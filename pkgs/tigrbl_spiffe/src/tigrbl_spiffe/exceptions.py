@@ -1,0 +1,10 @@
+from __future__ import annotations
+
+
+class SpiffeError(Exception): ...
+
+
+class TransportError(SpiffeError): ...
+
+
+class ValidationError(SpiffeError): ...
