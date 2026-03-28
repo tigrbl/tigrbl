@@ -47,6 +47,11 @@ from tigrbl_core.config.constants import TIGRBL_GET_DB_ATTR
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
 from tigrbl_concrete.system.docs.runtime_ops import register_runtime_route
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
+from ._native_backend import (
+    clear_ffi_boundary_events as _clear_native_boundary_events,
+    ffi_boundary_events as _native_boundary_events,
+    normalize_execution_backend as _normalize_execution_backend,
+)
 
 
 # optional compat: legacy transactional decorator
@@ -112,6 +117,7 @@ class TigrblApp(_App):
             title=spec.title,
             version=spec.version,
             lifespan=spec.lifespan,
+            execution_backend=getattr(spec, "execution_backend", None),
         )
         table_registry = TableRegistry(tables=spec_tables)
         app._table_registry = table_registry
@@ -159,6 +165,7 @@ class TigrblApp(_App):
         router_hooks: Mapping[str, Iterable[Callable]]
         | Mapping[str, Mapping[str, Iterable[Callable]]]
         | None = None,
+        execution_backend: str | None = None,
         **asgi_kwargs: Any,
     ) -> None:
         title = asgi_kwargs.pop("title", None)
@@ -209,6 +216,7 @@ class TigrblApp(_App):
         if mount_system is None:
             mount_system = str(profile or "").lower() != "minimal"
         self.mount_system = bool(mount_system)
+        self.execution_backend = _normalize_execution_backend(execution_backend)
 
         # public containers (mirrors used by bindings.router)
         self.schemas = SimpleNamespace()
@@ -262,6 +270,12 @@ class TigrblApp(_App):
             and self.__class__.__name__ not in self._table_registry
         ):
             self.include_table(self.__class__)
+
+    def native_trace(self) -> list[dict[str, Any]]:
+        return _native_boundary_events()
+
+    def clear_native_trace(self) -> None:
+        _clear_native_boundary_events()
 
     def _has_local_op_declarations(self) -> bool:
         """Return True when the app subclass declares op_alias/op_ctx operations."""

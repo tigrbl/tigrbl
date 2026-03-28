@@ -34,6 +34,11 @@ from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from ._engine import Engine
+from ._native_backend import (
+    clear_ffi_boundary_events as _clear_native_boundary_events,
+    ffi_boundary_events as _native_boundary_events,
+    normalize_execution_backend as _normalize_execution_backend,
+)
 
 
 class TigrblRouter(_Router):
@@ -87,6 +92,7 @@ class TigrblRouter(_Router):
         router_hooks: Mapping[str, Iterable[Callable]]
         | Mapping[str, Mapping[str, Iterable[Callable]]]
         | None = None,
+        execution_backend: str | None = None,
         **router_kwargs: Any,
     ) -> None:
         if prefix is not None:
@@ -113,6 +119,7 @@ class TigrblRouter(_Router):
         self.rest_prefix = (
             prefix if prefix is not None else getattr(self, "REST_PREFIX", "/api")
         )
+        self.execution_backend = _normalize_execution_backend(execution_backend)
 
         # public containers (mirrors used by bindings.router)
         self.tables = TableRegistry(
@@ -133,6 +140,12 @@ class TigrblRouter(_Router):
         self._router_hooks_map = copy.deepcopy(router_hooks) if router_hooks else None
         if tables:
             self.include_tables(list(tables))
+
+    def native_trace(self) -> list[dict[str, Any]]:
+        return _native_boundary_events()
+
+    def clear_native_trace(self) -> None:
+        _clear_native_boundary_events()
 
     # ------------------------- internal helpers -------------------------
 
