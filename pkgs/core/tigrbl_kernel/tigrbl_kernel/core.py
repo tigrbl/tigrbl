@@ -24,6 +24,7 @@ from .cache import _SpecsOnceCache, _WeakMaybeDict
 from .models import KernelPlan, OpView
 from .opview_compiler import compile_opview_from_specs
 from .types import DEFAULT_PHASE_ORDER as _DEFAULT_PHASE_ORDER
+from .native_compile import build_native_kernel as _build_native_kernel
 from .utils import (
     _opspecs,
     _table_iter,
@@ -43,16 +44,17 @@ class Kernel:
             cls._instance = super().__new__(cls)
         return cls._instance
 
-    def __init__(self, atoms: Optional[Sequence[_DiscoveredAtom]] = None):
+    def __init__(self, atoms: Optional[Sequence[_DiscoveredAtom]] = None, backend: str = "python"):
         if atoms is None and getattr(self, "_singleton_initialized", False):
-            self._reset(atoms)
+            self._reset(atoms, backend=backend)
             return
-        self._reset(atoms)
+        self._reset(atoms, backend=backend)
         if atoms is None:
             self._singleton_initialized = True
 
-    def _reset(self, atoms: Optional[Sequence[_DiscoveredAtom]] = None) -> None:
+    def _reset(self, atoms: Optional[Sequence[_DiscoveredAtom]] = None, backend: str = "python") -> None:
         self._atoms_cache = list(atoms) if atoms else None
+        self.backend = backend
         self._specs_cache = _SpecsOnceCache()
         self._opviews = _WeakMaybeDict()
         self._phase_chains = _WeakMaybeDict()
@@ -152,6 +154,9 @@ class Kernel:
         if isinstance(payload, dict):
             return payload
         return {}
+
+    def compile_native_plan(self, app: Any):
+        return _build_native_kernel(app)
 
     def invalidate_kernelz_payload(self, app: Optional[Any] = None) -> None:
         with self._lock:
