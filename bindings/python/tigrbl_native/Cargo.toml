@@ -1,0 +1,17 @@
+[package]
+name = "tigrbl_native_bindings"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+description = "Python bindings for the Rust-native Tigrbl kernel and runtime."
+
+[lib]
+name = "_native"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+tigrbl_rs_kernel = { path = "../../../crates/tigrbl_rs_kernel" }
+tigrbl_rs_runtime = { path = "../../../crates/tigrbl_rs_runtime" }
+tigrbl_rs_spec = { path = "../../../crates/tigrbl_rs_spec" }

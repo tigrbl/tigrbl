@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/tigrbl_rs_spec",
+  "crates/tigrbl_rs_ports",
+  "crates/tigrbl_rs_atoms",
+  "crates/tigrbl_rs_ops_oltp",
+  "crates/tigrbl_rs_kernel",
+  "crates/tigrbl_rs_runtime",
+  "crates/tigrbl_rs_engine_sqlite",
+  "crates/tigrbl_rs_engine_postgres",
+  "crates/tigrbl_rs_engine_inmemory",
+  "bindings/python/tigrbl_native",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+authors = ["Jacob Stewart <jacob@swarmauri.com>"]
+rust-version = "1.81"
+
+[workspace.dependencies]

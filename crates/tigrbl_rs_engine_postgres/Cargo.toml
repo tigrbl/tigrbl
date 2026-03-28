@@ -1,0 +1,13 @@
+[package]
+name = "tigrbl_rs_engine_postgres"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+description = "Rust-native Postgres engine for Tigrbl."
+
+[dependencies]
+tigrbl_rs_ports = { path = "../tigrbl_rs_ports" }
+tigrbl_rs_spec = { path = "../tigrbl_rs_spec" }
+
