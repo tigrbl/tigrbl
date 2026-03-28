@@ -1,0 +1,19 @@
+[package]
+name = "tigrbl_rs_runtime"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+description = "Rust-native runtime and executor for compiled Tigrbl kernel plans."
+
+[dependencies]
+tigrbl_rs_atoms = { path = "../tigrbl_rs_atoms" }
+tigrbl_rs_engine_inmemory = { path = "../tigrbl_rs_engine_inmemory" }
+tigrbl_rs_engine_postgres = { path = "../tigrbl_rs_engine_postgres" }
+tigrbl_rs_engine_sqlite = { path = "../tigrbl_rs_engine_sqlite" }
+tigrbl_rs_kernel = { path = "../tigrbl_rs_kernel" }
+tigrbl_rs_ops_oltp = { path = "../tigrbl_rs_ops_oltp" }
+tigrbl_rs_ports = { path = "../tigrbl_rs_ports" }
+tigrbl_rs_spec = { path = "../tigrbl_rs_spec" }
+
