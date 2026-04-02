@@ -1,32 +1,23 @@
-# tigrbl-spiffe
+# tigrbl_spiffe
 
-SPIFFE/SPIRE plugin for **Tigrbl**. Table/op-centric design:
-- Single SVID table with `rotate` op and remote-read delegation
-- Registrar and Bundle tables using canonical `read/merge/replace`
-- Middleware for identity injection, authn, TLS
-- Transport adapter for UDS (agent), HTTP/HTTPS (gateways)
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Install
+## Canonical repository docs
 
-```bash
-uv add tigrbl-spiffe
-# or
-pip install tigrbl-spiffe
-```
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Quickstart
+## Package identity
 
-```python
-from tigrbl import TigrblApp
-from tigrbl_spiffe.plugin import TigrblSpiffePlugin
-from tigrbl_spiffe.adapters import Endpoint
+- workspace path: `pkgs/apps/tigrbl_spiffe`
+- workspace class: application package
+- implementation layout: `src/tigrbl_spiffe/`
 
-app = TigrblApp()
-
-plugin = TigrblSpiffePlugin(
-    workload_endpoint=Endpoint(scheme="uds", address="unix:///tmp/spire-agent/public/api.sock"),
-)
-plugin.install(app)
-```
-
-See **examples/** for agent fetch, registrar merge, and TLS client usage.
+Long-form repository documentation is governed from `docs/`.

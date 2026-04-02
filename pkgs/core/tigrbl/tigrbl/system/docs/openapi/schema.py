@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+JSON_SCHEMA_DRAFT_2020_12_DIALECT = "https://json-schema.org/draft/2020-12/schema"
+
 from ....runtime.status.mappings import status
 from .helpers import (
     _request_schema_from_handler,
@@ -149,6 +151,7 @@ def openapi(router: Any) -> dict[str, Any]:
 
     doc: dict[str, Any] = {
         "openapi": "3.1.0",
+        "jsonSchemaDialect": JSON_SCHEMA_DRAFT_2020_12_DIALECT,
         "info": {"title": router.title, "version": router.version},
         "paths": paths,
         "components": components,

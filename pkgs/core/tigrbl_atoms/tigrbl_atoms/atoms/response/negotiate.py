@@ -30,7 +30,7 @@ def _run(obj: Optional[object], ctx: Any) -> None:
         hints.media_type = negotiate_media_type(accept, default_media)
 
 
-class AtomImpl(Atom[Operated, Encoded]):
+class AtomImpl(Atom[Operated, Encoded, Exception]):
     name = "response.negotiate"
     anchor = ANCHOR
 

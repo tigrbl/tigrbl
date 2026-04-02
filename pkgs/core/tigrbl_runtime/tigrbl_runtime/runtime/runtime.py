@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from tigrbl_kernel import Kernel, _default_kernel
+from tigrbl_kernel import Kernel, _kernel
 
 from tigrbl_runtime.executors import (
     ExecutorBase,
@@ -21,7 +21,8 @@ class Runtime(RuntimeBase):
         *,
         default_executor: str = "numba_packed",
     ) -> None:
-        super().__init__(kernel=kernel or _default_kernel)
+        resolved_kernel = kernel if kernel is not None else _kernel()
+        super().__init__(kernel=resolved_kernel)
         self.default_executor = default_executor
         self.register_executor(PackedPlanExecutor())
         self.register_executor(NumbaPackedPlanExecutor())

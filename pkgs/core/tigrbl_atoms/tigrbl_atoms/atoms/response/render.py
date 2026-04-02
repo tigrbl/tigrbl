@@ -86,7 +86,7 @@ def _run(obj: Optional[object], ctx: Any) -> Any:
     return resp
 
 
-class AtomImpl(Atom[Operated, Encoded]):
+class AtomImpl(Atom[Operated, Encoded, Exception]):
     name = "response.render"
     anchor = ANCHOR
 

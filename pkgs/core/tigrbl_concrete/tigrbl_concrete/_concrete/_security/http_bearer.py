@@ -26,6 +26,7 @@ class HTTPBearer(OpenAPISecurityDependency):
         bearer_format: str | None = None,
         description: str | None = None,
         scopes: Sequence[str] | None = None,
+        realm: str | None = None,
     ) -> None:
         payload: dict[str, Any] = {"type": "http", "scheme": scheme}
         if bearer_format is not None:
@@ -39,33 +40,64 @@ class HTTPBearer(OpenAPISecurityDependency):
             auto_error=auto_error,
         )
         self.http_scheme = scheme
+        self.realm = realm
+
+    def _challenge_value(
+        self,
+        *,
+        error: str | None = None,
+        error_description: str | None = None,
+    ) -> str:
+        parts = ["Bearer"]
+        if self.realm:
+            parts.append(f'realm="{self.realm}"')
+        if error:
+            parts.append(f'error="{error}"')
+        if error_description:
+            parts.append(f'error_description="{error_description}"')
+        return ", ".join(parts) if len(parts) > 1 else parts[0]
+
+    def _unauthorized(
+        self,
+        *,
+        error: str | None = None,
+        error_description: str | None = None,
+        detail: str = "Unauthorized",
+    ) -> None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=detail,
+            headers={
+                "WWW-Authenticate": self._challenge_value(
+                    error=error,
+                    error_description=error_description,
+                )
+            },
+        )
 
     def __call__(self, request: Any) -> HTTPAuthorizationCredentials | None:
         header = request.headers.get("authorization")
         if not header:
             if self.auto_error:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Forbidden",
-                )
+                self._unauthorized()
             return None
 
         try:
             incoming_scheme, credentials = header.split(" ", 1)
         except ValueError:
             if self.auto_error:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Forbidden",
-                )
+                self._unauthorized(error="invalid_request")
             return None
 
         if incoming_scheme.lower() != self.http_scheme.lower():
             if self.auto_error:
-                raise HTTPException(
-                    status_code=status.HTTP_403_FORBIDDEN,
-                    detail="Forbidden",
-                )
+                self._unauthorized(error="invalid_request")
+            return None
+
+        credentials = credentials.strip()
+        if not credentials:
+            if self.auto_error:
+                self._unauthorized(error="invalid_token")
             return None
 
         return HTTPAuthorizationCredentials(

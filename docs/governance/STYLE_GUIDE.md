@@ -11,6 +11,16 @@
 
 Use claim language that matches the current claim tier. Do not imply certification where the gate model and evidence do not support it.
 
+Outside `docs/governance/`, `docs/conformance/`, and `docs/adr/`, do not use certification language such as:
+
+- `certified`
+- `certifiably`
+- `conformant`
+- `fully featured`
+- `fully compliant`
+
+Use neutral wording in package-local distribution READMEs and developer docs.
+
 ## Structure
 
 Each governance or conformance document should state:

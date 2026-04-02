@@ -336,7 +336,7 @@ def _coerce_model_field_value(ctx: Any, field: str, value: Any) -> Any:
     return value
 
 
-class AtomImpl(Atom[Executing, Executing]):
+class AtomImpl(Atom[Executing, Executing, Exception]):
     name = "wire.build_in"
     anchor = ANCHOR
 

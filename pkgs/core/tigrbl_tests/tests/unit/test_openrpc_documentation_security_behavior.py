@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from httpx import ASGITransport, Client
+import asyncio
+
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, String
 
 from tigrbl import (
     APIKey,
+    HTTPBasic,
     HTTPBearer,
     MutualTLS,
     OAuth2,
@@ -20,6 +23,10 @@ from tigrbl.security import Security
 
 
 def _bearer_dep(cred=Security(HTTPBearer(scheme_name="BearerAuth"))):
+    return cred
+
+
+def _basic_dep(cred=Security(HTTPBasic(scheme_name="BasicAuth"))):
     return cred
 
 
@@ -51,6 +58,13 @@ def _openid_dep(
 
 def _mtls_dep(cred=Security(MutualTLS(scheme_name="MutualTLSAuth"))):
     return cred
+
+
+class BasicDocsTable(TableBase, GUIDPk):
+    __tablename__ = "basic_docs_table_openrpc"
+
+    name = Column(String, nullable=False)
+    __tigrbl_ops__ = (OpSpec(alias="read", target="read", secdeps=(_basic_dep,)),)
 
 
 class AppDocsTable(TableBase, GUIDPk):
@@ -85,6 +99,7 @@ def test_openrpc_docs_cover_app_router_table_and_all_security_schemes() -> None:
     app.include_table(AppDocsTable)
 
     router = TigrblRouter(engine=mem(async_=False))
+    router.include_table(BasicDocsTable)
     router.include_table(RouterDocsTable)
     router.include_table(TableDocsTable)
     app.include_router(router)
@@ -93,9 +108,12 @@ def test_openrpc_docs_cover_app_router_table_and_all_security_schemes() -> None:
     app.mount_jsonrpc()
     app.mount_openrpc()
 
-    transport = ASGITransport(app=app)
-    with Client(transport=transport, base_url="http://test") as client:
-        openrpc = client.get("/openrpc.json").json()
+    async def _fetch() -> dict[str, object]:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            return (await client.get("/openrpc.json")).json()
+
+    openrpc = asyncio.run(_fetch())
 
     method_map = {method["name"]: method for method in openrpc["methods"]}
     assert "AppDocsTable.read" in method_map
@@ -103,6 +121,7 @@ def test_openrpc_docs_cover_app_router_table_and_all_security_schemes() -> None:
     assert "TableDocsTable.read" in method_map
 
     assert method_map["AppDocsTable.read"]["security"] == [{"BearerAuth": []}]
+    assert method_map["BasicDocsTable.read"]["security"] == [{"BasicAuth": []}]
     assert method_map["RouterDocsTable.read"]["security"] == [{"ApiKeyAuth": []}]
     assert method_map["TableDocsTable.read"]["security"] == [
         {"OAuth2Auth": []},
@@ -111,6 +130,7 @@ def test_openrpc_docs_cover_app_router_table_and_all_security_schemes() -> None:
     ]
 
     assert openrpc["components"]["securitySchemes"] == {
+        "BasicAuth": {"type": "http", "scheme": "basic"},
         "BearerAuth": {"type": "http", "scheme": "bearer"},
         "ApiKeyAuth": {"type": "apiKey", "name": "X-API-Key", "in": "header"},
         "OAuth2Auth": {

@@ -29,7 +29,7 @@ def _run(obj: Optional[object], ctx: Any) -> None:
     temp["schema_out"] = dict(_ensure_schema_out(ctx))
 
 
-class AtomImpl(Atom[Operated, Operated]):
+class AtomImpl(Atom[Operated, Operated, Exception]):
     name = "schema.collect_out"
     anchor = ANCHOR
 

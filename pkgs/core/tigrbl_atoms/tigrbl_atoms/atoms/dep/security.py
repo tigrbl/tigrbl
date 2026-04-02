@@ -117,7 +117,7 @@ async def _run(dep: object | None, ctx: Any) -> Any:
     return rv
 
 
-class AtomImpl(Atom[Planned, Guarded]):
+class AtomImpl(Atom[Planned, Guarded, Exception]):
     name = "dep.security"
     anchor = ANCHOR
 

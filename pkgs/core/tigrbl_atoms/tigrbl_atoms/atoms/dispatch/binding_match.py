@@ -152,7 +152,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         setattr(ctx, "path_params", matched_path_params)
 
 
-class AtomImpl(Atom[Ingress, Bound]):
+class AtomImpl(Atom[Ingress, Bound, Exception]):
     name = "dispatch.binding_match"
     anchor = ANCHOR
 

@@ -135,7 +135,7 @@ def _mask_value(value: Any, keep_last: Optional[int]) -> str:
     return "•" * (len(s) - n) + s[-n:]
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "out.masking"
     anchor = ANCHOR
 

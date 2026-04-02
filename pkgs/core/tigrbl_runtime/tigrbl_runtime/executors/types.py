@@ -16,8 +16,11 @@ from typing import (
     runtime_checkable,
 )
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
+try:
+    from sqlalchemy.ext.asyncio import AsyncSession
+    from sqlalchemy.orm import Session
+except Exception:  # pragma: no cover - optional ORM dependency for runtime typing
+    AsyncSession = Session = Any  # type: ignore[assignment]
 from tigrbl_base._base import AttrDict
 from tigrbl_atoms.types import BaseCtx
 from tigrbl_concrete._concrete._request import Request

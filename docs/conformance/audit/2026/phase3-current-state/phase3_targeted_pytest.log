@@ -1,0 +1,1225 @@
+..................FFFFFFFFFFFF.............xxxxxxxx                      [100%]
+=================================== FAILURES ===================================
+______ test_openapi_docs_cover_app_router_table_and_all_security_schemes _______
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f7e6340>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_openapi_docs_cover_app_router_table_and_all_security_schemes() -> None:
+        app = TigrblApp(engine=mem(async_=False))
+        app.include_table(AppDocsTable)
+    
+        router = TigrblRouter(engine=mem(async_=False))
+        router.include_table(RouterDocsTable)
+        router.include_table(TableDocsTable)
+        app.include_router(router)
+    
+        app.initialize()
+    
+        transport = ASGITransport(app=app)
+        with Client(transport=transport, base_url="http://test") as client:
+>           openapi = client.get("/openapi.json").json()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py:96: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f7f49e0>
+args = (<TigrblApp tables=['AppDocsTable', '__tigrbl_system_docs__', 'RouterDocsTable', 'TableDocsTable'] rpc=['AppDocsTable', 'Appdocstable']>,)
+kwargs = {}
+app = <TigrblApp tables=['AppDocsTable', '__tigrbl_system_docs__', 'RouterDocsTable', 'TableDocsTable'] rpc=['AppDocsTable', 'Appdocstable']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+______ test_openrpc_docs_cover_app_router_table_and_all_security_schemes _______
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f5b1440>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_openrpc_docs_cover_app_router_table_and_all_security_schemes() -> None:
+        app = TigrblApp(engine=mem(async_=False))
+        app.include_table(AppDocsTable)
+    
+        router = TigrblRouter(engine=mem(async_=False))
+        router.include_table(RouterDocsTable)
+        router.include_table(TableDocsTable)
+        app.include_router(router)
+    
+        app.initialize()
+        app.mount_jsonrpc()
+        app.mount_openrpc()
+    
+        transport = ASGITransport(app=app)
+        with Client(transport=transport, base_url="http://test") as client:
+>           openrpc = client.get("/openrpc.json").json()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py:98: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f763350>
+args = (<TigrblApp tables=['AppDocsTable', '__tigrbl_system_docs__', 'RouterDocsTable', 'TableDocsTable'] rpc=['AppDocsTable', 'Appdocstable']>,)
+kwargs = {}
+app = <TigrblApp tables=['AppDocsTable', '__tigrbl_system_docs__', 'RouterDocsTable', 'TableDocsTable'] rpc=['AppDocsTable', 'Appdocstable']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+________________________ test_openrpc_endpoint_exposed _________________________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f5b3c40>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_openrpc_endpoint_exposed():
+        app, _ = _build_app()
+        transport = ASGITransport(app=app)
+        with Client(transport=transport, base_url="http://test") as client:
+>           response = client.get("/openrpc.json")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f5b2850>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+_______________ test_openrpc_server_url_respects_jsonrpc_prefix ________________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f31e040>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_openrpc_server_url_respects_jsonrpc_prefix():
+        app, _ = _build_app()
+        app.jsonrpc_prefix = "/rpc/custom"
+        transport = ASGITransport(app=app)
+    
+        with Client(transport=transport, base_url="http://test") as client:
+>           payload = client.get("/openrpc.json").json()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:39: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f31ce50>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+_____________________ test_openrpc_includes_method_schema ______________________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f38c340>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_openrpc_includes_method_schema():
+        app, model = _build_app()
+        transport = ASGITransport(app=app)
+        with Client(transport=transport, base_url="http://test") as client:
+>           payload = client.get("/openrpc.json").json()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f31a120>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+________________ test_mount_jsonrpc_updates_openrpc_server_url _________________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f38e740>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_mount_jsonrpc_updates_openrpc_server_url() -> None:
+        app, _ = _build_app()
+        app.mount_jsonrpc(prefix="/jsonrpc")
+        transport = ASGITransport(app=app)
+    
+        with Client(transport=transport, base_url="http://test") as client:
+>           payload = client.get("/openrpc.json").json()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f3985f0>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+______________ test_jsonrpc_create_accepts_nested_params_mapping _______________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f38d540>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_jsonrpc_create_accepts_nested_params_mapping() -> None:
+        app, model = _build_app()
+        transport = ASGITransport(app=app)
+    
+        request_payload = {
+            "jsonrpc": "2.0",
+            "method": f"{model.__name__}.create",
+            "params": {"params": {"name": "New Widget"}},
+            "id": 1,
+        }
+    
+        with Client(transport=transport, base_url="http://test") as client:
+>           response = client.post("/rpc", json=request_payload)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:90: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1144: in post
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f3a11d0>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+___________ test_jsonrpc_notification_without_id_returns_no_content ____________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f256340>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_jsonrpc_notification_without_id_returns_no_content() -> None:
+        app, model = _build_app()
+        transport = ASGITransport(app=app)
+    
+        request_payload = {
+            "jsonrpc": "2.0",
+            "method": f"{model.__name__}.create",
+            "params": {"name": "Silent Widget"},
+        }
+    
+        with Client(transport=transport, base_url="http://test") as client:
+>           response = client.post("/rpc", json=request_payload)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:109: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1144: in post
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f347070>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+_____________ test_mount_lens_uses_latest_openrpc_path_by_default ______________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f26d640>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_mount_lens_uses_latest_openrpc_path_by_default() -> None:
+        app, _ = _build_app()
+        app.mount_openrpc(path="/schema/openrpc.json")
+        app.mount_lens(path="/lens-custom")
+    
+        transport = ASGITransport(app=app)
+        with Client(transport=transport, base_url="http://test") as client:
+>           html = client.get("/lens-custom").text
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:122: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f86ba00>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+_________ test_default_system_docs_endpoints_are_present_and_gettable __________
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f26e840>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_default_system_docs_endpoints_are_present_and_gettable() -> None:
+        app, _ = _build_app()
+        transport = ASGITransport(app=app)
+    
+        with Client(transport=transport, base_url="http://test") as client:
+>           docs = client.get("/docs")
+                   ^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:132: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f52b950>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+_____ test_docs_lens_openapi_openrpc_are_rest_get_only_and_not_rpc_methods _____
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f244640>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_docs_lens_openapi_openrpc_are_rest_get_only_and_not_rpc_methods() -> None:
+        app, _ = _build_app()
+        transport = ASGITransport(app=app)
+    
+        route_map = {route.path: route for route in app.routes}
+        for path in ("/docs", "/lens", "/openapi.json", "/openrpc.json"):
+            assert path in route_map
+            assert set(route_map[path].methods or []) == {"GET"}
+    
+        with Client(transport=transport, base_url="http://test") as client:
+            # Runtime dispatch only mounts these as GET handlers. Depending on the
+            # underlying route adapter we can surface either 404 or 405 for
+            # non-GET methods, but never a successful RPC dispatch.
+>           assert client.post("/docs").status_code in {404, 405}
+                   ^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:165: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1144: in post
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f52bad0>
+args = (<TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>,)
+kwargs = {}
+app = <TigrblApp tables=['Widget', '__tigrbl_system_docs__'] rpc=['Widget']>
+revision = 0, kernel_id = 10515696, cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+____ test_openrpc_server_url_respects_router_mount_jsonrpc_prefix_argument _____
+
+coro = <coroutine object _patch_httpx_asgi_transport_sync_router.<locals>._to_sync_response at 0x7eda0f246c40>
+
+    def _run_coro_sync(coro):
+        """Run a coroutine from sync code, even when an event loop is already running."""
+    
+        try:
+>           asyncio.get_running_loop()
+E           RuntimeError: no running event loop
+
+pkgs/core/tigrbl_tests/tests/conftest.py:102: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+    def test_openrpc_server_url_respects_router_mount_jsonrpc_prefix_argument():
+        class Widget(TableBase, GUIDPk):
+            __tablename__ = "widgets_openrpc_router_mount_prefix"
+            name = Column(String, nullable=False)
+    
+        router = TigrblRouter(engine=mem(async_=False))
+        router.include_table(Widget)
+        router.initialize()
+        router.mount_jsonrpc(prefix="/jsonrpc")
+        router.mount_openrpc()
+    
+        app = TigrblApp()
+        app.include_router(router.router)
+    
+        transport = ASGITransport(app=app)
+        with Client(transport=transport, base_url="http://test") as client:
+>           payload = client.get("/openrpc.json").json()
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py:194: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1053: in get
+    return self.request(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:825: in request
+    return self.send(request, auth=auth, follow_redirects=follow_redirects)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:914: in send
+    response = self._send_handling_auth(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:942: in _send_handling_auth
+    response = self._send_handling_redirects(
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:979: in _send_handling_redirects
+    response = self._send_single_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_client.py:1014: in _send_single_request
+    response = transport.handle_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:150: in handle_request
+    return _run_coro_sync(_to_sync_response(self, request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:104: in _run_coro_sync
+    return asyncio.run(coro)
+           ^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.13/asyncio/base_events.py:725: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+pkgs/core/tigrbl_tests/tests/conftest.py:138: in _to_sync_response
+    response = await transport.handle_async_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/opt/pyvenv/lib/python3.13/site-packages/httpx/_transports/asgi.py:170: in handle_async_request
+    await self.app(scope, receive, send)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:199: in __call__
+    await self.invoke(env)
+pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py:169: in invoke
+    plan, packed_plan = self.runtime.compile(self)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <tigrbl_runtime.runtime.runtime.Runtime object at 0x7eda0f72e200>
+args = (<TigrblApp tables=[] rpc=[]>,), kwargs = {}
+app = <TigrblApp tables=[] rpc=[]>, revision = 0, kernel_id = 10515696
+cache_key = (10515696, 0), cached = None
+
+    def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
+        if args:
+            app = args[0]
+        else:
+            app = kwargs.get("app")
+        if app is None:
+            raise ValueError("Runtime.compile requires an app instance")
+    
+        revision = getattr(app, "_runtime_plan_revision", 0)
+        kernel_id = id(self.kernel)
+        cache_key = (kernel_id, revision)
+        cached = getattr(app, "_runtime_compile_cache", None)
+        if isinstance(cached, tuple) and len(cached) == 3 and cached[0] == cache_key:
+            return cached[1], cached[2]
+    
+>       plan = self.kernel.kernel_plan(app)
+               ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+
+pkgs/core/tigrbl_runtime/tigrbl_runtime/runtime/runtime.py:48: AttributeError
+=============================== warnings summary ===============================
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py:9
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/security/test_schemes.py:9: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py:18
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/security/test_schemes.py:18: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py:30
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/security/test_schemes.py:30: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py:38
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/security/test_schemes.py:38: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:10
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:10: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:29
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:29: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:48
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:48: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:70
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:70: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:90
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:90: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:110
+  /mnt/data/phase3_src/tigrbl-master/pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py:110: PytestUnknownMarkWarning: Unknown pytest.mark.unit - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html
+    @pytest.mark.unit
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py::test_openapi_docs_cover_app_router_table_and_all_security_schemes - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py::test_openrpc_docs_cover_app_router_table_and_all_security_schemes - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_endpoint_exposed - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_server_url_respects_jsonrpc_prefix - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_includes_method_schema - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_mount_jsonrpc_updates_openrpc_server_url - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_jsonrpc_create_accepts_nested_params_mapping - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_jsonrpc_notification_without_id_returns_no_content - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_mount_lens_uses_latest_openrpc_path_by_default - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_default_system_docs_endpoints_are_present_and_gettable - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_docs_lens_openapi_openrpc_are_rest_get_only_and_not_rpc_methods - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+FAILED pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_server_url_respects_router_mount_jsonrpc_prefix_argument - AttributeError: 'NoneType' object has no attribute 'kernel_plan'
+12 failed, 31 passed, 8 xfailed, 10 warnings in 3.38s

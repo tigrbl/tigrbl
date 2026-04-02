@@ -1,39 +1,23 @@
-![Tigrbl Branding](https://github.com/swarmauri/swarmauri-sdk/blob/a170683ecda8ca1c4f912c966d4499649ffb8224/assets/tigrbl.brand.theme.svg)
+# tigrbl_spec
 
-<p align="center">
-    <a href="https://pypi.org/project/tigrbl_spec/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl_spec" alt="PyPI - Downloads"/></a>
-    <a href="https://hits.sh/github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/standards/tigrbl_spec/">
-        <img alt="Hits" src="https://hits.sh/github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/standards/tigrbl_spec.svg"/></a>
-    <a href="https://pypi.org/project/tigrbl_spec/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl_spec" alt="PyPI - Python Version"/></a>
-    <a href="https://pypi.org/project/tigrbl_spec/">
-        <img src="https://img.shields.io/pypi/l/tigrbl_spec" alt="PyPI - License"/></a>
-    <a href="https://pypi.org/project/tigrbl_spec/">
-        <img src="https://img.shields.io/pypi/v/tigrbl_spec?label=tigrbl_spec&color=green" alt="PyPI - tigrbl_spec"/></a>
-</p>
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Features
+## Canonical repository docs
 
-- Provides a planning-stage home for Tigrbl shared specifications.
-- Captures protocol and interface intent for future package consumers.
-- Declares Python 3.10 through 3.12 support.
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Installation
+## Package identity
 
-### uv
+- workspace path: `pkgs/core/tigrbl_spec`
+- workspace class: core Python package
+- implementation layout: `tigrbl_spec/`
 
-```bash
-uv add tigrbl_spec
-```
-
-### pip
-
-```bash
-pip install tigrbl_spec
-```
-
-## Usage
-
-Import `tigrbl_spec` to access shared specification artifacts as they are introduced,
-including compatibility contracts and cross-package interface definitions.
+Long-form repository documentation is governed from `docs/`.

@@ -44,7 +44,7 @@ async def _run(obj: Optional[object], ctx: Any) -> None:
         hints.media_type = "text/html"
 
 
-class AtomImpl(Atom[Operated, Encoded]):
+class AtomImpl(Atom[Operated, Encoded, Exception]):
     name = "response.template"
     anchor = ANCHOR
 

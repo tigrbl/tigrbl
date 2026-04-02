@@ -1,15 +1,23 @@
-        # tigrbl_rs_ops_oltp
+# tigrbl_rs_ops_oltp
 
-        Rust-native CRUD and bulk operation semantics used by sys handler atoms and the native runtime.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-        ## Owns
+## Canonical repository docs
 
-        - CRUD verbs and bulk verbs
-- normalization, defaults, filters, patch/merge shaping
-- native handler registry
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-        ## Does not own
+## Package identity
 
-        - phase algebra
-- kernel plan compilation
-- runtime executor ownership
+- workspace path: `crates/tigrbl_rs_ops_oltp`
+- workspace class: Rust crate
+- implementation layout: `src/`
+
+Long-form repository documentation is governed from `docs/`.

@@ -1,0 +1,25 @@
+{
+  "marker_type": "target-freeze-equivalent",
+  "gate": "Gate A \u2014 Boundary Freeze",
+  "cycle_id": "current-target-cycle-2026-phase14-handoff",
+  "freeze_date": "2026-04-02",
+  "status": "frozen",
+  "freeze_tag_equivalent": "phase14-post-promotion-handoff-2026-04-02",
+  "boundary_docs": [
+    "docs/conformance/CURRENT_TARGET.md",
+    "docs/governance/TARGET_BOUNDARY.md"
+  ],
+  "controlled_docs": [
+    "docs/conformance/CURRENT_TARGET.md",
+    "docs/governance/TARGET_BOUNDARY.md",
+    "docs/conformance/CLAIM_REGISTRY.md",
+    "docs/governance/CLAIM_TIERS.md",
+    "docs/governance/CERTIFICATION_POLICY.md",
+    "docs/governance/RELEASE_POLICY.md"
+  ],
+  "claim_registry_path": "docs/conformance/CLAIM_REGISTRY.md",
+  "manifest_path": "docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json",
+  "manifest_sha256": "1c8b7a92f743ad08f266a20dbfe8ffda3b9c1482f75d696be24f071f433d3407",
+  "change_rule": "Changes to frozen boundary documents in this cycle require synchronized updates to the claim registry, the boundary-freeze manifest, and this marker.",
+  "last_refreshed_checkpoint": "phase14-post-promotion-handoff"
+}

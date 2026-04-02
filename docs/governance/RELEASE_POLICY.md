@@ -29,3 +29,21 @@ Stable releases should publish:
 - current target snapshot
 - gate results
 - artifact manifest
+
+## Release-note claim rule
+
+Feature, spec, security, or certification claims in release notes must be governed.
+
+Each release-note file under `docs/release-notes/` or `docs/conformance/releases/` must declare:
+
+- `Supported claim ids: <CLAIM_ID,...>`
+
+The referenced claim IDs must exist in `docs/conformance/CLAIM_REGISTRY.md` and may not point at rows whose status is:
+
+- `not achieved`
+- `missing`
+- `partial`
+- `deferred`
+- `OOB`
+
+If a release note uses Tier 3+ certification wording, every referenced claim must also be Tier 3 or Tier 4.

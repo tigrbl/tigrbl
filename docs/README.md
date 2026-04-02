@@ -1,29 +1,24 @@
 # Documentation Map
 
-This is the single authoritative documentation tree for the repository.
+This is the single authoritative documentation tree for the repository. Phase 14 records the post-promotion handoff that freezes stable release `0.3.18` as release history and opens the governed next-target planning line `0.3.19.dev1`.
 
 ## Canonical reader path
 
-1. [`conformance/CURRENT_TARGET.md`](conformance/CURRENT_TARGET.md)
-2. [`conformance/CURRENT_STATE.md`](conformance/CURRENT_STATE.md)
-3. [`conformance/NEXT_STEPS.md`](conformance/NEXT_STEPS.md)
-4. [`governance/DOC_POINTERS.md`](governance/DOC_POINTERS.md)
+1. `conformance/CURRENT_TARGET.md`
+2. `conformance/CURRENT_STATE.md`
+3. `conformance/NEXT_TARGETS.md`
+4. `conformance/RFC_SECURITY_EVIDENCE_MAP.md`
+5. `conformance/EVIDENCE_MODEL.md`
+6. `conformance/IMPLEMENTATION_MAP.md`
+7. `conformance/NEXT_STEPS.md`
+8. `governance/DOC_POINTERS.md`
 
 ## Sections
 
-- `governance/` — project rules, claim model, versioning, target boundary, structure policy
-- `conformance/` — current target, current state, next steps, claim registry, gates
-- `adr/` — architectural decisions that govern the current target and future work
-- `developer/` — operator surfaces, CLI contract, testing guidance, developer-oriented references
+- `governance/` — project rules, claim model, versioning, target boundary, release policy, structure policy, and path-length policy
+- `conformance/` — frozen current target, current state, next targets, RFC evidence map, evidence model, implementation map, next steps, claim registry, dev/release bundles, gates, freeze artifacts, and audit evidence
+- `adr/` — architectural decisions that govern the current target, the handoff boundary, and next-target work
+- `developer/` — operator surfaces, operator reference pages, the implemented CLI surface, the certification lane model, package inventory, and CI validation guidance
+- `release-notes/` — governed release-note entry point and release-note claim policy examples
 - `notes/` — work-in-progress and archived notes
 - `conformance/archive/` — archived legacy status/build proof materials retained for traceability
-
-## Legacy developer docs already in tree
-
-The supplied archive already included developer-oriented material under:
-
-- `docs/architecture/`
-- `docs/migration/`
-- `docs/testing/`
-
-Those paths are still inside the authoritative docs tree. Future general-purpose developer docs should prefer `docs/developer/` unless there is a strong reason to keep a specialized section.

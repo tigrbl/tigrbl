@@ -1,0 +1,1658 @@
+{
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      },
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      },
+      "BearerAuth": {
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "MutualTLSAuth": {
+        "type": "mutualTLS"
+      },
+      "OAuth2Auth": {
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://issuer.example/token"
+          }
+        },
+        "type": "oauth2"
+      },
+      "OpenIdAuth": {
+        "openIdConnectUrl": "https://issuer.example/.well-known/openid-configuration",
+        "type": "openIdConnect"
+      }
+    }
+  },
+  "info": {
+    "title": "Phase 5 API JSON-RPC API",
+    "version": "5.0.0"
+  },
+  "methods": [
+    {
+      "description": "RPC method for Phase5BasicDocsTable.clear (clear)",
+      "name": "Phase5BasicDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BasicDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BasicDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for Phase5BasicDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5BasicDocsTableClearResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BasicDocsTable.create (create)",
+      "name": "Phase5BasicDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5BasicDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BasicDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5BasicDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BasicDocsTableCreateResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BasicDocsTable.delete (delete)",
+      "name": "Phase5BasicDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BasicDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "Phase5BasicDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for Phase5BasicDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5BasicDocsTableDeleteResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BasicDocsTable.list (list)",
+      "name": "Phase5BasicDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BasicDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BasicDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5BasicDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BasicDocsTableListResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BasicDocsTable.read (read)",
+      "name": "Phase5BasicDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BasicDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BasicDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5BasicDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BasicDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "BasicAuth": []
+        }
+      ]
+    },
+    {
+      "description": "RPC method for Phase5BasicDocsTable.replace (replace)",
+      "name": "Phase5BasicDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5BasicDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BasicDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5BasicDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BasicDocsTableReplaceResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BasicDocsTable.update (update)",
+      "name": "Phase5BasicDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5BasicDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "Phase5BasicDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5BasicDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "Phase5BasicDocsTableUpdateResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BearerDocsTable.clear (clear)",
+      "name": "Phase5BearerDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BearerDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BearerDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for Phase5BearerDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5BearerDocsTableClearResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BearerDocsTable.create (create)",
+      "name": "Phase5BearerDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5BearerDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BearerDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5BearerDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BearerDocsTableCreateResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BearerDocsTable.delete (delete)",
+      "name": "Phase5BearerDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BearerDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "Phase5BearerDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for Phase5BearerDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5BearerDocsTableDeleteResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BearerDocsTable.list (list)",
+      "name": "Phase5BearerDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BearerDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BearerDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5BearerDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BearerDocsTableListResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BearerDocsTable.read (read)",
+      "name": "Phase5BearerDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5BearerDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BearerDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5BearerDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BearerDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ]
+    },
+    {
+      "description": "RPC method for Phase5BearerDocsTable.replace (replace)",
+      "name": "Phase5BearerDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5BearerDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5BearerDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5BearerDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5BearerDocsTableReplaceResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5BearerDocsTable.update (update)",
+      "name": "Phase5BearerDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5BearerDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "Phase5BearerDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5BearerDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "Phase5BearerDocsTableUpdateResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5RouterDocsTable.clear (clear)",
+      "name": "Phase5RouterDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5RouterDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5RouterDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for Phase5RouterDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5RouterDocsTableClearResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5RouterDocsTable.create (create)",
+      "name": "Phase5RouterDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5RouterDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5RouterDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5RouterDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5RouterDocsTableCreateResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5RouterDocsTable.delete (delete)",
+      "name": "Phase5RouterDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5RouterDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "Phase5RouterDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for Phase5RouterDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5RouterDocsTableDeleteResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5RouterDocsTable.list (list)",
+      "name": "Phase5RouterDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5RouterDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5RouterDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5RouterDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5RouterDocsTableListResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5RouterDocsTable.read (read)",
+      "name": "Phase5RouterDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5RouterDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5RouterDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5RouterDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5RouterDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "ApiKeyAuth": []
+        }
+      ]
+    },
+    {
+      "description": "RPC method for Phase5RouterDocsTable.replace (replace)",
+      "name": "Phase5RouterDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5RouterDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5RouterDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5RouterDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5RouterDocsTableReplaceResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5RouterDocsTable.update (update)",
+      "name": "Phase5RouterDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5RouterDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "Phase5RouterDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5RouterDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "Phase5RouterDocsTableUpdateResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5TableDocsTable.clear (clear)",
+      "name": "Phase5TableDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5TableDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5TableDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for Phase5TableDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5TableDocsTableClearResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5TableDocsTable.create (create)",
+      "name": "Phase5TableDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5TableDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5TableDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5TableDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5TableDocsTableCreateResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5TableDocsTable.delete (delete)",
+      "name": "Phase5TableDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5TableDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "Phase5TableDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for Phase5TableDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "Phase5TableDocsTableDeleteResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5TableDocsTable.list (list)",
+      "name": "Phase5TableDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5TableDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5TableDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5TableDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5TableDocsTableListResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5TableDocsTable.read (read)",
+      "name": "Phase5TableDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 Phase5TableDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5TableDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 Phase5TableDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5TableDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "OAuth2Auth": []
+        },
+        {
+          "OpenIdAuth": []
+        },
+        {
+          "MutualTLSAuth": []
+        }
+      ]
+    },
+    {
+      "description": "RPC method for Phase5TableDocsTable.replace (replace)",
+      "name": "Phase5TableDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5TableDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "Phase5TableDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5TableDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "Phase5TableDocsTableReplaceResponse",
+          "type": "object"
+        }
+      }
+    },
+    {
+      "description": "RPC method for Phase5TableDocsTable.update (update)",
+      "name": "Phase5TableDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 Phase5TableDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "Phase5TableDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 Phase5TableDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "Phase5TableDocsTableUpdateResponse",
+          "type": "object"
+        }
+      }
+    }
+  ],
+  "openrpc": "1.2.6",
+  "servers": [
+    {
+      "name": "Phase 5 API",
+      "url": "/rpc"
+    }
+  ]
+}

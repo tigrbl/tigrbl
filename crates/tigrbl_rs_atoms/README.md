@@ -1,15 +1,23 @@
-        # tigrbl_rs_atoms
+# tigrbl_rs_atoms
 
-        Rust-native atom catalog mirroring the Python atom surface while separating atom algebra from CRUD and engine ownership.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-        ## Owns
+## Canonical repository docs
 
-        - phase algebra and labels
-- context promotions
-- built-in atoms and sys handler atoms
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-        ## Does not own
+## Package identity
 
-        - native CRUD semantics
-- route compilation
-- runtime orchestration
+- workspace path: `crates/tigrbl_rs_atoms`
+- workspace class: Rust crate
+- implementation layout: `src/`
+
+Long-form repository documentation is governed from `docs/`.

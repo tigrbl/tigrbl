@@ -1,157 +1,152 @@
-# Current State
+# Current State — Phase 14 Post-promotion Handoff
 
-## Status summary
+## Scope and method
 
-This repository now has a governed documentation and policy baseline for Phase 0. The package is **not yet** at a Tier 3 certifiable state for “fully featured” or “fully RFC/spec/standard compliant” claims.
+This document carries forward the Phase 10 Gate B, Phase 11 Gate C, Phase 12 Gate D, and Phase 13 Gate E checkpoints and records the Phase 14 work completed to freeze the promoted release as release history while opening the next governed development line.
 
-## Repository composition
+Phase 14 focused on:
 
-- core Python packages: 15
-- engine packages: 22
-- app packages: 6
-- Rust crates: 9
-- Python binding packages: 1
+- preserving stable release `0.3.18` as frozen current-boundary release history
+- retaining `docs/conformance/dev/0.3.18.dev1/` as the exact promotion-source dev bundle
+- advancing the working-tree facade package version from `0.3.18` to `0.3.19.dev1`
+- creating `docs/conformance/NEXT_TARGETS.md`
+- moving the datatype/table program into governed next-target ADRs and plans
+- archiving promotion-only WIP notes under `docs/notes/archive/2026/p14-post-promotion-handoff/`
+- creating an active dev-bundle scaffold at `docs/conformance/dev/0.3.19.dev1/`
 
-### Core packages
+The current state below is grounded in:
 
-- `tigrbl`
-- `tigrbl_atoms`
-- `tigrbl_base`
-- `tigrbl_canon`
-- `tigrbl_client`
-- `tigrbl_concrete`
-- `tigrbl_core`
-- `tigrbl_kernel`
-- `tigrbl_ops_olap`
-- `tigrbl_ops_oltp`
-- `tigrbl_orm`
-- `tigrbl_runtime`
-- `tigrbl_spec`
-- `tigrbl_tests`
-- `tigrbl_typing`
-
-### Engine packages
-
-- `tigrbl_engine_bigquery`
-- `tigrbl_engine_clickhouse`
-- `tigrbl_engine_csv`
-- `tigrbl_engine_dataframe`
-- `tigrbl_engine_duckdb`
-- `tigrbl_engine_inmemcache`
-- `tigrbl_engine_inmemory`
-- `tigrbl_engine_membloom`
-- `tigrbl_engine_memdedupe`
-- `tigrbl_engine_memkv`
-- `tigrbl_engine_memlru`
-- `tigrbl_engine_mempubsub`
-- `tigrbl_engine_memqueue`
-- `tigrbl_engine_memrate`
-- `tigrbl_engine_numpy`
-- `tigrbl_engine_pandas`
-- `tigrbl_engine_pgsqli_wal`
-- `tigrbl_engine_pyspark`
-- `tigrbl_engine_redis`
-- `tigrbl_engine_rediscachethrough`
-- `tigrbl_engine_snowflake`
-- `tigrbl_engine_xlsx`
-
-### App packages
-
-- `tigrbl_acme_ca`
-- `tigrbl_api_cron`
-- `tigrbl_api_hpks`
-- `tigrbl_billing`
-- `tigrbl_kms`
-- `tigrbl_spiffe`
-
-### Rust crates
-
-- `tigrbl_rs_atoms`
-- `tigrbl_rs_engine_inmemory`
-- `tigrbl_rs_engine_postgres`
-- `tigrbl_rs_engine_sqlite`
-- `tigrbl_rs_kernel`
-- `tigrbl_rs_ops_oltp`
-- `tigrbl_rs_ports`
-- `tigrbl_rs_runtime`
-- `tigrbl_rs_spec`
-
-## Phase 0 work completed in this checkpoint
-
-- preserved Apache 2.0 licensing already present in the supplied archive
-- added contributor, conduct, and security policy files at the root
-- created a governed docs tree for governance, conformance, ADRs, developer docs, and notes
-- added canonical pointers from the root README to target, state, next steps, governance, contributing, conduct, and security docs
-- archived legacy root-level status/build-proof materials into `docs/conformance/archive/2026/phase0-authority-reset/`
-- removed generated `target/` output from the checkpoint zip
-
-## Existing implemented surfaces observed from the supplied repository state
-
-### OAS / docs / security
-
-- OpenAPI document emission at `3.1.0`
-- `info`, `paths`, request bodies, responses, path/query parameters
-- `components.schemas`
-- `components.securitySchemes`
-- operation-level `security`
-- `/openapi.json`
-- Swagger UI
-- OpenRPC JSON
-- Lens / OpenRPC UI
-- OAS security scheme surface for `apiKey`, `http`, `oauth2`, `openIdConnect`, and `mutualTLS`
-- generic auth/security plumbing via `AuthNProvider`, router/app auth configuration, security dependencies, and `OpSpec.secdeps`
-
-### Public framework surface observed
-
-- REST
-- JSON-RPC surface exists, though explicit JSON-RPC 2.0 closure remains partial
-- request/response surface
-- templating
-- middleware protocol
-
-### Rust-native additive checkpoint observed
-
-The archived legacy current-state material shows an additive Rust-native substrate with:
-
-- Rust crates under `crates/`
-- Python bindings under `bindings/python/tigrbl_native`
-- public backend-selection and boundary-trace surfaces
-- crate-level Rust tests and selected Python native-surface tests
-- a source-importable Python fallback for the native binding surface
-
-See the archived legacy checkpoint materials for the exact older wording and build proof package.
-
-## Partial current-target surfaces
-
-- explicit JSON Schema Draft 2020-12 closure
-- explicit JSON-RPC 2.0 target
-- OIDC Core 1.0
-- RFC 7235
-- RFC 7617
-- RFC 6749
-- RFC 6750
-- RFC 7519
-- RFC 7636
-- RFC 8414
-- RFC 8705
-- RFC 9110 framework-owned semantics
-- WebSockets
-- static files
-- cookies
-- streaming responses
-- built-in middleware catalog
-
-## Missing current-target surfaces
-
-- RFC 9449 DPoP
-- AsyncAPI docs UI
-- JSON Schema docs UI
-- OIDC discovery/docs surface
-- WHATWG SSE
-- forms / multipart
-- upload handling
-- unified `tigrbl` CLI and its command/flag surface
+1. direct inspection of the governed docs tree
+2. direct inspection of the Gate B, Gate C, Gate D, and Gate E validators, workflows, and bundle files
+3. direct inspection of the new Phase 14 handoff validator, workflow, ADRs, and audit note
+4. execution of the repository policy validators under `tools/ci/`
+5. execution of the Gate B, Gate C, Gate D, Gate E, and Phase 14 validator pytest slices
+6. carried-forward audit evidence from Phases 5 through 13 for the closed release bundle `0.3.18`
 
 ## Certification status
 
-The current repository state does **not** justify a claim that the package is already certifiably fully featured or certifiably fully RFC/spec/standard compliant within the current boundary. This checkpoint documents the state honestly and freezes the authority surfaces needed to continue the program.
+Gate E remains passed for the promoted stable release `0.3.18`.
+
+Within the declared current target boundary, the promoted stable release `0.3.18` remains honestly describable as:
+
+- certifiably fully featured
+- certifiably fully RFC/spec/standard compliant
+
+The active working-tree line `0.3.19.dev1` is a governed next-target planning checkpoint. It is **not** described here as a new certified release and it does not inherit Tier 3 wording merely by following the promoted release.
+
+Boundary note: the certification wording above still applies only within the declared current target boundary. Deferred datatype/table work and out-of-boundary server/runtime transport ownership remain outside the claim set for the frozen release.
+
+## Exact gate state
+
+- Gate A: passed and still enforced
+- Gate B: passed and still enforced
+- Gate C: passed in the Phase 11 checkpoint
+- Gate D: passed in the Phase 12 checkpoint
+- Gate E: passed in the Phase 13 promotion checkpoint
+- Phase 14 handoff: verified in the current checkpoint
+
+## Exact current Gate B statement carried forward
+
+There are **no unresolved current-target surface gaps** remaining.
+
+## Exact retained spec/security state carried forward
+
+There are no unresolved retained spec/security gaps remain in the governed current-target set.
+
+### OpenAPI / JSON Schema / JSON-RPC / OpenRPC rows
+
+Closed and proved in Gate C for frozen release `0.3.18`:
+
+- OpenAPI 3.1.0 docs and emitted behavior
+- explicit JSON Schema Draft 2020-12 declaration via `jsonSchemaDialect`
+- request body / response / parameter behavior
+- `components.schemas`
+- `components.securitySchemes`
+- operation-level security requirements from `secdeps`
+- JSON-RPC 2.0 explicit target and runtime/docs behavior
+- OpenRPC 1.2.6 explicit target and runtime/docs behavior
+
+### Security-scheme and RFC rows retained in the frozen current cycle
+
+Closed and proved in Gate C for frozen release `0.3.18`:
+
+- `apiKey` docs/runtime alignment
+- HTTP Basic docs/runtime alignment
+- HTTP Bearer docs/runtime alignment
+- `oauth2` OAS scheme docs/runtime alignment
+- `openIdConnect` OAS scheme docs/runtime alignment
+- `mutualTLS` OAS scheme docs/runtime alignment
+- RFC 7235 retained HTTP auth challenge semantics
+- RFC 7617 retained Basic parsing/challenge behavior
+- RFC 6750 retained Bearer parsing/challenge behavior
+
+### Exact rows explicitly de-scoped and still outside the frozen release cycle
+
+These rows remain explicitly de-scoped and therefore do **not** block the frozen release `0.3.18`:
+
+- OIDC Core 1.0 exact closure
+- RFC 6749 exact OAuth 2.0 closure
+- RFC 7519 exact JWT closure
+- RFC 7636 exact PKCE closure
+- RFC 8414 exact authorization-server metadata closure
+- RFC 8705 exact OAuth mutual-TLS closure
+- RFC 9110 exact framework-owned semantics closure
+- RFC 9449 exact DPoP closure
+
+## Active working-tree status
+
+The active working tree is now `0.3.19.dev1`.
+
+What is governed now:
+
+- stable release history remains frozen under `docs/conformance/releases/0.3.18/`
+- promotion-source dev evidence remains frozen under `docs/conformance/dev/0.3.18.dev1/`
+- active planning work is isolated under `docs/conformance/NEXT_TARGETS.md`
+- the active dev bundle is scaffolded under `docs/conformance/dev/0.3.19.dev1/`
+- the datatype/table program is governed by ADR-0011 and ADR-0012 rather than by loose WIP notes
+
+What is not yet true for `0.3.19.dev1`:
+
+- no Tier 3 certification claim is attached to the active dev line
+- no new stable release has been promoted
+- no next-target implementation closure is claimed yet
+
+## Phase 14 machine-checks now in tree
+
+| Surface | Current state | Evidence |
+|---|---|---|
+| Gate E validator | implemented | `tools/ci/validate_gate_e_promotion.py` |
+| Gate E validator pytest slice | implemented | `tools/ci/tests/test_gate_e_promotion.py` |
+| Gate E workflow | implemented | `.github/workflows/gate-e-promotion.yml` |
+| Phase 14 handoff validator | implemented | `tools/ci/validate_phase14_handoff.py` |
+| Phase 14 handoff pytest slice | implemented | `tools/ci/tests/test_phase14_handoff.py` |
+| Phase 14 handoff workflow | implemented | `.github/workflows/phase14-post-promotion-handoff.yml` |
+| Active dev-bundle scaffold | implemented | `docs/conformance/dev/0.3.19.dev1/` |
+| Next-target plan | implemented | `docs/conformance/NEXT_TARGETS.md` |
+
+## Evidence-backed conclusions
+
+1. The selected candidate build `0.3.18.dev1` remains the exact source build for the promoted stable release `0.3.18`.
+2. The stable release bundle remains frozen and synchronized across release notes, claims, evidence index, current-target snapshot, gate results, and artifact manifests.
+3. The working-tree facade package metadata is now advanced to `0.3.19.dev1` for the next governed line.
+4. The datatype/table program is now isolated into governed next-target ADRs and plans instead of being carried as unresolved release-cycle WIP.
+5. The current-boundary Tier 3 claim rows remain attached to the frozen stable release bundle only.
+
+The clean-room evidence passes on the selected candidate build.
+
+## Authoritative companion documents
+
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/NEXT_TARGETS.md`
+- `docs/conformance/CLAIM_REGISTRY.md`
+- `docs/conformance/IMPLEMENTATION_MAP.md`
+- `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`
+- `docs/conformance/EVIDENCE_MODEL.md`
+- `docs/conformance/EVIDENCE_REGISTRY.json`
+- `docs/conformance/gates/GATE_C_CONFORMANCE_SECURITY.md`
+- `docs/conformance/gates/GATE_D_REPRODUCIBILITY.md`
+- `docs/conformance/gates/GATE_E_PROMOTION.md`
+- `docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md`
+- `docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`

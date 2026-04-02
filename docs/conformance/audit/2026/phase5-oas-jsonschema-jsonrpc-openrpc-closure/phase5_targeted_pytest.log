@@ -1,0 +1,282 @@
+
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py::test_scheme_classes_are_exposed_from_security_modules PASSED [  1%]
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py::test_http_bearer_reads_authorization_header PASSED [  3%]
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py::test_router_key_reads_value_from_query_params PASSED [  5%]
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py::test_router_key_missing_value_raises_when_auto_error_enabled PASSED [  6%]
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py::test_http_basic_reads_authorization_header_and_decodes_credentials PASSED [  8%]
+pkgs/core/tigrbl_tests/tests/security/test_schemes.py::test_http_basic_missing_value_raises_when_auto_error_enabled PASSED [ 10%]
+pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py::test_openapi_docs_cover_app_router_table_and_all_security_schemes 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:53 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 11%]
+pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py::test_openrpc_docs_cover_app_router_table_and_all_security_schemes 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 13%]
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py::test_system_build_helpers_return_documents PASSED [ 15%]
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py::test_openrpc_builder_uses_request_origin_and_jsonrpc_prefix PASSED [ 16%]
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py::test_openrpc_builder_normalizes_forwarded_host_header_values PASSED [ 18%]
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py::test_openrpc_builder_prefers_request_scheme_without_forwarded_proto PASSED [ 20%]
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py::test_openrpc_builder_prefers_forwarded_proto_over_request_scheme PASSED [ 22%]
+pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py::test_openrpc_builder_keeps_relative_server_url_without_forwarding_headers PASSED [ 23%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_endpoint_exposed 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 25%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_server_url_respects_jsonrpc_prefix 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 27%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_includes_method_schema 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 28%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_mount_jsonrpc_updates_openrpc_server_url 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 30%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_jsonrpc_create_accepts_nested_params_mapping 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: POST http://test/rpc "HTTP/1.1 200 OK"
+PASSED                                                                   [ 32%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_jsonrpc_notification_without_id_returns_no_content 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: POST http://test/rpc "HTTP/1.1 204 No Content"
+PASSED                                                                   [ 33%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_mount_lens_uses_latest_openrpc_path_by_default 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/lens-custom "HTTP/1.1 200 OK"
+PASSED                                                                   [ 35%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_default_system_docs_endpoints_are_present_and_gettable 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/docs "HTTP/1.1 200 OK"
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/lens "HTTP/1.1 200 OK"
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+2026-03-31 12:00:54 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 37%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_docs_lens_openapi_openrpc_are_rest_get_only_and_not_rpc_methods 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:55 [INFO] HTTP Request: POST http://test/docs "HTTP/1.1 404 Not Found"
+2026-03-31 12:00:55 [INFO] HTTP Request: POST http://test/lens "HTTP/1.1 404 Not Found"
+2026-03-31 12:00:55 [INFO] HTTP Request: POST http://test/openapi.json "HTTP/1.1 404 Not Found"
+2026-03-31 12:00:55 [INFO] HTTP Request: POST http://test/openrpc.json "HTTP/1.1 404 Not Found"
+2026-03-31 12:00:55 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 38%]
+pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py::test_openrpc_server_url_respects_router_mount_jsonrpc_prefix_argument 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:55 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 40%]
+pkgs/core/tigrbl_tests/tests/i9n/test_schema.py::test_schema_generation[sync] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:55 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 42%]
+pkgs/core/tigrbl_tests/tests/i9n/test_schema.py::test_schema_generation[async] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:55 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 44%]
+pkgs/core/tigrbl_tests/tests/i9n/test_schema.py::test_bulk_operation_schema[sync] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 45%]
+pkgs/core/tigrbl_tests/tests/i9n/test_schema.py::test_bulk_operation_schema[async] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 47%]
+pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py::test_openapi_examples_and_schemas_present[sync] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 49%]
+pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py::test_openapi_examples_and_schemas_present[async] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 50%]
+pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py::test_get_schema_returns_bound_request_and_response_from_bind PASSED [ 52%]
+pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py::test_get_schema_kind_is_case_insensitive PASSED [ 54%]
+pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py::test_get_schema_raises_for_unbound_model PASSED [ 55%]
+pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py::test_get_schema_raises_for_unknown_op PASSED [ 57%]
+pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py::test_get_schema_raises_for_invalid_kind PASSED [ 59%]
+pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py::test_get_schema_raises_when_kind_not_bound PASSED [ 61%]
+pkgs/core/tigrbl_tests/tests/unit/test_openapi_openrpc_schema_separation.py::test_openapi_schema_excludes_openrpc_endpoint 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 62%]
+pkgs/core/tigrbl_tests/tests/unit/test_openapi_openrpc_schema_separation.py::test_openrpc_schema_excludes_openapi_endpoint 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 64%]
+pkgs/core/tigrbl_tests/tests/unit/test_openapi_openrpc_schema_separation.py::test_openapi_schema_excludes_openrpc_even_if_route_is_schema_visible 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 66%]
+pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py::test_openapi_and_openrpc_security_are_derived_from_opspec_secdeps 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+2026-03-31 12:00:56 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 67%]
+pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py::test_docs_ignore_router_security_dependency_metadata 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:57 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+2026-03-31 12:00:57 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 69%]
+pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py::test_jsonrpc_batch_executes_in_order[sync] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:57 [INFO] HTTP Request: POST http://test/rpc/ "HTTP/1.1 200 OK"
+PASSED                                                                   [ 71%]
+pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py::test_jsonrpc_batch_executes_in_order[async] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:57 [INFO] HTTP Request: POST http://test/rpc/ "HTTP/1.1 200 OK"
+PASSED                                                                   [ 72%]
+------------------------------ live log teardown -------------------------------
+2026-03-31 12:00:57 [ERROR] Exception during reset or similar
+Traceback (most recent call last):
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/pool/base.py", line 986, in _finalize_fairy
+    fairy._reset(
+    ~~~~~~~~~~~~^
+        pool,
+        ^^^^^
+    ...<2 lines>...
+        asyncio_safe=can_manipulate_connection,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/pool/base.py", line 1441, in _reset
+    pool._dialect.do_rollback(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 712, in do_rollback
+    dbapi_connection.rollback()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/dialects/sqlite/aiosqlite.py", line 307, in rollback
+    self.await_(self._connection.rollback())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/aiosqlite/core.py", line 197, in rollback
+    await self._execute(self._conn.rollback)
+  File "/opt/pyvenv/lib/python3.13/site-packages/aiosqlite/core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py::test_jsonrpc_batch_reports_errors_per_item[sync] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:57 [INFO] HTTP Request: POST http://test/rpc/ "HTTP/1.1 200 OK"
+PASSED                                                                   [ 74%]
+pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py::test_jsonrpc_batch_reports_errors_per_item[async] 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:58 [INFO] HTTP Request: POST http://test/rpc/ "HTTP/1.1 200 OK"
+PASSED                                                                   [ 76%]
+------------------------------ live log teardown -------------------------------
+2026-03-31 12:00:58 [ERROR] Exception during reset or similar
+Traceback (most recent call last):
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/pool/base.py", line 986, in _finalize_fairy
+    fairy._reset(
+    ~~~~~~~~~~~~^
+        pool,
+        ^^^^^
+    ...<2 lines>...
+        asyncio_safe=can_manipulate_connection,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/pool/base.py", line 1441, in _reset
+    pool._dialect.do_rollback(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/engine/default.py", line 712, in do_rollback
+    dbapi_connection.rollback()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/dialects/sqlite/aiosqlite.py", line 307, in rollback
+    self.await_(self._connection.rollback())
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/sqlalchemy/util/_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "/opt/pyvenv/lib/python3.13/site-packages/aiosqlite/core.py", line 197, in rollback
+    await self._execute(self._conn.rollback)
+  File "/opt/pyvenv/lib/python3.13/site-packages/aiosqlite/core.py", line 160, in _execute
+    return await future
+           ^^^^^^^^^^^^
+asyncio.exceptions.CancelledError
+
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:58 [INFO] HTTP Request: GET http://127.0.0.1:53043/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 77%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:59 [INFO] HTTP Request: GET http://127.0.0.1:45459/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 79%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_with_tigrbl_app_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:59 [INFO] HTTP Request: GET http://127.0.0.1:55511/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 81%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_with_tigrbl_router_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:00:59 [INFO] HTTP Request: GET http://127.0.0.1:36899/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 83%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py::test_openapi_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:00 [INFO] HTTP Request: GET http://127.0.0.1:42809/custom/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 84%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py::test_openapi_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:00 [INFO] HTTP Request: GET http://127.0.0.1:40459/custom/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 86%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py::test_swagger_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:00 [INFO] HTTP Request: GET http://127.0.0.1:60039/custom/docs "HTTP/1.1 200 OK"
+PASSED                                                                   [ 88%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py::test_swagger_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:01 [INFO] HTTP Request: GET http://127.0.0.1:55447/custom/docs "HTTP/1.1 200 OK"
+PASSED                                                                   [ 89%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:01 [INFO] HTTP Request: GET http://127.0.0.1:52505/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 91%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:01 [INFO] HTTP Request: GET http://127.0.0.1:39215/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 93%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_with_openrpc_spec_path_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:02 [INFO] HTTP Request: GET http://127.0.0.1:43607/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 94%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_with_tigrbl_app_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:02 [INFO] HTTP Request: GET http://127.0.0.1:43327/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 96%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_with_tigrbl_router_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:03 [INFO] HTTP Request: GET http://127.0.0.1:58323/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 98%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py::test_phase5_generated_specs_and_snapshot_artifacts_cover_required_contracts 
+-------------------------------- live log call ---------------------------------
+2026-03-31 12:01:03 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+2026-03-31 12:01:03 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+2026-03-31 12:01:03 [INFO] HTTP Request: GET http://test/docs "HTTP/1.1 200 OK"
+2026-03-31 12:01:03 [INFO] HTTP Request: GET http://test/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [100%]
+
+=============================== warnings summary ===============================
+../../../../opt/pyvenv/lib/python3.13/site-packages/_pytest/config/__init__.py:1428
+  /opt/pyvenv/lib/python3.13/site-packages/_pytest/config/__init__.py:1428: PytestConfigWarning: Unknown config option: timeout
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_on_tigrbl_app_uvicorn
+  /opt/pyvenv/lib/python3.13/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_on_tigrbl_app_uvicorn
+  /opt/pyvenv/lib/python3.13/site-packages/uvicorn/protocols/websockets/websockets_impl.py:17: DeprecationWarning: websockets.server.WebSocketServerProtocol is deprecated
+    from websockets.server import WebSocketServerProtocol
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 59 passed, 3 warnings in 12.33s ========================

@@ -20,7 +20,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     ingress.setdefault("started_at", perf_counter())
 
 
-class AtomImpl(Atom[Boot, Boot]):
+class AtomImpl(Atom[Boot, Boot, Exception]):
     name = "ingress.ctx_init"
     anchor = ANCHOR
 

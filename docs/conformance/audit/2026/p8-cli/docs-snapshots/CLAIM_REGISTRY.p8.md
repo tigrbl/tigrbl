@@ -1,0 +1,74 @@
+# Claim Registry
+
+This is the Phase 8 governance + spec/security + operator-surface + CLI closure claim registry. It records the governance baseline, the core OAS / JSON-RPC / OpenRPC closure from Phase 5, the retained RFC security rows from Phase 6, the Phase 7 docs/operator closure rows, and the Phase 8 unified CLI closure rows.
+
+## Gate A synchronization
+
+- Boundary freeze marker: `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json`
+- Boundary freeze manifest: `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json`
+- Synchronization rule: changes to the frozen current-target or governance-boundary docs require a synchronized claim-registry update plus a refreshed manifest/marker pair.
+
+| Claim ID | Claim | Status | Tier | Owner | Evidence |
+|---|---|---|---|---|---|
+| GOV-001 | Apache 2.0 license is present at root | implemented | Tier 1 | Governance | `LICENSE` |
+| GOV-002 | Contributor policy exists | implemented | Tier 1 | Governance | `CONTRIBUTING.md` |
+| GOV-003 | Code of conduct exists | implemented | Tier 1 | Governance | `CODE_OF_CONDUCT.md` |
+| GOV-004 | Security policy exists | implemented | Tier 1 | Governance | `SECURITY.md` |
+| GOV-005 | Single authoritative docs tree is declared | implemented | Tier 1 | Governance | `docs/README.md`, `docs/governance/DOC_POINTERS.md` |
+| GOV-006 | Package layout validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_package_layout.py` |
+| GOV-007 | Doc-pointer validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_doc_pointers.py` |
+| GOV-008 | Root-clutter and generated-artifact validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_root_clutter.py` |
+| GOV-009 | Claim-language lint exists | implemented | Tier 1 | Governance | `tools/ci/lint_claim_language.py` |
+| GOV-010 | Policy validation workflow exists in CI | implemented | Tier 1 | Governance | `.github/workflows/policy-governance.yml` |
+| PATH-001 | Path-length policy is declared | implemented | Tier 1 | Governance | `docs/governance/PATH_LENGTH_POLICY.md` |
+| PATH-002 | Path-length validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_path_lengths.py` |
+| PATH-003 | Repository path/name conformance is verified in checkpoint | verified in checkpoint | Tier 2 | Governance | `docs/conformance/audit/2026/p6-rfc-sec/README.md` |
+| GATE-001 | Gate A boundary-freeze marker exists for the current cycle | implemented | Tier 1 | Governance | `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json` |
+| GATE-002 | Gate A boundary-freeze manifest exists | implemented | Tier 1 | Governance | `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json` |
+| GATE-003 | Boundary-freeze diff enforcement exists | implemented | Tier 1 | Governance | `tools/ci/enforce_boundary_freeze_diff.py` |
+| GATE-004 | Boundary-freeze manifest validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_boundary_freeze_manifest.py` |
+| GATE-005 | Release-note claim lint exists | implemented | Tier 1 | Governance | `tools/ci/lint_release_note_claims.py` |
+| GATE-006 | Gate A validation suite passes in the checkpoint tree | verified in checkpoint | Tier 2 | Governance | `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md` |
+| GATE-007 | Gate B surface-closure conditions are satisfied in the checkpoint tree | verified in checkpoint | Tier 2 | Governance | `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md`, `docs/conformance/audit/2026/p8-cli/README.md` |
+| OAS-001 | OpenAPI 3.1.0 emission is explicit and verified | verified in checkpoint | Tier 2 | Docs & Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py` |
+| OAS-002 | JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect` | verified in checkpoint | Tier 2 | Docs & Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py` |
+| OAS-003 | `components.schemas` emission is verified | verified in checkpoint | Tier 2 | Docs & Runtime | `pkgs/core/tigrbl_tests/tests/i9n/test_schema.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py` |
+| OAS-004 | Request body / response / parameter emission is verified | verified in checkpoint | Tier 2 | Docs & Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py` |
+| OAS-005 | Operation security emission from `secdeps` is verified | verified in checkpoint | Tier 2 | Docs & Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py` |
+| OAS-006 | Mounted `/openapi.json` and `/docs` surfaces are verified | verified in checkpoint | Tier 2 | Docs & Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py` |
+| SEC-001 | `apiKey` docs/runtime alignment is verified | verified in checkpoint | Tier 2 | Auth & Security | `pkgs/core/tigrbl_tests/tests/security/test_schemes.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py` |
+| SEC-002 | HTTP Basic docs/runtime alignment is verified | verified in checkpoint | Tier 2 | Auth & Security | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_security/http_basic.py`, `pkgs/core/tigrbl_tests/tests/security/test_schemes.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py` |
+| SEC-003 | HTTP Bearer docs/runtime alignment is verified | verified in checkpoint | Tier 2 | Auth & Security | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_security/http_bearer.py`, `pkgs/core/tigrbl_tests/tests/security/test_schemes.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py` |
+| SEC-004 | `oauth2` docs/runtime alignment is verified | verified in checkpoint | Tier 2 | Auth & Security | `pkgs/core/tigrbl_tests/tests/security/test_schemes.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py` |
+| SEC-005 | `openIdConnect` docs/runtime alignment is verified | verified in checkpoint | Tier 2 | Auth & Security | `pkgs/core/tigrbl_tests/tests/security/test_schemes.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py` |
+| SEC-006 | `mutualTLS` docs/runtime alignment is verified | verified in checkpoint | Tier 2 | Auth & Security | `pkgs/core/tigrbl_tests/tests/security/test_schemes.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py` |
+| RPC-001 | JSON-RPC 2.0 current-target surface is verified | verified in checkpoint | Tier 2 | Protocol / RPC Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py` |
+| RPC-002 | OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified | verified in checkpoint | Tier 2 | Protocol / RPC Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py` |
+| RPC-003 | Mounted Lens / OpenRPC UI is verified | verified in checkpoint | Tier 2 | Protocol / RPC Runtime | `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py` |
+| RFC-7235 | Retained framework-owned HTTP authentication challenge semantics are verified | verified in checkpoint | Tier 2 | Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `pkgs/core/tigrbl_tests/tests/security/test_phase6_rfc_security_runtime.py` |
+| RFC-7617 | Retained HTTP Basic parsing and challenge behavior are verified | verified in checkpoint | Tier 2 | Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `pkgs/core/tigrbl_tests/tests/security/test_phase6_rfc_security_runtime.py` |
+| RFC-6750 | Retained HTTP Bearer parsing and challenge behavior are verified | verified in checkpoint | Tier 2 | Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `pkgs/core/tigrbl_tests/tests/security/test_phase6_rfc_security_runtime.py` |
+| RFC-6749 | Exact OAuth 2.0 RFC row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| RFC-7519 | Exact JWT RFC row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| RFC-7636 | Exact PKCE RFC row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| RFC-8414 | Exact metadata/discovery RFC row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| RFC-8705 | Exact mutual-TLS RFC row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| RFC-9110 | Exact framework-owned semantics RFC row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Docs & Runtime | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| RFC-9449 | Exact DPoP RFC row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| OIDC-001 | Exact OIDC Core / discovery row is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Auth & Security | `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/governance/TARGET_BOUNDARY.md` |
+| OP-001 | static files surface is verified in checkpoint | verified in checkpoint | Tier 2 | Operator Surface | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`, `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log` |
+| OP-002 | cookies surface is verified in checkpoint | verified in checkpoint | Tier 2 | Operator Surface | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`, `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log` |
+| OP-003 | streaming responses surface is verified in checkpoint | verified in checkpoint | Tier 2 | Operator Surface | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`, `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log` |
+| OP-004 | WebSockets surface is verified in checkpoint | verified in checkpoint | Tier 2 | Operator Surface | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`, `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log` |
+| OP-005 | WHATWG SSE surface is verified in checkpoint | verified in checkpoint | Tier 2 | Operator Surface | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`, `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log` |
+| OP-006 | forms / multipart surface is verified in checkpoint | verified in checkpoint | Tier 2 | Operator Surface | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`, `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log` |
+| OP-007 | upload handling surface is verified in checkpoint | verified in checkpoint | Tier 2 | Operator Surface | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`, `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log` |
+| OP-008 | bounded built-in middleware catalog is closed in docs and code | verified in checkpoint | Tier 2 | Operator Surface | `docs/developer/operator/middleware-catalog.md`, `docs/developer/OPERATOR_SURFACES.md`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_middleware.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_cors_middleware.py` |
+| OP-009 | generic auth surface is explicitly dependency/hook-based only | verified in checkpoint | Tier 2 | Operator Surface | `docs/developer/operator/middleware-catalog.md`, `docs/conformance/CURRENT_TARGET.md` |
+| OP-010 | AsyncAPI UI is de-scoped while `/asyncapi.json` stays in scope | de-scoped | Tier 0 | Governance + Operator Surface | `docs/developer/operator/docs-ui.md`, `docs/conformance/CURRENT_TARGET.md` |
+| OP-011 | JSON Schema UI is de-scoped while `/schemas.json` stays in scope | de-scoped | Tier 0 | Governance + Operator Surface | `docs/developer/operator/docs-ui.md`, `docs/conformance/CURRENT_TARGET.md` |
+| OP-012 | OIDC discovery/docs surface is de-scoped from the current cycle | de-scoped | Tier 0 | Governance + Operator Surface | `docs/developer/operator/docs-ui.md`, `docs/conformance/CURRENT_TARGET.md` |
+| CLI-001 | Unified `tigrbl` CLI surface exists with the required command set and required flag set | verified in checkpoint | Tier 2 | CLI / Developer Experience | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl/tigrbl/__main__.py`, `pkgs/core/tigrbl/pyproject.toml`, `docs/developer/CLI_REFERENCE.md`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`, `docs/conformance/audit/2026/p8-cli/README.md` |
+| CLI-002 | Supported-server CLI smoke covers Uvicorn, Hypercorn, Gunicorn, and Tigrcorn runner dispatch/config translation | verified in checkpoint | Tier 2 | CLI / Developer Experience | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`, `.github/workflows/cli-smoke.yml`, `docs/conformance/audit/2026/p8-cli/README.md` |
+| CERT-001 | Tier 3 current-boundary certification status has been achieved | not achieved | Tier 0 | Governance | not yet supported |
+| CERT-002 | Tier 3 current-boundary RFC/spec/security certification status has been achieved | not achieved | Tier 0 | Governance | not yet supported |

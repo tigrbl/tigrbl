@@ -1,14 +1,23 @@
-        # tigrbl_rs_engine_inmemory
+# tigrbl_rs_engine_inmemory
 
-        Rust-native in-memory engine for Tigrbl with row-store and column-store strategies.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-        ## Owns
+## Canonical repository docs
 
-        - engine/session/transaction lifecycle
-- engine-specific lowerers and query codecs
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-        ## Does not own
+## Package identity
 
-        - route compilation
-- phase algebra
-- Python binding details
+- workspace path: `crates/tigrbl_rs_engine_inmemory`
+- workspace class: Rust crate
+- implementation layout: `src/`
+
+Long-form repository documentation is governed from `docs/`.
