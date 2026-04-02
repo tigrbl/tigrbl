@@ -176,7 +176,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
         setattr(ctx, "body", body)
 
 
-class AtomImpl(Atom[Ingress, Ingress]):
+class AtomImpl(Atom[Ingress, Ingress, Exception]):
     name = "ingress.transport_extract"
     anchor = ANCHOR
 

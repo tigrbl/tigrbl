@@ -26,7 +26,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         egress["wire_payload"] = wire_payload
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "egress.out_dump"
     anchor = ANCHOR
 

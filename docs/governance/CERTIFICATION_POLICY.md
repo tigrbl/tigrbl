@@ -29,6 +29,16 @@ A claim is not certifiable until:
 - docs, code, and evidence agree
 - the applicable gates have passed
 
+## Gate A rule
+
+The current-target cycle is frozen for this checkpoint. Changes to the frozen boundary documents require synchronized updates to:
+
+- `docs/conformance/CLAIM_REGISTRY.md`
+- `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json`
+- `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json`
+
 ## Current checkpoint status
 
-This Phase 0 checkpoint establishes governance and documentation. It does **not** establish Tier 3 certification for the package.
+The promoted stable release `0.3.18` satisfies the governed Gate A through Gate E sequence for the Tier 3 current-boundary claim rows in `docs/conformance/CLAIM_REGISTRY.md`.
+
+The active `0.3.19.dev1` line is a next-target planning checkpoint and does **not** use Tier 3 certification wording.

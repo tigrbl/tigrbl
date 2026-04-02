@@ -28,13 +28,17 @@ _EXPORTS = {
     "HTMLResponse": "_html_response",
     "PlainTextResponse": "_plain_text_response",
     "StreamingResponse": "_streaming_response",
+    "EventStreamResponse": "_event_stream_response",
     "DefaultSession": "_session",
     "FileResponse": "_file_response",
     "RedirectResponse": "_redirect_response",
     "Request": "_request",
+    "UploadedFile": "_request",
+    "WebSocket": "_websocket",
     "Body": "_body",
     "Depends": "dependencies",
     "APIKey": "_security",
+    "HTTPBasic": "_security",
     "HTTPBearer": "_security",
     "OAuth2": "_security",
     "OpenIdConnect": "_security",
@@ -44,6 +48,8 @@ _EXPORTS = {
     "BackgroundTask": "_background",
     "wrap_sessionmaker": "_session",
     "allow_anon": "_allow_anon",
+    "Middleware": "_middleware",
+    "CORSMiddleware": "_cors_middleware",
 }
 
 __all__ = list(_EXPORTS)

@@ -32,7 +32,7 @@ def _resolve_handler(obj: object | None, ctx: Any) -> HandlerFn | None:
     return None
 
 
-class BoundAtom(Atom[Resolved, Operated]):
+class BoundAtom(Atom[Resolved, Operated, Exception]):
     name = "handler.custom"
     anchor = ANCHOR
 
@@ -49,11 +49,11 @@ class BoundAtom(Atom[Resolved, Operated]):
         return ctx.promote(OperatedCtx)
 
 
-def bind(fn: HandlerFn, *, name: str | None = None) -> Atom[Resolved, Operated]:
+def bind(fn: HandlerFn, *, name: str | None = None) -> Atom[Resolved, Operated, Exception]:
     return BoundAtom(fn, name=name)
 
 
-class AtomImpl(Atom[Resolved, Operated]):
+class AtomImpl(Atom[Resolved, Operated, Exception]):
     name = "handler.custom"
     anchor = ANCHOR
 

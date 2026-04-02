@@ -37,9 +37,16 @@ from tigrbl_concrete.system import mount_lens as _mount_lens
 from tigrbl_concrete.system import mount_openapi as _mount_openapi
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_swagger as _mount_swagger
+from tigrbl_concrete.system import mount_asyncapi as _mount_asyncapi
+from tigrbl_concrete.system import mount_json_schema as _mount_json_schema
+from tigrbl_concrete.system import mount_static as _mount_static
+from tigrbl_concrete.system import build_asyncapi_spec as _build_asyncapi_spec
+from tigrbl_concrete.system import build_json_schema_bundle as _build_json_schema_bundle
 from tigrbl_concrete.system import build_openrpc_spec as _build_openrpc_spec
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from ._op_registry import get_registry
+from ._route import compile_path
+from ._websocket import WebSocketRoute
 from ._table_registry import TableRegistry
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
@@ -226,6 +233,8 @@ class TigrblApp(_App):
         self.rpc = SimpleNamespace()
         self.rest = SimpleNamespace()
         self.routers: Dict[str, Any] = {}
+        self.websocket_routes: list[WebSocketRoute] = []
+        self._static_mounts: list[dict[str, str]] = []
         self.tables = AttrDict(self._table_registry)
         self.columns: Dict[str, Tuple[str, ...]] = {}
         self.table_config: Dict[str, Dict[str, Any]] = {}
@@ -246,6 +255,8 @@ class TigrblApp(_App):
             self.attach_diagnostics(prefix=self.system_prefix)
             self.mount_openrpc(path="/openrpc.json")
             self.mount_lens(path="/lens", spec_path="/openrpc.json")
+            self.mount_json_schema(path="/schemas.json")
+            self.mount_asyncapi(path="/asyncapi.json")
         if routers:
             initial_routers.extend(list(routers))
         if initial_routers:
@@ -594,6 +605,19 @@ class TigrblApp(_App):
         mount_prefix = _normalize_mount_prefix(
             prefix if prefix is not None else getattr(router, "prefix", None)
         )
+        for ws_route in list(getattr(router, "websocket_routes", ()) or []):
+            path_template = ws_route.path_template
+            if mount_prefix:
+                path_template = f"{mount_prefix}{path_template}" if path_template != "/" else (mount_prefix or "/")
+            pattern, param_names = compile_path(path_template)
+            self.websocket_routes.append(
+                replace(ws_route, path_template=path_template, pattern=pattern, param_names=param_names)
+            )
+        for mount in list(getattr(router, "_static_mounts", ()) or []):
+            mount_path = str(mount.get("path") or "/")
+            if mount_prefix:
+                mount_path = f"{mount_prefix}{mount_path}" if mount_path != "/" else (mount_prefix or "/")
+            self._static_mounts.append({"path": mount_path.rstrip("/") or "/", "directory": str(mount.get("directory") or "")})
 
         if isinstance(self.routers, dict):
             key = (
@@ -828,6 +852,42 @@ class TigrblApp(_App):
                 continue
             self.add_route(path, lambda *_args, **_kwargs: None, methods=["POST"])
         return router
+
+    def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
+        return _mount_json_schema(self, path=path)
+
+    def mount_asyncapi(self, *, path: str = "/asyncapi.json") -> Any:
+        return _mount_asyncapi(self, path=path)
+
+    def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
+        return _mount_static(self, directory=directory, path=path)
+
+    def build_json_schema_bundle(self) -> Dict[str, Any]:
+        return _build_json_schema_bundle(self)
+
+    def build_asyncapi_spec(self) -> Dict[str, Any]:
+        return _build_asyncapi_spec(self)
+
+    def websocket(self, path: str, **kwargs: Any) -> Callable[[Any], Any]:
+        def _decorator(handler: Any) -> Any:
+            full_path = path if path.startswith("/") else f"/{path}"
+            normalized_path = full_path.rstrip("/") or "/"
+            pattern, param_names = compile_path(normalized_path)
+            self.websocket_routes.append(
+                WebSocketRoute(
+                    path_template=normalized_path,
+                    pattern=pattern,
+                    param_names=param_names,
+                    handler=handler,
+                    name=kwargs.get("name", getattr(handler, "__name__", "websocket")),
+                    summary=kwargs.get("summary"),
+                    description=kwargs.get("description"),
+                    tags=kwargs.get("tags"),
+                )
+            )
+            return handler
+
+        return _decorator
 
     def mount_openapi(
         self,

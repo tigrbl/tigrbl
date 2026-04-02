@@ -1,41 +1,23 @@
 # tigrbl_engine_pgsqli_wal
 
-**Tigrbl engine plugin providing two engines:**
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-- `postgres_wal` — PostgreSQL via SQLAlchemy + psycopg3
-- `sqlite_wal` — SQLite with WAL mode enabled via connection PRAGMAs
+## Canonical repository docs
 
-The package **auto-registers** with Tigrbl through the `tigrbl.engine` entry-point group.
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Install
+## Package identity
 
-```bash
-pip install -e .
-```
+- workspace path: `pkgs/engines/tigrbl_engine_pgsqli_wal`
+- workspace class: engine package
+- implementation layout: `src/tigrbl_engine_pgsqli_wal/`
 
-## Usage (inside Tigrbl)
-
-```python
-from tigrbl.engine import Engine
-from tigrbl.engine.engine_spec import EngineSpec
-
-# PostgreSQL (DSN or mapping)
-spec = EngineSpec(kind="postgres_wal", dsn="postgresql+psycopg://user:pwd@host:5432/db?application_name=tigrbl")
-
-# Or with mapping (the plugin builds the URL)
-spec = EngineSpec(kind="postgres_wal", mapping={
-  "host": "127.0.0.1", "port": 5432, "user": "user", "pwd": "pwd", "db": "db",
-  "application_name": "tigrbl", "pool_size": 10, "max_overflow": 20
-})
-
-# SQLite (file path required for WAL)
-spec = EngineSpec(kind="sqlite_wal", mapping={"path": "/path/to/db.sqlite", "pool_size": 5})
-
-engine = Engine(spec)
-with engine.session() as s:
-    s.execute("select 1").all()
-```
-
-> Notes:
-> - PostgreSQL WAL is a server feature; this plugin tunes connection/session parameters only.
-> - SQLite WAL is enabled via `PRAGMA journal_mode=WAL` on each new connection.
+Long-form repository documentation is governed from `docs/`.

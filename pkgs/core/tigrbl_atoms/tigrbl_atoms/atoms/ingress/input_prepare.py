@@ -36,7 +36,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         request.body = body
 
 
-class AtomImpl(Atom[Ingress, Ingress]):
+class AtomImpl(Atom[Ingress, Ingress, Exception]):
     name = "ingress.input_prepare"
     anchor = ANCHOR
 

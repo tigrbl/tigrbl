@@ -1,10 +1,13 @@
 from __future__ import annotations
 
-from httpx import ASGITransport, Client
+import asyncio
+
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, String
 
 from tigrbl import (
     APIKey,
+    HTTPBasic,
     HTTPBearer,
     MutualTLS,
     OAuth2,
@@ -20,6 +23,10 @@ from tigrbl.security import Security
 
 
 def _bearer_dep(cred=Security(HTTPBearer(scheme_name="BearerAuth"))):
+    return cred
+
+
+def _basic_dep(cred=Security(HTTPBasic(scheme_name="BasicAuth"))):
     return cred
 
 
@@ -51,6 +58,13 @@ def _openid_dep(
 
 def _mtls_dep(cred=Security(MutualTLS(scheme_name="MutualTLSAuth"))):
     return cred
+
+
+class BasicDocsTable(TableBase, GUIDPk):
+    __tablename__ = "basic_docs_table_openapi"
+
+    name = Column(String, nullable=False)
+    __tigrbl_ops__ = (OpSpec(alias="read", target="read", secdeps=(_basic_dep,)),)
 
 
 class AppDocsTable(TableBase, GUIDPk):
@@ -85,15 +99,19 @@ def test_openapi_docs_cover_app_router_table_and_all_security_schemes() -> None:
     app.include_table(AppDocsTable)
 
     router = TigrblRouter(engine=mem(async_=False))
+    router.include_table(BasicDocsTable)
     router.include_table(RouterDocsTable)
     router.include_table(TableDocsTable)
     app.include_router(router)
 
     app.initialize()
 
-    transport = ASGITransport(app=app)
-    with Client(transport=transport, base_url="http://test") as client:
-        openapi = client.get("/openapi.json").json()
+    async def _fetch() -> dict[str, object]:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            return (await client.get("/openapi.json")).json()
+
+    openapi = asyncio.run(_fetch())
 
     documented_security = [
         security
@@ -103,6 +121,7 @@ def test_openapi_docs_cover_app_router_table_and_all_security_schemes() -> None:
         for security in op.get("security", [])
     ]
 
+    assert {"BasicAuth": []} in documented_security
     assert {"BearerAuth": []} in documented_security
     assert {"ApiKeyAuth": []} in documented_security
     assert {"OAuth2Auth": []} in documented_security
@@ -111,6 +130,7 @@ def test_openapi_docs_cover_app_router_table_and_all_security_schemes() -> None:
 
     security_schemes = openapi["components"].get("securitySchemes", {})
     assert security_schemes == {
+        "BasicAuth": {"type": "http", "scheme": "basic"},
         "BearerAuth": {"type": "http", "scheme": "bearer"},
         "ApiKeyAuth": {"type": "apiKey", "name": "X-API-Key", "in": "header"},
         "OAuth2Auth": {

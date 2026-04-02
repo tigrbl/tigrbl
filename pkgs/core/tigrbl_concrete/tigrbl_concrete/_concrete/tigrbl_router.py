@@ -29,6 +29,8 @@ from ._op_registry import get_registry
 from tigrbl_core._spec import OpSpec
 from ._table_registry import TableRegistry
 from ._routing import include_router as _include_router_impl
+from ._route import compile_path
+from ._websocket import WebSocketRoute
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
@@ -135,6 +137,8 @@ class TigrblRouter(_Router):
         self.table_config: Dict[str, Dict[str, Any]] = {}
         self.core = SimpleNamespace()
         self.core_raw = SimpleNamespace()
+        self.websocket_routes: list[WebSocketRoute] = []
+        self._static_mounts: list[dict[str, str]] = []
 
         # Router-level hooks map (merged into each model at include-time; precedence handled in bindings.hooks)
         self._router_hooks_map = copy.deepcopy(router_hooks) if router_hooks else None
@@ -317,6 +321,52 @@ class TigrblRouter(_Router):
     ) -> Any:
         """Mount an OpenRPC JSON endpoint onto this router instance."""
         return _mount_openrpc(self, path=path, name=name, tags=tags)
+
+    def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
+        from tigrbl_concrete.system import mount_json_schema as _mount_json_schema
+
+        return _mount_json_schema(self, path=path)
+
+    def mount_asyncapi(self, *, path: str = "/asyncapi.json") -> Any:
+        from tigrbl_concrete.system import mount_asyncapi as _mount_asyncapi
+
+        return _mount_asyncapi(self, path=path)
+
+    def mount_static(self, *, directory: str, path: str = "/static") -> Any:
+        from tigrbl_concrete.system import mount_static as _mount_static
+
+        return _mount_static(self, directory=directory, path=path)
+
+    def build_json_schema_bundle(self) -> Dict[str, Any]:
+        from tigrbl_concrete.system import build_json_schema_bundle as _build_json_schema_bundle
+
+        return _build_json_schema_bundle(self)
+
+    def build_asyncapi_spec(self) -> Dict[str, Any]:
+        from tigrbl_concrete.system import build_asyncapi_spec as _build_asyncapi_spec
+
+        return _build_asyncapi_spec(self)
+
+    def websocket(self, path: str, **kwargs: Any) -> Callable[[Any], Any]:
+        def _decorator(handler: Any) -> Any:
+            full_path = path if path.startswith("/") else f"/{path}"
+            normalized_path = full_path.rstrip("/") or "/"
+            pattern, param_names = compile_path(normalized_path)
+            self.websocket_routes.append(
+                WebSocketRoute(
+                    path_template=normalized_path,
+                    pattern=pattern,
+                    param_names=param_names,
+                    handler=handler,
+                    name=kwargs.get("name", getattr(handler, "__name__", "websocket")),
+                    summary=kwargs.get("summary"),
+                    description=kwargs.get("description"),
+                    tags=kwargs.get("tags"),
+                )
+            )
+            return handler
+
+        return _decorator
 
     def attach_diagnostics(
         self, *, prefix: str | None = None, app: Any | None = None

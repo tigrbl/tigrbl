@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phase 5 API — Lens</title>
+    <link
+      rel="stylesheet"
+      href="https://esm.sh/@tigrbljs/tigrbl-lens@latest/dist/tigrbl-lens.css?css"
+    />
+    <style>
+      html, body, #root {
+        margin: 0;
+        width: 100%;
+        min-height: 100%;
+      }
+      body {
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "https://esm.sh/react@19",
+          "react-dom/client": "https://esm.sh/react-dom@19/client",
+          "@tigrbljs/tigrbl-lens": "https://esm.sh/@tigrbljs/tigrbl-lens@latest"
+        }
+      }
+    </script>
+    <script type="module">
+      import React from "react";
+      import { createRoot } from "react-dom/client";
+      import { EmbeddedLens } from "@tigrbljs/tigrbl-lens";
+
+      const rootEl = document.getElementById("root");
+      if (rootEl) {
+        createRoot(rootEl).render(
+          React.createElement(
+            React.StrictMode,
+            null,
+            React.createElement(EmbeddedLens, { url: "/openrpc.json" }),
+          ),
+        );
+      }
+    </script>
+  </body>
+</html>

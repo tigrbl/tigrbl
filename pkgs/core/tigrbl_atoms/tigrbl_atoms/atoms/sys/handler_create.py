@@ -21,7 +21,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
     )
 
 
-class AtomImpl(Atom[Resolved, Operated]):
+class AtomImpl(Atom[Resolved, Operated, Exception]):
     name = "sys.handler_create"
     anchor = ANCHOR
 

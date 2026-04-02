@@ -13,3 +13,8 @@ A target should stay deferred or out-of-boundary when:
 - ownership is shared with or dominated by the server/runtime
 - the public contract is not yet stable
 - tests or evidence cannot yet support a certifiable claim
+
+
+## UI-only surface rule
+
+If a spec emission surface exists but an interactive UI does not, the current boundary may keep the emitted spec and explicitly de-scope the UI row instead of overstating closure.

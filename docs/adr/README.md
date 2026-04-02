@@ -1,3 +1,3 @@
 # Architecture Decision Records
 
-This directory contains the decisions that define the current boundary, governance model, docs authority, CLI target, and deferred next-target work.
+This directory contains the decisions that define the frozen current boundary, the governance model, docs authority, the CLI target, the release-history handoff, and the active next-target datatype/table program.

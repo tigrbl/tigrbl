@@ -764,6 +764,7 @@ class PackedPlanExecutor(ExecutorBase):
                     env,
                     int(getattr(exc, "status_code", 500) or 500),
                     {"detail": detail},
+                    headers=getattr(exc, "headers", None),
                 )
                 return
             except Exception as exc:
@@ -787,6 +788,7 @@ class PackedPlanExecutor(ExecutorBase):
                     env,
                     int(getattr(std, "status_code", 500) or 500),
                     {"detail": detail},
+                    headers=getattr(std, "headers", None),
                 )
                 return
 

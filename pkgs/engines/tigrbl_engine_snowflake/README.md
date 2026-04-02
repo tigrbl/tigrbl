@@ -1,45 +1,23 @@
 # tigrbl_engine_snowflake
 
-**Tigrbl engine plugin for Snowflake**, auto-registered via the `tigrbl.engine` entry-point group.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Install
+## Canonical repository docs
 
-```bash
-pip install -e .
-```
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Usage (inside Tigrbl)
+## Package identity
 
-```python
-from tigrbl.engine import Engine
-from tigrbl.engine.engine_spec import EngineSpec
+- workspace path: `pkgs/engines/tigrbl_engine_snowflake`
+- workspace class: engine package
+- implementation layout: `src/tigrbl_engine_snowflake/`
 
-# DSN (Snowflake SQLAlchemy URL)
-spec = EngineSpec(kind="snowflake", dsn="snowflake://USER:PWD@ACCOUNT/DB/SCHEMA?warehouse=WH&role=ROLE")
-
-# Or provide a mapping; the plugin builds the DSN
-spec = EngineSpec(kind="snowflake", mapping={
-    "account": "myacct-xy123",
-    "user": "USER",
-    "pwd": "PWD",
-    "db": "DB",
-    "schema": "PUBLIC",
-    "warehouse": "COMPUTE_WH",
-    "role": "SYSADMIN",
-    "pool_size": 10,
-    "max_overflow": 20
-})
-
-engine = Engine(spec)
-with engine.session() as s:
-    s.execute("SELECT CURRENT_ROLE()").all()
-```
-
-## Entry-point
-
-Declared in `pyproject.toml`:
-
-```toml
-[project.entry-points."tigrbl.engine"]
-snowflake = "tigrbl_engine_snowflake:register"
-```
+Long-form repository documentation is governed from `docs/`.

@@ -1,58 +1,23 @@
-![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
-
-<p align="center">
-    <a href="https://pypi.org/project/tigrbl_engine_xlsx/">
-        <img src="https://img.shields.io/pypi/v/tigrbl_engine_xlsx?label=tigrbl_engine_xlsx&color=green" alt="PyPI - tigrbl_engine_xlsx"/>
-    </a>
-    <a href="https://pypi.org/project/tigrbl_engine_xlsx/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl_engine_xlsx" alt="PyPI - Downloads"/>
-    </a>
-    <a href="https://pypi.org/project/tigrbl_engine_xlsx/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl_engine_xlsx" alt="PyPI - Python Version"/>
-    </a>
-    <a href="https://pypi.org/project/tigrbl_engine_xlsx/">
-        <img src="https://img.shields.io/pypi/l/tigrbl_engine_xlsx" alt="PyPI - License"/>
-    </a>
-    <a href="https://hits.sh/github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/experimental/tigrbl_engine_xlsx/">
-        <img alt="Hits" src="https://hits.sh/github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/experimental/tigrbl_engine_xlsx.svg"/>
-    </a>
-</p>
-
 # tigrbl_engine_xlsx
 
-A tigrbl engine plugin where each workbook is a database-like object and each sheet is a table.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Features
+## Canonical repository docs
 
-- Registers `kind="xlsx"` through the `tigrbl.engine` entry-point group.
-- Uses `load_workbook`, `wb[...]`, and `wb.save(...)` directly for workbook operations.
-- Treats each sheet as a table with transactional table semantics.
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Installation
+## Package identity
 
-### uv
+- workspace path: `pkgs/engines/tigrbl_engine_xlsx`
+- workspace class: engine package
+- implementation layout: `src/tigrbl_engine_xlsx/`
 
-```bash
-uv add tigrbl_engine_xlsx
-```
-
-### pip
-
-```bash
-pip install tigrbl_engine_xlsx
-```
-
-## Usage
-
-```python
-from tigrbl.engine import EngineSpec
-
-spec = EngineSpec(kind="xlsx", mapping={"path": "./workbook.xlsx", "pk": "id"})
-provider = spec.provider()
-engine, session_factory = provider.build()
-
-session = session_factory()
-wb = session.workbook()
-print(wb["Sheet1"])
-print(session.table("Sheet1"))
-```
+Long-form repository documentation is governed from `docs/`.

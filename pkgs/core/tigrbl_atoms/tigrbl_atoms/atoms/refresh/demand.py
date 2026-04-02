@@ -130,7 +130,7 @@ def _reason(
     return "; ".join(parts)
 
 
-class AtomImpl(Atom[Operated, Operated]):
+class AtomImpl(Atom[Operated, Operated, Exception]):
     name = "refresh.demand"
     anchor = ANCHOR
 

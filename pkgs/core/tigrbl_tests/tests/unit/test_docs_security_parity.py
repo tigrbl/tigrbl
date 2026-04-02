@@ -1,13 +1,16 @@
-from httpx import ASGITransport, Client
+from __future__ import annotations
+
+import asyncio
+
+from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, String
 
-from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl import HTTPBearer, TigrblApp
 from tigrbl._spec import OpSpec
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
-from tigrbl import HTTPBearer
 from tigrbl.security import Security
+from tigrbl.shortcuts.engine import mem
 
 
 def _alpha_dep(cred=Security(HTTPBearer(scheme_name="AlphaToken"))):
@@ -36,10 +39,14 @@ def test_openapi_and_openrpc_security_are_derived_from_opspec_secdeps() -> None:
     app.mount_jsonrpc()
     app.mount_openrpc()
 
-    transport = ASGITransport(app=app)
-    with Client(transport=transport, base_url="http://test") as client:
-        openapi = client.get("/openapi.json").json()
-        openrpc = client.get("/openrpc.json").json()
+    async def _fetch() -> tuple[dict[str, object], dict[str, object]]:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            openapi = (await client.get("/openapi.json")).json()
+            openrpc = (await client.get("/openrpc.json")).json()
+        return openapi, openrpc
+
+    openapi, openrpc = asyncio.run(_fetch())
 
     read_security = openapi["paths"]["/widget/{item_id}"]["get"].get("security")
     create_security = openapi["paths"]["/widget"]["post"].get("security")
@@ -67,7 +74,6 @@ def test_docs_ignore_router_security_dependency_metadata() -> None:
     app.mount_jsonrpc()
     app.mount_openrpc()
 
-    # Tamper with transport/router metadata; docs must still come from OpSpec.secdeps.
     widget_router = app.routers["Widget"]
     for route in getattr(widget_router, "routes", []):
         try:
@@ -75,10 +81,14 @@ def test_docs_ignore_router_security_dependency_metadata() -> None:
         except Exception:
             pass
 
-    transport = ASGITransport(app=app)
-    with Client(transport=transport, base_url="http://test") as client:
-        openapi = client.get("/openapi.json").json()
-        openrpc = client.get("/openrpc.json").json()
+    async def _fetch() -> tuple[dict[str, object], dict[str, object]]:
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            openapi = (await client.get("/openapi.json")).json()
+            openrpc = (await client.get("/openrpc.json")).json()
+        return openapi, openrpc
+
+    openapi, openrpc = asyncio.run(_fetch())
 
     assert openapi["paths"]["/widget"]["get"].get("security") is None
     assert openapi["paths"]["/widget/{item_id}"]["get"]["security"] == [

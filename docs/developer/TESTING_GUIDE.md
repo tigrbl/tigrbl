@@ -1,23 +1,58 @@
 # Testing Guide
 
-## Current baseline evidence retained from the supplied archive
+## Required lane classes for the current certification program
 
-The archived legacy build-proof package records these baseline validation actions:
+The governed evidence model now uses these lane classes:
 
-- `cargo test --workspace --all-targets`
-- selected Python native-surface pytest runs
-- a concrete backend surface smoke that was skipped in the supplied container because `sqlalchemy` was not installed
+- unit
+- integration
+- spec conformance
+- security / negative
+- docs UI smoke
+- CLI smoke
+- operator-surface smoke
+- server compatibility smoke
+- clean-room package tests
+- promotion and release
 
-See:
+## Current workflow entry points
 
-- `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/build_artifacts/rust_native_checkpoint_validation.md`
-- `docs/testing/rust_native_conformance_plan.md`
+- `.github/workflows/policy-governance.yml`
+- `.github/workflows/operator-surface.yml`
+- `.github/workflows/cli-smoke.yml`
+- `.github/workflows/evidence-lanes.yml`
+- `.github/workflows/gate-b-surface-closure.yml`
+- `.github/workflows/gate-c-conformance-security.yml`
+- `.github/workflows/gate-d-reproducibility.yml`
+- `.github/workflows/gate-e-promotion.yml`
 
-## Guidance for contributors
+## Current governed validators
 
-When changing a public surface:
+- `tools/ci/validate_package_layout.py`
+- `tools/ci/validate_doc_pointers.py`
+- `tools/ci/validate_root_clutter.py`
+- `tools/ci/validate_path_lengths.py`
+- `tools/ci/lint_claim_language.py`
+- `tools/ci/validate_boundary_freeze_manifest.py`
+- `tools/ci/lint_release_note_claims.py`
+- `tools/ci/validate_evidence_registry.py`
+- `tools/ci/validate_evidence_bundles.py`
+- `tools/ci/validate_gate_b_surface_closure.py`
+- `tools/ci/validate_gate_c_conformance_security.py`
+- `tools/ci/validate_gate_d_reproducibility.py`
+- `tools/ci/validate_gate_e_promotion.py`
 
-1. run the relevant Python tests in the affected package(s)
-2. run relevant Rust crate tests when touching the native substrate
-3. update conformance docs if the current-state or current-target interpretation changes
-4. archive new build proof in the governed conformance tree rather than at the repository root
+## Current bundle entry points
+
+- `docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md`
+- `docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md`
+
+## Contributor guidance
+
+When changing any current-target surface:
+
+1. run the affected unit/integration/spec/security/operator/CLI/promotion lanes as appropriate
+2. refresh any affected governed docs
+3. refresh the evidence registry if a claim row, workflow, or artifact path changes
+4. keep the dev/release bundle structures valid
+5. refresh the Gate A manifest if frozen boundary docs change

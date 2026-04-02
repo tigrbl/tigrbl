@@ -1,28 +1,23 @@
 # tigrbl_engine_duckdb
 
-DuckDB engine extension for **Tigrbl**. This package registers the `duckdb`
-engine kind with Tigrbl’s engine registry via entry points.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Install
+## Canonical repository docs
 
-```bash
-pip install tigrbl_engine_duckdb
-```
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Use
+## Package identity
 
-After installing, you can bind DuckDB using `engine_ctx`:
+- workspace path: `pkgs/engines/tigrbl_engine_duckdb`
+- workspace class: engine package
+- implementation layout: `src/tigrbl_engine_duckdb/`
 
-```python
-from tigrbl.engine.decorators import engine_ctx
-from tigrbl.session.decorators import session_ctx
-
-@engine_ctx({"kind": "duckdb", "path": "./data/app.duckdb",
-             "pragmas": {"memory_limit": "2GB"}})
-@session_ctx({"isolation": "repeatable_read"})
-class AnalyticsAPI:
-    pass
-```
-
-No import of this package is required in your app; Tigrbl auto-loads the
-plugin via entry points on import.
+Long-form repository documentation is governed from `docs/`.

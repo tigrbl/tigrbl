@@ -191,6 +191,22 @@ class Response(ResponseBase):
             media_type="application/json",
         )
 
+    async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
+        del receive
+        headers = list(self.raw_headers)
+        body_iterator = getattr(self, "body_iterator", None)
+        if body_iterator is not None:
+            await send({"type": "http.response.start", "status": int(self.status_code), "headers": headers})
+            async for chunk in body_iterator:
+                await send({"type": "http.response.body", "body": bytes(chunk), "more_body": True})
+            await send({"type": "http.response.body", "body": b"", "more_body": False})
+            return
+        from tigrbl_atoms.atoms.egress.asgi_send import finalize_transport_response
+        body = self.body or b""
+        headers, body = finalize_transport_response(scope, int(self.status_code), headers, body)
+        await send({"type": "http.response.start", "status": int(self.status_code), "headers": headers})
+        await send({"type": "http.response.body", "body": body, "more_body": False})
+
 
 def _json_default(value: Any) -> Any:
     if isinstance(value, (bytes, bytearray, memoryview)):
@@ -293,16 +309,26 @@ def as_stream(
     status: int = 200,
     headers: ResponseHeaders | None = None,
 ) -> Response:
-    if hasattr(chunks, "__aiter__"):
-        raise TypeError("AsyncIterable streaming is not supported in stdapi shortcuts")
-    body_chunks = [bytes(chunk) for chunk in chunks]
-    response = Response(
+    from ._streaming_response import StreamingResponse
+
+    response = StreamingResponse(
+        chunks,
         status_code=status,
-        headers=[("content-type", media_type)],
-        body=b"".join(body_chunks),
         media_type=media_type,
+        headers=headers,
     )
-    return _with_headers(response, headers)
+    return response
+
+
+def as_event_stream(
+    events: Iterable[Any] | AsyncIterable[Any],
+    *,
+    status: int = 200,
+    headers: ResponseHeaders | None = None,
+) -> Response:
+    from ._event_stream_response import EventStreamResponse
+
+    return EventStreamResponse(events, status_code=status, headers=headers)
 
 
 def as_file(
@@ -355,5 +381,6 @@ __all__ = [
     "as_text",
     "as_redirect",
     "as_stream",
+    "as_event_stream",
     "as_file",
 ]

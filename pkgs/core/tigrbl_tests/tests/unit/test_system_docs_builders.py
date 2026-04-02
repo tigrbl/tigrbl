@@ -20,6 +20,7 @@ def test_system_build_helpers_return_documents() -> None:
     lens_html = build_lens(app, request, spec_path="/openrpc.json")
 
     assert openapi_doc["openapi"].startswith("3.")
+    assert openapi_doc["jsonSchemaDialect"] == "https://json-schema.org/draft/2020-12/schema"
     assert openrpc_doc["openrpc"] == "1.2.6"
     assert openrpc_doc["servers"] == [{"name": app.title, "url": "/rpc"}]
     assert "swagger-ui" in swagger_html
