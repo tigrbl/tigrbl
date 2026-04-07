@@ -1,0 +1,27 @@
+schema_version: 1
+state: blocked
+claims:
+  - id: BLK-001
+    public: true
+    certified_boundary: false
+    title: The active 0.3.19.dev1 line is not certifiably fully featured.
+    owner: Governance
+    blocker: Next-target implementation has not closed N1 through N5.
+  - id: BLK-002
+    public: true
+    certified_boundary: false
+    title: The active 0.3.19.dev1 line is not certifiably fully RFC compliant.
+    owner: Governance
+    blocker: RFC/spec closure remains attached to frozen release 0.3.18 only.
+  - id: BLK-003
+    public: false
+    certified_boundary: false
+    title: Certification authority tree has no dedicated machine validator yet.
+    owner: Governance
+    blocker: Validation remains document-governed rather than tool-enforced.
+  - id: BLK-004
+    public: false
+    certified_boundary: false
+    title: Engine-family datatype alignment lacks feature-specific proof slices.
+    owner: Next-target program
+    blocker: Planned test classes are declared but not implemented.

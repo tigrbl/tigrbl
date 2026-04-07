@@ -4,9 +4,13 @@
 
 Certification language is controlled. This repository may only use certification wording when the documented claim tier permits it.
 
+The root `certification/` tree is the authoritative certification control surface. Narrative conformance docs must agree with that tree.
+
 ## Boundary rule
 
 Certification applies only within the declared current target boundary. Server/runtime transport ownership remains outside the framework claim set unless explicitly added later.
+
+The authoritative boundary record is `certification/boundary.yaml`.
 
 ## Claim language rule
 
@@ -42,3 +46,5 @@ The current-target cycle is frozen for this checkpoint. Changes to the frozen bo
 The promoted stable release `0.3.18` satisfies the governed Gate A through Gate E sequence for the Tier 3 current-boundary claim rows in `docs/conformance/CLAIM_REGISTRY.md`.
 
 The active `0.3.19.dev1` line is a next-target planning checkpoint and does **not** use Tier 3 certification wording.
+
+The Phase 0 certification authority reset is complete when the exit criteria in `certification/targets/next_target.yaml` remain true.

@@ -1,0 +1,10 @@
+schema_version: 1
+gate: gate-a
+name: Boundary freeze
+state: evidenced
+applies_to: 0.3.18
+owner: Governance
+authoritative_marker:
+  marker: docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json
+  manifest: docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json
+pass_condition: Frozen current boundary remains synchronized with governed release history.

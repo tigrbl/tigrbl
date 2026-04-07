@@ -3,6 +3,9 @@
 ## Canonical top-level reader path
 
 - `README.md`
+- `certification/boundary.yaml`
+- `reports/current_state/2026-04-07-phase0-certification-freeze.md`
+- `reports/certification_state/2026-04-07-registry-reclassification.md`
 - `docs/README.md`
 - `docs/conformance/CURRENT_TARGET.md`
 - `docs/conformance/CURRENT_STATE.md`
@@ -20,6 +23,20 @@
 
 | Need | Canonical path |
 |---|---|
+| Certification authority | `certification/boundary.yaml` |
+| Next-target authority | `certification/targets/next_target.yaml` |
+| Current claims | `certification/claims/current.yaml` |
+| Target claims | `certification/claims/target.yaml` |
+| Blocked claims | `certification/claims/blocked.yaml` |
+| Evidenced claims | `certification/claims/evidenced.yaml` |
+| Certification evidence schema | `certification/evidence/schema.json` |
+| Current release certification profile | `certification/profiles/current_release.yaml` |
+| Active dev-line certification profile | `certification/profiles/active_next_target.yaml` |
+| Root ADR index | `adr/README.md` |
+| Certification truth-model ADR | `adr/ADR-0001-certification-truth-model.md` |
+| Certification truth-model spec | `specs/certification-truth-model.md` |
+| Current-state report | `reports/current_state/2026-04-07-phase0-certification-freeze.md` |
+| Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
 | Target boundary | `docs/governance/TARGET_BOUNDARY.md` |
 | Certification rules | `docs/governance/CERTIFICATION_POLICY.md` |
 | Claim tiers | `docs/governance/CLAIM_TIERS.md` |

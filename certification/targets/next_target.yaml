@@ -1,0 +1,131 @@
+schema_version: 1
+target_id: next-target-0.3.19.dev1
+status: target
+owner: Next-target program
+version_line: 0.3.19.dev1
+scope_statement: >
+  Govern the datatype and table architecture as an active next-target program without
+  reopening the frozen 0.3.18 certification boundary.
+features:
+  - id: NEXT-FEAT-001
+    name: Canonical datatype semantic center
+    state: target
+    owner: Next-target program
+    package: pkgs/core/tigrbl_core
+    crate: crates/tigrbl_rs_spec
+    test_class: semantic-datatype-core
+    claim_target: NEXT-003
+    phase: N1
+  - id: NEXT-FEAT-002
+    name: ColumnSpec.datatype adoption
+    state: target
+    owner: Next-target program
+    package: pkgs/core/tigrbl_core
+    crate: crates/tigrbl_rs_spec
+    test_class: column-datatype-integration
+    claim_target: NEXT-004
+    phase: N3
+  - id: NEXT-FEAT-003
+    name: TypeAdapter and TypeRegistry contract
+    state: target
+    owner: Next-target program
+    package: pkgs/core/tigrbl_core
+    crate: crates/tigrbl_rs_spec
+    test_class: adapter-registry-contract
+    claim_target: NEXT-005
+    phase: N1
+  - id: NEXT-FEAT-004
+    name: Engine lowering and registry bridge
+    state: target
+    owner: Next-target program
+    package: pkgs/core/tigrbl_core
+    crate: crates/tigrbl_rs_spec
+    test_class: engine-bridge-lowering
+    claim_target: NEXT-006
+    phase: N2
+  - id: NEXT-FEAT-005
+    name: Reflected type mapper and reverse mapping
+    state: target
+    owner: Next-target program
+    package: pkgs/core/tigrbl_core
+    crate: crates/tigrbl_rs_spec
+    test_class: reflection-roundtrip-recovery
+    claim_target: NEXT-007
+    phase: N5
+  - id: NEXT-FEAT-006
+    name: Engine-family datatype alignment
+    state: target
+    owner: Next-target program
+    package: pkgs/engines
+    crate: crates/tigrbl_rs_engine_inmemory
+    test_class: engine-family-alignment
+    claim_target: NEXT-008
+    phase: N2
+  - id: NEXT-FEAT-007
+    name: Table portability and interoperability rules
+    state: target
+    owner: Next-target program
+    package: pkgs/core/tigrbl_core
+    crate: crates/tigrbl_rs_spec
+    test_class: table-portability-contract
+    claim_target: NEXT-009
+    phase: N4
+  - id: NEXT-FEAT-008
+    name: Reflection-driven schema round-trip recovery
+    state: target
+    owner: Next-target program
+    package: pkgs/core/tigrbl_core
+    crate: crates/tigrbl_rs_spec
+    test_class: schema-roundtrip-recovery
+    claim_target: NEXT-010
+    phase: N5
+risks:
+  - id: RISK-001
+    title: Certification wording drift between frozen release and active dev line
+    state: current
+    mitigation: Keep release claims in current/evidenced files and dev work in target/blocked files only.
+    mitigation_owner: Governance
+  - id: RISK-002
+    title: Datatype architecture widens boundary without gate updates
+    state: target
+    mitigation: Require claim_target mapping and phase ownership before implementation promotion.
+    mitigation_owner: Next-target program
+  - id: RISK-003
+    title: Evidence registry and new authority tree diverge
+    state: blocked
+    mitigation: Keep docs/conformance evidence map as historical evidence and use certification/ as release-control authority.
+    mitigation_owner: Governance
+  - id: RISK-004
+    title: Engine alignment scope outruns available multi-engine validation
+    state: blocked
+    mitigation: Hold engine-family claims at target or blocked until feature-specific tests exist.
+    mitigation_owner: Next-target program
+issues:
+  - id: ISSUE-001
+    title: Active dev line has no Tier 3 or release promotion claim
+    state: blocked
+    phase_link: N1
+    waiver: null
+  - id: ISSUE-002
+    title: Datatype and table program remains planning-scoped rather than implementation-closed
+    state: blocked
+    phase_link: N1
+    waiver: null
+  - id: ISSUE-003
+    title: No certification-tree validator exists yet
+    state: blocked
+    phase_link: N1
+    waiver: null
+  - id: ISSUE-004
+    title: Frozen 0.3.18 release bundle should not be regenerated as part of Phase 0 boundary reset
+    state: current
+    phase_link: null
+    waiver:
+      id: WAIVER-001
+      reason: Historical release bundle remains governed release history and is intentionally not rewritten.
+      approved_by: Governance
+phase_exit_criteria:
+  every_next_target_feature_has_owner_package_crate_test_class_claim_target: true
+  every_public_claim_has_certified_boundary_flag: true
+  every_risk_has_mitigation_owner: true
+  every_issue_has_phase_or_waiver: true

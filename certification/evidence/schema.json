@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tigrbl.local/certification/evidence/schema.json",
+  "title": "Certification Evidence Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "state",
+    "owner",
+    "summary"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "current",
+        "target",
+        "blocked",
+        "evidenced"
+      ]
+    },
+    "owner": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "certified_boundary": {
+      "type": "boolean"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "phase": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "blocker": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "mitigation_owner": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "claim_target": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
