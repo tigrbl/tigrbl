@@ -124,6 +124,7 @@ def openapi(router: Any) -> dict[str, Any]:
 
             model = getattr(route, "tigrbl_model", None)
             alias = getattr(route, "tigrbl_alias", None)
+            binding = getattr(route, "tigrbl_binding", None)
             security_deps: list[Any] = []
             security_deps.extend(list(getattr(router, "dependencies", None) or ()))
             security_deps.extend(list(getattr(route, "dependencies", None) or ()))
@@ -134,7 +135,9 @@ def openapi(router: Any) -> dict[str, Any]:
                 specs = getattr(getattr(model, "ops", None), "by_alias", {})
                 sp_list = specs.get(alias) or ()
                 if sp_list:
-                    security_deps.extend(list(getattr(sp_list[0], "secdeps", ()) or ()))
+                    security_deps.extend(
+                        list(getattr(sp_list[0], "security_deps", ()) or ())
+                    )
 
             for dep in tuple(getattr(route, "dependencies", ()) or ()):
                 if dep not in security_deps:
@@ -146,6 +149,19 @@ def openapi(router: Any) -> dict[str, Any]:
                 components.setdefault("securitySchemes", {}).update(
                     _security_schemes_from_dependencies(security_deps)
                 )
+
+            op["x-tigrbl-surface"] = {
+                "binding": {
+                    "proto": getattr(binding, "proto", None),
+                    "path": getattr(binding, "path", None),
+                    "framing": getattr(binding, "framing", None),
+                    "exchange": getattr(binding, "exchange", None),
+                }
+                if binding is not None
+                else None,
+                "exchange": getattr(route, "tigrbl_exchange", None),
+                "txScope": getattr(route, "tigrbl_tx_scope", None),
+            }
 
             path_item[method.lower()] = op
 

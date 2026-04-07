@@ -23,7 +23,11 @@ except Exception:  # pragma: no cover - optional ORM dependency for runtime typi
     AsyncSession = Session = Any  # type: ignore[assignment]
 from tigrbl_base._base import AttrDict
 from tigrbl_atoms.types import BaseCtx
-from tigrbl_concrete._concrete._request import Request
+
+
+@runtime_checkable
+class Request(Protocol):
+    state: Any
 
 
 class _ResponseState:

@@ -20,7 +20,6 @@ authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 dependencies = [
     "tigrbl-typing",
     "tigrbl-kernel",
-    "tigrbl-concrete",
     "tigrbl-atoms",
     "numba>=0.61.2",
 ]
@@ -29,7 +28,6 @@ keywords = ["tigrbl", "sdk", "standards", "framework"]
 [tool.uv.sources]
 "tigrbl-typing" = { workspace = true }
 "tigrbl-kernel" = { workspace = true }
-"tigrbl-concrete" = { workspace = true }
 "tigrbl-atoms" = { workspace = true }
 
 [build-system]

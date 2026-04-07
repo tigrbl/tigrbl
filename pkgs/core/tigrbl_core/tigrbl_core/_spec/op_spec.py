@@ -14,7 +14,7 @@ from typing import (
     Tuple,
 )
 
-from .binding_spec import TransportBindingSpec
+from .binding_spec import Exchange, TransportBindingSpec
 
 from .._spec.hook_spec import HookSpec as OpHook
 
@@ -24,6 +24,7 @@ from .op_utils import _maybe_await, _normalize_persist, _unwrap
 
 PersistPolicy = Literal["default", "prepend", "append", "override", "skip"]
 Arity = Literal["collection", "member"]
+TxScope = Literal["inherit", "none", "read_only", "read_write"]
 TargetOp = Literal[
     "create",
     "read",
@@ -75,6 +76,9 @@ class OpSpec(SerdeMixin):
     expose_rpc: bool = True
     expose_method: bool = True
     bindings: Tuple[TransportBindingSpec, ...] = field(default_factory=tuple)
+    exchange: Exchange = "request_response"
+    tx_scope: TxScope = "inherit"
+    subevents: Tuple[str, ...] = field(default_factory=tuple)
 
     # Optional per-op engine binding (DSN string or mapping spec)
     engine: Optional[EngineCfg] = None
@@ -106,7 +110,14 @@ class OpSpec(SerdeMixin):
     core_raw: Optional[StepFn] = None
     extra: Mapping[str, Any] = field(default_factory=dict)
     deps: Tuple[StepFn | str, ...] = field(default_factory=tuple)
+    security_deps: Tuple[StepFn | str, ...] = field(default_factory=tuple)
     secdeps: Tuple[StepFn | str, ...] = field(default_factory=tuple)
+
+    def __post_init__(self) -> None:
+        if self.security_deps and not self.secdeps:
+            object.__setattr__(self, "secdeps", self.security_deps)
+        elif self.secdeps and not self.security_deps:
+            object.__setattr__(self, "security_deps", self.secdeps)
 
     @staticmethod
     def apply_alias(verb: str, alias_map: Mapping[str, str]) -> str:
@@ -437,6 +448,10 @@ def _mro_collect_decorated_ops(table: type) -> List["OpSpec"]:
                     expose_routes=getattr(op_spec, "expose_routes", None),
                     expose_rpc=getattr(op_spec, "expose_rpc", None),
                     expose_method=getattr(op_spec, "expose_method", None),
+                    bindings=tuple(getattr(op_spec, "bindings", ()) or ()),
+                    exchange=getattr(op_spec, "exchange", "request_response"),
+                    tx_scope=getattr(op_spec, "tx_scope", "inherit"),
+                    subevents=tuple(getattr(op_spec, "subevents", ()) or ()),
                     engine=getattr(op_spec, "engine", None),
                     response=getattr(op_spec, "response", None),
                     returns=getattr(op_spec, "returns", None),
@@ -444,6 +459,11 @@ def _mro_collect_decorated_ops(table: type) -> List["OpSpec"]:
                     core_raw=getattr(op_spec, "core_raw", None) or wrapped_core,
                     extra=dict(getattr(op_spec, "extra", {}) or {}),
                     deps=tuple(getattr(op_spec, "deps", ()) or ()),
+                    security_deps=tuple(
+                        getattr(op_spec, "security_deps", ())
+                        or getattr(op_spec, "secdeps", ())
+                        or ()
+                    ),
                     secdeps=tuple(getattr(op_spec, "secdeps", ()) or ()),
                 )
             )

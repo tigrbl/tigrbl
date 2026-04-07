@@ -37,6 +37,8 @@
 | Certification truth-model spec | `specs/certification-truth-model.md` |
 | Current-state report | `reports/current_state/2026-04-07-phase0-certification-freeze.md` |
 | Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
+| Phase 1 current-state report | `reports/current_state/2026-04-07-phase1-declarative-surface.md` |
+| Phase 1 certification-state report | `reports/certification_state/2026-04-07-phase1-declarative-surface.md` |
 | Target boundary | `docs/governance/TARGET_BOUNDARY.md` |
 | Certification rules | `docs/governance/CERTIFICATION_POLICY.md` |
 | Claim tiers | `docs/governance/CLAIM_TIERS.md` |

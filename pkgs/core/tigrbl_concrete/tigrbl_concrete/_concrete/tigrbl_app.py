@@ -235,6 +235,8 @@ class TigrblApp(_App):
         self.routers: Dict[str, Any] = {}
         self.websocket_routes: list[WebSocketRoute] = []
         self._static_mounts: list[dict[str, str]] = []
+        self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
+        self._tigrbl_runtime_acquire_db = _resolver.acquire
         self.tables = AttrDict(self._table_registry)
         self.columns: Dict[str, Tuple[str, ...]] = {}
         self.table_config: Dict[str, Dict[str, Any]] = {}

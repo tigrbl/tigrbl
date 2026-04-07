@@ -223,10 +223,27 @@ def build_openrpc_spec(router: Any, request: Any | None = None) -> JsonObject:
                 method["result"] = {"name": "result", "schema": out_json}
 
             secdeps = tuple(getattr(op, "secdeps", ()) or ())
+            if not secdeps:
+                secdeps = tuple(getattr(op, "security_deps", ()) or ())
             security = _security_from_dependencies(secdeps)
             if security:
                 method["security"] = security
                 security_schemes.update(_security_schemes_from_dependencies(secdeps))
+
+            method["x-tigrbl-surface"] = {
+                "bindings": [
+                    {
+                        "proto": getattr(binding, "proto", None),
+                        "path": getattr(binding, "path", None),
+                        "rpcMethod": getattr(binding, "rpc_method", None),
+                        "framing": getattr(binding, "framing", None),
+                        "exchange": getattr(binding, "exchange", None),
+                    }
+                    for binding in tuple(getattr(op, "bindings", ()) or ())
+                ],
+                "exchange": getattr(op, "exchange", None),
+                "txScope": getattr(op, "tx_scope", None),
+            }
 
             methods.append(method)
 

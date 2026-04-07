@@ -139,6 +139,8 @@ class TigrblRouter(_Router):
         self.core_raw = SimpleNamespace()
         self.websocket_routes: list[WebSocketRoute] = []
         self._static_mounts: list[dict[str, str]] = []
+        self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
+        self._tigrbl_runtime_acquire_db = _resolver.acquire
 
         # Router-level hooks map (merged into each model at include-time; precedence handled in bindings.hooks)
         self._router_hooks_map = copy.deepcopy(router_hooks) if router_hooks else None

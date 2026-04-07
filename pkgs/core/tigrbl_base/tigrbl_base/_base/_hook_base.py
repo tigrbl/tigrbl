@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Iterable, Optional, Union
+from typing import Optional
 
 from tigrbl_core._spec.hook_spec import HookSpec
 from tigrbl_atoms import HookPhase, StepFn
@@ -15,7 +15,6 @@ class HookBase(HookSpec):
 
     phase: HookPhase
     fn: StepFn
-    ops: Union[str, Iterable[str]] = "*"
     order: int = 0
     when: Optional[object] = None
     name: Optional[str] = None
