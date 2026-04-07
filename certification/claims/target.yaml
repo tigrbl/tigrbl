@@ -1,0 +1,51 @@
+schema_version: 1
+state: target
+claims:
+  - id: NEXT-003
+    public: true
+    certified_boundary: false
+    title: DataTypeSpec and StorageTypeRef will define the canonical semantic datatype center.
+    owner: Next-target program
+    phase: N1
+  - id: NEXT-004
+    public: true
+    certified_boundary: false
+    title: ColumnSpec.datatype will become the canonical datatype attachment point.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-005
+    public: true
+    certified_boundary: false
+    title: TypeAdapter, BaseTypeAdapter, and TypeRegistry will become the executable datatype contract.
+    owner: Next-target program
+    phase: N1
+  - id: NEXT-006
+    public: true
+    certified_boundary: false
+    title: EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge will control engine-owned lowering.
+    owner: Next-target program
+    phase: N2
+  - id: NEXT-007
+    public: true
+    certified_boundary: false
+    title: ReflectedTypeMapper will govern reverse mapping and reflection import behavior.
+    owner: Next-target program
+    phase: N5
+  - id: NEXT-008
+    public: true
+    certified_boundary: false
+    title: Relational, dataframe, file, cache, and probabilistic engines will align to the datatype bridge contract.
+    owner: Next-target program
+    phase: N2
+  - id: NEXT-009
+    public: true
+    certified_boundary: false
+    title: Table portability and interoperability rules will be specified as governed next-target work.
+    owner: Next-target program
+    phase: N4
+  - id: NEXT-010
+    public: true
+    certified_boundary: false
+    title: Reflection-driven round-trip schema recovery will be defined with best-effort and metadata-preserving modes.
+    owner: Next-target program
+    phase: N5

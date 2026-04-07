@@ -1,0 +1,45 @@
+schema_version: 1
+state: current
+claims:
+  - id: CUR-001
+    public: true
+    certified_boundary: true
+    title: Stable release 0.3.18 remains the frozen current certification boundary.
+    owner: Governance
+    profile: current_release
+  - id: CUR-002
+    public: true
+    certified_boundary: true
+    title: OpenAPI 3.1.0 and JSON Schema Draft 2020-12 emission remain in boundary for the frozen release.
+    owner: Docs & Runtime
+    profile: current_release
+  - id: CUR-003
+    public: true
+    certified_boundary: true
+    title: JSON-RPC 2.0 and OpenRPC 1.2.6 framework surfaces remain in the frozen release boundary.
+    owner: Protocol / RPC Runtime
+    profile: current_release
+  - id: CUR-004
+    public: true
+    certified_boundary: true
+    title: Retained RFC 7235, RFC 7617, and RFC 6750 rows remain current-boundary claims.
+    owner: Auth & Security
+    profile: current_release
+  - id: CUR-005
+    public: true
+    certified_boundary: true
+    title: Operator surfaces closed in Phase 7 remain current-boundary claims.
+    owner: Operator Surface
+    profile: current_release
+  - id: CUR-006
+    public: true
+    certified_boundary: true
+    title: Unified tigrbl CLI command and flag surface remains current-boundary scope.
+    owner: CLI / Developer Experience
+    profile: current_release
+  - id: CUR-007
+    public: true
+    certified_boundary: false
+    title: Active line 0.3.19.dev1 exists as governed next-target work only and is not a certified release.
+    owner: Governance
+    profile: active_next_target

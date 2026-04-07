@@ -1,0 +1,55 @@
+schema_version: 1
+authority:
+  authoritative: true
+  owner: Governance
+  last_updated: 2026-04-07
+  purpose: Freeze the certification boundary and define a fail-closed truth model.
+  truth_model:
+    states:
+      - id: current
+        meaning: Claim or surface is inside the frozen certified current boundary for stable release 0.3.18.
+      - id: target
+        meaning: Claim or feature is part of the active next-target program for 0.3.19.dev1 and is not yet certifiable.
+      - id: blocked
+        meaning: Claim or feature cannot be promoted because required implementation, validation, or policy closure is incomplete.
+      - id: evidenced
+        meaning: Claim has mapped evidence artifacts, validators, or release-bundle proof and can be audited directly.
+  authoritative_paths:
+    target_definition: certification/targets/next_target.yaml
+    current_claims: certification/claims/current.yaml
+    target_claims: certification/claims/target.yaml
+    blocked_claims: certification/claims/blocked.yaml
+    evidenced_claims: certification/claims/evidenced.yaml
+    gates: certification/gates/
+    evidence_schema: certification/evidence/schema.json
+    profiles: certification/profiles/
+    adr: adr/
+    specs: specs/
+    reports_current_state: reports/current_state/
+    reports_certification_state: reports/certification_state/
+  governing_sources:
+    - docs/governance/CERTIFICATION_POLICY.md
+    - docs/governance/TARGET_BOUNDARY.md
+    - docs/conformance/CURRENT_TARGET.md
+    - docs/conformance/CURRENT_STATE.md
+    - docs/conformance/NEXT_TARGETS.md
+    - docs/conformance/CLAIM_REGISTRY.md
+    - docs/conformance/EVIDENCE_MODEL.md
+current_release:
+  version: 0.3.18
+  profile: certification/profiles/current_release.yaml
+  gate_sequence:
+    - gate-a
+    - gate-b
+    - gate-c
+    - gate-d
+    - gate-e
+active_line:
+  version: 0.3.19.dev1
+  profile: certification/profiles/active_next_target.yaml
+fail_closed_rules:
+  - Public claims must carry a certified_boundary flag.
+  - Next-target features must declare owner, package, crate, test_class, and claim_target.
+  - Risks must declare mitigation_owner.
+  - Issues must link to a next-target phase or declare an explicit waiver.
+  - Narrative docs must not overstate the active dev line beyond this authority tree.
