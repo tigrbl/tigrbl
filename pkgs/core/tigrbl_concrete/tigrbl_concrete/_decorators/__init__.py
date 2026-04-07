@@ -12,6 +12,10 @@ _EXPORTS = {
     "alias_ctx": "tigrbl_concrete._decorators.op",
     "op_alias": "tigrbl_concrete._decorators.op",
     "op_ctx": "tigrbl_concrete._decorators.op",
+    "sse_ctx": "tigrbl_concrete._decorators.op",
+    "stream_ctx": "tigrbl_concrete._decorators.op",
+    "websocket_ctx": "tigrbl_concrete._decorators.op",
+    "webtransport_ctx": "tigrbl_concrete._decorators.op",
     # hook
     "HOOK_DECLS_ATTR": "tigrbl_concrete._decorators.hook",
     "hook_ctx": "tigrbl_concrete._decorators.hook",

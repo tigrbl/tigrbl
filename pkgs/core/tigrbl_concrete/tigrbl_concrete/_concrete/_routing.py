@@ -77,6 +77,9 @@ def add_route(
         security_dependencies=kwargs.pop("security_dependencies", None),
         tigrbl_model=kwargs.pop("tigrbl_model", None),
         tigrbl_alias=kwargs.pop("tigrbl_alias", None),
+        tigrbl_binding=kwargs.pop("tigrbl_binding", None),
+        tigrbl_exchange=kwargs.pop("tigrbl_exchange", None),
+        tigrbl_tx_scope=kwargs.pop("tigrbl_tx_scope", None),
     )
     owner.routes.append(route)
 
@@ -121,6 +124,9 @@ def include_router(owner: Any, router: Any, *, prefix: str = "") -> None:
             security_dependencies=route.security_dependencies,
             tigrbl_model=route.tigrbl_model,
             tigrbl_alias=route.tigrbl_alias,
+            tigrbl_binding=route.tigrbl_binding,
+            tigrbl_exchange=route.tigrbl_exchange,
+            tigrbl_tx_scope=route.tigrbl_tx_scope,
         )
 
 

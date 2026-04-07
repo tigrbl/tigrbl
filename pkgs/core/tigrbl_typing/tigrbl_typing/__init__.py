@@ -6,6 +6,10 @@ from importlib import import_module
 from typing import Any
 
 _LAZY_EXPORTS = {
+    'OpChannel': 'channel',
+    'OpChannelFamily': 'channel',
+    'OpChannelKind': 'channel',
+    'OpChannelSubevent': 'channel',
     'PgUUID': 'types',
 }
 

@@ -4,6 +4,7 @@ from typing import Any
 
 from tigrbl_kernel import Kernel, _kernel
 
+from tigrbl_runtime.channel import complete_channel, prepare_channel_context
 from tigrbl_runtime.executors import (
     ExecutorBase,
     NumbaPackedPlanExecutor,
@@ -64,13 +65,16 @@ class Runtime(RuntimeBase):
         impl = self.executors.get(selected)
         if impl is None:
             raise KeyError(f"Unknown executor: {selected}")
-        return await impl.invoke(
+        await prepare_channel_context(env, ctx)
+        result = await impl.invoke(
             runtime=self,
             env=env,
             ctx=ctx,
             plan=plan,
             packed_plan=packed_plan,
         )
+        await complete_channel(env, ctx)
+        return result
 
 
 __all__ = ["Runtime"]

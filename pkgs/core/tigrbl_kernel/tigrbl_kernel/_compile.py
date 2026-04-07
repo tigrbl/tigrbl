@@ -33,6 +33,9 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
     from tigrbl_core._spec.binding_spec import (
         HttpJsonRpcBindingSpec,
         HttpRestBindingSpec,
+        HttpStreamBindingSpec,
+        SseBindingSpec,
+        WebTransportBindingSpec,
         WsBindingSpec,
     )
 
@@ -64,7 +67,10 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
             )
 
             for binding in getattr(sp, "bindings", ()) or ():
-                if isinstance(binding, HttpRestBindingSpec):
+                if isinstance(
+                    binding,
+                    (HttpRestBindingSpec, HttpStreamBindingSpec, SseBindingSpec),
+                ):
                     bucket = route_data.setdefault(
                         binding.proto, {"exact": {}, "templated": []}
                     )
@@ -101,7 +107,7 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                         meta_index
                     )
 
-                elif isinstance(binding, WsBindingSpec):
+                elif isinstance(binding, (WsBindingSpec, WebTransportBindingSpec)):
                     bucket = route_data.setdefault(
                         binding.proto, {"exact": {}, "templated": []}
                     )
@@ -119,7 +125,9 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                                 "names": names,
                                 "meta_index": meta_index,
                                 "selector": selector,
-                                "subprotocols": tuple(binding.subprotocols or ()),
+                                "subprotocols": tuple(
+                                    getattr(binding, "subprotocols", ()) or ()
+                                ),
                             }
                         )
                     else:

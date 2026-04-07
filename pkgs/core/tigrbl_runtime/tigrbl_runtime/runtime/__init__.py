@@ -6,6 +6,8 @@ from importlib import import_module
 from typing import Any
 
 _EXPORTS = {
+    "build_asgi_channel": "channel",
+    "prepare_channel_context": "channel",
     "Kernel": "kernel",
     "build_phase_chains": "kernel",
     "get_cached_specs": "kernel",

@@ -56,6 +56,7 @@ from ..vendor.pydantic import (
 from ..status.exceptions import StatusDetailError
 
 # ── Local Package ─────────────────────────────────────────────────────────
+from .channel import OpChannel, OpChannelFamily, OpChannelKind, OpChannelSubevent
 from .op import _Op, _SchemaVerb
 from .uuid import PgUUID, SqliteUUID
 from .authn_abc import AuthNProvider
@@ -71,6 +72,10 @@ __all__: list[str] = [
     "_Op",
     "_SchemaVerb",
     "AuthNProvider",
+    "OpChannel",
+    "OpChannelFamily",
+    "OpChannelKind",
+    "OpChannelSubevent",
     # add ons
     "SqliteUUID",
     # builtin types

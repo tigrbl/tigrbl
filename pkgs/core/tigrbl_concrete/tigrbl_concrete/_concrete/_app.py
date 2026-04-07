@@ -149,6 +149,8 @@ class App(AppBase):
 
         self._runtime_default_executor = getattr(self, "DEFAULT_EXECUTOR", "packed")
         self._runtime_instance = None
+        self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
+        self._tigrbl_runtime_acquire_db = _resolver.acquire
 
     @property
     def router(self) -> "App":
@@ -341,7 +343,8 @@ class App(AppBase):
             await self._handle_lifespan(scope, receive, send)
             return
         if scope_type == "websocket":
-            await self._handle_websocket(scope, receive, send)
+            env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
+            await self.invoke(env)
             return
         path = scope.get("path")
         if isinstance(path, str):
@@ -362,23 +365,8 @@ class App(AppBase):
     async def _handle_websocket(
         self, scope: dict[str, Any], receive: Any, send: Any
     ) -> None:
-        path = str(scope.get("path") or "/")
-        for route in list(getattr(self, "websocket_routes", ()) or []):
-            matched = route.pattern.match(path)
-            if matched is None:
-                continue
-            path_params = matched.groupdict()
-            scope["path_params"] = path_params
-            websocket = WebSocket(scope, receive, send, path_params=path_params)
-            result = route.handler(websocket)
-            if inspect.isawaitable(result):
-                await result
-            if not websocket.closed:
-                if not websocket.accepted:
-                    await websocket.accept()
-                await websocket.close()
-            return
-        await send({"type": "websocket.close", "code": 4404})
+        env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
+        await self.invoke(env)
 
     async def _handle_lifespan(
         self, _scope: dict[str, Any], receive: Any, send: Any
