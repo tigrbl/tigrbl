@@ -29,7 +29,14 @@ REQUIRED_TREE_PATHS = [
     ROOT / "reports" / "certification_state",
 ]
 REQUIRED_STATES = {"current", "target", "blocked", "evidenced"}
-REQUIRED_FEATURE_FIELDS = {"owner", "package", "crate", "test_class", "claim_target"}
+REQUIRED_FEATURE_FIELDS = {
+    "owner",
+    "package",
+    "crate",
+    "test_class",
+    "claim_target",
+    "evidence_artifacts",
+}
 
 
 def read_yaml(path: Path) -> object:
@@ -159,6 +166,17 @@ def validate_next_target(errors: list[str], target_claim_ids: set[str]) -> None:
                 errors.append(
                     f"certification/targets/next_target.yaml feature {feature_id} points to unknown target claim {claim_target}"
                 )
+            evidence_artifacts = feature.get("evidence_artifacts")
+            if not isinstance(evidence_artifacts, list) or not evidence_artifacts:
+                errors.append(
+                    f"certification/targets/next_target.yaml feature {feature_id} must define evidence_artifacts"
+                )
+            else:
+                for artifact in evidence_artifacts:
+                    if not isinstance(artifact, str) or not (ROOT / artifact).exists():
+                        errors.append(
+                            f"certification/targets/next_target.yaml feature {feature_id} references missing evidence artifact {artifact}"
+                        )
 
     risks = payload.get("risks")
     if not isinstance(risks, list):
@@ -214,6 +232,34 @@ def validate_reports(errors: list[str]) -> None:
         errors.append("reports/certification_state/2026-04-07-registry-reclassification.md must record machine-validated registry state")
 
 
+def validate_lifecycle_completeness(errors: list[str]) -> None:
+    lifecycle = read_yaml(CERTIFICATION / "claims" / "lifecycle.yaml")
+    blocked = read_yaml(CERTIFICATION / "claims" / "blocked.yaml")
+    if not isinstance(lifecycle, dict) or not isinstance(blocked, dict):
+        errors.append("certification lifecycle and blocked claims must decode as mappings")
+        return
+
+    lifecycle_claims = lifecycle.get("claims")
+    blocked_claims = blocked.get("claims")
+    if not isinstance(lifecycle_claims, list) or not isinstance(blocked_claims, list):
+        errors.append("certification lifecycle and blocked claims must define claims as lists")
+        return
+
+    lifecycle_ids = {
+        entry.get("id")
+        for entry in lifecycle_claims
+        if isinstance(entry, dict) and isinstance(entry.get("id"), str)
+    }
+    for claim in blocked_claims:
+        if not isinstance(claim, dict):
+            continue
+        claim_id = claim.get("id")
+        if isinstance(claim_id, str) and claim_id not in lifecycle_ids:
+            errors.append(
+                f"blocked claim {claim_id} exists in certification/claims/blocked.yaml but not in certification/claims/lifecycle.yaml"
+            )
+
+
 def main() -> None:
     errors: list[str] = []
 
@@ -227,6 +273,7 @@ def main() -> None:
         if claim_id.startswith("NEXT-")
     }
     validate_next_target(errors, target_claim_ids)
+    validate_lifecycle_completeness(errors)
     validate_reports(errors)
 
     fail(errors)

@@ -80,10 +80,12 @@ class ColumnBase(ColumnSpec, MappedColumn):
                 comment=s.comment,
                 **kw,
             )
+            self.type = dtype
         else:
             MappedColumn.__init__(self, **kw)
 
         self.storage = s
+        self.datatype = getattr(spec, "datatype", None)
         self.field = field if field is not None else F()
         self.io = io if io is not None else IO()
         self.default_factory = default_factory

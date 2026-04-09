@@ -42,6 +42,18 @@ def resolve_table_engine(model: type) -> Any | None:
     return None
 
 
+def _resolve_table_metadata(model: type, key: str, default: Any) -> Any:
+    resolved = default
+    for base in reversed(model.__mro__):
+        cfg = base.__dict__.get("table_config")
+        if isinstance(cfg, Mapping) and key in cfg:
+            resolved = cfg[key]
+        attr = base.__dict__.get(key.upper())
+        if attr is not None:
+            resolved = attr
+    return resolved
+
+
 @dataclass
 class TableSpec(SerdeMixin):
     """
@@ -118,4 +130,11 @@ class TableSpec(SerdeMixin):
                 model, "SECURITY_DEPS", include_inherited=True
             ),
             deps=merge_seq_attr(model, "DEPS", include_inherited=True),
+            portability_class=_resolve_table_metadata(model, "portability_class", None),
+            interoperable_with=tuple(
+                _resolve_table_metadata(model, "interoperable_with", ())
+            ),
+            roundtrip_mode=str(
+                _resolve_table_metadata(model, "roundtrip_mode", "best_effort")
+            ),
         )

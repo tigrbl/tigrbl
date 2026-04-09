@@ -67,13 +67,23 @@ def test_next_target_phase0_exit_criteria_are_fully_declared() -> None:
         for claim in _load_yaml(REPO_ROOT / "certification" / "claims" / "target.yaml")["claims"]
     }
     for feature in payload["features"]:
-        for field in ("owner", "package", "crate", "test_class", "claim_target"):
+        for field in ("owner", "package", "crate", "test_class", "claim_target", "evidence_artifacts"):
             assert feature[field]
         assert feature["claim_target"] in target_claim_ids
+        for artifact in feature["evidence_artifacts"]:
+            assert (REPO_ROOT / artifact).exists()
     for risk in payload["risks"]:
         assert risk["mitigation_owner"]
     for issue in payload["issues"]:
         assert issue.get("phase_link") or issue.get("waiver")
+
+
+def test_blocked_claims_are_lifecycle_tracked() -> None:
+    lifecycle = _load_yaml(REPO_ROOT / "certification" / "claims" / "lifecycle.yaml")
+    blocked = _load_yaml(REPO_ROOT / "certification" / "claims" / "blocked.yaml")
+    lifecycle_ids = {claim["id"] for claim in lifecycle["claims"]}
+    for claim in blocked["claims"]:
+        assert claim["id"] in lifecycle_ids
 
 
 def test_phase0_reports_record_machine_validated_checkpoint() -> None:

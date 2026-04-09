@@ -8,5 +8,10 @@ pub mod reflected;
 pub mod registry;
 pub mod storage_type_ref;
 
+pub use adapter::BaseDatatypeAdapter;
+pub use bridge::EngineDatatypeBridge;
 pub use datatype_spec::DataTypeSpec;
+pub use engine_registry::EngineDatatypeRegistry;
+pub use reflected::{ReflectedDatatype, ReflectedTypeMapper};
+pub use registry::DatatypeRegistry;
 pub use storage_type_ref::StorageTypeRef;

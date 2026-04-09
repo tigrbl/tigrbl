@@ -16,6 +16,9 @@ features:
     test_class: semantic-datatype-core
     claim_target: NEXT-003
     phase: N1
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+      - .github/workflows/next-target-datatypes.yml
   - id: NEXT-FEAT-002
     name: ColumnSpec.datatype adoption
     state: target
@@ -25,6 +28,9 @@ features:
     test_class: column-datatype-integration
     claim_target: NEXT-004
     phase: N3
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
+      - pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
   - id: NEXT-FEAT-003
     name: TypeAdapter and TypeRegistry contract
     state: target
@@ -34,6 +40,9 @@ features:
     test_class: adapter-registry-contract
     claim_target: NEXT-005
     phase: N1
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+      - crates/tigrbl_rs_spec/tests/spec_contract.rs
   - id: NEXT-FEAT-004
     name: Engine lowering and registry bridge
     state: target
@@ -43,6 +52,9 @@ features:
     test_class: engine-bridge-lowering
     claim_target: NEXT-006
     phase: N2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+      - crates/tigrbl_rs_spec/tests/spec_contract.rs
   - id: NEXT-FEAT-005
     name: Reflected type mapper and reverse mapping
     state: target
@@ -52,6 +64,9 @@ features:
     test_class: reflection-roundtrip-recovery
     claim_target: NEXT-007
     phase: N5
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
   - id: NEXT-FEAT-006
     name: Engine-family datatype alignment
     state: target
@@ -61,6 +76,9 @@ features:
     test_class: engine-family-alignment
     claim_target: NEXT-008
     phase: N2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+      - .github/workflows/evidence-lanes.yml
   - id: NEXT-FEAT-007
     name: Table portability and interoperability rules
     state: target
@@ -70,6 +88,9 @@ features:
     test_class: table-portability-contract
     claim_target: NEXT-009
     phase: N4
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py
   - id: NEXT-FEAT-008
     name: Reflection-driven schema round-trip recovery
     state: target
@@ -79,6 +100,9 @@ features:
     test_class: schema-roundtrip-recovery
     claim_target: NEXT-010
     phase: N5
+    evidence_artifacts:
+      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
 risks:
   - id: RISK-001
     title: Certification wording drift between frozen release and active dev line
@@ -126,6 +150,7 @@ issues:
       approved_by: Governance
 phase_exit_criteria:
   every_next_target_feature_has_owner_package_crate_test_class_claim_target: true
+  every_next_target_feature_has_evidence_artifacts: true
   every_public_claim_has_certified_boundary_flag: true
   every_risk_has_mitigation_owner: true
   every_issue_has_phase_or_waiver: true

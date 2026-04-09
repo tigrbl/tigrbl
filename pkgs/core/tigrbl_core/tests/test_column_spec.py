@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from sqlalchemy import Column, Integer, String
+
 from tigrbl_core._spec.column_spec import ColumnSpec
 from tigrbl_core._spec.field_spec import FieldSpec
 from tigrbl_core._spec.io_spec import IOSpec
@@ -42,3 +44,17 @@ def test_column_spec_mro_collect_columns_aliases_collect() -> None:
         __tigrbl_cols__ = {"title": ColumnSpec(storage=None)}
 
     assert ColumnSpec.mro_collect_columns(Demo) == ColumnSpec.collect(Demo)
+
+
+def test_column_spec_collect_preserves_storage_metadata_from_plain_columns() -> None:
+    class Demo:
+        name = Column(String(32), nullable=False)
+        age = Column(Integer, nullable=True)
+
+    collected = ColumnSpec.collect(Demo)
+
+    assert collected["name"].storage is not None
+    assert collected["name"].storage.nullable is False
+    assert collected["name"].storage.type_ is not None
+    assert collected["name"].storage.physical_type is not None
+    assert collected["name"].storage.physical_type.physical_name.lower() in {"string", "varchar"}
