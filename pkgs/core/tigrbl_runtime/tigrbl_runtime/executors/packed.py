@@ -321,6 +321,9 @@ class PackedPlanExecutor(ExecutorBase):
                     if hasattr(pattern, "match") and isinstance(meta_index, int):
                         matched = pattern.match(path)
                         if matched is not None:
+                            channel = ctx.get("channel")
+                            if channel is not None:
+                                channel.path_params = matched.groupdict()
                             temp = getattr(ctx, "temp", None)
                             if isinstance(temp, dict):
                                 temp.setdefault("dispatch", {})["path_params"] = matched.groupdict()
@@ -716,21 +719,6 @@ class PackedPlanExecutor(ExecutorBase):
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
             scope = getattr(env, "scope", {}) or {}
-            if str(scope.get("type") or "") == "websocket":
-                from tigrbl_runtime.channel import dispatch_legacy_websocket
-
-                path = str(scope.get("path") or "/")
-                owner = getattr(ctx, "router", None) or getattr(ctx, "app", None)
-                for route in list(getattr(owner, "websocket_routes", ()) or ()):
-                    matched = route.pattern.match(path)
-                    if matched is None:
-                        continue
-                    scope["path_params"] = matched.groupdict()
-                    channel = ctx.get("channel")
-                    if channel is not None:
-                        channel.path_params = matched.groupdict()
-                    await dispatch_legacy_websocket(ctx, route)
-                    return
             egress = temp.get("egress") if isinstance(temp, dict) else None
             transport = (
                 egress.get("transport_response") if isinstance(egress, dict) else None

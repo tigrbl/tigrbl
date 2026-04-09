@@ -210,3 +210,27 @@ async def test_websocket_surface_accepts_receives_and_sends_text() -> None:
     assert sent[0]["type"] == "websocket.accept"
     assert sent[1] == {"type": "websocket.send", "text": "echo:hi"}
     assert sent[2]["type"] == "websocket.close"
+
+
+def test_websocket_routes_register_runtime_bindings_with_prefixed_paths() -> None:
+    app = TigrblApp(title="Phase 7 WS Prefix")
+    router = TigrblRouter()
+
+    @router.websocket("/echo", framing="jsonrpc")
+    async def echo(ws):
+        await ws.accept()
+        await ws.close()
+
+    app.include_router(router, prefix="/ws")
+
+    system_model = app.tables["__tigrbl_system_docs__"]
+    spec = next(
+        item
+        for item in tuple(getattr(getattr(system_model, "ops", None), "all", ()) or ())
+        if getattr(item, "alias", None) == "echo"
+    )
+    binding = spec.bindings[0]
+
+    assert binding.path == "/ws/echo"
+    assert binding.exchange == "bidirectional_stream"
+    assert binding.framing == "jsonrpc"

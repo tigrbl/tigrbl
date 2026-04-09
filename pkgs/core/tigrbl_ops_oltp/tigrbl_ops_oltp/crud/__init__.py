@@ -14,6 +14,8 @@ _EXPORTS = {
     'delete': 'ops',
     'list': 'ops',
     'clear': 'ops',
+    'count': 'ops',
+    'exists': 'ops',
     'bulk_create': 'bulk',
     'bulk_update': 'bulk',
     'bulk_replace': 'bulk',

@@ -9,6 +9,7 @@ from tigrbl_core._spec.binding_spec import (
     WebTransportBindingSpec,
     WsBindingSpec,
 )
+from .surface import binding_family, op_surface
 
 ASYNCAPI_VERSION = "2.6.0"
 
@@ -46,15 +47,10 @@ def _build_asyncapi_spec(router: Any) -> dict[str, Any]:
             str(getattr(binding, "proto", "unknown")): {
                 "exchange": getattr(spec, "exchange", None),
                 "framing": getattr(binding, "framing", None),
-                "family": (
-                    "session"
-                    if isinstance(binding, WebTransportBindingSpec)
-                    else "socket"
-                    if isinstance(binding, WsBindingSpec)
-                    else "stream"
-                ),
+                "family": binding_family(binding),
             }
         }
+        op_entry["x-tigrbl-surface"] = op_surface(spec)
         entry[operation_name] = op_entry
     return {
         "asyncapi": ASYNCAPI_VERSION,

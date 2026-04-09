@@ -29,6 +29,7 @@ The active `0.3.19.dev1` line is still not honestly describable as certifiably f
 ## Verification performed
 
 - syntax verification via `py_compile` for edited source and test files
+- policy validation via `python tools/ci/validate_phase1_declared_surface.py`
 
 ## Verification not performed
 

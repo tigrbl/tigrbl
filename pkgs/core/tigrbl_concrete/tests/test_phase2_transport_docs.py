@@ -45,6 +45,8 @@ def test_asyncapi_uses_declared_transport_bindings() -> None:
 
     assert "/widgets/events" in spec["channels"]
     assert spec["channels"]["/widgets/events"]["subscribe"]["operationId"] == "watch_widgets"
+    assert spec["channels"]["/widgets/events"]["subscribe"]["x-tigrbl-surface"]["family"] == "custom"
     ws_bindings = spec["channels"]["/ws/widgets/{widget_id}"]["receive"]["bindings"]["wss"]
     assert ws_bindings["framing"] == "jsonrpc"
     assert ws_bindings["exchange"] == "bidirectional_stream"
+    assert ws_bindings["family"] == "socket"

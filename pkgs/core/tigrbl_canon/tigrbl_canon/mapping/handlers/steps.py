@@ -87,11 +87,23 @@ def _wrap_core(model: type, target: str) -> StepFn:
         "delete": "handler_delete",
         "list": "handler_list",
         "clear": "handler_clear",
+        "count": "handler_count",
+        "exists": "handler_exists",
         "bulk_create": "handler_bulk_create",
         "bulk_update": "handler_bulk_update",
         "bulk_replace": "handler_bulk_replace",
         "bulk_merge": "handler_bulk_merge",
         "bulk_delete": "handler_bulk_delete",
+        "aggregate": "handler_aggregate",
+        "group_by": "handler_group_by",
+        "publish": "handler_publish",
+        "subscribe": "handler_subscribe",
+        "tail": "handler_tail",
+        "upload": "handler_upload",
+        "download": "handler_download",
+        "append_chunk": "handler_append_chunk",
+        "send_datagram": "handler_send_datagram",
+        "checkpoint": "handler_checkpoint",
     }
 
     subject = subject_by_target.get(target)

@@ -22,6 +22,8 @@ The repository certification bundle is now reclassified into four explicit autho
 
 This repository checkpoint is complete for Phase 0 boundary freeze and truth-model work.
 
+The authority tree is now machine-validated through `tools/ci/validate_certification_tree.py`.
+
 The checkpoint package is not a statement that the active line `0.3.19.dev1` is fully featured or fully RFC compliant.
 
-The checkpoint package is a statement that the repository now records those facts explicitly and fail-closed.
+The checkpoint package is a statement that the repository now records those facts explicitly, fail-closed, and machine-validated.

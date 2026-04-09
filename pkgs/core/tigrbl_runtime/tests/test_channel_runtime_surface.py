@@ -3,7 +3,13 @@ from __future__ import annotations
 import asyncio
 from types import SimpleNamespace
 
-from tigrbl_runtime.channel import build_asgi_channel, complete_channel, prepare_channel_context
+from tigrbl_runtime.channel import (
+    RuntimeWebSocket,
+    build_asgi_channel,
+    complete_channel,
+    normalize_exchange,
+    prepare_channel_context,
+)
 from tigrbl_typing.channel import OpChannel
 from tigrbl_typing.gw.raw import GwRawEnvelope
 
@@ -50,6 +56,7 @@ def test_prepare_and_complete_channel_context_marks_post_emit() -> None:
     assert ctx["transport_completed"] is True
     assert ctx["current_phase"] == "POST_EMIT"
     assert channel.state["completed"] is True
+    assert channel.state["completion_fence"] == "POST_EMIT"
 
 
 def test_prepare_channel_context_reads_initial_websocket_message() -> None:
@@ -76,3 +83,23 @@ def test_prepare_channel_context_reads_initial_websocket_message() -> None:
     assert channel.kind == "websocket"
     assert ctx["body"] == b'{"jsonrpc":"2.0","method":"widgets.echo","id":1}'
     assert ctx["temp"]["dispatch"]["binding_protocol"] == "wss.jsonrpc"
+    assert channel.state["receive_queue"][0]["type"] == "websocket.receive"
+
+
+def test_runtime_websocket_replays_buffered_receive_message() -> None:
+    channel = OpChannel(
+        kind="websocket",
+        family="socket",
+        exchange="bidirectional_stream",
+        protocol="ws",
+        path="/ws/echo",
+        state={"receive_queue": [{"type": "websocket.receive", "text": "hello"}]},
+    )
+
+    websocket = RuntimeWebSocket(channel)
+
+    assert asyncio.run(websocket.receive_text()) == "hello"
+
+
+def test_normalize_exchange_maps_legacy_bidirectional_value() -> None:
+    assert normalize_exchange("bidirectional") == "bidirectional_stream"

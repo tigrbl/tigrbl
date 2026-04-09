@@ -6,6 +6,8 @@ from urllib.parse import parse_qs
 
 from tigrbl_typing.channel import OpChannel
 
+from .websocket import RuntimeWebSocket
+
 
 def _headers(scope: Mapping[str, Any]) -> dict[str, str]:
     pairs = scope.get("headers", ())
@@ -34,7 +36,15 @@ def _scheme(scope: Mapping[str, Any]) -> str:
     return str(scope.get("scheme") or "").lower()
 
 
+def normalize_exchange(exchange: str | None) -> str:
+    token = str(exchange or "request_response")
+    if token == "bidirectional":
+        return "bidirectional_stream"
+    return token
+
+
 def _channel_family(scope_type: str, exchange: str) -> str:
+    exchange = normalize_exchange(exchange)
     if scope_type == "websocket":
         return "socket"
     if scope_type == "webtransport":
@@ -47,6 +57,7 @@ def _channel_family(scope_type: str, exchange: str) -> str:
 
 
 def _channel_kind(scope_type: str, exchange: str) -> str:
+    exchange = normalize_exchange(exchange)
     if scope_type == "websocket":
         return "websocket"
     if scope_type == "webtransport":
@@ -59,6 +70,7 @@ def _channel_kind(scope_type: str, exchange: str) -> str:
 
 
 def _subevents(scope_type: str, exchange: str) -> tuple[str, ...]:
+    exchange = normalize_exchange(exchange)
     if scope_type == "websocket":
         return ("connect", "receive", "emit", "complete", "disconnect")
     if scope_type == "webtransport":
@@ -75,6 +87,7 @@ def build_asgi_channel(
     protocol: str | None = None,
     framing: str | None = None,
 ) -> OpChannel:
+    exchange = normalize_exchange(exchange)
     scope = getattr(env, "scope", {}) or {}
     scope_type = str(scope.get("type") or "http")
     path = str(scope.get("path") or "/")
@@ -113,6 +126,7 @@ async def _receive_websocket_message(env: Any, channel: OpChannel, ctx: Any) -> 
         message = await receive()
         state["last_event"] = message
     if message.get("type") == "websocket.receive":
+        state.setdefault("receive_queue", []).append(message)
         payload = message.get("bytes")
         if payload is None and message.get("text") is not None:
             payload = str(message.get("text")).encode("utf-8")
@@ -135,6 +149,7 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
         or getattr(ctx, "tigrbl_exchange", None)
         or "request_response"
     )
+    exchange = normalize_exchange(exchange)
     protocol = str(route.get("protocol") or _scheme(getattr(env, "scope", {}) or {}))
     framing = route.get("framing")
     channel = build_asgi_channel(
@@ -199,6 +214,13 @@ async def send_transport_via_channel(env: Any, ctx: Any) -> None:
     scope = getattr(env, "scope", {}) or {}
     scope_type = str(scope.get("type") or "http")
     if scope_type == "websocket":
+        channel = ctx.get("channel")
+        state = getattr(channel, "state", None) if channel is not None else None
+        if isinstance(state, dict) and state.get("transport_sent") is True:
+            temp = getattr(ctx, "temp", None)
+            if isinstance(temp, dict):
+                temp.setdefault("egress", {})["response_sent"] = True
+            return
         temp = getattr(ctx, "temp", None)
         egress = temp.get("egress") if isinstance(temp, dict) else None
         transport = egress.get("transport_response") if isinstance(egress, dict) else None
@@ -208,6 +230,11 @@ async def send_transport_via_channel(env: Any, ctx: Any) -> None:
         if payload is None:
             payload = getattr(ctx, "result", None)
         await _send_websocket_payload(env, payload)
+        if isinstance(state, dict):
+            state["transport_sent"] = True
+            state["emitted"] = payload is not None
+        if isinstance(egress, dict):
+            egress["response_sent"] = True
         return
     from tigrbl_atoms.atoms.egress.asgi_send import _send_transport_response
 
@@ -227,67 +254,10 @@ async def complete_channel(env: Any, ctx: Any) -> None:
         ctx["channel"] = channel
     if isinstance(getattr(channel, "state", None), dict):
         channel.state["completed"] = True
+        channel.state["completion_fence"] = "POST_EMIT"
     ctx["transport_completed"] = True
     ctx["current_phase"] = "POST_EMIT"
 
 
-async def dispatch_legacy_websocket(ctx: Any, route: Any) -> bool:
-    channel = ctx.get("channel")
-    if channel is None:
-        return False
-    handler = getattr(route, "handler", None)
-    if not callable(handler):
-        return False
-
-    class _LegacyWebSocket:
-        def __init__(self, op_channel: OpChannel) -> None:
-            self.scope = {"type": "websocket", "path": op_channel.path}
-            self.path_params = dict(op_channel.path_params)
-            self.accepted = False
-            self.closed = False
-            self._channel = op_channel
-
-        async def accept(self, subprotocol: str | None = None) -> None:
-            if callable(self._channel.send):
-                message = {"type": "websocket.accept"}
-                if subprotocol is not None:
-                    message["subprotocol"] = subprotocol
-                await self._channel.send(message)
-            self.accepted = True
-
-        async def receive(self) -> dict[str, Any]:
-            if not callable(self._channel.receive):
-                return {"type": "websocket.disconnect", "code": 1006}
-            message = await self._channel.receive()
-            if message.get("type") == "websocket.disconnect":
-                self.closed = True
-            return message
-
-        async def receive_text(self) -> str:
-            message = await self.receive()
-            if message.get("type") == "websocket.disconnect":
-                raise RuntimeError("websocket disconnected")
-            return str(message.get("text") or "")
-
-        async def send_text(self, data: str) -> None:
-            if callable(self._channel.send):
-                await self._channel.send({"type": "websocket.send", "text": data})
-
-        async def send_bytes(self, data: bytes) -> None:
-            if callable(self._channel.send):
-                await self._channel.send({"type": "websocket.send", "bytes": bytes(data)})
-
-        async def close(self, code: int = 1000) -> None:
-            if callable(self._channel.send):
-                await self._channel.send({"type": "websocket.close", "code": code})
-            self.closed = True
-
-    websocket = _LegacyWebSocket(channel)
-    result = handler(websocket)
-    if hasattr(result, "__await__"):
-        await result
-    if not websocket.closed:
-        if not websocket.accepted:
-            await websocket.accept()
-        await websocket.close()
-    return True
+def websocket_adapter(channel: OpChannel) -> RuntimeWebSocket:
+    return RuntimeWebSocket(channel)

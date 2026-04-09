@@ -13,6 +13,12 @@ fn opkind_exposes_bulk_variants() {
     assert!(OpKind::BulkCreate.is_bulk());
     assert_eq!(OpKind::BulkDelete.as_str(), "bulk_delete");
     assert_eq!(OpKind::Merge.as_str(), "merge");
+    assert_eq!(OpKind::Count.as_str(), "count");
+    assert_eq!(OpKind::Exists.as_str(), "exists");
+    assert_eq!(OpKind::Aggregate.as_str(), "aggregate");
+    assert_eq!(OpKind::GroupBy.as_str(), "group_by");
+    assert_eq!(OpKind::Publish.as_str(), "publish");
+    assert_eq!(OpKind::Checkpoint.as_str(), "checkpoint");
 }
 
 #[test]

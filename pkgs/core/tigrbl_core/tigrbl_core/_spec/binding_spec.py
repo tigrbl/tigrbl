@@ -9,8 +9,10 @@ from .serde import SerdeMixin
 Exchange = Literal[
     "request_response",
     "server_stream",
+    "event_stream",
     "client_stream",
     "bidirectional",
+    "bidirectional_stream",
     "fire_and_forget",
 ]
 Framing = Literal["json", "jsonrpc", "sse", "stream", "text", "bytes", "webtransport"]
@@ -56,7 +58,7 @@ class WsBindingSpec(SerdeMixin):
     proto: Literal["ws", "wss"]
     path: str
     subprotocols: tuple[str, ...] = ()
-    exchange: Exchange = "bidirectional"
+    exchange: Exchange = "bidirectional_stream"
     framing: Framing = "text"
 
 
@@ -64,7 +66,7 @@ class WsBindingSpec(SerdeMixin):
 class WebTransportBindingSpec(SerdeMixin):
     proto: Literal["webtransport"] = "webtransport"
     path: str = "/"
-    exchange: Exchange = "bidirectional"
+    exchange: Exchange = "bidirectional_stream"
     framing: Framing = "webtransport"
 
 

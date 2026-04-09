@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import inspect
+from dataclasses import replace
 from typing import Any
 
 from ._table_registry import TableRegistry
@@ -209,21 +210,43 @@ class App(AppBase):
         def _decorator(handler: Any) -> Any:
             from ._route import compile_path
             from ._websocket import WebSocketRoute
+            from tigrbl_concrete.system.docs.runtime_ops import (
+                register_runtime_websocket_route,
+            )
+
             full_path = path if path.startswith("/") else f"/{path}"
             normalized_path = full_path.rstrip("/") or "/"
             pattern, param_names = compile_path(normalized_path)
+            route_name = kwargs.get("name", getattr(handler, "__name__", "websocket"))
             self.websocket_routes.append(
                 WebSocketRoute(
                     path_template=normalized_path,
                     pattern=pattern,
                     param_names=param_names,
                     handler=handler,
-                    name=kwargs.get("name", getattr(handler, "__name__", "websocket")),
+                    name=route_name,
+                    protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
+                    exchange=str(
+                        kwargs.get("exchange", "bidirectional_stream")
+                    ),
+                    framing=str(kwargs.get("framing", "text")),
                     summary=kwargs.get("summary"),
                     description=kwargs.get("description"),
                     tags=kwargs.get("tags"),
                 )
             )
+            register_runtime_websocket_route(
+                self,
+                path=normalized_path,
+                alias=route_name,
+                endpoint=handler,
+                protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
+                exchange=str(kwargs.get("exchange", "bidirectional_stream")),
+                framing=str(kwargs.get("framing", "text")),
+            )
+            bump = getattr(self, "_bump_runtime_plan_revision", None)
+            if callable(bump):
+                bump()
             return handler
         return _decorator
 
@@ -434,11 +457,92 @@ class App(AppBase):
 
     def include_router(self, router: Any, *, prefix: str | None = None) -> Any:
         from ._route import compile_path
-        from dataclasses import replace
+        from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
+        from tigrbl_core._spec.binding_spec import (
+            HttpRestBindingSpec,
+            HttpStreamBindingSpec,
+            SseBindingSpec,
+            WebTransportBindingSpec,
+            WsBindingSpec,
+        )
+
+        def _apply_mount_prefix_to_model_bindings(model: type, mount_prefix: str) -> None:
+            if not mount_prefix:
+                return
+
+            ops_ns = getattr(model, "ops", None)
+            specs = tuple(getattr(ops_ns, "all", ()) or ())
+            if not specs:
+                return
+
+            updated_specs: list[Any] = []
+            changed = False
+            for spec in specs:
+                bindings = tuple(getattr(spec, "bindings", ()) or ())
+                updated_bindings: list[Any] = []
+                local_changed = False
+                for binding in bindings:
+                    if not isinstance(
+                        binding,
+                        (
+                            HttpRestBindingSpec,
+                            HttpStreamBindingSpec,
+                            SseBindingSpec,
+                            WsBindingSpec,
+                            WebTransportBindingSpec,
+                        ),
+                    ):
+                        updated_bindings.append(binding)
+                        continue
+
+                    path = str(getattr(binding, "path", "") or "")
+                    if not path.startswith("/"):
+                        path = f"/{path}"
+                    prefixed_path = (
+                        path
+                        if path == mount_prefix or path.startswith(f"{mount_prefix}/")
+                        else f"{mount_prefix}{path}"
+                    )
+                    if prefixed_path != getattr(binding, "path", None):
+                        local_changed = True
+                        updated_bindings.append(replace(binding, path=prefixed_path))
+                    else:
+                        updated_bindings.append(binding)
+
+                if local_changed:
+                    changed = True
+                    updated_specs.append(replace(spec, bindings=tuple(updated_bindings)))
+                else:
+                    updated_specs.append(spec)
+
+            if not changed:
+                return
+
+            updated_all = tuple(updated_specs)
+            by_alias: dict[str, Any] = {}
+            grouped_specs: dict[str, list[Any]] = {}
+            by_key: dict[tuple[str, str], Any] = {}
+            for spec in updated_all:
+                grouped_specs.setdefault(spec.alias, []).append(spec)
+                by_key[(spec.alias, spec.target)] = spec
+            for alias, specs_for_alias in grouped_specs.items():
+                by_alias[alias] = _OpSpecGroup(tuple(specs_for_alias))
+
+            updated_ops = type(ops_ns)(
+                all=updated_all,
+                by_alias=by_alias,
+                by_key=by_key,
+            )
+            model.ops = updated_ops
+            model.opspecs = updated_ops
+
         routed = getattr(router, "router", router)
         route_prefix = prefix or ""
         _include_router_impl(self, routed, prefix=route_prefix)
         normalized_prefix = _normalize_prefix_impl(route_prefix)
+        for name, model in dict(getattr(routed, "tables", {}) or {}).items():
+            _apply_mount_prefix_to_model_bindings(model, normalized_prefix)
+            self.tables.setdefault(name, model)
         for ws_route in list(getattr(routed, "websocket_routes", ()) or []):
             path_template = ws_route.path_template
             if normalized_prefix:
