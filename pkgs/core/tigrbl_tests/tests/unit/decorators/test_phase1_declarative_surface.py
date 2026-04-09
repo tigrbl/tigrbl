@@ -1,4 +1,9 @@
 from tigrbl import (
+    Binding,
+    BindingRegistry,
+    BindingRegistrySpec,
+    BindingSpec,
+    HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     Hook,
     OpSpec,
@@ -98,3 +103,16 @@ def test_hook_ctx_records_direct_selector_declaration() -> None:
     assert decls[0].exchange == "server_stream"
     assert decls[0].family == ("custom",)
     assert decls[0].subevents == ("chunk",)
+
+
+def test_public_facade_exports_binding_surface_types() -> None:
+    binding = BindingSpec(
+        name="rpc",
+        spec=HttpJsonRpcBindingSpec(proto="http.jsonrpc", rpc_method="Widget.rpc"),
+    )
+    registry = BindingRegistrySpec()
+    registry.register(binding)
+
+    assert Binding is not None
+    assert BindingRegistry is not None
+    assert registry.get("rpc") == binding

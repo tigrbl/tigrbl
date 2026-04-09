@@ -65,6 +65,12 @@ jobs:
       - name: Validate evidence bundles
         run: python tools/ci/validate_evidence_bundles.py
 
+      - name: Validate certification authority tree
+        run: python tools/ci/validate_certification_tree.py
+
+      - name: Validate Phase 1 declared surface
+        run: python tools/ci/validate_phase1_declared_surface.py
+
       - name: Validate Gate B surface closure
         run: python tools/ci/validate_gate_b_surface_closure.py
 
@@ -72,4 +78,4 @@ jobs:
         run: python tools/ci/validate_gate_c_conformance_security.py
 
       - name: Run governance and evidence pytest coverage
-        run: pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_phase14_handoff.py
+        run: pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_phase1_declared_surface.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_phase14_handoff.py

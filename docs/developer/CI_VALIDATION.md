@@ -14,6 +14,8 @@ The current certification program uses policy validators, evidence-lane workflow
 - `tools/ci/lint_release_note_claims.py`
 - `tools/ci/validate_evidence_registry.py`
 - `tools/ci/validate_evidence_bundles.py`
+- `tools/ci/validate_certification_tree.py`
+- `tools/ci/validate_phase1_declared_surface.py`
 - `tools/ci/validate_gate_b_surface_closure.py`
 - `tools/ci/validate_gate_c_conformance_security.py`
 - `tools/ci/validate_gate_d_reproducibility.py`
@@ -34,6 +36,8 @@ The current certification program uses policy validators, evidence-lane workflow
 - release-note files must declare governed claim IDs
 - every claim row maps to tests, CI jobs, and artifact paths in `docs/conformance/EVIDENCE_REGISTRY.json`
 - dev/release bundle structures contain the required governed files and directories
+- the certification authority tree keeps the four-state truth model and Phase 0 exit criteria machine-checked
+- the Phase 1 declared-surface checkpoint stays documented and synchronized with the policy workflow
 - Gate E promotion output stays synchronized to the exact chosen dev build and the promoted stable release bundle
 - the Phase 14 handoff keeps frozen release history separated from the active next-line bundle
 

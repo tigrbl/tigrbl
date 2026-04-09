@@ -13,6 +13,7 @@ from .helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
+from tigrbl_concrete.system.docs.surface import binding_surface, op_surface
 
 
 def openapi(router: Any) -> dict[str, Any]:
@@ -136,7 +137,11 @@ def openapi(router: Any) -> dict[str, Any]:
                 sp_list = specs.get(alias) or ()
                 if sp_list:
                     security_deps.extend(
-                        list(getattr(sp_list[0], "security_deps", ()) or ())
+                        list(
+                            getattr(sp_list[0], "security_deps", ())
+                            or getattr(sp_list[0], "secdeps", ())
+                            or ()
+                        )
                     )
 
             for dep in tuple(getattr(route, "dependencies", ()) or ()):
@@ -150,17 +155,20 @@ def openapi(router: Any) -> dict[str, Any]:
                     _security_schemes_from_dependencies(security_deps)
                 )
 
+            op_spec_surface = None
+            if model is not None and isinstance(alias, str):
+                specs = getattr(getattr(model, "ops", None), "by_alias", {})
+                sp_list = specs.get(alias) or ()
+                if sp_list:
+                    op_spec_surface = op_surface(sp_list[0])
+
             op["x-tigrbl-surface"] = {
-                "binding": {
-                    "proto": getattr(binding, "proto", None),
-                    "path": getattr(binding, "path", None),
-                    "framing": getattr(binding, "framing", None),
-                    "exchange": getattr(binding, "exchange", None),
-                }
-                if binding is not None
-                else None,
+                "binding": binding_surface(binding) if binding is not None else None,
+                "bindings": op_spec_surface["bindings"] if op_spec_surface else [],
                 "exchange": getattr(route, "tigrbl_exchange", None),
                 "txScope": getattr(route, "tigrbl_tx_scope", None),
+                "family": op_spec_surface["family"] if op_spec_surface else None,
+                "subevents": op_spec_surface["subevents"] if op_spec_surface else [],
             }
 
             path_item[method.lower()] = op

@@ -10,3 +10,5 @@ It separates:
 - evidence-backed claims
 
 See `certification/boundary.yaml`.
+
+Machine validation is enforced by `tools/ci/validate_certification_tree.py`.

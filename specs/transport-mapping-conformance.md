@@ -22,11 +22,10 @@ Phase 2 runtime/kernel transport checkpoint.
 ## Current checkpoint behavior
 
 - Python runtime owns ASGI channel preparation and completion tracking.
-- Python concrete now hands runtime DB/session resolution callbacks instead of
-  being imported by runtime executors.
+- Legacy websocket decorators compile into hidden runtime-owned websocket ops.
 - Declared websocket and WebTransport bindings resolve by compiled plan path.
-- Legacy websocket decorators still work, but they are dispatched from runtime
-  as a compatibility fallback rather than from a direct app bypass.
+- Runtime-owned websocket adapters keep buffered ingress messages available to
+  websocket handlers instead of consuming them outside the runtime loop.
 - `POST_EMIT` is represented as a deterministic runtime completion marker on the
   context after transport completion. This checkpoint does not yet add a full
   compiled hook phase for `POST_EMIT`.

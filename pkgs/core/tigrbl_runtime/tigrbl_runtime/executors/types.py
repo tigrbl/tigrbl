@@ -114,6 +114,16 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         "error",
         "current_phase",
         "error_phase",
+        "phase",
+        "stage",
+        "capability_mask",
+        "exact_route",
+        "route_family",
+        "route_subevents",
+        "binding",
+        "exchange",
+        "tx_scope",
+        "plan",
     }
 
     def __getattribute__(self, name: str) -> Any:

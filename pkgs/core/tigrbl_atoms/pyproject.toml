@@ -19,6 +19,8 @@ classifiers = [
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 dependencies = [
     "tigrbl-ops-oltp",
+    "tigrbl-ops-olap",
+    "tigrbl-ops-realtime",
     "tigrbl-core",
     "tigrbl-typing",
     "jinja2>=3.1",
@@ -29,6 +31,8 @@ keywords = ["tigrbl", "sdk", "standards", "framework"]
 
 [tool.uv.sources]
 "tigrbl-ops-oltp" = { workspace = true }
+"tigrbl-ops-olap" = { workspace = true }
+"tigrbl-ops-realtime" = { workspace = true }
 "tigrbl-core" = { workspace = true }
 "tigrbl-typing" = { workspace = true }
 

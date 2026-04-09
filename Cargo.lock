@@ -53,10 +53,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "tigrbl_rs_ops_olap"
+version = "0.1.0"
+dependencies = [
+ "tigrbl_rs_spec",
+]
+
+[[package]]
 name = "tigrbl_rs_ops_oltp"
 version = "0.1.0"
 dependencies = [
  "tigrbl_rs_ports",
+ "tigrbl_rs_spec",
+]
+
+[[package]]
+name = "tigrbl_rs_ops_realtime"
+version = "0.1.0"
+dependencies = [
  "tigrbl_rs_spec",
 ]
 

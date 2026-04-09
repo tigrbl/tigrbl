@@ -19,4 +19,5 @@ The correct claim at this checkpoint is:
 
 - Phase 1 public-surface work has advanced
 - the repository has a valid checkpoint artifact
+- the checkpoint is synchronized to the policy lane by `tools/ci/validate_phase1_declared_surface.py`
 - the active line is still not a certifiably fully featured or certifiably fully RFC compliant release

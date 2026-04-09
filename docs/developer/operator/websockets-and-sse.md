@@ -6,6 +6,7 @@ The framework now exposes a first-class websocket route surface:
 
 - `router.websocket("/path")`
 - `app.websocket("/path")`
+- websocket route declarations are compiled into runtime-owned channel ops
 - websocket dispatch and echo-style send/receive behavior are covered by the Phase 7 operator tests
 
 ## WHATWG SSE
@@ -18,4 +19,6 @@ The framework now exposes a first-class SSE surface:
 
 ## Notes
 
-This closure is at the framework/operator surface boundary. Transport/server protocol concerns remain delegated to the serving layer.
+This closure is at the framework/operator surface boundary. Runtime now owns
+the websocket execution path, while transport/server protocol concerns still
+remain delegated to the serving layer.

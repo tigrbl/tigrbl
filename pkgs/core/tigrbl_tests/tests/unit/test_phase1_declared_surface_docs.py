@@ -66,8 +66,11 @@ def test_openapi_uses_declared_surface_metadata() -> None:
 
     operation = payload["paths"]["/widget/events"]["get"]
     assert operation["x-tigrbl-surface"]["binding"]["proto"] == "http.stream"
+    assert operation["x-tigrbl-surface"]["binding"]["family"] == "stream"
     assert operation["x-tigrbl-surface"]["binding"]["framing"] == "stream"
     assert operation["x-tigrbl-surface"]["exchange"] == "server_stream"
+    assert operation["x-tigrbl-surface"]["family"] == "custom"
+    assert operation["x-tigrbl-surface"]["subevents"] == ["chunk"]
     assert operation["x-tigrbl-surface"]["txScope"] == "read_only"
 
 
@@ -81,7 +84,13 @@ def test_openrpc_uses_declared_surface_metadata_and_ws_jsonrpc_bridge() -> None:
     methods = {method["name"]: method for method in payload["methods"]}
     socket_method = methods[f"{model.__name__}.socket_rpc"]
     bindings = socket_method["x-tigrbl-surface"]["bindings"]
-    assert any(binding["proto"] == "ws" and binding["framing"] == "jsonrpc" for binding in bindings)
+    assert any(
+        binding["proto"] == "ws"
+        and binding["framing"] == "jsonrpc"
+        and binding["family"] == "socket"
+        for binding in bindings
+    )
+    assert socket_method["x-tigrbl-surface"]["family"] == "custom"
     assert socket_method["x-tigrbl-surface"]["txScope"] == "read_write"
 
     socket_ops = model.ops.by_alias["socket_rpc"]

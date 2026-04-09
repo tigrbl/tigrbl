@@ -6,6 +6,8 @@ Date: 2026-04-07
 
 The repository now has a root-owned authoritative certification tree under `certification/`.
 
+The certification-tree validator now exists at `tools/ci/validate_certification_tree.py`, so the Phase 0 truth model is machine-checked rather than document-only.
+
 That tree separates the frozen certified release `0.3.18` from the active next-target line `0.3.19.dev1` using four explicit states:
 
 - current
@@ -29,6 +31,12 @@ Within the declared frozen `0.3.18` boundary, the package remains evidenced and 
 The active `0.3.19.dev1` line is not a promoted certified release.
 
 It is not honestly describable as certifiably fully featured or certifiably fully RFC compliant because the datatype/table next-target program remains target- or blocked-state work.
+
+## Checkpoint
+
+This checkpoint is machine-validated for the Phase 0 boundary and truth-model requirements.
+
+It is not a statement that active line `0.3.19.dev1` is certifiably fully featured or certifiably fully RFC compliant.
 
 ## Phase 0 exit criteria status
 

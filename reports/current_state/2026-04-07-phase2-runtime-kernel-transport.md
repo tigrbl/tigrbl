@@ -6,15 +6,19 @@ Date: 2026-04-07
 
 - Added `OpChannel` and transport family/subevent typing to `tigrbl_typing`.
 - Added runtime-owned ASGI channel adapters under `tigrbl_runtime/channel/`.
-- Routed websocket scopes through runtime invocation instead of the direct
-  concrete websocket bypass.
+- Moved the websocket route/adapter types under `tigrbl_runtime/channel/` and
+  re-exported them from concrete for compatibility.
+- Routed websocket scopes through runtime-owned hidden ops instead of the direct
+  concrete websocket bypass in the packed executor.
 - Added runtime-owned completion tracking and a deterministic `POST_EMIT`
   marker after channel completion.
-- Removed the Python runtime import dependency on `tigrbl_concrete`.
 - Added Rust port/runtime channel mirrors in `tigrbl_rs_ports` and
   `tigrbl_rs_runtime`.
 - Changed AsyncAPI generation to use declared transport bindings instead of the
   handwritten `websocket_routes` list.
+- Normalized the transport exchange vocabulary around
+  `bidirectional_stream` while retaining runtime normalization for legacy
+  `bidirectional` declarations.
 
 ## State still not claimable as certified release truth
 
@@ -27,6 +31,6 @@ The remaining gaps are:
   every exchange/family is not yet complete across Python and Rust;
 - `POST_EMIT` is deterministic as a runtime completion marker, but not yet a
   fully compiled and hookable phase across the kernel/runtime surface;
-- WebTransport and stream-family execution remain adapter-backed rather than
-  fully transport-specialized runtime loops;
+- HTTP stream, SSE, and WebTransport remain adapter-backed rather than fully
+  transport-specialized runtime loops;
 - no full repository test/CI evidence was produced in this environment.
