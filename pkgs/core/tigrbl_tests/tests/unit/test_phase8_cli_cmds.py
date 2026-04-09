@@ -94,6 +94,58 @@ def test_doctor_command_smoke_outputs_app_summary() -> None:
         "/rpc.json",
         "--lens-path",
         "/rpc-ui",
+        "--statsd-addr",
+        "127.0.0.1:8125",
+        "--dogstatsd-tags",
+        "env:test,service:tigrbl",
+        "--otel-endpoint",
+        "http://127.0.0.1:4318",
+        "--trace-sample-rate",
+        "0.5",
+        "--drain-timeout",
+        "11",
+        "--shutdown-timeout",
+        "12",
+        "--concurrency-limit",
+        "64",
+        "--admission-queue",
+        "128",
+        "--backlog",
+        "256",
+        "--ws-heartbeat",
+        "15",
+        "--ws-heartbeat-timeout",
+        "18",
+        "--http2-max-concurrent-streams",
+        "99",
+        "--http2-initial-window-size",
+        "131072",
+        "--http3-max-data",
+        "2097152",
+        "--http3-max-uni-streams",
+        "24",
+        "--alpn-policy",
+        "h3,h2",
+        "--ocsp-policy",
+        "strict",
+        "--revocation-policy",
+        "strict",
+        "--interop-bundle-dir",
+        "docs/conformance/audit/2026/p8-cli",
+        "--benchmark-bundle-dir",
+        "reports/current_state/benchmarks",
+        "--deployment-profile",
+        "strict-h3-edge",
+        "--proxy-contract",
+        "edge-normalized",
+        "--early-data-policy",
+        "edge-replay-guarded",
+        "--origin-static-policy",
+        "edge-static",
+        "--quic-metrics",
+        "connections,retry",
+        "--qlog-dir",
+        "reports/current_state/benchmarks/qlog",
     )
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
@@ -107,6 +159,34 @@ def test_doctor_command_smoke_outputs_app_summary() -> None:
     }
     assert payload["routes"]["count"] >= 1
     assert payload["routes"]["websocket_count"] >= 1
+    assert payload["operator_controls"] == {
+        "statsd_addr": "127.0.0.1:8125",
+        "dogstatsd_tags": ["env:test", "service:tigrbl"],
+        "otel_endpoint": "http://127.0.0.1:4318",
+        "trace_sample_rate": 0.5,
+        "drain_timeout": 11.0,
+        "shutdown_timeout": 12.0,
+        "concurrency_limit": 64,
+        "admission_queue": 128,
+        "backlog": 256,
+        "ws_heartbeat": 15.0,
+        "ws_heartbeat_timeout": 18.0,
+        "http2_max_concurrent_streams": 99,
+        "http2_initial_window_size": 131072,
+        "http3_max_data": 2097152,
+        "http3_max_uni_streams": 24,
+        "alpn_policy": ["h3", "h2"],
+        "ocsp_policy": "strict",
+        "revocation_policy": "strict",
+        "interop_bundle_dir": "docs/conformance/audit/2026/p8-cli",
+        "benchmark_bundle_dir": "reports/current_state/benchmarks",
+        "deployment_profile": "strict-h3-edge",
+        "proxy_contract": "edge-normalized",
+        "early_data_policy": "edge-replay-guarded",
+        "origin_static_policy": "edge-static",
+        "quic_metrics": ["connections", "retry"],
+        "qlog_dir": "reports/current_state/benchmarks/qlog",
+    }
 
 
 def test_capabilities_command_smoke_outputs_commands_flags_servers_and_target() -> None:
@@ -124,5 +204,18 @@ def test_capabilities_command_smoke_outputs_commands_flags_servers_and_target() 
         "capabilities",
     ]
     assert "--server" in payload["flags"]
+    assert "--statsd-addr" in payload["flags"]
+    assert "--otel-endpoint" in payload["flags"]
+    assert "--concurrency-limit" in payload["flags"]
+    assert "--http3-max-data" in payload["flags"]
+    assert "--alpn-policy" in payload["flags"]
+    assert "--interop-bundle-dir" in payload["flags"]
+    assert "--deployment-profile" in payload["flags"]
+    assert "--proxy-contract" in payload["flags"]
+    assert "--early-data-policy" in payload["flags"]
+    assert "--origin-static-policy" in payload["flags"]
+    assert "--quic-metrics" in payload["flags"]
+    assert "--qlog-dir" in payload["flags"]
     assert set(payload["servers"]) == {"uvicorn", "hypercorn", "gunicorn", "tigrcorn"}
     assert payload["app"]["title"] == "Phase 8 CLI App"
+    assert "operator_controls" in payload["app"]

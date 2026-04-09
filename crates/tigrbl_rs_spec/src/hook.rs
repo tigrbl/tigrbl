@@ -1,3 +1,4 @@
+use crate::op::Exchange;
 use crate::values::Value;
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
@@ -40,5 +41,9 @@ impl HookPhase {
 pub struct HookSpec {
     pub name: String,
     pub phase: HookPhase,
+    pub bindings: Vec<String>,
+    pub exchange: Option<Exchange>,
+    pub family: Vec<String>,
+    pub subevents: Vec<String>,
     pub metadata: Value,
 }

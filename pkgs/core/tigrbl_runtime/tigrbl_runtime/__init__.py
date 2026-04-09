@@ -15,6 +15,7 @@ _LAZY_EXPORTS = {
     'build_native_runtime': 'native_runtime',
     'clear_native_boundary_events': 'native_runtime',
     'native_boundary_events': 'native_runtime',
+    'transport_parity_trace': 'native_runtime',
 }
 
 __all__ = [

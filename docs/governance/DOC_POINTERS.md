@@ -6,6 +6,12 @@
 - `certification/boundary.yaml`
 - `reports/current_state/2026-04-07-phase0-certification-freeze.md`
 - `reports/certification_state/2026-04-07-registry-reclassification.md`
+- `reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
+- `reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
+- `reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md`
+- `reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md`
+- `reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md`
+- `reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md`
 - `docs/README.md`
 - `docs/conformance/CURRENT_TARGET.md`
 - `docs/conformance/CURRENT_STATE.md`
@@ -28,6 +34,7 @@
 | Current claims | `certification/claims/current.yaml` |
 | Target claims | `certification/claims/target.yaml` |
 | Blocked claims | `certification/claims/blocked.yaml` |
+| Claim lifecycle registry | `certification/claims/lifecycle.yaml` |
 | Evidenced claims | `certification/claims/evidenced.yaml` |
 | Certification evidence schema | `certification/evidence/schema.json` |
 | Current release certification profile | `certification/profiles/current_release.yaml` |
@@ -39,6 +46,14 @@
 | Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
 | Phase 1 current-state report | `reports/current_state/2026-04-07-phase1-declarative-surface.md` |
 | Phase 1 certification-state report | `reports/certification_state/2026-04-07-phase1-declarative-surface.md` |
+| Phase 4 current-state report | `reports/current_state/2026-04-09-phase4-native-parity.md` |
+| Phase 4 certification-state report | `reports/certification_state/2026-04-09-phase4-native-parity.md` |
+| Phase 5 current-state report | `reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
+| Phase 5 certification-state report | `reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
+| Phase 6 current-state report | `reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md` |
+| Phase 6 certification-state report | `reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md` |
+| Phase 7 current-state report | `reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md` |
+| Phase 7 certification-state report | `reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md` |
 | Target boundary | `docs/governance/TARGET_BOUNDARY.md` |
 | Certification rules | `docs/governance/CERTIFICATION_POLICY.md` |
 | Claim tiers | `docs/governance/CLAIM_TIERS.md` |
@@ -78,6 +93,8 @@
 | Package layout | `docs/developer/PACKAGE_LAYOUT.md` |
 | CI validation | `docs/developer/CI_VALIDATION.md` |
 | CLI reference | `docs/developer/CLI_REFERENCE.md` |
+| Tigrcorn example configs | `docs/developer/examples/tigrcorn/` |
+| Tigrcorn operator profiles | `docs/developer/operator/profiles/` |
 | Operator reference index | `docs/developer/operator/README.md` |
 | Path-length validator | `tools/ci/validate_path_lengths.py` |
 | CLI smoke workflow | `.github/workflows/cli-smoke.yml` |
@@ -85,6 +102,10 @@
 | Evidence-registry validator | `tools/ci/validate_evidence_registry.py` |
 | Evidence-bundle validator | `tools/ci/validate_evidence_bundles.py` |
 | Gate B surface-closure validator | `tools/ci/validate_gate_b_surface_closure.py` |
+| Phase 4 native-parity validator | `tools/ci/validate_phase4_native_parity.py` |
+| Phase 5 Tigrcorn operator-surface validator | `tools/ci/validate_phase5_tigrcorn_operator_surface.py` |
+| Phase 6 Tigrcorn hardening validator | `tools/ci/validate_phase6_tigrcorn_hardening.py` |
+| Phase 7 claim-lifecycle validator | `tools/ci/validate_phase7_claim_lifecycle.py` |
 | Gate B surface-closure workflow | `.github/workflows/gate-b-surface-closure.yml` |
 | Gate C conformance/security validator | `tools/ci/validate_gate_c_conformance_security.py` |
 | Gate C conformance/security workflow | `.github/workflows/gate-c-conformance-security.yml` |

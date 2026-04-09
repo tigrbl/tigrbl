@@ -1,0 +1,523 @@
+schema_version: 1
+lifecycle_states:
+  - draft
+  - mapped
+  - implemented
+  - tested
+  - evidenced
+  - certified
+  - recertify_required
+claims:
+  - id: CUR-001
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/current.yaml
+      - docs/conformance/releases/0.3.18/
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/CURRENT_STATE.md
+      - docs/conformance/releases/0.3.18/CLAIMS.md
+    required_test_classes:
+      - tools/ci/tests/test_gate_e_promotion.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+      - docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: CUR-002
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/current.yaml
+      - pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/CURRENT_TARGET.md
+      - docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+      - docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: CUR-003
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/current.yaml
+      - pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/CURRENT_TARGET.md
+      - docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+      - docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: CUR-004
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/current.yaml
+      - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/security/test_schemes.py
+      - tools/ci/tests/test_http_auth_challenges.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: CUR-005
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/current.yaml
+      - docs/developer/operator/
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/developer/operator/README.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py
+    preserved_evidence:
+      - docs/conformance/audit/2026/phase7-operator-surface/README.md
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: CUR-006
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/current.yaml
+      - pkgs/core/tigrbl/tigrbl/cli.py
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/developer/CLI_REFERENCE.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - docs/conformance/audit/2026/p8-cli/README.md
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: CUR-007
+    lifecycle: evidenced
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/current.yaml
+      - docs/conformance/dev/0.3.19.dev1/
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md
+    required_test_classes:
+      - tools/ci/tests/test_phase14_handoff.py
+    preserved_evidence:
+      - docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md
+    release_gate_coverage:
+      - A
+  - id: EVD-001
+    lifecycle: evidenced
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/evidenced.yaml
+      - docs/conformance/releases/0.3.18/gate-results/
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/GATE_MODEL.md
+    required_test_classes:
+      - tools/ci/tests/test_evidence_registry.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/gate-results/
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: EVD-002
+    lifecycle: evidenced
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/evidenced.yaml
+      - docs/conformance/EVIDENCE_REGISTRY.json
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/EVIDENCE_MODEL.md
+      - docs/conformance/EVIDENCE_REGISTRY.json
+    required_test_classes:
+      - tools/ci/tests/test_evidence_registry.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+      - docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: EVD-003
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/evidenced.yaml
+      - docs/conformance/CURRENT_STATE.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/CURRENT_STATE.md
+    required_test_classes:
+      - tools/ci/tests/test_gate_e_promotion.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/CLAIMS.md
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: EVD-004
+    lifecycle: certified
+    boundary_inclusion: true
+    target_mapping: current_release
+    owning_modules:
+      - certification/claims/evidenced.yaml
+      - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md
+    required_test_classes:
+      - tools/ci/tests/test_gate_e_promotion.py
+    preserved_evidence:
+      - docs/conformance/releases/0.3.18/CLAIMS.md
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: BLK-001
+    lifecycle: recertify_required
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/blocked.yaml
+      - reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/claims/blocked.yaml
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: BLK-002
+    lifecycle: recertify_required
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/blocked.yaml
+      - reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/claims/blocked.yaml
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: BLK-004
+    lifecycle: recertify_required
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/blocked.yaml
+      - reports/certification_state/2026-04-09-phase4-native-parity.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - reports/certification_state/2026-04-09-phase4-native-parity.md
+    required_test_classes:
+      - tools/ci/tests/test_phase4_native_parity.py
+    preserved_evidence:
+      - reports/certification_state/2026-04-09-phase4-native-parity.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: BLK-005
+    lifecycle: recertify_required
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/blocked.yaml
+      - reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md
+    required_test_classes:
+      - tools/ci/tests/test_phase5_tigrcorn_operator_surface.py
+    preserved_evidence:
+      - reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: BLK-006
+    lifecycle: recertify_required
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/blocked.yaml
+      - reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md
+    required_test_classes:
+      - tools/ci/tests/test_phase6_tigrcorn_hardening.py
+    preserved_evidence:
+      - reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: BLK-007
+    lifecycle: recertify_required
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/blocked.yaml
+      - reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md
+    required_test_classes:
+      - tools/ci/tests/test_phase7_claim_lifecycle.py
+    preserved_evidence:
+      - reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md
+      - docs/conformance/releases/0.3.18/artifacts/certification-bundle.json
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-003
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N1
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-004
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-005
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N1
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-006
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-007
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N5
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-008
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-009
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N4
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
+  - id: NEXT-010
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N5
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - docs/conformance/NEXT_TARGETS.md
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E

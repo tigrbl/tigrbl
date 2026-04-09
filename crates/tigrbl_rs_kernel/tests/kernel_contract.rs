@@ -1,5 +1,5 @@
 use tigrbl_rs_kernel::KernelCompiler;
-use tigrbl_rs_spec::{AppSpec, BindingSpec, OpKind, OpSpec};
+use tigrbl_rs_spec::{AppSpec, BindingSpec, Exchange, OpKind, OpSpec, TxScope};
 
 #[test]
 fn compiler_preserves_binding_aliases_and_packs_counts() {
@@ -13,6 +13,9 @@ fn compiler_preserves_binding_aliases_and_packs_counts() {
             kind: OpKind::Create,
             name: "create".to_string(),
             route: Some("/users".to_string()),
+            exchange: Exchange::RequestResponse,
+            tx_scope: TxScope::ReadWrite,
+            subevents: vec![],
         },
         ..BindingSpec::default()
     });
@@ -22,6 +25,9 @@ fn compiler_preserves_binding_aliases_and_packs_counts() {
             kind: OpKind::BulkCreate,
             name: "bulk_create".to_string(),
             route: Some("/users/bulk".to_string()),
+            exchange: Exchange::RequestResponse,
+            tx_scope: TxScope::ReadWrite,
+            subevents: vec![],
         },
         ..BindingSpec::default()
     });

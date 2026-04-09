@@ -1,0 +1,18 @@
+{
+  "bundle_kind": "tigrcorn-benchmark",
+  "release_gate": "pre-certification",
+  "scenarios": [
+    "rest-ping",
+    "jsonrpc-echo",
+    "sse-fanout",
+    "websocket-echo"
+  ],
+  "artifacts": [
+    "README.md",
+    "machine-profile.json",
+    "throughput.json",
+    "latency-histogram.json",
+    "raw/"
+  ],
+  "claim_policy": "Benchmark and throughput claims remain blocked until the artifact bundle is produced by governed release lanes."
+}

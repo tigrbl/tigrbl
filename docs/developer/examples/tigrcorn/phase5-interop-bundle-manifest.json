@@ -1,0 +1,20 @@
+{
+  "bundle_kind": "tigrcorn-interop",
+  "release_gate": "pre-certification",
+  "server": "tigrcorn",
+  "protocols": [
+    "rest-http1.1",
+    "json-rpc-websocket",
+    "sse",
+    "websocket",
+    "http3-quic"
+  ],
+  "artifacts": [
+    "README.md",
+    "matrix.json",
+    "client-traces/",
+    "server-traces/",
+    "summary.json"
+  ],
+  "claim_policy": "Do not publish certifying interop claims until the bundle is populated by release evidence lanes."
+}

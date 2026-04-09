@@ -10,6 +10,7 @@ This section documents the current-target framework/operator surfaces that remai
 - WebSockets and SSE: `websockets-and-sse.md`
 - Forms and uploads: `forms-and-uploads.md`
 - Built-in middleware catalog and auth-surface decision: `middleware-catalog.md`
+- Tigrcorn deployment profiles: `profiles/`
 
 ## Boundary decisions recorded here
 
@@ -18,3 +19,4 @@ This section documents the current-target framework/operator surfaces that remai
 - keep JSON Schema bundle emission at `/schemas.json`, but de-scope interactive JSON Schema UI to a later target
 - de-scope the OIDC discovery/docs surface from the current cycle
 - keep the generic auth surface dependency/hook-based only rather than adding a new monolithic auth middleware abstraction in this cycle
+- keep Tigrcorn hardening/profile certification fail-closed until external-runtime evidence lanes pass
