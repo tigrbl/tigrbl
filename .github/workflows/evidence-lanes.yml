@@ -70,6 +70,20 @@ jobs:
           - lane: clean-room-package
             cmd: >-
               python tools/conformance/clean_room_package_smoke.py
+          - lane: next-target-datatypes
+            cmd: >-
+              python -m pytest --noconftest -q
+              pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+              pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
+              pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+              pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+              pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+              pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+              pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
+              pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+              pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+              pkgs/core/tigrbl_client/tests/unit/test_tigrbl_nested_crud.py
+              -p no:cacheprovider
     env:
       PYTHONDONTWRITEBYTECODE: '1'
     steps:

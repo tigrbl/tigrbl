@@ -10,6 +10,8 @@ from sqlalchemy.orm import DeclarativeBase, declared_attr, mapped_column
 from sqlalchemy import CheckConstraint, ForeignKey, MetaData
 from sqlalchemy.types import Enum as SAEnum, String
 
+from ._datatype_lowering import lower_datatype_to_sqla_type
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers – type inference & SA type instantiation
 # ──────────────────────────────────────────────────────────────────────────────
@@ -148,7 +150,9 @@ def _materialize_colspecs_to_sqla(cls, *, map_columns: bool = True) -> None:
                 # that trigger SQLAlchemy implicit combination warnings.
                 continue
 
-            dtype = getattr(storage, "type_", None)
+            dtype = getattr(storage, "type_", None) or lower_datatype_to_sqla_type(
+                getattr(spec, "datatype", None), field=getattr(spec, "field", None)
+            )
             if not dtype:
                 # No SA dtype specified – cannot materialize
                 continue

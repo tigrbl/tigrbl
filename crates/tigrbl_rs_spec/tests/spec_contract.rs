@@ -1,4 +1,5 @@
-use tigrbl_rs_spec::{AppSpec, Exchange, HookPhase, OpKind, TxScope};
+use tigrbl_rs_spec::{AppSpec, DataTypeSpec, Exchange, HookPhase, OpKind, TxScope};
+use tigrbl_rs_spec::datatypes::{bridge::EngineDatatypeBridge, engine_registry::EngineDatatypeRegistry, storage_type_ref::StorageTypeRef};
 
 #[test]
 fn appspec_defaults_match_python_surface_prefixes() {
@@ -36,4 +37,24 @@ fn exchange_and_tx_scope_match_python_surface_literals() {
     assert_eq!(TxScope::Inherit.as_str(), "inherit");
     assert_eq!(TxScope::ReadOnly.as_str(), "read_only");
     assert_eq!(TxScope::ReadWrite.as_str(), "read_write");
+}
+
+#[test]
+fn engine_bridge_uses_registered_lowering_before_fallback() {
+    let mut registry = EngineDatatypeRegistry::default();
+    registry.register(
+        "sqlite",
+        "string",
+        StorageTypeRef {
+            engine_kind: Some("sqlite".to_string()),
+            physical_name: "TEXT".to_string(),
+        },
+    );
+
+    let bridge = EngineDatatypeBridge { registry };
+    let lowered = bridge.lower("sqlite", &DataTypeSpec::new("string"));
+    assert_eq!(lowered.physical_name, "TEXT");
+
+    let fallback = bridge.lower("sqlite", &DataTypeSpec::new("integer"));
+    assert_eq!(fallback.physical_name, "integer");
 }
