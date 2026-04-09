@@ -27,6 +27,33 @@ A claim is not Tier 3 certifiable until:
 4. the relevant bundle structure passes validation
 5. Gate D and Gate E are passed on the exact chosen build/release
 
+## Phase 7 lifecycle rule
+
+The repo-owned certification tree now carries a machine-readable claim lifecycle at `certification/claims/lifecycle.yaml`.
+
+Lifecycle states are:
+
+- `draft`
+- `mapped`
+- `implemented`
+- `tested`
+- `evidenced`
+- `certified`
+- `recertify_required`
+
+A public certification claim cannot advance unless it records:
+
+- boundary inclusion
+- target mapping
+- owning modules
+- ADR link
+- public contract artifact
+- required test classes
+- preserved evidence
+- release-gate coverage
+
+The current stable release bundle also preserves a certification-bundle artifact at `docs/conformance/releases/0.3.18/artifacts/certification-bundle.json`.
+
 ## Current checkpoint status
 
 The frozen release history now records:

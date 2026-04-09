@@ -20,7 +20,7 @@ pub use column::ColumnSpec;
 pub use datatypes::datatype_spec::DataTypeSpec;
 pub use engine::EngineSpec;
 pub use hook::{HookPhase, HookSpec};
-pub use op::{OpKind, OpSpec};
+pub use op::{Exchange, OpKind, OpSpec, TxScope};
 pub use request::RequestEnvelope;
 pub use response::ResponseEnvelope;
 pub use storage::StorageSpec;

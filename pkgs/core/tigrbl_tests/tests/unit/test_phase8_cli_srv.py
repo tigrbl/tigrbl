@@ -27,6 +27,32 @@ def _cfg(**overrides):
         openapi_path="/schema.json",
         openrpc_path="/rpc.json",
         lens_path="/rpc-ui",
+        statsd_addr="127.0.0.1:8125",
+        dogstatsd_tags=("env:test", "service:tigrbl"),
+        otel_endpoint="http://127.0.0.1:4318",
+        trace_sample_rate=0.25,
+        drain_timeout=15.0,
+        shutdown_timeout=20.0,
+        concurrency_limit=64,
+        admission_queue=256,
+        backlog=512,
+        ws_heartbeat=10.0,
+        ws_heartbeat_timeout=12.5,
+        http2_max_concurrent_streams=96,
+        http2_initial_window_size=98304,
+        http3_max_data=2097152,
+        http3_max_uni_streams=48,
+        alpn_policy=("h3", "h2"),
+        ocsp_policy="strict",
+        revocation_policy="strict",
+        interop_bundle_dir="artifacts/interop",
+        benchmark_bundle_dir="artifacts/benchmarks",
+        deployment_profile="strict-h3-edge",
+        proxy_contract="edge-normalized",
+        early_data_policy="edge-replay-guarded",
+        origin_static_policy="edge-static",
+        quic_metrics=("connections", "retry"),
+        qlog_dir="artifacts/qlog",
     )
     for key, value in overrides.items():
         setattr(base, key, value)
@@ -171,3 +197,48 @@ def test_tigrcorn_runner_translates_config(monkeypatch) -> None:
     assert captured["workers"] == 2
     assert captured["root_path"] == "/root"
     assert captured["proxy_headers"] is True
+    assert captured["statsd_addr"] == "127.0.0.1:8125"
+    assert captured["dogstatsd_tags"] == ["env:test", "service:tigrbl"]
+    assert captured["otel_endpoint"] == "http://127.0.0.1:4318"
+    assert captured["trace_sample_rate"] == 0.25
+    assert captured["drain_timeout"] == 15.0
+    assert captured["shutdown_timeout"] == 20.0
+    assert captured["concurrency_limit"] == 64
+    assert captured["admission_queue"] == 256
+    assert captured["backlog"] == 512
+    assert captured["ws_heartbeat"] == 10.0
+    assert captured["ws_heartbeat_timeout"] == 12.5
+    assert captured["http2_max_concurrent_streams"] == 96
+    assert captured["http2_initial_window_size"] == 98304
+    assert captured["http3_max_data"] == 2097152
+    assert captured["http3_max_uni_streams"] == 48
+    assert captured["alpn_policy"] == ["h3", "h2"]
+    assert captured["ocsp_policy"] == "strict"
+    assert captured["revocation_policy"] == "strict"
+    assert captured["interop_bundle_dir"] == "artifacts/interop"
+    assert captured["benchmark_bundle_dir"] == "artifacts/benchmarks"
+    assert captured["deployment_profile"] == "strict-h3-edge"
+    assert captured["proxy_contract"] == "edge-normalized"
+    assert captured["early_data_policy"] == "edge-replay-guarded"
+    assert captured["origin_static_policy"] == "edge-static"
+    assert captured["quic_metrics"] == ["connections", "retry"]
+    assert captured["qlog_dir"] == "artifacts/qlog"
+
+
+@pytest.mark.parametrize(
+    ("argv", "message"),
+    [
+        (["serve", TARGET, "--trace-sample-rate", "1.5"], "--trace-sample-rate must be between 0.0 and 1.0"),
+        (["serve", TARGET, "--concurrency-limit", "0"], "--concurrency-limit must be >= 1"),
+        (["serve", TARGET, "--admission-queue", "0"], "--admission-queue must be >= 1"),
+        (["serve", TARGET, "--backlog", "0"], "--backlog must be >= 1"),
+        (["serve", TARGET, "--http2-max-concurrent-streams", "0"], "--http2-max-concurrent-streams must be >= 1"),
+        (["serve", TARGET, "--http3-max-data", "0"], "--http3-max-data must be >= 1"),
+        (["serve", TARGET, "--alpn-policy", ",,,"], "--alpn-policy must include at least one protocol"),
+        (["serve", TARGET, "--quic-metrics", ",,,"], "--quic-metrics must include at least one counter"),
+    ],
+)
+def test_cli_rejects_invalid_tigrcorn_operator_controls(argv: list[str], message: str) -> None:
+    with pytest.raises(tigrbl_cli.CLIError, match=message):
+        args = tigrbl_cli._build_parser().parse_args(argv)
+        tigrbl_cli._serve_config_from_args(args)

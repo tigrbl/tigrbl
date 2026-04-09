@@ -51,6 +51,32 @@ CLI_FLAG_NAMES = (
     "--openapi-path",
     "--openrpc-path",
     "--lens-path",
+    "--statsd-addr",
+    "--dogstatsd-tags",
+    "--otel-endpoint",
+    "--trace-sample-rate",
+    "--drain-timeout",
+    "--shutdown-timeout",
+    "--concurrency-limit",
+    "--admission-queue",
+    "--backlog",
+    "--ws-heartbeat",
+    "--ws-heartbeat-timeout",
+    "--http2-max-concurrent-streams",
+    "--http2-initial-window-size",
+    "--http3-max-data",
+    "--http3-max-uni-streams",
+    "--alpn-policy",
+    "--ocsp-policy",
+    "--revocation-policy",
+    "--interop-bundle-dir",
+    "--benchmark-bundle-dir",
+    "--deployment-profile",
+    "--proxy-contract",
+    "--early-data-policy",
+    "--origin-static-policy",
+    "--quic-metrics",
+    "--qlog-dir",
 )
 
 
@@ -72,6 +98,32 @@ class ServeConfig:
     openapi_path: str = DEFAULT_OPENAPI_PATH
     openrpc_path: str = DEFAULT_OPENRPC_PATH
     lens_path: str = DEFAULT_LENS_PATH
+    statsd_addr: str | None = None
+    dogstatsd_tags: tuple[str, ...] = ()
+    otel_endpoint: str | None = None
+    trace_sample_rate: float = 1.0
+    drain_timeout: float = 30.0
+    shutdown_timeout: float = 30.0
+    concurrency_limit: int | None = None
+    admission_queue: int = 1024
+    backlog: int = 2048
+    ws_heartbeat: float = 30.0
+    ws_heartbeat_timeout: float = 30.0
+    http2_max_concurrent_streams: int = 128
+    http2_initial_window_size: int = 65535
+    http3_max_data: int = 1048576
+    http3_max_uni_streams: int = 128
+    alpn_policy: tuple[str, ...] = ("h3", "h2", "http/1.1")
+    ocsp_policy: str = "optional"
+    revocation_policy: str = "best_effort"
+    interop_bundle_dir: str | None = None
+    benchmark_bundle_dir: str | None = None
+    deployment_profile: str | None = None
+    proxy_contract: str = "strict"
+    early_data_policy: str = "reject"
+    origin_static_policy: str = "strict"
+    quic_metrics: tuple[str, ...] = ("connections", "handshake", "retry", "migration")
+    qlog_dir: str | None = None
 
 
 class _RootPathWrapper:
@@ -124,6 +176,12 @@ class _GunicornApplication:
 def _normalize_path(path: str, default: str) -> str:
     raw = (path or default).strip() or default
     return raw if raw.startswith("/") else f"/{raw}"
+
+
+def _csv_tuple(value: str | None) -> tuple[str, ...]:
+    if value is None:
+        return ()
+    return tuple(item.strip() for item in str(value).split(",") if item.strip())
 
 
 def _resolve_target(args: argparse.Namespace) -> str | None:
@@ -365,6 +423,34 @@ def _build_doctor_payload(app: Any, cfg: ServeConfig, target: str) -> dict[str, 
         "engine_capabilities": _engine_supports(app),
         "supported_servers": _installed_servers(),
         "known_engine_kinds": list(known_engine_kinds()),
+        "operator_controls": {
+            "statsd_addr": cfg.statsd_addr,
+            "dogstatsd_tags": list(cfg.dogstatsd_tags),
+            "otel_endpoint": cfg.otel_endpoint,
+            "trace_sample_rate": cfg.trace_sample_rate,
+            "drain_timeout": cfg.drain_timeout,
+            "shutdown_timeout": cfg.shutdown_timeout,
+            "concurrency_limit": cfg.concurrency_limit,
+            "admission_queue": cfg.admission_queue,
+            "backlog": cfg.backlog,
+            "ws_heartbeat": cfg.ws_heartbeat,
+            "ws_heartbeat_timeout": cfg.ws_heartbeat_timeout,
+            "http2_max_concurrent_streams": cfg.http2_max_concurrent_streams,
+            "http2_initial_window_size": cfg.http2_initial_window_size,
+            "http3_max_data": cfg.http3_max_data,
+            "http3_max_uni_streams": cfg.http3_max_uni_streams,
+            "alpn_policy": list(cfg.alpn_policy),
+            "ocsp_policy": cfg.ocsp_policy,
+            "revocation_policy": cfg.revocation_policy,
+            "interop_bundle_dir": cfg.interop_bundle_dir,
+            "benchmark_bundle_dir": cfg.benchmark_bundle_dir,
+            "deployment_profile": cfg.deployment_profile,
+            "proxy_contract": cfg.proxy_contract,
+            "early_data_policy": cfg.early_data_policy,
+            "origin_static_policy": cfg.origin_static_policy,
+            "quic_metrics": list(cfg.quic_metrics),
+            "qlog_dir": cfg.qlog_dir,
+        },
     }
 
 
@@ -447,6 +533,32 @@ def _run_with_tigrcorn(app: Any, cfg: ServeConfig) -> int:
                 root_path=cfg.root_path,
                 proxy_headers=cfg.proxy_headers,
                 uds=cfg.uds,
+                statsd_addr=cfg.statsd_addr,
+                dogstatsd_tags=list(cfg.dogstatsd_tags),
+                otel_endpoint=cfg.otel_endpoint,
+                trace_sample_rate=cfg.trace_sample_rate,
+                drain_timeout=cfg.drain_timeout,
+                shutdown_timeout=cfg.shutdown_timeout,
+                concurrency_limit=cfg.concurrency_limit,
+                admission_queue=cfg.admission_queue,
+                backlog=cfg.backlog,
+                ws_heartbeat=cfg.ws_heartbeat,
+                ws_heartbeat_timeout=cfg.ws_heartbeat_timeout,
+                http2_max_concurrent_streams=cfg.http2_max_concurrent_streams,
+                http2_initial_window_size=cfg.http2_initial_window_size,
+                http3_max_data=cfg.http3_max_data,
+                http3_max_uni_streams=cfg.http3_max_uni_streams,
+                alpn_policy=list(cfg.alpn_policy),
+                ocsp_policy=cfg.ocsp_policy,
+                revocation_policy=cfg.revocation_policy,
+                interop_bundle_dir=cfg.interop_bundle_dir,
+                benchmark_bundle_dir=cfg.benchmark_bundle_dir,
+                deployment_profile=cfg.deployment_profile,
+                proxy_contract=cfg.proxy_contract,
+                early_data_policy=cfg.early_data_policy,
+                origin_static_policy=cfg.origin_static_policy,
+                quic_metrics=list(cfg.quic_metrics),
+                qlog_dir=cfg.qlog_dir,
             )
             return 0
     raise CLIError("The installed 'tigrcorn' module does not expose a compatible run/serve callable.")
@@ -484,6 +596,61 @@ def _build_parser() -> argparse.ArgumentParser:
         sp.add_argument("--root-path", default="")
         sp.add_argument("--proxy-headers", action="store_true")
         sp.add_argument("--uds")
+        sp.add_argument("--statsd-addr")
+        sp.add_argument("--dogstatsd-tags", default="")
+        sp.add_argument("--otel-endpoint")
+        sp.add_argument("--trace-sample-rate", type=float, default=1.0)
+        sp.add_argument("--drain-timeout", type=float, default=30.0)
+        sp.add_argument("--shutdown-timeout", type=float, default=30.0)
+        sp.add_argument("--concurrency-limit", type=int)
+        sp.add_argument("--admission-queue", type=int, default=1024)
+        sp.add_argument("--backlog", type=int, default=2048)
+        sp.add_argument("--ws-heartbeat", type=float, default=30.0)
+        sp.add_argument("--ws-heartbeat-timeout", type=float, default=30.0)
+        sp.add_argument("--http2-max-concurrent-streams", type=int, default=128)
+        sp.add_argument("--http2-initial-window-size", type=int, default=65535)
+        sp.add_argument("--http3-max-data", type=int, default=1048576)
+        sp.add_argument("--http3-max-uni-streams", type=int, default=128)
+        sp.add_argument("--alpn-policy", default="h3,h2,http/1.1")
+        sp.add_argument("--ocsp-policy", choices=("disabled", "optional", "strict"), default="optional")
+        sp.add_argument(
+            "--revocation-policy",
+            choices=("disabled", "best_effort", "strict"),
+            default="best_effort",
+        )
+        sp.add_argument("--interop-bundle-dir")
+        sp.add_argument("--benchmark-bundle-dir")
+        sp.add_argument(
+            "--deployment-profile",
+            choices=(
+                "strict-h1-origin",
+                "strict-h2-origin",
+                "strict-h3-edge",
+                "strict-mtls-origin",
+                "static-origin",
+            ),
+        )
+        sp.add_argument(
+            "--proxy-contract",
+            choices=("strict", "trusted-proxy", "edge-normalized"),
+            default="strict",
+        )
+        sp.add_argument(
+            "--early-data-policy",
+            choices=("reject", "idempotent-only", "edge-replay-guarded"),
+            default="reject",
+        )
+        sp.add_argument(
+            "--origin-static-policy",
+            choices=("strict", "static-origin", "edge-static"),
+            default="strict",
+        )
+        sp.add_argument(
+            "--quic-metrics",
+            default="connections,handshake,retry,migration",
+            help="Comma-separated stable QUIC counters to emit; qlog remains experimental via --qlog-dir.",
+        )
+        sp.add_argument("--qlog-dir")
         add_docs_flags(sp)
 
     for name in ("run", "serve", "dev"):
@@ -491,14 +658,18 @@ def _build_parser() -> argparse.ArgumentParser:
         add_target(sp, required=True)
         add_server_flags(sp)
 
-    for name in ("routes", "openapi", "openrpc", "doctor"):
+    for name in ("routes", "openapi", "openrpc"):
         sp = subparsers.add_parser(name, help=f"Inspect a Tigrbl app via {name}")
         add_target(sp, required=True)
         add_docs_flags(sp)
 
+    sp = subparsers.add_parser("doctor", help="Inspect a Tigrbl app via doctor")
+    add_target(sp, required=True)
+    add_server_flags(sp)
+
     sp = subparsers.add_parser("capabilities", help="Show CLI/server/engine capabilities")
     add_target(sp, required=False)
-    add_docs_flags(sp)
+    add_server_flags(sp)
 
     return parser
 
@@ -517,9 +688,63 @@ def _serve_config_from_args(args: argparse.Namespace) -> ServeConfig:
         openapi_path=str(getattr(args, "openapi_path", DEFAULT_OPENAPI_PATH) or DEFAULT_OPENAPI_PATH),
         openrpc_path=str(getattr(args, "openrpc_path", DEFAULT_OPENRPC_PATH) or DEFAULT_OPENRPC_PATH),
         lens_path=str(getattr(args, "lens_path", DEFAULT_LENS_PATH) or DEFAULT_LENS_PATH),
+        statsd_addr=getattr(args, "statsd_addr", None),
+        dogstatsd_tags=_csv_tuple(getattr(args, "dogstatsd_tags", "")),
+        otel_endpoint=getattr(args, "otel_endpoint", None),
+        trace_sample_rate=float(getattr(args, "trace_sample_rate", 1.0)),
+        drain_timeout=float(getattr(args, "drain_timeout", 30.0)),
+        shutdown_timeout=float(getattr(args, "shutdown_timeout", 30.0)),
+        concurrency_limit=getattr(args, "concurrency_limit", None),
+        admission_queue=int(getattr(args, "admission_queue", 1024)),
+        backlog=int(getattr(args, "backlog", 2048)),
+        ws_heartbeat=float(getattr(args, "ws_heartbeat", 30.0)),
+        ws_heartbeat_timeout=float(getattr(args, "ws_heartbeat_timeout", 30.0)),
+        http2_max_concurrent_streams=int(getattr(args, "http2_max_concurrent_streams", 128)),
+        http2_initial_window_size=int(getattr(args, "http2_initial_window_size", 65535)),
+        http3_max_data=int(getattr(args, "http3_max_data", 1048576)),
+        http3_max_uni_streams=int(getattr(args, "http3_max_uni_streams", 128)),
+        alpn_policy=_csv_tuple(getattr(args, "alpn_policy", "h3,h2,http/1.1")),
+        ocsp_policy=str(getattr(args, "ocsp_policy", "optional")),
+        revocation_policy=str(getattr(args, "revocation_policy", "best_effort")),
+        interop_bundle_dir=getattr(args, "interop_bundle_dir", None),
+        benchmark_bundle_dir=getattr(args, "benchmark_bundle_dir", None),
+        deployment_profile=getattr(args, "deployment_profile", None),
+        proxy_contract=str(getattr(args, "proxy_contract", "strict")),
+        early_data_policy=str(getattr(args, "early_data_policy", "reject")),
+        origin_static_policy=str(getattr(args, "origin_static_policy", "strict")),
+        quic_metrics=_csv_tuple(getattr(args, "quic_metrics", "connections,handshake,retry,migration")),
+        qlog_dir=getattr(args, "qlog_dir", None),
     )
     if cfg.workers < 1:
         raise CLIError("--workers must be >= 1")
+    if cfg.trace_sample_rate < 0.0 or cfg.trace_sample_rate > 1.0:
+        raise CLIError("--trace-sample-rate must be between 0.0 and 1.0")
+    if cfg.drain_timeout < 0.0:
+        raise CLIError("--drain-timeout must be >= 0")
+    if cfg.shutdown_timeout < 0.0:
+        raise CLIError("--shutdown-timeout must be >= 0")
+    if cfg.concurrency_limit is not None and cfg.concurrency_limit < 1:
+        raise CLIError("--concurrency-limit must be >= 1")
+    if cfg.admission_queue < 1:
+        raise CLIError("--admission-queue must be >= 1")
+    if cfg.backlog < 1:
+        raise CLIError("--backlog must be >= 1")
+    if cfg.ws_heartbeat < 0.0:
+        raise CLIError("--ws-heartbeat must be >= 0")
+    if cfg.ws_heartbeat_timeout < 0.0:
+        raise CLIError("--ws-heartbeat-timeout must be >= 0")
+    if cfg.http2_max_concurrent_streams < 1:
+        raise CLIError("--http2-max-concurrent-streams must be >= 1")
+    if cfg.http2_initial_window_size < 1:
+        raise CLIError("--http2-initial-window-size must be >= 1")
+    if cfg.http3_max_data < 1:
+        raise CLIError("--http3-max-data must be >= 1")
+    if cfg.http3_max_uni_streams < 1:
+        raise CLIError("--http3-max-uni-streams must be >= 1")
+    if not cfg.alpn_policy:
+        raise CLIError("--alpn-policy must include at least one protocol")
+    if not cfg.quic_metrics:
+        raise CLIError("--quic-metrics must include at least one counter")
     return cfg
 
 

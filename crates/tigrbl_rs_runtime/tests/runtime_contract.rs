@@ -1,6 +1,6 @@
 use tigrbl_rs_kernel::KernelCompiler;
 use tigrbl_rs_runtime::{NativeRuntime, RuntimeConfig};
-use tigrbl_rs_spec::{AppSpec, BindingSpec, OpKind, OpSpec};
+use tigrbl_rs_spec::{AppSpec, BindingSpec, Exchange, OpKind, OpSpec, TxScope};
 
 #[test]
 fn runtime_instantiates_handles_from_compiled_plans() {
@@ -14,6 +14,9 @@ fn runtime_instantiates_handles_from_compiled_plans() {
             kind: OpKind::Read,
             name: "read".to_string(),
             route: Some("/users/{id}".to_string()),
+            exchange: Exchange::RequestResponse,
+            tx_scope: TxScope::ReadOnly,
+            subevents: vec![],
         },
         ..BindingSpec::default()
     });

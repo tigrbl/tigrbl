@@ -1,0 +1,33 @@
+{
+  "server": "tigrcorn",
+  "host": "0.0.0.0",
+  "port": 8443,
+  "workers": 4,
+  "statsd_addr": "127.0.0.1:8125",
+  "dogstatsd_tags": [
+    "env:staging",
+    "service:tigrbl-api"
+  ],
+  "otel_endpoint": "http://127.0.0.1:4318",
+  "trace_sample_rate": 0.25,
+  "drain_timeout": 20.0,
+  "shutdown_timeout": 30.0,
+  "concurrency_limit": 512,
+  "admission_queue": 2048,
+  "backlog": 4096,
+  "ws_heartbeat": 15.0,
+  "ws_heartbeat_timeout": 20.0,
+  "http2_max_concurrent_streams": 256,
+  "http2_initial_window_size": 131072,
+  "http3_max_data": 4194304,
+  "http3_max_uni_streams": 128,
+  "alpn_policy": [
+    "h3",
+    "h2",
+    "http/1.1"
+  ],
+  "ocsp_policy": "strict",
+  "revocation_policy": "best_effort",
+  "interop_bundle_dir": "docs/conformance/audit/2026/p8-cli/interop",
+  "benchmark_bundle_dir": "reports/current_state/benchmarks/tigrcorn"
+}

@@ -1,0 +1,29 @@
+{
+  "release": "0.3.18",
+  "bundle_version": 1,
+  "signed_bundle": {
+    "manifest": "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json",
+    "signature": "docs/conformance/releases/0.3.18/artifacts/certification-bundle.sig"
+  },
+  "source_archive_digest": "docs/conformance/releases/0.3.18/artifacts/source-archive-digest.txt",
+  "built_artifacts": [
+    "docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json",
+    "docs/conformance/releases/0.3.18/artifacts/clean-room-package-manifest.json",
+    "docs/conformance/releases/0.3.18/artifacts/installed-package-smoke-manifest.json"
+  ],
+  "spec_artifacts": "docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json",
+  "target_manifest": "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
+  "claims_report": "docs/conformance/releases/0.3.18/artifacts/claims-report.json",
+  "evidence_manifest": "docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json",
+  "adr_index": "adr/README.md",
+  "interop_bundle_references": "docs/conformance/releases/0.3.18/artifacts/interop-bundle-refs.json",
+  "performance_artifacts": "docs/conformance/releases/0.3.18/artifacts/performance-artifacts.json",
+  "attestation_provenance_records": "docs/conformance/releases/0.3.18/artifacts/provenance.attestation.json",
+  "gate_decisions": {
+    "A": "surface freeze",
+    "B": "correctness",
+    "C": "interop",
+    "D": "performance/operability",
+    "E": "security/abuse"
+  }
+}

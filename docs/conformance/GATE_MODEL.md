@@ -35,4 +35,16 @@ What is not yet true:
 - Gate D — reproducibility and package assembly
 - Gate E — promotion and release
 
+## Phase 7 release-decision map
+
+For certification-bundle lifecycle and release-decision reporting, the repo also preserves the following explicit A-E interpretation:
+
+- Gate A: surface freeze
+- Gate B: correctness
+- Gate C: interop
+- Gate D: performance/operability
+- Gate E: security/abuse
+
+This mapping is preserved in the Phase 7 certification bundle so release decisions are machine-checkable without implying undeclared RFC or feature scope.
+
 See `gates/` for the per-gate condition documents. Phase 14 is a post-promotion handoff checkpoint rather than a new certification gate.

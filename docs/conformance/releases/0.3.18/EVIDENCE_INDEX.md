@@ -27,6 +27,15 @@ Supported claim ids: EVID-003, GATE-013
 - `docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json`
 - `docs/conformance/releases/0.3.18/artifacts/clean-room-package-manifest.json`
 - `docs/conformance/releases/0.3.18/artifacts/installed-package-smoke-manifest.json`
+- `docs/conformance/releases/0.3.18/artifacts/certification-bundle.json`
+- `docs/conformance/releases/0.3.18/artifacts/source-archive-digest.txt`
+- `docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json`
+- `docs/conformance/releases/0.3.18/artifacts/claims-report.json`
+- `docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json`
+- `docs/conformance/releases/0.3.18/artifacts/interop-bundle-refs.json`
+- `docs/conformance/releases/0.3.18/artifacts/performance-artifacts.json`
+- `docs/conformance/releases/0.3.18/artifacts/provenance.attestation.json`
+- `docs/conformance/releases/0.3.18/artifacts/certification-bundle.sig`
 
 ## Claim mapping source
 

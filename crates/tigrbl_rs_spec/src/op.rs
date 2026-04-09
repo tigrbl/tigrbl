@@ -1,4 +1,44 @@
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub enum Exchange {
+    #[default]
+    RequestResponse,
+    ServerStream,
+    ClientStream,
+    BidirectionalStream,
+}
+
+impl Exchange {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::RequestResponse => "request_response",
+            Self::ServerStream => "server_stream",
+            Self::ClientStream => "client_stream",
+            Self::BidirectionalStream => "bidirectional_stream",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub enum TxScope {
+    #[default]
+    Inherit,
+    None,
+    ReadOnly,
+    ReadWrite,
+}
+
+impl TxScope {
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            Self::Inherit => "inherit",
+            Self::None => "none",
+            Self::ReadOnly => "read_only",
+            Self::ReadWrite => "read_write",
+        }
+    }
+}
+
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub enum OpKind {
     #[default]
     Create,
@@ -78,4 +118,7 @@ pub struct OpSpec {
     pub kind: OpKind,
     pub name: String,
     pub route: Option<String>,
+    pub exchange: Exchange,
+    pub tx_scope: TxScope,
+    pub subevents: Vec<String>,
 }
