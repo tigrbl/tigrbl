@@ -5,6 +5,7 @@ from functools import lru_cache
 from types import SimpleNamespace
 from typing import Any, Callable, Dict, Optional
 
+from .datatypes import DataTypeSpec, infer_datatype
 from .._spec.field_spec import FieldSpec as F
 from .._spec.io_spec import IOSpec as IO
 from .._spec.storage_spec import StorageSpec as S
@@ -34,6 +35,7 @@ class ColumnSpec(SerdeMixin):
         self,
         *,
         storage: S | None,
+        datatype: DataTypeSpec | None = None,
         field: F | None = None,
         io: IO | None = None,
         default_factory: Optional[Callable[[dict], Any]] = None,
@@ -42,6 +44,12 @@ class ColumnSpec(SerdeMixin):
         self.storage = storage
         self.field = field if field is not None else F()
         self.io = io if io is not None else IO()
+        self.datatype = datatype or infer_datatype(
+            field_py_type=self.field.py_type,
+            storage_type=getattr(storage, "type_", None),
+            nullable=getattr(storage, "nullable", None),
+            constraints=getattr(self.field, "constraints", {}),
+        )
         self.default_factory = default_factory
         self.read_producer = read_producer
 

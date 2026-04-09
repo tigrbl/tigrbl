@@ -62,6 +62,9 @@ class TableSpec(SerdeMixin):
     hooks: Sequence[Callable[..., Any]] = field(default_factory=tuple)
     security_deps: Sequence[Callable[..., Any]] = field(default_factory=tuple)
     deps: Sequence[Callable[..., Any]] = field(default_factory=tuple)
+    portability_class: str | None = None
+    interoperable_with: Sequence[str] = field(default_factory=tuple)
+    roundtrip_mode: str = "best_effort"
 
     response: Optional[ResponseSpec] = None
 

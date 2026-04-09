@@ -5,6 +5,7 @@ from typing import Any, Callable, Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import MappedColumn
 
+from ._datatype_lowering import lower_datatype_to_sqla_type
 from tigrbl_core._spec.column_spec import ColumnSpec
 from tigrbl_core._spec.field_spec import FieldSpec as F
 from tigrbl_core._spec.io_spec import IOSpec as IO
@@ -49,7 +50,10 @@ class ColumnBase(ColumnSpec, MappedColumn):
 
         s = storage
         if s is not None:
-            args: list[Any] = [s.type_]
+            dtype = s.type_ or lower_datatype_to_sqla_type(
+                getattr(spec, "datatype", None), field=field
+            )
+            args: list[Any] = [dtype]
             fk = getattr(s, "fk", None)
             if fk is not None:
                 args.append(
