@@ -280,6 +280,29 @@ claims:
       - C
       - D
       - E
+  - id: BLK-003
+    lifecycle: recertify_required
+    boundary_inclusion: true
+    target_mapping: active_next_target
+    owning_modules:
+      - certification/claims/blocked.yaml
+      - certification/targets/next_target.yaml
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/claims/blocked.yaml
+      - certification/targets/next_target.yaml
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+    preserved_evidence:
+      - certification/targets/next_target.yaml
+      - .github/workflows/next-target-datatypes.yml
+    release_gate_coverage:
+      - A
+      - B
+      - C
+      - D
+      - E
   - id: BLK-004
     lifecycle: recertify_required
     boundary_inclusion: true
@@ -362,19 +385,24 @@ claims:
       - D
       - E
   - id: NEXT-003
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N1
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - crates/tigrbl_rs_spec/src/datatypes/
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-    required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
-    preserved_evidence:
       - certification/targets/next_target.yaml
+    required_test_classes:
+      - pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+      - crates/tigrbl_rs_spec/tests/spec_contract.rs
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+      - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
       - B
@@ -382,19 +410,24 @@ claims:
       - D
       - E
   - id: NEXT-004
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/column_spec.py
+      - pkgs/core/tigrbl_base/tigrbl_base/_base/_column_base.py
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-    required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
-    preserved_evidence:
       - certification/targets/next_target.yaml
+    required_test_classes:
+      - pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
+      - pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
+      - pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
     release_gate_coverage:
       - A
       - B
@@ -402,19 +435,24 @@ claims:
       - D
       - E
   - id: NEXT-005
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N1
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - crates/tigrbl_rs_spec/src/datatypes/registry.rs
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-    required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
-    preserved_evidence:
       - certification/targets/next_target.yaml
+    required_test_classes:
+      - pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+      - crates/tigrbl_rs_spec/tests/spec_contract.rs
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+      - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
       - B
@@ -422,19 +460,25 @@ claims:
       - D
       - E
   - id: NEXT-006
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N2
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - crates/tigrbl_rs_spec/src/datatypes/bridge.rs
+      - crates/tigrbl_rs_spec/src/datatypes/engine_registry.rs
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-    required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
-    preserved_evidence:
       - certification/targets/next_target.yaml
+    required_test_classes:
+      - pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+      - crates/tigrbl_rs_spec/tests/spec_contract.rs
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+      - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
       - B
@@ -442,19 +486,24 @@ claims:
       - D
       - E
   - id: NEXT-007
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N5
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - crates/tigrbl_rs_spec/src/datatypes/reflected.rs
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-    required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
-    preserved_evidence:
       - certification/targets/next_target.yaml
+    required_test_classes:
+      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+      - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
       - B
@@ -462,19 +511,23 @@ claims:
       - D
       - E
   - id: NEXT-008
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N2
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - .github/workflows/evidence-lanes.yml
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-    required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
-    preserved_evidence:
       - certification/targets/next_target.yaml
+    required_test_classes:
+      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+      - .github/workflows/evidence-lanes.yml
     release_gate_coverage:
       - A
       - B
@@ -482,18 +535,21 @@ claims:
       - D
       - E
   - id: NEXT-009
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N4
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
+      - certification/targets/next_target.yaml
     required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
+      - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
     preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
       - certification/targets/next_target.yaml
     release_gate_coverage:
       - A
@@ -502,19 +558,24 @@ claims:
       - D
       - E
   - id: NEXT-010
-    lifecycle: mapped
+    lifecycle: implemented
     boundary_inclusion: true
     target_mapping: N5
     owning_modules:
       - certification/claims/target.yaml
       - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
+      - crates/tigrbl_rs_spec/src/datatypes/reflected.rs
     adr_link: adr/ADR-0001-certification-truth-model.md
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-    required_test_classes:
-      - tools/ci/tests/test_certification_tree.py
-    preserved_evidence:
       - certification/targets/next_target.yaml
+    required_test_classes:
+      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+      - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
       - B

@@ -17,7 +17,10 @@ pub mod values;
 pub use app::AppSpec;
 pub use binding::BindingSpec;
 pub use column::ColumnSpec;
-pub use datatypes::datatype_spec::DataTypeSpec;
+pub use datatypes::{
+    DataTypeSpec, DatatypeRegistry, EngineDatatypeBridge, EngineDatatypeRegistry,
+    ReflectedDatatype, ReflectedTypeMapper, StorageTypeRef,
+};
 pub use engine::EngineSpec;
 pub use hook::{HookPhase, HookSpec};
 pub use op::{Exchange, OpKind, OpSpec, TxScope};

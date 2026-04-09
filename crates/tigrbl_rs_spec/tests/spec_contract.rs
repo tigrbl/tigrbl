@@ -1,5 +1,7 @@
-use tigrbl_rs_spec::{AppSpec, DataTypeSpec, Exchange, HookPhase, OpKind, TxScope};
-use tigrbl_rs_spec::datatypes::{bridge::EngineDatatypeBridge, engine_registry::EngineDatatypeRegistry, storage_type_ref::StorageTypeRef};
+use tigrbl_rs_spec::{
+    AppSpec, DataTypeSpec, DatatypeRegistry, EngineDatatypeBridge, EngineDatatypeRegistry,
+    Exchange, HookPhase, OpKind, ReflectedTypeMapper, StorageTypeRef, TxScope,
+};
 
 #[test]
 fn appspec_defaults_match_python_surface_prefixes() {
@@ -45,10 +47,7 @@ fn engine_bridge_uses_registered_lowering_before_fallback() {
     registry.register(
         "sqlite",
         "string",
-        StorageTypeRef {
-            engine_kind: Some("sqlite".to_string()),
-            physical_name: "TEXT".to_string(),
-        },
+        StorageTypeRef::new("TEXT", Some("sqlite")),
     );
 
     let bridge = EngineDatatypeBridge { registry };
@@ -57,4 +56,29 @@ fn engine_bridge_uses_registered_lowering_before_fallback() {
 
     let fallback = bridge.lower("sqlite", &DataTypeSpec::new("integer"));
     assert_eq!(fallback.physical_name, "integer");
+}
+
+#[test]
+fn datatype_registry_normalizes_registered_specs() {
+    let mut registry = DatatypeRegistry::default();
+    registry.register(DataTypeSpec::new("string"));
+    let normalized = registry.normalize(&DataTypeSpec::new("string"));
+    assert_eq!(normalized.logical_name, "string");
+    assert_eq!(registry.registered_names(), vec!["string".to_string()]);
+}
+
+#[test]
+fn builtin_engine_registry_and_reflection_mapper_cover_next_target_surface() {
+    let bridge = EngineDatatypeBridge::with_builtins();
+    let lowered = bridge.lower("postgres", &DataTypeSpec::new("json"));
+    assert_eq!(lowered.physical_name, "JSONB");
+
+    let reflected = ReflectedTypeMapper::from_storage_ref(
+        &StorageTypeRef::new("JSONB", Some("postgres")),
+        "metadata_preserving",
+        false,
+    )
+    .expect("reflection should succeed");
+    assert_eq!(reflected.logical_name, "json");
+    assert!(reflected.options.contains_key("reflected_engine_kind"));
 }

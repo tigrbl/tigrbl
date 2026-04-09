@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrbl_core._spec import DataTypeSpec, StorageTypeRef
+from tigrbl_core._spec import CANONICAL_DATATYPES, DataTypeSpec, StorageTypeRef, TypeRegistry
 from tigrbl_core._spec.datatypes import infer_datatype
 
 
@@ -21,3 +21,13 @@ def test_datatype_spec_new_uses_options_and_nullable() -> None:
     assert spec.logical_name == "uuid"
     assert spec.nullable is True
     assert spec.options["format"] == "canonical"
+
+
+def test_semantic_datatype_core_normalizes_builtin_aliases() -> None:
+    spec = infer_datatype(field_py_type="varchar")
+    assert spec.logical_name == "string"
+
+
+def test_semantic_datatype_core_registry_exposes_builtin_names() -> None:
+    registry = TypeRegistry()
+    assert set(CANONICAL_DATATYPES).issubset(set(registry.registered_names()))

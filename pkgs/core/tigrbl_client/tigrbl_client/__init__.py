@@ -12,7 +12,7 @@ T = TypeVar("T")
 
 
 # Re-export the Schema protocol for public use
-__all__ = ["TigrblClient", "_Schema"]
+__all__ = ["TigrblClient", "NestedCRUDMixin", "_Schema"]
 
 
 class TigrblClient(RPCMixin, CRUDMixin, NestedCRUDMixin):
