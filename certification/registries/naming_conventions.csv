@@ -1,0 +1,7 @@
+entity_type,source_id_format,generated_registry_id_format,example,notes
+feature,NEXT-FEAT-NNN,FREG-NNNN,NEXT-FEAT-009 / FREG-0009,Feature rows in certification/targets/next_target.yaml.
+claim,<FAMILY>-NNN,CREG-NNNN,NEXT-011 / CREG-0015,"Claim families include CUR, NEXT, BLK, and EVD."
+evidence_bundle,derived from normalized bundle root,EBND-NNNN,docs/conformance/releases/0.3.18 -> EBND-0001,Bundle roots group related evidence artifacts.
+evidence_artifact,derived from normalized artifact path,EART-NNNN,pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py -> EART-0001,Artifact IDs are stable for a given sorted path set.
+test_case,derived from normalized test file path,TCASE-NNNN,pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py -> TCASE-0001,One row per test case in the universal registry.
+test_set,derived from normalized test directory,TSET-NNNN,pkgs/core/tigrbl_atoms/tests -> TSET-0001,Groups related test cases by containing set directory.

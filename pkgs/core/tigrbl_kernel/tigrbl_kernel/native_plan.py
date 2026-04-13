@@ -7,6 +7,7 @@ from typing import Any
 @dataclass(slots=True)
 class NativePlan:
     description: str
+    compiled_plan: dict[str, Any] | None = None
     backend: str = "rust"
     normalized_spec: str | None = None
     parity_snapshot: dict[str, Any] | None = None

@@ -33,6 +33,9 @@ def normalize_spec(spec: Any) -> str:
     return native.normalize_spec(_coerce_spec(spec))
 
 
-def compile_app(spec: Any) -> str:
+def compile_app(spec: Any) -> dict[str, Any]:
     native = _require_native()
-    return native.compile_spec(_coerce_spec(spec))
+    compiled = native.compile_spec(_coerce_spec(spec))
+    if isinstance(compiled, str):
+        return json.loads(compiled)
+    return compiled

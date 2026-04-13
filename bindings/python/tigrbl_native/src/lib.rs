@@ -15,8 +15,26 @@ pub fn normalize_spec(spec_json: &str) -> NativeResult<String> {
 }
 
 pub fn compile_spec(spec_json: &str) -> NativeResult<String> {
-    let normalized = spec_codec::normalize_spec(spec_json)?;
-    Ok(format!("compiled-spec:{}", normalized.len()))
+    let spec = spec_codec::decode_spec(spec_json)?;
+    let plan = tigrbl_rs_kernel::KernelCompiler::default().compile(&spec);
+    serde_json::to_string(&serde_json::json!({
+        "description": format!(
+            "compiled native plan for {} with {} binding(s)",
+            plan.app_name,
+            plan.bindings.len()
+        ),
+        "app_name": plan.app_name,
+        "engine_kind": plan.engine_kind,
+        "binding_count": plan.bindings.len(),
+        "route_count": plan.routes.len(),
+        "packed": plan.packed.as_ref().map(|packed| serde_json::json!({
+            "segments": packed.segments,
+            "hot_paths": packed.hot_paths,
+            "fused_steps": packed.fused_steps,
+            "routes": packed.routes,
+        })),
+    }))
+    .map_err(|err| err.to_string())
 }
 
 pub fn create_runtime_handle(spec_json: &str) -> NativeResult<runtime_handle::RuntimeHandle> {
