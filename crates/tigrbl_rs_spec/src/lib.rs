@@ -1,5 +1,6 @@
 pub mod app;
 pub mod binding;
+pub mod callback;
 pub mod column;
 pub mod datatypes;
 pub mod engine;
@@ -16,6 +17,7 @@ pub mod values;
 
 pub use app::AppSpec;
 pub use binding::BindingSpec;
+pub use callback::CallbackSpec;
 pub use column::ColumnSpec;
 pub use datatypes::{
     DataTypeSpec, DatatypeRegistry, EngineDatatypeBridge, EngineDatatypeRegistry,
