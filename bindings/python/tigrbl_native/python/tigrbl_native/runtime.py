@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
 from typing import Any
 
 from .compile import _coerce_spec
@@ -29,6 +30,25 @@ class NativeRuntimeHandle:
 
     def describe(self) -> str:
         return self._handle.describe()
+
+    def plan(self) -> dict[str, object]:
+        if hasattr(self._handle, "plan_json"):
+            return json.loads(self._handle.plan_json())
+        return {}
+
+    def execute_rest(self, envelope: Any) -> dict[str, object]:
+        payload = _coerce_spec(envelope)
+        if hasattr(self._handle, "execute_rest_json"):
+            return json.loads(self._handle.execute_rest_json(payload))
+        raise NativeBindingsUnavailableError("native runtime handle cannot execute REST envelopes")
+
+    def execute_jsonrpc(self, envelope: Any) -> dict[str, object]:
+        payload = _coerce_spec(envelope)
+        if hasattr(self._handle, "execute_jsonrpc_json"):
+            return json.loads(self._handle.execute_jsonrpc_json(payload))
+        raise NativeBindingsUnavailableError(
+            "native runtime handle cannot execute JSON-RPC envelopes"
+        )
 
     def begin_request(self, transport: str = "rest") -> None:
         if hasattr(self._handle, "begin_request"):

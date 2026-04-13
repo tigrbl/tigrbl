@@ -82,3 +82,37 @@ fn builtin_engine_registry_and_reflection_mapper_cover_next_target_surface() {
     assert_eq!(reflected.logical_name, "json");
     assert!(reflected.options.contains_key("reflected_engine_kind"));
 }
+
+#[test]
+fn canonical_json_roundtrip_restores_native_spec() {
+    let raw = r#"{
+        "name": "demo",
+        "title": "Demo",
+        "bindings": [
+            {
+                "alias": "users.create",
+                "transport": "rest",
+                "path": "/users",
+                "op": {
+                    "name": "create",
+                    "kind": "create",
+                    "route": "/users",
+                    "exchange": "request_response",
+                    "tx_scope": "read_write"
+                },
+                "table": {"name": "users"}
+            }
+        ],
+        "engines": [{"name": "default", "kind": "inmemory"}]
+    }"#;
+
+    let parsed = tigrbl_rs_spec::serde::json::from_json(raw).unwrap();
+    assert_eq!(parsed.name, "demo");
+    assert_eq!(parsed.bindings[0].alias, "users.create");
+    assert_eq!(parsed.bindings[0].op.kind, OpKind::Create);
+
+    let reencoded = tigrbl_rs_spec::serde::json::to_json(&parsed).unwrap();
+    let restored = tigrbl_rs_spec::serde::json::from_json(&reencoded).unwrap();
+    assert_eq!(restored.name, "demo");
+    assert_eq!(restored.engines[0].kind, "inmemory");
+}

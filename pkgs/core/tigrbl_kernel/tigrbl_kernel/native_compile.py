@@ -9,8 +9,10 @@ from .native_plan import NativePlan
 
 def build_native_kernel(app: Any) -> NativePlan:
     normalized = normalize_spec(app)
+    compiled = compile_app(app)
     return NativePlan(
-        description=compile_app(app),
+        description=str(compiled.get("description", "compiled native plan")),
+        compiled_plan=compiled,
         backend="rust",
         normalized_spec=normalized,
         parity_snapshot=native_parity_snapshot(app),

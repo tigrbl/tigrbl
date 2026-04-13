@@ -582,3 +582,497 @@ claims:
       - C
       - D
       - E
+  - id: NEXT-011
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/create.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/create.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-012
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/read.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/read.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-013
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/update.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/update.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-014
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-015
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-016
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-017
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/list.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/list.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-018
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-019
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/count.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/count.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-020
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-021
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/bulk/create.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/bulk/create.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-022
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/bulk/update.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/bulk/update.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-023
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-024
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-025
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_oltp
+      - crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-026
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_olap
+      - crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-027
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_olap
+      - crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-028
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-029
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-030
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-031
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-032
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/download.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/download.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-033
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-034
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-035
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_ops_realtime
+      - crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - reports/current_state/2026-04-08-phase3-feature-module-closure.md
+    required_test_classes:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
+      - crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-036
+    lifecycle: mapped
+    boundary_inclusion: true
+    target_mapping: N3
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
+      - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
+    adr_link: adr/ADR-0001-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
+    required_test_classes:
+      - tools/ci/tests/test_certification_tree.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
+      - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
+    release_gate_coverage: [A, B, C, D, E]

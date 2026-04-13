@@ -3,6 +3,7 @@ pub struct PackedPlan {
     pub segments: usize,
     pub hot_paths: usize,
     pub fused_steps: usize,
+    pub routes: usize,
 }
 
 impl PackedPlan {
@@ -11,6 +12,7 @@ impl PackedPlan {
             segments: binding_count,
             hot_paths: binding_count.min(1),
             fused_steps: binding_count,
+            routes: binding_count,
         }
     }
 }

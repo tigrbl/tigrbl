@@ -1,0 +1,5188 @@
+{
+  "authority_model": {
+    "description": "Single normalized registry artifact for features, claims, tests, and evidence.",
+    "name": "universal-certification-registry",
+    "output_roots": {
+      "claims_registry_csv": "certification/registries/claims_registry.csv",
+      "feature_registry_csv": "certification/registries/feature_registry.csv",
+      "naming_conventions_csv": "certification/registries/naming_conventions.csv",
+      "test_registry_csv": "certification/registries/test_registry.csv",
+      "universal_registry": "certification/registries/universal_registry.json"
+    },
+    "source_roots": {
+      "claims": [
+        "certification/claims/current.yaml",
+        "certification/claims/target.yaml",
+        "certification/claims/blocked.yaml",
+        "certification/claims/evidenced.yaml"
+      ],
+      "lifecycle": "certification/claims/lifecycle.yaml",
+      "targets": "certification/targets/next_target.yaml"
+    }
+  },
+  "claims": [
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "BLK-001",
+      "claim_lifecycle": "recertify_required",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0001",
+      "claim_state": "blocked",
+      "claim_status": "blocked",
+      "claim_tier_target": "tier_0_blocked",
+      "claim_title": "The active 0.3.19.dev1 line is not certifiably fully featured.",
+      "evidence_artifact_ids": [
+        "EART-0003",
+        "EART-0096"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/blocked.yaml",
+        "reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_certification_tree.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "BLK-002",
+      "claim_lifecycle": "recertify_required",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0002",
+      "claim_state": "blocked",
+      "claim_status": "blocked",
+      "claim_tier_target": "tier_0_blocked",
+      "claim_title": "The active 0.3.19.dev1 line is not certifiably fully RFC compliant.",
+      "evidence_artifact_ids": [
+        "EART-0003",
+        "EART-0096"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/blocked.yaml",
+        "reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_certification_tree.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "BLK-003",
+      "claim_lifecycle": "recertify_required",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": false,
+      "claim_registry_row_id": "CREG-0003",
+      "claim_state": "blocked",
+      "claim_status": "blocked",
+      "claim_tier_target": "tier_0_blocked",
+      "claim_title": "Engine-family datatype alignment lacks feature-specific proof slices.",
+      "evidence_artifact_ids": [
+        "EART-0002",
+        "EART-0003",
+        "EART-0007"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0001",
+        "EBND-0002",
+        "EBND-0002"
+      ],
+      "evidence_pointers": [
+        ".github/workflows/next-target-datatypes.yml",
+        "certification/claims/blocked.yaml",
+        "certification/targets/next_target.yaml"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_certification_tree.py",
+        "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "BLK-004",
+      "claim_lifecycle": "recertify_required",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0004",
+      "claim_state": "blocked",
+      "claim_status": "blocked",
+      "claim_tier_target": "tier_0_blocked",
+      "claim_title": "Native backend claims must remain blocked until Python-vs-Rust parity lanes pass as release evidence.",
+      "evidence_artifact_ids": [
+        "EART-0003",
+        "EART-0091"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0023"
+      ],
+      "evidence_pointers": [
+        "certification/claims/blocked.yaml",
+        "reports/certification_state/2026-04-09-phase4-native-parity.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_phase4_native_parity.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "BLK-005",
+      "claim_lifecycle": "recertify_required",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0005",
+      "claim_state": "blocked",
+      "claim_status": "blocked",
+      "claim_tier_target": "tier_0_blocked",
+      "claim_title": "Tigrcorn interop and benchmark certification claims must remain blocked until governed release evidence populates the public bundle targets.",
+      "evidence_artifact_ids": [
+        "EART-0003",
+        "EART-0092"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0023"
+      ],
+      "evidence_pointers": [
+        "certification/claims/blocked.yaml",
+        "reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_phase5_tigrcorn_operator_surface.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "BLK-006",
+      "claim_lifecycle": "recertify_required",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0006",
+      "claim_state": "blocked",
+      "claim_status": "blocked",
+      "claim_tier_target": "tier_0_blocked",
+      "claim_title": "Tigrcorn hardening and negative-certification claims must remain blocked until profile-specific negative corpora run as governed release evidence.",
+      "evidence_artifact_ids": [
+        "EART-0003",
+        "EART-0093"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0023"
+      ],
+      "evidence_pointers": [
+        "certification/claims/blocked.yaml",
+        "reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_phase6_tigrcorn_hardening.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "BLK-007",
+      "claim_lifecycle": "recertify_required",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0007",
+      "claim_state": "blocked",
+      "claim_status": "blocked",
+      "claim_tier_target": "tier_0_blocked",
+      "claim_title": "The active line cannot be promoted until claim lifecycle prerequisites and preserved release evidence are complete.",
+      "evidence_artifact_ids": [
+        "EART-0003",
+        "EART-0054",
+        "EART-0094",
+        "EART-0097"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0010",
+        "EBND-0023",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/blocked.yaml",
+        "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json",
+        "reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
+        "reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_phase7_claim_lifecycle.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "CUR-001",
+      "claim_lifecycle": "certified",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0008",
+      "claim_state": "current",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_certified_release",
+      "claim_title": "Stable release 0.3.18 remains the frozen current certification boundary.",
+      "evidence_artifact_ids": [
+        "EART-0004",
+        "EART-0039",
+        "EART-0050",
+        "EART-0051",
+        "EART-0053",
+        "EART-0059"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010",
+        "EBND-0010",
+        "EBND-0010"
+      ],
+      "evidence_pointers": [
+        "certification/claims/current.yaml",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/releases/0.3.18/",
+        "docs/conformance/releases/0.3.18/CLAIMS.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_gate_e_promotion.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "CUR-002",
+      "claim_lifecycle": "certified",
+      "claim_owner": "Docs & Runtime",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0009",
+      "claim_state": "current",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_certified_release",
+      "claim_title": "OpenAPI 3.1.0 and JSON Schema Draft 2020-12 emission remain in boundary for the frozen release.",
+      "evidence_artifact_ids": [
+        "EART-0004",
+        "EART-0040",
+        "EART-0052",
+        "EART-0053",
+        "EART-0056",
+        "EART-0064"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010",
+        "EBND-0010",
+        "EBND-0012"
+      ],
+      "evidence_pointers": [
+        "certification/claims/current.yaml",
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json",
+        "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "CUR-003",
+      "claim_lifecycle": "certified",
+      "claim_owner": "Protocol / RPC Runtime",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0010",
+      "claim_state": "current",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_certified_release",
+      "claim_title": "JSON-RPC 2.0 and OpenRPC 1.2.6 framework surfaces remain in the frozen release boundary.",
+      "evidence_artifact_ids": [
+        "EART-0004",
+        "EART-0040",
+        "EART-0052",
+        "EART-0053",
+        "EART-0056",
+        "EART-0068"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010",
+        "EBND-0010",
+        "EBND-0016"
+      ],
+      "evidence_pointers": [
+        "certification/claims/current.yaml",
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "CUR-004",
+      "claim_lifecycle": "certified",
+      "claim_owner": "Auth & Security",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0011",
+      "claim_state": "current",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_certified_release",
+      "claim_title": "Retained RFC 7235, RFC 7617, and RFC 6750 rows remain current-boundary claims.",
+      "evidence_artifact_ids": [
+        "EART-0004",
+        "EART-0045",
+        "EART-0053",
+        "EART-0058"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010"
+      ],
+      "evidence_pointers": [
+        "certification/claims/current.yaml",
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "CUR-005",
+      "claim_lifecycle": "certified",
+      "claim_owner": "Operator Surface",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0012",
+      "claim_state": "current",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_certified_release",
+      "claim_title": "Operator surfaces closed in Phase 7 remain current-boundary claims.",
+      "evidence_artifact_ids": [
+        "EART-0004",
+        "EART-0047",
+        "EART-0053",
+        "EART-0061",
+        "EART-0062"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0011",
+        "EBND-0011"
+      ],
+      "evidence_pointers": [
+        "certification/claims/current.yaml",
+        "docs/conformance/audit/2026/phase7-operator-surface/README.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/developer/operator/",
+        "docs/developer/operator/README.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "CUR-006",
+      "claim_lifecycle": "certified",
+      "claim_owner": "CLI / Developer Experience",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0013",
+      "claim_state": "current",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_certified_release",
+      "claim_title": "Unified tigrbl CLI command and flag surface remains current-boundary scope.",
+      "evidence_artifact_ids": [
+        "EART-0004",
+        "EART-0046",
+        "EART-0053",
+        "EART-0060",
+        "EART-0063"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0011",
+        "EBND-0012"
+      ],
+      "evidence_pointers": [
+        "certification/claims/current.yaml",
+        "docs/conformance/audit/2026/p8-cli/README.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/developer/CLI_REFERENCE.md",
+        "pkgs/core/tigrbl/tigrbl/cli.py"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "CUR-007",
+      "claim_lifecycle": "evidenced",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "active_next_target",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0014",
+      "claim_state": "current",
+      "claim_status": "evidenced",
+      "claim_tier_target": "tier_1_governed_nonrelease",
+      "claim_title": "Active line 0.3.19.dev1 exists as governed next-target work only and is not a certified release.",
+      "evidence_artifact_ids": [
+        "EART-0004",
+        "EART-0044",
+        "EART-0048",
+        "EART-0049"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0009",
+        "EBND-0009"
+      ],
+      "evidence_pointers": [
+        "certification/claims/current.yaml",
+        "docs/conformance/NEXT_TARGETS.md",
+        "docs/conformance/dev/0.3.19.dev1/",
+        "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_phase14_handoff.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "EVD-001",
+      "claim_lifecycle": "evidenced",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0015",
+      "claim_state": "evidenced",
+      "claim_status": "evidenced",
+      "claim_tier_target": "tier_3_evidenced_release",
+      "claim_title": "Gate A through Gate E evidence exists for stable release 0.3.18.",
+      "evidence_artifact_ids": [
+        "EART-0005",
+        "EART-0043",
+        "EART-0053",
+        "EART-0057"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010"
+      ],
+      "evidence_pointers": [
+        "certification/claims/evidenced.yaml",
+        "docs/conformance/GATE_MODEL.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/gate-results/"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_evidence_registry.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "EVD-002",
+      "claim_lifecycle": "evidenced",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0016",
+      "claim_state": "evidenced",
+      "claim_status": "evidenced",
+      "claim_tier_target": "tier_3_evidenced_release",
+      "claim_title": "Release-grade claim rows are mapped to evidence artifacts.",
+      "evidence_artifact_ids": [
+        "EART-0005",
+        "EART-0041",
+        "EART-0042",
+        "EART-0053",
+        "EART-0055"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010"
+      ],
+      "evidence_pointers": [
+        "certification/claims/evidenced.yaml",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_evidence_registry.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "EVD-003",
+      "claim_lifecycle": "certified",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0017",
+      "claim_state": "evidenced",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_evidenced_release",
+      "claim_title": "Frozen release 0.3.18 remains honestly describable as certifiably fully featured within the declared boundary.",
+      "evidence_artifact_ids": [
+        "EART-0005",
+        "EART-0039",
+        "EART-0051",
+        "EART-0053"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010"
+      ],
+      "evidence_pointers": [
+        "certification/claims/evidenced.yaml",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/releases/0.3.18/CLAIMS.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_gate_e_promotion.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": true,
+      "claim_id": "EVD-004",
+      "claim_lifecycle": "certified",
+      "claim_owner": "Governance",
+      "claim_profile_or_phase": "current_release",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0018",
+      "claim_state": "evidenced",
+      "claim_status": "certified",
+      "claim_tier_target": "tier_3_evidenced_release",
+      "claim_title": "Frozen release 0.3.18 remains honestly describable as certifiably fully RFC/spec compliant within the declared boundary.",
+      "evidence_artifact_ids": [
+        "EART-0005",
+        "EART-0039",
+        "EART-0045",
+        "EART-0051",
+        "EART-0053"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0008",
+        "EBND-0010",
+        "EBND-0010"
+      ],
+      "evidence_pointers": [
+        "certification/claims/evidenced.yaml",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/releases/0.3.18/CLAIMS.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "mapped_feature_ids": [],
+      "required_test_pointers": [
+        "tools/ci/tests/test_gate_e_promotion.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-003",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N1",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0019",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "DataTypeSpec and StorageTypeRef define the active canonical semantic datatype center for the next target.",
+      "evidence_artifact_ids": [
+        "EART-0002",
+        "EART-0006",
+        "EART-0007",
+        "EART-0033",
+        "EART-0044",
+        "EART-0075",
+        "EART-0078"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0001",
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0006",
+        "EBND-0008",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        ".github/workflows/next-target-datatypes.yml",
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_spec/src/datatypes/",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-001"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
+        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-004",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0020",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "ColumnSpec.datatype is the canonical datatype attachment point on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0044",
+        "EART-0066",
+        "EART-0067",
+        "EART-0070",
+        "EART-0077"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0015",
+        "EBND-0014",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
+        "pkgs/core/tigrbl_base/tigrbl_base/_base/_column_base.py",
+        "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/column_spec.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-002"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+        "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-005",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N1",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0021",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype contract on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0002",
+        "EART-0006",
+        "EART-0007",
+        "EART-0037",
+        "EART-0044",
+        "EART-0069",
+        "EART-0078"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0001",
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0006",
+        "EBND-0008",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        ".github/workflows/next-target-datatypes.yml",
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_spec/src/datatypes/registry.rs",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-003"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-006",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N2",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0022",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned lowering on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0002",
+        "EART-0006",
+        "EART-0007",
+        "EART-0034",
+        "EART-0035",
+        "EART-0044",
+        "EART-0071",
+        "EART-0078"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0001",
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0006",
+        "EBND-0006",
+        "EBND-0008",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        ".github/workflows/next-target-datatypes.yml",
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_spec/src/datatypes/bridge.rs",
+        "crates/tigrbl_rs_spec/src/datatypes/engine_registry.rs",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-004"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-007",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N5",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0023",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "ReflectedTypeMapper governs reverse mapping and reflection import behavior on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0002",
+        "EART-0006",
+        "EART-0007",
+        "EART-0036",
+        "EART-0044",
+        "EART-0073",
+        "EART-0078"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0001",
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0006",
+        "EBND-0008",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        ".github/workflows/next-target-datatypes.yml",
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-005"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-008",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N2",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0024",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "Relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0001",
+        "EART-0006",
+        "EART-0007",
+        "EART-0044",
+        "EART-0072",
+        "EART-0078"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0001",
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        ".github/workflows/evidence-lanes.yml",
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-006"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-009",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N4",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0025",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "Table portability and interoperability rules are specified as governed next-target work on the active line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0044",
+        "EART-0076",
+        "EART-0080"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0008",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-007"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-010",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N5",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0026",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "Reflection-driven round-trip schema recovery is defined with best-effort and metadata-preserving modes on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0002",
+        "EART-0006",
+        "EART-0007",
+        "EART-0036",
+        "EART-0044",
+        "EART-0074",
+        "EART-0078"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0001",
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0006",
+        "EBND-0008",
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        ".github/workflows/next-target-datatypes.yml",
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
+        "docs/conformance/NEXT_TARGETS.md",
+        "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-008"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-011",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0027",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `create` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0017",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-009"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-012",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0028",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `read` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0022",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-010"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-013",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0029",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `update` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0024",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-011"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-014",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0030",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `replace` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0023",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-012"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-015",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0031",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `merge` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0021",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-013"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-016",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0032",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `delete` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0018",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-014"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-017",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0033",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `list` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0020",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-015"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-018",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0034",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `clear` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0015",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-016"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-019",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0035",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `count` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0016",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-017"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-020",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0036",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `exists` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0019",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-018"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-021",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0037",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `bulk_create` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0010",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-019"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-022",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0038",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `bulk_update` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0014",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-020"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-023",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0039",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `bulk_replace` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0013",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-021"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-024",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0040",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `bulk_merge` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0012",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-022"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-025",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0041",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `bulk_delete` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0011",
+        "EART-0065",
+        "EART-0083",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0004",
+        "EBND-0013",
+        "EBND-0020",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_oltp",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-023"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-026",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0042",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `aggregate` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0008",
+        "EART-0065",
+        "EART-0082",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0003",
+        "EBND-0013",
+        "EBND-0019",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_olap",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-024"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-027",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0043",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `group_by` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0009",
+        "EART-0065",
+        "EART-0082",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0003",
+        "EBND-0013",
+        "EBND-0019",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_olap",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-025"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-028",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0044",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `publish` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0028",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-026"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-029",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0045",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `subscribe` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0030",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-027"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-030",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0046",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `tail` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0031",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-028"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-031",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0047",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `upload` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0032",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-029"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-032",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0048",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `download` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0027",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-030"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-033",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0049",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `append_chunk` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0025",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-031"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-034",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0050",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `send_datagram` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0029",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-032"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-035",
+      "claim_lifecycle": "implemented",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0051",
+      "claim_state": "target",
+      "claim_status": "implemented",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `checkpoint` op is governed as a distinct executable claim on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0026",
+        "EART-0065",
+        "EART-0084",
+        "EART-0095"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0005",
+        "EBND-0013",
+        "EBND-0021",
+        "EBND-0024"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs",
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "pkgs/core/tigrbl_ops_realtime",
+        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-033"
+      ],
+      "required_test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "claim_certified_boundary": false,
+      "claim_id": "NEXT-036",
+      "claim_lifecycle": "mapped",
+      "claim_owner": "Next-target program",
+      "claim_profile_or_phase": "N3",
+      "claim_public": true,
+      "claim_registry_row_id": "CREG-0052",
+      "claim_state": "target",
+      "claim_status": "mapped",
+      "claim_tier_target": "tier_2_checkpoint_target",
+      "claim_title": "The canonical `custom` op remains an explicit governed extension point on the active next-target line.",
+      "evidence_artifact_ids": [
+        "EART-0006",
+        "EART-0007",
+        "EART-0079",
+        "EART-0081"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0002",
+        "EBND-0002",
+        "EBND-0017",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        "certification/claims/target.yaml",
+        "certification/targets/next_target.yaml",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/config/constants.py"
+      ],
+      "mapped_feature_ids": [
+        "NEXT-FEAT-034"
+      ],
+      "required_test_pointers": [
+        "tools/ci/tests/test_certification_tree.py"
+      ]
+    }
+  ],
+  "evidence_artifacts": [
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": ".github/workflows/evidence-lanes.yml",
+      "bundle_id": "EBND-0001",
+      "evidence_artifact_id": "EART-0001"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": ".github/workflows/next-target-datatypes.yml",
+      "bundle_id": "EBND-0001",
+      "evidence_artifact_id": "EART-0002"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "certification/claims/blocked.yaml",
+      "bundle_id": "EBND-0002",
+      "evidence_artifact_id": "EART-0003"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "certification/claims/current.yaml",
+      "bundle_id": "EBND-0002",
+      "evidence_artifact_id": "EART-0004"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "certification/claims/evidenced.yaml",
+      "bundle_id": "EBND-0002",
+      "evidence_artifact_id": "EART-0005"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "certification/claims/target.yaml",
+      "bundle_id": "EBND-0002",
+      "evidence_artifact_id": "EART-0006"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "certification/targets/next_target.yaml",
+      "bundle_id": "EBND-0002",
+      "evidence_artifact_id": "EART-0007"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs",
+      "bundle_id": "EBND-0003",
+      "evidence_artifact_id": "EART-0008"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs",
+      "bundle_id": "EBND-0003",
+      "evidence_artifact_id": "EART-0009"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0010"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0011"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0012"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0013"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0014"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0015"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0016"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0017"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0018"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0019"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0020"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0021"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0022"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0023"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs",
+      "bundle_id": "EBND-0004",
+      "evidence_artifact_id": "EART-0024"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0025"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0026"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0027"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0028"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0029"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0030"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0031"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs",
+      "bundle_id": "EBND-0005",
+      "evidence_artifact_id": "EART-0032"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/",
+      "bundle_id": "EBND-0006",
+      "evidence_artifact_id": "EART-0033"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/bridge.rs",
+      "bundle_id": "EBND-0006",
+      "evidence_artifact_id": "EART-0034"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/engine_registry.rs",
+      "bundle_id": "EBND-0006",
+      "evidence_artifact_id": "EART-0035"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
+      "bundle_id": "EBND-0006",
+      "evidence_artifact_id": "EART-0036"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/registry.rs",
+      "bundle_id": "EBND-0006",
+      "evidence_artifact_id": "EART-0037"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "bundle_id": "EBND-0007",
+      "evidence_artifact_id": "EART-0038"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/CURRENT_STATE.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0039"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/CURRENT_TARGET.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0040"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/EVIDENCE_MODEL.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0041"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/EVIDENCE_REGISTRY.json",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0042"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/GATE_MODEL.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0043"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/NEXT_TARGETS.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0044"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0045"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/audit/2026/p8-cli/README.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0046"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/audit/2026/phase7-operator-surface/README.md",
+      "bundle_id": "EBND-0008",
+      "evidence_artifact_id": "EART-0047"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/dev/0.3.19.dev1/",
+      "bundle_id": "EBND-0009",
+      "evidence_artifact_id": "EART-0048"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md",
+      "bundle_id": "EBND-0009",
+      "evidence_artifact_id": "EART-0049"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0050"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/CLAIMS.md",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0051"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0052"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0053"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0054"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0055"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0056"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0057"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0058"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md",
+      "bundle_id": "EBND-0010",
+      "evidence_artifact_id": "EART-0059"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/developer/CLI_REFERENCE.md",
+      "bundle_id": "EBND-0011",
+      "evidence_artifact_id": "EART-0060"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/developer/operator/",
+      "bundle_id": "EBND-0011",
+      "evidence_artifact_id": "EART-0061"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/developer/operator/README.md",
+      "bundle_id": "EBND-0011",
+      "evidence_artifact_id": "EART-0062"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl/tigrbl/cli.py",
+      "bundle_id": "EBND-0012",
+      "evidence_artifact_id": "EART-0063"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py",
+      "bundle_id": "EBND-0012",
+      "evidence_artifact_id": "EART-0064"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0065"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
+      "bundle_id": "EBND-0015",
+      "evidence_artifact_id": "EART-0066"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_base/tigrbl_base/_base/_column_base.py",
+      "bundle_id": "EBND-0014",
+      "evidence_artifact_id": "EART-0067"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py",
+      "bundle_id": "EBND-0016",
+      "evidence_artifact_id": "EART-0068"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0069"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0070"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0071"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0072"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0073"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0074"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0075"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
+      "bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0076"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/column_spec.py",
+      "bundle_id": "EBND-0017",
+      "evidence_artifact_id": "EART-0077"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py",
+      "bundle_id": "EBND-0017",
+      "evidence_artifact_id": "EART-0078"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py",
+      "bundle_id": "EBND-0017",
+      "evidence_artifact_id": "EART-0079"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py",
+      "bundle_id": "EBND-0017",
+      "evidence_artifact_id": "EART-0080"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/config/constants.py",
+      "bundle_id": "EBND-0017",
+      "evidence_artifact_id": "EART-0081"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_ops_olap",
+      "bundle_id": "EBND-0019",
+      "evidence_artifact_id": "EART-0082"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_ops_oltp",
+      "bundle_id": "EBND-0020",
+      "evidence_artifact_id": "EART-0083"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_ops_realtime",
+      "bundle_id": "EBND-0021",
+      "evidence_artifact_id": "EART-0084"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+      "bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0085"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0086"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0087"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0088"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0089"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0090"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "reports/certification_state/2026-04-09-phase4-native-parity.md",
+      "bundle_id": "EBND-0023",
+      "evidence_artifact_id": "EART-0091"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md",
+      "bundle_id": "EBND-0023",
+      "evidence_artifact_id": "EART-0092"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md",
+      "bundle_id": "EBND-0023",
+      "evidence_artifact_id": "EART-0093"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
+      "bundle_id": "EBND-0023",
+      "evidence_artifact_id": "EART-0094"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "reports/current_state/2026-04-08-phase3-feature-module-closure.md",
+      "bundle_id": "EBND-0024",
+      "evidence_artifact_id": "EART-0095"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md",
+      "bundle_id": "EBND-0024",
+      "evidence_artifact_id": "EART-0096"
+    },
+    {
+      "artifact_kind": "artifact",
+      "artifact_pointer": "reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md",
+      "bundle_id": "EBND-0024",
+      "evidence_artifact_id": "EART-0097"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_certification_tree.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0098"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0099"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0100"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_http_auth_challenges.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0101"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0102"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0103"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_phase5_tigrcorn_operator_surface.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0104"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_phase6_tigrcorn_hardening.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0105"
+    },
+    {
+      "artifact_kind": "test_case",
+      "artifact_pointer": "tools/ci/tests/test_phase7_claim_lifecycle.py",
+      "bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0106"
+    }
+  ],
+  "evidence_bundles": [
+    {
+      "bundle_root": ".github/workflows",
+      "evidence_bundle_id": "EBND-0001"
+    },
+    {
+      "bundle_root": "certification",
+      "evidence_bundle_id": "EBND-0002"
+    },
+    {
+      "bundle_root": "crates/tigrbl_rs_ops_olap",
+      "evidence_bundle_id": "EBND-0003"
+    },
+    {
+      "bundle_root": "crates/tigrbl_rs_ops_oltp",
+      "evidence_bundle_id": "EBND-0004"
+    },
+    {
+      "bundle_root": "crates/tigrbl_rs_ops_realtime",
+      "evidence_bundle_id": "EBND-0005"
+    },
+    {
+      "bundle_root": "crates/tigrbl_rs_spec",
+      "evidence_bundle_id": "EBND-0006"
+    },
+    {
+      "bundle_root": "crates/tigrbl_rs_spec/tests",
+      "evidence_bundle_id": "EBND-0007"
+    },
+    {
+      "bundle_root": "docs/conformance",
+      "evidence_bundle_id": "EBND-0008"
+    },
+    {
+      "bundle_root": "docs/conformance/dev/0.3.19.dev1",
+      "evidence_bundle_id": "EBND-0009"
+    },
+    {
+      "bundle_root": "docs/conformance/releases/0.3.18",
+      "evidence_bundle_id": "EBND-0010"
+    },
+    {
+      "bundle_root": "docs/developer",
+      "evidence_bundle_id": "EBND-0011"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl",
+      "evidence_bundle_id": "EBND-0012"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_atoms/tests",
+      "evidence_bundle_id": "EBND-0013"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_base",
+      "evidence_bundle_id": "EBND-0014"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_base/tests",
+      "evidence_bundle_id": "EBND-0015"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_concrete",
+      "evidence_bundle_id": "EBND-0016"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_core",
+      "evidence_bundle_id": "EBND-0017"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_core/tests",
+      "evidence_bundle_id": "EBND-0018"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_ops_olap",
+      "evidence_bundle_id": "EBND-0019"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_ops_oltp",
+      "evidence_bundle_id": "EBND-0020"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_ops_realtime",
+      "evidence_bundle_id": "EBND-0021"
+    },
+    {
+      "bundle_root": "pkgs/core/tigrbl_tests/tests",
+      "evidence_bundle_id": "EBND-0022"
+    },
+    {
+      "bundle_root": "reports/certification_state",
+      "evidence_bundle_id": "EBND-0023"
+    },
+    {
+      "bundle_root": "reports/current_state",
+      "evidence_bundle_id": "EBND-0024"
+    },
+    {
+      "bundle_root": "tools/ci/tests",
+      "evidence_bundle_id": "EBND-0025"
+    }
+  ],
+  "features": [
+    {
+      "evidence_artifact_ids": [
+        "EART-0075",
+        "EART-0002"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0001"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
+        ".github/workflows/next-target-datatypes.yml"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "DataTypeSpec and StorageTypeRef define the active canonical semantic datatype center for the next target. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-001",
+      "feature_name": "Canonical datatype semantic center",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N1",
+      "feature_registry_row_id": "FREG-0001",
+      "feature_state": "target",
+      "feature_test_class": "semantic-datatype-core",
+      "mapped_claim_id": "NEXT-003",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0010"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0070",
+        "EART-0066"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0015"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+        "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "ColumnSpec.datatype is the canonical datatype attachment point on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-002",
+      "feature_name": "ColumnSpec.datatype adoption",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0002",
+      "feature_state": "target",
+      "feature_test_class": "column-datatype-integration",
+      "mapped_claim_id": "NEXT-004",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0005",
+        "TCASE-0003"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+        "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0069",
+        "EART-0038"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0007"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype contract on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-003",
+      "feature_name": "TypeAdapter and TypeRegistry contract",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N1",
+      "feature_registry_row_id": "FREG-0003",
+      "feature_state": "target",
+      "feature_test_class": "adapter-registry-contract",
+      "mapped_claim_id": "NEXT-005",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0004",
+        "TCASE-0001"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0071",
+        "EART-0038"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0007"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned lowering on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-004",
+      "feature_name": "Engine lowering and registry bridge",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N2",
+      "feature_registry_row_id": "FREG-0004",
+      "feature_state": "target",
+      "feature_test_class": "engine-bridge-lowering",
+      "mapped_claim_id": "NEXT-006",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0006",
+        "TCASE-0001"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0073",
+        "EART-0074"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0018"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "ReflectedTypeMapper governs reverse mapping and reflection import behavior on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-005",
+      "feature_name": "Reflected type mapper and reverse mapping",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N5",
+      "feature_registry_row_id": "FREG-0005",
+      "feature_state": "target",
+      "feature_test_class": "reflection-roundtrip-recovery",
+      "mapped_claim_id": "NEXT-007",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0008",
+        "TCASE-0009"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0072",
+        "EART-0001"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0001"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+        ".github/workflows/evidence-lanes.yml"
+      ],
+      "feature_crate": "crates/tigrbl_rs_engine_inmemory",
+      "feature_description": "Relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line. Package owner `pkgs/engines` and crate owner `crates/tigrbl_rs_engine_inmemory` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-006",
+      "feature_name": "Engine-family datatype alignment",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/engines",
+      "feature_phase": "N2",
+      "feature_registry_row_id": "FREG-0006",
+      "feature_state": "target",
+      "feature_test_class": "engine-family-alignment",
+      "mapped_claim_id": "NEXT-008",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0007"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0076",
+        "EART-0080"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "Table portability and interoperability rules are specified as governed next-target work on the active line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-007",
+      "feature_name": "Table portability and interoperability rules",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N4",
+      "feature_registry_row_id": "FREG-0007",
+      "feature_state": "target",
+      "feature_test_class": "table-portability-contract",
+      "mapped_claim_id": "NEXT-009",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0011"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0074",
+        "EART-0073"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0018",
+        "EBND-0018"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "Reflection-driven round-trip schema recovery is defined with best-effort and metadata-preserving modes on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
+      "feature_id": "NEXT-FEAT-008",
+      "feature_name": "Reflection-driven schema round-trip recovery",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N5",
+      "feature_registry_row_id": "FREG-0008",
+      "feature_state": "target",
+      "feature_test_class": "schema-roundtrip-recovery",
+      "mapped_claim_id": "NEXT-010",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0009",
+        "TCASE-0008"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+        "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0017"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `create` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-009",
+      "feature_name": "Canonical op create",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0009",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-create",
+      "mapped_claim_id": "NEXT-011",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0022"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `read` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-010",
+      "feature_name": "Canonical op read",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0010",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-read",
+      "mapped_claim_id": "NEXT-012",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0024"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `update` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-011",
+      "feature_name": "Canonical op update",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0011",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-update",
+      "mapped_claim_id": "NEXT-013",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0023"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `replace` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-012",
+      "feature_name": "Canonical op replace",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0012",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-replace",
+      "mapped_claim_id": "NEXT-014",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0021"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `merge` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-013",
+      "feature_name": "Canonical op merge",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0013",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-merge",
+      "mapped_claim_id": "NEXT-015",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0018"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `delete` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-014",
+      "feature_name": "Canonical op delete",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0014",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-delete",
+      "mapped_claim_id": "NEXT-016",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0020"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `list` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-015",
+      "feature_name": "Canonical op list",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0015",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-list",
+      "mapped_claim_id": "NEXT-017",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0015"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `clear` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-016",
+      "feature_name": "Canonical op clear",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0016",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-clear",
+      "mapped_claim_id": "NEXT-018",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0016"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `count` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-017",
+      "feature_name": "Canonical op count",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0017",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-count",
+      "mapped_claim_id": "NEXT-019",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0019"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `exists` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-018",
+      "feature_name": "Canonical op exists",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0018",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-exists",
+      "mapped_claim_id": "NEXT-020",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0010"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `bulk_create` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-019",
+      "feature_name": "Canonical op bulk_create",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0019",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-bulk-create",
+      "mapped_claim_id": "NEXT-021",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0014"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `bulk_update` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-020",
+      "feature_name": "Canonical op bulk_update",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0020",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-bulk-update",
+      "mapped_claim_id": "NEXT-022",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0013"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `bulk_replace` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-021",
+      "feature_name": "Canonical op bulk_replace",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0021",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-bulk-replace",
+      "mapped_claim_id": "NEXT-023",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0012"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `bulk_merge` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-022",
+      "feature_name": "Canonical op bulk_merge",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0022",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-bulk-merge",
+      "mapped_claim_id": "NEXT-024",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0011"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0004"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_oltp",
+      "feature_description": "Tracks the canonical `bulk_delete` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-023",
+      "feature_name": "Canonical op bulk_delete",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_oltp",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0023",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-bulk-delete",
+      "mapped_claim_id": "NEXT-025",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0008"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0003"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_olap",
+      "feature_description": "Tracks the canonical `aggregate` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-024",
+      "feature_name": "Canonical op aggregate",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_olap",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0024",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-aggregate",
+      "mapped_claim_id": "NEXT-026",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0009"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0003"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_olap",
+      "feature_description": "Tracks the canonical `group_by` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-025",
+      "feature_name": "Canonical op group_by",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_olap",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0025",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-group-by",
+      "mapped_claim_id": "NEXT-027",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0028"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `publish` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-026",
+      "feature_name": "Canonical op publish",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0026",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-publish",
+      "mapped_claim_id": "NEXT-028",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0030"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `subscribe` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-027",
+      "feature_name": "Canonical op subscribe",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0027",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-subscribe",
+      "mapped_claim_id": "NEXT-029",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0031"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `tail` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-028",
+      "feature_name": "Canonical op tail",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0028",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-tail",
+      "mapped_claim_id": "NEXT-030",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0032"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `upload` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-029",
+      "feature_name": "Canonical op upload",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0029",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-upload",
+      "mapped_claim_id": "NEXT-031",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0027"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `download` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-030",
+      "feature_name": "Canonical op download",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0030",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-download",
+      "mapped_claim_id": "NEXT-032",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0025"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `append_chunk` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-031",
+      "feature_name": "Canonical op append_chunk",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0031",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-append-chunk",
+      "mapped_claim_id": "NEXT-033",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0029"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `send_datagram` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-032",
+      "feature_name": "Canonical op send_datagram",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0032",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-send-datagram",
+      "mapped_claim_id": "NEXT-034",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0065",
+        "EART-0026"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0013",
+        "EBND-0005"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+        "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs"
+      ],
+      "feature_crate": "crates/tigrbl_rs_ops_realtime",
+      "feature_description": "Tracks the canonical `checkpoint` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-033",
+      "feature_name": "Canonical op checkpoint",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_ops_realtime",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0033",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-checkpoint",
+      "mapped_claim_id": "NEXT-035",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "implemented",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [
+        "TCASE-0002"
+      ],
+      "test_pointers": [
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
+      ]
+    },
+    {
+      "evidence_artifact_ids": [
+        "EART-0079",
+        "EART-0081"
+      ],
+      "evidence_bundle_ids": [
+        "EBND-0017",
+        "EBND-0017"
+      ],
+      "evidence_pointers": [
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py",
+        "pkgs/core/tigrbl_core/tigrbl_core/config/constants.py"
+      ],
+      "feature_crate": "crates/tigrbl_rs_spec",
+      "feature_description": "Tracks the canonical `custom` surface as a governed feature with package/crate ownership and executable evidence pointers.",
+      "feature_id": "NEXT-FEAT-034",
+      "feature_name": "Canonical op custom",
+      "feature_owner": "Next-target program",
+      "feature_package": "pkgs/core/tigrbl_core",
+      "feature_phase": "N3",
+      "feature_registry_row_id": "FREG-0034",
+      "feature_state": "target",
+      "feature_test_class": "canonical-op-custom",
+      "mapped_claim_id": "NEXT-036",
+      "mapped_claim_lifecycle": "mapped",
+      "mapped_claim_state": "target",
+      "mapped_claim_status": "mapped",
+      "mapped_claim_tier_target": "tier_2_checkpoint_target",
+      "test_case_ids": [],
+      "test_pointers": []
+    }
+  ],
+  "naming_conventions": [
+    {
+      "entity_type": "feature",
+      "example": "NEXT-FEAT-009 / FREG-0009",
+      "generated_registry_id_format": "FREG-NNNN",
+      "notes": "Feature rows in certification/targets/next_target.yaml.",
+      "source_id_format": "NEXT-FEAT-NNN"
+    },
+    {
+      "entity_type": "claim",
+      "example": "NEXT-011 / CREG-0015",
+      "generated_registry_id_format": "CREG-NNNN",
+      "notes": "Claim families include CUR, NEXT, BLK, and EVD.",
+      "source_id_format": "<FAMILY>-NNN"
+    },
+    {
+      "entity_type": "evidence_bundle",
+      "example": "docs/conformance/releases/0.3.18 -> EBND-0001",
+      "generated_registry_id_format": "EBND-NNNN",
+      "notes": "Bundle roots group related evidence artifacts.",
+      "source_id_format": "derived from normalized bundle root"
+    },
+    {
+      "entity_type": "evidence_artifact",
+      "example": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py -> EART-0001",
+      "generated_registry_id_format": "EART-NNNN",
+      "notes": "Artifact IDs are stable for a given sorted path set.",
+      "source_id_format": "derived from normalized artifact path"
+    },
+    {
+      "entity_type": "test_case",
+      "example": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py -> TCASE-0001",
+      "generated_registry_id_format": "TCASE-NNNN",
+      "notes": "One row per test case in the universal registry.",
+      "source_id_format": "derived from normalized test file path"
+    },
+    {
+      "entity_type": "test_set",
+      "example": "pkgs/core/tigrbl_atoms/tests -> TSET-0001",
+      "generated_registry_id_format": "TSET-NNNN",
+      "notes": "Groups related test cases by containing set directory.",
+      "source_id_format": "derived from normalized test directory"
+    }
+  ],
+  "schema_version": 1,
+  "test_cases": [
+    {
+      "evidence_artifact_id": "EART-0038",
+      "evidence_bundle_id": "EBND-0007",
+      "test_case_id": "TCASE-0001",
+      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "test_set_id": "TSET-0001"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_set_id": "TSET-0002"
+    },
+    {
+      "evidence_artifact_id": "EART-0066",
+      "evidence_bundle_id": "EBND-0015",
+      "test_case_id": "TCASE-0003",
+      "test_case_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
+      "test_set_id": "TSET-0003"
+    },
+    {
+      "evidence_artifact_id": "EART-0069",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0004",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0070",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0005",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0071",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0006",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0072",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0007",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0008",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0074",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0009",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0075",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0010",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0076",
+      "evidence_bundle_id": "EBND-0018",
+      "test_case_id": "TCASE-0011",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
+      "test_set_id": "TSET-0004"
+    },
+    {
+      "evidence_artifact_id": "EART-0085",
+      "evidence_bundle_id": "EBND-0022",
+      "test_case_id": "TCASE-0012",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+      "test_set_id": "TSET-0005"
+    },
+    {
+      "evidence_artifact_id": "EART-0086",
+      "evidence_bundle_id": "EBND-0022",
+      "test_case_id": "TCASE-0013",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
+      "evidence_artifact_id": "EART-0087",
+      "evidence_bundle_id": "EBND-0022",
+      "test_case_id": "TCASE-0014",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
+      "evidence_artifact_id": "EART-0088",
+      "evidence_bundle_id": "EBND-0022",
+      "test_case_id": "TCASE-0015",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
+      "evidence_artifact_id": "EART-0089",
+      "evidence_bundle_id": "EBND-0022",
+      "test_case_id": "TCASE-0016",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
+      "evidence_artifact_id": "EART-0090",
+      "evidence_bundle_id": "EBND-0022",
+      "test_case_id": "TCASE-0017",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
+      "evidence_artifact_id": "EART-0098",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0018",
+      "test_case_pointer": "tools/ci/tests/test_certification_tree.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0099",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0019",
+      "test_case_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0100",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0020",
+      "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0101",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0021",
+      "test_case_pointer": "tools/ci/tests/test_http_auth_challenges.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0102",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0022",
+      "test_case_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0103",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0023",
+      "test_case_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0104",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0024",
+      "test_case_pointer": "tools/ci/tests/test_phase5_tigrcorn_operator_surface.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0105",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0025",
+      "test_case_pointer": "tools/ci/tests/test_phase6_tigrcorn_hardening.py",
+      "test_set_id": "TSET-0007"
+    },
+    {
+      "evidence_artifact_id": "EART-0106",
+      "evidence_bundle_id": "EBND-0025",
+      "test_case_id": "TCASE-0026",
+      "test_case_pointer": "tools/ci/tests/test_phase7_claim_lifecycle.py",
+      "test_set_id": "TSET-0007"
+    }
+  ],
+  "test_registry": [
+    {
+      "evidence_artifact_id": "EART-0098",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
+      "mapped_claim_id": "BLK-001",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0018",
+      "test_case_pointer": "tools/ci/tests/test_certification_tree.py",
+      "test_registry_row_id": "TREG-0001",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0098",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
+      "mapped_claim_id": "BLK-002",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0018",
+      "test_case_pointer": "tools/ci/tests/test_certification_tree.py",
+      "test_registry_row_id": "TREG-0002",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0072",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+      "mapped_claim_id": "BLK-003",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0007",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+      "test_registry_row_id": "TREG-0003",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0098",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
+      "mapped_claim_id": "BLK-003",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0018",
+      "test_case_pointer": "tools/ci/tests/test_certification_tree.py",
+      "test_registry_row_id": "TREG-0004",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0103",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "mapped_claim_id": "BLK-004",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0023",
+      "test_case_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "test_registry_row_id": "TREG-0005",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0104",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_phase5_tigrcorn_operator_surface.py",
+      "mapped_claim_id": "BLK-005",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0024",
+      "test_case_pointer": "tools/ci/tests/test_phase5_tigrcorn_operator_surface.py",
+      "test_registry_row_id": "TREG-0006",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0105",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_phase6_tigrcorn_hardening.py",
+      "mapped_claim_id": "BLK-006",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0025",
+      "test_case_pointer": "tools/ci/tests/test_phase6_tigrcorn_hardening.py",
+      "test_registry_row_id": "TREG-0007",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0106",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_phase7_claim_lifecycle.py",
+      "mapped_claim_id": "BLK-007",
+      "mapped_claim_lifecycle": "recertify_required",
+      "mapped_claim_state": "blocked",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0026",
+      "test_case_pointer": "tools/ci/tests/test_phase7_claim_lifecycle.py",
+      "test_registry_row_id": "TREG-0008",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0100",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "mapped_claim_id": "CUR-001",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0020",
+      "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "test_registry_row_id": "TREG-0009",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0087",
+      "evidence_bundle_id": "EBND-0022",
+      "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "mapped_claim_id": "CUR-002",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0014",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "test_registry_row_id": "TREG-0010",
+      "test_set_id": "TSET-0006",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
+    },
+    {
+      "evidence_artifact_id": "EART-0086",
+      "evidence_bundle_id": "EBND-0022",
+      "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "mapped_claim_id": "CUR-003",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0013",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "test_registry_row_id": "TREG-0011",
+      "test_set_id": "TSET-0006",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
+    },
+    {
+      "evidence_artifact_id": "EART-0085",
+      "evidence_bundle_id": "EBND-0022",
+      "evidence_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+      "mapped_claim_id": "CUR-004",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0012",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+      "test_registry_row_id": "TREG-0012",
+      "test_set_id": "TSET-0005",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/security"
+    },
+    {
+      "evidence_artifact_id": "EART-0101",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_http_auth_challenges.py",
+      "mapped_claim_id": "CUR-004",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0021",
+      "test_case_pointer": "tools/ci/tests/test_http_auth_challenges.py",
+      "test_registry_row_id": "TREG-0013",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0088",
+      "evidence_bundle_id": "EBND-0022",
+      "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "mapped_claim_id": "CUR-005",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0015",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "test_registry_row_id": "TREG-0014",
+      "test_set_id": "TSET-0006",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
+    },
+    {
+      "evidence_artifact_id": "EART-0089",
+      "evidence_bundle_id": "EBND-0022",
+      "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "mapped_claim_id": "CUR-006",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0016",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "test_registry_row_id": "TREG-0015",
+      "test_set_id": "TSET-0006",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
+    },
+    {
+      "evidence_artifact_id": "EART-0090",
+      "evidence_bundle_id": "EBND-0022",
+      "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "mapped_claim_id": "CUR-006",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0017",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "test_registry_row_id": "TREG-0016",
+      "test_set_id": "TSET-0006",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
+    },
+    {
+      "evidence_artifact_id": "EART-0102",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "mapped_claim_id": "CUR-007",
+      "mapped_claim_lifecycle": "evidenced",
+      "mapped_claim_state": "current",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0022",
+      "test_case_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "test_registry_row_id": "TREG-0017",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0099",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "mapped_claim_id": "EVD-001",
+      "mapped_claim_lifecycle": "evidenced",
+      "mapped_claim_state": "evidenced",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0019",
+      "test_case_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "test_registry_row_id": "TREG-0018",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0099",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "mapped_claim_id": "EVD-002",
+      "mapped_claim_lifecycle": "evidenced",
+      "mapped_claim_state": "evidenced",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0019",
+      "test_case_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "test_registry_row_id": "TREG-0019",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0100",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "mapped_claim_id": "EVD-003",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "evidenced",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0020",
+      "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "test_registry_row_id": "TREG-0020",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0100",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "mapped_claim_id": "EVD-004",
+      "mapped_claim_lifecycle": "certified",
+      "mapped_claim_state": "evidenced",
+      "mapped_feature_id": "",
+      "test_case_id": "TCASE-0020",
+      "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "test_registry_row_id": "TREG-0021",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0038",
+      "evidence_bundle_id": "EBND-0007",
+      "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "mapped_claim_id": "NEXT-003",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-001",
+      "test_case_id": "TCASE-0001",
+      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "test_registry_row_id": "TREG-0022",
+      "test_set_id": "TSET-0001",
+      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0075",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
+      "mapped_claim_id": "NEXT-003",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-001",
+      "test_case_id": "TCASE-0010",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
+      "test_registry_row_id": "TREG-0023",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0066",
+      "evidence_bundle_id": "EBND-0015",
+      "evidence_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
+      "mapped_claim_id": "NEXT-004",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-002",
+      "test_case_id": "TCASE-0003",
+      "test_case_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
+      "test_registry_row_id": "TREG-0024",
+      "test_set_id": "TSET-0003",
+      "test_set_pointer": "pkgs/core/tigrbl_base/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0070",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+      "mapped_claim_id": "NEXT-004",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-002",
+      "test_case_id": "TCASE-0005",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+      "test_registry_row_id": "TREG-0025",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0038",
+      "evidence_bundle_id": "EBND-0007",
+      "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "mapped_claim_id": "NEXT-005",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-003",
+      "test_case_id": "TCASE-0001",
+      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "test_registry_row_id": "TREG-0026",
+      "test_set_id": "TSET-0001",
+      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0069",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+      "mapped_claim_id": "NEXT-005",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-003",
+      "test_case_id": "TCASE-0004",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+      "test_registry_row_id": "TREG-0027",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0038",
+      "evidence_bundle_id": "EBND-0007",
+      "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "mapped_claim_id": "NEXT-006",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-004",
+      "test_case_id": "TCASE-0001",
+      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
+      "test_registry_row_id": "TREG-0028",
+      "test_set_id": "TSET-0001",
+      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0071",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+      "mapped_claim_id": "NEXT-006",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-004",
+      "test_case_id": "TCASE-0006",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+      "test_registry_row_id": "TREG-0029",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+      "mapped_claim_id": "NEXT-007",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-005",
+      "test_case_id": "TCASE-0008",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+      "test_registry_row_id": "TREG-0030",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0074",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+      "mapped_claim_id": "NEXT-007",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-005",
+      "test_case_id": "TCASE-0009",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+      "test_registry_row_id": "TREG-0031",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0072",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+      "mapped_claim_id": "NEXT-008",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-006",
+      "test_case_id": "TCASE-0007",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+      "test_registry_row_id": "TREG-0032",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0076",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
+      "mapped_claim_id": "NEXT-009",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-007",
+      "test_case_id": "TCASE-0011",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
+      "test_registry_row_id": "TREG-0033",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+      "mapped_claim_id": "NEXT-010",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-008",
+      "test_case_id": "TCASE-0008",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+      "test_registry_row_id": "TREG-0034",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0074",
+      "evidence_bundle_id": "EBND-0018",
+      "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+      "mapped_claim_id": "NEXT-010",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-008",
+      "test_case_id": "TCASE-0009",
+      "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+      "test_registry_row_id": "TREG-0035",
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-011",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-009",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0036",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-012",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-010",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0037",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-013",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-011",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0038",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-014",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-012",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0039",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-015",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-013",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0040",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-016",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-014",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0041",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-017",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-015",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0042",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-018",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-016",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0043",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-019",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-017",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0044",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-020",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-018",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0045",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-021",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-019",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0046",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-022",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-020",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0047",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-023",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-021",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0048",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-024",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-022",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0049",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-025",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-023",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0050",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-026",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-024",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0051",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-027",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-025",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0052",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-028",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-026",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0053",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-029",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-027",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0054",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-030",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-028",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0055",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-031",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-029",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0056",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-032",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-030",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0057",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-033",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-031",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0058",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-034",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-032",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0059",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0065",
+      "evidence_bundle_id": "EBND-0013",
+      "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "mapped_claim_id": "NEXT-035",
+      "mapped_claim_lifecycle": "implemented",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-033",
+      "test_case_id": "TCASE-0002",
+      "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "test_registry_row_id": "TREG-0060",
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "evidence_artifact_id": "EART-0098",
+      "evidence_bundle_id": "EBND-0025",
+      "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
+      "mapped_claim_id": "NEXT-036",
+      "mapped_claim_lifecycle": "mapped",
+      "mapped_claim_state": "target",
+      "mapped_feature_id": "NEXT-FEAT-034",
+      "test_case_id": "TCASE-0018",
+      "test_case_pointer": "tools/ci/tests/test_certification_tree.py",
+      "test_registry_row_id": "TREG-0061",
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    }
+  ],
+  "test_sets": [
+    {
+      "test_set_id": "TSET-0001",
+      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+    },
+    {
+      "test_set_id": "TSET-0002",
+      "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
+    },
+    {
+      "test_set_id": "TSET-0003",
+      "test_set_pointer": "pkgs/core/tigrbl_base/tests"
+    },
+    {
+      "test_set_id": "TSET-0004",
+      "test_set_pointer": "pkgs/core/tigrbl_core/tests"
+    },
+    {
+      "test_set_id": "TSET-0005",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/security"
+    },
+    {
+      "test_set_id": "TSET-0006",
+      "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
+    },
+    {
+      "test_set_id": "TSET-0007",
+      "test_set_pointer": "tools/ci/tests"
+    }
+  ]
+}
