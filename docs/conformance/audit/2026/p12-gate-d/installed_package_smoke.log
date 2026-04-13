@@ -1,0 +1,18 @@
+installed-package smoke completed via isolated target install root
+
+Inputs:
+- built wheel: tigrbl-0.3.18.dev1-py3-none-any.whl
+- built sdist: tigrbl-0.3.18.dev1.tar.gz
+- target install root: /tmp/tigrbl_target/site
+- native binding source fallback: bindings/python/tigrbl_native/python
+
+Executed:
+- python -m tigrbl capabilities /tmp/tigrbl_target/phase12_installed_app.py:app
+- python -m tigrbl openapi /tmp/tigrbl_target/phase12_installed_app.py:app
+- python -m tigrbl openrpc /tmp/tigrbl_target/phase12_installed_app.py:app
+- python -m tigrbl doctor /tmp/tigrbl_target/phase12_installed_app.py:app
+- python -m tigrbl routes /tmp/tigrbl_target/phase12_installed_app.py:app
+- runner translation smoke for uvicorn, hypercorn, gunicorn, tigrcorn
+
+Result:
+- manifest written to docs/conformance/dev/0.3.18.dev1/artifacts/installed-package-smoke-manifest.json

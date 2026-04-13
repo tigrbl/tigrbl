@@ -10,6 +10,7 @@ from tigrbl_core._spec.binding_spec import (
     HttpRestBindingSpec,
 )
 from tigrbl_core._spec.column_spec import ColumnSpec
+from tigrbl_core._spec.datatypes import TypeRegistry
 from tigrbl_core._spec.engine_spec import EngineCfg
 from tigrbl_core._spec.field_spec import FieldSpec
 from tigrbl_core._spec.io_spec import IOSpec
@@ -140,3 +141,14 @@ def test_binding_registry_spec_inherits_serde_mixin_and_round_trips() -> None:
     assert restored_binding is not None
     assert restored_binding.name == "create_widget"
     assert isinstance(restored_binding.spec, HttpRestBindingSpec)
+
+
+def test_type_registry_json_round_trip_preserves_registered_adapters() -> None:
+    registry = TypeRegistry(include_builtins=False)
+    adapter = TypeRegistry().resolve("string")
+    assert adapter is not None
+    registry.register(adapter)
+
+    restored = TypeRegistry.from_json(registry.to_json())
+
+    assert restored.registered_names() == ("string",)

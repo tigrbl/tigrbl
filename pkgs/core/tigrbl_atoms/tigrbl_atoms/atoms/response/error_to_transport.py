@@ -34,7 +34,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "status_code", status_code)
 
 
-class AtomImpl(Atom[Failed, Encoded]):
+class AtomImpl(Atom[Failed, Encoded, Exception]):
     name = "response.error_to_transport"
     anchor = ANCHOR
 

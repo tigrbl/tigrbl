@@ -1,0 +1,35 @@
+schema_version: 1
+state: evidenced
+claims:
+  - id: EVD-001
+    public: true
+    certified_boundary: true
+    title: Gate A through Gate E evidence exists for stable release 0.3.18.
+    owner: Governance
+    evidence:
+      - docs/conformance/releases/0.3.18/gate-results/
+      - docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md
+  - id: EVD-002
+    public: true
+    certified_boundary: true
+    title: Release-grade claim rows are mapped to evidence artifacts.
+    owner: Governance
+    evidence:
+      - docs/conformance/EVIDENCE_REGISTRY.json
+      - docs/conformance/EVIDENCE_MODEL.md
+  - id: EVD-003
+    public: true
+    certified_boundary: true
+    title: Frozen release 0.3.18 remains honestly describable as certifiably fully featured within the declared boundary.
+    owner: Governance
+    evidence:
+      - docs/conformance/CURRENT_STATE.md
+      - docs/conformance/releases/0.3.18/CLAIMS.md
+  - id: EVD-004
+    public: true
+    certified_boundary: true
+    title: Frozen release 0.3.18 remains honestly describable as certifiably fully RFC/spec compliant within the declared boundary.
+    owner: Governance
+    evidence:
+      - docs/conformance/CURRENT_STATE.md
+      - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md

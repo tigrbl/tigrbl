@@ -1,5 +1,6 @@
 pub mod app;
 pub mod binding;
+pub mod callback;
 pub mod column;
 pub mod datatypes;
 pub mod engine;
@@ -16,11 +17,15 @@ pub mod values;
 
 pub use app::AppSpec;
 pub use binding::BindingSpec;
+pub use callback::CallbackSpec;
 pub use column::ColumnSpec;
-pub use datatypes::datatype_spec::DataTypeSpec;
+pub use datatypes::{
+    DataTypeSpec, DatatypeRegistry, EngineDatatypeBridge, EngineDatatypeRegistry,
+    ReflectedDatatype, ReflectedTypeMapper, StorageTypeRef,
+};
 pub use engine::EngineSpec;
 pub use hook::{HookPhase, HookSpec};
-pub use op::{OpKind, OpSpec};
+pub use op::{Exchange, OpKind, OpSpec, TxScope};
 pub use request::RequestEnvelope;
 pub use response::ResponseEnvelope;
 pub use storage::StorageSpec;

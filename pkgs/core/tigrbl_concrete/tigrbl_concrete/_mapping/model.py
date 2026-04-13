@@ -14,6 +14,10 @@ from tigrbl_core._spec import OpSpec
 from tigrbl_core._spec.binding_spec import (
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
+    HttpStreamBindingSpec,
+    SseBindingSpec,
+    WebTransportBindingSpec,
+    WsBindingSpec,
     resolve_rest_nested_prefix,
 )
 from tigrbl_core.config.constants import HOOK_DECLS_ATTR
@@ -426,7 +430,12 @@ def _bind_model_hooks(model: type, specs: Tuple[OpSpec, ...]) -> None:
         model.hooks = hooks_root
 
     alias_map = _mro_alias_map(model)
-    collected = _collect_decorated_hooks(model, visible_aliases, alias_map)
+    collected = _collect_decorated_hooks(
+        model,
+        visible_aliases,
+        alias_map,
+        spec_by_alias,
+    )
     _merge_hooks_map(
         collected, getattr(model, "__tigrbl_hooks__", {}) or {}, visible_aliases
     )
@@ -496,6 +505,7 @@ def _collect_decorated_hooks(
     model: type,
     visible_aliases: set[str],
     alias_map: dict[str, str],
+    spec_by_alias: dict[str, OpSpec],
 ) -> dict[str, dict[str, list[Any]]]:
     out: dict[str, dict[str, list[Any]]] = {}
     for base in reversed(model.__mro__):
@@ -507,6 +517,9 @@ def _collect_decorated_hooks(
             for decl in decls:
                 phase_name = _phase_name(decl.phase)
                 for op in _resolve_hook_ops(decl.ops, visible_aliases, alias_map):
+                    spec = spec_by_alias.get(op)
+                    if spec is None or not _hook_matches_spec(decl, spec):
+                        continue
                     out.setdefault(op, {}).setdefault(phase_name, []).append(
                         _wrap_ctx_hook(model, decl.fn, phase_name)
                     )
@@ -530,6 +543,58 @@ def _resolve_hook_ops(
         if alias in visible_aliases:
             resolved.append(alias)
     return tuple(resolved)
+
+
+def _binding_tokens(spec: OpSpec) -> set[str]:
+    tokens: set[str] = set()
+    for binding in tuple(getattr(spec, "bindings", ()) or ()):
+        proto = str(getattr(binding, "proto", "") or "").lower()
+        if proto:
+            tokens.add(proto)
+            tokens.update(part for part in proto.split(".") if part)
+        name = binding.__class__.__name__.replace("BindingSpec", "").lower()
+        if name:
+            tokens.add(name)
+    return tokens
+
+
+def _op_family(spec: OpSpec) -> str:
+    target = str(getattr(spec, "target", "custom") or "custom")
+    if target.startswith("bulk_"):
+        return "bulk"
+    if target == "custom":
+        return "custom"
+    return "crud"
+
+
+def _hook_matches_spec(decl: Any, spec: OpSpec) -> bool:
+    decl_bindings = tuple(
+        str(item).lower() for item in (getattr(decl, "bindings", ()) or ())
+    )
+    if decl_bindings:
+        op_bindings = _binding_tokens(spec)
+        if not any(item in op_bindings for item in decl_bindings):
+            return False
+
+    decl_exchange = getattr(decl, "exchange", None)
+    if decl_exchange is not None and decl_exchange != getattr(spec, "exchange", None):
+        return False
+
+    decl_family = tuple(
+        str(item).lower() for item in (getattr(decl, "family", ()) or ())
+    )
+    if decl_family and _op_family(spec) not in decl_family:
+        return False
+
+    decl_subevents = {
+        str(item) for item in (getattr(decl, "subevents", ()) or ())
+    }
+    if decl_subevents:
+        op_subevents = {str(item) for item in (getattr(spec, "subevents", ()) or ())}
+        if not op_subevents.intersection(decl_subevents):
+            return False
+
+    return True
 
 
 def _wrap_ctx_hook(model: type, fn: Any, phase: str):
@@ -635,11 +700,7 @@ def _normalize_bindings(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpec,
         merged = list(tuple(getattr(spec, "bindings", ()) or ()))
         if spec.expose_routes:
             for path, methods in _rest_bindings_for_spec(model, spec):
-                binding = HttpRestBindingSpec(
-                    proto="http.rest",
-                    methods=tuple(str(method).upper() for method in methods),
-                    path=path,
-                )
+                binding = _default_route_binding(spec, path, methods)
                 if binding not in merged:
                     merged.append(binding)
 
@@ -651,9 +712,38 @@ def _normalize_bindings(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpec,
             if rpc_binding not in merged:
                 merged.append(rpc_binding)
 
+        if spec.expose_method:
+            for binding in tuple(getattr(spec, "bindings", ()) or ()):
+                if isinstance(binding, WsBindingSpec) and binding.framing == "jsonrpc":
+                    rpc_binding = HttpJsonRpcBindingSpec(
+                        proto="http.jsonrpc",
+                        rpc_method=f"{model.__name__}.{spec.alias}",
+                    )
+                    if rpc_binding not in merged:
+                        merged.append(rpc_binding)
+
         normalized.append(replace(spec, bindings=tuple(merged)))
 
     return tuple(normalized)
+
+
+def _default_route_binding(
+    spec: OpSpec,
+    path: str,
+    methods: tuple[str, ...],
+) -> HttpRestBindingSpec | HttpStreamBindingSpec | SseBindingSpec:
+    exchange = getattr(spec, "exchange", "request_response")
+    if exchange == "server_stream":
+        return HttpStreamBindingSpec(
+            proto="http.stream",
+            path=path,
+            methods=tuple(str(method).upper() for method in methods),
+        )
+    return HttpRestBindingSpec(
+        proto="http.rest",
+        methods=tuple(str(method).upper() for method in methods),
+        path=path,
+    )
 
 
 def _default_path_suffix(spec: OpSpec) -> str | None:
@@ -699,7 +789,10 @@ def _rest_bindings_for_spec(
 ) -> tuple[tuple[str, tuple[str, ...]], ...]:
     bindings: list[tuple[str, tuple[str, ...]]] = []
     for binding in tuple(getattr(spec, "bindings", ()) or ()):  # pragma: no branch
-        if not isinstance(binding, HttpRestBindingSpec):
+        if not isinstance(
+            binding,
+            (HttpRestBindingSpec, HttpStreamBindingSpec, SseBindingSpec),
+        ):
             continue
         methods = tuple(str(method).upper() for method in binding.methods)
         bindings.append((binding.path, methods))
@@ -780,7 +873,23 @@ def _materialize_rest_router(
     for spec in specs:
         if spec.alias in suppressed_aliases:
             continue
-        for path, methods in _rest_bindings_for_spec(model, spec):
+        route_bindings = tuple(
+            binding
+            for binding in tuple(getattr(spec, "bindings", ()) or ())
+            if isinstance(
+                binding,
+                (HttpRestBindingSpec, HttpStreamBindingSpec, SseBindingSpec),
+            )
+        )
+        if not route_bindings and spec.expose_routes:
+            route_bindings = tuple(
+                _default_route_binding(spec, path, methods)
+                for path, methods in _rest_bindings_for_spec(model, spec)
+            )
+
+        for binding in route_bindings:
+            path = binding.path
+            methods = tuple(str(method).upper() for method in binding.methods)
             route_key = (path, tuple(sorted(methods)), spec.alias)
             if route_key in existing_routes:
                 continue
@@ -840,6 +949,9 @@ def _materialize_rest_router(
                 tags=[model.__name__],
                 tigrbl_model=model,
                 tigrbl_alias=spec.alias,
+                tigrbl_binding=binding,
+                tigrbl_exchange=spec.exchange,
+                tigrbl_tx_scope=spec.tx_scope,
                 request_model=None if is_get_only else getattr(alias_ns, "in_", None),
                 response_model=getattr(alias_ns, "out", None),
                 query_param_schemas=query_schemas,

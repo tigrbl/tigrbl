@@ -1,0 +1,231 @@
+name: Release Certification Automation
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+  release:
+    types:
+      - published
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install governance dependencies
+        run: python -m pip install --upgrade pip pytest pyyaml tomli-w
+
+      - name: Validate certification authority and lifecycle gates
+        run: >-
+          python tools/ci/validate_certification_tree.py
+          && python tools/ci/validate_phase7_claim_lifecycle.py
+
+      - name: Run governance pytest slices
+        run: >-
+          python -m pytest -q
+          tools/ci/tests/test_certification_tree.py
+          tools/ci/tests/test_phase7_claim_lifecycle.py
+          -p no:cacheprovider
+
+  next-target-python:
+    runs-on: ubuntu-latest
+    needs: governance
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install next-target dependencies
+        run: python -m pip install --upgrade pip pytest sqlalchemy pydantic pyyaml tomli-w "httpx<0.28"
+
+      - name: Compute workspace PYTHONPATH
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY_PATH="$GITHUB_WORKSPACE"
+          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+            if [[ -d "$base" ]]; then
+              for child in "$base"/*; do
+                [[ -d "$child" ]] || continue
+                PY_PATH="$PY_PATH:$child"
+                if [[ -d "$child/src" ]]; then
+                  PY_PATH="$PY_PATH:$child/src"
+                fi
+              done
+            fi
+          done
+          echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
+
+      - name: Run next-target datatype tests
+        run: >-
+          python -m pytest -q
+          pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+          pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
+          pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+          pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+          pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+          pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+          pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
+          pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+          pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+          pkgs/core/tigrbl_client/tests/unit/test_tigrbl_nested_crud.py
+          -p no:cacheprovider
+
+      - name: Run Rust next-target spec contract
+        run: cargo test -p tigrbl_rs_spec --test spec_contract
+
+  evidence-lanes:
+    runs-on: ubuntu-latest
+    needs: governance
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - lane: spec-conformance
+            cmd: >-
+              python -m pytest --noconftest -q
+              pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py
+              pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
+              pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
+              pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py
+              pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py
+              -p no:cacheprovider
+          - lane: security-negative
+            cmd: >-
+              python -m pytest --noconftest -q
+              pkgs/core/tigrbl_tests/tests/security/test_schemes.py
+              tools/ci/tests/test_http_auth_challenges.py
+              pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py
+              -p no:cacheprovider
+          - lane: next-target-datatypes
+            cmd: >-
+              python -m pytest --noconftest -q
+              pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+              pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
+              pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+              pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+              pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+              pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+              pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
+              pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+              pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+              pkgs/core/tigrbl_client/tests/unit/test_tigrbl_nested_crud.py
+              -p no:cacheprovider
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install evidence-lane dependencies
+        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic uvicorn hypercorn gunicorn typing_extensions build
+
+      - name: Compute workspace PYTHONPATH
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY_PATH="$GITHUB_WORKSPACE"
+          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+            if [[ -d "$base" ]]; then
+              for child in "$base"/*; do
+                [[ -d "$child" ]] || continue
+                PY_PATH="$PY_PATH:$child"
+                if [[ -d "$child/src" ]]; then
+                  PY_PATH="$PY_PATH:$child/src"
+                fi
+              done
+            fi
+          done
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/bindings/python/tigrbl_native/python"
+          echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
+
+      - name: Run ${{ matrix.lane }} lane
+        shell: bash
+        run: ${{ matrix.cmd }}
+
+  bundle-dry-run:
+    runs-on: ubuntu-latest
+    needs:
+      - governance
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install bundle dependencies
+        run: python -m pip install --upgrade pip pyyaml tomli-w
+
+      - name: Validate release promotion and handoff gates
+        run: >-
+          python tools/ci/validate_gate_e_promotion.py
+          && python tools/ci/validate_phase14_handoff.py
+
+      - name: Assemble certification dry-run bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/certification-dry-run
+          cp certification/claims/current.yaml dist/certification-dry-run/
+          cp certification/claims/target.yaml dist/certification-dry-run/
+          cp certification/claims/blocked.yaml dist/certification-dry-run/
+          cp certification/claims/lifecycle.yaml dist/certification-dry-run/
+          cp certification/targets/next_target.yaml dist/certification-dry-run/
+          cp docs/conformance/releases/0.3.18/artifacts/certification-bundle.json dist/certification-dry-run/
+          cp docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json dist/certification-dry-run/
+          cp docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json dist/certification-dry-run/
+          cp docs/conformance/releases/0.3.18/artifacts/provenance.attestation.json dist/certification-dry-run/
+          cp docs/conformance/releases/0.3.18/CLAIMS.md dist/certification-dry-run/
+          cp docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md dist/certification-dry-run/
+
+      - name: Upload certification dry-run bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: certification-dry-run
+          path: dist/certification-dry-run/
+
+  release-publish:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    needs:
+      - governance
+      - bundle-dry-run
+    steps:
+      - name: Download dry-run bundle
+        uses: actions/download-artifact@v4
+        with:
+          name: certification-dry-run
+          path: release-artifacts/
+
+      - name: Publish certification artifacts to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release-artifacts/**/*

@@ -29,7 +29,7 @@ def _run(obj: Optional[object], ctx: Any) -> None:
     temp["schema_in"] = dict(_ensure_schema_in(ctx))
 
 
-class AtomImpl(Atom[Executing, Executing]):
+class AtomImpl(Atom[Executing, Executing, Exception]):
     name = "schema.collect_in"
     anchor = ANCHOR
 

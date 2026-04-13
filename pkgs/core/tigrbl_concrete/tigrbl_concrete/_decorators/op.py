@@ -5,7 +5,22 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Iterable, Optional, Sequence, Union
 
-from tigrbl_core._spec.op_spec import OpSpec, Arity, TargetOp, PersistPolicy
+from tigrbl_core._spec.binding_spec import (
+    Exchange,
+    Framing,
+    HttpStreamBindingSpec,
+    SseBindingSpec,
+    TransportBindingSpec,
+    WebTransportBindingSpec,
+    WsBindingSpec,
+)
+from tigrbl_core._spec.op_spec import (
+    Arity,
+    OpSpec,
+    PersistPolicy,
+    TargetOp,
+    TxScope,
+)
 from tigrbl_core._spec.op_utils import (
     _maybe_await as _core_maybe_await,
     _normalize_persist as _core_normalize_persist,
@@ -138,15 +153,20 @@ def op_alias(
 def op_ctx(
     *,
     bind: Any | Iterable[Any] | None = None,
+    bindings: TransportBindingSpec | Iterable[TransportBindingSpec] | None = None,
     alias: Optional[str] = None,
     target: Optional[TargetOp] = None,
     arity: Optional[Arity] = None,
+    exchange: Exchange = "request_response",
+    tx_scope: TxScope = "inherit",
+    subevents: Sequence[str] | None = None,
     http_methods: Sequence[str] | None = None,
     rest: Optional[bool] = None,
     request_schema: Optional[SchemaArg] = None,
     response_schema: Optional[SchemaArg] = None,
     persist: Optional[PersistPolicy] = None,
     status_code: Optional[int] = None,
+    security_deps: Sequence[Any] | None = None,
 ):
     """Declare a ctx-only operation whose body is `(cls, ctx)`."""
 
@@ -184,12 +204,17 @@ def op_ctx(
             alias=resolved_alias,
             target=resolved_target,
             arity=inferred_arity,
+            bindings=_normalize_bindings(bindings),
+            exchange=exchange,
+            tx_scope=tx_scope,
+            subevents=tuple(subevents or ()),
             http_methods=tuple(http_methods) if http_methods else None,
             expose_routes=True if rest is None else bool(rest),
             request_model=request_schema,
             response_model=response_schema,
             persist=_normalize_persist(persist),
             status_code=status_code,
+            security_deps=tuple(security_deps or ()),
         )
         f.__tigrbl_op_spec__ = spec
         # Backward-compatible attr name; value is always OpSpec.
@@ -238,6 +263,75 @@ def _normalize_persist(p) -> str:
     return _core_normalize_persist(p)
 
 
+def _normalize_bindings(
+    value: TransportBindingSpec | Iterable[TransportBindingSpec] | None,
+) -> tuple[TransportBindingSpec, ...]:
+    if value is None:
+        return ()
+    if isinstance(value, Iterable) and not isinstance(value, (str, bytes)):
+        return tuple(value)
+    return (value,)
+
+
+def websocket_ctx(
+    path: str,
+    *,
+    proto: str = "ws",
+    framing: Framing = "text",
+    subprotocols: Sequence[str] | None = None,
+    **kwargs: Any,
+):
+    binding = WsBindingSpec(
+        proto=proto,
+        path=path,
+        subprotocols=tuple(subprotocols or ()),
+        framing=framing,
+    )
+    exchange = kwargs.pop("exchange", binding.exchange)
+    return op_ctx(bindings=(binding,), exchange=exchange, **kwargs)
+
+
+def sse_ctx(
+    path: str,
+    *,
+    proto: str = "http.sse",
+    methods: Sequence[str] | None = None,
+    **kwargs: Any,
+):
+    binding = SseBindingSpec(proto=proto, path=path, methods=tuple(methods or ("GET",)))
+    exchange = kwargs.pop("exchange", binding.exchange)
+    return op_ctx(bindings=(binding,), exchange=exchange, **kwargs)
+
+
+def stream_ctx(
+    path: str,
+    *,
+    proto: str = "http.stream",
+    methods: Sequence[str] | None = None,
+    framing: Framing = "stream",
+    **kwargs: Any,
+):
+    binding = HttpStreamBindingSpec(
+        proto=proto,
+        path=path,
+        methods=tuple(methods or ("GET",)),
+        framing=framing,
+    )
+    exchange = kwargs.pop("exchange", binding.exchange)
+    return op_ctx(bindings=(binding,), exchange=exchange, **kwargs)
+
+
+def webtransport_ctx(
+    path: str,
+    *,
+    proto: str = "webtransport",
+    **kwargs: Any,
+):
+    binding = WebTransportBindingSpec(proto=proto, path=path)
+    exchange = kwargs.pop("exchange", binding.exchange)
+    return op_ctx(bindings=(binding,), exchange=exchange, **kwargs)
+
+
 def _refresh_bound_ops(model: type) -> None:
     try:
         from tigrbl_core._spec.op_spec import _mro_collect_decorated_ops
@@ -254,4 +348,13 @@ def _refresh_bound_ops(model: type) -> None:
         return
 
 
-__all__ = ["alias", "alias_ctx", "op_alias", "op_ctx"]
+__all__ = [
+    "alias",
+    "alias_ctx",
+    "op_alias",
+    "op_ctx",
+    "sse_ctx",
+    "stream_ctx",
+    "websocket_ctx",
+    "webtransport_ctx",
+]

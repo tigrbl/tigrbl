@@ -1,0 +1,68 @@
+name: Next Target Datatypes
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  python-datatype-contracts:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python dependencies
+        run: python -m pip install --upgrade pip pytest sqlalchemy pydantic pyyaml tomli-w "httpx<0.28"
+
+      - name: Compute workspace PYTHONPATH
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY_PATH="$GITHUB_WORKSPACE"
+          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+            if [[ -d "$base" ]]; then
+              for child in "$base"/*; do
+                [[ -d "$child" ]] || continue
+                PY_PATH="$PY_PATH:$child"
+                if [[ -d "$child/src" ]]; then
+                  PY_PATH="$PY_PATH:$child/src"
+                fi
+              done
+            fi
+          done
+          echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
+
+      - name: Run next-target datatype tests
+        run: >-
+          python -m pytest -q
+          pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
+          pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
+          pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
+          pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
+          pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
+          pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
+          pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
+          pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
+          pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
+          pkgs/core/tigrbl_client/tests/unit/test_tigrbl_nested_crud.py
+          -p no:cacheprovider
+
+  rust-datatype-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Run Rust spec contract tests
+        run: cargo test -p tigrbl_rs_spec --test spec_contract

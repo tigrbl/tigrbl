@@ -149,7 +149,7 @@ def _secure_token(max_len: int) -> str:
     return token
 
 
-class AtomImpl(Atom[Executing, Resolved]):
+class AtomImpl(Atom[Executing, Resolved, Exception]):
     name = "resolve.paired_gen"
     anchor = ANCHOR
 

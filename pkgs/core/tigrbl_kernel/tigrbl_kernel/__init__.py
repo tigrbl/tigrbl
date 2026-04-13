@@ -8,7 +8,11 @@ try:  # pragma: no cover - additive optional integration
 except Exception:  # pragma: no cover
     ExecutionBackend = NativeBackendConfig = None
 
-from .native_compile import build_native_kernel, normalize_native_spec
+from .native_compile import (
+    build_native_kernel,
+    build_native_parity_snapshot,
+    normalize_native_spec,
+)
 from .native_plan import NativePlan
 
 _LAZY_EXPORTS = {
@@ -71,6 +75,7 @@ __all__ = [
     "SchemaOut",
     "build_kernel_plan",
     "build_native_kernel",
+    "build_native_parity_snapshot",
     "build_packed_kernel",
     "get_cached_specs",
     "build_phase_chains",

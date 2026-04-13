@@ -1,54 +1,23 @@
-![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
+# tigrbl_client
 
-<p align="center">
-    <a href="https://pypi.org/project/tigrbl_client/">
-        <img src="https://img.shields.io/pypi/v/tigrbl_client?label=tigrbl_client&color=green" alt="PyPI - tigrbl_client"/>
-    </a>
-    <a href="https://pypi.org/project/tigrbl_client/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl_client" alt="PyPI - Downloads"/>
-    </a>
-    <a href="https://pypi.org/project/tigrbl_client/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl_client" alt="PyPI - Python Version"/>
-    </a>
-    <a href="https://pypi.org/project/tigrbl_client/">
-        <img src="https://img.shields.io/pypi/l/tigrbl_client" alt="PyPI - License"/>
-    </a>
-    <a href="https://hits.sh/github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/standards/tigrbl_client/">
-        <img alt="Hits" src="https://hits.sh/github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/standards/tigrbl_client.svg"/>
-    </a>
-</p>
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
----
+## Canonical repository docs
 
-# Tigrbl Client 🐅
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-A lightweight HTTP client for interacting with Tigrbl services.
-Tigrbl exposes operations under resource-based namespaces such as
-`api.core.Users.create` or `api.rpc.Users.login`, all accessible via
-this client.
+## Package identity
 
-## Features ✨
+- workspace path: `pkgs/core/tigrbl_client`
+- workspace class: core Python package
+- implementation layout: `tigrbl_client/`
 
-- Minimal dependencies with friendly typing
-- Automatic JSON serialization / deserialization
-- Simple namespace-based method access
-
-## Installation 📦
-
-```bash
-pip install tigrbl_client
-```
-
-## Quick Start 🚀
-
-```python
-from tigrbl_client import Client
-
-client = Client("https://api.tigrbl.io", token="your-token")
-response = client.api.core.Users.read(id=1)
-print(response)
-```
-
-## License 📝
-
-This project is licensed under the terms of the [MIT license](LICENSE).
+Long-form repository documentation is governed from `docs/`.

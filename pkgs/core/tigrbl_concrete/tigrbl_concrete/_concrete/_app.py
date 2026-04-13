@@ -1,8 +1,13 @@
 from __future__ import annotations
 
+import inspect
+from dataclasses import replace
 from typing import Any
 
 from ._table_registry import TableRegistry
+from ._websocket import WebSocket
+from ._request import Request
+from ._response import Response
 from tigrbl_base._base import AppBase
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
 from ._engine import Engine
@@ -10,11 +15,13 @@ from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.engine_spec import EngineCfg
 from ._routing import (
+    add_route as _add_route_impl,
     include_router as _include_router_impl,
     merge_tags as _merge_tags_impl,
     normalize_prefix as _normalize_prefix_impl,
+    route as _route_impl,
 )
-from tigrbl_runtime.runtime import Runtime
+from tigrbl_concrete.system.static import _serve_static
 from tigrbl_typing.gw.raw import GwRawEnvelope
 
 
@@ -141,13 +148,182 @@ class App(AppBase):
             _resolver.set_default(_engine_ctx)
             _resolver.resolve_provider()
 
-        self.runtime = Runtime(
-            default_executor=getattr(self, "DEFAULT_EXECUTOR", "packed")
-        )
+        self._runtime_default_executor = getattr(self, "DEFAULT_EXECUTOR", "packed")
+        self._runtime_instance = None
+        self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
+        self._tigrbl_runtime_acquire_db = _resolver.acquire
 
     @property
     def router(self) -> "App":
         return self
+
+    def add_route(self, path: str, endpoint: Any, *, methods: list[str] | tuple[str, ...], **kwargs: Any) -> None:
+        _add_route_impl(self, path, endpoint, methods=methods, **kwargs)
+
+    def route(self, path: str, *, methods: Any, **kwargs: Any):
+        return _route_impl(self, path, methods=methods, **kwargs)
+
+    def get(self, path: str, **kwargs: Any):
+        return self.route(path, methods=["GET"], **kwargs)
+
+    def post(self, path: str, **kwargs: Any):
+        return self.route(path, methods=["POST"], **kwargs)
+
+    def put(self, path: str, **kwargs: Any):
+        return self.route(path, methods=["PUT"], **kwargs)
+
+    def patch(self, path: str, **kwargs: Any):
+        return self.route(path, methods=["PATCH"], **kwargs)
+
+    def delete(self, path: str, **kwargs: Any):
+        return self.route(path, methods=["DELETE"], **kwargs)
+
+    def mount_openapi(self, *, path: str = "/openapi.json", name: str = "__openapi__") -> Any:
+        from tigrbl_concrete.system.docs.openapi.mount import mount_openapi as _mount_openapi
+        return _mount_openapi(self, path=path, name=name)
+
+    def mount_swagger(self, *, path: str = "/docs", openapi_url: str | None = None, title: str | None = None) -> Any:
+        from tigrbl_concrete.system.docs.swagger import mount_swagger as _mount_swagger
+        return _mount_swagger(self, path=path, openapi_url=openapi_url, title=title)
+
+    def mount_openrpc(self, *, path: str = "/openrpc.json", name: str = "openrpc_json") -> Any:
+        from tigrbl_concrete.system.docs.openrpc import mount_openrpc as _mount_openrpc
+        return _mount_openrpc(self, path=path, name=name)
+
+    def mount_lens(self, *, path: str = "/lens", openrpc_url: str | None = None, title: str | None = None) -> Any:
+        from tigrbl_concrete.system.docs.lens import mount_lens as _mount_lens
+        return _mount_lens(self, path=path, openrpc_url=openrpc_url, title=title)
+
+    def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
+        from tigrbl_concrete.system.docs.json_schema import _mount_json_schema
+        return _mount_json_schema(self, path=path)
+
+    def mount_asyncapi(self, *, path: str = "/asyncapi.json") -> Any:
+        from tigrbl_concrete.system.docs.asyncapi import _mount_asyncapi
+        return _mount_asyncapi(self, path=path)
+
+    def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
+        from tigrbl_concrete.system.static import _mount_static
+        return _mount_static(self, directory=directory, path=path)
+
+    def websocket(self, path: str, **kwargs: Any):
+        def _decorator(handler: Any) -> Any:
+            from ._route import compile_path
+            from ._websocket import WebSocketRoute
+            from tigrbl_concrete.system.docs.runtime_ops import (
+                register_runtime_websocket_route,
+            )
+
+            full_path = path if path.startswith("/") else f"/{path}"
+            normalized_path = full_path.rstrip("/") or "/"
+            pattern, param_names = compile_path(normalized_path)
+            route_name = kwargs.get("name", getattr(handler, "__name__", "websocket"))
+            self.websocket_routes.append(
+                WebSocketRoute(
+                    path_template=normalized_path,
+                    pattern=pattern,
+                    param_names=param_names,
+                    handler=handler,
+                    name=route_name,
+                    protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
+                    exchange=str(
+                        kwargs.get("exchange", "bidirectional_stream")
+                    ),
+                    framing=str(kwargs.get("framing", "text")),
+                    summary=kwargs.get("summary"),
+                    description=kwargs.get("description"),
+                    tags=kwargs.get("tags"),
+                )
+            )
+            register_runtime_websocket_route(
+                self,
+                path=normalized_path,
+                alias=route_name,
+                endpoint=handler,
+                protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
+                exchange=str(kwargs.get("exchange", "bidirectional_stream")),
+                framing=str(kwargs.get("framing", "text")),
+            )
+            bump = getattr(self, "_bump_runtime_plan_revision", None)
+            if callable(bump):
+                bump()
+            return handler
+        return _decorator
+
+    @property
+    def runtime(self):
+        runtime = getattr(self, "_runtime_instance", None)
+        if runtime is None:
+            from tigrbl_runtime.runtime import Runtime
+            runtime = Runtime(default_executor=self._runtime_default_executor)
+            self._runtime_instance = runtime
+        return runtime
+
+    async def _read_http_body(self, receive: Any) -> bytes:
+        chunks: list[bytes] = []
+        while True:
+            message = await receive()
+            if message.get("type") != "http.request":
+                break
+            chunks.append(message.get("body", b"") or b"")
+            if not message.get("more_body"):
+                break
+        return b"".join(chunks)
+
+    async def _dispatch_http_route(self, scope: dict[str, Any], receive: Any, send: Any) -> bool:
+        method = str(scope.get("method") or "GET").upper()
+        path = str(scope.get("path") or "/")
+        body = await self._read_http_body(receive)
+        request = Request.from_scope(scope, app=self)
+        request.body = body
+        for route in list(getattr(self, "routes", ()) or []):
+            if method not in getattr(route, "methods", ()):
+                continue
+            matched = route.pattern.match(path)
+            if matched is None:
+                continue
+            path_params = matched.groupdict()
+            scope["path_params"] = path_params
+            try:
+                for dep in list(getattr(route, "security_dependencies", ()) or []):
+                    dep(request)
+                kwargs: dict[str, Any] = {}
+                signature = inspect.signature(route.handler)
+                params = list(signature.parameters.items())
+                for idx, (name, param) in enumerate(params):
+                    if name in path_params:
+                        kwargs[name] = path_params[name]
+                        continue
+                    annotation = param.annotation
+                    if annotation is Request or name in {"request", "_request"} or (len(params) == 1 and not path_params):
+                        kwargs[name] = request
+                result = route.handler(**kwargs)
+                if inspect.isawaitable(result):
+                    result = await result
+            except Exception as exc:  # pragma: no cover - exercised by operator tests
+                from tigrbl_runtime.runtime.status.exceptions import HTTPException
+                if isinstance(exc, HTTPException):
+                    response = Response.json(
+                        {"detail": exc.detail},
+                        status=int(exc.status_code),
+                        headers=getattr(exc, "headers", None),
+                    )
+                    await response(scope, receive, send)
+                    return True
+                raise
+            if isinstance(result, Response):
+                response = result
+            elif result is None:
+                response = Response(status_code=204)
+            elif isinstance(result, (dict, list)):
+                response = Response.json(result)
+            elif isinstance(result, (bytes, bytearray, memoryview)):
+                response = Response.bytes(bytes(result))
+            else:
+                response = Response.text(str(result))
+            await response(scope, receive, send)
+            return True
+        return False
 
     def install_engines(
         self, *, router: Any = None, tables: tuple[Any, ...] | None = None
@@ -185,8 +361,13 @@ class App(AppBase):
         )
 
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
-        if scope.get("type") == "lifespan":
+        scope_type = scope.get("type")
+        if scope_type == "lifespan":
             await self._handle_lifespan(scope, receive, send)
+            return
+        if scope_type == "websocket":
+            env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
+            await self.invoke(env)
             return
         path = scope.get("path")
         if isinstance(path, str):
@@ -195,6 +376,18 @@ class App(AppBase):
                 seen_paths = set()
                 setattr(self, "_seen_paths", seen_paths)
             seen_paths.add(path)
+            static_response = _serve_static(self, Request.from_scope(scope, app=self))
+            if static_response is not None:
+                await static_response(scope, receive, send)
+                return
+        if await self._dispatch_http_route(scope, receive, send):
+            return
+        env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
+        await self.invoke(env)
+
+    async def _handle_websocket(
+        self, scope: dict[str, Any], receive: Any, send: Any
+    ) -> None:
         env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
         await self.invoke(env)
 
@@ -263,8 +456,106 @@ class App(AppBase):
         return _merge_tags_impl(getattr(self, "tags", None), tags)
 
     def include_router(self, router: Any, *, prefix: str | None = None) -> Any:
+        from ._route import compile_path
+        from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
+        from tigrbl_core._spec.binding_spec import (
+            HttpRestBindingSpec,
+            HttpStreamBindingSpec,
+            SseBindingSpec,
+            WebTransportBindingSpec,
+            WsBindingSpec,
+        )
+
+        def _apply_mount_prefix_to_model_bindings(model: type, mount_prefix: str) -> None:
+            if not mount_prefix:
+                return
+
+            ops_ns = getattr(model, "ops", None)
+            specs = tuple(getattr(ops_ns, "all", ()) or ())
+            if not specs:
+                return
+
+            updated_specs: list[Any] = []
+            changed = False
+            for spec in specs:
+                bindings = tuple(getattr(spec, "bindings", ()) or ())
+                updated_bindings: list[Any] = []
+                local_changed = False
+                for binding in bindings:
+                    if not isinstance(
+                        binding,
+                        (
+                            HttpRestBindingSpec,
+                            HttpStreamBindingSpec,
+                            SseBindingSpec,
+                            WsBindingSpec,
+                            WebTransportBindingSpec,
+                        ),
+                    ):
+                        updated_bindings.append(binding)
+                        continue
+
+                    path = str(getattr(binding, "path", "") or "")
+                    if not path.startswith("/"):
+                        path = f"/{path}"
+                    prefixed_path = (
+                        path
+                        if path == mount_prefix or path.startswith(f"{mount_prefix}/")
+                        else f"{mount_prefix}{path}"
+                    )
+                    if prefixed_path != getattr(binding, "path", None):
+                        local_changed = True
+                        updated_bindings.append(replace(binding, path=prefixed_path))
+                    else:
+                        updated_bindings.append(binding)
+
+                if local_changed:
+                    changed = True
+                    updated_specs.append(replace(spec, bindings=tuple(updated_bindings)))
+                else:
+                    updated_specs.append(spec)
+
+            if not changed:
+                return
+
+            updated_all = tuple(updated_specs)
+            by_alias: dict[str, Any] = {}
+            grouped_specs: dict[str, list[Any]] = {}
+            by_key: dict[tuple[str, str], Any] = {}
+            for spec in updated_all:
+                grouped_specs.setdefault(spec.alias, []).append(spec)
+                by_key[(spec.alias, spec.target)] = spec
+            for alias, specs_for_alias in grouped_specs.items():
+                by_alias[alias] = _OpSpecGroup(tuple(specs_for_alias))
+
+            updated_ops = type(ops_ns)(
+                all=updated_all,
+                by_alias=by_alias,
+                by_key=by_key,
+            )
+            model.ops = updated_ops
+            model.opspecs = updated_ops
+
         routed = getattr(router, "router", router)
-        _include_router_impl(self, routed, prefix=prefix or "")
+        route_prefix = prefix or ""
+        _include_router_impl(self, routed, prefix=route_prefix)
+        normalized_prefix = _normalize_prefix_impl(route_prefix)
+        for name, model in dict(getattr(routed, "tables", {}) or {}).items():
+            _apply_mount_prefix_to_model_bindings(model, normalized_prefix)
+            self.tables.setdefault(name, model)
+        for ws_route in list(getattr(routed, "websocket_routes", ()) or []):
+            path_template = ws_route.path_template
+            if normalized_prefix:
+                path_template = f"{normalized_prefix}{path_template}" if path_template != "/" else normalized_prefix
+            pattern, param_names = compile_path(path_template)
+            self.websocket_routes.append(
+                replace(ws_route, path_template=path_template, pattern=pattern, param_names=param_names)
+            )
+        for mount in list(getattr(routed, "_static_mounts", ()) or []):
+            static_path = mount.get("path", "/static")
+            if normalized_prefix:
+                static_path = f"{normalized_prefix}{static_path}" if static_path != "/" else normalized_prefix
+            self._static_mounts.append({"path": static_path, "directory": mount["directory"]})
         bump = getattr(self, "_bump_runtime_plan_revision", None)
         if callable(bump):
             bump()

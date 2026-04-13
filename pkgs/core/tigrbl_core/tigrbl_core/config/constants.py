@@ -33,11 +33,23 @@ CANON: Tuple[str, ...] = (
     "delete",
     "list",
     "clear",
+    "count",
+    "exists",
     "bulk_create",
     "bulk_update",
     "bulk_replace",
     "bulk_merge",
     "bulk_delete",
+    "aggregate",
+    "group_by",
+    "publish",
+    "subscribe",
+    "tail",
+    "upload",
+    "download",
+    "append_chunk",
+    "send_datagram",
+    "checkpoint",
     "custom",
 )
 
@@ -73,11 +85,23 @@ DEFAULT_HTTP_METHODS: Mapping[str, Tuple[str, ...]] = {
     "delete": ("DELETE",),
     "list": ("GET",),
     "clear": ("DELETE",),
+    "count": ("GET",),
+    "exists": ("GET",),
     "bulk_create": ("POST",),
     "bulk_update": ("PATCH",),
     "bulk_replace": ("PUT",),
     "bulk_merge": ("PATCH",),
     "bulk_delete": ("DELETE",),
+    "aggregate": ("POST",),
+    "group_by": ("POST",),
+    "publish": ("POST",),
+    "subscribe": ("GET",),
+    "tail": ("GET",),
+    "upload": ("POST",),
+    "download": ("GET",),
+    "append_chunk": ("POST",),
+    "send_datagram": ("POST",),
+    "checkpoint": ("POST",),
     "custom": ("POST",),
 }
 
@@ -171,6 +195,17 @@ CTX_SKIP_PERSIST_FLAG = "__tigrbl_skip_persist__"  # set by ephemeral ops
 CTX_USER_ID_KEY = "user_id"
 CTX_TENANT_ID_KEY = "tenant_id"
 CTX_AUTH_KEY = "auth"
+CTX_ROUTE_KEY = "route"
+CTX_STAGE_KEY = "stage"
+CTX_PHASE_KEY = "phase"
+CTX_CAPABILITY_MASK_KEY = "capability_mask"
+CTX_EXACT_ROUTE_KEY = "exact_route"
+CTX_ROUTE_FAMILY_KEY = "route_family"
+CTX_ROUTE_SUBEVENTS_KEY = "route_subevents"
+CTX_PLAN_KEY = "plan"
+CTX_BINDING_KEY = "binding"
+CTX_EXCHANGE_KEY = "exchange"
+CTX_TX_SCOPE_KEY = "tx_scope"
 
 # Request.state attribute that carries auth context (tenant/user ids)
 TIGRBL_AUTH_CONTEXT_ATTR = "__tigrbl_auth_context__"
@@ -219,6 +254,17 @@ __all__ = [
     "CTX_USER_ID_KEY",
     "CTX_TENANT_ID_KEY",
     "CTX_AUTH_KEY",
+    "CTX_ROUTE_KEY",
+    "CTX_STAGE_KEY",
+    "CTX_PHASE_KEY",
+    "CTX_CAPABILITY_MASK_KEY",
+    "CTX_EXACT_ROUTE_KEY",
+    "CTX_ROUTE_FAMILY_KEY",
+    "CTX_ROUTE_SUBEVENTS_KEY",
+    "CTX_PLAN_KEY",
+    "CTX_BINDING_KEY",
+    "CTX_EXCHANGE_KEY",
+    "CTX_TX_SCOPE_KEY",
     "TIGRBL_AUTH_CONTEXT_ATTR",
     "__SAFE_IDENT__",
 ]

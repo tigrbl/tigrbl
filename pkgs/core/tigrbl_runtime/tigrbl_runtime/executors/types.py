@@ -16,11 +16,18 @@ from typing import (
     runtime_checkable,
 )
 
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import Session
+try:
+    from sqlalchemy.ext.asyncio import AsyncSession
+    from sqlalchemy.orm import Session
+except Exception:  # pragma: no cover - optional ORM dependency for runtime typing
+    AsyncSession = Session = Any  # type: ignore[assignment]
 from tigrbl_base._base import AttrDict
 from tigrbl_atoms.types import BaseCtx
-from tigrbl_concrete._concrete._request import Request
+
+
+@runtime_checkable
+class Request(Protocol):
+    state: Any
 
 
 class _ResponseState:
@@ -107,6 +114,16 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         "error",
         "current_phase",
         "error_phase",
+        "phase",
+        "stage",
+        "capability_mask",
+        "exact_route",
+        "route_family",
+        "route_subevents",
+        "binding",
+        "exchange",
+        "tx_scope",
+        "plan",
     }
 
     def __getattribute__(self, name: str) -> Any:

@@ -59,7 +59,7 @@ def _run(_, ctx) -> None:
                 hints.headers[header_name] = str(value)
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "response.headers_from_payload"
     anchor = ANCHOR
 

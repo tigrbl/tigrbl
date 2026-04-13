@@ -51,7 +51,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "response_headers", headers)
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "egress.headers_apply"
     anchor = ANCHOR
 

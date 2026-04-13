@@ -1,0 +1,13 @@
+{
+  "profile": "strict-h2-origin",
+  "transport": "http/2-origin",
+  "proxy_contract": "strict",
+  "early_data_policy": "reject",
+  "origin_static_policy": "strict",
+  "quic_metrics": [
+    "connections",
+    "handshake"
+  ],
+  "qlog_export": "experimental-only",
+  "claimable": false
+}

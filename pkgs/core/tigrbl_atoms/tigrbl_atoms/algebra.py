@@ -7,8 +7,8 @@ Acquire = Callable[[Ctx[S]], Awaitable[Any]]
 Release = Callable[[Ctx[T], Any], Awaitable[None]]
 
 
-def seq(a: Atom[S, T], b: Atom[T, U]) -> Atom[S, U]:
-    class _Seq(Atom[S, U]):
+def seq(a: Atom[S, T, Exception], b: Atom[T, U, Exception]) -> Atom[S, U, Exception]:
+    class _Seq(Atom[S, U, Exception]):
         name = f"seq({a.name};{b.name})"
         anchor = getattr(b, "anchor", "")
 
@@ -18,8 +18,8 @@ def seq(a: Atom[S, T], b: Atom[T, U]) -> Atom[S, U]:
     return _Seq()
 
 
-def when(pred: Pred[S], a: Atom[S, S]) -> Atom[S, S]:
-    class _When(Atom[S, S]):
+def when(pred: Pred[S], a: Atom[S, S, Exception]) -> Atom[S, S, Exception]:
+    class _When(Atom[S, S, Exception]):
         name = f"when({getattr(pred, '__name__', 'pred')}) {a.name}"
         anchor = getattr(a, "anchor", "")
 
@@ -29,17 +29,17 @@ def when(pred: Pred[S], a: Atom[S, S]) -> Atom[S, S]:
     return _When()
 
 
-def chain(*atoms: Atom[Any, Any]) -> Atom[Any, Any]:
+def chain(*atoms: Atom[Any, Any, Exception]) -> Atom[Any, Any, Exception]:
     if not atoms:
         raise ValueError("chain requires >=1 atom")
-    p: Atom[Any, Any] = atoms[0]
+    p: Atom[Any, Any, Exception] = atoms[0]
     for n in atoms[1:]:
-        p = seq(cast(Atom[Any, Any], p), cast(Atom[Any, Any], n))
+        p = seq(cast(Atom[Any, Any, Exception], p), cast(Atom[Any, Any, Exception], n))
     return p
 
 
-def id_atom(name: str = "id") -> Atom[S, S]:
-    class _Id(Atom[S, S]):
+def id_atom(name: str = "id") -> Atom[S, S, Exception]:
+    class _Id(Atom[S, S, Exception]):
         anchor = ""
 
         async def __call__(self, obj: object | None, ctx: Ctx[S]) -> Ctx[S]:
@@ -51,9 +51,9 @@ def id_atom(name: str = "id") -> Atom[S, S]:
 
 
 def choice(
-    cases: Sequence[tuple[Pred[S], Atom[S, T]]], *, default: Atom[S, T] | None = None
-) -> Atom[S, T]:
-    class _Choice(Atom[S, T]):
+    cases: Sequence[tuple[Pred[S], Atom[S, T, Exception]]], *, default: Atom[S, T, Exception] | None = None
+) -> Atom[S, T, Exception]:
+    class _Choice(Atom[S, T, Exception]):
         name = "choice"
         anchor = getattr(default, "anchor", "") if default else ""
 
@@ -68,8 +68,8 @@ def choice(
     return _Choice()
 
 
-def try_(a: Atom[S, T]) -> Atom[S, T]:
-    class _Try(Atom[S, T]):
+def try_(a: Atom[S, T, Exception]) -> Atom[S, T, Exception]:
+    class _Try(Atom[S, T, Exception]):
         name = f"try({a.name})"
         anchor = getattr(a, "anchor", "")
 
@@ -84,9 +84,9 @@ def try_(a: Atom[S, T]) -> Atom[S, T]:
 
 
 def recover(
-    pred: Pred[T], handler: Atom[T, T], *, label: str = "recover"
-) -> Atom[T, T]:
-    class _Recover(Atom[T, T]):
+    pred: Pred[T], handler: Atom[T, T, Exception], *, label: str = "recover"
+) -> Atom[T, T, Exception]:
+    class _Recover(Atom[T, T, Exception]):
         name = label
         anchor = getattr(handler, "anchor", "")
 
@@ -98,12 +98,12 @@ def recover(
 
 def bracket(
     acquire: Acquire[S],
-    use: Atom[S, T],
+    use: Atom[S, T, Exception],
     release: Release[T],
     *,
     resource_key: str = "resource",
-) -> Atom[S, T]:
-    class _Bracket(Atom[S, T]):
+) -> Atom[S, T, Exception]:
+    class _Bracket(Atom[S, T, Exception]):
         name = f"bracket({use.name})"
         anchor = getattr(use, "anchor", "")
 
@@ -120,8 +120,8 @@ def bracket(
 
 def loop_over(
     key: str, body: Callable[[Ctx[S], Any], Awaitable[None]], *, label: str = "loop"
-) -> Atom[S, S]:
-    class _Loop(Atom[S, S]):
+) -> Atom[S, S, Exception]:
+    class _Loop(Atom[S, S, Exception]):
         name = label
         anchor = ""
 
@@ -143,8 +143,8 @@ def fold_over(
     *,
     out_key: str,
     label: str = "fold",
-) -> Atom[S, S]:
-    class _Fold(Atom[S, S]):
+) -> Atom[S, S, Exception]:
+    class _Fold(Atom[S, S, Exception]):
         name = label
         anchor = ""
 
@@ -163,8 +163,8 @@ def fold_over(
 
 def map_(
     src_key: str, dst_key: str, f: Callable[[Any], Any], *, label: str = "map"
-) -> Atom[S, S]:
-    class _Map(Atom[S, S]):
+) -> Atom[S, S, Exception]:
+    class _Map(Atom[S, S, Exception]):
         name = label
         anchor = ""
 
@@ -181,8 +181,8 @@ def bind_(
     f: Callable[[Any, Ctx[S]], Awaitable[Any]],
     *,
     label: str = "bind",
-) -> Atom[S, S]:
-    class _Bind(Atom[S, S]):
+) -> Atom[S, S, Exception]:
+    class _Bind(Atom[S, S, Exception]):
         name = label
         anchor = ""
 
@@ -197,8 +197,8 @@ def tap(
     effect: Callable[[Ctx[S]], Awaitable[None]] | Callable[[Ctx[S]], None],
     *,
     label: str = "tap",
-) -> Atom[S, S]:
-    class _Tap(Atom[S, S]):
+) -> Atom[S, S, Exception]:
+    class _Tap(Atom[S, S, Exception]):
         name = label
         anchor = ""
 
@@ -211,8 +211,8 @@ def tap(
     return _Tap()
 
 
-def assert_(pred: Pred[S], msg: str, *, label: str = "assert") -> Atom[S, S]:
-    class _Assert(Atom[S, S]):
+def assert_(pred: Pred[S], msg: str, *, label: str = "assert") -> Atom[S, S, Exception]:
+    class _Assert(Atom[S, S, Exception]):
         name = label
         anchor = ""
 
@@ -226,8 +226,8 @@ def assert_(pred: Pred[S], msg: str, *, label: str = "assert") -> Atom[S, S]:
 
 def require(
     getter: Callable[[Ctx[S]], Any], msg: str, *, label: str = "require"
-) -> Atom[S, S]:
-    class _Require(Atom[S, S]):
+) -> Atom[S, S, Exception]:
+    class _Require(Atom[S, S, Exception]):
         name = label
         anchor = ""
 

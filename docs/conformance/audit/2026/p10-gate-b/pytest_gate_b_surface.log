@@ -1,0 +1,107 @@
+
+----------------------------- live log collection ------------------------------
+2026-04-01 09:42:44 [INFO] Loaded 52 runtime atoms
+
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py::test_openapi_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:45 [INFO] HTTP Request: GET http://127.0.0.1:38595/custom/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [  3%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py::test_openapi_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:46 [INFO] HTTP Request: GET http://127.0.0.1:39139/custom/openapi.json "HTTP/1.1 200 OK"
+PASSED                                                                   [  6%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py::test_swagger_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:46 [INFO] HTTP Request: GET http://127.0.0.1:34873/custom/docs "HTTP/1.1 200 OK"
+PASSED                                                                   [  9%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py::test_swagger_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:46 [INFO] HTTP Request: GET http://127.0.0.1:37717/custom/docs "HTTP/1.1 200 OK"
+PASSED                                                                   [ 12%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:46 [INFO] HTTP Request: GET http://127.0.0.1:53943/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 15%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:46 [INFO] HTTP Request: GET http://127.0.0.1:51401/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 18%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_with_tigrbl_app_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:47 [INFO] HTTP Request: GET http://127.0.0.1:59003/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 21%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py::test_openrpc_mountable_with_tigrbl_router_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:47 [INFO] HTTP Request: GET http://127.0.0.1:46213/custom/openrpc.json "HTTP/1.1 200 OK"
+PASSED                                                                   [ 24%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_on_tigrbl_app_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:47 [INFO] HTTP Request: GET http://127.0.0.1:48581/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 27%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_on_tigrbl_router_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:47 [INFO] HTTP Request: GET http://127.0.0.1:49079/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 30%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_with_openrpc_spec_path_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:47 [INFO] HTTP Request: GET http://127.0.0.1:37459/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 33%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_with_tigrbl_app_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://127.0.0.1:38203/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 36%]
+pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py::test_lens_mountable_with_tigrbl_router_method_uvicorn 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://127.0.0.1:58323/custom/lens "HTTP/1.1 200 OK"
+PASSED                                                                   [ 39%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py::test_docs_surfaces_include_json_schema_and_asyncapi_specs_and_static_mount 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/openapi.json "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/docs "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/openrpc.json "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/lens "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/schemas.json "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/asyncapi.json "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/assets/nested/hello.txt "HTTP/1.1 200 OK"
+PASSED                                                                   [ 42%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py::test_cookie_form_and_upload_surfaces_roundtrip 
+-------------------------------- live log call ---------------------------------
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/cookie/set "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: GET http://test/cookie/read "HTTP/1.1 200 OK"
+2026-04-01 09:42:48 [INFO] HTTP Request: POST http://test/form "HTTP/1.1 200 OK"
+PASSED                                                                   [ 45%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py::test_streaming_and_sse_surfaces_emit_multiple_asgi_body_messages PASSED [ 48%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py::test_websocket_surface_accepts_receives_and_sends_text PASSED [ 51%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py::test_operator_surface_reference_pages_exist PASSED [ 54%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py::test_operator_surface_docs_record_de_scoped_docs_ui_and_auth_decisions PASSED [ 57%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_routes_command_smoke_lists_http_websocket_and_docs_routes PASSED [ 60%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_openapi_command_smoke_outputs_openapi_document PASSED [ 63%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_openrpc_command_smoke_outputs_openrpc_document PASSED [ 66%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_doctor_command_smoke_outputs_app_summary PASSED [ 69%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_capabilities_command_smoke_outputs_commands_flags_servers_and_target PASSED [ 72%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[uvicorn] PASSED [ 75%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[hypercorn] PASSED [ 78%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[gunicorn] PASSED [ 81%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[tigrcorn] PASSED [ 84%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_dev_command_enables_reload_by_default PASSED [ 87%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_uvicorn_runner_translates_config PASSED [ 90%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_hypercorn_runner_translates_config PASSED [ 93%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_gunicorn_runner_translates_config PASSED [ 96%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_tigrcorn_runner_translates_config PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../../opt/pyvenv/lib/python3.13/site-packages/_pytest/config/__init__.py:1428
+  /opt/pyvenv/lib/python3.13/site-packages/_pytest/config/__init__.py:1428: PytestConfigWarning: Unknown config option: timeout
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+tests/i9n/test_mountable_openapi_uvicorn.py::test_openapi_mountable_on_tigrbl_app_uvicorn
+  /opt/pyvenv/lib/python3.13/site-packages/websockets/legacy/__init__.py:6: DeprecationWarning: websockets.legacy is deprecated; see https://websockets.readthedocs.io/en/stable/howto/upgrade.html for upgrade instructions
+    warnings.warn(  # deprecated in 14.0 - 2024-11-09
+
+tests/i9n/test_mountable_openapi_uvicorn.py::test_openapi_mountable_on_tigrbl_app_uvicorn
+  /opt/pyvenv/lib/python3.13/site-packages/uvicorn/protocols/websockets/websockets_impl.py:17: DeprecationWarning: websockets.server.WebSocketServerProtocol is deprecated
+    from websockets.server import WebSocketServerProtocol
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 33 passed, 3 warnings in 24.06s ========================

@@ -114,10 +114,20 @@ def as_stream(
     status: int = 200,
     headers: Optional[Headers] = None,
 ) -> Response:
-    if hasattr(chunks, "__aiter__"):
-        raise TypeError("AsyncIterable streaming is not supported in stdapi shortcuts")
     return _with_headers(
         StreamingResponse(chunks, status_code=status, media_type=media_type),
+        headers,
+    )
+
+
+def as_event_stream(
+    events: Union[Iterable[Any], AsyncIterable[Any]],
+    *,
+    status: int = 200,
+    headers: Optional[Headers] = None,
+) -> Response:
+    return _with_headers(
+        EventStreamResponse(events, status_code=status),
         headers,
     )
 
@@ -154,6 +164,7 @@ def as_file(
 
 
 __all__ = [
+    "as_event_stream",
     "as_json",
     "as_html",
     "as_text",

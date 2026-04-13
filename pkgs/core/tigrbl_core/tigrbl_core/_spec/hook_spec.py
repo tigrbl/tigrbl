@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Tuple
 
+from .binding_spec import Exchange
 from .hook_types import HookPhase, HookPredicate, StepFn
 
 from .serde import SerdeMixin
@@ -14,6 +15,11 @@ from .serde import SerdeMixin
 class HookSpec(SerdeMixin):
     phase: HookPhase
     fn: StepFn
+    ops: str | Tuple[str, ...] = "*"
+    bindings: Tuple[str, ...] = ()
+    exchange: Optional[Exchange] = None
+    family: Tuple[str, ...] = ()
+    subevents: Tuple[str, ...] = ()
     order: int = 0
     when: Optional[HookPredicate] = None
     name: Optional[str] = None

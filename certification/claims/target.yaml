@@ -1,0 +1,207 @@
+schema_version: 1
+state: target
+claims:
+  - id: NEXT-003
+    public: true
+    certified_boundary: false
+    title: DataTypeSpec and StorageTypeRef define the active canonical semantic datatype center for the next target.
+    owner: Next-target program
+    phase: N1
+  - id: NEXT-004
+    public: true
+    certified_boundary: false
+    title: ColumnSpec.datatype is the canonical datatype attachment point on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-005
+    public: true
+    certified_boundary: false
+    title: TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype contract on the active next-target line.
+    owner: Next-target program
+    phase: N1
+  - id: NEXT-006
+    public: true
+    certified_boundary: false
+    title: EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned lowering on the active next-target line.
+    owner: Next-target program
+    phase: N2
+  - id: NEXT-007
+    public: true
+    certified_boundary: false
+    title: ReflectedTypeMapper governs reverse mapping and reflection import behavior on the active next-target line.
+    owner: Next-target program
+    phase: N5
+  - id: NEXT-008
+    public: true
+    certified_boundary: false
+    title: Relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line.
+    owner: Next-target program
+    phase: N2
+  - id: NEXT-009
+    public: true
+    certified_boundary: false
+    title: Table portability and interoperability rules are specified as governed next-target work on the active line.
+    owner: Next-target program
+    phase: N4
+  - id: NEXT-010
+    public: true
+    certified_boundary: false
+    title: Reflection-driven round-trip schema recovery is defined with best-effort and metadata-preserving modes on the active next-target line.
+    owner: Next-target program
+    phase: N5
+  - id: NEXT-011
+    public: true
+    certified_boundary: false
+    title: The canonical `create` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-012
+    public: true
+    certified_boundary: false
+    title: The canonical `read` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-013
+    public: true
+    certified_boundary: false
+    title: The canonical `update` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-014
+    public: true
+    certified_boundary: false
+    title: The canonical `replace` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-015
+    public: true
+    certified_boundary: false
+    title: The canonical `merge` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-016
+    public: true
+    certified_boundary: false
+    title: The canonical `delete` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-017
+    public: true
+    certified_boundary: false
+    title: The canonical `list` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-018
+    public: true
+    certified_boundary: false
+    title: The canonical `clear` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-019
+    public: true
+    certified_boundary: false
+    title: The canonical `count` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-020
+    public: true
+    certified_boundary: false
+    title: The canonical `exists` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-021
+    public: true
+    certified_boundary: false
+    title: The canonical `bulk_create` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-022
+    public: true
+    certified_boundary: false
+    title: The canonical `bulk_update` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-023
+    public: true
+    certified_boundary: false
+    title: The canonical `bulk_replace` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-024
+    public: true
+    certified_boundary: false
+    title: The canonical `bulk_merge` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-025
+    public: true
+    certified_boundary: false
+    title: The canonical `bulk_delete` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-026
+    public: true
+    certified_boundary: false
+    title: The canonical `aggregate` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-027
+    public: true
+    certified_boundary: false
+    title: The canonical `group_by` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-028
+    public: true
+    certified_boundary: false
+    title: The canonical `publish` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-029
+    public: true
+    certified_boundary: false
+    title: The canonical `subscribe` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-030
+    public: true
+    certified_boundary: false
+    title: The canonical `tail` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-031
+    public: true
+    certified_boundary: false
+    title: The canonical `upload` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-032
+    public: true
+    certified_boundary: false
+    title: The canonical `download` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-033
+    public: true
+    certified_boundary: false
+    title: The canonical `append_chunk` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-034
+    public: true
+    certified_boundary: false
+    title: The canonical `send_datagram` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-035
+    public: true
+    certified_boundary: false
+    title: The canonical `checkpoint` op is governed as a distinct executable claim on the active next-target line.
+    owner: Next-target program
+    phase: N3
+  - id: NEXT-036
+    public: true
+    certified_boundary: false
+    title: The canonical `custom` op remains an explicit governed extension point on the active next-target line.
+    owner: Next-target program
+    phase: N3

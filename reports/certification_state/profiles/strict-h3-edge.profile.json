@@ -1,0 +1,15 @@
+{
+  "profile": "strict-h3-edge",
+  "transport": "http/3-edge",
+  "proxy_contract": "edge-normalized",
+  "early_data_policy": "edge-replay-guarded",
+  "origin_static_policy": "edge-static",
+  "quic_metrics": [
+    "connections",
+    "handshake",
+    "retry",
+    "migration"
+  ],
+  "qlog_export": "experimental-only",
+  "claimable": false
+}

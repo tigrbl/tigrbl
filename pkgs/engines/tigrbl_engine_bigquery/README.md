@@ -1,31 +1,23 @@
 # tigrbl_engine_bigquery
 
-A BigQuery engine plugin for **tigrbl**. This package registers a new engine kind
-`"bigquery"` that tigrbl auto-discovers via the `tigrbl.engine` entry-point group.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Installation
+## Canonical repository docs
 
-```bash
-pip install tigrbl_engine_bigquery
-```
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Usage
+## Package identity
 
-Once installed, just refer to `kind="bigquery"` in your engine spec:
+- workspace path: `pkgs/engines/tigrbl_engine_bigquery`
+- workspace class: engine package
+- implementation layout: `src/tigrbl_engine_bigquery/`
 
-```python
-from tigrbl.engine.engine_spec import EngineSpec
-
-spec = EngineSpec(kind="bigquery", mapping={"project": "my-gcp-project", "default_dataset": "analytics"})
-provider = spec.to_provider()
-engine, make_session = provider.ensure()   # triggers external plugin registration
-session = make_session()                   # returns a BigQuerySession
-
-# Optionally run SQL via the session (see session.query method stub)
-```
-
-This package exposes:
-- `BigQueryEngine` (engine handle/config)
-- `BigQuerySession` (simple session wrapper)
-- `bigquery_engine` (builder used by tigrbl)
-- `register()` (called by tigrbl’s plugin loader)
+Long-form repository documentation is governed from `docs/`.

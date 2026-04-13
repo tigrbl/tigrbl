@@ -1,0 +1,93 @@
+name: Policy Governance
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate-policy:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Resolve Gate A diff range
+        shell: bash
+        run: |
+          set -euo pipefail
+          RANGE=""
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            BASE_COMMIT="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+            RANGE="${BASE_COMMIT}..HEAD"
+          elif git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
+            RANGE="HEAD~1..HEAD"
+          fi
+          echo "GATE_A_DIFF_RANGE=${RANGE}" >> "$GITHUB_ENV"
+
+      - name: Validate package layout
+        run: python tools/ci/validate_package_layout.py
+
+      - name: Validate documentation pointers
+        run: python tools/ci/validate_doc_pointers.py
+
+      - name: Validate root clutter
+        run: python tools/ci/validate_root_clutter.py
+
+      - name: Validate path lengths
+        run: python tools/ci/validate_path_lengths.py
+
+      - name: Lint claim language
+        run: python tools/ci/lint_claim_language.py
+
+      - name: Validate Gate A boundary freeze manifest
+        run: python tools/ci/validate_boundary_freeze_manifest.py
+
+      - name: Enforce Gate A diff policy
+        run: python tools/ci/enforce_boundary_freeze_diff.py
+
+      - name: Lint release note claims
+        run: python tools/ci/lint_release_note_claims.py
+
+      - name: Validate evidence registry
+        run: python tools/ci/validate_evidence_registry.py
+
+      - name: Validate evidence bundles
+        run: python tools/ci/validate_evidence_bundles.py
+
+      - name: Validate certification authority tree
+        run: python tools/ci/validate_certification_tree.py
+
+      - name: Validate Phase 1 declared surface
+        run: python tools/ci/validate_phase1_declared_surface.py
+
+      - name: Validate Phase 4 native parity
+        run: python tools/ci/validate_phase4_native_parity.py
+
+      - name: Validate Phase 5 Tigrcorn operator surface
+        run: python tools/ci/validate_phase5_tigrcorn_operator_surface.py
+
+      - name: Validate Phase 6 Tigrcorn hardening
+        run: python tools/ci/validate_phase6_tigrcorn_hardening.py
+
+      - name: Validate Phase 7 claim lifecycle and release bundle
+        run: python tools/ci/validate_phase7_claim_lifecycle.py
+
+      - name: Validate Gate B surface closure
+        run: python tools/ci/validate_gate_b_surface_closure.py
+
+      - name: Validate Gate C conformance/security closure
+        run: python tools/ci/validate_gate_c_conformance_security.py
+
+      - name: Run governance and evidence pytest coverage
+        run: pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_phase1_declared_surface.py tools/ci/tests/test_phase4_native_parity.py tools/ci/tests/test_phase5_tigrcorn_operator_surface.py tools/ci/tests/test_phase6_tigrcorn_hardening.py tools/ci/tests/test_phase7_claim_lifecycle.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_phase14_handoff.py

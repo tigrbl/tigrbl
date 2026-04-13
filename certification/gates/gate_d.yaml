@@ -1,0 +1,9 @@
+schema_version: 1
+gate: gate-d
+name: Reproducibility and package assembly
+state: evidenced
+applies_to: 0.3.18
+owner: Governance
+validator: tools/ci/validate_gate_d_reproducibility.py
+workflow: .github/workflows/gate-d-reproducibility.yml
+pass_condition: The chosen promotion-source build is reproducible and package evidence is synchronized.

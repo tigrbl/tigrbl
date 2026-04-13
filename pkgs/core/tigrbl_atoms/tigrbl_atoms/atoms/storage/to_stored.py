@@ -167,7 +167,7 @@ def _resolve_from_pointer(
     return pv.get(field, {}).get("raw")
 
 
-class AtomImpl(Atom[Resolved, Resolved]):
+class AtomImpl(Atom[Resolved, Resolved, Exception]):
     name = "storage.to_stored"
     anchor = ANCHOR
 

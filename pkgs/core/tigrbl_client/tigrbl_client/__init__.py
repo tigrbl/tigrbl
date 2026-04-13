@@ -12,7 +12,7 @@ T = TypeVar("T")
 
 
 # Re-export the Schema protocol for public use
-__all__ = ["TigrblClient", "_Schema"]
+__all__ = ["TigrblClient", "NestedCRUDMixin", "_Schema"]
 
 
 class TigrblClient(RPCMixin, CRUDMixin, NestedCRUDMixin):
@@ -25,7 +25,7 @@ class TigrblClient(RPCMixin, CRUDMixin, NestedCRUDMixin):
     * Async versions of all operations (aget, apost, aput, apatch, adelete)
     * Connection pooling via httpx.Client
     * Optional Pydantic schema validation for requests and responses
-    * Placeholder for future nested CRUD operations
+    * Nested REST helpers for hierarchical resources
     * Works with Tigrbl services that expose operations via resource-based
       namespaces (e.g., ``api.core.Users.create`` or ``api.rpc.Users.login``)
 
@@ -72,7 +72,7 @@ class TigrblClient(RPCMixin, CRUDMixin, NestedCRUDMixin):
         self._async_client = httpx.AsyncClient(timeout=10.0)
         self._own_async = True  # we always own the async client
 
-        # Initialize nested CRUD placeholder
+        # Enable nested resource helpers.
         NestedCRUDMixin.__init__(self)
 
     @property

@@ -15,6 +15,14 @@ from .callbacks import (
     registered_python_callbacks,
 )
 from .compile import compile_app, normalize_spec
+from .parity import (
+    native_parity_snapshot,
+    native_transport_trace,
+    reference_parity_snapshot,
+    reference_transport_trace,
+)
+from .request import NativeRequest
+from .response import NativeResponse
 from .errors import NativeBindingsUnavailableError
 from .runtime import NativeRuntimeHandle, create_runtime
 from .trace import (
@@ -28,6 +36,8 @@ __all__ = [
     "ExecutionBackend",
     "NativeBackendConfig",
     "NativeBindingsUnavailableError",
+    "NativeRequest",
+    "NativeResponse",
     "NativeRuntimeHandle",
     "clear_ffi_boundary_events",
     "coerce_execution_backend",
@@ -36,6 +46,8 @@ __all__ = [
     "create_runtime",
     "ffi_boundary_events",
     "native_available",
+    "native_parity_snapshot",
+    "native_transport_trace",
     "normalize_spec",
     "register_python_atom",
     "register_python_callback",
@@ -43,5 +55,7 @@ __all__ = [
     "register_python_handler",
     "register_python_hook",
     "registered_python_callbacks",
+    "reference_parity_snapshot",
+    "reference_transport_trace",
     "wants_native_backend",
 ]

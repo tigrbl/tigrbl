@@ -30,7 +30,7 @@ def _run(obj: object | None, ctx: Any) -> None:
                 egress["result"] = payload
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "egress.result_normalize"
     anchor = ANCHOR
 

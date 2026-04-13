@@ -8,22 +8,34 @@ import pytest
 from tigrbl_atoms.atoms.sys import REGISTRY
 from tigrbl_atoms.atoms.sys import (
     commit_tx,
+    handler_aggregate,
+    handler_append_chunk,
     handler_bulk_create,
     handler_bulk_delete,
     handler_bulk_merge,
     handler_bulk_replace,
     handler_bulk_update,
+    handler_checkpoint,
     handler_clear,
+    handler_count,
     handler_create,
     handler_custom,
     handler_delete,
+    handler_download,
+    handler_exists,
+    handler_group_by,
     handler_list,
     handler_merge,
     handler_noop,
     handler_persistence,
+    handler_publish,
     handler_read,
     handler_replace,
+    handler_send_datagram,
+    handler_subscribe,
+    handler_tail,
     handler_update,
+    handler_upload,
     start_tx,
 )
 from tigrbl_atoms.types import Atom, ExecutingCtx, GuardedCtx, OperatedCtx, ResolvedCtx
@@ -42,11 +54,23 @@ def test_sys_registry_contains_expected_atoms() -> None:
         ("sys", "handler_delete"),
         ("sys", "handler_list"),
         ("sys", "handler_clear"),
+        ("sys", "handler_count"),
+        ("sys", "handler_exists"),
         ("sys", "handler_bulk_create"),
         ("sys", "handler_bulk_update"),
         ("sys", "handler_bulk_replace"),
         ("sys", "handler_bulk_merge"),
         ("sys", "handler_bulk_delete"),
+        ("sys", "handler_aggregate"),
+        ("sys", "handler_group_by"),
+        ("sys", "handler_publish"),
+        ("sys", "handler_subscribe"),
+        ("sys", "handler_tail"),
+        ("sys", "handler_upload"),
+        ("sys", "handler_download"),
+        ("sys", "handler_append_chunk"),
+        ("sys", "handler_send_datagram"),
+        ("sys", "handler_checkpoint"),
         ("sys", "commit_tx"),
     }
 
@@ -85,6 +109,14 @@ def test_sys_registry_binds_expected_anchor_and_instance_samples() -> None:
         handler_clear.ANCHOR,
         handler_clear.INSTANCE,
     )
+    assert REGISTRY[("sys", "handler_count")] == (
+        handler_count.ANCHOR,
+        handler_count.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_exists")] == (
+        handler_exists.ANCHOR,
+        handler_exists.INSTANCE,
+    )
     assert REGISTRY[("sys", "handler_bulk_create")] == (
         handler_bulk_create.ANCHOR,
         handler_bulk_create.INSTANCE,
@@ -104,6 +136,46 @@ def test_sys_registry_binds_expected_anchor_and_instance_samples() -> None:
     assert REGISTRY[("sys", "handler_bulk_delete")] == (
         handler_bulk_delete.ANCHOR,
         handler_bulk_delete.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_aggregate")] == (
+        handler_aggregate.ANCHOR,
+        handler_aggregate.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_group_by")] == (
+        handler_group_by.ANCHOR,
+        handler_group_by.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_publish")] == (
+        handler_publish.ANCHOR,
+        handler_publish.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_subscribe")] == (
+        handler_subscribe.ANCHOR,
+        handler_subscribe.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_tail")] == (
+        handler_tail.ANCHOR,
+        handler_tail.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_upload")] == (
+        handler_upload.ANCHOR,
+        handler_upload.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_download")] == (
+        handler_download.ANCHOR,
+        handler_download.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_append_chunk")] == (
+        handler_append_chunk.ANCHOR,
+        handler_append_chunk.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_send_datagram")] == (
+        handler_send_datagram.ANCHOR,
+        handler_send_datagram.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_checkpoint")] == (
+        handler_checkpoint.ANCHOR,
+        handler_checkpoint.INSTANCE,
     )
     assert REGISTRY[("sys", "handler_persistence")] == (
         handler_persistence.ANCHOR,
@@ -129,11 +201,23 @@ def test_sys_instances_and_impls_use_atom_contract() -> None:
         handler_delete,
         handler_list,
         handler_clear,
+        handler_count,
+        handler_exists,
         handler_bulk_create,
         handler_bulk_update,
         handler_bulk_replace,
         handler_bulk_merge,
         handler_bulk_delete,
+        handler_aggregate,
+        handler_group_by,
+        handler_publish,
+        handler_subscribe,
+        handler_tail,
+        handler_upload,
+        handler_download,
+        handler_append_chunk,
+        handler_send_datagram,
+        handler_checkpoint,
         handler_noop,
     )
     for module in modules:
@@ -278,6 +362,46 @@ def test_handler_clear_delegates_to_core_clear_with_empty_filter(
     assert ctx.result == {"cleared": True}
 
 
+def test_handler_count_delegates_to_core_count(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class Model:
+        pass
+
+    async def fake_count(model: type, filters: object, db: object) -> dict[str, object]:
+        assert model is Model
+        assert filters == {"status": "active"}
+        assert db == "db-handle"
+        return {"count": 3}
+
+    monkeypatch.setattr(handler_count._core, "count", fake_count)
+
+    ctx = SimpleNamespace(payload={"status": "active"}, db="db-handle")
+    asyncio.run(handler_count._run(Model, ctx))
+
+    assert ctx.result == {"count": 3}
+
+
+def test_handler_exists_delegates_to_core_exists(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    class Model:
+        pass
+
+    async def fake_exists(model: type, ident: object, db: object) -> dict[str, object]:
+        assert model is Model
+        assert ident == 9
+        assert db == "db-handle"
+        return {"exists": True}
+
+    monkeypatch.setattr(handler_exists._core, "exists", fake_exists)
+
+    ctx = SimpleNamespace(payload={"id": 9}, db="db-handle")
+    asyncio.run(handler_exists._run(Model, ctx))
+
+    assert ctx.result == {"exists": True}
+
+
 def test_handler_bulk_create_requires_list_payload() -> None:
     class Model:
         pass
@@ -389,6 +513,82 @@ def test_handler_list_passes_filters_and_pagination(
     asyncio.run(handler_list._run(Model, ctx))
 
     assert ctx.result == [{"id": 1}]
+
+
+@pytest.mark.parametrize(
+    ("atom", "module_name", "fn_name", "payload", "expected"),
+    (
+        (handler_aggregate, handler_aggregate, "aggregate", {"rows": []}, {"value": 0}),
+        (
+            handler_group_by,
+            handler_group_by,
+            "group_by",
+            {"rows": [], "field": "kind"},
+            {"groups": []},
+        ),
+        (
+            handler_publish,
+            handler_publish,
+            "publish",
+            {"channel": "ops"},
+            {"published": True},
+        ),
+        (
+            handler_subscribe,
+            handler_subscribe,
+            "subscribe",
+            {"channel": "ops"},
+            {"subscribed": True},
+        ),
+        (handler_tail, handler_tail, "tail", {"stream": "audit"}, {"tailed": True}),
+        (handler_upload, handler_upload, "upload", {"name": "x"}, {"uploaded": True}),
+        (
+            handler_download,
+            handler_download,
+            "download",
+            {"name": "x"},
+            {"downloaded": True},
+        ),
+        (
+            handler_append_chunk,
+            handler_append_chunk,
+            "append_chunk",
+            {"stream": "x"},
+            {"appended": True},
+        ),
+        (
+            handler_send_datagram,
+            handler_send_datagram,
+            "send_datagram",
+            {"route": "x"},
+            {"sent": True},
+        ),
+        (
+            handler_checkpoint,
+            handler_checkpoint,
+            "checkpoint",
+            {"cursor": "x"},
+            {"checkpointed": True},
+        ),
+    ),
+)
+def test_phase3_handlers_delegate_to_backing_packages(
+    monkeypatch: pytest.MonkeyPatch,
+    atom: Atom,
+    module_name: object,
+    fn_name: str,
+    payload: dict[str, object],
+    expected: dict[str, object],
+) -> None:
+    async def fake_call(incoming_payload: object) -> dict[str, object]:
+        assert incoming_payload == payload
+        return expected
+
+    monkeypatch.setattr(module_name._core, fn_name, fake_call)
+    ctx = SimpleNamespace(payload=payload, db="db-handle")
+    asyncio.run(atom._run(None, ctx))
+
+    assert ctx.result == expected
 
 
 def test_sys_instances_promote_expected_ctx_types() -> None:

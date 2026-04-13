@@ -6,18 +6,51 @@ from typing import Literal, Optional, Type, Union
 from ..config.constants import TIGRBL_NESTED_PATHS_ATTR
 from .serde import SerdeMixin
 
+Exchange = Literal[
+    "request_response",
+    "server_stream",
+    "event_stream",
+    "client_stream",
+    "bidirectional",
+    "bidirectional_stream",
+    "fire_and_forget",
+]
+Framing = Literal["json", "jsonrpc", "sse", "stream", "text", "bytes", "webtransport"]
+
 
 @dataclass(frozen=True, slots=True)
 class HttpRestBindingSpec(SerdeMixin):
     proto: Literal["http.rest", "https.rest"]
     methods: tuple[str, ...]
     path: str
+    exchange: Exchange = "request_response"
+    framing: Framing = "json"
 
 
 @dataclass(frozen=True, slots=True)
 class HttpJsonRpcBindingSpec(SerdeMixin):
     proto: Literal["http.jsonrpc", "https.jsonrpc"]
     rpc_method: str
+    exchange: Exchange = "request_response"
+    framing: Framing = "jsonrpc"
+
+
+@dataclass(frozen=True, slots=True)
+class HttpStreamBindingSpec(SerdeMixin):
+    proto: Literal["http.stream", "https.stream"]
+    path: str
+    methods: tuple[str, ...] = ("GET",)
+    exchange: Exchange = "server_stream"
+    framing: Framing = "stream"
+
+
+@dataclass(frozen=True, slots=True)
+class SseBindingSpec(SerdeMixin):
+    proto: Literal["http.sse", "https.sse"] = "http.sse"
+    path: str = "/"
+    methods: tuple[str, ...] = ("GET",)
+    exchange: Exchange = "server_stream"
+    framing: Framing = "sse"
 
 
 @dataclass(frozen=True, slots=True)
@@ -25,12 +58,25 @@ class WsBindingSpec(SerdeMixin):
     proto: Literal["ws", "wss"]
     path: str
     subprotocols: tuple[str, ...] = ()
+    exchange: Exchange = "bidirectional_stream"
+    framing: Framing = "text"
+
+
+@dataclass(frozen=True, slots=True)
+class WebTransportBindingSpec(SerdeMixin):
+    proto: Literal["webtransport"] = "webtransport"
+    path: str = "/"
+    exchange: Exchange = "bidirectional_stream"
+    framing: Framing = "webtransport"
 
 
 TransportBindingSpec = Union[
     HttpRestBindingSpec,
     HttpJsonRpcBindingSpec,
+    HttpStreamBindingSpec,
+    SseBindingSpec,
     WsBindingSpec,
+    WebTransportBindingSpec,
 ]
 
 
@@ -70,9 +116,14 @@ def resolve_rest_nested_prefix(model: Type) -> Optional[str]:
 __all__ = [
     "BindingSpec",
     "BindingRegistrySpec",
+    "Exchange",
+    "Framing",
     "HttpJsonRpcBindingSpec",
     "HttpRestBindingSpec",
+    "HttpStreamBindingSpec",
+    "SseBindingSpec",
     "TransportBindingSpec",
+    "WebTransportBindingSpec",
     "WsBindingSpec",
     "resolve_rest_nested_prefix",
 ]

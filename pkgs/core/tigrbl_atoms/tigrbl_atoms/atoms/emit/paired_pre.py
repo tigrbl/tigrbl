@@ -106,7 +106,7 @@ def _get_paired_values(temp: Mapping[str, Any]) -> Mapping[str, Dict[str, Any]]:
     return pv if isinstance(pv, dict) else {}
 
 
-class AtomImpl(Atom[Resolved, Resolved]):
+class AtomImpl(Atom[Resolved, Resolved, Exception]):
     name = "emit.paired_pre"
     anchor = ANCHOR
 

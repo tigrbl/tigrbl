@@ -1,0 +1,9 @@
+schema_version: 1
+gate: gate-b
+name: Surface closure
+state: evidenced
+applies_to: 0.3.18
+owner: Governance
+validator: tools/ci/validate_gate_b_surface_closure.py
+workflow: .github/workflows/gate-b-surface-closure.yml
+pass_condition: No unresolved current-target surface gaps remain.

@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
+JSON_SCHEMA_DRAFT_2020_12_DIALECT = "https://json-schema.org/draft/2020-12/schema"
+
 from ....runtime.status.mappings import status
 from .helpers import (
     _request_schema_from_handler,
@@ -11,6 +13,7 @@ from .helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
+from tigrbl_concrete.system.docs.surface import binding_surface, op_surface
 
 
 def openapi(router: Any) -> dict[str, Any]:
@@ -122,6 +125,7 @@ def openapi(router: Any) -> dict[str, Any]:
 
             model = getattr(route, "tigrbl_model", None)
             alias = getattr(route, "tigrbl_alias", None)
+            binding = getattr(route, "tigrbl_binding", None)
             security_deps: list[Any] = []
             security_deps.extend(list(getattr(router, "dependencies", None) or ()))
             security_deps.extend(list(getattr(route, "dependencies", None) or ()))
@@ -132,7 +136,13 @@ def openapi(router: Any) -> dict[str, Any]:
                 specs = getattr(getattr(model, "ops", None), "by_alias", {})
                 sp_list = specs.get(alias) or ()
                 if sp_list:
-                    security_deps.extend(list(getattr(sp_list[0], "secdeps", ()) or ()))
+                    security_deps.extend(
+                        list(
+                            getattr(sp_list[0], "security_deps", ())
+                            or getattr(sp_list[0], "secdeps", ())
+                            or ()
+                        )
+                    )
 
             for dep in tuple(getattr(route, "dependencies", ()) or ()):
                 if dep not in security_deps:
@@ -145,10 +155,27 @@ def openapi(router: Any) -> dict[str, Any]:
                     _security_schemes_from_dependencies(security_deps)
                 )
 
+            op_spec_surface = None
+            if model is not None and isinstance(alias, str):
+                specs = getattr(getattr(model, "ops", None), "by_alias", {})
+                sp_list = specs.get(alias) or ()
+                if sp_list:
+                    op_spec_surface = op_surface(sp_list[0])
+
+            op["x-tigrbl-surface"] = {
+                "binding": binding_surface(binding) if binding is not None else None,
+                "bindings": op_spec_surface["bindings"] if op_spec_surface else [],
+                "exchange": getattr(route, "tigrbl_exchange", None),
+                "txScope": getattr(route, "tigrbl_tx_scope", None),
+                "family": op_spec_surface["family"] if op_spec_surface else None,
+                "subevents": op_spec_surface["subevents"] if op_spec_surface else [],
+            }
+
             path_item[method.lower()] = op
 
     doc: dict[str, Any] = {
         "openapi": "3.1.0",
+        "jsonSchemaDialect": JSON_SCHEMA_DRAFT_2020_12_DIALECT,
         "info": {"title": router.title, "version": router.version},
         "paths": paths,
         "components": components,

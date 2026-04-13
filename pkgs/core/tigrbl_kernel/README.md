@@ -1,29 +1,23 @@
-![Tigrbl branding](https://github.com/swarmauri/swarmauri-sdk/blob/a170683ecda8ca1c4f912c966d4499649ffb8224/assets/tigrbl.brand.theme.svg)
+# tigrbl_kernel
 
-# tigrbl-kernel
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tigrbl-kernel.svg) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/pypi/pyversions/tigrbl-kernel.svg) ![License](https://img.shields.io/pypi/l/tigrbl-kernel.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-kernel.svg)
+## Canonical repository docs
 
-## Features
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-- Modular package in the Tigrbl namespace.
-- Supports Python 3.10 through 3.12.
-- Distributed as part of the swarmauri-sdk workspace.
+## Package identity
 
-## Installation
+- workspace path: `pkgs/core/tigrbl_kernel`
+- workspace class: core Python package
+- implementation layout: `tigrbl_kernel/`
 
-### uv
-
-```bash
-uv add tigrbl-kernel
-```
-
-### pip
-
-```bash
-pip install tigrbl-kernel
-```
-
-## Usage
-
-Import from the shared package-specific module namespaces after installation in your environment.
+Long-form repository documentation is governed from `docs/`.

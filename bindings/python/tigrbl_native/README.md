@@ -1,15 +1,23 @@
-        # tigrbl_native
+# tigrbl_native
 
-        PyO3 / maturin bridge used to serialize Python-authored specs into Rust-native IR, compile native plans, and instantiate native runtime handles.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-        ## Owns
+## Canonical repository docs
 
-        - spec normalization and FFI entrypoints
-- callback registration descriptors
-- runtime handle creation
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-        ## Does not own
+## Package identity
 
-        - kernel optimizer ownership
-- engine implementation logic
-- long-term business logic
+- workspace path: `bindings/python/tigrbl_native`
+- workspace class: Python binding package
+- implementation layout: `python/tigrbl_native/` and `src/`
+
+Long-form repository documentation is governed from `docs/`.

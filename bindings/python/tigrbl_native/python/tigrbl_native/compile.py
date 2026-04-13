@@ -8,7 +8,7 @@ from .errors import NativeBindingsUnavailableError
 try:
     from . import _native
 except Exception as exc:  # pragma: no cover - exercised when extension is not built.
-    _native = None
+    from . import _fallback as _native
     _IMPORT_ERROR = exc
 else:
     _IMPORT_ERROR = None
@@ -33,6 +33,9 @@ def normalize_spec(spec: Any) -> str:
     return native.normalize_spec(_coerce_spec(spec))
 
 
-def compile_app(spec: Any) -> str:
+def compile_app(spec: Any) -> dict[str, Any]:
     native = _require_native()
-    return native.compile_spec(_coerce_spec(spec))
+    compiled = native.compile_spec(_coerce_spec(spec))
+    if isinstance(compiled, str):
+        return json.loads(compiled)
+    return compiled

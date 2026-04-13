@@ -270,7 +270,7 @@ def _dump_scalar(v: Any) -> Any:
     return v
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "wire.dump"
     anchor = ANCHOR
 

@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import re
+from typing import Any
 
 from ._headers import Headers
-
-from .base import BaseHTTPMiddleware
+from ._middleware import Middleware as BaseHTTPMiddleware
 
 
 class CORSMiddleware(BaseHTTPMiddleware):
@@ -21,34 +21,21 @@ class CORSMiddleware(BaseHTTPMiddleware):
 
     def __init__(
         self,
-        app,
+        app: Any,
         *,
         allow_origin: str = "*",
         allow_origins: list[str] | tuple[str, ...] | None = None,
         allow_origin_regex: str | None = None,
-        allow_methods: str
-        | list[str]
-        | tuple[str, ...] = "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+        allow_methods: str | list[str] | tuple[str, ...] = "GET,POST,PUT,PATCH,DELETE,OPTIONS",
         allow_headers: str | list[str] | tuple[str, ...] = "*",
         allow_credentials: bool = False,
         max_age: int = 600,
     ) -> None:
-        super().__init__(
-            app,
-            allow_origin=allow_origin,
-            allow_origins=allow_origins,
-            allow_origin_regex=allow_origin_regex,
-            allow_methods=allow_methods,
-            allow_headers=allow_headers,
-            allow_credentials=allow_credentials,
-            max_age=max_age,
-        )
+        super().__init__(app)
         self.allow_origin = allow_origin
         self.allow_origins = list(allow_origins or [])
         self.allow_origin_regex = allow_origin_regex
-        self._allow_origin_pattern = (
-            re.compile(allow_origin_regex) if allow_origin_regex else None
-        )
+        self._allow_origin_pattern = re.compile(allow_origin_regex) if allow_origin_regex else None
         self.allow_methods = self._normalize_listish(allow_methods)
         self.allow_headers = self._normalize_listish(allow_headers)
         self.allow_credentials = allow_credentials
@@ -64,22 +51,14 @@ class CORSMiddleware(BaseHTTPMiddleware):
         origin = request_headers.get("origin")
         if not origin:
             return self.allow_origin
-
         if self._allow_origin_pattern and self._allow_origin_pattern.match(origin):
             return origin
-
         if self.allow_origins:
-            if origin in self.allow_origins:
-                return origin
-            return "null"
-
+            return origin if origin in self.allow_origins else "null"
         if self.allow_origin == "*":
             return self.allow_origin
-
         allowed = [candidate.strip() for candidate in self.allow_origin.split(",")]
-        if origin in allowed:
-            return origin
-        return "null"
+        return origin if origin in allowed else "null"
 
     def _cors_headers(self, request_headers: Headers) -> list[tuple[str, str]]:
         allow_origin = self._resolve_allow_origin(request_headers)
@@ -87,7 +66,6 @@ class CORSMiddleware(BaseHTTPMiddleware):
         requested_headers = request_headers.get("access-control-request-headers")
         if allow_headers == "*" and requested_headers:
             allow_headers = requested_headers
-
         headers = [
             ("access-control-allow-origin", allow_origin),
             ("access-control-allow-methods", self.allow_methods),

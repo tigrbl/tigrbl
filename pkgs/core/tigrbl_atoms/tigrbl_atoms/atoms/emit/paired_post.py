@@ -151,7 +151,7 @@ def _scrub_paired_raw(pv: MutableMapping[str, Dict[str, Any]], field: str) -> No
     entry["emitted"] = True
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "emit.paired_post"
     anchor = ANCHOR
 

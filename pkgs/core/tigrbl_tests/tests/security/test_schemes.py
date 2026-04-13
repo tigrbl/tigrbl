@@ -1,13 +1,15 @@
+import base64
 from types import SimpleNamespace
 
 import pytest
 
-from tigrbl import APIKey, HTTPBearer, MutualTLS, OAuth2, OpenIdConnect
+from tigrbl import APIKey, HTTPBasic, HTTPBearer, MutualTLS, OAuth2, OpenIdConnect
 from tigrbl_base._base._security_base import OpenAPISecurityDependency
 
 
 @pytest.mark.unit
 def test_scheme_classes_are_exposed_from_security_modules() -> None:
+    assert issubclass(HTTPBasic, OpenAPISecurityDependency)
     assert issubclass(HTTPBearer, OpenAPISecurityDependency)
     assert issubclass(APIKey, OpenAPISecurityDependency)
     assert issubclass(OAuth2, OpenAPISecurityDependency)
@@ -39,6 +41,30 @@ def test_router_key_reads_value_from_query_params() -> None:
 def test_router_key_missing_value_raises_when_auto_error_enabled() -> None:
     dep = APIKey(name="api_key", in_="header", auto_error=True)
     request = SimpleNamespace(headers={}, query_params={})
+
+    from tigrbl.runtime.status.exceptions import HTTPException
+
+    with pytest.raises(HTTPException):
+        dep(request)
+
+
+@pytest.mark.unit
+def test_http_basic_reads_authorization_header_and_decodes_credentials() -> None:
+    dep = HTTPBasic()
+    token = base64.b64encode(b"alice:secret").decode("ascii")
+    request = SimpleNamespace(headers={"authorization": f"Basic {token}"})
+
+    credentials = dep(request)
+
+    assert credentials is not None
+    assert credentials.username == "alice"
+    assert credentials.password == "secret"
+
+
+@pytest.mark.unit
+def test_http_basic_missing_value_raises_when_auto_error_enabled() -> None:
+    dep = HTTPBasic(auto_error=True)
+    request = SimpleNamespace(headers={})
 
     from tigrbl.runtime.status.exceptions import HTTPException
 
