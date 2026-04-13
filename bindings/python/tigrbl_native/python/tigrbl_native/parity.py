@@ -9,7 +9,7 @@ from .errors import NativeBindingsUnavailableError
 try:
     from . import _native
 except Exception as exc:  # pragma: no cover
-    _native = None
+    from . import _fallback as _native
     _IMPORT_ERROR = exc
 else:
     _IMPORT_ERROR = None

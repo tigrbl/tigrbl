@@ -21,6 +21,8 @@ from .parity import (
     reference_parity_snapshot,
     reference_transport_trace,
 )
+from .request import NativeRequest
+from .response import NativeResponse
 from .errors import NativeBindingsUnavailableError
 from .runtime import NativeRuntimeHandle, create_runtime
 from .trace import (
@@ -34,6 +36,8 @@ __all__ = [
     "ExecutionBackend",
     "NativeBackendConfig",
     "NativeBindingsUnavailableError",
+    "NativeRequest",
+    "NativeResponse",
     "NativeRuntimeHandle",
     "clear_ffi_boundary_events",
     "coerce_execution_backend",

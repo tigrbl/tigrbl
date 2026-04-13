@@ -1,11 +1,13 @@
 from __future__ import annotations
 
+import json
+
 from .errors import NativeBindingsUnavailableError
 
 try:
     from . import _native
 except Exception as exc:  # pragma: no cover
-    _native = None
+    from . import _fallback as _native
     _IMPORT_ERROR = exc
 else:
     _IMPORT_ERROR = None
@@ -22,7 +24,10 @@ def _require_native():
 def ffi_boundary_events() -> list[dict[str, object]]:
     native = _require_native()
     if hasattr(native, "ffi_boundary_events"):
-        return list(native.ffi_boundary_events())
+        events = native.ffi_boundary_events()
+        if isinstance(events, str):
+            return list(json.loads(events))
+        return list(events)
     return []
 
 

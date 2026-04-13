@@ -5,6 +5,8 @@ use serde_json::{Map, Value as JsonValue};
 use crate::{
     app::AppSpec,
     binding::BindingSpec,
+    callback::CallbackSpec,
+    column::ColumnSpec,
     engine::EngineSpec,
     errors::SpecError,
     hook::{HookPhase, HookSpec},
@@ -38,6 +40,17 @@ pub fn from_json(raw: &str) -> Result<AppSpec, SpecError> {
     spec.metadata = object_field(object, "metadata")
         .map(string_map)
         .unwrap_or_default();
+    spec.runtime = object_field(object, "runtime")
+        .map(value_map_from_json)
+        .unwrap_or_default();
+    spec.dependencies = object
+        .get("dependencies")
+        .map(value_from_json)
+        .unwrap_or(Value::Null);
+    spec.security = object
+        .get("security")
+        .map(value_from_json)
+        .unwrap_or(Value::Null);
     spec.bindings = array_field(object, "bindings")
         .map(parse_bindings)
         .transpose()?
@@ -50,6 +63,10 @@ pub fn from_json(raw: &str) -> Result<AppSpec, SpecError> {
         .map(parse_engines)
         .transpose()?
         .unwrap_or_default();
+    spec.callbacks = array_field(object, "callbacks")
+        .map(parse_callbacks)
+        .transpose()?
+        .unwrap_or_default();
 
     if spec.name.trim().is_empty() {
         return Err(SpecError::Invalid("spec.name must be present".to_string()));
@@ -60,10 +77,19 @@ pub fn from_json(raw: &str) -> Result<AppSpec, SpecError> {
 
 pub fn request_to_json(value: &RequestEnvelope) -> JsonValue {
     let mut object = Map::new();
-    object.insert("operation".to_string(), JsonValue::String(value.operation.clone()));
-    object.insert("transport".to_string(), JsonValue::String(value.transport.clone()));
+    object.insert(
+        "operation".to_string(),
+        JsonValue::String(value.operation.clone()),
+    );
+    object.insert(
+        "transport".to_string(),
+        JsonValue::String(value.transport.clone()),
+    );
     object.insert("path".to_string(), JsonValue::String(value.path.clone()));
-    object.insert("method".to_string(), JsonValue::String(value.method.clone()));
+    object.insert(
+        "method".to_string(),
+        JsonValue::String(value.method.clone()),
+    );
     object.insert(
         "path_params".to_string(),
         JsonValue::Object(value_map_to_json(&value.path_params)),
@@ -89,9 +115,9 @@ pub fn request_to_json(value: &RequestEnvelope) -> JsonValue {
 pub fn request_from_json(raw: &str) -> Result<RequestEnvelope, SpecError> {
     let parsed: JsonValue =
         serde_json::from_str(raw).map_err(|err| SpecError::Invalid(err.to_string()))?;
-    let object = parsed.as_object().ok_or_else(|| {
-        SpecError::Invalid("request payload must be a JSON object".to_string())
-    })?;
+    let object = parsed
+        .as_object()
+        .ok_or_else(|| SpecError::Invalid("request payload must be a JSON object".to_string()))?;
 
     Ok(RequestEnvelope {
         operation: string_field(object, "operation").unwrap_or_default(),
@@ -123,13 +149,46 @@ fn parse_bindings(values: &[JsonValue]) -> Result<Vec<BindingSpec>, SpecError> {
     values.iter().map(parse_binding).collect()
 }
 
+fn parse_callbacks(values: &[JsonValue]) -> Result<Vec<CallbackSpec>, SpecError> {
+    values.iter().map(parse_callback).collect()
+}
+
+fn parse_callback(value: &JsonValue) -> Result<CallbackSpec, SpecError> {
+    let object = value
+        .as_object()
+        .ok_or_else(|| SpecError::Invalid("callback must be a JSON object".to_string()))?;
+    let name = string_field(object, "name").unwrap_or_default();
+    if name.trim().is_empty() {
+        return Err(SpecError::Invalid(
+            "callback.name must be present".to_string(),
+        ));
+    }
+    Ok(CallbackSpec {
+        name,
+        kind: string_field(object, "kind").unwrap_or_else(|| "callback".to_string()),
+        language: string_field(object, "language").unwrap_or_else(|| "python".to_string()),
+        target: string_field(object, "target"),
+        metadata: object
+            .get("metadata")
+            .map(value_from_json)
+            .unwrap_or(Value::Null),
+    })
+}
+
 fn parse_binding(value: &JsonValue) -> Result<BindingSpec, SpecError> {
     let object = value
         .as_object()
         .ok_or_else(|| SpecError::Invalid("binding must be a JSON object".to_string()))?;
 
+    let alias = string_field(object, "alias").unwrap_or_default();
+    if alias.trim().is_empty() {
+        return Err(SpecError::Invalid(
+            "binding.alias must be present".to_string(),
+        ));
+    }
+
     Ok(BindingSpec {
-        alias: string_field(object, "alias").unwrap_or_default(),
+        alias,
         transport: string_field(object, "transport").unwrap_or_else(|| "rest".to_string()),
         path: string_field(object, "path")
             .or_else(|| string_field(object, "route"))
@@ -183,13 +242,23 @@ fn parse_op(value: &JsonValue) -> Result<OpSpec, SpecError> {
         .as_object()
         .ok_or_else(|| SpecError::Invalid("binding.op must be a JSON object".to_string()))?;
 
+    let name = string_field(object, "name")
+        .or_else(|| string_field(object, "target"))
+        .unwrap_or_default();
+    if name.trim().is_empty() {
+        return Err(SpecError::Invalid(
+            "binding.op.name must be present".to_string(),
+        ));
+    }
+
     Ok(OpSpec {
         kind: string_to_op_kind(
             string_field(object, "kind")
+                .or_else(|| string_field(object, "target"))
                 .or_else(|| string_field(object, "name"))
                 .as_deref(),
         ),
-        name: string_field(object, "name").unwrap_or_default(),
+        name,
         route: string_field(object, "route")
             .or_else(|| string_field(object, "path"))
             .map(Some)
@@ -210,9 +279,40 @@ fn parse_table(value: &JsonValue) -> Result<TableSpec, SpecError> {
     let object = value
         .as_object()
         .ok_or_else(|| SpecError::Invalid("table must be a JSON object".to_string()))?;
+    let name = string_field(object, "name").unwrap_or_default();
+    if name.trim().is_empty() {
+        return Err(SpecError::Invalid("table.name must be present".to_string()));
+    }
     Ok(TableSpec {
-        name: string_field(object, "name").unwrap_or_default(),
-        columns: Vec::new(),
+        name,
+        columns: array_field(object, "columns")
+            .map(parse_columns)
+            .transpose()?
+            .unwrap_or_default(),
+    })
+}
+
+fn parse_columns(values: &[JsonValue]) -> Result<Vec<ColumnSpec>, SpecError> {
+    values.iter().map(parse_column).collect()
+}
+
+fn parse_column(value: &JsonValue) -> Result<ColumnSpec, SpecError> {
+    let object = value
+        .as_object()
+        .ok_or_else(|| SpecError::Invalid("column must be a JSON object".to_string()))?;
+    let name = string_field(object, "name").unwrap_or_default();
+    if name.trim().is_empty() {
+        return Err(SpecError::Invalid(
+            "column.name must be present".to_string(),
+        ));
+    }
+    Ok(ColumnSpec {
+        name,
+        datatype: Default::default(),
+        storage: None,
+        nullable: bool_field(object, "nullable").unwrap_or(false),
+        primary_key: bool_field(object, "primary_key").unwrap_or(false),
+        default_expr: string_field(object, "default_expr"),
     })
 }
 
@@ -224,9 +324,12 @@ fn parse_engine(value: &JsonValue) -> Result<EngineSpec, SpecError> {
     let object = value
         .as_object()
         .ok_or_else(|| SpecError::Invalid("engine must be a JSON object".to_string()))?;
+    let kind = string_field(object, "kind").unwrap_or_else(|| "inmemory".to_string());
     Ok(EngineSpec {
         name: string_field(object, "name").unwrap_or_default(),
-        kind: string_field(object, "kind").unwrap_or_else(|| "inmemory".to_string()),
+        kind,
+        language: string_field(object, "language").unwrap_or_else(|| "rust".to_string()),
+        callback: string_field(object, "callback"),
         options: object_field(object, "options")
             .map(value_map_from_json)
             .unwrap_or_default(),
@@ -237,7 +340,10 @@ fn app_to_json(value: &AppSpec) -> JsonValue {
     let mut object = Map::new();
     object.insert("name".to_string(), JsonValue::String(value.name.clone()));
     object.insert("title".to_string(), JsonValue::String(value.title.clone()));
-    object.insert("version".to_string(), JsonValue::String(value.version.clone()));
+    object.insert(
+        "version".to_string(),
+        JsonValue::String(value.version.clone()),
+    );
     object.insert(
         "jsonrpc_prefix".to_string(),
         JsonValue::String(value.jsonrpc_prefix.clone()),
@@ -257,6 +363,15 @@ fn app_to_json(value: &AppSpec) -> JsonValue {
         ),
     );
     object.insert(
+        "runtime".to_string(),
+        JsonValue::Object(value_map_to_json(&value.runtime)),
+    );
+    object.insert(
+        "dependencies".to_string(),
+        value_to_json(&value.dependencies),
+    );
+    object.insert("security".to_string(), value_to_json(&value.security));
+    object.insert(
         "bindings".to_string(),
         JsonValue::Array(value.bindings.iter().map(binding_to_json).collect()),
     );
@@ -269,7 +384,37 @@ fn app_to_json(value: &AppSpec) -> JsonValue {
                 .map(|table| {
                     let mut table_object = Map::new();
                     table_object.insert("name".to_string(), JsonValue::String(table.name.clone()));
-                    table_object.insert("columns".to_string(), JsonValue::Array(Vec::new()));
+                    table_object.insert(
+                        "columns".to_string(),
+                        JsonValue::Array(
+                            table
+                                .columns
+                                .iter()
+                                .map(|column| {
+                                    let mut column_object = Map::new();
+                                    column_object.insert(
+                                        "name".to_string(),
+                                        JsonValue::String(column.name.clone()),
+                                    );
+                                    column_object.insert(
+                                        "nullable".to_string(),
+                                        JsonValue::Bool(column.nullable),
+                                    );
+                                    column_object.insert(
+                                        "primary_key".to_string(),
+                                        JsonValue::Bool(column.primary_key),
+                                    );
+                                    if let Some(default_expr) = &column.default_expr {
+                                        column_object.insert(
+                                            "default_expr".to_string(),
+                                            JsonValue::String(default_expr.clone()),
+                                        );
+                                    }
+                                    JsonValue::Object(column_object)
+                                })
+                                .collect(),
+                        ),
+                    );
                     JsonValue::Object(table_object)
                 })
                 .collect(),
@@ -283,13 +428,50 @@ fn app_to_json(value: &AppSpec) -> JsonValue {
                 .iter()
                 .map(|engine| {
                     let mut engine_object = Map::new();
-                    engine_object.insert("name".to_string(), JsonValue::String(engine.name.clone()));
-                    engine_object.insert("kind".to_string(), JsonValue::String(engine.kind.clone()));
+                    engine_object
+                        .insert("name".to_string(), JsonValue::String(engine.name.clone()));
+                    engine_object
+                        .insert("kind".to_string(), JsonValue::String(engine.kind.clone()));
+                    engine_object.insert(
+                        "language".to_string(),
+                        JsonValue::String(engine.language.clone()),
+                    );
+                    if let Some(callback) = &engine.callback {
+                        engine_object
+                            .insert("callback".to_string(), JsonValue::String(callback.clone()));
+                    }
                     engine_object.insert(
                         "options".to_string(),
                         JsonValue::Object(value_map_to_json(&engine.options)),
                     );
                     JsonValue::Object(engine_object)
+                })
+                .collect(),
+        ),
+    );
+    object.insert(
+        "callbacks".to_string(),
+        JsonValue::Array(
+            value
+                .callbacks
+                .iter()
+                .map(|callback| {
+                    let mut callback_object = Map::new();
+                    callback_object
+                        .insert("name".to_string(), JsonValue::String(callback.name.clone()));
+                    callback_object
+                        .insert("kind".to_string(), JsonValue::String(callback.kind.clone()));
+                    callback_object.insert(
+                        "language".to_string(),
+                        JsonValue::String(callback.language.clone()),
+                    );
+                    if let Some(target) = &callback.target {
+                        callback_object
+                            .insert("target".to_string(), JsonValue::String(target.clone()));
+                    }
+                    callback_object
+                        .insert("metadata".to_string(), value_to_json(&callback.metadata));
+                    JsonValue::Object(callback_object)
                 })
                 .collect(),
         ),
@@ -300,8 +482,14 @@ fn app_to_json(value: &AppSpec) -> JsonValue {
 fn binding_to_json(value: &BindingSpec) -> JsonValue {
     let mut object = Map::new();
     object.insert("alias".to_string(), JsonValue::String(value.alias.clone()));
-    object.insert("transport".to_string(), JsonValue::String(value.transport.clone()));
-    object.insert("family".to_string(), JsonValue::String(value.family.clone()));
+    object.insert(
+        "transport".to_string(),
+        JsonValue::String(value.transport.clone()),
+    );
+    object.insert(
+        "family".to_string(),
+        JsonValue::String(value.family.clone()),
+    );
     if let Some(path) = &value.path {
         object.insert("path".to_string(), JsonValue::String(path.clone()));
     }
@@ -332,6 +520,16 @@ fn binding_to_json(value: &BindingSpec) -> JsonValue {
                         "phase".to_string(),
                         JsonValue::String(hook.phase.as_str().to_string()),
                     );
+                    hook_object.insert(
+                        "bindings".to_string(),
+                        JsonValue::Array(
+                            hook.bindings
+                                .iter()
+                                .cloned()
+                                .map(JsonValue::String)
+                                .collect(),
+                        ),
+                    );
                     JsonValue::Object(hook_object)
                 })
                 .collect(),
@@ -342,7 +540,10 @@ fn binding_to_json(value: &BindingSpec) -> JsonValue {
 
 fn op_to_json(value: &OpSpec) -> JsonValue {
     let mut object = Map::new();
-    object.insert("kind".to_string(), JsonValue::String(value.kind.as_str().to_string()));
+    object.insert(
+        "kind".to_string(),
+        JsonValue::String(value.kind.as_str().to_string()),
+    );
     object.insert("name".to_string(), JsonValue::String(value.name.clone()));
     if let Some(route) = &value.route {
         object.insert("route".to_string(), JsonValue::String(route.clone()));
@@ -407,12 +608,9 @@ fn value_to_json(value: &Value) -> JsonValue {
         Value::Integer(value) => JsonValue::from(*value),
         Value::Float(value) => JsonValue::from(*value),
         Value::String(value) => JsonValue::String(value.clone()),
-        Value::Bytes(value) => JsonValue::Array(
-            value
-                .iter()
-                .map(|item| JsonValue::from(*item))
-                .collect(),
-        ),
+        Value::Bytes(value) => {
+            JsonValue::Array(value.iter().map(|item| JsonValue::from(*item)).collect())
+        }
         Value::Array(values) => JsonValue::Array(values.iter().map(value_to_json).collect()),
         Value::Object(values) => JsonValue::Object(value_map_to_json(values)),
     }
@@ -449,6 +647,18 @@ fn string_field(object: &Map<String, JsonValue>, name: &str) -> Option<String> {
         JsonValue::String(value) => Some(value.clone()),
         JsonValue::Number(value) => Some(value.to_string()),
         JsonValue::Bool(value) => Some(value.to_string()),
+        _ => None,
+    }
+}
+
+fn bool_field(object: &Map<String, JsonValue>, name: &str) -> Option<bool> {
+    match object.get(name)? {
+        JsonValue::Bool(value) => Some(*value),
+        JsonValue::String(value) => match value.as_str() {
+            "true" => Some(true),
+            "false" => Some(false),
+            _ => None,
+        },
         _ => None,
     }
 }

@@ -47,36 +47,77 @@ def normalize_spec(spec_json: str) -> str:
 
 def compile_spec(spec_json: str) -> str:
     spec = json.loads(normalize_spec(spec_json))
+    engine = ((spec.get("engines") or [{}])[0]) or {}
+    engine_kind = engine.get("kind", "inmemory")
+    engine_language = engine.get("language", "rust")
+    engine_callback = engine.get("callback")
+    callbacks = [item.get("name", "") for item in spec.get("callbacks", [])]
     bindings = []
     routes = []
-    engine_kind = ((spec.get("engines") or [{}])[0]).get("kind", "inmemory")
     for binding in spec.get("bindings", []):
         op = binding.get("op", {})
         path = op.get("route") or binding.get("path") or f"/{binding.get('alias', '')}"
+        transport = binding.get("transport", "rest")
+        op_kind = op.get("kind") or op.get("target") or op.get("name", "create")
+        method = {
+            "rest": {
+                "create": "POST",
+                "read": "GET",
+                "list": "GET",
+                "delete": "DELETE",
+                "replace": "PUT",
+                "update": "PATCH",
+                "merge": "PATCH",
+            }.get(op_kind, "POST"),
+            "jsonrpc": "POST",
+            "ws": "MESSAGE",
+            "sse": "GET",
+            "stream": "GET",
+        }.get(transport, "POST")
         item = {
             "alias": binding.get("alias", ""),
-            "op_name": op.get("name", ""),
-            "op_kind": op.get("kind", op.get("name", "create")),
-            "transport": binding.get("transport", "rest"),
+            "op_name": op.get("name") or op.get("target", ""),
+            "op_kind": op_kind,
+            "transport": transport,
+            "family": binding.get("family", transport),
+            "framing": binding.get("framing"),
             "path": path,
+            "method": method,
+            "method_name": binding.get("alias", "") if transport == "jsonrpc" else (op.get("name") or op.get("target", "")),
+            "exchange": op.get("exchange", "request_response"),
+            "tx_scope": op.get("tx_scope", "inherit"),
+            "subevents": list(op.get("subevents", []) or []),
+            "hooks": [hook.get("name") or hook.get("phase", "") for hook in binding.get("hooks", [])],
+            "callback_fences": [
+                f"hook:{hook.get('name') or hook.get('phase', '')}" for hook in binding.get("hooks", [])
+            ],
             "table": (binding.get("table") or {}).get("name", binding.get("alias", "")),
             "engine_kind": engine_kind,
+            "engine_language": engine_language,
+            "engine_callback": engine_callback,
         }
         bindings.append(item)
         routes.append(
             {
-                "transport": item["transport"],
-                "path": item["path"],
+                "transport": transport,
+                "family": item["family"],
+                "path": path,
+                "method": method,
+                "method_name": item["method_name"],
                 "binding_alias": item["alias"],
                 "op_name": item["op_name"],
             }
         )
     payload = {
-        "description": f"compiled native plan for {spec.get('name', '')} with {len(bindings)} binding(s)",
         "app_name": spec.get("name", ""),
+        "title": spec.get("title", spec.get("name", "")),
+        "version": spec.get("version", "0.1.0"),
         "engine_kind": engine_kind,
         "binding_count": len(bindings),
         "route_count": len(routes),
+        "callbacks": callbacks,
+        "runtime": deepcopy(spec.get("runtime", {})),
+        "metadata": deepcopy(spec.get("metadata", {})),
         "bindings": bindings,
         "routes": routes,
         "packed": {
@@ -92,33 +133,23 @@ def compile_spec(spec_json: str) -> str:
 
 @dataclass(slots=True)
 class RuntimeHandle:
-    spec_json: str
+    plan_json_payload: str
     description_text: str = field(init=False)
     _plan: dict[str, Any] = field(init=False)
     _tables: dict[str, list[dict[str, Any]]] = field(default_factory=dict, init=False)
 
     def __post_init__(self) -> None:
-        normalized = normalize_spec(self.spec_json)
-        self._plan = json.loads(compile_spec(normalized))
+        self._plan = json.loads(self.plan_json_payload)
         self.description_text = (
-            f"runtime handle for {self._plan['binding_count']} binding(s) in app {self._plan['app_name']}"
+            f"runtime handle for {len(self._plan.get('bindings', []))} binding(s) in app {self._plan.get('app_name', '')}"
         )
-        _record("create_runtime_handle", size=len(normalized))
+        _record("create_runtime_handle", app_name=self._plan.get("app_name", ""))
 
     def describe(self) -> str:
         return self.description_text
 
     def plan_json(self) -> str:
-        return json.dumps(
-            {
-                "app_name": self._plan["app_name"],
-                "engine_kind": self._plan["engine_kind"],
-                "bindings": self._plan["bindings"],
-                "routes": self._plan["routes"],
-                "packed": self._plan["packed"],
-            },
-            sort_keys=True,
-        )
+        return json.dumps(self._plan, sort_keys=True)
 
     def execute_rest_json(self, request_json: str) -> str:
         request = json.loads(request_json)
@@ -132,6 +163,27 @@ class RuntimeHandle:
         _record("request_entry", transport="jsonrpc", operation=request.get("operation"))
         response = self._execute("jsonrpc", request)
         _record("response_exit", transport="jsonrpc", status=response["status"])
+        return json.dumps(response, sort_keys=True)
+
+    def execute_ws_json(self, request_json: str) -> str:
+        request = json.loads(request_json)
+        _record("request_entry", transport="ws", operation=request.get("operation"))
+        response = self._execute("ws", request)
+        _record("response_exit", transport="ws", status=response["status"])
+        return json.dumps(response, sort_keys=True)
+
+    def execute_stream_json(self, request_json: str) -> str:
+        request = json.loads(request_json)
+        _record("request_entry", transport="stream", operation=request.get("operation"))
+        response = self._execute("stream", request)
+        _record("response_exit", transport="stream", status=response["status"])
+        return json.dumps(response, sort_keys=True)
+
+    def execute_sse_json(self, request_json: str) -> str:
+        request = json.loads(request_json)
+        _record("request_entry", transport="sse", operation=request.get("operation"))
+        response = self._execute("sse", request)
+        _record("response_exit", transport="sse", status=response["status"])
         return json.dumps(response, sort_keys=True)
 
     def begin_request(self, transport: str = "rest") -> None:
@@ -163,6 +215,8 @@ class RuntimeHandle:
         )
         if binding is None:
             raise RuntimeError("no matching native binding")
+        if binding.get("engine_language", "rust") != "rust" and not binding.get("engine_callback"):
+            raise RuntimeError("catastrophic native runtime failure: python-backed engine missing callback")
 
         table = self._tables.setdefault(binding["table"], [])
         kind = binding["op_kind"]
@@ -195,8 +249,8 @@ class RuntimeHandle:
         return {"status": 501, "headers": {}, "body": {"error": f"unsupported op {kind}"}}
 
 
-def create_runtime_handle(spec_json: str) -> RuntimeHandle:
-    return RuntimeHandle(spec_json)
+def create_runtime_handle(plan_json: str) -> RuntimeHandle:
+    return RuntimeHandle(plan_json)
 
 
 def _descriptor(kind: str, name: str) -> str:
