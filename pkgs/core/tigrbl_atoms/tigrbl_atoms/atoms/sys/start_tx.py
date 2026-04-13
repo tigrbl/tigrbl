@@ -35,7 +35,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
         temp["__sys_tx_open__"] = True
 
 
-class AtomImpl(Atom[Guarded, Executing]):
+class AtomImpl(Atom[Guarded, Executing, Exception]):
     name = "sys.start_tx"
     anchor = ANCHOR
 

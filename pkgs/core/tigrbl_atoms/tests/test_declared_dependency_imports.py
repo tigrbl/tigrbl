@@ -11,6 +11,8 @@ PACKAGE_DIR = Path(__file__).resolve().parents[1] / PACKAGE_NAME
 ALLOWED_TOP_LEVEL_IMPORTS = {
     "tigrbl_typing",
     "tigrbl_ops_oltp",
+    "tigrbl_ops_olap",
+    "tigrbl_ops_realtime",
     "jinja2",
     "tigrbl_core",
     "sqlalchemy",

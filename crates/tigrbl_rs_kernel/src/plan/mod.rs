@@ -5,5 +5,5 @@ pub mod packed;
 pub mod phase;
 pub mod segment;
 
-pub use models::{KernelPlan, PlanBinding};
+pub use models::{KernelPlan, PlanBinding, PlanRoute};
 pub use packed::PackedPlan;

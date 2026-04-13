@@ -21,7 +21,8 @@ from ._routing import (
 )
 from ._httpx import ensure_httpx_sync_transport
 
-from ._route import Route
+from ._route import Route, compile_path
+from ._websocket import WebSocketRoute
 from tigrbl_concrete.system.docs.openapi.metadata import (
     is_metadata_route as _is_metadata_route_impl,
 )
@@ -115,6 +116,8 @@ class Router(RouterBase):
 
         self._routes: list[Route] = []
         self.routes = self._routes
+        self.websocket_routes: list[WebSocketRoute] = []
+        self._static_mounts: list[dict[str, str]] = []
 
         self.name = getattr(self, "NAME", "router")
         self.prefix = normalize_prefix(prefix or getattr(self, "PREFIX", ""))
@@ -242,6 +245,66 @@ class Router(RouterBase):
 
     def delete(self, path: str, **kwargs: Any) -> Callable[[Handler], Handler]:
         return _rest_delete(self, path, **kwargs)
+
+    def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
+        from tigrbl_concrete.system.docs.json_schema import _mount_json_schema
+        return _mount_json_schema(self, path=path)
+
+    def mount_asyncapi(self, *, path: str = "/asyncapi.json") -> Any:
+        from tigrbl_concrete.system.docs.asyncapi import _mount_asyncapi
+        return _mount_asyncapi(self, path=path)
+
+    def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
+        from tigrbl_concrete.system.static import _mount_static
+        return _mount_static(self, directory=directory, path=path)
+
+    def build_json_schema_bundle(self) -> dict[str, Any]:
+        from tigrbl_concrete.system.docs.json_schema import _build_json_schema_bundle
+        return _build_json_schema_bundle(self)
+
+    def build_asyncapi_spec(self) -> dict[str, Any]:
+        from tigrbl_concrete.system.docs.asyncapi import _build_asyncapi_spec
+        return _build_asyncapi_spec(self)
+
+    def websocket(self, path: str, **kwargs: Any) -> Callable[[Any], Any]:
+        def _decorator(handler: Any) -> Any:
+            from tigrbl_concrete.system.docs.runtime_ops import (
+                register_runtime_websocket_route,
+            )
+
+            full_path = path if path.startswith("/") else f"/{path}"
+            normalized_path = full_path.rstrip("/") or "/"
+            pattern, param_names = compile_path(normalized_path)
+            route_name = kwargs.get("name", getattr(handler, "__name__", "websocket"))
+            self.websocket_routes.append(
+                WebSocketRoute(
+                    path_template=normalized_path,
+                    pattern=pattern,
+                    param_names=param_names,
+                    handler=handler,
+                    name=route_name,
+                    protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
+                    exchange=str(
+                        kwargs.get("exchange", "bidirectional_stream")
+                    ),
+                    framing=str(kwargs.get("framing", "text")),
+                    summary=kwargs.get("summary"),
+                    description=kwargs.get("description"),
+                    tags=kwargs.get("tags"),
+                )
+            )
+            register_runtime_websocket_route(
+                self,
+                path=normalized_path,
+                alias=route_name,
+                endpoint=handler,
+                protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
+                exchange=str(kwargs.get("exchange", "bidirectional_stream")),
+                framing=str(kwargs.get("framing", "text")),
+            )
+            self._bump_runtime_plan_revision()
+            return handler
+        return _decorator
 
     def __call__(self, *args: Any, **kwargs: Any):
         del args, kwargs

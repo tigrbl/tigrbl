@@ -94,7 +94,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         egress["enveloped"] = payload
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "egress.envelope_apply"
     anchor = ANCHOR
 

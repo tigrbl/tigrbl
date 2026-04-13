@@ -111,7 +111,7 @@ def _read_current_value(obj: Optional[object], ctx: Any, field: str) -> Optional
     return None
 
 
-class AtomImpl(Atom[Operated, Encoded]):
+class AtomImpl(Atom[Operated, Encoded, Exception]):
     name = "wire.build_out"
     anchor = ANCHOR
 

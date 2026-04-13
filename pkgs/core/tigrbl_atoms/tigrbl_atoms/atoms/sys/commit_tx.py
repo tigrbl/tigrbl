@@ -35,7 +35,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
             release()
 
 
-class AtomImpl(Atom[Operated, Operated]):
+class AtomImpl(Atom[Operated, Operated, Exception]):
     name = "sys.commit_tx"
     anchor = ANCHOR
 

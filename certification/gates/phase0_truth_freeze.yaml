@@ -1,0 +1,9 @@
+schema_version: 1
+gate: phase0-truth-freeze
+name: Certification authority reset
+state: current
+applies_to: 0.3.19.dev1
+owner: Governance
+pass_condition: >
+  The certification tree is authoritative, the truth model uses current/target/blocked/evidenced,
+  and next-target features, claims, risks, and issues satisfy the Phase 0 exit criteria.

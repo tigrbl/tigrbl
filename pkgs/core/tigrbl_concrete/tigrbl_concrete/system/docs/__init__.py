@@ -51,13 +51,41 @@ def build_openrpc_spec(*args: Any, **kwargs: Any) -> Any:
     return _build_openrpc_spec(*args, **kwargs)
 
 
+def build_json_schema_bundle(*args: Any, **kwargs: Any) -> Any:
+    from .json_schema import _build_json_schema_bundle as _build_json_schema_bundle
+
+    return _build_json_schema_bundle(*args, **kwargs)
+
+
+def mount_json_schema(*args: Any, **kwargs: Any) -> Any:
+    from .json_schema import _mount_json_schema as _mount_json_schema
+
+    return _mount_json_schema(*args, **kwargs)
+
+
+def build_asyncapi_spec(*args: Any, **kwargs: Any) -> Any:
+    from .asyncapi import _build_asyncapi_spec as _build_asyncapi_spec
+
+    return _build_asyncapi_spec(*args, **kwargs)
+
+
+def mount_asyncapi(*args: Any, **kwargs: Any) -> Any:
+    from .asyncapi import _mount_asyncapi as _mount_asyncapi
+
+    return _mount_asyncapi(*args, **kwargs)
+
+
 __all__ = [
-    "build_lens",
-    "build_openapi",
-    "build_openrpc_spec",
-    "build_swagger",
-    "mount_lens",
-    "mount_openapi",
-    "mount_openrpc",
-    "mount_swagger",
+    'build_lens',
+    'build_openapi',
+    'build_openrpc_spec',
+    'build_swagger',
+    'build_json_schema_bundle',
+    'build_asyncapi_spec',
+    'mount_lens',
+    'mount_openapi',
+    'mount_openrpc',
+    'mount_swagger',
+    'mount_json_schema',
+    'mount_asyncapi',
 ]

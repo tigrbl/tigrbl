@@ -33,11 +33,23 @@ _CANONICAL_TARGETS = {
     "delete",
     "list",
     "clear",
+    "count",
+    "exists",
     "bulk_create",
     "bulk_update",
     "bulk_replace",
     "bulk_merge",
     "bulk_delete",
+    "aggregate",
+    "group_by",
+    "publish",
+    "subscribe",
+    "tail",
+    "upload",
+    "download",
+    "append_chunk",
+    "send_datagram",
+    "checkpoint",
 }
 
 
@@ -129,6 +141,32 @@ def _default_schemas_for_spec(
         params = _build_list_params(model)
         result["in_"] = params
         result["out"] = _make_deleted_response_model(model, "clear")
+
+    elif target == "count":
+        params = _build_list_params(model)
+        result["in_"] = params
+
+        class _CountResponse(BaseModel):
+            count: int
+
+        result["out"] = namely_model(
+            _CountResponse,
+            name=f"{model.__name__}CountResponse",
+            doc=f"count response schema for {model.__name__}",
+        )
+
+    elif target == "exists":
+        pk_name, pk_type = _pk_info(model)
+        result["in_"] = _make_pk_model(model, "exists", pk_name, pk_type)
+
+        class _ExistsResponse(BaseModel):
+            exists: bool
+
+        result["out"] = namely_model(
+            _ExistsResponse,
+            name=f"{model.__name__}ExistsResponse",
+            doc=f"exists response schema for {model.__name__}",
+        )
 
     elif target == "bulk_create":
         logger.debug("Using bulk_create defaults for %s.%s", model.__name__, sp.alias)
@@ -244,6 +282,21 @@ def _default_schemas_for_spec(
         pk_name, pk_type = _pk_info(model)
         result["in_"] = _make_bulk_ids_model(model, "bulk_delete", pk_type)
         result["out"] = _make_deleted_response_model(model, "bulk_delete")
+
+    elif target in {
+        "aggregate",
+        "group_by",
+        "publish",
+        "subscribe",
+        "tail",
+        "upload",
+        "download",
+        "append_chunk",
+        "send_datagram",
+        "checkpoint",
+    }:
+        result["in_"] = None
+        result["out"] = None
 
     elif target == "custom":
         logger.debug("Using custom defaults for %s.%s", model.__name__, sp.alias)

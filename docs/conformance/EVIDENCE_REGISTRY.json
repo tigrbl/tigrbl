@@ -1,0 +1,2019 @@
+{
+  "claims": {
+    "CERT-001": {
+      "artifact_paths": [
+        "docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-e-promotion.yml#gate-e-promotion",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/gates/GATE_E_PROMOTION.md",
+        "docs/conformance/releases/0.3.18/CLAIMS.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "release promotion"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_claim_rows_have_expected_statuses",
+        "tools/ci/tests/test_gate_e_promotion.py::test_current_docs_record_gate_e_pass_and_promoted_version",
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry"
+      ]
+    },
+    "CERT-002": {
+      "artifact_paths": [
+        "docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json",
+        "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-e-promotion.yml#gate-e-promotion",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec conformance]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/gates/GATE_E_PROMOTION.md",
+        "docs/conformance/releases/0.3.18/CLAIMS.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "spec conformance",
+        "release promotion"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_claim_rows_have_expected_statuses",
+        "tools/ci/tests/test_gate_e_promotion.py::test_current_docs_record_gate_e_pass_and_promoted_version",
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry"
+      ]
+    },
+    "CLI-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/cli-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/server-compat-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/cli-smoke.yml#phase8-cli",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[cli-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[server-compat-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/CLI_REFERENCE.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "CLI smoke",
+        "server compatibility smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py"
+      ]
+    },
+    "CLI-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/cli-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/server-compat-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/cli-smoke.yml#phase8-cli",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[cli-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[server-compat-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/CLI_REFERENCE.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "CLI smoke",
+        "server compatibility smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py"
+      ]
+    },
+    "EVID-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "EVID-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "EVID-003": {
+      "artifact_paths": [
+        "docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json",
+        "docs/conformance/releases/0.3.18/artifacts/clean-room-package-manifest.json",
+        "docs/conformance/releases/0.3.18/artifacts/installed-package-smoke-manifest.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/releases/0.3.18/RELEASE_NOTES.md",
+        "docs/conformance/releases/0.3.18/CLAIMS.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass",
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass"
+      ]
+    },
+    "EVID-004": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "EVID-005": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/clean-room-package.md",
+        "docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[clean-room-package]"
+      ],
+      "doc_paths": [
+        "docs/conformance/dev/0.3.18.dev1/BUILD_NOTES.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "clean-room package tests"
+      ],
+      "tests": [
+        "tools/conformance/clean_room_package_smoke.py",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "EVID-006": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GATE-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GATE-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GATE-003": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GATE-004": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GATE-005": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GATE-006": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GATE-007": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-b-surface-closure.md",
+        "docs/conformance/releases/0.3.18/gate-results/gate-b-surface-closure.md",
+        "docs/conformance/audit/2026/p10-gate-b/README.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/gate-b-surface-closure.yml#gate-b-surface-closure"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md",
+        "docs/conformance/CLAIM_REGISTRY.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "docs UI smoke",
+        "operator-surface smoke",
+        "CLI smoke"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_b_surface_closure.py::test_gate_b_surface_validator_passes",
+        "tools/ci/tests/test_gate_b_surface_closure.py::test_gate_b_claim_rows_have_closed_or_descoped_status",
+        "tools/ci/tests/test_gate_b_surface_closure.py::test_current_target_and_current_state_record_no_open_surface_gaps"
+      ]
+    },
+    "GATE-008": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-b-surface-closure.md",
+        "docs/conformance/audit/2026/p10-gate-b/README.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/gate-b-surface-closure.yml#gate-b-surface-closure"
+      ],
+      "doc_paths": [
+        "tools/ci/validate_gate_b_surface_closure.py",
+        "tools/ci/tests/test_gate_b_surface_closure.py",
+        ".github/workflows/gate-b-surface-closure.yml",
+        "docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "docs UI smoke",
+        "operator-surface smoke",
+        "CLI smoke"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_b_surface_closure.py::test_gate_b_surface_validator_passes",
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass"
+      ]
+    },
+    "GATE-009": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/audit/2026/p11-gate-c/README.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/gates/GATE_C_CONFORMANCE_SECURITY.md",
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md"
+      ],
+      "lane_classes": [
+        "spec conformance",
+        "security / negative",
+        "docs UI smoke",
+        "integration"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "tools/ci/tests/test_http_auth_challenges.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "GATE-010": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/gates/GATE_C_CONFORMANCE_SECURITY.md"
+      ],
+      "lane_classes": [
+        "spec conformance",
+        "security / negative"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/validate_gate_c_conformance_security.py"
+      ]
+    },
+    "GATE-011": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-d-reproducibility.md",
+        "docs/conformance/dev/0.3.18.dev1/artifacts/clean-room-package-manifest.json",
+        "docs/conformance/dev/0.3.18.dev1/artifacts/installed-package-smoke-manifest.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-d-reproducibility.yml"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/gates/GATE_D_REPRODUCIBILITY.md",
+        "docs/conformance/audit/2026/p12-gate-d/README.md"
+      ],
+      "lane_classes": [
+        "clean-room-package",
+        "installed-package-smoke",
+        "docs-build-verification"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_d_reproducibility.py"
+      ]
+    },
+    "GATE-012": {
+      "artifact_paths": [
+        "tools/ci/validate_gate_d_reproducibility.py",
+        ".github/workflows/gate-d-reproducibility.yml"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-d-reproducibility.yml"
+      ],
+      "doc_paths": [
+        "docs/conformance/gates/GATE_D_REPRODUCIBILITY.md"
+      ],
+      "lane_classes": [
+        "policy-governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_d_reproducibility.py"
+      ]
+    },
+    "GATE-013": {
+      "artifact_paths": [
+        "docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json",
+        "docs/conformance/releases/0.3.18/artifacts/clean-room-package-manifest.json",
+        "docs/conformance/releases/0.3.18/artifacts/installed-package-smoke-manifest.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-e-promotion.yml#gate-e-promotion",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/gates/GATE_E_PROMOTION.md",
+        "docs/conformance/releases/0.3.18/RELEASE_NOTES.md",
+        "docs/conformance/releases/0.3.18/CLAIMS.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
+        "docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md",
+        "docs/conformance/audit/2026/p13-gate-e/README.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "release promotion"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_validator_passes",
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_claim_rows_have_expected_statuses",
+        "tools/ci/tests/test_gate_e_promotion.py::test_current_docs_record_gate_e_pass_and_promoted_version"
+      ]
+    },
+    "GATE-014": {
+      "artifact_paths": [
+        ".github/workflows/gate-e-promotion.yml",
+        "tools/ci/validate_gate_e_promotion.py",
+        "tools/ci/tests/test_gate_e_promotion.py"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-e-promotion.yml#gate-e-promotion",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/gates/GATE_E_PROMOTION.md",
+        "docs/conformance/audit/2026/p13-gate-e/README.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "release promotion"
+      ],
+      "tests": [
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_validator_passes",
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass"
+      ]
+    },
+    "GOV-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-003": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-004": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-005": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-006": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-007": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-008": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-009": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "GOV-010": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "HANDOFF-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.19.dev1/gate-results/post-promotion-handoff.md",
+        "docs/conformance/audit/2026/p14-post-promotion-handoff/README.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/NEXT_TARGETS.md",
+        "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "post-promotion handoff",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes",
+        "tools/ci/tests/test_phase14_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
+      ]
+    },
+    "HANDOFF-002": {
+      "artifact_paths": [
+        "docs/conformance/audit/2026/p14-post-promotion-handoff/README.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff"
+      ],
+      "doc_paths": [
+        "tools/ci/validate_phase14_handoff.py",
+        "tools/ci/tests/test_phase14_handoff.py",
+        ".github/workflows/phase14-post-promotion-handoff.yml",
+        "docs/developer/CI_VALIDATION.md"
+      ],
+      "lane_classes": [
+        "post-promotion handoff"
+      ],
+      "tests": [
+        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes"
+      ]
+    },
+    "NEXT-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.19.dev1/BUILD_NOTES.md",
+        "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "pkgs/core/tigrbl/pyproject.toml",
+        "docs/governance/VERSIONING_POLICY.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/dev/README.md"
+      ],
+      "lane_classes": [
+        "post-promotion handoff",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_phase14_handoff.py::test_next_line_and_next_target_claim_rows_exist",
+        "tools/ci/tests/test_phase14_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
+      ]
+    },
+    "NEXT-002": {
+      "artifact_paths": [
+        "docs/conformance/NEXT_TARGETS.md",
+        "docs/notes/archive/2026/p14-post-promotion-handoff/README.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff"
+      ],
+      "doc_paths": [
+        "docs/conformance/NEXT_TARGETS.md",
+        "docs/adr/ADR-0010-deferred-next-target-datatype-table-program.md",
+        "docs/adr/ADR-0011-post-promotion-release-history-freeze.md",
+        "docs/adr/ADR-0012-next-target-datatype-table-program-activation.md"
+      ],
+      "lane_classes": [
+        "post-promotion handoff"
+      ],
+      "tests": [
+        "tools/ci/tests/test_phase14_handoff.py::test_next_line_and_next_target_claim_rows_exist",
+        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes"
+      ]
+    },
+    "OAS-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "OAS-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "OAS-003": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "OAS-004": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "OAS-005": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "OAS-006": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "OIDC-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "OP-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-003": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-004": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-005": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-006": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-007": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-008": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-009": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-010": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-011": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "OP-012": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/operator-surface-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
+      ],
+      "doc_paths": [
+        "docs/developer/OPERATOR_SURFACES.md",
+        "docs/developer/operator/README.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "operator-surface smoke",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+      ]
+    },
+    "PATH-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "PATH-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "PATH-003": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/policy-governance.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CLAIM_REGISTRY.md",
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "unit"
+      ],
+      "tests": [
+        "tools/ci/tests/test_governance_validators.py::test_repo_governance_scripts_pass",
+        "tools/ci/tests/test_path_length_policy.py::test_repository_conforms_to_declared_path_limits",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RFC-6749": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RFC-6750": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "RFC-7235": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "RFC-7519": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RFC-7617": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "RFC-7636": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RFC-8414": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RFC-8705": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RFC-9110": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RFC-9449": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/evidence-model.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/EVIDENCE_MODEL.md",
+        "docs/conformance/EVIDENCE_REGISTRY.json",
+        "docs/conformance/dev/0.3.18.dev1/EVIDENCE_INDEX.md",
+        "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_evidence_registry.py::test_evidence_registry_and_bundle_validators_pass"
+      ]
+    },
+    "RPC-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "RPC-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "RPC-003": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/spec-conformance.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[integration]",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/IMPLEMENTATION_MAP.md"
+      ],
+      "lane_classes": [
+        "unit",
+        "integration",
+        "spec conformance",
+        "docs UI smoke"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py"
+      ]
+    },
+    "SEC-001": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "SEC-002": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "SEC-003": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "SEC-004": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "SEC-005": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    },
+    "SEC-006": {
+      "artifact_paths": [
+        "docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md",
+        "docs/conformance/dev/0.3.18.dev1/gate-results/security-negative.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/evidence-lanes.yml#evidence-lane[security-negative]",
+        ".github/workflows/gate-c-conformance-security.yml#gate-c-conformance-security",
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+        "docs/conformance/CURRENT_TARGET.md"
+      ],
+      "lane_classes": [
+        "security / negative",
+        "unit"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
+        "tools/ci/tests/test_gate_c_conformance_security.py",
+        "tools/ci/tests/test_http_auth_challenges.py"
+      ]
+    }
+  },
+  "dev_bundle": "docs/conformance/dev/0.3.19.dev1",
+  "generated_at": "2026-04-02",
+  "release_bundle": "docs/conformance/releases/0.3.18",
+  "schema_version": 1
+}

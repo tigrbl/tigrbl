@@ -17,10 +17,13 @@ def test_runtime_gateway_owns_runtime_entrypoint_and_send():
     runtime_source = (RUNTIME_PKG / "runtime" / "runtime.py").read_text()
     executor_source = (RUNTIME_PKG / "executors" / "kernel_executor.py").read_text()
     packed_source = (RUNTIME_PKG / "executors" / "packed.py").read_text()
+    channel_source = (RUNTIME_PKG / "channel" / "websocket.py").read_text()
 
     assert "kernel.kernel_plan(app)" in runtime_source
     assert "await _invoke(" in executor_source
     assert "_send_transport_response" in packed_source
+    assert "dispatch_legacy_websocket" not in packed_source
+    assert "class RuntimeWebSocket" in channel_source
 
 
 def test_docs_generation_reads_secdeps_metadata():

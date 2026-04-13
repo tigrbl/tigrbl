@@ -6,5 +6,7 @@ use crate::values::Value;
 pub struct EngineSpec {
     pub name: String,
     pub kind: String,
+    pub language: String,
+    pub callback: Option<String>,
     pub options: BTreeMap<String, Value>,
 }

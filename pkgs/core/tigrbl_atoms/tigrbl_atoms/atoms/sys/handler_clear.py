@@ -19,7 +19,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "result", await _core.clear(model, {}, db=_ctx.db(ctx)))
 
 
-class AtomImpl(Atom[Resolved, Operated]):
+class AtomImpl(Atom[Resolved, Operated, Exception]):
     name = "sys.handler_clear"
     anchor = ANCHOR
 

@@ -88,7 +88,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         setattr(ctx, "status_code", status)
 
 
-class AtomImpl(Atom[Bound, Planned]):
+class AtomImpl(Atom[Bound, Planned, Exception]):
     name = "dispatch.op_resolve"
     anchor = ANCHOR
 

@@ -60,7 +60,12 @@ def finalize_transport_response(
     return headers, body
 
 
-async def _send_json(env: Any, status: int, payload: Any) -> None:
+async def _send_json(
+    env: Any,
+    status: int,
+    payload: Any,
+    headers: Mapping[str, str] | None = None,
+) -> None:
     scope = getattr(env, "scope", {}) or {}
     path = scope.get("path") if isinstance(scope, Mapping) else None
     is_jsonrpc = False
@@ -96,13 +101,17 @@ async def _send_json(env: Any, status: int, payload: Any) -> None:
         ensure_ascii=False,
         default=_json_default,
     ).encode("utf-8")
-    headers = [(b"content-type", b"application/json")]
-    headers, body = finalize_transport_response(scope, status, headers, body)
+    asgi_headers = [(b"content-type", b"application/json")]
+    for key, value in (headers or {}).items():
+        if value is None:
+            continue
+        asgi_headers.append((str(key).encode("latin-1"), str(value).encode("latin-1")))
+    asgi_headers, body = finalize_transport_response(scope, status, asgi_headers, body)
     await env.send(
         {
             "type": "http.response.start",
             "status": status,
-            "headers": headers,
+            "headers": asgi_headers,
         }
     )
     await env.send(
@@ -304,8 +313,35 @@ async def _run(obj: object | None, ctx: Any) -> None:
         },
         "body": resp.body or b"",
     }
-    body = resp.body or b""
+    body_iterator = getattr(resp, "body_iterator", None)
     headers = list(resp.raw_headers)
+    if body_iterator is not None:
+        await send(
+            {
+                "type": "http.response.start",
+                "status": int(resp.status_code),
+                "headers": headers,
+            }
+        )
+        async for chunk in body_iterator:
+            await send(
+                {
+                    "type": "http.response.body",
+                    "body": bytes(chunk),
+                    "more_body": True,
+                }
+            )
+        await send(
+            {
+                "type": "http.response.body",
+                "body": b"",
+                "more_body": False,
+            }
+        )
+        egress["response_sent"] = True
+        return
+
+    body = resp.body or b""
     headers, body = finalize_transport_response(
         scope, int(resp.status_code), headers, body
     )
@@ -326,7 +362,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
     egress["response_sent"] = True
 
 
-class AtomImpl(Atom[Emitting, Egressed]):
+class AtomImpl(Atom[Emitting, Egressed, Exception]):
     name = "egress.asgi_send"
     anchor = ANCHOR
 

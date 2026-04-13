@@ -49,7 +49,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "payload", normalized)
 
 
-class AtomImpl(Atom[Bound, Bound]):
+class AtomImpl(Atom[Bound, Bound, Exception]):
     name = "dispatch.input_normalize"
     anchor = ANCHOR
 

@@ -5,9 +5,10 @@ from functools import lru_cache
 from types import SimpleNamespace
 from typing import Any, Callable, Dict, Optional
 
+from .datatypes import DataTypeSpec, StorageTypeRef, infer_datatype
 from .._spec.field_spec import FieldSpec as F
 from .._spec.io_spec import IOSpec as IO
-from .._spec.storage_spec import StorageSpec as S
+from .._spec.storage_spec import ForeignKeySpec, StorageSpec as S
 from .serde import SerdeMixin
 
 logger = logging.getLogger("uvicorn")
@@ -34,6 +35,7 @@ class ColumnSpec(SerdeMixin):
         self,
         *,
         storage: S | None,
+        datatype: DataTypeSpec | None = None,
         field: F | None = None,
         io: IO | None = None,
         default_factory: Optional[Callable[[dict], Any]] = None,
@@ -42,6 +44,12 @@ class ColumnSpec(SerdeMixin):
         self.storage = storage
         self.field = field if field is not None else F()
         self.io = io if io is not None else IO()
+        self.datatype = datatype or infer_datatype(
+            field_py_type=self.field.py_type,
+            storage_type=getattr(storage, "type_", None),
+            nullable=getattr(storage, "nullable", None),
+            constraints=getattr(self.field, "constraints", {}),
+        )
         self.default_factory = default_factory
         self.read_producer = read_producer
 
@@ -86,6 +94,49 @@ class ColumnSpec(SerdeMixin):
             return ()
 
     @staticmethod
+    def _storage_spec_from_column(column: object) -> S:
+        fk_spec = None
+        foreign_keys = tuple(getattr(column, "foreign_keys", ()) or ())
+        if foreign_keys:
+            fk = foreign_keys[0]
+            target = str(getattr(fk, "target_fullname", "") or "")
+            if target:
+                fk_spec = ForeignKeySpec(
+                    target=target,
+                    on_delete=str(getattr(fk, "ondelete", None) or "RESTRICT"),
+                    on_update=str(getattr(fk, "onupdate", None) or "RESTRICT"),
+                    deferrable=bool(getattr(fk, "deferrable", False)),
+                    initially_deferred=(
+                        str(getattr(fk, "initially", "") or "").upper() == "DEFERRED"
+                    ),
+                    match=str(getattr(fk, "match", None) or "SIMPLE"),
+                )
+
+        type_obj = getattr(column, "type", None)
+        physical_name = None
+        if type_obj is not None:
+            physical_name = getattr(type_obj, "__visit_name__", None) or type(type_obj).__name__
+
+        return S(
+            type_=type_obj,
+            physical_type=(
+                StorageTypeRef(physical_name=str(physical_name))
+                if physical_name is not None
+                else None
+            ),
+            nullable=getattr(column, "nullable", None),
+            unique=bool(getattr(column, "unique", False)),
+            index=bool(getattr(column, "index", False)),
+            primary_key=bool(getattr(column, "primary_key", False)),
+            autoincrement=getattr(column, "autoincrement", None),
+            default=getattr(getattr(column, "default", None), "arg", None),
+            onupdate=getattr(getattr(column, "onupdate", None), "arg", None),
+            server_default=getattr(getattr(column, "server_default", None), "arg", None),
+            fk=fk_spec,
+            comment=getattr(column, "comment", None),
+        )
+
+    @staticmethod
     @lru_cache(maxsize=None)
     def _mro_collect_columns_cached(
         model: object, _cache_bust: int
@@ -121,7 +172,13 @@ class ColumnSpec(SerdeMixin):
                 name = getattr(col, "key", None) or getattr(col, "name", None)
                 if not isinstance(name, str):
                     continue
-                out.setdefault(name, ColumnSpec(storage=S(), io=ColumnSpec._DEFAULT_IO))
+                out.setdefault(
+                    name,
+                    ColumnSpec(
+                        storage=ColumnSpec._storage_spec_from_column(col),
+                        io=ColumnSpec._DEFAULT_IO,
+                    ),
+                )
         else:
             # Declarative models can be inspected before SQLAlchemy finishes
             # materializing ``__table__``. In that transient state plain
@@ -133,7 +190,8 @@ class ColumnSpec(SerdeMixin):
                         continue
                     if hasattr(value, "type") and hasattr(value, "nullable"):
                         out[attr_name] = ColumnSpec(
-                            storage=S(), io=ColumnSpec._DEFAULT_IO
+                            storage=ColumnSpec._storage_spec_from_column(value),
+                            io=ColumnSpec._DEFAULT_IO,
                         )
 
         logger.debug(

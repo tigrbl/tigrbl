@@ -5,9 +5,10 @@ from types import SimpleNamespace
 from typing import Any, Callable
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_core._spec.binding_spec import HttpRestBindingSpec
+from tigrbl_core._spec.binding_spec import HttpRestBindingSpec, WsBindingSpec
 from tigrbl_core._spec.op_spec import OpSpec
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
+from tigrbl_runtime.channel import normalize_exchange, websocket_adapter
 
 
 def ensure_system_docs_model(router: Any) -> type | None:
@@ -157,8 +158,71 @@ def register_runtime_get_route(
     hooks_ns.HANDLER = [_runtime_route_step]
 
 
+def register_runtime_websocket_route(
+    router: Any,
+    *,
+    path: str,
+    alias: str,
+    endpoint: Callable[..., Any],
+    protocol: str = "ws",
+    exchange: str = "bidirectional_stream",
+    framing: str = "text",
+) -> None:
+    """Register a websocket endpoint as a runtime-owned operation."""
+    model = ensure_system_docs_model(router)
+    if model is None:
+        return
+
+    normalized_exchange = normalize_exchange(exchange)
+    op = OpSpec(
+        alias=alias,
+        target="custom",
+        arity="collection",
+        persist="skip",
+        expose_routes=False,
+        expose_rpc=False,
+        expose_method=False,
+        exchange=normalized_exchange,
+        subevents=("connect", "receive", "emit", "complete", "disconnect"),
+        bindings=(
+            WsBindingSpec(
+                proto=str(protocol),
+                path=path,
+                exchange=normalized_exchange,
+                framing=str(framing),
+            ),
+        ),
+    )
+    model.ops.by_alias[alias] = _OpSpecGroup((op,))
+    model.opspecs.all = tuple(
+        spec for spec in model.opspecs.all if getattr(spec, "alias", None) != alias
+    ) + (op,)
+
+    async def _runtime_websocket_step(ctx: Any) -> None:
+        channel = ctx.get("channel")
+        if channel is None:
+            raise RuntimeError("runtime websocket step requires channel context")
+        websocket = websocket_adapter(channel)
+        ctx["websocket"] = websocket
+        result = endpoint(websocket)
+        if inspect.isawaitable(result):
+            result = await result
+        if result is not None:
+            setattr(ctx, "result", result)
+            temp = getattr(ctx, "temp", None)
+            if isinstance(temp, dict):
+                temp.setdefault("egress", {})["result"] = result
+
+    hooks_ns = getattr(model.hooks, alias, None)
+    if hooks_ns is None:
+        hooks_ns = SimpleNamespace()
+        setattr(model.hooks, alias, hooks_ns)
+    hooks_ns.HANDLER = [_runtime_websocket_step]
+
+
 __all__ = [
     "ensure_system_docs_model",
     "register_runtime_route",
     "register_runtime_get_route",
+    "register_runtime_websocket_route",
 ]

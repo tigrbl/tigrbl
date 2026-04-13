@@ -4,6 +4,7 @@
 from dataclasses import KW_ONLY, dataclass
 from typing import Any, Literal, Union
 
+from .datatypes import StorageTypeRef
 from .serde import SerdeMixin
 
 
@@ -45,6 +46,7 @@ class StorageSpec(SerdeMixin):
 
     # SQLAlchemy column shape (DDL/runtime)
     type_: Any | None = None
+    physical_type: StorageTypeRef | None = None
     _: KW_ONLY
     nullable: bool | None = None
     unique: bool = False

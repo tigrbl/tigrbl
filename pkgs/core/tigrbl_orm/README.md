@@ -1,35 +1,23 @@
-![Tigrbl branding](https://github.com/swarmauri/swarmauri-sdk/blob/a170683ecda8ca1c4f912c966d4499649ffb8224/assets/tigrbl.brand.theme.svg)
+# tigrbl_orm
 
-# tigrbl-orm
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tigrbl-orm.svg) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/pypi/pyversions/tigrbl-orm.svg) ![License](https://img.shields.io/pypi/l/tigrbl-orm.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-orm.svg)
+## Canonical repository docs
 
-## Features
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-- Provides the `tigrbl_orm.orm` module as a standalone package.
-- Includes reusable ORM mixins and table models for Tigrbl services.
-- Supports Python 3.10 through 3.12.
+## Package identity
 
-## Installation
+- workspace path: `pkgs/core/tigrbl_orm`
+- workspace class: core Python package
+- implementation layout: `tigrbl_orm/`
 
-### uv
-
-```bash
-uv add tigrbl-orm
-```
-
-### pip
-
-```bash
-pip install tigrbl-orm
-```
-
-## Usage
-
-```python
-from tigrbl_orm.orm.tables.user import User
-
-print(User.__tablename__)
-```
-
-Install this package alongside other Tigrbl components when you need SQLAlchemy-backed models.
+Long-form repository documentation is governed from `docs/`.

@@ -258,7 +258,7 @@ def _reserved_input_keys(
     return reserved
 
 
-class AtomImpl(Atom[Executing, Executing]):
+class AtomImpl(Atom[Executing, Executing, Exception]):
     name = "wire.validate_in"
     anchor = ANCHOR
 

@@ -39,6 +39,9 @@ class Route:
     security_dependencies: list[Any] | None = None
     tigrbl_model: Any | None = None
     tigrbl_alias: str | None = None
+    tigrbl_binding: Any | None = None
+    tigrbl_exchange: str | None = None
+    tigrbl_tx_scope: str | None = None
 
     @property
     def path(self) -> str:

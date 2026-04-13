@@ -10,7 +10,7 @@ _REGISTRY: dict[str, Callable[..., Any]] = {}
 try:
     from . import _native
 except Exception as exc:  # pragma: no cover - exercised when extension is not built.
-    _native = None
+    from . import _fallback as _native
     _IMPORT_ERROR = exc
 else:
     _IMPORT_ERROR = None

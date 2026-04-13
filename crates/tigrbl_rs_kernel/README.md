@@ -1,15 +1,23 @@
-        # tigrbl_rs_kernel
+# tigrbl_rs_kernel
 
-        Rust-native compile pipeline from canonical spec into a packed, optimizable kernel plan.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-        ## Owns
+## Canonical repository docs
 
-        - route and opview lowering
-- phase-chain assembly
-- packed plan model and optimizer passes
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-        ## Does not own
+## Package identity
 
-        - live request execution
-- DB sessions and transaction ownership
-- Python object invocation
+- workspace path: `crates/tigrbl_rs_kernel`
+- workspace class: Rust crate
+- implementation layout: `src/`
+
+Long-form repository documentation is governed from `docs/`.

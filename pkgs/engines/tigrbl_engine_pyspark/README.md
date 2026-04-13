@@ -1,28 +1,23 @@
 # tigrbl_engine_pyspark
 
-A minimal PySpark engine plugin for **tigrbl**. It registers the `pyspark` engine
-via the `tigrbl.engine` entry point, so tigrbl discovers it automatically on import.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Install
+## Canonical repository docs
 
-```bash
-pip install -e .
-```
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-## Usage
+## Package identity
 
-```python
-from tigrbl.engine import EngineSpec
+- workspace path: `pkgs/engines/tigrbl_engine_pyspark`
+- workspace class: engine package
+- implementation layout: `src/tigrbl_engine_pyspark/`
 
-spec = EngineSpec(kind="pyspark")
-provider = spec.to_provider()
-engine, session_factory = provider.build()
-
-sess = session_factory()     # has .spark (SparkSession) and .close()
-sess.spark.sql("SELECT 1").show()
-```
-
-## Notes
-
-- Entry point group: `tigrbl.engine`
-- Target: `tigrbl_engine_pyspark:register`
+Long-form repository documentation is governed from `docs/`.

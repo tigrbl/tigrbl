@@ -1,0 +1,14 @@
+schema_version: 1
+profile: current_release
+version: 0.3.18
+state: current
+certification_status:
+  within_declared_boundary:
+    certifiably_fully_featured: true
+    certifiably_fully_rfc_compliant: true
+  outside_declared_boundary:
+    certifiably_fully_featured: false
+    certifiably_fully_rfc_compliant: false
+notes:
+  - Applies only to the frozen boundary recorded in docs/governance/TARGET_BOUNDARY.md.
+  - Deferred datatype/table work remains excluded from this certification profile.

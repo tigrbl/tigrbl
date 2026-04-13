@@ -36,7 +36,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "status_code", status)
 
 
-class AtomImpl(Atom[Emitting, Emitting]):
+class AtomImpl(Atom[Emitting, Emitting, Exception]):
     name = "egress.http_finalize"
     anchor = ANCHOR
 

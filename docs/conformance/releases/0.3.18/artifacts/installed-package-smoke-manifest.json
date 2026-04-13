@@ -1,0 +1,92 @@
+{
+  "doctor_title": "Phase 12 Installed App",
+  "doctor_version": "12.0.0",
+  "install_mode": "isolated target install root",
+  "installed_cli": {
+    "app_title": "Phase 12 Installed App",
+    "commands": [
+      "run",
+      "serve",
+      "dev",
+      "routes",
+      "openapi",
+      "openrpc",
+      "doctor",
+      "capabilities"
+    ],
+    "flags": [
+      "--server",
+      "--host",
+      "--port",
+      "--reload",
+      "--workers",
+      "--root-path",
+      "--proxy-headers",
+      "--uds",
+      "--docs-path",
+      "--openapi-path",
+      "--openrpc-path",
+      "--lens-path"
+    ],
+    "servers": {
+      "gunicorn": false,
+      "hypercorn": true,
+      "tigrcorn": false,
+      "uvicorn": true
+    }
+  },
+  "native_binding_support": "source-path fallback via bindings/python/tigrbl_native/python",
+  "openapi_version": "3.1.0",
+  "openrpc_version": "1.2.6",
+  "package_dir": "pkgs/core/tigrbl",
+  "promotion_date": "2026-04-02",
+  "routes_contains": {
+    "/docs": true,
+    "/lens": true,
+    "/openapi.json": true,
+    "/openrpc.json": true,
+    "/ping": true,
+    "/ws/echo": true
+  },
+  "sdist": "tigrbl-0.3.18.tar.gz",
+  "sdist_contents": {
+    "contains_cli": true,
+    "contains_pyproject": true,
+    "contains_readme": true
+  },
+  "server_translation": {
+    "gunicorn": {
+      "bind": "0.0.0.0:9001",
+      "forwarded_allow_ips": "*",
+      "worker_class": "uvicorn.workers.UvicornWorker",
+      "workers": 2
+    },
+    "hypercorn": {
+      "bind": [
+        "0.0.0.0:9001"
+      ],
+      "proxy_mode": "legacy",
+      "root_path": "/root",
+      "workers": 2
+    },
+    "tigrcorn": {
+      "host": "0.0.0.0",
+      "port": 9001,
+      "proxy_headers": true,
+      "root_path": "/root",
+      "workers": 2
+    },
+    "uvicorn": {
+      "host": "0.0.0.0",
+      "port": 9001,
+      "proxy_headers": true,
+      "root_path": "/root"
+    }
+  },
+  "source_dev_build": "0.3.18.dev1",
+  "source_manifest": "docs/conformance/dev/0.3.18.dev1/artifacts/installed-package-smoke-manifest.json",
+  "wheel": "tigrbl-0.3.18-py3-none-any.whl",
+  "wheel_entry_points": {
+    "tigrbl": "tigrbl.cli:console_main"
+  }
+}

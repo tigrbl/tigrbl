@@ -1,6 +1,8 @@
 pub mod clear;
+pub mod count;
 pub mod create;
 pub mod delete;
+pub mod exists;
 pub mod list;
 pub mod merge;
 pub mod read;

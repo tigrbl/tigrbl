@@ -1,26 +1,23 @@
 # tigrbl_engine_dataframe
 
-A Tigrbl engine plugin that provides a **DataFrame-backed** engine/session.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-- **Native transactions** (`begin/commit/rollback`).
-- **MVCC-style snapshots** for reads.
-- Works with Tigrbl **core CRUD** via the small session surface.
+## Canonical repository docs
 
-## Install
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-```bash
-pip install tigrbl_engine_dataframe
-```
+## Package identity
 
-The plugin **auto-registers** via entry points under the group `tigrbl.engine`.
+- workspace path: `pkgs/engines/tigrbl_engine_dataframe`
+- workspace class: engine package
+- implementation layout: `src/tigrbl_engine_dataframe/`
 
-## Usage
-
-```python
-from tigrbl.engine.decorators import engine_ctx
-
-# Bind by kind using the plugin's engine
-@engine_ctx({"kind": "dataframe", "async": True, "tables": {"widgets": df}, "pks": {"widgets": "id"}})
-class API:
-    pass
-```
+Long-form repository documentation is governed from `docs/`.

@@ -169,7 +169,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "transport_response", response)
 
 
-class AtomImpl(Atom[Encoded, Emitting]):
+class AtomImpl(Atom[Encoded, Emitting, Exception]):
     name = "egress.to_transport_response"
     anchor = ANCHOR
 

@@ -6,7 +6,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-FAVICON_PATH = Path(__file__).parent / "favicon" / "assets" / "favicon.svg"
+FAVICON_PATH = Path(__file__).parent / 'favicon' / 'assets' / 'favicon.svg'
 
 
 def mount_diagnostics(*args: Any, **kwargs: Any) -> Any:
@@ -45,6 +45,24 @@ def mount_favicon(*args: Any, **kwargs: Any) -> Any:
     return _mount_favicon(*args, **kwargs)
 
 
+def mount_json_schema(*args: Any, **kwargs: Any) -> Any:
+    from .docs import mount_json_schema as _mount_json_schema
+
+    return _mount_json_schema(*args, **kwargs)
+
+
+def mount_asyncapi(*args: Any, **kwargs: Any) -> Any:
+    from .docs import mount_asyncapi as _mount_asyncapi
+
+    return _mount_asyncapi(*args, **kwargs)
+
+
+def mount_static(*args: Any, **kwargs: Any) -> Any:
+    from .static import _mount_static as _mount_static
+
+    return _mount_static(*args, **kwargs)
+
+
 def build_openapi(*args: Any, **kwargs: Any) -> Any:
     from .docs import build_openapi as _build_openapi
 
@@ -75,6 +93,18 @@ def build_openrpc_spec(*args: Any, **kwargs: Any) -> Any:
     return _build_openrpc_spec(*args, **kwargs)
 
 
+def build_json_schema_bundle(*args: Any, **kwargs: Any) -> Any:
+    from .docs import build_json_schema_bundle as _build_json_schema_bundle
+
+    return _build_json_schema_bundle(*args, **kwargs)
+
+
+def build_asyncapi_spec(*args: Any, **kwargs: Any) -> Any:
+    from .docs import build_asyncapi_spec as _build_asyncapi_spec
+
+    return _build_asyncapi_spec(*args, **kwargs)
+
+
 def stop_uvicorn_server(*args: Any, **kwargs: Any) -> Any:
     from .uvicorn import stop_uvicorn_server as _stop_uvicorn_server
 
@@ -82,17 +112,22 @@ def stop_uvicorn_server(*args: Any, **kwargs: Any) -> Any:
 
 
 __all__ = [
-    "FAVICON_PATH",
-    "mount_diagnostics",
-    "mount_favicon",
-    "mount_lens",
-    "mount_openapi",
-    "mount_openrpc",
-    "mount_swagger",
-    "build_favicon",
-    "build_lens",
-    "build_openapi",
-    "build_openrpc_spec",
-    "build_swagger",
-    "stop_uvicorn_server",
+    'FAVICON_PATH',
+    'mount_diagnostics',
+    'mount_favicon',
+    'mount_lens',
+    'mount_openapi',
+    'mount_openrpc',
+    'mount_swagger',
+    'mount_json_schema',
+    'mount_asyncapi',
+    'mount_static',
+    'build_favicon',
+    'build_lens',
+    'build_openapi',
+    'build_openrpc_spec',
+    'build_swagger',
+    'build_json_schema_bundle',
+    'build_asyncapi_spec',
+    'stop_uvicorn_server',
 ]

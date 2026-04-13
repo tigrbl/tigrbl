@@ -1,0 +1,49 @@
+{
+  "artifacts": [
+    {
+      "name": "clean-room-package-manifest",
+      "path": "docs/conformance/releases/0.3.18/artifacts/clean-room-package-manifest.json",
+      "source_dev_artifact": "docs/conformance/dev/0.3.18.dev1/artifacts/clean-room-package-manifest.json"
+    },
+    {
+      "name": "installed-package-smoke-manifest",
+      "path": "docs/conformance/releases/0.3.18/artifacts/installed-package-smoke-manifest.json",
+      "source_dev_artifact": "docs/conformance/dev/0.3.18.dev1/artifacts/installed-package-smoke-manifest.json"
+    },
+    {
+      "name": "certification-bundle",
+      "path": "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json",
+      "source_dev_artifact": "docs/conformance/dev/0.3.18.dev1/gate-results/gate-e-promotion.md"
+    },
+    {
+      "name": "certification-bundle-signature",
+      "path": "docs/conformance/releases/0.3.18/artifacts/certification-bundle.sig",
+      "source_dev_artifact": "docs/conformance/dev/0.3.18.dev1/gate-results/gate-e-promotion.md"
+    },
+    {
+      "name": "source-archive-digest",
+      "path": "docs/conformance/releases/0.3.18/artifacts/source-archive-digest.txt",
+      "source_dev_artifact": "docs/conformance/dev/0.3.18.dev1/gate-results/gate-e-promotion.md"
+    }
+  ],
+  "bundle": {
+    "claims": "docs/conformance/releases/0.3.18/CLAIMS.md",
+    "current_target_snapshot": "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
+    "evidence_index": "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
+    "release_notes": "docs/conformance/releases/0.3.18/RELEASE_NOTES.md"
+  },
+  "gate_results": [
+    "docs/conformance/releases/0.3.18/gate-results/gate-b-surface-closure.md",
+    "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md",
+    "docs/conformance/releases/0.3.18/gate-results/gate-d-reproducibility.md",
+    "docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md"
+  ],
+  "note": "This manifest freezes the promoted stable release bundle and records the exact dev-build evidence source used for promotion.",
+  "package_metadata": {
+    "path": "pkgs/core/tigrbl/pyproject.toml",
+    "version": "0.3.18"
+  },
+  "promotion_date": "2026-04-02",
+  "release": "0.3.18",
+  "source_dev_build": "0.3.18.dev1"
+}

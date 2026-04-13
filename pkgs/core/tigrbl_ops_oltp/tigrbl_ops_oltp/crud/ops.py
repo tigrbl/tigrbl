@@ -11,6 +11,7 @@ import logging
 from sqlalchemy.orm.exc import UnmappedInstanceError
 from sqlalchemy import inspect as _sa_inspect
 from sqlalchemy.exc import NoInspectionAvailable, OperationalError
+from sqlalchemy import func
 
 from .helpers import (
     AsyncSession,
@@ -355,3 +356,26 @@ async def clear(
     n = int(getattr(res, "rowcount", 0) or 0)
     logger.debug("clear removed %d rows", n)
     return {"deleted": n}
+
+
+async def count(*args: Any, **kwargs: Any) -> Dict[str, int]:
+    """Count rows matching equality filters."""
+    model, params = _normalize_list_call(args, kwargs)
+    _ensure_model_mapped(model)
+
+    filters: Mapping[str, Any] = _coerce_filters(model, params["filters"])
+    db: Union[Session, AsyncSession] = params["db"]
+    stmt = select(func.count()).select_from(model)
+    where = _apply_filters(model, filters)
+    if where is not None:
+        stmt = stmt.where(where)
+    result = await _maybe_execute(db, stmt)
+    value = result.scalar_one()
+    return {"count": int(value or 0)}
+
+
+async def exists(model: type, ident: Any, db: Union[Session, AsyncSession]) -> Dict[str, bool]:
+    """Check whether a row exists by primary key."""
+    _ensure_model_mapped(model)
+    obj = await _maybe_get(db, model, ident)
+    return {"exists": obj is not None}

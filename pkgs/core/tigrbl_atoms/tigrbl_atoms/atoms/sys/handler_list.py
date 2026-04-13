@@ -90,7 +90,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "result", await _call_list_core(_core.list, model, payload, ctx))
 
 
-class AtomImpl(Atom[Resolved, Operated]):
+class AtomImpl(Atom[Resolved, Operated, Exception]):
     name = "sys.handler_list"
     anchor = ANCHOR
 

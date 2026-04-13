@@ -1,0 +1,2245 @@
+{
+  "components": {
+    "schemas": {
+      "Phase5BasicDocsTableClearRequest": {
+        "description": "Tigrbl v3 Phase5BasicDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BasicDocsTableClearRequest",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableClearResponse": {
+        "description": "clear response schema for Phase5BasicDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5BasicDocsTableClearResponse",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BasicDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BasicDocsTableCreateRequest",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableCreateResponse": {
+        "description": "Tigrbl v3 Phase5BasicDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BasicDocsTableCreateResponse",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 Phase5BasicDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "Phase5BasicDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableDeleteResponse": {
+        "description": "delete response schema for Phase5BasicDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5BasicDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableListResponse": {
+        "description": "Tigrbl v3 Phase5BasicDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BasicDocsTableListResponse",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableReadResponse": {
+        "description": "Tigrbl v3 Phase5BasicDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BasicDocsTableReadResponse",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BasicDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BasicDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BasicDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BasicDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BasicDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5BasicDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "Phase5BasicDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BasicDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5BasicDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableClearRequest": {
+        "description": "Tigrbl v3 Phase5BearerDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BearerDocsTableClearRequest",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableClearResponse": {
+        "description": "clear response schema for Phase5BearerDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5BearerDocsTableClearResponse",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BearerDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BearerDocsTableCreateRequest",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableCreateResponse": {
+        "description": "Tigrbl v3 Phase5BearerDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BearerDocsTableCreateResponse",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 Phase5BearerDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "Phase5BearerDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableDeleteResponse": {
+        "description": "delete response schema for Phase5BearerDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5BearerDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableListResponse": {
+        "description": "Tigrbl v3 Phase5BearerDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BearerDocsTableListResponse",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableReadResponse": {
+        "description": "Tigrbl v3 Phase5BearerDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BearerDocsTableReadResponse",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BearerDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BearerDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BearerDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5BearerDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BearerDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5BearerDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "Phase5BearerDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5BearerDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5BearerDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "Phase5CreateWidget": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5CreateWidget",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableClearRequest": {
+        "description": "Tigrbl v3 Phase5RouterDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5RouterDocsTableClearRequest",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableClearResponse": {
+        "description": "clear response schema for Phase5RouterDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5RouterDocsTableClearResponse",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5RouterDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5RouterDocsTableCreateRequest",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableCreateResponse": {
+        "description": "Tigrbl v3 Phase5RouterDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5RouterDocsTableCreateResponse",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 Phase5RouterDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "Phase5RouterDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableDeleteResponse": {
+        "description": "delete response schema for Phase5RouterDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5RouterDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableListResponse": {
+        "description": "Tigrbl v3 Phase5RouterDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5RouterDocsTableListResponse",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableReadResponse": {
+        "description": "Tigrbl v3 Phase5RouterDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5RouterDocsTableReadResponse",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5RouterDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5RouterDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5RouterDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5RouterDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5RouterDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5RouterDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "Phase5RouterDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5RouterDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5RouterDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "Phase5TableDocsTableClearRequest": {
+        "description": "Tigrbl v3 Phase5TableDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5TableDocsTableClearRequest",
+        "type": "object"
+      },
+      "Phase5TableDocsTableClearResponse": {
+        "description": "clear response schema for Phase5TableDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5TableDocsTableClearResponse",
+        "type": "object"
+      },
+      "Phase5TableDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5TableDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5TableDocsTableCreateRequest",
+        "type": "object"
+      },
+      "Phase5TableDocsTableCreateResponse": {
+        "description": "Tigrbl v3 Phase5TableDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5TableDocsTableCreateResponse",
+        "type": "object"
+      },
+      "Phase5TableDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 Phase5TableDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "Phase5TableDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "Phase5TableDocsTableDeleteResponse": {
+        "description": "delete response schema for Phase5TableDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "Phase5TableDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "Phase5TableDocsTableListResponse": {
+        "description": "Tigrbl v3 Phase5TableDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5TableDocsTableListResponse",
+        "type": "object"
+      },
+      "Phase5TableDocsTableReadResponse": {
+        "description": "Tigrbl v3 Phase5TableDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5TableDocsTableReadResponse",
+        "type": "object"
+      },
+      "Phase5TableDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5TableDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5TableDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "Phase5TableDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5TableDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "Phase5TableDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "Phase5TableDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5TableDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5TableDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "Phase5TableDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 Phase5TableDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "Phase5TableDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "Phase5WidgetOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "Phase5WidgetOut",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      },
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      },
+      "BearerAuth": {
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "MutualTLSAuth": {
+        "type": "mutualTLS"
+      },
+      "OAuth2Auth": {
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://issuer.example/token"
+          }
+        },
+        "type": "oauth2"
+      },
+      "OpenIdAuth": {
+        "openIdConnectUrl": "https://issuer.example/.well-known/openid-configuration",
+        "type": "openIdConnect"
+      }
+    }
+  },
+  "info": {
+    "title": "Phase 5 API",
+    "version": "5.0.0"
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "openapi": "3.1.0",
+  "paths": {
+    "/phase5basicdocstable": {
+      "delete": {
+        "operationId": "Phase5BasicDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BasicDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BasicDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BasicDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5BasicDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BasicDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BasicDocsTable"
+        ]
+      },
+      "post": {
+        "operationId": "Phase5BasicDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BasicDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BasicDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BasicDocsTable"
+        ]
+      }
+    },
+    "/phase5basicdocstable/{item_id}": {
+      "delete": {
+        "operationId": "Phase5BasicDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BasicDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BasicDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BasicDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5BasicDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BasicDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "tags": [
+          "Phase5BasicDocsTable"
+        ]
+      },
+      "patch": {
+        "operationId": "Phase5BasicDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BasicDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BasicDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BasicDocsTable"
+        ]
+      },
+      "put": {
+        "operationId": "Phase5BasicDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BasicDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BasicDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BasicDocsTable"
+        ]
+      }
+    },
+    "/phase5bearerdocstable": {
+      "delete": {
+        "operationId": "Phase5BearerDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BearerDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BearerDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BearerDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5BearerDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BearerDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BearerDocsTable"
+        ]
+      },
+      "post": {
+        "operationId": "Phase5BearerDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BearerDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BearerDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BearerDocsTable"
+        ]
+      }
+    },
+    "/phase5bearerdocstable/{item_id}": {
+      "delete": {
+        "operationId": "Phase5BearerDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BearerDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BearerDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BearerDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5BearerDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BearerDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": [
+          "Phase5BearerDocsTable"
+        ]
+      },
+      "patch": {
+        "operationId": "Phase5BearerDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BearerDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BearerDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BearerDocsTable"
+        ]
+      },
+      "put": {
+        "operationId": "Phase5BearerDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5BearerDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5BearerDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5BearerDocsTable"
+        ]
+      }
+    },
+    "/phase5routerdocstable": {
+      "delete": {
+        "operationId": "Phase5RouterDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5RouterDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5RouterDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5RouterDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5RouterDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5RouterDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5RouterDocsTable"
+        ]
+      },
+      "post": {
+        "operationId": "Phase5RouterDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5RouterDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5RouterDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5RouterDocsTable"
+        ]
+      }
+    },
+    "/phase5routerdocstable/{item_id}": {
+      "delete": {
+        "operationId": "Phase5RouterDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5RouterDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5RouterDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5RouterDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5RouterDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5RouterDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "Phase5RouterDocsTable"
+        ]
+      },
+      "patch": {
+        "operationId": "Phase5RouterDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5RouterDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5RouterDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5RouterDocsTable"
+        ]
+      },
+      "put": {
+        "operationId": "Phase5RouterDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5RouterDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5RouterDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5RouterDocsTable"
+        ]
+      }
+    },
+    "/phase5tabledocstable": {
+      "delete": {
+        "operationId": "Phase5TableDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5TableDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5TableDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5TableDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5TableDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5TableDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5TableDocsTable"
+        ]
+      },
+      "post": {
+        "operationId": "Phase5TableDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5TableDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5TableDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5TableDocsTable"
+        ]
+      }
+    },
+    "/phase5tabledocstable/{item_id}": {
+      "delete": {
+        "operationId": "Phase5TableDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5TableDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5TableDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5TableDocsTable"
+        ]
+      },
+      "get": {
+        "operationId": "Phase5TableDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5TableDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "OAuth2Auth": []
+          },
+          {
+            "OpenIdAuth": []
+          },
+          {
+            "MutualTLSAuth": []
+          }
+        ],
+        "tags": [
+          "Phase5TableDocsTable"
+        ]
+      },
+      "patch": {
+        "operationId": "Phase5TableDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5TableDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5TableDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5TableDocsTable"
+        ]
+      },
+      "put": {
+        "operationId": "Phase5TableDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5TableDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5TableDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "Phase5TableDocsTable"
+        ]
+      }
+    },
+    "/rpc": {
+      "post": {
+        "operationId": "<lambda>",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        }
+      }
+    },
+    "/system/healthz": {
+      "get": {
+        "description": "Database connectivity check.",
+        "operationId": "healthz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/system/hookz": {
+      "get": {
+        "description": "Expose hook execution order for each method.\n\nPhases appear in runner order; error phases trail.\nWithin each phase, hooks are listed in execution order: global (None) hooks, then method-specific hooks.",
+        "operationId": "hookz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Hooks",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/system/kernelz": {
+      "get": {
+        "description": "Phase-chain plan as built by the kernel per operation.",
+        "operationId": "kernelz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Kernel Plan",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/system/methodz": {
+      "get": {
+        "description": "Ordered, canonical operation list.",
+        "operationId": "methodz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Methods",
+        "tags": [
+          "system"
+        ]
+      }
+    },
+    "/widgets/{widget_id}": {
+      "post": {
+        "description": "Create or update a widget",
+        "operationId": "create",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "verbose",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Phase5CreateWidget"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Phase5WidgetOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Create widget",
+        "tags": [
+          "widgets"
+        ]
+      }
+    }
+  }
+}

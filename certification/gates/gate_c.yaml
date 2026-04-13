@@ -1,0 +1,9 @@
+schema_version: 1
+gate: gate-c
+name: Conformance and security closure
+state: evidenced
+applies_to: 0.3.18
+owner: Governance
+validator: tools/ci/validate_gate_c_conformance_security.py
+workflow: .github/workflows/gate-c-conformance-security.yml
+pass_condition: Retained spec and security rows are closed for the frozen boundary.

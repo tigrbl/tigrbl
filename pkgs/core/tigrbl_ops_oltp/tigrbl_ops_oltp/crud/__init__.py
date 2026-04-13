@@ -1,43 +1,41 @@
-from .ops import (
-    create,
-    read,
-    update,
-    replace,
-    merge,
-    delete,
-    list as _list,
-    clear,
-)
-from .bulk import (
-    bulk_create,
-    bulk_update,
-    bulk_replace,
-    bulk_merge,
-    bulk_delete,
-)
+"""CRUD surface exports with lazy loading."""
 
-from .params import Body, Header, Param, Path, Query
+from __future__ import annotations
 
-# Public alias named exactly `list` to preserve API surface
-list = _list  # noqa: A001 - intentional shadow of built-in for public API
+from importlib import import_module
+from typing import Any
 
-__all__ = [
-    "Header",
-    "Path",
-    "Query",
-    "Body",
-    "Param",
-    "create",
-    "read",
-    "update",
-    "replace",
-    "merge",
-    "delete",
-    "list",
-    "clear",
-    "bulk_create",
-    "bulk_update",
-    "bulk_replace",
-    "bulk_merge",
-    "bulk_delete",
-]
+_EXPORTS = {
+    'create': 'ops',
+    'read': 'ops',
+    'update': 'ops',
+    'replace': 'ops',
+    'merge': 'ops',
+    'delete': 'ops',
+    'list': 'ops',
+    'clear': 'ops',
+    'count': 'ops',
+    'exists': 'ops',
+    'bulk_create': 'bulk',
+    'bulk_update': 'bulk',
+    'bulk_replace': 'bulk',
+    'bulk_merge': 'bulk',
+    'bulk_delete': 'bulk',
+    'Body': 'params',
+    'Header': 'params',
+    'Param': 'params',
+    'Path': 'params',
+    'Query': 'params',
+}
+
+__all__ = list(_EXPORTS)
+
+
+def __getattr__(name: str) -> Any:
+    module_name = _EXPORTS.get(name)
+    if module_name is None:
+        raise AttributeError(name)
+    module = import_module(f"{__name__}.{module_name}")
+    attr = getattr(module, name)
+    globals()[name] = attr
+    return attr

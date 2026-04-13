@@ -6,7 +6,6 @@ from typing import Any, ClassVar, Mapping
 from operator import attrgetter
 from types import SimpleNamespace
 
-from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
 
 from .base import ExecutorBase
@@ -54,12 +53,9 @@ class PackedPlanExecutor(ExecutorBase):
 
     @classmethod
     def _resolve_transport_senders(cls):
-        from tigrbl_atoms.atoms.egress.asgi_send import (
-            _send_json,
-            _send_transport_response,
-        )
+        from tigrbl_runtime.channel import channel_senders
 
-        return _send_json, _send_transport_response
+        return channel_senders()
 
     @classmethod
     def _resolve_error_helpers(cls):
@@ -293,6 +289,46 @@ class PackedPlanExecutor(ExecutorBase):
             exact_cache[(id(plan), method, path)] = meta_index
             return meta_index
 
+        return -1
+
+    def _resolve_program_id_from_channel(
+        self,
+        ctx: _Ctx,
+        plan: KernelPlan,
+    ) -> int:
+        channel = ctx.get("channel")
+        protocol = getattr(channel, "protocol", None)
+        path = getattr(channel, "path", None)
+        if not (isinstance(protocol, str) and isinstance(path, str) and path):
+            return -1
+
+        for proto in (protocol, "ws", "wss", "webtransport"):
+            bucket = plan.proto_indices.get(proto)
+            if not isinstance(bucket, Mapping):
+                continue
+            exact_bucket = bucket.get("exact")
+            if isinstance(exact_bucket, Mapping):
+                maybe = exact_bucket.get(path)
+                if isinstance(maybe, int):
+                    return maybe
+            templated_bucket = bucket.get("templated")
+            if isinstance(templated_bucket, list):
+                for entry in templated_bucket:
+                    if not isinstance(entry, Mapping):
+                        continue
+                    pattern = entry.get("pattern")
+                    meta_index = entry.get("meta_index")
+                    if hasattr(pattern, "match") and isinstance(meta_index, int):
+                        matched = pattern.match(path)
+                        if matched is not None:
+                            channel = ctx.get("channel")
+                            if channel is not None:
+                                channel.path_params = matched.groupdict()
+                            temp = getattr(ctx, "temp", None)
+                            if isinstance(temp, dict):
+                                temp.setdefault("dispatch", {})["path_params"] = matched.groupdict()
+                                temp.setdefault("route", {})["path_params"] = matched.groupdict()
+                            return meta_index
         return -1
 
     @staticmethod
@@ -544,6 +580,33 @@ class PackedPlanExecutor(ExecutorBase):
             return _acquire
 
         provider_cache: dict[str, Any] = {}
+        app_resolver_cache: dict[str, Any] = {}
+
+        def _runtime_owner(ctx: _Ctx) -> Any:
+            return getattr(ctx, "router", None) or getattr(ctx, "app", None)
+
+        def _resolve_from_owner(ctx: _Ctx) -> Any:
+            owner = _runtime_owner(ctx)
+            if owner is None:
+                return None
+            if "resolver" in app_resolver_cache:
+                return app_resolver_cache["resolver"]
+            resolver = getattr(owner, "_tigrbl_runtime_resolve_provider", None)
+            if callable(resolver):
+                app_resolver_cache["resolver"] = resolver
+                return resolver
+            return None
+
+        def _acquire_via_owner(ctx: _Ctx) -> tuple[Any, Any] | None:
+            owner = _runtime_owner(ctx)
+            acquire = getattr(owner, "_tigrbl_runtime_acquire_db", None)
+            if callable(acquire):
+                return acquire(
+                    router=getattr(ctx, "router", None) or getattr(ctx, "app", None),
+                    model=model,
+                    op_alias=alias if isinstance(alias, str) else None,
+                )
+            return None
 
         def _release(db: Any) -> None:
             close = getattr(db, "close", None)
@@ -566,22 +629,27 @@ class PackedPlanExecutor(ExecutorBase):
             return db, lambda: _release(db)
 
         def _acquire(ctx: _Ctx) -> tuple[Any, Any]:
+            owner_session = _acquire_via_owner(ctx)
+            if owner_session is not None:
+                return owner_session
             provider = provider_cache.get("provider")
             if provider is not None:
                 return _acquire_from_provider(provider)
-            provider = _resolver.resolve_provider(
-                router=getattr(ctx, "router", None) or getattr(ctx, "app", None),
-                model=model,
-                op_alias=alias if isinstance(alias, str) else None,
-            )
+            resolver = _resolve_from_owner(ctx)
+            provider = None
+            if callable(resolver):
+                provider = resolver(
+                    router=getattr(ctx, "router", None) or getattr(ctx, "app", None),
+                    model=model,
+                    op_alias=alias if isinstance(alias, str) else None,
+                )
             if provider is not None:
                 provider_cache["provider"] = provider
                 return _acquire_from_provider(provider)
-            return _resolver.acquire(
-                router=getattr(ctx, "router", None) or getattr(ctx, "app", None),
-                model=model,
-                op_alias=alias if isinstance(alias, str) else None,
-            )
+            owner_session = _acquire_via_owner(ctx)
+            if owner_session is not None:
+                return owner_session
+            raise RuntimeError("No runtime database acquisition callback is configured")
 
         self._db_acquire_cache[cache_key] = _acquire
         return _acquire
@@ -644,10 +712,13 @@ class PackedPlanExecutor(ExecutorBase):
         if program_id < 0:
             program_id = self._resolve_program_id_from_dispatch(ctx, packed)
         if program_id < 0:
+            program_id = self._resolve_program_id_from_channel(ctx, plan)
+        if program_id < 0:
             program_id = self._resolve_program_id_from_request(ctx, plan)
         if program_id < 0:
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
+            scope = getattr(env, "scope", {}) or {}
             egress = temp.get("egress") if isinstance(temp, dict) else None
             transport = (
                 egress.get("transport_response") if isinstance(egress, dict) else None
@@ -659,6 +730,11 @@ class PackedPlanExecutor(ExecutorBase):
             route = temp.get("route", {})
             if isinstance(route, dict) and route.get("method_not_allowed") is True:
                 await _send_json(env, 405, {"detail": "Method Not Allowed"})
+                return
+            if str(scope.get("type") or "") == "websocket":
+                send = getattr(env, "send", None)
+                if callable(send):
+                    await send({"type": "websocket.close", "code": 4404})
                 return
             await _send_json(
                 env, 404, {"detail": "No runtime operation matched request."}
@@ -764,6 +840,7 @@ class PackedPlanExecutor(ExecutorBase):
                     env,
                     int(getattr(exc, "status_code", 500) or 500),
                     {"detail": detail},
+                    headers=getattr(exc, "headers", None),
                 )
                 return
             except Exception as exc:
@@ -787,6 +864,7 @@ class PackedPlanExecutor(ExecutorBase):
                     env,
                     int(getattr(std, "status_code", 500) or 500),
                     {"detail": detail},
+                    headers=getattr(std, "headers", None),
                 )
                 return
 

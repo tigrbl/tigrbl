@@ -150,7 +150,7 @@ def _try_read_inbound(inbound: Mapping[str, Any], field: str) -> Tuple[bool, Any
     return False, None
 
 
-class AtomImpl(Atom[Executing, Resolved]):
+class AtomImpl(Atom[Executing, Resolved, Exception]):
     name = "resolve.assemble"
     anchor = ANCHOR
 

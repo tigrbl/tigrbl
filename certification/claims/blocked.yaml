@@ -1,0 +1,45 @@
+schema_version: 1
+state: blocked
+claims:
+  - id: BLK-001
+    public: true
+    certified_boundary: false
+    title: The active 0.3.19.dev1 line is not certifiably fully featured.
+    owner: Governance
+    blocker: Next-target implementation has not closed N1 through N5.
+  - id: BLK-002
+    public: true
+    certified_boundary: false
+    title: The active 0.3.19.dev1 line is not certifiably fully RFC compliant.
+    owner: Governance
+    blocker: RFC/spec closure remains attached to frozen release 0.3.18 only.
+  - id: BLK-003
+    public: false
+    certified_boundary: false
+    title: Engine-family datatype alignment lacks feature-specific proof slices.
+    owner: Next-target program
+    blocker: Planned test classes are declared but not implemented.
+  - id: BLK-004
+    public: true
+    certified_boundary: false
+    title: Native backend claims must remain blocked until Python-vs-Rust parity lanes pass as release evidence.
+    owner: Governance
+    blocker: The repo may expose native parity artifacts and tests, but native backend claims must remain blocked until those lanes pass in release evidence.
+  - id: BLK-005
+    public: true
+    certified_boundary: false
+    title: Tigrcorn interop and benchmark certification claims must remain blocked until governed release evidence populates the public bundle targets.
+    owner: Governance
+    blocker: The repo now exposes public bundle directories and manifests for Tigrcorn interop and benchmark artifacts, but those bundles are not populated by release evidence in this workspace.
+  - id: BLK-006
+    public: true
+    certified_boundary: false
+    title: Tigrcorn hardening and negative-certification claims must remain blocked until profile-specific negative corpora run as governed release evidence.
+    owner: Governance
+    blocker: The repo now publishes deployment profiles, hardening contracts, and negative corpus manifests, but those lanes are not executed as governed release evidence in this workspace.
+  - id: BLK-007
+    public: true
+    certified_boundary: false
+    title: The active line cannot be promoted until claim lifecycle prerequisites and preserved release evidence are complete.
+    owner: Governance
+    blocker: Phase 7 lifecycle and certification-bundle governance now exist, but the active 0.3.19.dev1 line still lacks the full A-E evidence required for promotion.

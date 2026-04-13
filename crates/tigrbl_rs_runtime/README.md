@@ -1,15 +1,23 @@
-        # tigrbl_rs_runtime
+# tigrbl_rs_runtime
 
-        Native runtime, executor, callback fence, engine resolution, and transaction lifecycle management for compiled kernel plans.
+This file is a package-local distribution entry point.
+It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-        ## Owns
+## Canonical repository docs
 
-        - runtime handles and config
-- executor selection and phase invocation
-- callback fences and engine resolution
+- `README.md`
+- `docs/README.md`
+- `docs/conformance/CURRENT_TARGET.md`
+- `docs/conformance/CURRENT_STATE.md`
+- `docs/conformance/NEXT_STEPS.md`
+- `docs/governance/DOC_POINTERS.md`
+- `docs/developer/PACKAGE_CATALOG.md`
+- `docs/developer/PACKAGE_LAYOUT.md`
 
-        ## Does not own
+## Package identity
 
-        - spec authoring
-- compile-time plan optimization
-- CRUD semantic definition
+- workspace path: `crates/tigrbl_rs_runtime`
+- workspace class: Rust crate
+- implementation layout: `src/`
+
+Long-form repository documentation is governed from `docs/`.

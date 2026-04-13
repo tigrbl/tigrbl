@@ -119,7 +119,7 @@ def _safe_readtime_value(value: Any, desc: Mapping[str, Any]) -> Any:
     return value
 
 
-class AtomImpl(Atom[Encoded, Encoded]):
+class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "emit.readtime_alias"
     anchor = ANCHOR
 

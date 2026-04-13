@@ -1,0 +1,27 @@
+
+----------------------------- live log collection ------------------------------
+2026-03-31 21:41:51 [INFO] Loaded 52 runtime atoms
+
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_routes_command_smoke_lists_http_websocket_and_docs_routes PASSED [  7%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_openapi_command_smoke_outputs_openapi_document PASSED [ 14%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_openrpc_command_smoke_outputs_openrpc_document PASSED [ 21%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_doctor_command_smoke_outputs_app_summary PASSED [ 28%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py::test_capabilities_command_smoke_outputs_commands_flags_servers_and_target PASSED [ 35%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[uvicorn] PASSED [ 42%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[hypercorn] PASSED [ 50%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[gunicorn] PASSED [ 57%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_run_command_dispatches_to_each_supported_server[tigrcorn] PASSED [ 64%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_dev_command_enables_reload_by_default PASSED [ 71%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_uvicorn_runner_translates_config PASSED [ 78%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_hypercorn_runner_translates_config PASSED [ 85%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_gunicorn_runner_translates_config PASSED [ 92%]
+pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py::test_tigrcorn_runner_translates_config PASSED [100%]
+
+=============================== warnings summary ===============================
+../../../../opt/pyvenv/lib/python3.13/site-packages/_pytest/config/__init__.py:1428
+  /opt/pyvenv/lib/python3.13/site-packages/_pytest/config/__init__.py:1428: PytestConfigWarning: Unknown config option: timeout
+  
+    self._warn_or_fail_if_strict(f"Unknown config option: {key}\n")
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================== 14 passed, 1 warning in 24.38s ========================
