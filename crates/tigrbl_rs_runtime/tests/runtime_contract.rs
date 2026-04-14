@@ -1,5 +1,5 @@
 use tigrbl_rs_kernel::KernelCompiler;
-use tigrbl_rs_runtime::{NativeRuntime, RuntimeConfig};
+use tigrbl_rs_runtime::{RustRuntime, RuntimeConfig};
 use tigrbl_rs_spec::{AppSpec, BindingSpec, Exchange, OpKind, OpSpec, RequestEnvelope, TxScope, Value};
 
 #[test]
@@ -23,7 +23,7 @@ fn runtime_instantiates_handles_from_compiled_plans() {
     });
 
     let plan = KernelCompiler.compile(&app);
-    let runtime = NativeRuntime::new(RuntimeConfig {
+    let runtime = RustRuntime::new(RuntimeConfig {
         service_name: "demo-service".to_string(),
         enable_tracing: true,
         enable_metrics: true,
@@ -90,7 +90,7 @@ fn runtime_executes_crud_against_inmemory_engine() {
     });
 
     let plan = KernelCompiler.compile(&app);
-    let runtime = NativeRuntime::new(RuntimeConfig::default());
+    let runtime = RustRuntime::new(RuntimeConfig::default());
     let handle = runtime.instantiate(plan);
 
     let create = handle
@@ -182,7 +182,7 @@ fn runtime_resolves_jsonrpc_bindings_by_method_name_before_shared_path() {
     });
 
     let plan = KernelCompiler.compile(&app);
-    let runtime = NativeRuntime::new(RuntimeConfig::default());
+    let runtime = RustRuntime::new(RuntimeConfig::default());
     let handle = runtime.instantiate(plan);
 
     let create = handle

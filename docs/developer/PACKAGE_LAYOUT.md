@@ -49,7 +49,7 @@ Hybrid Python/Rust packages remain governed under `pkgs/`. They may contain:
 - `pyproject.toml`
 - `README.md`
 - `<package>/` or `src/<package>/` for the importable Python surface
-- `src/` for the native Rust extension source
+- `src/` for the Rust extension source
 
 ## Rust crate layout
 

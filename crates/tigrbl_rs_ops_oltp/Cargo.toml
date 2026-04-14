@@ -5,9 +5,8 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 rust-version.workspace = true
-description = "Rust-native OLTP CRUD and bulk handler semantics for Tigrbl."
+description = "Rust OLTP CRUD and bulk handler semantics for Tigrbl."
 
 [dependencies]
 tigrbl_rs_ports = { path = "../tigrbl_rs_ports" }
 tigrbl_rs_spec = { path = "../tigrbl_rs_spec" }
-

@@ -5,10 +5,10 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 rust-version.workspace = true
-description = "Runtime-owned Python bindings for the Rust-native Tigrbl kernel and runtime."
+description = "Runtime-owned Python bindings for the Rust Tigrbl kernel and runtime."
 
 [lib]
-name = "_native"
+name = "_rust"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]

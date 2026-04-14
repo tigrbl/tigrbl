@@ -84,7 +84,7 @@ fn builtin_engine_registry_and_reflection_mapper_cover_next_target_surface() {
 }
 
 #[test]
-fn canonical_json_roundtrip_restores_native_spec() {
+fn canonical_json_roundtrip_restores_rust_spec() {
     let raw = r#"{
         "name": "demo",
         "title": "Demo",

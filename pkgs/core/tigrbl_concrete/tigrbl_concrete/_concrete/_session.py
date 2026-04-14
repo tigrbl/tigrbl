@@ -8,7 +8,7 @@ from tigrbl_core._spec.session_spec import SessionSpec
 
 
 class DefaultSession(TigrblSessionBase):
-    """Delegating wrapper for native provider sessions."""
+    """Delegating wrapper for resolved provider sessions."""
 
     def __init__(self, underlying: Any, spec: Optional[SessionSpec] = None) -> None:
         super().__init__(spec)

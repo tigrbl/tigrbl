@@ -1,1 +1,1 @@
-pub type NativeResult<T> = Result<T, String>;
+pub type RustResult<T> = Result<T, String>;

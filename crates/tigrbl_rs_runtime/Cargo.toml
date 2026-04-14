@@ -5,7 +5,7 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 rust-version.workspace = true
-description = "Rust-native runtime and executor for compiled Tigrbl kernel plans."
+description = "Rust runtime and executor for compiled Tigrbl kernel plans."
 
 [dependencies]
 tigrbl_rs_atoms = { path = "../tigrbl_rs_atoms" }
@@ -16,4 +16,3 @@ tigrbl_rs_kernel = { path = "../tigrbl_rs_kernel" }
 tigrbl_rs_ops_oltp = { path = "../tigrbl_rs_ops_oltp" }
 tigrbl_rs_ports = { path = "../tigrbl_rs_ports" }
 tigrbl_rs_spec = { path = "../tigrbl_rs_spec" }
-

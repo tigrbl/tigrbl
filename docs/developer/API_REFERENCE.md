@@ -74,4 +74,4 @@
 - OpenRPC JSON
 - Lens / OpenRPC UI
 - generic auth/security plumbing
-- additive Rust-native backend-selection and boundary-trace surfaces
+- additive Rust backend-selection and boundary-trace surfaces

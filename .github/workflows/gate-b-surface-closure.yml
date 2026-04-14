@@ -38,7 +38,7 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/bindings/python/tigrbl_native/python"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/core/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Validate Gate B surface closure

@@ -102,7 +102,7 @@
 | Evidence-registry validator | `tools/ci/validate_evidence_registry.py` |
 | Evidence-bundle validator | `tools/ci/validate_evidence_bundles.py` |
 | Gate B surface-closure validator | `tools/ci/validate_gate_b_surface_closure.py` |
-| Phase 4 native-parity validator | `tools/ci/validate_phase4_native_parity.py` |
+| Phase 4 rust-parity validator | `tools/ci/validate_phase4_rust_parity.py` |
 | Phase 5 Tigrcorn operator-surface validator | `tools/ci/validate_phase5_tigrcorn_operator_surface.py` |
 | Phase 6 Tigrcorn hardening validator | `tools/ci/validate_phase6_tigrcorn_hardening.py` |
 | Phase 7 claim-lifecycle validator | `tools/ci/validate_phase7_claim_lifecycle.py` |
@@ -125,16 +125,16 @@
 
 | Previous root path | Archived path |
 |---|---|
-| `BUILD_PROOF.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/BUILD_PROOF.md` |
-| `CURRENT_STATE.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/CURRENT_STATE.md` |
-| `build_artifacts` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/build_artifacts` |
-| `build_artifacts_manifest.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/build_artifacts_manifest.txt` |
-| `cargo_build_workspace_debug.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_build_workspace_debug.log` |
-| `cargo_build_workspace_release.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_build_workspace_release.log` |
-| `cargo_metadata.json` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_metadata.json` |
-| `cargo_test_workspace.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_test_workspace.log` |
-| `rust_tool_versions.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rust_tool_versions.txt` |
-| `rustup_source_attempt.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rustup_source_attempt.log` |
+| `BUILD_PROOF.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/BUILD_PROOF.md` |
+| `CURRENT_STATE.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/CURRENT_STATE.md` |
+| `build_artifacts` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/build_artifacts` |
+| `build_artifacts_manifest.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/build_artifacts_manifest.txt` |
+| `cargo_build_workspace_debug.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_build_workspace_debug.log` |
+| `cargo_build_workspace_release.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_build_workspace_release.log` |
+| `cargo_metadata.json` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_metadata.json` |
+| `cargo_test_workspace.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_test_workspace.log` |
+| `rust_tool_versions.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/rust_tool_versions.txt` |
+| `rustup_source_attempt.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/rustup_source_attempt.log` |
 
 ## Phase 2 archive retained for traceability
 

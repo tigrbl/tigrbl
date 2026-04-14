@@ -60,9 +60,9 @@ from tigrbl_core.config.constants import TIGRBL_GET_DB_ATTR
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
 from tigrbl_concrete.system.docs.runtime_ops import register_runtime_route
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
-from ._native_backend import (
-    clear_ffi_boundary_events as _clear_native_boundary_events,
-    ffi_boundary_events as _native_boundary_events,
+from ._rust_backend import (
+    clear_ffi_boundary_events as _clear_rust_boundary_events,
+    ffi_boundary_events as _rust_boundary_events,
     normalize_execution_backend as _normalize_execution_backend,
 )
 
@@ -290,11 +290,11 @@ class TigrblApp(_App):
         ):
             self.include_table(self.__class__)
 
-    def native_trace(self) -> list[dict[str, Any]]:
-        return _native_boundary_events()
+    def rust_trace(self) -> list[dict[str, Any]]:
+        return _rust_boundary_events()
 
-    def clear_native_trace(self) -> None:
-        _clear_native_boundary_events()
+    def clear_rust_trace(self) -> None:
+        _clear_rust_boundary_events()
 
     def _has_local_op_declarations(self) -> bool:
         """Return True when the app subclass declares op_alias/op_ctx operations."""

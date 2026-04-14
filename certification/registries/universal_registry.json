@@ -123,7 +123,7 @@
       "claim_state": "blocked",
       "claim_status": "blocked",
       "claim_tier_target": "tier_0_blocked",
-      "claim_title": "Native backend claims must remain blocked until Python-vs-Rust parity lanes pass as release evidence.",
+      "claim_title": "Rust backend claims must remain blocked until Python-vs-Rust parity lanes pass as release evidence.",
       "evidence_artifact_ids": [
         "EART-0003",
         "EART-0091"
@@ -138,7 +138,7 @@
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
-        "tools/ci/tests/test_phase4_native_parity.py"
+        "tools/ci/tests/test_phase4_rust_parity.py"
       ]
     },
     {
@@ -2747,7 +2747,7 @@
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "artifact_pointer": "tools/ci/tests/test_phase4_rust_parity.py",
       "bundle_id": "EBND-0025",
       "evidence_artifact_id": "EART-0103"
     },
@@ -4274,7 +4274,7 @@
       "evidence_artifact_id": "EART-0103",
       "evidence_bundle_id": "EBND-0025",
       "test_case_id": "TCASE-0023",
-      "test_case_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "test_case_pointer": "tools/ci/tests/test_phase4_rust_parity.py",
       "test_set_id": "TSET-0007"
     },
     {
@@ -4359,13 +4359,13 @@
     {
       "evidence_artifact_id": "EART-0103",
       "evidence_bundle_id": "EBND-0025",
-      "evidence_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "evidence_pointer": "tools/ci/tests/test_phase4_rust_parity.py",
       "mapped_claim_id": "BLK-004",
       "mapped_claim_lifecycle": "recertify_required",
       "mapped_claim_state": "blocked",
       "mapped_feature_id": "",
       "test_case_id": "TCASE-0023",
-      "test_case_pointer": "tools/ci/tests/test_phase4_native_parity.py",
+      "test_case_pointer": "tools/ci/tests/test_phase4_rust_parity.py",
       "test_registry_row_id": "TREG-0005",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"

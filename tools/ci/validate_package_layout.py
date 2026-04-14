@@ -9,7 +9,6 @@ PYTHON_PACKAGE_BASES = [
     ROOT / "pkgs" / "core",
     ROOT / "pkgs" / "engines",
     ROOT / "pkgs" / "apps",
-    ROOT / "bindings" / "python",
 ]
 
 
@@ -52,18 +51,12 @@ def main() -> None:
         package_name = package_root.name
         if not (package_root / "README.md").is_file():
             errors.append(f"{rel} missing README.md")
-        if rel.parts[:2] == ("bindings", "python"):
-            if not (package_root / "python" / package_name).is_dir():
-                errors.append(f"{rel} missing python/{package_name}/ binding surface")
-            if not (package_root / "src").is_dir():
-                errors.append(f"{rel} missing src/ native extension source")
-        else:
-            src_layout = (package_root / "src" / package_name).is_dir()
-            flat_layout = (package_root / package_name).is_dir()
-            if src_layout == flat_layout:
-                errors.append(
-                    f"{rel} must contain exactly one implementation layout: src/{package_name}/ or {package_name}/"
-                )
+        src_layout = (package_root / "src" / package_name).is_dir()
+        flat_layout = (package_root / package_name).is_dir()
+        if src_layout == flat_layout:
+            errors.append(
+                f"{rel} must contain exactly one implementation layout: src/{package_name}/ or {package_name}/"
+            )
         nested_pyprojects = [
             p.relative_to(ROOT)
             for p in package_root.rglob("pyproject.toml")
@@ -93,13 +86,6 @@ def main() -> None:
         ]
         if disallowed_markdown:
             errors.append(f"{rel} contains non-authoritative Markdown files: {', '.join(map(str, disallowed_markdown))}")
-
-    # no stray markdown in bindings/python category directory
-    bindings_dir = ROOT / "bindings" / "python"
-    if bindings_dir.exists():
-        for child in bindings_dir.iterdir():
-            if child.is_file() and child.suffix.lower() == ".md":
-                errors.append(f"bindings/python contains unexpected file {child.name}")
 
     fail(errors)
     print("package layout validation passed")

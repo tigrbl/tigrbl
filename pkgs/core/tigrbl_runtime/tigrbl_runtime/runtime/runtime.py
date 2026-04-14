@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from tigrbl_kernel import Kernel, NativePlan, _kernel
+from tigrbl_kernel import Kernel, RustPlan, _kernel
 
 from tigrbl_runtime.channel import complete_channel, prepare_channel_context
 from tigrbl_runtime.executors import (
@@ -11,17 +11,17 @@ from tigrbl_runtime.executors import (
     NumbaPackedPlanExecutor,
     PackedPlanExecutor,
 )
-from tigrbl_runtime.native import (
+from tigrbl_runtime.rust import (
     ExecutionBackend,
-    NativeBackendConfig,
-    build_native_app_spec,
+    RustBackendConfig,
+    build_rust_app_spec,
     coerce_execution_backend,
-    compile_app as compile_native_app,
+    compile_app as compile_rust_app,
     create_runtime_from_compiled,
-    native_parity_snapshot,
-    normalize_spec as normalize_native_spec,
+    rust_parity_snapshot,
+    normalize_spec as normalize_rust_spec,
 )
-from tigrbl_runtime.native.runtime import NativeRuntimeHandle
+from tigrbl_runtime.rust.runtime import RustRuntimeHandle
 from .base import RuntimeBase
 
 
@@ -36,7 +36,7 @@ class Runtime(RuntimeBase):
         kernel_backend: str | ExecutionBackend = ExecutionBackend.AUTO,
         atoms_backend: str | ExecutionBackend = ExecutionBackend.AUTO,
         executor_backend: str | ExecutionBackend = ExecutionBackend.PYTHON,
-        native_backend: NativeBackendConfig | None = None,
+        rust_backend: RustBackendConfig | None = None,
     ) -> None:
         resolved_kernel = kernel if kernel is not None else _kernel()
         super().__init__(kernel=resolved_kernel)
@@ -44,11 +44,11 @@ class Runtime(RuntimeBase):
         self.kernel_backend = coerce_execution_backend(kernel_backend)
         self.atoms_backend = coerce_execution_backend(atoms_backend)
         self.executor_backend = coerce_execution_backend(executor_backend)
-        self.native_backend = native_backend or NativeBackendConfig(
+        self.rust_backend = rust_backend or RustBackendConfig(
             backend=self.executor_backend
         )
-        self._native_compile_cache: dict[
-            tuple[int, int, int, str, str, str], tuple[NativePlan, NativeRuntimeHandle]
+        self._rust_compile_cache: dict[
+            tuple[int, int, int, str, str, str], tuple[RustPlan, RustRuntimeHandle]
         ] = {}
         self.register_executor(PackedPlanExecutor())
         self.register_executor(NumbaPackedPlanExecutor())
@@ -65,7 +65,7 @@ class Runtime(RuntimeBase):
         except Exception:
             return 0
 
-    def _native_cache_key(
+    def _rust_cache_key(
         self,
         app: Any,
     ) -> tuple[int, int, int, str, str, str]:
@@ -81,32 +81,32 @@ class Runtime(RuntimeBase):
     def _uses_rust_executor(self) -> bool:
         return self.executor_backend is ExecutionBackend.RUST
 
-    def _compile_native(self, app: Any) -> tuple[NativePlan, NativeRuntimeHandle]:
-        cache_key = self._native_cache_key(app)
-        cached = self._native_compile_cache.get(cache_key)
+    def _compile_rust(self, app: Any) -> tuple[RustPlan, RustRuntimeHandle]:
+        cache_key = self._rust_cache_key(app)
+        cached = self._rust_compile_cache.get(cache_key)
         if cached is not None:
             return cached
 
-        payload = build_native_app_spec(app)
-        normalized = normalize_native_spec(payload)
-        compiled = compile_native_app(payload)
-        plan = NativePlan(
+        payload = build_rust_app_spec(app)
+        normalized = normalize_rust_spec(payload)
+        compiled = compile_rust_app(payload)
+        plan = RustPlan(
             description=(
-                "compiled native KernelPlan for "
+                "compiled rust KernelPlan for "
                 f"{compiled.get('app_name', payload['name'])}"
             ),
             compiled_plan=compiled,
             backend="rust",
             normalized_spec=normalized,
-            parity_snapshot=native_parity_snapshot(payload),
+            parity_snapshot=rust_parity_snapshot(payload),
             claimable=False,
         )
         handle = create_runtime_from_compiled(compiled)
-        self._native_compile_cache[cache_key] = (plan, handle)
+        self._rust_compile_cache[cache_key] = (plan, handle)
         return plan, handle
 
     @staticmethod
-    def _coerce_native_envelope(envelope: Any) -> dict[str, Any]:
+    def _coerce_rust_envelope(envelope: Any) -> dict[str, Any]:
         if isinstance(envelope, Mapping):
             return dict(envelope)
         asdict = getattr(envelope, "asdict", None)
@@ -115,12 +115,12 @@ class Runtime(RuntimeBase):
             if isinstance(payload, Mapping):
                 return dict(payload)
         raise TypeError(
-            "Runtime.execute_native expects a mapping-like envelope or value with asdict()"
+            "Runtime.execute_rust expects a mapping-like envelope or value with asdict()"
         )
 
     @staticmethod
     def _execute_with_handle(
-        handle: NativeRuntimeHandle,
+        handle: RustRuntimeHandle,
         envelope: dict[str, Any],
     ) -> dict[str, Any]:
         transport = str(envelope.get("transport", "rest") or "rest").lower()
@@ -134,28 +134,28 @@ class Runtime(RuntimeBase):
         }
         execute = dispatch.get(transport)
         if execute is None:
-            raise ValueError(f"unsupported native transport: {transport!r}")
+            raise ValueError(f"unsupported rust transport: {transport!r}")
         return execute(envelope)
 
-    def native_handle(self, app: Any) -> NativeRuntimeHandle:
-        _, handle = self._compile_native(app)
+    def rust_handle(self, app: Any) -> RustRuntimeHandle:
+        _, handle = self._compile_rust(app)
         return handle
 
-    def execute_native(
+    def execute_rust(
         self,
         envelope: Any,
         *,
         app: Any | None = None,
-        handle: NativeRuntimeHandle | None = None,
+        handle: RustRuntimeHandle | None = None,
     ) -> dict[str, Any]:
         resolved_handle = handle
         if resolved_handle is None:
             if app is None:
                 raise ValueError(
-                    "Runtime.execute_native requires either an app or a native handle"
+                    "Runtime.execute_rust requires either an app or a rust handle"
                 )
-            resolved_handle = self.native_handle(app)
-        payload = self._coerce_native_envelope(envelope)
+            resolved_handle = self.rust_handle(app)
+        payload = self._coerce_rust_envelope(envelope)
         return self._execute_with_handle(resolved_handle, payload)
 
     def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
@@ -167,8 +167,8 @@ class Runtime(RuntimeBase):
             raise ValueError("Runtime.compile requires an app instance")
 
         if self._uses_rust_executor():
-            native_plan, native_handle = self._compile_native(app)
-            return native_plan, native_handle
+            rust_plan, rust_handle = self._compile_rust(app)
+            return rust_plan, rust_handle
 
         revision = getattr(app, "_runtime_plan_revision", 0)
         kernel_id = id(self.kernel)
@@ -196,8 +196,8 @@ class Runtime(RuntimeBase):
             if resolved_handle is None and isinstance(ctx, Mapping):
                 app = ctx.get("app") or ctx.get("router")
                 if app is not None:
-                    resolved_handle = self.native_handle(app)
-            return self.execute_native(env, handle=resolved_handle)
+                    resolved_handle = self.rust_handle(app)
+            return self.execute_rust(env, handle=resolved_handle)
 
         selected = executor or self.default_executor
         impl = self.executors.get(selected)
