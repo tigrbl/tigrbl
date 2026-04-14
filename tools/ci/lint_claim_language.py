@@ -32,7 +32,6 @@ SCAN_PATHS = [
     Path("docs/testing"),
     Path("pkgs"),
     Path("crates"),
-    Path("bindings/python"),
 ]
 
 

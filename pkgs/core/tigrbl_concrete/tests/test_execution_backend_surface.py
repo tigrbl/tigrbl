@@ -13,7 +13,7 @@ def test_app_and_router_accept_execution_backend() -> None:
     app = TigrblApp(mount_system=False, execution_backend="rust")
     router = TigrblRouter(execution_backend="python")
     runtime = Runtime(executor_backend="rust")
-    handle = runtime.native_handle(
+    handle = runtime.rust_handle(
         {
             "name": "demo",
             "bindings": [
@@ -30,8 +30,8 @@ def test_app_and_router_accept_execution_backend() -> None:
 
     assert app.execution_backend == "rust"
     assert router.execution_backend == "python"
-    assert isinstance(app.native_trace(), list)
-    assert isinstance(router.native_trace(), list)
+    assert isinstance(app.rust_trace(), list)
+    assert isinstance(router.rust_trace(), list)
     assert handle.execute_rest(
         {
             "operation": "users.create",

@@ -16,7 +16,7 @@ The current certification program uses policy validators, evidence-lane workflow
 - `tools/ci/validate_evidence_bundles.py`
 - `tools/ci/validate_certification_tree.py`
 - `tools/ci/validate_phase1_declared_surface.py`
-- `tools/ci/validate_phase4_native_parity.py`
+- `tools/ci/validate_phase4_rust_parity.py`
 - `tools/ci/validate_phase5_tigrcorn_operator_surface.py`
 - `tools/ci/validate_phase6_tigrcorn_hardening.py`
 - `tools/ci/validate_phase7_claim_lifecycle.py`
@@ -42,7 +42,7 @@ The current certification program uses policy validators, evidence-lane workflow
 - dev/release bundle structures contain the required governed files and directories
 - the certification authority tree keeps the four-state truth model and Phase 0 exit criteria machine-checked
 - the Phase 1 declared-surface checkpoint stays documented and synchronized with the policy workflow
-- native backend claim language remains fail-closed until the Phase 4 parity checkpoint is documented and wired in CI
+- Rust backend claim language remains fail-closed until the Phase 4 parity checkpoint is documented and wired in CI
 - the Phase 5 Tigrcorn operator surface stays documented, example-backed, and fail-closed for interop/benchmark certification claims
 - the Phase 6 Tigrcorn hardening package stays documented, profile-backed, and fail-closed for negative-certification claims
 - the Phase 7 claim lifecycle and release certification-bundle artifacts stay synchronized and machine-checked

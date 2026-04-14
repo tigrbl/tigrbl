@@ -1,7 +1,7 @@
 [project]
 name = "tigrbl-runtime"
 version = "0.1.0"
-description = "Runtime pipeline and Rust-native execution bridge for Tigrbl."
+description = "Runtime pipeline and Rust execution bridge for Tigrbl."
 license = "Apache-2.0"
 readme = "README.md"
 repository = "http://github.com/swarmauri/swarmauri-sdk"
@@ -39,7 +39,7 @@ requires = ["maturin>=1.7,<2.0"]
 build-backend = "maturin"
 
 [tool.maturin]
-module-name = "tigrbl_runtime.native._native"
+module-name = "tigrbl_runtime.rust._rust"
 python-source = "."
 features = ["pyo3/extension-module"]
 

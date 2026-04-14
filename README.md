@@ -6,10 +6,10 @@ This repository is a mixed Python + Rust workspace for Tigrbl. It contains:
 - Python engine packages under `pkgs/engines/`
 - Python application packages under `pkgs/apps/`
 - Non-authoritative examples under `examples/`
-- Rust-native crates under `crates/`
+- Rust crates under `crates/`
 - The Python↔Rust runtime bridge under `pkgs/core/tigrbl_runtime/`
 
-The root `pyproject.toml` is configured as a uv workspace with packaging disabled. The root `Cargo.toml` is configured as a Rust workspace for the additive native substrate.
+The root `pyproject.toml` is configured as a uv workspace with packaging disabled. The root `Cargo.toml` is configured as a Rust workspace for the additive Rust substrate.
 
 ## Repository status
 

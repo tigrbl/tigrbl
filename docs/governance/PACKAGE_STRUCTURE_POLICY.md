@@ -24,7 +24,7 @@ The root must not accumulate:
 - `pkgs/core/` - core Python packages
 - `pkgs/engines/` - engine packages
 - `pkgs/apps/` - application packages
-- `crates/` - Rust-native crates
+- `crates/` - Rust crates
 - `examples/` - non-authoritative demos and verification helpers
 
 ## Python package layout

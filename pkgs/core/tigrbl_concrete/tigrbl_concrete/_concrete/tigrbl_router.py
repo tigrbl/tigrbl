@@ -36,9 +36,9 @@ from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from ._engine import Engine
-from ._native_backend import (
-    clear_ffi_boundary_events as _clear_native_boundary_events,
-    ffi_boundary_events as _native_boundary_events,
+from ._rust_backend import (
+    clear_ffi_boundary_events as _clear_rust_boundary_events,
+    ffi_boundary_events as _rust_boundary_events,
     normalize_execution_backend as _normalize_execution_backend,
 )
 
@@ -147,11 +147,11 @@ class TigrblRouter(_Router):
         if tables:
             self.include_tables(list(tables))
 
-    def native_trace(self) -> list[dict[str, Any]]:
-        return _native_boundary_events()
+    def rust_trace(self) -> list[dict[str, Any]]:
+        return _rust_boundary_events()
 
-    def clear_native_trace(self) -> None:
-        _clear_native_boundary_events()
+    def clear_rust_trace(self) -> None:
+        _clear_rust_boundary_events()
 
     # ------------------------- internal helpers -------------------------
 

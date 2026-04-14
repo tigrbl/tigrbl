@@ -5,7 +5,7 @@ from typing import Any
 
 
 @dataclass(slots=True)
-class NativeRuntimeHandleRef:
+class RustRuntimeHandleRef:
     description: str
     backend: str = "rust"
     metadata: dict[str, Any] = field(default_factory=dict)

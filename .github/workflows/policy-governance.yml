@@ -71,8 +71,8 @@ jobs:
       - name: Validate Phase 1 declared surface
         run: python tools/ci/validate_phase1_declared_surface.py
 
-      - name: Validate Phase 4 native parity
-        run: python tools/ci/validate_phase4_native_parity.py
+      - name: Validate Phase 4 rust parity
+        run: python tools/ci/validate_phase4_rust_parity.py
 
       - name: Validate Phase 5 Tigrcorn operator surface
         run: python tools/ci/validate_phase5_tigrcorn_operator_surface.py
@@ -90,4 +90,4 @@ jobs:
         run: python tools/ci/validate_gate_c_conformance_security.py
 
       - name: Run governance and evidence pytest coverage
-        run: pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_phase1_declared_surface.py tools/ci/tests/test_phase4_native_parity.py tools/ci/tests/test_phase5_tigrcorn_operator_surface.py tools/ci/tests/test_phase6_tigrcorn_hardening.py tools/ci/tests/test_phase7_claim_lifecycle.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_phase14_handoff.py
+        run: pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_phase1_declared_surface.py tools/ci/tests/test_phase4_rust_parity.py tools/ci/tests/test_phase5_tigrcorn_operator_surface.py tools/ci/tests/test_phase6_tigrcorn_hardening.py tools/ci/tests/test_phase7_claim_lifecycle.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_phase14_handoff.py

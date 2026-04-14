@@ -38,7 +38,7 @@ The next-target plan now governs these items:
 
 The design direction now captured here and in the ADR set includes:
 
-- semantic datatype declarations separated from engine-native lowering
+- semantic datatype declarations separated from Rust engine lowering
 - engine registries and lowerers instead of adapter hardcoding
 - `to_json`, `to_df`, `encode`, and `decode` as explicit adapter behaviors
 - table/program sequencing after the datatype semantic center is in place

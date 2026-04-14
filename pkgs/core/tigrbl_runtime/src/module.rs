@@ -1,8 +1,8 @@
 use pyo3::prelude::*;
 
-use crate::{errors::NativeResult, runtime_handle::PyRuntimeHandle};
+use crate::{errors::RustResult, runtime_handle::PyRuntimeHandle};
 
-fn into_py_err<T>(result: NativeResult<T>) -> PyResult<T> {
+fn into_py_err<T>(result: RustResult<T>) -> PyResult<T> {
     result.map_err(pyo3::exceptions::PyRuntimeError::new_err)
 }
 
@@ -58,7 +58,7 @@ fn clear_ffi_boundary_events() {
 }
 
 #[pyfunction]
-fn native_available() -> bool {
+fn rust_available() -> bool {
     true
 }
 
@@ -68,7 +68,7 @@ fn compiled_extension_available() -> bool {
 }
 
 #[pymodule]
-pub fn _native(_py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
+pub fn _rust(_py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_class::<PyRuntimeHandle>()?;
     module.add_function(wrap_pyfunction!(normalize_spec, module)?)?;
     module.add_function(wrap_pyfunction!(compile_spec, module)?)?;
@@ -80,7 +80,7 @@ pub fn _native(_py: Python<'_>, module: &Bound<'_, PyModule>) -> PyResult<()> {
     module.add_function(wrap_pyfunction!(register_python_engine, module)?)?;
     module.add_function(wrap_pyfunction!(ffi_boundary_events, module)?)?;
     module.add_function(wrap_pyfunction!(clear_ffi_boundary_events, module)?)?;
-    module.add_function(wrap_pyfunction!(native_available, module)?)?;
+    module.add_function(wrap_pyfunction!(rust_available, module)?)?;
     module.add_function(wrap_pyfunction!(compiled_extension_available, module)?)?;
     Ok(())
 }

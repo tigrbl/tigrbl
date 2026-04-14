@@ -3,8 +3,8 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
-from .fallback import native_atoms_enabled
-from .native import register_native_atom, register_native_callback, register_native_hook
+from .fallback import rust_atoms_enabled
+from .rust import register_rust_atom, register_rust_callback, register_rust_hook
 
 _LAZY_EXPORTS = {
     "PHASE_SEQUENCE": "types",
@@ -28,10 +28,10 @@ __all__ = [
     "VALID_HOOK_PHASES",
     "StepFn",
     "HookPredicate",
-    "native_atoms_enabled",
-    "register_native_atom",
-    "register_native_callback",
-    "register_native_hook",
+    "rust_atoms_enabled",
+    "register_rust_atom",
+    "register_rust_callback",
+    "register_rust_hook",
 ]
 
 

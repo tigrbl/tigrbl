@@ -15,4 +15,4 @@ pub mod trace;
 pub use config::RuntimeConfig;
 pub use handle::runtime_handle::RuntimeHandle;
 pub use parity::{build_transport_trace, TransportTraceEvent};
-pub use runtime::NativeRuntime;
+pub use runtime::RustRuntime;

@@ -4,16 +4,16 @@ from importlib import import_module
 from typing import Any, Dict, List, Mapping
 
 try:  # pragma: no cover - additive optional integration
-    from tigrbl_runtime.native import ExecutionBackend, NativeBackendConfig
+    from tigrbl_runtime.rust import ExecutionBackend, RustBackendConfig
 except Exception:  # pragma: no cover
-    ExecutionBackend = NativeBackendConfig = None
+    ExecutionBackend = RustBackendConfig = None
 
-from .native_compile import (
-    build_native_kernel,
-    build_native_parity_snapshot,
-    normalize_native_spec,
+from .rust_compile import (
+    build_rust_kernel,
+    build_rust_parity_snapshot,
+    normalize_rust_spec,
 )
-from .native_plan import NativePlan
+from .rust_plan import RustPlan
 
 _LAZY_EXPORTS = {
     "Kernel": "core",
@@ -67,18 +67,18 @@ def plan_labels(model: type, alias: str) -> list[str]:
 __all__ = [
     "ExecutionBackend",
     "Kernel",
-    "NativeBackendConfig",
-    "NativePlan",
+    "RustBackendConfig",
+    "RustPlan",
     "OpView",
     "PackedKernel",
     "SchemaIn",
     "SchemaOut",
     "build_kernel_plan",
-    "build_native_kernel",
-    "build_native_parity_snapshot",
+    "build_rust_kernel",
+    "build_rust_parity_snapshot",
     "build_packed_kernel",
     "get_cached_specs",
     "build_phase_chains",
-    "normalize_native_spec",
+    "normalize_rust_spec",
     "plan_labels",
 ]

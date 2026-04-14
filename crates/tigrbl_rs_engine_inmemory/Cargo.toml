@@ -5,9 +5,8 @@ edition.workspace = true
 license.workspace = true
 authors.workspace = true
 rust-version.workspace = true
-description = "Rust-native in-memory engine for Tigrbl with row-store and column-store strategies."
+description = "Rust in-memory engine for Tigrbl with row-store and column-store strategies."
 
 [dependencies]
 tigrbl_rs_ports = { path = "../tigrbl_rs_ports" }
 tigrbl_rs_spec = { path = "../tigrbl_rs_spec" }
-

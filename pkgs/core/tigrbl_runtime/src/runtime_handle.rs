@@ -1,8 +1,8 @@
-use crate::errors::NativeResult;
+use crate::errors::RustResult;
 use pyo3::prelude::*;
 use serde_json::{json, Map, Value as JsonValue};
 use tigrbl_rs_kernel::KernelPlan;
-use tigrbl_rs_runtime::{NativeRuntime, RuntimeConfig};
+use tigrbl_rs_runtime::{RustRuntime, RuntimeConfig};
 use tigrbl_rs_spec::{
     request::RequestEnvelope, response::ResponseEnvelope, serde::json as spec_json, Exchange,
     OpKind, TxScope, Value,
@@ -117,7 +117,7 @@ impl RuntimeHandle {
         crate::callback_registry::ffi_boundary_events()
     }
 
-    pub fn execute_rest_json(&self, request_json: &str) -> NativeResult<String> {
+    pub fn execute_rest_json(&self, request_json: &str) -> RustResult<String> {
         let request = decode_request(request_json)?;
         self.begin_request("rest");
         let response = self
@@ -128,7 +128,7 @@ impl RuntimeHandle {
         encode_response(&response)
     }
 
-    pub fn execute_jsonrpc_json(&self, request_json: &str) -> NativeResult<String> {
+    pub fn execute_jsonrpc_json(&self, request_json: &str) -> RustResult<String> {
         let request = decode_request(request_json)?;
         self.begin_request("jsonrpc");
         let response = self
@@ -139,7 +139,7 @@ impl RuntimeHandle {
         encode_response(&response)
     }
 
-    pub fn execute_ws_json(&self, request_json: &str) -> NativeResult<String> {
+    pub fn execute_ws_json(&self, request_json: &str) -> RustResult<String> {
         let request = decode_request(request_json)?;
         self.begin_request("ws");
         let response = self
@@ -150,7 +150,7 @@ impl RuntimeHandle {
         encode_response(&response)
     }
 
-    pub fn execute_stream_json(&self, request_json: &str) -> NativeResult<String> {
+    pub fn execute_stream_json(&self, request_json: &str) -> RustResult<String> {
         let request = decode_request(request_json)?;
         self.begin_request("stream");
         let response = self
@@ -161,7 +161,7 @@ impl RuntimeHandle {
         encode_response(&response)
     }
 
-    pub fn execute_sse_json(&self, request_json: &str) -> NativeResult<String> {
+    pub fn execute_sse_json(&self, request_json: &str) -> RustResult<String> {
         let request = decode_request(request_json)?;
         self.begin_request("sse");
         let response = self
@@ -172,14 +172,14 @@ impl RuntimeHandle {
         encode_response(&response)
     }
 
-    pub fn plan_json(&self) -> NativeResult<String> {
+    pub fn plan_json(&self) -> RustResult<String> {
         encode_plan(&self.handle.plan)
     }
 }
 
-pub fn create_runtime_handle(plan_json: &str) -> NativeResult<RuntimeHandle> {
+pub fn create_runtime_handle(plan_json: &str) -> RustResult<RuntimeHandle> {
     let plan = decode_plan(plan_json)?;
-    let runtime = NativeRuntime::new(RuntimeConfig::default());
+    let runtime = RustRuntime::new(RuntimeConfig::default());
     crate::callback_registry::record_event(
         "create_runtime_handle",
         serde_json::json!({"app_name": plan.app_name}),
@@ -189,20 +189,20 @@ pub fn create_runtime_handle(plan_json: &str) -> NativeResult<RuntimeHandle> {
     })
 }
 
-fn decode_request(raw: &str) -> NativeResult<RequestEnvelope> {
+fn decode_request(raw: &str) -> RustResult<RequestEnvelope> {
     spec_json::request_from_json(raw).map_err(|err| err.to_string())
 }
 
-fn encode_response(response: &ResponseEnvelope) -> NativeResult<String> {
+fn encode_response(response: &ResponseEnvelope) -> RustResult<String> {
     spec_json::response_to_json(response).map_err(|err| err.to_string())
 }
 
 #[allow(dead_code)]
-fn _json_value(raw: &str) -> NativeResult<JsonValue> {
+fn _json_value(raw: &str) -> RustResult<JsonValue> {
     serde_json::from_str(raw).map_err(|err| err.to_string())
 }
 
-pub fn encode_plan(plan: &KernelPlan) -> NativeResult<String> {
+pub fn encode_plan(plan: &KernelPlan) -> RustResult<String> {
     serde_json::to_string(&json!({
         "app_name": plan.app_name,
         "title": plan.title,
@@ -256,21 +256,21 @@ pub fn encode_plan(plan: &KernelPlan) -> NativeResult<String> {
     .map_err(|err| err.to_string())
 }
 
-pub fn decode_plan(raw: &str) -> NativeResult<KernelPlan> {
+pub fn decode_plan(raw: &str) -> RustResult<KernelPlan> {
     let parsed: JsonValue = serde_json::from_str(raw).map_err(|err| err.to_string())?;
     let object = parsed
         .as_object()
-        .ok_or_else(|| "compiled plan payload must be a JSON object".to_string())?;
+        .ok_or_else(|| "compiled plan payload must be a JSOa object".to_string())?;
     let bindings = array_field(object, "bindings")
         .ok_or_else(|| "compiled plan bindings must be present".to_string())?
         .iter()
         .map(decode_binding)
-        .collect::<NativeResult<Vec<_>>>()?;
+        .collect::<RustResult<Vec<_>>>()?;
     let routes = array_field(object, "routes")
         .ok_or_else(|| "compiled plan routes must be present".to_string())?
         .iter()
         .map(decode_route)
-        .collect::<NativeResult<Vec<_>>>()?;
+        .collect::<RustResult<Vec<_>>>()?;
     let packed = object
         .get("packed")
         .and_then(|value| value.as_object())
@@ -302,10 +302,10 @@ pub fn decode_plan(raw: &str) -> NativeResult<KernelPlan> {
     })
 }
 
-fn decode_binding(value: &JsonValue) -> NativeResult<tigrbl_rs_kernel::plan::models::PlanBinding> {
+fn decode_binding(value: &JsonValue) -> RustResult<tigrbl_rs_kernel::plan::models::PlanBinding> {
     let object = value
         .as_object()
-        .ok_or_else(|| "compiled binding must be a JSON object".to_string())?;
+        .ok_or_else(|| "compiled binding must be a JSOa object".to_string())?;
     Ok(tigrbl_rs_kernel::plan::models::PlanBinding {
         alias: string_field(object, "alias").unwrap_or_default(),
         op_name: string_field(object, "op_name").unwrap_or_default(),
@@ -335,10 +335,10 @@ fn decode_binding(value: &JsonValue) -> NativeResult<tigrbl_rs_kernel::plan::mod
     })
 }
 
-fn decode_route(value: &JsonValue) -> NativeResult<tigrbl_rs_kernel::plan::models::PlanRoute> {
+fn decode_route(value: &JsonValue) -> RustResult<tigrbl_rs_kernel::plan::models::PlanRoute> {
     let object = value
         .as_object()
-        .ok_or_else(|| "compiled route must be a JSON object".to_string())?;
+        .ok_or_else(|| "compiled route must be a JSOa object".to_string())?;
     Ok(tigrbl_rs_kernel::plan::models::PlanRoute {
         transport: string_field(object, "transport").unwrap_or_else(|| "rest".to_string()),
         family: string_field(object, "family").unwrap_or_else(|| "rest".to_string()),

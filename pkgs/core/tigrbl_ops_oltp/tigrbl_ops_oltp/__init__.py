@@ -5,8 +5,8 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
-from .fallback import native_handlers_enabled
-from .native_handlers import register_native_handler
+from .fallback import rust_handlers_enabled
+from .rust_handlers import register_rust_handler
 
 _LAZY_EXPORTS = {
     "Body": "crud",
@@ -49,9 +49,9 @@ __all__ = [
     "exists",
     "list",
     "merge",
-    "native_handlers_enabled",
+    "rust_handlers_enabled",
     "read",
-    "register_native_handler",
+    "register_rust_handler",
     "replace",
     "update",
 ]

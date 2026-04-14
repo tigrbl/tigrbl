@@ -51,7 +51,7 @@ POINTER_DOCS = [
 
 BACKTICK_PATH_RE = re.compile(r"`([A-Za-z0-9_./\-]+(?:/|\.md|\.json))`")
 MARKDOWN_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
-ROOT_RELATIVE_PREFIXES = {"docs", "pkgs", "crates", "bindings", "tools", ".github", ".cargo"}
+ROOT_RELATIVE_PREFIXES = {"docs", "pkgs", "crates", "tools", ".github", ".cargo"}
 ROOT_RELATIVE_FILES = {
     "README.md",
     "CONTRIBUTING.md",
@@ -71,7 +71,6 @@ def package_readmes() -> list[Path]:
         "pkgs/engines/*/README.md",
         "pkgs/apps/*/README.md",
         "crates/*/README.md",
-        "bindings/python/*/README.md",
     ]
     files: list[Path] = []
     for pattern in patterns:
