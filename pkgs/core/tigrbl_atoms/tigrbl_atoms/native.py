@@ -4,7 +4,11 @@ from collections.abc import Callable
 from typing import Any
 
 try:
-    from tigrbl_native import register_python_atom, register_python_callback, register_python_hook
+    from tigrbl_runtime.native import (
+        register_python_atom,
+        register_python_callback,
+        register_python_hook,
+    )
 except Exception:  # pragma: no cover - additive optional integration
     register_python_atom = None
     register_python_callback = None

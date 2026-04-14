@@ -137,3 +137,95 @@ fn runtime_executes_crud_against_inmemory_engine() {
         )
     );
 }
+
+#[test]
+fn runtime_resolves_jsonrpc_bindings_by_method_name_before_shared_path() {
+    let mut app = AppSpec {
+        name: "demo".to_string(),
+        ..AppSpec::default()
+    };
+    app.bindings.push(BindingSpec {
+        alias: "users.create".to_string(),
+        transport: "jsonrpc".to_string(),
+        path: Some("/rpc".to_string()),
+        op: OpSpec {
+            kind: OpKind::Create,
+            name: "create".to_string(),
+            route: Some("/rpc".to_string()),
+            exchange: Exchange::RequestResponse,
+            tx_scope: TxScope::ReadWrite,
+            subevents: vec![],
+        },
+        table: Some(tigrbl_rs_spec::TableSpec {
+            name: "users".to_string(),
+            columns: vec![],
+        }),
+        ..BindingSpec::default()
+    });
+    app.bindings.push(BindingSpec {
+        alias: "users.read".to_string(),
+        transport: "jsonrpc".to_string(),
+        path: Some("/rpc".to_string()),
+        op: OpSpec {
+            kind: OpKind::Read,
+            name: "read".to_string(),
+            route: Some("/rpc".to_string()),
+            exchange: Exchange::RequestResponse,
+            tx_scope: TxScope::ReadOnly,
+            subevents: vec![],
+        },
+        table: Some(tigrbl_rs_spec::TableSpec {
+            name: "users".to_string(),
+            columns: vec![],
+        }),
+        ..BindingSpec::default()
+    });
+
+    let plan = KernelCompiler.compile(&app);
+    let runtime = NativeRuntime::new(RuntimeConfig::default());
+    let handle = runtime.instantiate(plan);
+
+    let create = handle
+        .execute_jsonrpc(RequestEnvelope {
+            operation: "users.create".to_string(),
+            transport: "jsonrpc".to_string(),
+            path: "/rpc".to_string(),
+            method: "POST".to_string(),
+            body: Value::Object(
+                [
+                    ("id".to_string(), Value::String("u2".to_string())),
+                    ("name".to_string(), Value::String("Bob".to_string())),
+                ]
+                .into_iter()
+                .collect(),
+            ),
+            ..RequestEnvelope::default()
+        })
+        .unwrap();
+    assert_eq!(create.status, 201);
+
+    let read = handle
+        .execute_jsonrpc(RequestEnvelope {
+            operation: "users.read".to_string(),
+            transport: "jsonrpc".to_string(),
+            path: "/rpc".to_string(),
+            method: "POST".to_string(),
+            path_params: [("id".to_string(), Value::String("u2".to_string()))]
+                .into_iter()
+                .collect(),
+            ..RequestEnvelope::default()
+        })
+        .unwrap();
+    assert_eq!(read.status, 200);
+    assert_eq!(
+        read.body,
+        Value::Object(
+            [
+                ("id".to_string(), Value::String("u2".to_string())),
+                ("name".to_string(), Value::String("Bob".to_string())),
+            ]
+            .into_iter()
+            .collect(),
+        )
+    );
+}

@@ -4,7 +4,7 @@ from importlib import import_module
 from typing import Any, Dict, List, Mapping
 
 try:  # pragma: no cover - additive optional integration
-    from tigrbl_native import ExecutionBackend, NativeBackendConfig
+    from tigrbl_runtime.native import ExecutionBackend, NativeBackendConfig
 except Exception:  # pragma: no cover
     ExecutionBackend = NativeBackendConfig = None
 

@@ -13,7 +13,7 @@ from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
 PACKAGE_DIR = ROOT / 'pkgs' / 'core' / 'tigrbl'
-NATIVE_PY_PATH = ROOT / 'bindings' / 'python' / 'tigrbl_native' / 'python'
+NATIVE_PY_PATH = ROOT / 'pkgs' / 'core' / 'tigrbl_runtime'
 CORE_INSTALL_DIRS = [
     ROOT / 'pkgs' / 'core' / 'tigrbl_typing',
     ROOT / 'pkgs' / 'core' / 'tigrbl_spec',
@@ -240,7 +240,7 @@ def main() -> None:
             'wheel_entry_points': wheel_eps,
             'sdist_contents': sdist_info,
             'install_mode': 'isolated target install root',
-            'native_binding_support': 'source-path fallback via bindings/python/tigrbl_native/python',
+            'native_binding_support': 'source-path fallback via pkgs/core/tigrbl_runtime',
             'installed_cli': {
                 'commands': capabilities['commands'],
                 'flags': capabilities['flags'],

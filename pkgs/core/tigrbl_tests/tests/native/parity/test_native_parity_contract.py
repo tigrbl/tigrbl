@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tigrbl_kernel import build_native_kernel, build_native_parity_snapshot
-from tigrbl_native import (
+from tigrbl_runtime.native import (
     native_parity_snapshot,
     native_transport_trace,
     reference_parity_snapshot,

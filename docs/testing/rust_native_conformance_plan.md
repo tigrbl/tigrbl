@@ -28,14 +28,14 @@ The same Rust pipeline is used, but Python callbacks are allowed at explicit fen
 - `NativeBackendConfig`
 - boundary trace readers and clearers
 - `register_native_atom`, `register_native_hook`, `register_native_handler`, `register_native_engine`
-- `build_native_kernel`, `build_native_runtime`
+- `build_native_kernel`, `Runtime(executor_backend="rust")`
 - `execution_backend=` on `TigrblApp` and `TigrblRouter`
 - `Kernel(backend=...)`
 
 ## Test groups in this checkpoint
 
 ### Binding / FFI
-- `bindings/python/tigrbl_native/tests/test_fallback_boundary_trace.py`
+- `pkgs/core/tigrbl_runtime/tests/test_native_codec.py`
 - `pkgs/core/tigrbl_tests/tests/native/ffi/test_native_binding_trace.py`
 
 ### Atom surface and callback fence registration
@@ -48,6 +48,7 @@ The same Rust pipeline is used, but Python callbacks are allowed at explicit fen
 
 ### Runtime surface
 - `pkgs/core/tigrbl_tests/tests/native/runtime/test_native_runtime_public_surface.py`
+- `pkgs/core/tigrbl_runtime/tests/test_native_runtime_demo_curl.py`
 - `crates/tigrbl_rs_runtime/tests/runtime_contract.rs`
 
 ## Added in Phase 4 parity closure

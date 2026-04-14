@@ -4,22 +4,17 @@ from collections.abc import Callable
 from typing import Any
 
 from .errors import NativeBindingsUnavailableError
+from ._load_native import load_native_module
 
 _REGISTRY: dict[str, Callable[..., Any]] = {}
 
-try:
-    from . import _native
-except Exception as exc:  # pragma: no cover - exercised when extension is not built.
-    from . import _fallback as _native
-    _IMPORT_ERROR = exc
-else:
-    _IMPORT_ERROR = None
+_native, _IMPORT_ERROR = load_native_module()
 
 
 def _require_native():
     if _native is None:
         raise NativeBindingsUnavailableError(
-            "tigrbl_native._native is unavailable; build the extension before using native callbacks."
+            "tigrbl_runtime.native._native is unavailable; build the runtime extension before using native callbacks."
         ) from _IMPORT_ERROR
     return _native
 

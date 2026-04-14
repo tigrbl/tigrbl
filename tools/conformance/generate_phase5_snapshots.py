@@ -7,7 +7,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 for rel in [
-    'bindings/python/tigrbl_native/python',
     'pkgs/core/tigrbl',
     'pkgs/core/tigrbl_atoms',
     'pkgs/core/tigrbl_base',

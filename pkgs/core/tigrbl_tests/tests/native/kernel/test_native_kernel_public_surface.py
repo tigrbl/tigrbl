@@ -5,7 +5,7 @@ from tigrbl_kernel.native_compile import (
     build_native_parity_snapshot,
     normalize_native_spec,
 )
-from tigrbl_native import ExecutionBackend
+from tigrbl_runtime import ExecutionBackend
 
 
 def test_native_kernel_surface_exposes_backend_aware_plan_helpers() -> None:

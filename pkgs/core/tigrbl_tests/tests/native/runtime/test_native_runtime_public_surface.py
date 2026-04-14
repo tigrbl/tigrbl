@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tigrbl_runtime import (
-    build_native_runtime,
+    Runtime,
     clear_native_boundary_events,
     native_boundary_events,
     transport_parity_trace,
@@ -10,7 +10,7 @@ from tigrbl_runtime import (
 
 def test_native_runtime_surface_exposes_boundary_trace_helpers() -> None:
     clear_native_boundary_events()
-    handle = build_native_runtime({"name": "runtime-demo"})
+    handle = Runtime(executor_backend="rust").native_handle({"name": "runtime-demo"})
     handle.begin_request("rest")
     handle.callback_fence("hook", "pre_handler")
     handle.finish_response("rest")

@@ -16,9 +16,9 @@ Allowed top-level repository entries are:
 - `LICENSE`
 - `README.md`
 - `SECURITY.md`
-- `bindings/`
 - `crates/`
 - `docs/`
+- `examples/`
 - `pkgs/`
 - `pyproject.toml`
 - `rust-toolchain.toml`
@@ -31,7 +31,6 @@ Python packages live under one of:
 - `pkgs/core/<package>/`
 - `pkgs/engines/<package>/`
 - `pkgs/apps/<package>/`
-- `bindings/python/<package>/`
 
 Each Python package root must contain:
 
@@ -43,13 +42,13 @@ Each Python package root must contain:
 
 Nested package roots inside a package directory are not allowed.
 
-## Python binding package layout
+## Hybrid package layout
 
-Binding packages under `bindings/python/` are hybrid packages. They must contain:
+Hybrid Python/Rust packages remain governed under `pkgs/`. They may contain:
 
 - `pyproject.toml`
 - `README.md`
-- `python/<package>/` for the importable Python surface
+- `<package>/` or `src/<package>/` for the importable Python surface
 - `src/` for the native Rust extension source
 
 ## Rust crate layout
@@ -68,3 +67,4 @@ Long-form package documentation belongs under the authoritative docs tree in `do
 ## Examples and tests
 
 Examples, notebooks, and tests may remain inside package roots when they are code or data, but they may not become independent documentation authorities.
+Top-level `examples/` is allowed for non-authoritative demos and verification helpers.

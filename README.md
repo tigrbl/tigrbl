@@ -5,14 +5,15 @@ This repository is a mixed Python + Rust workspace for Tigrbl. It contains:
 - Python core packages under `pkgs/core/`
 - Python engine packages under `pkgs/engines/`
 - Python application packages under `pkgs/apps/`
+- Non-authoritative examples under `examples/`
 - Rust-native crates under `crates/`
-- Python bindings for the native runtime under `bindings/python/`
+- The Python↔Rust runtime bridge under `pkgs/core/tigrbl_runtime/`
 
 The root `pyproject.toml` is configured as a uv workspace with packaging disabled. The root `Cargo.toml` is configured as a Rust workspace for the additive native substrate.
 
 ## Repository status
 
-This checkpoint completes **Phase 14 — post-promotion handoff** on top of the already-passed **Phase 13 — Gate E promotion and release**.
+This checkpoint completes **Phase 14 - post-promotion handoff** on top of the already-passed **Phase 13 - Gate E promotion and release**.
 
 The repository now records:
 
@@ -27,14 +28,14 @@ Boundary note: the existing Tier 3 certification wording still applies only to t
 
 ## Workspace layout
 
-- `pkgs/core/` — 15 core Python packages
-- `pkgs/engines/` — 22 Python engine packages
-- `pkgs/apps/` — 6 application packages
-- `crates/` — 9 Rust crates
-- `bindings/python/` — 1 Python binding package
-- `docs/` — single authoritative documentation tree
-- `tools/ci/` — repository policy and gate validation scripts
-- `tools/conformance/` — spec snapshot generation helpers
+- `pkgs/core/` - 15 core Python packages
+- `pkgs/engines/` - 22 Python engine packages
+- `pkgs/apps/` - 6 application packages
+- `examples/` - non-authoritative demos and verification helpers
+- `crates/` - 9 Rust crates
+- `docs/` - single authoritative documentation tree
+- `tools/ci/` - repository policy and gate validation scripts
+- `tools/conformance/` - spec snapshot generation helpers
 
 ## Canonical documentation
 

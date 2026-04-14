@@ -76,15 +76,35 @@ impl RuntimeHandle {
         transport: &str,
         request: &RequestEnvelope,
     ) -> Result<&'a PlanBinding, PortError> {
-        self.plan
+        let bindings = self
+            .plan
             .bindings
             .iter()
-            .find(|binding| {
-                binding.transport == transport
-                    && (binding.alias == request.operation
-                        || binding.op_name == request.operation
-                        || binding.path == request.path)
-            })
+            .filter(|binding| binding.transport == transport)
+            .collect::<Vec<_>>();
+
+        if !request.operation.is_empty() {
+            if let Some(binding) = bindings.iter().copied().find(|binding| {
+                binding.alias == request.operation
+                    || binding.method_name == request.operation
+                    || binding.op_name == request.operation
+            }) {
+                return Ok(binding);
+            }
+        }
+
+        if !request.path.is_empty() {
+            if let Some(binding) = bindings.iter().copied().find(|binding| {
+                binding.path == request.path
+                    && (request.method.is_empty() || binding.method == request.method)
+            }) {
+                return Ok(binding);
+            }
+        }
+
+        bindings
+            .into_iter()
+            .find(|binding| binding.path == request.path)
             .ok_or_else(|| {
                 PortError::Message(format!(
                     "no binding found for operation={} path={} transport={transport}",

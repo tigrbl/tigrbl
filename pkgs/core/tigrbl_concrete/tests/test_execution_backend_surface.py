@@ -8,11 +8,12 @@ pytest.importorskip("sqlalchemy")
 
 def test_app_and_router_accept_execution_backend() -> None:
     from tigrbl_concrete._concrete import TigrblApp, TigrblRouter
-    from tigrbl_runtime.native_runtime import build_native_runtime
+    from tigrbl_runtime import Runtime
 
     app = TigrblApp(mount_system=False, execution_backend="rust")
     router = TigrblRouter(execution_backend="python")
-    runtime = build_native_runtime(
+    runtime = Runtime(executor_backend="rust")
+    handle = runtime.native_handle(
         {
             "name": "demo",
             "bindings": [
@@ -31,7 +32,7 @@ def test_app_and_router_accept_execution_backend() -> None:
     assert router.execution_backend == "python"
     assert isinstance(app.native_trace(), list)
     assert isinstance(router.native_trace(), list)
-    assert runtime.execute_rest(
+    assert handle.execute_rest(
         {
             "operation": "users.create",
             "transport": "rest",

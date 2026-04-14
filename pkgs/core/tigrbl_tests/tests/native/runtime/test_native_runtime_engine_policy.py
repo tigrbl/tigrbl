@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_native import create_runtime
+from tigrbl_runtime import Runtime
 
 
 def test_native_runtime_rejects_python_engine_without_explicit_callback() -> None:
-    handle = create_runtime(
+    handle = Runtime(executor_backend="rust").native_handle(
         {
             "name": "engine-policy-demo",
             "engines": [{"name": "legacy", "kind": "sqlite", "language": "python"}],

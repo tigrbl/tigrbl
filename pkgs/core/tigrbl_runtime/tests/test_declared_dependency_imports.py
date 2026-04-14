@@ -14,7 +14,6 @@ ALLOWED_TOP_LEVEL_IMPORTS = {
     "tigrbl_typing",
     "tigrbl_atoms",
     "tigrbl_core",
-    "tigrbl_native",
     "tigrbl_ops_oltp",
     "sqlalchemy",
     "numba",

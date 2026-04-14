@@ -62,6 +62,7 @@ def test_normalize_app_spec_coerces_defaults_and_sequences() -> None:
 
     assert normalized.title == "Tigrbl"
     assert normalized.version == "0.1.0"
+    assert normalized.execution_backend == "auto"
     assert normalized.routers == ("router_a",)
     assert normalized.ops == ("op_a",)
     assert normalized.schemas == ({"schema": "value"},)

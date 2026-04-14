@@ -17,7 +17,7 @@ It is not the authoritative location for repository governance, current target s
 ## Package identity
 
 - workspace path: `pkgs/core/tigrbl_runtime`
-- workspace class: core Python package
-- implementation layout: `tigrbl_runtime/`
+- workspace class: hybrid core Python/Rust package
+- implementation layout: `tigrbl_runtime/` and `src/`
 
 Long-form repository documentation is governed from `docs/`.
