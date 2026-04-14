@@ -1,14 +1,14 @@
 from __future__ import annotations
 from typing import Any
 
-from tigrbl_native import compile_app, native_parity_snapshot, normalize_spec
+from tigrbl_runtime.native import compile_app, native_parity_snapshot, normalize_spec
+from tigrbl_runtime.native.codec import build_native_app_spec
 
 from .native_plan import NativePlan
-from .startup_payload import build_startup_payload
 
 
 def build_native_kernel(app: Any) -> NativePlan:
-    payload = build_startup_payload(app)
+    payload = build_native_app_spec(app)
     normalized = normalize_spec(payload)
     compiled = compile_app(payload)
     return NativePlan(
@@ -22,8 +22,8 @@ def build_native_kernel(app: Any) -> NativePlan:
 
 
 def normalize_native_spec(app: Any) -> str:
-    return normalize_spec(build_startup_payload(app))
+    return normalize_spec(build_native_app_spec(app))
 
 
 def build_native_parity_snapshot(app: Any) -> dict[str, object]:
-    return native_parity_snapshot(build_startup_payload(app))
+    return native_parity_snapshot(build_native_app_spec(app))

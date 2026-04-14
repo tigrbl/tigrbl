@@ -8,7 +8,7 @@ This document is the canonical workspace inventory for package and crate locatio
 - engine packages: 22
 - application packages: 6
 - Rust crates: 9
-- Python binding packages: 1
+- hybrid Python/Rust packages under `pkgs/`: 1
 
 ## Core Python packages
 
@@ -74,9 +74,9 @@ This document is the canonical workspace inventory for package and crate locatio
 - `tigrbl_rs_runtime`
 - `tigrbl_rs_spec`
 
-## Python binding packages
+## Hybrid Python/Rust packages
 
-- `tigrbl_native`
+- `pkgs/core/tigrbl_runtime`
 
 ## Package README policy
 

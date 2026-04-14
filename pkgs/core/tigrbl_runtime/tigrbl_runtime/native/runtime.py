@@ -1,27 +1,51 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 import json
 from typing import Any
 
-from .compile import _coerce_spec
 from .errors import NativeBindingsUnavailableError
+from ._load_native import load_native_module
 
-try:
-    from . import _native
-except Exception as exc:  # pragma: no cover - exercised when extension is not built.
-    from . import _fallback as _native
-    _IMPORT_ERROR = exc
-else:
-    _IMPORT_ERROR = None
+_native, _IMPORT_ERROR = load_native_module()
 
 
 def _require_native():
     if _native is None:
         raise NativeBindingsUnavailableError(
-            "tigrbl_native._native is unavailable; build the maturin extension before instantiating the native runtime."
+            "tigrbl_runtime.native._native is unavailable; build the runtime extension before instantiating the native runtime."
         ) from _IMPORT_ERROR
     return _native
+
+
+def _coerce_compiled_plan(plan: Any) -> str:
+    if isinstance(plan, str):
+        payload = json.loads(plan)
+        if not isinstance(payload, dict):
+            raise TypeError("native runtime expects a compiled plan JSON object")
+        return json.dumps(payload, sort_keys=True)
+    if isinstance(plan, Mapping):
+        return json.dumps(dict(plan), sort_keys=True)
+    raise TypeError(
+        "create_runtime_from_compiled expects a compiled plan mapping or JSON object"
+    )
+
+
+def _coerce_request_payload(envelope: Any) -> str:
+    if isinstance(envelope, str):
+        payload = json.loads(envelope)
+        if not isinstance(payload, dict):
+            raise TypeError("native runtime expects a request JSON object")
+        return json.dumps(payload, sort_keys=True)
+    if isinstance(envelope, Mapping):
+        return json.dumps(dict(envelope), sort_keys=True)
+    asdict = getattr(envelope, "asdict", None)
+    if callable(asdict):
+        payload = asdict()
+        if isinstance(payload, Mapping):
+            return json.dumps(dict(payload), sort_keys=True)
+    raise TypeError("native runtime expects a request mapping or JSON object")
 
 
 @dataclass(slots=True)
@@ -37,13 +61,13 @@ class NativeRuntimeHandle:
         return {}
 
     def execute_rest(self, envelope: Any) -> dict[str, object]:
-        payload = _coerce_spec(envelope)
+        payload = _coerce_request_payload(envelope)
         if hasattr(self._handle, "execute_rest_json"):
             return json.loads(self._handle.execute_rest_json(payload))
         raise NativeBindingsUnavailableError("native runtime handle cannot execute REST envelopes")
 
     def execute_jsonrpc(self, envelope: Any) -> dict[str, object]:
-        payload = _coerce_spec(envelope)
+        payload = _coerce_request_payload(envelope)
         if hasattr(self._handle, "execute_jsonrpc_json"):
             return json.loads(self._handle.execute_jsonrpc_json(payload))
         raise NativeBindingsUnavailableError(
@@ -51,19 +75,19 @@ class NativeRuntimeHandle:
         )
 
     def execute_ws(self, envelope: Any) -> dict[str, object]:
-        payload = _coerce_spec(envelope)
+        payload = _coerce_request_payload(envelope)
         if hasattr(self._handle, "execute_ws_json"):
             return json.loads(self._handle.execute_ws_json(payload))
         raise NativeBindingsUnavailableError("native runtime handle cannot execute websocket envelopes")
 
     def execute_stream(self, envelope: Any) -> dict[str, object]:
-        payload = _coerce_spec(envelope)
+        payload = _coerce_request_payload(envelope)
         if hasattr(self._handle, "execute_stream_json"):
             return json.loads(self._handle.execute_stream_json(payload))
         raise NativeBindingsUnavailableError("native runtime handle cannot execute streaming envelopes")
 
     def execute_sse(self, envelope: Any) -> dict[str, object]:
-        payload = _coerce_spec(envelope)
+        payload = _coerce_request_payload(envelope)
         if hasattr(self._handle, "execute_sse_json"):
             return json.loads(self._handle.execute_sse_json(payload))
         raise NativeBindingsUnavailableError("native runtime handle cannot execute SSE envelopes")
@@ -89,10 +113,14 @@ class NativeRuntimeHandle:
         return []
 
 
-def create_runtime(spec: Any) -> NativeRuntimeHandle:
+def create_runtime_from_compiled(plan: Any) -> NativeRuntimeHandle:
     native = _require_native()
+    handle = native.create_runtime_handle(_coerce_compiled_plan(plan))
+    return NativeRuntimeHandle(handle)
+
+
+def create_runtime(spec: Any) -> NativeRuntimeHandle:
     from .compile import compile_app
 
     compiled = compile_app(spec)
-    handle = native.create_runtime_handle(_coerce_spec(compiled))
-    return NativeRuntimeHandle(handle)
+    return create_runtime_from_compiled(compiled)

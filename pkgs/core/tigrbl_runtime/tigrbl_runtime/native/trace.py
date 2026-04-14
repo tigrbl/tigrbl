@@ -3,20 +3,15 @@ from __future__ import annotations
 import json
 
 from .errors import NativeBindingsUnavailableError
+from ._load_native import load_native_module
 
-try:
-    from . import _native
-except Exception as exc:  # pragma: no cover
-    from . import _fallback as _native
-    _IMPORT_ERROR = exc
-else:
-    _IMPORT_ERROR = None
+_native, _IMPORT_ERROR = load_native_module()
 
 
 def _require_native():
     if _native is None:
         raise NativeBindingsUnavailableError(
-            "tigrbl_native._native is unavailable; build the extension or use the source fallback."
+            "tigrbl_runtime.native._native is unavailable; build the runtime extension or use the source fallback."
         ) from _IMPORT_ERROR
     return _native
 

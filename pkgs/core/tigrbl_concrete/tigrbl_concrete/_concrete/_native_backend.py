@@ -14,7 +14,7 @@ def normalize_execution_backend(value: Any) -> str:
 
 def ffi_boundary_events() -> list[dict[str, Any]]:
     try:
-        from tigrbl_native import ffi_boundary_events as _ffi_boundary_events
+        from tigrbl_runtime.native import ffi_boundary_events as _ffi_boundary_events
     except Exception:
         return []
     return list(_ffi_boundary_events())
@@ -22,7 +22,7 @@ def ffi_boundary_events() -> list[dict[str, Any]]:
 
 def clear_ffi_boundary_events() -> None:
     try:
-        from tigrbl_native import clear_ffi_boundary_events as _clear
+        from tigrbl_runtime.native import clear_ffi_boundary_events as _clear
     except Exception:
         return None
     _clear()

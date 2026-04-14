@@ -6,7 +6,7 @@ The repository root should remain small and predictable. It may contain:
 
 - package/workspace manifests (`pyproject.toml`, `Cargo.toml`, `Cargo.lock`, toolchain files)
 - governance entry points (`README.md`, `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`)
-- source roots (`pkgs/`, `crates/`, `bindings/`, `docs/`)
+- source roots (`pkgs/`, `crates/`, `examples/`, `docs/`)
 - repository configuration directories such as `.cargo/` and `.github/`
 - repository automation utilities under `tools/`
 
@@ -21,11 +21,11 @@ The root must not accumulate:
 
 ## Source roots
 
-- `pkgs/core/` — core Python packages
-- `pkgs/engines/` — engine packages
-- `pkgs/apps/` — application packages
-- `crates/` — Rust-native crates
-- `bindings/python/` — Python bindings to the native runtime
+- `pkgs/core/` - core Python packages
+- `pkgs/engines/` - engine packages
+- `pkgs/apps/` - application packages
+- `crates/` - Rust-native crates
+- `examples/` - non-authoritative demos and verification helpers
 
 ## Python package layout
 
@@ -40,14 +40,7 @@ Each Python package root under `pkgs/` must contain:
 Nested package roots inside package directories are not allowed.
 Duplicate package mirrors inside an existing package root are not allowed.
 
-## Python binding package layout
-
-Each binding package under `bindings/python/` must contain:
-
-- `pyproject.toml`
-- `README.md`
-- `python/<package>/`
-- `src/`
+Hybrid Python/Rust packages may additionally contain `src/` for the Rust extension source.
 
 ## Package-local documentation boundary
 

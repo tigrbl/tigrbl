@@ -1,0 +1,42 @@
+# ADR-0002 — Package DAG and Ownership
+
+- **Status:** Proposed
+- **Date:** 2026-04-14
+- **Related ADRs:** ADR-0003, ADR-0015, ADR-0016, ADR-0020, ADR-0022, ADR-0025
+
+## Context
+
+The repo already has a strong macro-shape, but several architectural gaps come from boundary leakage: declarative layers owning runtime details, runtime owning concrete transport details, or concrete code bypassing compiled/runtime paths.
+A precise package DAG is required so that future additions do not recreate cycles or semantic duplication.
+
+## Decision
+
+1. Package ownership is frozen as follows:
+   - `tigrbl_core`: authoritative declarative types and core semantic spec objects.
+   - `tigrbl_spec`: re-export and facade only.
+   - `tigrbl_typing`: shared protocols and low-level typing surfaces.
+   - `tigrbl_atoms`: structural atoms and canonical handler shims.
+   - `tigrbl_kernel`: lowering, plan compilation, segment packing, and optimization.
+   - `tigrbl_runtime`: live execution, context, loops, and runtime-owned abstractions.
+   - `tigrbl_concrete`: ASGI adapter layer and public decorator/app surface.
+   - ops packages: executable operation implementations grouped by domain.
+2. Import direction is frozen:
+   - declarative layers may not depend on runtime or concrete layers;
+   - kernel may depend on declarative and atom layers but not on concrete;
+   - runtime may depend on kernel, atoms, typing, and core, but not on concrete-owned execution details;
+   - concrete may depend on runtime, typing, and core.
+3. New packages and crates must fit this DAG rather than forcing exceptions.
+4. The same ownership logic applies to Rust mirror crates.
+
+## Consequences
+
+- Architectural drift is easier to detect because ownership violations are explicit.
+- Runtime/concrete cycles become correctness failures, not style disagreements.
+- New features can be placed by responsibility instead of convenience.
+- Python and Rust parity work gets a stable crate/package map.
+
+## Rejected alternatives
+
+- A permissive import graph with case-by-case exceptions.
+- Allowing runtime to depend on concrete request/transport types.
+- Splitting ownership by transport rather than by architectural responsibility.

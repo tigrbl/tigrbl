@@ -3,29 +3,23 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from .codec import coerce_native_spec_json
 from .errors import NativeBindingsUnavailableError
+from ._load_native import load_native_module
 
-try:
-    from . import _native
-except Exception as exc:  # pragma: no cover - exercised when extension is not built.
-    from . import _fallback as _native
-    _IMPORT_ERROR = exc
-else:
-    _IMPORT_ERROR = None
+_native, _IMPORT_ERROR = load_native_module()
 
 
 def _require_native():
     if _native is None:
         raise NativeBindingsUnavailableError(
-            "tigrbl_native._native is unavailable; build the maturin extension before compiling specs."
+            "tigrbl_runtime.native._native is unavailable; build the runtime extension before compiling native specs."
         ) from _IMPORT_ERROR
     return _native
 
 
 def _coerce_spec(spec: Any) -> str:
-    if isinstance(spec, str):
-        return spec
-    return json.dumps(spec, sort_keys=True)
+    return coerce_native_spec_json(spec)
 
 
 def normalize_spec(spec: Any) -> str:

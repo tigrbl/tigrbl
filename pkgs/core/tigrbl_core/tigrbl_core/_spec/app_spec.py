@@ -68,6 +68,7 @@ def normalize_app_spec(spec: "AppSpec") -> "AppSpec":
         title=str(spec.title or "Tigrbl"),
         description=spec.description,
         version=str(spec.version or "0.1.0"),
+        execution_backend=str(getattr(spec, "execution_backend", None) or "auto"),
         engine=spec.engine,
         routers=routers,
         ops=ops,
@@ -93,6 +94,7 @@ class AppSpec(SerdeMixin):
     title: str = "Tigrbl"
     description: str | None = None
     version: str = "0.1.0"
+    execution_backend: str = "auto"
     engine: Optional[EngineCfg] = None
 
     # NEW: multi-Router composition (store Router classes or instances)
@@ -128,6 +130,7 @@ class AppSpec(SerdeMixin):
         sentinel = object()
         title: Any = sentinel
         version: Any = sentinel
+        execution_backend: Any = sentinel
         engine: Any | None = sentinel  # type: ignore[assignment]
         response: Any = sentinel
         jsonrpc_prefix: Any = sentinel
@@ -139,6 +142,11 @@ class AppSpec(SerdeMixin):
                 title = base.__dict__["TITLE"]
             if "VERSION" in base.__dict__ and version is sentinel:
                 version = base.__dict__["VERSION"]
+            if (
+                "EXECUTION_BACKEND" in base.__dict__
+                and execution_backend is sentinel
+            ):
+                execution_backend = base.__dict__["EXECUTION_BACKEND"]
             if "ENGINE" in base.__dict__ and engine is sentinel:
                 engine = base.__dict__["ENGINE"]
             if "RESPONSE" in base.__dict__ and response is sentinel:
@@ -154,6 +162,8 @@ class AppSpec(SerdeMixin):
             title = "Tigrbl"
         if version is sentinel:
             version = "0.1.0"
+        if execution_backend is sentinel:
+            execution_backend = "auto"
         if engine is sentinel:
             engine = None
         if response is sentinel:
@@ -171,6 +181,7 @@ class AppSpec(SerdeMixin):
             title=title,
             description=description,
             version=version,
+            execution_backend=execution_backend,
             engine=engine,
             routers=tuple(
                 merge_seq_attr(
@@ -199,6 +210,7 @@ class AppSpec(SerdeMixin):
                 title=spec.title,
                 description=spec.description,
                 version=spec.version,
+                execution_backend=spec.execution_backend,
                 engine=spec.engine,
                 routers=tuple(spec.routers or ()),
                 ops=tuple(spec.ops or ()),

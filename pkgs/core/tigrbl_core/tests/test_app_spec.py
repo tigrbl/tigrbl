@@ -8,6 +8,7 @@ def test_collect_reads_scalar_and_sequence_attributes() -> None:
         TITLE = "Demo"
         DESCRIPTION = "desc"
         VERSION = "1.0.0"
+        EXECUTION_BACKEND = "rust"
         JSONRPC_PREFIX = "/r"
         SYSTEM_PREFIX = "/s"
         ROUTERS = ("router",)
@@ -18,6 +19,7 @@ def test_collect_reads_scalar_and_sequence_attributes() -> None:
     assert spec.title == "Demo"
     assert spec.description == "desc"
     assert spec.version == "1.0.0"
+    assert spec.execution_backend == "rust"
     assert spec.jsonrpc_prefix == "/r"
     assert spec.system_prefix == "/s"
     assert spec.routers == ("router",)
@@ -32,5 +34,6 @@ def test_collect_falls_back_to_defaults() -> None:
 
     assert spec.title == "Tigrbl"
     assert spec.version == "0.1.0"
+    assert spec.execution_backend == "auto"
     assert spec.jsonrpc_prefix == "/rpc"
     assert spec.system_prefix == "/system"

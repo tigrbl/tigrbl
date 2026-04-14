@@ -19,4 +19,4 @@ The Rust-native substrate is additive. Python packages remain the authoring and 
 - kernel compiles and optimizes plans but does not execute live requests;
 - runtime executes compiled plans but does not author spec or redefine CRUD semantics;
 - engine crates do not know transport routing or Python binding details;
-- `bindings/python/tigrbl_native` is glue only and must not become a logic sink.
+- `pkgs/core/tigrbl_runtime` owns the Python↔Rust runtime bridge and must not become a logic sink.

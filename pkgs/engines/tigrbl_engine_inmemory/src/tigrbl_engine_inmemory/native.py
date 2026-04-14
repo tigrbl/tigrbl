@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 try:
-    from tigrbl_native import register_python_engine
+    from tigrbl_runtime.native import register_python_engine
 except Exception:  # pragma: no cover - additive optional integration
     register_python_engine = None
 

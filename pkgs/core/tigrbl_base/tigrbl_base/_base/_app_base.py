@@ -17,6 +17,7 @@ class AppBase(AppSpec):
     title: str = "Tigrbl"
     description: str | None = None
     version: str = "0.1.0"
+    execution_backend: str = "auto"
     engine: Optional[EngineCfg] = None
     routers: Sequence[Any] = ()
     ops: Sequence[Any] = ()
@@ -99,6 +100,7 @@ class AppBase(AppSpec):
             title=spec.title,
             description=spec.description,
             version=spec.version,
+            execution_backend=spec.execution_backend,
             engine=spec.engine,
             routers=routers,
             ops=tuple(spec.ops or ()),
@@ -131,6 +133,7 @@ class AppBase(AppSpec):
             title=str(spec.title or "Tigrbl"),
             description=spec.description,
             version=str(spec.version or "0.1.0"),
+            execution_backend=str(spec.execution_backend or "auto"),
             engine=spec.engine,
             routers=cls._bind_mapped_children(spec.routers, parent=parent),
             ops=cls._bind_mapped_children(spec.ops, parent=parent),

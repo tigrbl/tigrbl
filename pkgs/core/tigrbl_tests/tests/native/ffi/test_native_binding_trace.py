@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tigrbl_native import clear_ffi_boundary_events, create_runtime, ffi_boundary_events
+from tigrbl_runtime.native import clear_ffi_boundary_events, create_runtime, ffi_boundary_events
 
 
 def test_native_runtime_trace_records_entry_and_response_exit() -> None:

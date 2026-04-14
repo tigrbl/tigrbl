@@ -23,7 +23,6 @@ def _pythonpath() -> str:
                 src = child / "src"
                 if src.is_dir():
                     parts.append(str(src))
-    parts.append(str(REPO_ROOT / "bindings" / "python" / "tigrbl_native" / "python"))
     parts.append(str(REPO_ROOT))
     return os.pathsep.join(parts)
 
