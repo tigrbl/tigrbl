@@ -1,0 +1,105 @@
+{
+  "passed": true,
+  "registry_path": ".ssot/registry.json",
+  "from_schema_version": 3,
+  "to_schema_version": 4,
+  "from_version": "0.1.2",
+  "to_version": "0.2.2",
+  "migrations": [
+    "migrate_v3_to_v4"
+  ],
+  "renamed_specs": [
+    {
+      "from": ".ssot/specs/registry-core.md",
+      "to": ".ssot/specs/SPEC-0001-registry-core.md"
+    },
+    {
+      "from": ".ssot/specs/cli.md",
+      "to": ".ssot/specs/SPEC-0002-cli.md"
+    },
+    {
+      "from": ".ssot/specs/graph-model.md",
+      "to": ".ssot/specs/SPEC-0003-graph-model.md"
+    },
+    {
+      "from": ".ssot/specs/feature-lifecycle.md",
+      "to": ".ssot/specs/SPEC-0004-feature-lifecycle.md"
+    },
+    {
+      "from": ".ssot/specs/claim-statuses.md",
+      "to": ".ssot/specs/SPEC-0005-claim-statuses.md"
+    },
+    {
+      "from": ".ssot/specs/claim-tiers.md",
+      "to": ".ssot/specs/SPEC-0006-claim-tiers.md"
+    },
+    {
+      "from": ".ssot/specs/snapshots-and-reports.md",
+      "to": ".ssot/specs/SPEC-0007-snapshots-and-reports.md"
+    },
+    {
+      "from": ".ssot/specs/repo-policy.md",
+      "to": ".ssot/specs/SPEC-0008-repo-policy.md"
+    },
+    {
+      "from": ".ssot/specs/gates-and-fences.md",
+      "to": ".ssot/specs/SPEC-0009-gates-and-fences.md"
+    },
+    {
+      "from": ".ssot/specs/id-normalization.md",
+      "to": ".ssot/specs/SPEC-0010-id-normalization.md"
+    },
+    {
+      "from": ".ssot/specs/file-tree.md",
+      "to": ".ssot/specs/SPEC-0011-file-tree.md"
+    },
+    {
+      "from": ".ssot/specs/planning-horizons.md",
+      "to": ".ssot/specs/SPEC-0012-planning-horizons.md"
+    },
+    {
+      "from": ".ssot/specs/python-api.md",
+      "to": ".ssot/specs/SPEC-0013-python-api.md"
+    }
+  ],
+  "sync": {
+    "adr": {
+      "created": [],
+      "updated": [],
+      "unchanged": [
+        "adr:0001",
+        "adr:0002",
+        "adr:0003",
+        "adr:0004",
+        "adr:0005",
+        "adr:0006",
+        "adr:0007",
+        "adr:0008",
+        "adr:0009",
+        "adr:0010",
+        "adr:0011",
+        "adr:0012"
+      ]
+    },
+    "spec": {
+      "created": [],
+      "updated": [],
+      "unchanged": [
+        "spc:0001",
+        "spc:0002",
+        "spc:0003",
+        "spc:0004",
+        "spc:0005",
+        "spc:0006",
+        "spc:0007",
+        "spc:0008",
+        "spc:0009",
+        "spc:0010",
+        "spc:0011",
+        "spc:0012",
+        "spc:0013"
+      ]
+    }
+  },
+  "changed": true
+}
