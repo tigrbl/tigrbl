@@ -1,0 +1,47 @@
+# ADR-1007: ADR-0007 — First-Class Protocol Support Matrix
+
+# ADR-0007 — First-Class Protocol Support Matrix
+
+- **Status:** Proposed
+- **Date:** 2026-04-14
+- **Related ADRs:** ADR-0005, ADR-0006, ADR-0014, ADR-0016, ADR-0021, ADR-0022, ADR-0023, ADR-0024, ADR-0025
+
+## Context
+
+Tigrbl needs an explicit statement of which protocols are first-class and what first-class means.
+Without this, the repo can accidentally imply support levels that are only partial, experimental, or transport-adapter-only.
+
+## Decision
+
+1. A protocol/binding is first-class only if it has:
+   - a canonical binding spec;
+   - a supported public declaration path;
+   - a compiled kernel path;
+   - a runtime execution path;
+   - docs projection support;
+   - direct test coverage.
+2. The initial first-class protocol set is:
+   - REST over HTTP/HTTPS;
+   - JSON-RPC over HTTP/HTTPS;
+   - HTTP stream over HTTP/HTTPS;
+   - SSE over HTTP/HTTPS;
+   - WebSocket over WS/WSS;
+   - JSON-RPC over WS/WSS through websocket framing;
+   - WebTransport;
+   - app-framed WebTransport.
+3. HTTP/3 and QUIC are transport substrates, not separate semantic bindings.
+4. Protocols not in this set are non-first-class by default and may not be implied by analogy.
+5. First-class status requires public docs and tests, not just internal code paths.
+
+## Consequences
+
+- The public support matrix becomes explicit and auditable.
+- Feature claims stay bounded.
+- Kernel/runtime work can prioritize the protocols that actually define the framework surface.
+- Later certification and interop work get a stable target matrix.
+
+## Rejected alternatives
+
+- Implicit support claims based on partial internal code.
+- Treating transport substrate changes as new semantic bindings.
+- Promoting protocols to first-class status without docs and tests.

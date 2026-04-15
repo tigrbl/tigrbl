@@ -5,9 +5,11 @@ The canonical registry is `.ssot/registry.json`.
 Top-level sections:
 - `schema_version`
 - `repo`
+- `tooling`
 - `paths`
 - `program`
 - `guard_policies`
+- `document_id_reservations`
 - `features`
 - `tests`
 - `claims`
@@ -16,3 +18,5 @@ Top-level sections:
 - `risks`
 - `boundaries`
 - `releases`
+- `adrs`
+- `specs`
