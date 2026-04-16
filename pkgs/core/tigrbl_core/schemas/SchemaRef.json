@@ -1,0 +1,40 @@
+{
+  "$defs": {
+    "SchemaRefEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.schema_spec:SchemaRef"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SchemaRefEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "SchemaRef.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "alias": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "in",
+        "out"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "alias",
+    "kind"
+  ],
+  "title": "SchemaRef",
+  "type": "object"
+}

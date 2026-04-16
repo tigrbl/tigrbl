@@ -1,0 +1,50 @@
+{
+  "$defs": {
+    "StorageTransformSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.storage_spec:StorageTransformSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "StorageTransformSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "StorageTransformSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "from_stored": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "to_stored": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "to_stored",
+    "from_stored"
+  ],
+  "title": "StorageTransformSpec",
+  "type": "object"
+}

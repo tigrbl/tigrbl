@@ -1,0 +1,67 @@
+{
+  "$defs": {
+    "RequestSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.request_spec:RequestSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "RequestSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "RequestSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "app": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "body": {
+      "type": "string"
+    },
+    "headers": {
+      "$ref": "./shared.json#/$defs/StringMap"
+    },
+    "method": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "path_params": {
+      "$ref": "./shared.json#/$defs/StringMap"
+    },
+    "query": {
+      "$ref": "./shared.json#/$defs/StringListMap"
+    },
+    "script_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "method",
+    "path",
+    "headers",
+    "query",
+    "path_params",
+    "body",
+    "script_name",
+    "app"
+  ],
+  "title": "RequestSpec",
+  "type": "object"
+}

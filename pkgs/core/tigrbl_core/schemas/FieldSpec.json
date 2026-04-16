@@ -1,0 +1,55 @@
+{
+  "$defs": {
+    "FieldSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.field_spec:FieldSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "FieldSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "FieldSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allow_null_in": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "constraints": {
+      "$ref": "./shared.json#/$defs/AnyMap"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "py_type": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "required_in": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    }
+  },
+  "required": [
+    "py_type",
+    "constraints",
+    "description",
+    "required_in",
+    "allow_null_in"
+  ],
+  "title": "FieldSpec",
+  "type": "object"
+}
