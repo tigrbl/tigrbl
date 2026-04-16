@@ -1,0 +1,52 @@
+{
+  "$defs": {
+    "WsBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:WsBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "WsBindingSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "WsBindingSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "exchange": {
+      "type": "string"
+    },
+    "framing": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "proto": {
+      "enum": [
+        "ws",
+        "wss"
+      ],
+      "type": "string"
+    },
+    "subprotocols": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    }
+  },
+  "required": [
+    "proto",
+    "path",
+    "subprotocols",
+    "exchange",
+    "framing"
+  ],
+  "title": "WsBindingSpec",
+  "type": "object"
+}

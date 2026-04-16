@@ -1,0 +1,45 @@
+{
+  "$defs": {
+    "WebTransportBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:WebTransportBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "WebTransportBindingSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "WebTransportBindingSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "exchange": {
+      "type": "string"
+    },
+    "framing": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "proto": {
+      "const": "webtransport",
+      "type": "string"
+    }
+  },
+  "required": [
+    "proto",
+    "path",
+    "exchange",
+    "framing"
+  ],
+  "title": "WebTransportBindingSpec",
+  "type": "object"
+}

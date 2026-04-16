@@ -1,0 +1,151 @@
+{
+  "$defs": {
+    "ResponseSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.response_spec:ResponseSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "ResponseSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "ResponseSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "cache_control": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "download": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "envelope": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "etag": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "filename": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "headers": {
+      "$ref": "./shared.json#/$defs/StringMap"
+    },
+    "kind": {
+      "enum": [
+        "auto",
+        "json",
+        "html",
+        "text",
+        "file",
+        "stream",
+        "redirect"
+      ],
+      "type": "string"
+    },
+    "media_type": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "redirect_to": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "status_code": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "template": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./TemplateSpec.json"
+            },
+            {
+              "$ref": "./TemplateSpec.json#/$defs/TemplateSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "kind",
+    "media_type",
+    "status_code",
+    "headers",
+    "envelope",
+    "template",
+    "filename",
+    "download",
+    "etag",
+    "cache_control",
+    "redirect_to"
+  ],
+  "title": "ResponseSpec",
+  "type": "object"
+}

@@ -1,0 +1,186 @@
+{
+  "$defs": {
+    "StorageSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.storage_spec:StorageSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "StorageSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "StorageSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "autoincrement": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "check": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "comment": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "default": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "fk": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./ForeignKeySpec.json"
+            },
+            {
+              "$ref": "./ForeignKeySpec.json#/$defs/ForeignKeySpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "index": {
+      "type": "boolean"
+    },
+    "nullable": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "onupdate": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "physical_type": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./StorageTypeRef.json"
+            },
+            {
+              "$ref": "./StorageTypeRef.json#/$defs/StorageTypeRefEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "primary_key": {
+      "type": "boolean"
+    },
+    "refresh_on_return": {
+      "type": "boolean"
+    },
+    "server_default": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "transform": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./StorageTransformSpec.json"
+            },
+            {
+              "$ref": "./StorageTransformSpec.json#/$defs/StorageTransformSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "type_": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "unique": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "type_",
+    "physical_type",
+    "nullable",
+    "unique",
+    "index",
+    "primary_key",
+    "autoincrement",
+    "default",
+    "onupdate",
+    "server_default",
+    "refresh_on_return",
+    "transform",
+    "fk",
+    "check",
+    "comment"
+  ],
+  "title": "StorageSpec",
+  "type": "object"
+}

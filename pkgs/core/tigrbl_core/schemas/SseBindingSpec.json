@@ -1,0 +1,52 @@
+{
+  "$defs": {
+    "SseBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:SseBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SseBindingSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "SseBindingSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "exchange": {
+      "type": "string"
+    },
+    "framing": {
+      "type": "string"
+    },
+    "methods": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "path": {
+      "type": "string"
+    },
+    "proto": {
+      "enum": [
+        "http.sse",
+        "https.sse"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "proto",
+    "path",
+    "methods",
+    "exchange",
+    "framing"
+  ],
+  "title": "SseBindingSpec",
+  "type": "object"
+}
