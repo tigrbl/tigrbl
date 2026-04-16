@@ -1,6 +1,4 @@
-# ADR-1025: ADR-0025 — OpChannel and Runtime IO Abstraction
-
-# ADR-0025 — OpChannel and Runtime IO Abstraction
+# ADR-0025 â€” OpChannel and Runtime IO Abstraction
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -32,3 +30,4 @@ The architecture pack places this abstraction at the typing/ports boundary and k
 - Separate public channel abstractions per transport.
 - Putting the channel abstraction in spec or concrete layers.
 - Letting transport adapters invoke handlers directly without a runtime-owned abstraction.
+

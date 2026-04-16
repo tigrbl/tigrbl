@@ -1,6 +1,4 @@
-# ADR-1024: ADR-0024 — Runtime Family Model
-
-# ADR-0024 — Runtime Family Model
+# ADR-0024 â€” Runtime Family Model
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -36,3 +34,4 @@ The architecture pack uses a small runtime-family taxonomy as the normalized exe
 - Binding-specific family taxonomies.
 - Treating runtime families as declarative spec features everywhere.
 - Unlimited family growth as new protocols appear.
+

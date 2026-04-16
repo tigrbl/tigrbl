@@ -1,6 +1,4 @@
-# ADR-1014: ADR-0014 — REST and JSON-RPC Semantic Parity
-
-# ADR-0014 — REST and JSON-RPC Semantic Parity
+# ADR-0014 â€” REST and JSON-RPC Semantic Parity
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -35,3 +33,4 @@ The architecture pack repeatedly treats them as different projections over the s
 - Binding-specific semantics for the same canonical operation.
 - Treating JSON-RPC as a custom-op-only surface.
 - Duplicating operation semantics into REST-specific and RPC-specific implementations.
+

@@ -1,6 +1,4 @@
-# ADR-1005: ADR-0005 — ASGI3 Boundary and Projection Rules
-
-# ADR-0005 — ASGI3 Boundary and Projection Rules
+# ADR-0005 â€” ASGI3 Boundary and Projection Rules
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -36,3 +34,4 @@ This decision is foundational because protocol support, server interop, and runt
 - Replacing ASGI with a framework-specific boundary.
 - Encoding all richer semantics into custom server APIs.
 - Making Tigrbl depend on one server's internal request/response objects.
+

@@ -1,5 +1,3 @@
-# ADR-1026: ADR-0001 Certification Truth Model
-
 # ADR-0001 Certification Truth Model
 
 ## Status
@@ -28,3 +26,4 @@ The existing registry and conformance documents provide strong traceability, but
 - certification wording can be checked against a single root authority tree
 - next-target planning is recorded without silently inheriting release-grade language
 - Phase 0 exit criteria become machine-readable and auditable
+

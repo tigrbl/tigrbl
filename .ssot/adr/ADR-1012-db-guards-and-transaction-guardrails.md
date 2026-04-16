@@ -1,6 +1,4 @@
-# ADR-1012: ADR-0012 — DB Guards and Transaction Guardrails
-
-# ADR-0012 — DB Guards and Transaction Guardrails
+# ADR-0012 â€” DB Guards and Transaction Guardrails
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -33,3 +31,4 @@ The repo already has DB- and tx-oriented system atoms; this ADR freezes the guar
 - Letting arbitrary handlers manage framework-owned transactions implicitly.
 - Exposing raw database state to all handlers by default.
 - Hiding cross-engine fan-in inside canonical OLTP behavior.
+

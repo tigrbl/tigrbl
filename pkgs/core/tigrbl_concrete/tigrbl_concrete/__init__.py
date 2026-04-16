@@ -19,6 +19,7 @@ __all__ = [
     'build_hooks',
     'build_schemas',
     'build_rest_router',
+    'register_http_route',
     *_COMPAT_ALIASES,
 ]
 
@@ -39,6 +40,8 @@ def __getattr__(name: str) -> Any:
             if 'router' not in kwargs:
                 kwargs['router'] = None
             return import_module('tigrbl_concrete._mapping.model')._materialize_rest_router(*args, **kwargs)
+    elif name == 'register_http_route':
+        fn = import_module('tigrbl_concrete.http_routes').register_http_route
     else:
         raise AttributeError(name)
     globals()[name] = fn

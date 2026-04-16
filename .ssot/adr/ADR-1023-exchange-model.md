@@ -1,6 +1,4 @@
-# ADR-1023: ADR-0023 — Exchange Model
-
-# ADR-0023 — Exchange Model
+# ADR-0023 â€” Exchange Model
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -33,3 +31,4 @@ The architecture pack already converges on three exchange shapes, but this decis
 - Per-protocol execution models with no normalization layer.
 - Treating every new transport as a new exchange kind.
 - Hiding exchange semantics inside transport adapters only.
+

@@ -1,6 +1,4 @@
-# ADR-1015: ADR-0015 — Engine Interoperability Contract
-
-# ADR-0015 — Engine Interoperability Contract
+# ADR-0015 â€” Engine Interoperability Contract
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -40,3 +38,4 @@ Without an explicit contract, canonical ops either become engine-specific or sil
 - Letting handlers call engine-specific APIs directly as the primary integration style.
 - Implicitly assuming every engine supports the full canonical contract.
 - Encoding engine behavior into bindings or transport adapters.
+

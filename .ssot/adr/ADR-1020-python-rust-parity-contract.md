@@ -1,6 +1,4 @@
-# ADR-1020: ADR-0020 — Python / Rust Parity Contract
-
-# ADR-0020 — Python / Rust Parity Contract
+# ADR-0020 â€” Python / Rust Parity Contract
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -37,3 +35,4 @@ That only works if parity is defined as a contract with evidence requirements.
 - Calling Rust 'supported' because crates exist.
 - Best-effort mirroring with no differential evidence.
 - Treating semantic mismatches as acceptable implementation detail.
+

@@ -1,6 +1,4 @@
-# ADR-1010: ADR-0010 — Hook Model and Selector Semantics
-
-# ADR-0010 — Hook Model and Selector Semantics
+# ADR-0010 â€” Hook Model and Selector Semantics
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -38,3 +36,4 @@ The current architecture requires phase-bound hookability and leaves room for la
 - Free-form middleware-style hooks with no phase constraints.
 - Transport-specific hook systems.
 - Implicit ordering driven by import order or container iteration order.
+

@@ -1,6 +1,4 @@
-# ADR-1006: ADR-0006 — Protocol Binding Model
-
-# ADR-0006 — Protocol Binding Model
+# ADR-0006 â€” Protocol Binding Model
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -37,3 +35,4 @@ This ADR freezes the separation between semantics and exposure.
 - Separate route subsystems per protocol.
 - Protocol-specific handler decorators with unique semantics.
 - Treating bindings as runtime-only details with no spec representation.
+

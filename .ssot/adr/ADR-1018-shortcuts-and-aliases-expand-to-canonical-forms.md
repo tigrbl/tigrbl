@@ -1,6 +1,4 @@
-# ADR-1018: ADR-0018 — Shortcuts and Aliases Expand to Canonical Forms
-
-# ADR-0018 — Shortcuts and Aliases Expand to Canonical Forms
+# ADR-0018 â€” Shortcuts and Aliases Expand to Canonical Forms
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -32,3 +30,4 @@ This ADR keeps convenience aligned with declarative canon.
 - Alias-only capabilities.
 - Large families of near-duplicate decorator APIs.
 - Hidden expansion rules that only runtime code understands.
+

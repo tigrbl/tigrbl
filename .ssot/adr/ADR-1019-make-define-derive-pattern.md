@@ -1,6 +1,4 @@
-# ADR-1019: ADR-0019 — Make / Define / Derive Pattern
-
-# ADR-0019 — Make / Define / Derive Pattern
+# ADR-0019 â€” Make / Define / Derive Pattern
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -35,3 +33,4 @@ Without a stable pattern, each subsystem invents its own normalization pipeline.
 - Directly deriving plans, docs, or runtime behavior from raw decorator arguments.
 - Blurring canonical definition and projection layers.
 - Allowing each package to invent its own input-normalization pipeline.
+

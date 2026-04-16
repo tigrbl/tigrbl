@@ -1,6 +1,4 @@
-# ADR-1001: ADR-0001 — One Semantic Op Model
-
-# ADR-0001 — One Semantic Op Model
+# ADR-0001 â€” One Semantic Op Model
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -32,3 +30,4 @@ Without an explicit decision here, websocket, streaming, and RPC surfaces tend t
 - Separate websocket and SSE programming models.
 - Transport-owned handler contracts.
 - Route-type-specific semantics that are not expressible through the canonical operation model.
+

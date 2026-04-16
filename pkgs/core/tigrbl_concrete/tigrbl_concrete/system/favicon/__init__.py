@@ -4,10 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from tigrbl_concrete._concrete import FileResponse, RedirectResponse
-from tigrbl_concrete.system.docs.runtime_ops import (
-    ensure_system_docs_model,
-    register_runtime_get_route,
-)
+from tigrbl_concrete.http_routes import register_http_route, remove_http_routes
 
 FAVICON_PATH = Path(__file__).with_name("assets") / "favicon.svg"
 
@@ -66,40 +63,6 @@ def _remove_existing_favicon_routes(router: Any, *paths: str) -> None:
         _prune_routes(nested_router)
 
 
-def _remove_existing_favicon_runtime_ops(router: Any, *paths: str) -> None:
-    """Remove runtime op bindings that point at superseded favicon paths."""
-
-    model = ensure_system_docs_model(router)
-    if model is None:
-        return
-
-    path_set = set(paths)
-    ops = tuple(getattr(getattr(model, "opspecs", None), "all", ()) or ())
-    if not ops:
-        return
-
-    retained = []
-    removed_aliases: set[str] = set()
-    for op in ops:
-        bindings = tuple(getattr(op, "bindings", ()) or ())
-        if any(getattr(binding, "path", None) in path_set for binding in bindings):
-            alias = getattr(op, "alias", None)
-            if isinstance(alias, str):
-                removed_aliases.add(alias)
-            continue
-        retained.append(op)
-
-    model.opspecs.all = tuple(retained)
-    by_alias = getattr(getattr(model, "ops", None), "by_alias", None)
-    if isinstance(by_alias, dict):
-        for alias in removed_aliases:
-            by_alias.pop(alias, None)
-    hooks = getattr(model, "hooks", None)
-    for alias in removed_aliases:
-        if hooks is not None and hasattr(hooks, alias):
-            delattr(hooks, alias)
-
-
 def mount_favicon(
     router: Any,
     *,
@@ -130,7 +93,7 @@ def mount_favicon(
         default_svg_path,
         default_ico_path,
     )
-    _remove_existing_favicon_runtime_ops(
+    remove_http_routes(
         router,
         mounted_svg_path,
         mounted_ico_path,
@@ -163,15 +126,17 @@ def mount_favicon(
         )(endpoint)
 
     if resolved.suffix.lower() == ".svg":
-        register_runtime_get_route(
+        register_http_route(
             router,
             path=mounted_svg_path,
+            methods=("GET",),
             alias=name,
             endpoint=lambda _request: favicon_endpoint(favicon_path=resolved)(),
         )
-        register_runtime_get_route(
+        register_http_route(
             router,
             path=mounted_ico_path,
+            methods=("GET",),
             alias=f"{name}_ico_redirect",
             endpoint=lambda _request: favicon_ico_redirect_endpoint(
                 path=f"{base_prefix}{svg_path}"
@@ -185,9 +150,10 @@ def mount_favicon(
         )
         return router
 
-    register_runtime_get_route(
+    register_http_route(
         router,
         path=mounted_ico_path,
+        methods=("GET",),
         alias=name,
         endpoint=lambda _request: favicon_endpoint(favicon_path=resolved)(),
     )

@@ -212,7 +212,7 @@ async def test_websocket_surface_accepts_receives_and_sends_text() -> None:
     assert sent[2]["type"] == "websocket.close"
 
 
-def test_websocket_routes_register_runtime_bindings_with_prefixed_paths() -> None:
+def test_websocket_routes_register_concrete_bindings_with_prefixed_paths() -> None:
     app = TigrblApp(title="Phase 7 WS Prefix")
     router = TigrblRouter()
 
@@ -223,7 +223,7 @@ def test_websocket_routes_register_runtime_bindings_with_prefixed_paths() -> Non
 
     app.include_router(router, prefix="/ws")
 
-    system_model = app.tables["__tigrbl_system_docs__"]
+    system_model = app.tables["__tigrbl_system_routes__"]
     spec = next(
         item
         for item in tuple(getattr(getattr(system_model, "ops", None), "all", ()) or ())

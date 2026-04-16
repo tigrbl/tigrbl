@@ -1,7 +1,5 @@
 # Transport Mapping Conformance
 
-# Transport Mapping Conformance
-
 Date: 2026-04-07
 Phase: 2
 
@@ -40,3 +38,4 @@ Phase 2 runtime/kernel transport checkpoint.
   through the ASGI channel adapter and response emission path rather than a
   dedicated per-family executor.
 - Full release certification for `0.3.19.dev1` remains blocked.
+

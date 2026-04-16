@@ -1,6 +1,4 @@
-# ADR-1002: ADR-0002 — Package DAG and Ownership
-
-# ADR-0002 — Package DAG and Ownership
+# ADR-0002 â€” Package DAG and Ownership
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -42,3 +40,4 @@ A precise package DAG is required so that future additions do not recreate cycle
 - A permissive import graph with case-by-case exceptions.
 - Allowing runtime to depend on concrete request/transport types.
 - Splitting ownership by transport rather than by architectural responsibility.
+

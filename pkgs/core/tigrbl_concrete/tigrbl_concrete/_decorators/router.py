@@ -47,12 +47,12 @@ def route_ctx(
     status_code: Optional[int] = None,
     tags: Sequence[str] | None = None,
 ):
-    """Declare a ctx operation with explicit route metadata.
+    """Declare an HTTP route as a concrete ``op_ctx`` alias.
 
-    This decorator composes :func:`op_ctx` and then enriches the underlying
-    ``__tigrbl_op_spec__`` payload so ``mro_collect_decorated_ops`` can build a
-    corresponding :class:`~tigrbl.op.OpSpec` that carries route hints
-    (``path_suffix``, ``http_methods``, and optional ``tags``).
+    This decorator composes :func:`op_ctx` and enriches the underlying
+    declaration so materialization produces an :class:`~tigrbl.op.OpSpec`
+    carrying an ``HttpRestBindingSpec`` via ``path_suffix`` and
+    ``http_methods`` hints.
     """
 
     normalized_methods = _normalize_methods(methods)

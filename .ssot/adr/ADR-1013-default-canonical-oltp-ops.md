@@ -1,6 +1,4 @@
-# ADR-1013: ADR-0013 — Default Canonical OLTP Ops
-
-# ADR-0013 — Default Canonical OLTP Ops
+# ADR-0013 â€” Default Canonical OLTP Ops
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -51,3 +49,4 @@ The architecture pack already points to several missing canonical handler atoms;
 - Leaving the canonical OLTP set informal.
 - Treating count/exists as optional conveniences.
 - Mixing OLTP, OLAP, and realtime verbs into one undifferentiated default canon.
+
