@@ -1,4 +1,4 @@
-import uuid
+﻿import uuid
 from itertools import product
 from inspect import isawaitable
 
@@ -8,7 +8,7 @@ import pytest
 from tigrbl import TigrblApp, TigrblRouter, op_ctx
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.types import BaseModel, Column, String
 
 from .uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
@@ -187,3 +187,4 @@ async def test_uvicorn_client_call_with_op_ctx_parameter_combinations(
             assert not response.content
     finally:
         await stop_uvicorn_server(server, task)
+

@@ -1,7 +1,7 @@
-"""Lesson 06.1: Declaring context-only operations with `op_ctx`."""
+﻿"""Lesson 06.1: Declaring context-only operations with `op_ctx`."""
 
 from tigrbl import TableBase, TigrblApp, op_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -70,3 +70,4 @@ def test_op_ctx_metadata_records_target_and_arity():
     assert decl.alias == "summary"
     assert decl.target == "custom"
     assert decl.arity == "member"
+

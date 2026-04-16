@@ -1,4 +1,4 @@
-"""Example: one-to-many relationships exposed through Tigrbl REST endpoints."""
+﻿"""Example: one-to-many relationships exposed through Tigrbl REST endpoints."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import inspect
 import httpx
 import pytest
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.types import Column, ForeignKey, Integer, String, relationship
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 
@@ -81,3 +81,4 @@ async def test_one_to_many_relationship_via_rest() -> None:
     finally:
         # Always stop uvicorn to avoid leaking tasks.
         await stop_uvicorn(server, task)
+

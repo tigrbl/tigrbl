@@ -1,4 +1,4 @@
-from types import SimpleNamespace
+﻿from types import SimpleNamespace
 
 import pytest
 import pytest_asyncio
@@ -7,12 +7,12 @@ from sqlalchemy import select
 from tigrbl import TigrblApp
 from tigrbl.core import crud
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl_atoms.atoms.resolve import assemble
 from tigrbl._spec import IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import UUID, String
 
 
@@ -198,3 +198,4 @@ async def test_kernelz_lists_atoms_and_steps(widget_setup):
     steps = data["Widget"]["create"]
     assert "HANDLER:hook:wire:tigrbl:core:crud:ops:create@HANDLER" in steps
     assert any("hook:sys:txn:begin@START_TX" in s for s in steps)
+

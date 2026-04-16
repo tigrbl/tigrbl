@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import inspect
 
@@ -7,9 +7,9 @@ import pytest
 from tigrbl_client import TigrblClient
 
 from tigrbl import TableBase
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
-from tigrbl.shortcuts.app import deriveApp
+from tigrbl.factories.app import deriveApp
 from tigrbl.types import Column, String
 
 from tigrbl_tests.tests.harness_v3._support import (
@@ -154,3 +154,4 @@ async def test_appspec_to_uvicorn_rest_and_rpc_parity_e2e() -> None:
             await rpc.aclose()
     finally:
         await stop_uvicorn(server, task)
+

@@ -1,14 +1,14 @@
-import httpx
+﻿import httpx
 import pytest
 import pytest_asyncio
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl import HTTPBearer
 from tigrbl.security import Security
 from tigrbl._concrete._security.http_bearer import HTTPAuthorizationCredentials
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Mapped, String
 
 from .uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
@@ -98,3 +98,4 @@ async def test_tigrbl_router_app_handles_authenticated_request(
     assert resp.status_code == 201
     payload = resp.json()
     assert payload["name"] == "Kappa"
+

@@ -1,4 +1,4 @@
-"""Lesson 21.3: App-level security deps via construction params.
+﻿"""Lesson 21.3: App-level security deps via construction params.
 
 This example demonstrates how to pass security dependencies at ``TigrblApp``
 construction time and confirm the OpenAPI schema reflects those requirements
@@ -15,7 +15,7 @@ from tigrbl import HTTPBearer
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -64,3 +64,4 @@ async def test_openapi_security_from_app_constructor_deps() -> None:
         assert "AppToken" in schema["components"]["securitySchemes"]
 
     await stop_uvicorn(server, task)
+

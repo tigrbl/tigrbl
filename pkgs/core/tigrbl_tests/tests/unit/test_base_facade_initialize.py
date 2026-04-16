@@ -1,11 +1,11 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import pytest
 from sqlalchemy import Column, Integer
 
 from tigrbl import TigrblApp, TigrblRouter
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.tables import TableBase
 
 
@@ -72,3 +72,4 @@ async def test_base_router_supports_initialize_async():
 
     assert getattr(router, "_ddl_executed", False) is True
     assert router.tables["Gadget"] is Gadget.__table__
+

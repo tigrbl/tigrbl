@@ -1,9 +1,9 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from tigrbl import TableBase
 from tigrbl.orm.mixins import ActiveToggle
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Integer, Mapped, String
 
 
@@ -24,3 +24,4 @@ def test_mixin_and_custom_columns() -> None:
 
     assert Feature.is_active.storage is not None
     assert "is_active" in Feature.__tigrbl_cols__
+

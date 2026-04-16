@@ -1,4 +1,4 @@
-import asyncio
+﻿import asyncio
 from pathlib import Path
 
 from httpx import ASGITransport, Client
@@ -6,7 +6,7 @@ from httpx import ASGITransport, Client
 from tests.conftest import mro_collect_decorated_ops
 from tigrbl_concrete._mapping.router.include import include_table
 from tigrbl.decorators.op import op_ctx
-from tigrbl.shortcuts.responses import as_file
+from tigrbl.factories.responses import as_file
 from tigrbl import (
     build_hooks,
     build_handlers,
@@ -110,3 +110,4 @@ def test_file_response_api(tmp_path):
         response = client.post("/widget/download", json={})
         assert response.status_code == 200
         assert response.content == file_path.read_bytes()
+

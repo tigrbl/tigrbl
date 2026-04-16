@@ -34,8 +34,6 @@ _EXPORTS = {
     "put": "tigrbl_concrete._decorators.rest",
     "patch": "tigrbl_concrete._decorators.rest",
     "delete": "tigrbl_concrete._decorators.rest",
-    "route_ctx": "tigrbl_concrete._decorators.router",
-    "route": "tigrbl_concrete._decorators.router",
     # authn
     "allow_anon": "tigrbl_concrete._decorators.allow_anon",
     # response

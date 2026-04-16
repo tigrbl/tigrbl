@@ -1,4 +1,4 @@
-"""Example: self-referential relationships exposed through REST endpoints."""
+﻿"""Example: self-referential relationships exposed through REST endpoints."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ import pytest
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.types import Column, ForeignKey, Integer, String, relationship
 
 
@@ -68,3 +68,4 @@ async def test_self_referential_relationship_via_rest() -> None:
     finally:
         # Ensure the server is stopped even if assertions fail.
         await stop_uvicorn(server, task)
+

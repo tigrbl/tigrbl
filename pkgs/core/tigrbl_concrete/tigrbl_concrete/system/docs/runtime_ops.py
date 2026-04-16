@@ -4,7 +4,7 @@ import inspect
 from types import SimpleNamespace
 from typing import Any, Callable
 
-from tigrbl_concrete.http_routes import ensure_system_route_model
+from tigrbl_concrete._concrete._routing import ensure_system_route_model
 from tigrbl_core._spec.binding_spec import WsBindingSpec
 from tigrbl_core._spec.op_spec import OpSpec
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup

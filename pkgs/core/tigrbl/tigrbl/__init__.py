@@ -124,14 +124,18 @@ from tigrbl.decorators import (  # noqa: E402
     alias,
     allow_anon,
     alias_ctx,
+    delete,
     engine_ctx,
+    get,
     hook_ctx,
     middleware,
     middlewares,
     op_alias,
     op_ctx,
+    patch,
+    post,
+    put,
     response_ctx,
-    route_ctx,
     schema_ctx,
     sse_ctx,
     stream_ctx,
@@ -139,7 +143,7 @@ from tigrbl.decorators import (  # noqa: E402
     webtransport_ctx,
 )
 from tigrbl_concrete import register_http_route  # noqa: E402
-from tigrbl.shortcuts.op import op  # noqa: E402
+from tigrbl.factories.op import op  # noqa: E402
 from tigrbl.schema import _build_list_params, _build_schema, get_schema  # noqa: E402
 from tigrbl.ddl import bootstrap_dbschema, ensure_schemas, register_sqlite_attach  # noqa: E402
 
@@ -291,12 +295,16 @@ __all__ = [
     "SchemaRef",
     "SchemaArg",
     "alias_ctx",
+    "get",
     "op_ctx",
+    "post",
+    "put",
+    "patch",
+    "delete",
     "websocket_ctx",
     "sse_ctx",
     "stream_ctx",
     "webtransport_ctx",
-    "route_ctx",
     "register_http_route",
     "hook_ctx",
     "schema_ctx",

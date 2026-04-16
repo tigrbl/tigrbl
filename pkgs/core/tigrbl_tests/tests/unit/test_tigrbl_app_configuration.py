@@ -1,7 +1,7 @@
-import pytest
+﻿import pytest
 
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl import HTTPBearer
 from tigrbl.security import Security
 from tigrbl._concrete._security.http_bearer import HTTPAuthorizationCredentials
@@ -49,3 +49,4 @@ def test_tigrbl_app_post_instantiation_set_auth_updates_state() -> None:
     assert "_allow_anon" in app_dir
     assert app._authn is _auth_dependency
     assert app._allow_anon is False
+

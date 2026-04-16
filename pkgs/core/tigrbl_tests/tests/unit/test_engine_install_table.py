@@ -1,11 +1,11 @@
-import pytest
+﻿import pytest
 
 from tigrbl import engine_ctx
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl import Table
 from tigrbl.types import Mapped, String
 
@@ -46,3 +46,4 @@ def test_table_engine_ctx_on_instance_does_not_register() -> None:
     engine_ctx(mem(async_=False))(instance)
 
     assert _resolver.resolve_provider(model=Gadget) is None
+

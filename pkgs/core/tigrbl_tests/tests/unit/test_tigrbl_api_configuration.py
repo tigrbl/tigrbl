@@ -1,7 +1,7 @@
-import pytest
+﻿import pytest
 
 from tigrbl import TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl import HTTPBearer
 from tigrbl.security import Security
 from tigrbl._concrete._security.http_bearer import HTTPAuthorizationCredentials
@@ -58,3 +58,4 @@ def test_tigrbl_router_class_prefix_defaults() -> None:
     assert router.rest_prefix == "/api"
     assert router.rpc_prefix == "/rpc"
     assert router.system_prefix == "/system"
+

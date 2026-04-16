@@ -41,7 +41,7 @@ def __getattr__(name: str) -> Any:
                 kwargs['router'] = None
             return import_module('tigrbl_concrete._mapping.model')._materialize_rest_router(*args, **kwargs)
     elif name == 'register_http_route':
-        fn = import_module('tigrbl_concrete.http_routes').register_http_route
+        fn = import_module('tigrbl_concrete._concrete._routing').register_http_route
     else:
         raise AttributeError(name)
     globals()[name] = fn

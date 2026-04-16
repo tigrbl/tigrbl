@@ -1,4 +1,4 @@
-"""Lesson 16: table router bindings.
+﻿"""Lesson 16: table router bindings.
 
 This lesson highlights how REST routers are stored on the API instance so
 handlers can be discovered and composed without inspecting the app.
@@ -7,7 +7,7 @@ metadata with the API configuration.
 """
 
 from tigrbl import TableBase, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -44,3 +44,4 @@ def test_router_registry_tracks_model_alias():
 
     assert Widget.__name__ in router.routers
     assert router.routers[Widget.__name__] is rest_router
+

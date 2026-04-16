@@ -1,4 +1,4 @@
-"""Lesson 21.5: App + API security deps and OpenAPI precedence.
+﻿"""Lesson 21.5: App + API security deps and OpenAPI precedence.
 
 This example demonstrates how ``TigrblApp`` and ``TigrblRouter`` security deps
 combine when the API is mounted on the app, including shared scheme names that
@@ -15,7 +15,7 @@ from tigrbl import HTTPBearer
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblRouter, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -83,3 +83,4 @@ async def test_openapi_security_from_app_and_router_deps() -> None:
         assert "SharedToken" in schema["components"]["securitySchemes"]
 
     await stop_uvicorn(server, task)
+

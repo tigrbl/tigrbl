@@ -1,4 +1,4 @@
-"""Harness: AppSpec -> uvicorn server E2E.
+﻿"""Harness: AppSpec -> uvicorn server E2E.
 
 This is the top-level "works in production" contract.
 
@@ -21,7 +21,7 @@ import pytest
 import httpx
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -105,3 +105,4 @@ async def test_appspec_to_uvicorn_rest_and_rpc_roundtrip() -> None:
             # --- Prefix gating: JSON-RPC body on REST path must not succeed ---
             r = await client.post("/widget", json=payload)
             assert r.status_code >= 400
+

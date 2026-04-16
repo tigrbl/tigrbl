@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import asyncio
 
@@ -18,7 +18,7 @@ from tigrbl import (
 from tigrbl._spec import OpSpec
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.security import Security
 
 
@@ -145,3 +145,4 @@ def test_openrpc_docs_cover_app_router_table_and_all_security_schemes() -> None:
         },
         "MutualTLSAuth": {"type": "mutualTLS"},
     }
+

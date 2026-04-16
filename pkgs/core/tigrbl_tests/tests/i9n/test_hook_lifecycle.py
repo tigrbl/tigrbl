@@ -1,4 +1,4 @@
-"""
+﻿"""
 Hook Lifecycle Tests for Tigrbl v3
 
 Tests all hook phases and their behavior across CRUD, nested CRUD, and RPC operations.
@@ -8,7 +8,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, ForeignKey, String
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.decorators.hook import hook_ctx
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import PgUUID
@@ -448,3 +448,4 @@ async def test_multiple_hooks_same_phase(db_mode):
     assert "second" in executions
     assert "third" in executions
     await client.aclose()
+

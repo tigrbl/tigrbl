@@ -1,7 +1,7 @@
-from tigrbl import TableBase
+﻿from tigrbl import TableBase
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Column, String
 
 
@@ -15,3 +15,4 @@ def test_mapped_column_specs_still_materialize_columns():
         tag = acol(storage=S(type_=String, nullable=False))
 
     assert "tag" in Widget.__table__.c
+

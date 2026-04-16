@@ -1,6 +1,6 @@
-from tigrbl import TigrblApp
-from tigrbl.shortcuts.app import defineAppSpec
-from tigrbl.shortcuts.engine import mem
+﻿from tigrbl import TigrblApp
+from tigrbl.factories.app import defineAppSpec
+from tigrbl.factories.engine import mem
 
 
 def test_engine_precedence_resolves_latest():
@@ -24,3 +24,4 @@ def test_engine_precedence_resolves_latest():
     app = ChildApp()
     # Assertion: the child engine configuration takes precedence.
     assert app.engine is child_engine
+

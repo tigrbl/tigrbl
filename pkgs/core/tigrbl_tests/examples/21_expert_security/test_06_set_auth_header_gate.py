@@ -1,4 +1,4 @@
-"""Lesson 21.6: Header-based set_auth gate for REST and JSON-RPC.
+﻿"""Lesson 21.6: Header-based set_auth gate for REST and JSON-RPC.
 
 This example demonstrates ``set_auth`` with a header-driven authn dependency
 that supports two credential tiers:
@@ -23,7 +23,7 @@ from tigrbl._concrete._security.http_bearer import HTTPAuthorizationCredentials
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -257,3 +257,4 @@ async def test_set_auth_header_gate_for_rpc_methods() -> None:
         assert admin_create.json()["result"]["name"] == "admin-rpc-create"
 
     await stop_uvicorn(server, task)
+

@@ -1,7 +1,7 @@
-from types import SimpleNamespace
+﻿from types import SimpleNamespace
 
 from tigrbl._spec import ColumnSpec, F, IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl_atoms.atoms.schema.collect_in import _run as collect_in_run
 from tigrbl_atoms.atoms.schema.collect_out import _run as collect_out_run
 from tigrbl_atoms.atoms.out import masking
@@ -171,3 +171,4 @@ def test_allow_out_disables_field():
     ctx = SimpleNamespace(opview=ov, temp={})
     collect_out_run(None, ctx)
     assert "name" not in ctx.temp["schema_out"]["by_field"]
+

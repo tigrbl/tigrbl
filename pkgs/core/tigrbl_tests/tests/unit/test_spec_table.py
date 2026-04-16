@@ -1,5 +1,5 @@
-from tests.conftest import mro_collect_table_spec
-from tigrbl.shortcuts.table import defineTableSpec
+﻿from tests.conftest import mro_collect_table_spec
+from tigrbl.factories.table import defineTableSpec
 
 
 class BaseSpec(defineTableSpec(engine="sqlite://:memory:", ops=("create",))):
@@ -32,3 +32,4 @@ def test_table_spec_defaults_and_merge():
 def test_concrete_table_initializes_from_mro_collect_spec():
     assert ConcreteWidget.OPS == ("read", "create")
     assert ConcreteWidget.table_config["engine"] == "sqlite:///:memory:"
+

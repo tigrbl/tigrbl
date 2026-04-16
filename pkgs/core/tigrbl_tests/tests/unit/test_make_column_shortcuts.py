@@ -1,6 +1,6 @@
-import pytest
+﻿import pytest
 
-from tigrbl.shortcuts.column import (
+from tigrbl.factories.column import (
     Column,
     ColumnSpec,
     F,
@@ -78,3 +78,4 @@ def test_alias_functions_behave_equally() -> None:
     v1 = makeVirtualColumn(field=F(py_type=int))
     v2 = vcol(field=F(py_type=int))
     assert v1.storage is None and v2.storage is None
+

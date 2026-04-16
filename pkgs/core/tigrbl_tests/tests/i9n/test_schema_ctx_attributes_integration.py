@@ -1,10 +1,10 @@
-import pytest
+﻿import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from tigrbl import TableBase, TigrblApp, TigrblRouter, schema_ctx
 from tigrbl.core import crud
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.types import BaseModel, Column, Integer, String
 
 
@@ -173,3 +173,4 @@ async def test_schema_ctx_system_steps(schema_ctx_client):
     kernelz = (await client.get("/system/kernelz")).json()
     assert "Widget" in kernelz
     assert "create" in kernelz["Widget"]
+

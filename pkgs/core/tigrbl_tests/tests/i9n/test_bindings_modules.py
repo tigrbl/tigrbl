@@ -1,4 +1,4 @@
-import inspect
+﻿import inspect
 
 import pytest
 from tigrbl_base._base._rpc_map import register_and_attach, rpc_call
@@ -13,7 +13,7 @@ from tigrbl_concrete._mapping.model import (
 from tigrbl_concrete._mapping.op_resolver import resolve
 from tigrbl_concrete._mapping.router.include import include_table, include_tables
 from tigrbl_core._spec.column_spec import mro_collect_columns
-from tigrbl.shortcuts import column as sc
+from tigrbl.factories import column as sc
 from tigrbl.orm.tables import TableBase
 from tigrbl._spec import IO, ColumnSpec, F, S
 from tigrbl.types import (
@@ -143,3 +143,4 @@ def test_column_spec_io_flags():
     )
     assert "create" not in spec.io.in_verbs
     assert "read" in spec.io.out_verbs
+

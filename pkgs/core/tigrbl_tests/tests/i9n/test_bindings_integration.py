@@ -1,12 +1,12 @@
-import asyncio
+﻿import asyncio
 from types import SimpleNamespace
 
 from sqlalchemy import String
 from tigrbl_core.config.constants import TIGRBL_GET_DB_ATTR
 from tigrbl import resolver as _resolver
 from tigrbl_concrete._mapping.router.include import include_table
-from tigrbl.shortcuts.engine import engine as engine_factory
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import engine as engine_factory
+from tigrbl.factories.engine import mem
 from tigrbl import (
     bind,
     include_tables,
@@ -17,7 +17,7 @@ from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl.runtime import build_phase_chains
 from tigrbl._spec import IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import uuid4
 
 
@@ -113,3 +113,4 @@ def test_bind_and_rebind():
 
     rebind(Widget)
     assert Widget.rest.router is not None
+

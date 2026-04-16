@@ -1,4 +1,4 @@
-"""Lesson 19: bulk model inclusion for apps.
+﻿"""Lesson 19: bulk model inclusion for apps.
 
 Including multiple models at once ensures the application registry is fully
 populated before startup. This is the preferred pattern for bootstrapping
@@ -6,7 +6,7 @@ larger apps because it keeps model configuration centralized.
 """
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -54,3 +54,4 @@ def test_app_model_registry_exposes_named_entries():
 
     assert app.tables[Widget.__name__] is Widget
     assert app.tables[Gadget.__name__] is Gadget
+

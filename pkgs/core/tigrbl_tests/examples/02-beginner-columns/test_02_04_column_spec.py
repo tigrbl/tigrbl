@@ -1,7 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from tigrbl._spec import ColumnSpec, F, IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Integer, String
 
 
@@ -23,3 +23,4 @@ def test_column_spec_composition() -> None:
         io=IO(in_verbs=("create",), out_verbs=("read",)),
     )
     assert name.storage.type_ is String
+

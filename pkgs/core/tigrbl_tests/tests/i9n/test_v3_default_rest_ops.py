@@ -1,11 +1,11 @@
-import pytest
+﻿import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.tables import TableBase as Base3
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Integer, Mapped, String
 
 
@@ -140,3 +140,4 @@ async def test_rest_clear(client_and_model):
     remaining = await client.get("/gadget")
     assert remaining.status_code == 200
     assert remaining.json() == []
+

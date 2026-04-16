@@ -1,4 +1,4 @@
-"""Example: one-to-many document version history managed by hooks."""
+﻿"""Example: one-to-many document version history managed by hooks."""
 
 from __future__ import annotations
 
@@ -9,9 +9,9 @@ import httpx
 import pytest
 from tigrbl import TableBase, TigrblApp, TigrblRouter, hook_ctx
 from tigrbl import resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl._spec import IO, F, S
 from tigrbl._spec import ForeignKeySpec
 from tigrbl.types import (
@@ -195,3 +195,4 @@ async def test_document_versions_one_to_many() -> None:
     finally:
         # Always stop uvicorn to avoid leaking tasks.
         await stop_uvicorn(server, task)
+

@@ -1,5 +1,5 @@
-from tigrbl import resolver
-from tigrbl.shortcuts.engine import mem
+﻿from tigrbl import resolver
+from tigrbl.factories.engine import mem
 
 
 def _reset_resolver_state() -> None:
@@ -52,3 +52,4 @@ def test_warmup_builds_all_registered_providers() -> None:
     assert providers[0]._maker is not None
 
     _reset_resolver_state()
+

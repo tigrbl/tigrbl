@@ -1,9 +1,9 @@
-from tigrbl import TigrblApp
+﻿from tigrbl import TigrblApp
 from tigrbl_concrete._mapping.model import bind
 from tigrbl.orm.tables import TableBase
 from tigrbl_kernel import _default_kernel as K
 from tigrbl._spec import IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Integer as IntType
 
 
@@ -29,3 +29,4 @@ def test_kernel_get_opview_caches_runtime_result() -> None:
     K._opviews.pop(app, None)
     K._kernelz_payload.pop(app, None)
     K._primed.pop(app, None)
+

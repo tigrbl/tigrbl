@@ -1,11 +1,11 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from typing import Iterable, Sequence
 
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts.column import acol, vcol
+from tigrbl.factories.column import acol, vcol
 from tigrbl.types import Integer, String
 
 
@@ -63,3 +63,4 @@ async def build_widget_app(
         router.attach_diagnostics(prefix=prefix, app=app)
     app.include_router(router)
     return app, router
+

@@ -1,4 +1,4 @@
-import uuid
+﻿import uuid
 from typing import Iterable
 
 import pytest
@@ -56,7 +56,7 @@ def _client_for_owner(
 
     from tigrbl._concrete._engine import Engine
     from tigrbl._spec import EngineSpec
-    from tigrbl.shortcuts.engine import mem
+    from tigrbl.factories.engine import mem
 
     cfg = {**mem(async_=False), "tag": str(uuid.uuid4())}
     engine = Engine(EngineSpec.from_any(cfg))
@@ -134,7 +134,7 @@ def _client_for_tenant(
 
     from tigrbl._concrete._engine import Engine
     from tigrbl._spec import EngineSpec
-    from tigrbl.shortcuts.engine import mem
+    from tigrbl.factories.engine import mem
 
     cfg = {**mem(async_=False), "tag": str(uuid.uuid4())}
     engine = Engine(EngineSpec.from_any(cfg))
@@ -190,3 +190,4 @@ def test_tenant_policy_runtime_switch():
         assert res.json()["tenant_id"] == str(supplied)
     finally:
         client.close()
+

@@ -5,6 +5,7 @@ from tigrbl import (
     BindingSpec,
     build_handlers,
     build_rest,
+    get,
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     Hook,
@@ -13,7 +14,6 @@ from tigrbl import (
     WsBindingSpec,
     hook_ctx,
     op_ctx,
-    route_ctx,
     sse_ctx,
     stream_ctx,
     websocket_ctx,
@@ -87,9 +87,9 @@ def test_alias_surface_decorators_attach_expected_bindings() -> None:
     assert specs["transport"].bindings[0].proto == "webtransport"
 
 
-def test_route_ctx_expands_to_http_rest_binding() -> None:
+def test_get_decorator_attaches_explicit_http_rest_binding() -> None:
     class Widget:
-        @route_ctx("/feed", methods=("GET",), alias="feed")
+        @get("/feed", alias="feed")
         def feed(cls, ctx):
             return None
 

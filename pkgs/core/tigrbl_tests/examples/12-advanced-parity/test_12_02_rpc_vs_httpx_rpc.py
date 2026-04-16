@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import inspect
 
@@ -9,7 +9,7 @@ from tigrbl_client import TigrblClient
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -66,3 +66,4 @@ async def test_rpc_parity_with_httpx() -> None:
         assert http_list.json().get("result") == rpc_list
     finally:
         await stop_uvicorn(server, task)
+

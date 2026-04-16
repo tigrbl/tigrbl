@@ -1,5 +1,5 @@
-from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+﻿from tigrbl import TableBase, TigrblApp
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -7,7 +7,7 @@ from tigrbl.types import Column, String
 def test_app_includes_model_and_registry():
     """Ensure a model is registered when included in the app.
 
-    Purpose: illustrate the app lifecycle—include the model, initialize the
+    Purpose: illustrate the app lifecycleâ€”include the model, initialize the
     app, then query the registry to confirm the model is active.
 
     Best practice: initialize once and re-use the app instance to keep routing
@@ -52,3 +52,4 @@ def test_app_model_map_tracks_the_model_class():
     app.initialize()
     # Assertion: the model registry maps the class name to the model class.
     assert app.tables[Widget.__name__] is Widget
+

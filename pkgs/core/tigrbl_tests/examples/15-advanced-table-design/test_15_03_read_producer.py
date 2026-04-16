@@ -1,7 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from tigrbl._spec import ColumnSpec, F, IO
-from tigrbl.shortcuts.column import vcol
+from tigrbl.factories.column import vcol
 
 
 def test_virtual_column_read_producer() -> None:
@@ -11,3 +11,4 @@ def test_virtual_column_read_producer() -> None:
     spec = ColumnSpec(storage=None, field=F(py_type=str), io=IO(out_verbs=("read",)))
     col = vcol(spec=spec, read_producer=display_value)
     assert col.read_producer is display_value
+

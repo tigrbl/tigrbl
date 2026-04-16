@@ -1,7 +1,7 @@
-import inspect
+﻿import inspect
 
 from tigrbl import TableBase, TigrblApp, hook_ctx, op_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -32,3 +32,4 @@ def test_custom_op_hooks_register():
         asyncio.run(init_result)
     app.bind(Widget)
     assert len(getattr(Widget.hooks, "report").POST_RESPONSE) == 1
+

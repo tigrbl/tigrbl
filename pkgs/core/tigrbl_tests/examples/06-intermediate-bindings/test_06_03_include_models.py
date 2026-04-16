@@ -1,9 +1,9 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import pytest
 
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 from tigrbl_tests.examples.lesson_support import make_widget_model
 
@@ -19,3 +19,4 @@ async def test_include_models_registers_resources() -> None:
 
     assert "WidgetA" in app.tables
     assert "WidgetB" in app.tables
+

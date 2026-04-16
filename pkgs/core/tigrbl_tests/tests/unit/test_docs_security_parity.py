@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import asyncio
 
@@ -10,7 +10,7 @@ from tigrbl._spec import OpSpec
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl.security import Security
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 
 def _alpha_dep(cred=Security(HTTPBearer(scheme_name="AlphaToken"))):
@@ -98,3 +98,4 @@ def test_docs_ignore_router_security_dependency_metadata() -> None:
     method_map = {method["name"]: method for method in openrpc["methods"]}
     assert method_map["Widget.list"].get("security") is None
     assert method_map["Widget.read"]["security"] == [{"AlphaToken": []}]
+

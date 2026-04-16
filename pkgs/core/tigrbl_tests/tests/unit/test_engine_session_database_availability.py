@@ -1,8 +1,8 @@
-from sqlalchemy import text
+﻿from sqlalchemy import text
 
 from tigrbl import TableBase, TigrblApp, resolver
 from tigrbl.orm.mixins import GUIDPk
-from tigrbl.shortcuts.engine import engine, mem
+from tigrbl.factories.engine import engine, mem
 from tigrbl.types import Column, String
 
 
@@ -49,3 +49,4 @@ def test_database_availability_after_app_initialize():
             text("SELECT name FROM sqlite_master WHERE type='table'")
         ).scalars()
         assert "availability_probe" in set(names)
+

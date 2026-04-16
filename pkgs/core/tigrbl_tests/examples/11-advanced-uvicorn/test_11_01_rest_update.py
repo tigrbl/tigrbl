@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import inspect
 
@@ -9,7 +9,7 @@ from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop
 from tigrbl import TigrblApp
 from tigrbl import TigrblRouter
 from tigrbl import TableBase
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -46,3 +46,4 @@ async def test_rest_update_round_trip() -> None:
             assert update.json()["name"] == "Delta"
     finally:
         await stop_uvicorn(server, task)
+

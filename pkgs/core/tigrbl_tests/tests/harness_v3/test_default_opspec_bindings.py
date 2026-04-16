@@ -1,4 +1,4 @@
-"""Harness: default Ops + BindingSpecs.
+﻿"""Harness: default Ops + BindingSpecs.
 
 Contract (TDD):
 1) Including a model/table automatically generates the canonical CRUD operation
@@ -14,7 +14,7 @@ from __future__ import annotations
 import inspect
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import HttpJsonRpcBindingSpec, HttpRestBindingSpec
 from tigrbl.types import Column, String
@@ -108,3 +108,4 @@ def test_model_initialize_is_awaitable_or_sync() -> None:
 
     result = app.initialize()
     assert result is None or inspect.isawaitable(result)
+

@@ -1,10 +1,10 @@
-import pytest
+﻿import pytest
 from pydantic import BaseModel
 from tigrbl import op_alias, op_ctx
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl._spec import F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Column, Mapped, String
 
 from .test_op_ctx_behavior import setup_router
@@ -62,3 +62,4 @@ def test_op_ctx_alias_inherits_canonical_schemas(sync_db_session):
     setup_router(Person, get_db)
     assert set(Person.schemas.register.in_.model_fields) == {"info"}
     assert set(Person.schemas.register.out.model_fields) == {"info"}
+

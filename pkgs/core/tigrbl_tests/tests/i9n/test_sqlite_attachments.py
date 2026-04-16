@@ -1,6 +1,6 @@
-import pytest
+﻿import pytest
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import engine, mem
+from tigrbl.factories.engine import engine, mem
 
 
 def _db_names(conn):
@@ -34,3 +34,4 @@ async def test_initialize_async_with_sqlite_attachments(tmp_path):
         fk = await conn.exec_driver_sql("PRAGMA foreign_keys")
         assert fk.scalar() == 1
     assert "logs" in names
+

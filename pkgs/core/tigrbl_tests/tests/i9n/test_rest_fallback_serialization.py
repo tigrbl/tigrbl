@@ -1,4 +1,4 @@
-import pytest
+﻿import pytest
 import pytest_asyncio
 from types import SimpleNamespace
 from httpx import ASGITransport, AsyncClient
@@ -6,10 +6,10 @@ from tigrbl.types import Integer, Mapped, String
 from tigrbl import TigrblApp, TigrblRouter
 import tigrbl_ops_oltp as _oltp_pkg
 from tigrbl_ops_oltp import crud
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.tables import TableBase as Base3
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 
 
 @pytest_asyncio.fixture()
@@ -70,3 +70,4 @@ async def test_rest_read_and_list_with_output_schema(client_and_model, monkeypat
     assert resp_list.status_code == 200
     data = resp_list.json()
     assert data == [{"id": 1, "name": "A"}]
+

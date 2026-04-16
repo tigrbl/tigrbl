@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import inspect
 
@@ -6,7 +6,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, String
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.decorators.hook import hook_ctx
 from tigrbl._spec import OpSpec
 from tigrbl.orm.mixins import GUIDPk
@@ -252,3 +252,4 @@ async def test_secdep_auth_failure_and_success_parity_for_rest_and_rpc(
     assert events == []
 
     await client.aclose()
+

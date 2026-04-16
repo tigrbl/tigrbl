@@ -1,4 +1,4 @@
-"""Pedagogical many-to-many relationship example via association table.
+﻿"""Pedagogical many-to-many relationship example via association table.
 
 The example keeps everything explicit so readers can map the data model to
 runtime behavior without hidden helper layers.
@@ -16,10 +16,10 @@ import uvicorn
 from tigrbl_client import TigrblClient
 
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl._spec import ForeignKeySpec
 from tigrbl.system import stop_uvicorn_server
 from tigrbl.types import Mapped, PgUUID, String, UUID, relationship
@@ -182,3 +182,4 @@ async def test_many_to_many_relationship_storage_field_io_client_experience() ->
         await rpc.aclose()
     finally:
         await stop_uvicorn_server(server, task)
+

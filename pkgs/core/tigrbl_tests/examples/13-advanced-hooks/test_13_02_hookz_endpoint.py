@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import inspect
 
@@ -7,7 +7,7 @@ import pytest
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -40,3 +40,4 @@ async def test_hookz_endpoint_lists_hooks() -> None:
         assert isinstance(hookz_data, dict)
     finally:
         await stop_uvicorn(server, task)
+

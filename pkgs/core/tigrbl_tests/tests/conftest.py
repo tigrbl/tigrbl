@@ -1,4 +1,4 @@
-import pytest
+﻿import pytest
 import pytest_asyncio
 import contextlib
 from dataclasses import dataclass
@@ -17,7 +17,7 @@ from tigrbl_core._spec import StorageTransform
 from tigrbl_core.schema import builder as v3_builder
 from tigrbl_runtime.runtime import kernel as runtime_kernel
 from tigrbl_runtime.runtime import system as runtime_system
-from tigrbl.shortcuts.engine import mem, sqlitef
+from tigrbl.factories.engine import mem, sqlitef
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_concrete import (
     build_handlers as _materialize_handlers,
@@ -659,3 +659,4 @@ class mapping_plan:
     @staticmethod
     def plan(ctx):
         return SimpleNamespace(visible_specs=tuple(resolve_ops(ctx.model)))
+
