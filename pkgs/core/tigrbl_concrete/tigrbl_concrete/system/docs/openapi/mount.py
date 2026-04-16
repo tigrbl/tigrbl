@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_concrete.http_routes import register_http_route
+from tigrbl_concrete._concrete._routing import register_http_route
 from .schema import openapi
 
 

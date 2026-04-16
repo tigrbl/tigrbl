@@ -1,10 +1,10 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from tigrbl_core._spec.column_spec import mro_collect_columns
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl._spec import S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Mapped, String
 
 
@@ -20,3 +20,4 @@ def test_collect_columns_includes_mixin_fields():
     specs = mro_collect_columns(Thing)
     assert "id" in specs
     assert "name" in specs
+

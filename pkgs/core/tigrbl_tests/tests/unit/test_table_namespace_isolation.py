@@ -1,7 +1,7 @@
-from types import SimpleNamespace
+﻿from types import SimpleNamespace
 
 from tigrbl._spec import F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl import Table
 from tigrbl.types import Integer, Mapped
 
@@ -42,3 +42,4 @@ def test_model_namespace_mutations_do_not_bleed() -> None:
 
     WidgetAlpha.schemas.alpha_only = "alpha_schema"
     assert not hasattr(WidgetBeta.schemas, "alpha_only")
+

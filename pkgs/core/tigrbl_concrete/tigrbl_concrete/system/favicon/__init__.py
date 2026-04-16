@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from tigrbl_concrete._concrete import FileResponse, RedirectResponse
-from tigrbl_concrete.http_routes import register_http_route, remove_http_routes
+from tigrbl_concrete._concrete._routing import register_http_route, remove_http_routes
 
 FAVICON_PATH = Path(__file__).with_name("assets") / "favicon.svg"
 

@@ -1,4 +1,4 @@
-from uuid import uuid4
+﻿from uuid import uuid4
 
 import httpx
 import pytest
@@ -16,7 +16,7 @@ from tigrbl.orm.mixins import (
 )
 from tigrbl.orm.mixins.utils import CRUD_IO
 from tigrbl._spec import F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import Mapped, String
 
@@ -149,3 +149,4 @@ async def test_rejects_router_key_in_request(running_app):
     async with httpx.AsyncClient() as client:
         resp = await client.post(f"{base_url}/apikey", json=bad)
     assert resp.status_code == 422
+

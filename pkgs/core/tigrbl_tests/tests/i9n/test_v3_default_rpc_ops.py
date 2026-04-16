@@ -1,12 +1,12 @@
-import pytest
+﻿import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import BulkCapable, Mergeable, Replaceable
 from tigrbl.orm.tables import TableBase
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Integer, Mapped, String, uuid4
 
 
@@ -341,3 +341,4 @@ async def test_rpc_bulk_ops(bulk_client_and_model):
     resp = await rpc("Gadget.bulk_delete", ids + [str(uuid4())], id_=5)
     assert resp.status_code == 200
     assert resp.json()["result"]["deleted"] == 2
+

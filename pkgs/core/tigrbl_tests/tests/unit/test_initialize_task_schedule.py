@@ -1,10 +1,10 @@
-import asyncio
+﻿import asyncio
 
 import pytest
 from sqlalchemy import Column, Integer
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 
 class Widget(TableBase):
@@ -25,3 +25,4 @@ async def test_initialize_schedules_task_for_sync_engine():
     await result
 
     assert getattr(app, "_ddl_executed", False) is True
+

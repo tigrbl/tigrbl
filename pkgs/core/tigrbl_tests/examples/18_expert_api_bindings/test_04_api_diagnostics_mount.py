@@ -1,4 +1,4 @@
-"""Lesson 18: diagnostics router mounting.
+﻿"""Lesson 18: diagnostics router mounting.
 
 Diagnostics routers provide operational visibility for an API. The router is
 retrieved from the API instance and mounted on a host app, keeping the API
@@ -6,7 +6,7 @@ responsible for its own diagnostic endpoints.
 """
 
 from tigrbl import TableBase, TigrblRouter, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -50,3 +50,4 @@ def test_router_diagnostics_mounts_on_app_namespace():
     assert any(
         route.path == f"{app.system_prefix}/healthz" for route in app.router.routes
     )
+

@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Callable, Optional
 
 from tigrbl_concrete._concrete._router import Router
-from tigrbl_concrete.http_routes import register_http_route
+from tigrbl_concrete._concrete._routing import register_http_route
 from .healthz import build_healthz_endpoint
 from .hookz import build_hookz_endpoint
 from .kernelz import build_kernelz_endpoint

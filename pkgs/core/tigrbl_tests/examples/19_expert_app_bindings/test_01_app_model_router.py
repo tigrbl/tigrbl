@@ -1,4 +1,4 @@
-"""Lesson 19: app-level model router binding.
+﻿"""Lesson 19: app-level model router binding.
 
 TigrblApp aggregates model routers so the application can manage REST routes
 per model through its namespace. This pattern is preferred because it keeps
@@ -6,7 +6,7 @@ the app aware of generated routers without manual tracking.
 """
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -43,3 +43,4 @@ def test_app_router_registry_keeps_model_name():
 
     assert Widget.__name__ in app.routers
     assert app.routers[Widget.__name__] is router
+

@@ -1,10 +1,10 @@
-import pytest
+﻿import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, declarative_base
 
 from tigrbl.core import crud
 from tigrbl._spec import IO, S, F
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Integer, String
 from tigrbl.schema import _build_list_params
 from sqlalchemy.orm.exc import NoResultFound
@@ -173,3 +173,4 @@ def test_build_list_params_includes_ops():
     assert "sort" in fields
     assert "value__gt" in fields
     assert "name__like" in fields
+

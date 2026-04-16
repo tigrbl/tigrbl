@@ -1,8 +1,8 @@
-"""Compatibility type exports for legacy ``tigrbl.types`` imports."""
+﻿"""Compatibility type exports for legacy ``tigrbl.types`` imports."""
 
 from __future__ import annotations
 
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl_core._spec import F, IO, S
 from tigrbl_concrete.decorators import allow_anon
 from tigrbl_typing import types as _typing_types
@@ -33,3 +33,4 @@ def __getattr__(name: str):
             f"Import it from '{module}' instead."
         )
     raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+

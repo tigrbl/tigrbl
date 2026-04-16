@@ -1,4 +1,4 @@
-"""TDD harness: AppSpec -> uvicorn -> REST + JSON-RPC E2E.
+﻿"""TDD harness: AppSpec -> uvicorn -> REST + JSON-RPC E2E.
 
 This is the highest-level harness:
   AppSpec -> TigrblApp.from_spec(spec)
@@ -28,7 +28,7 @@ async def test_appspec_to_uvicorn_rest_and_rpc_roundtrip() -> None:
     from tigrbl import TableBase
     from tigrbl._spec import AppSpec
     from tigrbl import TigrblApp
-    from tigrbl.shortcuts.engine import mem
+    from tigrbl.factories.engine import mem
     from tigrbl.orm.mixins import GUIDPk
     from tigrbl._spec import OpSpec
     from tigrbl._spec import HttpJsonRpcBindingSpec, HttpRestBindingSpec
@@ -84,3 +84,4 @@ async def test_appspec_to_uvicorn_rest_and_rpc_roundtrip() -> None:
         assert body["result"]["name"] == "beta"
     finally:
         await stop_uvicorn_server(server, task)
+

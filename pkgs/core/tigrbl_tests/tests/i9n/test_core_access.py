@@ -1,9 +1,9 @@
-from typing import Any, Mapping
+﻿from typing import Any, Mapping
 
 import pytest
 import pytest_asyncio
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import engine, mem
+from tigrbl.factories.engine import engine, mem
 from tigrbl.orm.mixins import BulkCapable, GUIDPk, Replaceable
 from tigrbl.runtime.status import HTTPException
 from tigrbl.types import UUID, Column, Integer, String, uuid4
@@ -162,3 +162,4 @@ async def test_async_app_initializes(async_app):
     assert hasattr(app.core, "CoreTestUser")
     async with eng.asession():
         pass
+

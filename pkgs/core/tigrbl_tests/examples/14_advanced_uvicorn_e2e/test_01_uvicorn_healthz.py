@@ -1,9 +1,9 @@
-import inspect
+﻿import inspect
 
 import httpx
 import pytest
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
@@ -36,3 +36,4 @@ async def test_uvicorn_healthz_endpoint():
         response = await client.get("/healthz")
         assert response.status_code == 200
     await stop_uvicorn(server, task)
+

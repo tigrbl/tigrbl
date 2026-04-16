@@ -1,8 +1,8 @@
-import pytest
+﻿import pytest
 
 from tigrbl import TigrblRouter, engine_ctx
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 
 @pytest.mark.unit
@@ -26,3 +26,4 @@ def test_router_engine_ctx_instance_requires_install_engines() -> None:
     provider = _resolver.resolve_provider(router=router)
     assert provider is not None
     assert provider.spec.kind == "sqlite"
+

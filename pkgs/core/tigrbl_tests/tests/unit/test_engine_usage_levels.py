@@ -1,5 +1,5 @@
-from tigrbl import resolver
-from tigrbl.shortcuts.engine import mem
+﻿from tigrbl import resolver
+from tigrbl.factories.engine import mem
 
 
 def test_engine_usage_levels_and_precedence():
@@ -36,3 +36,4 @@ def test_engine_usage_levels_and_precedence():
 
     p_default = resolver.resolve_provider()
     assert p_default is not None and p_default.spec.async_ is False
+

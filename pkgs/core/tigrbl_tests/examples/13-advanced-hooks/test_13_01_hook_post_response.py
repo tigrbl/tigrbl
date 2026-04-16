@@ -1,12 +1,12 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import httpx
 import pytest
 
 from tigrbl import TableBase, TigrblApp, hook_ctx, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Integer, Mapped, String
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
@@ -48,3 +48,4 @@ async def test_hook_modifies_response() -> None:
         assert response.json()["hooked"] is True
     finally:
         await stop_uvicorn(server, task)
+

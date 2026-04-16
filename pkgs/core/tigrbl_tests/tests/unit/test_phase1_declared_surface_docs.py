@@ -1,11 +1,11 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from httpx import ASGITransport, Client
 from sqlalchemy import Column, String
 
 from tigrbl import TableBase, TigrblApp, hook_ctx, stream_ctx, websocket_ctx
 from tigrbl.orm.mixins import GUIDPk
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 
 def _build_app():
@@ -95,3 +95,4 @@ def test_openrpc_uses_declared_surface_metadata_and_ws_jsonrpc_bridge() -> None:
 
     socket_ops = model.ops.by_alias["socket_rpc"]
     assert any(getattr(binding, "proto", None) == "http.jsonrpc" for binding in socket_ops[0].bindings)
+

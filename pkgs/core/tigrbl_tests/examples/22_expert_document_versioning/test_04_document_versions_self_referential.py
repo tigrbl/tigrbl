@@ -1,4 +1,4 @@
-"""Example: self-referential version lineage for document history."""
+﻿"""Example: self-referential version lineage for document history."""
 
 from __future__ import annotations
 
@@ -12,10 +12,10 @@ from tigrbl_client import TigrblClient
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter, hook_ctx
 from tigrbl import resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl._spec import ForeignKeySpec
 from tigrbl.types import (
     Integer,
@@ -219,3 +219,4 @@ async def test_document_versions_self_referential_lineage() -> None:
         assert versions[1].parent_version_id == versions[0].id
     finally:
         await stop_uvicorn(server, task)
+

@@ -1,5 +1,5 @@
-from tigrbl import TableBase, SchemaRef, TigrblApp, op_ctx
-from tigrbl.shortcuts.engine import mem
+﻿from tigrbl import TableBase, SchemaRef, TigrblApp, op_ctx
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -34,3 +34,4 @@ def test_custom_op_declares_schema_refs():
     op = next(spec for spec in app.bind(Widget) if spec.alias == "summarize")
     # Assertion: request schemas are resolved for the op.
     assert op.request_model is not None
+

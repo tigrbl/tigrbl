@@ -1,7 +1,7 @@
-import pytest
+﻿import pytest
 from httpx import ASGITransport, AsyncClient
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import (
     Created,
     GUIDPk,
@@ -10,7 +10,7 @@ from tigrbl.orm.mixins import (
     ValidityWindow,
 )
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import Mapped, String
 
@@ -44,3 +44,4 @@ async def test_router_key_creation_requires_valid_payload(sync_db_session):
         res = await client.post("/apikey", json={})
 
     assert res.status_code == 422
+

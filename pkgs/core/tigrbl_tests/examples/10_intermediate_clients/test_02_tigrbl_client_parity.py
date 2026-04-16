@@ -1,4 +1,4 @@
-"""Lesson 10.2: Comparing TigrblClient and httpx behaviors."""
+﻿"""Lesson 10.2: Comparing TigrblClient and httpx behaviors."""
 
 import httpx
 import inspect
@@ -7,7 +7,7 @@ from tigrbl_client import TigrblClient
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -112,3 +112,4 @@ async def test_tigrbl_client_list_returns_created_items():
     assert any(item["name"] == "gamma" for item in items)
     await client.aclose()
     await stop_uvicorn(server, task)
+

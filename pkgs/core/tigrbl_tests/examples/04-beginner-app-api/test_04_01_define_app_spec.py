@@ -1,7 +1,7 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from tests.conftest import mro_collect_app_spec
-from tigrbl.shortcuts.app import defineAppSpec
+from tigrbl.factories.app import defineAppSpec
 
 
 def test_define_app_spec_values() -> None:
@@ -11,3 +11,4 @@ def test_define_app_spec_values() -> None:
     spec = mro_collect_app_spec(BaseSpec)
     assert spec.title == "Acme"
     assert spec.version == "1.0"
+

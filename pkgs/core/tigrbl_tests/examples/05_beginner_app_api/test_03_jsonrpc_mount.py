@@ -1,5 +1,5 @@
-from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+﻿from tigrbl import TableBase, TigrblApp
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -58,3 +58,4 @@ def test_jsonrpc_mount_preserves_existing_routes():
 
     # Assertion: existing routes remain available after adding JSON-RPC.
     assert initial_routes.issubset(updated_routes)
+

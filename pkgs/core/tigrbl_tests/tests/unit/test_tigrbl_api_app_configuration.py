@@ -1,13 +1,13 @@
-import pytest
+﻿import pytest
 
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl import HTTPBearer
 from tigrbl.security import Security
 from tigrbl._concrete._security.http_bearer import HTTPAuthorizationCredentials
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Mapped, String
 
 
@@ -84,3 +84,4 @@ def test_tigrbl_router_app_post_instantiation_updates_auth_state() -> None:
     assert "_allow_anon" in app_dir
     assert app._authn is _auth_dependency
     assert app._allow_anon is False
+

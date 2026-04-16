@@ -1,4 +1,4 @@
-"""Lesson 16: table registry bindings.
+﻿"""Lesson 16: table registry bindings.
 
 This lesson shows how table metadata is registered on an API instance so
 consumers can discover model tables via the API's namespace rather than
@@ -8,7 +8,7 @@ directly from the API layer.
 """
 
 from tigrbl import TableBase, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -44,3 +44,4 @@ def test_table_registry_respects_model_identity():
 
     assert Widget.__name__ in router.tables
     assert router.tables[Widget.__name__].__table__.name == Widget.__table__.name
+

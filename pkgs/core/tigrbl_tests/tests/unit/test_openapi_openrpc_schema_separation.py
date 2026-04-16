@@ -1,10 +1,10 @@
-from httpx import ASGITransport, Client
+﻿from httpx import ASGITransport, Client
 
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Mapped, String
 
 
@@ -72,3 +72,4 @@ def test_openapi_schema_excludes_openrpc_even_if_route_is_schema_visible() -> No
         payload = client.get("/openapi.json").json()
 
     assert "/openrpc.json" not in payload["paths"]
+

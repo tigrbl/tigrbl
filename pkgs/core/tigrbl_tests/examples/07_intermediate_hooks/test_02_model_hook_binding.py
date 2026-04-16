@@ -1,7 +1,7 @@
-"""Lesson 07.2: Binding hooks onto models during API setup."""
+﻿"""Lesson 07.2: Binding hooks onto models during API setup."""
 
 from tigrbl import TableBase, TigrblApp, hook_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -73,3 +73,4 @@ def test_model_hook_scopes_do_not_leak_to_other_ops():
     # Assertion: create has a hook, update remains untouched.
     assert len(create_hooks) == 1
     assert update_hooks == []
+

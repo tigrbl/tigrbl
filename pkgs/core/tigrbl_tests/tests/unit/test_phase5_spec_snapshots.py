@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import asyncio
 import json
@@ -12,7 +12,7 @@ from tigrbl import APIKey, HTTPBasic, HTTPBearer, MutualTLS, OAuth2, OpenIdConne
 from tigrbl._spec import OpSpec
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.security import Security
 
 SNAPSHOT_DIR = (
@@ -232,3 +232,4 @@ def test_phase5_generated_specs_and_snapshot_artifacts_cover_required_contracts(
     assert "openrpc" in lens_html.lower()
     assert "lens" in snapshot_lens.lower()
     assert "openrpc" in snapshot_lens.lower()
+

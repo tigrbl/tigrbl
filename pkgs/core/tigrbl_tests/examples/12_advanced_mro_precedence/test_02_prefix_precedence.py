@@ -1,5 +1,5 @@
-from tigrbl import TigrblApp
-from tigrbl.shortcuts.app import defineAppSpec
+﻿from tigrbl import TigrblApp
+from tigrbl.factories.app import defineAppSpec
 
 
 def test_prefix_precedence_overrides_parent():
@@ -20,3 +20,4 @@ def test_prefix_precedence_overrides_parent():
     app = ChildApp()
     # Assertion: child prefixes override base config.
     assert app.system_prefix == "/systemz"
+

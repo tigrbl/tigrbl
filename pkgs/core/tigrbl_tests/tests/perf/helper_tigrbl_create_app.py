@@ -1,11 +1,11 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import inspect
 import sqlite3
 from pathlib import Path
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import sqlitef
+from tigrbl.factories.engine import sqlitef
 from tigrbl.types import Column, Integer, String
 
 
@@ -44,3 +44,4 @@ def fetch_tigrbl_names(db_path: Path) -> list[str]:
 
 def tigrbl_create_path() -> str:
     return "/tigrblbenchmarkitem"
+

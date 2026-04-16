@@ -1,8 +1,8 @@
-import pytest
+﻿import pytest
 
 from tigrbl import TigrblApp, engine_ctx
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 
 @pytest.mark.unit
@@ -26,3 +26,4 @@ def test_app_engine_ctx_instance_requires_install_engines() -> None:
     app.install_engines()
     provider = _resolver.resolve_provider()
     assert provider is None
+

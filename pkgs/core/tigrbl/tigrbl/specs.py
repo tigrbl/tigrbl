@@ -1,6 +1,6 @@
-"""Compatibility exports for legacy ``tigrbl.specs`` imports.
+﻿"""Compatibility exports for legacy ``tigrbl.specs`` imports.
 
-Prefer importing from :mod:`tigrbl._spec` and :mod:`tigrbl.shortcuts.column`
+Prefer importing from :mod:`tigrbl._spec` and :mod:`tigrbl.factories.column`
 going forward.
 """
 
@@ -36,3 +36,4 @@ __all__ = [
 def is_virtual(spec: ColumnSpec) -> bool:
     """Return ``True`` for wire-only columns that are not persisted."""
     return getattr(spec, "storage", None) is None
+

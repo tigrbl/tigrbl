@@ -1,7 +1,7 @@
-"""Lesson 06.4: Understanding the default operation set."""
+﻿"""Lesson 06.4: Understanding the default operation set."""
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -57,3 +57,4 @@ def test_default_ops_include_read_and_create():
 
     # Assertion: core CRUD verbs are part of the default set.
     assert {"create", "read"}.issubset(aliases)
+

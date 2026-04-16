@@ -1,7 +1,7 @@
-from types import SimpleNamespace
+﻿from types import SimpleNamespace
 
 from tigrbl._spec import F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl import Table
 from tigrbl.types import Integer, Mapped
 
@@ -26,3 +26,4 @@ def test_table_initializes_model_namespaces() -> None:
     assert isinstance(Widget.__tigrbl_hooks__, dict)
     assert isinstance(Widget.columns, SimpleNamespace)
     assert Widget.columns.id is Widget.__tigrbl_cols__["id"]
+

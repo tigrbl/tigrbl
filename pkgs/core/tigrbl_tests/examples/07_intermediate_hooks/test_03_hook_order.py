@@ -1,7 +1,7 @@
-"""Lesson 07.3: Ordering multiple hooks in the same phase."""
+﻿"""Lesson 07.3: Ordering multiple hooks in the same phase."""
 
 from tigrbl import TableBase, TigrblApp, hook_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -78,3 +78,4 @@ def test_hook_order_preserves_declaration_sequence():
     # Assertion: hook sequence matches the declaration order.
     assert hooks[0].__name__ == "first"
     assert hooks[1].__name__ == "second"
+

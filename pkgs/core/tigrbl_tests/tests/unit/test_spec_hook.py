@@ -1,7 +1,7 @@
-from tigrbl_core.config.constants import HOOK_DECLS_ATTR
+﻿from tigrbl_core.config.constants import HOOK_DECLS_ATTR
 from tigrbl.decorators.hook import hook_ctx
 from tigrbl._spec import HookSpec
-from tigrbl.shortcuts.hook import hook, hook_spec
+from tigrbl.factories.hook import hook, hook_spec
 
 
 def _step(ctx):
@@ -33,3 +33,4 @@ def test_hook_ctx_decorator_binds_decl():
     assert decls[0].phase == "PRE_HANDLER"
     assert decls[0].ops == "read"
     assert getattr(wrapped, "__tigrbl_ctx_only__") is True
+

@@ -4,7 +4,7 @@ from typing import Any
 from urllib.parse import quote
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_concrete.http_routes import register_http_route
+from tigrbl_concrete._concrete._routing import register_http_route
 
 
 TIGRBL_LENS_VERSION = "latest"

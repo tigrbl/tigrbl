@@ -1,8 +1,8 @@
-import httpx
+﻿import httpx
 import pytest
 from sqlalchemy import Column, String
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.system import mount_openrpc
 
@@ -92,3 +92,4 @@ async def test_openrpc_mountable_with_tigrbl_router_method_uvicorn():
         assert response.json()["openrpc"] == "1.2.6"
     finally:
         await stop_uvicorn_server(server, task)
+

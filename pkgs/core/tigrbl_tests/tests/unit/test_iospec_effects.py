@@ -1,4 +1,4 @@
-from tigrbl import TigrblApp
+﻿from tigrbl import TigrblApp
 from tigrbl.types import (
     Column,
     InstrumentedAttribute,
@@ -18,7 +18,7 @@ from tigrbl_atoms.atoms.schema.collect_out import _run as collect_out_run
 from tigrbl_kernel import _default_kernel as K
 from tigrbl.schema import _build_list_params
 from tigrbl._spec import ColumnSpec, F, IO, S
-from tigrbl.shortcuts.column import acol, vcol
+from tigrbl.factories.column import acol, vcol
 from tigrbl.orm.tables import TableBase
 from tigrbl.orm.mixins import GUIDPk
 
@@ -173,3 +173,4 @@ def test_iospec_virtual_columns_materialized_and_tracked() -> None:
     assert "nickname" in Thing.__table__.c
     assert isinstance(Thing.__dict__["nickname"], InstrumentedAttribute)
     assert isinstance(Thing.__tigrbl_cols__["nickname"], ColumnSpec)
+

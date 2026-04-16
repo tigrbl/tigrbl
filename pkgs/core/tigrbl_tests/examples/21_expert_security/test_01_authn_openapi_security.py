@@ -1,4 +1,4 @@
-"""Lesson 21.1: Authn dependencies update OpenAPI security per route.
+﻿"""Lesson 21.1: Authn dependencies update OpenAPI security per route.
 
 This example demonstrates how to configure authn dependencies on both
 ``TigrblApp`` and ``TigrblRouter``, allow anonymous access to selected operations,
@@ -10,7 +10,7 @@ import inspect
 import httpx
 import pytest
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl import JSONResponse
 from tigrbl import HTTPBearer
@@ -189,3 +189,4 @@ def test_app_set_auth_refreshes_security_for_preincluded_tables() -> None:
     ops_by_alias = getattr(SecurityRefreshWidget.ops, "by_alias", {})
     assert tuple(ops_by_alias["list"])[0].secdeps == ()
     assert tuple(ops_by_alias["create"])[0].secdeps == (app._authn,)
+

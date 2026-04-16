@@ -1,8 +1,8 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 from tigrbl import TableBase
 from tests.conftest import mro_collect_table_spec
-from tigrbl.shortcuts.table import defineTableSpec
+from tigrbl.factories.table import defineTableSpec
 
 
 def test_define_table_spec_ops_and_columns() -> None:
@@ -15,3 +15,4 @@ def test_define_table_spec_ops_and_columns() -> None:
     spec = mro_collect_table_spec(Widget)
     assert spec.ops == ("create",)
     assert spec.columns == ("id", "name")
+

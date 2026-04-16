@@ -1,5 +1,5 @@
-from tigrbl import App, AppBase
-from tigrbl.shortcuts.app import defineAppSpec, deriveApp
+﻿from tigrbl import App, AppBase
+from tigrbl.factories.app import defineAppSpec, deriveApp
 
 
 class BaseAppSpec(defineAppSpec(title="TableBase", version="1.0", routers=("base",))):
@@ -69,3 +69,4 @@ def test_app_spec_normalizes_scalar_sequence_fields():
     assert spec.security_deps == ("security",)
     assert spec.deps == ("dep",)
     assert spec.middlewares == ("mw",)
+

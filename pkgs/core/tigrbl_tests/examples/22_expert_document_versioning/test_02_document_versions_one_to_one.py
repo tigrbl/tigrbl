@@ -1,4 +1,4 @@
-"""Example: one-to-one current version pointer plus version history."""
+﻿"""Example: one-to-one current version pointer plus version history."""
 
 from __future__ import annotations
 
@@ -12,10 +12,10 @@ from tigrbl_client import TigrblClient
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter, hook_ctx
 from tigrbl import resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl._spec import ForeignKeySpec
 from tigrbl.types import (
     Integer,
@@ -214,3 +214,4 @@ async def test_document_versions_one_to_one_current_pointer() -> None:
         assert document.current_version_id == latest.id
     finally:
         await stop_uvicorn(server, task)
+
