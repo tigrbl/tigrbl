@@ -1,6 +1,4 @@
-# ADR-1003: ADR-0003 — Spec-First Authoritative Spec Layer
-
-# ADR-0003 — Spec-First Authoritative Spec Layer
+# ADR-0003 â€” Spec-First Authoritative Spec Layer
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -32,3 +30,4 @@ The architecture pack consistently places this responsibility in `tigrbl_core._s
 - Runtime-first public behavior.
 - Docs-first declarations disconnected from execution.
 - Multiple authoritative spec layers with informal reconciliation.
+

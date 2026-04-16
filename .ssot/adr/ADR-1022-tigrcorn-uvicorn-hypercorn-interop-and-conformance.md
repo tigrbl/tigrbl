@@ -1,6 +1,4 @@
-# ADR-1022: ADR-0022 — Tigrcorn / Uvicorn / Hypercorn Interop and Conformance
-
-# ADR-0022 — Tigrcorn / Uvicorn / Hypercorn Interop and Conformance
+# ADR-0022 â€” Tigrcorn / Uvicorn / Hypercorn Interop and Conformance
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -34,3 +32,4 @@ Interop belongs after the semantic, spec, binding, and compilation foundation is
 - Assuming all ASGI servers are behaviorally identical.
 - Baking Tigrcorn-specific semantics into core Tigrbl behavior.
 - Implying interop for extension surfaces with no evidence.
+

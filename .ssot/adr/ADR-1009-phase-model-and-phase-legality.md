@@ -1,6 +1,4 @@
-# ADR-1009: ADR-0009 — Phase Model and Phase Legality
-
-# ADR-0009 — Phase Model and Phase Legality
+# ADR-0009 â€” Phase Model and Phase Legality
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -39,3 +37,4 @@ This ADR freezes the legality model early so that hooks, deps, atoms, guards, an
 - Protocol-specific phase systems.
 - Allowing handlers or deps to choose their own lifecycle points.
 - Phase drift driven by transport adapters.
+

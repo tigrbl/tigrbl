@@ -1,7 +1,5 @@
 # Certification Truth Model
 
-# Certification Truth Model
-
 ## Purpose
 
 Define the repository-level certification control model that separates release-grade facts from planning facts.
@@ -51,3 +49,4 @@ Define the repository-level certification control model that separates release-g
 ## Authority rule
 
 If a narrative document conflicts with `certification/`, the `certification/` tree wins.
+

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any, Callable, Sequence
 
 from ._route import Route, compile_path
+from ..http_routes import register_http_route
 from tigrbl_concrete.system.docs.openapi.metadata import (
     is_metadata_route as _is_metadata_route,
 )
@@ -82,6 +83,17 @@ def add_route(
         tigrbl_tx_scope=kwargs.pop("tigrbl_tx_scope", None),
     )
     owner.routes.append(route)
+
+    # Keep custom HTTP routes visible through the same concrete op/binding
+    # surface that powers compiled-plan dispatch and system-document builders.
+    if route.tigrbl_model is None:
+        register_http_route(
+            owner,
+            path=route.path,
+            methods=tuple(route.methods),
+            alias=route.name,
+            endpoint=route.endpoint,
+        )
 
 
 def include_router(owner: Any, router: Any, *, prefix: str = "") -> None:

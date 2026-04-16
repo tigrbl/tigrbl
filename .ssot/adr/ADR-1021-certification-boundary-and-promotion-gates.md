@@ -1,6 +1,4 @@
-# ADR-1021: ADR-0021 — Certification Boundary and Promotion Gates
-
-# ADR-0021 — Certification Boundary and Promotion Gates
+# ADR-0021 â€” Certification Boundary and Promotion Gates
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -40,3 +38,4 @@ If Tigrbl is going to make compatibility, protocol, or parity claims, the claim 
 - Marketing-style feature claims with no evidence model.
 - Manual one-off promotion decisions.
 - Treating partial implementations as certified support.
+

@@ -1,6 +1,4 @@
-# ADR-1004: ADR-0004 — Specification Merge Precedence
-
-# ADR-0004 — Specification Merge Precedence
+# ADR-0004 â€” Specification Merge Precedence
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -43,3 +41,4 @@ Without an explicit merge lattice, 'spec-first' becomes ambiguous and different 
 - Ad hoc field-by-field merge logic implemented independently in decorators, runtime, and compiler.
 - Silent last-writer-wins for all fields.
 - Implicit destructive clears based on omission.
+

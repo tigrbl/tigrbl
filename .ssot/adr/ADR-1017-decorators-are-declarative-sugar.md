@@ -1,6 +1,4 @@
-# ADR-1017: ADR-0017 — Decorators Are Declarative Sugar
-
-# ADR-0017 — Decorators Are Declarative Sugar
+# ADR-0017 â€” Decorators Are Declarative Sugar
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -32,3 +30,4 @@ Tigrbl needs a design-pattern ADR that keeps decorators aligned with the spec-fi
 - Decorators that allocate live runtime objects as part of declaration.
 - Transport-specific decorator semantics that bypass canonical specs.
 - Divergent decorator-only features.
+

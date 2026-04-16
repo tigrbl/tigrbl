@@ -1,6 +1,4 @@
-# ADR-1016: ADR-0016 — Kernel Plan Compilation, Packing, Fusion, and Compaction
-
-# ADR-0016 — Kernel Plan Compilation, Packing, Fusion, and Compaction
+# ADR-0016 â€” Kernel Plan Compilation, Packing, Fusion, and Compaction
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -37,3 +35,4 @@ This ADR freezes that direction early because it shapes specs, atoms, phases, pe
 - Purely interpreted per-invocation chain assembly.
 - Transport-specific dispatch pipelines with no common compiled substrate.
 - Unbounded atom proliferation without packing/fusion rules.
+

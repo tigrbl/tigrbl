@@ -58,7 +58,6 @@ from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
 from tigrbl_core.config.constants import TIGRBL_GET_DB_ATTR
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
-from tigrbl_concrete.system.docs.runtime_ops import register_runtime_route
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from ._rust_backend import (
     clear_ffi_boundary_events as _clear_rust_boundary_events,
@@ -491,18 +490,6 @@ class TigrblApp(_App):
         if has_rpc_binding:
             self.mount_jsonrpc()
 
-    def _ensure_system_route_model(self) -> type:
-        model_name = "__tigrbl_system_routes__"
-        model = self.tables.get(model_name)
-        if model is None:
-            model = type("TigrblSystemRoutes", (), {})
-            model.resource_name = "system_routes"
-            model.hooks = SimpleNamespace()
-            model.ops = SimpleNamespace(by_alias={})
-            model.opspecs = SimpleNamespace(all=())
-            self.tables[model_name] = model
-        return model
-
     def _sync_default_router_namespaces(self) -> None:
         """Mirror the auto-created Router registries onto the app facade."""
         if self._default_router is None:
@@ -706,36 +693,6 @@ class TigrblApp(_App):
             if self._default_router is not None and self._default_router is not router:
                 for name, table in route_models.items():
                     self._default_router.tables.setdefault(name, table)
-
-        for route in getattr(router, "routes", ()):
-            if getattr(route, "tigrbl_model", None) is not None:
-                continue
-            endpoint = getattr(route, "endpoint", None)
-            path = getattr(route, "path", None)
-            methods = tuple(
-                sorted(
-                    str(method).upper()
-                    for method in (getattr(route, "methods", ()) or ())
-                    if str(method).upper() not in {"HEAD", "OPTIONS"}
-                )
-            )
-            if not callable(endpoint) or not isinstance(path, str) or not methods:
-                continue
-            full_path = (
-                path
-                if not mount_prefix
-                else path
-                if path == mount_prefix or path.startswith(f"{mount_prefix}/")
-                else f"{mount_prefix}{path if path.startswith('/') else '/' + path}"
-            )
-            alias = f"route_{'_'.join(methods).lower()}_{full_path.strip('/').replace('/', '_').replace('{', '').replace('}', '') or 'root'}"
-            register_runtime_route(
-                self,
-                path=full_path,
-                methods=methods,
-                alias=alias,
-                endpoint=endpoint,
-            )
 
         if not mount_router:
             return router

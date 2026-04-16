@@ -1,6 +1,4 @@
-# ADR-1011: ADR-0011 — Security Deps and Deps Ordering
-
-# ADR-0011 — Security Deps and Deps Ordering
+# ADR-0011 â€” Security Deps and Deps Ordering
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -32,3 +30,4 @@ This invariant is important enough to deserve an explicit ADR because it affects
 - A single dependency list with convention-based ordering.
 - Letting handlers or transport adapters perform security checks ad hoc.
 - Running ordinary deps before authn/authz-oriented deps for convenience.
+

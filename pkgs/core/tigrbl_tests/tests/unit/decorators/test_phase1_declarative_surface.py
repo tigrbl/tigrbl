@@ -3,6 +3,8 @@ from tigrbl import (
     BindingRegistry,
     BindingRegistrySpec,
     BindingSpec,
+    build_handlers,
+    build_rest,
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     Hook,
@@ -11,6 +13,7 @@ from tigrbl import (
     WsBindingSpec,
     hook_ctx,
     op_ctx,
+    route_ctx,
     sse_ctx,
     stream_ctx,
     websocket_ctx,
@@ -82,6 +85,25 @@ def test_alias_surface_decorators_attach_expected_bindings() -> None:
     assert specs["events"].exchange == "server_stream"
     assert specs["stream"].bindings[0].framing == "stream"
     assert specs["transport"].bindings[0].proto == "webtransport"
+
+
+def test_route_ctx_expands_to_http_rest_binding() -> None:
+    class Widget:
+        @route_ctx("/feed", methods=("GET",), alias="feed")
+        def feed(cls, ctx):
+            return None
+
+    specs = tuple(mro_collect_decorated_ops(Widget))
+    build_handlers(Widget, specs)
+    build_rest(Widget, specs)
+
+    spec = next(item for item in tuple(getattr(getattr(Widget, "ops", None), "all", ()) or ()) if item.alias == "feed")
+    binding = spec.bindings[0]
+
+    assert isinstance(binding, HttpRestBindingSpec)
+    assert binding.path.endswith("/feed")
+    assert binding.methods == ("GET",)
+    assert spec.target == "custom"
 
 
 def test_hook_ctx_records_direct_selector_declaration() -> None:

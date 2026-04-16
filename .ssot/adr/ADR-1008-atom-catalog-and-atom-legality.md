@@ -1,6 +1,4 @@
-# ADR-1008: ADR-0008 — Atom Catalog and Atom Legality
-
-# ADR-0008 — Atom Catalog and Atom Legality
+# ADR-0008 â€” Atom Catalog and Atom Legality
 
 - **Status:** Proposed
 - **Date:** 2026-04-14
@@ -44,3 +42,4 @@ Without an ADR, atom growth can become ad hoc, undermining compilation, fusion, 
 - Ad hoc unnamed execution steps.
 - Runtime-only special cases with no atom representation.
 - Protocol-specific atom trees for every transport surface.
+

@@ -3,22 +3,17 @@ from __future__ import annotations
 from typing import Any
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_concrete.system.docs.runtime_ops import register_runtime_get_route
+from tigrbl_concrete.http_routes import register_http_route
 from .schema import openapi
 
 
-def _register_runtime_openapi_op(router: Any, *, path: str, alias: str) -> None:
-    """Ensure the kernel can resolve the OpenAPI endpoint as a runtime operation."""
+def _register_openapi_route_op(router: Any, *, path: str, alias: str) -> None:
+    """Ensure the kernel can resolve the OpenAPI endpoint as a concrete route op."""
 
     def _openapi_runtime_handler(_request: Any) -> Response:
         return Response.json(openapi(router))
 
-    register_runtime_get_route(
-        router,
-        path=path,
-        alias=alias,
-        endpoint=_openapi_runtime_handler,
-    )
+    register_http_route(router, path=path, methods=("GET",), alias=alias, endpoint=_openapi_runtime_handler)
 
 
 def mount_openapi(
@@ -32,7 +27,7 @@ def mount_openapi(
     def _openapi_handler(request: Any) -> Response:
         return Response.json(openapi(router))
 
-    _register_runtime_openapi_op(router, path=path, alias=name)
+    _register_openapi_route_op(router, path=path, alias=name)
 
     router.add_route(
         path,
