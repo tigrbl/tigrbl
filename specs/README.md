@@ -1,9 +1,6 @@
-# Specs
+# Spec Pointer
 
-This tree holds repo-owned specifications for the certification model introduced in Phase 0.
+Canonical spec documents now live under `.ssot/specs/`.
 
-Current specs:
-
-- `specs/certification-truth-model.md`
-- `specs/transport-mapping-conformance.md`
-- `specs/http-route-registration.md`
+- Spec index: `.ssot/specs/SPEC-2001-readme.md`
+- Registry-backed spec records: `.ssot/registry.json`

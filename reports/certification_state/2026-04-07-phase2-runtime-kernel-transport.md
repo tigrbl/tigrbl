@@ -6,7 +6,7 @@ Target line: `0.3.19.dev1`
 ## Evidence produced
 
 - repo-owned transport mapping specification:
-  `specs/transport-mapping-conformance.md`
+  `.ssot/specs/SPEC-2007-transport-mapping-conformance.md`
 - Python runtime channel surface, websocket adapter, and tests
 - Rust channel mirror surface and tests
 - concrete-to-runtime routing change for websocket execution through hidden

@@ -39,9 +39,9 @@
 | Certification evidence schema | `certification/evidence/schema.json` |
 | Current release certification profile | `certification/profiles/current_release.yaml` |
 | Active dev-line certification profile | `certification/profiles/active_next_target.yaml` |
-| Root ADR index | `adr/README.md` |
-| Certification truth-model ADR | `adr/ADR-0001-certification-truth-model.md` |
-| Certification truth-model spec | `specs/certification-truth-model.md` |
+| Root ADR index | `.ssot/adr/ADR-1027-adr-index.md` |
+| Certification truth-model ADR | `.ssot/adr/ADR-1026-certification-truth-model.md` |
+| Certification truth-model spec | `.ssot/specs/SPEC-2002-certification-truth-model.md` |
 | Current-state report | `reports/current_state/2026-04-07-phase0-certification-freeze.md` |
 | Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
 | Phase 1 current-state report | `reports/current_state/2026-04-07-phase1-declarative-surface.md` |
@@ -116,7 +116,7 @@
 | Phase 14 handoff validator | `tools/ci/validate_phase14_handoff.py` |
 | Phase 14 handoff workflow | `.github/workflows/phase14-post-promotion-handoff.yml` |
 | Release-note entry point | `docs/release-notes/README.md` |
-| ADRs | `docs/adr/` |
+| ADRs | `.ssot/adr/` |
 | Developer guidance | `docs/developer/` |
 | WIP notes | `docs/notes/wip/YYYY/` |
 | Archived notes | `docs/notes/archive/YYYY/` |

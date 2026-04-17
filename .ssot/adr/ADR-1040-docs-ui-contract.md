@@ -1,5 +1,6 @@
-# Docs UI contract
+# ADR-1040: Docs UI contract
 
+﻿
 Accepted.
 
 ## Decision

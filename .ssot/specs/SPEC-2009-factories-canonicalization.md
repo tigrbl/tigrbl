@@ -1,5 +1,6 @@
 # Canonical Factories and Shortcut Re-Exports
 
+﻿
 Date: 2026-04-16
 Kind: repo-local
 
@@ -28,6 +29,6 @@ This document defines the canonical ownership boundary for `factories` and `shor
 
 ## Traceability
 
-- ADR: `adr/ADR-0028-factories-are-canonical-construction-surfaces.md`
+- ADR: `.ssot/adr/ADR-1029-factories-are-canonical-construction-surfaces.md`
 - Tests:
   - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
