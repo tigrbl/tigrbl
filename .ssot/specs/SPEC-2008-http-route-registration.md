@@ -1,5 +1,6 @@
 # Canonical HTTP Route Registration
 
+﻿
 Date: 2026-04-16
 Kind: repo-local
 
@@ -38,8 +39,8 @@ This document defines the canonical HTTP route model for the active line.
 ## Traceability
 
 - ADRs:
-  - `adr/ADR-0027-route-aliases-expand-to-concrete-http-op-specs.md`
-  - `adr/ADR-0029-documentation-support-uses-canonical-metadata-sources.md`
+  - `.ssot/adr/ADR-1028-route-aliases-expand-to-concrete-http-op-specs.md`
+  - `.ssot/adr/ADR-1030-documentation-support-uses-canonical-metadata-sources.md`
 - Tests:
   - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
   - `pkgs/core/tigrbl_tests/tests/unit/decorators/test_phase1_declarative_surface.py`

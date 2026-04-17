@@ -1,5 +1,6 @@
-# Docs authority and pointer policy
+# ADR-1036: Docs authority and pointer policy
 
+﻿
 Accepted.
 
 ## Decision

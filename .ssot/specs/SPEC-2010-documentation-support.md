@@ -1,5 +1,6 @@
 # Documentation Support and Metadata Ownership
 
+﻿
 Date: 2026-04-16
 Kind: repo-local
 
@@ -27,7 +28,7 @@ The active line supports:
 
 ## Traceability
 
-- ADR: `adr/ADR-0029-documentation-support-uses-canonical-metadata-sources.md`
+- ADR: `.ssot/adr/ADR-1030-documentation-support-uses-canonical-metadata-sources.md`
 - Tests:
   - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
   - `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`

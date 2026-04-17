@@ -19,8 +19,8 @@ This audit note records the repository changes made to freeze the promoted relea
 - `docs/conformance/NEXT_TARGETS.md`
 - `docs/conformance/dev/0.3.19.dev1/BUILD_NOTES.md`
 - `docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md`
-- `docs/adr/ADR-0011-post-promotion-release-history-freeze.md`
-- `docs/adr/ADR-0012-next-target-datatype-table-program-activation.md`
+- `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.md`
+- `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md`
 - `pkgs/core/tigrbl/pyproject.toml`
 - `tools/ci/validate_phase14_handoff.py`
 - `tools/ci/tests/test_phase14_handoff.py`

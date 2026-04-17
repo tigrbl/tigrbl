@@ -12,5 +12,5 @@ This archive records that promotion-only WIP from the `0.3.18` release cycle has
 ## Canonical follow-on locations
 
 - `docs/conformance/NEXT_TARGETS.md`
-- `docs/adr/ADR-0011-post-promotion-release-history-freeze.md`
-- `docs/adr/ADR-0012-next-target-datatype-table-program-activation.md`
+- `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.md`
+- `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md`

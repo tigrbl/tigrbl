@@ -1,5 +1,6 @@
-# CLI contract and server-selection contract
+# ADR-1039: CLI contract and server-selection contract
 
+﻿
 Accepted as a target contract; implementation pending.
 
 ## Decision

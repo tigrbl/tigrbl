@@ -1,4 +1,4 @@
-# Tigrbl Workspace
+﻿# Tigrbl Workspace
 
 This repository is a mixed Python + Rust workspace for Tigrbl. It contains:
 
@@ -21,7 +21,7 @@ The repository now records:
 - promotion-source dev bundle `0.3.18.dev1` retained unchanged under `docs/conformance/dev/0.3.18.dev1/`
 - active working-tree version advanced to `0.3.19.dev1` at `pkgs/core/tigrbl/pyproject.toml`
 - a governed next-target planning document at `docs/conformance/NEXT_TARGETS.md`
-- next-target ADRs for the datatype/table program under `docs/adr/`
+- next-target ADRs for the datatype/table program under `.ssot/adr/`
 - archived promotion-only WIP notes under `docs/notes/archive/2026/p14-post-promotion-handoff/`
 
 Boundary note: the existing Tier 3 certification wording still applies only to the frozen stable release `0.3.18` within the declared current target boundary in `docs/governance/TARGET_BOUNDARY.md`. The active `0.3.19.dev1` line is a governed next-target planning line and is **not** described here as a new promoted Tier 3 release.
@@ -54,3 +54,4 @@ Read the repository in this order:
 11. `CONTRIBUTING.md`
 12. `CODE_OF_CONDUCT.md`
 13. `SECURITY.md`
+

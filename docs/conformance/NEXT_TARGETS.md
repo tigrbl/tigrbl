@@ -80,9 +80,9 @@ The design direction now captured here and in the ADR set includes:
 
 ## Governing ADR set for the next target
 
-- `docs/adr/ADR-0010-deferred-next-target-datatype-table-program.md`
-- `docs/adr/ADR-0011-post-promotion-release-history-freeze.md`
-- `docs/adr/ADR-0012-next-target-datatype-table-program-activation.md`
+- `.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.md`
+- `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.md`
+- `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md`
 
 ## Deliverables now established by Phase 14
 
