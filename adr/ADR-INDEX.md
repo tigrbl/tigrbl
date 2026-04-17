@@ -8,7 +8,7 @@ The ADRs are intentionally **not** organized by tranche; they are numbered seque
 
 ## Contents
 
-- 26 ADR markdown files
+- 29 ADR markdown files
 - `ADR-INDEX.md`
 - `adr-manifest.csv`
 
@@ -39,4 +39,6 @@ The ADRs are intentionally **not** organized by tranche; they are numbered seque
 - `ADR-0024-runtime-family-model.md` - Runtime Family Model
 - `ADR-0025-opchannel-and-runtime-io-abstraction.md` - OpChannel and Runtime IO Abstraction
 - `ADR-0026-certification-truth-model.md` - Certification Truth Model
-- `ADR-0027-route-aliases-expand-to-concrete-http-op-specs.md` - Route Aliases Expand to Concrete HTTP Op Specs
+- `ADR-0027-route-aliases-expand-to-concrete-http-op-specs.md` - Binding-First REST Decorators and Route-Backed Spec Normalization
+- `ADR-0028-factories-are-canonical-construction-surfaces.md` - Factories Are Canonical Construction Surfaces
+- `ADR-0029-documentation-support-uses-canonical-metadata-sources.md` - Documentation Support Uses Canonical Metadata Sources

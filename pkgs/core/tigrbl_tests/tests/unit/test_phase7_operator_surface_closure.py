@@ -223,7 +223,7 @@ def test_websocket_routes_register_concrete_bindings_with_prefixed_paths() -> No
 
     app.include_router(router, prefix="/ws")
 
-    system_model = app.tables["__tigrbl_system_routes__"]
+    system_model = app.tables["__tigrbl_route_ops__"]
     spec = next(
         item
         for item in tuple(getattr(getattr(system_model, "ops", None), "all", ()) or ())

@@ -14,12 +14,15 @@ from ._engine import Engine
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.engine_spec import EngineCfg
-from ._routing import (
+from ._route import (
+    ROUTE_OPS_MODEL_NAME,
     add_route as _add_route_impl,
-    include_router as _include_router_impl,
+    include_router_routes as _include_router_impl,
     merge_tags as _merge_tags_impl,
     normalize_prefix as _normalize_prefix_impl,
+    prefix_model_bindings as _prefix_model_bindings,
     route as _route_impl,
+    upsert_route_opspec,
 )
 from tigrbl_concrete.system.static import _serve_static
 from tigrbl_typing.gw.raw import GwRawEnvelope
@@ -366,6 +369,9 @@ class App(AppBase):
             await self._handle_lifespan(scope, receive, send)
             return
         if scope_type == "websocket":
+            if not scope.get("scheme"):
+                scope = dict(scope)
+                scope["scheme"] = "ws"
             env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
             await self.invoke(env)
             return
@@ -457,91 +463,24 @@ class App(AppBase):
 
     def include_router(self, router: Any, *, prefix: str | None = None) -> Any:
         from ._route import compile_path
-        from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
-        from tigrbl_core._spec.binding_spec import (
-            HttpRestBindingSpec,
-            HttpStreamBindingSpec,
-            SseBindingSpec,
-            WebTransportBindingSpec,
-            WsBindingSpec,
-        )
-
-        def _apply_mount_prefix_to_model_bindings(model: type, mount_prefix: str) -> None:
-            if not mount_prefix:
-                return
-
-            ops_ns = getattr(model, "ops", None)
-            specs = tuple(getattr(ops_ns, "all", ()) or ())
-            if not specs:
-                return
-
-            updated_specs: list[Any] = []
-            changed = False
-            for spec in specs:
-                bindings = tuple(getattr(spec, "bindings", ()) or ())
-                updated_bindings: list[Any] = []
-                local_changed = False
-                for binding in bindings:
-                    if not isinstance(
-                        binding,
-                        (
-                            HttpRestBindingSpec,
-                            HttpStreamBindingSpec,
-                            SseBindingSpec,
-                            WsBindingSpec,
-                            WebTransportBindingSpec,
-                        ),
-                    ):
-                        updated_bindings.append(binding)
-                        continue
-
-                    path = str(getattr(binding, "path", "") or "")
-                    if not path.startswith("/"):
-                        path = f"/{path}"
-                    prefixed_path = (
-                        path
-                        if path == mount_prefix or path.startswith(f"{mount_prefix}/")
-                        else f"{mount_prefix}{path}"
-                    )
-                    if prefixed_path != getattr(binding, "path", None):
-                        local_changed = True
-                        updated_bindings.append(replace(binding, path=prefixed_path))
-                    else:
-                        updated_bindings.append(binding)
-
-                if local_changed:
-                    changed = True
-                    updated_specs.append(replace(spec, bindings=tuple(updated_bindings)))
-                else:
-                    updated_specs.append(spec)
-
-            if not changed:
-                return
-
-            updated_all = tuple(updated_specs)
-            by_alias: dict[str, Any] = {}
-            grouped_specs: dict[str, list[Any]] = {}
-            by_key: dict[tuple[str, str], Any] = {}
-            for spec in updated_all:
-                grouped_specs.setdefault(spec.alias, []).append(spec)
-                by_key[(spec.alias, spec.target)] = spec
-            for alias, specs_for_alias in grouped_specs.items():
-                by_alias[alias] = _OpSpecGroup(tuple(specs_for_alias))
-
-            updated_ops = type(ops_ns)(
-                all=updated_all,
-                by_alias=by_alias,
-                by_key=by_key,
-            )
-            model.ops = updated_ops
-            model.opspecs = updated_ops
 
         routed = getattr(router, "router", router)
         route_prefix = prefix or ""
         _include_router_impl(self, routed, prefix=route_prefix)
         normalized_prefix = _normalize_prefix_impl(route_prefix)
         for name, model in dict(getattr(routed, "tables", {}) or {}).items():
-            _apply_mount_prefix_to_model_bindings(model, normalized_prefix)
+            _prefix_model_bindings(model, normalized_prefix)
+            if name == ROUTE_OPS_MODEL_NAME and name in self.tables:
+                hooks = getattr(model, "hooks", None)
+                for spec in tuple(getattr(getattr(model, "ops", None), "all", ()) or ()):
+                    handler_step = None
+                    alias_hooks = getattr(hooks, str(getattr(spec, "alias", "")), None)
+                    if alias_hooks is not None:
+                        handlers = list(getattr(alias_hooks, "HANDLER", ()) or ())
+                        if handlers:
+                            handler_step = handlers[0]
+                    upsert_route_opspec(self, spec, handler_step=handler_step)
+                continue
             self.tables.setdefault(name, model)
         for ws_route in list(getattr(routed, "websocket_routes", ()) or []):
             path_template = ws_route.path_template

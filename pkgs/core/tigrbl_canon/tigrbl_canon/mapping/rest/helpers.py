@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from warnings import warn
 
-from tigrbl_concrete._mapping.rest.helpers import (
+from tigrbl_base._base._rest_map import (
     _Key,
     _coerce_parent_kw,
     _ensure_jsonable,
@@ -13,7 +13,7 @@ from tigrbl_concrete._mapping.rest.helpers import (
 )
 
 warn(
-    "tigrbl_canon.mapping.rest.helpers is deprecated; use tigrbl_concrete._mapping.rest.helpers",
+    "tigrbl_canon.mapping.rest.helpers is deprecated; use tigrbl_base._base._rest_map",
     DeprecationWarning,
     stacklevel=2,
 )

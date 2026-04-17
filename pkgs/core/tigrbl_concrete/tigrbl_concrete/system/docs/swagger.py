@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Any
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_concrete._concrete._routing import register_http_route
 
 
 def _resolve_docs_owner(target: Any) -> Any:
@@ -67,14 +66,13 @@ def mount_swagger(
     def _docs_handler(request: Any) -> Response:
         return Response.html(build_swagger_html(router, request))
 
-    register_http_route(router, path=path, methods=("GET",), alias=name, endpoint=_docs_handler)
-
     router.add_route(
         path,
         _docs_handler,
         methods=["GET"],
         name=name,
         include_in_schema=False,
+        inherit_owner_dependencies=False,
     )
     return router
 

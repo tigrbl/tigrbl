@@ -2,8 +2,8 @@
 """
 Aggregates per-model REST routers into a single Router.
 
-This does not build endpoints by itself — it simply collects the routers that
-`tigrbl_concrete._mapping.rest` attached to each model at `model.rest.router`.
+This does not build endpoints by itself; it simply collects the routers that
+the concrete model binder attached to each model at `model.rest.router`.
 
 Recommended workflow:
   1) Include models with `mount_router=False` so you don't double-mount:
@@ -17,9 +17,9 @@ Recommended workflow:
         mount_rest(router, app, base_prefix="/router")
 
 Notes:
-  • Router paths already include `/{resource}`; we only add `base_prefix`.
-  • Model-level auth/db deps and extra REST deps are already attached to each
-    model router by `bindings.rest`; this wrapper can add *additional* top-level
+  - Router paths already include `/{resource}`; we only add `base_prefix`.
+  - Model-level auth/db deps and extra REST deps are already attached to each
+    model router by the concrete binder; this wrapper can add additional top-level
     dependencies if you pass them in.
 """
 
@@ -36,19 +36,18 @@ def _norm_prefix(p: Optional[str]) -> str:
         return ""
     if not p.startswith("/"):
         p = "/" + p
-    # Avoid double trailing slashes; ASGI is lenient but keep it clean
     return p.rstrip("/")
 
 
 def _normalize_deps(deps: Optional[Sequence[Any]]) -> list:
     """Accept either Depends(...) objects or plain callables."""
     out = []
-    for d in deps or ():
+    for dep in deps or ():
         try:
-            is_dep_obj = hasattr(d, "dependency")
+            is_dep_obj = hasattr(dep, "dependency")
         except Exception:
             is_dep_obj = False
-        out.append(d if is_dep_obj else Depends(d))
+        out.append(dep if is_dep_obj else Depends(dep))
     return out
 
 
@@ -56,8 +55,7 @@ def _iter_tables(router: Any, only: Optional[Sequence[type]] = None) -> Sequence
     if only:
         return list(only)
     tables: Mapping[str, type] = getattr(router, "tables", None) or {}
-    # deterministic iteration
-    return [tables[k] for k in sorted(tables.keys())]
+    return [tables[key] for key in sorted(tables.keys())]
 
 
 def build_rest_router(
@@ -84,12 +82,10 @@ def build_rest_router(
 
     for model in _iter_tables(router, models):
         rest_ns = getattr(model, "rest", None)
-        router = getattr(rest_ns, "router", None) if rest_ns is not None else None
-        if router is None:
-            # Nothing to include for this model (not bound or no routes)
+        child_router = getattr(rest_ns, "router", None) if rest_ns is not None else None
+        if child_router is None:
             continue
-        # Include with only the base prefix; the model router already has /{resource} in its paths
-        root.include_router(router, prefix=prefix or "")
+        root.include_router(child_router, prefix=prefix or "")
     return root
 
 
@@ -106,13 +102,13 @@ def mount_rest(
 
     Returns the created router so you can keep a reference if desired.
     """
-    router = build_rest_router(
+    rest_router = build_rest_router(
         router, models=models, base_prefix=base_prefix, dependencies=dependencies
     )
     include = getattr(app, "include_router", None)
     if callable(include):
-        include(router)
-    return router
+        include(rest_router)
+    return rest_router
 
 
 __all__ = ["build_rest_router", "mount_rest"]

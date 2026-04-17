@@ -1,37 +1,34 @@
-# ADR-1028: ADR-0027 - Route Aliases Expand to Concrete HTTP Op Specs
-
-# ADR-0027 - Route Aliases Expand to Concrete HTTP Op Specs
+# ADR-0027 - Binding-First REST Decorators and Route-Backed Spec Normalization
 
 - **Status:** Proposed
 - **Date:** 2026-04-16
-- **Related ADRs:** ADR-0003, ADR-0006, ADR-0017, ADR-0018
+- **Related ADRs:** ADR-0003, ADR-0006, ADR-0017, ADR-0018, ADR-0019
 
 ## Context
 
-Tigrbl previously described some HTTP route registration paths as "runtime routes" and placed canonical registration helpers under `tigrbl_concrete.system.docs`. That made ordinary HTTP route registration look like a separate abstraction rather than what it really is: concrete `op_ctx`-style custom operations carrying `HttpRestBindingSpec` bindings.
+The active line no longer treats HTTP routes as a separate runtime abstraction. The old `route_ctx(...)` and `register_http_route(...)` model split declarative route aliases from imperative route mutation and introduced a second HTTP registration subsystem that did not align with the existing spec graph that the kernel already compiles.
 
-The route model also mixed deprecated `tigrbl_canon` compatibility code into a surface that is no longer supported.
+At the same time, route-facing documentation metadata must still have an authoritative home, and documentation mounts must behave like ordinary routes rather than a docs-owned special case.
 
 ## Decision
 
-1. An HTTP route is a concrete custom op alias plus at least one `HttpRestBindingSpec`.
-2. `route_ctx(...)` remains the decorator-first alias for declaring that shape.
-3. `register_http_route(...)` is the imperative helper for materializing the same shape onto app/router owners.
-4. Canonical HTTP route registration lives in `tigrbl_concrete`, not in `tigrbl_concrete.system`.
-5. System document endpoints use the same `register_http_route(...)` helper as other HTTP routes.
-6. Deprecated `tigrbl_canon` route-registration shims are removed rather than preserved.
-7. "Runtime route" is not canonical terminology for HTTP route registration.
+1. Module-level `route_ctx(...)` and module-level `route(...)` are removed from the declarative surface.
+2. Module-level `get(...)`, `post(...)`, `put(...)`, `patch(...)`, and `delete(...)` are REST-specific decorator aliases over `op_ctx(...)`.
+3. Those REST decorators preset `HttpRestBindingSpec` values through `op_ctx(bindings=...)`; route-specific public fields are not added to `op_ctx(...)`.
+4. `Router.route/get/post/...` and `App.route/get/post/...` remain imperative namespace APIs that create `Route` records.
+5. Imperative routes normalize into the existing owner-local spec graph through the neutral `__tigrbl_route_ops__` carrier; there is no separate HTTP route registration subsystem and no public `register_http_route(...)` API.
+6. `Route` remains the canonical home for route-facing documentation/runtime policy metadata, including `inherit_owner_dependencies`.
+7. Kernel compilation is unchanged; kernel visibility comes from the existing nested spec graph after route-backed ops are normalized there.
 
 ## Consequences
 
-- HTTP route registration is inspectable as ordinary op/binding materialization.
-- System document routes and custom user routes share one concrete registration path.
-- Kernel-plan-visible route bindings come from one source of truth.
-- Deprecated compatibility layers stop defining the API surface.
+- Declarative REST aliases and imperative route mutation converge on the same binding-first op shape.
+- Direct routes, mounted routes, and documentation/system endpoints all become ordinary route-backed ops in the owner spec graph.
+- Documentation support no longer depends on docs-policy imports inside route mutation code.
+- The active line stops exposing a separate HTTP route registration helper.
 
 ## Rejected alternatives
 
-- Keeping a docs-owned HTTP route registration helper.
-- Preserving `tigrbl_canon` compatibility shims for route registration.
-- Treating HTTP routes as a separate abstraction from op alias expansion.
-
+- Keeping `route_ctx(...)` as a separate declarative abstraction.
+- Keeping `register_http_route(...)` as a public or internal HTTP registration subsystem.
+- Moving route-facing metadata into `HttpRestBindingSpec`.

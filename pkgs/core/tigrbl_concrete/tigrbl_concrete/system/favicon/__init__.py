@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from tigrbl_concrete._concrete import FileResponse, RedirectResponse
-from tigrbl_concrete._concrete._routing import register_http_route, remove_http_routes
+from tigrbl_concrete._concrete._route import prune_route_ops
 
 FAVICON_PATH = Path(__file__).with_name("assets") / "favicon.svg"
 
@@ -57,10 +57,12 @@ def _remove_existing_favicon_routes(router: Any, *paths: str) -> None:
         return True
 
     _prune_routes(router)
+    prune_route_ops(router, *paths)
 
     nested_router = getattr(router, "router", None)
     if nested_router is not None:
         _prune_routes(nested_router)
+        prune_route_ops(nested_router, *paths)
 
 
 def mount_favicon(
@@ -93,13 +95,6 @@ def mount_favicon(
         default_svg_path,
         default_ico_path,
     )
-    remove_http_routes(
-        router,
-        mounted_svg_path,
-        mounted_ico_path,
-        default_svg_path,
-        default_ico_path,
-    )
 
     def _register(path: str, endpoint: Any, route_name: str) -> None:
         add_route = getattr(router, "add_route", None)
@@ -110,6 +105,7 @@ def mount_favicon(
                 methods=["GET"],
                 name=route_name,
                 include_in_schema=False,
+                inherit_owner_dependencies=False,
             )
             return
 
@@ -123,25 +119,10 @@ def mount_favicon(
             methods=["GET"],
             name=route_name,
             include_in_schema=False,
+            inherit_owner_dependencies=False,
         )(endpoint)
 
     if resolved.suffix.lower() == ".svg":
-        register_http_route(
-            router,
-            path=mounted_svg_path,
-            methods=("GET",),
-            alias=name,
-            endpoint=lambda _request: favicon_endpoint(favicon_path=resolved)(),
-        )
-        register_http_route(
-            router,
-            path=mounted_ico_path,
-            methods=("GET",),
-            alias=f"{name}_ico_redirect",
-            endpoint=lambda _request: favicon_ico_redirect_endpoint(
-                path=f"{base_prefix}{svg_path}"
-            )(),
-        )
         _register(mounted_svg_path, favicon_endpoint(favicon_path=resolved), name)
         _register(
             mounted_ico_path,
@@ -150,13 +131,6 @@ def mount_favicon(
         )
         return router
 
-    register_http_route(
-        router,
-        path=mounted_ico_path,
-        methods=("GET",),
-        alias=name,
-        endpoint=lambda _request: favicon_endpoint(favicon_path=resolved)(),
-    )
     _register(mounted_ico_path, favicon_endpoint(favicon_path=resolved), name)
     return router
 

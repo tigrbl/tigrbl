@@ -28,7 +28,6 @@ from tigrbl_concrete._mapping.model import rebind as _rebind, bind as _bind
 from ._op_registry import get_registry
 from tigrbl_core._spec import OpSpec
 from ._table_registry import TableRegistry
-from ._routing import include_router as _include_router_impl
 from ._route import compile_path
 from ._websocket import WebSocketRoute
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
@@ -204,7 +203,7 @@ class TigrblRouter(_Router):
             self, model, app=None, prefix=prefix, mount_router=mount_router
         )
         if mount_router and router is not None:
-            _include_router_impl(self, router, prefix=prefix)
+            self.include_router(router, prefix=prefix)
         return included_table, router
 
     def include_tables(
@@ -226,7 +225,7 @@ class TigrblRouter(_Router):
         if mount_router:
             for router in included.values():
                 if router is not None:
-                    _include_router_impl(self, router, prefix=base_prefix)
+                    self.include_router(router, prefix=base_prefix)
         return included
 
     def install_engines(
@@ -397,7 +396,7 @@ class TigrblRouter(_Router):
         prov = _resolver.resolve_provider(router=self)
         get_db = prov.get_db if prov else None
         router = _mount_diagnostics(self, get_db=get_db)
-        _include_router_impl(self, router, prefix=px)
+        self.include_router(router, prefix=px)
         if app is not None and app is not self:
             include_other = getattr(app, "include_router", None)
             if callable(include_other):
