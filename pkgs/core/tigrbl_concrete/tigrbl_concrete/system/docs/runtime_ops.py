@@ -4,10 +4,9 @@ import inspect
 from types import SimpleNamespace
 from typing import Any, Callable
 
-from tigrbl_concrete._concrete._routing import ensure_system_route_model
+from tigrbl_concrete._concrete._route import ensure_route_ops_model, upsert_route_opspec
 from tigrbl_core._spec.binding_spec import WsBindingSpec
 from tigrbl_core._spec.op_spec import OpSpec
-from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from tigrbl_runtime.channel import normalize_exchange, websocket_adapter
 
 
@@ -22,7 +21,7 @@ def register_runtime_websocket_route(
     framing: str = "text",
 ) -> None:
     """Register a websocket endpoint as a runtime-owned operation."""
-    model = ensure_system_route_model(router)
+    model = ensure_route_ops_model(router)
     if model is None:
         return
 
@@ -46,20 +45,6 @@ def register_runtime_websocket_route(
             ),
         ),
     )
-    ops_ns = getattr(model, "ops", None)
-    by_alias = dict(getattr(ops_ns, "by_alias", {}) or {})
-    by_alias[alias] = _OpSpecGroup((op,))
-    all_specs = tuple(
-        spec for spec in tuple(getattr(ops_ns, "all", ()) or ()) if getattr(spec, "alias", None) != alias
-    ) + (op,)
-    by_key = {
-        (str(getattr(spec, "alias", "")), str(getattr(spec, "target", ""))): spec
-        for spec in all_specs
-    }
-    updated_ops = SimpleNamespace(all=all_specs, by_alias=by_alias, by_key=by_key)
-    model.ops = updated_ops
-    model.opspecs = updated_ops
-
     async def _runtime_websocket_step(ctx: Any) -> None:
         channel = ctx.get("channel")
         if channel is None:
@@ -75,11 +60,7 @@ def register_runtime_websocket_route(
             if isinstance(temp, dict):
                 temp.setdefault("egress", {})["result"] = result
 
-    hooks_ns = getattr(model.hooks, alias, None)
-    if hooks_ns is None:
-        hooks_ns = SimpleNamespace()
-        setattr(model.hooks, alias, hooks_ns)
-    hooks_ns.HANDLER = [_runtime_websocket_step]
+    upsert_route_opspec(router, op, handler_step=_runtime_websocket_step)
 
 
 __all__ = [

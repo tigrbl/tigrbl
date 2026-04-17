@@ -3,50 +3,11 @@ from __future__ import annotations
 from typing import Any, Callable, Optional
 
 from tigrbl_concrete._concrete._router import Router
-from tigrbl_concrete._concrete._routing import register_http_route
 from .healthz import build_healthz_endpoint
 from .hookz import build_hookz_endpoint
 from .kernelz import build_kernelz_endpoint
 from .methodz import build_methodz_endpoint
 from .utils import maybe_execute, opspecs, table_iter
-
-
-def _register_diagnostics_route(
-    router: Any,
-    *,
-    path: str,
-    alias: str,
-    endpoint_factory: Callable[[Any], Any],
-) -> None:
-    """Expose diagnostics endpoints through the canonical concrete route helper."""
-
-    async def _diagnostics_step(ctx: Any) -> None:
-        payload = await endpoint_factory(ctx)
-        setattr(ctx, "result", payload)
-        if isinstance(getattr(ctx, "temp", None), dict):
-            ctx.temp.setdefault("egress", {})["result"] = payload
-
-    register_http_route(router, path=path, methods=("GET",), alias=alias, endpoint=_diagnostics_step)
-
-
-def _register_diagnostics_paths(
-    router: Any, *, path: str, alias: str, endpoint_factory: Callable[[Any], Any]
-) -> None:
-    _register_diagnostics_route(
-        router,
-        path=path,
-        alias=alias,
-        endpoint_factory=endpoint_factory,
-    )
-    system_prefix = str(getattr(router, "system_prefix", "/system") or "/system")
-    if system_prefix and system_prefix != "/":
-        prefixed = f"{system_prefix.rstrip('/')}{path}"
-        _register_diagnostics_route(
-            router,
-            path=prefixed,
-            alias=alias,
-            endpoint_factory=endpoint_factory,
-        )
 
 
 def mount_diagnostics(
@@ -81,12 +42,6 @@ def mount_diagnostics(
         await maybe_execute(db, "SELECT 1")
         return {"ok": True}
 
-    _register_diagnostics_paths(
-        source_router,
-        path="/healthz",
-        alias="healthz",
-        endpoint_factory=_runtime_healthz,
-    )
     router.add_route(
         "/healthz",
         healthz_endpoint,
@@ -95,15 +50,10 @@ def mount_diagnostics(
         tags=["system"],
         summary="Health",
         description="Database connectivity check.",
+        inherit_owner_dependencies=False,
     )
 
     methodz_endpoint = build_methodz_endpoint(source_router)
-    _register_diagnostics_paths(
-        source_router,
-        path="/methodz",
-        alias="methodz",
-        endpoint_factory=lambda _ctx: methodz_endpoint(),
-    )
     router.add_route(
         "/methodz",
         methodz_endpoint,
@@ -112,15 +62,10 @@ def mount_diagnostics(
         tags=["system"],
         summary="Methods",
         description="Ordered, canonical operation list.",
+        inherit_owner_dependencies=False,
     )
 
     hookz_endpoint = build_hookz_endpoint(source_router)
-    _register_diagnostics_paths(
-        source_router,
-        path="/hookz",
-        alias="hookz",
-        endpoint_factory=lambda _ctx: hookz_endpoint(),
-    )
     router.add_route(
         "/hookz",
         hookz_endpoint,
@@ -134,6 +79,7 @@ def mount_diagnostics(
             "Within each phase, hooks are listed in execution order: "
             "global (None) hooks, then method-specific hooks."
         ),
+        inherit_owner_dependencies=False,
     )
 
     kernelz_endpoint = build_kernelz_endpoint(source_router)
@@ -150,12 +96,6 @@ def mount_diagnostics(
                 payload[model_name][sp.alias] = K.plan_labels(model, sp.alias)
         return payload
 
-    _register_diagnostics_paths(
-        source_router,
-        path="/kernelz",
-        alias="kernelz",
-        endpoint_factory=_runtime_kernelz,
-    )
     router.add_route(
         "/kernelz",
         kernelz_endpoint,
@@ -164,6 +104,7 @@ def mount_diagnostics(
         tags=["system"],
         summary="Kernel Plan",
         description="Phase-chain plan as built by the kernel per operation.",
+        inherit_owner_dependencies=False,
     )
 
     return router

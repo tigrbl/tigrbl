@@ -20,15 +20,7 @@ from typing import (
 
 from ._app import App as _App
 from .tigrbl_router import TigrblRouter
-from ._routing import add_route as _add_route_impl
 from tigrbl_core._spec.op_spec import OpSpec
-from tigrbl_core._spec.binding_spec import (
-    HttpRestBindingSpec,
-    HttpStreamBindingSpec,
-    SseBindingSpec,
-    WebTransportBindingSpec,
-    WsBindingSpec,
-)
 from tigrbl_core._spec.engine_spec import EngineCfg
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
@@ -51,14 +43,13 @@ from tigrbl_concrete.system import build_json_schema_bundle as _build_json_schem
 from tigrbl_concrete.system import build_openrpc_spec as _build_openrpc_spec
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from ._op_registry import get_registry
-from ._route import compile_path
+from ._route import compile_path, prefix_model_bindings as _prefix_model_bindings
 from ._websocket import WebSocketRoute
 from ._table_registry import TableRegistry
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
 from tigrbl_core.config.constants import TIGRBL_GET_DB_ATTR
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
-from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from ._rust_backend import (
     clear_ffi_boundary_events as _clear_rust_boundary_events,
     ffi_boundary_events as _rust_boundary_events,
@@ -533,79 +524,6 @@ class TigrblApp(_App):
                 token = f"/{token}"
             return token.rstrip("/")
 
-        def _apply_mount_prefix_to_model_bindings(
-            model: type, mount_prefix: str
-        ) -> None:
-            if not mount_prefix:
-                return
-
-            ops_ns = getattr(model, "ops", None)
-            specs = tuple(getattr(ops_ns, "all", ()) or ())
-            if not specs:
-                return
-
-            updated_specs: list[Any] = []
-            changed = False
-            for spec in specs:
-                bindings = tuple(getattr(spec, "bindings", ()) or ())
-                updated_bindings: list[Any] = []
-                local_changed = False
-                for binding in bindings:
-                    if not isinstance(
-                        binding,
-                        (
-                            HttpRestBindingSpec,
-                            HttpStreamBindingSpec,
-                            SseBindingSpec,
-                            WsBindingSpec,
-                            WebTransportBindingSpec,
-                        ),
-                    ):
-                        updated_bindings.append(binding)
-                        continue
-
-                    path = str(binding.path or "")
-                    if not path.startswith("/"):
-                        path = f"/{path}"
-                    prefixed_path = (
-                        path
-                        if path == mount_prefix or path.startswith(f"{mount_prefix}/")
-                        else f"{mount_prefix}{path}"
-                    )
-                    if prefixed_path != binding.path:
-                        local_changed = True
-                        updated_bindings.append(replace(binding, path=prefixed_path))
-                    else:
-                        updated_bindings.append(binding)
-
-                if local_changed:
-                    changed = True
-                    updated_specs.append(
-                        replace(spec, bindings=tuple(updated_bindings))
-                    )
-                else:
-                    updated_specs.append(spec)
-
-            if not changed:
-                return
-
-            updated_all = tuple(updated_specs)
-            by_alias: dict[str, _OpSpecGroup] = {}
-            grouped_specs: dict[str, list[Any]] = {}
-            by_key: dict[tuple[str, str], Any] = {}
-            for spec in updated_all:
-                grouped_specs.setdefault(spec.alias, []).append(spec)
-                by_key[(spec.alias, spec.target)] = spec
-
-            for alias, specs_for_alias in grouped_specs.items():
-                by_alias[alias] = _OpSpecGroup(tuple(specs_for_alias))
-
-            updated_ops_ns = SimpleNamespace(
-                all=updated_all, by_alias=by_alias, by_key=by_key
-            )
-            model.ops = updated_ops_ns
-            model.opspecs = updated_ops_ns
-
         mount_prefix = _normalize_mount_prefix(
             prefix if prefix is not None else getattr(router, "prefix", None)
         )
@@ -687,7 +605,7 @@ class TigrblApp(_App):
 
         if route_models:
             for table in route_models.values():
-                _apply_mount_prefix_to_model_bindings(table, mount_prefix)
+                _prefix_model_bindings(table, mount_prefix)
             for name, table in route_models.items():
                 self.tables.setdefault(name, table)
             if self._default_router is not None and self._default_router is not router:
@@ -701,11 +619,11 @@ class TigrblApp(_App):
 
     def add_router_route(self, path: str, endpoint: Any, **kwargs: Any) -> None:
         """Register a route directly on this app instance."""
-        _add_route_impl(self, path, endpoint, **kwargs)
+        super().add_route(path, endpoint, **kwargs)
 
     def add_route(self, path: str, endpoint: Any, **kwargs: Any) -> None:
         """Register a route directly on this app instance."""
-        _add_route_impl(self, path, endpoint, **kwargs)
+        super().add_route(path, endpoint, **kwargs)
 
     def include_routers(self, routers: Sequence[Any]) -> None:
         """Mount multiple Routers, supporting optional per-item prefixes."""

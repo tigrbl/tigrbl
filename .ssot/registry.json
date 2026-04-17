@@ -3425,7 +3425,7 @@
                      {
                          "id":  "feat:http-route-001",
                          "title":  "Canonical HTTP route registration",
-                         "description":  "Tracks the concrete HTTP route registration surface owned by tigrbl_concrete, including route alias expansion, direct route registration, and shared system-document registration.",
+                         "description":  "Tracks the binding-first REST decorator surface and imperative route normalization owned by tigrbl_concrete, including explicit HttpRestBindingSpec defaults, ordinary documentation routes, and the neutral __tigrbl_route_ops__ spec-graph carrier.",
                          "implementation_status":  "implemented",
                          "lifecycle":  {
                                            "stage":  "active",
@@ -3454,6 +3454,66 @@
                                       ],
                          "requires":  [
 
+                                      ]
+                     },
+                     {
+                         "id":  "feat:factories-001",
+                         "title":  "Canonical factories and shortcut re-exports",
+                         "description":  "Tracks factories as the canonical construction surface for make*/define*/derive* helpers and direct factory aliases, with shortcuts retained as thin re-export modules.",
+                         "implementation_status":  "implemented",
+                         "lifecycle":  {
+                                           "stage":  "active",
+                                           "replacement_feature_ids":  [
+
+                                                                       ],
+                                           "note":  null
+                                       },
+                         "plan":  {
+                                      "horizon":  "current",
+                                      "slot":  "conformance",
+                                      "target_claim_tier":  "T2",
+                                      "target_lifecycle_stage":  "active"
+                                  },
+                         "claim_ids":  [
+                                           "clm:factories-001"
+                                       ],
+                         "test_ids":  [
+                                          "tst:http-route-registration-unit"
+                                      ],
+                         "requires":  [
+
+                                      ]
+                     },
+                     {
+                         "id":  "feat:docs-support-001",
+                         "title":  "Canonical documentation support surfaces",
+                         "description":  "Tracks supported documentation outputs and metadata ownership for OpenAPI, OpenRPC, AsyncAPI, and JSON Schema, including ordinary route mounts for documentation endpoints.",
+                         "implementation_status":  "implemented",
+                         "lifecycle":  {
+                                           "stage":  "active",
+                                           "replacement_feature_ids":  [
+
+                                                                       ],
+                                           "note":  null
+                                       },
+                         "plan":  {
+                                      "horizon":  "current",
+                                      "slot":  "conformance",
+                                      "target_claim_tier":  "T2",
+                                      "target_lifecycle_stage":  "active"
+                                  },
+                         "claim_ids":  [
+                                           "clm:docs-support-001",
+                                           "clm:docs-support-002"
+                                       ],
+                         "test_ids":  [
+                                          "tst:http-route-registration-unit",
+                                          "tst:http-route-system-docs-builders",
+                                          "tst:http-route-jsonrpc-openrpc-surface",
+                                          "tst:http-route-websocket-binding-slice"
+                                      ],
+                         "requires":  [
+                                          "feat:http-route-001"
                                       ]
                      }
                  ],
@@ -5343,12 +5403,16 @@
                       "kind":  "pytest",
                       "path":  "pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py",
                       "feature_ids":  [
-                                          "feat:http-route-001"
+                                          "feat:http-route-001",
+                                          "feat:factories-001",
+                                          "feat:docs-support-001"
                                       ],
                       "claim_ids":  [
                                         "clm:http-route-001",
                                         "clm:http-route-002",
-                                        "clm:http-route-003"
+                                        "clm:http-route-003",
+                                        "clm:factories-001",
+                                        "clm:docs-support-002"
                                     ],
                       "evidence_ids":  [
                                            "evd:http-route-pytest-log",
@@ -5379,10 +5443,13 @@
                       "kind":  "pytest",
                       "path":  "pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py",
                       "feature_ids":  [
-                                          "feat:http-route-001"
+                                          "feat:http-route-001",
+                                          "feat:docs-support-001"
                                       ],
                       "claim_ids":  [
-                                        "clm:http-route-002"
+                                        "clm:http-route-002",
+                                        "clm:docs-support-001",
+                                        "clm:docs-support-002"
                                     ],
                       "evidence_ids":  [
                                            "evd:http-route-pytest-log",
@@ -5396,10 +5463,13 @@
                       "kind":  "pytest",
                       "path":  "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
                       "feature_ids":  [
-                                          "feat:http-route-001"
+                                          "feat:http-route-001",
+                                          "feat:docs-support-001"
                                       ],
                       "claim_ids":  [
-                                        "clm:http-route-002"
+                                        "clm:http-route-002",
+                                        "clm:docs-support-001",
+                                        "clm:docs-support-002"
                                     ],
                       "evidence_ids":  [
                                            "evd:http-route-pytest-log",
@@ -5413,10 +5483,13 @@
                       "kind":  "pytest",
                       "path":  "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
                       "feature_ids":  [
-                                          "feat:http-route-001"
+                                          "feat:http-route-001",
+                                          "feat:docs-support-001"
                                       ],
                       "claim_ids":  [
-                                        "clm:http-route-002"
+                                        "clm:http-route-002",
+                                        "clm:docs-support-001",
+                                        "clm:docs-support-002"
                                     ],
                       "evidence_ids":  [
                                            "evd:http-route-pytest-log",
@@ -8583,7 +8656,7 @@
                        "status":  "asserted",
                        "tier":  "T2",
                        "kind":  "repo-claim",
-                       "description":  "Route registration materializes concrete custom op aliases carrying HttpRestBindingSpec bindings through route_ctx(...) and register_http_route(...).",
+                       "description":  "Binding-first REST decorators materialize concrete custom ops through op_ctx(bindings=(HttpRestBindingSpec(...), ...)), and imperative HTTP routes normalize equivalent route-backed ops into the owner-local __tigrbl_route_ops__ spec carrier.",
                        "feature_ids":  [
                                            "feat:http-route-001"
                                        ],
@@ -8602,7 +8675,7 @@
                        "status":  "asserted",
                        "tier":  "T2",
                        "kind":  "repo-claim",
-                       "description":  "OpenAPI, OpenRPC, schema, docs, favicon, and diagnostics mounts register through tigrbl_concrete.register_http_route(...) rather than a docs-owned canonical helper.",
+                       "description":  "OpenAPI, OpenRPC, AsyncAPI, JSON Schema, Swagger, Lens, favicon, and diagnostics endpoints mount as ordinary routes and normalize into the same route-backed op carrier as user-defined imperative routes.",
                        "feature_ids":  [
                                            "feat:http-route-001"
                                        ],
@@ -8623,12 +8696,71 @@
                        "status":  "asserted",
                        "tier":  "T2",
                        "kind":  "repo-claim",
-                       "description":  "The deprecated tigrbl_canon runtime-route surface is absent, and HTTP route registration terminology is kept on the concrete route model rather than a separate runtime-route abstraction.",
+                       "description":  "The active line exposes no separate HTTP route registration subsystem: module-level route_ctx(...) and route(...) are removed, register_http_route(...) is absent, and route normalization happens through ordinary decorators and imperative route ownership.",
                        "feature_ids":  [
                                            "feat:http-route-001"
                                        ],
                        "test_ids":  [
                                         "tst:http-route-registration-unit"
+                                    ],
+                       "evidence_ids":  [
+                                            "evd:http-route-pytest-log",
+                                            "evd:http-route-registry-validation"
+                                        ]
+                   },
+                   {
+                       "id":  "clm:factories-001",
+                       "title":  "Factories are canonical and shortcuts re-export factory aliases.",
+                       "status":  "asserted",
+                       "tier":  "T2",
+                       "kind":  "repo-claim",
+                       "description":  "The canonical construction surface lives under factories for make*/define*/derive* helpers and direct factory aliases such as acol, vcol, and op, while shortcuts remains a thin re-export layer.",
+                       "feature_ids":  [
+                                           "feat:factories-001"
+                                       ],
+                       "test_ids":  [
+                                        "tst:http-route-registration-unit"
+                                    ],
+                       "evidence_ids":  [
+                                            "evd:http-route-pytest-log",
+                                            "evd:http-route-registry-validation"
+                                        ]
+                   },
+                   {
+                       "id":  "clm:docs-support-001",
+                       "title":  "OpenAPI, OpenRPC, AsyncAPI, and JSON Schema read from canonical metadata sources.",
+                       "status":  "asserted",
+                       "tier":  "T2",
+                       "kind":  "repo-claim",
+                       "description":  "OpenAPI consumes route-facing metadata from Route plus bindings/models/schemas, while OpenRPC, AsyncAPI, and JSON Schema continue to derive from their canonical op, binding, and schema inputs without a docs-owned route registry.",
+                       "feature_ids":  [
+                                           "feat:docs-support-001"
+                                       ],
+                       "test_ids":  [
+                                        "tst:http-route-system-docs-builders",
+                                        "tst:http-route-jsonrpc-openrpc-surface",
+                                        "tst:http-route-websocket-binding-slice"
+                                    ],
+                       "evidence_ids":  [
+                                            "evd:http-route-pytest-log",
+                                            "evd:http-route-registry-validation"
+                                        ]
+                   },
+                   {
+                       "id":  "clm:docs-support-002",
+                       "title":  "Documentation endpoints mount as ordinary routes and normalized route-backed ops.",
+                       "status":  "asserted",
+                       "tier":  "T2",
+                       "kind":  "repo-claim",
+                       "description":  "Documentation and system endpoints are mounted as ordinary imperative routes, set inherit_owner_dependencies=False where required, and normalize into the same __tigrbl_route_ops__ carrier without any surface_kind abstraction.",
+                       "feature_ids":  [
+                                           "feat:docs-support-001"
+                                       ],
+                       "test_ids":  [
+                                        "tst:http-route-registration-unit",
+                                        "tst:http-route-system-docs-builders",
+                                        "tst:http-route-jsonrpc-openrpc-surface",
+                                        "tst:http-route-websocket-binding-slice"
                                     ],
                        "evidence_ids":  [
                                             "evd:http-route-pytest-log",
@@ -12160,7 +12292,10 @@
                          "claim_ids":  [
                                            "clm:http-route-001",
                                            "clm:http-route-002",
-                                           "clm:http-route-003"
+                                           "clm:http-route-003",
+                                           "clm:factories-001",
+                                           "clm:docs-support-001",
+                                           "clm:docs-support-002"
                                        ],
                          "test_ids":  [
                                           "tst:http-route-registration-unit",
@@ -12180,7 +12315,10 @@
                          "claim_ids":  [
                                            "clm:http-route-001",
                                            "clm:http-route-002",
-                                           "clm:http-route-003"
+                                           "clm:http-route-003",
+                                           "clm:factories-001",
+                                           "clm:docs-support-001",
+                                           "clm:docs-support-002"
                                        ],
                          "test_ids":  [
                                           "tst:http-route-registration-unit",
@@ -13239,13 +13377,51 @@
                      "id":  "adr:1028",
                      "number":  1028,
                      "slug":  "route-aliases-expand-to-concrete-http-op-specs",
-                     "title":  "ADR-0027 - Route Aliases Expand to Concrete HTTP Op Specs",
+                     "title":  "ADR-0027 - Binding-First REST Decorators and Route-Backed Spec Normalization",
                      "path":  ".ssot/adr/ADR-1028-route-aliases-expand-to-concrete-http-op-specs.md",
                      "origin":  "repo-local",
                      "managed":  false,
                      "immutable":  false,
                      "package_version":  "0.2.2",
-                     "content_sha256":  "1ce8d07414fa0b8d6980330fe65f4279ae6bf9ccc2474d57c3b2a98c562c9956",
+                     "content_sha256":  "654d4595f8777c9100312fc7035f84685688af4cb852c7879ff1b184270bc0ed",
+                     "status":  "proposed",
+                     "supersedes":  [
+
+                                    ],
+                     "superseded_by":  [
+
+                                       ]
+                 },
+                 {
+                     "id":  "adr:1029",
+                     "number":  1029,
+                     "slug":  "factories-are-canonical-construction-surfaces",
+                     "title":  "ADR-0028 - Factories Are Canonical Construction Surfaces",
+                     "path":  ".ssot/adr/ADR-1029-factories-are-canonical-construction-surfaces.md",
+                     "origin":  "repo-local",
+                     "managed":  false,
+                     "immutable":  false,
+                     "package_version":  "0.2.2",
+                     "content_sha256":  "8dfa26bd364e296036407c1beaaf2923b849847eddfefe4af3d41c7072644d0e",
+                     "status":  "proposed",
+                     "supersedes":  [
+
+                                    ],
+                     "superseded_by":  [
+
+                                       ]
+                 },
+                 {
+                     "id":  "adr:1030",
+                     "number":  1030,
+                     "slug":  "documentation-support-uses-canonical-metadata-sources",
+                     "title":  "ADR-0029 - Documentation Support Uses Canonical Metadata Sources",
+                     "path":  ".ssot/adr/ADR-1030-documentation-support-uses-canonical-metadata-sources.md",
+                     "origin":  "repo-local",
+                     "managed":  false,
+                     "immutable":  false,
+                     "package_version":  "0.2.2",
+                     "content_sha256":  "250cfdb0bcb5fb90cd877d73d072af317babf17b8af8afe55a03c96b6b096fa3",
                      "status":  "proposed",
                      "supersedes":  [
 
@@ -13474,7 +13650,33 @@
                       "managed":  false,
                       "immutable":  false,
                       "package_version":  "0.2.2",
-                      "content_sha256":  "00f3f91c38ab5e2633869996608dab43fafb29dd9f79e45fcc656e3b525e970b",
+                      "content_sha256":  "58f2978572435ef8b0a87bc7602425eaea274a5d637a6a850f14e67025d42cd3",
+                      "kind":  "repo-local"
+                  },
+                  {
+                      "id":  "spc:2009",
+                      "number":  2009,
+                      "slug":  "factories-canonicalization",
+                      "title":  "Canonical Factories and Shortcut Re-Exports",
+                      "path":  ".ssot/specs/SPEC-2009-factories-canonicalization.md",
+                      "origin":  "repo-local",
+                      "managed":  false,
+                      "immutable":  false,
+                      "package_version":  "0.2.2",
+                      "content_sha256":  "001587e981d31a4d515f8ac8f6239ba2825b009db1a84fe0b6e621ee45ce50ac",
+                      "kind":  "repo-local"
+                  },
+                  {
+                      "id":  "spc:2010",
+                      "number":  2010,
+                      "slug":  "documentation-support",
+                      "title":  "Documentation Support and Metadata Ownership",
+                      "path":  ".ssot/specs/SPEC-2010-documentation-support.md",
+                      "origin":  "repo-local",
+                      "managed":  false,
+                      "immutable":  false,
+                      "package_version":  "0.2.2",
+                      "content_sha256":  "e49c3267077b870bad7102c2c7d74abe5add1b87c0c750f28cb3fd3b46698c07",
                       "kind":  "repo-local"
                   }
               ]

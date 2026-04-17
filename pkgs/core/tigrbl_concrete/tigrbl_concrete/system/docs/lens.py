@@ -4,7 +4,6 @@ from typing import Any
 from urllib.parse import quote
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_concrete._concrete._routing import register_http_route
 
 
 TIGRBL_LENS_VERSION = "latest"
@@ -89,14 +88,13 @@ def mount_lens(
             build_lens_html(router, request, spec_path=resolved_spec_path)
         )
 
-    register_http_route(router, path=_with_leading_slash(path), methods=("GET",), alias=name, endpoint=_lens_handler)
-
     router.add_route(
         path,
         _lens_handler,
         methods=["GET"],
         name=name,
         include_in_schema=False,
+        inherit_owner_dependencies=False,
     )
     return router
 

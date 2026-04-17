@@ -5,7 +5,6 @@ from typing import Any, Dict, Iterable, List, Mapping, Sequence
 from pydantic import BaseModel
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_concrete._concrete._routing import register_http_route
 from tigrbl_core._spec import OpSpec
 from .openapi.helpers import (
     _security_from_dependencies,
@@ -254,8 +253,6 @@ def mount_openrpc(
     def _openrpc_endpoint(request: Any) -> Response:
         return Response.json(build_openrpc_spec(router, request=request))
 
-    register_http_route(router, path=normalized_path, methods=("GET",), alias=name, endpoint=_openrpc_endpoint)
-
     router.add_route(
         normalized_path,
         _openrpc_endpoint,
@@ -265,6 +262,7 @@ def mount_openrpc(
         tags=list(tags) if tags else None,
         summary="OpenRPC",
         description="OpenRPC 1.2.6 schema for JSON-RPC methods.",
+        inherit_owner_dependencies=False,
     )
     return router
 

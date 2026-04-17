@@ -5,39 +5,41 @@ Kind: repo-local
 
 ## Intent
 
-This document defines the canonical HTTP route registration model for the active line.
+This document defines the canonical HTTP route model for the active line.
 
 ## Canonical model
 
-- A registered HTTP route is a concrete custom op alias with one or more `HttpRestBindingSpec` bindings.
-- `route_ctx(...)` is the decorator-first alias that expands into that shape during materialization.
-- `register_http_route(...)` is the imperative helper that registers the same shape directly onto concrete app/router owners.
+- Module-level `route_ctx(...)` and module-level `route(...)` are not part of the active declarative surface.
+- Module-level `get/post/put/patch/delete` are REST-specific decorator aliases over `op_ctx(...)`.
+- Those decorators construct `HttpRestBindingSpec` values and pass them through `op_ctx(bindings=...)`.
+- Imperative `Router.route/get/post/...` and `App.route/get/post/...` create `Route` records and normalize route-backed ops into the owner-local `__tigrbl_route_ops__` carrier.
+- There is no separate HTTP route registration subsystem and no `register_http_route(...)` helper.
 
-## Required registration fields
+## Binding and metadata ownership
 
-`register_http_route(...)` requires:
+- Transport facts live in `HttpRestBindingSpec`.
+- Op semantics live in `OpSpec`.
+- Route-facing documentation/runtime policy lives on `Route`.
+- `inherit_owner_dependencies` is the generic route policy flag used by documentation/system routes that should not inherit owner dependencies.
 
-- `path`
-- `methods`
-- `alias`
-- `endpoint`
+## Normalization rules
 
-The helper normalizes the HTTP path, normalizes the verb set, and stores the resulting op on the synthetic concrete route model.
+- Direct imperative routes and mounted imperative routes normalize into `__tigrbl_route_ops__`.
+- The normalized carrier is an owner-local spec graph node, not a separate public subsystem.
+- Reusing the same alias merges HTTP bindings by alias and path rather than creating duplicate op rows.
+- Mount prefixes must be preserved on both the mounted `Route` and the normalized binding specs.
 
-## Synthetic route model
+## Documentation endpoints
 
-- Concrete route-backed ops are stored on `__tigrbl_system_routes__`.
-- The synthetic route model is not limited to docs endpoints; it is the shared owner for concrete route-backed custom ops.
-- Re-registering the same alias updates the existing op entry instead of creating duplicate op rows.
-
-## System documents
-
-- HTTP system-document mounts such as `/openapi.json`, `/docs`, `/openrpc.json`, `/lens`, `/schemas.json`, `/asyncapi.json`, favicon endpoints, and diagnostics endpoints register through `register_http_route(...)`.
-- The `system` package may call the helper, but it does not define canonical route registration behavior.
+- `/openapi.*`, `/docs`, `/openrpc.json`, `/lens`, `/schemas.json`, and `/asyncapi.json` mount as ordinary routes.
+- Those routes also normalize into `__tigrbl_route_ops__`.
+- OpenAPI reads route-facing metadata from `Route`; OpenRPC, AsyncAPI, and JSON Schema continue to read their canonical op/binding/schema sources.
 
 ## Traceability
 
-- ADR: `adr/ADR-0027-route-aliases-expand-to-concrete-http-op-specs.md`
+- ADRs:
+  - `adr/ADR-0027-route-aliases-expand-to-concrete-http-op-specs.md`
+  - `adr/ADR-0029-documentation-support-uses-canonical-metadata-sources.md`
 - Tests:
   - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
   - `pkgs/core/tigrbl_tests/tests/unit/decorators/test_phase1_declarative_surface.py`
