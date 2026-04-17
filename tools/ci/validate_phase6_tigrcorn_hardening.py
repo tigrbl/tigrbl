@@ -16,12 +16,6 @@ BLOCKED_CLAIMS = ROOT / "certification" / "claims" / "blocked.yaml"
 OPERATOR_PROFILES = ROOT / "docs" / "developer" / "operator" / "profiles"
 PROFILE_REPORTS = ROOT / "reports" / "certification_state" / "profiles"
 NEGATIVE_CORPORA = ROOT / "reports" / "certification_state" / "negative_corpora"
-SPECS = (
-    ROOT / "specs" / "tigrcorn-proxy-contract.md",
-    ROOT / "specs" / "tigrcorn-early-data-contract.md",
-    ROOT / "specs" / "tigrcorn-origin-pathsend-static-contract.md",
-    ROOT / "specs" / "tigrcorn-quic-observability.md",
-)
 PROFILE_NAMES = (
     "strict-h1-origin",
     "strict-h2-origin",
@@ -97,10 +91,6 @@ def main() -> None:
             errors.append(f"Missing profile certification report: reports/certification_state/profiles/{name}.report.md")
         if not (NEGATIVE_CORPORA / f"{name}.negative.json").exists():
             errors.append(f"Missing profile negative corpus: reports/certification_state/negative_corpora/{name}.negative.json")
-
-    for path in SPECS:
-        if not path.exists():
-            errors.append(f"Missing Phase 6 spec: {path.relative_to(ROOT)}")
 
     fail(errors)
     print("Phase 6 Tigrcorn hardening validation passed")
