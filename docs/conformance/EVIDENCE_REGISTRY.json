@@ -918,6 +918,192 @@
         "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes"
       ]
     },
+    "NEXT-003": {
+      "artifact_paths": [
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/op.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/hook.py"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/decorators/test_phase1_declarative_surface.py::test_declarative_surface_literals_are_present"
+      ]
+    },
+    "NEXT-004": {
+      "artifact_paths": [
+        "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_phase1_declared_surface_docs.py::test_declared_surface_docs_derive_from_bindings",
+        "pkgs/core/tigrbl_concrete/tests/test_phase2_transport_docs.py::test_transport_docs_follow_declared_bindings"
+      ]
+    },
+    "NEXT-005": {
+      "artifact_paths": [
+        "tools/ci/validate_phase1_declared_surface.py"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "tools/ci/validate_phase1_declared_surface.py",
+        "docs/developer/CI_VALIDATION.md"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_phase1_declared_surface.py::test_phase1_declared_surface_validator_passes"
+      ]
+    },
+    "NEXT-006": {
+      "artifact_paths": [
+        ".ssot/reports/transport-dispatch-track-setup.md",
+        ".ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/NEXT_TARGETS.md",
+        ".ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.md",
+        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.md"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes"
+      ]
+    },
+    "NEXT-007": {
+      "artifact_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md",
+        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.md"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching"
+      ]
+    },
+    "NEXT-008": {
+      "artifact_paths": [
+        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.md",
+        ".ssot/specs/SPEC-2015-endpoint-keyed-jsonrpc-bindings.md",
+        ".ssot/specs/SPEC-2016-core-default-endpoint-mappings.md"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity"
+      ]
+    },
+    "NEXT-009": {
+      "artifact_paths": [
+        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.md"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching",
+        "pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity"
+      ]
+    },
+    "NEXT-010": {
+      "artifact_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching"
+      ]
+    },
+    "NEXT-011": {
+      "artifact_paths": [
+        ".ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/registry.json",
+        ".ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes"
+      ]
+    },
+    "NEXT-012": {
+      "artifact_paths": [
+        "tools/ci/validate_transport_dispatch_track.py",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "tools/ci/validate_transport_dispatch_track.py",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes"
+      ]
+    },
     "OAS-001": {
       "artifact_paths": [
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md",

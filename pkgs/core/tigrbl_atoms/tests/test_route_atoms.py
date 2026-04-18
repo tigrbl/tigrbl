@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from types import SimpleNamespace
 
+from tigrbl_kernel.models import OpKey
 from tigrbl_atoms.atoms.dispatch import (
     REGISTRY,
     binding_match,
@@ -30,15 +31,23 @@ def test_dispatch_instances_and_impls_use_atom_contract() -> None:
 
 
 def test_binding_match_parse_normalize_and_resolve() -> None:
-    packed = SimpleNamespace(
-        selector_to_id={"Widget.create": 1},
-        proto_to_id={"http.jsonrpc": 0},
-        route_to_program=[[0, 0]],
-    )
     plan = SimpleNamespace(
-        proto_indices={"http.jsonrpc": {"Widget.create": 0}},
-        packed=packed,
+        proto_indices={
+            "http.jsonrpc": {
+                "endpoints": {
+                    "default": {
+                        "Widget.create": {
+                            "meta_index": 0,
+                            "selector": "default:Widget.create",
+                            "rpc_method": "Widget.create",
+                            "endpoint": "default",
+                        }
+                    }
+                }
+            }
+        },
         opmeta=[SimpleNamespace(model="Widget", alias="create", target="widgets")],
+        opkey_to_meta={OpKey("http.jsonrpc", "default:Widget.create"): 0},
     )
     ctx = SimpleNamespace(
         method="POST",
@@ -56,7 +65,8 @@ def test_binding_match_parse_normalize_and_resolve() -> None:
     op_resolve._run(None, ctx)
 
     assert ctx.temp["dispatch"]["binding_protocol"] == "http.jsonrpc"
-    assert ctx.temp["dispatch"]["binding_selector"] == "Widget.create"
+    assert ctx.temp["dispatch"]["binding_selector"] == "default:Widget.create"
+    assert ctx.temp["dispatch"]["endpoint"] == "default"
     assert ctx.payload == {"name": "x"}
     assert ctx.op == "create"
     assert ctx.opmeta_index == 0

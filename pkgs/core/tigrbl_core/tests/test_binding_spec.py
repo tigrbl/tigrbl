@@ -3,6 +3,7 @@ from __future__ import annotations
 from tigrbl_core._spec.binding_spec import (
     BindingRegistrySpec,
     BindingSpec,
+    HttpJsonRpcBindingSpec,
     HttpStreamBindingSpec,
     HttpRestBindingSpec,
     SseBindingSpec,
@@ -10,7 +11,11 @@ from tigrbl_core._spec.binding_spec import (
     WsBindingSpec,
     resolve_rest_nested_prefix,
 )
-from tigrbl_core.config.constants import TIGRBL_NESTED_PATHS_ATTR
+from tigrbl_core.config.constants import (
+    TIGRBL_NESTED_PATHS_ATTR,
+    __JSONRPC_DEFAULT_ENDPOINT__,
+    __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__,
+)
 
 
 def test_binding_registry_register_get_and_values() -> None:
@@ -53,3 +58,10 @@ def test_streaming_binding_specs_expose_exchange_and_framing_defaults() -> None:
     assert ws.framing == "jsonrpc"
     assert wt.exchange == "bidirectional_stream"
     assert wt.framing == "webtransport"
+
+
+def test_jsonrpc_binding_spec_exposes_endpoint_default_from_core_constants() -> None:
+    binding = HttpJsonRpcBindingSpec(proto="http.jsonrpc", rpc_method="Widget.create")
+
+    assert binding.endpoint == __JSONRPC_DEFAULT_ENDPOINT__
+    assert __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__[binding.endpoint] == "/rpc"

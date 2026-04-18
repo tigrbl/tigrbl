@@ -89,7 +89,7 @@ def test_compile_plan_builds_indices_for_rest_ws_and_jsonrpc_bindings() -> None:
     assert plan.opkey_to_meta[OpKey("http.rest", "GET /widgets")] == 0
     assert plan.opkey_to_meta[OpKey("http.rest", "GET /widgets/{widget_id}")] == 1
     assert plan.opkey_to_meta[OpKey("ws", "/ws/widgets/{widget_id}")] == 1
-    assert plan.opkey_to_meta[OpKey("http.jsonrpc", "widgets.lookup")] == 2
+    assert plan.opkey_to_meta[OpKey("http.jsonrpc", "default:widgets.lookup")] == 2
 
     http_rest_index = plan.proto_indices["http.rest"]
     assert http_rest_index["exact"]["GET /widgets"] == 0
@@ -102,7 +102,9 @@ def test_compile_plan_builds_indices_for_rest_ws_and_jsonrpc_bindings() -> None:
     assert templated_ws["path"] == "/ws/widgets/{widget_id}"
     assert templated_ws["names"] == ("widget_id",)
 
-    assert plan.proto_indices["http.jsonrpc"]["widgets.lookup"] == 2
+    jsonrpc_index = plan.proto_indices["http.jsonrpc"]["endpoints"]["default"]
+    assert jsonrpc_index["widgets.lookup"]["meta_index"] == 2
+    assert jsonrpc_index["widgets.lookup"]["selector"] == "default:widgets.lookup"
 
 
 def test_compile_plan_accepts_appspec_and_declared_tigrbl_ops() -> None:

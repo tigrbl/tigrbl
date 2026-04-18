@@ -17,7 +17,9 @@ from typing import (
 )
 
 from ._router import Router as _Router
+from ._response import Response
 from tigrbl_core._spec.engine_spec import EngineCfg
+from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
 from tigrbl_concrete._mapping.router.include import (
     include_table as _include_table,
@@ -138,6 +140,7 @@ class TigrblRouter(_Router):
         self.core_raw = SimpleNamespace()
         self.websocket_routes: list[WebSocketRoute] = []
         self._static_mounts: list[dict[str, str]] = []
+        self._jsonrpc_endpoint_mounts: dict[str, str] = {}
         self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
         self._tigrbl_runtime_acquire_db = _resolver.acquire
 
@@ -295,20 +298,98 @@ class TigrblRouter(_Router):
         )
 
     def mount_jsonrpc(
-        self, *, prefix: str | None = None, tags: Sequence[str] | None = ("rpc",)
+        self,
+        *,
+        prefix: str | None = None,
+        endpoint: str = __JSONRPC_DEFAULT_ENDPOINT__,
+        tags: Sequence[str] | None = ("rpc",),
     ) -> Any:
+        from collections.abc import Mapping
+
+        from tigrbl_concrete.transport.jsonrpc.helpers import (
+            _err,
+            _normalize_params,
+            _ok,
+        )
+        from tigrbl_runtime.runtime.status.exceptions import HTTPException
+
         del tags
         if prefix is not None:
             self.jsonrpc_prefix = prefix
+        endpoint = str(endpoint or __JSONRPC_DEFAULT_ENDPOINT__)
+
+        async def _jsonrpc_endpoint(
+            request: Any = None,
+            body: Any = None,
+            **_kwargs: Any,
+        ) -> Any:
+            request_id = None
+            try:
+                payload = body
+                if payload is None and request is not None:
+                    payload = request.json_sync()
+                if payload is None:
+                    payload = {}
+                if not isinstance(payload, Mapping):
+                    return Response.json(
+                        _err(-32600, "Invalid Request", request_id),
+                        status_code=400,
+                    )
+
+                method = str(payload.get("method") or "")
+                request_id = payload.get("id")
+                if not method:
+                    return Response.json(
+                        _err(-32600, "Method is required", request_id),
+                        status_code=400,
+                    )
+
+                model_name, dot, alias = method.partition(".")
+                if not dot or not model_name or not alias:
+                    return Response.json(
+                        _err(-32601, f"Unknown RPC method '{method}'", request_id),
+                        status_code=404,
+                    )
+
+                params = _normalize_params(payload.get("params"))
+                result = await self.rpc_call(
+                    model_name,
+                    alias,
+                    params,
+                    request=request,
+                    ctx={"request": request},
+                )
+                if request_id is None:
+                    return Response(status_code=204)
+                return Response.json(_ok(result, request_id))
+            except HTTPException as exc:
+                return Response.json(
+                    _err(int(exc.status_code), str(exc.detail), request_id),
+                    status_code=int(exc.status_code),
+                )
+            except AttributeError as exc:
+                return Response.json(
+                    _err(-32601, str(exc), request_id),
+                    status_code=404,
+                )
+            except Exception as exc:
+                return Response.json(
+                    _err(-32000, str(exc), request_id),
+                    status_code=500,
+                )
 
         existing_paths = {getattr(route, "path", None) for route in self.routes}
-        if (
-            self.jsonrpc_prefix not in existing_paths
-            and f"{self.jsonrpc_prefix}/" not in existing_paths
-        ):
+        candidate_paths = (
+            self.jsonrpc_prefix,
+            f"{self.jsonrpc_prefix}/" if self.jsonrpc_prefix != "/" else "/",
+        )
+        for path in candidate_paths:
+            self._jsonrpc_endpoint_mounts[path] = endpoint
+            if path in existing_paths:
+                continue
             self.add_route(
-                self.jsonrpc_prefix,
-                lambda *_args, **_kwargs: None,
+                path,
+                _jsonrpc_endpoint,
                 methods=["POST"],
             )
         return self

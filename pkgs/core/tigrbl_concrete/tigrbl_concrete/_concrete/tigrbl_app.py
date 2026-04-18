@@ -19,6 +19,7 @@ from typing import (
 )
 
 from ._app import App as _App
+from ._response import Response
 from .tigrbl_router import TigrblRouter
 from tigrbl_core._spec.op_spec import OpSpec
 from tigrbl_core._spec.engine_spec import EngineCfg
@@ -48,7 +49,10 @@ from ._websocket import WebSocketRoute
 from ._table_registry import TableRegistry
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
-from tigrbl_core.config.constants import TIGRBL_GET_DB_ATTR
+from tigrbl_core.config.constants import (
+    TIGRBL_GET_DB_ATTR,
+    __JSONRPC_DEFAULT_ENDPOINT__,
+)
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
 from ._rust_backend import (
     clear_ffi_boundary_events as _clear_rust_boundary_events,
@@ -140,19 +144,7 @@ class TigrblApp(_App):
             for binding in tuple(getattr(op_spec, "bindings", ()) or ())
         )
         if has_jsonrpc_binding:
-            app._ensure_default_router()
-            existing_paths = {
-                getattr(route, "path", None) for route in getattr(app, "routes", ())
-            }
-            if (
-                spec.jsonrpc_prefix not in existing_paths
-                and f"{spec.jsonrpc_prefix}/" not in existing_paths
-            ):
-                app.add_route(
-                    spec.jsonrpc_prefix,
-                    lambda *_args, **_kwargs: None,
-                    methods=["POST"],
-                )
+            app.mount_jsonrpc(prefix=spec.jsonrpc_prefix)
         return app
 
     def __init__(
@@ -231,6 +223,7 @@ class TigrblApp(_App):
         self.routers: Dict[str, Any] = {}
         self.websocket_routes: list[WebSocketRoute] = []
         self._static_mounts: list[dict[str, str]] = []
+        self._jsonrpc_endpoint_mounts: dict[str, str] = {}
         self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
         self._tigrbl_runtime_acquire_db = _resolver.acquire
         self.tables = AttrDict(self._table_registry)
@@ -728,9 +721,84 @@ class TigrblApp(_App):
 
     # ------------------------- extras / mounting -------------------------
 
-    def mount_jsonrpc(self, *, prefix: str | None = None) -> Any:
+    def mount_jsonrpc(
+        self,
+        *,
+        prefix: str | None = None,
+        endpoint: str = __JSONRPC_DEFAULT_ENDPOINT__,
+    ) -> Any:
+        from collections.abc import Mapping
+
+        from tigrbl_concrete.transport.jsonrpc.helpers import (
+            _err,
+            _normalize_params,
+            _ok,
+        )
+        from tigrbl_runtime.runtime.status.exceptions import HTTPException
+
         if prefix is not None:
             self.jsonrpc_prefix = prefix
+        endpoint = str(endpoint or __JSONRPC_DEFAULT_ENDPOINT__)
+
+        async def _jsonrpc_endpoint(
+            request: Any = None,
+            body: Any = None,
+            **_kwargs: Any,
+        ) -> Any:
+            request_id = None
+            try:
+                payload = body
+                if payload is None and request is not None:
+                    payload = request.json_sync()
+                if payload is None:
+                    payload = {}
+                if not isinstance(payload, Mapping):
+                    return Response.json(
+                        _err(-32600, "Invalid Request", request_id),
+                        status_code=400,
+                    )
+
+                method = str(payload.get("method") or "")
+                request_id = payload.get("id")
+                if not method:
+                    return Response.json(
+                        _err(-32600, "Method is required", request_id),
+                        status_code=400,
+                    )
+
+                model_name, dot, alias = method.partition(".")
+                if not dot or not model_name or not alias:
+                    return Response.json(
+                        _err(-32601, f"Unknown RPC method '{method}'", request_id),
+                        status_code=404,
+                    )
+
+                params = _normalize_params(payload.get("params"))
+                result = await self.rpc_call(
+                    model_name,
+                    alias,
+                    params,
+                    request=request,
+                    ctx={"request": request},
+                )
+                if request_id is None:
+                    return Response(status_code=204)
+                return Response.json(_ok(result, request_id))
+            except HTTPException as exc:
+                return Response.json(
+                    _err(int(exc.status_code), str(exc.detail), request_id),
+                    status_code=int(exc.status_code),
+                )
+            except AttributeError as exc:
+                return Response.json(
+                    _err(-32601, str(exc), request_id),
+                    status_code=404,
+                )
+            except Exception as exc:
+                return Response.json(
+                    _err(-32000, str(exc), request_id),
+                    status_code=500,
+                )
 
         router = self._ensure_default_router()
         existing_paths = {getattr(route, "path", None) for route in self.routes}
@@ -740,9 +808,10 @@ class TigrblApp(_App):
             f"{base_prefix}/" if base_prefix != "/" else "/",
         )
         for path in candidate_paths:
+            self._jsonrpc_endpoint_mounts[path] = endpoint
             if path in existing_paths:
                 continue
-            self.add_route(path, lambda *_args, **_kwargs: None, methods=["POST"])
+            self.add_route(path, _jsonrpc_endpoint, methods=["POST"])
         return router
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:

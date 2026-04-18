@@ -1,0 +1,29 @@
+# ADR-1047 - KernelPlan-Owned Transport Dispatch
+
+- **Status:** Accepted
+- **Date:** 2026-04-18
+- **Related ADRs:** ADR-1005, ADR-1006, ADR-1008, ADR-1016, ADR-1024, ADR-1025
+
+## Context
+
+The active line drifted into transport-specific bypasses: app-local HTTP dispatch, direct JSON-RPC endpoint logic, and executor-level lookup/matching. That breaks the intended ownership split between concrete ingress, runtime/executor, and the kernel plan.
+
+## Decision
+
+1. There is one dispatch path for transport ingress.
+2. Concrete app/router handlers may normalize transport envelopes, but they may not perform operation lookup or semantic dispatch.
+3. Runtime and executors do not perform lookup, matching, read/write/effect/reducer work.
+4. The compiled `KernelPlan` and its atoms own transport lookup, binding resolution, path or RPC-method matching, payload extraction, and downstream semantic phase execution.
+5. REST and JSON-RPC parity must be preserved by the shared semantic dispatch path rather than by transport-specific fallbacks.
+
+## Consequences
+
+- transport adapters stay thin and replaceable
+- executor implementations stop encoding protocol-routing rules
+- kernel compilation becomes the authoritative location for dispatch semantics
+
+## Rejected alternatives
+
+- separate transport-owned dispatch stacks for REST and JSON-RPC
+- executor-owned route or RPC matching
+- transport-specific semantic differences for the same canonical operation

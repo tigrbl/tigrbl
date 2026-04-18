@@ -13,6 +13,7 @@ from tigrbl.types import Column, String
 
 
 @pytest.mark.asyncio
+@pytest.mark.timeout(5)
 async def test_systemz_prefix_routes() -> None:
     class Widget(TableBase, GUIDPk):
         __tablename__ = "lesson_systemz_widget"

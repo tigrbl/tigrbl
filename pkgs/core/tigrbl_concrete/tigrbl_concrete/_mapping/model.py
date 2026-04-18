@@ -849,6 +849,48 @@ def _materialize_rest_router(
     if "bulk_delete" in aliases:
         suppressed_aliases.add("clear")
 
+    def _make_materialized_endpoint(alias: str, target: str):
+        async def _materialized_endpoint(
+            request: Any = None,
+            body: Any = None,
+            query: dict[str, Any] | None = None,
+            **path_params: Any,
+        ) -> Any:
+            from tigrbl_concrete._concrete import engine_resolver as _resolver
+            from tigrbl_runtime.runtime.executor.invoke import invoke_op
+
+            db = None
+            release = None
+            if target != "custom":
+                db, release = _resolver.acquire(
+                    router=router,
+                    model=model,
+                    op_alias=alias,
+                )
+
+            payload = body
+            if payload is None:
+                payload = dict(query or {})
+            ctx = {
+                "request": request,
+                "path_params": dict(path_params or {}),
+                "payload": payload,
+                "query_params": dict(query or {}),
+                "temp": (
+                    {"__sys_db_release__": release} if callable(release) else {}
+                ),
+            }
+            return await invoke_op(
+                request=request,
+                db=db,
+                model=model,
+                alias=alias,
+                ctx=ctx,
+            )
+
+        _materialized_endpoint.__name__ = f"{model.__name__}_{alias}_route"
+        return _materialized_endpoint
+
     # Remove REST bindings from suppressed specs so the kernel plan
     # does not create templated route entries that shadow bulk ops.
     if suppressed_aliases:
@@ -894,25 +936,10 @@ def _materialize_rest_router(
             if route_key in existing_routes:
                 continue
 
-            async def _placeholder_endpoint(
-                *_args: Any, _alias: str = spec.alias, **_kwargs: Any
-            ) -> Any:
-                handler = getattr(model, _alias, None)
-                if not callable(handler):
-                    return {
-                        "detail": "Route materialized; handler unavailable in concrete binder.",
-                    }
-                ctx = {
-                    "request": _kwargs.get("request"),
-                    "path_params": _kwargs,
-                    "payload": _kwargs.get("body", {}),
-                }
-                result = _call_op_handler(handler, model, ctx)
-                if inspect.isawaitable(result):
-                    result = await result
-                return result
-
-            _placeholder_endpoint.__name__ = f"{model.__name__}_{spec.alias}_route"
+            _materialized_endpoint = _make_materialized_endpoint(
+                spec.alias,
+                spec.target,
+            )
             alias_ns = getattr(
                 getattr(model, "schemas", SimpleNamespace()),
                 spec.alias,
@@ -943,7 +970,7 @@ def _materialize_rest_router(
 
             model_router.add_route(
                 path=path,
-                endpoint=_placeholder_endpoint,
+                endpoint=_materialized_endpoint,
                 methods=list(methods),
                 name=f"{model.__name__}.{spec.alias}",
                 tags=[model.__name__],
