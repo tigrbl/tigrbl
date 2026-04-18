@@ -21,6 +21,8 @@ For `0.3.19.dev1`:
 
 The active next-target program is the datatype/table architecture that was previously deferred from the current-target certification cycle.
 
+The active line also now carries a governed Transport-dispatch track inside the same next-target boundary.
+
 ### Program scope
 
 The next-target plan now governs these items:
@@ -34,6 +36,19 @@ The next-target plan now governs these items:
 7. table-spec portability, multi-engine table semantics, and interoperability
 8. reflection-driven round-trip schema recovery
 
+### Transport-dispatch track
+
+The transport-dispatch track now governs these items:
+
+1. single-dispatch transport flow
+2. removal of non-conforming transport bypasses
+3. binding-driven REST and JSON-RPC ingress materialization
+4. KernelPlan-owned lookup and matching
+5. executor non-ownership for transport matching
+6. endpoint-keyed JSON-RPC ingress identity
+7. default endpoint mappings owned by `tigrbl_core`
+8. REST/JSON-RPC semantic parity through one shared dispatch path
+
 ### Scope sources already incorporated into the governed plan
 
 The design direction now captured here and in the ADR set includes:
@@ -44,6 +59,15 @@ The design direction now captured here and in the ADR set includes:
 - table/program sequencing after the datatype semantic center is in place
 
 ## Sequence for the next line
+
+### Stage T0 - Transport-dispatch governance setup
+
+- install repo-local `ssot-registry 0.2.6`
+- author ADR-1045 through ADR-1047
+- author SPEC-2013 through SPEC-2016
+- create transport-dispatch features, tests, claims, and evidence rows
+- create and freeze boundary `bnd:transport-dispatch-track-001`
+
 
 ### Stage N1 — Semantic datatype core
 
@@ -78,11 +102,21 @@ The design direction now captured here and in the ADR set includes:
 - define reflection/import behavior
 - document best-effort vs metadata-preserving round-trip rules
 
+### Stage T1 - Single-dispatch transport flow
+
+- restore one transport-dispatch path through the kernel-owned plan
+- keep concrete `/rpc` mounts as thin ingress adapters only
+- move transport lookup and matching back into KernelPlan compilation and atoms
+- preserve semantic parity without weakening parity tests
+
 ## Governing ADR set for the next target
 
 - `.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.md`
 - `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.md`
 - `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md`
+- `.ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.md`
+- `.ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.md`
+- `.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md`
 
 ## Deliverables now established by Phase 14
 
@@ -91,6 +125,8 @@ The design direction now captured here and in the ADR set includes:
 - next-target ADRs
 - handoff audit note `docs/conformance/audit/2026/p14-post-promotion-handoff/README.md`
 - archived promotion-only WIP note `docs/notes/archive/2026/p14-post-promotion-handoff/README.md`
+- transport-dispatch setup note `.ssot/reports/transport-dispatch-track-setup.md`
+- transport-dispatch boundary snapshot `.ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json`
 
 ## Non-goals for this checkpoint
 

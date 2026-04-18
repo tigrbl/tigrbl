@@ -21,6 +21,7 @@ from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop
 
 
 @pytest.mark.asyncio
+@pytest.mark.timeout(5)
 async def test_openapi_security_from_app_authn_dependency() -> None:
     """Show app-level authn dependencies mark secured routes in OpenAPI.
 

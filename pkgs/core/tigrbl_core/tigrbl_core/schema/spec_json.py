@@ -500,6 +500,7 @@ def build_individual_spec_json_schemas() -> dict[str, dict[str, Any]]:
             {
                 "proto": {"type": "string", "enum": ["http.jsonrpc", "https.jsonrpc"]},
                 "rpc_method": {"type": "string"},
+                "endpoint": {"type": "string"},
                 "exchange": {"type": "string"},
                 "framing": {"type": "string"},
             },

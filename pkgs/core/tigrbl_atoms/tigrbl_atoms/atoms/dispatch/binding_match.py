@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
+from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
+
 from ... import events as _ev
 from ...stages import Ingress, Bound
 from ...types import Atom, BoundCtx, Ctx
@@ -27,6 +29,20 @@ def _method(ctx: Any) -> str:
 
 def _path(ctx: Any) -> str:
     return str(getattr(ctx, "path", "/") or "/")
+
+
+def _endpoint(dispatch: Mapping[str, object], ctx: Any) -> str:
+    endpoint = dispatch.get("endpoint")
+    if isinstance(endpoint, str) and endpoint:
+        return endpoint
+    temp = getattr(ctx, "temp", None)
+    if isinstance(temp, Mapping):
+        route = temp.get("route")
+        if isinstance(route, Mapping):
+            endpoint = route.get("endpoint")
+            if isinstance(endpoint, str) and endpoint:
+                return endpoint
+    return __JSONRPC_DEFAULT_ENDPOINT__
 
 
 def _rpc_method(dispatch: Mapping[str, object], ctx: Any) -> str | None:
@@ -78,6 +94,7 @@ def _run(obj: object | None, ctx: Any) -> None:
 
     method = _method(ctx)
     path = _path(ctx)
+    endpoint = _endpoint(dispatch, ctx)
     rpc_method = _rpc_method(dispatch, ctx)
 
     matched_proto: str | None = None
@@ -91,11 +108,21 @@ def _run(obj: object | None, ctx: Any) -> None:
             if (
                 proto.endswith(".jsonrpc")
                 and isinstance(rpc_method, str)
-                and rpc_method in bucket
             ):
-                matched_proto = proto
-                matched_selector = rpc_method
-                break
+                endpoints = bucket.get("endpoints")
+                if isinstance(endpoints, Mapping):
+                    endpoint_bucket = endpoints.get(endpoint)
+                    if isinstance(endpoint_bucket, Mapping):
+                        entry = endpoint_bucket.get(rpc_method)
+                        if isinstance(entry, Mapping):
+                            matched_proto = proto
+                            matched_selector = str(
+                                entry.get("selector") or f"{endpoint}:{rpc_method}"
+                            )
+                            dispatch["endpoint"] = str(
+                                entry.get("endpoint") or endpoint
+                            )
+                            break
             if proto.endswith(".rest"):
                 exact = bucket.get("exact")
                 selector = f"{method} {path}"
@@ -145,6 +172,10 @@ def _run(obj: object | None, ctx: Any) -> None:
         if isinstance(route, dict):
             route["selector"] = matched_selector
         setattr(ctx, "selector", matched_selector)
+    if matched_proto is not None and matched_proto.endswith(".jsonrpc"):
+        if isinstance(route, dict):
+            route["endpoint"] = str(dispatch.get("endpoint") or endpoint)
+        setattr(ctx, "endpoint", str(dispatch.get("endpoint") or endpoint))
     if matched_path_params:
         dispatch["path_params"] = matched_path_params
         if isinstance(route, dict):

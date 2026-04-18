@@ -4,6 +4,8 @@ import json
 import uuid
 from typing import Any, Mapping
 
+from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
+
 from ... import events as _ev
 from ...stages import Bound
 from ...types import Atom, BoundCtx, Ctx
@@ -39,13 +41,23 @@ def _run(obj: object | None, ctx: Any) -> None:
 
     if not protocol and isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
         dispatch.setdefault("binding_protocol", "http.jsonrpc")
-        dispatch["binding_selector"] = body.get("method")
+        endpoint = str(
+            dispatch.get("endpoint")
+            or route.get("endpoint")
+            or __JSONRPC_DEFAULT_ENDPOINT__
+        )
+        method = body.get("method")
+        dispatch["endpoint"] = endpoint
+        dispatch["binding_selector"] = (
+            f"{endpoint}:{method}" if isinstance(method, str) and method else method
+        )
         dispatch["rpc"] = dict(body)
-        dispatch["rpc_method"] = body.get("method")
+        dispatch["rpc_method"] = method
         dispatch["parsed_payload"] = body.get("params", {})
         if isinstance(route, dict):
             route["protocol"] = dispatch.get("binding_protocol")
             route["selector"] = dispatch.get("binding_selector")
+            route["endpoint"] = endpoint
             route["rpc_envelope"] = dict(body)
             route["payload"] = dispatch["parsed_payload"]
         return
@@ -63,12 +75,23 @@ def _run(obj: object | None, ctx: Any) -> None:
 
     if protocol.endswith(".jsonrpc"):
         if isinstance(body, Mapping):
-            dispatch.setdefault("binding_selector", body.get("method"))
+            endpoint = str(
+                dispatch.get("endpoint")
+                or route.get("endpoint")
+                or __JSONRPC_DEFAULT_ENDPOINT__
+            )
+            method = body.get("method")
+            dispatch["endpoint"] = endpoint
+            dispatch.setdefault(
+                "binding_selector",
+                f"{endpoint}:{method}" if isinstance(method, str) and method else method,
+            )
             dispatch["rpc"] = dict(body)
-            dispatch["rpc_method"] = body.get("method")
+            dispatch["rpc_method"] = method
             dispatch["parsed_payload"] = body.get("params", {})
             if isinstance(route, dict):
                 route["selector"] = dispatch.get("binding_selector")
+                route["endpoint"] = endpoint
                 route["rpc_envelope"] = dict(body)
         elif isinstance(body, list):
             dispatch["rpc_batch"] = [

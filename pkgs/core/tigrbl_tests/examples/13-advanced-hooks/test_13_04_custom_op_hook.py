@@ -13,6 +13,7 @@ from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop
 
 
 @pytest.mark.asyncio
+@pytest.mark.timeout(5)
 async def test_custom_op_with_hook() -> None:
     class Widget(TableBase):
         __tablename__ = "hook_ops_widgets"

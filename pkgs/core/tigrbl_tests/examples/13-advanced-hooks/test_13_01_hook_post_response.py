@@ -13,6 +13,7 @@ from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop
 
 
 @pytest.mark.asyncio
+@pytest.mark.timeout(5)
 async def test_hook_modifies_response() -> None:
     class Item(TableBase):
         __tablename__ = "hook_items"

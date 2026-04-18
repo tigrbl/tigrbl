@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-import inspect
 from dataclasses import replace
 from typing import Any
 
 from ._table_registry import TableRegistry
 from ._websocket import WebSocket
 from ._request import Request
-from ._response import Response
 from tigrbl_base._base import AppBase
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
 from ._engine import Engine
@@ -262,72 +260,6 @@ class App(AppBase):
             self._runtime_instance = runtime
         return runtime
 
-    async def _read_http_body(self, receive: Any) -> bytes:
-        chunks: list[bytes] = []
-        while True:
-            message = await receive()
-            if message.get("type") != "http.request":
-                break
-            chunks.append(message.get("body", b"") or b"")
-            if not message.get("more_body"):
-                break
-        return b"".join(chunks)
-
-    async def _dispatch_http_route(self, scope: dict[str, Any], receive: Any, send: Any) -> bool:
-        method = str(scope.get("method") or "GET").upper()
-        path = str(scope.get("path") or "/")
-        body = await self._read_http_body(receive)
-        request = Request.from_scope(scope, app=self)
-        request.body = body
-        for route in list(getattr(self, "routes", ()) or []):
-            if method not in getattr(route, "methods", ()):
-                continue
-            matched = route.pattern.match(path)
-            if matched is None:
-                continue
-            path_params = matched.groupdict()
-            scope["path_params"] = path_params
-            try:
-                for dep in list(getattr(route, "security_dependencies", ()) or []):
-                    dep(request)
-                kwargs: dict[str, Any] = {}
-                signature = inspect.signature(route.handler)
-                params = list(signature.parameters.items())
-                for idx, (name, param) in enumerate(params):
-                    if name in path_params:
-                        kwargs[name] = path_params[name]
-                        continue
-                    annotation = param.annotation
-                    if annotation is Request or name in {"request", "_request"} or (len(params) == 1 and not path_params):
-                        kwargs[name] = request
-                result = route.handler(**kwargs)
-                if inspect.isawaitable(result):
-                    result = await result
-            except Exception as exc:  # pragma: no cover - exercised by operator tests
-                from tigrbl_runtime.runtime.status.exceptions import HTTPException
-                if isinstance(exc, HTTPException):
-                    response = Response.json(
-                        {"detail": exc.detail},
-                        status=int(exc.status_code),
-                        headers=getattr(exc, "headers", None),
-                    )
-                    await response(scope, receive, send)
-                    return True
-                raise
-            if isinstance(result, Response):
-                response = result
-            elif result is None:
-                response = Response(status_code=204)
-            elif isinstance(result, (dict, list)):
-                response = Response.json(result)
-            elif isinstance(result, (bytes, bytearray, memoryview)):
-                response = Response.bytes(bytes(result))
-            else:
-                response = Response.text(str(result))
-            await response(scope, receive, send)
-            return True
-        return False
-
     def install_engines(
         self, *, router: Any = None, tables: tuple[Any, ...] | None = None
     ) -> None:
@@ -386,8 +318,6 @@ class App(AppBase):
             if static_response is not None:
                 await static_response(scope, receive, send)
                 return
-        if await self._dispatch_http_route(scope, receive, send):
-            return
         env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
         await self.invoke(env)
 

@@ -4,6 +4,10 @@ import json
 from typing import Any, Mapping
 from urllib.parse import parse_qs
 
+from tigrbl_core.config.constants import (
+    __JSONRPC_DEFAULT_ENDPOINT__,
+    __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__,
+)
 from tigrbl_typing.channel import OpChannel
 
 from .websocket import RuntimeWebSocket
@@ -114,6 +118,30 @@ def build_asgi_channel(
     )
 
 
+def _resolve_jsonrpc_endpoint(ctx: Any, channel: OpChannel) -> str:
+    route = {}
+    temp = ctx.get("temp")
+    if isinstance(temp, dict):
+        route = temp.setdefault("route", {})
+    if isinstance(route, Mapping):
+        endpoint = route.get("endpoint")
+        if isinstance(endpoint, str) and endpoint:
+            return endpoint
+
+    for owner_key in ("router", "app"):
+        owner = ctx.get(owner_key)
+        mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
+        if isinstance(mounts, Mapping):
+            endpoint = mounts.get(channel.path)
+            if isinstance(endpoint, str) and endpoint:
+                return endpoint
+
+    for endpoint, mapped_path in __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__.items():
+        if channel.path == mapped_path or channel.path == f"{mapped_path}/":
+            return endpoint
+    return __JSONRPC_DEFAULT_ENDPOINT__
+
+
 async def _receive_websocket_message(env: Any, channel: OpChannel, ctx: Any) -> None:
     receive = getattr(env, "receive", None)
     if not callable(receive):
@@ -167,6 +195,9 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
         dispatch.setdefault("binding_protocol", channel.protocol)
         dispatch.setdefault("binding_selector", channel.path)
         dispatch.setdefault("path_params", dict(channel.path_params))
+        endpoint = _resolve_jsonrpc_endpoint(ctx, channel)
+        if isinstance(endpoint, str) and endpoint:
+            dispatch.setdefault("endpoint", endpoint)
 
     scope = getattr(env, "scope", {}) or {}
     if str(scope.get("type") or "http") == "websocket":
@@ -186,6 +217,7 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
         route.setdefault("protocol", dispatch.get("binding_protocol"))
         route.setdefault("selector", channel.path)
         route.setdefault("path_params", dict(channel.path_params))
+        route.setdefault("endpoint", dispatch.get("endpoint"))
 
     return channel
 

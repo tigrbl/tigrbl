@@ -361,20 +361,7 @@ class PackedPlanExecutor(ExecutorBase):
         if isinstance(temp, dict):
             temp["ingress_probed"] = True
 
-        program_id = self._require_program_id_from_ctx(ctx)
-        if (
-            program_id < 0
-            and isinstance(getattr(ctx, "method", None), str)
-            and isinstance(getattr(ctx, "path", None), str)
-        ):
-            program_id = self._resolve_program_id_from_exact_route(
-                packed, str(ctx.method), str(ctx.path)
-            )
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_dispatch(ctx, packed)
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_request(ctx, plan)
-        return program_id
+        return self._require_program_id_from_ctx(ctx)
 
     def _resolve_segment_step_ids(
         self, packed: PackedKernel
@@ -699,22 +686,6 @@ class PackedPlanExecutor(ExecutorBase):
             temp = ctx.temp
 
         program_id = self._require_program_id_from_ctx(ctx)
-        resolved_from_exact_route = False
-        if (
-            program_id < 0
-            and isinstance(getattr(ctx, "method", None), str)
-            and isinstance(getattr(ctx, "path", None), str)
-        ):
-            program_id = self._resolve_program_id_from_exact_route(
-                packed, str(ctx.method), str(ctx.path)
-            )
-            resolved_from_exact_route = program_id >= 0
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_dispatch(ctx, packed)
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_channel(ctx, plan)
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_request(ctx, plan)
         if program_id < 0:
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
@@ -742,20 +713,12 @@ class PackedPlanExecutor(ExecutorBase):
             return
 
         temp["program_id"] = program_id
-        if resolved_from_exact_route:
-            temp["_tigrbl_hot_exact_route"] = True
 
         hot_op_plan = (
             packed.hot_op_plans[program_id]
             if program_id < len(getattr(packed, "hot_op_plans", ()))
             else None
         )
-        if (
-            resolved_from_exact_route
-            and hot_op_plan is not None
-            and str(getattr(hot_op_plan, "target", "")).lower() == "create"
-        ):
-            temp["_tigrbl_hot_direct_create"] = True
 
         if program_id >= len(plan.opmeta):
             await _send_json(
@@ -814,11 +777,8 @@ class PackedPlanExecutor(ExecutorBase):
                     packed,
                     program_id,
                     hot_op_plan,
-                    skip_dispatch=resolved_from_exact_route,
-                    fast_direct_create=bool(
-                        isinstance(temp, dict)
-                        and temp.get("_tigrbl_hot_direct_create") is True
-                    ),
+                    skip_dispatch=False,
+                    fast_direct_create=False,
                 )(ctx)
             except StatusDetailError as exc:
                 detail = (
