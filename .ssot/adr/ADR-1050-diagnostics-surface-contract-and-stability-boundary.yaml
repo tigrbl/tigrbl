@@ -1,0 +1,42 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1050"
+number: 1050
+slug: "diagnostics-surface-contract-and-stability-boundary"
+title: "Diagnostics surface contract and stability boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The framework exposes diagnostics endpoints such as `/system/healthz` and"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  The framework exposes diagnostics endpoints such as `/system/healthz` and
+  `/system/kernelz`, and tests treat those endpoints as part of the public
+  surface. The repo does not currently define which diagnostics payloads are
+  stable, when warnings may be emitted, or how diagnostics inherit the configured
+  system prefix.
+  
+  ## Decision
+  
+  1. Diagnostics endpoints that are mounted by the framework are public
+     operational surfaces within the repo boundary.
+  2. Diagnostics payload shapes, warning vocabularies, and mount-prefix behavior
+     are governed by repo-local specs rather than by incidental implementation.
+  3. Diagnostics may expose degraded state, but they may not emit undocumented
+     warning keys or environment-specific noise as part of the stable contract.
+  4. Diagnostics endpoints are operational status surfaces, not arbitrary debug
+     dumps or internal object snapshots.
+  5. System-prefix configuration applies to diagnostics mounts in the same way it
+     applies to other framework-owned system routes.
+  
+  ## Traceability
+  
+  - Related ADRs: `adr:1030`, `adr:1033`, `adr:1041`
+  - Companion spec: `spc:2021`
+  - Related feature: `feat:diagnostics-contract-001`

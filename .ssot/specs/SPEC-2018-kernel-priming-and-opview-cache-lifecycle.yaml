@@ -1,0 +1,42 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2018"
+number: 2018
+slug: "kernel-priming-and-opview-cache-lifecycle"
+title: "Kernel priming and OpView cache lifecycle"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the runtime contract for default-kernel creation,"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the runtime contract for default-kernel creation,
+  idempotent priming, and OpView cache lifecycle across docs, harness, and
+  transport ingress.
+  
+  ## Rules
+  
+  - a materialized app or router surface has one logical default kernel identity
+    for its compiled plan scope
+  - `ensure_primed()` is idempotent and must leave an already-usable default
+    kernel available after repeated calls
+  - `kernel_plan` compilation and OpView caches attach to the same logical kernel
+    identity
+  - `get_opview()` may compile on demand, but on-demand materialization must reuse
+    canonical cache ownership rather than fork a second implicit kernel
+  - explicit invalidation is required before cache replacement or default-kernel
+    reset
+  - sync harness execution and async runtime execution must observe the same
+    priming and cache semantics
+  
+  ## Traceability
+  
+  - ADRs: `adr:1016`, `adr:1031`, `adr:1048`
+  - Feature: `feat:kernel-prime-opview-cache-001`
+spec_kind: "local-policy"

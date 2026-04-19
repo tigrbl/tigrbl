@@ -1,0 +1,46 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2023"
+number: 2023
+slug: "canonical-realtime-and-transfer-verb-family"
+title: "Canonical realtime and transfer verb family"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the canonical realtime and transfer verb family"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the canonical realtime and transfer verb family
+  introduced by the Phase 3 operator-surface expansion.
+  
+  ## Canonical Verbs
+  
+  - `publish`
+  - `subscribe`
+  - `tail`
+  - `upload`
+  - `download`
+  - `append_chunk`
+  - `send_datagram`
+  - `checkpoint`
+  
+  ## Rules
+  
+  - the realtime/transfer family is public only for the canonical verbs listed
+    here
+  - runtime dispatch, docs builders, and default package exports must preserve
+    the same family membership
+  - transfer, streaming, and datagram verbs remain governed by the same canonical
+    family contract even when they bind to different transports or framings
+  
+  ## Traceability
+  
+  - ADRs: `adr:1049`
+  - Feature: `feat:canonical-realtime-transfer-ops-001`
+spec_kind: "local-policy"

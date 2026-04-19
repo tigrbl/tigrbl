@@ -1,0 +1,43 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1049"
+number: 1049
+slug: "canonical-non-oltp-verb-families"
+title: "Canonical non-OLTP verb families"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The repository already freezes canonical OLTP verbs, but Phase 3 introduced"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  The repository already freezes canonical OLTP verbs, but Phase 3 introduced
+  additional analytical, realtime, transfer, and checkpoint verbs without a
+  matching architectural decision that defines which non-OLTP families are
+  canonical, which remain provisional, and when docs/runtime parity obligations
+  apply.
+  
+  ## Decision
+  
+  1. Non-OLTP verbs are governed as named canonical families rather than as an
+     open-ended catch-all surface.
+  2. The analytical family and the realtime/transfer family are the only
+     non-OLTP families governed by this ADR.
+  3. Companion specs enumerate the canonical verb members for each family and the
+     runtime/docs obligations that follow from canonization.
+  4. A verb that is exported in code but not listed by a canonical family spec is
+     provisional and may not be treated as a certified public semantic surface.
+  5. Package exports, docs builders, and runtime dispatch paths must preserve the
+     same governed family boundaries.
+  
+  ## Traceability
+  
+  - Related ADRs: `adr:1013`, `adr:1014`, `adr:1041`
+  - Companion specs: `spc:2022`, `spc:2023`
+  - Related features: `feat:canonical-analytical-ops-001`,
+    `feat:canonical-realtime-transfer-ops-001`

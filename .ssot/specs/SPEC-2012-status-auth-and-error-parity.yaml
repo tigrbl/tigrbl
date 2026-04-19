@@ -1,0 +1,59 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2012"
+number: 2012
+slug: "status-auth-and-error-parity"
+title: "Status, Auth, and Error Parity"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Date: 2026-04-16"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Content
+  
+  Date: 2026-04-16
+  Kind: repo-local
+  
+  ## Scope
+  
+  This spec governs the current recovery lane for:
+  
+  - anonymous-access handling
+  - REST create status semantics
+  - authn and authorization projection parity
+  - validation parity across REST and JSON-RPC
+  - error-envelope and response-structure correctness
+  
+  ## Required Invariants
+  
+  - Canonical create success projects to REST `201 Created` unless an explicit op contract overrides it.
+  - Allow-anon behavior is derived from canonical security metadata and matches generated documentation.
+  - Validation, authorization, and handler failures are classified once and then projected consistently across transports.
+  - REST and JSON-RPC error parity must hold for equivalent canonical operation failures.
+  - Response-structure conformance is mandatory for both success and error envelopes exposed to clients.
+  
+  ## Targeted Failing Lanes
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_allow_anon.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_apikey_generation.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_error_mappings.py`
+  
+  ## Implementation Expectations
+  
+  - Fixes should centralize projection rules instead of patching individual handlers or routes one by one.
+  - Documentation-support behavior must remain aligned with runtime anon-access and error-shape rules.
+  - Response-structure regressions are release-blocking because they directly affect client interoperability.
+  
+  ## Traceability
+  
+  - ADR: `adr/ADR-0031-status-auth-and-error-projections-derive-from-canonical-outcomes.md`
+  - Features:
+    - `feat:anon-access-rest-status-parity-001`
+    - `feat:error-parity-response-structure-001`
+spec_kind: "local-policy"

@@ -1,0 +1,41 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2020"
+number: 2020
+slug: "operator-surface-framing-and-multipart-semantics"
+title: "Operator-surface framing and multipart semantics"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the runtime semantics for governed operator surfaces that"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the runtime semantics for governed operator surfaces that
+  depend on response framing, multipart parsing, or uploaded file handling.
+  
+  ## Rules
+  
+  - streaming responses emit one terminal ASGI body sequence that preserves the
+    produced chunk ordering and does not collapse multiple chunks into an
+    accidental single-body response
+  - WHATWG event streams emit `text/event-stream` framing compatible with the
+    produced event boundaries
+  - multipart and form parsing preserve field values and uploaded files without
+    transport-specific loss of metadata
+  - uploaded-file handling preserves filename, content-type, and body access for
+    runtime handlers
+  - the same governed semantics apply in docs-backed smoke paths and live runtime
+    execution
+  
+  ## Traceability
+  
+  - ADRs: `adr:1041`
+  - Specs: `spc:2007`
+  - Feature: `feat:operator-surface-framing-semantics-001`
+spec_kind: "local-policy"
