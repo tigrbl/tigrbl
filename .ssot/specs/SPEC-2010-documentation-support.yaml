@@ -1,0 +1,52 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2010"
+number: 2010
+slug: "documentation-support"
+title: "Documentation Support and Metadata Ownership"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "﻿"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Content
+  
+  ﻿
+  Date: 2026-04-16
+  Kind: repo-local
+  
+  ## Supported Outputs
+  
+  The active line supports:
+  
+  - OpenAPI
+  - OpenRPC
+  - AsyncAPI
+  - JSON Schema
+  
+  ## Canonical Metadata Sources
+  
+  - OpenAPI consumes route-facing metadata from `Route` plus bound models and schemas.
+  - OpenRPC consumes canonical op specs, JSON-RPC bindings, and schemas.
+  - AsyncAPI consumes canonical transport bindings plus op/channel metadata.
+  - JSON Schema consumes canonical schema component metadata.
+  
+  ## Route Behavior
+  
+  - Documentation endpoints are ordinary imperative routes and ordinary normalized route-backed ops.
+  - Documentation/system mounts set `inherit_owner_dependencies=False` when owner dependency inheritance must be suppressed.
+  - No `surface_kind` abstraction is introduced.
+  
+  ## Traceability
+  
+  - ADR: `.ssot/adr/ADR-1030-documentation-support-uses-canonical-metadata-sources.md`
+  - Tests:
+    - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
+    - `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`
+    - `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`
+spec_kind: "local-policy"

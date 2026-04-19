@@ -1,0 +1,39 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2022"
+number: 2022
+slug: "canonical-analytical-verb-family"
+title: "Canonical analytical verb family"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the canonical analytical verb family introduced by the"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the canonical analytical verb family introduced by the
+  Phase 3 operator-surface expansion.
+  
+  ## Canonical Verbs
+  
+  - `aggregate`
+  - `group_by`
+  
+  ## Rules
+  
+  - the analytical family is public only for the canonical verbs listed here
+  - runtime dispatch, docs builders, and default package exports must preserve the
+    same analytical family membership
+  - analytical verbs are governed as semantic operations, not as transport-local
+    conveniences
+  
+  ## Traceability
+  
+  - ADRs: `adr:1049`
+  - Feature: `feat:canonical-analytical-ops-001`
+spec_kind: "local-policy"

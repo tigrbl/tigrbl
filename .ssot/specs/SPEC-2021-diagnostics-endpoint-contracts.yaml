@@ -1,0 +1,37 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2021"
+number: 2021
+slug: "diagnostics-endpoint-contracts"
+title: "Diagnostics endpoint contracts"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the stable payload and mount behavior for framework-owned"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the stable payload and mount behavior for framework-owned
+  diagnostics endpoints.
+  
+  ## Rules
+  
+  - diagnostics endpoints mount beneath the configured system prefix
+  - `/system/healthz` returns a stable health payload rather than an
+    environment-specific debug dump
+  - optional integrations that are not configured do not emit undocumented
+    warnings solely because they are absent
+  - warnings, when present, must come from a governed vocabulary
+  - `/system/kernelz` exposes kernel/priming status through a bounded operational
+    payload rather than raw internal object state
+  
+  ## Traceability
+  
+  - ADRs: `adr:1050`
+  - Feature: `feat:diagnostics-contract-001`
+spec_kind: "local-policy"

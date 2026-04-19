@@ -1,0 +1,42 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1014"
+number: 1014
+slug: "rest-jsonrpc-semantic-parity"
+title: "ADR-0014 â€” REST and JSON-RPC Semantic Parity"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "REST and JSON-RPC are distinct transport/binding surfaces, but Tigrbl should not let them drift into different semantic frameworks."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-14
+  - **Related ADRs:** ADR-0001, ADR-0006, ADR-0007, ADR-0013, ADR-0015, ADR-0016
+  
+  1. REST and JSON-RPC project the same semantic operation model.
+  2. Canonical operations available through REST must be representable through JSON-RPC where the semantic contract applies, and vice versa.
+  3. Differences between the two surfaces are limited to:
+     - envelope/framing;
+     - transport-facing method/route selection;
+     - protocol-native response/error shapes;
+     - protocol-native metadata.
+  4. Semantic differences such as authorization rules, canonical operation behavior, and engine effects may not diverge by binding.
+  5. Tests and docs must evaluate parity at the semantic layer, not only at the transport layer.
+  
+  ## Context
+  
+  REST and JSON-RPC are distinct transport/binding surfaces, but Tigrbl should not let them drift into different semantic frameworks.
+  The architecture pack repeatedly treats them as different projections over the same semantic operations.
+  
+  ## Rejected Alternatives
+  
+  - Binding-specific semantics for the same canonical operation.
+  - Treating JSON-RPC as a custom-op-only surface.
+  - Duplicating operation semantics into REST-specific and RPC-specific implementations.

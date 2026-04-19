@@ -1,0 +1,45 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2013"
+number: 2013
+slug: "transport-ingress-single-dispatch-flow"
+title: "Transport Ingress Single Dispatch Flow"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Date: 2026-04-18"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Content
+  
+  Date: 2026-04-18
+  Kind: repo-local
+  
+  ## Intent
+  
+  This document defines the next-target transport ingress flow for the transport-dispatch track.
+  
+  ## Canonical Flow
+  
+  - concrete app/router transport surfaces may receive HTTP, JSON-RPC, stream, SSE, and websocket ingress
+  - those concrete surfaces normalize transport input into the gateway envelope and attached context metadata
+  - runtime compiles or loads the `KernelPlan` and invokes the configured executor
+  - the executor ships the envelope and context through the compiled plan
+  - the `KernelPlan` and atoms perform lookup, matching, binding resolution, parse/reduce/effect behavior, and response selection
+  
+  ## Non Goals
+  
+  - app-local HTTP route matching
+  - router-local JSON-RPC method dispatch
+  - executor-owned transport lookup
+  
+  ## Traceability
+  
+  - ADRs:
+    - `.ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.md`
+    - `.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md`
+spec_kind: "local-policy"

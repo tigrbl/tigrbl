@@ -1,0 +1,39 @@
+schema_version: 9
+kind: "adr"
+id: "adr:1003"
+number: 1003
+slug: "spec-first-authoritative-spec-layer"
+title: "ADR-0003 â€” Spec-First Authoritative Spec Layer"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl needs a single authoritative declarative layer so that execution, docs, hooks, and compilation are all driven from the same canonical objects."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-14
+  - **Related ADRs:** ADR-0001, ADR-0004, ADR-0006, ADR-0007, ADR-0016, ADR-0017, ADR-0018, ADR-0019
+  
+  1. `tigrbl_core._spec` is the authoritative declarative layer for public semantic and binding definitions.
+  2. `tigrbl_spec` may re-export, compose, or facade the authoritative definitions, but it may not redefine their semantics.
+  3. Public framework behavior must be expressible through canonical spec objects before it is considered supported.
+  4. Decorators, aliases, and convenience APIs must expand into canonical specs rather than creating parallel declarative pathways.
+  5. Docs generation, compatibility reporting, and kernel compilation must consume the same canonical specs.
+  6. Execution behavior that is not representable in spec is not claimable as a public framework feature.
+  
+  ## Context
+  
+  Tigrbl needs a single authoritative declarative layer so that execution, docs, hooks, and compilation are all driven from the same canonical objects.
+  The architecture pack consistently places this responsibility in `tigrbl_core._spec`, with `tigrbl_spec` acting as a facade or re-export layer rather than as a second source of truth.
+  
+  ## Rejected Alternatives
+  
+  - Runtime-first public behavior.
+  - Docs-first declarations disconnected from execution.
+  - Multiple authoritative spec layers with informal reconciliation.

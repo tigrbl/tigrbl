@@ -1,0 +1,42 @@
+schema_version: 9
+kind: "spec"
+id: "spc:2019"
+number: 2019
+slug: "declared-surface-docs-extension-schema"
+title: "Declared-surface docs extension schema"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the governed extension fields emitted for declared"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the governed extension fields emitted for declared
+  transport and operator surfaces in generated documentation.
+  
+  ## Rules
+  
+  - docs builders emit `x-tigrbl-surface` only from declared canonical metadata
+  - `x-tigrbl-surface.binding.family` is required when a surface is bound to a
+    declared transport family
+  - `x-tigrbl-surface.binding.proto` is required when a concrete protocol binding
+    is declared
+  - `x-tigrbl-surface.exchange`, `x-tigrbl-surface.framing`,
+    `x-tigrbl-surface.subevents`, and `x-tigrbl-surface.txScope` are emitted when
+    those declarations exist on the bound surface
+  - omitted declarations are omitted from the extension object rather than
+    synthesized from transport-specific guesses
+  - OpenAPI and OpenRPC projections must agree on the declared-surface metadata
+    they share
+  
+  ## Traceability
+  
+  - ADRs: `adr:1030`
+  - Specs: `spc:2010`
+  - Feature: `feat:declared-surface-docs-extension-001`
+spec_kind: "local-policy"
