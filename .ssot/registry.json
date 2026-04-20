@@ -4512,6 +4512,1741 @@
       "test_ids": [],
       "requires": [],
       "spec_ids": []
+    },
+    {
+      "id": "feat:engine-extension-surface-001",
+      "title": "Engine extension surface",
+      "description": "Tracks the governed engine extension surface as a separate SSOT family spanning engine contracts, plugin resolution, datatype lowering, and public/base projections.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2027"
+      ]
+    },
+    {
+      "id": "feat:engine-surface-contract-001",
+      "title": "Engine surface contract and datatype bridge",
+      "description": "Tracks the engine-owned contract surface spanning EngineSpec, EngineProviderSpec, and the datatype bridge/lowering contracts.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2027"
+      ]
+    },
+    {
+      "id": "feat:engine-surface-plugin-resolution-001",
+      "title": "Engine plugin registration and resolution",
+      "description": "Tracks engine plugin discovery, registration, and precedence-driven resolution across app, router, table, and op scopes.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2027"
+      ]
+    },
+    {
+      "id": "feat:engine-surface-public-projection-001",
+      "title": "Engine public and base projection",
+      "description": "Tracks public and base projection of engine-facing contracts through tigrbl and tigrbl_base.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2027"
+      ]
+    },
+    {
+      "id": "feat:hook-extension-surface-001",
+      "title": "Hook extension surface",
+      "description": "Tracks the governed hook extension surface as a separate SSOT family spanning phase legality, selector semantics, attachment/order behavior, and public/base projections.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:hook-surface-phase-selector-001",
+      "title": "Hook phase and selector contract",
+      "description": "Tracks the hook phase vocabulary and selector semantics as part of the governed hook surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:hook-surface-attachment-ordering-001",
+      "title": "Hook attachment and ordering behavior",
+      "description": "Tracks hook attachment through app/router/table/op declarations together with deterministic hook execution ordering.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:hook-surface-public-projection-001",
+      "title": "Hook public and base projection",
+      "description": "Tracks public and base projection of hook-facing contracts and helpers.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2028"
+      ]
+    },
+    {
+      "id": "feat:op-extension-surface-001",
+      "title": "Op extension surface",
+      "description": "Tracks the governed op extension surface as a separate SSOT family spanning canonical verb families, custom ops, and public projection of op-facing contracts.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2029"
+      ]
+    },
+    {
+      "id": "feat:op-surface-default-oltp-001",
+      "title": "Default canonical OLTP op family",
+      "description": "Tracks the frozen default canonical OLTP op family as part of the governed op extension surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2029"
+      ]
+    },
+    {
+      "id": "feat:op-surface-custom-op-001",
+      "title": "Custom op extension contract",
+      "description": "Tracks the governed custom-op extension point distinct from the canonical verb families.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2029"
+      ]
+    },
+    {
+      "id": "feat:op-surface-public-projection-001",
+      "title": "Op public projection",
+      "description": "Tracks public projection of op-facing contracts and helpers through the tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2029"
+      ]
+    },
+    {
+      "id": "feat:middleware-extension-surface-001",
+      "title": "Middleware extension surface",
+      "description": "Tracks the governed middleware extension surface as a separate SSOT family spanning protocol/composition rules, bounded catalog policy, public projection, and auth-surface separation.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2030"
+      ]
+    },
+    {
+      "id": "feat:middleware-surface-protocol-composition-001",
+      "title": "Middleware protocol and composition",
+      "description": "Tracks middleware protocol compatibility and deterministic wrapper composition as part of the middleware extension surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2030"
+      ]
+    },
+    {
+      "id": "feat:middleware-surface-builtin-catalog-001",
+      "title": "Middleware built-in catalog boundary",
+      "description": "Tracks the bounded built-in middleware catalog consisting of Middleware and CORSMiddleware.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2030"
+      ]
+    },
+    {
+      "id": "feat:middleware-surface-public-projection-001",
+      "title": "Middleware public projection",
+      "description": "Tracks public projection of middleware-facing contracts and decorators through the tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2030"
+      ]
+    },
+    {
+      "id": "feat:middleware-surface-auth-separation-001",
+      "title": "Middleware and auth-surface separation",
+      "description": "Tracks the governed non-goal that generic auth remains dependency/hook-based rather than becoming a monolithic middleware abstraction.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": [
+        "spc:2030"
+      ]
+    },
+    {
+      "id": "feat:aliasspec-contract-001",
+      "title": "AliasSpec contract",
+      "description": "Tracks AliasSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:appspec-contract-001",
+      "title": "AppSpec contract",
+      "description": "Tracks AppSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:bindingspec-contract-001",
+      "title": "BindingSpec contract",
+      "description": "Tracks BindingSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:bindingregistryspec-contract-001",
+      "title": "BindingRegistrySpec contract",
+      "description": "Tracks BindingRegistrySpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:http-rest-bindingspec-contract-001",
+      "title": "HttpRestBindingSpec contract",
+      "description": "Tracks HttpRestBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:http-jsonrpc-bindingspec-contract-001",
+      "title": "HttpJsonRpcBindingSpec contract",
+      "description": "Tracks HttpJsonRpcBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:http-stream-bindingspec-contract-001",
+      "title": "HttpStreamBindingSpec contract",
+      "description": "Tracks HttpStreamBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:sse-bindingspec-contract-001",
+      "title": "SseBindingSpec contract",
+      "description": "Tracks SseBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:ws-bindingspec-contract-001",
+      "title": "WsBindingSpec contract",
+      "description": "Tracks WsBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:webtransport-bindingspec-contract-001",
+      "title": "WebTransportBindingSpec contract",
+      "description": "Tracks WebTransportBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:columnspec-contract-001",
+      "title": "ColumnSpec contract",
+      "description": "Tracks ColumnSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:fieldspec-contract-001",
+      "title": "FieldSpec contract",
+      "description": "Tracks FieldSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:iospec-contract-001",
+      "title": "IOSpec contract",
+      "description": "Tracks IOSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:datatypespec-contract-001",
+      "title": "DataTypeSpec contract",
+      "description": "Tracks DataTypeSpec as a first-class tigrbl_core._spec datatype contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:storagetyperef-contract-001",
+      "title": "StorageTypeRef contract",
+      "description": "Tracks StorageTypeRef as a first-class tigrbl_core._spec datatype contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:typeadapter-protocol-001",
+      "title": "TypeAdapter protocol",
+      "description": "Tracks TypeAdapter as a first-class tigrbl_core._spec datatype adapter protocol surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:typeregistry-contract-001",
+      "title": "TypeRegistry contract",
+      "description": "Tracks TypeRegistry as a first-class tigrbl_core._spec datatype registry contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:enginespec-contract-001",
+      "title": "EngineSpec contract",
+      "description": "Tracks EngineSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:engineproviderspec-contract-001",
+      "title": "EngineProviderSpec contract",
+      "description": "Tracks EngineProviderSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:enginetypelowerer-protocol-001",
+      "title": "EngineTypeLowerer protocol",
+      "description": "Tracks EngineTypeLowerer as a first-class tigrbl_core._spec datatype lowering protocol surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:engineregistry-contract-001",
+      "title": "EngineRegistry contract",
+      "description": "Tracks EngineRegistry as a first-class tigrbl_core._spec datatype lowering registry surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:enginedatatypebridge-contract-001",
+      "title": "EngineDatatypeBridge contract",
+      "description": "Tracks EngineDatatypeBridge as a first-class tigrbl_core._spec datatype lowering bridge surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:reflecteddatatype-contract-001",
+      "title": "ReflectedDatatype contract",
+      "description": "Tracks ReflectedDatatype as a first-class tigrbl_core._spec reflection contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:reflectedtypemapper-contract-001",
+      "title": "ReflectedTypeMapper contract",
+      "description": "Tracks ReflectedTypeMapper as a first-class tigrbl_core._spec reflection contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:hookspec-contract-001",
+      "title": "HookSpec contract",
+      "description": "Tracks HookSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:hookphase-vocabulary-001",
+      "title": "HookPhase vocabulary",
+      "description": "Tracks HookPhase as a first-class tigrbl_core._spec hook-phase vocabulary surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:middlewarespec-protocol-001",
+      "title": "MiddlewareSpec protocol",
+      "description": "Tracks MiddlewareSpec as a first-class tigrbl_core._spec middleware protocol surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:opspec-contract-001",
+      "title": "OpSpec contract",
+      "description": "Tracks OpSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:templatespec-contract-001",
+      "title": "TemplateSpec contract",
+      "description": "Tracks TemplateSpec as a first-class tigrbl_core._spec response-template contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:responsespec-contract-001",
+      "title": "ResponseSpec contract",
+      "description": "Tracks ResponseSpec as a first-class tigrbl_core._spec response contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:requestspec-contract-001",
+      "title": "RequestSpec contract",
+      "description": "Tracks RequestSpec as a first-class tigrbl_core._spec request contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:schemaspec-contract-001",
+      "title": "SchemaSpec contract",
+      "description": "Tracks SchemaSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:schemaref-contract-001",
+      "title": "SchemaRef contract",
+      "description": "Tracks SchemaRef as a first-class tigrbl_core._spec schema-reference contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:sessionspec-contract-001",
+      "title": "SessionSpec contract",
+      "description": "Tracks SessionSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:storagespec-contract-001",
+      "title": "StorageSpec contract",
+      "description": "Tracks StorageSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:storagetransformspec-contract-001",
+      "title": "StorageTransformSpec contract",
+      "description": "Tracks StorageTransformSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:foreignkeyspec-contract-001",
+      "title": "ForeignKeySpec contract",
+      "description": "Tracks ForeignKeySpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tablespec-contract-001",
+      "title": "TableSpec contract",
+      "description": "Tracks TableSpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tableregistryspec-contract-001",
+      "title": "TableRegistrySpec contract",
+      "description": "Tracks TableRegistrySpec as a first-class tigrbl_core._spec contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:appbase-contract-001",
+      "title": "AppBase contract",
+      "description": "Tracks AppBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:bindingbase-contract-001",
+      "title": "BindingBase contract",
+      "description": "Tracks BindingBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:bindingregistrybase-contract-001",
+      "title": "BindingRegistryBase contract",
+      "description": "Tracks BindingRegistryBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:columnbase-contract-001",
+      "title": "ColumnBase contract",
+      "description": "Tracks ColumnBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:aliasbase-contract-001",
+      "title": "AliasBase contract",
+      "description": "Tracks AliasBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:enginebase-contract-001",
+      "title": "EngineBase contract",
+      "description": "Tracks EngineBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:engineproviderbase-contract-001",
+      "title": "EngineProviderBase contract",
+      "description": "Tracks EngineProviderBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:hookbase-contract-001",
+      "title": "HookBase contract",
+      "description": "Tracks HookBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:routerbase-contract-001",
+      "title": "RouterBase contract",
+      "description": "Tracks RouterBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:foreignkeybase-contract-001",
+      "title": "ForeignKeyBase contract",
+      "description": "Tracks ForeignKeyBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:storagetransformbase-contract-001",
+      "title": "StorageTransformBase contract",
+      "description": "Tracks StorageTransformBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:opbase-contract-001",
+      "title": "OpBase contract",
+      "description": "Tracks OpBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:requestbase-contract-001",
+      "title": "RequestBase contract",
+      "description": "Tracks RequestBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:schemabase-contract-001",
+      "title": "SchemaBase contract",
+      "description": "Tracks SchemaBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:sessionabc-contract-001",
+      "title": "SessionABC contract",
+      "description": "Tracks SessionABC as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrblsessionbase-contract-001",
+      "title": "TigrblSessionBase contract",
+      "description": "Tracks TigrblSessionBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tablebase-contract-001",
+      "title": "TableBase contract",
+      "description": "Tracks TableBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tableregistrybase-contract-001",
+      "title": "TableRegistryBase contract",
+      "description": "Tracks TableRegistryBase as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:attrdict-contract-001",
+      "title": "AttrDict contract",
+      "description": "Tracks AttrDict as a first-class tigrbl_base contract surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:appbase-public-projection-001",
+      "title": "AppBase public projection",
+      "description": "Tracks the public operator projection of AppBase through the top-level tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:foreignkeybase-public-projection-001",
+      "title": "ForeignKeyBase public projection",
+      "description": "Tracks the public operator projection of ForeignKeyBase through the top-level tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:hookbase-public-projection-001",
+      "title": "HookBase public projection",
+      "description": "Tracks the public operator projection of HookBase through the top-level tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:routerbase-public-projection-001",
+      "title": "RouterBase public projection",
+      "description": "Tracks the public operator projection of RouterBase through the top-level tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tablebase-public-projection-001",
+      "title": "TableBase public projection",
+      "description": "Tracks the public operator projection of TableBase through the top-level tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tableregistrybase-public-projection-001",
+      "title": "TableRegistryBase public projection",
+      "description": "Tracks the public operator projection of TableRegistryBase through the top-level tigrbl facade.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
     }
   ],
   "tests": [
@@ -14777,6 +16512,22 @@
           "at": "2026-04-20T10:28:42Z"
         }
       ]
+    },
+    {
+      "id": "adr:1054",
+      "number": 1054,
+      "slug": "middleware-extension-surface-contract",
+      "title": "Middleware Extension Surface Contract",
+      "path": ".ssot/adr/ADR-1054-middleware-extension-surface-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "39153bb26c382ee51425c57eaf060b7073ed4853cbf23ad5dfd97d307c05c6e2",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -14789,7 +16540,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "d03d461a32d1cbc5798cd33fbda66589010b8d082b65bf989f18f761d273b587",
       "status": "draft",
       "supersedes": [],
@@ -14806,7 +16557,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "bacd750fcaee57277115e2bd61c5fde308624798839a34bce0bc8f1320de3287",
       "status": "draft",
       "supersedes": [],
@@ -14823,7 +16574,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "c2f9addf6a50ccbfc020c40327de93027ec984bebd0dc12feb1f4febfa816293",
       "status": "draft",
       "supersedes": [],
@@ -14840,7 +16591,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "fe3ff8e895162ae90359401bac69bc8e8e5c98b2b31447fea3b6e1ae76516c79",
       "status": "draft",
       "supersedes": [],
@@ -14857,7 +16608,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "d789748eb6dd262134c80baf77a8c44dd85f6ca0ce1ab53586d25dcb576e32a1",
       "status": "draft",
       "supersedes": [],
@@ -14874,7 +16625,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "7b350ed11cad9d9be5fce31e10f0f4350d6a071049a01c950af8694d5f0630d7",
       "status": "draft",
       "supersedes": [],
@@ -14891,7 +16642,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "6952e1ae415375b4dbe46c92537f6c6cd3dce5709a2507d906197bf8043fd6d6",
       "status": "draft",
       "supersedes": [],
@@ -14908,7 +16659,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "63b5056e142d551afb5a7c8e119b4e02913371771bb54c56c52464b1615893c2",
       "status": "draft",
       "supersedes": [],
@@ -14925,7 +16676,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "ab8ef1311b825d7474f24a8b2eeff2fee19183804746cbccd7234f9f5e2166a9",
       "status": "draft",
       "supersedes": [],
@@ -14942,7 +16693,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "ce9b9a9cd22703419af6d37aaf3e7da815291deb6bf493a16689f41d9019233e",
       "status": "draft",
       "supersedes": [],
@@ -14959,7 +16710,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "e821e3c072a3973300b6c91eb2f6ce504cf4f34f4c6b49ed7c742a4315b7d5fc",
       "status": "draft",
       "supersedes": [],
@@ -14976,7 +16727,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "fa4fab0acc1175f202b36fe1770cbe076332bf33e7bccf5eb539c477c9215b7d",
       "status": "draft",
       "supersedes": [],
@@ -14993,7 +16744,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "bbea37ab830073ee6309011ee7aa9b13aa490e660bdf01448cd50f1d42a32993",
       "status": "draft",
       "supersedes": [],
@@ -15010,7 +16761,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "9e7523c7f8fe3f5cad8bd05aa42796e96794c7427cb774639ef9c5dfc4082c8a",
       "status": "draft",
       "supersedes": [],
@@ -15027,7 +16778,7 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.8",
       "content_sha256": "38914181571d8d366258bc4cce8837a9857b2e480e03687db9d811555b807f77",
       "status": "draft",
       "supersedes": [],
@@ -15408,6 +17159,74 @@
         }
       ],
       "kind": "local-policy"
+    },
+    {
+      "id": "spc:2027",
+      "number": 2027,
+      "slug": "engine-extension-surface",
+      "title": "Engine Extension Surface",
+      "path": ".ssot/specs/SPEC-2027-engine-extension-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "109b5686b498e21ba58c49d5c593293c1bfe31b7fadabf64b02a7ed477c4edda",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2028",
+      "number": 2028,
+      "slug": "hook-extension-surface",
+      "title": "Hook Extension Surface",
+      "path": ".ssot/specs/SPEC-2028-hook-extension-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "a4ca878341213c8581a430eb96e3406701cba51db32726f9ce9fddd057dd0698",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2029",
+      "number": 2029,
+      "slug": "op-extension-surface",
+      "title": "Op Extension Surface",
+      "path": ".ssot/specs/SPEC-2029-op-extension-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "75a93303704baaa725730912044fc5fc1392b27827d3b22e0fbe97b53667b214",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "spc:2030",
+      "number": 2030,
+      "slug": "middleware-extension-surface",
+      "title": "Middleware Extension Surface",
+      "path": ".ssot/specs/SPEC-2030-middleware-extension-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "7604bf0f87cf9f9fd3c4596d8218bf91e085f7f9e5eee815f223cdf585959780",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "profiles": []

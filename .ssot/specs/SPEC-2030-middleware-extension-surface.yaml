@@ -1,0 +1,52 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2030"
+number: 2030
+slug: "middleware-extension-surface"
+title: "Middleware Extension Surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the governed middleware extension surface for Tigrbl."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the governed middleware extension surface for Tigrbl.
+  
+  ## Canonical Surface
+  
+  - The middleware extension surface includes `MiddlewareSpec`, app-level middleware declaration, and deterministic wrapper composition.
+  - Middleware remains a boundary-wrapping extension surface around ASGI/WSGI execution rather than a semantic op-definition surface.
+  - Built-in middleware support is a bounded catalog, not an open-ended promise of framework-owned middleware families.
+  - Generic auth remains dependency/hook-based only in the current cycle; middleware may support auth-related mechanics but does not become the canonical auth surface.
+  
+  ## Public Projection
+  
+  - Public projection may appear through `tigrbl` exports such as `Middleware`, `CORSMiddleware`, `middleware`, and `middlewares`.
+  - Public projection does not widen the bounded built-in catalog or relax the separation between middleware and hooks.
+  
+  ## Feature Granularity
+  
+  - One parent feature may track the middleware extension surface as a whole.
+  - Separate child features may track:
+    - protocol and composition behavior;
+    - bounded built-in catalog behavior;
+    - public projection of middleware-facing contracts;
+    - separation from the generic auth surface.
+  
+  ## Classification Rules
+  
+  - protocol/composition feature: middleware protocol, declaration, and wrapper order
+  - catalog feature: bounded built-in middleware inventory
+  - projection feature: public exports and decorators that project middleware contracts
+  - auth-separation feature: non-goal that generic auth remains dependency/hook-based
+  
+  ## Traceability
+  
+  - ADRs: `adr:1011`, `adr:1041`, `adr:1052`, `adr:1054`
+spec_kind: "local-policy"

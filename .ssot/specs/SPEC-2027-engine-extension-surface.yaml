@@ -1,0 +1,51 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2027"
+number: 2027
+slug: "engine-extension-surface"
+title: "Engine Extension Surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the governed engine extension surface for Tigrbl."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the governed engine extension surface for Tigrbl.
+  
+  ## Canonical Surface
+  
+  - The engine extension surface includes the canonical `_spec` contracts `EngineSpec` and `EngineProviderSpec`.
+  - The engine extension surface also includes engine-owned lowering and registry bridge contracts exposed through `EngineDatatypeBridge`, `EngineRegistry`, `EngineTypeLowerer`, and `StaticEngineLowerer`.
+  - Engine plugin registration, discovery, and resolver application are part of the engine extension surface because they determine how declared engine bindings become live runtime behavior.
+  - Engine precedence across app, router, table, and op scopes remains part of the engine extension surface and is not a transport-owned concern.
+  
+  ## Public and Base Projection
+  
+  - Public or semi-public engine projection may appear through `tigrbl`, `tigrbl_base`, and engine-facing helper modules, but those projections do not redefine engine meaning.
+  - Transport bindings, docs builders, and middleware may depend on engine outcomes, but they do not own engine semantics.
+  
+  ## Feature Granularity
+  
+  - One parent feature may track the engine extension surface as a whole.
+  - Separate child features may track:
+    - core engine contract and datatype bridge ownership;
+    - plugin registration and precedence-driven resolution;
+    - public and base projection of engine-facing contracts.
+  
+  ## Classification Rules
+  
+  - contract feature: governed engine declarations and lowering bridge
+  - plugin/resolution feature: plugin registration, discovery, and precedence application
+  - projection feature: public or base export surfaces that project engine contracts
+  
+  ## Traceability
+  
+  - ADRs: `adr:1012`, `adr:1015`, `adr:1031`, `adr:1052`, `adr:1053`
+  - Related specs: `spc:2025`, `spc:2026`
+spec_kind: "local-policy"
