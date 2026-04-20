@@ -110,6 +110,16 @@ def test_run_command_dispatches_to_each_supported_server(monkeypatch, server: st
     assert "/rpc-ui" in routes
 
 
+def test_supported_servers_are_locked_to_the_governed_set() -> None:
+    assert tigrbl_cli.SUPPORTED_SERVERS == ("tigrcorn", "uvicorn", "hypercorn", "gunicorn")
+
+
+@pytest.mark.parametrize("server", ["daphne", "twisted", "granian"])
+def test_parser_rejects_out_of_boundary_servers(server: str) -> None:
+    with pytest.raises(SystemExit):
+        tigrbl_cli._build_parser().parse_args(["serve", TARGET, "--server", server])
+
+
 def test_dev_command_enables_reload_by_default(monkeypatch) -> None:
     called: dict[str, object] = {}
 
