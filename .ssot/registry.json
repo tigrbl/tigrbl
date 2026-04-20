@@ -6562,6 +6562,181 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": []
+    },
+    {
+      "id": "feat:server-support-tigrcorn-001",
+      "title": "Supported server tigrcorn",
+      "description": "Track tigrcorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:server-support-tigrcorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-uvicorn-001",
+      "title": "Supported server uvicorn",
+      "description": "Track uvicorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:server-support-uvicorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-hypercorn-001",
+      "title": "Supported server hypercorn",
+      "description": "Track hypercorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:server-support-hypercorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-gunicorn-001",
+      "title": "Supported server gunicorn",
+      "description": "Track gunicorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:server-support-gunicorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-daphne-001",
+      "title": "Out-of-boundary server daphne",
+      "description": "Track daphne explicitly as outside the governed supported server set. It must not be advertised or targeted as first-class server support unless separately governed.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "server-support",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:server-support-daphne-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-twisted-001",
+      "title": "Out-of-boundary server twisted",
+      "description": "Track twisted explicitly as outside the governed supported server set. It must not be advertised or targeted as first-class server support unless separately governed.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "server-support",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:server-support-twisted-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-granian-001",
+      "title": "Out-of-boundary server granian",
+      "description": "Track granian explicitly as outside the governed supported server set. It must not be advertised or targeted as first-class server support unless separately governed.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "server-support",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:server-support-granian-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -7352,11 +7527,25 @@
         "feat:cli-path-target-resolution-001",
         "feat:cli-target-surface-loading-001",
         "feat:cli-target-error-classification-001",
-        "feat:cli-shared-target-loader-001"
+        "feat:cli-shared-target-loader-001",
+        "feat:server-support-tigrcorn-001",
+        "feat:server-support-uvicorn-001",
+        "feat:server-support-hypercorn-001",
+        "feat:server-support-gunicorn-001",
+        "feat:server-support-daphne-001",
+        "feat:server-support-twisted-001",
+        "feat:server-support-granian-001"
       ],
       "claim_ids": [
         "clm:cli-001",
-        "clm:cli-002"
+        "clm:cli-002",
+        "clm:server-support-tigrcorn-001",
+        "clm:server-support-uvicorn-001",
+        "clm:server-support-hypercorn-001",
+        "clm:server-support-gunicorn-001",
+        "clm:server-support-daphne-001",
+        "clm:server-support-twisted-001",
+        "clm:server-support-granian-001"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -11968,6 +12157,111 @@
       "evidence_ids": [
         "evd:transport-dispatch-parity-test"
       ]
+    },
+    {
+      "id": "clm:server-support-tigrcorn-001",
+      "title": "Tigrcorn is part of the governed supported server set.",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Tigrcorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
+      "feature_ids": [
+        "feat:server-support-tigrcorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:server-support-uvicorn-001",
+      "title": "Uvicorn is part of the governed supported server set.",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Uvicorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
+      "feature_ids": [
+        "feat:server-support-uvicorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:server-support-hypercorn-001",
+      "title": "Hypercorn is part of the governed supported server set.",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Hypercorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
+      "feature_ids": [
+        "feat:server-support-hypercorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:server-support-gunicorn-001",
+      "title": "Gunicorn is part of the governed supported server set.",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Gunicorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
+      "feature_ids": [
+        "feat:server-support-gunicorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:server-support-daphne-001",
+      "title": "Daphne is tracked but out of bounds for first-class server support.",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Daphne is explicitly tracked as out-of-bounds and must not be treated as governed first-class server support unless a future boundary change accepts it.",
+      "feature_ids": [
+        "feat:server-support-daphne-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:server-support-twisted-001",
+      "title": "Twisted is tracked but out of bounds for first-class server support.",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Twisted is explicitly tracked as out-of-bounds and must not be treated as governed first-class server support unless a future boundary change accepts it.",
+      "feature_ids": [
+        "feat:server-support-twisted-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:server-support-granian-001",
+      "title": "Granian is tracked but out of bounds for first-class server support.",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Granian is explicitly tracked as out-of-bounds and must not be treated as governed first-class server support unless a future boundary change accepts it.",
+      "feature_ids": [
+        "feat:server-support-granian-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+      ],
+      "evidence_ids": []
     }
   ],
   "evidence": [
@@ -15531,6 +15825,19 @@
         "feat:executor-dispatch-removal-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:transport-parity-contract-001"
+      ],
+      "profile_ids": []
+    },
+    {
+      "id": "bnd:server-support-boundary-001",
+      "title": "Supported server boundary",
+      "status": "draft",
+      "frozen": false,
+      "feature_ids": [
+        "feat:server-support-tigrcorn-001",
+        "feat:server-support-uvicorn-001",
+        "feat:server-support-hypercorn-001",
+        "feat:server-support-gunicorn-001"
       ],
       "profile_ids": []
     }
