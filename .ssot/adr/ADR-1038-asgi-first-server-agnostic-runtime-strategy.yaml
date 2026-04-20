@@ -8,14 +8,14 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Preserve a governed four-server support set at the ASGI boundary."
+summary: "Accepted."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
   Accepted.
-
+  
   Preserve compatibility with Tigrcorn, Uvicorn, Hypercorn, and Gunicorn while keeping framework claims scoped to framework-owned behavior.
-
+  
   Treat other server integrations, including Daphne, Twisted, and Granian, as tracked but out-of-boundary until a future SSOT boundary change explicitly governs them.

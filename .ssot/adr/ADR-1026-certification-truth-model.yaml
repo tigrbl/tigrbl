@@ -8,7 +8,7 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The repository adopts `.ssot/registry.json` as the authoritative certification truth model."
+summary: "The repository adopts `.ssot/registry.json` as the authoritative machine-readable truth model for planning, features, claims, tests, evidence, boundaries, releases, ADRs, and specs."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -17,11 +17,11 @@ body: |-
   ## Decision
   
   The repository adopts `.ssot/registry.json` as the authoritative machine-readable truth model for planning, features, claims, tests, evidence, boundaries, releases, ADRs, and specs.
-
+  
   The authored policy documents that govern that registry live under `.ssot/adr/` and `.ssot/specs/`.
-
+  
   The `certification/` tree is a derived certification projection and historical bundle layer. Files such as `certification/claims/target.yaml` and `certification/targets/next_target.yaml` are deprecated projection artifacts and must not receive new source edits.
-
+  
   Narrative certification prose under `docs/` is subordinate to the SSOT and must agree with SSOT-backed projections.
   
   ## Rationale
