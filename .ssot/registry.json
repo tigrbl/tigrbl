@@ -8509,6 +8509,100 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": []
+    },
+    {
+      "id": "feat:mount-swagger-helper-surface-001",
+      "title": "mount_swagger helper surface",
+      "description": "Tracks mount_swagger as the concrete mount helper that exposes Swagger UI for the OpenAPI UIX surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:mount-lens-helper-surface-001",
+      "title": "mount_lens helper surface",
+      "description": "Tracks mount_lens as the concrete mount helper that exposes tigrbl-lens for the OpenRPC UIX surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:mount-static-helper-surface-001",
+      "title": "mount_static helper surface",
+      "description": "Tracks mount_static as the concrete mount helper that records static path-to-directory mounts for app and router owners.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2040"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:wrap-sessionmaker-helper-surface-001",
+      "title": "wrap_sessionmaker helper surface",
+      "description": "Tracks wrap_sessionmaker as the concrete helper that applies SessionSpec behavior to provider session factories.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2035",
+        "spc:2036",
+        "spc:2037"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
     }
   ],
   "tests": [
