@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2038"
+number: 2038
+slug: "table-mixins-surface"
+title: "Table mixins surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed table-mixins surface for reusable ORM behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed table-mixins surface for reusable ORM behavior.
+  
+  ## Invariants
+  
+  - Table mixins may contribute columns, hooks, schemas, deps, security deps, and marker capability.
+  - Mixin-defined surface area participates in normal MRO-based collection and does not bypass table contracts.
+  - Mixins remain composable and class-local.
+  - Mixin projection through `tigrbl.orm.mixins` does not redefine canonical table ownership.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1056`, `adr:1053`
+  - Related features: `feat:bootstrappable-table-mixin-001`
+spec_kind: "local-policy"

@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2032"
+number: 2032
+slug: "ddl-surface"
+title: "DDL surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed DDL surface for Tigrbl concrete bootstrap behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed DDL surface for Tigrbl concrete bootstrap behavior.
+  
+  ## Canonical Surface
+  
+  - The DDL surface includes `initialize()`, `ensure_schemas()`, `bootstrap_dbschema()`, and `register_sqlite_attach()`.
+  - Concrete app, router, and table owners project the DDL surface through their `initialize()` entrypoints.
+  - DDL groups tables by resolved engine/provider and creates metadata on the selected bind.
+  - DDL owns schema/bootstrap execution only; migration surfaces remain separate.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1055`, `adr:1015`
+  - Related features: `feat:ddl-runtime-surface-001`, `feat:bootstrap-dbschema-runtime-surface-001`
+spec_kind: "local-policy"

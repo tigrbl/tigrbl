@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1057"
+number: 1057
+slug: "static-files-surface-contract"
+title: "Static files surface contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Concrete app and router owners expose `mount_static()`, and the concrete static runtime already records static mounts and serves files via safe path resolution."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1031, ADR-1053
+  
+  1. Static file serving is a first-class repo-local operator surface.
+  2. Static mounts are explicit path-to-directory declarations owned by concrete app and router surfaces.
+  3. Static serving must remain traversal-safe and may serve only regular files beneath the configured mount root.
+  4. Missing or invalid static targets return normal HTTP not-found behavior rather than leaking internal filesystem state.
+  5. Static files remain a delivery surface distinct from docs payloads, UIX mounts, and dynamic template rendering.
+  
+  ## Context
+  
+  Concrete app and router owners expose `mount_static()`, and the concrete static runtime already records static mounts and serves files via safe path resolution.
+  The repo does not yet carry an explicit ADR that defines static files as a governed operator surface.
+  
+  ## Consequences
+  
+  - Static mount behavior can be audited and feature-tracked independently from docs/UIX payloads.
+  - Safe path handling and 404 semantics now have an architectural home in SSOT.
+  
+  ## Rejected Alternatives
+  
+  - Treat static file serving as an ungoverned convenience behavior.
+  - Collapse static serving into generic docs/UIX surfaces.
+  - Permit path traversal or implicit directory-wide behavior outside the declared mount root.

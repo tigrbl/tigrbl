@@ -1,0 +1,36 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2045"
+number: 2045
+slug: "supported-server-runner-surface"
+title: "Supported server runner surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed supported-server boundary for the tigrbl CLI runner surface."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed supported-server boundary for the `tigrbl` CLI runner surface.
+  
+  ## Supported Set
+  
+  - The governed supported runner set is `tigrcorn`, `uvicorn`, `hypercorn`, and `gunicorn`.
+  - `daphne`, `twisted`, and `granian` remain explicit out-of-boundary runner names on the active line.
+  
+  ## Invariants
+  
+  - Server support is a bounded CLI/config translation surface around external runner integrations; it is not proof of framework-owned transport implementation.
+  - The supported set is explicit and closed until a new governed runner is added through SSOT planning.
+  - Unsupported names remain tracked as deliberate out-of-boundary rows rather than as accidental gaps.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1022`
+  - Related features: `feat:server-support-tigrcorn-001`, `feat:server-support-uvicorn-001`, `feat:server-support-hypercorn-001`, `feat:server-support-gunicorn-001`, `feat:server-support-daphne-001`, `feat:server-support-twisted-001`, `feat:server-support-granian-001`
+spec_kind: "local-policy"
