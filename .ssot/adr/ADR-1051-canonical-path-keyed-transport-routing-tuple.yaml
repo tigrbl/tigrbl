@@ -1,0 +1,51 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1051"
+number: 1051
+slug: "canonical-path-keyed-transport-routing-tuple"
+title: "Canonical Path-Keyed Transport Routing Tuple"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The canonical public routing identity is the transport-agnostic tuple `(scope, path, method) -> op`."
+supersedes:
+  - "adr:1046"
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Concrete (scope, path, method) routing is now canonical for the public contract; JSON-RPC endpoint identity remains an internal or derived detail for multiplexed mounts and compilation."
+    at: "2026-04-20T10:28:42Z"
+references: []
+body: |-
+  ## Decision
+  
+  The canonical public routing identity is the transport-agnostic tuple `(scope, path, method) -> op`.
+  
+  1. `scope` names the transport or binding family, such as `http.rest`, `http.jsonrpc`, `ws`, `wss`, or `webtransport`.
+  2. `path` is the concrete mounted ingress address for the served surface.
+  3. `method` is the transport-specific operation discriminator required to select an op at a path.
+  4. The canonical public and diagnostics-facing lookup shape is `index[scope][path][method] = op_meta_index`.
+  5. JSON-RPC logical endpoint identity is no longer the canonical public lookup key. Endpoint identity remains an internal or derived concern that may support multiplexed mounts, binding materialization, and compilation.
+  6. `KernelPlan` remains the governed owner of transport lookup, binding resolution, matching, and semantic dispatch per `adr:1047`.
+  7. Internal selector forms such as `OpKey(proto, selector)`, nested endpoint maps, or exact/templated matcher tables remain allowed as implementation details so long as they project losslessly to `(scope, path, method)`.
+  
+  ## Context
+  
+  The active transport-dispatch line already established two important boundaries: multiplexed JSON-RPC ingress needed more structure than a flat RPC-method-only key, and `KernelPlan` owns dispatch rather than transport adapters or executors. The remaining ambiguity is the public routing identity exposed by compiled plans and diagnostics. The existing shape is mixed: REST-like surfaces are method-plus-path keyed, JSON-RPC is endpoint-plus-method keyed, and websocket-style surfaces are path keyed. That makes the kernel plan harder to inspect, compare, and validate across transports.
+  
+  Every served surface still has a mounted path. What varies is the discriminator required to pick an operation once a request or session reaches that path. A canonical tuple model preserves those differences without changing the public lookup shape per transport.
+  
+  ## Consequences
+  
+  - JSON-RPC concrete mounted paths such as `/rpc` and `/admin-rpc` become first-class in the canonical public index.
+  - The term `method` is defined by transport semantics, not limited to HTTP verbs.
+  - Existing endpoint-keyed JSON-RPC materialization remains valid as an implementation detail, but it no longer defines the canonical public routing contract.
+  - Diagnostics, kernel-plan contract tests, and future transport additions can share one public indexing model without transport-specific branching.
+  
+  ## Rejected Alternatives
+  
+  - Keeping logical endpoint identity as the canonical public key for JSON-RPC while leaving other transports path-primary.
+  - Publishing different canonical lookup shapes per transport family.
+  - Forcing internal implementation structures to exactly match the public tuple shape instead of allowing projected compatibility.

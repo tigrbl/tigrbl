@@ -14675,12 +14675,20 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "d81f187fdb3a97cab26fdd2c437008c552da7a648b9c554ac389fd30052f9ad7",
-      "status": "accepted",
+      "package_version": "0.2.10",
+      "content_sha256": "25e6e1797cfd02669c84c8d895aba1ef4d8bb288d46d2f490144ea3c2b084d53",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
-      "status_notes": []
+      "superseded_by": [
+        "adr:1051"
+      ],
+      "status_notes": [
+        {
+          "status": "superseded",
+          "note": "Concrete (scope, path, method) routing is now canonical for the public contract; JSON-RPC endpoint identity remains an internal or derived detail for multiplexed mounts and compilation.",
+          "at": "2026-04-20T10:28:42Z"
+        }
+      ]
     },
     {
       "id": "adr:1047",
@@ -14745,6 +14753,30 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1051",
+      "number": 1051,
+      "slug": "canonical-path-keyed-transport-routing-tuple",
+      "title": "Canonical Path-Keyed Transport Routing Tuple",
+      "path": ".ssot/adr/ADR-1051-canonical-path-keyed-transport-routing-tuple.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "44697ff8f1e8607b9f097fdfdfbbd98e6df3d8a644617fe5391259552762c5ec",
+      "status": "accepted",
+      "supersedes": [
+        "adr:1046"
+      ],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Concrete (scope, path, method) routing is now canonical for the public contract; JSON-RPC endpoint identity remains an internal or derived detail for multiplexed mounts and compilation.",
+          "at": "2026-04-20T10:28:42Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -15148,13 +15180,21 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "ab946993e9cfae52c1ef4a5c82d92848e714a9fe2a43ba1230c74956c56b0317",
+      "package_version": "0.2.10",
+      "content_sha256": "0533f788a20fbbf88534a0fe90cc3c752c69438480adf82b96e42467174e6d5f",
       "kind": "local-policy",
-      "status": "draft",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
-      "status_notes": []
+      "superseded_by": [
+        "spc:2024"
+      ],
+      "status_notes": [
+        {
+          "status": "superseded",
+          "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
+          "at": "2026-04-20T10:29:37Z"
+        }
+      ]
     },
     {
       "id": "spc:2014",
@@ -15182,13 +15222,21 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "be631a49fbcd8bdfbce1869261c73e81c16e5fcac61324f29059e77890023588",
+      "package_version": "0.2.10",
+      "content_sha256": "990ab038e72b5bea934e5c664924fcfd2e01a789b37e1245f973965c00b3390f",
       "kind": "local-policy",
-      "status": "draft",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
-      "status_notes": []
+      "superseded_by": [
+        "spc:2024"
+      ],
+      "status_notes": [
+        {
+          "status": "superseded",
+          "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
+          "at": "2026-04-20T10:29:37Z"
+        }
+      ]
     },
     {
       "id": "spc:2016",
@@ -15199,13 +15247,21 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "76b836f696e125d0790f503c906c37c624145b6dd40546416c5b3b6aaf8282de",
+      "package_version": "0.2.10",
+      "content_sha256": "e6934162f27158f35ab51a458456882abd806bffeb19f28505632ed858a81f13",
       "kind": "local-policy",
-      "status": "draft",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
-      "status_notes": []
+      "superseded_by": [
+        "spc:2024"
+      ],
+      "status_notes": [
+        {
+          "status": "superseded",
+          "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
+          "at": "2026-04-20T10:29:37Z"
+        }
+      ]
     },
     {
       "id": "spc:2017",
@@ -15325,6 +15381,33 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "spc:2024",
+      "number": 2024,
+      "slug": "canonical-transport-routing-tuple-and-kernelplan-index-contract",
+      "title": "Canonical Transport Routing Tuple and KernelPlan Index Contract",
+      "path": ".ssot/specs/SPEC-2024-canonical-transport-routing-tuple-and-kernelplan-index-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "1cdeb58252ce12cd6e7bdc6b54970c1af75e5574924e43c6ce86359556859f62",
+      "status": "draft",
+      "supersedes": [
+        "spc:2013",
+        "spc:2015",
+        "spc:2016"
+      ],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
+          "at": "2026-04-20T10:29:37Z"
+        }
+      ],
+      "kind": "local-policy"
     }
   ],
   "profiles": []
