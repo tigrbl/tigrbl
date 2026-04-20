@@ -1,4 +1,4 @@
-schema_version: 9
+schema_version: "0.1.0"
 kind: "spec"
 id: "spc:2018"
 number: 2018
@@ -20,23 +20,22 @@ body: |-
   idempotent priming, and OpView cache lifecycle across docs, harness, and
   transport ingress.
   
-  ## Rules
+  ## Invariants
   
-  - a materialized app or router surface has one logical default kernel identity
-    for its compiled plan scope
-  - `ensure_primed()` is idempotent and must leave an already-usable default
-    kernel available after repeated calls
-  - `kernel_plan` compilation and OpView caches attach to the same logical kernel
-    identity
-  - `get_opview()` may compile on demand, but on-demand materialization must reuse
-    canonical cache ownership rather than fork a second implicit kernel
+  - a materialized app or router surface has one logical default kernel
+    identity for its compiled plan scope, and `kernel_plan` compilation
+    attaches to that identity.
+  - repeated `ensure_primed()` calls keep an already-usable default kernel
+    available without duplication.
+  - `get_opview()` may compile on demand, but on-demand materialization reuses
+    canonical cache ownership rather than forking a second implicit kernel.
   - explicit invalidation is required before cache replacement or default-kernel
-    reset
-  - sync harness execution and async runtime execution must observe the same
-    priming and cache semantics
+    reset.
+  - sync harness execution and async runtime execution observe the same priming
+    and cache semantics.
   
   ## Traceability
   
   - ADRs: `adr:1016`, `adr:1031`, `adr:1048`
-  - Feature: `feat:kernel-prime-opview-cache-001`
+  - Related feature granularity lives in the registry layer.
 spec_kind: "local-policy"

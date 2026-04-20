@@ -1,4 +1,4 @@
-schema_version: 9
+schema_version: "0.1.0"
 kind: "spec"
 id: "spc:2023"
 number: 2023
@@ -30,17 +30,18 @@ body: |-
   - `send_datagram`
   - `checkpoint`
   
-  ## Rules
+  ## Invariants
   
   - the realtime/transfer family is public only for the canonical verbs listed
-    here
-  - runtime dispatch, docs builders, and default package exports must preserve
-    the same family membership
-  - transfer, streaming, and datagram verbs remain governed by the same canonical
-    family contract even when they bind to different transports or framings
+    here.
+  - runtime dispatch, docs builders, and default package exports preserve the
+    same family membership.
+  - transfer, streaming, and datagram verbs remain governed by the same
+    canonical family contract even when they bind to different transports or
+    framings.
   
   ## Traceability
   
   - ADRs: `adr:1049`
-  - Feature: `feat:canonical-realtime-transfer-ops-001`
+  - Related feature granularity lives in the registry layer.
 spec_kind: "local-policy"

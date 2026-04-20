@@ -1,4 +1,4 @@
-schema_version: 9
+schema_version: "0.1.0"
 kind: "spec"
 id: "spc:2019"
 number: 2019
@@ -19,24 +19,22 @@ body: |-
   This document defines the governed extension fields emitted for declared
   transport and operator surfaces in generated documentation.
   
-  ## Rules
+  ## Invariants
   
-  - docs builders emit `x-tigrbl-surface` only from declared canonical metadata
-  - `x-tigrbl-surface.binding.family` is required when a surface is bound to a
-    declared transport family
-  - `x-tigrbl-surface.binding.proto` is required when a concrete protocol binding
-    is declared
-  - `x-tigrbl-surface.exchange`, `x-tigrbl-surface.framing`,
-    `x-tigrbl-surface.subevents`, and `x-tigrbl-surface.txScope` are emitted when
-    those declarations exist on the bound surface
-  - omitted declarations are omitted from the extension object rather than
-    synthesized from transport-specific guesses
-  - OpenAPI and OpenRPC projections must agree on the declared-surface metadata
-    they share
+  - docs builders emit `x-tigrbl-surface.binding.family` whenever a surface is
+    bound to a declared transport family.
+  - docs builders emit `x-tigrbl-surface.binding.proto` whenever a concrete
+    protocol binding is declared.
+  - docs builders emit `exchange`, `framing`, `subevents`, and `txScope` when
+    those declarations exist on the bound surface.
+  - undeclared metadata fields are omitted rather than synthesized from
+    transport-specific guesses.
+  - OpenAPI and OpenRPC projections agree on the declared-surface metadata they
+    share.
   
   ## Traceability
   
   - ADRs: `adr:1030`
   - Specs: `spc:2010`
-  - Feature: `feat:declared-surface-docs-extension-001`
+  - Related feature granularity lives in the registry layer.
 spec_kind: "local-policy"

@@ -1,4 +1,4 @@
-schema_version: 9
+schema_version: "0.1.0"
 kind: "spec"
 id: "spc:2017"
 number: 2017
@@ -19,18 +19,18 @@ body: |-
   This document defines the target grammar and loading semantics for the unified
   `tigrbl` CLI when resolving app, router, and factory targets.
   
-  ## Rules
+  ## Invariants
   
-  - supported target forms are `<module:attr>` and `<path.py:attr>`
-  - path-based targets must preserve Windows absolute paths without treating the
-    drive-letter colon as the module/attribute separator
-  - when a path-based target is used, the module name is derived from the file
-    path and the final `:attr` segment only
-  - target attributes may resolve to an app object, router object, or zero-arg
-    factory returning one of those surfaces
-  - loader failures must classify as target-resolution errors rather than as
-    unrelated import-path corruption
-  - command and server-selection paths must share the same target loader
+  - `<module:attr>` targets resolve as module-addressed imports without
+    path-style parsing side effects.
+  - `<path.py:attr>` targets preserve Windows absolute paths and split only on
+    the final `:attr` segment rather than the drive-letter colon.
+  - resolved target attributes may yield an app object, a router object, or a
+    zero-arg factory returning one of those surfaces.
+  - loader failures classify as target-resolution errors rather than as
+    unrelated import-path corruption.
+  - command execution and server-selection entrypoints use the same target
+    loader implementation.
   
   ## Non Goals
   
@@ -40,5 +40,5 @@ body: |-
   ## Traceability
   
   - ADRs: `adr:1039`
-  - Features: `feat:cli-target-resolution-001`, `feat:cli-001`, `feat:cli-002`
+  - Related specs and implementation tracking live in the registry layer.
 spec_kind: "local-policy"

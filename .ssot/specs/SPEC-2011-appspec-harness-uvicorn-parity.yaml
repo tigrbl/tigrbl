@@ -1,4 +1,4 @@
-schema_version: 9
+schema_version: "0.1.0"
 kind: "spec"
 id: "spc:2011"
 number: 2011
@@ -14,29 +14,29 @@ superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Content
+  ## Intent
   
-  Date: 2026-04-16
-  Kind: repo-local
+  This document governs the recovery lane for AppSpec materialization,
+  imperative harness assembly, and Uvicorn-backed REST / JSON-RPC execution.
   
-  ## Scope
+  ## Invariants
   
-  This spec governs the current recovery lane for:
+  - equivalent AppSpec and imperative declarations compile to the same semantic
+    kernel plan.
+  - harness execution uses the same compiled routing and projection rules as
+    ordinary runtime execution.
+  - REST and JSON-RPC consume the same canonical operation result under
+    Uvicorn-backed execution.
+  - request/response JSON-RPC calls return JSON-RPC envelopes and only
+    notifications may project to `204 No Content`.
+  - engine resolver precedence is transport-agnostic and resolves before final
+    projection.
+  - mounted and prefixed Uvicorn scenarios preserve the same routing semantics.
+  - multi-table routing preserves the same semantic behavior across REST and
+    JSON-RPC.
   
-  - AppSpec materialization
-  - imperative harness assembly
-  - kernel bootstrap and plan priming
-  - Uvicorn-backed REST / JSON-RPC end-to-end behavior
-  - engine resolver precedence and multi-table routing under Uvicorn
-  
-  ## Required Invariants
-  
-  - AppSpec and imperative assembly compile to the same semantic kernel-plan outcome for equivalent declarations.
-  - Kernel priming is idempotent and does not duplicate or mutate semantic opview identity.
-  - Harness execution uses the same compiled routing and projection rules as ordinary runtime execution.
-  - REST and JSON-RPC consume the same canonical operation result.
-  - Request / response JSON-RPC calls return JSON-RPC envelopes; only notifications may project to `204 No Content`.
-  - Engine resolver precedence, router prefixing, and multi-table resolution are transport-agnostic decisions applied before final projection.
+  Kernel bootstrap, priming, and OpView cache lifecycle are governed
+  normatively by `spc:2018`.
   
   ## Targeted Failing Lanes
   
@@ -56,9 +56,7 @@ body: |-
   
   ## Traceability
   
-  - ADR: `adr/ADR-0030-appspec-harness-and-uvicorn-projections-preserve-canonical-outcomes.md`
-  - Features:
-    - `feat:appspec-harness-uvicorn-e2e-parity-001`
-    - `feat:kernel-bootstrap-plan-parity-001`
-    - `feat:engine-resolver-multi-table-rpc-001`
+  - ADRs: `adr:1031`
+  - Specs: `spc:2018`
+  - Related feature granularity lives in the registry layer.
 spec_kind: "local-policy"
