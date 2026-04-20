@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2037"
+number: 2037
+slug: "engine-session-plugin-capabilities"
+title: "Engine-session plugin capabilities"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define engine-session plugin capabilities that influence provider resolution and session construction."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define engine-session plugin capabilities that influence provider resolution and session construction.
+  
+  ## Invariants
+  
+  - Engine plugins may advertise or resolve sync/async session-factory behavior.
+  - Session plugin capabilities include factory construction, provider acquisition, and `SessionSpec` application.
+  - Plugin capability resolution remains engine-owned and may affect runtime and DDL execution paths.
+  - Session capability extension does not bypass engine precedence rules.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1015`, `adr:1055`
+  - Related features: `feat:engine-surface-plugin-resolution-001`, `feat:engine-session-runtime-surface-001`
+spec_kind: "local-policy"

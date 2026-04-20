@@ -1,0 +1,33 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2031"
+number: 2031
+slug: "database-schema-surface"
+title: "Database schema surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed database-schema surface for concrete schema creation, named-schema preparation, and SQLite attachment behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed database-schema surface for concrete schema creation, named-schema preparation, and SQLite attachment behavior.
+  
+  ## Invariants
+  
+  - Named schema preparation is explicit and engine-aware.
+  - `ensure_schemas()` is best-effort schema creation, not migration planning.
+  - `bootstrap_dbschema()` is the canonical schema-bootstrap helper for attempted schema creation plus SQLite attachment registration.
+  - SQLite uses attachment maps rather than `CREATE SCHEMA` semantics.
+  - Database-schema bootstrap remains separate from migration history, diffing, and version tables.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1055`
+  - Related features: `feat:build-schemas-helper-surface-001`, `feat:ensure-schemas-runtime-surface-001`, `feat:bootstrap-dbschema-runtime-surface-001`, `feat:sqlite-attach-runtime-surface-001`
+spec_kind: "local-policy"

@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2033"
+number: 2033
+slug: "ddl-initialization-modes"
+title: "DDL initialization modes"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the supported DDL initialization modes across sync and async runtime contexts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the supported DDL initialization modes across sync and async runtime contexts.
+  
+  ## Supported Modes
+  
+  - Outside a running event loop, DDL bootstrap executes synchronously and closes provider sessions synchronously.
+  - Inside a running event loop with synchronous providers, DDL may still bootstrap synchronously and return a no-op or close task as needed.
+  - Inside a running event loop with async providers, DDL bootstrap returns an awaitable and uses `run_sync()` or thread offloading where needed.
+  - Repeated initialization is guarded by the concrete `_ddl_executed` marker.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1055`
+  - Related features: `feat:ddl-initialization-modes-001`, `feat:ddl-runtime-surface-001`
+spec_kind: "local-policy"

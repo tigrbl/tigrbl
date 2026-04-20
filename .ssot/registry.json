@@ -71,7 +71,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2012"
+      ]
     },
     {
       "id": "feat:appspec-harness-uvicorn-e2e-parity-001",
@@ -92,7 +94,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011"
+      ]
     },
     {
       "id": "feat:binding-driven-ingress-001",
@@ -118,7 +122,9 @@
         "tst:jsonrpc-endpoint-binding-contract"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2014"
+      ]
     },
     {
       "id": "feat:cert-001",
@@ -255,7 +261,9 @@
       "requires": [
         "feat:http-route-001"
       ],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2010"
+      ]
     },
     {
       "id": "feat:engine-resolver-multi-table-rpc-001",
@@ -276,7 +284,11 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011",
+        "spc:2027",
+        "spc:2034"
+      ]
     },
     {
       "id": "feat:error-parity-response-structure-001",
@@ -297,7 +309,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2012"
+      ]
     },
     {
       "id": "feat:evid-001",
@@ -478,7 +492,10 @@
         "tst:transport-dispatch-kernelplan-contract"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2013",
+        "spc:2024"
+      ]
     },
     {
       "id": "feat:factories-001",
@@ -503,7 +520,9 @@
         "tst:http-route-registration-unit"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2009"
+      ]
     },
     {
       "id": "feat:gate-001",
@@ -1237,7 +1256,9 @@
         "tst:http-route-websocket-binding-slice"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2008"
+      ]
     },
     {
       "id": "feat:jsonrpc-endpoint-key-001",
@@ -1262,7 +1283,10 @@
         "tst:jsonrpc-endpoint-binding-contract"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2015",
+        "spc:2016"
+      ]
     },
     {
       "id": "feat:kernel-bootstrap-plan-parity-001",
@@ -1283,7 +1307,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011",
+        "spc:2018"
+      ]
     },
     {
       "id": "feat:kernelplan-dispatch-ownership-001",
@@ -1308,7 +1335,10 @@
         "tst:transport-dispatch-kernelplan-contract"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2013",
+        "spc:2024"
+      ]
     },
     {
       "id": "feat:next-001",
@@ -1386,7 +1416,9 @@
         "tst:tcase-0001"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2025"
+      ]
     },
     {
       "id": "feat:columnspec-datatype-attachment-point-001",
@@ -1412,7 +1444,9 @@
         "tst:tcase-0005"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2025"
+      ]
     },
     {
       "id": "feat:datatype-adapter-registry-contract-001",
@@ -1438,7 +1472,9 @@
         "tst:tcase-0004"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2025"
+      ]
     },
     {
       "id": "feat:engine-datatype-lowering-registry-bridge-001",
@@ -1464,7 +1500,10 @@
         "tst:tcase-0006"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2025",
+        "spc:2027"
+      ]
     },
     {
       "id": "feat:reflected-datatype-mapper-reverse-mapping-001",
@@ -1490,7 +1529,9 @@
         "tst:tcase-0009"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2025"
+      ]
     },
     {
       "id": "feat:default-canonical-engine-family-datatype-alignment-001",
@@ -1515,7 +1556,9 @@
         "tst:tcase-0007"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2027"
+      ]
     },
     {
       "id": "feat:multi-engine-table-portability-interoperability-001",
@@ -1540,7 +1583,9 @@
         "tst:tcase-0011"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2034"
+      ]
     },
     {
       "id": "feat:schema-reflection-roundtrip-recovery-001",
@@ -1566,7 +1611,9 @@
         "tst:tcase-0009"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2025"
+      ]
     },
     {
       "id": "feat:canonical-op-create-001",
@@ -1591,7 +1638,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-read-001",
@@ -1616,7 +1665,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-update-001",
@@ -1641,7 +1692,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-replace-001",
@@ -1666,7 +1719,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-merge-001",
@@ -1691,7 +1746,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-delete-001",
@@ -1716,7 +1773,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-list-001",
@@ -1741,7 +1800,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-clear-001",
@@ -1766,7 +1827,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-count-001",
@@ -1791,7 +1854,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-exists-001",
@@ -1816,7 +1881,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-bulk-create-001",
@@ -1841,7 +1908,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-bulk-update-001",
@@ -1866,7 +1935,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-bulk-replace-001",
@@ -1891,7 +1962,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-bulk-merge-001",
@@ -1916,7 +1989,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-bulk-delete-001",
@@ -1941,7 +2016,9 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-aggregate-001",
@@ -1966,7 +2043,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2022",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-group-by-001",
@@ -1991,7 +2071,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2022",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-publish-001",
@@ -2016,7 +2099,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-subscribe-001",
@@ -2041,7 +2127,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-tail-001",
@@ -2066,7 +2155,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-upload-001",
@@ -2091,7 +2183,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-download-001",
@@ -2116,7 +2211,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-append-chunk-001",
@@ -2141,7 +2239,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-send-datagram-001",
@@ -2166,7 +2267,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-checkpoint-001",
@@ -2191,7 +2295,10 @@
         "tst:tcase-0002"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-op-custom-001",
@@ -2216,7 +2323,9 @@
         "tst:tcase-0018"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:oas-001",
@@ -3400,7 +3509,10 @@
         "tst:transport-dispatch-kernelplan-contract"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2013",
+        "spc:2024"
+      ]
     },
     {
       "id": "feat:transport-dispatch-governance-001",
@@ -3425,7 +3537,13 @@
         "tst:transport-dispatch-track-governance"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2013",
+        "spc:2014",
+        "spc:2015",
+        "spc:2016",
+        "spc:2024"
+      ]
     },
     {
       "id": "feat:transport-parity-contract-001",
@@ -3450,7 +3568,10 @@
         "tst:transport-dispatch-parity-contract"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2013",
+        "spc:2024"
+      ]
     },
     {
       "id": "feat:cli-target-resolution-001",
@@ -3477,7 +3598,9 @@
         "feat:cli-001",
         "feat:cli-002"
       ],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2017"
+      ]
     },
     {
       "id": "feat:kernel-prime-opview-cache-001",
@@ -3498,7 +3621,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2018"
+      ]
     },
     {
       "id": "feat:declared-surface-docs-extension-001",
@@ -3523,7 +3648,10 @@
       "requires": [
         "feat:docs-support-001"
       ],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2010",
+        "spc:2019"
+      ]
     },
     {
       "id": "feat:operator-surface-framing-semantics-001",
@@ -3552,7 +3680,9 @@
         "feat:op-006",
         "feat:op-007"
       ],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2020"
+      ]
     },
     {
       "id": "feat:diagnostics-contract-001",
@@ -3573,7 +3703,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2021"
+      ]
     },
     {
       "id": "feat:canonical-analytical-ops-001",
@@ -3594,7 +3726,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2022",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:canonical-realtime-transfer-ops-001",
@@ -3615,7 +3750,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:cli-module-target-resolution-001",
@@ -3639,7 +3777,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2017"
+      ]
     },
     {
       "id": "feat:cli-path-target-resolution-001",
@@ -3663,7 +3803,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2017"
+      ]
     },
     {
       "id": "feat:cli-target-surface-loading-001",
@@ -3687,7 +3829,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2017"
+      ]
     },
     {
       "id": "feat:cli-target-error-classification-001",
@@ -3711,7 +3855,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2017"
+      ]
     },
     {
       "id": "feat:cli-shared-target-loader-001",
@@ -3735,7 +3881,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2017"
+      ]
     },
     {
       "id": "feat:anon-access-projection-001",
@@ -3756,7 +3904,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2012"
+      ]
     },
     {
       "id": "feat:rest-create-success-status-001",
@@ -3777,7 +3927,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2012"
+      ]
     },
     {
       "id": "feat:auth-failure-projection-parity-001",
@@ -3798,7 +3950,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2012"
+      ]
     },
     {
       "id": "feat:validation-failure-projection-parity-001",
@@ -3819,7 +3973,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2012"
+      ]
     },
     {
       "id": "feat:error-envelope-structure-parity-001",
@@ -3840,7 +3996,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2012"
+      ]
     },
     {
       "id": "feat:appspec-imperative-plan-parity-001",
@@ -3861,7 +4019,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011"
+      ]
     },
     {
       "id": "feat:harness-runtime-routing-parity-001",
@@ -3882,7 +4042,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011"
+      ]
     },
     {
       "id": "feat:uvicorn-rest-rpc-semantic-parity-001",
@@ -3903,7 +4065,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011"
+      ]
     },
     {
       "id": "feat:jsonrpc-notification-204-projection-001",
@@ -3924,7 +4088,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011"
+      ]
     },
     {
       "id": "feat:engine-resolver-precedence-001",
@@ -3945,7 +4111,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011",
+        "spc:2027"
+      ]
     },
     {
       "id": "feat:mounted-prefix-routing-parity-001",
@@ -3966,7 +4135,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011"
+      ]
     },
     {
       "id": "feat:multi-table-routing-parity-001",
@@ -3987,7 +4158,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2011"
+      ]
     },
     {
       "id": "feat:default-kernel-identity-001",
@@ -4008,7 +4181,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2018"
+      ]
     },
     {
       "id": "feat:ensure-primed-idempotence-001",
@@ -4029,7 +4204,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2018"
+      ]
     },
     {
       "id": "feat:opview-on-demand-cache-reuse-001",
@@ -4050,7 +4227,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2018"
+      ]
     },
     {
       "id": "feat:kernel-cache-invalidation-contract-001",
@@ -4071,7 +4250,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2018"
+      ]
     },
     {
       "id": "feat:surface-binding-family-emission-001",
@@ -4094,7 +4275,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2019"
+      ]
     },
     {
       "id": "feat:surface-binding-proto-emission-001",
@@ -4117,7 +4300,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2019"
+      ]
     },
     {
       "id": "feat:surface-optional-metadata-emission-001",
@@ -4140,7 +4325,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2019"
+      ]
     },
     {
       "id": "feat:surface-docs-cross-projection-parity-001",
@@ -4163,7 +4350,10 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2010",
+        "spc:2019"
+      ]
     },
     {
       "id": "feat:stream-chunk-order-preservation-001",
@@ -4186,7 +4376,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2020"
+      ]
     },
     {
       "id": "feat:sse-event-framing-001",
@@ -4209,7 +4401,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2020"
+      ]
     },
     {
       "id": "feat:multipart-form-preservation-001",
@@ -4232,7 +4426,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2020"
+      ]
     },
     {
       "id": "feat:uploaded-file-runtime-contract-001",
@@ -4255,7 +4451,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2020"
+      ]
     },
     {
       "id": "feat:diagnostics-system-prefix-mount-001",
@@ -4276,7 +4474,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2021"
+      ]
     },
     {
       "id": "feat:healthz-stable-payload-001",
@@ -4297,7 +4497,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2021"
+      ]
     },
     {
       "id": "feat:diagnostics-warning-vocabulary-001",
@@ -4318,7 +4520,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2021"
+      ]
     },
     {
       "id": "feat:kernelz-bounded-payload-001",
@@ -4339,7 +4543,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2021"
+      ]
     },
     {
       "id": "feat:analytical-family-membership-freeze-001",
@@ -4360,7 +4566,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2022",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:analytical-runtime-docs-export-parity-001",
@@ -4381,7 +4590,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2022",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:realtime-transfer-family-membership-freeze-001",
@@ -4402,7 +4614,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:realtime-transfer-runtime-docs-export-parity-001",
@@ -4423,7 +4638,10 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2023",
+        "spc:2029"
+      ]
     },
     {
       "id": "feat:kernel-priming-runtime-parity-001",
@@ -4444,7 +4662,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2018"
+      ]
     },
     {
       "id": "feat:surface-metadata-omission-contract-001",
@@ -4467,7 +4687,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2019"
+      ]
     },
     {
       "id": "feat:operator-surface-smoke-runtime-parity-001",
@@ -4490,7 +4712,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2020"
+      ]
     },
     {
       "id": "feat:diagnostics-absence-warning-suppression-001",
@@ -4511,7 +4735,9 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [
+        "spc:2021"
+      ]
     },
     {
       "id": "feat:engine-extension-surface-001",
@@ -4556,7 +4782,8 @@
       "test_ids": [],
       "requires": [],
       "spec_ids": [
-        "spc:2027"
+        "spc:2027",
+        "spc:2034"
       ]
     },
     {
@@ -4579,7 +4806,8 @@
       "test_ids": [],
       "requires": [],
       "spec_ids": [
-        "spc:2027"
+        "spc:2027",
+        "spc:2037"
       ]
     },
     {
@@ -4920,7 +5148,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -4941,7 +5171,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -4962,7 +5194,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -4983,7 +5217,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5004,7 +5240,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5025,7 +5263,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5046,7 +5286,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5067,7 +5309,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5088,7 +5332,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5109,7 +5355,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5130,7 +5378,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5151,7 +5401,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5172,7 +5424,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5193,7 +5447,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5214,7 +5470,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5235,7 +5493,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5256,7 +5516,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5277,7 +5539,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5298,7 +5562,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5319,7 +5585,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5340,7 +5608,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5361,7 +5631,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5382,7 +5654,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5403,7 +5677,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5424,7 +5700,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5445,7 +5723,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5466,7 +5746,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5487,7 +5769,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5508,7 +5792,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5529,7 +5815,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5550,7 +5838,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5571,7 +5861,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5592,7 +5884,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5613,7 +5907,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5634,7 +5930,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5655,7 +5953,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5676,7 +5976,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5697,7 +5999,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5718,7 +6022,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2025"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5739,7 +6045,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5760,7 +6068,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5781,7 +6091,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5802,7 +6114,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5823,7 +6137,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5844,7 +6160,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5865,7 +6183,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5886,7 +6206,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5907,7 +6229,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5928,7 +6252,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5949,7 +6275,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5970,7 +6298,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -5991,7 +6321,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6012,7 +6344,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6033,7 +6367,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6054,7 +6390,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6075,7 +6413,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6096,7 +6436,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6117,7 +6459,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6138,7 +6482,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6159,7 +6505,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6180,7 +6528,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6201,7 +6551,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6222,7 +6574,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6243,7 +6597,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2026"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6264,7 +6620,11 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2035",
+        "spc:2036",
+        "spc:2037"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6285,7 +6645,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2034"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6306,7 +6668,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2027"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6327,7 +6691,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2043"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6348,7 +6714,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2042"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6369,7 +6737,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2042"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6390,7 +6760,10 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2031",
+        "spc:2042"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6411,7 +6784,10 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2028",
+        "spc:2042"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6432,7 +6808,10 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2029",
+        "spc:2042"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6453,7 +6832,11 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2014",
+        "spc:2029",
+        "spc:2042"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6474,7 +6857,10 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2032",
+        "spc:2033"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6495,7 +6881,10 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2031",
+        "spc:2032"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6516,7 +6905,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2031"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6537,7 +6928,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2031"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6558,7 +6951,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2042"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "requires": []
@@ -6579,7 +6974,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2045"
+      ],
       "claim_ids": [
         "clm:server-support-tigrcorn-001"
       ],
@@ -6604,7 +7001,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2045"
+      ],
       "claim_ids": [
         "clm:server-support-uvicorn-001"
       ],
@@ -6629,7 +7028,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2045"
+      ],
       "claim_ids": [
         "clm:server-support-hypercorn-001"
       ],
@@ -6654,7 +7055,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2045"
+      ],
       "claim_ids": [
         "clm:server-support-gunicorn-001"
       ],
@@ -6679,7 +7082,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2045"
+      ],
       "claim_ids": [
         "clm:server-support-daphne-001"
       ],
@@ -6704,7 +7109,9 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2045"
+      ],
       "claim_ids": [
         "clm:server-support-twisted-001"
       ],
@@ -6729,13 +7136,1378 @@
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
-      "spec_ids": [],
+      "spec_ids": [
+        "spc:2045"
+      ],
       "claim_ids": [
         "clm:server-support-granian-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
       ],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrblapp-concrete-facade-class-001",
+      "title": "TigrblApp concrete facade class",
+      "description": "Tracks TigrblApp as the concrete app facade class that projects AppSpec-driven runtime behavior and public mounting helpers.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2011"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrblrouter-concrete-facade-class-001",
+      "title": "TigrblRouter concrete facade class",
+      "description": "Tracks TigrblRouter as the concrete router facade class that projects router-bound runtime, docs, and mount behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2011"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:response-concrete-response-class-001",
+      "title": "Response concrete response class",
+      "description": "Tracks Response as the concrete response class for header, cookie, body, and ASGI send behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:transportresponse-concrete-response-class-001",
+      "title": "TransportResponse concrete response class",
+      "description": "Tracks the exported TransportResponse surface as a concrete response-class row; current implementation is export-level only and lacks a distinct backing object.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:jsonresponse-concrete-response-class-001",
+      "title": "JSONResponse concrete response class",
+      "description": "Tracks JSONResponse as the concrete JSON response class exported by tigrbl_concrete.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:htmlresponse-concrete-response-class-001",
+      "title": "HTMLResponse concrete response class",
+      "description": "Tracks HTMLResponse as the concrete HTML response class exported by tigrbl_concrete.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:plaintextresponse-concrete-response-class-001",
+      "title": "PlainTextResponse concrete response class",
+      "description": "Tracks PlainTextResponse as the concrete text response class exported by tigrbl_concrete.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:streamingresponse-concrete-stream-class-001",
+      "title": "StreamingResponse concrete stream class",
+      "description": "Tracks StreamingResponse as the concrete ordered byte-stream response class for sync and async chunk sources.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041",
+        "spc:2020"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:eventstreamresponse-concrete-sse-class-001",
+      "title": "EventStreamResponse concrete SSE class",
+      "description": "Tracks EventStreamResponse as the concrete SSE response class with event framing and event-stream headers.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041",
+        "spc:2020"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:fileresponse-concrete-response-class-001",
+      "title": "FileResponse concrete response class",
+      "description": "Tracks FileResponse as the concrete response class for file delivery behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:redirectresponse-concrete-response-class-001",
+      "title": "RedirectResponse concrete response class",
+      "description": "Tracks RedirectResponse as the concrete redirect response class for location-based redirects.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:backgroundtask-concrete-class-001",
+      "title": "BackgroundTask concrete class",
+      "description": "Tracks BackgroundTask as the concrete post-response task helper with awaitable-aware call behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:websocket-concrete-runtime-class-001",
+      "title": "WebSocket concrete runtime class",
+      "description": "Tracks WebSocket as the concrete websocket runtime surface projected by tigrbl_concrete.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2020"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:defaultsession-concrete-session-class-001",
+      "title": "DefaultSession concrete session class",
+      "description": "Tracks DefaultSession as the concrete delegating session wrapper that applies SessionSpec behavior to provider sessions.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2035",
+        "spc:2036",
+        "spc:2037"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:depends-concrete-dependency-helper-001",
+      "title": "Depends concrete dependency helper",
+      "description": "Tracks Depends as the concrete dependency helper that wraps injection callables for transport and runtime binding.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2044"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:security-concrete-dependency-helper-001",
+      "title": "Security concrete dependency helper",
+      "description": "Tracks Security as the concrete security dependency helper for auth-oriented dependency binding.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:apikey-security-dependency-001",
+      "title": "APIKey security dependency",
+      "description": "Tracks APIKey as a concrete first-class security dependency surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:httpbasic-security-dependency-001",
+      "title": "HTTPBasic security dependency",
+      "description": "Tracks HTTPBasic as a concrete first-class security dependency surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:httpbearer-security-dependency-001",
+      "title": "HTTPBearer security dependency",
+      "description": "Tracks HTTPBearer as a concrete first-class security dependency surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:oauth2-security-dependency-001",
+      "title": "OAuth2 security dependency",
+      "description": "Tracks OAuth2 as a concrete first-class security dependency surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:openidconnect-security-dependency-001",
+      "title": "OpenIdConnect security dependency",
+      "description": "Tracks OpenIdConnect as a concrete first-class security dependency surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:mutualtls-security-dependency-001",
+      "title": "MutualTLS security dependency",
+      "description": "Tracks MutualTLS as a concrete first-class security dependency surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-healthz-endpoint-helper-001",
+      "title": "build_healthz_endpoint helper surface",
+      "description": "Tracks build_healthz_endpoint as the concrete diagnostics endpoint-builder for healthz payload behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-methodz-endpoint-helper-001",
+      "title": "build_methodz_endpoint helper surface",
+      "description": "Tracks build_methodz_endpoint as the concrete diagnostics endpoint-builder for ordered method inventory payloads.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-hookz-endpoint-helper-001",
+      "title": "build_hookz_endpoint helper surface",
+      "description": "Tracks build_hookz_endpoint as the concrete diagnostics endpoint-builder for hook ordering payloads.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-kernelz-endpoint-helper-001",
+      "title": "build_kernelz_endpoint helper surface",
+      "description": "Tracks build_kernelz_endpoint as the concrete diagnostics endpoint-builder for kernel plan payloads.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-openapi-helper-surface-001",
+      "title": "build_openapi helper surface",
+      "description": "Tracks build_openapi as the concrete helper that materializes the OpenAPI payload surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-swagger-helper-surface-001",
+      "title": "build_swagger helper surface",
+      "description": "Tracks build_swagger as the concrete helper that materializes Swagger UI HTML for the OpenAPI UIX surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-lens-helper-surface-001",
+      "title": "build_lens helper surface",
+      "description": "Tracks build_lens as the concrete helper that materializes tigrbl-lens UI HTML for the OpenRPC UIX surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-openrpc-spec-helper-surface-001",
+      "title": "build_openrpc_spec helper surface",
+      "description": "Tracks build_openrpc_spec as the concrete helper that materializes the OpenRPC payload surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-json-schema-bundle-helper-surface-001",
+      "title": "build_json_schema_bundle helper surface",
+      "description": "Tracks build_json_schema_bundle as the concrete helper that materializes the JSON Schema bundle payload surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:build-asyncapi-spec-helper-surface-001",
+      "title": "build_asyncapi_spec helper surface",
+      "description": "Tracks build_asyncapi_spec as the concrete helper that materializes the AsyncAPI payload surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:diagnostics-router-mount-surface-001",
+      "title": "Diagnostics router mount surface",
+      "description": "Tracks mount_diagnostics as the concrete router-level mount surface that projects healthz, methodz, hookz, and kernelz endpoints.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:healthz-mount-surface-001",
+      "title": "Healthz mount surface",
+      "description": "Tracks the concrete healthz endpoint mount emitted by diagnostics routing.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:methodz-mount-surface-001",
+      "title": "Methodz mount surface",
+      "description": "Tracks the concrete methodz endpoint mount emitted by diagnostics routing.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:hookz-mount-surface-001",
+      "title": "Hookz mount surface",
+      "description": "Tracks the concrete hookz endpoint mount emitted by diagnostics routing.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:kernelz-mount-surface-001",
+      "title": "Kernelz mount surface",
+      "description": "Tracks the concrete kernelz endpoint mount emitted by diagnostics routing.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:openapi-mount-surface-001",
+      "title": "OpenAPI mount surface",
+      "description": "Tracks the concrete OpenAPI JSON mount surface projected by app and router owners.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:openrpc-mount-surface-001",
+      "title": "OpenRPC mount surface",
+      "description": "Tracks the concrete OpenRPC JSON mount surface projected by app and router owners.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:asyncapi-mount-surface-001",
+      "title": "AsyncAPI mount surface",
+      "description": "Tracks the concrete AsyncAPI JSON mount surface projected by app and router owners.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:json-schema-mount-surface-001",
+      "title": "JSON Schema mount surface",
+      "description": "Tracks the concrete JSON Schema bundle mount surface projected by app and router owners.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:methodz-payload-surface-001",
+      "title": "Methodz payload surface",
+      "description": "Tracks the concrete methodz diagnostics payload as ordered operation inventory rather than incidental debug output.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:hookz-payload-surface-001",
+      "title": "Hookz payload surface",
+      "description": "Tracks the concrete hookz diagnostics payload as a hook-order and phase-reporting surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:openapi-payload-surface-001",
+      "title": "OpenAPI payload surface",
+      "description": "Tracks the concrete OpenAPI document payload as a first-class documentation surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:openrpc-payload-surface-001",
+      "title": "OpenRPC payload surface",
+      "description": "Tracks the concrete OpenRPC document payload as a first-class documentation surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:asyncapi-payload-surface-001",
+      "title": "AsyncAPI payload surface",
+      "description": "Tracks the concrete AsyncAPI document payload as a first-class documentation surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:json-schema-payload-surface-001",
+      "title": "JSON Schema payload surface",
+      "description": "Tracks the concrete JSON Schema bundle payload as a first-class documentation surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:openapi-uix-surface-001",
+      "title": "OpenAPI UIX surface",
+      "description": "Tracks the concrete human-viewable OpenAPI UIX surface currently satisfied through Swagger-backed rendering.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:openrpc-uix-surface-001",
+      "title": "OpenRPC UIX surface",
+      "description": "Tracks the concrete human-viewable OpenRPC UIX surface currently satisfied through tigrbl-lens rendering.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:asyncapi-uix-surface-001",
+      "title": "AsyncAPI UIX surface",
+      "description": "Tracks the requested human-viewable AsyncAPI UIX surface; current concrete package exposes the payload but not a dedicated UIX.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:json-schema-uix-surface-001",
+      "title": "JSON Schema UIX surface",
+      "description": "Tracks the requested human-viewable JSON Schema UIX surface; current concrete package exposes the payload but not a dedicated UIX.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:healthz-uix-surface-001",
+      "title": "Healthz UIX surface",
+      "description": "Tracks the requested human-viewable Healthz UIX surface; current concrete package exposes only the payload endpoint.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:kernelz-uix-surface-001",
+      "title": "Kernelz UIX surface",
+      "description": "Tracks the requested human-viewable Kernelz UIX surface; current concrete package exposes only the payload endpoint.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:uniform-diagnostics-uix-surface-001",
+      "title": "Uniform diagnostics UIX surface",
+      "description": "Tracks a uniform UIX that can display documentation payloads and system diagnostics together; current concrete package does not yet provide this consolidated UIX.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010",
+        "spc:2021"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:swagger-openapi-uix-001",
+      "title": "Swagger OpenAPI UIX",
+      "description": "Tracks Swagger as the concrete OpenAPI UIX implementation surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tigrbl-lens-openrpc-uix-001",
+      "title": "tigrbl-lens OpenRPC UIX",
+      "description": "Tracks tigrbl-lens as the concrete OpenRPC UIX implementation surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2010"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:ddl-initialization-modes-001",
+      "title": "DDL initialization modes",
+      "description": "Tracks the concrete sync and async DDL initialization modes for app, router, and table bootstrap.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2033"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:bootstrappable-table-mixin-001",
+      "title": "Bootstrappable table mixin",
+      "description": "Tracks Bootstrappable as the concrete ORM mixin for default rows, bootstrap seeding, and explicit reseeding.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2038",
+        "spc:2039"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:static-files-surface-001",
+      "title": "Static files surface",
+      "description": "Tracks the concrete static-files mount and serving surface for app and router owners.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2040"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
       "requires": []
     }
   ],
@@ -17150,6 +18922,70 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1055",
+      "number": 1055,
+      "slug": "ddl-surface-ownership-and-initialization-boundary",
+      "title": "DDL surface ownership and initialization boundary",
+      "path": ".ssot/adr/ADR-1055-ddl-surface-ownership-and-initialization-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "354d6e2b7274b9e59a359280af5510dccc5c87dc9c9476065e6a63033b395006",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1056",
+      "number": 1056,
+      "slug": "table-mixins-and-bootstrappable-defaults",
+      "title": "Table mixins and bootstrappable defaults",
+      "path": ".ssot/adr/ADR-1056-table-mixins-and-bootstrappable-defaults.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "3705310ec0ec77d0c234fb1fe1a5401eaa7716038193468a924e3407feaee741",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1057",
+      "number": 1057,
+      "slug": "static-files-surface-contract",
+      "title": "Static files surface contract",
+      "path": ".ssot/adr/ADR-1057-static-files-surface-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "7b01798a6966a1b91ba854f1c0bf245a4f3dcc122d7964d92fb2b928073048a2",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1058",
+      "number": 1058,
+      "slug": "concrete-response-type-surface-boundary",
+      "title": "Concrete response type surface boundary",
+      "path": ".ssot/adr/ADR-1058-concrete-response-type-surface-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "18c2b678e65f3c5a63648392b9dfa31d1443236a47b8a8d250490f786aba029c",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -17883,6 +19719,261 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "spc:2031",
+      "number": 2031,
+      "slug": "database-schema-surface",
+      "title": "Database schema surface",
+      "path": ".ssot/specs/SPEC-2031-database-schema-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "de2de9f383e89ca4b78624c43410d08b8e0dfb81202b3822cc8c7101c958d3de",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2032",
+      "number": 2032,
+      "slug": "ddl-surface",
+      "title": "DDL surface",
+      "path": ".ssot/specs/SPEC-2032-ddl-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "e165ab4363fe74e299d12dc202e2b313c04ee3fefe90fd946720ce884aba4e62",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2033",
+      "number": 2033,
+      "slug": "ddl-initialization-modes",
+      "title": "DDL initialization modes",
+      "path": ".ssot/specs/SPEC-2033-ddl-initialization-modes.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "5d8507955ce1a27aafc8c6b9284ca198ee874a74245d71c4dbd37c1025f0520d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2034",
+      "number": 2034,
+      "slug": "engine-interoperability",
+      "title": "Engine interoperability",
+      "path": ".ssot/specs/SPEC-2034-engine-interoperability.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "6d02d450585862d247014e1e32a2da86caeb28036871d8e581aebb1bee5930dd",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2035",
+      "number": 2035,
+      "slug": "engine-session-pairing",
+      "title": "Engine-session pairing",
+      "path": ".ssot/specs/SPEC-2035-engine-session-pairing.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "03a95d1ec915581f31ed4a4ee632e48cadcd123e9bcccdaca6c7d9d905626d22",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2036",
+      "number": 2036,
+      "slug": "engine-session-interoperability",
+      "title": "Engine-session interoperability",
+      "path": ".ssot/specs/SPEC-2036-engine-session-interoperability.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "7e371d9e3de84626029aa2e05b8ad14c70ffa8bdb585b7e1f224a91f37b26871",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2037",
+      "number": 2037,
+      "slug": "engine-session-plugin-capabilities",
+      "title": "Engine-session plugin capabilities",
+      "path": ".ssot/specs/SPEC-2037-engine-session-plugin-capabilities.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "6e081cb1fe1f1776990819982917beb7d2b032ae49dfedc8949b8e7434dc4b34",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2038",
+      "number": 2038,
+      "slug": "table-mixins-surface",
+      "title": "Table mixins surface",
+      "path": ".ssot/specs/SPEC-2038-table-mixins-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "91183c415e40c801282f9e79a3526c2acbb5b80747e3879176b9d0f207ee1553",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2039",
+      "number": 2039,
+      "slug": "bootstrappable-table-orm-mixin-defaults-and-seeding",
+      "title": "Bootstrappable table ORM mixin defaults and seeding",
+      "path": ".ssot/specs/SPEC-2039-bootstrappable-table-orm-mixin-defaults-and-seeding.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "ee421bd0e4881f8cc47a3cf52d98f8efb765bdf3cc71be3b5b76b5122c054217",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2040",
+      "number": 2040,
+      "slug": "static-files-surface",
+      "title": "Static files surface",
+      "path": ".ssot/specs/SPEC-2040-static-files-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "ae2f66852d9c2d341ff0396879a918f1db400b2ce9d57f95ca91dabc6ea2e7a8",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2041",
+      "number": 2041,
+      "slug": "concrete-response-type-surface",
+      "title": "Concrete response type surface",
+      "path": ".ssot/specs/SPEC-2041-concrete-response-type-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "54894915a4cb118a5bae781bdf82dbce9929f82753c74a4bba875d2651ebc5e8",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2042",
+      "number": 2042,
+      "slug": "tigrbl-helper-facade-surface",
+      "title": "Tigrbl helper facade surface",
+      "path": ".ssot/specs/SPEC-2042-tigrbl-helper-facade-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "d888e7b41543937554fd8afb9cadab0abc725137e330ff4b29ffac0818d726ef",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2043",
+      "number": 2043,
+      "slug": "schema-migration-runtime-surface",
+      "title": "Schema migration runtime surface",
+      "path": ".ssot/specs/SPEC-2043-schema-migration-runtime-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "08a46220077fb696a0b4691ce0524bbefaffc382f977e46118a449c2f7f9c7a5",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2044",
+      "number": 2044,
+      "slug": "concrete-dependency-helper-surface",
+      "title": "Concrete dependency helper surface",
+      "path": ".ssot/specs/SPEC-2044-concrete-dependency-helper-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "f0d877e50a989c57be8bcb809457151bc7a0650da80ee9671cb417eaefd7e403",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2045",
+      "number": 2045,
+      "slug": "supported-server-runner-surface",
+      "title": "Supported server runner surface",
+      "path": ".ssot/specs/SPEC-2045-supported-server-runner-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "b46ecccf29b62c9d39592b57dc2191ba07873d8904a9731e69f96048900ab21d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
     }
   ],
   "profiles": []

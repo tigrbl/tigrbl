@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2042"
+number: 2042
+slug: "tigrbl-helper-facade-surface"
+title: "Tigrbl helper facade surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed top-level helper surface projected by the tigrbl facade."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed top-level helper surface projected by the `tigrbl` facade.
+  
+  ## Canonical Surface
+  
+  - `bind()`, `rebind()`, `build_schemas()`, `build_hooks()`, `build_handlers()`, `build_rest()`, and `get_schema()` are the governed helper exports on the top-level facade.
+  - Those helpers are facade projections over lower-layer authorities in `tigrbl_concrete._mapping.model`, `tigrbl_base._base._rpc_map`, and `tigrbl_core.schema`; they do not create a second source of truth for op, hook, schema, or transport semantics.
+  - `bind()` and `rebind()` are orchestration helpers that materialize handlers, hooks, bound schemas, RPC attachments, and REST surfaces for a model.
+  - `build_*` helpers project one bounded portion of that model-binding flow without redefining the canonical semantics of ops, hooks, or bindings.
+  - `get_schema()` is a lookup helper over already-bound model schema namespaces rather than a schema-definition authority.
+  
+  ## Classification Rules
+  
+  - binding-helper feature: top-level orchestration helpers such as `bind()` and `rebind()`
+  - projection-helper feature: top-level `build_*` helpers that project bounded lower-layer materialization work
+  - lookup-helper feature: read-only helper access such as `get_schema()`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1002`, `adr:1046`, `adr:1047`, `adr:1052`, `adr:1053`
+  - Related features: `feat:bind-helper-surface-001`, `feat:rebind-helper-surface-001`, `feat:build-schemas-helper-surface-001`, `feat:build-hooks-helper-surface-001`, `feat:build-handlers-helper-surface-001`, `feat:build-rest-helper-surface-001`, `feat:get-schema-python-helper-surface-001`
+spec_kind: "local-policy"
