@@ -4,14 +4,19 @@ id: "spc:2016"
 number: 2016
 slug: "core-default-endpoint-mappings"
 title: "Core Default Endpoint Mappings"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Date: 2026-04-18"
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "spc:2024"
+status_notes:
+  -
+    status: "superseded"
+    note: "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract."
+    at: "2026-04-20T10:29:37Z"
 references: []
 body: |-
   ## Content

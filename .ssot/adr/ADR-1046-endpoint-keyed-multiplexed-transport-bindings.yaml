@@ -4,14 +4,19 @@ id: "adr:1046"
 number: 1046
 slug: "endpoint-keyed-multiplexed-transport-bindings"
 title: "ADR-1046 - Endpoint-Keyed Multiplexed Transport Bindings"
-status: "accepted"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "JSON-RPC is multiplexed: many operations share one concrete ingress such as `/rpc`. The binding model already treats transport support as op-centric metadata, but JSON-RPC currently lacks a first-class endpoint identity that can distinguish multiple mounted multiplexed surfaces without hard-coding concrete paths into every operation binding."
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "adr:1051"
+status_notes:
+  -
+    status: "superseded"
+    note: "Concrete (scope, path, method) routing is now canonical for the public contract; JSON-RPC endpoint identity remains an internal or derived detail for multiplexed mounts and compilation."
+    at: "2026-04-20T10:28:42Z"
 references: []
 body: |-
   ## Decision
