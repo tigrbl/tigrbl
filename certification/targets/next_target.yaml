@@ -415,6 +415,93 @@ features:
     evidence_artifacts:
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
       - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
+  - id: NEXT-FEAT-035
+    name: Supported server tigrcorn
+    state: target
+    owner: CLI / Developer Experience
+    package: pkgs/core/tigrbl
+    crate: crates/tigrbl_rs_runtime
+    test_class: server-runner-tigrcorn
+    claim_target: NEXT-037
+    phase: T2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+  - id: NEXT-FEAT-036
+    name: Supported server uvicorn
+    state: target
+    owner: CLI / Developer Experience
+    package: pkgs/core/tigrbl
+    crate: crates/tigrbl_rs_runtime
+    test_class: server-runner-uvicorn
+    claim_target: NEXT-038
+    phase: T2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+  - id: NEXT-FEAT-037
+    name: Supported server hypercorn
+    state: target
+    owner: CLI / Developer Experience
+    package: pkgs/core/tigrbl
+    crate: crates/tigrbl_rs_runtime
+    test_class: server-runner-hypercorn
+    claim_target: NEXT-039
+    phase: T2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+  - id: NEXT-FEAT-038
+    name: Supported server gunicorn
+    state: target
+    owner: CLI / Developer Experience
+    package: pkgs/core/tigrbl
+    crate: crates/tigrbl_rs_runtime
+    test_class: server-runner-gunicorn
+    claim_target: NEXT-040
+    phase: T2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+  - id: NEXT-FEAT-039
+    name: Out-of-boundary server daphne
+    state: target
+    owner: Server/runtime boundary
+    package: pkgs/core/tigrbl
+    crate: crates/tigrbl_rs_runtime
+    test_class: server-oob-daphne
+    claim_target: NEXT-041
+    phase: T2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+  - id: NEXT-FEAT-040
+    name: Out-of-boundary server twisted
+    state: target
+    owner: Server/runtime boundary
+    package: pkgs/core/tigrbl
+    crate: crates/tigrbl_rs_runtime
+    test_class: server-oob-twisted
+    claim_target: NEXT-042
+    phase: T2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+  - id: NEXT-FEAT-041
+    name: Out-of-boundary server granian
+    state: target
+    owner: Server/runtime boundary
+    package: pkgs/core/tigrbl
+    crate: crates/tigrbl_rs_runtime
+    test_class: server-oob-granian
+    claim_target: NEXT-043
+    phase: T2
+    evidence_artifacts:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
 risks:
   - id: RISK-001
     title: Certification wording drift between frozen release and active dev line

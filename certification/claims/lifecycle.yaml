@@ -1076,3 +1076,143 @@ claims:
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
       - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
     release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-037
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: T2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl/tigrbl/cli.py
+      - docs/developer/CLI_REFERENCE.md
+    adr_link: .ssot/adr/ADR-1026-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/developer/CLI_REFERENCE.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-038
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: T2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl/tigrbl/cli.py
+      - docs/developer/CLI_REFERENCE.md
+    adr_link: .ssot/adr/ADR-1026-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/developer/CLI_REFERENCE.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-039
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: T2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl/tigrbl/cli.py
+      - docs/developer/CLI_REFERENCE.md
+    adr_link: .ssot/adr/ADR-1026-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/developer/CLI_REFERENCE.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-040
+    lifecycle: implemented
+    boundary_inclusion: true
+    target_mapping: T2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - pkgs/core/tigrbl/tigrbl/cli.py
+      - docs/developer/CLI_REFERENCE.md
+    adr_link: .ssot/adr/ADR-1026-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/developer/CLI_REFERENCE.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+      - tools/conformance/installed_package_smoke.py
+    release_gate_coverage: [A, B, C, D, E]
+  - id: NEXT-041
+    lifecycle: mapped
+    boundary_inclusion: false
+    target_mapping: T2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    adr_link: .ssot/adr/ADR-1026-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    release_gate_coverage: [A]
+  - id: NEXT-042
+    lifecycle: mapped
+    boundary_inclusion: false
+    target_mapping: T2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    adr_link: .ssot/adr/ADR-1026-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    release_gate_coverage: [A]
+  - id: NEXT-043
+    lifecycle: mapped
+    boundary_inclusion: false
+    target_mapping: T2
+    owning_modules:
+      - certification/claims/target.yaml
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    adr_link: .ssot/adr/ADR-1026-certification-truth-model.md
+    public_contract_artifacts:
+      - certification/targets/next_target.yaml
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    required_test_classes:
+      - pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+    preserved_evidence:
+      - docs/conformance/NEXT_TARGETS.md
+      - docs/conformance/IMPLEMENTATION_MAP.md
+    release_gate_coverage: [A]

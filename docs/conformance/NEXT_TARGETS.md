@@ -49,6 +49,25 @@ The transport-dispatch track now governs these items:
 7. default endpoint mappings owned by `tigrbl_core`
 8. REST/JSON-RPC semantic parity through one shared dispatch path
 
+### Supported server boundary
+
+The active line now also tracks the supported server boundary explicitly.
+
+Supported server runners are limited to:
+
+1. `tigrcorn`
+2. `uvicorn`
+3. `hypercorn`
+4. `gunicorn`
+
+The following remain tracked only as out-of-boundary server/runtime rows on the active line:
+
+1. `daphne`
+2. `twisted`
+3. `granian`
+
+Any other non-listed server/runtime adapters remain out of boundary until a new governed feature/claim row is added.
+
 ### Scope sources already incorporated into the governed plan
 
 The design direction now captured here and in the ADR set includes:
@@ -108,6 +127,13 @@ The design direction now captured here and in the ADR set includes:
 - keep concrete `/rpc` mounts as thin ingress adapters only
 - move transport lookup and matching back into KernelPlan compilation and atoms
 - preserve semantic parity without weakening parity tests
+
+### Stage T2 - Supported server contract and OOB tracking
+
+- keep the supported runner set locked to `tigrcorn`, `uvicorn`, `hypercorn`, and `gunicorn`
+- track each supported runner as its own governed feature on the active line
+- keep `daphne`, `twisted`, and `granian` tracked only as out-of-boundary rows
+- treat any other non-listed server/runtime adapter as out of boundary until separately governed
 
 ## Governing ADR set for the next target
 
