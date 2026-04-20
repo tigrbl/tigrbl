@@ -3,7 +3,7 @@
 ## Canonical top-level reader path
 
 - `README.md`
-- `certification/boundary.yaml`
+- `.ssot/registry.json`
 - `reports/current_state/2026-04-07-phase0-certification-freeze.md`
 - `reports/certification_state/2026-04-07-registry-reclassification.md`
 - `reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
@@ -27,21 +27,23 @@
 
 ## Canonical docs locations
 
+Machine authority lives in `.ssot/registry.json`. Certification YAML files under `certification/` are derived projections unless a row below explicitly says otherwise.
+
 | Need | Canonical path |
 |---|---|
-| Certification authority | `certification/boundary.yaml` |
-| Next-target authority | `certification/targets/next_target.yaml` |
-| Current claims | `certification/claims/current.yaml` |
-| Target claims | `certification/claims/target.yaml` |
-| Blocked claims | `certification/claims/blocked.yaml` |
-| Claim lifecycle registry | `certification/claims/lifecycle.yaml` |
-| Evidenced claims | `certification/claims/evidenced.yaml` |
+| Certification authority | `.ssot/registry.json` |
+| Next-target authority | `.ssot/registry.json` |
+| Current claims | `.ssot/registry.json` |
+| Target claims | `.ssot/registry.json` |
+| Blocked claims | `.ssot/registry.json` |
+| Claim lifecycle registry | `.ssot/registry.json` |
+| Evidenced claims | `.ssot/registry.json` |
 | Certification evidence schema | `certification/evidence/schema.json` |
 | Current release certification profile | `certification/profiles/current_release.yaml` |
 | Active dev-line certification profile | `certification/profiles/active_next_target.yaml` |
-| Root ADR index | `.ssot/adr/ADR-1027-adr-index.md` |
-| Certification truth-model ADR | `.ssot/adr/ADR-1026-certification-truth-model.md` |
-| Certification truth-model spec | `.ssot/specs/SPEC-2002-certification-truth-model.md` |
+| Root ADR index | `.ssot/adr/ADR-1027-adr-index.yaml` |
+| Certification truth-model ADR | `.ssot/adr/ADR-1026-certification-truth-model.yaml` |
+| Certification truth-model spec | `.ssot/specs/SPEC-2002-certification-truth-model.yaml` |
 | Current-state report | `reports/current_state/2026-04-07-phase0-certification-freeze.md` |
 | Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
 | Phase 1 current-state report | `reports/current_state/2026-04-07-phase1-declarative-surface.md` |

@@ -8,16 +8,16 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The CLI exposes a governed first-class server-selection contract."
+summary: "Accepted."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
   Accepted.
-
+  
   The unified `tigrbl` CLI is part of the current target surface. It must expose run/serve/dev/routes/openapi/openrpc/doctor/capabilities and explicit server selection.
-
+  
   The governed first-class `--server` set is limited to `tigrcorn`, `uvicorn`, `hypercorn`, and `gunicorn`.
-
+  
   `daphne`, `twisted`, and `granian` remain tracked as out-of-boundary rows and must be rejected by the first-class CLI server selector until a future SSOT boundary change accepts them.

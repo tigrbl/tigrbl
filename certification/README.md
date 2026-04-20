@@ -1,6 +1,8 @@
-# Certification Authority
+# Certification Projections
 
-This tree is the authoritative certification boundary and truth model for the repository.
+`.ssot/registry.json` is the authoritative machine-readable source of truth for the repository, with authored policy documents under `.ssot/adr/` and `.ssot/specs/`.
+
+This tree contains derived certification projections, gate inputs, and historical release bundles.
 
 It separates:
 
@@ -8,6 +10,8 @@ It separates:
 - active next-target claims
 - blocked closure items
 - evidence-backed claims
+
+The projection files `certification/claims/target.yaml` and `certification/targets/next_target.yaml` are deprecated and must not receive new source edits. New planning, feature, claim, and boundary work belongs in the SSOT.
 
 For normalized tracking across features, claims, tests, and evidence, use the
 generated universal registry artifact at
@@ -27,6 +31,7 @@ Build and validate it with:
 - `python tools/ci/generate_registry_csvs.py`
 - `python tools/ci/validate_universal_registry.py`
 
-See `certification/boundary.yaml`.
+See `certification/boundary.yaml` for the derived certification projection
+entry point.
 
 Machine validation is enforced by `tools/ci/validate_certification_tree.py`.
