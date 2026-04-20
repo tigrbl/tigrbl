@@ -1,4 +1,4 @@
-schema_version: 9
+schema_version: "0.1.0"
 kind: "spec"
 id: "spc:2012"
 number: 2012
@@ -14,28 +14,23 @@ superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Content
+  ## Intent
   
-  Date: 2026-04-16
-  Kind: repo-local
+  This document governs status, auth, validation, and error projection parity
+  for the current recovery lane.
   
-  ## Scope
+  ## Invariants
   
-  This spec governs the current recovery lane for:
-  
-  - anonymous-access handling
-  - REST create status semantics
-  - authn and authorization projection parity
-  - validation parity across REST and JSON-RPC
-  - error-envelope and response-structure correctness
-  
-  ## Required Invariants
-  
-  - Canonical create success projects to REST `201 Created` unless an explicit op contract overrides it.
-  - Allow-anon behavior is derived from canonical security metadata and matches generated documentation.
-  - Validation, authorization, and handler failures are classified once and then projected consistently across transports.
-  - REST and JSON-RPC error parity must hold for equivalent canonical operation failures.
-  - Response-structure conformance is mandatory for both success and error envelopes exposed to clients.
+  - allow-anon behavior derives only from canonical security metadata and
+    matches generated documentation.
+  - canonical create success projects to REST `201 Created` unless an explicit
+    operation contract overrides it.
+  - authentication and authorization failures are classified once and projected
+    consistently across transports.
+  - canonical validation failures preserve parity between REST and JSON-RPC
+    projections.
+  - success and error envelopes preserve governed response structure rather than
+    transport-specific shapes.
   
   ## Targeted Failing Lanes
   
@@ -52,8 +47,6 @@ body: |-
   
   ## Traceability
   
-  - ADR: `adr/ADR-0031-status-auth-and-error-projections-derive-from-canonical-outcomes.md`
-  - Features:
-    - `feat:anon-access-rest-status-parity-001`
-    - `feat:error-parity-response-structure-001`
+  - ADRs: `adr:1032`
+  - Related feature granularity lives in the registry layer.
 spec_kind: "local-policy"
