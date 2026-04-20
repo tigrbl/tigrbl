@@ -1,0 +1,48 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2025"
+number: 2025
+slug: "tigrbl-core-spec-private-and-public-export-surface"
+title: "tigrbl_core._spec Private and Public Export Surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the governed module, export, and public-facade"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the governed module, export, and public-facade projection surface for `tigrbl_core._spec`.
+  
+  ## Canonical Layer Surface
+  
+  - The canonical `_spec` module surface is the unique set of backing modules referenced by `tigrbl_core._spec.__init__._EXPORTS`, together with `hook_types` for the `PHASE` and `PHASES` aliases.
+  - The canonical `_spec` export surface is the full key set of `tigrbl_core._spec.__init__._EXPORTS`.
+  - `PHASE` and `PHASES` are governed `_spec` aliases even though they are materialized through special-case logic rather than ordinary `_EXPORTS` lookup.
+  
+  ## Public Operator Projection
+  
+  - The governed public operator projection for `_spec` is the intersection of the `_spec` export surface with `tigrbl.__all__`.
+  - A governed public `_spec` export must continue to name the same underlying `_spec` contract concept even if the import path is projected through the facade.
+  - `_spec` exports that are not re-exported through `tigrbl.__all__` remain governed private/internal `_spec` surface rather than public operator surface.
+  
+  ## Feature Granularity
+  
+  - One feature row may track each governed `_spec` module.
+  - One feature row may track each governed `_spec` export.
+  - One additional feature row may track each `_spec` export that is promoted into the public `tigrbl` facade.
+  
+  ## Classification Rules
+  
+  - module feature: ownership of the concrete backing module inside `tigrbl_core._spec`
+  - export feature: ownership of the governed symbol exported from `tigrbl_core._spec`
+  - public export feature: facade/operator-surface exposure of an `_spec` export through `tigrbl`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1003`, `adr:1052`
+spec_kind: "local-policy"
