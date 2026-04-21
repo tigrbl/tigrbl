@@ -6,3 +6,6 @@ dependencies = ["tigrbl"]
 
 [project.entry-points."tigrbl.engine"]
 memkv = "tigrbl_engine_memkv.plugin:register"
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

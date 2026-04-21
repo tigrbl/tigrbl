@@ -28,7 +28,8 @@ def _method(ctx: Any) -> str:
 
 
 def _path(ctx: Any) -> str:
-    return str(getattr(ctx, "path", "/") or "/")
+    path = str(getattr(ctx, "path", "/") or "/")
+    return path.rstrip("/") or "/"
 
 
 def _endpoint(dispatch: Mapping[str, object], ctx: Any) -> str:

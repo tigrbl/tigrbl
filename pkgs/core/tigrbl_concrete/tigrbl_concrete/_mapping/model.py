@@ -192,12 +192,24 @@ def _build_raw_handler(model: type, spec: OpSpec):
 
     import tigrbl_ops_oltp as _core
 
-    core_fn = getattr(_core, target)
+    try:
+        core_fn = getattr(_core, target)
+    except AttributeError:
+        async def _unsupported_raw(ctx: Any):
+            from tigrbl_runtime.runtime.status.exceptions import HTTPException
+
+            raise HTTPException(
+                status_code=501,
+                detail=f"Operation target '{target}' is declared but not implemented",
+            )
+
+        _unsupported_raw.__name__ = f"{model.__name__}_{target}_unsupported"
+        return _unsupported_raw
 
     @wraps(core_fn)
     async def _raw(ctx: Any):
         ctx_dict = dict(ctx or {})
-        db = ctx_dict.get("db")
+        db = ctx_dict.get("db") or ctx_dict.get("_raw_db")
         payload = ctx_dict.get("payload")
         params = ctx_dict.get("path_params")
         ident = None

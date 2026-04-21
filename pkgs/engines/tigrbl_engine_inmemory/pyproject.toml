@@ -30,3 +30,6 @@ inmemory = "tigrbl_engine_inmemory.plugin:register"
 dev = [
     "ruff>=0.11.0",
 ]
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

@@ -559,6 +559,7 @@ class PackedPlanExecutor(ExecutorBase):
         if hint == "model_get_db" and callable(
             getattr(model, "__tigrbl_get_db__", None)
         ):
+            from tigrbl_concrete._concrete import engine_resolver as _resolver
 
             def _acquire(_ctx: _Ctx) -> tuple[Any, Any]:
                 return _resolver.acquire(model=model)
