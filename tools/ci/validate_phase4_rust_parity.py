@@ -33,7 +33,7 @@ def main() -> None:
 
     for snippet in (
         "route/opview/phase-plan parity snapshots",
-        "differential Python-vs-native parity suites",
+        "differential Python-vs-Rust parity suites",
         "packed-plan parity",
         "REST, JSON-RPC, SSE, WS/WSS, and WebTransport transport traces",
     ):
@@ -63,10 +63,7 @@ def main() -> None:
     if "Validate Phase 4 rust parity" not in workflow:
         errors.append(".github/workflows/policy-governance.yml must run the Phase 4 rust-parity validator")
 
-    if "BLK-004" not in blocked_claims or (
-        "native backend claims must remain blocked" not in blocked_claims
-        and "Rust backend claims must remain blocked" not in blocked_claims
-    ):
+    if "BLK-004" not in blocked_claims or "native backend claims must remain blocked" not in blocked_claims:
         errors.append("certification/claims/blocked.yaml must block Rust backend claim publication until parity lanes pass")
 
     fail(errors)

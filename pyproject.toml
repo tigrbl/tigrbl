@@ -1,50 +1,6 @@
 [tool.uv]
 package = false
 
-[tool.uv.sources]
-tigrbl = { workspace = true }
-"tigrbl-acme-ca" = { workspace = true }
-"tigrbl-atoms" = { workspace = true }
-"tigrbl-base" = { workspace = true }
-"tigrbl-canon" = { workspace = true }
-"tigrbl-client" = { workspace = true }
-"tigrbl-concrete" = { workspace = true }
-"tigrbl-core" = { workspace = true }
-"tigrbl-engine-bigquery" = { workspace = true }
-"tigrbl-engine-clickhouse" = { workspace = true }
-"tigrbl-engine-csv" = { workspace = true }
-"tigrbl-engine-dataframe" = { workspace = true }
-"tigrbl-engine-duckdb" = { workspace = true }
-"tigrbl-engine-inmemcache" = { workspace = true }
-"tigrbl-engine-inmemory" = { workspace = true }
-"tigrbl-engine-membloom" = { workspace = true }
-"tigrbl-engine-memdedupe" = { workspace = true }
-"tigrbl-engine-memkv" = { workspace = true }
-"tigrbl-engine-memlru" = { workspace = true }
-"tigrbl-engine-mempubsub" = { workspace = true }
-"tigrbl-engine-memqueue" = { workspace = true }
-"tigrbl-engine-memrate" = { workspace = true }
-"tigrbl-engine-numpy" = { workspace = true }
-"tigrbl-engine-pandas" = { workspace = true }
-"tigrbl-engine-pgsqli-wal" = { workspace = true }
-"tigrbl-engine-postgres" = { workspace = true }
-"tigrbl-engine-pyspark" = { workspace = true }
-"tigrbl-engine-redis" = { workspace = true }
-"tigrbl-engine-rediscachethrough" = { workspace = true }
-"tigrbl-engine-snowflake" = { workspace = true }
-"tigrbl-engine-sqlite" = { workspace = true }
-"tigrbl-engine-xlsx" = { workspace = true }
-"tigrbl-kernel" = { workspace = true }
-"tigrbl-ops-olap" = { workspace = true }
-"tigrbl-ops-oltp" = { workspace = true }
-"tigrbl-ops-realtime" = { workspace = true }
-"tigrbl-orm" = { workspace = true }
-"tigrbl-runtime" = { workspace = true }
-"tigrbl-spec" = { workspace = true }
-"tigrbl-spiffe" = { workspace = true }
-"tigrbl-tests" = { workspace = true }
-"tigrbl-typing" = { workspace = true }
-
 [dependency-groups]
 dev = [
   "pytest>=8.0",

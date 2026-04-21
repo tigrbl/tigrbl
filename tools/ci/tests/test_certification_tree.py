@@ -5,11 +5,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(REPO_ROOT / "tools" / "ci"))
-
 from simple_yaml import load_yaml
 
+REPO_ROOT = Path(__file__).resolve().parents[3]
 BOUNDARY = REPO_ROOT / "certification" / "boundary.yaml"
 NEXT_TARGET = REPO_ROOT / "certification" / "targets" / "next_target.yaml"
 CLAIM_FILES = [
