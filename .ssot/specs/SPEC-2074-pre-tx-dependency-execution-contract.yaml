@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2074"
+number: 2074
+slug: "pre-tx-dependency-execution-contract"
+title: "Pre-TX dependency execution contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract specifies the execution order and transaction boundary for operation security dependencies and ordinary dependencies."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This contract specifies the execution order and transaction boundary for operation security dependencies and ordinary dependencies.
+  
+  ## Contract
+  
+  1. Security dependencies must execute before ordinary dependencies.
+  2. Security dependencies and ordinary dependencies must execute in the pre-transaction phase before `START_TX`.
+  3. Dependency failure must fail closed before handler execution, persistence work, transaction start, commit, or post-commit side effects.
+  4. REST and JSON-RPC transports that execute the semantic operation must preserve the same dependency ordering and transaction boundary.
+  5. Dependency placement must be operation-level behavior, not transport-local behavior.
+  6. Diagnostics may report dependency placement, but diagnostics output must not be treated as a substitute for actual execution ordering.
+  
+  ## Related Decisions
+  
+  - ADR-1011 governs security dependency and dependency ordering.
+  - ADR-1012 governs transaction guardrails.
+  - ADR-1078 narrows the pre-TX dependency execution boundary.
+  
+  ## Verification
+  
+  - Tests should prove security dependencies run before ordinary dependencies.
+  - Tests should prove failures occur before `START_TX`.
+  - Tests should verify REST and JSON-RPC behavior separately when both transports execute the semantic operation.
+spec_kind: "local-policy"

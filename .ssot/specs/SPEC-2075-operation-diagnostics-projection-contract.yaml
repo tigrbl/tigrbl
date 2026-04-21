@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2075"
+number: 2075
+slug: "operation-diagnostics-projection-contract"
+title: "Operation diagnostics projection contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract specifies diagnostics projection for operation materialization, hook, atom, dependency, and kernel-step views."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This contract specifies diagnostics projection for operation materialization, hook, atom, dependency, and kernel-step views.
+  
+  ## Contract
+  
+  1. Diagnostics must project from materialized operation state, not from an independent interpretation of decorator arguments or transport route state.
+  2. Diagnostics may expose operation names, aliases, target names, route metadata, schema projections, hook chains, atom selections, dependency placement, persistence policy, and kernel-step ordering.
+  3. Diagnostics output must be stable enough for tests to assert governed operation placement and ordering.
+  4. Diagnostics must not redefine execution semantics; execution contracts remain owned by the relevant operation, transport, dependency, persistence, and kernel-plan specs.
+  5. If diagnostics intentionally omit a materialized operation concern, that omission must be explicit in the diagnostics contract or the relevant feature status.
+  6. Diagnostics parity across REST, JSON-RPC, and owner-scope projections should be tracked as feature coverage rather than inferred from one transport.
+  
+  ## Related Decisions
+  
+  - ADR-1050 governs diagnostics surface stability.
+  - ADR-1075 governs OpSpec materialization side effects.
+  - ADR-1078 governs pre-TX dependency execution where diagnostics expose dependency placement.
+  
+  ## Verification
+  
+  - Tests should assert diagnostics projection only for governed and stable fields.
+  - Tests should separate diagnostics projection assertions from execution assertions.
+  - Tests should link omitted diagnostics fields to explicit feature gaps or status notes.
+spec_kind: "local-policy"

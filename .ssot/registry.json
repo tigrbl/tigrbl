@@ -3512,7 +3512,8 @@
       "requires": [],
       "spec_ids": [
         "spc:2013",
-        "spc:2024"
+        "spc:2024",
+        "spc:2070"
       ]
     },
     {
@@ -8624,6 +8625,183 @@
       },
       "spec_ids": [
         "spc:2060"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:mapping-dispatch-convergence-001",
+      "title": "Mapping dispatch convergence",
+      "description": "Keep canonical mapping and route/RPC projection code from importing removed dispatch modules or invoking semantic operations through transport bypasses.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "transport-dispatch",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2071"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:op-ctx-table-owner-scope-materialization-001",
+      "title": "op_ctx table owner-scope materialization",
+      "description": "Track table-owned op_ctx declarations materializing through include_table into Uvicorn-backed REST execution across arity, response schema, and persist-policy variants.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "op-owner-scope",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2073",
+        "spc:2063",
+        "spc:2066",
+        "spc:2067",
+        "spc:2069"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:op-ctx-router-owner-scope-materialization-001",
+      "title": "op_ctx router owner-scope materialization",
+      "description": "Track router-scoped inclusion of table op_ctx declarations into Uvicorn-backed REST execution across arity, response schema, and persist-policy variants.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "op-owner-scope",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2073",
+        "spc:2063",
+        "spc:2066",
+        "spc:2067",
+        "spc:2069"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:op-ctx-app-owner-scope-materialization-001",
+      "title": "op_ctx app owner-scope materialization",
+      "description": "Track app-local op_ctx declarations materializing into Uvicorn-backed REST execution without table ownership across arity, response schema, and persist-policy variants.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "op-owner-scope",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2073",
+        "spc:2063",
+        "spc:2066",
+        "spc:2067",
+        "spc:2069"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:pre-tx-dependency-execution-001",
+      "title": "Pre-TX dependency execution",
+      "description": "Track ordinary operation dependencies executing in PRE_TX_BEGIN before transaction start, handler execution, persistence, or commit side effects.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "op-dependency-execution",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2074",
+        "spc:2044"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:pre-tx-security-dependency-execution-001",
+      "title": "Pre-TX security dependency execution",
+      "description": "Track operation security dependencies executing before ordinary dependencies and before transaction start, including auth failure behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "op-dependency-execution",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2074",
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:operation-diagnostics-projection-001",
+      "title": "Operation diagnostics projection",
+      "description": "Track diagnostics projecting materialized operation, hook, atom, dependency, persistence, and kernel-step state without redefining execution semantics.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "diagnostics",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2075",
+        "spc:2021",
+        "spc:2068"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -19379,6 +19557,54 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1076",
+      "number": 1076,
+      "slug": "transport-bypass-removal-boundary",
+      "title": "Transport bypass removal boundary",
+      "path": ".ssot/adr/ADR-1076-transport-bypass-removal-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "2bc3bcefc55141c1ed42c77e521bf2d8a8ad7cc3b5104b01356aeaa04ddd69ed",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1077",
+      "number": 1077,
+      "slug": "mapping-plan-compilation-boundary",
+      "title": "Mapping plan compilation boundary",
+      "path": ".ssot/adr/ADR-1077-mapping-plan-compilation-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "c6d783074865f09e59e895271424996fd8a904cc51c515ac6d506f0012e7c414",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1078",
+      "number": 1078,
+      "slug": "pre-tx-dependency-execution-boundary",
+      "title": "Pre-TX dependency execution boundary",
+      "path": ".ssot/adr/ADR-1078-pre-tx-dependency-execution-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "0b971ad4007070668c88dd42c9a48ef91e5ce3027b8d61fd28e7ba41de11bc59",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -20696,6 +20922,108 @@
       "immutable": false,
       "package_version": "0.2.10",
       "content_sha256": "eafe526df1475382bfea6049fcfa526d4922b9dfaaf3d7faf13db06100165e85",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2070",
+      "number": 2070,
+      "slug": "transport-bypass-removal-contract",
+      "title": "Transport bypass removal contract",
+      "path": ".ssot/specs/SPEC-2070-transport-bypass-removal-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "be1f2e1852b95440522aadabfb009b2af4114241fe8a3e2f36ae729535e373a5",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2071",
+      "number": 2071,
+      "slug": "mapping-dispatch-convergence-contract",
+      "title": "Mapping dispatch convergence contract",
+      "path": ".ssot/specs/SPEC-2071-mapping-dispatch-convergence-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "c98b40043c62f9722011bf694363a93fd74e7cae86c3e45f43178aaf99e78b1c",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2072",
+      "number": 2072,
+      "slug": "mapping-plan-compilation-contract",
+      "title": "Mapping plan compilation contract",
+      "path": ".ssot/specs/SPEC-2072-mapping-plan-compilation-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "a3a2613116b7fede063da1ed0713a66570915058bfe5d64ddf1e0c94687e6360",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2073",
+      "number": 2073,
+      "slug": "owner-scope-op-materialization-contract",
+      "title": "Owner-scope op materialization contract",
+      "path": ".ssot/specs/SPEC-2073-owner-scope-op-materialization-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "4a89059e3d11427e9d27787dd8aa312f52bf4b0323a2cb89534444d58ccae17d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2074",
+      "number": 2074,
+      "slug": "pre-tx-dependency-execution-contract",
+      "title": "Pre-TX dependency execution contract",
+      "path": ".ssot/specs/SPEC-2074-pre-tx-dependency-execution-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "54d51219167dfa4e23380591095bd9ff63241305227b22f9ab2410d0f3ebdacd",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2075",
+      "number": 2075,
+      "slug": "operation-diagnostics-projection-contract",
+      "title": "Operation diagnostics projection contract",
+      "path": ".ssot/specs/SPEC-2075-operation-diagnostics-projection-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "87b75b17aa7a2b84846aa7648d8d3cc60d5ada533bc05f88097b68803a4f12df",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],

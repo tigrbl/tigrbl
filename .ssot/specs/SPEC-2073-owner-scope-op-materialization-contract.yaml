@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2073"
+number: 2073
+slug: "owner-scope-op-materialization-contract"
+title: "Owner-scope op materialization contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract specifies how table, router, and app owner scopes materialize declared operations into executable REST surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This contract specifies how table, router, and app owner scopes materialize declared operations into executable REST surfaces.
+  
+  ## Contract
+  
+  1. Operation declarations attached at table scope must materialize when the table is included into an application or router.
+  2. Operation declarations attached through router-scoped inclusion must preserve the table operation semantics while projecting through the router mount.
+  3. Operation declarations attached at app scope must materialize as app-local operations without requiring table ownership.
+  4. Operation parameters that affect route arity, persistence policy, response schema, and handler chain construction must retain the same semantics across supported owner scopes.
+  5. Owner-scope materialization must execute through the same semantic operation model under ASGI/Uvicorn runtime execution.
+  6. Scope-specific projection may change route mounting context, but it must not reinterpret operation semantics.
+  
+  ## Related Decisions
+  
+  - ADR-1001 establishes one semantic operation model.
+  - ADR-1071 governs operation declaration attachment.
+  - ADR-1073 governs persist policy and handler chain boundaries.
+  - ADR-1075 governs OpSpec materialization side effects.
+  
+  ## Verification
+  
+  - Integration tests should exercise table, router, and app scopes through a real ASGI server where practical.
+  - Tests should cover route arity, response schema, and persistence-policy variants across owner scopes.
+  - Tests should distinguish owner-scope projection failures from handler or persistence failures.
+spec_kind: "local-policy"

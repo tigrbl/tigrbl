@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1077"
+number: 1077
+slug: "mapping-plan-compilation-boundary"
+title: "Mapping plan compilation boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The P0 harness mapping tests freeze a deterministic plan order and assert that default canonical operations become visible from collected model declarations. Existing kernel-plan ADRs govern runtime compilation broadly, but this test concern is earlier in the pipeline: mapping model declarations into normalized operation and binding materialization inputs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. The mapping/bootstrap pipeline is a governed compilation boundary between declarations and materialized operation projections.
+  2. The canonical mapping plan order is collect, merge, bind models, bind ops, bind hooks, bind deps, then seal.
+  3. Default operation visibility after merge is part of the compilation contract.
+  4. Mapping may produce visible specs, bindings, and materialization inputs, but it must not perform semantic dispatch.
+  5. Mapping-plan shape changes require explicit ADR/SPEC review because they affect operation visibility, helper materialization, and downstream runtime projections.
+  
+  ## Context
+  
+  The P0 harness mapping tests freeze a deterministic plan order and assert that default canonical operations become visible from collected model declarations. Existing kernel-plan ADRs govern runtime compilation broadly, but this test concern is earlier in the pipeline: mapping model declarations into normalized operation and binding materialization inputs.
+  
+  ## Consequences
+  
+  - Bootstrap ordering can be tested independently from concrete runtime execution.
+  - Default operation generation has a stable place in the materialization lifecycle.
+  - Mapping-layer regressions can be linked to a compilation boundary rather than generic runtime dispatch.
+  
+  ## Rejected Alternatives
+  
+  - Treating mapping as an ungoverned helper implementation detail.
+  - Letting default operation visibility depend on incidental bind order.
+  - Combining declaration collection, materialization, and runtime dispatch into one opaque phase.
