@@ -1,4 +1,4 @@
-﻿from tests.conftest import mro_collect_table_spec
+from tests.conftest import mro_collect_table_spec
 from tigrbl.factories.table import defineTableSpec
 from tigrbl.orm.tables import TableBase
 from tigrbl.orm.mixins import GUIDPk

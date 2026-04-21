@@ -1,4 +1,4 @@
-﻿"""Harness: KernelPlan compilation + route resolution.
+"""Harness: KernelPlan compilation + route resolution.
 
 Contract (TDD):
 - Kernel.compile_plan(app) produces plain selector maps for REST and JSON-RPC.

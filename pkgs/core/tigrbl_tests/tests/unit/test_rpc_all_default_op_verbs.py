@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from collections.abc import Iterator
 
 from tigrbl import TigrblApp

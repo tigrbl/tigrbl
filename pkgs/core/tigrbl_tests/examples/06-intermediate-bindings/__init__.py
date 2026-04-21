@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from httpx import ASGITransport, AsyncClient
 
 from tigrbl import TigrblRouter, TigrblApp, op_alias, op_ctx

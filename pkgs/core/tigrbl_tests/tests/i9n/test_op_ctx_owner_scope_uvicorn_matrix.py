@@ -1,4 +1,4 @@
-﻿import uuid
+import uuid
 from itertools import product
 from inspect import isawaitable
 

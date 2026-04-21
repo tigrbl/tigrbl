@@ -1,4 +1,4 @@
-﻿"""
+"""
 Hook Lifecycle Tests for Tigrbl v3
 
 Tests all hook phases and their behavior across CRUD, nested CRUD, and RPC operations.

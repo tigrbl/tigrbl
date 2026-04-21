@@ -1,4 +1,4 @@
-﻿"""Lesson 17: materializing SQLAlchemy columns.
+"""Lesson 17: materializing SQLAlchemy columns.
 
 This lesson shows how column specs convert into SQLAlchemy columns that live
 on the model's mapped table. The mapping ensures SQLAlchemy metadata is always

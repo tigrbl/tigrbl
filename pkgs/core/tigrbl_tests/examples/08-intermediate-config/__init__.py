@@ -1,4 +1,4 @@
-﻿"""Lesson 07.4: Scoping hooks to specific operations."""
+"""Lesson 07.4: Scoping hooks to specific operations."""
 
 from tigrbl import TableBase, TigrblApp, hook_ctx
 from tigrbl.factories.engine import mem

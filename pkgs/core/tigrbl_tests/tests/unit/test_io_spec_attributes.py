@@ -1,4 +1,4 @@
-﻿from types import SimpleNamespace
+from types import SimpleNamespace
 
 from tigrbl._spec import ColumnSpec, F, IO, S
 from tigrbl.factories.column import acol

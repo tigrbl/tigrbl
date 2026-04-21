@@ -1,4 +1,4 @@
-﻿import asyncio
+import asyncio
 import json
 
 from tigrbl.core.crud.params import Body, Query

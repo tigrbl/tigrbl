@@ -1,4 +1,4 @@
-﻿from types import SimpleNamespace
+from types import SimpleNamespace
 
 
 from tigrbl_concrete._mapping.model import bind

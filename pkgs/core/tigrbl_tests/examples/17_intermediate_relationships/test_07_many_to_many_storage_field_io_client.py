@@ -1,4 +1,4 @@
-﻿"""Pedagogical many-to-many relationship example via association table.
+"""Pedagogical many-to-many relationship example via association table.
 
 The example keeps everything explicit so readers can map the data model to
 runtime behavior without hidden helper layers.

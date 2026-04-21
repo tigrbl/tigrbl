@@ -1,4 +1,4 @@
-﻿"""Lesson 21.6: Header-based set_auth gate for REST and JSON-RPC.
+"""Lesson 21.6: Header-based set_auth gate for REST and JSON-RPC.
 
 This example demonstrates ``set_auth`` with a header-driven authn dependency
 that supports two credential tiers:

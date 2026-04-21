@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from tigrbl import TableBase
 from tigrbl.orm.mixins import ActiveToggle

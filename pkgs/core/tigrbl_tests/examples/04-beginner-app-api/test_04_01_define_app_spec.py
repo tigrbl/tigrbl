@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from tests.conftest import mro_collect_app_spec
 from tigrbl.factories.app import defineAppSpec

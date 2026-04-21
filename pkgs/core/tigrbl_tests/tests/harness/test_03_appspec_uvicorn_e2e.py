@@ -1,4 +1,4 @@
-﻿"""TDD harness: AppSpec -> uvicorn -> REST + JSON-RPC E2E.
+"""TDD harness: AppSpec -> uvicorn -> REST + JSON-RPC E2E.
 
 This is the highest-level harness:
   AppSpec -> TigrblApp.from_spec(spec)

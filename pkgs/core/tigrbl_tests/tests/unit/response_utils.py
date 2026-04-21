@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 from tigrbl import TableBase, alias_ctx, op_ctx, schema_ctx
 from tigrbl_concrete._mapping.model import (
     _bind_model_hooks as build_hooks,

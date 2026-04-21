@@ -1,4 +1,4 @@
-﻿import inspect
+import inspect
 
 from tigrbl._concrete._engine import Engine, Provider
 from tigrbl.decorators.engine import engine_ctx

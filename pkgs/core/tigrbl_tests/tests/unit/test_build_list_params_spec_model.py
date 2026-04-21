@@ -1,4 +1,4 @@
-﻿from tigrbl._base._table_base import _materialize_colspecs_to_sqla
+from tigrbl._base._table_base import _materialize_colspecs_to_sqla
 from tigrbl._spec import S, F, IO
 from tigrbl.factories.column import acol
 from tigrbl.types import Integer, String

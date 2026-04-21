@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from tigrbl._spec import ColumnSpec, F, IO, S
 from tigrbl.factories.column import acol

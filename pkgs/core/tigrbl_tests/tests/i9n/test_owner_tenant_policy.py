@@ -1,4 +1,4 @@
-﻿import uuid
+import uuid
 from typing import Iterable
 
 import pytest

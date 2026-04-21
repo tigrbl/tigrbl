@@ -1,4 +1,4 @@
-﻿from tigrbl.factories.app import deriveApp
+from tigrbl.factories.app import deriveApp
 from tigrbl.factories.router import deriveRouter
 
 

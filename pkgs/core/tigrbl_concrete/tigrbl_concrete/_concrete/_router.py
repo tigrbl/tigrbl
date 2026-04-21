@@ -201,6 +201,15 @@ class Router(RouterBase):
             self._runtime_plan_revision = int(current) + 1
         except Exception:
             self._runtime_plan_revision = 1
+        kernels = []
+        runtime = getattr(self, "_runtime_instance", None)
+        kernel = getattr(runtime, "kernel", None)
+        if kernel is not None:
+            kernels.append(kernel)
+        for kernel in kernels:
+            invalidate = getattr(kernel, "invalidate_kernelz_payload", None)
+            if callable(invalidate):
+                invalidate(self)
 
     def add_route(
         self,

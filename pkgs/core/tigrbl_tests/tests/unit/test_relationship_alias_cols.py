@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from tigrbl._spec import F, S
 from tigrbl.factories.column import acol, vcol
 from tigrbl.decorators.op import alias_ctx

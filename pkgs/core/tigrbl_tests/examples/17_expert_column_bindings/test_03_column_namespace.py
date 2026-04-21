@@ -1,4 +1,4 @@
-﻿"""Lesson 17: column namespace access.
+"""Lesson 17: column namespace access.
 
 Column specs are accessible via the model's ``columns`` namespace, which makes
 it easy to discover field metadata without scanning class attributes directly.

@@ -1,4 +1,4 @@
-﻿"""Lesson 10.4: Calling JSON-RPC operations from a client."""
+"""Lesson 10.4: Calling JSON-RPC operations from a client."""
 
 import httpx
 import inspect

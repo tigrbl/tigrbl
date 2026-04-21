@@ -1,4 +1,4 @@
-﻿"""Lesson 16: table configuration bindings.
+"""Lesson 16: table configuration bindings.
 
 This module demonstrates how table configuration metadata is captured on the
 API instance. The configuration registry keeps engine settings close to the

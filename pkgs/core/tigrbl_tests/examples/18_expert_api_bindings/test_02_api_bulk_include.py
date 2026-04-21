@@ -1,4 +1,4 @@
-﻿"""Lesson 18: bulk API inclusion.
+"""Lesson 18: bulk API inclusion.
 
 Bulk inclusion binds multiple models to the API in a single operation. The
 bulk workflow is preferred because it keeps API registration consistent when

@@ -1,4 +1,4 @@
-﻿"""Lesson 21.2: Op-level security dependencies surface in OpenAPI.
+"""Lesson 21.2: Op-level security dependencies surface in OpenAPI.
 
 This example shows how to add security dependencies directly to specific
 operations on a ``TigrblRouter``, mount that API on ``TigrblApp``, and confirm that

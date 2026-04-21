@@ -1,4 +1,4 @@
-﻿"""Harness: AppSpec -> uvicorn server E2E.
+"""Harness: AppSpec -> uvicorn server E2E.
 
 This is the top-level "works in production" contract.
 

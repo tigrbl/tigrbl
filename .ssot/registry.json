@@ -13120,6 +13120,33 @@
         "tst:tigrbl-tests-tests-unit-test-v3-op-ctx-attributes"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:tigrbl-concrete-kernel-import-boundary-001",
+      "title": "tigrbl_concrete kernel import boundary",
+      "description": "Ensure tigrbl_concrete never imports tigrbl_kernel; only tigrbl_runtime owns kernel integration and lifecycle mediation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:1001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-concrete-tests-test-kernel-independence"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -25818,6 +25845,22 @@
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake"
       ]
+    },
+    {
+      "id": "tst:tigrbl-concrete-tests-test-kernel-independence",
+      "title": "tigrbl_concrete kernel independence strict test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_concrete/tests/test_kernel_independence.py",
+      "feature_ids": [
+        "feat:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-concrete-kernel-independence-pytest"
+      ]
     }
   ],
   "claims": [
@@ -29818,6 +29861,23 @@
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake"
       ]
+    },
+    {
+      "id": "clm:tigrbl-concrete-kernel-import-boundary-001",
+      "title": "tigrbl_concrete does not import tigrbl_kernel",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "architecture-boundary",
+      "description": "tigrbl_concrete does not statically or dynamically import tigrbl_kernel, does not declare tigrbl-kernel as a dependency, and package import does not load tigrbl_kernel; only tigrbl_runtime owns kernel integration.",
+      "feature_ids": [
+        "feat:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-concrete-tests-test-kernel-independence"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-concrete-kernel-independence-pytest"
+      ]
     }
   ],
   "evidence": [
@@ -33787,6 +33847,20 @@
         "tst:tigrbl-tests-tests-unit-test-v3-storage-spec-attributes",
         "tst:tigrbl-tests-tests-unit-test-verbosity"
       ]
+    },
+    {
+      "id": "evd:tigrbl-concrete-kernel-independence-pytest",
+      "title": "tigrbl_concrete kernel independence pytest",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-kernel-independence-pytest.txt",
+      "claim_ids": [
+        "clm:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-concrete-tests-test-kernel-independence"
+      ]
     }
   ],
   "issues": [],
@@ -34384,6 +34458,28 @@
       "superseded_by": [],
       "status_notes": [],
       "summary": "The registry needed an entity between atomic features and release boundaries:"
+    },
+    {
+      "id": "adr:1000",
+      "number": 1000,
+      "slug": "concrete-runtime-kernel-import-boundary",
+      "title": "Concrete runtime-kernel import boundary",
+      "path": ".ssot/adr/ADR-1000-concrete-runtime-kernel-import-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "e0c8ef66fbd410f0f06c18b40a39fbfbd86de3c59b8abc442f8520fd2e59d4a9",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to enforce that only tigrbl_runtime imports tigrbl_kernel.",
+          "at": "2026-04-21T12:43:31Z"
+        }
+      ]
     },
     {
       "id": "adr:1001",
@@ -36111,6 +36207,32 @@
         "adr:1052"
       ],
       "summary": "This contract defines the typed composition rules for AppSpec and RouterSpec declarations that assemble routers, router-owned tables, portable model references, nested column metadata, foreign keys, and response defaults."
+    },
+    {
+      "id": "spc:1001",
+      "number": 1001,
+      "slug": "concrete-runtime-kernel-import-boundary",
+      "title": "Concrete runtime-kernel import boundary",
+      "path": ".ssot/specs/SPEC-1001-concrete-runtime-kernel-import-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "88d36a9873dedf8cb54b87917148f02e354a8da6d15d1ea961d7091fa8d99b9d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to normatively require concrete/kernel import separation.",
+          "at": "2026-04-21T12:43:37Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1000"
+      ]
     },
     {
       "id": "spc:2001",

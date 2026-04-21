@@ -1,0 +1,70 @@
+feature_id,category,title,purpose,owner_surface,minimum_first_slice
+feat:contract-ingress-scope-normalization-001,atoms,Contract ingress scope normalization,"Normalize raw ASGI scope data into the contract scope shape before dispatch.",tigrbl_atoms,false
+feat:contract-ingress-event-normalization-001,atoms,Contract ingress event normalization,"Normalize inbound ASGI event data into contract event vocabulary.",tigrbl_atoms,false
+feat:contract-dispatch-binding-family-legality-001,atoms,Contract dispatch binding family legality,"Enforce Binding to Family legality during dispatch.",tigrbl_atoms,true
+feat:contract-dispatch-subevent-legality-001,atoms,Contract dispatch subevent legality,"Enforce Binding to Subevent and Family to Subevent legality during dispatch.",tigrbl_atoms,true
+feat:contract-wire-in-payload-shape-001,atoms,Contract wire-in payload shape,"Decode and validate inbound payload shape for request message stream and datagram families.",tigrbl_atoms,false
+feat:contract-wire-out-payload-shape-001,atoms,Contract wire-out payload shape,"Encode semantic results into contract-compatible outbound payloads.",tigrbl_atoms,false
+feat:contract-egress-event-projection-001,atoms,Contract egress event projection,"Project semantic results into legal outbound transport event types.",tigrbl_atoms,true
+feat:contract-emit-completion-event-001,atoms,Contract emit completion event,"Emit or record transport.emit.complete with contract completion semantics.",tigrbl_atoms,true
+feat:contract-error-event-projection-001,atoms,Contract error event projection,"Project runtime failures into legal transport-specific error events.",tigrbl_atoms,false
+feat:contract-ingress-phase-obligations-001,phases,Contract ingress phase obligations,"Declare contract normalization obligations for ingress phases.",tigrbl_runtime,false
+feat:contract-dispatch-phase-obligations-001,phases,Contract dispatch phase obligations,"Declare binding family and subevent legality obligations for dispatch phases.",tigrbl_runtime,false
+feat:contract-wire-phase-obligations-001,phases,Contract wire phase obligations,"Declare inbound and outbound payload shape obligations for wire phases.",tigrbl_runtime,false
+feat:contract-egress-phase-obligations-001,phases,Contract egress phase obligations,"Declare event projection obligations for egress phases.",tigrbl_runtime,false
+feat:contract-emit-phase-obligations-001,phases,Contract emit phase obligations,"Declare outbound send or queue obligations for emit phases.",tigrbl_runtime,false
+feat:contract-post-emit-phase-obligations-001,phases,Contract POST_EMIT phase obligations,"Align POST_EMIT with contract completion semantics.",tigrbl_runtime,true
+feat:contract-error-phase-obligations-001,phases,Contract error phase obligations,"Declare transport-aware failure projection obligations for error phases.",tigrbl_runtime,false
+feat:contract-stage-raw-asgi-received-001,stages,Contract raw ASGI received stage,"Represent the context state before contract normalization.",tigrbl_atoms,false
+feat:contract-stage-scope-normalized-001,stages,Contract scope normalized stage,"Represent the context state after ContractScope projection.",tigrbl_atoms,true
+feat:contract-stage-event-normalized-001,stages,Contract event normalized stage,"Represent the context state after ContractEvent projection.",tigrbl_atoms,false
+feat:contract-stage-binding-matched-001,stages,Contract binding matched stage,"Represent the context state after transport binding selection.",tigrbl_atoms,true
+feat:contract-stage-family-validated-001,stages,Contract family validated stage,"Represent the context state after Binding to Family legality validation.",tigrbl_atoms,true
+feat:contract-stage-subevent-validated-001,stages,Contract subevent validated stage,"Represent the context state after Binding and Family subevent legality validation.",tigrbl_atoms,true
+feat:contract-stage-op-resolved-001,stages,Contract op resolved stage,"Represent the context state after KernelPlan op resolution.",tigrbl_kernel,false
+feat:contract-stage-transport-encoded-001,stages,Contract transport encoded stage,"Represent the context state after outbound contract event encoding.",tigrbl_atoms,false
+feat:contract-stage-emit-completed-001,stages,Contract emit completed stage,"Represent the context state after transport completion is observed.",tigrbl_atoms,true
+feat:contract-request-response-chain-001,phase-chains,Contract request response chain,"Govern the chain shape for rest and jsonrpc unary request response work.",tigrbl_kernel,true
+feat:contract-server-stream-chain-001,phase-chains,Contract server stream chain,"Govern the chain shape for http.stream and sse server-stream work.",tigrbl_kernel,false
+feat:contract-session-message-chain-001,phase-chains,Contract session message chain,"Govern the chain shape for websocket webtransport and sse session/message work.",tigrbl_kernel,false
+feat:contract-stream-chain-001,phase-chains,Contract stream chain,"Govern the chain shape for stream chunk input output and completion work.",tigrbl_kernel,false
+feat:contract-datagram-chain-001,phase-chains,Contract datagram chain,"Govern the chain shape for webtransport datagram work.",tigrbl_kernel,false
+feat:contract-lifespan-chain-001,phase-chains,Contract lifespan chain,"Govern ASGI lifespan as framework lifecycle rather than OpSpec dispatch.",tigrbl_runtime,true
+feat:contract-error-chain-001,phase-chains,Contract error chain,"Govern transport-specific error projection chains.",tigrbl_kernel,false
+feat:contract-binding-sensitive-edge-atoms-001,phase-chains,Contract binding-sensitive edge atoms,"Inject binding-specific atoms at ingress dispatch egress emit and error boundaries.",tigrbl_kernel,true
+feat:contract-op-binding-projection-001,ops,Contract op binding projection,"Project each OpSpec binding into the external contract Binding vocabulary.",tigrbl_core,true
+feat:contract-op-family-intent-001,ops,Contract op family intent,"Declare which contract families an operation binding intends to serve.",tigrbl_core,true
+feat:contract-op-stream-intent-001,ops,Contract op stream intent,"Declare stream intent for operations reachable through stream-capable bindings.",tigrbl_core,false
+feat:contract-op-message-intent-001,ops,Contract op message intent,"Declare message intent for operations reachable through message-capable bindings.",tigrbl_core,false
+feat:contract-op-datagram-intent-001,ops,Contract op datagram intent,"Declare datagram intent for operations reachable through webtransport datagram bindings.",tigrbl_core,false
+feat:contract-op-transport-neutral-core-001,ops,Contract op transport neutral core,"Preserve transport-neutral semantic operation execution while bindings carry transport intent.",tigrbl_core,false
+feat:contract-binding-rest-projection-001,bindings,Contract REST binding projection,"Map http.rest and https.rest protos to contract Binding rest.",tigrbl_core,true
+feat:contract-binding-jsonrpc-projection-001,bindings,Contract JSON-RPC binding projection,"Map http.jsonrpc and https.jsonrpc protos to contract Binding jsonrpc.",tigrbl_core,true
+feat:contract-binding-http-stream-projection-001,bindings,Contract HTTP stream binding projection,"Map http.stream and https.stream protos to contract Binding http.stream.",tigrbl_core,false
+feat:contract-binding-sse-projection-001,bindings,Contract SSE binding projection,"Map http.sse and https.sse protos to contract Binding sse.",tigrbl_core,false
+feat:contract-binding-websocket-projection-001,bindings,Contract WebSocket binding projection,"Map ws and wss protos to contract Binding websocket.",tigrbl_core,false
+feat:contract-binding-webtransport-projection-001,bindings,Contract WebTransport binding projection,"Map webtransport proto to contract Binding webtransport.",tigrbl_core,false
+feat:contract-binding-exchange-normalization-001,bindings,Contract binding exchange normalization,"Normalize tigrbl exchange values to contract exchange values at the conformance boundary.",tigrbl_core,true
+feat:contract-family-request-001,families,Contract request family,"Govern the request family as a first-class contract family.",tigrbl_core,true
+feat:contract-family-session-001,families,Contract session family,"Govern the session family as a first-class contract family.",tigrbl_core,false
+feat:contract-family-message-001,families,Contract message family,"Govern the message family as a first-class contract family.",tigrbl_core,false
+feat:contract-family-stream-001,families,Contract stream family,"Govern the stream family as a first-class contract family.",tigrbl_core,false
+feat:contract-family-datagram-001,families,Contract datagram family,"Govern the datagram family as a first-class contract family.",tigrbl_core,false
+feat:contract-family-capabilities-scope-ext-001,families,Contract family capabilities scope extension,"Project request session message stream_in stream_out and datagram capabilities into ScopeExt.",tigrbl_core,true
+feat:contract-subevent-request-family-001,subevents,Contract request family subevents,"Govern request family subevents including request and response lifecycle rows.",tigrbl_atoms,false
+feat:contract-subevent-session-family-001,subevents,Contract session family subevents,"Govern session family subevents including open accept ready heartbeat sync close disconnect and emit completion.",tigrbl_atoms,false
+feat:contract-subevent-message-family-001,subevents,Contract message family subevents,"Govern message family subevents including input decode handle output ack nack replay snapshot and emit completion.",tigrbl_atoms,false
+feat:contract-subevent-stream-family-001,subevents,Contract stream family subevents,"Govern stream family subevents including open chunk flush finalize abort close and emit completion.",tigrbl_atoms,false
+feat:contract-subevent-datagram-family-001,subevents,Contract datagram family subevents,"Govern datagram family subevents including in handle out ack close and emit completion.",tigrbl_atoms,false
+feat:contract-subevent-binding-legality-matrix-001,subevents,Contract subevent binding legality matrix,"Enforce the contract Binding to Subevent legality matrix.",tigrbl_atoms,true
+feat:contract-subevent-family-legality-matrix-001,subevents,Contract subevent family legality matrix,"Enforce the contract Family to Subevent legality matrix.",tigrbl_atoms,true
+feat:contract-scope-http-shape-001,scope-event-shapes,Contract HTTP scope shape,"Project HTTP ASGI scopes into ContractScope with HTTP transport metadata.",tigrbl_atoms,true
+feat:contract-scope-websocket-shape-001,scope-event-shapes,Contract WebSocket scope shape,"Project WebSocket ASGI scopes into ContractScope with websocket extension metadata.",tigrbl_atoms,false
+feat:contract-scope-webtransport-shape-001,scope-event-shapes,Contract WebTransport scope shape,"Project WebTransport scopes into ContractScope with webtransport extension metadata.",tigrbl_atoms,false
+feat:contract-scope-lifespan-shape-001,scope-event-shapes,Contract lifespan scope shape,"Project lifespan scopes as framework lifecycle inputs rather than operation dispatch inputs.",tigrbl_runtime,true
+feat:contract-scope-ext-transport-metadata-001,scope-event-shapes,Contract scope transport metadata,"Project transport metadata including binding network secure alpn tls and framing.",tigrbl_atoms,true
+feat:contract-scope-ext-family-capabilities-001,scope-event-shapes,Contract scope family capabilities,"Project family capability flags into ScopeExt.",tigrbl_atoms,true
+feat:contract-event-http-shape-001,scope-event-shapes,Contract HTTP event shape,"Project HTTP request disconnect response start and response body events into ContractEvent.",tigrbl_atoms,true
+feat:contract-event-websocket-shape-001,scope-event-shapes,Contract WebSocket event shape,"Project websocket connect receive disconnect accept send and close events into ContractEvent.",tigrbl_atoms,false
+feat:contract-event-webtransport-shape-001,scope-event-shapes,Contract WebTransport event shape,"Project webtransport session stream datagram disconnect and close events into ContractEvent.",tigrbl_atoms,false
+feat:contract-event-emit-complete-shape-001,scope-event-shapes,Contract emit complete event shape,"Project transport.emit.complete into ContractEvent.",tigrbl_atoms,true

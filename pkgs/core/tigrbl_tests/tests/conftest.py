@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 import pytest_asyncio
 import contextlib
 from dataclasses import dataclass

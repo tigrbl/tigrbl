@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from pydantic import BaseModel
 from tigrbl import op_alias, op_ctx
 from tigrbl.orm.mixins import GUIDPk

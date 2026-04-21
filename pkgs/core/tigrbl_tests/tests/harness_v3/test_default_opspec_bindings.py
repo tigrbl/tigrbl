@@ -1,4 +1,4 @@
-﻿"""Harness: default Ops + BindingSpecs.
+"""Harness: default Ops + BindingSpecs.
 
 Contract (TDD):
 1) Including a model/table automatically generates the canonical CRUD operation

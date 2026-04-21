@@ -142,15 +142,15 @@ def _normalize_jsonrpc_transport_response(
         normalized["body"] = body
         return normalized
 
-    if isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
-        normalized["status_code"] = 200
-        normalized["body"] = body
-        return normalized
-
     request_id = _jsonrpc_request_id(ctx)
     if request_id is None and _is_jsonrpc_notification(ctx):
         normalized["status_code"] = 204
         normalized["body"] = b""
+        return normalized
+
+    if isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
+        normalized["status_code"] = 200
+        normalized["body"] = body
         return normalized
 
     if not (isinstance(body, Mapping) and body.get("jsonrpc") == "2.0"):

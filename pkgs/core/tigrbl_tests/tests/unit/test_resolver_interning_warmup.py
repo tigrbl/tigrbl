@@ -1,4 +1,4 @@
-﻿from tigrbl import resolver
+from tigrbl import resolver
 from tigrbl.factories.engine import mem
 
 

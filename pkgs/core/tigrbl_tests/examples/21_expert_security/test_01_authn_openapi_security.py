@@ -1,4 +1,4 @@
-﻿"""Lesson 21.1: Authn dependencies update OpenAPI security per route.
+"""Lesson 21.1: Authn dependencies update OpenAPI security per route.
 
 This example demonstrates how to configure authn dependencies on both
 ``TigrblApp`` and ``TigrblRouter``, allow anonymous access to selected operations,

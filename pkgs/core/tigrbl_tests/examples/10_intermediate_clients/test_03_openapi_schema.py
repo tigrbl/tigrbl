@@ -1,4 +1,4 @@
-﻿"""Lesson 10.3: Inspecting the OpenAPI schema."""
+"""Lesson 10.3: Inspecting the OpenAPI schema."""
 
 import httpx
 import inspect

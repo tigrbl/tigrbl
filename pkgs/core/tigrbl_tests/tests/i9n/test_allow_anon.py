@@ -1,4 +1,4 @@
-﻿from httpx import ASGITransport, Client
+from httpx import ASGITransport, Client
 from sqlalchemy.orm import sessionmaker
 from tigrbl import TigrblApp, TigrblRouter
 from tigrbl_core.config.constants import TIGRBL_AUTH_CONTEXT_ATTR

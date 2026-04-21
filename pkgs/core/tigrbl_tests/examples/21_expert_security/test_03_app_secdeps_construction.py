@@ -1,4 +1,4 @@
-﻿"""Lesson 21.3: App-level security deps via construction params.
+"""Lesson 21.3: App-level security deps via construction params.
 
 This example demonstrates how to pass security dependencies at ``TigrblApp``
 construction time and confirm the OpenAPI schema reflects those requirements

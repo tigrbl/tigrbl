@@ -1,4 +1,4 @@
-﻿import inspect
+import inspect
 
 import pytest
 from tigrbl_base._base._rpc_map import register_and_attach, rpc_call

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from httpx import ASGITransport, Client
 from sqlalchemy import Column, String

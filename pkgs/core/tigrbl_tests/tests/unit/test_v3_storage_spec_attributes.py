@@ -1,4 +1,4 @@
-﻿from types import SimpleNamespace
+from types import SimpleNamespace
 
 from tigrbl_atoms.atoms.storage import to_stored
 from tigrbl_kernel import (

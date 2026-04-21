@@ -1,4 +1,4 @@
-﻿"""Lesson 16: table registry bindings.
+"""Lesson 16: table registry bindings.
 
 This lesson shows how table metadata is registered on an API instance so
 consumers can discover model tables via the API's namespace rather than
