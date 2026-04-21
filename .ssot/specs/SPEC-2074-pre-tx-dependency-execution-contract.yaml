@@ -11,7 +11,11 @@ tags: []
 summary: "This contract specifies the execution order and transaction boundary for operation security dependencies and ordinary dependencies."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from legacy package edge test inventory to include direct pre-TX dependency edge-row verification and feature candidates."
+    at: "2026-04-21T08:43:27Z"
 references: []
 body: |-
   ## Purpose
@@ -38,6 +42,11 @@ body: |-
   - Tests should prove security dependencies run before ordinary dependencies.
   - Tests should prove failures occur before `START_TX`.
   - Tests should verify REST and JSON-RPC behavior separately when both transports execute the semantic operation.
+  - `pkgs/core/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` is the legacy package edge-row verification for the direct kernel/runtime boundary.
+  
+  ## Traceability
+  
+  - Candidate features: `feat:pre-tx-dependency-execution-001`, `feat:pre-tx-security-dependency-execution-001`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1078"

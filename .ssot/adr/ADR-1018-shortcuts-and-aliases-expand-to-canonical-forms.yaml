@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "adr"
 id: "adr:1018"
 number: 1018
@@ -8,17 +8,21 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrbl needs shortcuts and aliases for usability, but shortcuts become dangerous when they express capabilities unavailable through the canonical surface or when they grow into independent feature trees."
+summary: "Tigrbl needs shortcuts and aliases for usability, but shortcuts become dangerous when they express capabilities unavailable through the canonical surface or when they grow into independent feature trees. This ADR keeps convenience aligned with declarative canon."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from legacy package edge test inventory to govern module/package alias compatibility paths."
+    at: "2026-04-21T08:39:29Z"
 references: []
 body: |-
   ## Decision
   
   - **Status:** Proposed
   - **Date:** 2026-04-14
-  - **Related ADRs:** ADR-0003, ADR-0006, ADR-0007, ADR-0017, ADR-0019
+  - **Related ADRs:** ADR-0003, ADR-0006, ADR-0007, ADR-0017, ADR-0019, ADR-1053, ADR-1056
   
   1. A shortcut or alias is valid only if it expands deterministically into canonical forms.
   2. Aliases may reduce boilerplate, but they may not create alias-only semantics.
@@ -26,14 +30,28 @@ body: |-
   4. Aliases should parameterize canonical forms rather than multiply public API families unnecessarily.
   5. Aliases that cannot be represented cleanly as canonical expansions must remain internal or be redesigned.
   6. Public documentation must show the canonical expansion for every significant alias.
+  7. Module and package aliases, including compatibility paths such as `tigrbl.orm` and `tigrbl.orm.mixins`, are governed aliases when tests or public documentation rely on them.
+  8. A module alias may project a canonical package surface, but it may not redefine ownership of the underlying class, mixin, or contract.
   
   ## Context
   
-  Tigrbl needs shortcuts and aliases for usability, but shortcuts become dangerous when they express capabilities unavailable through the canonical surface or when they grow into independent feature trees.
-  This ADR keeps convenience aligned with declarative canon.
+  Tigrbl needs shortcuts and aliases for usability, but shortcuts become dangerous when they express capabilities unavailable through the canonical surface or when they grow into independent feature trees. This ADR keeps convenience aligned with declarative canon.
+  
+  The legacy package edge inventory shows `pkgs/core/tigrbl_tests/tigrbl_tests/tests/test_orm_alias_exports.py` asserting that the legacy `tigrbl.orm` module path and `tigrbl.orm.mixins.Bootstrappable` remain loadable. That behavior reflects an alias/projection decision, not a new canonical ORM ownership model.
+  
+  ## Consequences
+  
+  - Alias tests can be traced to alias governance instead of being treated as unowned package smoke tests.
+  - `tigrbl.orm` compatibility can be tracked separately from the canonical ORM mixin and table-contract surfaces.
+  - If a compatibility alias is temporary, its lifecycle must be tied to a versioned compatibility-window policy rather than being left implicit.
+  
+  ## Verification
+  
+  - `pkgs/core/tigrbl_tests/tigrbl_tests/tests/test_orm_alias_exports.py`
   
   ## Rejected Alternatives
   
   - Alias-only capabilities.
   - Large families of near-duplicate decorator APIs.
   - Hidden expansion rules that only runtime code understands.
+  - Treating module aliases as incidental packaging details when they are tested as compatibility behavior.
