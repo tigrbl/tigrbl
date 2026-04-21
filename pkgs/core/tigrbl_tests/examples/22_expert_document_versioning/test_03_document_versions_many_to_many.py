@@ -1,4 +1,4 @@
-﻿"""Example: association-model (many-to-many) document version links."""
+"""Example: association-model (many-to-many) document version links."""
 
 from __future__ import annotations
 

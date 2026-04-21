@@ -1,4 +1,4 @@
-﻿"""Harness: bootstrap + compilation semantics.
+"""Harness: bootstrap + compilation semantics.
 
 Contract (TDD):
 - The kernel can be *primed* once per app instance.

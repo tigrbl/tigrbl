@@ -1,4 +1,4 @@
-﻿from tigrbl import TableBase
+from tigrbl import TableBase
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
 from tigrbl.factories import acol

@@ -1,4 +1,4 @@
-﻿"""Pedagogical one-to-one relationship example across storage, field, IO, and clients.
+"""Pedagogical one-to-one relationship example across storage, field, IO, and clients.
 
 This example intentionally shows the full flow:
 - relationship modeling with ``relationship``.

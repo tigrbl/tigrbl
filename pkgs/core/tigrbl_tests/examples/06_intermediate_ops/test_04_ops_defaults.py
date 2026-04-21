@@ -1,4 +1,4 @@
-﻿"""Lesson 06.4: Understanding the default operation set."""
+"""Lesson 06.4: Understanding the default operation set."""
 
 from tigrbl import TableBase, TigrblApp
 from tigrbl.factories.engine import mem

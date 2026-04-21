@@ -1,4 +1,4 @@
-﻿"""Pedagogical one-to-many relationship example with REST and JSON-RPC clients.
+"""Pedagogical one-to-many relationship example with REST and JSON-RPC clients.
 
 This walkthrough demonstrates a complete user journey:
 1. define data and relationship semantics with storage/field/IO specs,

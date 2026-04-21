@@ -1,4 +1,4 @@
-﻿import httpx
+import httpx
 import pytest
 from sqlalchemy import Column, String
 from tigrbl import TableBase, TigrblApp

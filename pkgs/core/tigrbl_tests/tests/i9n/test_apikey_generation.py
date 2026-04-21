@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from httpx import ASGITransport, AsyncClient
 from tigrbl import TigrblApp
 from tigrbl.factories.engine import mem

@@ -1,4 +1,4 @@
-﻿"""Example: self-referential version lineage for document history."""
+"""Example: self-referential version lineage for document history."""
 
 from __future__ import annotations
 

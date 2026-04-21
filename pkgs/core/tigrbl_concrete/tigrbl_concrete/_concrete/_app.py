@@ -158,8 +158,25 @@ class App(AppBase):
     def router(self) -> "App":
         return self
 
+    def _bump_runtime_plan_revision(self) -> None:
+        current = getattr(self, "_runtime_plan_revision", 0)
+        try:
+            self._runtime_plan_revision = int(current) + 1
+        except Exception:
+            self._runtime_plan_revision = 1
+        kernels = []
+        runtime = getattr(self, "_runtime_instance", None)
+        kernel = getattr(runtime, "kernel", None)
+        if kernel is not None:
+            kernels.append(kernel)
+        for kernel in kernels:
+            invalidate = getattr(kernel, "invalidate_kernelz_payload", None)
+            if callable(invalidate):
+                invalidate(self)
+
     def add_route(self, path: str, endpoint: Any, *, methods: list[str] | tuple[str, ...], **kwargs: Any) -> None:
         _add_route_impl(self, path, endpoint, methods=methods, **kwargs)
+        self._bump_runtime_plan_revision()
 
     def route(self, path: str, *, methods: Any, **kwargs: Any):
         return _route_impl(self, path, methods=methods, **kwargs)
@@ -318,6 +335,45 @@ class App(AppBase):
             if static_response is not None:
                 await static_response(scope, receive, send)
                 return
+            if str(scope.get("method") or "").upper() == "OPTIONS":
+                path_value = path.rstrip("/") or "/"
+                allowed: set[str] = set()
+                for route in getattr(self, "routes", ()) or ():
+                    pattern = getattr(route, "pattern", None)
+                    if pattern is None or pattern.match(path_value) is None:
+                        continue
+                    allowed.update(str(method).upper() for method in route.methods)
+                if allowed:
+                    allowed.discard("HEAD")
+                    allowed.add("OPTIONS")
+                    methods = ",".join(sorted(allowed))
+                    headers: dict[str, str] = {
+                        "allow": methods,
+                        "access-control-allow-methods": methods,
+                    }
+                    request_headers = {
+                        key.decode("latin-1").lower(): value.decode("latin-1")
+                        for key, value in scope.get("headers", ()) or ()
+                    }
+                    origin = request_headers.get("origin")
+                    requested_headers = request_headers.get(
+                        "access-control-request-headers"
+                    )
+                    vary: list[str] = []
+                    if origin:
+                        headers["access-control-allow-origin"] = origin
+                        vary.append("origin")
+                    if requested_headers:
+                        headers["access-control-allow-headers"] = requested_headers
+                        vary.append("access-control-request-headers")
+                    if vary:
+                        headers["vary"] = ",".join(vary)
+                    from ._response import Response
+
+                    await Response(status_code=204, headers=headers)(
+                        scope, receive, send
+                    )
+                    return
         env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
         await self.invoke(env)
 
@@ -425,6 +481,20 @@ class App(AppBase):
             if normalized_prefix:
                 static_path = f"{normalized_prefix}{static_path}" if static_path != "/" else normalized_prefix
             self._static_mounts.append({"path": static_path, "directory": mount["directory"]})
+        routed_jsonrpc_mounts = getattr(routed, "_jsonrpc_endpoint_mounts", None)
+        if isinstance(routed_jsonrpc_mounts, dict):
+            owner_mounts = getattr(self, "_jsonrpc_endpoint_mounts", None)
+            if not isinstance(owner_mounts, dict):
+                owner_mounts = {}
+                setattr(self, "_jsonrpc_endpoint_mounts", owner_mounts)
+            for mount_path, endpoint in routed_jsonrpc_mounts.items():
+                path = mount_path
+                if normalized_prefix:
+                    path = f"{normalized_prefix}{path}" if path != "/" else normalized_prefix
+                normalized_path = (path if path.startswith("/") else f"/{path}").rstrip("/") or "/"
+                owner_mounts[normalized_path] = endpoint
+                if normalized_path != "/":
+                    owner_mounts[f"{normalized_path}/"] = endpoint
         bump = getattr(self, "_bump_runtime_plan_revision", None)
         if callable(bump):
             bump()

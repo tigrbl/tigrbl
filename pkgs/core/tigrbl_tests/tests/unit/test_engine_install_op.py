@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 
 from tigrbl import Op, TigrblApp, engine_ctx, op_ctx
 from tigrbl import resolver as _resolver

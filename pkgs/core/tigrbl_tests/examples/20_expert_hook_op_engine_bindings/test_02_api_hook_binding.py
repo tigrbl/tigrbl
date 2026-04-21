@@ -1,4 +1,4 @@
-﻿"""Lesson 20: API hook bindings.
+"""Lesson 20: API hook bindings.
 
 API-level hook declarations merge into the model hook namespace when models
 are included. This pattern is preferred because it enables cross-cutting

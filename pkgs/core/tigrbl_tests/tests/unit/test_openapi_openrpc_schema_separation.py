@@ -1,4 +1,4 @@
-﻿from httpx import ASGITransport, Client
+from httpx import ASGITransport, Client
 
 from tigrbl import TableBase, TigrblApp, TigrblRouter
 from tigrbl.factories.engine import mem

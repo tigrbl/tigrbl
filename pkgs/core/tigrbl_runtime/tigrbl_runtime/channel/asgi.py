@@ -118,7 +118,15 @@ def build_asgi_channel(
     )
 
 
-def _resolve_jsonrpc_endpoint(ctx: Any, channel: OpChannel) -> str:
+def _normalize_path(path: str) -> str:
+    return path.rstrip("/") or "/"
+
+
+def _resolve_jsonrpc_endpoint(ctx: Any, channel: OpChannel) -> str | None:
+    if channel.kind != "http" or str(channel.method or "").upper() != "POST":
+        return None
+
+    path = _normalize_path(channel.path)
     route = {}
     temp = ctx.get("temp")
     if isinstance(temp, dict):
@@ -132,14 +140,14 @@ def _resolve_jsonrpc_endpoint(ctx: Any, channel: OpChannel) -> str:
         owner = ctx.get(owner_key)
         mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
         if isinstance(mounts, Mapping):
-            endpoint = mounts.get(channel.path)
+            endpoint = mounts.get(path) or mounts.get(channel.path)
             if isinstance(endpoint, str) and endpoint:
                 return endpoint
 
     for endpoint, mapped_path in __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__.items():
-        if channel.path == mapped_path or channel.path == f"{mapped_path}/":
+        if path == _normalize_path(mapped_path):
             return endpoint
-    return __JSONRPC_DEFAULT_ENDPOINT__
+    return None
 
 
 async def _receive_websocket_message(env: Any, channel: OpChannel, ctx: Any) -> None:
@@ -192,11 +200,11 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
 
     dispatch = temp.setdefault("dispatch", {})
     if isinstance(dispatch, dict):
-        dispatch.setdefault("binding_protocol", channel.protocol)
-        dispatch.setdefault("binding_selector", channel.path)
+        dispatch.setdefault("channel_protocol", channel.protocol)
+        dispatch.setdefault("channel_selector", channel.selector)
         dispatch.setdefault("path_params", dict(channel.path_params))
         endpoint = _resolve_jsonrpc_endpoint(ctx, channel)
-        if isinstance(endpoint, str) and endpoint:
+        if endpoint:
             dispatch.setdefault("endpoint", endpoint)
 
     scope = getattr(env, "scope", {}) or {}

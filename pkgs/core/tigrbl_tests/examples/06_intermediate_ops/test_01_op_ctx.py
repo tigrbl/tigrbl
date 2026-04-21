@@ -1,4 +1,4 @@
-﻿"""Lesson 06.1: Declaring context-only operations with `op_ctx`."""
+"""Lesson 06.1: Declaring context-only operations with `op_ctx`."""
 
 from tigrbl import TableBase, TigrblApp, op_ctx
 from tigrbl.factories.engine import mem

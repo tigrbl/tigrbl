@@ -1,4 +1,4 @@
-﻿"""Lesson 21.4: Router-level security deps via construction params.
+"""Lesson 21.4: Router-level security deps via construction params.
 
 This example shows how to supply security dependencies for a ``TigrblRouter``
 through its class configuration and verify that the OpenAPI schema marks

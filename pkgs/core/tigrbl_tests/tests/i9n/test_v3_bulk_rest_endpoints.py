@@ -1,4 +1,4 @@
-﻿from typing import Iterator
+from typing import Iterator
 
 import pytest
 import pytest_asyncio

@@ -1,4 +1,4 @@
-﻿"""Lesson 18: diagnostics router mounting.
+"""Lesson 18: diagnostics router mounting.
 
 Diagnostics routers provide operational visibility for an API. The router is
 retrieved from the API instance and mounted on a host app, keeping the API

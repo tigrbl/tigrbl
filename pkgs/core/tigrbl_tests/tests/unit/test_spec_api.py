@@ -1,4 +1,4 @@
-﻿from tests.conftest import mro_collect_router_hooks
+from tests.conftest import mro_collect_router_hooks
 from tigrbl.factories.router import defineRouterSpec, deriveRouter
 from tigrbl_core.config.constants import TIGRBL_ROUTER_HOOKS_ATTR
 

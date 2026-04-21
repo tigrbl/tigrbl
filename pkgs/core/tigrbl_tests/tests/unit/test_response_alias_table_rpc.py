@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 import pytest
 from tigrbl import alias_ctx
 from tigrbl import response_ctx

@@ -1,4 +1,4 @@
-﻿"""Integration coverage for engine precedence, interning, and uvicorn routing.
+"""Integration coverage for engine precedence, interning, and uvicorn routing.
 
 These scenarios validate resolver binding across TigrblApp/TigrblRouter surfaces,
 including REST + JSON-RPC flows against a live uvicorn server.

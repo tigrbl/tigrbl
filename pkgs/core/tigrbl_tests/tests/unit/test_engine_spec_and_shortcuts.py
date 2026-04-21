@@ -1,4 +1,4 @@
-﻿# tests/test_engine_spec_and_shortcuts.py
+# tests/test_engine_spec_and_shortcuts.py
 import json
 
 import pytest

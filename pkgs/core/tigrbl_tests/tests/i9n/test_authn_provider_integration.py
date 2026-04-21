@@ -1,4 +1,4 @@
-﻿from httpx import ASGITransport, Client
+from httpx import ASGITransport, Client
 from tigrbl import TableBase, TigrblApp, hook_ctx
 from tigrbl_core.config.constants import TIGRBL_AUTH_CONTEXT_ATTR
 from tigrbl.factories.engine import mem

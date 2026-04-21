@@ -1,4 +1,4 @@
-﻿"""Lesson 07.3: Ordering multiple hooks in the same phase."""
+"""Lesson 07.3: Ordering multiple hooks in the same phase."""
 
 from tigrbl import TableBase, TigrblApp, hook_ctx
 from tigrbl.factories.engine import mem

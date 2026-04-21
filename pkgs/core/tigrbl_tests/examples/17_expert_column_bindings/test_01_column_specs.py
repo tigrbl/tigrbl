@@ -1,4 +1,4 @@
-﻿"""Lesson 17: column specs on models.
+"""Lesson 17: column specs on models.
 
 This module teaches how column specs live on the model namespace so runtime
 code can inspect field metadata without instantiating extra helpers. The

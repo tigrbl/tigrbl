@@ -1,4 +1,4 @@
-﻿from datetime import datetime
+from datetime import datetime
 
 
 from tigrbl_concrete._mapping.model import bind

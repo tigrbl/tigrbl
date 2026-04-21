@@ -1,4 +1,4 @@
-﻿"""Lesson 18: JSON-RPC mounting on APIs.
+"""Lesson 18: JSON-RPC mounting on APIs.
 
 This lesson shows how the API exposes a JSON-RPC router that can be mounted on
 an application. Keeping the router attached to the API instance is the

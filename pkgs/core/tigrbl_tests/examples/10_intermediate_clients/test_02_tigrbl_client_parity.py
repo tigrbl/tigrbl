@@ -1,4 +1,4 @@
-﻿"""Lesson 10.2: Comparing TigrblClient and httpx behaviors."""
+"""Lesson 10.2: Comparing TigrblClient and httpx behaviors."""
 
 import httpx
 import inspect

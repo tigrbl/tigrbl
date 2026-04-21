@@ -1,4 +1,4 @@
-﻿"""Lesson 10.1: Using httpx for REST CRUD workflows."""
+"""Lesson 10.1: Using httpx for REST CRUD workflows."""
 
 import inspect
 

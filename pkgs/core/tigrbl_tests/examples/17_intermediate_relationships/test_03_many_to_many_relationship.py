@@ -1,4 +1,4 @@
-﻿"""Example: many-to-many relationships exposed through Tigrbl REST endpoints."""
+"""Example: many-to-many relationships exposed through Tigrbl REST endpoints."""
 
 from __future__ import annotations
 

@@ -25,6 +25,7 @@ Handler = Callable[..., Any]
 
 ROUTE_OPS_MODEL_NAME = "__tigrbl_route_ops__"
 ROUTE_OPS_RESOURCE_NAME = "route_ops"
+JSONRPC_MOUNT_SENTINEL = object()
 
 
 @dataclass(frozen=True)
@@ -300,6 +301,17 @@ def _build_route_step(route: Route) -> Handler:
             if name in path_params:
                 kwargs[name] = path_params[name]
                 continue
+            default = param.default
+            dep_callable = getattr(default, "dependency", None)
+            if callable(dep_callable):
+                owner = getattr(ctx, "app", None) or getattr(ctx, "router", None)
+                overrides = getattr(owner, "dependency_overrides", {}) or {}
+                resolver = overrides.get(dep_callable, dep_callable)
+                resolved = resolver()
+                if inspect.isawaitable(resolved):
+                    resolved = await resolved
+                kwargs[name] = resolved
+                continue
             annotation = param.annotation
             if (
                 name in {"ctx", "_ctx"}
@@ -311,7 +323,11 @@ def _build_route_step(route: Route) -> Handler:
             if (
                 name in {"request", "_request"}
                 or getattr(annotation, "__name__", None) == "Request"
-                or (len(params) == 1 and not path_params)
+                or (
+                    len(params) == 1
+                    and not path_params
+                    and param.default is inspect._empty
+                )
             ):
                 kwargs[name] = request
 
@@ -523,6 +539,52 @@ def add_route(
     return route
 
 
+async def _jsonrpc_mount_marker(*_args: Any, **_kwargs: Any) -> None:
+    """Marker endpoint; JSON-RPC execution is selected by binding dispatch."""
+    return None
+
+
+def add_jsonrpc_mount(
+    owner: Any,
+    path: str,
+    *,
+    endpoint: str,
+    name: str = "jsonrpc",
+) -> Route | None:
+    if not path.startswith("/"):
+        path = f"/{path}"
+    normalized_path = path.rstrip("/") or "/"
+
+    mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
+    if not isinstance(mounts, dict):
+        mounts = {}
+        setattr(owner, "_jsonrpc_endpoint_mounts", mounts)
+    mounts[normalized_path] = endpoint
+    if normalized_path != "/":
+        mounts[f"{normalized_path}/"] = endpoint
+
+    for existing in getattr(owner, "routes", ()) or ():
+        if getattr(existing, "path", None) == normalized_path:
+            return existing
+
+    pattern, param_names = compile_path(normalized_path)
+    route = Route(
+        methods=frozenset({"POST"}),
+        path_template=normalized_path,
+        pattern=pattern,
+        param_names=param_names,
+        handler=_jsonrpc_mount_marker,
+        name=name,
+        include_in_schema=False,
+        inherit_owner_dependencies=False,
+        tigrbl_model=JSONRPC_MOUNT_SENTINEL,
+        tigrbl_exchange="request_response",
+        tigrbl_tx_scope="skip",
+    )
+    owner.routes.append(route)
+    return route
+
+
 def include_router_routes(owner: Any, router: Any, *, prefix: str = "") -> None:
     nested_prefix = normalize_prefix(prefix)
     router_dependencies = list(getattr(router, "dependencies", ()) or ())
@@ -538,6 +600,20 @@ def include_router_routes(owner: Any, router: Any, *, prefix: str = "") -> None:
                 dep for dep in router_dependencies if dep not in route_dependencies
             ] + route_dependencies
 
+        normalized_path = (path if path.startswith("/") else f"/{path}").rstrip("/") or "/"
+        methods = frozenset(str(method).upper() for method in tuple(route.methods))
+        owner.routes[:] = [
+            existing
+            for existing in getattr(owner, "routes", ())
+            if not (
+                getattr(existing, "path", None) == normalized_path
+                and frozenset(
+                    str(method).upper()
+                    for method in tuple(getattr(existing, "methods", ()) or ())
+                )
+                == methods
+            )
+        ]
         add_route(
             owner,
             path,
@@ -639,6 +715,7 @@ def prefix_model_bindings(model: type, mount_prefix: str) -> None:
 __all__ = [
     "ROUTE_OPS_MODEL_NAME",
     "Route",
+    "add_jsonrpc_mount",
     "add_route",
     "compile_path",
     "ensure_route_ops_model",

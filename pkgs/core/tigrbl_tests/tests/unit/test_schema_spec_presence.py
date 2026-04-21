@@ -1,4 +1,4 @@
-﻿from pydantic import BaseModel
+from pydantic import BaseModel
 from tigrbl.factories.app import deriveApp
 from tigrbl.factories.router import deriveRouter
 from tigrbl.factories.table import defineTableSpec

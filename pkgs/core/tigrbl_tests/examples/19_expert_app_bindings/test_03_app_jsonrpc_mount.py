@@ -1,4 +1,4 @@
-﻿"""Lesson 19: JSON-RPC mounting on apps.
+"""Lesson 19: JSON-RPC mounting on apps.
 
 Apps expose a JSON-RPC router for programmatic access to operations. Keeping
 the router on the app instance ensures a consistent integration point for

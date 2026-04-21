@@ -1,4 +1,4 @@
-﻿from tigrbl import TableBase
+from tigrbl import TableBase
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import CheckConstraint, Column, String, UniqueConstraint
 

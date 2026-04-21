@@ -1,4 +1,4 @@
-﻿from tigrbl.engine.bind import install_from_objects
+from tigrbl.engine.bind import install_from_objects
 from tigrbl.engine import resolver
 from tigrbl.factories.engine import pga, pgs, sqlitef
 from tigrbl.factories.engine import mem

@@ -1,4 +1,4 @@
-﻿"""Lesson 21.5: App + API security deps and OpenAPI precedence.
+"""Lesson 21.5: App + API security deps and OpenAPI precedence.
 
 This example demonstrates how ``TigrblApp`` and ``TigrblRouter`` security deps
 combine when the API is mounted on the app, including shared scheme names that

@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 import pytest_asyncio
 from types import SimpleNamespace
 from httpx import ASGITransport, AsyncClient

@@ -1,4 +1,4 @@
-﻿"""Lesson 19: app-level model router binding.
+"""Lesson 19: app-level model router binding.
 
 TigrblApp aggregates model routers so the application can manage REST routes
 per model through its namespace. This pattern is preferred because it keeps

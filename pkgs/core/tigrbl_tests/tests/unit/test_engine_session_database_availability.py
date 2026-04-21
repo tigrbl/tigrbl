@@ -1,4 +1,4 @@
-﻿from sqlalchemy import text
+from sqlalchemy import text
 
 from tigrbl import TableBase, TigrblApp, resolver
 from tigrbl.orm.mixins import GUIDPk

@@ -1,4 +1,4 @@
-﻿from types import SimpleNamespace
+from types import SimpleNamespace
 
 from tigrbl.factories.engine import pga, pgs, prov, sqlitef
 from tigrbl.factories.engine import mem

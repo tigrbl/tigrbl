@@ -1,4 +1,4 @@
-﻿"""Lesson 09.1: Understanding app-level configuration precedence."""
+"""Lesson 09.1: Understanding app-level configuration precedence."""
 
 from tigrbl import TableBase, TigrblApp
 from tigrbl.orm.mixins import GUIDPk

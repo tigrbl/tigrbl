@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 
 from tigrbl import TableBase, TigrblRouter, TigrblApp
 from tigrbl.factories.engine import mem

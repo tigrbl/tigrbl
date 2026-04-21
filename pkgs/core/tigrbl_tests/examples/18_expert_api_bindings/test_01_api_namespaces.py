@@ -1,4 +1,4 @@
-﻿"""Lesson 18: API namespaces.
+"""Lesson 18: API namespaces.
 
 API bindings populate dedicated namespaces (schemas, handlers, hooks, etc.)
 so consumers can discover generated artifacts through attribute access. This

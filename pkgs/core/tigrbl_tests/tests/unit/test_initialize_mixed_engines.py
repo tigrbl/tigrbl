@@ -1,4 +1,4 @@
-﻿import asyncio
+import asyncio
 
 import pytest
 from sqlalchemy import Column, Integer

@@ -1,4 +1,4 @@
-﻿"""Lesson 16: table model registry bindings.
+"""Lesson 16: table model registry bindings.
 
 This module focuses on the API model registry, which acts as a canonical
 lookup table for ORM classes. Storing models by name lets other subsystems

@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from tigrbl_core._spec.column_spec import mro_collect_columns
 from tigrbl.orm.mixins import GUIDPk

@@ -1,4 +1,4 @@
-﻿"""Lesson 06.2: Renaming canonical operations with `op_alias`."""
+"""Lesson 06.2: Renaming canonical operations with `op_alias`."""
 
 from tigrbl import TableBase, TigrblApp, op_alias
 from tigrbl.factories.engine import mem

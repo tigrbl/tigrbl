@@ -1,4 +1,4 @@
-﻿"""Lesson 07.2: Binding hooks onto models during API setup."""
+"""Lesson 07.2: Binding hooks onto models during API setup."""
 
 from tigrbl import TableBase, TigrblApp, hook_ctx
 from tigrbl.factories.engine import mem

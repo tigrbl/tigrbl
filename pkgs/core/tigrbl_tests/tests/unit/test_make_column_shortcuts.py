@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 
 from tigrbl.factories.column import (
     Column,

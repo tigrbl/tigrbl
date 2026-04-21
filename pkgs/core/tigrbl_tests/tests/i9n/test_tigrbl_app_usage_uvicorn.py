@@ -1,4 +1,4 @@
-﻿import httpx
+import httpx
 import pytest
 import pytest_asyncio
 from tigrbl import TableBase, TigrblApp

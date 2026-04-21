@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 from httpx import ASGITransport, Client
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, sessionmaker

@@ -1,4 +1,4 @@
-﻿"""Example: one-to-many document version history managed by hooks."""
+"""Example: one-to-many document version history managed by hooks."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-﻿"""Example: self-referential relationships exposed through REST endpoints."""
+"""Example: self-referential relationships exposed through REST endpoints."""
 
 from __future__ import annotations
 

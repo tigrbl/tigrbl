@@ -115,6 +115,7 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                     endpoint_bucket = proto_bucket.setdefault("endpoints", {}).setdefault(
                         endpoint, {}
                     )
+                    proto_bucket[binding.rpc_method] = meta_index
                     endpoint_bucket[binding.rpc_method] = {
                         "meta_index": meta_index,
                         "selector": selector,

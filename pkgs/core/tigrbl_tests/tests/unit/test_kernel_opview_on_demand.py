@@ -1,4 +1,4 @@
-﻿from tigrbl import TigrblApp
+from tigrbl import TigrblApp
 from tigrbl_concrete._mapping.model import bind
 from tigrbl_kernel import _default_kernel as K
 from tigrbl._spec import S, IO

@@ -1,4 +1,4 @@
-﻿import inspect
+import inspect
 
 import pytest
 from tigrbl import TableBase, TigrblApp, op_ctx, TigrblRouter

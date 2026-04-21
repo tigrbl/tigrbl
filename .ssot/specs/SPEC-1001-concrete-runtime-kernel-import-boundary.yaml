@@ -1,0 +1,40 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:1001"
+number: 1001
+slug: "concrete-runtime-kernel-import-boundary"
+title: "Concrete runtime-kernel import boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A direct `tigrbl_concrete` import of `tigrbl_kernel`, a literal dynamic import of `tigrbl_kernel`, a direct package dependency on `tigrbl-kernel`, or transitive kernel loading during package import is release-blocking for this boundary."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to normatively require concrete/kernel import separation."
+    at: "2026-04-21T12:43:37Z"
+references: []
+body: |-
+  ## Contract
+  
+  1. `tigrbl_concrete` package source must not contain static imports from `tigrbl_kernel`.
+  2. `tigrbl_concrete` package source must not contain literal dynamic import calls targeting `tigrbl_kernel`.
+  3. Importing `tigrbl_concrete` must not load `tigrbl_kernel` into `sys.modules`.
+  4. `pkgs/core/tigrbl_concrete/pyproject.toml` must not list `tigrbl-kernel` in required or optional dependencies.
+  5. `tigrbl_runtime` remains the authorized package boundary for importing `tigrbl_kernel` and mediating kernel lifecycle operations.
+  
+  ## Required Verification
+  
+  - Static AST scan of `pkgs/core/tigrbl_concrete/tigrbl_concrete` for forbidden imports.
+  - Dependency metadata scan of `pkgs/core/tigrbl_concrete/pyproject.toml`.
+  - Isolated interpreter import probe proving `import tigrbl_concrete` does not load `tigrbl_kernel`.
+  
+  ## Non-Conformance
+  
+  A direct `tigrbl_concrete` import of `tigrbl_kernel`, a literal dynamic import of `tigrbl_kernel`, a direct package dependency on `tigrbl-kernel`, or transitive kernel loading during package import is release-blocking for this boundary.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1000"

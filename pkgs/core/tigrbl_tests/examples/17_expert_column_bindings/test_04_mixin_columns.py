@@ -1,4 +1,4 @@
-﻿"""Lesson 17: mixin column specs.
+"""Lesson 17: mixin column specs.
 
 Mixins contribute column specs that are merged into the model's column
 registry. This keeps shared schema rules centralized in mixins, which is the

@@ -1,4 +1,4 @@
-﻿"""Lesson 08.4: Registering JSON-RPC callables."""
+"""Lesson 08.4: Registering JSON-RPC callables."""
 
 from tigrbl import TableBase, bind, register_rpc
 from tigrbl.orm.mixins import GUIDPk

@@ -1,4 +1,4 @@
-﻿"""Lesson 19: bulk model inclusion for apps.
+"""Lesson 19: bulk model inclusion for apps.
 
 Including multiple models at once ensures the application registry is fully
 populated before startup. This is the preferred pattern for bootstrapping

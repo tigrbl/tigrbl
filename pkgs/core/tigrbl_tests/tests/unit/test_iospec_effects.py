@@ -1,4 +1,4 @@
-﻿from tigrbl import TigrblApp
+from tigrbl import TigrblApp
 from tigrbl.types import (
     Column,
     InstrumentedAttribute,

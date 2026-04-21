@@ -1,4 +1,4 @@
-﻿"""Lesson 06.3: Verifying payload handlers for custom operations."""
+"""Lesson 06.3: Verifying payload handlers for custom operations."""
 
 from tigrbl import TableBase, TigrblApp, op_ctx
 from tigrbl.factories.engine import mem

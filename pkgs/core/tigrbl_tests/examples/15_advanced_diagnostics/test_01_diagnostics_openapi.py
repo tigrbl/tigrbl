@@ -1,4 +1,4 @@
-﻿import inspect
+import inspect
 
 import httpx
 import pytest

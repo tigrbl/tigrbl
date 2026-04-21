@@ -1,4 +1,4 @@
-﻿from tigrbl import TableBase, TigrblApp
+from tigrbl import TableBase, TigrblApp
 from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String

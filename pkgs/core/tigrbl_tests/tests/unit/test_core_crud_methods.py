@@ -1,4 +1,4 @@
-﻿import asyncio
+import asyncio
 import enum
 from typing import Any, Mapping
 

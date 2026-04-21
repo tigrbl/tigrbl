@@ -1,4 +1,4 @@
-﻿"""Example: one-to-one current version pointer plus version history."""
+"""Example: one-to-one current version pointer plus version history."""
 
 from __future__ import annotations
 

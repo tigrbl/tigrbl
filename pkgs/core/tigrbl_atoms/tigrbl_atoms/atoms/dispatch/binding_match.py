@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, Mapping
 
-from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
+from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__
 
 from ... import events as _ev
 from ...stages import Ingress, Bound
@@ -32,7 +32,7 @@ def _path(ctx: Any) -> str:
     return path.rstrip("/") or "/"
 
 
-def _endpoint(dispatch: Mapping[str, object], ctx: Any) -> str:
+def _endpoint(dispatch: Mapping[str, object], ctx: Any) -> str | None:
     endpoint = dispatch.get("endpoint")
     if isinstance(endpoint, str) and endpoint:
         return endpoint
@@ -43,29 +43,62 @@ def _endpoint(dispatch: Mapping[str, object], ctx: Any) -> str:
             endpoint = route.get("endpoint")
             if isinstance(endpoint, str) and endpoint:
                 return endpoint
-    return __JSONRPC_DEFAULT_ENDPOINT__
+    return None
+
+
+def _jsonrpc_endpoint_for_request(
+    dispatch: Mapping[str, object],
+    ctx: Any,
+    *,
+    method: str,
+    path: str,
+) -> str | None:
+    if method != "POST":
+        return None
+
+    endpoint = _endpoint(dispatch, ctx)
+    if endpoint:
+        return endpoint
+
+    for owner_key in ("router", "app"):
+        owner = getattr(ctx, owner_key, None)
+        if owner is None and hasattr(ctx, "get"):
+            owner = ctx.get(owner_key)
+        mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
+        if isinstance(mounts, Mapping):
+            mounted = mounts.get(path) or mounts.get(f"{path}/")
+            if isinstance(mounted, str) and mounted:
+                return mounted
+
+    for mapped_endpoint, mapped_path in __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__.items():
+        if path == (str(mapped_path).rstrip("/") or "/"):
+            return str(mapped_endpoint)
+    return None
 
 
 def _rpc_method(dispatch: Mapping[str, object], ctx: Any) -> str | None:
+    payload = _rpc_payload(dispatch, ctx)
+    if isinstance(payload, Mapping):
+        method = payload.get("method")
+        if isinstance(method, str):
+            return method
+    return None
+
+
+def _rpc_payload(dispatch: Mapping[str, object], ctx: Any) -> Mapping[str, object] | None:
     rpc = dispatch.get("rpc")
     if isinstance(rpc, Mapping):
-        method = rpc.get("method")
-        if isinstance(method, str):
-            return method
+        return rpc
     body_json = dispatch.get("body_json")
     if isinstance(body_json, Mapping):
-        method = body_json.get("method")
-        if isinstance(method, str):
-            return method
+        return body_json
     temp = getattr(ctx, "temp", None)
     if isinstance(temp, Mapping):
         ingress = temp.get("ingress")
         if isinstance(ingress, Mapping):
             ingress_body_json = ingress.get("body_json")
             if isinstance(ingress_body_json, Mapping):
-                method = ingress_body_json.get("method")
-                if isinstance(method, str):
-                    return method
+                return ingress_body_json
     body = getattr(ctx, "body", None)
     if isinstance(body, (bytes, bytearray)):
         try:
@@ -75,13 +108,9 @@ def _rpc_method(dispatch: Mapping[str, object], ctx: Any) -> str | None:
         except Exception:
             decoded = None
         if isinstance(decoded, Mapping):
-            method = decoded.get("method")
-            if isinstance(method, str):
-                return method
+            return decoded
     if isinstance(body, Mapping):
-        method = body.get("method")
-        if isinstance(method, str):
-            return method
+        return body
     return None
 
 
@@ -95,7 +124,13 @@ def _run(obj: object | None, ctx: Any) -> None:
 
     method = _method(ctx)
     path = _path(ctx)
-    endpoint = _endpoint(dispatch, ctx)
+    endpoint = _jsonrpc_endpoint_for_request(
+        dispatch,
+        ctx,
+        method=method,
+        path=path,
+    )
+    rpc_payload = _rpc_payload(dispatch, ctx)
     rpc_method = _rpc_method(dispatch, ctx)
 
     matched_proto: str | None = None
@@ -108,6 +143,7 @@ def _run(obj: object | None, ctx: Any) -> None:
                 continue
             if (
                 proto.endswith(".jsonrpc")
+                and isinstance(endpoint, str)
                 and isinstance(rpc_method, str)
             ):
                 endpoints = bucket.get("endpoints")
@@ -174,8 +210,15 @@ def _run(obj: object | None, ctx: Any) -> None:
             route["selector"] = matched_selector
         setattr(ctx, "selector", matched_selector)
     if matched_proto is not None and matched_proto.endswith(".jsonrpc"):
+        if isinstance(rpc_payload, Mapping):
+            dispatch["rpc"] = dict(rpc_payload)
+            dispatch["rpc_method"] = rpc_payload.get("method")
+            dispatch["parsed_payload"] = rpc_payload.get("params", {})
         if isinstance(route, dict):
             route["endpoint"] = str(dispatch.get("endpoint") or endpoint)
+            if isinstance(rpc_payload, Mapping):
+                route["rpc_envelope"] = dict(rpc_payload)
+                route["payload"] = rpc_payload.get("params", {})
         setattr(ctx, "endpoint", str(dispatch.get("endpoint") or endpoint))
     if matched_path_params:
         dispatch["path_params"] = matched_path_params

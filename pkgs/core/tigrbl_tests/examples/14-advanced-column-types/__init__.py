@@ -1,4 +1,4 @@
-﻿import inspect
+import inspect
 
 from tigrbl import TableBase, TigrblApp, hook_ctx, op_ctx
 from tigrbl.factories.engine import mem

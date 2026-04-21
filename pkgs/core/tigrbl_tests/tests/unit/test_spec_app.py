@@ -1,4 +1,4 @@
-﻿from tigrbl import App, AppBase
+from tigrbl import App, AppBase
 from tigrbl.factories.app import defineAppSpec, deriveApp
 
 
