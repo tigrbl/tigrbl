@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated docs UI mount surface with Swagger and Lens P2 evidence."
+    note: "Updated docs UI mount surface with Swagger and Lens evidence."
     at: "2026-04-21T07:43:08Z"
+  -
+    status: "draft"
+    note: "Updated docs UI mount surface with Swagger and Lens evidence."
+    at: "2026-04-21T08:15:24Z"
 references: []
 body: |-
   ## Decision
@@ -25,7 +29,7 @@ body: |-
   3. UI surfaces MUST consume canonical payload routes and MUST NOT define independent projection logic.
   4. Swagger and Lens UI mounts must preserve configured payload-path behavior under supported app/router mounting forms.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`

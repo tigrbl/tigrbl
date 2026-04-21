@@ -14,7 +14,7 @@ superseded_by: []
 status_notes:
   -
     status: "accepted"
-    note: "Accepted semantic parity update for JSON-RPC batch behavior and P2 parity evidence."
+    note: "Accepted semantic parity update for JSON-RPC batch behavior and parity evidence."
     at: "2026-04-21T07:11:45Z"
   -
     status: "accepted"
@@ -45,7 +45,7 @@ body: |-
   
   REST and JSON-RPC are distinct transport/binding surfaces, but Tigrbl should not let them drift into different semantic frameworks. The architecture pack repeatedly treats them as different projections over the same semantic operations.
   
-  P2 integration tests now cover behavior that was only implicit in the original ADR: batch ordering, per-item batch errors, REST/RPC validation parity, and route/method symmetry. Those assertions need to be recognized as architectural parity evidence rather than incidental transport tests.
+  integration tests now cover behavior that was only implicit in the original ADR: batch ordering, per-item batch errors, REST/RPC validation parity, and route/method symmetry. Those assertions need to be recognized as architectural parity evidence rather than incidental transport tests.
   
   ## Consequences
   

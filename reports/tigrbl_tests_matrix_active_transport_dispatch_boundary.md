@@ -1,10 +1,10 @@
-# Priority 0 - Active Transport Dispatch Boundary
+# Active Transport Dispatch Boundary - Active Transport Dispatch Boundary
 
 - Source: `reports/tigrbl_tests_matrix.csv`
 - Rows: 36
 - Same column semantics as the combined matrix.
 
-| test_file | marker | domain | function | adr | spec | feature | feature_linked | priority_precedence |
+| test_file | marker | domain | function | adr | spec | feature | feature_linked | concern_precedence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | tests/architecture/test_transport_boundaries.py | none | architecture | transport boundaries | candidate:ADR-1045; candidate:ADR-1047; candidate:ADR-1051 | candidate:SPEC-2013; candidate:SPEC-2024 | none | no | 0 |
 | tests/architecture/test_transport_dispatch_convergence.py | none | architecture | transport dispatch convergence | candidate:ADR-1045; candidate:ADR-1047; candidate:ADR-1051 | candidate:SPEC-2013; candidate:SPEC-2024 | none | no | 0 |

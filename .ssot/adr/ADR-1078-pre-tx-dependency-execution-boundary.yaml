@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The P0 pre-TX dependency tests assert that `secdeps` and `deps` execute in `PRE_TX_BEGIN`, that failures abort before `START_TX`, and that kernel diagnostics expose dependency placement. Existing dependency ordering and database guardrail ADRs cover the broad intent, but the tests rely on a sharper phase and transaction boundary."
+summary: "The pre-transaction dependency tests assert that `secdeps` and `deps` execute in `PRE_TX_BEGIN`, that failures abort before `START_TX`, and that kernel diagnostics expose dependency placement. Existing dependency ordering and database guardrail ADRs cover the broad intent, but the tests rely on a sharper phase and transaction boundary."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -24,7 +24,7 @@ body: |-
   
   ## Context
   
-  The P0 pre-TX dependency tests assert that `secdeps` and `deps` execute in `PRE_TX_BEGIN`, that failures abort before `START_TX`, and that kernel diagnostics expose dependency placement. Existing dependency ordering and database guardrail ADRs cover the broad intent, but the tests rely on a sharper phase and transaction boundary.
+  The pre-transaction dependency tests assert that `secdeps` and `deps` execute in `PRE_TX_BEGIN`, that failures abort before `START_TX`, and that kernel diagnostics expose dependency placement. Existing dependency ordering and database guardrail ADRs cover the broad intent, but the tests rely on a sharper phase and transaction boundary.
   
   ## Consequences
   

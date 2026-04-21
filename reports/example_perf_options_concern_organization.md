@@ -1,6 +1,6 @@
-# P3 Tests Organized By Primary Concern
+# example, performance, and options Tests Organized By Primary Concern
 
-- Source workbook: `reports/tigrbl_tests_matrices.xlsx` (sheet: `P3 Examples`)
+- Source workbook: `reports/tigrbl_tests_matrices.xlsx` (sheet: `Example/Performance/Options`)
 - Rows organized: 164
 - Rows with inferred candidate SSOT features via spec links: 70
 
@@ -41,9 +41,9 @@
 - feat:pre-tx-security-dependency-execution-001: Pre-TX security dependency execution (created)
 - feat:operation-diagnostics-projection-001: Operation diagnostics projection (created)
 
-### Candidate Reference Gaps in P3 Matrix
-- Candidate ADR IDs referenced by P3 but missing from registry: none
-- Candidate SPEC IDs referenced by P3 but missing from registry: spc:2048
+### Candidate Reference Gaps in example, performance, and options matrix
+- Candidate ADR IDs referenced by example, performance, and options but missing from registry: none
+- Candidate SPEC IDs referenced by example, performance, and options but missing from registry: spc:2048
 
 ## Table/Column Schema and Mixins (41 tests)
 - `examples/01_beginner_fundamentals/test_04_table_args.py` (spec refs: candidate:SPEC-2031; candidate:SPEC-2038; candidate:SPEC-2039 | adr refs: candidate:ADR-1018; candidate:ADR-1056 | candidate SSOT features: feat:bootstrappable-table-mixin-001)

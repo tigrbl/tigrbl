@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated mapping-plan compilation with P2 routing/name/materialization evidence."
+    note: "Updated mapping-plan compilation with routing/name/materialization evidence."
     at: "2026-04-21T07:42:53Z"
+  -
+    status: "draft"
+    note: "Updated mapping-plan compilation with routing/name/materialization evidence."
+    at: "2026-04-21T08:15:23Z"
 references: []
 body: |-
   ## Purpose
@@ -38,7 +42,7 @@ body: |-
   - ADR-1077 narrows the mapping/bootstrap compilation boundary.
   - ADR-1014 governs REST/JSON-RPC semantic parity.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_acronym_route_name.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_nested_path_schema_and_rpc.py`

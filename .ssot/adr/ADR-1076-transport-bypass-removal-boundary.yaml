@@ -14,7 +14,7 @@ superseded_by: []
 status_notes:
   -
     status: "accepted"
-    note: "Accepted transport bypass removal update for compiled mapping dispatch and P2 boundary evidence."
+    note: "Accepted transport bypass removal update for compiled mapping dispatch and boundary evidence."
     at: "2026-04-21T07:11:50Z"
 references: []
 body: |-
@@ -31,7 +31,7 @@ body: |-
   
   The transport boundary tests assert that old `tigrbl.transport` modules, dispatcher files, gateway runtime bypasses, and top-level dispatch exports remain absent. Existing KernelPlan dispatch ADRs define the positive owner of dispatch, but the tests also need a negative boundary decision that makes reintroduction of old bypass surfaces explicitly non-conforming.
   
-  P2 tests also exercise dispatch parity through Uvicorn-backed runtime paths. Those tests reflect the same decision from the runtime side: transport behavior may enter through concrete bindings, but semantic operation selection must converge on the compiled mapping path.
+  integration tests also exercise dispatch parity through Uvicorn-backed runtime paths. Those tests reflect the same decision from the runtime side: transport behavior may enter through concrete bindings, but semantic operation selection must converge on the compiled mapping path.
   
   ## Consequences
   

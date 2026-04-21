@@ -24,7 +24,7 @@ body: |-
   
   ## Context
   
-  P0 tests exercise `OpSpec` effects across schemas, columns, defaults, storage, REST routes, RPC methods, core CRUD handlers, hooks, atom injection, and system-step registry behavior. Existing ADRs establish a spec-first architecture and one semantic operation model, but they do not explicitly name the materialization side-effect boundary that these tests rely on.
+  operation contract tests exercise `OpSpec` effects across schemas, columns, defaults, storage, REST routes, RPC methods, core CRUD handlers, hooks, atom injection, and system-step registry behavior. Existing ADRs establish a spec-first architecture and one semantic operation model, but they do not explicitly name the materialization side-effect boundary that these tests rely on.
   
   ## Consequences
   

@@ -8899,7 +8899,7 @@
     {
       "id": "feat:jsonrpc-batch-framing-001",
       "title": "JSON-RPC batch framing",
-      "description": "Tracks JSON-RPC batch request ordering, per-item result/error isolation, and batch envelope behavior as P2 integration-governed runtime semantics.",
+      "description": "Tracks JSON-RPC batch request ordering, per-item result/error isolation, and batch envelope behavior as integration-governed runtime semantics.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -8908,7 +8908,7 @@
       },
       "plan": {
         "horizon": "next",
-        "slot": "p2-integration-coverage",
+        "slot": "integration-coverage",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -8934,7 +8934,7 @@
       },
       "plan": {
         "horizon": "next",
-        "slot": "p2-integration-coverage",
+        "slot": "integration-coverage",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -8957,7 +8957,7 @@
       },
       "plan": {
         "horizon": "next",
-        "slot": "p2-integration-coverage",
+        "slot": "integration-coverage",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -8981,7 +8981,7 @@
       },
       "plan": {
         "horizon": "next",
-        "slot": "p2-integration-coverage",
+        "slot": "integration-coverage",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -9001,26 +9001,26 @@
       "requires": []
     },
     {
-      "id": "feat:p2-test-registry-coverage-001",
-      "title": "P2 integration test registry coverage",
-      "description": "Tracks registration and feature linkage for all P2 integration tests under pkgs/core/tigrbl_tests/tests/i9n.",
+      "claim_ids": [],
+      "description": "Tracks registration and feature linkage for all integration tests under pkgs/core/tigrbl_tests/tests/i9n.",
+      "id": "feat:integration-test-registry-coverage-001",
       "implementation_status": "partial",
       "lifecycle": {
-        "stage": "active",
+        "note": null,
         "replacement_feature_ids": [],
-        "note": null
+        "stage": "active"
       },
       "plan": {
         "horizon": "next",
-        "slot": "p2-integration-coverage",
+        "slot": "integration-coverage",
         "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
+      "requires": [],
       "spec_ids": [
         "spc:0600",
         "spc:0602"
       ],
-      "claim_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -9028,7 +9028,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py"
       ],
-      "requires": []
+      "title": "Integration test registry coverage"
     }
   ],
   "tests": [
@@ -9159,7 +9159,7 @@
       "feature_ids": [
         "feat:gate-009",
         "feat:jsonrpc-batch-framing-001",
-        "feat:p2-test-registry-coverage-001"
+        "feat:integration-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009"
@@ -9195,7 +9195,7 @@
         "feat:rpc-003",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
-        "feat:p2-test-registry-coverage-001"
+        "feat:integration-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -9244,7 +9244,7 @@
         "feat:rpc-003",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
-        "feat:p2-test-registry-coverage-001"
+        "feat:integration-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -9293,7 +9293,7 @@
         "feat:rpc-003",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
-        "feat:p2-test-registry-coverage-001"
+        "feat:integration-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -9342,7 +9342,7 @@
         "feat:rpc-003",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
-        "feat:p2-test-registry-coverage-001"
+        "feat:integration-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -18333,54 +18333,54 @@
   "document_id_reservations": {
     "adr": [
       {
-        "owner": "ssot-core",
-        "start": 1,
+        "assignable_by_repo": false,
+        "deletable": false,
         "end": 599,
         "immutable": true,
-        "deletable": false,
-        "assignable_by_repo": false
+        "owner": "ssot-core",
+        "start": 1
       },
       {
-        "owner": "ssot-origin",
-        "start": 600,
+        "assignable_by_repo": false,
+        "deletable": false,
         "end": 999,
         "immutable": true,
-        "deletable": false,
-        "assignable_by_repo": false
+        "owner": "ssot-origin",
+        "start": 600
       },
       {
-        "owner": "repo-local",
-        "start": 1000,
+        "assignable_by_repo": true,
+        "deletable": true,
         "end": 4999,
         "immutable": false,
-        "deletable": true,
-        "assignable_by_repo": true
+        "owner": "repo-local",
+        "start": 1000
       }
     ],
     "spec": [
       {
-        "owner": "ssot-core",
-        "start": 1,
+        "assignable_by_repo": false,
+        "deletable": false,
         "end": 599,
         "immutable": true,
-        "deletable": false,
-        "assignable_by_repo": false
+        "owner": "ssot-core",
+        "start": 1
       },
       {
-        "owner": "ssot-origin",
-        "start": 600,
+        "assignable_by_repo": false,
+        "deletable": false,
         "end": 999,
         "immutable": true,
-        "deletable": false,
-        "assignable_by_repo": false
+        "owner": "ssot-origin",
+        "start": 600
       },
       {
-        "owner": "repo-local",
-        "start": 1000,
+        "assignable_by_repo": true,
+        "deletable": true,
         "end": 4999,
         "immutable": false,
-        "deletable": true,
-        "assignable_by_repo": true
+        "owner": "repo-local",
+        "start": 1000
       }
     ]
   },
@@ -18763,11 +18763,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "3e2e08d8b87173e1b83d01a7cd9fd1f9f7ff798c0c630d4ea8f1b3c84f15e757",
+      "content_sha256": "097eecdca8845311dc5c5fab10bb286f22e612cc5af2fe9d12e9f48f7fafd5ef",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "at": "2026-04-21T08:06:01Z",
+          "note": "Updated from example, performance, and options test inventory to include hook lifecycle diagnostics and hookz traceability.",
+          "status": "draft"
+        }
+      ]
     },
     {
       "id": "adr:1011",
@@ -18827,20 +18833,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "8b9d81a1b2dad1d13742114251fe36ecd3220b419d275f123ae80d4ae497c3d9",
+      "content_sha256": "a5f7e35996eafcd245c7f531a9704008e6c24a6775abda63e7cdc94342f3b240",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
-          "note": "Accepted semantic parity update for JSON-RPC batch behavior and P2 parity evidence.",
-          "at": "2026-04-21T07:11:45Z"
+          "at": "2026-04-21T07:11:45Z",
+          "note": "Accepted semantic parity update for JSON-RPC batch behavior and parity evidence.",
+          "status": "accepted"
         },
         {
-          "status": "accepted",
+          "at": "2026-04-21T07:12:28Z",
           "note": "Normalized ADR title while preserving accepted semantic parity body.",
-          "at": "2026-04-21T07:12:28Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19062,7 +19068,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "b9d7ed8e153bdaed02c7ded58747361c3a3279406dc52246b582aaac995cb739",
+      "content_sha256": "17cc5f4e5703d2ad6791a74b419dc374004606e6e4115183b31a97d35843f3aa",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19174,15 +19180,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "6a81ae9fdffb0f8f4163b28216cd8455b763e4f8df82b03fd89b493d6de2198c",
+      "content_sha256": "7a19643c44d2210a6a3fa8652e6d97c5532cf7ca520d207bcb1116ec4edefbb5",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-21T07:11:59Z",
           "note": "Updated versioning policy with deprecated-export compatibility-window governance.",
-          "at": "2026-04-21T07:11:59Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19228,15 +19234,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "18a2e262acc0fbd50281910f9d8ecb94faedfee072db435b6c6e2922d4b03cba",
+      "content_sha256": "a70528b091ac3aacd228b249b2f2457b4946f698ac64d056fc426b6e83c93053",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-21T07:11:55Z",
           "note": "Updated ASGI-first strategy with Uvicorn protocol-mode evidence and active runner boundary language.",
-          "at": "2026-04-21T07:11:55Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19250,7 +19256,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "d76ba6c3358c32c38bd7d2feddcd6d11ebf1756be183d944c0947981d40f01ca",
+      "content_sha256": "8e358b96fbffa9cbd7e28157da2a0fcea6974bf2c12bd4525b463a8869bbfc97",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19290,9 +19296,9 @@
       ],
       "status_notes": [
         {
-          "status": "superseded",
+          "at": "2026-04-20T21:50:21Z",
           "note": "Public operator support is now explicit and excludes facade authoring helpers other than get_schema().",
-          "at": "2026-04-20T21:50:21Z"
+          "status": "superseded"
         }
       ]
     },
@@ -19378,9 +19384,9 @@
       ],
       "status_notes": [
         {
-          "status": "superseded",
+          "at": "2026-04-20T10:28:42Z",
           "note": "Concrete (scope, path, method) routing is now canonical for the public contract; JSON-RPC endpoint identity remains an internal or derived detail for multiplexed mounts and compilation.",
-          "at": "2026-04-20T10:28:42Z"
+          "status": "superseded"
         }
       ]
     },
@@ -19442,11 +19448,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "5ff88e9cc9c496cf88b20959f4da12468fec0f9208dd6893ce1d6d71b9118efa",
+      "content_sha256": "876a527848db69f65f5a700aee23e3c517236b7b79d1c03dccb6f41b7b1ef83f",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "at": "2026-04-21T08:06:01Z",
+          "note": "Updated from example, performance, and options test inventory to cover methodz/hookz/kernelz diagnostics stability and operation diagnostics projection.",
+          "status": "accepted"
+        }
+      ]
     },
     {
       "id": "adr:1051",
@@ -19466,9 +19478,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T10:28:42Z",
           "note": "Concrete (scope, path, method) routing is now canonical for the public contract; JSON-RPC endpoint identity remains an internal or derived detail for multiplexed mounts and compilation.",
-          "at": "2026-04-20T10:28:42Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19488,9 +19500,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:19Z",
           "note": "Documents the active-line decision that tigrbl_core._spec owns the canonical spec layer while public facade exposure remains a separate projection boundary.",
-          "at": "2026-04-20T21:50:19Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19510,9 +19522,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:19Z",
           "note": "Documents the active-line decision that tigrbl_base owns the canonical base layer while top-level facade exposure remains a separate projection boundary.",
-          "at": "2026-04-20T21:50:19Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19548,9 +19560,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:19Z",
           "note": "Narrows ADR-1055 to architectural ownership and namespace separation; companion specs own bootstrap timing and namespace details.",
-          "at": "2026-04-20T21:50:19Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19652,9 +19664,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:21Z",
           "note": "Public operator support is now explicit and excludes facade authoring helpers other than get_schema().",
-          "at": "2026-04-20T21:50:21Z"
+          "status": "accepted"
         }
       ]
     },
@@ -19748,7 +19760,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "61eb5d4ac5eb8af1d5751c1aafc3dcc5d5a30fa31e37295747b5024f638916d8",
+      "content_sha256": "38a0435e6207f7b557096ad1c1353915df25ab5641f8d25ccac0f69ad20fb7ee",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19764,7 +19776,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "77998dd8519a0fcc777ad66b480d14aa985a8a41c5f76456f432d2837853621c",
+      "content_sha256": "6b132f8b910cda0d10c7e7016316b62f202cc41e33008e8f92123e03df4f8082",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19780,7 +19792,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "1eb4ca05248270f823467d0d4e039f323fcfd7ae565cac57f26dcc8116503cbc",
+      "content_sha256": "5bf1012497f10799fb9200dfee9ef307f9d50b233bf50f7e7efbd3c03dca24bf",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19796,7 +19808,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "9cd2cf08e2c255f2fe1142aa6b34919542e0e7fd4a2f982795ea3c81f9e26a99",
+      "content_sha256": "7edcd13b63886ccde6695c61f90619b0874079d4cd30b24773a8360e91ab1e94",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19812,7 +19824,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "c95c23cbaee606641172d4aa3264ee959c13c0c0c2c983023e1313bcbdb971ee",
+      "content_sha256": "f26b5968c946e0aaa3326682b824c9da28c41fba823011c6bfbd83babb358159",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19828,15 +19840,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "396c8c15b9f4566d85c62c9c86d5652f158be63a960d88a63cc715babec575db",
+      "content_sha256": "6a5f8c982d4c8bdfef999412d4e73ad52dadcb77e2768eb199a4ef31ed9294db",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
-          "note": "Accepted transport bypass removal update for compiled mapping dispatch and P2 boundary evidence.",
-          "at": "2026-04-21T07:11:50Z"
+          "at": "2026-04-21T07:11:50Z",
+          "note": "Accepted transport bypass removal update for compiled mapping dispatch and boundary evidence.",
+          "status": "accepted"
         }
       ]
     },
@@ -19850,7 +19862,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "c6d783074865f09e59e895271424996fd8a904cc51c515ac6d506f0012e7c414",
+      "content_sha256": "8005769cd608f3ab8b47399e43da67bd3b7955deafe1f032d2eebe40fb326c8a",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19866,7 +19878,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "0b971ad4007070668c88dd42c9a48ef91e5ce3027b8d61fd28e7ba41de11bc59",
+      "content_sha256": "ce60e7c3998dd3f51c005a087d45233ade909d8a61f20166de6fa8ff713f5d1d",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19898,11 +19910,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "1b758705b0e5ffee2c6b9c213abfbf106982355d118fe799a70e60e860dfaeca",
+      "content_sha256": "e1df51140aa786c63100935d978efb5f4ce8c4c4ff0831698a83d0fe0a9113c4",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "at": "2026-04-21T08:06:01Z",
+          "note": "Updated from example, performance, and options test inventory to make docs/runtime parity explicit for system, diagnostics, OpenAPI, and security projections.",
+          "status": "draft"
+        }
+      ]
     }
   ],
   "specs": [
@@ -20301,16 +20319,21 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "73e735869e4d9119d2d5b16c0a8665843bf6015e1df8196024faa4b0de47b596",
+      "content_sha256": "cfd21b5ca3bc3fcb7e533f110c82cebe61976be74fe7c129217561d6f1f63849",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated AppSpec/Uvicorn parity with P2 app/API runtime evidence.",
-          "at": "2026-04-21T07:42:18Z"
+          "at": "2026-04-21T07:42:18Z",
+          "note": "Updated AppSpec/Uvicorn parity with app/API runtime evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:14:33Z",
+          "note": "Updated AppSpec/Uvicorn parity with app/API runtime evidence.",
+          "status": "draft"
         }
       ],
       "adr_ids": [
@@ -20329,16 +20352,21 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "14f68a73a4c36c6b86acc258e9db17f00598832e410ca81611d65db31af5840d",
+      "content_sha256": "f9608281bfb01e3e7de9f42afc0c9568d9e320a92c747feeeeee85f24bb4c5f5",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated status/auth/error parity with P2 security and error-mapping evidence.",
-          "at": "2026-04-21T07:42:23Z"
+          "at": "2026-04-21T07:42:23Z",
+          "note": "Updated status/auth/error parity with security and error-mapping evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:21Z",
+          "note": "Updated status/auth/error parity with security and error-mapping evidence.",
+          "status": "draft"
         }
       ],
       "adr_ids": [
@@ -20367,9 +20395,9 @@
       ],
       "status_notes": [
         {
-          "status": "superseded",
+          "at": "2026-04-20T10:29:37Z",
           "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
-          "at": "2026-04-20T10:29:37Z"
+          "status": "superseded"
         }
       ],
       "adr_ids": []
@@ -20411,9 +20439,9 @@
       ],
       "status_notes": [
         {
-          "status": "superseded",
+          "at": "2026-04-20T10:29:37Z",
           "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
-          "at": "2026-04-20T10:29:37Z"
+          "status": "superseded"
         }
       ],
       "adr_ids": []
@@ -20437,9 +20465,9 @@
       ],
       "status_notes": [
         {
-          "status": "superseded",
+          "at": "2026-04-20T10:29:37Z",
           "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
-          "at": "2026-04-20T10:29:37Z"
+          "status": "superseded"
         }
       ],
       "adr_ids": []
@@ -20514,16 +20542,21 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "d69a6ca9e60ddff8b13b02a9f71ac9d10f44341a939b5bd47ec7fbb3de35b6e3",
+      "content_sha256": "5038df62d0808e53a0010c49c4fcb03b4c5bafa83354fa963ddaaaf1d396c562",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
+          "at": "2026-04-21T07:42:30Z",
           "note": "Updated operator framing with JSON-RPC batch semantics.",
-          "at": "2026-04-21T07:42:30Z"
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:21Z",
+          "note": "Updated operator framing with JSON-RPC batch semantics.",
+          "status": "draft"
         }
       ],
       "adr_ids": [
@@ -20605,9 +20638,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
+          "at": "2026-04-20T10:29:37Z",
           "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
-          "at": "2026-04-20T10:29:37Z"
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -20740,14 +20773,14 @@
       ],
       "status_notes": [
         {
-          "status": "superseded",
+          "at": "2026-04-20T21:50:26Z",
           "note": "Namespace parity is split from the old generic database-schema surface.",
-          "at": "2026-04-20T21:50:26Z"
+          "status": "superseded"
         },
         {
-          "status": "superseded",
+          "at": "2026-04-20T21:50:26Z",
           "note": "Namespace ensuring is split from the old generic database-schema surface.",
-          "at": "2026-04-20T21:50:26Z"
+          "status": "superseded"
         }
       ],
       "kind": "local-policy",
@@ -20952,14 +20985,14 @@
       ],
       "status_notes": [
         {
-          "status": "superseded",
+          "at": "2026-04-20T21:50:25Z",
           "note": "Public helper support narrows to get_schema() only.",
-          "at": "2026-04-20T21:50:25Z"
+          "status": "superseded"
         },
         {
-          "status": "superseded",
+          "at": "2026-04-20T21:50:26Z",
           "note": "Facade helper orchestration and inclusion surfaces are private authoring helpers.",
-          "at": "2026-04-20T21:50:26Z"
+          "status": "superseded"
         }
       ],
       "kind": "local-policy",
@@ -21011,15 +21044,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "80bbad15e773f5312ecdef78365d37d1d11287c6a00f24d9a977c98d2723eae5",
+      "content_sha256": "6f3d0fa10fb60e65dc92267baa4abe8b1d05386ef4c33eaf273b63cb6f84f8de",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
+          "at": "2026-04-21T07:42:35Z",
           "note": "Updated server runner surface with Uvicorn protocol-mode semantic invariants.",
-          "at": "2026-04-21T07:42:35Z"
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:22Z",
+          "note": "Updated server runner surface with Uvicorn protocol-mode semantic invariants.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21047,9 +21085,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:26Z",
           "note": "Namespace ensuring is split from the old generic database-schema surface.",
-          "at": "2026-04-20T21:50:26Z"
+          "status": "accepted"
         }
       ],
       "kind": "local-policy",
@@ -21147,9 +21185,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:25Z",
           "note": "Public helper support narrows to get_schema() only.",
-          "at": "2026-04-20T21:50:25Z"
+          "status": "accepted"
         }
       ],
       "kind": "local-policy",
@@ -21173,9 +21211,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:26Z",
           "note": "Facade helper orchestration and inclusion surfaces are private authoring helpers.",
-          "at": "2026-04-20T21:50:26Z"
+          "status": "accepted"
         }
       ],
       "kind": "local-policy",
@@ -21199,9 +21237,9 @@
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "accepted",
+          "at": "2026-04-20T21:50:26Z",
           "note": "Namespace parity is split from the old generic database-schema surface.",
-          "at": "2026-04-20T21:50:26Z"
+          "status": "accepted"
         }
       ],
       "kind": "local-policy",
@@ -21255,15 +21293,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "ab86bf3630262b4a316c339b0e615019c185a7fcce39ec2cd0c52c8defd8e43b",
+      "content_sha256": "428e53f71f196cc8e72987cb513b9822842d4396f169eaef79dd17a51f7abdc9",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated alias and target resolution with P2 alias policy evidence.",
-          "at": "2026-04-21T07:42:41Z"
+          "at": "2026-04-21T07:42:41Z",
+          "note": "Updated alias and target resolution with alias policy evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:22Z",
+          "note": "Updated alias and target resolution with alias policy evidence.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21284,15 +21327,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "a4ae0c0c627fb3bed1c70fb036a40fe2d3b89546d13790c24a94f24f965e0312",
+      "content_sha256": "bb51ab0dc205f169ecd2d44ae7547667e62624c3495f1664b611afec00eff4e0",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated default OLTP projection with P2 REST/RPC/default-op evidence.",
-          "at": "2026-04-21T07:42:46Z"
+          "at": "2026-04-21T07:42:46Z",
+          "note": "Updated default OLTP projection with REST/RPC/default-op evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:23Z",
+          "note": "Updated default OLTP projection with REST/RPC/default-op evidence.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21436,15 +21484,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "a47fe612ffd37e7da183e91d3c4aa0d8f7e50a59c0daa0a3643fe748ae7b724b",
+      "content_sha256": "b9744ff3dc1de0a3b51ae697d0f8827559ff8c6759dcefff29ed3e0cbe5698d7",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated mapping-plan compilation with P2 routing/name/materialization evidence.",
-          "at": "2026-04-21T07:42:53Z"
+          "at": "2026-04-21T07:42:53Z",
+          "note": "Updated mapping-plan compilation with routing/name/materialization evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:23Z",
+          "note": "Updated mapping-plan compilation with routing/name/materialization evidence.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21546,15 +21599,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "d6c47eb4c43a5af2e17d2304fdb5a8c3fa13209d57c3796083f33b760d3af3be",
+      "content_sha256": "ece7e0acfb312861aa3d522b8776ec850d71f9c35a8bed88c06d17cb5ae1b20f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated docs route surface with P2 mount evidence.",
-          "at": "2026-04-21T07:42:57Z"
+          "at": "2026-04-21T07:42:57Z",
+          "note": "Updated docs route surface with mount evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:23Z",
+          "note": "Updated docs route surface with mount evidence.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21574,15 +21632,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "d321aaa4d96299d09cf55599ca871d7311d17beac412984d39a9b4374a861b3b",
+      "content_sha256": "de80af65ed1534a55f51e9d10ef45e65f5e7bce96c1dee3880cdd6faa96521a6",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated docs payload projection with P2 schema and payload evidence.",
-          "at": "2026-04-21T07:43:02Z"
+          "at": "2026-04-21T07:43:02Z",
+          "note": "Updated docs payload projection with schema and payload evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:24Z",
+          "note": "Updated docs payload projection with schema and payload evidence.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21602,15 +21665,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "820e0d411161d3fdd0c4765855414b4512026fe24d8e3f38068dc2e054fe2fc1",
+      "content_sha256": "0fce13121bd7e342e3d953964f22a467e7612706c13c488fd74ed43ae6ddcab4",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated docs UI mount surface with Swagger and Lens P2 evidence.",
-          "at": "2026-04-21T07:43:08Z"
+          "at": "2026-04-21T07:43:08Z",
+          "note": "Updated docs UI mount surface with Swagger and Lens evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:24Z",
+          "note": "Updated docs UI mount surface with Swagger and Lens evidence.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21629,15 +21697,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "782f2d9b06de910288203b1959af7b963e156df2da787d3d2314d00516bd6bf6",
+      "content_sha256": "23c4a62a448a740a607379094b966c3d5a0475ecaff25cf08149b5ae94517ff7",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Updated docs runtime parity with P2 docs/schema/runtime evidence.",
-          "at": "2026-04-21T07:43:13Z"
+          "at": "2026-04-21T07:43:13Z",
+          "note": "Updated docs runtime parity with docs/schema/runtime evidence.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:24Z",
+          "note": "Updated docs runtime parity with docs/schema/runtime evidence.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",
@@ -21658,15 +21731,20 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "00508cef962a0f9ebe166af0b469673b67696c6ecf19dae8019aa6b7d874f8e4",
+      "content_sha256": "ad6e6c05d75f901aa8c36547ddc3f543742ec21d63e30b5d5a3a9552ab7f782a",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [
         {
-          "status": "draft",
-          "note": "Created SPEC for deprecated-export compatibility window policy reflected by P2 tests.",
-          "at": "2026-04-21T07:43:18Z"
+          "at": "2026-04-21T07:43:18Z",
+          "note": "Created SPEC for deprecated-export compatibility window policy reflected by integration tests.",
+          "status": "draft"
+        },
+        {
+          "at": "2026-04-21T08:15:25Z",
+          "note": "Created SPEC for deprecated-export compatibility window policy reflected by integration tests.",
+          "status": "draft"
         }
       ],
       "kind": "local-policy",

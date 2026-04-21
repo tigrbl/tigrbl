@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated docs payload projection with P2 schema and payload evidence."
+    note: "Updated docs payload projection with schema and payload evidence."
     at: "2026-04-21T07:43:02Z"
+  -
+    status: "draft"
+    note: "Updated docs payload projection with schema and payload evidence."
+    at: "2026-04-21T08:15:24Z"
 references: []
 body: |-
   ## Decision
@@ -26,7 +30,7 @@ body: |-
   4. Payload projections MUST derive from canonical metadata ownership boundaries.
   5. Bulk operation schemas, clear response schemas, schema examples, and client-facing request/response schema objects are part of the payload projection contract.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_bulk_docs_client.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py`

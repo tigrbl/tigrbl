@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated default OLTP projection with P2 REST/RPC/default-op evidence."
+    note: "Updated default OLTP projection with REST/RPC/default-op evidence."
     at: "2026-04-21T07:42:46Z"
+  -
+    status: "draft"
+    note: "Updated default OLTP projection with REST/RPC/default-op evidence."
+    at: "2026-04-21T08:15:23Z"
 references: []
 body: |-
   ## Intent
@@ -36,9 +40,9 @@ body: |-
   - JSON-RPC method exposure derives from public alias and semantic availability.
   - Non-bulk-capable models must prefer valid non-bulk operations instead of exposing invalid bulk projections.
   - Shadowing between `create` and `bulk_create`, or between `clear` and `bulk_delete`, must be deterministic and testable.
-  - Default REST and default RPC operation sets must remain semantically equivalent under P2 integration execution.
+  - Default REST and default RPC operation sets must remain semantically equivalent under integration execution.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_v3_default_rest_ops.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_v3_default_rpc_ops.py`
