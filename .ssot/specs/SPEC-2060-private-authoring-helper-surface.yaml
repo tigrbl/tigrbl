@@ -1,0 +1,44 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2060"
+number: 2060
+slug: "private-authoring-helper-surface"
+title: "Private authoring helper surface"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed private authoring helper surface projected through the `tigrbl` facade and related authoring modules."
+supersedes:
+  - "spc:2042"
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Facade helper orchestration and inclusion surfaces are private authoring helpers."
+    at: "2026-04-20T21:50:26Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed private authoring helper surface projected through the `tigrbl` facade and related authoring modules.
+  
+  ## Canonical Surface
+  
+  - `bind()`, `rebind()`, `build_schemas()`, `build_hooks()`, `build_handlers()`, `build_rest()`, and `include_tables()` are governed private authoring helpers.
+  - Those helpers orchestrate lower-layer authorities in `_spec`, `tigrbl_base`, `tigrbl_concrete`, routing/materialization modules, and related extension-family specs.
+  - Facade export or import convenience does not promote an authoring helper to public operator status.
+  - Authoring helpers may project extension-family behavior, but they do not redefine the canonical contracts for schemas, hooks, ops, bindings, routers, or tables.
+  
+  ## Classification Rules
+  
+  - orchestration-helper feature: `bind()` and `rebind()` style authoring orchestration
+  - projection-helper feature: `build_*()` style authoring materialization helpers
+  - inclusion-helper feature: `include_tables()` and similar authoring inclusion surfaces
+  - non-goal: helper export parity being treated as public operator compatibility
+  
+  ## Traceability
+  
+  - ADRs: `adr:1029`, `adr:1052`, `adr:1053`, `adr:1070`, `adr:1063`
+  - Related features: `feat:bind-helper-surface-001`, `feat:rebind-helper-surface-001`, `feat:build-schemas-helper-surface-001`, `feat:build-hooks-helper-surface-001`, `feat:build-handlers-helper-surface-001`, `feat:build-rest-helper-surface-001`, `feat:include-tables-helper-surface-001`
+spec_kind: "local-policy"

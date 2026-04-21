@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2059"
+number: 2059
+slug: "public-operator-schema-lookup-surface"
+title: "Public operator schema lookup surface"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed public operator schema-lookup surface exposed through `get_schema()` on the `tigrbl` facade."
+supersedes:
+  - "spc:2042"
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Public helper support narrows to get_schema() only."
+    at: "2026-04-20T21:50:25Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed public operator schema-lookup surface exposed through `get_schema()` on the `tigrbl` facade.
+  
+  ## Canonical Surface
+  
+  - `get_schema()` is the only schema/helper-like facade export that is governed as a public operator helper surface.
+  - `get_schema()` is a read-only lookup over already-declared or already-bound schema objects; it does not become a schema-definition authority.
+  - `get_schema()` may resolve schema objects for operator-facing runtime/docs integration without widening the authoring-helper surface.
+  - Internal builder helpers such as `_build_schema()` and `_build_list_params()` are not governed public operator surfaces.
+  
+  ## Classification Rules
+  
+  - lookup-helper feature: read-only schema lookup surface explicitly supported on the facade
+  - non-goal: builder/materialization helpers becoming public merely because they are importable
+  
+  ## Traceability
+  
+  - ADRs: `adr:1039`, `adr:1052`, `adr:1063`
+  - Related features: `feat:get-schema-python-helper-surface-001`
+spec_kind: "local-policy"

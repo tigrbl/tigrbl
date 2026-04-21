@@ -4,40 +4,40 @@ id: "adr:1055"
 number: 1055
 slug: "ddl-surface-ownership-and-initialization-boundary"
 title: "DDL surface ownership and initialization boundary"
-status: "draft"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrbl exposes concrete DDL behavior through `tigrbl_concrete.ddl`, `tigrbl.ddl`, and the `initialize()` entrypoints on concrete app, router, and table owners."
+summary: "Tigrbl exposes concrete DDL behavior through `tigrbl_concrete.ddl`, `tigrbl.ddl`, and bootstrap entrypoints such as `initialize()` and `bootstrap_dbschema()`."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Narrows ADR-1055 to architectural ownership and namespace separation; companion specs own bootstrap timing and namespace details."
+    at: "2026-04-20T21:50:19Z"
 references: []
 body: |-
   ## Decision
   
-  - **Status:** Proposed
-  - **Date:** 2026-04-20
-  - **Related ADRs:** ADR-1015, ADR-1031, ADR-1053
-  
-  1. DDL bootstrap is a governed repo-local architectural surface distinct from schema migration planning and migration history.
-  2. `initialize()` is the canonical DDL bootstrap entrypoint for concrete app, router, and table owners.
-  3. The DDL surface owns schema creation, SQLite attachment, and per-provider `create_all` orchestration, but it does not own migration diffs or version tables.
-  4. DDL initialization must support three runtime modes: synchronous bootstrap outside an event loop, synchronous providers inside a running event loop, and async providers inside a running event loop.
-  5. Engine and session pairing determine how DDL acquires binds and sessions; transport projection does not redefine DDL behavior.
+  1. DDL bootstrap is a governed architectural surface distinct from schema migration planning and migration history.
+  2. The DDL family owns bootstrap orchestration and non-migration schema/table creation behavior for concrete app, router, and table owners.
+  3. Bootstrap execution timing and event-loop mode behavior are governed by specs, not by this ADR.
+  4. PostgreSQL schema namespaces and SQLite attachment maps are governed as a separate namespace boundary rather than being collapsed into generic table/model schema language.
   
   ## Context
   
-  Tigrbl exposes concrete DDL behavior through `tigrbl_concrete.ddl`, `tigrbl.ddl`, and the `initialize()` entrypoints on concrete app, router, and table owners.
-  The repo already tracks DDL and bootstrap behavior with feature rows, but it does not yet carry a repo-local ADR that fixes DDL ownership, scope, and initialization-mode expectations.
+  Tigrbl exposes concrete DDL behavior through `tigrbl_concrete.ddl`, `tigrbl.ddl`, and bootstrap entrypoints such as `initialize()` and `bootstrap_dbschema()`.
+  The repo already tracks DDL, bootstrap, and namespace-related feature rows, but the architectural boundary must stay narrower than the operational contract details in the companion specs.
   
   ## Consequences
   
-  - DDL traceability can now point to a dedicated architectural decision rather than only to runtime feature rows.
-  - Database-schema bootstrap, engine interoperability, and engine/session pairing can be specified as companion specs without collapsing into migration semantics.
+  - Non-bootstrap DDL contract, bootstrap execution/timing, namespace ensuring, namespace parity, and migration remain separately spec-governed surfaces.
+  - Migration surfaces do not inherit ownership merely because they also touch database structure.
+  - Runtime dispatch and operator projections do not redefine DDL or namespace ownership.
   
   ## Rejected Alternatives
   
-  - Treat DDL bootstrap and schema migration planning as one undifferentiated surface.
-  - Treat event-loop mode differences as incidental implementation details rather than governed behavior.
-  - Allow transport or docs projection to redefine DDL ownership.
+  - Treat bootstrap and migration as one undifferentiated surface.
+  - Treat PostgreSQL schema namespaces and SQLite attachments as incidental implementation details.
+  - Let helper exports or transport projections redefine DDL ownership.

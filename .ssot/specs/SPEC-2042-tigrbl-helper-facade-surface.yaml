@@ -4,14 +4,24 @@ id: "spc:2042"
 number: 2042
 slug: "tigrbl-helper-facade-surface"
 title: "Tigrbl helper facade surface"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the governed top-level helper surface projected by the tigrbl facade."
+summary: "Define the governed top-level helper surface projected by the `tigrbl` facade."
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "spc:2059"
+  - "spc:2060"
+status_notes:
+  -
+    status: "superseded"
+    note: "Public helper support narrows to get_schema() only."
+    at: "2026-04-20T21:50:25Z"
+  -
+    status: "superseded"
+    note: "Facade helper orchestration and inclusion surfaces are private authoring helpers."
+    at: "2026-04-20T21:50:26Z"
 references: []
 body: |-
   ## Intent

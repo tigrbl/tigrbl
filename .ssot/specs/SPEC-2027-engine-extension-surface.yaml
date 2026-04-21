@@ -22,7 +22,8 @@ body: |-
   
   - The engine extension surface includes the canonical `_spec` contracts `EngineSpec` and `EngineProviderSpec`.
   - The engine extension surface also includes engine-owned lowering and registry bridge contracts exposed through `EngineDatatypeBridge`, `EngineRegistry`, `EngineTypeLowerer`, and `StaticEngineLowerer`.
-  - Engine plugin registration, discovery, and resolver application are part of the engine extension surface because they determine how declared engine bindings become live runtime behavior.
+  - Engine plugin registration, discovery, and resolver application are part of the engine extension surface because they determine how declared engine bindings become live behavior.
+  - The built-in default engine catalog and family defaults are engine-owned inputs; they are governed by a companion engine-catalog spec rather than by runtime/executor terminology.
   - Engine precedence across app, router, table, and op scopes remains part of the engine extension surface and is not a transport-owned concern.
   
   ## Public and Base Projection
@@ -36,16 +37,18 @@ body: |-
   - Separate child features may track:
     - core engine contract and datatype bridge ownership;
     - plugin registration and precedence-driven resolution;
-    - public and base projection of engine-facing contracts.
+    - public and base projection of engine-facing contracts;
+    - default engine catalog and family-default behavior.
   
   ## Classification Rules
   
   - contract feature: governed engine declarations and lowering bridge
   - plugin/resolution feature: plugin registration, discovery, and precedence application
   - projection feature: public or base export surfaces that project engine contracts
+  - catalog/default feature: built-in engine-family catalog and default-selection behavior
   
   ## Traceability
   
-  - ADRs: `adr:1012`, `adr:1015`, `adr:1031`, `adr:1052`, `adr:1053`
-  - Related specs: `spc:2025`, `spc:2026`
+  - ADRs: `adr:1012`, `adr:1015`, `adr:1031`, `adr:1052`, `adr:1053`, `adr:1062`
+  - Related specs: `spc:2025`, `spc:2026`, `spc:2062`
 spec_kind: "local-policy"

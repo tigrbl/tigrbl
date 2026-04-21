@@ -4,14 +4,19 @@ id: "adr:1041"
 number: 1041
 slug: "operator-surface-boundary"
 title: "Operator-surface boundary"
-status: "accepted"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "﻿"
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "adr:1063"
+status_notes:
+  -
+    status: "superseded"
+    note: "Public operator support is now explicit and excludes facade authoring helpers other than get_schema()."
+    at: "2026-04-20T21:50:21Z"
 references: []
 body: |-
   ﻿

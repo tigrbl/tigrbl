@@ -4,14 +4,24 @@ id: "spc:2031"
 number: 2031
 slug: "database-schema-surface"
 title: "Database schema surface"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Define the governed database-schema surface for concrete schema creation, named-schema preparation, and SQLite attachment behavior."
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "spc:2061"
+  - "spc:2050"
+status_notes:
+  -
+    status: "superseded"
+    note: "Namespace parity is split from the old generic database-schema surface."
+    at: "2026-04-20T21:50:26Z"
+  -
+    status: "superseded"
+    note: "Namespace ensuring is split from the old generic database-schema surface."
+    at: "2026-04-20T21:50:26Z"
 references: []
 body: |-
   ## Intent
