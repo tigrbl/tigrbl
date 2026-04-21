@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2070"
 number: 2070
@@ -37,4 +37,5 @@ body: |-
   - Architecture tests should assert removed public dispatch exports are not present.
   - Runtime transport parity tests should prove operation execution uses the active KernelPlan path rather than a revived transport bypass.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1076"

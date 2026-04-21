@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "adr"
 id: "adr:1038"
 number: 1038
@@ -8,14 +8,43 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Accepted."
+summary: "Tigrbl remains ASGI-first and server-agnostic for framework-owned behavior."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Updated ASGI-first strategy with Uvicorn protocol-mode evidence and active runner boundary language."
+    at: "2026-04-21T07:11:55Z"
 references: []
 body: |-
-  Accepted.
+  ## Decision
   
-  Preserve compatibility with Tigrcorn, Uvicorn, Hypercorn, and Gunicorn while keeping framework claims scoped to framework-owned behavior.
+  Tigrbl remains ASGI-first and server-agnostic for framework-owned behavior.
   
-  Treat other server integrations, including Daphne, Twisted, and Granian, as tracked but out-of-boundary until a future SSOT boundary change explicitly governs them.
+  1. Tigrcorn, Uvicorn, Hypercorn, and Gunicorn are compatibility targets for the active server runner surface.
+  2. Application semantics such as routing, dispatch, status projection, validation, and error mapping must be invariant across supported runner configurations.
+  3. Runner/protocol differences are allowed only where they are explicitly documented as non-semantic server behavior.
+  4. Uvicorn protocol-mode coverage is accepted as boundary evidence for the active ASGI runtime strategy.
+  5. Other server integrations, including Daphne, Twisted, and Granian, remain tracked but out-of-boundary until a future SSOT boundary change explicitly governs them.
+  
+  ## Context
+  
+  The original decision accepted an ASGI-first strategy while preserving compatibility with the main runner set. P2 integration coverage now asserts concrete Uvicorn behavior across protocol modes and app/router mounting forms. That coverage reflects a decision boundary: protocol-mode variance may not change Tigrbl application semantics.
+  
+  The decision stays scoped to behavior owned by Tigrbl. It does not claim to certify every server implementation detail or every ASGI server in the ecosystem.
+  
+  ## Consequences
+  
+  - Server-runner specs must enumerate which protocol and runner behaviors are semantic for Tigrbl.
+  - Uvicorn-backed P2 tests are valid evidence for routing, dispatch, and projection behavior.
+  - Future runner support must declare whether it is active-boundary, tracked-only, or out-of-boundary.
+  - Runtime fixes should preserve application semantics before optimizing for runner-specific implementation details.
+  
+  ## Evidence
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_uvicorn_transport_behavior.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_api_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_include_api_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_multi_api_uvicorn.py`

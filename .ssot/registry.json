@@ -18653,17 +18653,28 @@
       "id": "adr:1014",
       "number": 1014,
       "slug": "rest-jsonrpc-semantic-parity",
-      "title": "ADR-0014 \u00e2\u20ac\u201d REST and JSON-RPC Semantic Parity",
+      "title": "REST and JSON-RPC Semantic Parity",
       "path": ".ssot/adr/ADR-1014-rest-jsonrpc-semantic-parity.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "d1f12b09d2c07b2dab18c672151e56c3d4c8553c2fc53532f95e2307f6966f4e",
-      "status": "draft",
+      "package_version": "0.2.11",
+      "content_sha256": "8b9d81a1b2dad1d13742114251fe36ecd3220b419d275f123ae80d4ae497c3d9",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted semantic parity update for JSON-RPC batch behavior and P2 parity evidence.",
+          "at": "2026-04-21T07:11:45Z"
+        },
+        {
+          "status": "accepted",
+          "note": "Normalized ADR title while preserving accepted semantic parity body.",
+          "at": "2026-04-21T07:12:28Z"
+        }
+      ]
     },
     {
       "id": "adr:1015",
@@ -18994,12 +19005,18 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "61ca81cfec192f45111cb77c9e4c895e577739861ae8557bff693487da57e449",
+      "package_version": "0.2.11",
+      "content_sha256": "6a81ae9fdffb0f8f4163b28216cd8455b763e4f8df82b03fd89b493d6de2198c",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Updated versioning policy with deprecated-export compatibility-window governance.",
+          "at": "2026-04-21T07:11:59Z"
+        }
+      ]
     },
     {
       "id": "adr:1036",
@@ -19042,12 +19059,18 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "e0ca7d62e84a98a72996a9d93a49ebdc04335fd309604b156298f8c1f557edb9",
+      "package_version": "0.2.11",
+      "content_sha256": "18a2e262acc0fbd50281910f9d8ecb94faedfee072db435b6c6e2922d4b03cba",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Updated ASGI-first strategy with Uvicorn protocol-mode evidence and active runner boundary language.",
+          "at": "2026-04-21T07:11:55Z"
+        }
+      ]
     },
     {
       "id": "adr:1039",
@@ -19636,12 +19659,18 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "2bc3bcefc55141c1ed42c77e521bf2d8a8ad7cc3b5104b01356aeaa04ddd69ed",
-      "status": "draft",
+      "package_version": "0.2.11",
+      "content_sha256": "396c8c15b9f4566d85c62c9c86d5652f158be63a960d88a63cc715babec575db",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted transport bypass removal update for compiled mapping dispatch and P2 boundary evidence.",
+          "at": "2026-04-21T07:11:50Z"
+        }
+      ]
     },
     {
       "id": "adr:1077",
@@ -21007,13 +21036,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "98ca90393468a0f4f75b94ec7b19ec56360413096f81a4fe454ef8852d23053a",
+      "content_sha256": "fb56c0a582d9e226306b2763f70cb1cf3c5249144d224a1f9dd9cd2fe252ebd3",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1071"
+      ]
     },
     {
       "id": "spc:2064",
@@ -21025,13 +21056,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "3bb4756d3279ad8e5e755f2d7949e82af449fc235495436d5ee32698e32e8ec6",
+      "content_sha256": "678b9570fd356af98fcd5fe993867388c58de2803c8137556fa155522a892716",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1072"
+      ]
     },
     {
       "id": "spc:2065",
@@ -21043,13 +21076,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "feb9dd1b99e7f0623aa350be0491cb8a659b0bc19cec0d8061bb432cf91f4df3",
+      "content_sha256": "e07ccba64c345220c77e6e86ce18ff6b5a14bd1d4df03e8bdae315afff78a6f0",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1074"
+      ]
     },
     {
       "id": "spc:2066",
@@ -21061,13 +21096,16 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "335aafef98320188af905f0cde91f72af31564b78070854c2155a6f3ca43e6f9",
+      "content_sha256": "22de23329931aee5e0643bedb9ca204be3c92c81a201e358291f82b9e6632271",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1072",
+        "adr:1075"
+      ]
     },
     {
       "id": "spc:2067",
@@ -21079,13 +21117,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "e9efe93e2afb22be6f38f00516f6326717694503ad136cfd7b6b22f6bcaf620d",
+      "content_sha256": "4ec291aae72bec1b3a585448cc89544d8f1daa5d83f4569508dc6a383fc6d494",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1073"
+      ]
     },
     {
       "id": "spc:2068",
@@ -21097,13 +21137,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "7c1713555299d4be146bd514f711e8817e1ebcf546d3674acaed2d18a66e39e8",
+      "content_sha256": "77f1e991b9e66105635c6cc766f565b72e70cfa4ec48f9277d0b0519f684c398",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1075"
+      ]
     },
     {
       "id": "spc:2069",
@@ -21115,13 +21157,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "e6f2db3361ae203b03f132aa5a7effc42b3b6cdc803979125c3c81e1427d9064",
+      "content_sha256": "e4517e5139f8a5b9fcc1e62e9f1aadac07ab6dfabba00e5e7d98fae3692017a7",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1075"
+      ]
     },
     {
       "id": "spc:2070",
@@ -21133,13 +21177,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "451c3f74af66ef59a432a8a19f315955d8fa561384ff7b0ccacb2ba4c6d7fe53",
+      "content_sha256": "580d1d76c89f4bbf336da40d706440753d76de17e004db951bbb71172fb4b07d",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1076"
+      ]
     },
     {
       "id": "spc:2071",
@@ -21151,13 +21197,16 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "e72d198acdd5b724f6046697f8560be5e726d971765ae57eac3ae5f4e3548a2f",
+      "content_sha256": "1d2e62d04c6e170457ee61a80cbf98046ad5b248f1a2b3da77a885303d4566fc",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1076",
+        "adr:1077"
+      ]
     },
     {
       "id": "spc:2072",
@@ -21169,13 +21218,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "65f792bcef27357843e151adda28aa62433c0251ae230eeb4bcd503c8012fa89",
+      "content_sha256": "6ff8c3879757ee02261ead2cbc699bf41c0f2147cc45662c8c4a17425d206c1f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1077"
+      ]
     },
     {
       "id": "spc:2073",
@@ -21187,13 +21238,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "969d0735f59e8e6b857d13e77288dd71fb93110f291755ca7ed651a01d087981",
+      "content_sha256": "6afe829c06a808078823c2da0a81351520ccaa8957569d862985002aca3cd87b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1071",
+        "adr:1073",
+        "adr:1075"
+      ]
     },
     {
       "id": "spc:2074",
@@ -21205,13 +21260,15 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "6fd8a028e823570fbdedb5e2b554a5a5439a637721869824807c2c5be47ac50e",
+      "content_sha256": "bda0f02440082f9bf722f918f2f8fc07bb64cdbb6042581df8cdbf9328665e67",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1078"
+      ]
     },
     {
       "id": "spc:2075",
@@ -21223,13 +21280,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "f2cb558db8634a38dff18b0059db7bc94cc296e4491d3cde09a698e5df5df55b",
+      "content_sha256": "9032885c29a84c254f9f4211580f4130805e8439c07af29ad3fa24536cc4a57e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy",
-      "adr_ids": []
+      "adr_ids": [
+        "adr:1050",
+        "adr:1075",
+        "adr:1078"
+      ]
     },
     {
       "id": "spc:2076",

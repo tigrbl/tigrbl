@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2065"
 number: 2065
@@ -39,4 +39,5 @@ body: |-
   - Related specs: `spc:2014`, `spc:2024`, `spc:2029`, `spc:2062`
   - Related features: `feat:op-surface-default-oltp-001`, `feat:transport-parity-contract-001`, `feat:binding-driven-ingress-001`
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1074"

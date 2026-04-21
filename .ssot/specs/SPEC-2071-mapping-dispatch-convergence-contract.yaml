@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2071"
 number: 2071
@@ -38,4 +38,6 @@ body: |-
   - Architecture tests should assert canonical mapping files do not call removed runtime invocation helpers.
   - Harness tests should verify mapping outputs as projections or materialization inputs, not execution results.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1076"
+  - "adr:1077"

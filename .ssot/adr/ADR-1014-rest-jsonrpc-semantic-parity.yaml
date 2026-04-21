@@ -1,24 +1,32 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "adr"
 id: "adr:1014"
 number: 1014
 slug: "rest-jsonrpc-semantic-parity"
-title: "ADR-0014 â€” REST and JSON-RPC Semantic Parity"
-status: "draft"
+title: "REST and JSON-RPC Semantic Parity"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "REST and JSON-RPC are distinct transport/binding surfaces, but Tigrbl should not let them drift into different semantic frameworks."
+summary: "REST and JSON-RPC are distinct transport/binding surfaces, but Tigrbl should not let them drift into different semantic frameworks. The architecture pack repeatedly treats them as different projections over the same semantic operations."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted semantic parity update for JSON-RPC batch behavior and P2 parity evidence."
+    at: "2026-04-21T07:11:45Z"
+  -
+    status: "accepted"
+    note: "Normalized ADR title while preserving accepted semantic parity body."
+    at: "2026-04-21T07:12:28Z"
 references: []
 body: |-
   ## Decision
   
-  - **Status:** Proposed
+  - **Status:** Accepted
   - **Date:** 2026-04-14
-  - **Related ADRs:** ADR-0001, ADR-0006, ADR-0007, ADR-0013, ADR-0015, ADR-0016
+  - **Related ADRs:** ADR-1001, ADR-1006, ADR-1007, ADR-1013, ADR-1015, ADR-1016
   
   1. REST and JSON-RPC project the same semantic operation model.
   2. Canonical operations available through REST must be representable through JSON-RPC where the semantic contract applies, and vice versa.
@@ -27,16 +35,35 @@ body: |-
      - transport-facing method/route selection;
      - protocol-native response/error shapes;
      - protocol-native metadata.
-  4. Semantic differences such as authorization rules, canonical operation behavior, and engine effects may not diverge by binding.
-  5. Tests and docs must evaluate parity at the semantic layer, not only at the transport layer.
+  4. Semantic differences such as authorization rules, canonical operation behavior, validation outcomes, persistence effects, and engine effects may not diverge by binding.
+  5. JSON-RPC batch requests execute in request order and produce one response item per request item unless the JSON-RPC protocol explicitly allows omission.
+  6. Per-item failures in a JSON-RPC batch are isolated to that item and must not cancel sibling operations by default.
+  7. REST and JSON-RPC error normalization must derive from the same canonical outcome rules, with only envelope-specific projection differences.
+  8. Tests and docs must evaluate parity at the semantic layer, including single-call, multi-call, and batch-call flows.
   
   ## Context
   
-  REST and JSON-RPC are distinct transport/binding surfaces, but Tigrbl should not let them drift into different semantic frameworks.
-  The architecture pack repeatedly treats them as different projections over the same semantic operations.
+  REST and JSON-RPC are distinct transport/binding surfaces, but Tigrbl should not let them drift into different semantic frameworks. The architecture pack repeatedly treats them as different projections over the same semantic operations.
+  
+  P2 integration tests now cover behavior that was only implicit in the original ADR: batch ordering, per-item batch errors, REST/RPC validation parity, and route/method symmetry. Those assertions need to be recognized as architectural parity evidence rather than incidental transport tests.
+  
+  ## Consequences
+  
+  - Transport adapters must map canonical outcomes through shared status, validation, and error normalization.
+  - JSON-RPC batch implementations must preserve request order and per-item error reporting.
+  - Runtime and documentation projections must not describe REST and JSON-RPC as separate semantic systems.
+  - Conformance evidence should include REST/RPC parity tests for both successful operations and canonical error paths.
+  
+  ## Evidence
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_rest_rpc_parity_v3.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_symmetry_parity.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_error_mappings.py`
   
   ## Rejected Alternatives
   
   - Binding-specific semantics for the same canonical operation.
   - Treating JSON-RPC as a custom-op-only surface.
   - Duplicating operation semantics into REST-specific and RPC-specific implementations.
+  - Treating JSON-RPC batch behavior as a transport detail outside semantic parity governance.
