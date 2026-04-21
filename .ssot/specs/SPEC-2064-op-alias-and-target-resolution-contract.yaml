@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated alias and target resolution with P2 alias policy evidence."
+    note: "Updated alias and target resolution with alias policy evidence."
     at: "2026-04-21T07:42:41Z"
+  -
+    status: "draft"
+    note: "Updated alias and target resolution with alias policy evidence."
+    at: "2026-04-21T08:15:22Z"
 references: []
 body: |-
   ## Intent
@@ -39,7 +43,7 @@ body: |-
   - Alias and target resolution must be deterministic and inspectable through `OpSpec` or equivalent normalized declarations.
   - Canonical-only alias policy must reject invalid aliases and block alias exposure when the declaration requests canonical-only behavior.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_op_ctx_alias_examples.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_verb_alias_policy.py`

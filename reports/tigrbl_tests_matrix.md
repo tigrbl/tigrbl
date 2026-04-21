@@ -3,9 +3,9 @@
 - Generated from `pkgs/core/tigrbl_tests` and `.ssot/registry.json`.
 - `feature_linked=yes` means at least one direct SSOT test->feature link exists for that file.
 - `adr` and `spec` cells use direct registry links when available; `candidate:` prefixes indicate path/name inference only.
-- `priority_precedence`: `0` active transport-dispatch boundary, `1` other directly linked/governed tests, `2` core unlinked tests, `3` examples/perf/options, `4` legacy/package-edge rows.
+- `concern_precedence`: `0` active transport-dispatch boundary, `1` other directly linked/governed tests, `2` core unlinked tests, `3` examples/perf/options, `4` legacy package edge rows.
 
-| test_file | marker | domain | function | adr | spec | feature | feature_linked | priority_precedence |
+| test_file | marker | domain | function | adr | spec | feature | feature_linked | concern_precedence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | examples/01-beginner-foundations/test_01_01_class_creation.py | none | example/beginner | beginner foundations / class creation | none | none | none | no | 3 |
 | examples/01-beginner-foundations/test_01_02_instantiation.py | none | example/beginner | beginner foundations / instantiation | none | none | none | no | 3 |

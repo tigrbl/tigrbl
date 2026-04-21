@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated docs runtime parity with P2 docs/schema/runtime evidence."
+    note: "Updated docs runtime parity with docs/schema/runtime evidence."
     at: "2026-04-21T07:43:13Z"
+  -
+    status: "draft"
+    note: "Updated docs runtime parity with docs/schema/runtime evidence."
+    at: "2026-04-21T08:15:24Z"
 references: []
 body: |-
   ## Decision
@@ -26,7 +30,7 @@ body: |-
   4. Parity failures are conformance failures.
   5. REST/JSON-RPC parity, schema projection parity, and docs payload parity are one conformance concern when a test exercises all three.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`

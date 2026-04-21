@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated status/auth/error parity with P2 security and error-mapping evidence."
+    note: "Updated status/auth/error parity with security and error-mapping evidence."
     at: "2026-04-21T07:42:23Z"
+  -
+    status: "draft"
+    note: "Updated status/auth/error parity with security and error-mapping evidence."
+    at: "2026-04-21T08:15:21Z"
 references: []
 body: |-
   ## Decision
@@ -27,7 +31,7 @@ body: |-
   5. Anonymous access, auth provider behavior, API key behavior, owner/tenant policy, and key digest behavior are parity-sensitive runtime contracts.
   6. Validation errors and transport error envelopes may differ only by protocol-native projection shape.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_allow_anon.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_apikey_generation.py`

@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated AppSpec/Uvicorn parity with P2 app/API runtime evidence."
+    note: "Updated AppSpec/Uvicorn parity with app/API runtime evidence."
     at: "2026-04-21T07:42:18Z"
+  -
+    status: "draft"
+    note: "Updated AppSpec/Uvicorn parity with app/API runtime evidence."
+    at: "2026-04-21T08:14:33Z"
 references: []
 body: |-
   ## Intent
@@ -35,7 +39,7 @@ body: |-
   
   Kernel bootstrap, priming, and OpView cache lifecycle are governed normatively by `spc:2018`.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_engine_resolver_uvicorn.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_engine_install_uvicorn.py`

@@ -24,7 +24,7 @@ body: |-
   
   ## Context
   
-  P0 unit tests cover REST default op verbs, REST/RPC parity for default operations, `create` versus `bulk_create`, `clear` versus `bulk_delete`, and non-bulk-capable fallback behavior. Existing ADRs freeze the default canonical OLTP set and REST/RPC parity, but they do not explicitly decide how default-operation collisions and capability gaps are resolved.
+  operation contract tests cover REST default op verbs, REST/RPC parity for default operations, `create` versus `bulk_create`, `clear` versus `bulk_delete`, and non-bulk-capable fallback behavior. Existing ADRs freeze the default canonical OLTP set and REST/RPC parity, but they do not explicitly decide how default-operation collisions and capability gaps are resolved.
   
   ## Consequences
   

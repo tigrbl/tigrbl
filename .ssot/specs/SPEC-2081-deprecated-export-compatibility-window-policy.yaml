@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Created SPEC for deprecated-export compatibility window policy reflected by P2 tests."
+    note: "Created SPEC for deprecated-export compatibility window policy reflected by integration tests."
     at: "2026-04-21T07:43:18Z"
+  -
+    status: "draft"
+    note: "Created SPEC for deprecated-export compatibility window policy reflected by integration tests."
+    at: "2026-04-21T08:15:25Z"
 references: []
 body: |-
   ## Decision
@@ -26,7 +30,7 @@ body: |-
   4. After the declared removal boundary, the deprecated export must be absent unless a later accepted ADR extends the window.
   5. Release promotion may treat stale deprecated exports as non-conforming when the removal boundary has passed.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_types_deprecation_exports.py`
   

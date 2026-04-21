@@ -8,10 +8,14 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Documentation support surface partitioning"
+summary: "The example test suite cover OpenAPI path exposure, system endpoint visibility, security scheme projection, diagnostics mounts, Uvicorn runtime parity, and client-visible REST/RPC behavior. Those tests reflect a documentation architecture where docs are generated from canonical metadata and materialized framework state, then checked against runtime behavior."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from example, performance, and options test inventory to make docs/runtime parity explicit for system, diagnostics, OpenAPI, and security projections."
+    at: "2026-04-21T08:06:01Z"
 references: []
 body: |-
   ## Decision
@@ -22,3 +26,17 @@ body: |-
   4. UI Surface defines supported documentation UIs and mount points; it does not define payload semantics.
   5. Parity Surface defines runtime-to-documentation conformance obligations for security, operation visibility, and observable behavior.
   6. Documentation projections must consume canonical metadata and canonical materialization outputs; direct bypass projections are non-conforming.
+  7. Runtime diagnostics and documentation surfaces must agree for framework-owned system endpoints, including health, method, hook, kernel, OpenAPI, and mounted documentation routes.
+  8. example, performance, and options tests that compare runtime visibility, OpenAPI paths, system prefixes, security schemes, and diagnostics mounts are conformance signals for the documentation parity surface.
+  9. Documentation support specs must identify whether an asserted behavior belongs to route mounting, payload projection, UI mounting, or runtime parity so tests do not mix those contracts.
+  
+  ## Context
+  
+  The example test suite cover OpenAPI path exposure, system endpoint visibility, security scheme projection, diagnostics mounts, Uvicorn runtime parity, and client-visible REST/RPC behavior. Those tests reflect a documentation architecture where docs are generated from canonical metadata and materialized framework state, then checked against runtime behavior.
+  
+  ## Traceability
+  
+  - Related ADRs: `adr:1030`, `adr:1032`, `adr:1037`, `adr:1040`, `adr:1041`, `adr:1050`
+  - Companion specs: `spc:2077`, `spc:2078`, `spc:2079`, `spc:2080`, `spc:2012`, `spc:2021`
+  - Candidate features: `feat:docs-support-001`, `feat:openapi-mount-surface-001`, `feat:openapi-payload-surface-001`, `feat:diagnostics-router-mount-surface-001`, `feat:surface-docs-cross-projection-parity-001`
+  - Concern groups: System/Docs/Health Endpoints, Transport/API Binding and App Assembly, Client/REST-RPC Parity and Usage, Security/Auth Projection

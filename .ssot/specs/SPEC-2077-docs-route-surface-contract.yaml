@@ -14,8 +14,12 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Updated docs route surface with P2 mount evidence."
+    note: "Updated docs route surface with mount evidence."
     at: "2026-04-21T07:42:57Z"
+  -
+    status: "draft"
+    note: "Updated docs route surface with mount evidence."
+    at: "2026-04-21T08:15:23Z"
 references: []
 body: |-
   ## Decision
@@ -26,7 +30,7 @@ body: |-
   4. Authn/authz behavior on docs routes is normative and testable.
   5. OpenAPI, OpenRPC, Swagger, Lens, and favicon documentation route mounts must work for both app and router mounting forms where supported.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`

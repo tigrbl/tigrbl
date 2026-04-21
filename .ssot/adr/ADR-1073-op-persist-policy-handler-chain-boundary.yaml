@@ -24,7 +24,7 @@ body: |-
   
   ## Context
   
-  P0 op unit tests cover persist overrides, token normalization, custom-target persist behavior, and handler-chain ordering. Existing ADRs discuss database guardrails and canonical operation semantics, but persist policy needs an explicit boundary so future transport or decorator changes do not reinterpret persistence behavior locally.
+  operation contract tests cover persist overrides, token normalization, custom-target persist behavior, and handler-chain ordering. Existing ADRs discuss database guardrails and canonical operation semantics, but persist policy needs an explicit boundary so future transport or decorator changes do not reinterpret persistence behavior locally.
   
   ## Consequences
   

@@ -1,10 +1,10 @@
-# Priority 2 - Core Unlinked Tests
+# Core Unlinked Tests - Core Unlinked Tests
 
 - Source: `reports/tigrbl_tests_matrix.csv`
 - Rows: 259
 - Same column semantics as the combined matrix.
 
-| test_file | marker | domain | function | adr | spec | feature | feature_linked | priority_precedence |
+| test_file | marker | domain | function | adr | spec | feature | feature_linked | concern_precedence |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | tests/harness_e2e/test_00_appspec_uvicorn_rest_rpc.py | acceptance,asyncio | acceptance-e2e | appspec uvicorn rest rpc | candidate:ADR-1016; candidate:ADR-1031; candidate:ADR-1048 | candidate:SPEC-2011; candidate:SPEC-2018 | none | no | 2 |
 | tests/harness_e2e/test_01_imperative_uvicorn_rest_rpc.py | acceptance,asyncio | acceptance-e2e | imperative uvicorn rest rpc | candidate:ADR-1016; candidate:ADR-1031; candidate:ADR-1048 | candidate:SPEC-2011; candidate:SPEC-2018 | none | no | 2 |

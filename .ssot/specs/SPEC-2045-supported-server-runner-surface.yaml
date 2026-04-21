@@ -16,6 +16,10 @@ status_notes:
     status: "draft"
     note: "Updated server runner surface with Uvicorn protocol-mode semantic invariants."
     at: "2026-04-21T07:42:35Z"
+  -
+    status: "draft"
+    note: "Updated server runner surface with Uvicorn protocol-mode semantic invariants."
+    at: "2026-04-21T08:15:22Z"
 references: []
 body: |-
   ## Decision
@@ -26,7 +30,7 @@ body: |-
   4. Uvicorn-backed protocol modes must preserve Tigrbl-owned application semantics: routing, dispatch, validation, status projection, and error mapping.
   5. Runner-specific behavior is non-semantic unless a SPEC explicitly marks it as part of the Tigrbl contract.
   
-  ## P2 Coverage
+  ## Integration Coverage
   
   - `pkgs/core/tigrbl_tests/tests/i9n/test_uvicorn_transport_behavior.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_uvicorn.py`
