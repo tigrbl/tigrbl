@@ -95,7 +95,8 @@
       "test_ids": [],
       "requires": [],
       "spec_ids": [
-        "spc:2011"
+        "spc:2011",
+        "spc:2045"
       ]
     },
     {
@@ -256,13 +257,21 @@
         "tst:http-route-registration-unit",
         "tst:http-route-system-docs-builders",
         "tst:http-route-jsonrpc-openrpc-surface",
-        "tst:http-route-websocket-binding-slice"
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py"
       ],
       "requires": [
         "feat:http-route-001"
       ],
       "spec_ids": [
-        "spc:2010"
+        "spc:2010",
+        "spc:2077",
+        "spc:2078",
+        "spc:2079",
+        "spc:2080"
       ]
     },
     {
@@ -287,7 +296,8 @@
       "spec_ids": [
         "spc:2011",
         "spc:2027",
-        "spc:2034"
+        "spc:2034",
+        "spc:2045"
       ]
     },
     {
@@ -310,7 +320,8 @@
       "test_ids": [],
       "requires": [],
       "spec_ids": [
-        "spc:2012"
+        "spc:2012",
+        "spc:2020"
       ]
     },
     {
@@ -3513,7 +3524,8 @@
       "spec_ids": [
         "spc:2013",
         "spc:2024",
-        "spc:2070"
+        "spc:2070",
+        "spc:2071"
       ]
     },
     {
@@ -3907,7 +3919,8 @@
       "test_ids": [],
       "requires": [],
       "spec_ids": [
-        "spc:2012"
+        "spc:2012",
+        "spc:2080"
       ]
     },
     {
@@ -3953,7 +3966,8 @@
       "test_ids": [],
       "requires": [],
       "spec_ids": [
-        "spc:2012"
+        "spc:2012",
+        "spc:2080"
       ]
     },
     {
@@ -5772,7 +5786,10 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2025"
+        "spc:2025",
+        "spc:2064",
+        "spc:2065",
+        "spc:2068"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -7516,7 +7533,8 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2012"
+        "spc:2012",
+        "spc:2044"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -7539,7 +7557,8 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2012"
+        "spc:2012",
+        "spc:2044"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -8647,7 +8666,8 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2071"
+        "spc:2071",
+        "spc:2072"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -8875,6 +8895,140 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": []
+    },
+    {
+      "id": "feat:jsonrpc-batch-framing-001",
+      "title": "JSON-RPC batch framing",
+      "description": "Tracks JSON-RPC batch request ordering, per-item result/error isolation, and batch envelope behavior as P2 integration-governed runtime semantics.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "p2-integration-coverage",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2020",
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:deprecated-export-compat-window-001",
+      "title": "Deprecated export compatibility window",
+      "description": "Tracks the policy that deprecated public exports remain available only inside declared compatibility windows and are removed after the target boundary.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "p2-integration-coverage",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2081"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:uvicorn-protocol-mode-runtime-parity-001",
+      "title": "Uvicorn protocol-mode runtime parity",
+      "description": "Tracks that Uvicorn protocol modes preserve Tigrbl-owned routing, dispatch, status, validation, and error semantics.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "p2-integration-coverage",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2045",
+        "spc:2011"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:docs-mount-runtime-surface-parity-001",
+      "title": "Documentation mount runtime surface parity",
+      "description": "Tracks OpenAPI, OpenRPC, Swagger, Lens, and favicon documentation mounts across app/router Uvicorn forms and their runtime/docs parity obligations.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "p2-integration-coverage",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2077",
+        "spc:2078",
+        "spc:2079",
+        "spc:2080"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:p2-test-registry-coverage-001",
+      "title": "P2 integration test registry coverage",
+      "description": "Tracks registration and feature linkage for all P2 integration tests under pkgs/core/tigrbl_tests/tests/i9n.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "p2-integration-coverage",
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:0600",
+        "spc:0602"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -9003,7 +9157,9 @@
       "kind": "automated",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py",
       "feature_ids": [
-        "feat:gate-009"
+        "feat:gate-009",
+        "feat:jsonrpc-batch-framing-001",
+        "feat:p2-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009"
@@ -9036,7 +9192,10 @@
         "feat:oas-006",
         "feat:rpc-001",
         "feat:rpc-002",
-        "feat:rpc-003"
+        "feat:rpc-003",
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:docs-support-001",
+        "feat:p2-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -9082,7 +9241,10 @@
         "feat:oas-006",
         "feat:rpc-001",
         "feat:rpc-002",
-        "feat:rpc-003"
+        "feat:rpc-003",
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:docs-support-001",
+        "feat:p2-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -9128,7 +9290,10 @@
         "feat:oas-006",
         "feat:rpc-001",
         "feat:rpc-002",
-        "feat:rpc-003"
+        "feat:rpc-003",
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:docs-support-001",
+        "feat:p2-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -9174,7 +9339,10 @@
         "feat:oas-006",
         "feat:rpc-001",
         "feat:rpc-002",
-        "feat:rpc-003"
+        "feat:rpc-003",
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:docs-support-001",
+        "feat:p2-test-registry-coverage-001"
       ],
       "claim_ids": [
         "clm:gate-009",
