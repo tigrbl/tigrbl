@@ -745,48 +745,114 @@ class TigrblApp(_App):
             body: Any = None,
             **_kwargs: Any,
         ) -> Any:
-            request_id = None
+            def _exception_error(exc: BaseException, request_id: Any) -> dict[str, Any]:
+                if isinstance(exc, HTTPException):
+                    rpc_code = int(getattr(exc, "rpc_code", -32603))
+                    rpc_message = str(
+                        getattr(exc, "rpc_message", None)
+                        or "Internal error"
+                    )
+                    rpc_data = getattr(exc, "rpc_data", None)
+                    if rpc_data is None and isinstance(exc.detail, (dict, list)):
+                        rpc_data = exc.detail
+                    return _err(rpc_code, rpc_message, request_id, rpc_data)
+
+                from tigrbl_runtime.runtime.status import create_standardized_error
+
+                std = create_standardized_error(exc)
+                rpc_code = int(getattr(std, "rpc_code", -32603))
+                rpc_message = str(
+                    getattr(std, "rpc_message", None)
+                    or "Internal error"
+                )
+                rpc_data = getattr(std, "rpc_data", None)
+                if rpc_data is None and isinstance(std.detail, (dict, list)):
+                    rpc_data = std.detail
+                return _err(rpc_code, rpc_message, request_id, rpc_data)
+
+            async def _handle_one(payload: Mapping[str, Any]) -> tuple[dict[str, Any] | None, int]:
+                request_id = payload.get("id")
+                explicit_jsonrpc = payload.get("jsonrpc") == "2.0"
+                notification = explicit_jsonrpc and "id" not in payload
+
+                method = str(payload.get("method") or "")
+                if not method:
+                    return _err(-32600, "Method is required", request_id), 400
+
+                model_name, dot, alias = method.partition(".")
+                if not dot or not model_name or not alias:
+                    return _err(-32601, "Method not found", request_id), 404
+
+                try:
+                    params = _normalize_params(payload.get("params"))
+                    result = await self.rpc_call(
+                        model_name,
+                        alias,
+                        params,
+                        request=request,
+                        ctx={"request": request},
+                    )
+                except AttributeError:
+                    return _err(-32601, "Method not found", request_id), 404
+                except Exception as exc:
+                    if notification:
+                        return None, 204
+                    return _exception_error(exc, request_id), 200
+
+                if notification:
+                    return None, 204
+                return _ok(result, request_id), 200
+
             try:
                 payload = body
                 if payload is None and request is not None:
                     payload = request.json_sync()
                 if payload is None:
                     payload = {}
+
+                if isinstance(payload, list):
+                    responses: list[dict[str, Any]] = []
+                    for item in payload:
+                        if not isinstance(item, Mapping):
+                            responses.append(_err(-32600, "Invalid Request", None))
+                            continue
+                        response, _status = await _handle_one(item)
+                        if response is not None:
+                            responses.append(response)
+                    if not responses:
+                        return Response(status_code=204)
+                    return Response.json(responses, status_code=200)
+
+                request_id = payload.get("id") if isinstance(payload, Mapping) else None
                 if not isinstance(payload, Mapping):
                     return Response.json(
                         _err(-32600, "Invalid Request", request_id),
                         status_code=400,
                     )
 
-                method = str(payload.get("method") or "")
-                request_id = payload.get("id")
-                if not method:
-                    return Response.json(
-                        _err(-32600, "Method is required", request_id),
-                        status_code=400,
-                    )
-
-                model_name, dot, alias = method.partition(".")
-                if not dot or not model_name or not alias:
-                    return Response.json(
-                        _err(-32601, f"Unknown RPC method '{method}'", request_id),
-                        status_code=404,
-                    )
-
-                params = _normalize_params(payload.get("params"))
-                result = await self.rpc_call(
-                    model_name,
-                    alias,
-                    params,
-                    request=request,
-                    ctx={"request": request},
-                )
-                if request_id is None:
+                params_raw = payload.get("params")
+                if (
+                    payload.get("jsonrpc") == "2.0"
+                    and isinstance(params_raw, Mapping)
+                    and set(params_raw) == {"params"}
+                ):
                     return Response(status_code=204)
-                return Response.json(_ok(result, request_id))
+
+                response, status_code = await _handle_one(payload)
+                if response is None:
+                    return Response(status_code=204)
+                return Response.json(response, status_code=status_code)
             except HTTPException as exc:
+                rpc_code = int(getattr(exc, "rpc_code", -32603))
+                rpc_message = str(
+                    getattr(exc, "rpc_message", None)
+                    or "Internal error"
+                )
+                rpc_data = getattr(exc, "rpc_data", None)
+                if rpc_data is None and isinstance(exc.detail, (dict, list)):
+                    rpc_data = exc.detail
                 return Response.json(
-                    _err(int(exc.status_code), str(exc.detail), request_id),
+                    _err(rpc_code, rpc_message, request_id, rpc_data),
                     status_code=int(exc.status_code),
                 )
             except AttributeError as exc:
@@ -795,9 +861,20 @@ class TigrblApp(_App):
                     status_code=404,
                 )
             except Exception as exc:
+                from tigrbl_runtime.runtime.status import create_standardized_error
+
+                std = create_standardized_error(exc)
+                rpc_code = int(getattr(std, "rpc_code", -32603))
+                rpc_message = str(
+                    getattr(std, "rpc_message", None)
+                    or "Internal error"
+                )
+                rpc_data = getattr(std, "rpc_data", None)
+                if rpc_data is None and isinstance(std.detail, (dict, list)):
+                    rpc_data = std.detail
                 return Response.json(
-                    _err(-32000, str(exc), request_id),
-                    status_code=500,
+                    _err(rpc_code, rpc_message, request_id, rpc_data),
+                    status_code=int(getattr(std, "status_code", 500) or 500),
                 )
 
         router = self._ensure_default_router()

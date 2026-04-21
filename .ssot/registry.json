@@ -13032,6 +13032,94 @@
         "tst:tcase-0026"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:well-known-decorator-surface-001",
+      "title": "Well-known decorator surface",
+      "description": "Tracks the canonical well-known decorator entrypoints (`schema_ctx`, `op_ctx`, `hook_ctx`, `response_ctx`, and `engine_ctx`) and their normalized attachment semantics.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2063",
+        "spc:2066",
+        "spc:2068"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-decorators-test-op-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-decorators-test-hook-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-decorators-test-response-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-decorators-test-schema-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-decorators-test-engine-ctx-bindings"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:well-known-imperative-surface-001",
+      "title": "Well-known imperative surface",
+      "description": "Tracks well-known imperative app/router/table assembly surfaces that must converge with decorator-driven declarations and preserve canonical materialization outcomes.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2011",
+        "spc:2066",
+        "spc:2073"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-imperative-uvicorn-rest-rpc",
+        "tst:tigrbl-tests-tests-i9n-test-op-ctx-behavior",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-dynamic-attach"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:well-known-concrete-constants-surface-001",
+      "title": "Well-known concrete constants surface",
+      "description": "Tracks the concrete well-known constant set in `tigrbl_core.config.constants` for canonical verbs, model attribute keys, context keys, and default endpoint mappings consumed by concrete runtime paths.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2016",
+        "spc:2063"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-app-model-defaults",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-attributes",
+        "tst:tigrbl-tests-tests-unit-test-v3-op-ctx-attributes"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -19225,7 +19313,8 @@
         "feat:tigrblapp-concrete-facade-class-001",
         "feat:tigrblrouter-concrete-facade-class-001",
         "feat:uvicorn-protocol-mode-runtime-parity-001",
-        "feat:uvicorn-rest-rpc-semantic-parity-001"
+        "feat:uvicorn-rest-rpc-semantic-parity-001",
+        "feat:well-known-imperative-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -20116,7 +20205,8 @@
         "feat:op-surface-public-projection-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
-        "feat:transport-dispatch-governance-001"
+        "feat:transport-dispatch-governance-001",
+        "feat:well-known-imperative-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -21402,7 +21492,8 @@
         "feat:ensure-schemas-runtime-surface-001",
         "feat:multi-engine-interop-runtime-surface-001",
         "feat:multi-engine-table-portability-interoperability-001",
-        "feat:wrap-sessionmaker-helper-surface-001"
+        "feat:wrap-sessionmaker-helper-surface-001",
+        "feat:well-known-decorator-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -21422,7 +21513,8 @@
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
-        "feat:hook-surface-public-projection-001"
+        "feat:hook-surface-public-projection-001",
+        "feat:well-known-decorator-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -21534,7 +21626,8 @@
         "feat:op-surface-public-projection-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
-        "feat:transport-dispatch-governance-001"
+        "feat:transport-dispatch-governance-001",
+        "feat:well-known-decorator-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -21559,7 +21652,8 @@
         "feat:redirectresponse-concrete-response-class-001",
         "feat:response-concrete-response-class-001",
         "feat:streamingresponse-concrete-stream-class-001",
-        "feat:transportresponse-concrete-response-class-001"
+        "feat:transportresponse-concrete-response-class-001",
+        "feat:well-known-decorator-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -21578,7 +21672,8 @@
         "feat:bootstrappable-table-mixin-001",
         "feat:governed-module-alias-compatibility-001",
         "feat:orm-alias-export-compatibility-001",
-        "feat:orm-mixins-alias-compatibility-001"
+        "feat:orm-mixins-alias-compatibility-001",
+        "feat:well-known-decorator-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -22114,7 +22209,8 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_app_model_defaults.py",
       "feature_ids": [
-        "feat:tigrbl-test-suite-coverage-intake-001"
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:well-known-concrete-constants-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -23654,7 +23750,8 @@
         "feat:op-surface-public-projection-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
-        "feat:transport-dispatch-governance-001"
+        "feat:transport-dispatch-governance-001",
+        "feat:well-known-concrete-constants-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -23822,7 +23919,8 @@
         "feat:op-surface-public-projection-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
-        "feat:transport-dispatch-governance-001"
+        "feat:transport-dispatch-governance-001",
+        "feat:well-known-imperative-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -25660,7 +25758,8 @@
         "feat:op-surface-public-projection-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
-        "feat:transport-dispatch-governance-001"
+        "feat:transport-dispatch-governance-001",
+        "feat:well-known-concrete-constants-surface-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"

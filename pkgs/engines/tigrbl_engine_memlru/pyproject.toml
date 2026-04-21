@@ -6,3 +6,6 @@ dependencies = ["tigrbl"]
 
 [project.entry-points."tigrbl.engine"]
 memlru = "tigrbl_engine_memlru.plugin:register"
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

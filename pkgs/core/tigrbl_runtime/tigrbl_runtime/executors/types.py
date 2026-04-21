@@ -323,7 +323,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         if db is not None:
             ctx._raw_db = db
             if "db" not in ctx:
-                ctx.db = None
+                ctx.db = db
         if not isinstance(getattr(ctx, "temp", None), dict):
             ctx.temp = {}
         return ctx

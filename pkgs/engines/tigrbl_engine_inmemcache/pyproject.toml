@@ -30,3 +30,6 @@ inmemcache = "tigrbl_engine_inmemcache.plugin:register"
 dev = [
     "ruff>=0.11.0",
 ]
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

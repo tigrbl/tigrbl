@@ -16,6 +16,9 @@ classifiers = [
 keywords = ["tigrbl_acme_ca", "tigrbl", "experimental"]
 dependencies = ["tigrbl>=0.3.0.dev4"]
 
+[tool.uv.sources]
+tigrbl = { workspace = true }
+
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"

@@ -52,6 +52,52 @@ def _jsonrpc_request_id(ctx: Any) -> Any:
     return None
 
 
+def _jsonrpc_request_payload(ctx: Any) -> Any:
+    temp = getattr(ctx, "temp", None)
+    route = temp.get("route", {}) if isinstance(temp, dict) else {}
+    rpc_env = route.get("rpc_envelope") if isinstance(route, dict) else None
+    if isinstance(rpc_env, Mapping):
+        return rpc_env
+
+    raw = getattr(ctx, "gw_raw", None) or getattr(ctx, "raw", None)
+    rpc = getattr(raw, "rpc", None)
+    if isinstance(rpc, Mapping):
+        return rpc
+
+    dispatch = temp.get("dispatch", {}) if isinstance(temp, dict) else {}
+    if isinstance(dispatch, Mapping):
+        rpc_dispatch = dispatch.get("rpc")
+        if isinstance(rpc_dispatch, Mapping):
+            return rpc_dispatch
+        rpc_batch = dispatch.get("rpc_batch")
+        if isinstance(rpc_batch, list):
+            return rpc_batch
+
+    body = getattr(ctx, "body", None)
+    if isinstance(body, (bytes, bytearray)):
+        try:
+            body = json.loads(bytes(body).decode("utf-8"))
+        except Exception:
+            body = None
+    if isinstance(body, (Mapping, list)):
+        return body
+
+    request = getattr(ctx, "request", None)
+    req_body = getattr(request, "_json", None)
+    if isinstance(req_body, (Mapping, list)):
+        return req_body
+    return None
+
+
+def _is_jsonrpc_notification(ctx: Any) -> bool:
+    payload = _jsonrpc_request_payload(ctx)
+    return (
+        isinstance(payload, Mapping)
+        and payload.get("jsonrpc") == "2.0"
+        and "id" not in payload
+    )
+
+
 def _is_jsonrpc_request(ctx: Any) -> bool:
     raw = getattr(ctx, "gw_raw", None) or getattr(ctx, "raw", None)
     if getattr(raw, "kind", None) == "jsonrpc":
@@ -76,13 +122,13 @@ def _normalize_jsonrpc_transport_response(
     ctx: Any, response: dict[str, Any]
 ) -> dict[str, Any]:
     normalized = dict(response)
-    request_id = _jsonrpc_request_id(ctx)
-    if request_id is None:
+    body = normalized.get("body")
+    status_code = int(normalized.get("status_code", 200) or 200)
+    if status_code == 204 and body in (None, b"", ""):
         normalized["status_code"] = 204
         normalized["body"] = b""
         return normalized
 
-    body = normalized.get("body")
     if body is None:
         body = getattr(ctx, "result", None)
     if isinstance(body, (bytes, bytearray)):
@@ -91,8 +137,23 @@ def _normalize_jsonrpc_transport_response(
         except Exception:
             body = bytes(body).decode("utf-8", errors="replace")
 
+    if isinstance(body, list):
+        normalized["status_code"] = 200
+        normalized["body"] = body
+        return normalized
+
+    if isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
+        normalized["status_code"] = 200
+        normalized["body"] = body
+        return normalized
+
+    request_id = _jsonrpc_request_id(ctx)
+    if request_id is None and _is_jsonrpc_notification(ctx):
+        normalized["status_code"] = 204
+        normalized["body"] = b""
+        return normalized
+
     if not (isinstance(body, Mapping) and body.get("jsonrpc") == "2.0"):
-        status_code = int(normalized.get("status_code", 200) or 200)
         if status_code >= 400:
             from tigrbl_typing.status.mappings import ERROR_MESSAGES, _HTTP_TO_RPC
 
