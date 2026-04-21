@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2010"
 number: 2010
@@ -8,50 +8,25 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define supported documentation outputs, canonical metadata sources, and lifecycle naming rules for generated docs."
+summary: "SPEC-2010 is the umbrella documentation contract and index."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Intent
-
-  Define supported documentation outputs, metadata ownership, and lifecycle naming rules for generated documentation surfaces.
-
-  ## Supported Outputs
-
-  The active line supports:
-
-  - OpenAPI
-  - OpenRPC
-  - AsyncAPI
-  - JSON Schema
-
-  ## Canonical Metadata Sources
-
-  - OpenAPI consumes route-facing metadata from `Route` plus bound models and schemas.
-  - OpenRPC consumes canonical op specs, JSON-RPC bindings, and schemas.
-  - AsyncAPI consumes canonical transport bindings plus op and channel metadata.
-  - JSON Schema consumes canonical schema component metadata.
-
-  ## Route Behavior
-
-  - Documentation endpoints are ordinary imperative routes and ordinary normalized route-backed ops.
-  - Documentation and system mounts set `inherit_owner_dependencies=False` when owner dependency inheritance must be suppressed.
-  - No `surface_kind` abstraction is introduced.
-
-  ## Lifecycle Naming Policy
-
-  - Documentation outputs, examples, and generated support materials use canonical lifecycle phase names only.
-  - The canonical ingress routing phase is `INGRESS_ROUTE`.
-  - `INGRESS_DISPATCH` must not appear in supported documentation outputs, route docs, parity examples, or diagnostics examples as a compatibility label.
-
-  ## Traceability
-
-  - ADRs: `adr:1009`, `adr:1030`
-  - Related specs: `spc:2019`
-  - Tests:
-    - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
-    - `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`
-    - `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`
+  ## Decision
+  
+  SPEC-2010 is the umbrella documentation contract and index.
+  
+  1. Route support requirements are delegated to SPEC-2077.
+  2. Payload projection requirements are delegated to SPEC-2078.
+  3. UI support requirements are delegated to SPEC-2079.
+  4. Runtime/docs parity requirements are delegated to SPEC-2080.
+  
+  ## Normative Statement
+  
+  Implementations claiming documentation support MUST satisfy all applicable delegated docs contracts.
 spec_kind: "local-policy"
+adr_ids:
+  - "adr:1080"
+  - "adr:1030"

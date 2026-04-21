@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "adr"
 id: "adr:1032"
 number: 1032
@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The currently failing `tigrbl_tests` slice also shows drift in anonymous-access handling, REST create status codes, authn / authorization behavior, error parity, validation parity, and response-structure expectations. These failures all point to the same problem: transport-facing success and failure projections are no longer being derived consistently from one canonical semantic outcome."
+summary: "Security parity tests cover both runtime and docs surfaces; parity requirements must be explicit at the decision level."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -16,26 +16,15 @@ references: []
 body: |-
   ## Decision
   
-  - **Status:** Proposed
-  - **Date:** 2026-04-16
-  - **Related ADRs:** ADR-0011, ADR-0013, ADR-0014, ADR-0015, ADR-0016, ADR-0023, ADR-0025
-  
-  1. Canonical operation outcomes are transport-neutral until the final projection step. REST status codes, JSON-RPC envelopes, and error shapes must be derived from that shared result.
-  2. Canonical create success projects to REST `201 Created` unless an explicit operation contract states otherwise.
-  3. Anonymous-access eligibility is resolved from canonical dependency and security metadata before transport projection. Runtime behavior and generated documentation must reflect the same allow-anon decision.
-  4. Validation, authorization, and handler failures must map to one canonical error classification before REST or JSON-RPC shaping occurs.
-  5. REST and JSON-RPC error parity tests are contract tests. A failure in one transport path implies a semantic projection defect unless explicitly documented otherwise.
-  6. Response-structure tests for error envelopes are blocking conformance checks because malformed envelopes break client behavior even when transport-level status codes appear successful.
-  7. Success responses may not silently downgrade to transport-only success states that erase semantic information needed by clients, including create metadata and RPC result payloads.
+  1. Status/auth/error projections derive from canonical runtime outcomes.
+  2. OpenAPI/OpenRPC security projections MUST reflect runtime auth challenge and authorization behavior.
+  3. Divergence between runtime security behavior and documented security requirements is non-conforming.
   
   ## Context
   
-  The currently failing `tigrbl_tests` slice also shows drift in anonymous-access handling, REST create status codes, authn / authorization behavior, error parity, validation parity, and response-structure expectations. These failures all point to the same problem: transport-facing success and failure projections are no longer being derived consistently from one canonical semantic outcome.
+  Security parity tests cover both runtime and docs surfaces; parity requirements must be explicit at the decision level.
   
-  Tigrbl already commits to protocol parity and compiled semantic ownership. This ADR makes the projection rules explicit for create outcomes, anonymous access, validation failures, authorization failures, and response-envelope structure.
+  ## Consequences
   
-  ## Rejected Alternatives
-  
-  - Treating REST status codes as handler-local choices independent of canonical semantic outcomes.
-  - Allowing anonymous-access behavior to diverge from documented security metadata.
-  - Accepting different validation or authorization semantics between REST and JSON-RPC for the same canonical operation.
+  - Security docs are normative projections, not advisory metadata.
+  - Auth and error conformance requires runtime/docs equivalence evidence.

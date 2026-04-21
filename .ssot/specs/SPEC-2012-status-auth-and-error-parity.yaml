@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2012"
 number: 2012
@@ -8,45 +8,19 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Date: 2026-04-16"
+summary: "Status, Auth, and Error Parity"
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Intent
+  ## Decision
   
-  This document governs status, auth, validation, and error projection parity
-  for the current recovery lane.
-  
-  ## Invariants
-  
-  - allow-anon behavior derives only from canonical security metadata and
-    matches generated documentation.
-  - canonical create success projects to REST `201 Created` unless an explicit
-    operation contract overrides it.
-  - authentication and authorization failures are classified once and projected
-    consistently across transports.
-  - canonical validation failures preserve parity between REST and JSON-RPC
-    projections.
-  - success and error envelopes preserve governed response structure rather than
-    transport-specific shapes.
-  
-  ## Targeted Failing Lanes
-  
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_allow_anon.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_apikey_generation.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py`
-  - `pkgs/core/tigrbl_tests/tests/i9n/test_error_mappings.py`
-  
-  ## Implementation Expectations
-  
-  - Fixes should centralize projection rules instead of patching individual handlers or routes one by one.
-  - Documentation-support behavior must remain aligned with runtime anon-access and error-shape rules.
-  - Response-structure regressions are release-blocking because they directly affect client interoperability.
-  
-  ## Traceability
-  
-  - ADRs: `adr:1032`
-  - Related feature granularity lives in the registry layer.
+  1. Status/auth/error parity includes runtime and documentation projections.
+  2. OpenAPI/OpenRPC documented security schemes and challenges MUST match runtime behavior.
+  3. Docs/runtime divergence in auth or error behavior is non-conforming.
 spec_kind: "local-policy"
+adr_ids:
+  - "adr:1032"
+  - "adr:1011"
+  - "adr:1037"

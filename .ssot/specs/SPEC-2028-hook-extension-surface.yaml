@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the governed hook extension surface, its public boundary, and its exclusion of runtime-owned phases."
+summary: "This document defines the governed hook extension surface for Tigrbl."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -30,9 +30,9 @@ body: |-
   - Public or base projection may appear through `tigrbl`, `tigrbl_base`, `hook_ctx`, and diagnostics builders such as hook-oriented system endpoints.
   - Private authoring projection may appear through helper surfaces such as `build_hooks()`.
   - Projection does not widen the legal hook model beyond the canonical spec-layer contract, and authoring helpers do not become public operator surfaces merely because they are importable.
-
+  
   ## Phase Boundary Rules
-
+  
   - The public hook phase vocabulary is limited to the governed hook phase set and does not include ingress routing phases or runtime completion fences.
   - `INGRESS_ROUTE` remains runtime-owned and is not a hook phase.
   - `POST_EMIT` remains a runtime-owned completion fence and is not a hook phase.
@@ -59,3 +59,4 @@ body: |-
   - ADRs: `adr:1004`, `adr:1009`, `adr:1010`, `adr:1052`, `adr:1053`, `adr:1062`, `adr:1063`, `adr:1070`
   - Related specs: `spc:2025`, `spc:2026`, `spc:2060`, `spc:2061`
 spec_kind: "local-policy"
+adr_ids: []

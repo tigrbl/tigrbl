@@ -1,5 +1,5 @@
 {
-  "schema_version": "0.1.0",
+  "schema_version": "0.2.0",
   "repo": {
     "id": "repo:tigrbl",
     "name": "tigrbl",
@@ -18158,9 +18158,9 @@
     }
   ],
   "tooling": {
-    "ssot_registry_version": "0.2.10",
+    "ssot_registry_version": "0.2.11",
     "initialized_with_version": "0.1.2",
-    "last_upgraded_from_version": "0.2.8"
+    "last_upgraded_from_version": "0.2.10"
   },
   "document_id_reservations": {
     "adr": [
@@ -18882,8 +18882,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "03e8a8985d4f7bf5326293c7928504d678529ce554392ffb7792f8b318c3b735",
+      "package_version": "0.2.11",
+      "content_sha256": "b9d7ed8e153bdaed02c7ded58747361c3a3279406dc52246b582aaac995cb739",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18914,8 +18914,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "7e1d0eb0f7b6dc64166a095de30d6d94c206ebeb6929bef8ff38c89270daa7a3",
+      "package_version": "0.2.11",
+      "content_sha256": "1bf2a4e35b4e3104699fe2b99d5b30a641b01694479fd294031344f5687a7567",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18946,8 +18946,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "bfa95cab42902f42c1b0eab15993aed863c7a8180cdf705e0bce320d8d931bbc",
+      "package_version": "0.2.11",
+      "content_sha256": "bf4f0494ed292f3e4e8c987159715141bbe2c0e30c53c1dda0fe2600e3dde147",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19058,8 +19058,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "43062d48928a77be0b5cec082ff595411743e0b987874a64c1be43ab3306dfd4",
+      "package_version": "0.2.11",
+      "content_sha256": "d76ba6c3358c32c38bd7d2feddcd6d11ebf1756be183d944c0947981d40f01ca",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19074,8 +19074,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "9a12bb0916a13bef38b839056a39928719144c86156829c20cdb97849127ea58",
+      "package_version": "0.2.11",
+      "content_sha256": "72cc38a0ca839d8c1eefba1ca11110160d43592fd009f045dd3f43a73b9cffb4",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -19090,8 +19090,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "8ba6ec6e0592cca7e9d4cba09161da2cef9fdf35d65ab6134114bfdc0d9f0f7d",
+      "package_version": "0.2.11",
+      "content_sha256": "a32c6e9218954b8a0e1a4ba8dea9081c5b9364ed8e67f469b0dc12e48648686e",
       "status": "superseded",
       "supersedes": [],
       "superseded_by": [
@@ -19690,6 +19690,22 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1080",
+      "number": 1080,
+      "slug": "documentation-support-surface-partitioning",
+      "title": "Documentation support surface partitioning",
+      "path": ".ssot/adr/ADR-1080-documentation-support-surface-partitioning.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "1b758705b0e5ffee2c6b9c213abfbf106982355d118fe799a70e60e860dfaeca",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -19702,13 +19718,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "d03d461a32d1cbc5798cd33fbda66589010b8d082b65bf989f18f761d273b587",
+      "package_version": "0.2.11",
+      "content_sha256": "9eaf89b0939a26c04a8f6c3d7db5eef55fd93f6fc0e052db29a9fe153159650f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0601",
@@ -19719,13 +19736,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "bacd750fcaee57277115e2bd61c5fde308624798839a34bce0bc8f1320de3287",
+      "package_version": "0.2.11",
+      "content_sha256": "4f9d02ca80fdb8a37c6176c7f1c682892ac9f643962e4e2b22674dbb02e5b267",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "operational"
+      "kind": "operational",
+      "adr_ids": []
     },
     {
       "id": "spc:0602",
@@ -19736,13 +19754,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "c2f9addf6a50ccbfc020c40327de93027ec984bebd0dc12feb1f4febfa816293",
+      "package_version": "0.2.11",
+      "content_sha256": "098a7514eb3541651741143e3f87fa27a0831d89a868216bc477d525c89d9b8c",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0603",
@@ -19753,13 +19772,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "fe3ff8e895162ae90359401bac69bc8e8e5c98b2b31447fea3b6e1ae76516c79",
+      "package_version": "0.2.11",
+      "content_sha256": "cd47ebf1135f90083337d7300c021aa5602227039a96f02f2f831586a6f9da1d",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0604",
@@ -19770,13 +19790,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "d789748eb6dd262134c80baf77a8c44dd85f6ca0ce1ab53586d25dcb576e32a1",
+      "package_version": "0.2.11",
+      "content_sha256": "e715dd76712cba21b04a4cc922b883b881076478d01412ba49eeb482b756d4a1",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0605",
@@ -19787,13 +19808,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "7b350ed11cad9d9be5fce31e10f0f4350d6a071049a01c950af8694d5f0630d7",
+      "package_version": "0.2.11",
+      "content_sha256": "078b2ba5054c1c2cf5b7697920a63dcf7d3fb61084dc22f150ee84f26e630262",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0606",
@@ -19804,13 +19826,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "6952e1ae415375b4dbe46c92537f6c6cd3dce5709a2507d906197bf8043fd6d6",
+      "package_version": "0.2.11",
+      "content_sha256": "ca8a031339c7ab8f357a08c832b089fa84e6baa817ca974b59dd66847948da2e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "operational"
+      "kind": "operational",
+      "adr_ids": []
     },
     {
       "id": "spc:0607",
@@ -19821,13 +19844,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "63b5056e142d551afb5a7c8e119b4e02913371771bb54c56c52464b1615893c2",
+      "package_version": "0.2.11",
+      "content_sha256": "23a4b5dfc31e866db529c27489d54a4d33bfc31389ed2287839b6ae53e587a04",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "operational"
+      "kind": "operational",
+      "adr_ids": []
     },
     {
       "id": "spc:0608",
@@ -19838,13 +19862,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "ab8ef1311b825d7474f24a8b2eeff2fee19183804746cbccd7234f9f5e2166a9",
+      "package_version": "0.2.11",
+      "content_sha256": "87beb7e4bef75acb0a6c3d7e7048b7f5f2ba43671971d0d5d61e4f079d086032",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0609",
@@ -19855,13 +19880,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "ce9b9a9cd22703419af6d37aaf3e7da815291deb6bf493a16689f41d9019233e",
+      "package_version": "0.2.11",
+      "content_sha256": "e299d28d416a6b2fe1c04e7a9f99e8b1a16077b9617f6d08880ad5d94195c2c5",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0610",
@@ -19872,13 +19898,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "e821e3c072a3973300b6c91eb2f6ce504cf4f34f4c6b49ed7c742a4315b7d5fc",
+      "package_version": "0.2.11",
+      "content_sha256": "adf2ec784cf5d3fbcf8235e2502e8a65d5b766bed72ea2d6e8e09b33bf54aa04",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0611",
@@ -19889,13 +19916,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "fa4fab0acc1175f202b36fe1770cbe076332bf33e7bccf5eb539c477c9215b7d",
+      "package_version": "0.2.11",
+      "content_sha256": "b27e39a79f780c5af29dc04e9472254c60bae2cd43fece5a9b88b08cf61ddf38",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0612",
@@ -19906,13 +19934,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "bbea37ab830073ee6309011ee7aa9b13aa490e660bdf01448cd50f1d42a32993",
+      "package_version": "0.2.11",
+      "content_sha256": "e467782c4f9ee4fc2a3fd183aeb2f4e1dcdceacca98d83e8fcc587a9a409184e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "operational"
+      "kind": "operational",
+      "adr_ids": []
     },
     {
       "id": "spc:0613",
@@ -19923,13 +19952,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "9e7523c7f8fe3f5cad8bd05aa42796e96794c7427cb774639ef9c5dfc4082c8a",
+      "package_version": "0.2.11",
+      "content_sha256": "9b285d6955e0d0ad34c4daa1d3ba479b586c6dcc2eca5c540779d7e6492d206c",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:0614",
@@ -19940,13 +19970,14 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.8",
-      "content_sha256": "38914181571d8d366258bc4cce8837a9857b2e480e03687db9d811555b807f77",
+      "package_version": "0.2.11",
+      "content_sha256": "aa4277df313bf604e6f3a4930a98f635082e0e7ca0d3ecdc7f1b10d5d29357e8",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
     },
     {
       "id": "spc:2001",
@@ -19957,13 +19988,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "c038b6a7355e0aabb8fdaa37d3b29800ab54e6cbbdd4c16c10a68bb32102878e",
+      "package_version": "0.2.11",
+      "content_sha256": "5c2e36fec3c5c88a89e30f6bb0cbaa0e0276ef4aa7aaf8de0ebcdd1d35e1d2b6",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2002",
@@ -19974,13 +20006,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "f7837d2a9cc78db39b6696436bbc8bb29d7127010790b860f287f52133b72018",
+      "package_version": "0.2.11",
+      "content_sha256": "e12fcd7682305d63c4a52ac980bcd87d11358e23057c833dc17dbb61ad9e4644",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2007",
@@ -19991,13 +20024,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "f048d6879175d9145997f349b488e392fac78f6ebe9205ec57c5055dc3c40588",
+      "package_version": "0.2.11",
+      "content_sha256": "c9683dbfb5e1e40165656a67686b98da2899270955151ebef87ef5e28041b5f6",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2008",
@@ -20008,13 +20042,16 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "64aee796ba32be2d1c5788923c939f5234a4c24687ba930f365ea750b9e76649",
+      "package_version": "0.2.11",
+      "content_sha256": "f09b7997add78278e1650d78aca7427bded4aa79ba93599cf0a706550714259a",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1028"
+      ]
     },
     {
       "id": "spc:2009",
@@ -20025,13 +20062,16 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "978be4a8a78ea5cf913e9cd493bf951c4c8eb9be21ec6f204c02d1d8f490ef94",
+      "package_version": "0.2.11",
+      "content_sha256": "c2411f75e52256a67e73294ed8c0fe0bac91bf966525c74685420f46ec415f75",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1028"
+      ]
     },
     {
       "id": "spc:2010",
@@ -20042,13 +20082,17 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "c6e6e5eda6125f36fc53274a4c4dfc2142ec1cff84139dd81ff0d32cc510354a",
+      "package_version": "0.2.11",
+      "content_sha256": "2b2feb968f72084db702fb302cf37c2df965be09df9b1bc5a3c7c8069c05713c",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1080",
+        "adr:1030"
+      ]
     },
     {
       "id": "spc:2011",
@@ -20059,13 +20103,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "5071b08dc2f9d54931314bf9cded9820521510a7b4443e8e1acf785ea1e6071f",
+      "package_version": "0.2.11",
+      "content_sha256": "f3031e70cf7c1bf522a4670e3b2383cc03b6be3f3a4ba9d2a10a90dd7ad4a952",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2012",
@@ -20076,13 +20121,18 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "8ceb2b85e7d6c567dadb9fae7180cad8ff87a1c0411a87b3bd0aac295f897539",
+      "package_version": "0.2.11",
+      "content_sha256": "2de6c20287ac8e75c0c56244e6ce87285d12557f650773211def8bae08e601d9",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1032",
+        "adr:1011",
+        "adr:1037"
+      ]
     },
     {
       "id": "spc:2013",
@@ -20093,8 +20143,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "0533f788a20fbbf88534a0fe90cc3c752c69438480adf82b96e42467174e6d5f",
+      "package_version": "0.2.11",
+      "content_sha256": "c2c43828008bba73c70fc693e707e7fe3fbdee96404a98e72bb7a067ec2bebe5",
       "kind": "local-policy",
       "status": "superseded",
       "supersedes": [],
@@ -20107,7 +20157,8 @@
           "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
           "at": "2026-04-20T10:29:37Z"
         }
-      ]
+      ],
+      "adr_ids": []
     },
     {
       "id": "spc:2014",
@@ -20118,13 +20169,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.6",
-      "content_sha256": "d6085b8562b9991084dd2b85ca456286cf56a3bc360d985be804df6729308e5c",
+      "package_version": "0.2.11",
+      "content_sha256": "7e3366538df982728ad43fcb96b5b455a88dafb1f89babd18ccd4531c1164236",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2015",
@@ -20135,8 +20187,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "990ab038e72b5bea934e5c664924fcfd2e01a789b37e1245f973965c00b3390f",
+      "package_version": "0.2.11",
+      "content_sha256": "36e0ed8a8ba697af57e6b4d11e4d04dbc02cf58ff9615278a00fa14e18c9938c",
       "kind": "local-policy",
       "status": "superseded",
       "supersedes": [],
@@ -20149,7 +20201,8 @@
           "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
           "at": "2026-04-20T10:29:37Z"
         }
-      ]
+      ],
+      "adr_ids": []
     },
     {
       "id": "spc:2016",
@@ -20160,8 +20213,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "e6934162f27158f35ab51a458456882abd806bffeb19f28505632ed858a81f13",
+      "package_version": "0.2.11",
+      "content_sha256": "e69708e97c5ea2960131f4feda62ca4ea93a230c64698eda1298502c9e63af71",
       "kind": "local-policy",
       "status": "superseded",
       "supersedes": [],
@@ -20174,7 +20227,8 @@
           "note": "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract.",
           "at": "2026-04-20T10:29:37Z"
         }
-      ]
+      ],
+      "adr_ids": []
     },
     {
       "id": "spc:2017",
@@ -20185,13 +20239,17 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "b6246f06d5b3328e2261b349c47576d8fe3193c9f553cf85c9fb9af2ee992050",
+      "package_version": "0.2.11",
+      "content_sha256": "9a116152abff7be13fcf0063f88cfbcd021e6a05662ea40124a11a3f005393b4",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1039",
+        "adr:1022"
+      ]
     },
     {
       "id": "spc:2018",
@@ -20202,13 +20260,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "08ed4e4655c229ef92f07ee64cca80a3ccd83a7a3b382a1069f0e8cbef026088",
+      "package_version": "0.2.11",
+      "content_sha256": "b7c083f33a0edcfadd85552e73dc720d89738ac552e9e077fcba9e96e6ee28a1",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2019",
@@ -20219,13 +20278,17 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "8f2aeac01a1d3a64da2aa861d7dbb5286fd612862cd6f74ead5af036a3be6d3b",
+      "package_version": "0.2.11",
+      "content_sha256": "450d9e25c22bb5c5dcb7bfe6fbaf93452cc97e19e08f9a92bb533d509a44b267",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1041",
+        "adr:1030"
+      ]
     },
     {
       "id": "spc:2020",
@@ -20236,13 +20299,16 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "e6f5c65431fd2e165178bfc67952fe52ddc53e2826077392c6686c6221328ac9",
+      "package_version": "0.2.11",
+      "content_sha256": "e48299f0fffadba7d7c5174cb16e99ba345e5f294fd1b6ee24e96aa4e8c358cb",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1041"
+      ]
     },
     {
       "id": "spc:2021",
@@ -20253,13 +20319,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "ecaeac701b9fa73c6ae89ead6c759249a4d60d181c6bfb81764f30f433d80d25",
+      "package_version": "0.2.11",
+      "content_sha256": "8693e33e3a9e79460b916fcde749cc62eea1f6f70802bbe25c6ee466ea5f6efd",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2022",
@@ -20270,13 +20337,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "34de805e85a82d5d0308944c6a31148459b1a38e88d41adc156dae3d06052d4c",
+      "package_version": "0.2.11",
+      "content_sha256": "321e91349731b69c1268e98806702cdba2d06b3fefa2191c57c3c83580a63b53",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2023",
@@ -20287,13 +20355,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "8085aa85f20ba7ddee046b7bd758aa6a18fa67a76d9042cba7e370fbc3ad735a",
+      "package_version": "0.2.11",
+      "content_sha256": "681475b57b787e7b0839274271392fe3393ad68e501967a388498350f3dfaed1",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2024",
@@ -20304,8 +20373,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "1cdeb58252ce12cd6e7bdc6b54970c1af75e5574924e43c6ce86359556859f62",
+      "package_version": "0.2.11",
+      "content_sha256": "e0a4578d1ff957b17d9468de8b130f8363d4371d041e7870e723bae033e2bb4f",
       "status": "draft",
       "supersedes": [
         "spc:2013",
@@ -20320,7 +20389,8 @@
           "at": "2026-04-20T10:29:37Z"
         }
       ],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2025",
@@ -20331,13 +20401,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "a4debbd9ffdcbbc4b5b57320a5d8c294f5694104bd32247cb585e9e0e787786b",
+      "package_version": "0.2.11",
+      "content_sha256": "daf9a8a6d70388ab0da74ab1063d44dba86ec578d44a016c4dfd5022875cdafc",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2026",
@@ -20348,13 +20419,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "d51a30df67c6ba13a3cee3239dbf7b48f2566b0b759ad6f8d2485c05fe8458fb",
+      "package_version": "0.2.11",
+      "content_sha256": "f72e5e51b529828249043312ed42b990199ecf9b18e8cca952da661bba138abb",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2027",
@@ -20365,13 +20437,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "68de6ce7ed6c2478e62832c4a9412b7dfa61cdf22a8d8ed4bf359e18e3231bb1",
+      "package_version": "0.2.11",
+      "content_sha256": "7009f01a4106df192eebbc9057f51db9eb705e139393a110f498dbedb68f732f",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2028",
@@ -20382,13 +20455,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "87e573485ec3911bcf5cac87eb8d81e4977da8845ef33fa7935fb769697190c6",
+      "package_version": "0.2.11",
+      "content_sha256": "72eeba39475b9dec31380af51f2631f010cebbd9e8f31ea6fcd1d828c613f576",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2029",
@@ -20399,13 +20473,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "5d6a6223a3c106df6537ea43f583256e7c49f1267e23b4540d394e57f5d208a7",
+      "package_version": "0.2.11",
+      "content_sha256": "dfad1cf84c7bce3e4bbadd0d4e959d29b5370107643396064acdbe0e5ae4a635",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2030",
@@ -20416,13 +20491,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "02459f14234610e5a3e3c924e4a5028bc637ec8e5511a66d9e61697f12b2f5da",
+      "package_version": "0.2.11",
+      "content_sha256": "f1582fc8e291ec73e220d1a6cf0557b046efa5c467c6a5c6ad64b972b9067bfa",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [],
+      "adr_ids": []
     },
     {
       "id": "spc:2031",
@@ -20433,8 +20509,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "5b53397480874b16e5d7be77e75a8071fa5c78e4f5bf986701b49145cb8add4f",
+      "package_version": "0.2.11",
+      "content_sha256": "701b1d802729c50627f7ad2d1d800c58bb9faab1c0b493987587dd4d08c598c7",
       "status": "superseded",
       "supersedes": [],
       "superseded_by": [
@@ -20453,7 +20529,8 @@
           "at": "2026-04-20T21:50:26Z"
         }
       ],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2032",
@@ -20464,13 +20541,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "97da4a015ba26af9eddda30bc7e5f281b553641c014043fb40e42c0a86cf2d28",
+      "package_version": "0.2.11",
+      "content_sha256": "4311b7d1fb30ed60c90b491f4f580cee2527fd5f847d5c9828c301b338c2b8d1",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2033",
@@ -20481,13 +20559,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "7eabc52c811dd971b72a6bf8c6aaec5d3694df517745cd7368d915b4215630f3",
+      "package_version": "0.2.11",
+      "content_sha256": "c0c6b5def27953f9dcc245c40c5444dc601cd2af4c7f70ede0c6191c5741a25b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2034",
@@ -20498,13 +20577,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "6d02d450585862d247014e1e32a2da86caeb28036871d8e581aebb1bee5930dd",
+      "package_version": "0.2.11",
+      "content_sha256": "274ebdb88fd752d2624189220abcedcf7235a26243621a7cc5c44323e381a70a",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2035",
@@ -20515,13 +20595,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "03a95d1ec915581f31ed4a4ee632e48cadcd123e9bcccdaca6c7d9d905626d22",
+      "package_version": "0.2.11",
+      "content_sha256": "30249e18f4177b2ea6825a139ce7e52053fe2471367978161730d3dd8edb5a81",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2036",
@@ -20532,13 +20613,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "7e371d9e3de84626029aa2e05b8ad14c70ffa8bdb585b7e1f224a91f37b26871",
+      "package_version": "0.2.11",
+      "content_sha256": "71027d5d492ceff6870d790b6ac3437b7c2d79ac0048a6c59a9ffa71fbeccbdb",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2037",
@@ -20549,13 +20631,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "6e081cb1fe1f1776990819982917beb7d2b032ae49dfedc8949b8e7434dc4b34",
+      "package_version": "0.2.11",
+      "content_sha256": "21547b45519415102fb9d4896e7a014f08796ccbc21ac026fa39d80484df87d3",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2038",
@@ -20566,13 +20649,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "91183c415e40c801282f9e79a3526c2acbb5b80747e3879176b9d0f207ee1553",
+      "package_version": "0.2.11",
+      "content_sha256": "53f7df6ff4af5eced873e5e62847c4d381334f618f6c0cd02429231e37f095a3",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2039",
@@ -20583,13 +20667,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "ee421bd0e4881f8cc47a3cf52d98f8efb765bdf3cc71be3b5b76b5122c054217",
+      "package_version": "0.2.11",
+      "content_sha256": "a58472aff5ca963ec465b703effe3c6a50cbb2aaed27ecab316af72535162398",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2040",
@@ -20600,13 +20685,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "ae2f66852d9c2d341ff0396879a918f1db400b2ce9d57f95ca91dabc6ea2e7a8",
+      "package_version": "0.2.11",
+      "content_sha256": "c8bafec67f5bc982caf5fd0c3861d1c38e5a9d7a701319d9c54f135251315bed",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2041",
@@ -20617,13 +20703,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "54894915a4cb118a5bae781bdf82dbce9929f82753c74a4bba875d2651ebc5e8",
+      "package_version": "0.2.11",
+      "content_sha256": "e9bffe6c4ef6ebd9954cdfae1c2be7a5af95a79bcdd5054a4fb68d6bab440942",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2042",
@@ -20634,8 +20721,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "1b13dbae380c68590d0b2c986acc634063d1482a169b709bc5022f52eab7aa0f",
+      "package_version": "0.2.11",
+      "content_sha256": "17f5e5eeea54690ad9fe86497ef15a291c636e91883efd5626c9cb5e7771a435",
       "status": "superseded",
       "supersedes": [],
       "superseded_by": [
@@ -20654,7 +20741,8 @@
           "at": "2026-04-20T21:50:26Z"
         }
       ],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2043",
@@ -20665,13 +20753,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "08a46220077fb696a0b4691ce0524bbefaffc382f977e46118a449c2f7f9c7a5",
+      "package_version": "0.2.11",
+      "content_sha256": "b909396efb94ed35a4e1f7ae933c4a9e1872046627dc37f07208f406ee62876a",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2044",
@@ -20682,13 +20771,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "36c7790f72efbc1d3e64e443a153e155ce629af53ba506ce514c5e063fec6923",
+      "package_version": "0.2.11",
+      "content_sha256": "085f65cfc19c8312d02ac3b872f95754634b51e03838f1c640acbafed0fac341",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2045",
@@ -20699,13 +20789,17 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "b46ecccf29b62c9d39592b57dc2191ba07873d8904a9731e69f96048900ab21d",
+      "package_version": "0.2.11",
+      "content_sha256": "88b00bc1e0edf8835df96e254de7c7a0123aabfc7d236666cdb956209f02848c",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": [
+        "adr:1039",
+        "adr:1022"
+      ]
     },
     {
       "id": "spc:2050",
@@ -20716,8 +20810,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "43c7421ed33852d05302d4293b9dea0a57b955f5159527a66685588e596d309c",
+      "package_version": "0.2.11",
+      "content_sha256": "176704b29d5c4ea2ea52c50c466203dbc28207b9ca2aba95efadd280821955ac",
       "status": "accepted",
       "supersedes": [
         "spc:2031"
@@ -20730,7 +20824,8 @@
           "at": "2026-04-20T21:50:26Z"
         }
       ],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2055",
@@ -20741,15 +20836,16 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "5b94bb01842cc5bf92e13d047cb0afe522e88f17efca4ba7bdcc9b289134ba1a",
+      "package_version": "0.2.11",
+      "content_sha256": "829c2f8527cb87668e30cf29122f36e021f8784a65458a0217a6e6313e37489a",
       "status": "draft",
       "supersedes": [
         "spc:2007"
       ],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2056",
@@ -20760,13 +20856,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "1a548ea3373b21ecd8661071471346e0d966417b443235181c75b26a4e80a3b1",
+      "package_version": "0.2.11",
+      "content_sha256": "c4bf456a208efcf5bb5aee47139aca83a9f809f68961bf0c0e537be9bbf166fc",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2057",
@@ -20777,13 +20874,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "8994df19b7b35c048fb27d472c31a3dca6929e91e7e654d11afdfc0c87e8830a",
+      "package_version": "0.2.11",
+      "content_sha256": "d0b4f1df5240991bb093de066e5ab6626345e5667b4bfe736a28e8d26947ac51",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2058",
@@ -20794,13 +20892,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "648b619f6839fea06ea4583a243e3e77d219305b2c38f1232bdfbc2b1c1f168f",
+      "package_version": "0.2.11",
+      "content_sha256": "574a5566df3441035ef6a2333ca9d3b7ddfbb92b13bfefab7a8b43d215cbdf47",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2059",
@@ -20811,8 +20910,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "e749feb2b179de2db51b487e0a095af4a175c17de0f9e2aa00c5119ad8b1bc66",
+      "package_version": "0.2.11",
+      "content_sha256": "fcb21e59980680ef58b41fc2c0b8abc0c82d9a9a1f726e07dc636538c406f8d1",
       "status": "accepted",
       "supersedes": [
         "spc:2042"
@@ -20825,7 +20924,8 @@
           "at": "2026-04-20T21:50:25Z"
         }
       ],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2060",
@@ -20836,8 +20936,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "a7644798fe3e6da6a38b232aa5830fa7a27ca1bd0b82da6e6491278e2bd136c2",
+      "package_version": "0.2.11",
+      "content_sha256": "d59c0b40603c67b0f733174d1b877468017813bc2a97d5726c4b3c086bbe8249",
       "status": "accepted",
       "supersedes": [
         "spc:2042"
@@ -20850,7 +20950,8 @@
           "at": "2026-04-20T21:50:26Z"
         }
       ],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2061",
@@ -20861,8 +20962,8 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "0cdf578b10fff6511d283b518471b965bb4b885c94837f9231d0e92ae8ab5e94",
+      "package_version": "0.2.11",
+      "content_sha256": "0feccc25b3e3411f4c5ac5146b544ca6bf23fd01ca15722362533e8fe2d95ee1",
       "status": "accepted",
       "supersedes": [
         "spc:2031"
@@ -20875,7 +20976,8 @@
           "at": "2026-04-20T21:50:26Z"
         }
       ],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2062",
@@ -20886,13 +20988,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "20aa0f987881a9808970d3387425a7dce59c8966eec84e38c540bef3ad27f4ba",
+      "package_version": "0.2.11",
+      "content_sha256": "45a5ff18d7eab37f718d86b906241b88e81eb1fbea5e5f4e95a066d88dc9cb77",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2063",
@@ -20903,13 +21006,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "5a6aec03d0a986b7350db86da0be1d9e9dab7f18f9dd0ee95946dbc6c4a52ffd",
+      "package_version": "0.2.11",
+      "content_sha256": "98ca90393468a0f4f75b94ec7b19ec56360413096f81a4fe454ef8852d23053a",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2064",
@@ -20920,13 +21024,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "0398d6565a3c08bcfbc6e3466b07278fb208c15a536013eba549eeae90189fdf",
+      "package_version": "0.2.11",
+      "content_sha256": "3bb4756d3279ad8e5e755f2d7949e82af449fc235495436d5ee32698e32e8ec6",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2065",
@@ -20937,13 +21042,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "eab103bc420a324d1d3077080ade5badf21f373a3c4587b90d2b2b52c4e34964",
+      "package_version": "0.2.11",
+      "content_sha256": "feb9dd1b99e7f0623aa350be0491cb8a659b0bc19cec0d8061bb432cf91f4df3",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2066",
@@ -20954,13 +21060,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "1a40806080a6a088deb78a998b464b38b8e7e706415769155177e96f36e281f2",
+      "package_version": "0.2.11",
+      "content_sha256": "335aafef98320188af905f0cde91f72af31564b78070854c2155a6f3ca43e6f9",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2067",
@@ -20971,13 +21078,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "2a211f198be52f7eb1a33ae5ab8f64b148c1a4a6acea34fe5f5a495775a27aea",
+      "package_version": "0.2.11",
+      "content_sha256": "e9efe93e2afb22be6f38f00516f6326717694503ad136cfd7b6b22f6bcaf620d",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2068",
@@ -20988,13 +21096,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "58c9fdebed802c93d429afefb0d391416d04f05da75a8f3f2837a7f291f5d079",
+      "package_version": "0.2.11",
+      "content_sha256": "7c1713555299d4be146bd514f711e8817e1ebcf546d3674acaed2d18a66e39e8",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2069",
@@ -21005,13 +21114,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "eafe526df1475382bfea6049fcfa526d4922b9dfaaf3d7faf13db06100165e85",
+      "package_version": "0.2.11",
+      "content_sha256": "e6f2db3361ae203b03f132aa5a7effc42b3b6cdc803979125c3c81e1427d9064",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2070",
@@ -21022,13 +21132,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "be1f2e1852b95440522aadabfb009b2af4114241fe8a3e2f36ae729535e373a5",
+      "package_version": "0.2.11",
+      "content_sha256": "451c3f74af66ef59a432a8a19f315955d8fa561384ff7b0ccacb2ba4c6d7fe53",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2071",
@@ -21039,13 +21150,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "c98b40043c62f9722011bf694363a93fd74e7cae86c3e45f43178aaf99e78b1c",
+      "package_version": "0.2.11",
+      "content_sha256": "e72d198acdd5b724f6046697f8560be5e726d971765ae57eac3ae5f4e3548a2f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2072",
@@ -21056,13 +21168,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "a3a2613116b7fede063da1ed0713a66570915058bfe5d64ddf1e0c94687e6360",
+      "package_version": "0.2.11",
+      "content_sha256": "65f792bcef27357843e151adda28aa62433c0251ae230eeb4bcd503c8012fa89",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2073",
@@ -21073,13 +21186,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "4a89059e3d11427e9d27787dd8aa312f52bf4b0323a2cb89534444d58ccae17d",
+      "package_version": "0.2.11",
+      "content_sha256": "969d0735f59e8e6b857d13e77288dd71fb93110f291755ca7ed651a01d087981",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2074",
@@ -21090,13 +21204,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "54d51219167dfa4e23380591095bd9ff63241305227b22f9ab2410d0f3ebdacd",
+      "package_version": "0.2.11",
+      "content_sha256": "6fd8a028e823570fbdedb5e2b554a5a5439a637721869824807c2c5be47ac50e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2075",
@@ -21107,13 +21222,14 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "87b75b17aa7a2b84846aa7648d8d3cc60d5ada533bc05f88097b68803a4f12df",
+      "package_version": "0.2.11",
+      "content_sha256": "f2cb558db8634a38dff18b0059db7bc94cc296e4491d3cde09a698e5df5df55b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "local-policy"
+      "kind": "local-policy",
+      "adr_ids": []
     },
     {
       "id": "spc:2076",
@@ -21124,13 +21240,100 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.10",
-      "content_sha256": "9599a4b256a0cc6ec4422dc351f5ef1074c73dc29ad48d70b39c5401689c1d66",
+      "package_version": "0.2.11",
+      "content_sha256": "f9978152410d49bbf6e3a31002fe167cf3b78836bfa4c97aecedc5e22eac8f40",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "kind": "normative"
+      "kind": "normative",
+      "adr_ids": []
+    },
+    {
+      "id": "spc:2077",
+      "number": 2077,
+      "slug": "docs-route-surface-contract",
+      "title": "Documentation route surface contract",
+      "path": ".ssot/specs/SPEC-2077-docs-route-surface-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "29575822904177a80a6fa99d595a5f2689e7cb6dc4d041b2d476e802fff2f28c",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy",
+      "adr_ids": [
+        "adr:1080",
+        "adr:1030",
+        "adr:1028"
+      ]
+    },
+    {
+      "id": "spc:2078",
+      "number": 2078,
+      "slug": "docs-payload-projection-contract",
+      "title": "Documentation payload projection contract",
+      "path": ".ssot/specs/SPEC-2078-docs-payload-projection-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "91882cb4ebb04b5cbd3214468acd8d120621c29216a67144bcf94632b79cf4d3",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy",
+      "adr_ids": [
+        "adr:1080",
+        "adr:1030"
+      ]
+    },
+    {
+      "id": "spc:2079",
+      "number": 2079,
+      "slug": "docs-ui-mount-surface-contract",
+      "title": "Documentation UI mount surface contract",
+      "path": ".ssot/specs/SPEC-2079-docs-ui-mount-surface-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "5422b22412695a898733a286be0dc0a97290faad4aab2aa974436a849be1eb68",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy",
+      "adr_ids": [
+        "adr:1080",
+        "adr:1040"
+      ]
+    },
+    {
+      "id": "spc:2080",
+      "number": 2080,
+      "slug": "docs-runtime-parity-contract",
+      "title": "Documentation runtime parity contract",
+      "path": ".ssot/specs/SPEC-2080-docs-runtime-parity-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "a7c6555f89a5a026a12d5e4161f048c5547416f22703aafe0d1b13fb3301cce1",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy",
+      "adr_ids": [
+        "adr:1080",
+        "adr:1032",
+        "adr:1041"
+      ]
     }
   ],
   "profiles": []

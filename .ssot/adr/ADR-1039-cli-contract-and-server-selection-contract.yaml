@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "adr"
 id: "adr:1039"
 number: 1039
@@ -8,16 +8,23 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Accepted."
+summary: "P1 CLI tests validate target loading, target error behavior, and server support expectations as one cohesive contract."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Accepted.
+  ## Decision
   
-  The unified `tigrbl` CLI is part of the current target surface. It must expose run/serve/dev/routes/openapi/openrpc/doctor/capabilities and explicit server selection.
+  1. CLI target resolution is canonical and shared across relevant CLI command families.
+  2. Server-runner selection MUST preserve required docs route/payload availability for selected targets.
+  3. Target-resolution and server-selection error classification is normative and stable.
   
-  The governed first-class `--server` set is limited to `tigrcorn`, `uvicorn`, `hypercorn`, and `gunicorn`.
+  ## Context
   
-  `daphne`, `twisted`, and `granian` remain tracked as out-of-boundary rows and must be rejected by the first-class CLI server selector until a future SSOT boundary change accepts them.
+  P1 CLI tests validate target loading, target error behavior, and server support expectations as one cohesive contract.
+  
+  ## Consequences
+  
+  - CLI/server regressions are conformance issues, not implementation details.
+  - Docs/server behavior remains tied to canonical target resolution.

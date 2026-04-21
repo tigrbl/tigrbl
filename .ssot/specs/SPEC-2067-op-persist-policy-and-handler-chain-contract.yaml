@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define persist policy normalization and its projection into handler chains and transaction behavior."
+summary: "Define how operation persist policy is normalized and consumed by handler-chain, transaction, and storage projections."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -38,3 +38,4 @@ body: |-
   - Related specs: `spc:2028`, `spc:2029`, `spc:2060`
   - Related features: `feat:op-extension-surface-001`, `feat:build-handlers-helper-surface-001`, `feat:canonical-op-custom-001`
 spec_kind: "local-policy"
+adr_ids: []

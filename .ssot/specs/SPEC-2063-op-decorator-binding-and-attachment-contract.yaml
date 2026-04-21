@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define how op authoring helpers attach canonical operation declarations to models, apps, routers, plain objects, and explicit bind targets."
+summary: "Define the contract for attaching operation declarations through `op_ctx`, `op_alias`, `alias_ctx`, and equivalent authoring helpers."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -38,3 +38,4 @@ body: |-
   - Related specs: `spc:2025`, `spc:2029`, `spc:2060`
   - Related features: `feat:op-extension-surface-001`, `feat:op-surface-public-projection-001`, `feat:bind-helper-surface-001`, `feat:opspec-contract-001`
 spec_kind: "local-policy"
+adr_ids: []

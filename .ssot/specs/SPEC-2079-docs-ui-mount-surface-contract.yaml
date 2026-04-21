@@ -1,0 +1,25 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2079"
+number: 2079
+slug: "docs-ui-mount-surface-contract"
+title: "Documentation UI mount surface contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Documentation UI mount surface contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Docs UI surfaces are supported as explicit mounts over canonical docs payload routes.
+  2. UI support obligations are limited to availability and mount behavior, not framework-specific rendering internals.
+  3. UI surfaces MUST consume canonical payload routes and MUST NOT define independent projection logic.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1080"
+  - "adr:1040"

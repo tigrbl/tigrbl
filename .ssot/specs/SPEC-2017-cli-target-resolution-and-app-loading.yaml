@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2017"
 number: 2017
@@ -8,37 +8,18 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "This document defines the target grammar and loading semantics for the unified"
+summary: "CLI target resolution and app loading"
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Intent
+  ## Decision
   
-  This document defines the target grammar and loading semantics for the unified
-  `tigrbl` CLI when resolving app, router, and factory targets.
-  
-  ## Invariants
-  
-  - `<module:attr>` targets resolve as module-addressed imports without
-    path-style parsing side effects.
-  - `<path.py:attr>` targets preserve Windows absolute paths and split only on
-    the final `:attr` segment rather than the drive-letter colon.
-  - resolved target attributes may yield an app object, a router object, or a
-    zero-arg factory returning one of those surfaces.
-  - loader failures classify as target-resolution errors rather than as
-    unrelated import-path corruption.
-  - command execution and server-selection entrypoints use the same target
-    loader implementation.
-  
-  ## Non Goals
-  
-  - live server capability negotiation
-  - packaging or install-time smoke certification
-  
-  ## Traceability
-  
-  - ADRs: `adr:1039`
-  - Related specs and implementation tracking live in the registry layer.
+  1. CLI target resolution behavior is canonical and shared.
+  2. Target resolution error classification is normative.
+  3. CLI-resolved targets must preserve required docs and server-runner contract behavior.
 spec_kind: "local-policy"
+adr_ids:
+  - "adr:1039"
+  - "adr:1022"

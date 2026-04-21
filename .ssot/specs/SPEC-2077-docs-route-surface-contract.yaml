@@ -1,0 +1,27 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2077"
+number: 2077
+slug: "docs-route-surface-contract"
+title: "Documentation route surface contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Documentation route surface contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Required documentation route surfaces are part of the canonical operator surface.
+  2. Docs route support includes canonical mount paths, prefix behavior, and enable/disable semantics.
+  3. Route registration for docs surfaces MUST be derived from canonical route materialization and MUST NOT use a side registration subsystem.
+  4. Authn/authz behavior on docs routes is normative and testable.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1080"
+  - "adr:1030"
+  - "adr:1028"
