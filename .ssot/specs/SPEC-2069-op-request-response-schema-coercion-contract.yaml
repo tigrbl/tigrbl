@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2069"
+number: 2069
+slug: "op-request-response-schema-coercion-contract"
+title: "Op request and response schema coercion contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how operation request and response schema declarations resolve from direct schema objects and schema registry references."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define how request and response schema declarations on operations are normalized and projected.
+  
+  ## Canonical Surface
+  
+  - Operation declarations may specify request and response schemas by direct schema object or by owner-local schema reference string.
+  - Schema reference strings must resolve through the canonical schema declaration and registry surface.
+  - Request schema metadata and response schema metadata remain distinct even when both refer to the same schema family.
+  - Schema coercion belongs to operation materialization and schema projection, not to transport-specific builders.
+  
+  ## Projection Rules
+  
+  - `schema_ctx` declarations provide owner-local schema aliases and direction metadata used by operation schema references.
+  - Direct schema objects pass through unchanged after validation.
+  - REST, RPC, OpenAPI, OpenRPC, and schema-bundle projections consume the normalized schema metadata.
+  - Missing or ambiguous schema references must fail as declaration/materialization errors rather than silently producing incomplete docs.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1003`, `adr:1052`, `adr:1075`
+  - Related specs: `spc:2019`, `spc:2025`, `spc:2029`, `spc:2059`, `spc:2068`
+  - Related features: `feat:opspec-contract-001`, `feat:build-schemas-helper-surface-001`, `feat:get-schema-python-helper-surface-001`
+spec_kind: "local-policy"

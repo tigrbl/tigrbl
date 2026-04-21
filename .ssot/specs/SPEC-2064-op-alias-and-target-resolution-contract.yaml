@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2064"
+number: 2064
+slug: "op-alias-and-target-resolution-contract"
+title: "Op alias and target resolution contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how operation alias identity, canonical target identity, and custom target behavior resolve into one canonical operation declaration."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the contract for resolving `alias`, `target`, canonical target defaults, and custom operation targets.
+  
+  ## Canonical Surface
+  
+  - `alias` is the public operation name used for owner lookup, handler exposure, transport projection, and docs projection.
+  - `target` is the semantic operation identity used for default behavior, canonical handler selection, default arity, and capability interpretation.
+  - If `target` is omitted, custom operation declarations default to `custom` unless a canonical declaration form specifies otherwise.
+  - If `alias` is omitted for a canonical target, the public alias defaults to the target name.
+  - Alias declarations over canonical targets preserve canonical target behavior unless an explicit handler override is provided.
+  - `custom` targets are first-class operation extensions and must not mutate canonical target meanings.
+  
+  ## Projection Rules
+  
+  - Owner registries must index by public alias while preserving target metadata.
+  - Core handler selection must use target semantics before considering explicit handler override behavior.
+  - REST and RPC projections use alias for public method naming, but target remains the source for default route shape and operation-family behavior.
+  - Alias and target resolution must be deterministic and inspectable through `OpSpec` or equivalent normalized declarations.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1001`, `adr:1013`, `adr:1018`, `adr:1072`
+  - Related specs: `spc:2025`, `spc:2029`
+  - Related features: `feat:aliasspec-contract-001`, `feat:opspec-contract-001`, `feat:op-surface-public-projection-001`, `feat:op-surface-custom-op-001`
+spec_kind: "local-policy"

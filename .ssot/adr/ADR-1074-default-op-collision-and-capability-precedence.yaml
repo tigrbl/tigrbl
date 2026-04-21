@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1074"
+number: 1074
+slug: "default-op-collision-and-capability-precedence"
+title: "Default op collision and capability precedence"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Default canonical operation projection must resolve route and capability collisions deterministically instead of relying on incidental registration order."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Default canonical OLTP operations may share transport route shapes, HTTP methods, or semantic capability neighborhoods.
+  2. Collisions between default operations must resolve through governed precedence rules rather than incidental build or registration order.
+  3. Capability-gated operations must fall back to the nearest valid canonical operation only when the fallback preserves the same semantic contract.
+  4. REST and JSON-RPC projections must observe the same semantic availability decisions even when their concrete envelopes differ.
+  5. Bulk and non-bulk operation families must not silently shadow each other without an explicit precedence rule.
+  
+  ## Context
+  
+  P0 unit tests cover REST default op verbs, REST/RPC parity for default operations, `create` versus `bulk_create`, `clear` versus `bulk_delete`, and non-bulk-capable fallback behavior. Existing ADRs freeze the default canonical OLTP set and REST/RPC parity, but they do not explicitly decide how default-operation collisions and capability gaps are resolved.
+  
+  ## Consequences
+  
+  - Transport materialization can be tested against deterministic default-op precedence.
+  - Feature coverage can distinguish canonical operation existence from projection eligibility.
+  - Implementations must encode collision rules centrally rather than relying on list order or route-builder side effects.
+  
+  ## Rejected Alternatives
+  
+  - Letting later route registration overwrite earlier default operations.
+  - Treating bulk capability absence as a transport-specific concern.
+  - Allowing REST and RPC to expose different default-operation availability without an explicit semantic reason.

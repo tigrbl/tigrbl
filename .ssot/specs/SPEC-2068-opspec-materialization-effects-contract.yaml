@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2068"
+number: 2068
+slug: "opspec-materialization-effects-contract"
+title: "OpSpec materialization effects contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the downstream projections that must derive from a materialized OpSpec."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the required projection effects of a materialized `OpSpec`.
+  
+  ## Canonical Surface
+  
+  - `OpSpec` is the normalized operation declaration consumed by projection builders.
+  - Materialization may produce schemas, column/default bindings, storage behavior, REST routes, JSON-RPC methods, hooks, handler atoms, documentation records, and system-step registry entries.
+  - Projection builders may produce different views of the same operation, but they must not reinterpret raw decorator inputs independently.
+  - Projection gaps are implementation-status gaps against the materialization contract.
+  
+  ## Projection Rules
+  
+  - Schema builders consume operation request and response metadata.
+  - Handler builders consume target, alias, arity, persist policy, hooks, and core handler metadata.
+  - REST and JSON-RPC builders consume normalized operation bindings and semantic metadata.
+  - Hook and atom registries consume normalized phase and handler-chain projections.
+  - System registries and docs consume materialized operation records rather than transport-specific side channels.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1001`, `adr:1003`, `adr:1052`, `adr:1075`
+  - Related specs: `spc:2014`, `spc:2019`, `spc:2025`, `spc:2028`, `spc:2029`, `spc:2060`
+  - Related features: `feat:opspec-contract-001`, `feat:build-schemas-helper-surface-001`, `feat:build-handlers-helper-surface-001`, `feat:build-rest-helper-surface-001`
+spec_kind: "local-policy"
