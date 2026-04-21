@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2076"
+number: 2076
+slug: "rfc-8785-jcs-canonicalization-contract"
+title: "RFC 8785 JCS canonicalization contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the repository contract for RFC 8785 JCS canonicalization so canonical bytes are reproducible across runtime surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  Define the repository contract for RFC 8785 JCS canonicalization so canonical bytes are reproducible across runtime surfaces.
+  
+  ## Contract
+  
+  1. Canonicalization must serialize JSON values according to RFC 8785 ordering and formatting rules.
+  2. Object member ordering must be deterministic and based on lexicographic ordering of member names.
+  3. Numbers must be rendered in the RFC 8785 canonical number form; non-finite values are invalid.
+  4. String escaping and Unicode handling must match RFC 8785 canonical output requirements.
+  5. Input data outside JSON/JCS representable constraints must be rejected with deterministic error semantics.
+  6. Equivalent semantic payloads must yield identical canonical UTF-8 byte sequences across supported runtimes.
+  7. Any API or helper that advertises canonical JSON output must use the governed JCS path rather than ad-hoc serialization.
+  
+  ## Related Decisions
+  
+  - ADR-0600 defines canonical JSON as a core registry principle.
+  - ADR-1079 elevates RFC 8785 JCS as the canonicalization boundary for proof-bound payloads.
+  
+  ## Verification
+  
+  - Golden-vector tests should assert canonical bytes for representative object, string, and numeric edge cases.
+  - Conformance tests should assert deterministic rejection for non-finite numbers and other non-JCS inputs.
+  - Cross-runtime tests should assert equivalent bytes for the same semantic payload.
+spec_kind: "normative"

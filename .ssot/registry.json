@@ -8806,6 +8806,75 @@
       "claim_ids": [],
       "test_ids": [],
       "requires": []
+    },
+    {
+      "id": "feat:rfc-8785-jcs-conformance-vectors-001",
+      "title": "RFC 8785 JCS conformance vectors",
+      "description": "Add golden vectors for ordering, string escaping, unicode, and numeric canonicalization to assert byte-stable JCS output.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "conformance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2076"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rfc-8785-jcs-canonicalizer-001",
+      "title": "RFC 8785 JCS canonicalizer",
+      "description": "Provide a governed canonicalization path that emits RFC 8785 JCS canonical UTF-8 JSON bytes for proof-bound payloads.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "conformance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2076"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rfc-8785-jcs-rejection-semantics-001",
+      "title": "RFC 8785 JCS rejection semantics",
+      "description": "Define deterministic fail-closed behavior for non-JCS inputs such as non-finite numbers and unsupported JSON forms.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "conformance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2076"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
     }
   ],
   "tests": [
@@ -19605,6 +19674,22 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1079",
+      "number": 1079,
+      "slug": "rfc-8785-jcs-canonicalization-boundary",
+      "title": "RFC 8785 JCS canonicalization boundary",
+      "path": ".ssot/adr/ADR-1079-rfc-8785-jcs-canonicalization-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "9ea8e9a494c8eb96e8f0bbda5c6d2a4389bed5aa11410212d39f4b0e1f7ab42e",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -21029,6 +21114,23 @@
       "superseded_by": [],
       "status_notes": [],
       "kind": "local-policy"
+    },
+    {
+      "id": "spc:2076",
+      "number": 2076,
+      "slug": "rfc-8785-jcs-canonicalization-contract",
+      "title": "RFC 8785 JCS canonicalization contract",
+      "path": ".ssot/specs/SPEC-2076-rfc-8785-jcs-canonicalization-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "9599a4b256a0cc6ec4422dc351f5ef1074c73dc29ad48d70b39c5401689c1d66",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative"
     }
   ],
   "profiles": []
