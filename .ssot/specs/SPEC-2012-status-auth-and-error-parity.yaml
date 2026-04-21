@@ -11,7 +11,11 @@ tags: []
 summary: "Status, Auth, and Error Parity"
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated status/auth/error parity with P2 security and error-mapping evidence."
+    at: "2026-04-21T07:42:23Z"
 references: []
 body: |-
   ## Decision
@@ -19,8 +23,26 @@ body: |-
   1. Status/auth/error parity includes runtime and documentation projections.
   2. OpenAPI/OpenRPC documented security schemes and challenges MUST match runtime behavior.
   3. Docs/runtime divergence in auth or error behavior is non-conforming.
+  4. REST and JSON-RPC errors MUST derive from the same canonical outcome rules.
+  5. Anonymous access, auth provider behavior, API key behavior, owner/tenant policy, and key digest behavior are parity-sensitive runtime contracts.
+  6. Validation errors and transport error envelopes may differ only by protocol-native projection shape.
+  
+  ## P2 Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_allow_anon.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_apikey_generation.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_key_digest_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_owner_tenant_policy.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_error_mappings.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1032`, `adr:1011`, `adr:1037`, `adr:1014`
+  - Related specs: `spc:2080`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1032"
   - "adr:1011"
   - "adr:1037"
+  - "adr:1014"

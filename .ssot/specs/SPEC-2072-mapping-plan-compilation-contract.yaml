@@ -11,7 +11,11 @@ tags: []
 summary: "This contract specifies the observable mapping-plan compilation shape between declarations and materialized operation projections."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated mapping-plan compilation with P2 routing/name/materialization evidence."
+    at: "2026-04-21T07:42:53Z"
 references: []
 body: |-
   ## Purpose
@@ -26,11 +30,20 @@ body: |-
   4. `mapping_plan.plan(ctx)` must expose the visible operation specs produced from the collected and merged model declarations.
   5. Default canonical operations must become visible through mapping-plan output after declaration collection and merge.
   6. Mapping-plan shape changes that add, remove, reorder, or rename phases require explicit SSOT document review.
+  7. Nested routing, acronym resource naming, and path-schema/RPC materialization must derive from compiled mapping output rather than transport-local naming logic.
   
   ## Related Decisions
   
   - ADR-1016 governs kernel plan compilation broadly.
   - ADR-1077 narrows the mapping/bootstrap compilation boundary.
+  - ADR-1014 governs REST/JSON-RPC semantic parity.
+  
+  ## P2 Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_acronym_route_name.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_nested_path_schema_and_rpc.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_nested_routing_depth.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_symmetry_parity.py`
   
   ## Verification
   
@@ -39,4 +52,6 @@ body: |-
   - Tests should keep mapping-plan compilation separate from transport execution behavior.
 spec_kind: "local-policy"
 adr_ids:
+  - "adr:1016"
   - "adr:1077"
+  - "adr:1014"

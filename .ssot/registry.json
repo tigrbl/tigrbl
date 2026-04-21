@@ -20133,13 +20133,23 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "f3031e70cf7c1bf522a4670e3b2383cc03b6be3f3a4ba9d2a10a90dd7ad4a952",
+      "content_sha256": "73e735869e4d9119d2d5b16c0a8665843bf6015e1df8196024faa4b0de47b596",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "adr_ids": []
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated AppSpec/Uvicorn parity with P2 app/API runtime evidence.",
+          "at": "2026-04-21T07:42:18Z"
+        }
+      ],
+      "adr_ids": [
+        "adr:1031",
+        "adr:1038",
+        "adr:1014"
+      ]
     },
     {
       "id": "spc:2012",
@@ -20151,16 +20161,23 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "2de6c20287ac8e75c0c56244e6ce87285d12557f650773211def8bae08e601d9",
+      "content_sha256": "14f68a73a4c36c6b86acc258e9db17f00598832e410ca81611d65db31af5840d",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated status/auth/error parity with P2 security and error-mapping evidence.",
+          "at": "2026-04-21T07:42:23Z"
+        }
+      ],
       "adr_ids": [
         "adr:1032",
         "adr:1011",
-        "adr:1037"
+        "adr:1037",
+        "adr:1014"
       ]
     },
     {
@@ -20329,14 +20346,21 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "e48299f0fffadba7d7c5174cb16e99ba345e5f294fd1b6ee24e96aa4e8c358cb",
+      "content_sha256": "d69a6ca9e60ddff8b13b02a9f71ac9d10f44341a939b5bd47ec7fbb3de35b6e3",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated operator framing with JSON-RPC batch semantics.",
+          "at": "2026-04-21T07:42:30Z"
+        }
+      ],
       "adr_ids": [
-        "adr:1041"
+        "adr:1041",
+        "adr:1014"
       ]
     },
     {
@@ -20819,15 +20843,22 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "88b00bc1e0edf8835df96e254de7c7a0123aabfc7d236666cdb956209f02848c",
+      "content_sha256": "80bbad15e773f5312ecdef78365d37d1d11287c6a00f24d9a977c98d2723eae5",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated server runner surface with Uvicorn protocol-mode semantic invariants.",
+          "at": "2026-04-21T07:42:35Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
         "adr:1039",
-        "adr:1022"
+        "adr:1022",
+        "adr:1038"
       ]
     },
     {
@@ -21056,13 +21087,22 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "678b9570fd356af98fcd5fe993867388c58de2803c8137556fa155522a892716",
+      "content_sha256": "ab86bf3630262b4a316c339b0e615019c185a7fcce39ec2cd0c52c8defd8e43b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated alias and target resolution with P2 alias policy evidence.",
+          "at": "2026-04-21T07:42:41Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
+        "adr:1001",
+        "adr:1013",
+        "adr:1018",
         "adr:1072"
       ]
     },
@@ -21076,13 +21116,23 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "e07ccba64c345220c77e6e86ce18ff6b5a14bd1d4df03e8bdae315afff78a6f0",
+      "content_sha256": "a4ae0c0c627fb3bed1c70fb036a40fe2d3b89546d13790c24a94f24f965e0312",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated default OLTP projection with P2 REST/RPC/default-op evidence.",
+          "at": "2026-04-21T07:42:46Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
+        "adr:1013",
+        "adr:1014",
+        "adr:1047",
+        "adr:1051",
         "adr:1074"
       ]
     },
@@ -21218,14 +21268,22 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "6ff8c3879757ee02261ead2cbc699bf41c0f2147cc45662c8c4a17425d206c1f",
+      "content_sha256": "a47fe612ffd37e7da183e91d3c4aa0d8f7e50a59c0daa0a3643fe748ae7b724b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated mapping-plan compilation with P2 routing/name/materialization evidence.",
+          "at": "2026-04-21T07:42:53Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
-        "adr:1077"
+        "adr:1016",
+        "adr:1077",
+        "adr:1014"
       ]
     },
     {
@@ -21320,11 +21378,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "29575822904177a80a6fa99d595a5f2689e7cb6dc4d041b2d476e802fff2f28c",
+      "content_sha256": "d6c47eb4c43a5af2e17d2304fdb5a8c3fa13209d57c3796083f33b760d3af3be",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated docs route surface with P2 mount evidence.",
+          "at": "2026-04-21T07:42:57Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
         "adr:1080",
@@ -21342,15 +21406,22 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "91882cb4ebb04b5cbd3214468acd8d120621c29216a67144bcf94632b79cf4d3",
+      "content_sha256": "d321aaa4d96299d09cf55599ca871d7311d17beac412984d39a9b4374a861b3b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated docs payload projection with P2 schema and payload evidence.",
+          "at": "2026-04-21T07:43:02Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
         "adr:1080",
-        "adr:1030"
+        "adr:1030",
+        "adr:1014"
       ]
     },
     {
@@ -21363,11 +21434,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "5422b22412695a898733a286be0dc0a97290faad4aab2aa974436a849be1eb68",
+      "content_sha256": "820e0d411161d3fdd0c4765855414b4512026fe24d8e3f38068dc2e054fe2fc1",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated docs UI mount surface with Swagger and Lens P2 evidence.",
+          "at": "2026-04-21T07:43:08Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
         "adr:1080",
@@ -21384,16 +21461,49 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "a7c6555f89a5a026a12d5e4161f048c5547416f22703aafe0d1b13fb3301cce1",
+      "content_sha256": "782f2d9b06de910288203b1959af7b963e156df2da787d3d2314d00516bd6bf6",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Updated docs runtime parity with P2 docs/schema/runtime evidence.",
+          "at": "2026-04-21T07:43:13Z"
+        }
+      ],
       "kind": "local-policy",
       "adr_ids": [
         "adr:1080",
         "adr:1032",
-        "adr:1041"
+        "adr:1041",
+        "adr:1014"
+      ]
+    },
+    {
+      "id": "spc:2081",
+      "number": 2081,
+      "slug": "deprecated-export-compatibility-window-policy",
+      "title": "Deprecated export compatibility window policy",
+      "path": ".ssot/specs/SPEC-2081-deprecated-export-compatibility-window-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "00508cef962a0f9ebe166af0b469673b67696c6ecf19dae8019aa6b7d874f8e4",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created SPEC for deprecated-export compatibility window policy reflected by P2 tests.",
+          "at": "2026-04-21T07:43:18Z"
+        }
+      ],
+      "kind": "local-policy",
+      "adr_ids": [
+        "adr:1035"
       ]
     }
   ],
