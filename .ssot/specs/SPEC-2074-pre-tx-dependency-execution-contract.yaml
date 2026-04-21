@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2074"
 number: 2074
@@ -39,4 +39,5 @@ body: |-
   - Tests should prove failures occur before `START_TX`.
   - Tests should verify REST and JSON-RPC behavior separately when both transports execute the semantic operation.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1078"

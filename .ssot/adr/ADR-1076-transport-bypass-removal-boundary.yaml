@@ -1,17 +1,21 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "adr"
 id: "adr:1076"
 number: 1076
 slug: "transport-bypass-removal-boundary"
 title: "Transport bypass removal boundary"
-status: "draft"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The P0 transport boundary tests assert that old `tigrbl.transport` modules, dispatcher files, gateway runtime bypasses, and top-level dispatch exports remain absent. Existing KernelPlan dispatch ADRs define the positive owner of dispatch, but the tests also need a negative boundary decision that makes reintroduction of old bypass surfaces explicitly non-conforming."
+summary: "The transport boundary tests assert that old `tigrbl.transport` modules, dispatcher files, gateway runtime bypasses, and top-level dispatch exports remain absent. Existing KernelPlan dispatch ADRs define the positive owner of dispatch, but the tests also need a negative boundary decision that makes reintroduction of old bypass surfaces explicitly non-conforming."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted transport bypass removal update for compiled mapping dispatch and P2 boundary evidence."
+    at: "2026-04-21T07:11:50Z"
 references: []
 body: |-
   ## Decision
@@ -19,18 +23,29 @@ body: |-
   1. Legacy transport-owned semantic dispatch modules are outside the active architecture boundary.
   2. Removed transport modules, dispatcher files, gateway/runtime bypasses, and public dispatch exports must stay absent unless superseded by a new accepted ADR.
   3. Concrete transport surfaces may normalize ingress envelopes, but they must not own semantic operation lookup, matching, or dispatch.
-  4. Public facade exports such as `dispatch_operation` and `resolve_operation` must not be reintroduced as compatibility aliases for removed transport bypasses.
-  5. Negative architecture tests that assert absence of removed modules are first-class boundary evidence.
+  4. Runtime dispatch must use compiled mapping artifacts as the source of routing and operation resolution.
+  5. Public facade exports such as `dispatch_operation` and `resolve_operation` must not be reintroduced as compatibility aliases for removed transport bypasses.
+  6. Negative architecture and integration tests that assert absence of removed modules are first-class boundary evidence.
   
   ## Context
   
-  The P0 transport boundary tests assert that old `tigrbl.transport` modules, dispatcher files, gateway runtime bypasses, and top-level dispatch exports remain absent. Existing KernelPlan dispatch ADRs define the positive owner of dispatch, but the tests also need a negative boundary decision that makes reintroduction of old bypass surfaces explicitly non-conforming.
+  The transport boundary tests assert that old `tigrbl.transport` modules, dispatcher files, gateway runtime bypasses, and top-level dispatch exports remain absent. Existing KernelPlan dispatch ADRs define the positive owner of dispatch, but the tests also need a negative boundary decision that makes reintroduction of old bypass surfaces explicitly non-conforming.
+  
+  P2 tests also exercise dispatch parity through Uvicorn-backed runtime paths. Those tests reflect the same decision from the runtime side: transport behavior may enter through concrete bindings, but semantic operation selection must converge on the compiled mapping path.
   
   ## Consequences
   
   - Removed dispatch surfaces are tracked as architectural exclusions, not incidental cleanup.
-  - New transport work must extend the binding and KernelPlan path rather than reviving removed modules.
-  - Regression tests can link directly to this boundary without needing to prove runtime behavior.
+  - New transport work must extend the binding, mapping-plan, and KernelPlan path rather than reviving removed modules.
+  - Regression tests can link directly to this boundary without needing to prove runtime behavior in every negative package-boundary assertion.
+  - Dispatch parity failures should be treated as boundary regressions when they reveal a bypass around compiled mapping artifacts.
+  
+  ## Evidence
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_transport_dispatch_parity.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_uvicorn_transport_behavior.py`
+  - `pkgs/core/tigrbl_tests/tests/architecture/test_transport_dispatch_convergence.py`
+  - `pkgs/core/tigrbl_tests/tests/architecture/test_transport_boundaries.py`
   
   ## Rejected Alternatives
   

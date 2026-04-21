@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2075"
 number: 2075
@@ -39,4 +39,7 @@ body: |-
   - Tests should separate diagnostics projection assertions from execution assertions.
   - Tests should link omitted diagnostics fields to explicit feature gaps or status notes.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1050"
+  - "adr:1075"
+  - "adr:1078"

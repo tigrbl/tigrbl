@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2072"
 number: 2072
@@ -38,4 +38,5 @@ body: |-
   - Harness tests should verify visible default operation specs for representative models.
   - Tests should keep mapping-plan compilation separate from transport execution behavior.
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1077"
