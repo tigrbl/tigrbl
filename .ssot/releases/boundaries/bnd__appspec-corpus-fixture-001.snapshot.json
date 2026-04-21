@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-21T21:53:03Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "6db2eef69b13650515be581e619f0bbad1b4d8187c3cc152ee90477dd9d4cf36",
+  "boundary": {
+    "id": "bnd:appspec-corpus-fixture-001",
+    "title": "AppSpec corpus fixture boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:appspec-corpus-canonical-fixture-001",
+      "feat:appspec-corpus-negative-fail-closed-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:appspec-corpus-canonical-fixture-001",
+      "title": "AppSpec canonical corpus fixture",
+      "description": "Govern canonical AppSpec corpus fixture as test-owned source of truth.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "appspec-corpus",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2082"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:appspec-corpus-negative-fail-closed-001",
+      "title": "AppSpec negative corpus fail-closed lane",
+      "description": "Govern fail-closed AppSpec negative corpus runtime behavior.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "appspec-corpus",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2082"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:appspec-corpus-fixture-001",
+    "feature_count": 2,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

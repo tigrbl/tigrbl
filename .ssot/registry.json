@@ -13147,6 +13147,62 @@
         "tst:tigrbl-concrete-tests-test-kernel-independence"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:appspec-corpus-canonical-fixture-001",
+      "title": "AppSpec canonical corpus fixture",
+      "description": "Govern canonical AppSpec corpus fixture as test-owned source of truth.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "appspec-corpus",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2082"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:appspec-corpus-negative-fail-closed-001",
+      "title": "AppSpec negative corpus fail-closed lane",
+      "description": "Govern fail-closed AppSpec negative corpus runtime behavior.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "appspec-corpus",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2082"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -25861,6 +25917,42 @@
       "evidence_ids": [
         "evd:tigrbl-concrete-kernel-independence-pytest"
       ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+      "title": "AppSpec corpus fixture harness",
+      "status": "passing",
+      "kind": "acceptance",
+      "path": "pkgs/core/tigrbl_tests/tests/harness/test_04_appspec_corpus_fixture.py",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn",
+      "title": "AppSpec corpus uvicorn e2e",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/harness_e2e/test_01_appspec_corpus_uvicorn.py",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
     }
   ],
   "claims": [
@@ -29878,6 +29970,42 @@
       "evidence_ids": [
         "evd:tigrbl-concrete-kernel-independence-pytest"
       ]
+    },
+    {
+      "id": "clm:appspec-corpus-canonical-parity-001",
+      "title": "Canonical AppSpec corpus preserves REST and JSON-RPC parity",
+      "status": "published",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Canonical AppSpec corpus cases materialize and execute under uvicorn with stable REST/JSON-RPC parity behavior.",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    },
+    {
+      "id": "clm:appspec-corpus-negative-fail-closed-001",
+      "title": "Negative AppSpec corpus lanes fail closed",
+      "status": "published",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Negative AppSpec corpus cases preserve fail-closed runtime behavior for unsupported dispatch paths.",
+      "feature_ids": [
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
     }
   ],
   "evidence": [
@@ -33861,6 +33989,22 @@
       "test_ids": [
         "tst:tigrbl-concrete-tests-test-kernel-independence"
       ]
+    },
+    {
+      "id": "evd:appspec-corpus-pytest",
+      "title": "AppSpec corpus pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": "reports/certification_state/2026-04-21-appspec-corpus-fixture.md",
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ]
     }
   ],
   "issues": [],
@@ -33990,6 +34134,17 @@
       "frozen": true,
       "feature_ids": [
         "feat:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "profile_ids": []
+    },
+    {
+      "id": "bnd:appspec-corpus-fixture-001",
+      "title": "AppSpec corpus fixture boundary",
+      "status": "frozen",
+      "frozen": true,
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001"
       ],
       "profile_ids": []
     }
@@ -34181,6 +34336,19 @@
       "evidence_ids": [
         "evd:tigrbl-concrete-kernel-independence-pytest"
       ]
+    },
+    {
+      "id": "rel:0.3.19.dev1-appspec-corpus-fixture",
+      "version": "0.3.19.dev1-appspec-corpus-fixture",
+      "status": "published",
+      "boundary_id": "bnd:appspec-corpus-fixture-001",
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
     }
   ],
   "tooling": {
@@ -34252,13 +34420,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "e7bd19665fa1a92520ee9b21da493bd5e3e026209ac31fd64e344fcb1710bba5",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "The only authored machine-readable source of truth is `.ssot/registry.json`."
+      "status_notes": []
     },
     {
       "id": "adr:0601",
@@ -34269,13 +34436,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "29b6b133e5ecd059c90da8ab7ef931f940ac566cb955a9f4b36a8d6b5f1e2ef7",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Features are the only targetable implementation units. There is no separate `targets[]` section."
+      "status_notes": []
     },
     {
       "id": "adr:0602",
@@ -34286,13 +34452,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "761ffd5988667d68d1ed70d24b1c15946c69c1143115b0230a0a6ccb5cfa4238",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Issues and tickets can be planned as current, next, future, explicit, backlog, or out-of-bounds, but they are not substitute targets for features."
+      "status_notes": []
     },
     {
       "id": "adr:0603",
@@ -34303,13 +34468,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "f8b91bbe54942b2157744e0419b7f6c4b6bb84d02497a391ca1a088114c3c3da",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "The canonical registry is entity-centric JSON with explicit references. A graph export is derived from it."
+      "status_notes": []
     },
     {
       "id": "adr:0604",
@@ -34320,13 +34484,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "3e8243fe57d04a67d2eb94c02f100a466b7dd20566d292fd336979a35abdc6a2",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Every first-class entity uses a normalized prefixed ID."
+      "status_notes": []
     },
     {
       "id": "adr:0605",
@@ -34337,13 +34500,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "4aef17bb539ad05e48b04b70ee69119dc973ee4e16be407bc5d2d11fba0af607",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Claim status expresses lifecycle progression. Claim tier expresses assurance strength."
+      "status_notes": []
     },
     {
       "id": "adr:0606",
@@ -34354,13 +34516,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "a2331253dabab9dc3e407adb55b25f0febb6c16ad590a515d97ac19f33a9b962",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "`implementation_status` and `lifecycle.stage` are distinct fields."
+      "status_notes": []
     },
     {
       "id": "adr:0607",
@@ -34371,13 +34532,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "2145618a72dff6597602ca96df720776b7ac13023fe8ff5462be021621446940",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Frozen boundaries and promoted/published releases emit immutable snapshots with hashes."
+      "status_notes": []
     },
     {
       "id": "adr:0608",
@@ -34388,13 +34548,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "3026817d03ed825e1435612c08557b01dfa1fcadd5d1db32172169b79c7a27b1",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Validation, certification, promotion, publication, and lifecycle transitions refuse to proceed on guard violations."
+      "status_notes": []
     },
     {
       "id": "adr:0609",
@@ -34405,13 +34564,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "400819479d8e5036da5fd39e30b768f82785aecd3f06fc18738cd1a2b0cce079",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "This is an `ssot-origin` ADR copied into downstream SSOT repositories."
+      "status_notes": []
     },
     {
       "id": "adr:0610",
@@ -34422,13 +34580,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "c138f93e130f63857a2777dd40f3856fdceba7f4768d61dd0f2d0e5a9c7fe4cc",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Breaking schema changes increment `schema_version` and require migration."
+      "status_notes": []
     },
     {
       "id": "adr:0611",
@@ -34439,13 +34596,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "87fd1773ace8f82b7707dda6e8b633e285da493e8b29ea17c0dc776da3b4d8b9",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "The SSOT core contract governs and validates the registry graph. Repository-specific evidence generation is implemented outside the core (or through adapters) per repository."
+      "status_notes": []
     },
     {
       "id": "adr:0612",
@@ -34456,13 +34612,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "c3534a8ae8a38bdd1328cc652b750530fdd8c84e00ecf8e19c81301030da822f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "Files under `.ssot` MUST respect these limits:"
+      "status_notes": []
     },
     {
       "id": "adr:0613",
@@ -34473,13 +34628,12 @@
       "origin": "ssot-origin",
       "managed": true,
       "immutable": true,
-      "package_version": "0.2.10",
+      "package_version": "0.2.11",
       "content_sha256": "52047d10ab6538e7423e6233490be2eb699cd31e374f5b81d3daeeeda8eab98d",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": [],
-      "summary": "The registry needed an entity between atomic features and release boundaries:"
+      "status_notes": []
     },
     {
       "id": "adr:1000",
@@ -35914,6 +36068,22 @@
         }
       ],
       "summary": "The example test suite cover OpenAPI path exposure, system endpoint visibility, security scheme projection, diagnostics mounts, Uvicorn runtime parity, and client-visible REST/RPC behavior. Those tests reflect a documentation architecture where docs are generated from canonical metadata and materialized framework state, then checked against runtime behavior."
+    },
+    {
+      "id": "adr:1081",
+      "number": 1081,
+      "slug": "canonical-appspec-corpus-fixture-and-fail-closed-lanes",
+      "title": "Canonical AppSpec corpus fixture and fail-closed lane governance",
+      "path": ".ssot/adr/ADR-1081-canonical-appspec-corpus-fixture-and-fail-closed-lanes.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "95a33a58961073bf2653b4760af87bd5c525c186b832d9a87b14c0fbbce4e9c8",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -37917,6 +38087,26 @@
         "adr:1035"
       ],
       "summary": "Deprecated export compatibility window policy"
+    },
+    {
+      "id": "spc:2082",
+      "number": 2082,
+      "slug": "appspec-corpus-fixture-contract",
+      "title": "AppSpec corpus fixture contract",
+      "path": ".ssot/specs/SPEC-2082-appspec-corpus-fixture-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "a44643487e44a715529f3d90f674cce4ca133eab132e02b4d56b55bcc608adc4",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1081"
+      ]
     }
   ],
   "profiles": []
