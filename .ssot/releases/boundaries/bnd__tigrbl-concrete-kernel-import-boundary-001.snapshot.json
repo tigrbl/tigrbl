@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-21T21:40:13Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "b1e8ce4501ca7904c5e7a254e1d4df82f4c4c080232c4e53f9aedcdb4adaec30",
+  "boundary": {
+    "id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+    "title": "tigrbl_concrete kernel import boundary closure",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:tigrbl-concrete-kernel-import-boundary-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:tigrbl-concrete-kernel-import-boundary-001",
+      "title": "tigrbl_concrete kernel import boundary",
+      "description": "Ensure tigrbl_concrete never imports tigrbl_kernel; only tigrbl_runtime owns kernel integration and lifecycle mediation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:1001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-concrete-tests-test-kernel-independence"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+    "feature_count": 1,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

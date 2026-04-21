@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "registry_path": ".ssot/registry.json",
+  "release": {
+    "release_id": "rel:0.3.19.dev1-concrete-kernel-boundary",
+    "passed": true,
+    "failures": [],
+    "warnings": [],
+    "claims": [
+      {
+        "claim_id": "clm:tigrbl-concrete-kernel-import-boundary-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "evd:tigrbl-concrete-kernel-independence-pytest",
+        "passed": true,
+        "failures": []
+      }
+    ],
+    "profiles": [],
+    "boundary": {
+      "id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+      "profile_ids": [],
+      "resolved_feature_ids": [
+        "feat:tigrbl-concrete-kernel-import-boundary-001"
+      ]
+    },
+    "summary": {
+      "boundary_id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+      "boundary_feature_count": 1,
+      "boundary_profile_count": 0,
+      "release_claim_count": 1,
+      "release_evidence_count": 1
+    }
+  },
+  "boundary_scope": {
+    "boundary_id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+    "profile_ids": [],
+    "feature_ids": []
+  },
+  "summary": {
+    "counts": {
+      "features": 368,
+      "profiles": 0,
+      "tests": 530,
+      "claims": 156,
+      "evidence": 192,
+      "issues": 0,
+      "risks": 0,
+      "boundaries": 4,
+      "releases": 2,
+      "adrs": 91,
+      "specs": 86
+    },
+    "profile_status": {
+      "passing": 0,
+      "failing": 0,
+      "draft": 0
+    }
+  }
+}

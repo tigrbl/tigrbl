@@ -29865,7 +29865,7 @@
     {
       "id": "clm:tigrbl-concrete-kernel-import-boundary-001",
       "title": "tigrbl_concrete does not import tigrbl_kernel",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "architecture-boundary",
       "description": "tigrbl_concrete does not statically or dynamically import tigrbl_kernel, does not declare tigrbl-kernel as a dependency, and package import does not load tigrbl_kernel; only tigrbl_runtime owns kernel integration.",
@@ -33982,6 +33982,16 @@
         "feat:server-support-gunicorn-001"
       ],
       "profile_ids": []
+    },
+    {
+      "id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+      "title": "tigrbl_concrete kernel import boundary closure",
+      "status": "frozen",
+      "frozen": true,
+      "feature_ids": [
+        "feat:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "profile_ids": []
     }
   ],
   "releases": [
@@ -34158,6 +34168,18 @@
         "evd:transport-dispatch-jsonrpc-test",
         "evd:transport-dispatch-parity-test",
         "evd:transport-dispatch-boundary-snapshot"
+      ]
+    },
+    {
+      "id": "rel:0.3.19.dev1-concrete-kernel-boundary",
+      "version": "0.3.19.dev1-concrete-kernel-boundary",
+      "status": "published",
+      "boundary_id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+      "claim_ids": [
+        "clm:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-concrete-kernel-independence-pytest"
       ]
     }
   ],
