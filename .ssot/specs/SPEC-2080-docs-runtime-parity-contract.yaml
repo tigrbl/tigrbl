@@ -11,7 +11,11 @@ tags: []
 summary: "Documentation runtime parity contract"
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated docs runtime parity with P2 docs/schema/runtime evidence."
+    at: "2026-04-21T07:43:13Z"
 references: []
 body: |-
   ## Decision
@@ -20,8 +24,23 @@ body: |-
   2. Security behavior (auth challenges, documented schemes, authorization expectations) MUST be parity-checked between runtime and docs.
   3. Operator visibility exposed at runtime MUST match operator visibility in docs payloads.
   4. Parity failures are conformance failures.
+  5. REST/JSON-RPC parity, schema projection parity, and docs payload parity are one conformance concern when a test exercises all three.
+  
+  ## P2 Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_bulk_docs_client.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_rest_rpc_parity_v3.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_schema_ctx_op_ctx_integration.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1080`, `adr:1032`, `adr:1041`, `adr:1014`
+  - Related specs: `spc:2012`, `spc:2077`, `spc:2078`, `spc:2079`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"
   - "adr:1032"
   - "adr:1041"
+  - "adr:1014"

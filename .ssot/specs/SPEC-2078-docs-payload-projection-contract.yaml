@@ -11,7 +11,11 @@ tags: []
 summary: "Documentation payload projection contract"
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated docs payload projection with P2 schema and payload evidence."
+    at: "2026-04-21T07:43:02Z"
 references: []
 body: |-
   ## Decision
@@ -20,7 +24,21 @@ body: |-
   2. Payload generation MUST be deterministic for equivalent canonical inputs.
   3. Security, operation visibility, request/response schema references, and status/error metadata emitted in payloads are normative.
   4. Payload projections MUST derive from canonical metadata ownership boundaries.
+  5. Bulk operation schemas, clear response schemas, schema examples, and client-facing request/response schema objects are part of the payload projection contract.
+  
+  ## P2 Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_bulk_docs_client.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_schema.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1080`, `adr:1030`, `adr:1014`
+  - Related specs: `spc:2069`, `spc:2080`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"
   - "adr:1030"
+  - "adr:1014"

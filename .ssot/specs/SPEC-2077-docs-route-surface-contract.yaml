@@ -11,7 +11,11 @@ tags: []
 summary: "Documentation route surface contract"
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated docs route surface with P2 mount evidence."
+    at: "2026-04-21T07:42:57Z"
 references: []
 body: |-
   ## Decision
@@ -20,6 +24,20 @@ body: |-
   2. Docs route support includes canonical mount paths, prefix behavior, and enable/disable semantics.
   3. Route registration for docs surfaces MUST be derived from canonical route materialization and MUST NOT use a side registration subsystem.
   4. Authn/authz behavior on docs routes is normative and testable.
+  5. OpenAPI, OpenRPC, Swagger, Lens, and favicon documentation route mounts must work for both app and router mounting forms where supported.
+  
+  ## P2 Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_favicon_uvicorn.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1080`, `adr:1030`, `adr:1028`
+  - Related specs: `spc:2079`, `spc:2080`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"
