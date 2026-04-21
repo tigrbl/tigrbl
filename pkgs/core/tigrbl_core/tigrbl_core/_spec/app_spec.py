@@ -1,9 +1,10 @@
 # pkgs/standards/tigrbl_core/tigrbl/_spec/app_spec.py
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Any, Callable, Iterable, Mapping, Optional, Sequence
+from typing import Any, Callable, Optional, Sequence
 
 from .._spec.engine_spec import EngineCfg
+from .._spec.monotone import as_tuple, merge_mro_sequence_attr
 from .._spec.response_spec import ResponseSpec
 from .serde import SerdeMixin
 
@@ -11,17 +12,7 @@ from .serde import SerdeMixin
 def _seqify(value: Any) -> tuple[Any, ...]:
     """Normalize sequence-like inputs while treating scalars as a single item."""
 
-    if value is None:
-        return ()
-    if isinstance(value, tuple):
-        return value
-    if isinstance(value, (str, bytes, bytearray)):
-        return (value,)
-    if isinstance(value, Mapping):
-        return (value,)
-    if isinstance(value, Iterable):
-        return tuple(value)
-    return (value,)
+    return as_tuple(value)
 
 
 def merge_seq_attr(
@@ -34,27 +25,13 @@ def merge_seq_attr(
 ) -> tuple[Any, ...]:
     """Merge sequence-like class attributes over the MRO."""
 
-    values: list[Any] = []
-    seen_hashable: set[Any] = set()
-    mro = reversed(owner.__mro__) if reverse else owner.__mro__
-    for base in mro:
-        if include_inherited:
-            if not hasattr(base, attr):
-                continue
-            seq = getattr(base, attr) or ()
-        else:
-            seq = base.__dict__.get(attr, ()) or ()
-        for item in _seqify(seq):
-            if dedupe:
-                try:
-                    if item in seen_hashable:
-                        continue
-                    seen_hashable.add(item)
-                except TypeError:
-                    if any(item == existing for existing in values):
-                        continue
-            values.append(item)
-    return tuple(values)
+    return merge_mro_sequence_attr(
+        owner,
+        attr,
+        include_inherited=include_inherited,
+        reverse=reverse,
+        dedupe=dedupe,
+    )
 
 
 def normalize_app_spec(spec: "AppSpec") -> "AppSpec":
