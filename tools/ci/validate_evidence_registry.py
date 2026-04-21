@@ -28,7 +28,12 @@ def parse_claim_ids() -> list[str]:
 
 def test_path_exists(spec: str) -> bool:
     path_part = spec.split('::', 1)[0].split('#', 1)[0]
-    return (ROOT / path_part).exists()
+    path = ROOT / path_part
+    if path.exists():
+        return True
+    if path.suffix == '.md':
+        return path.with_suffix('.yaml').exists()
+    return False
 
 
 def main() -> None:

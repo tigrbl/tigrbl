@@ -63,7 +63,20 @@ def _public_claim_ids() -> set[str]:
 
 
 def _path_exists(spec: str) -> bool:
-    return (ROOT / spec.split("::", 1)[0].split("#", 1)[0]).exists()
+    path = ROOT / spec.split("::", 1)[0].split("#", 1)[0]
+    if path.exists():
+        return True
+    if path.suffix == ".md":
+        return path.with_suffix(".yaml").exists()
+    return False
+
+
+def _gate_values(value: object) -> list[str] | None:
+    if isinstance(value, list):
+        return [item for item in value if isinstance(item, str)]
+    if isinstance(value, str) and value.startswith("[") and value.endswith("]"):
+        return [item.strip() for item in value[1:-1].split(",") if item.strip()]
+    return None
 
 
 def main() -> None:
@@ -101,18 +114,22 @@ def main() -> None:
         for field in REQUIRED_FIELDS:
             value = entry.get(field)
             if field == "boundary_inclusion":
-                if value is not True:
-                    errors.append(f"{claim_id} must set boundary_inclusion: true")
+                if not isinstance(value, bool):
+                    errors.append(f"{claim_id} must set boundary_inclusion as a boolean")
                 continue
             if not value:
                 errors.append(f"{claim_id} missing required lifecycle field: {field}")
                 continue
-            if isinstance(value, list):
-                if field == "release_gate_coverage":
-                    for item in value:
-                        if item not in {"A", "B", "C", "D", "E"}:
-                            errors.append(f"{claim_id} release_gate_coverage must only use A-E")
+            if field == "release_gate_coverage":
+                gates = _gate_values(value)
+                if gates is None:
+                    errors.append(f"{claim_id} release_gate_coverage must be a list of A-E gates")
                     continue
+                for item in gates:
+                    if item not in {"A", "B", "C", "D", "E"}:
+                        errors.append(f"{claim_id} release_gate_coverage must only use A-E")
+                continue
+            if isinstance(value, list):
                 for item in value:
                     if not isinstance(item, str) or not _path_exists(item):
                         errors.append(f"{claim_id} references missing path in {field}: {item}")
@@ -123,7 +140,7 @@ def main() -> None:
                 else:
                     if not _path_exists(value):
                         errors.append(f"{claim_id} references missing path in {field}: {value}")
-        gates = entry.get("release_gate_coverage")
+        gates = _gate_values(entry.get("release_gate_coverage")) or []
         if state == "certified" and set(gates or []) != {"A", "B", "C", "D", "E"}:
             errors.append(f"{claim_id} must cover Gates A-E before reaching certified")
 

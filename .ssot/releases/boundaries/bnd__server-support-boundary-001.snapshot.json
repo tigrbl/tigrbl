@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-21T10:10:00Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "a60cb162fb8378e521a72f65903a2c2fdf7e3ed61770a0174a64ca9fbd371a53",
+  "boundary": {
+    "id": "bnd:server-support-boundary-001",
+    "title": "Supported server boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:server-support-tigrcorn-001",
+      "feat:server-support-uvicorn-001",
+      "feat:server-support-hypercorn-001",
+      "feat:server-support-gunicorn-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:server-support-tigrcorn-001",
+      "title": "Supported server tigrcorn",
+      "description": "Track tigrcorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2045"
+      ],
+      "claim_ids": [
+        "clm:server-support-tigrcorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:tcase-0017"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-uvicorn-001",
+      "title": "Supported server uvicorn",
+      "description": "Track uvicorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2045"
+      ],
+      "claim_ids": [
+        "clm:server-support-uvicorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:tcase-0017"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-hypercorn-001",
+      "title": "Supported server hypercorn",
+      "description": "Track hypercorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2045"
+      ],
+      "claim_ids": [
+        "clm:server-support-hypercorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:tcase-0017"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:server-support-gunicorn-001",
+      "title": "Supported server gunicorn",
+      "description": "Track gunicorn as a governed first-class server in the unified server-selection contract. Supported server work is limited to tigrcorn, uvicorn, hypercorn, and gunicorn.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "server-support",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2045"
+      ],
+      "claim_ids": [
+        "clm:server-support-gunicorn-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:tcase-0017"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:server-support-boundary-001",
+    "feature_count": 4,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}
