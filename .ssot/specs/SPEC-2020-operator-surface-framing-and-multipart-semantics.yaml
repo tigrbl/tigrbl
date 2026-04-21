@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2020"
 number: 2020
@@ -8,33 +8,17 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "This document defines the runtime semantics for governed operator surfaces that"
+summary: "Operator-surface framing and multipart semantics"
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Intent
+  ## Decision
   
-  This document defines the runtime semantics for governed operator surfaces that
-  depend on response framing, multipart parsing, or uploaded file handling.
-  
-  ## Invariants
-  
-  - streaming responses preserve produced chunk ordering and do not collapse
-    multiple chunks into one accidental body.
-  - WHATWG event streams emit `text/event-stream` framing compatible with
-    produced event boundaries.
-  - multipart and form parsing preserve field values without transport-specific
-    loss.
-  - uploaded-file handling preserves filename, content-type, and body access
-    for runtime handlers.
-  - docs-backed smoke paths and live runtime execution observe the same
-    governed operator-surface semantics.
-  
-  ## Traceability
-  
-  - ADRs: `adr:1041`
-  - Specs: `spc:2007`
-  - Related feature granularity lives in the registry layer.
+  1. Operator framing, multipart, stream, and upload semantics remain runtime contracts.
+  2. Documentation projections for those operator surfaces are required parity outputs.
+  3. Phase-closure conformance includes runtime/docs parity checks for operator surfaces.
 spec_kind: "local-policy"
+adr_ids:
+  - "adr:1041"

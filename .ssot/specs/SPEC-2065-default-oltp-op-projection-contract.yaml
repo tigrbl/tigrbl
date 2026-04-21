@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define projection and precedence rules for default canonical OLTP operations across REST, JSON-RPC, and core handler surfaces."
+summary: "Define how the default canonical OLTP operation family projects through core handlers, REST routes, JSON-RPC methods, and capability-gated exposure."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -39,3 +39,4 @@ body: |-
   - Related specs: `spc:2014`, `spc:2024`, `spc:2029`, `spc:2062`
   - Related features: `feat:op-surface-default-oltp-001`, `feat:transport-parity-contract-001`, `feat:binding-driven-ingress-001`
 spec_kind: "local-policy"
+adr_ids: []

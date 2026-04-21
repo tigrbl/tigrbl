@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2009"
 number: 2009
@@ -8,44 +8,17 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "﻿"
+summary: "Canonical Factories and Shortcut Re-Exports"
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Content
+  ## Decision
   
-  ﻿
-  Date: 2026-04-16
-  Kind: repo-local
-  
-  ## Intent
-  
-  This document defines the canonical ownership boundary for `factories` and `shortcuts`.
-  
-  ## Canonical Model
-  
-  - `factories` is the canonical owner for:
-    - `make*`
-    - `define*`
-    - `derive*`
-    - engine/config builders
-    - response helpers
-    - direct aliases of factory functions such as `acol`, `vcol`, and `op`
-  - `shortcuts` is a convenience re-export layer over canonical surfaces.
-  - `shortcuts.rest` may re-export REST decorator aliases, but those decorators remain owned by the decorators layer.
-  
-  ## Classification Rules
-  
-  - `acol` is a factory alias because it aliases `makeColumn`.
-  - `vcol` is a factory alias because it aliases `makeVirtualColumn`.
-  - `op` is a factory alias because it aliases the canonical op factory.
-  - Decorator aliases and protocol aliases are not factories.
-  
-  ## Traceability
-  
-  - ADR: `.ssot/adr/ADR-1029-factories-are-canonical-construction-surfaces.md`
-  - Tests:
-    - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
+  1. Canonical factories and shortcuts MUST preserve route and docs projection consistency.
+  2. Factory-driven materialization effects on docs-exposed routes are normative.
+  3. Factory canonicalization cannot introduce docs/runtime exposure divergence.
 spec_kind: "local-policy"
+adr_ids:
+  - "adr:1028"

@@ -1,0 +1,27 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2080"
+number: 2080
+slug: "docs-runtime-parity-contract"
+title: "Documentation runtime parity contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Documentation runtime parity contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Runtime behavior and documentation projections MUST remain observationally consistent.
+  2. Security behavior (auth challenges, documented schemes, authorization expectations) MUST be parity-checked between runtime and docs.
+  3. Operator visibility exposed at runtime MUST match operator visibility in docs payloads.
+  4. Parity failures are conformance failures.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1080"
+  - "adr:1032"
+  - "adr:1041"

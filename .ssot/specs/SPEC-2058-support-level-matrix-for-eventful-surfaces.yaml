@@ -8,25 +8,25 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the governed support levels for eventful transport surfaces, exchange tokens, and runtime-only markers."
+summary: "This document defines the governed support-level matrix for eventful transport surfaces, exchange tokens, and lifecycle markers so frozen current-target claims remain distinct from active-line implementation and provisional vocabulary."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
   ## Intent
-
+  
   This document defines the governed support-level matrix for eventful transport surfaces, exchange tokens, and lifecycle markers so frozen current-target claims remain distinct from active-line implementation and provisional vocabulary.
-
+  
   ## Support Levels
-
+  
   - `current_target`: inside the frozen certified current boundary
   - `active_line`: governed and implemented on the active development line but not frozen-release certified
   - `provisional`: visible in code or draft SSOT but not first-class or current-target
   - `internal_only`: compatibility or runtime vocabulary that must not be presented as supported public surface
-
+  
   ## Initial Matrix
-
+  
   - HTTP streaming response surface: `current_target`
   - WHATWG SSE and `EventStreamResponse`: `current_target`
   - WebSocket text surface: `current_target`
@@ -36,16 +36,17 @@ body: |-
   - `event_stream` and `bidirectional`: `internal_only` compatibility tokens
   - `client_stream` and `fire_and_forget`: `provisional`
   - `POST_EMIT`: `internal_only` runtime completion fence
-
+  
   ## Classification Rules
-
+  
   - Only `current_target` rows may appear in frozen release claims.
   - `active_line` rows may appear in planning and implementation docs but not as certified support.
   - `provisional` and `internal_only` rows must not be implied as supported by analogy, docs defaults, or CLI help text.
   - Active-line first-class support and frozen current-target certification must be described as distinct support levels.
-
+  
   ## Traceability
-
+  
   - Conformance docs: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/NEXT_TARGETS.md`
   - ADRs: `adr:1007`, `adr:1067`, `adr:1068`
 spec_kind: "local-policy"
+adr_ids: []

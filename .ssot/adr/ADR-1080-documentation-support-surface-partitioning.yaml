@@ -1,0 +1,24 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1080"
+number: 1080
+slug: "documentation-support-surface-partitioning"
+title: "Documentation support surface partitioning"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Documentation support surface partitioning"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Documentation support is partitioned into four explicit surfaces: Route Surface, Payload Surface, UI Surface, and Parity Surface.
+  2. Route Surface defines required endpoints, mount rules, prefix behavior, and enable/disable semantics.
+  3. Payload Surface defines normative OpenAPI/OpenRPC projection contracts and determinism requirements.
+  4. UI Surface defines supported documentation UIs and mount points; it does not define payload semantics.
+  5. Parity Surface defines runtime-to-documentation conformance obligations for security, operation visibility, and observable behavior.
+  6. Documentation projections must consume canonical metadata and canonical materialization outputs; direct bypass projections are non-conforming.

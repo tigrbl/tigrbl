@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the canonical mapping from transport bindings to exchange, framing, runtime family, and default subevents."
+summary: "This document defines the normative mapping from declared transport bindings to canonical exchange, framing, runtime family, and default runtime subevents."
 supersedes:
   - "spc:2007"
 superseded_by: []
@@ -16,29 +16,30 @@ status_notes: []
 references: []
 body: |-
   ## Intent
-
+  
   This document defines the normative mapping from declared transport bindings to canonical exchange, framing, runtime family, and default runtime subevents.
-
+  
   ## Canonical Mapping
-
+  
   - `HttpRestBindingSpec` maps to exchange `request_response`, framing `json`, runtime family `response`, and default subevents `receive`, `emit`, `complete`.
   - `HttpJsonRpcBindingSpec` maps to exchange `request_response`, framing `jsonrpc`, runtime family `response`, and default subevents `receive`, `emit`, `complete`.
   - `HttpStreamBindingSpec` maps to exchange `server_stream`, framing `stream`, runtime family `stream`, and default subevents `receive`, `emit`, `complete`.
   - `SseBindingSpec` maps to canonical exchange `server_stream`, framing `sse`, runtime family `stream`, and default subevents `receive`, `emit`, `complete`.
   - `WsBindingSpec` maps to exchange `bidirectional_stream`, framing `text` or `jsonrpc`, runtime family `socket`, and default subevents `connect`, `receive`, `emit`, `complete`, `disconnect`.
   - `WebTransportBindingSpec` maps to exchange `bidirectional_stream`, framing `webtransport`, runtime family `session`, and default subevents `connect`, `receive`, `emit`, `complete`, `disconnect`.
-
+  
   ## Compatibility Rules
-
+  
   - The closed runtime family set is `response`, `stream`, `socket`, `session`, and `request`.
   - `event_stream` is accepted only as an SSE compatibility projection; the canonical exchange remains `server_stream`.
   - `bidirectional` normalizes to `bidirectional_stream`.
   - `client_stream` and `fire_and_forget` remain provisional and out of first-class or current-target claims.
   - Transport-derived default subevents are distinct from declared semantic `OpSpec.subevents` and `HookSpec.subevents`.
   - Framing-only variation does not create a new runtime family.
-
+  
   ## Traceability
-
+  
   - ADRs: `adr:1007`, `adr:1024`, `adr:1025`, `adr:1067`, `adr:1068`
   - Related specs: `spc:2019`
 spec_kind: "local-policy"
+adr_ids: []

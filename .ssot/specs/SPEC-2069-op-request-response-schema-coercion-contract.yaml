@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define how operation request and response schema declarations resolve from direct schema objects and schema registry references."
+summary: "Define how request and response schema declarations on operations are normalized and projected."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -38,3 +38,4 @@ body: |-
   - Related specs: `spc:2019`, `spc:2025`, `spc:2029`, `spc:2059`, `spc:2068`
   - Related features: `feat:opspec-contract-001`, `feat:build-schemas-helper-surface-001`, `feat:get-schema-python-helper-surface-001`
 spec_kind: "local-policy"
+adr_ids: []

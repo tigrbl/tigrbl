@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define how operation alias identity, canonical target identity, and custom target behavior resolve into one canonical operation declaration."
+summary: "Define the contract for resolving `alias`, `target`, canonical target defaults, and custom operation targets."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -40,3 +40,4 @@ body: |-
   - Related specs: `spc:2025`, `spc:2029`
   - Related features: `feat:aliasspec-contract-001`, `feat:opspec-contract-001`, `feat:op-surface-public-projection-001`, `feat:op-surface-custom-op-001`
 spec_kind: "local-policy"
+adr_ids: []
