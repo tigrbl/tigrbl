@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2072"
+number: 2072
+slug: "mapping-plan-compilation-contract"
+title: "Mapping plan compilation contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract specifies the observable mapping-plan compilation shape between declarations and materialized operation projections."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This contract specifies the observable mapping-plan compilation shape between declarations and materialized operation projections.
+  
+  ## Contract
+  
+  1. Mapping-plan compilation must expose a deterministic phase order: collect, merge, bind models, bind ops, bind hooks, bind deps, then seal.
+  2. `collect_ctx` must produce a collection context for the target model without executing transport dispatch or handlers.
+  3. `mapping_plan.compile_plan()` must represent the governed compilation steps in the canonical order.
+  4. `mapping_plan.plan(ctx)` must expose the visible operation specs produced from the collected and merged model declarations.
+  5. Default canonical operations must become visible through mapping-plan output after declaration collection and merge.
+  6. Mapping-plan shape changes that add, remove, reorder, or rename phases require explicit SSOT document review.
+  
+  ## Related Decisions
+  
+  - ADR-1016 governs kernel plan compilation broadly.
+  - ADR-1077 narrows the mapping/bootstrap compilation boundary.
+  
+  ## Verification
+  
+  - Harness tests should verify the canonical phase order.
+  - Harness tests should verify visible default operation specs for representative models.
+  - Tests should keep mapping-plan compilation separate from transport execution behavior.
+spec_kind: "local-policy"
