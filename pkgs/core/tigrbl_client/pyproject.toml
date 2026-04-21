@@ -31,11 +31,6 @@ keywords = [
     'client',
 ]
 
-[tool.uv.sources]
-swarmauri_core = { workspace = true }
-swarmauri_base = { workspace = true }
-swarmauri_standard = { workspace = true }
-
 [tool.pytest.ini_options]
 norecursedirs = ["combined", "scripts"]
 markers = [

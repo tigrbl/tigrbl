@@ -23,8 +23,8 @@ REQUIRED_TREE_PATHS = [
     CERTIFICATION / "gates",
     CERTIFICATION / "evidence" / "schema.json",
     CERTIFICATION / "profiles",
-    ROOT / "adr",
-    ROOT / "specs",
+    ROOT / ".ssot" / "adr",
+    ROOT / ".ssot" / "specs",
     ROOT / "reports" / "current_state",
     ROOT / "reports" / "certification_state",
 ]

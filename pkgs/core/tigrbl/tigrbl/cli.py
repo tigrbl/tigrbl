@@ -208,7 +208,11 @@ def _load_target_object(target: str) -> Any:
     if not raw:
         raise CLIError("An app target is required. Use <module:attr> or <path.py:attr>.")
 
-    source, attr = (raw.split(":", 1) + ["app"])[:2] if ":" in raw else (raw, "app")
+    if ":" not in raw or raw.endswith(".py") or Path(raw).exists():
+        source, attr = raw, "app"
+    else:
+        source, attr = raw.rsplit(":", 1)
+        attr = attr or "app"
     source_path = Path(source)
     if source.endswith(".py") or source_path.exists():
         if not source_path.exists():
