@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2067"
+number: 2067
+slug: "op-persist-policy-and-handler-chain-contract"
+title: "Op persist policy and handler chain contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define persist policy normalization and its projection into handler chains and transaction behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define how operation persist policy is normalized and consumed by handler-chain, transaction, and storage projections.
+  
+  ## Canonical Surface
+  
+  - Persist policy belongs to the normalized operation declaration.
+  - Public authoring tokens such as `skip`, `none`, `read`, `write`, `default`, and `persist` must normalize before runtime projection.
+  - Canonical operations and custom operations use the same persist-policy vocabulary.
+  - Persist policy must not be interpreted independently by REST, RPC, docs, or decorator layers.
+  
+  ## Projection Rules
+  
+  - Handler-chain builders consume normalized persist policy.
+  - Transaction and persistence steps are included or skipped based on normalized policy.
+  - Core handler selection remains target-driven; persist policy only controls persistence and transaction projection around the selected handler behavior.
+  - Persist policy effects must be inspectable through owner-local hook or handler-chain registries.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1012`, `adr:1013`, `adr:1073`, `adr:1075`
+  - Related specs: `spc:2028`, `spc:2029`, `spc:2060`
+  - Related features: `feat:op-extension-surface-001`, `feat:build-handlers-helper-surface-001`, `feat:canonical-op-custom-001`
+spec_kind: "local-policy"

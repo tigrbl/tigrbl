@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2065"
+number: 2065
+slug: "default-oltp-op-projection-contract"
+title: "Default OLTP op projection contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define projection and precedence rules for default canonical OLTP operations across REST, JSON-RPC, and core handler surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define how the default canonical OLTP operation family projects through core handlers, REST routes, JSON-RPC methods, and capability-gated exposure.
+  
+  ## Canonical Surface
+  
+  - The default OLTP projection surface covers `create`, `read`, `list`, `update`, `replace`, `merge`, `delete`, `clear`, and governed bulk variants.
+  - Each default operation maps to one canonical target and one default core handler family.
+  - REST and JSON-RPC projections must preserve the same semantic availability decisions.
+  - Route or method collisions among default operations must resolve through explicit precedence rules rather than registration order.
+  - Capability-gated bulk operations may be omitted or fall back only when the fallback preserves the same semantic contract.
+  
+  ## Projection Rules
+  
+  - REST route shape and HTTP method defaults derive from target semantics.
+  - JSON-RPC method exposure derives from public alias and semantic availability.
+  - Non-bulk-capable models must prefer valid non-bulk operations instead of exposing invalid bulk projections.
+  - Shadowing between `create` and `bulk_create`, or between `clear` and `bulk_delete`, must be deterministic and testable.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1013`, `adr:1014`, `adr:1047`, `adr:1051`, `adr:1074`
+  - Related specs: `spc:2014`, `spc:2024`, `spc:2029`, `spc:2062`
+  - Related features: `feat:op-surface-default-oltp-001`, `feat:transport-parity-contract-001`, `feat:binding-driven-ingress-001`
+spec_kind: "local-policy"

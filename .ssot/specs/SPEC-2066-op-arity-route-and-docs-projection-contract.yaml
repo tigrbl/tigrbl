@@ -1,0 +1,41 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2066"
+number: 2066
+slug: "op-arity-route-and-docs-projection-contract"
+title: "Op arity route and docs projection contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how operation arity controls route shape, path parameters, and documentation projection."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the contract for `member` and `collection` arity when projecting operations into routes and documentation.
+  
+  ## Canonical Surface
+  
+  - `Arity` is operation metadata owned by the canonical operation declaration.
+  - `member` arity identifies operations scoped to one resource identity.
+  - `collection` arity identifies operations scoped to the collection or owner surface.
+  - If arity is omitted, canonical targets may infer default arity from target semantics.
+  - Custom operations may declare arity explicitly and must not rely on transport builders to infer hidden semantics.
+  
+  ## Projection Rules
+  
+  - REST path templates derive identity path parameters from arity.
+  - OpenAPI path parameters must match the REST path template produced from arity.
+  - JSON-RPC projection may not expose path parameters, but it must preserve the same semantic member or collection expectation.
+  - Documentation builders consume normalized operation arity, not raw decorator inputs.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1001`, `adr:1013`, `adr:1051`, `adr:1072`, `adr:1075`
+  - Related specs: `spc:2014`, `spc:2019`, `spc:2024`, `spc:2029`
+  - Related features: `feat:op-extension-surface-001`, `feat:build-rest-helper-surface-001`, `feat:http-rest-bindingspec-contract-001`
+spec_kind: "local-policy"
