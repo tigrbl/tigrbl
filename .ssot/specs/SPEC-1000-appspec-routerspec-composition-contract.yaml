@@ -1,0 +1,48 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:1000"
+number: 1000
+slug: "appspec-routerspec-composition-contract"
+title: "AppSpec and RouterSpec composition contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract defines the typed composition rules for AppSpec and RouterSpec declarations that assemble routers, router-owned tables, portable model references, nested column metadata, foreign keys, and response defaults."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from legacy package edge test inventory to govern AppSpec/RouterSpec nested composition and TableSpec model_ref."
+    at: "2026-04-21T08:43:15Z"
+references: []
+body: |-
+  ## Intent
+  
+  This contract defines the typed composition rules for AppSpec and RouterSpec declarations that assemble routers, router-owned tables, portable model references, nested column metadata, foreign keys, and response defaults.
+  
+  ## Contract
+  
+  1. `AppSpec.routers` is a governed composition surface for router-scoped declarations.
+  2. `RouterSpec.tables` owns router-local table composition through nested `TableSpec` values.
+  3. `RouterSpec.tables`, `RouterSpec.ops`, and `RouterSpec.schemas` must contain nested spec objects, not unresolved strings.
+  4. `TableSpec.model_ref` is the portable import-string representation for a model reference and may stand in for a concrete runtime model during authored specification.
+  5. `TableSpec.columns` may contain nested `ColumnSpec` values that include `StorageSpec`, `FieldSpec`, `IOSpec`, and `ForeignKeySpec` details.
+  6. `ForeignKeySpec` values embedded through storage metadata remain part of the typed table contract.
+  7. `ResponseSpec` defaults may be declared at app, router, table, and operation scopes without redefining the ownership of the typed spec layer.
+  8. Public facade imports of these spec objects are projections of the `tigrbl_core._spec` contract, not a second authority.
+  
+  ## Verification
+  
+  - `pkgs/core/tigrbl_tests/v4/tests/spec/test_master_app_spec_surface.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1003`, `adr:1052`
+  - Candidate features: `feat:appspec-contract-001`, `feat:tablespec-contract-001`, `feat:columnspec-contract-001`, `feat:fieldspec-contract-001`, `feat:iospec-contract-001`, `feat:foreignkeyspec-contract-001`
+  - Proposed features: `feat:routerspec-contract-001`, `feat:router-owned-tables-composition-001`, `feat:tablespec-model-ref-001`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1003"
+  - "adr:1052"

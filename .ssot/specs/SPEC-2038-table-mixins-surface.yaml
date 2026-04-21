@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2038"
 number: 2038
@@ -11,7 +11,11 @@ tags: []
 summary: "Define the governed table-mixins surface for reusable ORM behavior."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from legacy package edge test inventory to cover table-mixin alias projection through tigrbl.orm.mixins."
+    at: "2026-04-21T08:43:31Z"
 references: []
 body: |-
   ## Intent
@@ -24,10 +28,18 @@ body: |-
   - Mixin-defined surface area participates in normal MRO-based collection and does not bypass table contracts.
   - Mixins remain composable and class-local.
   - Mixin projection through `tigrbl.orm.mixins` does not redefine canonical table ownership.
+  - Compatibility aliases for mixin modules must project the canonical mixin surface without creating alias-only ORM semantics.
+  
+  ## Verification
+  
+  - `pkgs/core/tigrbl_tests/tigrbl_tests/tests/test_orm_alias_exports.py`
   
   ## Traceability
   
-  - ADRs: `adr:1056`, `adr:1053`
+  - ADRs: `adr:1056`, `adr:1053`, `adr:1018`
   - Related features: `feat:bootstrappable-table-mixin-001`
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1056"
+  - "adr:1053"
+  - "adr:1018"

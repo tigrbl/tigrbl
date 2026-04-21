@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.2.0"
 kind: "spec"
 id: "spc:2039"
 number: 2039
@@ -11,7 +11,11 @@ tags: []
 summary: "Define the bootstrappable ORM mixin surface for default rows, bootstrap seeding, and explicit reseeding."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from legacy package edge test inventory to include Bootstrappable compatibility projection verification."
+    at: "2026-04-21T08:43:38Z"
 references: []
 body: |-
   ## Intent
@@ -25,10 +29,18 @@ body: |-
   - Only mapped columns on the owning class may be inserted during bootstrap seeding.
   - Idempotency is guaranteed only when primary-key material permits dialect-specific do-nothing or ignore semantics.
   - `ensure_bootstrapped()` is the explicit manual reseeding path.
+  - `tigrbl.orm.mixins.Bootstrappable` is a compatibility projection of the governed Bootstrappable mixin surface.
+  
+  ## Verification
+  
+  - `pkgs/core/tigrbl_tests/tigrbl_tests/tests/test_orm_alias_exports.py`
   
   ## Traceability
   
-  - ADRs: `adr:1056`, `adr:1055`
+  - ADRs: `adr:1056`, `adr:1055`, `adr:1018`
   - Related features: `feat:bootstrappable-table-mixin-001`
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1056"
+  - "adr:1055"
+  - "adr:1018"
