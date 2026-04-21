@@ -13223,8 +13223,14 @@
       "spec_ids": [
         "spc:2083"
       ],
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:monotone-spec-merge-precedence-t2"
+      ],
+      "test_ids": [
+        "tst:tigrbl-core-test-monotone",
+        "tst:tigrbl-base-test-spec-normalization",
+        "tst:tigrbl-tests-tests-unit-test-mapping-plan-precedence"
+      ],
       "requires": []
     }
   ],
@@ -23633,13 +23639,16 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_mapping_plan_precedence.py",
       "feature_ids": [
-        "feat:tigrbl-test-suite-coverage-intake-001"
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:monotone-spec-merge-precedence-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-test-suite-coverage-intake-001"
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:monotone-spec-merge-precedence-t2"
       ],
       "evidence_ids": [
-        "evd:tigrbl-test-suite-matrix-coverage-intake"
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:monotone-spec-merge-targeted-pytest"
       ]
     },
     {
@@ -25987,6 +25996,38 @@
       ],
       "evidence_ids": [
         "evd:appspec-corpus-pytest"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-core-test-monotone",
+      "title": "Monotone operator unit coverage",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_core/tests/test_monotone.py",
+      "feature_ids": [
+        "feat:monotone-spec-merge-precedence-001"
+      ],
+      "claim_ids": [
+        "clm:monotone-spec-merge-precedence-t2"
+      ],
+      "evidence_ids": [
+        "evd:monotone-spec-merge-targeted-pytest"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-base-test-spec-normalization",
+      "title": "Spec normalization monotone roll-up coverage",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_spec_normalization.py",
+      "feature_ids": [
+        "feat:monotone-spec-merge-precedence-001"
+      ],
+      "claim_ids": [
+        "clm:monotone-spec-merge-precedence-t2"
+      ],
+      "evidence_ids": [
+        "evd:monotone-spec-merge-targeted-pytest"
       ]
     }
   ],
@@ -30041,6 +30082,25 @@
       "evidence_ids": [
         "evd:appspec-corpus-pytest"
       ]
+    },
+    {
+      "id": "clm:monotone-spec-merge-precedence-t2",
+      "title": "Monotone spec-merge precedence uses governed generic operators",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "implementation",
+      "description": "The spec-merge precedence implementation delegates scalar, mapping, keyed, sequence, and MRO roll-up behavior to generic domain-agnostic monotone operators.",
+      "feature_ids": [
+        "feat:monotone-spec-merge-precedence-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-core-test-monotone",
+        "tst:tigrbl-base-test-spec-normalization",
+        "tst:tigrbl-tests-tests-unit-test-mapping-plan-precedence"
+      ],
+      "evidence_ids": [
+        "evd:monotone-spec-merge-targeted-pytest"
+      ]
     }
   ],
   "evidence": [
@@ -34062,6 +34122,22 @@
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
         "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
         "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs"
+      ]
+    },
+    {
+      "id": "evd:monotone-spec-merge-targeted-pytest",
+      "title": "Monotone spec-merge targeted pytest",
+      "status": "passed",
+      "kind": "pytest-log",
+      "tier": "T2",
+      "path": ".ssot/reports/monotone-spec-merge-targeted-pytest.txt",
+      "claim_ids": [
+        "clm:monotone-spec-merge-precedence-t2"
+      ],
+      "test_ids": [
+        "tst:tigrbl-core-test-monotone",
+        "tst:tigrbl-base-test-spec-normalization",
+        "tst:tigrbl-tests-tests-unit-test-mapping-plan-precedence"
       ]
     }
   ],
