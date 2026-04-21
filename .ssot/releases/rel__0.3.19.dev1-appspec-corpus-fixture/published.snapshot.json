@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "kind": "published_snapshot",
+  "generated_at": "2026-04-21T21:53:06Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "06de20ba3112a4d05c6a085d1a4ec60f762eb214926b92f77eecb057073c59cc",
+  "release": {
+    "id": "rel:0.3.19.dev1-appspec-corpus-fixture",
+    "version": "0.3.19.dev1-appspec-corpus-fixture",
+    "status": "published",
+    "boundary_id": "bnd:appspec-corpus-fixture-001",
+    "claim_ids": [
+      "clm:appspec-corpus-canonical-parity-001",
+      "clm:appspec-corpus-negative-fail-closed-001"
+    ],
+    "evidence_ids": [
+      "evd:appspec-corpus-pytest"
+    ]
+  },
+  "boundary": {
+    "id": "bnd:appspec-corpus-fixture-001",
+    "title": "AppSpec corpus fixture boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:appspec-corpus-canonical-fixture-001",
+      "feat:appspec-corpus-negative-fail-closed-001"
+    ],
+    "profile_ids": []
+  },
+  "claims": [
+    {
+      "id": "clm:appspec-corpus-canonical-parity-001",
+      "title": "Canonical AppSpec corpus preserves REST and JSON-RPC parity",
+      "status": "published",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Canonical AppSpec corpus cases materialize and execute under uvicorn with stable REST/JSON-RPC parity behavior.",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    },
+    {
+      "id": "clm:appspec-corpus-negative-fail-closed-001",
+      "title": "Negative AppSpec corpus lanes fail closed",
+      "status": "published",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Negative AppSpec corpus cases preserve fail-closed runtime behavior for unsupported dispatch paths.",
+      "feature_ids": [
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd:appspec-corpus-pytest",
+      "title": "AppSpec corpus pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": "reports/certification_state/2026-04-21-appspec-corpus-fixture.md",
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ]
+    }
+  ],
+  "summary": {
+    "release_id": "rel:0.3.19.dev1-appspec-corpus-fixture",
+    "version": "0.3.19.dev1-appspec-corpus-fixture",
+    "status": "published",
+    "claim_count": 2,
+    "evidence_count": 1
+  }
+}

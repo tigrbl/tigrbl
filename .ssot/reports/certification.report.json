@@ -2,13 +2,28 @@
   "passed": true,
   "registry_path": ".ssot/registry.json",
   "release": {
-    "release_id": "rel:0.3.19.dev1-concrete-kernel-boundary",
+    "release_id": "rel:0.3.19.dev1-appspec-corpus-fixture",
     "passed": true,
     "failures": [],
     "warnings": [],
     "claims": [
       {
-        "claim_id": "clm:tigrbl-concrete-kernel-import-boundary-001",
+        "claim_id": "clm:appspec-corpus-canonical-parity-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:appspec-corpus-negative-fail-closed-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -25,45 +40,46 @@
     ],
     "evidence": [
       {
-        "evidence_id": "evd:tigrbl-concrete-kernel-independence-pytest",
+        "evidence_id": "evd:appspec-corpus-pytest",
         "passed": true,
         "failures": []
       }
     ],
     "profiles": [],
     "boundary": {
-      "id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+      "id": "bnd:appspec-corpus-fixture-001",
       "profile_ids": [],
       "resolved_feature_ids": [
-        "feat:tigrbl-concrete-kernel-import-boundary-001"
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001"
       ]
     },
     "summary": {
-      "boundary_id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
-      "boundary_feature_count": 1,
+      "boundary_id": "bnd:appspec-corpus-fixture-001",
+      "boundary_feature_count": 2,
       "boundary_profile_count": 0,
-      "release_claim_count": 1,
+      "release_claim_count": 2,
       "release_evidence_count": 1
     }
   },
   "boundary_scope": {
-    "boundary_id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+    "boundary_id": "bnd:appspec-corpus-fixture-001",
     "profile_ids": [],
     "feature_ids": []
   },
   "summary": {
     "counts": {
-      "features": 368,
+      "features": 370,
       "profiles": 0,
-      "tests": 530,
-      "claims": 156,
-      "evidence": 192,
+      "tests": 532,
+      "claims": 158,
+      "evidence": 193,
       "issues": 0,
       "risks": 0,
-      "boundaries": 4,
-      "releases": 2,
-      "adrs": 91,
-      "specs": 86
+      "boundaries": 5,
+      "releases": 3,
+      "adrs": 92,
+      "specs": 87
     },
     "profile_status": {
       "passing": 0,

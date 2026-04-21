@@ -1,0 +1,32 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1081"
+number: 1081
+slug: "canonical-appspec-corpus-fixture-and-fail-closed-lanes"
+title: "Canonical AppSpec corpus fixture and fail-closed lane governance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Existing AppSpec contract and parity tests exist, but no governed corpus fixture currently captures canonical/negative lanes as explicit release evidence artifacts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. The canonical AppSpec corpus fixture is test-owned source of truth under `pkgs/core/tigrbl_tests/tests/fixtures/`.
+  2. The corpus is split into explicit positive (`canonical`) and fail-closed negative (`negative`) lanes.
+  3. Corpus fixture identifiers must be stable, normalized, and machine-validated before execution.
+  4. Corpus-driven harness and uvicorn E2E lanes are release-evidence inputs, not ad hoc examples.
+  5. Certification-state documents are projections of corpus execution output and are not canonical sources.
+  
+  ## Context
+  
+  Existing AppSpec contract and parity tests exist, but no governed corpus fixture currently captures canonical/negative lanes as explicit release evidence artifacts.
+  
+  ## Consequences
+  
+  - Future AppSpec conformance additions should be encoded as corpus cases first.
+  - Negative runtime behavior stays fail closed and explicitly asserted in corpus evidence.
