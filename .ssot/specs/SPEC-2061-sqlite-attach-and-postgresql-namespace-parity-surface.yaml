@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2061"
+number: 2061
+slug: "sqlite-attach-and-postgresql-namespace-parity-surface"
+title: "SQLite attach and PostgreSQL namespace parity surface"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed parity rules between PostgreSQL schema namespaces and SQLite attachment maps."
+supersedes:
+  - "spc:2031"
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Namespace parity is split from the old generic database-schema surface."
+    at: "2026-04-20T21:50:26Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed parity rules between PostgreSQL schema namespaces and SQLite attachment maps.
+  
+  ## Canonical Surface
+  
+  - The namespace concept covered here is the PostgreSQL schema-like namespace and its SQLite attachment-map equivalent.
+  - `register_sqlite_attach()` is the governed attachment-registration helper for SQLite namespace parity behavior.
+  - Bootstrap helpers such as `bootstrap_dbschema()` may apply namespace parity rules during bootstrap, but parity remains distinct from bootstrap timing and from generic DDL contract.
+  - Namespace parity does not govern model/table/column/datatype schema definitions and does not govern migration history.
+  
+  ## Invariants
+  
+  - PostgreSQL namespace preparation and SQLite attachment registration must remain semantically aligned where Tigrbl claims cross-engine namespace support.
+  - SQLite attachment behavior is not described as `CREATE SCHEMA`; it is the parity mechanism for the namespace concept on SQLite.
+  - Public operator and docs surfaces do not redefine namespace parity semantics.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1055`, `adr:1064`
+  - Related features: `feat:sqlite-attach-runtime-surface-001`, `feat:bootstrap-dbschema-runtime-surface-001`, `feat:ddl-runtime-surface-001`
+spec_kind: "local-policy"

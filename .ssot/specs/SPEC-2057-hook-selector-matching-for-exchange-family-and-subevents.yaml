@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2057"
+number: 2057
+slug: "hook-selector-matching-for-exchange-family-and-subevents"
+title: "Hook selector matching for exchange, family, and subevents"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define exact selector matching semantics for hook exchange, family, and subevent constraints."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+
+  This document defines exact selector matching semantics for `HookSpec` fields that constrain execution by phase, binding, exchange, family, and subevents.
+
+  ## Matching Rules
+
+  - Phase legality is evaluated first.
+  - An omitted selector field is a wildcard.
+  - `bindings` matches normalized binding scope and protocol tokens.
+  - `exchange` matches the canonical normalized exchange token after alias normalization.
+  - `family` matches compiled surface family metadata and may not be satisfied by transport-specific guessing.
+  - `subevents` matches declared semantic subevents carried by compiled op or hook metadata.
+  - Transport-derived default channel subevents do not satisfy semantic `subevents` matching unless they are explicitly projected into declared surface metadata.
+  - Sequence-valued selectors use intersection semantics: any normalized overlap is a match.
+
+  ## Ordering Rules
+
+  - Matching hooks execute by precedence class and then by declaration order within class.
+  - Selector matching occurs against compiled normalized metadata before user code runs.
+  - Selector evaluation uses only the public hook phase set; runtime-owned phases such as `INGRESS_ROUTE` and `POST_EMIT` are not legal hook selectors.
+
+  ## Traceability
+
+  - ADRs: `adr:1010`, `adr:1067`, `adr:1068`
+  - Related specs: `spc:2028`, `spc:2055`
+spec_kind: "local-policy"

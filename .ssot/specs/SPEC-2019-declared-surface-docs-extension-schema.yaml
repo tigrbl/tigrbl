@@ -8,33 +8,31 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "This document defines the governed extension fields emitted for declared"
+summary: "Define governed extension fields and canonical normalization rules for declared-surface metadata in generated docs."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
   ## Intent
-  
-  This document defines the governed extension fields emitted for declared
-  transport and operator surfaces in generated documentation.
-  
+
+  This document defines the governed extension fields emitted for declared transport and operator surfaces in generated documentation.
+
   ## Invariants
-  
-  - docs builders emit `x-tigrbl-surface.binding.family` whenever a surface is
-    bound to a declared transport family.
-  - docs builders emit `x-tigrbl-surface.binding.proto` whenever a concrete
-    protocol binding is declared.
-  - docs builders emit `exchange`, `framing`, `subevents`, and `txScope` when
-    those declarations exist on the bound surface.
-  - undeclared metadata fields are omitted rather than synthesized from
-    transport-specific guesses.
-  - OpenAPI and OpenRPC projections agree on the declared-surface metadata they
-    share.
-  
+
+  - docs builders emit `x-tigrbl-surface.binding.family` whenever a surface is bound to a declared transport family.
+  - docs builders emit `x-tigrbl-surface.binding.proto` whenever a concrete protocol binding is declared.
+  - docs builders emit canonical normalized `exchange`, `framing`, `subevents`, and `txScope` when those declarations exist on the bound surface.
+  - compatibility aliases are normalized before docs emission; docs builders emit `server_stream` instead of `event_stream` and `bidirectional_stream` instead of `bidirectional` when those canonical values govern the surface.
+  - docs builders do not emit non-canonical lifecycle aliases in declared-surface metadata or diagnostics examples.
+  - if lifecycle phase names are rendered in governed docs output, they use canonical vocabulary only.
+  - `INGRESS_ROUTE` is canonical and `INGRESS_DISPATCH` is forbidden.
+  - undeclared metadata fields are omitted rather than synthesized from transport-specific guesses.
+  - OpenAPI and OpenRPC projections agree on the declared-surface metadata they share.
+
   ## Traceability
-  
-  - ADRs: `adr:1030`
-  - Specs: `spc:2010`
+
+  - ADRs: `adr:1030`, `adr:1067`
+  - Specs: `spc:2010`, `spc:2055`
   - Related feature granularity lives in the registry layer.
 spec_kind: "local-policy"

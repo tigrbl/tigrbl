@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1070"
+number: 1070
+slug: "private-authoring-surface-boundary"
+title: "Private authoring surface boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl exposes several top-level helper functions for composing tables, hooks, handlers, schemas, and routers. Those helpers are useful for framework authoring and assembly, but they are not the same category of support as stable operator-facing transport, docs, or request/response contracts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. The private authoring surface is a governed surface family distinct from public operators, CLI, maintainer tooling, and extension authorities.
+  2. `bind()`, `rebind()`, `build_schemas()`, `build_hooks()`, `build_handlers()`, `build_rest()`, and `include_tables()` are private authoring helpers.
+  3. Those helpers orchestrate lower-layer authorities in `_spec`, `tigrbl_base`, `tigrbl_concrete`, and related mapping modules; they do not create a second source of truth for schemas, hooks, ops, bindings, or routes.
+  4. Being exported from the `tigrbl` facade does not by itself make an authoring helper a public operator surface.
+  
+  ## Context
+  
+  Tigrbl exposes several top-level helper functions for composing tables, hooks, handlers, schemas, and routers. Those helpers are useful for framework authoring and assembly, but they are not the same category of support as stable operator-facing transport, docs, or request/response contracts.
+  
+  ## Consequences
+  
+  - Authoring helpers can remain available for composition without being claimed as public operator compatibility surface.
+  - Public operator specs can stay narrow and explicit.
+  - Extension-family specs can reference authoring helpers as projections without promoting them to operator status.

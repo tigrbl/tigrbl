@@ -3,12 +3,12 @@ kind: "spec"
 id: "spc:2032"
 number: 2032
 slug: "ddl-surface"
-title: "DDL surface"
+title: "Non-bootstrap DDL contract surface"
 status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the governed DDL surface for Tigrbl concrete bootstrap behavior."
+summary: "Define the governed non-bootstrap DDL contract surface for Tigrbl concrete behavior."
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -16,17 +16,24 @@ references: []
 body: |-
   ## Intent
   
-  Define the governed DDL surface for Tigrbl concrete bootstrap behavior.
+  Define the governed non-bootstrap DDL contract surface for Tigrbl concrete behavior.
   
   ## Canonical Surface
   
-  - The DDL surface includes `initialize()`, `ensure_schemas()`, `bootstrap_dbschema()`, and `register_sqlite_attach()`.
-  - Concrete app, router, and table owners project the DDL surface through their `initialize()` entrypoints.
-  - DDL groups tables by resolved engine/provider and creates metadata on the selected bind.
-  - DDL owns schema/bootstrap execution only; migration surfaces remain separate.
+  - The DDL contract surface governs concrete table/metadata creation behavior exposed through the DDL family.
+  - The DDL contract groups tables by resolved engine/provider and applies schema/table creation on the selected bind.
+  - The DDL contract remains separate from bootstrap timing, namespace ensuring, namespace parity, and migration history/versioning.
+  - Transport projection, docs projection, and public operator surfaces do not redefine DDL meaning.
+  
+  ## Exclusions
+  
+  - `ensure_schemas()` is governed as namespace ensuring, not as generic DDL contract.
+  - `register_sqlite_attach()` is governed as namespace parity, not as generic DDL contract.
+  - `bootstrap_dbschema()` and `initialize()` bootstrap timing/mode behavior are governed by the bootstrap execution spec.
+  - Schema migration remains governed separately.
   
   ## Traceability
   
-  - ADRs: `adr:1055`, `adr:1015`
-  - Related features: `feat:ddl-runtime-surface-001`, `feat:bootstrap-dbschema-runtime-surface-001`
+  - ADRs: `adr:1055`, `adr:1064`
+  - Related features: `feat:ddl-runtime-surface-001`
 spec_kind: "local-policy"

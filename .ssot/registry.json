@@ -1557,7 +1557,8 @@
       ],
       "requires": [],
       "spec_ids": [
-        "spc:2027"
+        "spc:2027",
+        "spc:2062"
       ]
     },
     {
@@ -6669,7 +6670,8 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2027"
+        "spc:2027",
+        "spc:2062"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6701,7 +6703,7 @@
     {
       "id": "feat:bind-helper-surface-001",
       "title": "bind helper surface",
-      "description": "Tracks the top-level tigrbl bind helper surface together with concrete model-binding entrypoints and binding graph installation behavior.",
+      "description": "Tracks the private authoring bind helper surface together with concrete model-binding entrypoints and binding graph installation behavior.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6715,7 +6717,7 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2042"
+        "spc:2060"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6724,7 +6726,7 @@
     {
       "id": "feat:rebind-helper-surface-001",
       "title": "rebind helper surface",
-      "description": "Tracks the top-level tigrbl rebind helper surface together with concrete rematerialization and rebinding behavior for existing model/router mappings.",
+      "description": "Tracks the private authoring rebind helper surface together with repeated model-binding and binding graph refresh behavior.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6738,7 +6740,7 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2042"
+        "spc:2060"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6747,7 +6749,7 @@
     {
       "id": "feat:build-schemas-helper-surface-001",
       "title": "build_schemas helper surface",
-      "description": "Tracks the top-level build_schemas helper surface and schema materialization behavior for mapped models.",
+      "description": "Tracks the private authoring build_schemas helper surface for model/schema materialization and keeps it distinct from database namespace ensuring.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6761,8 +6763,7 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2031",
-        "spc:2042"
+        "spc:2060"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6771,7 +6772,7 @@
     {
       "id": "feat:build-hooks-helper-surface-001",
       "title": "build_hooks helper surface",
-      "description": "Tracks the top-level build_hooks helper surface and concrete hook binding/materialization behavior for mapped models.",
+      "description": "Tracks the private authoring build_hooks helper surface and concrete hook binding/materialization behavior for mapped models.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6786,7 +6787,7 @@
       },
       "spec_ids": [
         "spc:2028",
-        "spc:2042"
+        "spc:2060"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6795,7 +6796,7 @@
     {
       "id": "feat:build-handlers-helper-surface-001",
       "title": "build_handlers helper surface",
-      "description": "Tracks the top-level build_handlers helper surface and concrete handler materialization behavior for mapped models.",
+      "description": "Tracks the private authoring build_handlers helper surface and concrete handler materialization behavior for mapped models.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6810,7 +6811,7 @@
       },
       "spec_ids": [
         "spc:2029",
-        "spc:2042"
+        "spc:2060"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6819,7 +6820,7 @@
     {
       "id": "feat:build-rest-helper-surface-001",
       "title": "build_rest helper surface",
-      "description": "Tracks the top-level build_rest helper surface and concrete REST router materialization behavior.",
+      "description": "Tracks the private authoring build_rest helper surface and concrete REST router materialization behavior.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6835,7 +6836,7 @@
       "spec_ids": [
         "spc:2014",
         "spc:2029",
-        "spc:2042"
+        "spc:2060"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6859,7 +6860,8 @@
       },
       "spec_ids": [
         "spc:2032",
-        "spc:2033"
+        "spc:2033",
+        "spc:2061"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6882,8 +6884,8 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2031",
-        "spc:2032"
+        "spc:2033",
+        "spc:2061"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6906,7 +6908,7 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2031"
+        "spc:2050"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6929,7 +6931,7 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2031"
+        "spc:2061"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -6938,7 +6940,7 @@
     {
       "id": "feat:get-schema-python-helper-surface-001",
       "title": "get_schema Python helper surface",
-      "description": "Tracks the Python get_schema helper surface used to resolve Pydantic/schema objects from Tigrbl models and schema declarations.",
+      "description": "Tracks get_schema as the only schema/helper-like public operator helper surface exported by the tigrbl facade.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6952,7 +6954,7 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2042"
+        "spc:2059"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -8599,6 +8601,29 @@
         "spc:2035",
         "spc:2036",
         "spc:2037"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:include-tables-helper-surface-001",
+      "title": "include_tables helper surface",
+      "description": "Tracks include_tables as a private authoring inclusion helper that assembles table/router materialization without becoming a public operator surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": "surface-inventory",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2060"
       ],
       "claim_ids": [],
       "test_ids": [],
@@ -18275,7 +18300,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "c480bb0f78eb6de9e261ebabd669d6cf9dc96a5799107c4f1a4308cda66ef875",
+      "content_sha256": "b6ccbce9ea692ad54332b272d3787d89dcb6d0eaebbf5525e32630585313d3ab",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18307,7 +18332,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "85ef1be5d0d321652c61018b10c36c2116a0bc83362da410dfeb093fb131626b",
+      "content_sha256": "b950aa8fe7c4805cc10fba7d0ab4867b54f3ddeb6195be5dfcc8a3dbb50086e4",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18531,7 +18556,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "48b7ba6272f9c881311e0dd6af38289158f5e58ba37715eaf00a3a9dbd5a829d",
+      "content_sha256": "3a585a88be2a494566129f93f99183e6c6d57f8d017bdff1a2885e0b8e5eebd4",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18547,7 +18572,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "f1317945aee77be3829fd688bcfaff7392753f72341f3b1d9e4d28112d7d7fac",
+      "content_sha256": "6b56aa1319cd854ee4b3a46e66dc190426bea93b23b709f3c68a1d20bcc4e011",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -18818,12 +18843,20 @@
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
-      "package_version": "0.2.2",
-      "content_sha256": "1b27b000cc415304cca7e5da46a7b790dc4b3a18348cc61d1c8d3ffe8c3341ae",
-      "status": "accepted",
+      "package_version": "0.2.10",
+      "content_sha256": "8ba6ec6e0592cca7e9d4cba09161da2cef9fdf35d65ab6134114bfdc0d9f0f7d",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
-      "status_notes": []
+      "superseded_by": [
+        "adr:1063"
+      ],
+      "status_notes": [
+        {
+          "status": "superseded",
+          "note": "Public operator support is now explicit and excludes facade authoring helpers other than get_schema().",
+          "at": "2026-04-20T21:50:21Z"
+        }
+      ]
     },
     {
       "id": "adr:1042",
@@ -19002,6 +19035,50 @@
       ]
     },
     {
+      "id": "adr:1052",
+      "number": 1052,
+      "slug": "tigrbl-core-spec-layer-nature-and-authority",
+      "title": "tigrbl_core._spec Layer Nature and Authority",
+      "path": ".ssot/adr/ADR-1052-tigrbl-core-spec-layer-nature-and-authority.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "fc52e923e4dc44af2dc969879bcb360f981efff49927f40c9ae7840d91244118",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Documents the active-line decision that tigrbl_core._spec owns the canonical spec layer while public facade exposure remains a separate projection boundary.",
+          "at": "2026-04-20T21:50:19Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1053",
+      "number": 1053,
+      "slug": "tigrbl-base-layer-nature-and-authority",
+      "title": "tigrbl_base Layer Nature and Authority",
+      "path": ".ssot/adr/ADR-1053-tigrbl-base-layer-nature-and-authority.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "e60dbabf87443dabcb58cdfe0fe2930b641e38c72524959862c0b07f9d765119",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Documents the active-line decision that tigrbl_base owns the canonical base layer while top-level facade exposure remains a separate projection boundary.",
+          "at": "2026-04-20T21:50:19Z"
+        }
+      ]
+    },
+    {
       "id": "adr:1054",
       "number": 1054,
       "slug": "middleware-extension-surface-contract",
@@ -19027,11 +19104,17 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "354d6e2b7274b9e59a359280af5510dccc5c87dc9c9476065e6a63033b395006",
-      "status": "draft",
+      "content_sha256": "d660aca169ed4a849acc8e706d07816c9d94a0420e51383d83cccfd443ef620c",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
-      "status_notes": []
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Narrows ADR-1055 to architectural ownership and namespace separation; companion specs own bootstrap timing and namespace details.",
+          "at": "2026-04-20T21:50:19Z"
+        }
+      ]
     },
     {
       "id": "adr:1056",
@@ -19093,6 +19176,126 @@
       "package_version": "0.2.10",
       "content_sha256": "53b26ace3a889698a133a7e1b572109b71c2b8d64ed571b0df0dcd70bba22f7f",
       "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1062",
+      "number": 1062,
+      "slug": "extension-surface-boundary",
+      "title": "Extension surface boundary",
+      "path": ".ssot/adr/ADR-1062-extension-surface-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "0b1f2b3075e43faa657f3e29ac3bfa8968054c54c2459479867814d2ce4b8299",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1063",
+      "number": 1063,
+      "slug": "public-operator-surface-boundary",
+      "title": "Public operator surface boundary",
+      "path": ".ssot/adr/ADR-1063-public-operator-surface-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "e378c51d82f4a1386a1e20f490b4ed9be67b1a55b7977e61aa320a59b7c8472c",
+      "status": "accepted",
+      "supersedes": [
+        "adr:1041"
+      ],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Public operator support is now explicit and excludes facade authoring helpers other than get_schema().",
+          "at": "2026-04-20T21:50:21Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1064",
+      "number": 1064,
+      "slug": "database-namespace-boundary",
+      "title": "Database namespace boundary",
+      "path": ".ssot/adr/ADR-1064-database-namespace-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "34e3e317b09f2c69ac3748fe8e56c2d4368045b36988ce2c310c3b70433ede35",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1067",
+      "number": 1067,
+      "slug": "canonical-exchange-vocabulary-aliasing-and-provisional-token-policy",
+      "title": "Canonical exchange vocabulary, aliasing, and provisional token policy",
+      "path": ".ssot/adr/ADR-1067-canonical-exchange-vocabulary-aliasing-and-provisional-token-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "a44554192d2bf1b8da8fbb187c5e11759454d87fc0680b7f579e06918db99dc4",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1068",
+      "number": 1068,
+      "slug": "transport-completion-fence-and-post-emit-legality",
+      "title": "Transport completion fence and POST_EMIT legality",
+      "path": ".ssot/adr/ADR-1068-transport-completion-fence-and-post-emit-legality.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "58605db7730825e30d360da614ad7bfd9194663faad2b815b2a9e30365e10908",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1069",
+      "number": 1069,
+      "slug": "private-maintainer-surface-boundary",
+      "title": "Private maintainer surface boundary",
+      "path": ".ssot/adr/ADR-1069-private-maintainer-surface-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "8edb5b08bfc76dd2830629a24bbbe77ef31ddd9a85a0497866f4e27023833966",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1070",
+      "number": 1070,
+      "slug": "private-authoring-surface-boundary",
+      "title": "Private authoring surface boundary",
+      "path": ".ssot/adr/ADR-1070-private-authoring-surface-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "5eccbcafb02a58f237a9a21db55e6d4296303c3bfab2003082648db8fabba833",
+      "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
@@ -19449,7 +19652,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "087aac438c8e773d8309bf58f71a1bdef4fcb495587c967cb3c9205e983ddd38",
+      "content_sha256": "c6e6e5eda6125f36fc53274a4c4dfc2142ec1cff84139dd81ff0d32cc510354a",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19626,7 +19829,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "ecd48caa0efe6988769d052723ce95ad2449dc1251de3582eb0851172204cb50",
+      "content_sha256": "8f2aeac01a1d3a64da2aa861d7dbb5286fd612862cd6f74ead5af036a3be6d3b",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19772,7 +19975,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "109b5686b498e21ba58c49d5c593293c1bfe31b7fadabf64b02a7ed477c4edda",
+      "content_sha256": "68de6ce7ed6c2478e62832c4a9412b7dfa61cdf22a8d8ed4bf359e18e3231bb1",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19789,7 +19992,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "a4ca878341213c8581a430eb96e3406701cba51db32726f9ce9fddd057dd0698",
+      "content_sha256": "87e573485ec3911bcf5cac87eb8d81e4977da8845ef33fa7935fb769697190c6",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19806,7 +20009,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "75a93303704baaa725730912044fc5fc1392b27827d3b22e0fbe97b53667b214",
+      "content_sha256": "5d6a6223a3c106df6537ea43f583256e7c49f1267e23b4540d394e57f5d208a7",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19823,7 +20026,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "7604bf0f87cf9f9fd3c4596d8218bf91e085f7f9e5eee815f223cdf585959780",
+      "content_sha256": "02459f14234610e5a3e3c924e4a5028bc637ec8e5511a66d9e61697f12b2f5da",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -19840,24 +20043,38 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "de2de9f383e89ca4b78624c43410d08b8e0dfb81202b3822cc8c7101c958d3de",
-      "status": "draft",
+      "content_sha256": "5b53397480874b16e5d7be77e75a8071fa5c78e4f5bf986701b49145cb8add4f",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
-      "status_notes": [],
+      "superseded_by": [
+        "spc:2061",
+        "spc:2050"
+      ],
+      "status_notes": [
+        {
+          "status": "superseded",
+          "note": "Namespace parity is split from the old generic database-schema surface.",
+          "at": "2026-04-20T21:50:26Z"
+        },
+        {
+          "status": "superseded",
+          "note": "Namespace ensuring is split from the old generic database-schema surface.",
+          "at": "2026-04-20T21:50:26Z"
+        }
+      ],
       "kind": "local-policy"
     },
     {
       "id": "spc:2032",
       "number": 2032,
       "slug": "ddl-surface",
-      "title": "DDL surface",
+      "title": "Non-bootstrap DDL contract surface",
       "path": ".ssot/specs/SPEC-2032-ddl-surface.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "e165ab4363fe74e299d12dc202e2b313c04ee3fefe90fd946720ce884aba4e62",
+      "content_sha256": "97da4a015ba26af9eddda30bc7e5f281b553641c014043fb40e42c0a86cf2d28",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -19868,13 +20085,13 @@
       "id": "spc:2033",
       "number": 2033,
       "slug": "ddl-initialization-modes",
-      "title": "DDL initialization modes",
+      "title": "DDL bootstrap execution modes and timing",
       "path": ".ssot/specs/SPEC-2033-ddl-initialization-modes.yaml",
       "origin": "repo-local",
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "5d8507955ce1a27aafc8c6b9284ca198ee874a74245d71c4dbd37c1025f0520d",
+      "content_sha256": "7eabc52c811dd971b72a6bf8c6aaec5d3694df517745cd7368d915b4215630f3",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -20027,11 +20244,25 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.10",
-      "content_sha256": "d888e7b41543937554fd8afb9cadab0abc725137e330ff4b29ffac0818d726ef",
-      "status": "draft",
+      "content_sha256": "1b13dbae380c68590d0b2c986acc634063d1482a169b709bc5022f52eab7aa0f",
+      "status": "superseded",
       "supersedes": [],
-      "superseded_by": [],
-      "status_notes": [],
+      "superseded_by": [
+        "spc:2059",
+        "spc:2060"
+      ],
+      "status_notes": [
+        {
+          "status": "superseded",
+          "note": "Public helper support narrows to get_schema() only.",
+          "at": "2026-04-20T21:50:25Z"
+        },
+        {
+          "status": "superseded",
+          "note": "Facade helper orchestration and inclusion surfaces are private authoring helpers.",
+          "at": "2026-04-20T21:50:26Z"
+        }
+      ],
       "kind": "local-policy"
     },
     {
@@ -20079,6 +20310,193 @@
       "immutable": false,
       "package_version": "0.2.10",
       "content_sha256": "b46ecccf29b62c9d39592b57dc2191ba07873d8904a9731e69f96048900ab21d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2050",
+      "number": 2050,
+      "slug": "database-namespace-ensuring-surface",
+      "title": "Database namespace ensuring surface",
+      "path": ".ssot/specs/SPEC-2050-database-namespace-ensuring-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "43c7421ed33852d05302d4293b9dea0a57b955f5159527a66685588e596d309c",
+      "status": "accepted",
+      "supersedes": [
+        "spc:2031"
+      ],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Namespace ensuring is split from the old generic database-schema surface.",
+          "at": "2026-04-20T21:50:26Z"
+        }
+      ],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2055",
+      "number": 2055,
+      "slug": "canonical-transport-exchange-family-and-subevent-mapping",
+      "title": "Canonical transport, exchange, family, and subevent mapping",
+      "path": ".ssot/specs/SPEC-2055-canonical-transport-exchange-family-and-subevent-mapping.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "5b94bb01842cc5bf92e13d047cb0afe522e88f17efca4ba7bdcc9b289134ba1a",
+      "status": "draft",
+      "supersedes": [
+        "spc:2007"
+      ],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2056",
+      "number": 2056,
+      "slug": "phase-chain-projection-and-emission-completion-contract",
+      "title": "Phase-chain projection and emission-completion contract",
+      "path": ".ssot/specs/SPEC-2056-phase-chain-projection-and-emission-completion-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "1a548ea3373b21ecd8661071471346e0d966417b443235181c75b26a4e80a3b1",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2057",
+      "number": 2057,
+      "slug": "hook-selector-matching-for-exchange-family-and-subevents",
+      "title": "Hook selector matching for exchange, family, and subevents",
+      "path": ".ssot/specs/SPEC-2057-hook-selector-matching-for-exchange-family-and-subevents.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "8994df19b7b35c048fb27d472c31a3dca6929e91e7e654d11afdfc0c87e8830a",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2058",
+      "number": 2058,
+      "slug": "support-level-matrix-for-eventful-surfaces",
+      "title": "Support-level matrix for eventful surfaces",
+      "path": ".ssot/specs/SPEC-2058-support-level-matrix-for-eventful-surfaces.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "648b619f6839fea06ea4583a243e3e77d219305b2c38f1232bdfbc2b1c1f168f",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2059",
+      "number": 2059,
+      "slug": "public-operator-schema-lookup-surface",
+      "title": "Public operator schema lookup surface",
+      "path": ".ssot/specs/SPEC-2059-public-operator-schema-lookup-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "e749feb2b179de2db51b487e0a095af4a175c17de0f9e2aa00c5119ad8b1bc66",
+      "status": "accepted",
+      "supersedes": [
+        "spc:2042"
+      ],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Public helper support narrows to get_schema() only.",
+          "at": "2026-04-20T21:50:25Z"
+        }
+      ],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2060",
+      "number": 2060,
+      "slug": "private-authoring-helper-surface",
+      "title": "Private authoring helper surface",
+      "path": ".ssot/specs/SPEC-2060-private-authoring-helper-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "a7644798fe3e6da6a38b232aa5830fa7a27ca1bd0b82da6e6491278e2bd136c2",
+      "status": "accepted",
+      "supersedes": [
+        "spc:2042"
+      ],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Facade helper orchestration and inclusion surfaces are private authoring helpers.",
+          "at": "2026-04-20T21:50:26Z"
+        }
+      ],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2061",
+      "number": 2061,
+      "slug": "sqlite-attach-and-postgresql-namespace-parity-surface",
+      "title": "SQLite attach and PostgreSQL namespace parity surface",
+      "path": ".ssot/specs/SPEC-2061-sqlite-attach-and-postgresql-namespace-parity-surface.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "0cdf578b10fff6511d283b518471b965bb4b885c94837f9231d0e92ae8ab5e94",
+      "status": "accepted",
+      "supersedes": [
+        "spc:2031"
+      ],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Namespace parity is split from the old generic database-schema surface.",
+          "at": "2026-04-20T21:50:26Z"
+        }
+      ],
+      "kind": "local-policy"
+    },
+    {
+      "id": "spc:2062",
+      "number": 2062,
+      "slug": "default-canonical-engine-catalog-and-family-defaults",
+      "title": "Default canonical engine catalog and family defaults",
+      "path": ".ssot/specs/SPEC-2062-default-canonical-engine-catalog-and-family-defaults.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.10",
+      "content_sha256": "20aa0f987881a9808970d3387425a7dce59c8966eec84e38c540bef3ad27f4ba",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],

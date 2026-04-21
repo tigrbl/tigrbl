@@ -8,43 +8,48 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "﻿"
+summary: "Define supported documentation outputs, canonical metadata sources, and lifecycle naming rules for generated docs."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Content
-  
-  ﻿
-  Date: 2026-04-16
-  Kind: repo-local
-  
+  ## Intent
+
+  Define supported documentation outputs, metadata ownership, and lifecycle naming rules for generated documentation surfaces.
+
   ## Supported Outputs
-  
+
   The active line supports:
-  
+
   - OpenAPI
   - OpenRPC
   - AsyncAPI
   - JSON Schema
-  
+
   ## Canonical Metadata Sources
-  
+
   - OpenAPI consumes route-facing metadata from `Route` plus bound models and schemas.
   - OpenRPC consumes canonical op specs, JSON-RPC bindings, and schemas.
-  - AsyncAPI consumes canonical transport bindings plus op/channel metadata.
+  - AsyncAPI consumes canonical transport bindings plus op and channel metadata.
   - JSON Schema consumes canonical schema component metadata.
-  
+
   ## Route Behavior
-  
+
   - Documentation endpoints are ordinary imperative routes and ordinary normalized route-backed ops.
-  - Documentation/system mounts set `inherit_owner_dependencies=False` when owner dependency inheritance must be suppressed.
+  - Documentation and system mounts set `inherit_owner_dependencies=False` when owner dependency inheritance must be suppressed.
   - No `surface_kind` abstraction is introduced.
-  
+
+  ## Lifecycle Naming Policy
+
+  - Documentation outputs, examples, and generated support materials use canonical lifecycle phase names only.
+  - The canonical ingress routing phase is `INGRESS_ROUTE`.
+  - `INGRESS_DISPATCH` must not appear in supported documentation outputs, route docs, parity examples, or diagnostics examples as a compatibility label.
+
   ## Traceability
-  
-  - ADR: `.ssot/adr/ADR-1030-documentation-support-uses-canonical-metadata-sources.md`
+
+  - ADRs: `adr:1009`, `adr:1030`
+  - Related specs: `spc:2019`
   - Tests:
     - `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`
     - `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`

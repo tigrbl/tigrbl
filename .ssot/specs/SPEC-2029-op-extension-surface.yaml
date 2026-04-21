@@ -25,10 +25,11 @@ body: |-
   - Op-owned bindings, hooks, dependency attachments, and engine overrides remain part of the op extension surface because they extend or specialize operation behavior without creating a second semantic model.
   - Custom ops remain a governed extension point, but they do not redefine the meaning of canonical verbs.
   
-  ## Public Projection
+  ## Public and Authoring Projection
   
-  - Public projection may appear through `tigrbl` exports and helper/decorator surfaces such as `op_ctx`, `build_handlers`, and `build_rest`.
-  - Public projection does not create a second op model; it projects the canonical one.
+  - Public projection may appear through `tigrbl` exports and declarative surfaces such as `op_ctx`.
+  - Private authoring projection may appear through helpers such as `build_handlers()` and `build_rest()`.
+  - Public projection does not create a second op model, and authoring helpers do not become public operator surfaces merely because they are importable.
   
   ## Feature Granularity
   
@@ -36,16 +37,18 @@ body: |-
   - Separate child features may track:
     - the default canonical OLTP family;
     - the custom-op extension contract;
-    - public projection of op-facing contracts and helpers.
+    - public projection of op-facing contracts;
+    - private authoring projection of op-facing materialization helpers.
   
   ## Classification Rules
   
   - canonical-family feature: governed canonical verb sets and their obligations
   - custom-op feature: governed explicit extension point for non-canonical operations
-  - projection feature: public export and helper surfaces that project op contracts
+  - projection feature: public export and declarative surfaces that project op contracts
+  - authoring-helper feature: private authoring helpers that materialize op-facing behavior
   
   ## Traceability
   
-  - ADRs: `adr:1001`, `adr:1013`, `adr:1015`, `adr:1049`, `adr:1052`
-  - Related specs: `spc:2022`, `spc:2023`, `spc:2025`
+  - ADRs: `adr:1001`, `adr:1013`, `adr:1015`, `adr:1049`, `adr:1052`, `adr:1070`, `adr:1062`, `adr:1063`
+  - Related specs: `spc:2022`, `spc:2023`, `spc:2025`, `spc:2060`
 spec_kind: "local-policy"

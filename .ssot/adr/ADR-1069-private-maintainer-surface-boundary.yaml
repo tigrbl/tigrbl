@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1069"
+number: 1069
+slug: "private-maintainer-surface-boundary"
+title: "Private maintainer surface boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl already distinguishes user-facing runtime/operator contracts from lower-layer spec/base authorities, but repo-local maintenance workflows need a separate boundary so maintainers can evolve them without widening the supported user-facing surface area."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. The private maintainer surface is a governed surface family distinct from CLI, private authoring, public operators, and extensions.
+  2. Maintainer surfaces include repo maintenance tooling, SSOT maintenance workflows, packaging/build/test support, upgrade/rewrite utilities, and other repo-owned operational mechanics.
+  3. Maintainer surfaces may be unstable and may change without public operator compatibility guarantees.
+  4. Importability or incidental availability inside the repository does not make a maintainer surface part of authoring or public operator support.
+  
+  ## Context
+  
+  Tigrbl already distinguishes user-facing runtime/operator contracts from lower-layer spec/base authorities, but repo-local maintenance workflows need a separate boundary so maintainers can evolve them without widening the supported user-facing surface area.
+  
+  ## Consequences
+  
+  - Repo-local maintenance helpers can be governed and documented without being mistaken for authoring or operator APIs.
+  - SSOT, packaging, release, migration, and verification workflows can be tracked as maintainer-owned surfaces.
+  - Public compatibility claims are not implied for maintainer-only tools.

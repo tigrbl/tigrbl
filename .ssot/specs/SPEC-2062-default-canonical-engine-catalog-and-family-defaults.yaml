@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2062"
+number: 2062
+slug: "default-canonical-engine-catalog-and-family-defaults"
+title: "Default canonical engine catalog and family defaults"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed default canonical engine catalog and engine-family default-selection behavior for Tigrbl."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed default canonical engine catalog and engine-family default-selection behavior for Tigrbl.
+  
+  ## Canonical Surface
+  
+  - The default canonical engine catalog is engine-owned and distinct from runtime dispatch/executor concepts.
+  - Built-in engine families and their family-default rules are governed inputs to engine resolution, lowering, provider selection, and bootstrap behavior.
+  - Family-default behavior must remain aligned with the datatype-lowering and registry-bridge contracts.
+  - Catalog/default semantics may be projected through engine plugins and builders, but those projections do not make the engine catalog a runtime-owned surface.
+  
+  ## Classification Rules
+  
+  - catalog feature: built-in/default engine-family inventory and catalog semantics
+  - family-default feature: default engine-family selection and family-alignment behavior
+  - non-goal: describing the engine catalog as a runtime-dispatch boundary
+  
+  ## Traceability
+  
+  - ADRs: `adr:1015`, `adr:1052`, `adr:1062`
+  - Related features: `feat:default-canonical-engine-catalog-001`, `feat:default-canonical-engine-family-datatype-alignment-001`
+  - Related specs: `spc:2027`, `spc:2034`, `spc:2035`, `spc:2036`, `spc:2037`
+spec_kind: "local-policy"

@@ -3,41 +3,45 @@ kind: "adr"
 id: "adr:1024"
 number: 1024
 slug: "runtime-family-model"
-title: "ADR-0024 â€” Runtime Family Model"
+title: "ADR-0024 \u00e2\u20ac\u201d Runtime Family Model"
 status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "After the semantic, binding, phase, and exchange layers are defined, Tigrbl needs a stable runtime classification for units of work."
+summary: "Define the closed active-line runtime family set derived after canonical routing."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
   ## Decision
-  
+
   - **Status:** Proposed
-  - **Date:** 2026-04-14
-  - **Related ADRs:** ADR-0005, ADR-0007, ADR-0009, ADR-0010, ADR-0016, ADR-0023, ADR-0025
-  
-  1. Tigrbl runtime classification is based on a closed family set.
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1005, ADR-1007, ADR-1009, ADR-1010, ADR-1016, ADR-1023, ADR-1025
+
+  1. Tigrbl runtime classification is based on a closed active-line family set.
   2. The runtime family set is:
-     - `request`
-     - `session`
-     - `message`
-     - `stream`
-     - `datagram`
+     - `response`;
+     - `stream`;
+     - `socket`;
+     - `session`; and
+     - `request`.
   3. Runtime families are derived execution concepts; they are not independent programming models.
-  4. Runtime-family derivation informs execution loops, hook selection extensions, legality checks, and docs/runtime classification where applicable.
-  5. Binding support may use only this closed family set unless a future ADR expands it.
-  
+  4. Runtime-family derivation begins only after canonical ingress routing at `INGRESS_ROUTE`.
+  5. Runtime-family derivation informs execution loops, channel adaptation, hook selector extensions, legality checks, and docs or runtime classification where applicable.
+  6. `INGRESS_DISPATCH` is not part of the runtime-family model and may not appear in family-oriented diagnostics or SSOT contract language.
+  7. Binding support may use only this closed family set unless a future ADR expands it.
+  8. Message-level, datagram-level, or framing-only variation does not create a new runtime family without a future ADR.
+
   ## Context
-  
-  After the semantic, binding, phase, and exchange layers are defined, Tigrbl needs a stable runtime classification for units of work.
-  The architecture pack uses a small runtime-family taxonomy as the normalized execution vocabulary above the ASGI boundary.
-  
+
+  After the semantic, binding, phase, and exchange layers are defined, Tigrbl still needs a stable runtime classification for units of work.
+  The active line already derives a small family vocabulary in runtime adapters, and that vocabulary should be governed directly rather than inferred from older architecture sketches.
+
   ## Rejected Alternatives
-  
+
   - Binding-specific family taxonomies.
   - Treating runtime families as declarative spec features everywhere.
   - Unlimited family growth as new protocols appear.
+  - Leaving `INGRESS_DISPATCH` available as a family-oriented lifecycle synonym.

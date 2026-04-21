@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1062"
+number: 1062
+slug: "extension-surface-boundary"
+title: "Extension surface boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl has multiple first-class extension families whose semantics live below the transport/operator layer. The repo needs one umbrella architectural boundary for those extension families so helper/export decisions do not blur extension authority with operator support."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Extensions are a governed surface family distinct from public operators, private authoring helpers, CLI surfaces, and maintainer tooling.
+  2. Engine, hook, op, middleware, and other explicit extension families are governed by their own companion specs and family-specific ADRs where needed.
+  3. Extension projections may appear through facade exports, decorators, authoring helpers, or concrete classes, but those projections do not redefine the canonical extension contracts.
+  4. Authoring helpers may materialize extension declarations, yet authoring helpers are not themselves the extension authority.
+  
+  ## Context
+  
+  Tigrbl has multiple first-class extension families whose semantics live below the transport/operator layer. The repo needs one umbrella architectural boundary for those extension families so helper/export decisions do not blur extension authority with operator support.
+  
+  ## Consequences
+  
+  - Extension-family specs can share one architectural taxonomy.
+  - Public and authoring projections can be described without widening extension semantics.
+  - Engine/plugin/catalog discussions remain extension concerns rather than runtime-dispatch concerns.

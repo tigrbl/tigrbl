@@ -1,0 +1,37 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1063"
+number: 1063
+slug: "public-operator-surface-boundary"
+title: "Public operator surface boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The older operator-surface ADR was too coarse and did not distinguish between facade-exported authoring helpers and explicitly supported public operator surfaces."
+supersedes:
+  - "adr:1041"
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Public operator support is now explicit and excludes facade authoring helpers other than get_schema()."
+    at: "2026-04-20T21:50:21Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Public operator surfaces are the explicitly governed, compatibility-relevant contracts that operators consume through transport, docs, diagnostics, security, and other runtime-facing projections.
+  2. Public operator status is explicit; importability or facade export alone does not make a surface public.
+  3. Among the schema/helper-like facade exports, only `get_schema()` is governed as a public operator helper surface.
+  4. `bind()`, `rebind()`, `build_*()`, and `include_tables()` remain private authoring helpers even when exported from `tigrbl`.
+  
+  ## Context
+  
+  The older operator-surface ADR was too coarse and did not distinguish between facade-exported authoring helpers and explicitly supported public operator surfaces.
+  
+  ## Consequences
+  
+  - Public operator specs can stay narrow and stable.
+  - Authoring helpers no longer need to be treated as operator-facing compatibility commitments.
+  - Extension, authoring, and maintainer surfaces can evolve without accidentally widening the public operator boundary.
