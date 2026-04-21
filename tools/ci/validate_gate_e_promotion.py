@@ -84,10 +84,7 @@ def main() -> None:
         errors.append('docs/conformance/GATE_MODEL.md must record Gate E as passed in Phase 13')
     if 'Passed in the Phase 13 promotion checkpoint.' not in gate_e_text:
         errors.append('docs/conformance/gates/GATE_E_PROMOTION.md must record Gate E as passed in Phase 13')
-    if (
-        '**Phase 13 — Gate E promotion and release**' not in readme_text
-        and '**Phase 13 - Gate E promotion and release**' not in readme_text
-    ):
+    if '**Phase 13 — Gate E promotion and release**' not in readme_text:
         errors.append('README.md must record the Phase 13 promotion checkpoint')
     if f'Current stable release bundle | `docs/conformance/releases/0.3.18/` |' not in pointer_text:
         errors.append('docs/governance/DOC_POINTERS.md must point to the promoted stable release bundle')

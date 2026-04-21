@@ -1,21 +1,17 @@
-schema_version: "0.2.0"
+schema_version: "0.1.0"
 kind: "spec"
 id: "spc:2002"
 number: 2002
 slug: "certification-truth-model"
 title: "Certification Truth Model"
-status: "accepted"
+status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Define the repository-level certification control model that separates release-grade facts from planning facts."
 supersedes: []
 superseded_by: []
-status_notes:
-  -
-    status: "accepted"
-    note: "Accepted as the governing certification predicate model for fully featured, fully conformant, and fully compliant release closure."
-    at: "2026-04-21T10:08:29Z"
+status_notes: []
 references: []
 body: |-
   ## Purpose
@@ -67,6 +63,5 @@ body: |-
   ## Authority Rule
   
   If a narrative document conflicts with `certification/`, the `certification/` tree wins.
-spec_kind: "governance"
-adr_ids:
-  - "adr:1026"
+spec_kind: "local-policy"
+adr_ids: []
