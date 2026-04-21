@@ -1,0 +1,52 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2083"
+number: 2083
+slug: "monotone-spec-merge-operator-contract"
+title: "Monotone spec merge operator contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract specifies the generic, domain-agnostic monotone operators used to implement specification merge precedence and MRO roll-up."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created contract for generic monotone spec-merge operators."
+    at: "2026-04-21T23:40:57Z"
+references: []
+body: |-
+  ## Purpose
+  
+  This contract specifies the generic, domain-agnostic monotone operators used to implement specification merge precedence and MRO roll-up.
+  
+  ## Contract
+  
+  1. The monotone operator surface must remain domain-agnostic and must not depend on `OpSpec`, transport bindings, hook phases, table specs, or framework-specific feature names.
+  2. `as_tuple(value)` must normalize declaration input so that `None` becomes an empty tuple, sequence-like values become tuples, mappings are treated as a single declaration item, and scalar values become a one-item tuple.
+  3. `highest_precedence(inherited, override)` must return the override value when it is set and otherwise preserve the inherited value. Callers may supply a field-specific set predicate for empty tuple, empty string, or other bottom-like values.
+  4. `mapping_overlay(*mappings)` must shallow-merge mappings by key with later mappings taking precedence and absent keys preserving prior values.
+  5. `keyed_overlay(*items, key=...)` must build a keyed map where later items replace earlier items for the same key.
+  6. `stable_keyed_overlay(values, key=...)` must de-duplicate by key while preserving the first key position and retaining the latest value for that key.
+  7. `stable_unique(values, key=...)` must preserve first-seen order while removing duplicate identities, including unhashable values through equality checks.
+  8. `sequence_union(*sequences, key=..., dedupe=True)` must concatenate normalized sequence-like inputs and then apply stable de-duplication unless disabled by the caller.
+  9. `merge_mro_sequence_attr(owner, attr, ...)` must roll up sequence-like class attributes across an MRO using the same normalization and stable de-duplication semantics as `sequence_union`.
+  10. `merge_mro_mapping_attr(owner, attr)` must roll up mapping-like class attributes across an MRO using subclass precedence.
+  11. Spec merge code must compose these generic operators rather than reimplementing equivalent ad hoc loops in mapping, app, table, or operation-specific modules.
+  12. Destructive clearing is not provided by omission-oriented operators. Any future reset semantics must be explicit and field-specific.
+  
+  ## Verification
+  
+  - Unit coverage must exercise the generic operators directly with domain-neutral payloads.
+  - Existing spec normalization and mapping-plan precedence tests must continue to pass when their internal merge code delegates to these operators.
+  
+  ## Related Decisions
+  
+  - ADR-1004 governs specification merge precedence.
+  - ADR-1077 governs mapping-plan compilation order.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1004"
+  - "adr:1077"

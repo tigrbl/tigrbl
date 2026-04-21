@@ -5,12 +5,18 @@ from typing import Any, Callable, Iterable, List
 from .hook_mro_collect import mro_collect_decorated_hooks
 from tigrbl.op import resolve as resolve_ops
 from tigrbl_atoms import VALID_HOOK_PHASES
+from tigrbl_core._spec.monotone import stable_keyed_overlay
 from .context import MappingContext
 from .precedence import key_for, merge_op_specs
 
 
 def _dedupe_by_name(funcs: Iterable[Callable[..., Any]]) -> List[Callable[..., Any]]:
-    return list({getattr(fn, "__qualname__", str(fn)): fn for fn in funcs}.values())
+    return list(
+        stable_keyed_overlay(
+            funcs,
+            key=lambda fn: getattr(fn, "__qualname__", str(fn)),
+        )
+    )
 
 
 def collect(ctx: MappingContext) -> MappingContext:
