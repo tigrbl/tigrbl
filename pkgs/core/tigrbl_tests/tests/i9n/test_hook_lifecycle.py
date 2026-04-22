@@ -33,7 +33,7 @@ async def setup_client(db_mode, Tenant, Item):
 
 @pytest.mark.i9n
 @pytest.mark.asyncio
-async def test_hook_phases_execution_order(db_mode):
+async def test_hook_lifecycle_execution_order(db_mode):
     """Test that all hook phases execute in the correct order."""
 
     execution_order: list[str] = []
@@ -407,7 +407,7 @@ async def test_catch_all_hooks(db_mode):
 
 @pytest.mark.i9n
 @pytest.mark.asyncio
-async def test_multiple_hooks_same_phase(db_mode):
+async def test_multiple_hooks_same_lifecycle_anchor(db_mode):
     """Test that multiple hooks for the same phase execute correctly."""
 
     executions: list[str] = []

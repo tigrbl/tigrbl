@@ -83,7 +83,7 @@ Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs
 | Gate A boundary-freeze audit evidence | `docs/conformance/audit/2026/phase4-boundary-freeze/` |
 | Spec/docs audit evidence | `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/` |
 | RFC/security audit evidence | `docs/conformance/audit/2026/p6-rfc-sec/` |
-| Operator-surface audit evidence | `docs/conformance/audit/2026/operator-surface/` |
+| Operator-surface audit evidence | `docs/conformance/audit/2026/phase7-operator-surface/` |
 | CLI audit evidence | `docs/conformance/audit/2026/p8-cli/` |
 | Evidence-model audit evidence | `docs/conformance/audit/2026/p9-evidence/` |
 | Gate B audit evidence | `docs/conformance/audit/2026/p10-gate-b/` |

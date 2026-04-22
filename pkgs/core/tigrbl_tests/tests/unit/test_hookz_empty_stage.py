@@ -6,8 +6,8 @@ from tigrbl.system.diagnostics import _build_hookz_endpoint
 
 
 @pytest.mark.asyncio
-async def test_hookz_omits_empty_phases_and_operations():
-    """Hookz should skip phases without hooks and drop empty operations."""
+async def test_hookz_omits_empty_lifecycle_groups_and_operations():
+    """Hookz should skip lifecycle groups without hooks and drop empty operations."""
 
     def dummy(ctx):
         pass

@@ -18,7 +18,7 @@ The current state below is grounded in:
 2. the existing Phase 5 and Phase 6 evidence
 3. direct inspection of the governed documentation tree
 4. execution of the repository policy validators under `tools/ci/`
-5. execution of the standalone Phase 7 pytest slice preserved under `docs/conformance/audit/2026/operator-surface/`
+5. execution of the standalone Phase 7 pytest slice preserved under `docs/conformance/audit/2026/phase7-operator-surface/`
 
 ## Certification status
 
@@ -107,4 +107,4 @@ The explicit `--server {tigrcorn,uvicorn,hypercorn,gunicorn}` flag contract also
 - `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`
 - `docs/conformance/NEXT_STEPS.md`
 - `docs/conformance/CLAIM_REGISTRY.md`
-- `docs/conformance/audit/2026/operator-surface/README.md`
+- `docs/conformance/audit/2026/phase7-operator-surface/README.md`

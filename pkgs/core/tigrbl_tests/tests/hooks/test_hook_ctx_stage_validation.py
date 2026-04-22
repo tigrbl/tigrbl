@@ -11,7 +11,7 @@ class InvalidPhase(Enum):
     IN_BUILD = "IN_BUILD"
 
 
-def test_hook_ctx_valid_string_phase_does_not_raise():
+def test_hook_ctx_valid_string_anchor_does_not_raise():
     @hook_ctx(ops="create", phase="PRE_HANDLER")
     def valid_string_hook(cls, ctx):
         return None
@@ -19,7 +19,7 @@ def test_hook_ctx_valid_string_phase_does_not_raise():
     assert valid_string_hook is not None
 
 
-def test_hook_ctx_invalid_string_phase_raises_immediately():
+def test_hook_ctx_invalid_string_anchor_raises_immediately():
     with pytest.raises(InvalidHookPhaseError) as exc_info:
 
         @hook_ctx(ops="create", phase="IN_BUILD")
@@ -33,7 +33,7 @@ def test_hook_ctx_invalid_string_phase_raises_immediately():
     assert "ON_ROLLBACK" in message
 
 
-def test_hook_ctx_valid_enum_phase_does_not_raise():
+def test_hook_ctx_valid_enum_anchor_does_not_raise():
     @hook_ctx(ops="create", phase=PHASE.PRE_HANDLER)
     def valid_enum_hook(cls, ctx):
         return None
@@ -41,7 +41,7 @@ def test_hook_ctx_valid_enum_phase_does_not_raise():
     assert valid_enum_hook is not None
 
 
-def test_hook_ctx_invalid_enum_phase_raises_immediately():
+def test_hook_ctx_invalid_enum_anchor_raises_immediately():
     with pytest.raises(InvalidHookPhaseError) as exc_info:
 
         @hook_ctx(ops="create", phase=InvalidPhase.IN_BUILD)

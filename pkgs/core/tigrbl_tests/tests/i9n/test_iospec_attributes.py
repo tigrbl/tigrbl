@@ -356,7 +356,7 @@ def test_atoms_execute_with_iospec():
 
 
 @pytest.mark.i9n
-def test_system_phase_chain_includes_system_steps():
+def test_system_lifecycle_chain_includes_system_steps():
     class Thing(TableBase):
         __tablename__ = "iospec_system_i9n"
         __allow_unmapped__ = True

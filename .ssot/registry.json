@@ -812,7 +812,7 @@
     {
       "id": "feat:gate-006",
       "title": "Gate A validation suite passes in the checkpoint tree",
-      "description": "Tracks conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
+      "description": "Tracks conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -20423,7 +20423,7 @@
     },
     {
       "id": "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
-      "title": "Hook ctx phase validation",
+      "title": "Hook ctx stage validation",
       "status": "passing",
       "kind": "hooks",
       "path": "pkgs/core/tigrbl_tests/tests/hooks/test_hook_ctx_stage_validation.py",
@@ -21814,7 +21814,7 @@
     },
     {
       "id": "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
-      "title": "Hook runtime phase parity",
+      "title": "Hook runtime stage parity",
       "status": "passing",
       "kind": "parity",
       "path": "pkgs/core/tigrbl_tests/tests/parity/test_hook_runtime_stage_parity.py",
@@ -22718,7 +22718,7 @@
     },
     {
       "id": "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
-      "title": "Atom stage phase window static",
+      "title": "Atom stage window static",
       "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_window_static.py",
@@ -22755,7 +22755,7 @@
     },
     {
       "id": "tst:tigrbl-tests-tests-unit-runtime-test-events-stages",
-      "title": "Events phases",
+      "title": "Events stages",
       "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_events_stages.py",
@@ -22787,7 +22787,7 @@
     },
     {
       "id": "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-access",
-      "title": "Ingress egress phase access",
+      "title": "Ingress egress access",
       "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_ingress_egress_access.py",
@@ -23867,7 +23867,7 @@
     },
     {
       "id": "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
-      "title": "Hookz empty phase",
+      "title": "Hookz empty stage",
       "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_hookz_empty_stage.py",
@@ -26856,7 +26856,7 @@
     },
     {
       "id": "tst:closure-case-atom-stage-window-static",
-      "title": "Closure case: test_every_atom_signature_stays_within_anchor_window",
+      "title": "Closure case: test_every_atom_signature_stays_within_stage_window",
       "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_window_static.py",
@@ -27953,7 +27953,7 @@
       "status": "asserted",
       "tier": "T2",
       "kind": "conformance",
-      "description": "Asserts conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
+      "description": "Asserts conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
       "feature_ids": [
         "feat:gate-006"
       ],
@@ -33563,7 +33563,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "docs/conformance/audit/2026/operator-surface/README.md",
+      "path": "docs/conformance/audit/2026/phase7-operator-surface/README.md",
       "claim_ids": [
         "clm:cur-005"
       ],
@@ -36557,7 +36557,7 @@
       "id": "adr:1001",
       "number": 1001,
       "slug": "one-semantic-op-model",
-      "title": "ADR-0001 \u00e2\u20ac\u201d One Semantic Op Model",
+      "title": "ADR-0001 â€” One Semantic Op Model",
       "path": ".ssot/adr/ADR-1001-one-semantic-op-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36574,7 +36574,7 @@
       "id": "adr:1002",
       "number": 1002,
       "slug": "package-dag-and-ownership",
-      "title": "ADR-0002 \u00e2\u20ac\u201d Package DAG and Ownership",
+      "title": "ADR-0002 â€” Package DAG and Ownership",
       "path": ".ssot/adr/ADR-1002-package-dag-and-ownership.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36591,7 +36591,7 @@
       "id": "adr:1003",
       "number": 1003,
       "slug": "spec-first-authoritative-spec-layer",
-      "title": "ADR-0003 \u00e2\u20ac\u201d Spec-First Authoritative Spec Layer",
+      "title": "ADR-0003 â€” Spec-First Authoritative Spec Layer",
       "path": ".ssot/adr/ADR-1003-spec-first-authoritative-spec-layer.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36636,7 +36636,7 @@
       "id": "adr:1005",
       "number": 1005,
       "slug": "asgi3-boundary-and-projection-rules",
-      "title": "ADR-0005 \u00e2\u20ac\u201d ASGI3 Boundary and Projection Rules",
+      "title": "ADR-0005 â€” ASGI3 Boundary and Projection Rules",
       "path": ".ssot/adr/ADR-1005-asgi3-boundary-and-projection-rules.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36653,7 +36653,7 @@
       "id": "adr:1006",
       "number": 1006,
       "slug": "protocol-binding-model",
-      "title": "ADR-0006 \u00e2\u20ac\u201d Protocol Binding Model",
+      "title": "ADR-0006 â€” Protocol Binding Model",
       "path": ".ssot/adr/ADR-1006-protocol-binding-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36670,7 +36670,7 @@
       "id": "adr:1007",
       "number": 1007,
       "slug": "first-class-protocol-support-matrix",
-      "title": "ADR-0007 \u00e2\u20ac\u201d First-Class Protocol Support Matrix",
+      "title": "ADR-0007 â€” First-Class Protocol Support Matrix",
       "path": ".ssot/adr/ADR-1007-first-class-protocol-support-matrix.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36687,7 +36687,7 @@
       "id": "adr:1008",
       "number": 1008,
       "slug": "atom-catalog-and-atom-legality",
-      "title": "ADR-0008 \u00e2\u20ac\u201d Atom Catalog and Atom Legality",
+      "title": "ADR-0008 â€” Atom Catalog and Atom Legality",
       "path": ".ssot/adr/ADR-1008-atom-catalog-and-atom-legality.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36704,7 +36704,7 @@
       "id": "adr:1009",
       "number": 1009,
       "slug": "phase-model-and-phase-legality",
-      "title": "ADR-0009 \u00e2\u20ac\u201d Phase Model and Phase Legality",
+      "title": "ADR-0009 â€” Phase Model and Phase Legality",
       "path": ".ssot/adr/ADR-1009-phase-model-and-phase-legality.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36721,7 +36721,7 @@
       "id": "adr:1010",
       "number": 1010,
       "slug": "hook-model-and-selector-semantics",
-      "title": "ADR-0010 \u00e2\u20ac\u201d Hook Model and Selector Semantics",
+      "title": "ADR-0010 â€” Hook Model and Selector Semantics",
       "path": ".ssot/adr/ADR-1010-hook-model-and-selector-semantics.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36744,7 +36744,7 @@
       "id": "adr:1011",
       "number": 1011,
       "slug": "security-deps-and-deps-ordering",
-      "title": "ADR-0011 \u00e2\u20ac\u201d Security Deps and Deps Ordering",
+      "title": "ADR-0011 â€” Security Deps and Deps Ordering",
       "path": ".ssot/adr/ADR-1011-security-deps-and-deps-ordering.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36761,7 +36761,7 @@
       "id": "adr:1012",
       "number": 1012,
       "slug": "db-guards-and-transaction-guardrails",
-      "title": "ADR-0012 \u00e2\u20ac\u201d DB Guards and Transaction Guardrails",
+      "title": "ADR-0012 â€” DB Guards and Transaction Guardrails",
       "path": ".ssot/adr/ADR-1012-db-guards-and-transaction-guardrails.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36778,7 +36778,7 @@
       "id": "adr:1013",
       "number": 1013,
       "slug": "default-canonical-oltp-ops",
-      "title": "ADR-0013 \u00e2\u20ac\u201d Default Canonical OLTP Ops",
+      "title": "ADR-0013 â€” Default Canonical OLTP Ops",
       "path": ".ssot/adr/ADR-1013-default-canonical-oltp-ops.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36823,7 +36823,7 @@
       "id": "adr:1015",
       "number": 1015,
       "slug": "engine-interoperability-contract",
-      "title": "ADR-0015 \u00e2\u20ac\u201d Engine Interoperability Contract",
+      "title": "ADR-0015 â€” Engine Interoperability Contract",
       "path": ".ssot/adr/ADR-1015-engine-interoperability-contract.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36840,7 +36840,7 @@
       "id": "adr:1016",
       "number": 1016,
       "slug": "kernel-plan-compilation-packing-fusion-compaction",
-      "title": "ADR-0016 \u00e2\u20ac\u201d Kernel Plan Compilation, Packing, Fusion, and Compaction",
+      "title": "ADR-0016 â€” Kernel Plan Compilation, Packing, Fusion, and Compaction",
       "path": ".ssot/adr/ADR-1016-kernel-plan-compilation-packing-fusion-compaction.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36857,7 +36857,7 @@
       "id": "adr:1017",
       "number": 1017,
       "slug": "decorators-are-declarative-sugar",
-      "title": "ADR-0017 \u00e2\u20ac\u201d Decorators Are Declarative Sugar",
+      "title": "ADR-0017 â€” Decorators Are Declarative Sugar",
       "path": ".ssot/adr/ADR-1017-decorators-are-declarative-sugar.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36874,7 +36874,7 @@
       "id": "adr:1018",
       "number": 1018,
       "slug": "shortcuts-and-aliases-expand-to-canonical-forms",
-      "title": "ADR-0018 \u00e2\u20ac\u201d Shortcuts and Aliases Expand to Canonical Forms",
+      "title": "ADR-0018 â€” Shortcuts and Aliases Expand to Canonical Forms",
       "path": ".ssot/adr/ADR-1018-shortcuts-and-aliases-expand-to-canonical-forms.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36897,7 +36897,7 @@
       "id": "adr:1019",
       "number": 1019,
       "slug": "make-define-derive-pattern",
-      "title": "ADR-0019 \u00e2\u20ac\u201d Make / Define / Derive Pattern",
+      "title": "ADR-0019 â€” Make / Define / Derive Pattern",
       "path": ".ssot/adr/ADR-1019-make-define-derive-pattern.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36914,7 +36914,7 @@
       "id": "adr:1020",
       "number": 1020,
       "slug": "python-rust-parity-contract",
-      "title": "ADR-0020 \u00e2\u20ac\u201d Python / Rust Parity Contract",
+      "title": "ADR-0020 â€” Python / Rust Parity Contract",
       "path": ".ssot/adr/ADR-1020-python-rust-parity-contract.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36931,7 +36931,7 @@
       "id": "adr:1021",
       "number": 1021,
       "slug": "certification-boundary-and-promotion-gates",
-      "title": "ADR-0021 \u00e2\u20ac\u201d Certification Boundary and Promotion Gates",
+      "title": "ADR-0021 â€” Certification Boundary and Promotion Gates",
       "path": ".ssot/adr/ADR-1021-certification-boundary-and-promotion-gates.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36948,7 +36948,7 @@
       "id": "adr:1022",
       "number": 1022,
       "slug": "tigrcorn-uvicorn-hypercorn-interop-and-conformance",
-      "title": "ADR-0022 \u00e2\u20ac\u201d Tigrcorn / Uvicorn / Hypercorn Interop and Conformance",
+      "title": "ADR-0022 â€” Tigrcorn / Uvicorn / Hypercorn Interop and Conformance",
       "path": ".ssot/adr/ADR-1022-tigrcorn-uvicorn-hypercorn-interop-and-conformance.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36965,7 +36965,7 @@
       "id": "adr:1023",
       "number": 1023,
       "slug": "exchange-model",
-      "title": "ADR-0023 \u00e2\u20ac\u201d Exchange Model",
+      "title": "ADR-0023 â€” Exchange Model",
       "path": ".ssot/adr/ADR-1023-exchange-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36982,7 +36982,7 @@
       "id": "adr:1024",
       "number": 1024,
       "slug": "runtime-family-model",
-      "title": "ADR-0024 \u00e2\u20ac\u201d Runtime Family Model",
+      "title": "ADR-0024 â€” Runtime Family Model",
       "path": ".ssot/adr/ADR-1024-runtime-family-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36999,7 +36999,7 @@
       "id": "adr:1025",
       "number": 1025,
       "slug": "opchannel-and-runtime-io-abstraction",
-      "title": "ADR-0025 \u00e2\u20ac\u201d OpChannel and Runtime IO Abstraction",
+      "title": "ADR-0025 â€” OpChannel and Runtime IO Abstraction",
       "path": ".ssot/adr/ADR-1025-opchannel-and-runtime-io-abstraction.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -37146,7 +37146,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1034",
@@ -37163,7 +37163,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1035",
@@ -37203,7 +37203,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1037",
@@ -37220,7 +37220,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1038",
@@ -37319,7 +37319,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1043",
@@ -37336,7 +37336,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1044",
@@ -37353,7 +37353,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1045",
@@ -38421,7 +38421,7 @@
       "superseded_by": [],
       "status_notes": [],
       "adr_ids": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "spc:2002",
