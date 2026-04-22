@@ -50,7 +50,7 @@ SNAPSHOT_DIR = (
     / 'conformance'
     / 'audit'
     / '2026'
-    / 'phase5-oas-jsonschema-jsonrpc-openrpc-closure'
+    / 'docs-spec-snapshot-closure'
     / 'snapshots'
 )
 
@@ -93,35 +93,35 @@ def _mtls_dep(cred=Security(MutualTLS(scheme_name='MutualTLSAuth'))):
     return cred
 
 
-class Phase5CreateWidget(BaseModel):
+class SpecSnapshotCreateWidget(BaseModel):
     name: str
 
 
-class Phase5WidgetOut(BaseModel):
+class SpecSnapshotWidgetOut(BaseModel):
     id: str
     name: str
 
 
-class Phase5BasicDocsTable(TableBase, GUIDPk):
-    __tablename__ = 'phase5_basic_docs_table'
+class SpecSnapshotBasicDocsTable(TableBase, GUIDPk):
+    __tablename__ = 'spec_snapshot_basic_docs_table'
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (OpSpec(alias='read', target='read', secdeps=(_basic_dep,)),)
 
 
-class Phase5BearerDocsTable(TableBase, GUIDPk):
-    __tablename__ = 'phase5_bearer_docs_table'
+class SpecSnapshotBearerDocsTable(TableBase, GUIDPk):
+    __tablename__ = 'spec_snapshot_bearer_docs_table'
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (OpSpec(alias='read', target='read', secdeps=(_bearer_dep,)),)
 
 
-class Phase5RouterDocsTable(TableBase, GUIDPk):
-    __tablename__ = 'phase5_router_docs_table'
+class SpecSnapshotRouterDocsTable(TableBase, GUIDPk):
+    __tablename__ = 'spec_snapshot_router_docs_table'
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (OpSpec(alias='read', target='read', secdeps=(_api_key_dep,)),)
 
 
-class Phase5TableDocsTable(TableBase, GUIDPk):
-    __tablename__ = 'phase5_table_docs_table'
+class SpecSnapshotTableDocsTable(TableBase, GUIDPk):
+    __tablename__ = 'spec_snapshot_table_docs_table'
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (
         OpSpec(
@@ -133,27 +133,27 @@ class Phase5TableDocsTable(TableBase, GUIDPk):
 
 
 def build_snapshot_app() -> TigrblApp:
-    router = TigrblRouter(title='Phase 5 Router', version='5.0.0', engine=mem(async_=False))
+    router = TigrblRouter(title='Spec Snapshot Router', version='5.0.0', engine=mem(async_=False))
 
     @router.post(
         '/widgets/{widget_id}',
         tags=['widgets'],
         summary='Create widget',
         description='Create or update a widget',
-        request_model=Phase5CreateWidget,
-        response_model=Phase5WidgetOut,
+        request_model=SpecSnapshotCreateWidget,
+        response_model=SpecSnapshotWidgetOut,
         path_param_schemas={'widget_id': {'type': 'string'}},
         query_param_schemas={'verbose': {'type': 'boolean', 'required': False}},
     )
     def create(widget_id: str):
         return {'id': widget_id, 'name': widget_id}
 
-    router.include_table(Phase5BasicDocsTable)
-    router.include_table(Phase5RouterDocsTable)
-    router.include_table(Phase5TableDocsTable)
+    router.include_table(SpecSnapshotBasicDocsTable)
+    router.include_table(SpecSnapshotRouterDocsTable)
+    router.include_table(SpecSnapshotTableDocsTable)
 
-    app = TigrblApp(title='Phase 5 API', version='5.0.0', engine=mem(async_=False))
-    app.include_table(Phase5BearerDocsTable)
+    app = TigrblApp(title='Spec Snapshot API', version='5.0.0', engine=mem(async_=False))
+    app.include_table(SpecSnapshotBearerDocsTable)
     app.include_router(router)
     app.initialize()
     app.mount_jsonrpc()
@@ -181,7 +181,7 @@ async def main() -> None:
     )
     (SNAPSHOT_DIR / 'swagger_snapshot.html').write_text(swagger_html, encoding='utf-8')
     (SNAPSHOT_DIR / 'lens_snapshot.html').write_text(lens_html, encoding='utf-8')
-    print(f'Wrote Phase 5 snapshots to {SNAPSHOT_DIR.relative_to(ROOT)}')
+    print(f'Wrote spec snapshots to {SNAPSHOT_DIR.relative_to(ROOT)}')
 
 
 if __name__ == '__main__':

@@ -51,7 +51,7 @@ GROUPS: dict[str, EvidenceTemplate] = {
     'spec': EvidenceTemplate(
         lane_classes=['unit', 'integration', 'spec conformance', 'docs UI smoke'],
         tests=[
-            'pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py',
+            'pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py',
             'pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py',
             'pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py',
             'pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py',
@@ -119,7 +119,7 @@ GROUPS: dict[str, EvidenceTemplate] = {
     'cli': EvidenceTemplate(
         lane_classes=['CLI smoke', 'server compatibility smoke'],
         tests=[
-            'pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py',
+            'pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py',
             'pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py',
         ],
         ci_jobs=[
@@ -282,15 +282,15 @@ This lane aggregates the current checkpoint's representative unit-level proof.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py`
 - `tools/ci/tests/test_evidence_registry.py`
 
 ## Source audit logs
 
 - `docs/conformance/audit/2026/p9-evidence/pytest_evidence_registry.log`
 - `docs/conformance/audit/2026/p8-cli/p8_cli_pytest.log`
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/phase5_targeted_pytest.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/phase5_targeted_pytest.log`
 ''',
         'integration.md': '''# Integration Lane
 
@@ -305,7 +305,7 @@ This lane keeps the integration evidence paths visible and durable.
 
 ## Source audit logs
 
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/phase5_targeted_pytest.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/phase5_targeted_pytest.log`
 - `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log`
 ''',
         'spec-conformance.md': '''# Spec Conformance Lane
@@ -314,7 +314,7 @@ This lane covers OpenAPI, JSON Schema, JSON-RPC, and OpenRPC conformance evidenc
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`
 - `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`
 - `pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`
 - `pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py`
@@ -322,8 +322,8 @@ This lane covers OpenAPI, JSON Schema, JSON-RPC, and OpenRPC conformance evidenc
 
 ## Source audit logs
 
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/phase5_targeted_pytest.log`
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/generate_phase5_snapshots.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/phase5_targeted_pytest.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/generate_spec_snapshots.log`
 ''',
         'security-negative.md': '''# Security / Negative Lane
 
@@ -363,7 +363,7 @@ This lane covers the unified `tigrbl` CLI command and flag smoke.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py`
 - `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`
 
 ## Source audit logs
@@ -534,7 +534,7 @@ This Phase 9 checkpoint creates the durable evidence model and validators. It do
         '- Phase 9 evidence-registry and bundle validators',
         '- Phase 9 clean-room package build/metadata smoke',
     ]
-    write(DEV_ROOT / 'BUILD_NOTES.md', f'''# Build Notes — {DEV_VERSION}
+    write(DEV_ROOT / 'BUILD_NOTES.md', f'''# Build Notes â€” {DEV_VERSION}
 
 ## Build identity
 
@@ -559,7 +559,7 @@ This bundle establishes durable structure and traceable evidence mapping. It doe
     claim_ids = sorted(registry['claims'])
     for claim_id in claim_ids:
         claims_summary.append(f'- `{claim_id}`')
-    write(DEV_ROOT / 'CLAIMS.md', f'''# Claims — {DEV_VERSION}
+    write(DEV_ROOT / 'CLAIMS.md', f'''# Claims â€” {DEV_VERSION}
 
 This dev bundle points to the governed claim set for the current cycle.
 
@@ -587,7 +587,7 @@ This dev bundle points to the governed claim set for the current cycle.
         f'| server compatibility smoke | `.github/workflows/evidence-lanes.yml#evidence-lane[server-compat-smoke]` | `docs/conformance/dev/{DEV_VERSION}/gate-results/server-compat-smoke.md` |',
         f'| clean-room package tests | `.github/workflows/evidence-lanes.yml#evidence-lane[clean-room-package]` | `docs/conformance/dev/{DEV_VERSION}/gate-results/clean-room-package.md` |',
     ]
-    write(DEV_ROOT / 'EVIDENCE_INDEX.md', f'''# Evidence Index — {DEV_VERSION}
+    write(DEV_ROOT / 'EVIDENCE_INDEX.md', f'''# Evidence Index â€” {DEV_VERSION}
 
 ## Purpose
 
@@ -604,7 +604,7 @@ This index is the durable entry point for the current dev-bundle evidence lane m
 
     write(RELEASE_ROOT / 'RELEASE_NOTES.md', '''Supported claim ids: GOV-010, GATE-007, OAS-001, OAS-006, CLI-001, CLI-002
 
-# Release Notes — 0.3.17
+# Release Notes â€” 0.3.17
 
 Supported claim ids: GOV-010, GATE-007, OAS-001, OAS-006, CLI-001, CLI-002
 
@@ -614,7 +614,7 @@ It records the stable line snapshot for `0.3.17`, but it does **not** claim that
 ''')
     write(RELEASE_ROOT / 'CLAIMS.md', '''Supported claim ids: EVID-003
 
-# Claims — 0.3.17
+# Claims â€” 0.3.17
 
 This release bundle points to the governed claim registry and the evidence registry for the stable line snapshot.
 
@@ -629,7 +629,7 @@ The Phase 9 checkpoint establishes durable release-bundle structure. It does not
 ''')
     write(RELEASE_ROOT / 'EVIDENCE_INDEX.md', f'''Supported claim ids: EVID-003
 
-# Evidence Index — {RELEASE_VERSION}
+# Evidence Index â€” {RELEASE_VERSION}
 
 ## Stable bundle structure
 
