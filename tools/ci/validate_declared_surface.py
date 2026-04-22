@@ -44,7 +44,7 @@ def main() -> None:
     if "Declared-surface current-state report" not in doc_pointers or "Declared-surface certification-state report" not in doc_pointers:
         errors.append("docs/governance/DOC_POINTERS.md must point to both declared-surface reports")
 
-    if "validate_phase1_declared_surface.py" not in ci_validation:
+    if "validate_declared_surface.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the declared-surface validator")
 
     if "Validate Declared surface" not in workflow:

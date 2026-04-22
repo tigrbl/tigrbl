@@ -21,7 +21,7 @@ SNAPSHOT_DIR = (
     / "conformance"
     / "audit"
     / "2026"
-    / "phase5-oas-jsonschema-jsonrpc-openrpc-closure"
+    / "docs-spec-snapshot-closure"
     / "snapshots"
 )
 JSON_SCHEMA_DIALECT = "https://json-schema.org/draft/2020-12/schema"
@@ -73,38 +73,38 @@ def _mtls_dep(cred=Security(MutualTLS(scheme_name="MutualTLSAuth"))):
     return cred
 
 
-class Phase5CreateWidget(BaseModel):
+class SpecSnapshotCreateWidget(BaseModel):
     name: str
 
 
-class Phase5WidgetOut(BaseModel):
+class SpecSnapshotWidgetOut(BaseModel):
     id: str
     name: str
 
 
-class Phase5BasicDocsTable(TableBase, GUIDPk):
-    __tablename__ = "phase5_basic_docs_table"
+class SpecSnapshotBasicDocsTable(TableBase, GUIDPk):
+    __tablename__ = "spec_snapshot_basic_docs_table"
 
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (OpSpec(alias="read", target="read", secdeps=(_basic_dep,)),)
 
 
-class Phase5BearerDocsTable(TableBase, GUIDPk):
-    __tablename__ = "phase5_bearer_docs_table"
+class SpecSnapshotBearerDocsTable(TableBase, GUIDPk):
+    __tablename__ = "spec_snapshot_bearer_docs_table"
 
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (OpSpec(alias="read", target="read", secdeps=(_bearer_dep,)),)
 
 
-class Phase5RouterDocsTable(TableBase, GUIDPk):
-    __tablename__ = "phase5_router_docs_table"
+class SpecSnapshotRouterDocsTable(TableBase, GUIDPk):
+    __tablename__ = "spec_snapshot_router_docs_table"
 
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (OpSpec(alias="read", target="read", secdeps=(_api_key_dep,)),)
 
 
-class Phase5TableDocsTable(TableBase, GUIDPk):
-    __tablename__ = "phase5_table_docs_table"
+class SpecSnapshotTableDocsTable(TableBase, GUIDPk):
+    __tablename__ = "spec_snapshot_table_docs_table"
 
     name = Column(String, nullable=False)
     __tigrbl_ops__ = (
@@ -124,20 +124,20 @@ def _build_app() -> TigrblApp:
         tags=["widgets"],
         summary="Create widget",
         description="Create or update a widget",
-        request_model=Phase5CreateWidget,
-        response_model=Phase5WidgetOut,
+        request_model=SpecSnapshotCreateWidget,
+        response_model=SpecSnapshotWidgetOut,
         path_param_schemas={"widget_id": {"type": "string"}},
         query_param_schemas={"verbose": {"type": "boolean", "required": False}},
     )
     def create(widget_id: str):
         return {"id": widget_id, "name": widget_id}
 
-    router.include_table(Phase5BasicDocsTable)
-    router.include_table(Phase5RouterDocsTable)
-    router.include_table(Phase5TableDocsTable)
+    router.include_table(SpecSnapshotBasicDocsTable)
+    router.include_table(SpecSnapshotRouterDocsTable)
+    router.include_table(SpecSnapshotTableDocsTable)
 
     app = TigrblApp(title="Spec Snapshot API", version="5.0.0", engine=mem(async_=False))
-    app.include_table(Phase5BearerDocsTable)
+    app.include_table(SpecSnapshotBearerDocsTable)
     app.include_router(router)
     app.initialize()
     app.mount_jsonrpc()
@@ -149,7 +149,7 @@ def _load_json_snapshot(name: str) -> dict[str, object]:
     return json.loads((SNAPSHOT_DIR / name).read_text(encoding="utf-8"))
 
 
-def test_phase5_generated_specs_and_snapshot_artifacts_cover_required_contracts() -> None:
+def test_generated_specs_and_snapshot_artifacts_cover_required_contracts() -> None:
     app = _build_app()
 
     async def _fetch() -> tuple[dict[str, object], dict[str, object], str, str]:
@@ -171,27 +171,27 @@ def test_phase5_generated_specs_and_snapshot_artifacts_cover_required_contracts(
     assert openapi_doc["openapi"] == "3.1.0"
     assert openapi_doc["jsonSchemaDialect"] == JSON_SCHEMA_DIALECT
     assert set(openapi_doc["components"]["securitySchemes"]) == EXPECTED_SECURITY_SCHEMES
-    assert "Phase5CreateWidget" in openapi_doc["components"]["schemas"]
-    assert "Phase5WidgetOut" in openapi_doc["components"]["schemas"]
+    assert "SpecSnapshotCreateWidget" in openapi_doc["components"]["schemas"]
+    assert "SpecSnapshotWidgetOut" in openapi_doc["components"]["schemas"]
 
     widget_post = openapi_doc["paths"]["/widgets/{widget_id}"]["post"]
     assert widget_post["summary"] == "Create widget"
     assert widget_post["description"] == "Create or update a widget"
     assert widget_post["requestBody"]["content"]["application/json"]["schema"] == {
-        "$ref": "#/components/schemas/Phase5CreateWidget"
+        "$ref": "#/components/schemas/SpecSnapshotCreateWidget"
     }
     assert widget_post["responses"]["201"]["content"]["application/json"]["schema"] == {
-        "$ref": "#/components/schemas/Phase5WidgetOut"
+        "$ref": "#/components/schemas/SpecSnapshotWidgetOut"
     }
     assert widget_post["parameters"] == [
         {"name": "widget_id", "in": "path", "required": True, "schema": {"type": "string"}},
         {"name": "verbose", "in": "query", "required": False, "schema": {"type": "boolean"}},
     ]
 
-    assert openapi_doc["paths"]["/phase5basicdocstable/{item_id}"]["get"]["security"] == [{"BasicAuth": []}]
-    assert openapi_doc["paths"]["/phase5bearerdocstable/{item_id}"]["get"]["security"] == [{"BearerAuth": []}]
-    assert openapi_doc["paths"]["/phase5routerdocstable/{item_id}"]["get"]["security"] == [{"ApiKeyAuth": []}]
-    assert openapi_doc["paths"]["/phase5tabledocstable/{item_id}"]["get"]["security"] == [
+    assert openapi_doc["paths"]["/specsnapshotbasicdocstable/{item_id}"]["get"]["security"] == [{"BasicAuth": []}]
+    assert openapi_doc["paths"]["/specsnapshotbearerdocstable/{item_id}"]["get"]["security"] == [{"BearerAuth": []}]
+    assert openapi_doc["paths"]["/specsnapshotrouterdocstable/{item_id}"]["get"]["security"] == [{"ApiKeyAuth": []}]
+    assert openapi_doc["paths"]["/specsnapshottabledocstable/{item_id}"]["get"]["security"] == [
         {"OAuth2Auth": []},
         {"OpenIdAuth": []},
         {"MutualTLSAuth": []},
@@ -205,10 +205,10 @@ def test_phase5_generated_specs_and_snapshot_artifacts_cover_required_contracts(
     assert openrpc_doc["openrpc"] == "1.2.6"
     assert set(openrpc_doc["components"]["securitySchemes"]) == EXPECTED_SECURITY_SCHEMES
     methods_by_name = {method["name"]: method for method in openrpc_doc["methods"]}
-    assert methods_by_name["Phase5BasicDocsTable.read"]["security"] == [{"BasicAuth": []}]
-    assert methods_by_name["Phase5BearerDocsTable.read"]["security"] == [{"BearerAuth": []}]
-    assert methods_by_name["Phase5RouterDocsTable.read"]["security"] == [{"ApiKeyAuth": []}]
-    assert methods_by_name["Phase5TableDocsTable.read"]["security"] == [
+    assert methods_by_name["SpecSnapshotBasicDocsTable.read"]["security"] == [{"BasicAuth": []}]
+    assert methods_by_name["SpecSnapshotBearerDocsTable.read"]["security"] == [{"BearerAuth": []}]
+    assert methods_by_name["SpecSnapshotRouterDocsTable.read"]["security"] == [{"ApiKeyAuth": []}]
+    assert methods_by_name["SpecSnapshotTableDocsTable.read"]["security"] == [
         {"OAuth2Auth": []},
         {"OpenIdAuth": []},
         {"MutualTLSAuth": []},
@@ -220,8 +220,8 @@ def test_phase5_generated_specs_and_snapshot_artifacts_cover_required_contracts(
     assert snapshot_openrpc["openrpc"] == openrpc_doc["openrpc"]
     assert set(snapshot_openrpc["components"]["securitySchemes"]) == EXPECTED_SECURITY_SCHEMES
     assert set(snapshot_methods_by_name) == set(methods_by_name)
-    assert snapshot_methods_by_name["Phase5BasicDocsTable.read"]["security"] == methods_by_name["Phase5BasicDocsTable.read"]["security"]
-    assert snapshot_methods_by_name["Phase5TableDocsTable.read"]["security"] == methods_by_name["Phase5TableDocsTable.read"]["security"]
+    assert snapshot_methods_by_name["SpecSnapshotBasicDocsTable.read"]["security"] == methods_by_name["SpecSnapshotBasicDocsTable.read"]["security"]
+    assert snapshot_methods_by_name["SpecSnapshotTableDocsTable.read"]["security"] == methods_by_name["SpecSnapshotTableDocsTable.read"]["security"]
 
     assert "swagger-ui" in swagger_html.lower()
     assert "swagger-ui" in snapshot_swagger.lower()

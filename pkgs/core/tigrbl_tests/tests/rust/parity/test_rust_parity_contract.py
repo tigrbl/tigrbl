@@ -10,9 +10,9 @@ from tigrbl_runtime.rust import (
 from tigrbl_runtime import rust_transport_trace
 
 
-def _phase4_spec() -> dict[str, object]:
+def _rust_parity_spec() -> dict[str, object]:
     return {
-        "name": "phase4-demo",
+        "name": "rust-parity-demo",
         "bindings": [
             {
                 "alias": "create_widget",
@@ -74,7 +74,7 @@ def _phase4_spec() -> dict[str, object]:
 
 
 def test_rust_parity_snapshot_matches_reference_contract() -> None:
-    spec = _phase4_spec()
+    spec = _rust_parity_spec()
     expected = reference_parity_snapshot(spec)
     observed = rust_parity_snapshot(spec)
     assert observed == expected
@@ -84,9 +84,9 @@ def test_rust_parity_snapshot_matches_reference_contract() -> None:
 
 
 def test_build_rust_kernel_attaches_parity_snapshot_without_marking_claimable() -> None:
-    plan = build_rust_kernel(_phase4_spec())
+    plan = build_rust_kernel(_rust_parity_spec())
     assert plan.backend == "rust"
-    assert plan.parity_snapshot == build_rust_parity_snapshot(_phase4_spec())
+    assert plan.parity_snapshot == build_rust_parity_snapshot(_rust_parity_spec())
     assert plan.claimable is False
 
 

@@ -12,7 +12,7 @@ This gate-result file records the dedicated Gate C proof added by the Gate C con
 
 ## Source tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`
 - `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`
 - `pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`
 - `pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py`

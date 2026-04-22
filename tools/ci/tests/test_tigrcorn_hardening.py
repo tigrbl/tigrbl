@@ -21,14 +21,14 @@ def _run(script: str) -> subprocess.CompletedProcess[str]:
     )
 
 
-def test_phase6_tigrcorn_hardening_validator_passes() -> None:
-    result = _run("tools/ci/validate_phase6_tigrcorn_hardening.py")
+def test_tigrcorn_hardening_validator_passes() -> None:
+    result = _run("tools/ci/validate_tigrcorn_hardening.py")
     assert result.returncode == 0, f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
 
 
-def test_phase6_reports_and_cli_surface_exist() -> None:
-    current_state = (REPO_ROOT / "reports" / "current_state" / "2026-04-09-phase6-tigrcorn-hardening.md").read_text(encoding="utf-8")
-    cert_state = (REPO_ROOT / "reports" / "certification_state" / "2026-04-09-phase6-tigrcorn-hardening.md").read_text(encoding="utf-8")
+def test_tigrcorn_hardening_reports_and_cli_surface_exist() -> None:
+    current_state = (REPO_ROOT / ".ssot" / "reports" / "current_state" / "2026-04-09-phase6-tigrcorn-hardening.md").read_text(encoding="utf-8")
+    cert_state = (REPO_ROOT / ".ssot" / "reports" / "certification_state" / "2026-04-09-phase6-tigrcorn-hardening.md").read_text(encoding="utf-8")
     cli_reference = (REPO_ROOT / "docs" / "developer" / "CLI_REFERENCE.md").read_text(encoding="utf-8")
     assert "five blessed deployment profiles" in current_state
     assert "Profile claims remain blocked until profile-specific negative corpora and mixed-topology lanes are executed as governed release evidence" in cert_state

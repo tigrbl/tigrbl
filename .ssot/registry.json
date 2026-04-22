@@ -262,8 +262,8 @@
         "clm:cli-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -290,8 +290,8 @@
         "clm:cli-002"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -335,7 +335,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "requires": [
         "feat:http-route-001"
@@ -812,7 +812,7 @@
     {
       "id": "feat:gate-006",
       "title": "Gate A validation suite passes in the checkpoint tree",
-      "description": "Tracks conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
+      "description": "Tracks conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -921,7 +921,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py",
         "tst:tcase-0012",
@@ -3596,7 +3596,7 @@
     {
       "id": "feat:oas-001",
       "title": "OpenAPI 3.1.0 emission is explicit and verified",
-      "description": "Tracks conformance surface OAS-001: OpenAPI 3.1.0 emission is explicit and verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Tracks conformance surface OAS-001: OpenAPI 3.1.0 emission is explicit and verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -3622,7 +3622,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -3633,7 +3633,7 @@
     {
       "id": "feat:oas-002",
       "title": "JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`",
-      "description": "Tracks conformance surface OAS-002: JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Tracks conformance surface OAS-002: JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -3659,7 +3659,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -3696,7 +3696,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -3707,7 +3707,7 @@
     {
       "id": "feat:oas-004",
       "title": "Request body / response / parameter emission is verified",
-      "description": "Tracks conformance surface OAS-004: Request body / response / parameter emission is verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Tracks conformance surface OAS-004: Request body / response / parameter emission is verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -3733,7 +3733,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -3770,7 +3770,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -3807,7 +3807,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -3862,8 +3862,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -3890,8 +3890,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -3918,8 +3918,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -3946,8 +3946,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -3974,8 +3974,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4002,8 +4002,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4030,8 +4030,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4058,8 +4058,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4086,8 +4086,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4114,8 +4114,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4142,8 +4142,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4170,8 +4170,8 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -4556,7 +4556,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -4567,7 +4567,7 @@
     {
       "id": "feat:rpc-002",
       "title": "OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified",
-      "description": "Tracks conformance surface RPC-002: OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Tracks conformance surface RPC-002: OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -4593,7 +4593,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -4604,7 +4604,7 @@
     {
       "id": "feat:rpc-003",
       "title": "Mounted Lens / OpenRPC UI is verified",
-      "description": "Tracks conformance surface RPC-003: Mounted Lens / OpenRPC UI is verified. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Tracks conformance surface RPC-003: Mounted Lens / OpenRPC UI is verified. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -4630,7 +4630,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014"
@@ -4980,8 +4980,8 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -5051,7 +5051,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -5094,7 +5094,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0015"
       ],
       "requires": [
@@ -5125,7 +5125,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2021"
@@ -5279,8 +5281,8 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -5307,8 +5309,8 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -5335,8 +5337,8 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -5363,8 +5365,8 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -5391,8 +5393,8 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0016",
         "tst:tcase-0017"
       ],
@@ -5985,7 +5987,7 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "requires": [],
       "spec_ids": [
@@ -6010,7 +6012,7 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "requires": [],
       "spec_ids": [
@@ -6035,7 +6037,7 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "requires": [],
       "spec_ids": [
@@ -6062,7 +6064,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -6103,7 +6105,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -6131,7 +6133,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -6159,7 +6161,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -6187,7 +6189,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -6212,7 +6214,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2021"
@@ -6235,7 +6239,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2021"
@@ -6258,7 +6264,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2021"
@@ -6281,7 +6289,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2021"
@@ -6603,7 +6613,7 @@
       },
       "claim_ids": [],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "requires": [],
       "spec_ids": [
@@ -6630,7 +6640,7 @@
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0015"
       ],
       "requires": [],
@@ -6655,7 +6665,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2021"
@@ -6678,7 +6690,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2027"
@@ -6815,7 +6829,9 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2027"
@@ -6856,16 +6872,16 @@
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-02-api-hook-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-04-engine-ctx-binding",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
         "tst:tigrbl-tests-tests-i9n-test-healthz-methodz-hookz",
         "tst:tigrbl-tests-tests-i9n-test-hook-ctx-v3-i9n",
         "tst:tigrbl-tests-tests-i9n-test-hook-lifecycle",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
         "tst:tigrbl-tests-tests-perf-test-hookz-performance",
         "tst:tigrbl-tests-tests-unit-decorators-test-hook-ctx-bindings",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
         "tst:tigrbl-tests-tests-unit-test-spec-hook"
       ],
       "requires": [],
@@ -6908,16 +6924,16 @@
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-02-api-hook-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-04-engine-ctx-binding",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
         "tst:tigrbl-tests-tests-i9n-test-healthz-methodz-hookz",
         "tst:tigrbl-tests-tests-i9n-test-hook-ctx-v3-i9n",
         "tst:tigrbl-tests-tests-i9n-test-hook-lifecycle",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
         "tst:tigrbl-tests-tests-perf-test-hookz-performance",
         "tst:tigrbl-tests-tests-unit-decorators-test-hook-ctx-bindings",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
         "tst:tigrbl-tests-tests-unit-test-spec-hook"
       ],
       "requires": [],
@@ -6960,16 +6976,16 @@
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-02-api-hook-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-04-engine-ctx-binding",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
         "tst:tigrbl-tests-tests-i9n-test-healthz-methodz-hookz",
         "tst:tigrbl-tests-tests-i9n-test-hook-ctx-v3-i9n",
         "tst:tigrbl-tests-tests-i9n-test-hook-lifecycle",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
         "tst:tigrbl-tests-tests-perf-test-hookz-performance",
         "tst:tigrbl-tests-tests-unit-decorators-test-hook-ctx-bindings",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
         "tst:tigrbl-tests-tests-unit-test-spec-hook"
       ],
       "requires": [],
@@ -7012,16 +7028,16 @@
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-02-api-hook-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-04-engine-ctx-binding",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
         "tst:tigrbl-tests-tests-i9n-test-healthz-methodz-hookz",
         "tst:tigrbl-tests-tests-i9n-test-hook-ctx-v3-i9n",
         "tst:tigrbl-tests-tests-i9n-test-hook-lifecycle",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
         "tst:tigrbl-tests-tests-perf-test-hookz-performance",
         "tst:tigrbl-tests-tests-unit-decorators-test-hook-ctx-bindings",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
         "tst:tigrbl-tests-tests-unit-test-spec-hook"
       ],
       "requires": [],
@@ -7430,7 +7446,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7481,7 +7499,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7504,7 +7524,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7527,7 +7549,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7550,7 +7574,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7573,7 +7599,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7596,7 +7624,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7619,7 +7649,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7642,7 +7674,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7749,7 +7783,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7772,7 +7808,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7795,7 +7833,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7818,7 +7858,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7841,7 +7883,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7864,7 +7908,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7887,7 +7933,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7910,7 +7958,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7933,7 +7983,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7956,7 +8008,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -7979,7 +8033,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8002,7 +8058,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8025,7 +8083,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8048,7 +8108,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8102,7 +8164,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8153,7 +8217,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8176,7 +8242,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8199,7 +8267,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8222,7 +8292,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8273,7 +8345,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8352,7 +8426,9 @@
         "spc:2025"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8375,7 +8451,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8398,7 +8476,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8421,7 +8501,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8444,7 +8526,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8467,7 +8551,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8490,7 +8576,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8513,7 +8601,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8536,7 +8626,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8559,7 +8651,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8582,7 +8676,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8605,7 +8701,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8628,7 +8726,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8651,7 +8751,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8674,7 +8776,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8697,7 +8801,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8720,7 +8826,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8743,7 +8851,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8766,7 +8876,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8789,7 +8901,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8812,7 +8926,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8835,7 +8951,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8858,7 +8976,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8881,7 +9001,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8904,7 +9026,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -8927,7 +9051,9 @@
         "spc:2026"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9065,7 +9191,9 @@
         "spc:2062"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9088,7 +9216,9 @@
         "spc:2043"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9111,7 +9241,9 @@
         "spc:2060"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9134,7 +9266,9 @@
         "spc:2060"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9157,7 +9291,9 @@
         "spc:2060"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9199,16 +9335,16 @@
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-02-api-hook-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
         "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-04-engine-ctx-binding",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
         "tst:tigrbl-tests-tests-i9n-test-healthz-methodz-hookz",
         "tst:tigrbl-tests-tests-i9n-test-hook-ctx-v3-i9n",
         "tst:tigrbl-tests-tests-i9n-test-hook-lifecycle",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
         "tst:tigrbl-tests-tests-perf-test-hookz-performance",
         "tst:tigrbl-tests-tests-unit-decorators-test-hook-ctx-bindings",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
         "tst:tigrbl-tests-tests-unit-test-spec-hook"
       ],
       "requires": []
@@ -9535,7 +9671,9 @@
         "spc:2061"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9558,7 +9696,9 @@
         "spc:2059"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -9584,7 +9724,7 @@
         "clm:server-support-tigrcorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0017"
       ],
       "requires": []
@@ -9612,7 +9752,7 @@
         "clm:server-support-uvicorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0017"
       ],
       "requires": []
@@ -9640,7 +9780,7 @@
         "clm:server-support-hypercorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0017"
       ],
       "requires": []
@@ -9668,7 +9808,7 @@
         "clm:server-support-gunicorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0017"
       ],
       "requires": []
@@ -9696,7 +9836,7 @@
         "clm:server-support-daphne-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0017"
       ],
       "requires": []
@@ -9724,7 +9864,7 @@
         "clm:server-support-twisted-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0017"
       ],
       "requires": []
@@ -9752,7 +9892,7 @@
         "clm:server-support-granian-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tcase-0017"
       ],
       "requires": []
@@ -10618,7 +10758,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -10641,7 +10783,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -10664,7 +10808,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -10687,7 +10833,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -10725,7 +10873,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -10765,7 +10913,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -10805,7 +10953,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -10845,7 +10993,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -10885,7 +11033,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -10925,7 +11073,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -10950,7 +11098,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -10973,7 +11123,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -10996,7 +11148,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -11019,7 +11173,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -11042,7 +11198,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -11080,7 +11238,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11120,7 +11278,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11160,7 +11318,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11200,7 +11358,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11225,7 +11383,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -11248,7 +11408,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -11286,7 +11448,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11326,7 +11488,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11366,7 +11528,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11406,7 +11568,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11446,7 +11608,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11486,7 +11648,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11526,7 +11688,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11566,7 +11728,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11591,7 +11753,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -11614,7 +11778,9 @@
         "spc:2021"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -11653,7 +11819,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11693,7 +11859,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11733,7 +11899,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11959,7 +12125,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -11999,7 +12165,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
       "requires": []
@@ -12108,7 +12274,9 @@
         "spc:2060"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12132,7 +12300,9 @@
         "spc:2072"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12159,7 +12329,9 @@
         "spc:2069"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12186,7 +12358,9 @@
         "spc:2069"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12213,7 +12387,9 @@
         "spc:2069"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12299,7 +12475,9 @@
         "spc:2068"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12322,7 +12500,9 @@
         "spc:2076"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12345,7 +12525,9 @@
         "spc:2076"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12368,7 +12550,9 @@
         "spc:2076"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -12425,7 +12609,9 @@
         "spc:2081"
       ],
       "claim_ids": [],
-      "test_ids": [],
+      "test_ids": [
+        "tst:ssot-authority-model-validator"
+      ],
       "requires": []
     },
     {
@@ -13086,11 +13272,11 @@
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-build-out",
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-dump",
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-validate-in",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
         "tst:tigrbl-tests-tests-unit-runtime-test-compilation-runtime-behavior",
-        "tst:tigrbl-tests-tests-unit-runtime-test-events-phases",
+        "tst:tigrbl-tests-tests-unit-runtime-test-events-stages",
         "tst:tigrbl-tests-tests-unit-runtime-test-events-runtime-behavior",
-        "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-phase-access",
+        "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-access",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-plan-event-ordering",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-plan-full-ordering",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-runtime-behavior",
@@ -13127,7 +13313,7 @@
         "tst:tigrbl-tests-tests-unit-test-kernelz-endpoint",
         "tst:tigrbl-tests-tests-unit-test-mapping-plan-precedence",
         "tst:tigrbl-tests-tests-unit-test-openapi-openrpc-schema-separation",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-unit-test-relationship-alias-cols",
         "tst:tigrbl-tests-tests-unit-test-request-body-schema",
         "tst:tigrbl-tests-tests-unit-test-resolver-interning-warmup",
@@ -13414,15 +13600,15 @@
         "tst:http-route-jsonrpc-openrpc-surface",
         "tst:http-route-websocket-binding-slice",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0013",
         "tst:tcase-0015",
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
         "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
         "tst:closure-case-authn-unauthorized-errors",
         "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-sync",
@@ -13433,22 +13619,256 @@
         "tst:closure-case-secdep-auth-parity-rest-rpc-async",
         "tst:closure-case-tigrbl-create-call-graph-250-ops",
         "tst:closure-case-tigrbl-fastapi-sequential-10-rounds",
-        "tst:closure-case-atom-stage-phase-window-static",
+        "tst:closure-case-atom-stage-window-static",
         "tst:closure-case-openrpc-router-mount-server-url",
         "tst:closure-case-openapi-declared-surface-metadata",
         "tst:closure-case-operator-cookie-form-upload-roundtrip",
         "tst:closure-case-operator-streaming-sse-multi-body"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:ssot-authority-migration-001",
+      "title": "SSOT authority migration",
+      "description": "SSOT authority migration tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:ssot-authority-projection-001"
+      ],
+      "test_ids": [
+        "tst:ssot-authority-model-validator",
+        "tst:docs-ci-projection-drift"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:1002",
+        "spc:2084",
+        "spc:2085"
+      ]
+    },
+    {
+      "id": "feat:tool-test-gate-taxonomy-001",
+      "title": "Tool, test, evidence, and gate taxonomy",
+      "description": "Tool, test, evidence, and gate taxonomy tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tool-test-gate-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:ssot-authority-model-validator",
+        "tst:tool-test-gate-taxonomy"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2084",
+        "spc:2085"
+      ]
+    },
+    {
+      "id": "feat:feature-test-coverage-completeness-001",
+      "title": "Feature verification coverage completeness",
+      "description": "Feature verification coverage completeness tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:feature-test-coverage-completeness-001"
+      ],
+      "test_ids": [
+        "tst:ssot-authority-model-validator",
+        "tst:feature-test-coverage-invariant"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2084",
+        "spc:2085"
+      ]
+    },
+    {
+      "id": "feat:boundary-scoped-test-selection-001",
+      "title": "Boundary-scoped test selection",
+      "description": "Boundary-scoped test selection tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:boundary-test-selection-deterministic-001"
+      ],
+      "test_ids": [
+        "tst:boundary-scoped-test-selection",
+        "tst:ssot-authority-model-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2084",
+        "spc:2085"
+      ]
+    },
+    {
+      "id": "feat:test-result-evidence-ingestion-001",
+      "title": "Test result evidence ingestion",
+      "description": "Test result evidence ingestion tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:status-sync-auditable-001"
+      ],
+      "test_ids": [
+        "tst:status-sync-outcome-mapping",
+        "tst:ssot-authority-model-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2084",
+        "spc:2085"
+      ]
+    },
+    {
+      "id": "feat:status-sync-engine-001",
+      "title": "SSOT status synchronization engine",
+      "description": "SSOT status synchronization engine tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:status-sync-auditable-001"
+      ],
+      "test_ids": [
+        "tst:status-sync-outcome-mapping",
+        "tst:ssot-authority-model-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2084",
+        "spc:2085"
+      ]
+    },
+    {
+      "id": "feat:gate-evaluator-model-001",
+      "title": "SSOT gate evaluator model",
+      "description": "SSOT gate evaluator model tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:gate-status-derived-001"
+      ],
+      "test_ids": [
+        "tst:gate-evaluator-claim-evidence-aggregation",
+        "tst:ssot-authority-model-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2084",
+        "spc:2085"
+      ]
+    },
+    {
+      "id": "feat:docs-ci-projection-validation-001",
+      "title": "Docs and CI projection validation",
+      "description": "Docs and CI projection validation tracked as an SSOT-governed migration feature under ADR-1082 and SPEC-2084/SPEC-2085.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Added for SSOT authority/test/gate migration."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:ssot-authority-projection-001"
+      ],
+      "test_ids": [
+        "tst:docs-ci-projection-drift",
+        "tst:ssot-authority-model-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:1002",
+        "spc:2084",
+        "spc:2085"
+      ]
     }
   ],
   "tests": [
     {
       "id": "tst:http-route-decorator-surface",
-      "title": "Phase1 declarative surface",
+      "title": "Declared surface",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/decorators/test_phase1_declarative_surface.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/decorators/test_declarative_surface.py",
       "feature_ids": [
         "feat:http-route-001"
       ],
@@ -13583,7 +14003,7 @@
       "title": "HTTP route websocket binding metadata slice",
       "status": "passing",
       "kind": "pytest",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "feature_ids": [
         "feat:http-route-001",
         "feat:docs-support-001",
@@ -14341,11 +14761,11 @@
       ]
     },
     {
-      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
-      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
+      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "status": "passing",
       "kind": "automated",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "feature_ids": [
         "feat:gate-009",
         "feat:oas-001",
@@ -14387,11 +14807,11 @@
       ]
     },
     {
-      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "status": "passing",
       "kind": "automated",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "feature_ids": [
         "feat:op-001",
         "feat:op-002",
@@ -14442,11 +14862,11 @@
       ]
     },
     {
-      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
-      "title": "Phase7 operator surface docs parity",
+      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
+      "title": "Operator surface docs parity",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py",
       "feature_ids": [
         "feat:op-001",
         "feat:op-002",
@@ -14516,11 +14936,11 @@
       ]
     },
     {
-      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "status": "passing",
       "kind": "automated",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "feature_ids": [
         "feat:cli-001",
         "feat:cli-002",
@@ -14545,11 +14965,11 @@
       ]
     },
     {
-      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
-      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
+      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "status": "passing",
       "kind": "automated",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "feature_ids": [
         "feat:cli-001",
         "feat:cli-002",
@@ -14920,10 +15340,10 @@
     },
     {
       "id": "tst:tcase-0014",
-      "title": "Phase5 spec snapshots",
+      "title": "Spec snapshots",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "feature_ids": [
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
@@ -14971,10 +15391,10 @@
     },
     {
       "id": "tst:tcase-0015",
-      "title": "Phase7 operator surface closure",
+      "title": "Operator surface closure",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "feature_ids": [
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
@@ -15041,10 +15461,10 @@
     },
     {
       "id": "tst:tcase-0016",
-      "title": "Phase8 cli cmds",
+      "title": "CLI commands",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "feature_ids": [
         "feat:cli-001",
         "feat:cli-002",
@@ -15064,10 +15484,10 @@
     },
     {
       "id": "tst:tcase-0017",
-      "title": "Phase8 cli srv",
+      "title": "CLI server",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "feature_ids": [
         "feat:appspec-harness-uvicorn-e2e-parity-001",
         "feat:cli-001",
@@ -15186,7 +15606,7 @@
       "title": "TCASE-0023",
       "status": "planned",
       "kind": "pytest",
-      "path": "tools/ci/tests/test_phase4_rust_parity.py",
+      "path": "tools/ci/tests/test_rust_parity.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -15202,7 +15622,7 @@
       "title": "TCASE-0024",
       "status": "planned",
       "kind": "pytest",
-      "path": "tools/ci/tests/test_phase5_tigrcorn_operator_surface.py",
+      "path": "tools/ci/tests/test_tigrcorn_operator_surface.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -15218,7 +15638,7 @@
       "title": "TCASE-0025",
       "status": "planned",
       "kind": "pytest",
-      "path": "tools/ci/tests/test_phase6_tigrcorn_hardening.py",
+      "path": "tools/ci/tests/test_tigrcorn_hardening.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -15234,7 +15654,7 @@
       "title": "TCASE-0026",
       "status": "planned",
       "kind": "pytest",
-      "path": "tools/ci/tests/test_phase7_claim_lifecycle.py",
+      "path": "tools/ci/tests/test_claim_lifecycle.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -20002,11 +20422,11 @@
       ]
     },
     {
-      "id": "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+      "id": "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
       "title": "Hook ctx phase validation",
       "status": "passing",
       "kind": "hooks",
-      "path": "pkgs/core/tigrbl_tests/tests/hooks/test_hook_ctx_phase_validation.py",
+      "path": "pkgs/core/tigrbl_tests/tests/hooks/test_hook_ctx_stage_validation.py",
       "feature_ids": [
         "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
@@ -21393,11 +21813,11 @@
       ]
     },
     {
-      "id": "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+      "id": "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
       "title": "Hook runtime phase parity",
       "status": "passing",
       "kind": "parity",
-      "path": "pkgs/core/tigrbl_tests/tests/parity/test_hook_runtime_phase_parity.py",
+      "path": "pkgs/core/tigrbl_tests/tests/parity/test_hook_runtime_stage_parity.py",
       "feature_ids": [
         "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
@@ -22297,11 +22717,11 @@
       ]
     },
     {
-      "id": "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+      "id": "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
       "title": "Atom stage phase window static",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_phase_window_static.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_window_static.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001",
         "feat:tigrbl-tests-failing-case-closure-001"
@@ -22334,11 +22754,11 @@
       ]
     },
     {
-      "id": "tst:tigrbl-tests-tests-unit-runtime-test-events-phases",
+      "id": "tst:tigrbl-tests-tests-unit-runtime-test-events-stages",
       "title": "Events phases",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_events_phases.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_events_stages.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -22366,11 +22786,11 @@
       ]
     },
     {
-      "id": "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-phase-access",
+      "id": "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-access",
       "title": "Ingress egress phase access",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_ingress_egress_phase_access.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_ingress_egress_access.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -23446,11 +23866,11 @@
       ]
     },
     {
-      "id": "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+      "id": "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
       "title": "Hookz empty phase",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_hookz_empty_phase.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_hookz_empty_stage.py",
       "feature_ids": [
         "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
@@ -24496,11 +24916,11 @@
       ]
     },
     {
-      "id": "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
-      "title": "Phase1 declared surface docs",
+      "id": "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
+      "title": "Declared surface docs",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase1_declared_surface_docs.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001",
         "feat:tigrbl-tests-failing-case-closure-001"
@@ -26435,11 +26855,11 @@
       ]
     },
     {
-      "id": "tst:closure-case-atom-stage-phase-window-static",
+      "id": "tst:closure-case-atom-stage-window-static",
       "title": "Closure case: test_every_atom_signature_stays_within_anchor_window",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_phase_window_static.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_window_static.py",
       "feature_ids": [
         "feat:tigrbl-tests-failing-case-closure-001"
       ],
@@ -26471,7 +26891,7 @@
       "title": "Closure case: test_openapi_uses_declared_surface_metadata",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase1_declared_surface_docs.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py",
       "feature_ids": [
         "feat:tigrbl-tests-failing-case-closure-001"
       ],
@@ -26487,7 +26907,7 @@
       "title": "Closure case: test_cookie_form_and_upload_surfaces_roundtrip",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "feature_ids": [
         "feat:tigrbl-tests-failing-case-closure-001"
       ],
@@ -26503,7 +26923,7 @@
       "title": "Closure case: test_streaming_and_sse_surfaces_emit_multiple_asgi_body_messages",
       "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "feature_ids": [
         "feat:tigrbl-tests-failing-case-closure-001"
       ],
@@ -26512,6 +26932,222 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:ssot-authority-model-validator",
+      "title": "SSOT authority model validator",
+      "status": "passing",
+      "kind": "governance-validator",
+      "path": "tools/ci/validate_ssot_authority_model.py",
+      "feature_ids": [
+        "feat:aliasbase-contract-001",
+        "feat:aliasspec-contract-001",
+        "feat:appbase-contract-001",
+        "feat:appbase-public-projection-001",
+        "feat:attrdict-contract-001",
+        "feat:bind-helper-surface-001",
+        "feat:bindingbase-contract-001",
+        "feat:bindingregistrybase-contract-001",
+        "feat:bindingregistryspec-contract-001",
+        "feat:bindingspec-contract-001",
+        "feat:boundary-scoped-test-selection-001",
+        "feat:build-healthz-endpoint-helper-001",
+        "feat:build-hookz-endpoint-helper-001",
+        "feat:build-kernelz-endpoint-helper-001",
+        "feat:build-methodz-endpoint-helper-001",
+        "feat:build-schemas-helper-surface-001",
+        "feat:columnbase-contract-001",
+        "feat:datatypespec-contract-001",
+        "feat:default-canonical-engine-catalog-001",
+        "feat:deprecated-export-compat-window-001",
+        "feat:diagnostics-absence-warning-suppression-001",
+        "feat:diagnostics-contract-001",
+        "feat:diagnostics-router-mount-surface-001",
+        "feat:diagnostics-system-prefix-mount-001",
+        "feat:diagnostics-warning-vocabulary-001",
+        "feat:docs-ci-projection-validation-001",
+        "feat:engine-extension-surface-001",
+        "feat:engine-surface-public-projection-001",
+        "feat:enginebase-contract-001",
+        "feat:enginedatatypebridge-contract-001",
+        "feat:engineproviderbase-contract-001",
+        "feat:engineproviderspec-contract-001",
+        "feat:engineregistry-contract-001",
+        "feat:enginespec-contract-001",
+        "feat:enginetypelowerer-protocol-001",
+        "feat:feature-test-coverage-completeness-001",
+        "feat:foreignkeybase-contract-001",
+        "feat:foreignkeybase-public-projection-001",
+        "feat:gate-evaluator-model-001",
+        "feat:get-schema-python-helper-surface-001",
+        "feat:healthz-mount-surface-001",
+        "feat:healthz-stable-payload-001",
+        "feat:healthz-uix-surface-001",
+        "feat:hookbase-contract-001",
+        "feat:hookbase-public-projection-001",
+        "feat:hookphase-vocabulary-001",
+        "feat:hookspec-contract-001",
+        "feat:hookz-mount-surface-001",
+        "feat:hookz-payload-surface-001",
+        "feat:http-jsonrpc-bindingspec-contract-001",
+        "feat:http-rest-bindingspec-contract-001",
+        "feat:http-stream-bindingspec-contract-001",
+        "feat:include-tables-helper-surface-001",
+        "feat:kernelz-bounded-payload-001",
+        "feat:kernelz-mount-surface-001",
+        "feat:kernelz-uix-surface-001",
+        "feat:mapping-dispatch-convergence-001",
+        "feat:methodz-mount-surface-001",
+        "feat:methodz-payload-surface-001",
+        "feat:middlewarespec-protocol-001",
+        "feat:op-ctx-app-owner-scope-materialization-001",
+        "feat:op-ctx-router-owner-scope-materialization-001",
+        "feat:op-ctx-table-owner-scope-materialization-001",
+        "feat:opbase-contract-001",
+        "feat:operation-diagnostics-projection-001",
+        "feat:rebind-helper-surface-001",
+        "feat:reflecteddatatype-contract-001",
+        "feat:reflectedtypemapper-contract-001",
+        "feat:requestbase-contract-001",
+        "feat:requestspec-contract-001",
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001",
+        "feat:routerbase-contract-001",
+        "feat:routerbase-public-projection-001",
+        "feat:schema-migration-runtime-surface-001",
+        "feat:schemabase-contract-001",
+        "feat:schemaref-contract-001",
+        "feat:schemaspec-contract-001",
+        "feat:sessionabc-contract-001",
+        "feat:sessionspec-contract-001",
+        "feat:sqlite-attach-runtime-surface-001",
+        "feat:sse-bindingspec-contract-001",
+        "feat:ssot-authority-migration-001",
+        "feat:status-sync-engine-001",
+        "feat:storagetransformbase-contract-001",
+        "feat:storagetransformspec-contract-001",
+        "feat:storagetyperef-contract-001",
+        "feat:tablebase-contract-001",
+        "feat:tablebase-public-projection-001",
+        "feat:tableregistrybase-contract-001",
+        "feat:tableregistrybase-public-projection-001",
+        "feat:tableregistryspec-contract-001",
+        "feat:templatespec-contract-001",
+        "feat:test-result-evidence-ingestion-001",
+        "feat:tigrblsessionbase-contract-001",
+        "feat:tool-test-gate-taxonomy-001",
+        "feat:typeadapter-protocol-001",
+        "feat:typeregistry-contract-001",
+        "feat:webtransport-bindingspec-contract-001",
+        "feat:ws-bindingspec-contract-001"
+      ],
+      "claim_ids": [
+        "clm:ssot-authority-projection-001",
+        "clm:feature-test-coverage-completeness-001",
+        "clm:tool-test-gate-taxonomy-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
+      ]
+    },
+    {
+      "id": "tst:feature-test-coverage-invariant",
+      "title": "Feature-test coverage invariant fixture",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tools/ci/tests/test_ssot_authority_model.py",
+      "feature_ids": [
+        "feat:feature-test-coverage-completeness-001"
+      ],
+      "claim_ids": [
+        "clm:feature-test-coverage-completeness-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
+      ]
+    },
+    {
+      "id": "tst:boundary-scoped-test-selection",
+      "title": "Boundary-scoped test selection fixture",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tools/ci/tests/test_ssot_authority_model.py",
+      "feature_ids": [
+        "feat:boundary-scoped-test-selection-001"
+      ],
+      "claim_ids": [
+        "clm:boundary-test-selection-deterministic-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-boundary-test-selection"
+      ]
+    },
+    {
+      "id": "tst:status-sync-outcome-mapping",
+      "title": "Status sync outcome mapping fixture",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tools/ci/tests/test_ssot_authority_model.py",
+      "feature_ids": [
+        "feat:status-sync-engine-001",
+        "feat:test-result-evidence-ingestion-001"
+      ],
+      "claim_ids": [
+        "clm:status-sync-auditable-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-status-sync-dry-run"
+      ]
+    },
+    {
+      "id": "tst:gate-evaluator-claim-evidence-aggregation",
+      "title": "Gate evaluator claim/evidence aggregation fixture",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tools/ci/tests/test_ssot_authority_model.py",
+      "feature_ids": [
+        "feat:gate-evaluator-model-001"
+      ],
+      "claim_ids": [
+        "clm:gate-status-derived-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-gate-evaluation"
+      ]
+    },
+    {
+      "id": "tst:docs-ci-projection-drift",
+      "title": "Docs and CI projection drift fixture",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tools/ci/tests/test_ssot_authority_model.py",
+      "feature_ids": [
+        "feat:docs-ci-projection-validation-001",
+        "feat:ssot-authority-migration-001"
+      ],
+      "claim_ids": [
+        "clm:ssot-authority-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-ci-projection-drift"
+      ]
+    },
+    {
+      "id": "tst:tool-test-gate-taxonomy",
+      "title": "Tool/test/evidence/claim/gate taxonomy fixture",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tools/ci/tests/test_ssot_authority_model.py",
+      "feature_ids": [
+        "feat:tool-test-gate-taxonomy-001"
+      ],
+      "claim_ids": [
+        "clm:tool-test-gate-taxonomy-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
       ]
     }
   ],
@@ -26715,8 +27351,8 @@
         "feat:cli-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -26738,8 +27374,8 @@
         "feat:cli-002"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -27317,7 +27953,7 @@
       "status": "asserted",
       "tier": "T2",
       "kind": "conformance",
-      "description": "Asserts conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
+      "description": "Asserts conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
       "feature_ids": [
         "feat:gate-006"
       ],
@@ -27409,7 +28045,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py"
       ],
@@ -28745,7 +29381,7 @@
       "status": "asserted",
       "tier": "T2",
       "kind": "conformance",
-      "description": "Asserts conformance surface OAS-001: OpenAPI 3.1.0 emission is explicit and verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Asserts conformance surface OAS-001: OpenAPI 3.1.0 emission is explicit and verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
         "feat:oas-001"
       ],
@@ -28758,7 +29394,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -28779,7 +29415,7 @@
       "status": "asserted",
       "tier": "T2",
       "kind": "conformance",
-      "description": "Asserts conformance surface OAS-002: JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Asserts conformance surface OAS-002: JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
         "feat:oas-002"
       ],
@@ -28792,7 +29428,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -28826,7 +29462,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -28847,7 +29483,7 @@
       "status": "asserted",
       "tier": "T2",
       "kind": "conformance",
-      "description": "Asserts conformance surface OAS-004: Request body / response / parameter emission is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Asserts conformance surface OAS-004: Request body / response / parameter emission is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
         "feat:oas-004"
       ],
@@ -28860,7 +29496,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -28894,7 +29530,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -28928,7 +29564,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -28978,8 +29614,8 @@
         "feat:op-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29003,8 +29639,8 @@
         "feat:op-002"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29028,8 +29664,8 @@
         "feat:op-003"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29053,8 +29689,8 @@
         "feat:op-004"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29078,8 +29714,8 @@
         "feat:op-005"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29103,8 +29739,8 @@
         "feat:op-006"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29128,8 +29764,8 @@
         "feat:op-007"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29153,8 +29789,8 @@
         "feat:op-008"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29178,8 +29814,8 @@
         "feat:op-009"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29203,8 +29839,8 @@
         "feat:op-010"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29228,8 +29864,8 @@
         "feat:op-011"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29253,8 +29889,8 @@
         "feat:op-012"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -29607,7 +30243,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -29628,7 +30264,7 @@
       "status": "asserted",
       "tier": "T2",
       "kind": "conformance",
-      "description": "Asserts conformance surface RPC-002: OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Asserts conformance surface RPC-002: OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
         "feat:rpc-002"
       ],
@@ -29641,7 +30277,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -29662,7 +30298,7 @@
       "status": "asserted",
       "tier": "T2",
       "kind": "conformance",
-      "description": "Asserts conformance surface RPC-003: Mounted Lens / OpenRPC UI is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`",
+      "description": "Asserts conformance surface RPC-003: Mounted Lens / OpenRPC UI is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
         "feat:rpc-003"
       ],
@@ -29675,7 +30311,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ],
       "evidence_ids": [
@@ -29909,7 +30545,7 @@
         "feat:server-support-tigrcorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": []
     },
@@ -29924,7 +30560,7 @@
         "feat:server-support-uvicorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": []
     },
@@ -29939,7 +30575,7 @@
         "feat:server-support-hypercorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": []
     },
@@ -29954,7 +30590,7 @@
         "feat:server-support-gunicorn-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": []
     },
@@ -29969,7 +30605,7 @@
         "feat:server-support-daphne-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": []
     },
@@ -29984,7 +30620,7 @@
         "feat:server-support-twisted-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": []
     },
@@ -29999,7 +30635,7 @@
         "feat:server-support-granian-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
       "evidence_ids": []
     },
@@ -30257,7 +30893,7 @@
         "tst:tigrbl-tests-tests-harness-v3-test-route-rpc-prebinding",
         "tst:tigrbl-tests-tests-harness-v3-test-route-runtime-fallback-atoms",
         "tst:tigrbl-tests-tests-harness-v3-test-uvicorn-e2e-appspec",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
         "tst:tigrbl-tests-tests-i9n-test-acronym-route-name",
         "tst:tigrbl-tests-tests-i9n-test-allow-anon",
         "tst:tigrbl-tests-tests-i9n-test-apikey-generation",
@@ -30320,7 +30956,7 @@
         "tst:tigrbl-tests-tests-mount-test-mount-favico",
         "tst:tigrbl-tests-tests-options-test-rest-options",
         "tst:tigrbl-tests-tests-options-test-rpc-options",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
         "tst:tigrbl-tests-tests-parity-test-stdapi-openapi-docs",
         "tst:tigrbl-tests-tests-parity-test-stdapi-primitives",
         "tst:tigrbl-tests-tests-parity-test-stdapi-routing",
@@ -30366,11 +31002,11 @@
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-build-out",
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-dump",
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-validate-in",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
         "tst:tigrbl-tests-tests-unit-runtime-test-compilation-runtime-behavior",
-        "tst:tigrbl-tests-tests-unit-runtime-test-events-phases",
+        "tst:tigrbl-tests-tests-unit-runtime-test-events-stages",
         "tst:tigrbl-tests-tests-unit-runtime-test-events-runtime-behavior",
-        "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-phase-access",
+        "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-access",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-plan-event-ordering",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-plan-full-ordering",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-runtime-behavior",
@@ -30418,7 +31054,7 @@
         "tst:tigrbl-tests-tests-unit-test-handler-step-qualname",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
         "tst:tigrbl-tests-tests-unit-test-hybrid-session-run-sync",
         "tst:tigrbl-tests-tests-unit-test-in-tx",
         "tst:tigrbl-tests-tests-unit-test-include-model-columns-namespace",
@@ -30454,7 +31090,7 @@
         "tst:tigrbl-tests-tests-unit-test-op-ctx-persist-options",
         "tst:tigrbl-tests-tests-unit-test-openapi-openrpc-schema-separation",
         "tst:tigrbl-tests-tests-unit-test-opspec-effects",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-unit-test-postgres-engine-errors",
         "tst:tigrbl-tests-tests-unit-test-postgres-env-vars",
         "tst:tigrbl-tests-tests-unit-test-relationship-alias-cols",
@@ -30733,15 +31369,15 @@
         "tst:http-route-jsonrpc-openrpc-surface",
         "tst:http-route-websocket-binding-slice",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0013",
         "tst:tcase-0015",
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
         "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops"
       ],
       "evidence_ids": [
@@ -30762,15 +31398,15 @@
         "tst:http-route-jsonrpc-openrpc-surface",
         "tst:http-route-websocket-binding-slice",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0013",
         "tst:tcase-0015",
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
         "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
         "tst:closure-case-authn-unauthorized-errors",
         "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-sync",
@@ -30781,7 +31417,7 @@
         "tst:closure-case-secdep-auth-parity-rest-rpc-async",
         "tst:closure-case-tigrbl-create-call-graph-250-ops",
         "tst:closure-case-tigrbl-fastapi-sequential-10-rounds",
-        "tst:closure-case-atom-stage-phase-window-static",
+        "tst:closure-case-atom-stage-window-static",
         "tst:closure-case-openrpc-router-mount-server-url",
         "tst:closure-case-openapi-declared-surface-metadata",
         "tst:closure-case-operator-cookie-form-upload-roundtrip",
@@ -30789,6 +31425,113 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "clm:ssot-authority-projection-001",
+      "title": "SSOT is authoritative over docs and CI projections.",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "governance",
+      "description": "SSOT registry, ADR, and SPEC records define governed truth; docs and CI are projections and guardrails.",
+      "feature_ids": [
+        "feat:ssot-authority-migration-001",
+        "feat:docs-ci-projection-validation-001"
+      ],
+      "test_ids": [
+        "tst:ssot-authority-model-validator",
+        "tst:docs-ci-projection-drift"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation",
+        "evd:docs-ci-projection-drift"
+      ]
+    },
+    {
+      "id": "clm:feature-test-coverage-completeness-001",
+      "title": "Every SSOT in-scope feature has verification coverage or a governance validator rationale.",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "governance",
+      "description": "Feature rows link to tests; governance-only rows can be covered by the SSOT authority validator.",
+      "feature_ids": [
+        "feat:feature-test-coverage-completeness-001"
+      ],
+      "test_ids": [
+        "tst:ssot-authority-model-validator",
+        "tst:feature-test-coverage-invariant"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
+      ]
+    },
+    {
+      "id": "clm:gate-status-derived-001",
+      "title": "Gate status derives from SSOT claims and evidence.",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "governance",
+      "description": "Gate outcomes are release-decision aggregations over SSOT claims and evidence, not direct feature tests.",
+      "feature_ids": [
+        "feat:gate-evaluator-model-001"
+      ],
+      "test_ids": [
+        "tst:gate-evaluator-claim-evidence-aggregation"
+      ],
+      "evidence_ids": [
+        "evd:ssot-gate-evaluation"
+      ]
+    },
+    {
+      "id": "clm:boundary-test-selection-deterministic-001",
+      "title": "Boundary-scoped test selection is deterministic.",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "governance",
+      "description": "Boundary and release inputs resolve to stable sorted feature, claim, test, and evidence manifests.",
+      "feature_ids": [
+        "feat:boundary-scoped-test-selection-001"
+      ],
+      "test_ids": [
+        "tst:boundary-scoped-test-selection"
+      ],
+      "evidence_ids": [
+        "evd:ssot-boundary-test-selection"
+      ]
+    },
+    {
+      "id": "clm:status-sync-auditable-001",
+      "title": "Status synchronization is auditable and reproducible.",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "governance",
+      "description": "Status changes are derived from machine-readable test results and can be emitted as dry-run audit artifacts before registry mutation.",
+      "feature_ids": [
+        "feat:test-result-evidence-ingestion-001",
+        "feat:status-sync-engine-001"
+      ],
+      "test_ids": [
+        "tst:status-sync-outcome-mapping"
+      ],
+      "evidence_ids": [
+        "evd:ssot-status-sync-dry-run"
+      ]
+    },
+    {
+      "id": "clm:tool-test-gate-taxonomy-001",
+      "title": "Tools, tests, evidence, claims, and gates have separate SSOT roles.",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "governance",
+      "description": "Tools execute; tests verify; evidence records proof; claims assert proof meaning; gates aggregate release decisions.",
+      "feature_ids": [
+        "feat:tool-test-gate-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:tool-test-gate-taxonomy"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
       ]
     }
   ],
@@ -30878,7 +31621,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py"
       ]
@@ -31006,7 +31749,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_evidence_registry.py",
         "tst:tools-ci-tests-test_gate_b_surface_closure.py",
         "tst:tools-ci-tests-test_gate_b_surface_closure.py-14298bc2",
@@ -31078,11 +31821,11 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tools-ci-tests-test_gate_b_surface_closure.py",
         "tst:tools-ci-tests-test_gate_b_surface_closure.py-14298bc2",
         "tst:tools-ci-tests-test_gate_b_surface_closure.py-6cc49b4b",
@@ -31189,8 +31932,8 @@
         "clm:cli-002"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ]
     },
     {
@@ -31232,9 +31975,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ]
     },
@@ -31344,7 +32087,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py",
         "tst:tools-ci-validate_gate_c_conformance_security.py"
@@ -31386,8 +32129,8 @@
         "clm:op-012"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ]
     },
     {
@@ -31461,8 +32204,8 @@
         "clm:cli-002"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ]
     },
     {
@@ -31492,7 +32235,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ]
     },
@@ -31695,7 +32438,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py",
         "tst:tools-ci-validate_gate_c_conformance_security.py"
@@ -31764,7 +32507,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py"
       ]
     },
@@ -31964,7 +32707,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_evidence_registry.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_gate_e_promotion.py",
@@ -32042,7 +32785,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_evidence_registry.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_gate_e_promotion.py",
@@ -32076,8 +32819,8 @@
         "clm:cli-002"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ]
     },
     {
@@ -32102,8 +32845,8 @@
         "clm:op-012"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ]
     },
     {
@@ -32128,8 +32871,8 @@
         "clm:op-012"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ]
     },
     {
@@ -32820,7 +33563,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "docs/conformance/audit/2026/phase7-operator-surface/README.md",
+      "path": "docs/conformance/audit/2026/operator-surface/README.md",
       "claim_ids": [
         "clm:cur-005"
       ],
@@ -33384,7 +34127,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0014"
@@ -33396,7 +34139,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0015"
@@ -33408,7 +34151,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0016"
@@ -33420,7 +34163,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0017"
@@ -33601,7 +34344,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "tools/ci/tests/test_phase4_rust_parity.py",
+      "path": "tools/ci/tests/test_rust_parity.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0023"
@@ -33613,7 +34356,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "tools/ci/tests/test_phase5_tigrcorn_operator_surface.py",
+      "path": "tools/ci/tests/test_tigrcorn_operator_surface.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0024"
@@ -33625,7 +34368,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "tools/ci/tests/test_phase6_tigrcorn_hardening.py",
+      "path": "tools/ci/tests/test_tigrcorn_hardening.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0025"
@@ -33637,7 +34380,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "tools/ci/tests/test_phase7_claim_lifecycle.py",
+      "path": "tools/ci/tests/test_claim_lifecycle.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0026"
@@ -33655,8 +34398,8 @@
         "clm:cli-002"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ]
     },
     {
@@ -33746,11 +34489,11 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_cmds.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase8_cli_srv.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py",
         "tst:tools-ci-tests-test_evidence_registry.py",
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
@@ -33821,7 +34564,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py",
         "tst:tools-ci-validate_gate_c_conformance_security.py"
@@ -33885,8 +34628,8 @@
         "clm:op-012"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_docs_parity.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
       ]
     },
     {
@@ -33978,7 +34721,7 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase5_spec_snapshots.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_evidence_registry.py",
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
         "tst:tools-ci-tests-test_gate_b_surface_closure.py",
@@ -34479,7 +35222,7 @@
         "tst:tigrbl-tests-tests-harness-v3-test-route-rpc-prebinding",
         "tst:tigrbl-tests-tests-harness-v3-test-route-runtime-fallback-atoms",
         "tst:tigrbl-tests-tests-harness-v3-test-uvicorn-e2e-appspec",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-phase-validation",
+        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
         "tst:tigrbl-tests-tests-i9n-test-acronym-route-name",
         "tst:tigrbl-tests-tests-i9n-test-allow-anon",
         "tst:tigrbl-tests-tests-i9n-test-apikey-generation",
@@ -34542,7 +35285,7 @@
         "tst:tigrbl-tests-tests-mount-test-mount-favico",
         "tst:tigrbl-tests-tests-options-test-rest-options",
         "tst:tigrbl-tests-tests-options-test-rpc-options",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-phase-parity",
+        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
         "tst:tigrbl-tests-tests-parity-test-stdapi-openapi-docs",
         "tst:tigrbl-tests-tests-parity-test-stdapi-primitives",
         "tst:tigrbl-tests-tests-parity-test-stdapi-routing",
@@ -34588,11 +35331,11 @@
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-build-out",
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-dump",
         "tst:tigrbl-tests-tests-unit-runtime-atoms-test-wire-validate-in",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
         "tst:tigrbl-tests-tests-unit-runtime-test-compilation-runtime-behavior",
-        "tst:tigrbl-tests-tests-unit-runtime-test-events-phases",
+        "tst:tigrbl-tests-tests-unit-runtime-test-events-stages",
         "tst:tigrbl-tests-tests-unit-runtime-test-events-runtime-behavior",
-        "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-phase-access",
+        "tst:tigrbl-tests-tests-unit-runtime-test-ingress-egress-access",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-plan-event-ordering",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-plan-full-ordering",
         "tst:tigrbl-tests-tests-unit-runtime-test-kernel-runtime-behavior",
@@ -34640,7 +35383,7 @@
         "tst:tigrbl-tests-tests-unit-test-handler-step-qualname",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-phase",
+        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
         "tst:tigrbl-tests-tests-unit-test-hybrid-session-run-sync",
         "tst:tigrbl-tests-tests-unit-test-in-tx",
         "tst:tigrbl-tests-tests-unit-test-include-model-columns-namespace",
@@ -34676,7 +35419,7 @@
         "tst:tigrbl-tests-tests-unit-test-op-ctx-persist-options",
         "tst:tigrbl-tests-tests-unit-test-openapi-openrpc-schema-separation",
         "tst:tigrbl-tests-tests-unit-test-opspec-effects",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-unit-test-postgres-engine-errors",
         "tst:tigrbl-tests-tests-unit-test-postgres-env-vars",
         "tst:tigrbl-tests-tests-unit-test-relationship-alias-cols",
@@ -34802,15 +35545,15 @@
         "tst:http-route-jsonrpc-openrpc-surface",
         "tst:http-route-websocket-binding-slice",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0013",
         "tst:tcase-0015",
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
         "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs"
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs"
       ]
     },
     {
@@ -34872,15 +35615,15 @@
         "tst:http-route-jsonrpc-openrpc-surface",
         "tst:http-route-websocket-binding-slice",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
         "tst:tcase-0013",
         "tst:tcase-0015",
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
         "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
-        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
         "tst:closure-case-authn-unauthorized-errors",
         "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-sync",
@@ -34891,11 +35634,85 @@
         "tst:closure-case-secdep-auth-parity-rest-rpc-async",
         "tst:closure-case-tigrbl-create-call-graph-250-ops",
         "tst:closure-case-tigrbl-fastapi-sequential-10-rounds",
-        "tst:closure-case-atom-stage-phase-window-static",
+        "tst:closure-case-atom-stage-window-static",
         "tst:closure-case-openrpc-router-mount-server-url",
         "tst:closure-case-openapi-declared-surface-metadata",
         "tst:closure-case-operator-cookie-form-upload-roundtrip",
         "tst:closure-case-operator-streaming-sse-multi-body"
+      ]
+    },
+    {
+      "id": "evd:ssot-authority-model-validation",
+      "title": "SSOT authority model validation report",
+      "status": "passed",
+      "kind": "validator-report",
+      "tier": "T2",
+      "path": ".ssot/reports/ssot-authority-model-validation.txt",
+      "claim_ids": [
+        "clm:ssot-authority-projection-001",
+        "clm:feature-test-coverage-completeness-001",
+        "clm:tool-test-gate-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:ssot-authority-model-validator",
+        "tst:feature-test-coverage-invariant",
+        "tst:tool-test-gate-taxonomy"
+      ]
+    },
+    {
+      "id": "evd:ssot-boundary-test-selection",
+      "title": "SSOT boundary test selection manifest",
+      "status": "passed",
+      "kind": "selection-manifest",
+      "tier": "T2",
+      "path": ".ssot/reports/ssot-boundary-test-selection.json",
+      "claim_ids": [
+        "clm:boundary-test-selection-deterministic-001"
+      ],
+      "test_ids": [
+        "tst:boundary-scoped-test-selection"
+      ]
+    },
+    {
+      "id": "evd:ssot-gate-evaluation",
+      "title": "SSOT gate evaluation report",
+      "status": "passed",
+      "kind": "gate-evaluation-report",
+      "tier": "T2",
+      "path": ".ssot/reports/ssot-gate-evaluation.json",
+      "claim_ids": [
+        "clm:gate-status-derived-001"
+      ],
+      "test_ids": [
+        "tst:gate-evaluator-claim-evidence-aggregation"
+      ]
+    },
+    {
+      "id": "evd:ssot-status-sync-dry-run",
+      "title": "SSOT status sync dry-run audit report",
+      "status": "passed",
+      "kind": "status-sync-report",
+      "tier": "T2",
+      "path": ".ssot/reports/ssot-status-sync-dry-run.json",
+      "claim_ids": [
+        "clm:status-sync-auditable-001"
+      ],
+      "test_ids": [
+        "tst:status-sync-outcome-mapping"
+      ]
+    },
+    {
+      "id": "evd:docs-ci-projection-drift",
+      "title": "Docs and CI projection drift coverage",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/ssot-authority-model-validation.txt",
+      "claim_ids": [
+        "clm:ssot-authority-projection-001"
+      ],
+      "test_ids": [
+        "tst:docs-ci-projection-drift"
       ]
     }
   ],
@@ -35164,6 +35981,23 @@
         "feat:tigrbl-tests-failing-case-closure-001"
       ],
       "profile_ids": []
+    },
+    {
+      "id": "bnd:ssot-authority-migration-001",
+      "title": "SSOT authority, test alignment, and gate model migration boundary",
+      "status": "draft",
+      "frozen": false,
+      "feature_ids": [
+        "feat:ssot-authority-migration-001",
+        "feat:tool-test-gate-taxonomy-001",
+        "feat:feature-test-coverage-completeness-001",
+        "feat:boundary-scoped-test-selection-001",
+        "feat:test-result-evidence-ingestion-001",
+        "feat:status-sync-engine-001",
+        "feat:gate-evaluator-model-001",
+        "feat:docs-ci-projection-validation-001"
+      ],
+      "profile_ids": []
     }
   ],
   "releases": [
@@ -35389,6 +36223,27 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "rel:0.3.19.dev1-ssot-authority-migration",
+      "version": "0.3.19.dev1+ssot-authority-migration",
+      "status": "draft",
+      "boundary_id": "bnd:ssot-authority-migration-001",
+      "claim_ids": [
+        "clm:ssot-authority-projection-001",
+        "clm:feature-test-coverage-completeness-001",
+        "clm:gate-status-derived-001",
+        "clm:boundary-test-selection-deterministic-001",
+        "clm:status-sync-auditable-001",
+        "clm:tool-test-gate-taxonomy-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation",
+        "evd:ssot-boundary-test-selection",
+        "evd:ssot-gate-evaluation",
+        "evd:ssot-status-sync-dry-run",
+        "evd:docs-ci-projection-drift"
       ]
     }
   ],
@@ -37158,6 +38013,29 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1082",
+      "number": 1082,
+      "slug": "ssot-authority-test-gate-status-sync",
+      "title": "SSOT authority, test alignment, and gate status synchronization",
+      "path": ".ssot/adr/ADR-1082-ssot-authority-test-gate-status-sync.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "d580134d154dc9947f99a393729b07e990c17a12ac489ade57fa2a8cbac3da44",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted as part of SSOT authority, test alignment, and gate model migration.",
+          "at": "2026-04-22T00:00:00Z"
+        }
+      ],
+      "summary": "Make SSOT the authority for governance state and define tests, evidence, claims, and gates as separate synchronized entities."
     }
   ],
   "specs": [
@@ -39234,6 +40112,60 @@
         "adr:1004",
         "adr:1077"
       ]
+    },
+    {
+      "id": "spc:2084",
+      "number": 2084,
+      "slug": "tool-test-evidence-gate-taxonomy",
+      "title": "Tool, test, evidence, and gate taxonomy",
+      "path": ".ssot/specs/SPEC-2084-tool-test-evidence-gate-taxonomy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "7d0a9597fe58d5a3ead60c0efed3e025455b2fefc12d9039246e3b44eb049b11",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted as part of SSOT authority, test alignment, and gate model migration.",
+          "at": "2026-04-22T00:00:00Z"
+        }
+      ],
+      "kind": "governance",
+      "adr_ids": [
+        "adr:1082"
+      ],
+      "summary": "Defines the SSOT taxonomy that separates tools, tests, evidence, claims, and gates."
+    },
+    {
+      "id": "spc:2085",
+      "number": 2085,
+      "slug": "boundary-test-selection-status-sync",
+      "title": "Boundary-scoped test selection and status synchronization",
+      "path": ".ssot/specs/SPEC-2085-boundary-test-selection-status-sync.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "e2bdfc36c05873ae6413ae5f6abf34fc9874f57dab75f41051444081dc3dfba2",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted as part of SSOT authority, test alignment, and gate model migration.",
+          "at": "2026-04-22T00:00:00Z"
+        }
+      ],
+      "kind": "governance",
+      "adr_ids": [
+        "adr:1082"
+      ],
+      "summary": "Defines deterministic test selection and auditable status synchronization from SSOT boundary and release state."
     }
   ],
   "profiles": []

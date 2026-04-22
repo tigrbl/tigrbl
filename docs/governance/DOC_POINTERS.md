@@ -83,7 +83,7 @@ Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs
 | Gate A boundary-freeze audit evidence | `docs/conformance/audit/2026/phase4-boundary-freeze/` |
 | Spec/docs audit evidence | `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/` |
 | RFC/security audit evidence | `docs/conformance/audit/2026/p6-rfc-sec/` |
-| Operator-surface audit evidence | `docs/conformance/audit/2026/phase7-operator-surface/` |
+| Operator-surface audit evidence | `docs/conformance/audit/2026/operator-surface/` |
 | CLI audit evidence | `docs/conformance/audit/2026/p8-cli/` |
 | Evidence-model audit evidence | `docs/conformance/audit/2026/p9-evidence/` |
 | Gate B audit evidence | `docs/conformance/audit/2026/p10-gate-b/` |
@@ -108,10 +108,10 @@ Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs
 | Evidence-registry validator | `tools/ci/validate_evidence_registry.py` |
 | Evidence-bundle validator | `tools/ci/validate_evidence_bundles.py` |
 | Gate B surface-closure validator | `tools/ci/validate_gate_b_surface_closure.py` |
-| Rust parity validator | `tools/ci/validate_phase4_rust_parity.py` |
-| Tigrcorn operator-surface validator | `tools/ci/validate_phase5_tigrcorn_operator_surface.py` |
-| Tigrcorn hardening validator | `tools/ci/validate_phase6_tigrcorn_hardening.py` |
-| Claim-lifecycle validator | `tools/ci/validate_phase7_claim_lifecycle.py` |
+| Rust parity validator | `tools/ci/validate_rust_parity.py` |
+| Tigrcorn operator-surface validator | `tools/ci/validate_tigrcorn_operator_surface.py` |
+| Tigrcorn hardening validator | `tools/ci/validate_tigrcorn_hardening.py` |
+| Claim-lifecycle validator | `tools/ci/validate_claim_lifecycle.py` |
 | Gate B surface-closure workflow | `.github/workflows/gate-b-surface-closure.yml` |
 | Gate C conformance/security validator | `tools/ci/validate_gate_c_conformance_security.py` |
 | Gate C conformance/security workflow | `.github/workflows/gate-c-conformance-security.yml` |

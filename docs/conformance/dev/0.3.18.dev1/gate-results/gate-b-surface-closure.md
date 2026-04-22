@@ -17,10 +17,10 @@ This gate-result file records the dedicated Gate B proof added by the Gate B sur
 - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
 - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`
 - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py`
 
 ## Source audit logs
 

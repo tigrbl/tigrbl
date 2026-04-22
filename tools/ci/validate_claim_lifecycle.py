@@ -200,7 +200,7 @@ def main() -> None:
         errors.append("docs/conformance/IMPLEMENTATION_MAP.md must include the claim-lifecycle checkpoint row")
     if "Claim-lifecycle current-state report" not in doc_pointers or "Claim-lifecycle certification-state report" not in doc_pointers:
         errors.append("docs/governance/DOC_POINTERS.md must point to both claim-lifecycle reports")
-    if "validate_phase7_claim_lifecycle.py" not in ci_validation:
+    if "validate_claim_lifecycle.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the claim-lifecycle validator")
     if "Validate Claim lifecycle and release bundle" not in workflow:
         errors.append(".github/workflows/policy-governance.yml must run the claim-lifecycle validator")

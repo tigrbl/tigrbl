@@ -10,7 +10,7 @@ from tigrbl.factories.engine import mem
 
 def _build_app():
     class Widget(TableBase, GUIDPk):
-        __tablename__ = "widgets_phase1_surface"
+        __tablename__ = "widgets_declared_surface"
         name = Column(String, nullable=False)
 
         @stream_ctx(

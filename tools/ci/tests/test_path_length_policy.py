@@ -17,11 +17,8 @@ module = importlib.util.module_from_spec(spec)
 assert spec and spec.loader
 spec.loader.exec_module(module)
 
-EXCLUDED_ROOTS = {REPO_ROOT / '.git'}
-
-
 def _excluded(path: Path) -> bool:
-    return any(path == ex or ex in path.parents for ex in EXCLUDED_ROOTS)
+    return module.is_excluded(path)
 
 
 def test_repository_conforms_to_declared_path_limits() -> None:

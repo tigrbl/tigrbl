@@ -15,8 +15,8 @@ jobs:
           - lane: unit
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py
-              pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py
+              pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py
+              pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py
               tools/ci/tests/test_evidence_registry.py
               -p no:cacheprovider
           - lane: integration
@@ -28,7 +28,7 @@ jobs:
           - lane: spec-conformance
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py
+              pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py
               pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
               pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
               pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py
@@ -48,24 +48,24 @@ jobs:
               pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
               pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
               pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py
-              pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py
+              pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
               -p no:cacheprovider
           - lane: cli-smoke
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py
-              pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+              pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py
+              pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
               -p no:cacheprovider
           - lane: operator-surface-smoke
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py
-              pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py
+              pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py
+              pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
               -p no:cacheprovider
           - lane: server-compat-smoke
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py
+              pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
               -p no:cacheprovider
           - lane: clean-room-package
             cmd: >-

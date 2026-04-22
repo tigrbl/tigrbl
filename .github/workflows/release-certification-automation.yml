@@ -30,13 +30,13 @@ jobs:
       - name: Validate certification authority and lifecycle gates
         run: >-
           python tools/ci/validate_certification_tree.py
-          && python tools/ci/validate_phase7_claim_lifecycle.py
+          && python tools/ci/validate_claim_lifecycle.py
 
       - name: Run governance pytest slices
         run: >-
           python -m pytest -q
           tools/ci/tests/test_certification_tree.py
-          tools/ci/tests/test_phase7_claim_lifecycle.py
+          tools/ci/tests/test_claim_lifecycle.py
           -p no:cacheprovider
 
   next-target-python:
@@ -102,7 +102,7 @@ jobs:
           - lane: spec-conformance
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py
+              pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py
               pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
               pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
               pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py

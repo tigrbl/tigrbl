@@ -67,7 +67,7 @@ def main() -> None:
     if "Tigrcorn operator-surface current-state report" not in doc_pointers or "Tigrcorn operator-surface certification-state report" not in doc_pointers:
         errors.append("docs/governance/DOC_POINTERS.md must point to both Tigrcorn operator-surface reports")
 
-    if "validate_phase5_tigrcorn_operator_surface.py" not in ci_validation:
+    if "validate_tigrcorn_operator_surface.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the Tigrcorn operator-surface validator")
 
     if "Validate Tigrcorn operator surface" not in workflow:
