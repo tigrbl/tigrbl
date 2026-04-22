@@ -212,7 +212,6 @@ def test_openrpc_server_url_for_router_mount_via_app_uses_current_app_level_pref
             return (await client.get("/openrpc.json")).json()
 
     payload = asyncio.run(_fetch())
-    # Current mounted-app behavior keeps the app-level default JSON-RPC prefix
-    # when a router-mounted OpenRPC endpoint is exposed through a parent app.
-    assert payload["servers"] == [{"name": app.title, "url": "/rpc"}]
+    # Router-mounted OpenRPC keeps the mounted router JSON-RPC binding path.
+    assert payload["servers"] == [{"name": router.title, "url": "/jsonrpc"}]
 

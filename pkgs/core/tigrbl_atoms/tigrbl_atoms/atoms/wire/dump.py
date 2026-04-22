@@ -61,7 +61,11 @@ def _run(obj: Optional[object], ctx: Any) -> None:
                     k.decode("latin-1"): v.decode("latin-1")
                     for k, v in getattr(raw_result, "raw_headers", ())
                 },
-                "body": getattr(raw_result, "body", None),
+                "body": (
+                    raw_result
+                    if hasattr(raw_result, "body_iterator")
+                    else getattr(raw_result, "body", None)
+                ),
             }
         return
 

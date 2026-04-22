@@ -132,6 +132,16 @@ async def _run(obj: object | None, ctx: Any) -> None:
         body = body.tobytes()
     if isinstance(body, str):
         body = body.encode("utf-8")
+    if body is not None:
+        setattr(request, "body", body)
+        if hasattr(request, "_json_loaded"):
+            setattr(request, "_json_loaded", False)
+        if hasattr(request, "_json_cache"):
+            setattr(request, "_json_cache", None)
+        if hasattr(request, "_form_loaded"):
+            setattr(request, "_form_loaded", False)
+        if hasattr(request, "_form_cache"):
+            setattr(request, "_form_cache", None)
 
     transport = "ws" if scope.get("type") == "websocket" else "http"
     scheme = str(scope.get("scheme", "http")).lower()

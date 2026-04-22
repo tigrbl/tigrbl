@@ -79,7 +79,10 @@ class HTTPBearer(OpenAPISecurityDependency):
         header = request.headers.get("authorization")
         if not header:
             if self.auto_error:
-                self._unauthorized()
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Not authenticated",
+                )
             return None
 
         try:

@@ -66,6 +66,42 @@ class PackedPlanExecutor(ExecutorBase):
 
         return StatusDetailError, create_standardized_error
 
+    @staticmethod
+    def _jsonrpc_error_payload(ctx: _Ctx, status_code: int, detail: Any) -> dict[str, Any] | None:
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            return None
+
+        rpc_id = temp.get("jsonrpc_request_id")
+        is_jsonrpc = "jsonrpc_request_id" in temp
+        for section_key in ("route", "dispatch"):
+            section = temp.get(section_key)
+            if not isinstance(section, Mapping):
+                continue
+            for payload_key in ("rpc_envelope", "rpc"):
+                payload = section.get(payload_key)
+                if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
+                    is_jsonrpc = True
+                    if rpc_id is None:
+                        rpc_id = payload.get("id")
+
+        if not is_jsonrpc:
+            return None
+
+        from tigrbl_typing.status.mappings import ERROR_MESSAGES, _HTTP_TO_RPC
+
+        rpc_code = _HTTP_TO_RPC.get(int(status_code), -32603)
+        data = dict(detail) if isinstance(detail, Mapping) else {"detail": detail}
+        return {
+            "jsonrpc": "2.0",
+            "error": {
+                "code": rpc_code,
+                "message": ERROR_MESSAGES.get(rpc_code, "Internal error"),
+                "data": data,
+            },
+            "id": rpc_id,
+        }
+
     def _resolve_segments_for_program(
         self, packed: PackedKernel, program_id: int
     ) -> tuple[tuple[int, ...], tuple[int, ...]]:
@@ -797,10 +833,12 @@ class PackedPlanExecutor(ExecutorBase):
                         await self._run_segment(ctx, packed, seg_id)
                     except Exception:
                         pass
+                status_code = int(getattr(exc, "status_code", 500) or 500)
+                payload = self._jsonrpc_error_payload(ctx, status_code, detail)
                 await _send_json(
                     env,
-                    int(getattr(exc, "status_code", 500) or 500),
-                    {"detail": detail},
+                    200 if payload is not None else status_code,
+                    payload or {"detail": detail},
                     headers=getattr(exc, "headers", None),
                 )
                 return
@@ -821,10 +859,12 @@ class PackedPlanExecutor(ExecutorBase):
                         await self._run_segment(ctx, packed, seg_id)
                     except Exception:
                         pass
+                status_code = int(getattr(std, "status_code", 500) or 500)
+                payload = self._jsonrpc_error_payload(ctx, status_code, detail)
                 await _send_json(
                     env,
-                    int(getattr(std, "status_code", 500) or 500),
-                    {"detail": detail},
+                    200 if payload is not None else status_code,
+                    payload or {"detail": detail},
                     headers=getattr(std, "headers", None),
                 )
                 return

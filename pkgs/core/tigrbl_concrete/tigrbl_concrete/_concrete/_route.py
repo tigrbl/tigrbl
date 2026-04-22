@@ -339,7 +339,11 @@ def _build_route_step(route: Route) -> Handler:
             payload = {
                 "status_code": int(getattr(response, "status_code", 200) or 200),
                 "headers": dict(getattr(response, "headers", ()) or ()),
-                "body": getattr(response, "body", b""),
+                "body": (
+                    response
+                    if hasattr(response, "body_iterator")
+                    else getattr(response, "body", b"")
+                ),
             }
             temp = getattr(ctx, "temp", None)
             if isinstance(temp, dict):

@@ -62,6 +62,8 @@ def _run(obj: object | None, ctx: Any) -> None:
                 or ""
             )
             method = body.get("method")
+            if isinstance(temp, dict):
+                temp["jsonrpc_request_id"] = body.get("id")
             dispatch["endpoint"] = endpoint
             dispatch.setdefault(
                 "binding_selector",

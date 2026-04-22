@@ -1,0 +1,655 @@
+{
+  "schema_version": 1,
+  "kind": "release_snapshot",
+  "generated_at": "2026-04-22T00:33:11Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "0826291f5e09e3280fb5a5aa6bdbfdc95267189209367535af3ecd28c403f091",
+  "release": {
+    "id": "rel:tigrbl-tests-failing-case-closure-20260421",
+    "version": "0.3.19.dev1+tigrbl-tests-failing-case-closure.20260421",
+    "status": "promoted",
+    "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "claim_ids": [
+      "clm:tigrbl-tests-failing-case-closure-001"
+    ],
+    "evidence_ids": [
+      "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+    ]
+  },
+  "boundary": {
+    "id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "title": "tigrbl_tests failing-case closure boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:tigrbl-tests-failing-case-closure-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:tigrbl-tests-failing-case-closure-001",
+      "title": "tigrbl_tests failing-case closure",
+      "description": "Certifiable closure feature for every pytest case that was failing in the tigrbl_tests closure sweep; the feature is implemented only by the repairs that make those cases and the full tigrbl_tests suite pass.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "explicit",
+        "slot": "rel:tigrbl-tests-failing-case-closure-20260421",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2002",
+        "spc:0608"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "test_ids": [
+        "tst:http-route-jsonrpc-openrpc-surface",
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:tcase-0013",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops"
+      ],
+      "requires": []
+    }
+  ],
+  "profiles": [],
+  "profile_evaluations": [],
+  "claims": [
+    {
+      "id": "clm:tigrbl-tests-failing-case-closure-001",
+      "title": "tigrbl_tests failing cases are closed",
+      "status": "promoted",
+      "tier": "T2",
+      "kind": "test_closure",
+      "description": "Asserts that every pytest case failing in the tigrbl_tests closure sweep is now passing under the full tigrbl_tests run, with the final JUnit and pytest output attached as evidence.",
+      "feature_ids": [
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "test_ids": [
+        "tst:http-route-jsonrpc-openrpc-surface",
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:tcase-0013",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "tst:http-route-jsonrpc-openrpc-surface",
+      "title": "HTTP route OpenRPC surface coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:http-route-001",
+        "feat:docs-support-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:http-route-002",
+        "clm:docs-support-001",
+        "clm:docs-support-002",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:http-route-pytest-log",
+        "evd:http-route-registry-validation",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:http-route-websocket-binding-slice",
+      "title": "HTTP route websocket binding metadata slice",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "feature_ids": [
+        "feat:http-route-001",
+        "feat:docs-support-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:http-route-002",
+        "clm:docs-support-001",
+        "clm:docs-support-002",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:http-route-pytest-log",
+        "evd:http-route-registry-validation",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "status": "passing",
+      "kind": "automated",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:gate-009",
+        "feat:oas-001",
+        "feat:oas-002",
+        "feat:oas-003",
+        "feat:oas-004",
+        "feat:oas-005",
+        "feat:oas-006",
+        "feat:rpc-001",
+        "feat:rpc-002",
+        "feat:rpc-003",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:gate-009",
+        "clm:oas-001",
+        "clm:oas-002",
+        "clm:oas-003",
+        "clm:oas-004",
+        "clm:oas-005",
+        "clm:oas-006",
+        "clm:rpc-001",
+        "clm:rpc-002",
+        "clm:rpc-003",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-conformance-audit-2026-p11-gate-c-readme.md",
+        "evd:docs-conformance-current_state.md",
+        "evd:docs-conformance-current_target.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-docs-ui-smoke.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-gate-c-conformance-security.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-spec-conformance.md",
+        "evd:docs-conformance-gates-gate_c_conformance_security.md",
+        "evd:docs-conformance-implementation_map.md",
+        "evd:docs-conformance-releases-0.3.18-gate-results-gate-c-conformance-security.md",
+        "evd:docs-conformance-rfc_security_evidence_map.md",
+        "evd:github-workflows-evidence-lanes.yml",
+        "evd:github-workflows-gate-c-conformance-security.yml",
+        "evd:github-workflows-policy-governance.yml",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+      "title": "Test coverage for pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "status": "passing",
+      "kind": "automated",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "feature_ids": [
+        "feat:op-001",
+        "feat:op-002",
+        "feat:op-003",
+        "feat:op-004",
+        "feat:op-005",
+        "feat:op-006",
+        "feat:op-007",
+        "feat:op-008",
+        "feat:op-009",
+        "feat:op-010",
+        "feat:op-011",
+        "feat:op-012",
+        "feat:operator-surface-framing-semantics-001",
+        "feat:stream-chunk-order-preservation-001",
+        "feat:sse-event-framing-001",
+        "feat:multipart-form-preservation-001",
+        "feat:uploaded-file-runtime-contract-001",
+        "feat:operator-surface-smoke-runtime-parity-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:op-001",
+        "clm:op-002",
+        "clm:op-003",
+        "clm:op-004",
+        "clm:op-005",
+        "clm:op-006",
+        "clm:op-007",
+        "clm:op-008",
+        "clm:op-009",
+        "clm:op-010",
+        "clm:op-011",
+        "clm:op-012",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-conformance-current_target.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-docs-ui-smoke.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-operator-surface-smoke.md",
+        "evd:docs-developer-operator-readme.md",
+        "evd:docs-developer-operator_surfaces.md",
+        "evd:github-workflows-evidence-lanes.yml",
+        "evd:github-workflows-operator-surface.yml",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tcase-0013",
+      "title": "Jsonrpc openrpc",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:asyncapi-mount-surface-001",
+        "feat:asyncapi-payload-surface-001",
+        "feat:asyncapi-uix-surface-001",
+        "feat:build-asyncapi-spec-helper-surface-001",
+        "feat:build-json-schema-bundle-helper-surface-001",
+        "feat:build-lens-helper-surface-001",
+        "feat:build-openapi-helper-surface-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:build-swagger-helper-surface-001",
+        "feat:declared-surface-docs-extension-001",
+        "feat:docs-support-001",
+        "feat:gate-009",
+        "feat:http-route-001",
+        "feat:json-schema-mount-surface-001",
+        "feat:json-schema-payload-surface-001",
+        "feat:json-schema-uix-surface-001",
+        "feat:mount-lens-helper-surface-001",
+        "feat:mount-swagger-helper-surface-001",
+        "feat:oas-001",
+        "feat:oas-002",
+        "feat:oas-003",
+        "feat:oas-004",
+        "feat:oas-005",
+        "feat:oas-006",
+        "feat:openapi-mount-surface-001",
+        "feat:openapi-payload-surface-001",
+        "feat:openapi-uix-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:rpc-001",
+        "feat:rpc-002",
+        "feat:rpc-003",
+        "feat:surface-docs-cross-projection-parity-001",
+        "feat:swagger-openapi-uix-001",
+        "feat:tigrbl-lens-openrpc-uix-001",
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:cur-003",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:eart-0086",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tcase-0015",
+      "title": "Phase7 operator surface closure",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
+      "feature_ids": [
+        "feat:asyncapi-mount-surface-001",
+        "feat:asyncapi-payload-surface-001",
+        "feat:asyncapi-uix-surface-001",
+        "feat:build-asyncapi-spec-helper-surface-001",
+        "feat:build-json-schema-bundle-helper-surface-001",
+        "feat:build-lens-helper-surface-001",
+        "feat:build-openapi-helper-surface-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:build-swagger-helper-surface-001",
+        "feat:declared-surface-docs-extension-001",
+        "feat:docs-support-001",
+        "feat:error-parity-response-structure-001",
+        "feat:eventstreamresponse-concrete-sse-class-001",
+        "feat:http-route-001",
+        "feat:json-schema-mount-surface-001",
+        "feat:json-schema-payload-surface-001",
+        "feat:json-schema-uix-surface-001",
+        "feat:jsonrpc-batch-framing-001",
+        "feat:mount-lens-helper-surface-001",
+        "feat:mount-swagger-helper-surface-001",
+        "feat:multipart-form-preservation-001",
+        "feat:op-001",
+        "feat:op-002",
+        "feat:op-003",
+        "feat:op-004",
+        "feat:op-005",
+        "feat:op-006",
+        "feat:op-007",
+        "feat:op-008",
+        "feat:op-009",
+        "feat:op-010",
+        "feat:op-011",
+        "feat:op-012",
+        "feat:openapi-mount-surface-001",
+        "feat:openapi-payload-surface-001",
+        "feat:openapi-uix-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:operator-surface-framing-semantics-001",
+        "feat:operator-surface-smoke-runtime-parity-001",
+        "feat:sse-event-framing-001",
+        "feat:stream-chunk-order-preservation-001",
+        "feat:streamingresponse-concrete-stream-class-001",
+        "feat:surface-docs-cross-projection-parity-001",
+        "feat:swagger-openapi-uix-001",
+        "feat:tigrbl-lens-openrpc-uix-001",
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:uploaded-file-runtime-contract-001",
+        "feat:websocket-concrete-runtime-class-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:cur-005",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:eart-0088",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+      "title": "Authn provider integration",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py",
+      "feature_ids": [
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+      "title": "Opspec pre tx deps",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/i9n/test_opspec_pre_tx_deps.py",
+      "feature_ids": [
+        "feat:analytical-family-membership-freeze-001",
+        "feat:analytical-runtime-docs-export-parity-001",
+        "feat:binding-driven-ingress-001",
+        "feat:build-handlers-helper-surface-001",
+        "feat:build-rest-helper-surface-001",
+        "feat:canonical-analytical-ops-001",
+        "feat:canonical-op-aggregate-001",
+        "feat:canonical-op-append-chunk-001",
+        "feat:canonical-op-bulk-create-001",
+        "feat:canonical-op-bulk-delete-001",
+        "feat:canonical-op-bulk-merge-001",
+        "feat:canonical-op-bulk-replace-001",
+        "feat:canonical-op-bulk-update-001",
+        "feat:canonical-op-checkpoint-001",
+        "feat:canonical-op-clear-001",
+        "feat:canonical-op-count-001",
+        "feat:canonical-op-create-001",
+        "feat:canonical-op-custom-001",
+        "feat:canonical-op-delete-001",
+        "feat:canonical-op-download-001",
+        "feat:canonical-op-exists-001",
+        "feat:canonical-op-group-by-001",
+        "feat:canonical-op-list-001",
+        "feat:canonical-op-merge-001",
+        "feat:canonical-op-publish-001",
+        "feat:canonical-op-read-001",
+        "feat:canonical-op-replace-001",
+        "feat:canonical-op-send-datagram-001",
+        "feat:canonical-op-subscribe-001",
+        "feat:canonical-op-tail-001",
+        "feat:canonical-op-update-001",
+        "feat:canonical-op-upload-001",
+        "feat:canonical-realtime-transfer-ops-001",
+        "feat:jsonrpc-endpoint-key-001",
+        "feat:op-extension-surface-001",
+        "feat:op-surface-custom-op-001",
+        "feat:op-surface-default-oltp-001",
+        "feat:op-surface-public-projection-001",
+        "feat:realtime-transfer-family-membership-freeze-001",
+        "feat:realtime-transfer-runtime-docs-export-parity-001",
+        "feat:transport-dispatch-governance-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
+      "title": "V3 default rpc ops",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/i9n/test_v3_default_rpc_ops.py",
+      "feature_ids": [
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
+      "title": "Tigrbl create call graph",
+      "status": "passing",
+      "kind": "performance",
+      "path": "pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_create_call_graph.py",
+      "feature_ids": [
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
+      "title": "Tigrbl vs fastapi create benchmark",
+      "status": "passing",
+      "kind": "performance",
+      "path": "pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py",
+      "feature_ids": [
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+      "title": "Atom stage phase window static",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_phase_window_static.py",
+      "feature_ids": [
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+      "title": "Phase1 declared surface docs",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_phase1_declared_surface_docs.py",
+      "feature_ids": [
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-test-suite-matrix-coverage-intake",
+        "evd:tigrbl-tests-current-failing-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+      "title": "tigrbl_tests failure closure final pytest run 2026-04-21",
+      "status": "passed",
+      "kind": "test_run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl_tests_junit_closure_boundary_final.xml",
+      "claim_ids": [
+        "clm:http-route-002",
+        "clm:docs-support-001",
+        "clm:docs-support-002",
+        "clm:gate-009",
+        "clm:oas-001",
+        "clm:oas-002",
+        "clm:oas-003",
+        "clm:oas-004",
+        "clm:oas-005",
+        "clm:oas-006",
+        "clm:rpc-001",
+        "clm:rpc-002",
+        "clm:rpc-003",
+        "clm:op-001",
+        "clm:op-002",
+        "clm:op-003",
+        "clm:op-004",
+        "clm:op-005",
+        "clm:op-006",
+        "clm:op-007",
+        "clm:op-008",
+        "clm:op-009",
+        "clm:op-010",
+        "clm:op-011",
+        "clm:op-012",
+        "clm:cur-003",
+        "clm:cur-005",
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "test_ids": [
+        "tst:http-route-jsonrpc-openrpc-surface",
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:tcase-0013",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops"
+      ]
+    }
+  ],
+  "file_hashes": {
+    ".ssot/reports/tigrbl_tests_junit_closure_boundary_final.xml": "2e61fb8b1e543cb3056d63901c76a81478bb5ba15e012631beff606c59686e61",
+    "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py": "b0e982b60f60c64f92fbb83697a02efc84bb50822f0fef116d7240ed7e25f047",
+    "pkgs/core/tigrbl_tests/tests/i9n/test_opspec_pre_tx_deps.py": "fecde8a6fd65dc006d8bd7373691ee1a3a2617c54cb626c97e7c99ed6840bef2",
+    "pkgs/core/tigrbl_tests/tests/i9n/test_v3_default_rpc_ops.py": "26c51a823929c888b01fd36aaa91f1fe8b8908ecd9bfa922de5e4e4f33f872fd",
+    "pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_create_call_graph.py": "55f29706e38cd11635607048e6cd4758ba28b10d2e8a666abf5d9a1378f2f125",
+    "pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py": "aea090a3694e7b78555a8fac56a61ebce97aca329d72a80a594890d9a07f08be",
+    "pkgs/core/tigrbl_tests/tests/unit/runtime/test_atom_stage_phase_window_static.py": "086d5707ead92af8867ce24e114c7c411566df43a123ecc84324c22736f9b651",
+    "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py": "8a9ab74cfdb87f26376536f1fcc84ed2f2b36c8cd306b22f9d9e048706c43b24",
+    "pkgs/core/tigrbl_tests/tests/unit/test_phase1_declared_surface_docs.py": "eb3df8ad8bc5e1a103981e277cdef6f64dd1daa924dc833cb2feada8de0bd2c5",
+    "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py": "a8e397e18bd590d31715126a5780c9699cd4cc0458d5219076bac8a903f4bdcc"
+  },
+  "summary": {
+    "release_id": "rel:tigrbl-tests-failing-case-closure-20260421",
+    "version": "0.3.19.dev1+tigrbl-tests-failing-case-closure.20260421",
+    "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "feature_count": 1,
+    "profile_count": 0,
+    "claim_count": 1,
+    "test_count": 13,
+    "evidence_count": 1,
+    "status": "promoted"
+  }
+}
