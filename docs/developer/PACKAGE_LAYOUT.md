@@ -62,7 +62,7 @@ Rust crates live under `crates/<crate>/` and must contain:
 ## Documentation boundary
 
 The only Markdown file allowed inside an active package root is the package root `README.md`.
-Long-form package documentation belongs under the authoritative docs tree in `docs/`.
+Long-form package documentation belongs under the governed docs projection tree in `docs/`.
 
 ## Examples and tests
 

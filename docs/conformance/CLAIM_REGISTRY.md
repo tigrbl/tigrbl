@@ -14,7 +14,7 @@ This is the post-promotion handoff governance + surface + conformance/security +
 | GOV-002 | Contributor policy exists | implemented | Tier 1 | Governance | `CONTRIBUTING.md` |
 | GOV-003 | Code of conduct exists | implemented | Tier 1 | Governance | `CODE_OF_CONDUCT.md` |
 | GOV-004 | Security policy exists | implemented | Tier 1 | Governance | `SECURITY.md` |
-| GOV-005 | Single authoritative docs tree is declared | implemented | Tier 1 | Governance | `docs/README.md`, `docs/governance/DOC_POINTERS.md` |
+| GOV-005 | Single governed docs projection tree is declared | implemented | Tier 1 | Governance | `docs/README.md`, `docs/governance/DOC_POINTERS.md` |
 | GOV-006 | Package layout validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_package_layout.py` |
 | GOV-007 | Doc-pointer validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_doc_pointers.py` |
 | GOV-008 | Root-clutter and generated-artifact validation exists | implemented | Tier 1 | Governance | `tools/ci/validate_root_clutter.py` |

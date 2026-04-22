@@ -1,9 +1,11 @@
 # Documentation and Pointer Map
 
-## Canonical top-level reader path
+## SSOT-First Reader Path
 
 - `README.md`
 - `.ssot/registry.json`
+- `.ssot/adr/ADR-1060-docs-ci-non-authoritative-projections.yaml`
+- `.ssot/specs/SPEC-1002-docs-ci-projection-authority-contract.yaml`
 - `reports/current_state/2026-04-07-phase0-certification-freeze.md`
 - `reports/certification_state/2026-04-07-registry-reclassification.md`
 - `.ssot/reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
@@ -25,9 +27,9 @@
 - `CODE_OF_CONDUCT.md`
 - `SECURITY.md`
 
-## Canonical docs locations
+## Projection Locations
 
-Machine authority lives in `.ssot/registry.json`. Certification YAML files under `certification/` are derived projections unless a row below explicitly says otherwise.
+Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs/`. Documentation under `docs/` and validation tooling under `tools/ci/` are non-authoritative projection and validation surfaces. Certification YAML files under `certification/` are derived projections unless a row below explicitly says otherwise.
 
 | Need | Canonical path |
 |---|---|
@@ -44,6 +46,8 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | Root ADR index | `.ssot/adr/ADR-1027-adr-index.yaml` |
 | Certification truth-model ADR | `.ssot/adr/ADR-1026-certification-truth-model.yaml` |
 | Certification truth-model spec | `.ssot/specs/SPEC-2002-certification-truth-model.yaml` |
+| Docs and CI projection ADR | `.ssot/adr/ADR-1060-docs-ci-non-authoritative-projections.yaml` |
+| Docs and CI projection contract | `.ssot/specs/SPEC-1002-docs-ci-projection-authority-contract.yaml` |
 | Current-state report | `reports/current_state/2026-04-07-phase0-certification-freeze.md` |
 | Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
 | Declared-surface current-state report | `.ssot/reports/current_state/2026-04-07-phase1-declarative-surface.md` |

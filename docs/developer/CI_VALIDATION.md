@@ -2,6 +2,8 @@
 
 The current certification program uses policy validators, evidence-lane workflows, gate-specific validators/workflows, and a dedicated post-promotion handoff validator.
 
+CI is non-authoritative. `tools/ci/` scripts are validation and fail-closed guardrails over SSOT-backed state; they do not define claims, features, gates, boundaries, releases, ADRs, or specs. The authority rule is governed by `.ssot/adr/ADR-1060-docs-ci-non-authoritative-projections.yaml` and `.ssot/specs/SPEC-1002-docs-ci-projection-authority-contract.yaml`.
+
 ## Validation scripts
 
 - `tools/ci/validate_package_layout.py`
