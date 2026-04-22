@@ -12,4 +12,4 @@ This lane aggregates the current checkpoint's representative unit-level proof.
 
 - `docs/conformance/audit/2026/p9-evidence/pytest_evidence_registry.log`
 - `docs/conformance/audit/2026/p8-cli/p8_cli_pytest.log`
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/phase5_targeted_pytest.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/phase5_targeted_pytest.log`

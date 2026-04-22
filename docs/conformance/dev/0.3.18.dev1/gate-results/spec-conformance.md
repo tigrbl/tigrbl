@@ -12,7 +12,7 @@ This lane covers OpenAPI, JSON Schema, JSON-RPC, and OpenRPC conformance evidenc
 
 ## Source audit logs
 
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/phase5_targeted_pytest.log`
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/generate_phase5_snapshots.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/phase5_targeted_pytest.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/generate_spec_snapshots.log`
 
 - `docs/conformance/audit/2026/p11-gate-c/pytest_gate_c_conformance_security.log`

@@ -81,7 +81,7 @@ Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs
 | Gate A freeze marker | `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json` |
 | Feature module audit evidence | `docs/conformance/audit/2026/phase3-current-state/` |
 | Gate A boundary-freeze audit evidence | `docs/conformance/audit/2026/phase4-boundary-freeze/` |
-| Spec/docs audit evidence | `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/` |
+| Spec/docs audit evidence | `docs/conformance/audit/2026/docs-spec-snapshot-closure/` |
 | RFC/security audit evidence | `docs/conformance/audit/2026/p6-rfc-sec/` |
 | Operator-surface audit evidence | `docs/conformance/audit/2026/phase7-operator-surface/` |
 | CLI audit evidence | `docs/conformance/audit/2026/p8-cli/` |
