@@ -5,7 +5,7 @@ from tigrbl.hook.exceptions import InvalidHookPhaseError
 from tigrbl_kernel.atoms import _inject_atoms
 
 
-_PHASE_ONLY_ATOM_ANCHORS = (
+_ATOM_ONLY_ANCHORS = (
     "INGRESS_BEGIN",
     "INGRESS_PARSE",
     "INGRESS_DISPATCH",
@@ -23,30 +23,30 @@ def _mk_atom(module: str, label: str):
     return run
 
 
-@pytest.mark.parametrize("phase", _PHASE_ONLY_ATOM_ANCHORS)
-def test_atom_injection_accepts_ingress_and_egress_phase_anchors(phase: str) -> None:
+@pytest.mark.parametrize("anchor", _ATOM_ONLY_ANCHORS)
+def test_atom_injection_accepts_ingress_and_egress_anchors(anchor: str) -> None:
     chains = {}
     atoms = [
         (
-            phase,
+            anchor,
             _mk_atom(
                 "tigrbl.runtime.atoms.response.custom",
-                f"atom:response:custom@{phase}",
+                f"atom:response:custom@{anchor}",
             ),
         )
     ]
 
     _inject_atoms(chains, atoms, persistent=True)
 
-    assert phase in chains
-    assert len(chains[phase]) == 1
+    assert anchor in chains
+    assert len(chains[anchor]) == 1
 
 
-@pytest.mark.parametrize("phase", _PHASE_ONLY_ATOM_ANCHORS)
-def test_hook_ctx_rejects_ingress_and_egress_phase_hooks(phase: str) -> None:
+@pytest.mark.parametrize("anchor", _ATOM_ONLY_ANCHORS)
+def test_hook_ctx_rejects_ingress_and_egress_hook_anchors(anchor: str) -> None:
     with pytest.raises(InvalidHookPhaseError):
 
         class Model:
-            @hook_ctx(ops="create", phase=phase)
-            def bad_phase_hook(cls, ctx):
+            @hook_ctx(ops="create", phase=anchor)
+            def bad_anchor_hook(cls, ctx):
                 return None

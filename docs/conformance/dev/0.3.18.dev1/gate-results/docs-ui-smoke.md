@@ -12,5 +12,5 @@ This lane covers the mounted docs/spec endpoints and parity docs.
 
 ## Source audit logs
 
-- `docs/conformance/audit/2026/operator-surface/phase7_operator_pytest.log`
+- `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log`
 - `docs/conformance/audit/2026/p9-evidence/pytest_docs_ui_smoke.log`

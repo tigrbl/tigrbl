@@ -23,7 +23,7 @@ def test_hook_ctx_records_ops():
     assert decls[0].ops == ("create", "delete")
 
 
-def test_hook_ctx_records_phase():
+def test_hook_ctx_records_lifecycle_anchor():
     class Table:
         @hook_ctx(ops="*", phase="POST_COMMIT")
         def hook(cls, ctx):

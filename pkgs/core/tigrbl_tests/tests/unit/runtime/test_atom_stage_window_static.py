@@ -82,7 +82,7 @@ def _all_atom_signatures() -> list[AtomStageSignature]:
     return signatures
 
 
-def test_every_atom_signature_stays_within_anchor_window() -> None:
+def test_every_atom_signature_stays_within_stage_window() -> None:
     signatures = _all_atom_signatures()
     assert signatures, "No atom signatures discovered."
 
