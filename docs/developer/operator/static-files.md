@@ -11,4 +11,4 @@ Static file serving is path-based and remains bounded to the configured director
 ## Notes
 
 - file responses and favicon support continue to exist
-- the Phase 7 tests verify a mounted nested static path round-trip
+- the operator-surface tests verify a mounted nested static path round-trip

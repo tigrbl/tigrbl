@@ -19,8 +19,8 @@ UNSUPPORTED_STATUSES = {
     "deferred",
     "oob",
     "de-scoped",
-    "de-scoped in phase 6",
-    "de-scoped in phase 7",
+    "de-scoped by RFC/security boundary review",
+    "de-scoped by docs/operator closure",
 }
 
 

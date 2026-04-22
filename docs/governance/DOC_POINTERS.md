@@ -6,12 +6,12 @@
 - `.ssot/registry.json`
 - `reports/current_state/2026-04-07-phase0-certification-freeze.md`
 - `reports/certification_state/2026-04-07-registry-reclassification.md`
-- `reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
-- `reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
-- `reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md`
-- `reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md`
-- `reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md`
-- `reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md`
+- `.ssot/reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
+- `.ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md`
+- `.ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md`
+- `.ssot/reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md`
+- `.ssot/reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md`
+- `.ssot/reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md`
 - `docs/README.md`
 - `docs/conformance/CURRENT_TARGET.md`
 - `docs/conformance/CURRENT_STATE.md`
@@ -46,16 +46,16 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | Certification truth-model spec | `.ssot/specs/SPEC-2002-certification-truth-model.yaml` |
 | Current-state report | `reports/current_state/2026-04-07-phase0-certification-freeze.md` |
 | Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
-| Phase 1 current-state report | `reports/current_state/2026-04-07-phase1-declarative-surface.md` |
-| Phase 1 certification-state report | `reports/certification_state/2026-04-07-phase1-declarative-surface.md` |
-| Phase 4 current-state report | `reports/current_state/2026-04-09-phase4-native-parity.md` |
-| Phase 4 certification-state report | `reports/certification_state/2026-04-09-phase4-native-parity.md` |
-| Phase 5 current-state report | `reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
-| Phase 5 certification-state report | `reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
-| Phase 6 current-state report | `reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md` |
-| Phase 6 certification-state report | `reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md` |
-| Phase 7 current-state report | `reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md` |
-| Phase 7 certification-state report | `reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md` |
+| Declared-surface current-state report | `.ssot/reports/current_state/2026-04-07-phase1-declarative-surface.md` |
+| Declared-surface certification-state report | `.ssot/reports/certification_state/2026-04-07-phase1-declarative-surface.md` |
+| Rust parity current-state report | `.ssot/reports/current_state/2026-04-09-phase4-native-parity.md` |
+| Rust parity certification-state report | `.ssot/reports/certification_state/2026-04-09-phase4-native-parity.md` |
+| Tigrcorn operator-surface current-state report | `.ssot/reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
+| Tigrcorn operator-surface certification-state report | `.ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
+| Tigrcorn hardening current-state report | `.ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md` |
+| Tigrcorn hardening certification-state report | `.ssot/reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md` |
+| Claim-lifecycle current-state report | `.ssot/reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md` |
+| Claim-lifecycle certification-state report | `.ssot/reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md` |
 | Target boundary | `docs/governance/TARGET_BOUNDARY.md` |
 | Certification rules | `docs/governance/CERTIFICATION_POLICY.md` |
 | Claim tiers | `docs/governance/CLAIM_TIERS.md` |
@@ -75,17 +75,17 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | Gate A freeze description | `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE.md` |
 | Gate A freeze manifest | `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json` |
 | Gate A freeze marker | `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json` |
-| Phase 3 audit evidence | `docs/conformance/audit/2026/phase3-current-state/` |
-| Phase 4 Gate A audit evidence | `docs/conformance/audit/2026/phase4-boundary-freeze/` |
-| Phase 5 spec/docs audit evidence | `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/` |
-| Phase 6 RFC/security audit evidence | `docs/conformance/audit/2026/p6-rfc-sec/` |
-| Phase 7 operator-surface audit evidence | `docs/conformance/audit/2026/phase7-operator-surface/` |
-| Phase 8 CLI audit evidence | `docs/conformance/audit/2026/p8-cli/` |
-| Phase 9 evidence-model audit evidence | `docs/conformance/audit/2026/p9-evidence/` |
-| Phase 10 Gate B audit evidence | `docs/conformance/audit/2026/p10-gate-b/` |
-| Phase 11 Gate C audit evidence | `docs/conformance/audit/2026/p11-gate-c/` |
-| Phase 12 Gate D audit evidence | `docs/conformance/audit/2026/p12-gate-d/` |
-| Phase 13 Gate E audit evidence | `docs/conformance/audit/2026/p13-gate-e/` |
+| Feature module audit evidence | `docs/conformance/audit/2026/phase3-current-state/` |
+| Gate A boundary-freeze audit evidence | `docs/conformance/audit/2026/phase4-boundary-freeze/` |
+| Spec/docs audit evidence | `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/` |
+| RFC/security audit evidence | `docs/conformance/audit/2026/p6-rfc-sec/` |
+| Operator-surface audit evidence | `docs/conformance/audit/2026/phase7-operator-surface/` |
+| CLI audit evidence | `docs/conformance/audit/2026/p8-cli/` |
+| Evidence-model audit evidence | `docs/conformance/audit/2026/p9-evidence/` |
+| Gate B audit evidence | `docs/conformance/audit/2026/p10-gate-b/` |
+| Gate C audit evidence | `docs/conformance/audit/2026/p11-gate-c/` |
+| Gate D audit evidence | `docs/conformance/audit/2026/p12-gate-d/` |
+| Gate E audit evidence | `docs/conformance/audit/2026/p13-gate-e/` |
 | Post-promotion handoff audit evidence | `docs/conformance/audit/2026/post-promotion-handoff/` |
 | Active dev bundle | `docs/conformance/dev/0.3.19.dev1/` |
 | Promotion-source dev bundle | `docs/conformance/dev/0.3.18.dev1/` |
@@ -104,10 +104,10 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | Evidence-registry validator | `tools/ci/validate_evidence_registry.py` |
 | Evidence-bundle validator | `tools/ci/validate_evidence_bundles.py` |
 | Gate B surface-closure validator | `tools/ci/validate_gate_b_surface_closure.py` |
-| Phase 4 rust-parity validator | `tools/ci/validate_phase4_rust_parity.py` |
-| Phase 5 Tigrcorn operator-surface validator | `tools/ci/validate_phase5_tigrcorn_operator_surface.py` |
-| Phase 6 Tigrcorn hardening validator | `tools/ci/validate_phase6_tigrcorn_hardening.py` |
-| Phase 7 claim-lifecycle validator | `tools/ci/validate_phase7_claim_lifecycle.py` |
+| Rust parity validator | `tools/ci/validate_phase4_rust_parity.py` |
+| Tigrcorn operator-surface validator | `tools/ci/validate_phase5_tigrcorn_operator_surface.py` |
+| Tigrcorn hardening validator | `tools/ci/validate_phase6_tigrcorn_hardening.py` |
+| Claim-lifecycle validator | `tools/ci/validate_phase7_claim_lifecycle.py` |
 | Gate B surface-closure workflow | `.github/workflows/gate-b-surface-closure.yml` |
 | Gate C conformance/security validator | `tools/ci/validate_gate_c_conformance_security.py` |
 | Gate C conformance/security workflow | `.github/workflows/gate-c-conformance-security.yml` |
@@ -123,7 +123,7 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | WIP notes | `docs/notes/wip/YYYY/` |
 | Archived notes | `docs/notes/archive/YYYY/` |
 
-## Phase 0 archive retained for traceability
+## Authority-reset archive retained for traceability
 
 | Previous root path | Archived path |
 |---|---|
@@ -138,7 +138,7 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | `rust_tool_versions.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rust_tool_versions.txt` |
 | `rustup_source_attempt.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rustup_source_attempt.log` |
 
-## Phase 2 archive retained for traceability
+## Runtime/kernel transport archive retained for traceability
 
 - `docs/notes/archive/2026/p2-struct-norm/`
 

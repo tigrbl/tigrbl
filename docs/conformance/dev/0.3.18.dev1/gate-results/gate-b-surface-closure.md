@@ -1,6 +1,6 @@
 # Gate B Surface Closure
 
-This gate-result file records the dedicated Gate B proof added in Phase 10.
+This gate-result file records the dedicated Gate B proof added by the Gate B surface-closure checkpoint.
 
 ## Source validator
 

@@ -31,7 +31,7 @@ This index is the durable entry point for the current dev-bundle evidence lane m
 | Gate | Current result | Summary path |
 |---|---|---|
 | Gate A | passed | `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE.md` |
-| Gate B | passed in Phase 10 checkpoint | `docs/conformance/dev/0.3.18.dev1/gate-results/gate-b-surface-closure.md` |
-| Gate C | passed in Phase 11 checkpoint | `docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md` |
-| Gate D | passed in Phase 12 checkpoint | `docs/conformance/dev/0.3.18.dev1/gate-results/gate-d-reproducibility.md` |
-| Gate E | passed in Phase 13 promotion checkpoint | `docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md` |
+| Gate B | passed in Gate B surface-closure checkpoint | `docs/conformance/dev/0.3.18.dev1/gate-results/gate-b-surface-closure.md` |
+| Gate C | passed in Gate C conformance/security checkpoint | `docs/conformance/dev/0.3.18.dev1/gate-results/gate-c-conformance-security.md` |
+| Gate D | passed in Gate D reproducibility checkpoint | `docs/conformance/dev/0.3.18.dev1/gate-results/gate-d-reproducibility.md` |
+| Gate E | passed by Gate E promotion checkpoint | `docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md` |

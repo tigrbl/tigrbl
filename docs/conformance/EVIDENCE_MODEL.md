@@ -27,7 +27,7 @@ A claim is not Tier 3 certifiable until:
 4. the relevant bundle structure passes validation
 5. Gate D and Gate E are passed on the exact chosen build/release
 
-## Phase 7 lifecycle rule
+## Lifecycle rule
 
 The repo-owned certification tree now carries a machine-readable claim lifecycle at `certification/claims/lifecycle.yaml`.
 

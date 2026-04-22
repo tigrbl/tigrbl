@@ -404,7 +404,7 @@
       "claim_state": "current",
       "claim_status": "certified",
       "claim_tier_target": "tier_3_certified_release",
-      "claim_title": "Operator surfaces closed in Phase 7 remain current-boundary claims.",
+      "claim_title": "Operator surfaces closed by the operator-surface checkpoint remain current-boundary claims.",
       "evidence_artifact_ids": [
         "EART-0004",
         "EART-0048",
@@ -502,7 +502,7 @@
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
-        "tools/ci/tests/test_phase14_handoff.py"
+        "tools/ci/tests/test_post_promotion_handoff.py"
       ]
     },
     {
@@ -3042,7 +3042,7 @@
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "artifact_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
       "bundle_id": "EBND-0025",
       "evidence_artifact_id": "EART-0103"
     },
@@ -4832,7 +4832,7 @@
       "evidence_artifact_id": "EART-0103",
       "evidence_bundle_id": "EBND-0025",
       "test_case_id": "TCASE-0022",
-      "test_case_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "test_case_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
       "test_set_id": "TSET-0007"
     },
     {
@@ -5092,13 +5092,13 @@
     {
       "evidence_artifact_id": "EART-0103",
       "evidence_bundle_id": "EBND-0025",
-      "evidence_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "evidence_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
       "mapped_claim_id": "CUR-007",
       "mapped_claim_lifecycle": "evidenced",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
       "test_case_id": "TCASE-0022",
-      "test_case_pointer": "tools/ci/tests/test_phase14_handoff.py",
+      "test_case_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
       "test_registry_row_id": "TREG-0017",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"

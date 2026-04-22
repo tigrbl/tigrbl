@@ -148,7 +148,7 @@ def test_doctor_command_smoke_outputs_app_summary() -> None:
     )
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
-    assert payload["title"] == "Phase 8 CLI App"
+    assert payload["title"] == "CLI Smoke App"
     assert payload["version"] == "8.0.0"
     assert payload["docs_paths"] == {
         "docs": "/api-docs",
@@ -216,5 +216,5 @@ def test_capabilities_command_smoke_outputs_commands_flags_servers_and_target() 
     assert "--quic-metrics" in payload["flags"]
     assert "--qlog-dir" in payload["flags"]
     assert set(payload["servers"]) == {"uvicorn", "hypercorn", "gunicorn", "tigrcorn"}
-    assert payload["app"]["title"] == "Phase 8 CLI App"
+    assert payload["app"]["title"] == "CLI Smoke App"
     assert "operator_controls" in payload["app"]

@@ -2,7 +2,7 @@ Supported claim ids: GATE-007, GATE-008
 
 # Gate B Surface Closure
 
-This release-bundle gate result points to the Phase 10 Gate B proof artifacts for the current cycle.
+This release-bundle gate result points to the Gate B proof artifacts for the current cycle.
 
 ## Source artifacts
 

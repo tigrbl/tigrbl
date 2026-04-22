@@ -58,7 +58,7 @@ Each crate under `crates/` must contain:
 
 ## Documentation authority
 
-The supplied archive already contained `docs/architecture/`, `docs/migration/`, and `docs/testing/`. Those directories remain part of the authoritative docs tree. New governance and conformance content must use the governed locations created in the Phase 0 and Phase 2 checkpoints.
+The supplied archive already contained `docs/architecture/`, `docs/migration/`, and `docs/testing/`. Those directories remain part of the authoritative docs tree. New governance and conformance content must use the governed locations created in the authority-reset and package-layout checkpoints.
 
 ## Path-length rule
 

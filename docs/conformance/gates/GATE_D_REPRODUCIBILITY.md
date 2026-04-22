@@ -6,9 +6,9 @@ Prove clean-room package assembly and installed-package reproducibility on the s
 
 ## Status
 
-Passed in the Phase 12 checkpoint.
+Passed in the Gate D reproducibility checkpoint.
 
-## What Phase 12 proves
+## What Gate D reproducibility proves
 
 - wheel and sdist assembly succeed for `pkgs/core/tigrbl` on the selected candidate build
 - wheel metadata exposes the governed `tigrbl = tigrbl.cli:console_main` console entry point

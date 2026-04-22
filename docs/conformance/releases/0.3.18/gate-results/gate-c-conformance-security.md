@@ -2,7 +2,7 @@ Supported claim ids: GATE-009, GATE-010
 
 # Gate C Conformance Security
 
-This release-bundle gate result points to the Phase 11 Gate C proof artifacts for the promoted release line.
+This release-bundle gate result points to the Gate C proof artifacts for the promoted release line.
 
 ## Source artifacts
 

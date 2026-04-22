@@ -5,8 +5,8 @@ from pathlib import Path
 from common import fail, repo_root
 
 ROOT = repo_root()
-CURRENT_STATE = ROOT / "reports" / "current_state" / "2026-04-09-phase5-tigrcorn-operator-surface.md"
-CERT_STATE = ROOT / "reports" / "certification_state" / "2026-04-09-phase5-tigrcorn-operator-surface.md"
+CURRENT_STATE = ROOT / ".ssot" / "reports" / "current_state" / "2026-04-09-phase5-tigrcorn-operator-surface.md"
+CERT_STATE = ROOT / ".ssot" / "reports" / "certification_state" / "2026-04-09-phase5-tigrcorn-operator-surface.md"
 CLI_REFERENCE = ROOT / "docs" / "developer" / "CLI_REFERENCE.md"
 IMPLEMENTATION_MAP = ROOT / "docs" / "conformance" / "IMPLEMENTATION_MAP.md"
 DOC_POINTERS = ROOT / "docs" / "governance" / "DOC_POINTERS.md"
@@ -41,13 +41,13 @@ def main() -> None:
         "formal benchmark / throughput artifact bundle directories",
     ):
         if snippet not in current_state:
-            errors.append(f"Phase 5 current-state report missing snippet: {snippet}")
+            errors.append(f"Tigrcorn operator-surface current-state report missing snippet: {snippet}")
 
     if "still not certifiably fully featured" not in current_state or "still not certifiably fully RFC compliant" not in current_state:
-        errors.append("Phase 5 current-state report must keep the active-line certification limitation explicit")
+        errors.append("Tigrcorn operator-surface current-state report must keep the active-line certification limitation explicit")
 
     if "certification claims for them remain blocked until the bundles are populated by governed release evidence" not in cert_state:
-        errors.append("Phase 5 certification-state report must keep interop/benchmark claims blocked pending release evidence")
+        errors.append("Tigrcorn operator-surface certification-state report must keep interop/benchmark claims blocked pending release evidence")
 
     for snippet in (
         "--statsd-addr",
@@ -59,29 +59,29 @@ def main() -> None:
         "docs/developer/examples/tigrcorn/phase5-operator-config.json",
     ):
         if snippet not in cli_reference:
-            errors.append(f"CLI reference missing Phase 5 Tigrcorn surface snippet: {snippet}")
+            errors.append(f"CLI reference missing Tigrcorn surface snippet: {snippet}")
 
-    if "Phase 5 Tigrcorn operator surface checkpoint" not in implementation_map:
-        errors.append("docs/conformance/IMPLEMENTATION_MAP.md must include the Phase 5 Tigrcorn operator surface checkpoint row")
+    if "Tigrcorn operator-surface checkpoint" not in implementation_map:
+        errors.append("docs/conformance/IMPLEMENTATION_MAP.md must include the Tigrcorn operator-surface checkpoint row")
 
-    if "Phase 5 current-state report" not in doc_pointers or "Phase 5 certification-state report" not in doc_pointers:
-        errors.append("docs/governance/DOC_POINTERS.md must point to both Phase 5 reports")
+    if "Tigrcorn operator-surface current-state report" not in doc_pointers or "Tigrcorn operator-surface certification-state report" not in doc_pointers:
+        errors.append("docs/governance/DOC_POINTERS.md must point to both Tigrcorn operator-surface reports")
 
     if "validate_phase5_tigrcorn_operator_surface.py" not in ci_validation:
-        errors.append("docs/developer/CI_VALIDATION.md must list the Phase 5 Tigrcorn operator-surface validator")
+        errors.append("docs/developer/CI_VALIDATION.md must list the Tigrcorn operator-surface validator")
 
-    if "Validate Phase 5 Tigrcorn operator surface" not in workflow:
-        errors.append(".github/workflows/policy-governance.yml must run the Phase 5 Tigrcorn operator-surface validator")
+    if "Validate Tigrcorn operator surface" not in workflow:
+        errors.append(".github/workflows/policy-governance.yml must run the Tigrcorn operator-surface validator")
 
     if "BLK-005" not in blocked_claims or "Tigrcorn interop and benchmark certification claims must remain blocked" not in blocked_claims:
         errors.append("certification/claims/blocked.yaml must block Tigrcorn interop/benchmark certification claims until release evidence exists")
 
     for path in (EXAMPLE_CONFIG, INTEROP_BUNDLE, BENCHMARK_BUNDLE):
         if not path.exists():
-            errors.append(f"Missing Phase 5 example/bundle manifest: {path.relative_to(ROOT)}")
+            errors.append(f"Missing Tigrcorn operator example/bundle manifest: {path.relative_to(ROOT)}")
 
     fail(errors)
-    print("Phase 5 Tigrcorn operator-surface validation passed")
+    print("Tigrcorn operator-surface validation passed")
 
 
 if __name__ == "__main__":

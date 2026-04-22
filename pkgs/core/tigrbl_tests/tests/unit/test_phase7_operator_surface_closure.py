@@ -33,7 +33,7 @@ async def _collect_asgi_messages(app: Any, scope: dict[str, Any], inbound: list[
 
 @pytest.mark.asyncio
 async def test_docs_surfaces_include_json_schema_and_asyncapi_specs_and_static_mount(tmp_path: Path) -> None:
-    app = TigrblApp(title="Phase 7 Docs")
+    app = TigrblApp(title="Operator Surface Docs")
     router = TigrblRouter()
     mount_openapi(app)
     mount_swagger(app)
@@ -84,7 +84,7 @@ async def test_docs_surfaces_include_json_schema_and_asyncapi_specs_and_static_m
 
 @pytest.mark.asyncio
 async def test_cookie_form_and_upload_surfaces_roundtrip() -> None:
-    app = TigrblApp(title="Phase 7 Forms")
+    app = TigrblApp(title="Operator Surface Forms")
     router = TigrblRouter()
 
     @router.get("/cookie/set")
@@ -136,7 +136,7 @@ async def test_cookie_form_and_upload_surfaces_roundtrip() -> None:
 
 @pytest.mark.asyncio
 async def test_streaming_and_sse_surfaces_emit_multiple_asgi_body_messages() -> None:
-    app = TigrblApp(title="Phase 7 Streams")
+    app = TigrblApp(title="Operator Surface Streams")
     router = TigrblRouter()
 
     @router.get("/stream")
@@ -182,7 +182,7 @@ async def test_streaming_and_sse_surfaces_emit_multiple_asgi_body_messages() -> 
 
 @pytest.mark.asyncio
 async def test_websocket_surface_accepts_receives_and_sends_text() -> None:
-    app = TigrblApp(title="Phase 7 WS")
+    app = TigrblApp(title="Operator Surface WS")
     router = TigrblRouter()
 
     @router.websocket("/ws/echo")
@@ -213,7 +213,7 @@ async def test_websocket_surface_accepts_receives_and_sends_text() -> None:
 
 
 def test_websocket_routes_register_concrete_bindings_with_prefixed_paths() -> None:
-    app = TigrblApp(title="Phase 7 WS Prefix")
+    app = TigrblApp(title="Operator Surface WS Prefix")
     router = TigrblRouter()
 
     @router.websocket("/echo", framing="jsonrpc")
