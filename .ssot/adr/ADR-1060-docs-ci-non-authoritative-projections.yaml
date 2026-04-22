@@ -1,0 +1,43 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1060"
+number: 1060
+slug: "docs-ci-non-authoritative-projections"
+title: "Docs and CI are non-authoritative projections"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The repository has accumulated human documentation under `docs/` and validation scripts under `tools/ci/` that describe, check, or package certification state. Those files are useful operator surfaces, but treating them as authority creates drift: prose and validators can preserve stale paths, stale labels, or implementation-era assumptions after the SSOT has moved."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted authority-boundary rule for docs and CI projection surfaces."
+    at: "2026-04-22T09:36:35Z"
+references: []
+body: |-
+  ## Context
+  
+  The repository has accumulated human documentation under `docs/` and validation scripts under `tools/ci/` that describe, check, or package certification state. Those files are useful operator surfaces, but treating them as authority creates drift: prose and validators can preserve stale paths, stale labels, or implementation-era assumptions after the SSOT has moved.
+  
+  ## Decision
+  
+  1. `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs/` are the authoritative source for governed repository truth.
+  2. `docs/` is a narrative projection layer. It explains, indexes, freezes, or evidences SSOT state, but it does not create authority independent of SSOT entities.
+  3. `tools/ci/` is a validation and guardrail layer. CI scripts may fail closed when projections drift from SSOT, but CI scripts do not define claims, features, gates, boundaries, releases, ADRs, or specs.
+  4. If docs or CI disagree with SSOT, SSOT wins. The fix is to update the projection or validator, or to make a deliberate SSOT mutation first.
+  5. New governed changes must land in SSOT first when they change authority, then update docs and CI as derived surfaces.
+  
+  ## Consequences
+  
+  - Docs and CI files may remain linked as evidence, proof, or operator guidance, but their role must be described as projection, evidence, or validation.
+  - Validators should check conformance to SSOT-backed state rather than encode a parallel source of truth.
+  - Release and certification decisions must be traceable to SSOT claims, features, boundaries, releases, ADRs, specs, and evidence links.
+  
+  ## Rejected alternatives
+  
+  - Treating `docs/conformance/CLAIM_REGISTRY.md` as an authority parallel to `.ssot/registry.json`.
+  - Treating `tools/ci/validate_*.py` as normative definitions of gates or claims.
+  - Allowing CI expectations to preserve stale terminology when SSOT terminology changes.
