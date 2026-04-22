@@ -73,7 +73,7 @@ def main() -> None:
     if "Tigrcorn hardening current-state report" not in doc_pointers or "Tigrcorn hardening certification-state report" not in doc_pointers:
         errors.append("docs/governance/DOC_POINTERS.md must point to both Tigrcorn hardening reports")
 
-    if "validate_phase6_tigrcorn_hardening.py" not in ci_validation:
+    if "validate_tigrcorn_hardening.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the Tigrcorn hardening validator")
 
     if "Validate Tigrcorn hardening" not in workflow:

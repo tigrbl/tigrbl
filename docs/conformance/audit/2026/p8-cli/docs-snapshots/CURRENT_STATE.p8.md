@@ -41,16 +41,16 @@ The Phase 8 deliverable closes the last remaining current-target surface gap at 
 | Surface | Current state | Evidence |
 |---|---|---|
 | top-level `tigrbl` entry point | closed | `pkgs/core/tigrbl/pyproject.toml`, `pkgs/core/tigrbl/tigrbl/__main__.py`, `pkgs/core/tigrbl/tigrbl/cli.py` |
-| `tigrbl run` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` |
-| `tigrbl serve` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` |
-| `tigrbl dev` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` |
-| `tigrbl routes` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py` |
-| `tigrbl openapi` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py` |
-| `tigrbl openrpc` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py` |
-| `tigrbl doctor` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py` |
-| `tigrbl capabilities` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py` |
-| required CLI flags | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `docs/developer/CLI_REFERENCE.md`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` |
-| supported-server compatibility smoke | closed at runner-dispatch smoke level | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` |
+| `tigrbl run` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py` |
+| `tigrbl serve` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py` |
+| `tigrbl dev` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py` |
+| `tigrbl routes` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py` |
+| `tigrbl openapi` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py` |
+| `tigrbl openrpc` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py` |
+| `tigrbl doctor` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py` |
+| `tigrbl capabilities` | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py` |
+| required CLI flags | closed | `pkgs/core/tigrbl/tigrbl/cli.py`, `docs/developer/CLI_REFERENCE.md`, `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py` |
+| supported-server compatibility smoke | closed at runner-dispatch smoke level | `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py` |
 
 ### Exact meaning of the current server smoke
 

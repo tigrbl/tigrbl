@@ -2,7 +2,19 @@
 
 The current certification program uses policy validators, evidence-lane workflows, gate-specific validators/workflows, and a dedicated post-promotion handoff validator.
 
-CI is non-authoritative. `tools/ci/` scripts are validation and fail-closed guardrails over SSOT-backed state; they do not define claims, features, gates, boundaries, releases, ADRs, or specs. The authority rule is governed by `.ssot/adr/ADR-1060-docs-ci-non-authoritative-projections.yaml` and `.ssot/specs/SPEC-1002-docs-ci-projection-authority-contract.yaml`.
+CI is non-authoritative. `tools/ci/` scripts are validation and fail-closed guardrails over SSOT-backed state in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs/`; they do not define claims, features, gates, boundaries, releases, ADRs, or specs. The authority rule is governed by `.ssot/adr/ADR-1060-docs-ci-non-authoritative-projections.yaml` and `.ssot/specs/SPEC-1002-docs-ci-projection-authority-contract.yaml`.
+
+The SSOT authority, test alignment, and gate synchronization migration is governed by `.ssot/adr/ADR-1082-ssot-authority-test-gate-status-sync.yaml`, `.ssot/specs/SPEC-2084-tool-test-evidence-gate-taxonomy.yaml`, and `.ssot/specs/SPEC-2085-boundary-test-selection-status-sync.yaml`.
+
+## Tool roles
+
+- Validators check SSOT invariants and fail closed when registry, docs, CI, or evidence projections drift.
+- Test runners execute runtime or governance tests and produce machine-readable result artifacts.
+- Evidence tools collect or validate proof artifacts and keep evidence links resolvable.
+- Gate evaluators aggregate SSOT claims and evidence into release-decision status.
+- Projection tools generate or verify docs, CSVs, manifests, and release bundles from SSOT-backed state.
+
+Tools are not tests unless they are registered as SSOT test entities for a specific invariant. Tests are not gates. Gates are not features. Gate status is derived from SSOT claims and evidence.
 
 ## Validation scripts
 
@@ -17,11 +29,12 @@ CI is non-authoritative. `tools/ci/` scripts are validation and fail-closed guar
 - `tools/ci/validate_evidence_registry.py`
 - `tools/ci/validate_evidence_bundles.py`
 - `tools/ci/validate_certification_tree.py`
-- `tools/ci/validate_phase1_declared_surface.py`
-- `tools/ci/validate_phase4_rust_parity.py`
-- `tools/ci/validate_phase5_tigrcorn_operator_surface.py`
-- `tools/ci/validate_phase6_tigrcorn_hardening.py`
-- `tools/ci/validate_phase7_claim_lifecycle.py`
+- `tools/ci/validate_ssot_authority_model.py`
+- `tools/ci/validate_declared_surface.py`
+- `tools/ci/validate_rust_parity.py`
+- `tools/ci/validate_tigrcorn_operator_surface.py`
+- `tools/ci/validate_tigrcorn_hardening.py`
+- `tools/ci/validate_claim_lifecycle.py`
 - `tools/ci/validate_gate_b_surface_closure.py`
 - `tools/ci/validate_gate_c_conformance_security.py`
 - `tools/ci/validate_gate_d_reproducibility.py`
@@ -43,6 +56,7 @@ CI is non-authoritative. `tools/ci/` scripts are validation and fail-closed guar
 - every claim row maps to tests, CI jobs, and artifact paths in `docs/conformance/EVIDENCE_REGISTRY.json`
 - dev/release bundle structures contain the required governed files and directories
 - the certification authority tree keeps the four-state truth model and authority-reset exit criteria machine-checked
+- the SSOT authority model keeps features, tests, claims, evidence, docs projections, and gate aggregation links synchronized
 - the declared-surface checkpoint stays documented and synchronized with the policy workflow
 - Rust backend claim language remains fail-closed until the Rust parity checkpoint is documented and wired in CI
 - the Tigrcorn operator surface stays documented, example-backed, and fail-closed for interop/benchmark certification claims

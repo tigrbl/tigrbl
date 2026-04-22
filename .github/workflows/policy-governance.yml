@@ -68,20 +68,23 @@ jobs:
       - name: Validate certification authority tree
         run: python tools/ci/validate_certification_tree.py
 
+      - name: Validate SSOT authority model
+        run: python tools/ci/validate_ssot_authority_model.py
+
       - name: Validate Declared surface
-        run: python tools/ci/validate_phase1_declared_surface.py
+        run: python tools/ci/validate_declared_surface.py
 
       - name: Validate Rust parity
-        run: python tools/ci/validate_phase4_rust_parity.py
+        run: python tools/ci/validate_rust_parity.py
 
       - name: Validate Tigrcorn operator surface
-        run: python tools/ci/validate_phase5_tigrcorn_operator_surface.py
+        run: python tools/ci/validate_tigrcorn_operator_surface.py
 
       - name: Validate Tigrcorn hardening
-        run: python tools/ci/validate_phase6_tigrcorn_hardening.py
+        run: python tools/ci/validate_tigrcorn_hardening.py
 
       - name: Validate Claim lifecycle and release bundle
-        run: python tools/ci/validate_phase7_claim_lifecycle.py
+        run: python tools/ci/validate_claim_lifecycle.py
 
       - name: Validate Gate B surface closure
         run: python tools/ci/validate_gate_b_surface_closure.py
@@ -90,4 +93,4 @@ jobs:
         run: python tools/ci/validate_gate_c_conformance_security.py
 
       - name: Run governance and evidence pytest coverage
-        run: pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_phase1_declared_surface.py tools/ci/tests/test_phase4_rust_parity.py tools/ci/tests/test_phase5_tigrcorn_operator_surface.py tools/ci/tests/test_phase6_tigrcorn_hardening.py tools/ci/tests/test_phase7_claim_lifecycle.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_post_promotion_handoff.py
+        run: pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_ssot_authority_model.py tools/ci/tests/test_declared_surface.py tools/ci/tests/test_rust_parity.py tools/ci/tests/test_tigrcorn_operator_surface.py tools/ci/tests/test_tigrcorn_hardening.py tools/ci/tests/test_claim_lifecycle.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_post_promotion_handoff.py

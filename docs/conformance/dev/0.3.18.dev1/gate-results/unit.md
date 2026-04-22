@@ -4,8 +4,8 @@ This lane aggregates the current checkpoint's representative unit-level proof.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py`
 - `tools/ci/tests/test_evidence_registry.py`
 
 ## Source audit logs

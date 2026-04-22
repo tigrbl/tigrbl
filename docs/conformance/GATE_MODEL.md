@@ -1,5 +1,17 @@
 # Gate Model
 
+This document is a non-authoritative projection of SSOT-backed governance state. `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs/` remain authoritative for gate features, claims, tests, evidence, boundaries, and releases.
+
+## Tool, test, evidence, claim, and gate separation
+
+- Tools run checks, generate projections, select boundary-scoped tests, ingest result artifacts, evaluate gate state, or report drift.
+- Tests verify behavior or governance invariants and produce result artifacts.
+- Evidence records proof from test/tool outputs and links that proof to claims.
+- Claims state what the linked evidence proves for a feature, boundary, or release.
+- Gates aggregate required SSOT claims and evidence into release decisions.
+
+ADR/SPEC conformance test passing is evidence for a claim; it is not itself a feature. A feature is complete only when implementation status, linked tests, linked claims, and linked evidence agree under SSOT validation.
+
 ## Current position
 
 Gate A remains passed for the current cycle.
@@ -34,6 +46,8 @@ What is not yet true:
 - Gate C — conformance and security closure
 - Gate D — reproducibility and package assembly
 - Gate E — promotion and release
+
+Gates are sequential for release decisions because later gates depend on earlier gate state. The underlying tests and evidence lanes may run in parallel after the boundary is known.
 
 ## Release-decision map
 

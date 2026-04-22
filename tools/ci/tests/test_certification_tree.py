@@ -16,8 +16,8 @@ CLAIM_FILES = [
     REPO_ROOT / "certification" / "claims" / "blocked.yaml",
     REPO_ROOT / "certification" / "claims" / "evidenced.yaml",
 ]
-CURRENT_STATE_REPORT = REPO_ROOT / "reports" / "current_state" / "2026-04-07-phase0-certification-freeze.md"
-CERTIFICATION_STATE_REPORT = REPO_ROOT / "reports" / "certification_state" / "2026-04-07-registry-reclassification.md"
+CURRENT_STATE_REPORT = REPO_ROOT / ".ssot" / "reports" / "current_state" / "2026-04-07-phase0-certification-freeze.md"
+CERTIFICATION_STATE_REPORT = REPO_ROOT / ".ssot" / "reports" / "certification_state" / "2026-04-07-registry-reclassification.md"
 
 
 def _run(script: str) -> subprocess.CompletedProcess[str]:
@@ -59,7 +59,7 @@ def test_public_claims_define_certified_boundary_flag() -> None:
                 assert "certified_boundary" in claim, (path, claim["id"])
 
 
-def test_next_target_phase0_exit_criteria_are_fully_declared() -> None:
+def test_next_target_exit_criteria_are_fully_declared() -> None:
     payload = _load_yaml(NEXT_TARGET)
     assert isinstance(payload, dict)
     target_claim_ids = {
@@ -86,7 +86,7 @@ def test_blocked_claims_are_lifecycle_tracked() -> None:
         assert claim["id"] in lifecycle_ids
 
 
-def test_phase0_reports_record_machine_validated_checkpoint() -> None:
+def test_certification_reports_record_machine_validated_checkpoint() -> None:
     current_state = CURRENT_STATE_REPORT.read_text(encoding="utf-8")
     certification_state = CERTIFICATION_STATE_REPORT.read_text(encoding="utf-8")
     assert "certification-tree validator" in current_state

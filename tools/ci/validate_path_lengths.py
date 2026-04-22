@@ -11,6 +11,13 @@ MAX_RELATIVE_PATH_LENGTH = 160
 
 EXCLUDED_ROOTS = {
     ROOT / '.git',
+    ROOT / '.ssot',
+    ROOT / '.venv',
+    ROOT / '.tmp',
+    ROOT / '.uv-cache',
+    ROOT / '.pip-cache',
+    ROOT / '.benchmarks',
+    ROOT / 'target',
 }
 
 

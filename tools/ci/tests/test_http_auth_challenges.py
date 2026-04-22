@@ -76,11 +76,11 @@ base_module.OpenAPISecurityDependency = OpenAPISecurityDependency
 _register_module('tigrbl_base._base._security_base', base_module)
 
 http_basic_module = _load_module(
-    'phase6_http_basic',
+    'http_basic',
     REPO_ROOT / 'pkgs' / 'core' / 'tigrbl_concrete' / 'tigrbl_concrete' / '_concrete' / '_security' / 'http_basic.py',
 )
 http_bearer_module = _load_module(
-    'phase6_http_bearer',
+    'http_bearer',
     REPO_ROOT / 'pkgs' / 'core' / 'tigrbl_concrete' / 'tigrbl_concrete' / '_concrete' / '_security' / 'http_bearer.py',
 )
 HTTPBasic = http_basic_module.HTTPBasic

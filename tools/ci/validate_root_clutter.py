@@ -7,8 +7,10 @@ ROOT = repo_root()
 
 ALLOWED_ROOT_ENTRIES = {
     ".cargo",
+    ".codex",
     ".github",
     ".gitignore",
+    ".ssot",
     "CODE_OF_CONDUCT.md",
     "CONTRIBUTING.md",
     "Cargo.lock",
@@ -17,12 +19,15 @@ ALLOWED_ROOT_ENTRIES = {
     "README.md",
     "SECURITY.md",
     "bindings",
+    "certification",
     "crates",
     "docs",
+    "examples",
     "pkgs",
     "pyproject.toml",
     "rust-toolchain.toml",
     "tools",
+    "uv.lock",
 }
 
 DISALLOWED_GENERATED_DIR_NAMES = {
@@ -42,17 +47,33 @@ DISALLOWED_GENERATED_DIR_NAMES = {
 
 EXCLUDED_ROOTS = {
     ROOT / ".git",
+    ROOT / ".pytest_cache",
+    ROOT / ".venv",
+    ROOT / ".tmp",
+    ROOT / ".uv-cache",
+    ROOT / ".uv-pytest",
+    ROOT / ".uv-pytest-tigrbl-tests",
+    ROOT / ".pip-cache",
+    ROOT / ".benchmarks",
+    ROOT / "target",
+}
+
+EXCLUDED_DIR_NAMES = {
+    "__pycache__",
+    ".pytest_cache",
 }
 
 
 def is_excluded(path: Path) -> bool:
-    return any(path == ex or ex in path.parents for ex in EXCLUDED_ROOTS)
+    return any(path == ex or ex in path.parents for ex in EXCLUDED_ROOTS) or any(
+        part in EXCLUDED_DIR_NAMES for part in path.relative_to(ROOT).parts
+    )
 
 
 def main() -> None:
     errors: list[str] = []
 
-    root_entries = {p.name for p in ROOT.iterdir()}
+    root_entries = {p.name for p in ROOT.iterdir() if not is_excluded(p)}
     unexpected = sorted(root_entries - ALLOWED_ROOT_ENTRIES)
     if unexpected:
         errors.append(f"unexpected root entries: {', '.join(unexpected)}")

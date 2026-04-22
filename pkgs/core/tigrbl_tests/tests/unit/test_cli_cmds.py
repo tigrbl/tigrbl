@@ -8,7 +8,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[5]
-FIXTURE = REPO_ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "fixtures" / "phase8_cli_app.py"
+FIXTURE = REPO_ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "fixtures" / "cli_smoke_app.py"
 TARGET = f"{FIXTURE}:app"
 
 

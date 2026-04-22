@@ -18,7 +18,7 @@ The current state below is grounded in:
 2. the existing Phase 5 and Phase 6 evidence
 3. direct inspection of the governed documentation tree
 4. execution of the repository policy validators under `tools/ci/`
-5. execution of the standalone Phase 7 pytest slice preserved under `docs/conformance/audit/2026/phase7-operator-surface/`
+5. execution of the standalone Phase 7 pytest slice preserved under `docs/conformance/audit/2026/operator-surface/`
 
 ## Certification status
 
@@ -58,13 +58,13 @@ The current cycle keeps the emitted spec endpoints and de-scopes the missing int
 
 | Surface | Current state | Evidence |
 |---|---|---|
-| static files | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/static.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| cookies | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| streaming responses | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_streaming_response.py`, `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/asgi_send.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| WebSockets | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_websocket.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| WHATWG SSE | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_event_stream_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| forms / multipart | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| upload handling | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
+| static files | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/static.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| cookies | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| streaming responses | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_streaming_response.py`, `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/asgi_send.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| WebSockets | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_websocket.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| WHATWG SSE | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_event_stream_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| forms / multipart | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| upload handling | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
 | bounded built-in middleware catalog | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_middleware.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_cors_middleware.py`, docs under `docs/developer/operator/middleware-catalog.md` |
 
 ### Auth-surface decision closed now
@@ -107,4 +107,4 @@ The explicit `--server {tigrcorn,uvicorn,hypercorn,gunicorn}` flag contract also
 - `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`
 - `docs/conformance/NEXT_STEPS.md`
 - `docs/conformance/CLAIM_REGISTRY.md`
-- `docs/conformance/audit/2026/phase7-operator-surface/README.md`
+- `docs/conformance/audit/2026/operator-surface/README.md`

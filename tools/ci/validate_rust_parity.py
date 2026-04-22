@@ -57,7 +57,7 @@ def main() -> None:
     if "Rust parity current-state report" not in doc_pointers or "Rust parity certification-state report" not in doc_pointers:
         errors.append("docs/governance/DOC_POINTERS.md must point to both Rust parity reports")
 
-    if "validate_phase4_rust_parity.py" not in ci_validation:
+    if "validate_rust_parity.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the Rust parity validator")
 
     if "Validate Rust parity" not in workflow:

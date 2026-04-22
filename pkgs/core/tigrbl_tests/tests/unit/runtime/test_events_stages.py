@@ -2,7 +2,7 @@ from tigrbl.hook.types import PHASES as HOOK_PHASES
 from tigrbl.runtime import events as _ev
 
 
-def test_phases_constant_lists_all_phases_in_order() -> None:
+def test_stages_constant_lists_all_stages_in_order() -> None:
     """Ensure runtime PHASES exports the complete ingress→egress ordered sequence."""
     assert _ev.PHASES == (
         "INGRESS_BEGIN",

@@ -23,10 +23,10 @@ REQUIRED_TREE_PATHS = [
     CERTIFICATION / "gates",
     CERTIFICATION / "evidence" / "schema.json",
     CERTIFICATION / "profiles",
-    ROOT / "adr",
-    ROOT / "specs",
-    ROOT / "reports" / "current_state",
-    ROOT / "reports" / "certification_state",
+    ROOT / ".ssot" / "adr",
+    ROOT / ".ssot" / "specs",
+    ROOT / ".ssot" / "reports" / "current_state",
+    ROOT / ".ssot" / "reports" / "certification_state",
 ]
 REQUIRED_STATES = {"current", "target", "blocked", "evidenced"}
 REQUIRED_FEATURE_FIELDS = {
@@ -220,16 +220,16 @@ def validate_required_paths(errors: list[str]) -> None:
 
 
 def validate_reports(errors: list[str]) -> None:
-    current_state_report = ROOT / "reports" / "current_state" / "2026-04-07-phase0-certification-freeze.md"
-    certification_state_report = ROOT / "reports" / "certification_state" / "2026-04-07-registry-reclassification.md"
+    current_state_report = ROOT / ".ssot" / "reports" / "current_state" / "2026-04-07-phase0-certification-freeze.md"
+    certification_state_report = ROOT / ".ssot" / "reports" / "certification_state" / "2026-04-07-registry-reclassification.md"
 
     current_state_text = current_state_report.read_text(encoding="utf-8")
     certification_state_text = certification_state_report.read_text(encoding="utf-8")
 
     if "certification-tree validator" not in current_state_text:
-        errors.append("reports/current_state/2026-04-07-phase0-certification-freeze.md must record certification-tree validator status")
+        errors.append(".ssot/reports/current_state/2026-04-07-phase0-certification-freeze.md must record certification-tree validator status")
     if "machine-validated" not in certification_state_text:
-        errors.append("reports/certification_state/2026-04-07-registry-reclassification.md must record machine-validated registry state")
+        errors.append(".ssot/reports/certification_state/2026-04-07-registry-reclassification.md must record machine-validated registry state")
 
 
 def validate_lifecycle_completeness(errors: list[str]) -> None:
