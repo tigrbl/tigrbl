@@ -1,4 +1,4 @@
-# Phase 14 post-promotion handoff archive
+# Post-promotion handoff archive
 
 This archive records that promotion-only WIP from the `0.3.18` release cycle has been resolved and closed.
 
@@ -12,5 +12,5 @@ This archive records that promotion-only WIP from the `0.3.18` release cycle has
 ## Canonical follow-on locations
 
 - `docs/conformance/NEXT_TARGETS.md`
-- `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.md`
-- `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md`
+- `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.yaml`
+- `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml`

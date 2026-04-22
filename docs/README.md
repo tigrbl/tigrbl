@@ -4,7 +4,7 @@ The authoritative machine-readable source of truth for the repository is `.ssot/
 
 `certification/` contains derived certification projections, gate inputs, and historical release bundles. `certification/claims/target.yaml` and `certification/targets/next_target.yaml` are deprecated projection artifacts and must not receive new source edits.
 
-`docs/` remains the authoritative narrative documentation tree. Phase 14 records the post-promotion handoff that freezes stable release `0.3.18` as release history and opens the governed next-target planning line `0.3.19.dev1`.
+`docs/` remains the authoritative narrative documentation tree. Post-promotion handoff records the post-promotion handoff that freezes stable release `0.3.18` as release history and opens the governed next-target planning line `0.3.19.dev1`.
 
 ## Canonical reader path
 
@@ -15,11 +15,12 @@ The authoritative machine-readable source of truth for the repository is `.ssot/
 5. `../.ssot/adr/ADR-1039-cli-contract-and-server-selection-contract.yaml`
 6. `conformance/CURRENT_TARGET.md`
 7. `conformance/CURRENT_STATE.md`
-8. `conformance/NEXT_TARGETS.md`
-9. `conformance/RFC_SECURITY_EVIDENCE_MAP.md`
-10. `conformance/EVIDENCE_MODEL.md`
-11. `conformance/IMPLEMENTATION_MAP.md`
-12. `governance/DOC_POINTERS.md`
+8. `conformance/NEXT_STEPS.md`
+9. `conformance/NEXT_TARGETS.md`
+10. `conformance/RFC_SECURITY_EVIDENCE_MAP.md`
+11. `conformance/EVIDENCE_MODEL.md`
+12. `conformance/IMPLEMENTATION_MAP.md`
+13. `governance/DOC_POINTERS.md`
 
 ## Sections
 

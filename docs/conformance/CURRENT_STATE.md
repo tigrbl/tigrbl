@@ -1,26 +1,26 @@
-# Current State — Phase 14 Post-promotion Handoff
+# Current State — Post-promotion handoff
 
 ## Scope and method
 
-This document carries forward the Phase 10 Gate B, Phase 11 Gate C, Phase 12 Gate D, and Phase 13 Gate E checkpoints and records the Phase 14 work completed to freeze the promoted release as release history while opening the next governed development line.
+This document carries forward the Phase 10 Gate B, Phase 11 Gate C, Phase 12 Gate D, and Phase 13 Gate E checkpoints and records the Post-promotion handoff work completed to freeze the promoted release as release history while opening the next governed development line.
 
-Phase 14 focused on:
+Post-promotion handoff focused on:
 
 - preserving stable release `0.3.18` as frozen current-boundary release history
 - retaining `docs/conformance/dev/0.3.18.dev1/` as the exact promotion-source dev bundle
 - advancing the working-tree facade package version from `0.3.18` to `0.3.19.dev1`
 - creating `docs/conformance/NEXT_TARGETS.md`
 - moving the datatype/table program into governed next-target ADRs and plans
-- archiving promotion-only WIP notes under `docs/notes/archive/2026/p14-post-promotion-handoff/`
+- archiving promotion-only WIP notes under `docs/notes/archive/2026/post-promotion-handoff/`
 - creating an active dev-bundle scaffold at `docs/conformance/dev/0.3.19.dev1/`
 
 The current state below is grounded in:
 
 1. direct inspection of the governed docs tree
 2. direct inspection of the Gate B, Gate C, Gate D, and Gate E validators, workflows, and bundle files
-3. direct inspection of the new Phase 14 handoff validator, workflow, ADRs, and audit note
+3. direct inspection of the new Post-promotion handoff validator, workflow, ADRs, and audit note
 4. execution of the repository policy validators under `tools/ci/`
-5. execution of the Gate B, Gate C, Gate D, Gate E, and Phase 14 validator pytest slices
+5. execution of the Gate B, Gate C, Gate D, Gate E, and Post-promotion handoff validator pytest slices
 6. carried-forward audit evidence from Phases 5 through 13 for the closed release bundle `0.3.18`
 
 ## Certification status
@@ -43,7 +43,7 @@ Boundary note: the certification wording above still applies only within the dec
 - Gate C: passed in the Phase 11 checkpoint
 - Gate D: passed in the Phase 12 checkpoint
 - Gate E: passed in the Phase 13 promotion checkpoint
-- Phase 14 handoff: verified in the current checkpoint
+- Post-promotion handoff: verified in the current checkpoint
 
 ## Exact current Gate B statement carried forward
 
@@ -111,16 +111,16 @@ What is not yet true for `0.3.19.dev1`:
 - no new stable release has been promoted
 - no next-target implementation closure is claimed yet
 
-## Phase 14 machine-checks now in tree
+## Post-promotion handoff machine-checks now in tree
 
 | Surface | Current state | Evidence |
 |---|---|---|
 | Gate E validator | implemented | `tools/ci/validate_gate_e_promotion.py` |
 | Gate E validator pytest slice | implemented | `tools/ci/tests/test_gate_e_promotion.py` |
 | Gate E workflow | implemented | `.github/workflows/gate-e-promotion.yml` |
-| Phase 14 handoff validator | implemented | `tools/ci/validate_phase14_handoff.py` |
-| Phase 14 handoff pytest slice | implemented | `tools/ci/tests/test_phase14_handoff.py` |
-| Phase 14 handoff workflow | implemented | `.github/workflows/phase14-post-promotion-handoff.yml` |
+| Post-promotion handoff validator | implemented | `tools/ci/validate_post_promotion_handoff.py` |
+| Post-promotion handoff pytest slice | implemented | `tools/ci/tests/test_post_promotion_handoff.py` |
+| Post-promotion handoff workflow | implemented | `.github/workflows/post-promotion-handoff.yml` |
 | Active dev-bundle scaffold | implemented | `docs/conformance/dev/0.3.19.dev1/` |
 | Next-target plan | implemented | `docs/conformance/NEXT_TARGETS.md` |
 

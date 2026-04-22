@@ -1,6 +1,6 @@
 # Implementation Map
 
-This document maps the frozen current-target rows and the Phase 14 handoff controls to concrete code, tests, blockers, owners, and closure paths.
+This document maps the frozen current-target rows and the Post-promotion handoff controls to concrete code, tests, blockers, owners, and closure paths.
 
 Owner labels in this checkpoint are subsystem owners, not named individuals:
 
@@ -13,13 +13,13 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 - **Next-target program**
 - **Server/runtime boundary**
 
-## Phase 14 handoff and next-target isolation
+## Post-promotion handoff and next-target isolation
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
-| release-history freeze after promotion | verified in checkpoint | Governance | `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/NEXT_TARGETS.md`, `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.md` | `tools/ci/tests/test_phase14_handoff.py` | — | keep `0.3.18` frozen as governed release history |
-| active next-line dev bundle scaffold | verified in checkpoint | Governance | `docs/conformance/dev/0.3.19.dev1/`, `pkgs/core/tigrbl/pyproject.toml`, `docs/governance/VERSIONING_POLICY.md` | `tools/ci/tests/test_phase14_handoff.py` | no implementation closure yet | keep planning language only until real next-target work lands |
-| datatype/table program isolation | verified in checkpoint | Next-target program | `docs/conformance/NEXT_TARGETS.md`, `.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.md`, `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md` | `tools/ci/tests/test_phase14_handoff.py` | implementation not started in this checkpoint | keep next-target planning out of the frozen `0.3.18` release claim set |
+| release-history freeze after promotion | verified in checkpoint | Governance | `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/NEXT_TARGETS.md`, `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.yaml` | `tools/ci/tests/test_post_promotion_handoff.py` | — | keep `0.3.18` frozen as governed release history |
+| active next-line dev bundle scaffold | verified in checkpoint | Governance | `docs/conformance/dev/0.3.19.dev1/`, `pkgs/core/tigrbl/pyproject.toml`, `docs/governance/VERSIONING_POLICY.md` | `tools/ci/tests/test_post_promotion_handoff.py` | no implementation closure yet | keep planning language only until real next-target work lands |
+| datatype/table program isolation | verified in checkpoint | Next-target program | `docs/conformance/NEXT_TARGETS.md`, `.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.yaml`, `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml` | `tools/ci/tests/test_post_promotion_handoff.py` | implementation not started in this checkpoint | keep next-target planning out of the frozen `0.3.18` release claim set |
 
 ## Phase 1 declared surface checkpoint
 

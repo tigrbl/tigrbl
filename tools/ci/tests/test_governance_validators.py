@@ -23,7 +23,7 @@ SCRIPTS = [
     'tools/ci/validate_gate_c_conformance_security.py',
     'tools/ci/validate_gate_d_reproducibility.py',
     'tools/ci/validate_gate_e_promotion.py',
-    'tools/ci/validate_phase14_handoff.py',
+    'tools/ci/validate_post_promotion_handoff.py',
 ]
 
 

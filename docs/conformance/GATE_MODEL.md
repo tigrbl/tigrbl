@@ -4,7 +4,7 @@
 
 Gate A remains passed for the current cycle.
 
-Checkpoints 5 through 13 establish the closed current-target release bundle, and Phase 14 establishes the post-promotion handoff.
+Checkpoints 5 through 13 establish the closed current-target release bundle, and Post-promotion handoff establishes the post-promotion handoff.
 
 What is now true:
 
@@ -19,7 +19,7 @@ What is now true:
 - Gate E is passed in the Phase 13 promotion checkpoint and machine-checked in CI
 - the certification program has explicit lane classes, a machine-readable evidence registry, governed dev/release bundle roots, explicit gate result artifacts, and a promoted stable release bundle
 - the package has Tier 3 current-boundary certification status for stable release `0.3.18`
-- Phase 14 freezes `0.3.18` as release history and opens governed next-target planning on `0.3.19.dev1`
+- Post-promotion handoff freezes `0.3.18` as release history and opens governed next-target planning on `0.3.19.dev1`
 
 What is not yet true:
 
@@ -47,4 +47,4 @@ For certification-bundle lifecycle and release-decision reporting, the repo also
 
 This mapping is preserved in the Phase 7 certification bundle so release decisions are machine-checkable without implying undeclared RFC or feature scope.
 
-See `gates/` for the per-gate condition documents. Phase 14 is a post-promotion handoff checkpoint rather than a new certification gate.
+See `gates/` for the per-gate condition documents. Post-promotion handoff is a post-promotion handoff checkpoint rather than a new certification gate.

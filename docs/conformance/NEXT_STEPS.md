@@ -1,6 +1,6 @@
 # Next Steps
 
-## Position after the Phase 14 handoff checkpoint
+## Position after the Post-promotion handoff checkpoint
 
 The repository now has:
 

@@ -1350,8 +1350,8 @@
         "clm:handoff-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6"
       ],
       "requires": [],
       "spec_ids": []
@@ -1376,7 +1376,7 @@
         "clm:handoff-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py"
       ],
       "requires": [],
       "spec_ids": []
@@ -1579,8 +1579,8 @@
         "clm:next-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ],
       "requires": [],
       "spec_ids": []
@@ -1605,8 +1605,8 @@
         "clm:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ],
       "requires": [],
       "spec_ids": []
@@ -15170,7 +15170,7 @@
       "title": "TCASE-0022",
       "status": "planned",
       "kind": "pytest",
-      "path": "tools/ci/tests/test_phase14_handoff.py",
+      "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -15852,11 +15852,11 @@
       ]
     },
     {
-      "id": "tst:tools-ci-tests-test_phase14_handoff.py",
-      "title": "Test coverage for tools/ci/tests/test_phase14_handoff.py",
+      "id": "tst:tools-ci-tests-test_post_promotion_handoff.py",
+      "title": "Test coverage for tools/ci/tests/test_post_promotion_handoff.py",
       "status": "passing",
       "kind": "automated",
-      "path": "tools/ci/tests/test_phase14_handoff.py",
+      "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "feature_ids": [
         "feat:handoff-001",
         "feat:handoff-002",
@@ -15871,26 +15871,26 @@
         "evd:docs-adr-adr-0010-deferred-next-target-datatype-table-program.md",
         "evd:docs-adr-adr-0011-post-promotion-release-history-freeze.md",
         "evd:docs-adr-adr-0012-next-target-datatype-table-program-activation.md",
-        "evd:docs-conformance-audit-2026-p14-post-promotion-handoff-readme.md",
+        "evd:docs-conformance-audit-2026-post-promotion-handoff-readme.md",
         "evd:docs-conformance-current_state.md",
         "evd:docs-conformance-current_target.md",
         "evd:docs-conformance-dev-0.3.19.dev1-evidence_index.md",
         "evd:docs-conformance-dev-0.3.19.dev1-gate-results-post-promotion-handoff.md",
         "evd:docs-conformance-next_targets.md",
         "evd:docs-developer-ci_validation.md",
-        "evd:docs-notes-archive-2026-p14-post-promotion-handoff-readme.md",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml",
+        "evd:docs-notes-archive-2026-post-promotion-handoff-readme.md",
+        "evd:github-workflows-post-promotion-handoff.yml",
         "evd:github-workflows-policy-governance.yml",
-        "evd:tools-ci-tests-test_phase14_handoff.py",
-        "evd:tools-ci-validate_phase14_handoff.py"
+        "evd:tools-ci-tests-test_post_promotion_handoff.py",
+        "evd:tools-ci-validate_post_promotion_handoff.py"
       ]
     },
     {
-      "id": "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-      "title": "Test coverage for tools/ci/tests/test_phase14_handoff.py",
+      "id": "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+      "title": "Test coverage for tools/ci/tests/test_post_promotion_handoff.py",
       "status": "passing",
       "kind": "automated",
-      "path": "tools/ci/tests/test_phase14_handoff.py",
+      "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "feature_ids": [
         "feat:handoff-001",
         "feat:next-001"
@@ -15900,7 +15900,7 @@
         "clm:next-001"
       ],
       "evidence_ids": [
-        "evd:docs-conformance-audit-2026-p14-post-promotion-handoff-readme.md",
+        "evd:docs-conformance-audit-2026-post-promotion-handoff-readme.md",
         "evd:docs-conformance-current_state.md",
         "evd:docs-conformance-current_target.md",
         "evd:docs-conformance-dev-0.3.19.dev1-build_notes.md",
@@ -15909,17 +15909,17 @@
         "evd:docs-conformance-dev-readme.md",
         "evd:docs-conformance-next_targets.md",
         "evd:docs-governance-versioning_policy.md",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml",
+        "evd:github-workflows-post-promotion-handoff.yml",
         "evd:github-workflows-policy-governance.yml",
         "evd:pkgs-core-tigrbl-pyproject.toml"
       ]
     },
     {
-      "id": "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322",
-      "title": "Test coverage for tools/ci/tests/test_phase14_handoff.py",
+      "id": "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322",
+      "title": "Test coverage for tools/ci/tests/test_post_promotion_handoff.py",
       "status": "passing",
       "kind": "automated",
-      "path": "tools/ci/tests/test_phase14_handoff.py",
+      "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "feature_ids": [
         "feat:next-001",
         "feat:next-002"
@@ -15938,8 +15938,8 @@
         "evd:docs-conformance-dev-readme.md",
         "evd:docs-conformance-next_targets.md",
         "evd:docs-governance-versioning_policy.md",
-        "evd:docs-notes-archive-2026-p14-post-promotion-handoff-readme.md",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml",
+        "evd:docs-notes-archive-2026-post-promotion-handoff-readme.md",
+        "evd:github-workflows-post-promotion-handoff.yml",
         "evd:github-workflows-policy-governance.yml",
         "evd:pkgs-core-tigrbl-pyproject.toml"
       ]
@@ -27805,17 +27805,17 @@
         "feat:handoff-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6"
       ],
       "evidence_ids": [
-        "evd:docs-conformance-audit-2026-p14-post-promotion-handoff-readme.md",
+        "evd:docs-conformance-audit-2026-post-promotion-handoff-readme.md",
         "evd:docs-conformance-current_state.md",
         "evd:docs-conformance-current_target.md",
         "evd:docs-conformance-dev-0.3.19.dev1-evidence_index.md",
         "evd:docs-conformance-dev-0.3.19.dev1-gate-results-post-promotion-handoff.md",
         "evd:docs-conformance-next_targets.md",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml",
+        "evd:github-workflows-post-promotion-handoff.yml",
         "evd:github-workflows-policy-governance.yml"
       ]
     },
@@ -27830,14 +27830,14 @@
         "feat:handoff-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py"
       ],
       "evidence_ids": [
-        "evd:docs-conformance-audit-2026-p14-post-promotion-handoff-readme.md",
+        "evd:docs-conformance-audit-2026-post-promotion-handoff-readme.md",
         "evd:docs-developer-ci_validation.md",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml",
-        "evd:tools-ci-tests-test_phase14_handoff.py",
-        "evd:tools-ci-validate_phase14_handoff.py"
+        "evd:github-workflows-post-promotion-handoff.yml",
+        "evd:tools-ci-tests-test_post_promotion_handoff.py",
+        "evd:tools-ci-validate_post_promotion_handoff.py"
       ]
     },
     {
@@ -27944,8 +27944,8 @@
         "feat:next-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_state.md",
@@ -27953,7 +27953,7 @@
         "evd:docs-conformance-dev-0.3.19.dev1-evidence_index.md",
         "evd:docs-conformance-dev-readme.md",
         "evd:docs-governance-versioning_policy.md",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml",
+        "evd:github-workflows-post-promotion-handoff.yml",
         "evd:github-workflows-policy-governance.yml",
         "evd:pkgs-core-tigrbl-pyproject.toml"
       ]
@@ -27969,16 +27969,16 @@
         "feat:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ],
       "evidence_ids": [
         "evd:docs-adr-adr-0010-deferred-next-target-datatype-table-program.md",
         "evd:docs-adr-adr-0011-post-promotion-release-history-freeze.md",
         "evd:docs-adr-adr-0012-next-target-datatype-table-program-activation.md",
         "evd:docs-conformance-next_targets.md",
-        "evd:docs-notes-archive-2026-p14-post-promotion-handoff-readme.md",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml"
+        "evd:docs-notes-archive-2026-post-promotion-handoff-readme.md",
+        "evd:github-workflows-post-promotion-handoff.yml"
       ]
     },
     {
@@ -30804,8 +30804,8 @@
         "clm:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -30819,8 +30819,8 @@
         "clm:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -30834,8 +30834,8 @@
         "clm:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -30916,19 +30916,19 @@
       ]
     },
     {
-      "id": "evd:docs-conformance-audit-2026-p14-post-promotion-handoff-readme.md",
-      "title": "Evidence for docs/conformance/audit/2026/p14-post-promotion-handoff/README.md",
+      "id": "evd:docs-conformance-audit-2026-post-promotion-handoff-readme.md",
+      "title": "Evidence for docs/conformance/audit/2026/post-promotion-handoff/README.md",
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "docs/conformance/audit/2026/p14-post-promotion-handoff/README.md",
+      "path": "docs/conformance/audit/2026/post-promotion-handoff/README.md",
       "claim_ids": [
         "clm:handoff-001",
         "clm:handoff-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6"
       ]
     },
     {
@@ -31016,9 +31016,9 @@
         "tst:tools-ci-tests-test_gate_e_promotion.py",
         "tst:tools-ci-tests-test_gate_e_promotion.py-99a00514",
         "tst:tools-ci-tests-test_http_auth_challenges.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -31089,8 +31089,8 @@
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tools-ci-tests-test_gate_d_reproducibility.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6"
       ]
     },
     {
@@ -31507,8 +31507,8 @@
         "clm:next-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -31523,9 +31523,9 @@
         "clm:next-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -31539,8 +31539,8 @@
         "clm:handoff-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6"
       ]
     },
     {
@@ -31554,8 +31554,8 @@
         "clm:next-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -31780,9 +31780,9 @@
         "clm:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -32061,7 +32061,7 @@
         "clm:handoff-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py"
       ]
     },
     {
@@ -32143,23 +32143,23 @@
         "clm:next-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
-      "id": "evd:docs-notes-archive-2026-p14-post-promotion-handoff-readme.md",
-      "title": "Evidence for docs/notes/archive/2026/p14-post-promotion-handoff/README.md",
+      "id": "evd:docs-notes-archive-2026-post-promotion-handoff-readme.md",
+      "title": "Evidence for docs/notes/archive/2026/post-promotion-handoff/README.md",
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "docs/notes/archive/2026/p14-post-promotion-handoff/README.md",
+      "path": "docs/notes/archive/2026/post-promotion-handoff/README.md",
       "claim_ids": [
         "clm:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -33432,7 +33432,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/certification_state/2026-04-09-phase4-native-parity.md",
+      "path": ".ssot/reports/certification_state/2026-04-09-phase4-native-parity.md",
       "claim_ids": [
         "clm:blk-004"
       ],
@@ -33444,7 +33444,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md",
+      "path": ".ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md",
       "claim_ids": [
         "clm:blk-005"
       ],
@@ -33456,7 +33456,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md",
+      "path": ".ssot/reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md",
       "claim_ids": [
         "clm:blk-006"
       ],
@@ -33468,7 +33468,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
+      "path": ".ssot/reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
       "claim_ids": [
         "clm:blk-007"
       ],
@@ -33480,7 +33480,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/current_state/2026-04-08-phase3-feature-module-closure.md",
+      "path": ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
       "claim_ids": [
         "clm:next-011",
         "clm:next-012",
@@ -33516,7 +33516,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md",
+      "path": ".ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md",
       "claim_ids": [
         "clm:blk-001",
         "clm:blk-002"
@@ -33529,7 +33529,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md",
+      "path": ".ssot/reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md",
       "claim_ids": [
         "clm:blk-007"
       ],
@@ -33589,7 +33589,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "tools/ci/tests/test_phase14_handoff.py",
+      "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "claim_ids": [],
       "test_ids": [
         "tst:tcase-0022"
@@ -33890,12 +33890,12 @@
       ]
     },
     {
-      "id": "evd:github-workflows-phase14-post-promotion-handoff.yml",
-      "title": "Evidence for .github/workflows/phase14-post-promotion-handoff.yml",
+      "id": "evd:github-workflows-post-promotion-handoff.yml",
+      "title": "Evidence for .github/workflows/post-promotion-handoff.yml",
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": ".github/workflows/phase14-post-promotion-handoff.yml",
+      "path": ".github/workflows/post-promotion-handoff.yml",
       "claim_ids": [
         "clm:handoff-001",
         "clm:handoff-002",
@@ -33903,9 +33903,9 @@
         "clm:next-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -33991,9 +33991,9 @@
         "tst:tools-ci-tests-test_governance_validators.py",
         "tst:tools-ci-tests-test_http_auth_challenges.py",
         "tst:tools-ci-tests-test_path_length_policy.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py",
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322",
         "tst:tools-ci-validate_gate_c_conformance_security.py"
       ]
     },
@@ -34003,7 +34003,7 @@
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "reports/verification/2026-04-16-http-route-registration-pytest.log",
+      "path": ".ssot/reports/verification/2026-04-16-http-route-registration-pytest.log",
       "claim_ids": [
         "clm:http-route-001",
         "clm:http-route-002",
@@ -34054,8 +34054,8 @@
         "clm:next-001"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py-bcb32ce6",
-        "tst:tools-ci-tests-test_phase14_handoff.py-d71c6322"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
+        "tst:tools-ci-tests-test_post_promotion_handoff.py-d71c6322"
       ]
     },
     {
@@ -34089,17 +34089,17 @@
       ]
     },
     {
-      "id": "evd:tools-ci-tests-test_phase14_handoff.py",
-      "title": "Evidence for tools/ci/tests/test_phase14_handoff.py",
+      "id": "evd:tools-ci-tests-test_post_promotion_handoff.py",
+      "title": "Evidence for tools/ci/tests/test_post_promotion_handoff.py",
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "tools/ci/tests/test_phase14_handoff.py",
+      "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "claim_ids": [
         "clm:handoff-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py"
       ]
     },
     {
@@ -34147,17 +34147,17 @@
       ]
     },
     {
-      "id": "evd:tools-ci-validate_phase14_handoff.py",
-      "title": "Evidence for tools/ci/validate_phase14_handoff.py",
+      "id": "evd:tools-ci-validate_post_promotion_handoff.py",
+      "title": "Evidence for tools/ci/validate_post_promotion_handoff.py",
       "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "tools/ci/validate_phase14_handoff.py",
+      "path": "tools/ci/validate_post_promotion_handoff.py",
       "claim_ids": [
         "clm:handoff-002"
       ],
       "test_ids": [
-        "tst:tools-ci-tests-test_phase14_handoff.py"
+        "tst:tools-ci-tests-test_post_promotion_handoff.py"
       ]
     },
     {
@@ -34296,7 +34296,7 @@
       "status": "passed",
       "kind": "report",
       "tier": "T2",
-      "path": "reports/tigrbl_tests_matrix.csv",
+      "path": ".ssot/reports/tigrbl_tests_matrix.csv",
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
       ],
@@ -34780,7 +34780,7 @@
       "status": "passed",
       "kind": "report",
       "tier": "T2",
-      "path": "reports/certification_state/2026-04-21-appspec-corpus-fixture.md",
+      "path": ".ssot/reports/certification_state/2026-04-21-appspec-corpus-fixture.md",
       "claim_ids": [
         "clm:appspec-corpus-canonical-parity-001",
         "clm:appspec-corpus-negative-fail-closed-001"
@@ -35268,7 +35268,7 @@
         "evd:docs-conformance-audit-2026-p11-gate-c-readme.md",
         "evd:docs-conformance-audit-2026-p12-gate-d-readme.md",
         "evd:docs-conformance-audit-2026-p13-gate-e-readme.md",
-        "evd:docs-conformance-audit-2026-p14-post-promotion-handoff-readme.md",
+        "evd:docs-conformance-audit-2026-post-promotion-handoff-readme.md",
         "evd:docs-conformance-claim_registry.md",
         "evd:docs-conformance-current_state.md",
         "evd:docs-conformance-current_target.md",
@@ -35316,7 +35316,7 @@
         "evd:docs-developer-operator-readme.md",
         "evd:docs-developer-operator_surfaces.md",
         "evd:docs-governance-versioning_policy.md",
-        "evd:docs-notes-archive-2026-p14-post-promotion-handoff-readme.md",
+        "evd:docs-notes-archive-2026-post-promotion-handoff-readme.md",
         "evd:github-workflows-cli-smoke.yml",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-b-surface-closure.yml",
@@ -35324,16 +35324,16 @@
         "evd:github-workflows-gate-d-reproducibility.yml",
         "evd:github-workflows-gate-e-promotion.yml",
         "evd:github-workflows-operator-surface.yml",
-        "evd:github-workflows-phase14-post-promotion-handoff.yml",
+        "evd:github-workflows-post-promotion-handoff.yml",
         "evd:github-workflows-policy-governance.yml",
         "evd:pkgs-core-tigrbl-pyproject.toml",
         "evd:tools-ci-tests-test_gate_b_surface_closure.py",
         "evd:tools-ci-tests-test_gate_e_promotion.py",
-        "evd:tools-ci-tests-test_phase14_handoff.py",
+        "evd:tools-ci-tests-test_post_promotion_handoff.py",
         "evd:tools-ci-validate_gate_b_surface_closure.py",
         "evd:tools-ci-validate_gate_d_reproducibility.py",
         "evd:tools-ci-validate_gate_e_promotion.py",
-        "evd:tools-ci-validate_phase14_handoff.py",
+        "evd:tools-ci-validate_post_promotion_handoff.py",
         "evd:transport-dispatch-setup-note",
         "evd:transport-dispatch-governance-test",
         "evd:transport-dispatch-kernelplan-test",
@@ -36459,7 +36459,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "9f6d05618acc605dbad743d03fb164a0e308ca837def8f41b97a9f215f8a63bb",
+      "content_sha256": "ec0415064c4c6cd57e76200a3db2561c6bfa6ed9761a633b67c0e10b0e677445",
       "status": "accepted",
       "supersedes": [],
       "superseded_by": [],
@@ -37678,7 +37678,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "c2c43828008bba73c70fc693e707e7fe3fbdee96404a98e72bb7a067ec2bebe5",
+      "content_sha256": "b9258ba39c9635370c8f16ae7f3455c5b8070d8c68ebf0c20d7c1ab3b9cd2861",
       "kind": "local-policy",
       "status": "superseded",
       "supersedes": [],
@@ -37705,7 +37705,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "7e3366538df982728ad43fcb96b5b455a88dafb1f89babd18ccd4531c1164236",
+      "content_sha256": "90c1dc68b5cf7fe6edd046e1c3aaafa4f5244bf4ad88cd5cfab35caaba4a7bef",
       "kind": "local-policy",
       "status": "draft",
       "supersedes": [],
@@ -37724,7 +37724,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "36e0ed8a8ba697af57e6b4d11e4d04dbc02cf58ff9615278a00fa14e18c9938c",
+      "content_sha256": "c43a822d500c7be4ca75c25034705e0abab976ddbe57c2f5245bde0431a75b60",
       "kind": "local-policy",
       "status": "superseded",
       "supersedes": [],
@@ -37751,7 +37751,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "e69708e97c5ea2960131f4feda62ca4ea93a230c64698eda1298502c9e63af71",
+      "content_sha256": "c47db104096e6a3269576abf8a2bff74bdafd25bcc0002a797c4a564b284bad7",
       "kind": "local-policy",
       "status": "superseded",
       "supersedes": [],

@@ -37,7 +37,7 @@ This document now freezes the closed current-target cycle as release history for
 - promotion-source dev build: `docs/conformance/dev/0.3.18.dev1/`
 - promoted stable release: `docs/conformance/releases/0.3.18/`
 
-## Phase 14 handoff status
+## Post-promotion handoff status
 
 - handoff status: current-target release history frozen and preserved
 - active next-line dev bundle: `docs/conformance/dev/0.3.19.dev1/`
@@ -134,9 +134,9 @@ Tigrbl currently targets framework ownership over:
 - `--openrpc-path`
 - `--lens-path`
 
-## Certification infrastructure established in Phase 9 and preserved in Phase 14
+## Certification infrastructure established in Phase 9 and preserved in Post-promotion handoff
 
-Phase 9 created the durable evidence model. Phase 13 promoted the exact chosen dev bundle into the current stable release. Phase 14 opens a new planning-only dev line without changing the frozen release bundle.
+Phase 9 created the durable evidence model. Phase 13 promoted the exact chosen dev bundle into the current stable release. Post-promotion handoff opens a new planning-only dev line without changing the frozen release bundle.
 
 Established now:
 

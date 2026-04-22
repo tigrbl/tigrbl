@@ -32,8 +32,8 @@ def _claim_rows() -> dict[str, tuple[str, str]]:
     return rows
 
 
-def test_phase14_handoff_validator_passes() -> None:
-    result = _run('tools/ci/validate_phase14_handoff.py')
+def test_post_promotion_handoff_validator_passes() -> None:
+    result = _run('tools/ci/validate_post_promotion_handoff.py')
     assert result.returncode == 0, f'STDOUT\n{result.stdout}\nSTDERR\n{result.stderr}'
 
 

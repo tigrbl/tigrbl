@@ -86,7 +86,7 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | Phase 11 Gate C audit evidence | `docs/conformance/audit/2026/p11-gate-c/` |
 | Phase 12 Gate D audit evidence | `docs/conformance/audit/2026/p12-gate-d/` |
 | Phase 13 Gate E audit evidence | `docs/conformance/audit/2026/p13-gate-e/` |
-| Phase 14 handoff audit evidence | `docs/conformance/audit/2026/p14-post-promotion-handoff/` |
+| Post-promotion handoff audit evidence | `docs/conformance/audit/2026/post-promotion-handoff/` |
 | Active dev bundle | `docs/conformance/dev/0.3.19.dev1/` |
 | Promotion-source dev bundle | `docs/conformance/dev/0.3.18.dev1/` |
 | Current stable release bundle | `docs/conformance/releases/0.3.18/` |
@@ -115,8 +115,8 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 | Gate D reproducibility workflow | `.github/workflows/gate-d-reproducibility.yml` |
 | Gate E promotion validator | `tools/ci/validate_gate_e_promotion.py` |
 | Gate E promotion workflow | `.github/workflows/gate-e-promotion.yml` |
-| Phase 14 handoff validator | `tools/ci/validate_phase14_handoff.py` |
-| Phase 14 handoff workflow | `.github/workflows/phase14-post-promotion-handoff.yml` |
+| Post-promotion handoff validator | `tools/ci/validate_post_promotion_handoff.py` |
+| Post-promotion handoff workflow | `.github/workflows/post-promotion-handoff.yml` |
 | Release-note entry point | `docs/release-notes/README.md` |
 | ADRs | `.ssot/adr/` |
 | Developer guidance | `docs/developer/` |
@@ -127,24 +127,24 @@ Machine authority lives in `.ssot/registry.json`. Certification YAML files under
 
 | Previous root path | Archived path |
 |---|---|
-| `BUILD_PROOF.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/BUILD_PROOF.md` |
-| `CURRENT_STATE.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/CURRENT_STATE.md` |
-| `build_artifacts` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/build_artifacts` |
-| `build_artifacts_manifest.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/build_artifacts_manifest.txt` |
-| `cargo_build_workspace_debug.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_build_workspace_debug.log` |
-| `cargo_build_workspace_release.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_build_workspace_release.log` |
-| `cargo_metadata.json` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_metadata.json` |
-| `cargo_test_workspace.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/cargo_test_workspace.log` |
-| `rust_tool_versions.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/rust_tool_versions.txt` |
-| `rustup_source_attempt.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-checkpoint/rustup_source_attempt.log` |
+| `BUILD_PROOF.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/BUILD_PROOF.md` |
+| `CURRENT_STATE.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/CURRENT_STATE.md` |
+| `build_artifacts` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/build_artifacts` |
+| `build_artifacts_manifest.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/build_artifacts_manifest.txt` |
+| `cargo_build_workspace_debug.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_build_workspace_debug.log` |
+| `cargo_build_workspace_release.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_build_workspace_release.log` |
+| `cargo_metadata.json` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_metadata.json` |
+| `cargo_test_workspace.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_test_workspace.log` |
+| `rust_tool_versions.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rust_tool_versions.txt` |
+| `rustup_source_attempt.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rustup_source_attempt.log` |
 
 ## Phase 2 archive retained for traceability
 
 - `docs/notes/archive/2026/p2-struct-norm/`
 
-## Phase 14 archive retained for traceability
+## Post-promotion handoff archive retained for traceability
 
-- `docs/notes/archive/2026/p14-post-promotion-handoff/`
+- `docs/notes/archive/2026/post-promotion-handoff/`
 
 ## Generated outputs removed from governed checkpoints
 
