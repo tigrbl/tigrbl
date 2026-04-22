@@ -13,7 +13,7 @@ The root `pyproject.toml` is configured as a uv workspace with packaging disable
 
 ## Repository status
 
-This checkpoint completes the **post-promotion handoff** on top of the already-passed **Phase 13 - Gate E promotion and release**.
+This checkpoint completes the **post-promotion handoff** on top of the already-passed **Gate E promotion and release**.
 
 The repository now records:
 
@@ -54,4 +54,3 @@ Read the repository in this order:
 11. `CONTRIBUTING.md`
 12. `CODE_OF_CONDUCT.md`
 13. `SECURITY.md`
-

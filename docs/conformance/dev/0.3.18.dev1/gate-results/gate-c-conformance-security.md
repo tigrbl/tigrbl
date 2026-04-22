@@ -1,6 +1,6 @@
 # Gate C Conformance Security
 
-This gate-result file records the dedicated Gate C proof added in Phase 11.
+This gate-result file records the dedicated Gate C proof added by the Gate C conformance/security checkpoint.
 
 ## Source validator
 

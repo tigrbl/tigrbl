@@ -6,7 +6,7 @@ The framework now treats cookies as a closed operator surface for the current ta
 
 - request cookie access through `Request.cookies`
 - response cookie setting through `Response.set_cookie(...)`
-- request/response round-trip behavior covered in the Phase 7 operator tests
+- request/response round-trip behavior covered in the operator-surface tests
 
 ## Streaming responses
 

@@ -13,25 +13,25 @@ This document now freezes the closed current-target cycle as release history for
 
 ## Gate B status
 
-- Gate B status: passed in the Phase 10 checkpoint
+- Gate B status: passed in the Gate B surface-closure checkpoint
 - Gate B validator: `tools/ci/validate_gate_b_surface_closure.py`
 - Gate B workflow: `.github/workflows/gate-b-surface-closure.yml`
 
 ## Gate C status
 
-- Gate C status: passed in the Phase 11 checkpoint
+- Gate C status: passed in the Gate C conformance/security checkpoint
 - Gate C validator: `tools/ci/validate_gate_c_conformance_security.py`
 - Gate C workflow: `.github/workflows/gate-c-conformance-security.yml`
 
 ## Gate D status
 
-- Gate D status: passed in the Phase 12 checkpoint
+- Gate D status: passed in the Gate D reproducibility checkpoint
 - Gate D validator: `tools/ci/validate_gate_d_reproducibility.py`
 - Gate D workflow: `.github/workflows/gate-d-reproducibility.yml`
 
 ## Gate E status
 
-- Gate E status: passed in the Phase 13 promotion checkpoint
+- Gate E status: passed in the Gate E promotion checkpoint
 - Gate E validator: `tools/ci/validate_gate_e_promotion.py`
 - Gate E workflow: `.github/workflows/gate-e-promotion.yml`
 - promotion-source dev build: `docs/conformance/dev/0.3.18.dev1/`
@@ -59,7 +59,7 @@ Tigrbl currently targets framework ownership over:
 - the unified framework CLI
 - support for Tigrcorn, Uvicorn, Hypercorn, and Gunicorn as supported serving paths
 
-## Current-target surfaces already closed in checkpoints 5 through 12
+## Current-target surfaces already closed by named checkpoints
 
 ### OAS / docs / schema
 
@@ -99,7 +99,7 @@ Tigrbl currently targets framework ownership over:
 - RFC 7617 — HTTP Basic parsing and challenge behavior
 - RFC 6750 — HTTP Bearer token parsing and challenge behavior
 
-### Operator surfaces closed in Phase 7 and proved in Gate B
+### Operator surfaces closed by operator-surface checkpoint and proved in Gate B
 
 - static files
 - cookies
@@ -111,7 +111,7 @@ Tigrbl currently targets framework ownership over:
 - bounded built-in middleware catalog
 - generic auth surface explicitly kept dependency/hook-based only
 
-### CLI surface closed in Phase 8 and proved in Gate B
+### CLI surface closed by CLI checkpoint and proved in Gate B
 
 - `tigrbl run`
 - `tigrbl serve`
@@ -134,9 +134,9 @@ Tigrbl currently targets framework ownership over:
 - `--openrpc-path`
 - `--lens-path`
 
-## Certification infrastructure established in Phase 9 and preserved in Post-promotion handoff
+## Certification infrastructure established by evidence-model checkpoint and preserved in post-promotion handoff
 
-Phase 9 created the durable evidence model. Phase 13 promoted the exact chosen dev bundle into the current stable release. Post-promotion handoff opens a new planning-only dev line without changing the frozen release bundle.
+The evidence-model checkpoint created the durable evidence model. Gate E promoted the exact chosen dev bundle into the current stable release. Post-promotion handoff opens a new planning-only dev line without changing the frozen release bundle.
 
 Established now:
 
@@ -159,7 +159,7 @@ Established now:
 
 ## Current-target rows explicitly de-scoped before Gate C
 
-### Exact RFC rows de-scoped in Phase 6
+### Exact RFC rows de-scoped by RFC/security boundary review
 
 - OIDC Core 1.0 exact closure
 - RFC 6749 exact OAuth 2.0 closure
@@ -170,7 +170,7 @@ Established now:
 - RFC 9110 exact framework-owned semantics closure
 - RFC 9449 exact DPoP closure
 
-### Docs/UI rows de-scoped in Phase 7
+### Docs/UI rows de-scoped by docs/operator closure
 
 - AsyncAPI UI (spec emission kept)
 - JSON Schema UI (spec emission kept)

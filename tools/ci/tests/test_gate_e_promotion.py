@@ -52,7 +52,7 @@ def test_current_docs_record_gate_e_pass_and_frozen_release_history() -> None:
     current_target = CURRENT_TARGET.read_text(encoding='utf-8')
     current_state = CURRENT_STATE.read_text(encoding='utf-8')
     gate_model = GATE_MODEL.read_text(encoding='utf-8')
-    assert '- Gate E status: passed in the Phase 13 promotion checkpoint' in current_target
-    assert 'Gate E: passed in the Phase 13 promotion checkpoint' in current_state
-    assert 'Gate E is passed in the Phase 13 promotion checkpoint' in gate_model
+    assert '- Gate E status: passed in the Gate E promotion checkpoint' in current_target
+    assert 'Gate E: passed in the Gate E promotion checkpoint' in current_state
+    assert 'Gate E is passed in the Gate E promotion checkpoint' in gate_model
     assert 'promoted stable release: `docs/conformance/releases/0.3.18/`' in current_target

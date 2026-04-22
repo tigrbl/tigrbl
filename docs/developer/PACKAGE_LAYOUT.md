@@ -1,6 +1,6 @@
 # Package Layout
 
-This document defines the normalized workspace layout enforced in the Phase 2 checkpoint.
+This document defines the normalized workspace layout enforced in the package-layout checkpoint.
 
 ## Root layout
 

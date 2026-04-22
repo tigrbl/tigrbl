@@ -2,7 +2,7 @@
 
 ## Scope and method
 
-This document carries forward the Phase 10 Gate B, Phase 11 Gate C, Phase 12 Gate D, and Phase 13 Gate E checkpoints and records the Post-promotion handoff work completed to freeze the promoted release as release history while opening the next governed development line.
+This document carries forward the Gate B surface-closure, Gate C conformance/security, Gate D reproducibility, and Gate E promotion checkpoints and records the Post-promotion handoff work completed to freeze the promoted release as release history while opening the next governed development line.
 
 Post-promotion handoff focused on:
 
@@ -21,7 +21,7 @@ The current state below is grounded in:
 3. direct inspection of the new Post-promotion handoff validator, workflow, ADRs, and audit note
 4. execution of the repository policy validators under `tools/ci/`
 5. execution of the Gate B, Gate C, Gate D, Gate E, and Post-promotion handoff validator pytest slices
-6. carried-forward audit evidence from Phases 5 through 13 for the closed release bundle `0.3.18`
+6. carried-forward audit evidence for the closed release bundle `0.3.18`
 
 ## Certification status
 
@@ -40,9 +40,9 @@ Boundary note: the certification wording above still applies only within the dec
 
 - Gate A: passed and still enforced
 - Gate B: passed and still enforced
-- Gate C: passed in the Phase 11 checkpoint
-- Gate D: passed in the Phase 12 checkpoint
-- Gate E: passed in the Phase 13 promotion checkpoint
+- Gate C: passed in the Gate C conformance/security checkpoint
+- Gate D: passed in the Gate D reproducibility checkpoint
+- Gate E: passed in the Gate E promotion checkpoint
 - Post-promotion handoff: verified in the current checkpoint
 
 ## Exact current Gate B statement carried forward

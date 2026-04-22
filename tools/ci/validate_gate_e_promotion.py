@@ -76,16 +76,16 @@ def main() -> None:
     readme_text = README.read_text(encoding='utf-8')
     pointer_text = DOC_POINTERS.read_text(encoding='utf-8')
 
-    if '- Gate E status: passed in the Phase 13 promotion checkpoint' not in current_target_text:
-        errors.append('docs/conformance/CURRENT_TARGET.md must record Gate E as passed in Phase 13')
-    if 'Gate E: passed in the Phase 13 promotion checkpoint' not in current_state_text:
-        errors.append('docs/conformance/CURRENT_STATE.md must record Gate E as passed in Phase 13')
-    if 'Gate E is passed in the Phase 13 promotion checkpoint' not in gate_model_text:
-        errors.append('docs/conformance/GATE_MODEL.md must record Gate E as passed in Phase 13')
-    if 'Passed in the Phase 13 promotion checkpoint.' not in gate_e_text:
-        errors.append('docs/conformance/gates/GATE_E_PROMOTION.md must record Gate E as passed in Phase 13')
-    if '**Phase 13 - Gate E promotion and release**' not in readme_text:
-        errors.append('README.md must record the Phase 13 promotion checkpoint')
+    if '- Gate E status: passed in the Gate E promotion checkpoint' not in current_target_text:
+        errors.append('docs/conformance/CURRENT_TARGET.md must record Gate E as passed in the Gate E promotion checkpoint')
+    if 'Gate E: passed in the Gate E promotion checkpoint' not in current_state_text:
+        errors.append('docs/conformance/CURRENT_STATE.md must record Gate E as passed in the Gate E promotion checkpoint')
+    if 'Gate E is passed in the Gate E promotion checkpoint' not in gate_model_text:
+        errors.append('docs/conformance/GATE_MODEL.md must record Gate E as passed in the Gate E promotion checkpoint')
+    if 'Passed in the Gate E promotion checkpoint.' not in gate_e_text:
+        errors.append('docs/conformance/gates/GATE_E_PROMOTION.md must record Gate E as passed in the Gate E promotion checkpoint')
+    if '**Gate E promotion and release**' not in readme_text:
+        errors.append('README.md must record the Gate E promotion checkpoint')
     if f'Current stable release bundle | `docs/conformance/releases/0.3.18/` |' not in pointer_text:
         errors.append('docs/governance/DOC_POINTERS.md must point to the promoted stable release bundle')
 

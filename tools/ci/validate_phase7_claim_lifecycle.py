@@ -15,8 +15,8 @@ CLAIM_FILES = [
 ]
 LIFECYCLE = ROOT / "certification" / "claims" / "lifecycle.yaml"
 BUNDLE = ROOT / "docs" / "conformance" / "releases" / "0.3.18" / "artifacts" / "certification-bundle.json"
-CURRENT_STATE = ROOT / "reports" / "current_state" / "2026-04-09-phase7-claims-evidence-promotion.md"
-CERT_STATE = ROOT / "reports" / "certification_state" / "2026-04-09-phase7-claims-evidence-promotion.md"
+CURRENT_STATE = ROOT / ".ssot" / "reports" / "current_state" / "2026-04-09-phase7-claims-evidence-promotion.md"
+CERT_STATE = ROOT / ".ssot" / "reports" / "certification_state" / "2026-04-09-phase7-claims-evidence-promotion.md"
 IMPLEMENTATION_MAP = ROOT / "docs" / "conformance" / "IMPLEMENTATION_MAP.md"
 DOC_POINTERS = ROOT / "docs" / "governance" / "DOC_POINTERS.md"
 CI_VALIDATION = ROOT / "docs" / "developer" / "CI_VALIDATION.md"
@@ -101,8 +101,10 @@ def main() -> None:
         for field in REQUIRED_FIELDS:
             value = entry.get(field)
             if field == "boundary_inclusion":
-                if value is not True:
-                    errors.append(f"{claim_id} must set boundary_inclusion: true")
+                if not isinstance(value, bool):
+                    errors.append(f"{claim_id} must set boundary_inclusion to a boolean")
+                elif state == "certified" and value is not True:
+                    errors.append(f"{claim_id} must set boundary_inclusion: true before certification")
                 continue
             if not value:
                 errors.append(f"{claim_id} missing required lifecycle field: {field}")
@@ -124,7 +126,7 @@ def main() -> None:
                     if not _path_exists(value):
                         errors.append(f"{claim_id} references missing path in {field}: {value}")
         gates = entry.get("release_gate_coverage")
-        if state == "certified" and set(gates or []) != {"A", "B", "C", "D", "E"}:
+        if state == "certified" and isinstance(gates, list) and set(gates or []) != {"A", "B", "C", "D", "E"}:
             errors.append(f"{claim_id} must cover Gates A-E before reaching certified")
 
     missing = sorted(public_claim_ids - lifecycle_ids)
@@ -180,7 +182,7 @@ def main() -> None:
             "E": "security/abuse",
         }
         if gate_decisions != expected:
-            errors.append("certification bundle must map Gates A-E to the Phase 7 release decisions")
+            errors.append("certification bundle must map Gates A-E to the release decisions")
 
     current_state = _read_text(CURRENT_STATE)
     cert_state = _read_text(CERT_STATE)
@@ -191,22 +193,22 @@ def main() -> None:
     gate_model = _read_text(GATE_MODEL)
 
     if "claim lifecycle registry" not in current_state or "signed certification bundle" not in current_state:
-        errors.append("Phase 7 current-state report must describe the lifecycle registry and signed certification bundle")
+        errors.append("Claim-lifecycle current-state report must describe the lifecycle registry and signed certification bundle")
     if "active `0.3.19.dev1` remains non-certifiable" not in cert_state:
-        errors.append("Phase 7 certification-state report must keep the active line non-certifiable")
-    if "Phase 7 claims, evidence, and certification promotion checkpoint" not in implementation_map:
-        errors.append("docs/conformance/IMPLEMENTATION_MAP.md must include the Phase 7 checkpoint row")
-    if "Phase 7 current-state report" not in doc_pointers or "Phase 7 certification-state report" not in doc_pointers:
-        errors.append("docs/governance/DOC_POINTERS.md must point to both Phase 7 reports")
+        errors.append("Claim-lifecycle certification-state report must keep the active line non-certifiable")
+    if "Claims, evidence, and certification-promotion checkpoint" not in implementation_map:
+        errors.append("docs/conformance/IMPLEMENTATION_MAP.md must include the claim-lifecycle checkpoint row")
+    if "Claim-lifecycle current-state report" not in doc_pointers or "Claim-lifecycle certification-state report" not in doc_pointers:
+        errors.append("docs/governance/DOC_POINTERS.md must point to both claim-lifecycle reports")
     if "validate_phase7_claim_lifecycle.py" not in ci_validation:
-        errors.append("docs/developer/CI_VALIDATION.md must list the Phase 7 validator")
-    if "Validate Phase 7 claim lifecycle and release bundle" not in workflow:
-        errors.append(".github/workflows/policy-governance.yml must run the Phase 7 validator")
+        errors.append("docs/developer/CI_VALIDATION.md must list the claim-lifecycle validator")
+    if "Validate Claim lifecycle and release bundle" not in workflow:
+        errors.append(".github/workflows/policy-governance.yml must run the claim-lifecycle validator")
     if "Gate A: surface freeze" not in gate_model or "Gate E: security/abuse" not in gate_model:
-        errors.append("docs/conformance/GATE_MODEL.md must record the Phase 7 release-decision mapping for Gates A-E")
+        errors.append("docs/conformance/GATE_MODEL.md must record the Release-decision mapping for Gates A-E")
 
     fail(errors)
-    print("Phase 7 claim-lifecycle validation passed")
+    print("Claim-lifecycle validation passed")
 
 
 if __name__ == "__main__":

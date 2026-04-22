@@ -19,7 +19,7 @@ Security is OAS 3.1 security-scheme first.
 
 ## Retained exact RFC rows for the frozen current cycle
 
-After the Phase 6 boundary review, the frozen cycle retains these exact RFC rows at the framework boundary:
+After the RFC/security boundary review, the frozen cycle retains these exact RFC rows at the framework boundary:
 
 - RFC 7235 — framework-owned HTTP authentication challenge semantics
 - RFC 7617 — HTTP Basic parsing and challenge behavior
@@ -65,7 +65,7 @@ The following remain server/runtime concerns for the frozen cycle:
 - QPACK
 - server-side TLS termination
 
-## Docs/UI rows explicitly de-scoped in Phase 7
+## Docs/UI rows explicitly de-scoped by docs/operator closure
 
 - AsyncAPI UI (while `/asyncapi.json` stays in scope)
 - JSON Schema UI (while `/schemas.json` stays in scope)

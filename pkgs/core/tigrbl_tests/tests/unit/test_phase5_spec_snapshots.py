@@ -117,7 +117,7 @@ class Phase5TableDocsTable(TableBase, GUIDPk):
 
 
 def _build_app() -> TigrblApp:
-    router = TigrblRouter(title="Phase 5 Router", version="5.0.0", engine=mem(async_=False))
+    router = TigrblRouter(title="Spec Snapshot Router", version="5.0.0", engine=mem(async_=False))
 
     @router.post(
         "/widgets/{widget_id}",
@@ -136,7 +136,7 @@ def _build_app() -> TigrblApp:
     router.include_table(Phase5RouterDocsTable)
     router.include_table(Phase5TableDocsTable)
 
-    app = TigrblApp(title="Phase 5 API", version="5.0.0", engine=mem(async_=False))
+    app = TigrblApp(title="Spec Snapshot API", version="5.0.0", engine=mem(async_=False))
     app.include_table(Phase5BearerDocsTable)
     app.include_router(router)
     app.initialize()
@@ -225,11 +225,10 @@ def test_phase5_generated_specs_and_snapshot_artifacts_cover_required_contracts(
 
     assert "swagger-ui" in swagger_html.lower()
     assert "swagger-ui" in snapshot_swagger.lower()
-    assert "phase 5 api" in swagger_html.lower()
-    assert "phase 5 api" in snapshot_swagger.lower()
+    assert "spec snapshot api" in swagger_html.lower()
+    assert "spec snapshot api" in snapshot_swagger.lower()
 
     assert "lens" in lens_html.lower()
     assert "openrpc" in lens_html.lower()
     assert "lens" in snapshot_lens.lower()
     assert "openrpc" in snapshot_lens.lower()
-

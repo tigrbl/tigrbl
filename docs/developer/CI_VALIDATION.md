@@ -40,12 +40,12 @@ The current certification program uses policy validators, evidence-lane workflow
 - release-note files must declare governed claim IDs
 - every claim row maps to tests, CI jobs, and artifact paths in `docs/conformance/EVIDENCE_REGISTRY.json`
 - dev/release bundle structures contain the required governed files and directories
-- the certification authority tree keeps the four-state truth model and Phase 0 exit criteria machine-checked
-- the Phase 1 declared-surface checkpoint stays documented and synchronized with the policy workflow
-- Rust backend claim language remains fail-closed until the Phase 4 parity checkpoint is documented and wired in CI
-- the Phase 5 Tigrcorn operator surface stays documented, example-backed, and fail-closed for interop/benchmark certification claims
-- the Phase 6 Tigrcorn hardening package stays documented, profile-backed, and fail-closed for negative-certification claims
-- the Phase 7 claim lifecycle and release certification-bundle artifacts stay synchronized and machine-checked
+- the certification authority tree keeps the four-state truth model and authority-reset exit criteria machine-checked
+- the declared-surface checkpoint stays documented and synchronized with the policy workflow
+- Rust backend claim language remains fail-closed until the Rust parity checkpoint is documented and wired in CI
+- the Tigrcorn operator surface stays documented, example-backed, and fail-closed for interop/benchmark certification claims
+- the Tigrcorn hardening package stays documented, profile-backed, and fail-closed for negative-certification claims
+- the Claim lifecycle and release certification-bundle artifacts stay synchronized and machine-checked
 - Gate E promotion output stays synchronized to the exact chosen dev build and the promoted stable release bundle
 - the Post-promotion handoff keeps frozen release history separated from the active next-line bundle
 
@@ -57,11 +57,11 @@ The workflow at `.github/workflows/policy-governance.yml` runs the validation su
 
 ### Operator surface
 
-The workflow at `.github/workflows/operator-surface.yml` runs the Phase 7 operator-surface closure tests and docs parity checks.
+The workflow at `.github/workflows/operator-surface.yml` runs the operator-surface closure tests and docs parity checks.
 
 ### CLI smoke
 
-The workflow at `.github/workflows/cli-smoke.yml` runs the Phase 8 CLI command smoke tests and the supported-server compatibility smoke tests.
+The workflow at `.github/workflows/cli-smoke.yml` runs the CLI command smoke tests and the supported-server compatibility smoke tests.
 
 ### Evidence lanes
 

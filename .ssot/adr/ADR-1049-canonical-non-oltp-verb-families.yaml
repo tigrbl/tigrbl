@@ -8,7 +8,7 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The repository already freezes canonical OLTP verbs, but Phase 3 introduced"
+summary: "The repository already freezes canonical OLTP verbs, but the operator-surface expansion introduced"
 supersedes: []
 superseded_by: []
 status_notes: []
@@ -16,7 +16,7 @@ references: []
 body: |-
   ## Context
   
-  The repository already freezes canonical OLTP verbs, but Phase 3 introduced
+  The repository already freezes canonical OLTP verbs, but the operator-surface expansion introduced
   additional analytical, realtime, transfer, and checkpoint verbs without a
   matching architectural decision that defines which non-OLTP families are
   canonical, which remain provisional, and when docs/runtime parity obligations

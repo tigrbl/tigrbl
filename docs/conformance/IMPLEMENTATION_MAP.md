@@ -21,15 +21,15 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 | active next-line dev bundle scaffold | verified in checkpoint | Governance | `docs/conformance/dev/0.3.19.dev1/`, `pkgs/core/tigrbl/pyproject.toml`, `docs/governance/VERSIONING_POLICY.md` | `tools/ci/tests/test_post_promotion_handoff.py` | no implementation closure yet | keep planning language only until real next-target work lands |
 | datatype/table program isolation | verified in checkpoint | Next-target program | `docs/conformance/NEXT_TARGETS.md`, `.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.yaml`, `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml` | `tools/ci/tests/test_post_promotion_handoff.py` | implementation not started in this checkpoint | keep next-target planning out of the frozen `0.3.18` release claim set |
 
-## Phase 1 declared surface checkpoint
+## Declared-surface checkpoint
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
 | declared transport literals and binding specs | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py`, `pkgs/core/tigrbl_core/tests/test_binding_spec.py`, `reports/current_state/2026-04-07-phase1-declarative-surface.md` | `pkgs/core/tigrbl_core/tests/test_binding_spec.py`, `pkgs/core/tigrbl_tests/tests/unit/decorators/test_phase1_declarative_surface.py` | full pytest not executed in this workspace | preserve the declared surface and keep it versioned through governed reports |
 | ctx decorators and selector declarations | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/op.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/hook.py` | `pkgs/core/tigrbl_tests/tests/unit/decorators/test_phase1_declarative_surface.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase1_declared_surface_docs.py` | local runtime verification remains environment-limited | keep decorators and selectors synchronized with docs builders |
-| policy validator for declared surface checkpoint | implemented | Governance | `tools/ci/validate_phase1_declared_surface.py`, `tools/ci/tests/test_phase1_declared_surface.py`, `.github/workflows/policy-governance.yml` | `tools/ci/tests/test_phase1_declared_surface.py` | validator covers checkpoint/doc synchronization, not runtime semantics | keep the policy lane synchronized whenever Phase 1 reports or workflow coverage changes |
+| policy validator for declared surface checkpoint | implemented | Governance | `tools/ci/validate_phase1_declared_surface.py`, `tools/ci/tests/test_phase1_declared_surface.py`, `.github/workflows/policy-governance.yml` | `tools/ci/tests/test_phase1_declared_surface.py` | validator covers checkpoint/doc synchronization, not runtime semantics | keep the policy lane synchronized whenever declared-surface reports or workflow coverage changes |
 
-## Phase 2 runtime/kernel transport checkpoint
+## Runtime/kernel transport checkpoint
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
@@ -37,35 +37,35 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 | transport mapping conformance checkpoint | verified in checkpoint | Docs & Runtime | `.ssot/specs/SPEC-2007-transport-mapping-conformance.md`, `reports/current_state/2026-04-07-phase2-runtime-kernel-transport.md`, `reports/certification_state/2026-04-07-phase2-runtime-kernel-transport.md` | `pkgs/core/tigrbl_concrete/tests/test_phase2_transport_docs.py`, `crates/tigrbl_rs_runtime/tests/channel_contract.rs` | stream/SSE/WebTransport loops remain only partially specialized | carry the mapping forward without overstating full transport completion |
 | canonical HTTP route registration | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/http_routes.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/router.py`, `.ssot/adr/ADR-1028-route-aliases-expand-to-concrete-http-op-specs.md`, `.ssot/specs/SPEC-2008-http-route-registration.md` | `pkgs/core/tigrbl_tests/tests/unit/test_http_route_registration.py`, `pkgs/core/tigrbl_tests/tests/unit/decorators/test_phase1_declarative_surface.py`, `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py` | full repository pytest was not executed in this workspace | preserve one concrete route registration path for app routes and system-document mounts |
 
-## Phase 3 feature module closure checkpoint
+## Feature module closure checkpoint
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
-| canonical Phase 3 verb surface and executable operator packages | verified in checkpoint | Operator Surface | `pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py`, `pkgs/core/tigrbl_core/tigrbl_core/config/constants.py`, `pkgs/core/tigrbl_ops_oltp/tigrbl_ops_oltp/crud/ops.py`, `pkgs/core/tigrbl_ops_olap/tigrbl_ops_olap/ops.py`, `pkgs/core/tigrbl_ops_realtime/tigrbl_ops_realtime/ops.py`, `reports/current_state/2026-04-08-phase3-feature-module-closure.md` | local `py_compile` checkpoint, local Python smoke, `crates/tigrbl_rs_spec/tests/spec_contract.rs` | full repository/runtime evidence was not produced in this workspace | preserve the new verb surface as executable code and keep future docs/runtime evidence tied to the real operator packages |
-| Phase 3 Python/Rust handler atom mirrors | implemented in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/`, `pkgs/core/tigrbl_canon/tigrbl_canon/mapping/handlers/steps.py`, `crates/tigrbl_rs_atoms/src/sys/`, `crates/tigrbl_rs_ops_olap/`, `crates/tigrbl_rs_ops_realtime/`, `reports/certification_state/2026-04-08-phase3-feature-module-closure.md` | `pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py`, `cargo test -p tigrbl_rs_atoms -p tigrbl_rs_ops_olap -p tigrbl_rs_ops_realtime --lib -- --nocapture` | no full end-to-end transport/runtime proof for every new verb | extend from metadata/handler parity into fully evidenced runtime execution without widening claims early |
+| canonical verb surface and executable operator packages | verified in checkpoint | Operator Surface | `pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py`, `pkgs/core/tigrbl_core/tigrbl_core/config/constants.py`, `pkgs/core/tigrbl_ops_oltp/tigrbl_ops_oltp/crud/ops.py`, `pkgs/core/tigrbl_ops_olap/tigrbl_ops_olap/ops.py`, `pkgs/core/tigrbl_ops_realtime/tigrbl_ops_realtime/ops.py`, `reports/current_state/2026-04-08-phase3-feature-module-closure.md` | local `py_compile` checkpoint, local Python smoke, `crates/tigrbl_rs_spec/tests/spec_contract.rs` | full repository/runtime evidence was not produced in this workspace | preserve the new verb surface as executable code and keep future docs/runtime evidence tied to the real operator packages |
+| Python/Rust handler atom mirrors | implemented in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/`, `pkgs/core/tigrbl_canon/tigrbl_canon/mapping/handlers/steps.py`, `crates/tigrbl_rs_atoms/src/sys/`, `crates/tigrbl_rs_ops_olap/`, `crates/tigrbl_rs_ops_realtime/`, `reports/certification_state/2026-04-08-phase3-feature-module-closure.md` | `pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py`, `cargo test -p tigrbl_rs_atoms -p tigrbl_rs_ops_olap -p tigrbl_rs_ops_realtime --lib -- --nocapture` | no full end-to-end transport/runtime proof for every new verb | extend from metadata/handler parity into fully evidenced runtime execution without widening claims early |
 
-## Phase 4 rust parity checkpoint
+## Rust parity checkpoint
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
 | route/opview/phase-plan parity snapshots | verified in checkpoint | Protocol / RPC Runtime | `pkgs/core/tigrbl_runtime/tigrbl_runtime/rust/_parity_contract.py`, `pkgs/core/tigrbl_runtime/tigrbl_runtime/rust/parity.py`, `crates/tigrbl_rs_kernel/src/parity.rs`, `reports/current_state/2026-04-09-phase4-native-parity.md` | `pkgs/core/tigrbl_tests/tests/rust/parity/test_rust_parity_contract.py`, `crates/tigrbl_rs_kernel/tests/parity_contract.rs` | snapshot parity is contract-level proof, not full live backend execution parity | preserve the shared parity contract and extend it into compiled-backend execution proof before publishing Rust claims |
 | Rust claim publication remains fail-closed | implemented in checkpoint | Governance | `tools/ci/validate_phase4_rust_parity.py`, `certification/claims/blocked.yaml`, `reports/certification_state/2026-04-09-phase4-native-parity.md` | `tools/ci/tests/test_phase4_rust_parity.py` | Rust release evidence lanes are still incomplete | keep Rust backend claims blocked until parity lanes pass as release evidence |
 
-## Phase 5 Tigrcorn operator surface checkpoint
+## Tigrcorn operator-surface checkpoint
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
 | public Tigrcorn operator/config control surface | verified in checkpoint | CLI / Developer Experience | `pkgs/core/tigrbl/tigrbl/cli.py`, `docs/developer/CLI_REFERENCE.md`, `docs/developer/examples/tigrcorn/phase5-operator-config.json`, `reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md` | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` | this is a governed CLI/config surface around an external runtime, not proof of framework-owned transport implementation | preserve the public operator controls and keep `doctor`/`capabilities` sourced from the real CLI surface |
 | Tigrcorn interop and benchmark publication remains fail-closed | implemented in checkpoint | Governance | `tools/ci/validate_phase5_tigrcorn_operator_surface.py`, `certification/claims/blocked.yaml`, `reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md` | `tools/ci/tests/test_phase5_tigrcorn_operator_surface.py` | release-grade interop/benchmark bundles are still not populated in this workspace | keep certification claims blocked until governed release evidence exists |
 
-## Phase 6 Tigrcorn hardening and negative-certification checkpoint
+## Tigrcorn hardening and negative-certification checkpoint
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
 | blessed deployment profiles and hardening contracts | verified in checkpoint | CLI / Developer Experience | `docs/developer/operator/profiles/`, `reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md` | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` | this repo still governs an external runtime boundary rather than implementing Tigrcorn internals directly | preserve the public profile/contract surface and keep safe-failure policy explicit |
 | hardening and negative-certification publication remains fail-closed | implemented in checkpoint | Governance | `tools/ci/validate_phase6_tigrcorn_hardening.py`, `certification/claims/blocked.yaml`, `reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md`, `reports/certification_state/profiles/`, `reports/certification_state/negative_corpora/` | `tools/ci/tests/test_phase6_tigrcorn_hardening.py` | release-grade negative corpora and mixed-topology evidence are still not executed in this workspace | keep hardening claims blocked until governed release evidence exists |
 
-## Phase 7 claims, evidence, and certification promotion checkpoint
+## Claims, evidence, and certification-promotion checkpoint
 
 | Target | Status | Owner | Code / docs locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
@@ -98,21 +98,21 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 
 | Target | Status | Owner | Code locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
-| OpenAPI 3.1.0 emission | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openapi/schema.py` | existing Phase 5 tests | — | preserve snapshot lane |
-| JSON Schema Draft 2020-12 declaration | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openapi/schema.py` | existing Phase 5 tests | — | preserve snapshot lane |
+| OpenAPI 3.1.0 emission | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openapi/schema.py` | existing spec snapshot tests | — | preserve snapshot lane |
+| JSON Schema Draft 2020-12 declaration | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openapi/schema.py` | existing spec snapshot tests | — | preserve snapshot lane |
 | mounted `/openapi.json` and `/docs` | verified in checkpoint | Docs & Runtime | docs mount helpers + app mounts | existing docs tests | — | preserve mounted parity |
 | JSON-RPC 2.0 current surface | verified in checkpoint | Protocol / RPC Runtime | jsonrpc helpers/models | existing JSON-RPC tests | — | preserve envelope/error/docs alignment |
 | OpenRPC 1.2.6 emission + mounted `/openrpc.json` + `/lens` | verified in checkpoint | Protocol / RPC Runtime | openrpc/lens docs modules | existing OpenRPC tests | — | preserve mounted parity |
-| mounted `/schemas.json` JSON Schema bundle | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/json_schema.py` | Phase 7 operator pytest slice | interactive UI de-scoped | keep spec endpoint; UI stays de-scoped |
-| mounted `/asyncapi.json` AsyncAPI spec | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py` | Phase 7 operator pytest slice | interactive UI de-scoped | keep spec endpoint; UI stays de-scoped |
+| mounted `/schemas.json` JSON Schema bundle | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/json_schema.py` | operator pytest slice | interactive UI de-scoped | keep spec endpoint; UI stays de-scoped |
+| mounted `/asyncapi.json` AsyncAPI spec | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py` | operator pytest slice | interactive UI de-scoped | keep spec endpoint; UI stays de-scoped |
 
 ## Retained RFC / security rows
 
 | Target | Status | Owner | Code locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
-| RFC 7235 challenge semantics | verified in checkpoint | Auth & Security | Basic/Bearer deps + executor/header propagation | existing Phase 6 tests | — | preserve auth challenge lane |
-| RFC 7617 Basic parsing/challenge behavior | verified in checkpoint | Auth & Security | `http_basic.py` | existing Phase 6 tests | — | preserve auth challenge lane |
-| RFC 6750 Bearer extraction/challenge behavior | verified in checkpoint | Auth & Security | `http_bearer.py` | existing Phase 6 tests | — | preserve auth challenge lane |
+| RFC 7235 challenge semantics | verified in checkpoint | Auth & Security | Basic/Bearer deps + executor/header propagation | existing RFC/security tests | — | preserve auth challenge lane |
+| RFC 7617 Basic parsing/challenge behavior | verified in checkpoint | Auth & Security | `http_basic.py` | existing RFC/security tests | — | preserve auth challenge lane |
+| RFC 6750 Bearer extraction/challenge behavior | verified in checkpoint | Auth & Security | `http_bearer.py` | existing RFC/security tests | — | preserve auth challenge lane |
 
 ## De-scoped RFC / discovery rows
 
@@ -121,7 +121,7 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 | OIDC Core / discovery beyond OAS scheme modeling | de-scoped | Governance + Auth & Security | target docs + evidence map | docs parity pages | not honestly implemented | keep de-scoped this cycle |
 | exact OAuth2 / JWT / PKCE / metadata / mTLS / DPoP rows | de-scoped | Governance + Auth & Security | target docs + evidence map | evidence map | not honestly implemented | keep de-scoped this cycle |
 
-## Operator surfaces closed in Phase 7
+## Operator surfaces closed by operator-surface checkpoint
 
 | Target | Status | Owner | Code locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
@@ -158,7 +158,7 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 | `twisted` server runner | OOB | Server/runtime boundary | `docs/conformance/NEXT_TARGETS.md`<br>`pkgs/core/tigrbl/tigrbl/cli.py` | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` | not part of the governed supported runner set | keep out of framework certification claims until separately governed |
 | `granian` server runner | OOB | Server/runtime boundary | `docs/conformance/NEXT_TARGETS.md`<br>`pkgs/core/tigrbl/tigrbl/cli.py` | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` | not part of the governed supported runner set | keep out of framework certification claims until separately governed |
 
-## Evidence-lane build-out in Phase 9
+## Evidence-lane build-out
 
 | Target | Status | Owner | Code locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|

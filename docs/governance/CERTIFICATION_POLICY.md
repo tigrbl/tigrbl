@@ -47,4 +47,4 @@ The promoted stable release `0.3.18` satisfies the governed Gate A through Gate 
 
 The active `0.3.19.dev1` line is a next-target planning checkpoint and does **not** use Tier 3 certification wording.
 
-The Phase 0 certification authority reset remains complete while the SSOT registry and its derived certification projections remain validated and in sync.
+The certification authority reset remains complete while the SSOT registry and its derived certification projections remain validated and in sync.

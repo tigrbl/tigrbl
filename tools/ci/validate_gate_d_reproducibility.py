@@ -57,15 +57,15 @@ def main() -> None:
     dev_index_text = DEV_INDEX.read_text(encoding='utf-8')
     build_notes = BUILD_NOTES.read_text(encoding='utf-8')
 
-    if '- Gate D status: passed in the Phase 12 checkpoint' not in current_target_text:
-        errors.append('docs/conformance/CURRENT_TARGET.md must record Gate D as passed in Phase 12')
+    if '- Gate D status: passed in the Gate D reproducibility checkpoint' not in current_target_text:
+        errors.append('docs/conformance/CURRENT_TARGET.md must record Gate D as passed in the Gate D reproducibility checkpoint')
     if 'clean-room evidence passes on the selected candidate build' not in current_state_text:
         errors.append('docs/conformance/CURRENT_STATE.md must declare clean-room evidence passes on the candidate build')
     if 'Gate D is passed at checkpoint quality and machine-checked in CI' not in gate_model_text:
         errors.append('docs/conformance/GATE_MODEL.md must record Gate D as passed at checkpoint quality')
-    if 'Passed in the Phase 12 checkpoint.' not in gate_d_text:
-        errors.append('docs/conformance/gates/GATE_D_REPRODUCIBILITY.md must record Gate D as passed in Phase 12')
-    if '| Gate D | passed in Phase 12 checkpoint |' not in dev_index_text:
+    if 'Passed in the Gate D reproducibility checkpoint.' not in gate_d_text:
+        errors.append('docs/conformance/gates/GATE_D_REPRODUCIBILITY.md must record Gate D as passed in the Gate D reproducibility checkpoint')
+    if '| Gate D | passed in Gate D reproducibility checkpoint |' not in dev_index_text:
         errors.append('dev evidence index must include the Gate D gate-result row')
     if 'working tree package version is now `0.3.18.dev1`' not in build_notes:
         errors.append('build notes must record synchronized package metadata for 0.3.18.dev1')
