@@ -75,13 +75,14 @@ def _run(obj: Optional[object], ctx: Any) -> Any:
                 "status_code": (
                     204
                     if int(resp.status_code) == 200 and not (resp.body or b"")
+                    and not hasattr(resp, "body_iterator")
                     else int(resp.status_code)
                 ),
                 "headers": {
                     k.decode("latin-1"): v.decode("latin-1")
                     for k, v in getattr(resp, "raw_headers", ())
                 },
-                "body": resp.body or None,
+                "body": resp if hasattr(resp, "body_iterator") else resp.body or None,
             }
     return resp
 

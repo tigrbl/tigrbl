@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 import sqlite3
 from pathlib import Path
+from typing import Any
 
 from tigrbl import TableBase, TigrblApp
 from tigrbl.factories.engine import sqlitef
@@ -32,6 +33,18 @@ async def initialize_tigrbl_app(app: TigrblApp) -> None:
     init_result = app.initialize()
     if inspect.isawaitable(init_result):
         await init_result
+
+
+async def dispose_tigrbl_app(app: TigrblApp) -> None:
+    engine = getattr(app, "engine", None)
+    provider = getattr(engine, "provider", None)
+    raw_engine = getattr(provider, "_engine", None)
+    dispose = getattr(raw_engine, "dispose", None)
+    if not callable(dispose):
+        return
+    result: Any = dispose()
+    if inspect.isawaitable(result):
+        await result
 
 
 def fetch_tigrbl_names(db_path: Path) -> list[str]:

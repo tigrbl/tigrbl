@@ -51,9 +51,9 @@ def _parse_signature(module_path: Path) -> AtomStageSignature | None:
                     continue
                 if not isinstance(base.value, ast.Name) or base.value.id != "Atom":
                     continue
-                if not isinstance(base.slice, ast.Tuple) or len(base.slice.elts) != 2:
+                if not isinstance(base.slice, ast.Tuple) or len(base.slice.elts) < 2:
                     continue
-                left, right = base.slice.elts
+                left, right = base.slice.elts[:2]
                 if isinstance(left, ast.Name) and isinstance(right, ast.Name):
                     stage_in_name = left.id
                     stage_out_name = right.id

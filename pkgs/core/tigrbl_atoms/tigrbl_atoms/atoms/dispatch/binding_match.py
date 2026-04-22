@@ -211,6 +211,8 @@ def _run(obj: object | None, ctx: Any) -> None:
         setattr(ctx, "selector", matched_selector)
     if matched_proto is not None and matched_proto.endswith(".jsonrpc"):
         if isinstance(rpc_payload, Mapping):
+            if isinstance(temp, dict):
+                temp["jsonrpc_request_id"] = rpc_payload.get("id")
             dispatch["rpc"] = dict(rpc_payload)
             dispatch["rpc_method"] = rpc_payload.get("method")
             dispatch["parsed_payload"] = rpc_payload.get("params", {})

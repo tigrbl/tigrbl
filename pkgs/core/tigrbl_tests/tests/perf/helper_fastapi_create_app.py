@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import inspect
 import sqlite3
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Any
 
 from fastapi import Depends, FastAPI
 from pydantic import BaseModel, ConfigDict
@@ -43,6 +45,7 @@ def create_fastapi_app(db_path: Path) -> FastAPI:
         yield
 
     app = FastAPI(lifespan=lifespan)
+    app.state.benchmark_engine = engine
 
     def get_session() -> Session:
         session = session_local()
@@ -62,6 +65,16 @@ def create_fastapi_app(db_path: Path) -> FastAPI:
         return FastApiCreateOut.model_validate(item)
 
     return app
+
+
+async def dispose_fastapi_app(app: FastAPI) -> None:
+    raw_engine = getattr(getattr(app, "state", None), "benchmark_engine", None)
+    dispose = getattr(raw_engine, "dispose", None)
+    if not callable(dispose):
+        return
+    result: Any = dispose()
+    if inspect.isawaitable(result):
+        await result
 
 
 def fetch_fastapi_names(db_path: Path) -> list[str]:

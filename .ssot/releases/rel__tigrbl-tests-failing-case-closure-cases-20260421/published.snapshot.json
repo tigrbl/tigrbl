@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "kind": "published_snapshot",
+  "generated_at": "2026-04-22T00:36:45Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "04606bd5e00572a33a29fc1bb11581368354ff3a1ce2de7bb4201871a4f97120",
+  "release": {
+    "id": "rel:tigrbl-tests-failing-case-closure-cases-20260421",
+    "version": "0.3.19.dev1+tigrbl-tests-failing-case-closure.cases.20260421",
+    "status": "published",
+    "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "claim_ids": [
+      "clm:tigrbl-tests-failing-case-closure-001"
+    ],
+    "evidence_ids": [
+      "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+    ]
+  },
+  "boundary": {
+    "id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "title": "tigrbl_tests failing-case closure boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:tigrbl-tests-failing-case-closure-001"
+    ],
+    "profile_ids": []
+  },
+  "claims": [
+    {
+      "id": "clm:tigrbl-tests-failing-case-closure-001",
+      "title": "tigrbl_tests failing cases are closed",
+      "status": "published",
+      "tier": "T2",
+      "kind": "test_closure",
+      "description": "Asserts that every pytest case failing in the tigrbl_tests closure sweep is now passing under the full tigrbl_tests run, with the final JUnit and pytest output attached as evidence.",
+      "feature_ids": [
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ],
+      "test_ids": [
+        "tst:http-route-jsonrpc-openrpc-surface",
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:tcase-0013",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
+        "tst:closure-case-authn-unauthorized-errors",
+        "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-sync",
+        "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-async",
+        "tst:closure-case-opspec-dep-failure-aborts-pre-tx-sync",
+        "tst:closure-case-opspec-dep-failure-aborts-pre-tx-async",
+        "tst:closure-case-secdep-auth-parity-rest-rpc-sync",
+        "tst:closure-case-secdep-auth-parity-rest-rpc-async",
+        "tst:closure-case-tigrbl-create-call-graph-250-ops",
+        "tst:closure-case-tigrbl-fastapi-sequential-10-rounds",
+        "tst:closure-case-atom-stage-phase-window-static",
+        "tst:closure-case-openrpc-router-mount-server-url",
+        "tst:closure-case-openapi-declared-surface-metadata",
+        "tst:closure-case-operator-cookie-form-upload-roundtrip",
+        "tst:closure-case-operator-streaming-sse-multi-body"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+      "title": "tigrbl_tests failure closure final pytest run 2026-04-21",
+      "status": "passed",
+      "kind": "test_run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl_tests_junit_closure_boundary_final.xml",
+      "claim_ids": [
+        "clm:http-route-002",
+        "clm:docs-support-001",
+        "clm:docs-support-002",
+        "clm:gate-009",
+        "clm:oas-001",
+        "clm:oas-002",
+        "clm:oas-003",
+        "clm:oas-004",
+        "clm:oas-005",
+        "clm:oas-006",
+        "clm:rpc-001",
+        "clm:rpc-002",
+        "clm:rpc-003",
+        "clm:op-001",
+        "clm:op-002",
+        "clm:op-003",
+        "clm:op-004",
+        "clm:op-005",
+        "clm:op-006",
+        "clm:op-007",
+        "clm:op-008",
+        "clm:op-009",
+        "clm:op-010",
+        "clm:op-011",
+        "clm:op-012",
+        "clm:cur-003",
+        "clm:cur-005",
+        "clm:tigrbl-test-suite-coverage-intake-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "test_ids": [
+        "tst:http-route-jsonrpc-openrpc-surface",
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:tcase-0013",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
+        "tst:closure-case-authn-unauthorized-errors",
+        "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-sync",
+        "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-async",
+        "tst:closure-case-opspec-dep-failure-aborts-pre-tx-sync",
+        "tst:closure-case-opspec-dep-failure-aborts-pre-tx-async",
+        "tst:closure-case-secdep-auth-parity-rest-rpc-sync",
+        "tst:closure-case-secdep-auth-parity-rest-rpc-async",
+        "tst:closure-case-tigrbl-create-call-graph-250-ops",
+        "tst:closure-case-tigrbl-fastapi-sequential-10-rounds",
+        "tst:closure-case-atom-stage-phase-window-static",
+        "tst:closure-case-openrpc-router-mount-server-url",
+        "tst:closure-case-openapi-declared-surface-metadata",
+        "tst:closure-case-operator-cookie-form-upload-roundtrip",
+        "tst:closure-case-operator-streaming-sse-multi-body"
+      ]
+    }
+  ],
+  "summary": {
+    "release_id": "rel:tigrbl-tests-failing-case-closure-cases-20260421",
+    "version": "0.3.19.dev1+tigrbl-tests-failing-case-closure.cases.20260421",
+    "status": "published",
+    "claim_count": 1,
+    "evidence_count": 1
+  }
+}
