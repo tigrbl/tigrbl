@@ -187,7 +187,7 @@ jobs:
       - name: Validate release promotion and handoff gates
         run: >-
           python tools/ci/validate_gate_e_promotion.py
-          && python tools/ci/validate_phase14_handoff.py
+          && python tools/ci/validate_post_promotion_handoff.py
 
       - name: Assemble certification dry-run bundle
         shell: bash

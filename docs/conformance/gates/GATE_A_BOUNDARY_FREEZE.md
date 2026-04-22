@@ -6,7 +6,7 @@ Freeze the target boundary, claim language, release-note claim policy, docs poin
 
 ## Current status
 
-Implemented and refreshed through the Phase 14 post-promotion handoff checkpoint.
+Implemented and refreshed through the Post-promotion handoff checkpoint.
 
 This does **not** mean the boundary changed. It means the boundary-freeze control layer remains enforceable by CI and has been refreshed to keep the frozen current target, the claim registry, and the handoff governance docs synchronized after release promotion.
 
@@ -66,6 +66,6 @@ If those synchronized updates are missing, CI must fail.
 - `docs/conformance/audit/2026/phase4-boundary-freeze/README.md`
 - `docs/conformance/audit/2026/p6-rfc-sec/README.md`
 - `docs/conformance/audit/2026/p13-gate-e/README.md`
-- `docs/conformance/audit/2026/p14-post-promotion-handoff/README.md`
+- `docs/conformance/audit/2026/post-promotion-handoff/README.md`
 - `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json`
 - `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json`

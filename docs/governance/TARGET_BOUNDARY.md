@@ -75,6 +75,6 @@ The following remain server/runtime concerns for the frozen cycle:
 
 The framework keeps auth dependency/hook-based only in the frozen cycle and does not add a new monolithic generic auth middleware abstraction.
 
-## Phase 14 handoff rule
+## Post-promotion handoff rule
 
 The active `0.3.19.dev1` line must keep next-target datatype/table work isolated from the frozen `0.3.18` release history until a later governed cycle declares and proves a new boundary.

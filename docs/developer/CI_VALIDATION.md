@@ -24,7 +24,7 @@ The current certification program uses policy validators, evidence-lane workflow
 - `tools/ci/validate_gate_c_conformance_security.py`
 - `tools/ci/validate_gate_d_reproducibility.py`
 - `tools/ci/validate_gate_e_promotion.py`
-- `tools/ci/validate_phase14_handoff.py`
+- `tools/ci/validate_post_promotion_handoff.py`
 - `tools/ci/generate_boundary_freeze_manifest.py`
 
 ## What is enforced
@@ -47,7 +47,7 @@ The current certification program uses policy validators, evidence-lane workflow
 - the Phase 6 Tigrcorn hardening package stays documented, profile-backed, and fail-closed for negative-certification claims
 - the Phase 7 claim lifecycle and release certification-bundle artifacts stay synchronized and machine-checked
 - Gate E promotion output stays synchronized to the exact chosen dev build and the promoted stable release bundle
-- the Phase 14 handoff keeps frozen release history separated from the active next-line bundle
+- the Post-promotion handoff keeps frozen release history separated from the active next-line bundle
 
 ## Workflows
 
@@ -93,6 +93,6 @@ The workflow at `.github/workflows/gate-d-reproducibility.yml` reruns the clean-
 
 The workflow at `.github/workflows/gate-e-promotion.yml` validates the promoted stable release bundle and frozen stable documentation pointers via `tools/ci/validate_gate_e_promotion.py`.
 
-### Phase 14 post-promotion handoff
+### Post-promotion handoff
 
-The workflow at `.github/workflows/phase14-post-promotion-handoff.yml` validates the handoff boundary, active next-line versioning, next-target planning docs, and archived WIP state via `tools/ci/validate_phase14_handoff.py`.
+The workflow at `.github/workflows/post-promotion-handoff.yml` validates the handoff boundary, active next-line versioning, next-target planning docs, and archived WIP state via `tools/ci/validate_post_promotion_handoff.py`.

@@ -831,10 +831,10 @@
     "HANDOFF-001": {
       "artifact_paths": [
         "docs/conformance/dev/0.3.19.dev1/gate-results/post-promotion-handoff.md",
-        "docs/conformance/audit/2026/p14-post-promotion-handoff/README.md"
+        "docs/conformance/audit/2026/post-promotion-handoff/README.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff",
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff",
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
@@ -848,28 +848,28 @@
         "policy governance"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes",
-        "tools/ci/tests/test_phase14_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes",
+        "tools/ci/tests/test_post_promotion_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
       ]
     },
     "HANDOFF-002": {
       "artifact_paths": [
-        "docs/conformance/audit/2026/p14-post-promotion-handoff/README.md"
+        "docs/conformance/audit/2026/post-promotion-handoff/README.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff"
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff"
       ],
       "doc_paths": [
-        "tools/ci/validate_phase14_handoff.py",
-        "tools/ci/tests/test_phase14_handoff.py",
-        ".github/workflows/phase14-post-promotion-handoff.yml",
+        "tools/ci/validate_post_promotion_handoff.py",
+        "tools/ci/tests/test_post_promotion_handoff.py",
+        ".github/workflows/post-promotion-handoff.yml",
         "docs/developer/CI_VALIDATION.md"
       ],
       "lane_classes": [
         "post-promotion handoff"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes"
       ]
     },
     "NEXT-001": {
@@ -878,7 +878,7 @@
         "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff",
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff",
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
@@ -892,30 +892,30 @@
         "policy governance"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_next_line_and_next_target_claim_rows_exist",
-        "tools/ci/tests/test_phase14_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_next_line_and_next_target_claim_rows_exist",
+        "tools/ci/tests/test_post_promotion_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
       ]
     },
     "NEXT-002": {
       "artifact_paths": [
         "docs/conformance/NEXT_TARGETS.md",
-        "docs/notes/archive/2026/p14-post-promotion-handoff/README.md"
+        "docs/notes/archive/2026/post-promotion-handoff/README.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff"
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff"
       ],
       "doc_paths": [
         "docs/conformance/NEXT_TARGETS.md",
-        ".ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.md",
-        ".ssot/adr/ADR-1043-post-promotion-release-history-freeze.md",
-        ".ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md"
+        ".ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.yaml",
+        ".ssot/adr/ADR-1043-post-promotion-release-history-freeze.yaml",
+        ".ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml"
       ],
       "lane_classes": [
         "post-promotion handoff"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_next_line_and_next_target_claim_rows_exist",
-        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_next_line_and_next_target_claim_rows_exist",
+        "tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes"
       ]
     },
     "NEXT-003": {
@@ -985,8 +985,8 @@
       ],
       "doc_paths": [
         "docs/conformance/NEXT_TARGETS.md",
-        ".ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.md",
-        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.md"
+        ".ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.yaml",
+        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.yaml"
       ],
       "lane_classes": [
         "policy governance"
@@ -997,14 +997,14 @@
     },
     "NEXT-007": {
       "artifact_paths": [
-        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md"
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml"
       ],
       "ci_jobs": [
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
-        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md",
-        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.md"
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml",
+        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.yaml"
       ],
       "lane_classes": [
         "next-target planning"
@@ -1015,15 +1015,15 @@
     },
     "NEXT-008": {
       "artifact_paths": [
-        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.md"
+        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml"
       ],
       "ci_jobs": [
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
-        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.md",
-        ".ssot/specs/SPEC-2015-endpoint-keyed-jsonrpc-bindings.md",
-        ".ssot/specs/SPEC-2016-core-default-endpoint-mappings.md"
+        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml",
+        ".ssot/specs/SPEC-2015-endpoint-keyed-jsonrpc-bindings.yaml",
+        ".ssot/specs/SPEC-2016-core-default-endpoint-mappings.yaml"
       ],
       "lane_classes": [
         "next-target planning"
@@ -1034,13 +1034,13 @@
     },
     "NEXT-009": {
       "artifact_paths": [
-        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.md"
+        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.yaml"
       ],
       "ci_jobs": [
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
-        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.md"
+        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.yaml"
       ],
       "lane_classes": [
         "next-target planning"
@@ -1052,13 +1052,13 @@
     },
     "NEXT-010": {
       "artifact_paths": [
-        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md"
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml"
       ],
       "ci_jobs": [
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
-        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md"
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml"
       ],
       "lane_classes": [
         "next-target planning"

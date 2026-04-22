@@ -20,13 +20,13 @@ REQUIRED_PATHS = [
     ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'EVIDENCE_INDEX.md',
     ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'gate-results' / 'README.md',
     ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'gate-results' / 'post-promotion-handoff.md',
-    ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'p14-post-promotion-handoff' / 'README.md',
-    ROOT / 'docs' / 'notes' / 'archive' / '2026' / 'p14-post-promotion-handoff' / 'README.md',
-    ROOT / 'docs' / 'adr' / 'ADR-0011-post-promotion-release-history-freeze.md',
-    ROOT / 'docs' / 'adr' / 'ADR-0012-next-target-datatype-table-program-activation.md',
-    ROOT / 'tools' / 'ci' / 'validate_phase14_handoff.py',
-    ROOT / 'tools' / 'ci' / 'tests' / 'test_phase14_handoff.py',
-    ROOT / '.github' / 'workflows' / 'phase14-post-promotion-handoff.yml',
+    ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'post-promotion-handoff' / 'README.md',
+    ROOT / 'docs' / 'notes' / 'archive' / '2026' / 'post-promotion-handoff' / 'README.md',
+    ROOT / '.ssot' / 'adr' / 'ADR-1043-post-promotion-release-history-freeze.yaml',
+    ROOT / '.ssot' / 'adr' / 'ADR-1044-next-target-datatype-table-program-activation.yaml',
+    ROOT / 'tools' / 'ci' / 'validate_post_promotion_handoff.py',
+    ROOT / 'tools' / 'ci' / 'tests' / 'test_post_promotion_handoff.py',
+    ROOT / '.github' / 'workflows' / 'post-promotion-handoff.yml',
 ]
 
 
@@ -52,7 +52,7 @@ def main() -> None:
     }
     for claim_id, allowed in required_status.items():
         if claim_id not in rows:
-            errors.append(f'missing Phase 14 claim row: {claim_id}')
+            errors.append(f'missing Post-promotion handoff claim row: {claim_id}')
             continue
         _text, status, _tier = rows[claim_id]
         if status not in allowed:
@@ -84,10 +84,10 @@ def main() -> None:
 
     for path in REQUIRED_PATHS:
         if not path.exists():
-            errors.append(f'missing Phase 14 required path: {path.relative_to(ROOT)}')
+            errors.append(f'missing Post-promotion handoff required path: {path.relative_to(ROOT)}')
 
     fail(errors)
-    print('Phase 14 handoff validation passed')
+    print('Post-promotion handoff validation passed')
 
 
 if __name__ == '__main__':

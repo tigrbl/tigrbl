@@ -4,4 +4,4 @@ Move resolved or superseded working notes here.
 
 Archived handoff note directories:
 
-- `p14-post-promotion-handoff/`
+- `post-promotion-handoff/`

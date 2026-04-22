@@ -137,20 +137,20 @@ The design direction now captured here and in the ADR set includes:
 
 ## Governing ADR set for the next target
 
-- `.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.md`
-- `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.md`
-- `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.md`
-- `.ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.md`
-- `.ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.md`
-- `.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.md`
+- `.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.yaml`
+- `.ssot/adr/ADR-1043-post-promotion-release-history-freeze.yaml`
+- `.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml`
+- `.ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.yaml`
+- `.ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml`
+- `.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml`
 
-## Deliverables now established by Phase 14
+## Deliverables now established by Post-promotion handoff
 
 - active dev line `0.3.19.dev1`
 - active dev-bundle scaffold `docs/conformance/dev/0.3.19.dev1/`
 - next-target ADRs
-- handoff audit note `docs/conformance/audit/2026/p14-post-promotion-handoff/README.md`
-- archived promotion-only WIP note `docs/notes/archive/2026/p14-post-promotion-handoff/README.md`
+- handoff audit note `docs/conformance/audit/2026/post-promotion-handoff/README.md`
+- archived promotion-only WIP note `docs/notes/archive/2026/post-promotion-handoff/README.md`
 - transport-dispatch setup note `.ssot/reports/transport-dispatch-track-setup.md`
 - transport-dispatch boundary snapshot `.ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json`
 
