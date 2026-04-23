@@ -98,8 +98,8 @@ GROUPS: dict[str, EvidenceTemplate] = {
     'operator': EvidenceTemplate(
         lane_classes=['operator-surface smoke', 'docs UI smoke'],
         tests=[
-            'pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py',
+            'pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py',
+            'pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py',
         ],
         ci_jobs=[
             '.github/workflows/operator-surface.yml#phase7-operator-surface',
@@ -120,7 +120,7 @@ GROUPS: dict[str, EvidenceTemplate] = {
         lane_classes=['CLI smoke', 'server compatibility smoke'],
         tests=[
             'pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py',
+            'pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py',
         ],
         ci_jobs=[
             '.github/workflows/cli-smoke.yml#phase8-cli',
@@ -177,6 +177,189 @@ GROUPS: dict[str, EvidenceTemplate] = {
 }
 
 
+CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
+    'HANDOFF-001': {
+        'lane_classes': ['post-promotion handoff', 'policy governance'],
+        'tests': [
+            'tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes',
+            'tools/ci/tests/test_post_promotion_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history',
+        ],
+        'ci_jobs': [
+            '.github/workflows/post-promotion-handoff.yml#post-promotion-handoff',
+            '.github/workflows/policy-governance.yml#validate-policy',
+        ],
+        'artifact_paths': [
+            'docs/conformance/dev/0.3.19.dev1/gate-results/post-promotion-handoff.md',
+            'docs/conformance/audit/2026/post-promotion-handoff/README.md',
+        ],
+        'doc_paths': [
+            'docs/conformance/CURRENT_TARGET.md',
+            'docs/conformance/CURRENT_STATE.md',
+            'docs/conformance/NEXT_TARGETS.md',
+            'docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md',
+        ],
+    },
+    'HANDOFF-002': {
+        'lane_classes': ['post-promotion handoff'],
+        'tests': ['tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes'],
+        'ci_jobs': ['.github/workflows/post-promotion-handoff.yml#post-promotion-handoff'],
+        'artifact_paths': ['docs/conformance/audit/2026/post-promotion-handoff/README.md'],
+        'doc_paths': [
+            'tools/ci/validate_post_promotion_handoff.py',
+            'tools/ci/tests/test_post_promotion_handoff.py',
+            '.github/workflows/post-promotion-handoff.yml',
+            'docs/developer/CI_VALIDATION.md',
+        ],
+    },
+    'NEXT-001': {
+        'lane_classes': ['post-promotion handoff', 'policy governance'],
+        'tests': [
+            'tools/ci/tests/test_post_promotion_handoff.py::test_next_line_and_next_target_claim_rows_exist',
+            'tools/ci/tests/test_post_promotion_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history',
+        ],
+        'ci_jobs': [
+            '.github/workflows/post-promotion-handoff.yml#post-promotion-handoff',
+            '.github/workflows/policy-governance.yml#validate-policy',
+        ],
+        'artifact_paths': [
+            'docs/conformance/dev/0.3.19.dev1/BUILD_NOTES.md',
+            'docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md',
+        ],
+        'doc_paths': [
+            'pkgs/core/tigrbl/pyproject.toml',
+            'docs/governance/VERSIONING_POLICY.md',
+            'docs/conformance/CURRENT_STATE.md',
+            'docs/conformance/dev/README.md',
+        ],
+    },
+    'NEXT-002': {
+        'lane_classes': ['post-promotion handoff'],
+        'tests': [
+            'tools/ci/tests/test_post_promotion_handoff.py::test_next_line_and_next_target_claim_rows_exist',
+            'tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes',
+        ],
+        'ci_jobs': ['.github/workflows/post-promotion-handoff.yml#post-promotion-handoff'],
+        'artifact_paths': [
+            'docs/conformance/NEXT_TARGETS.md',
+            'docs/notes/archive/2026/post-promotion-handoff/README.md',
+        ],
+        'doc_paths': [
+            'docs/conformance/NEXT_TARGETS.md',
+            '.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.yaml',
+            '.ssot/adr/ADR-1043-post-promotion-release-history-freeze.yaml',
+            '.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml',
+        ],
+    },
+    'NEXT-003': {
+        'lane_classes': ['policy governance'],
+        'tests': ['pkgs/core/tigrbl_tests/tests/unit/decorators/test_declarative_surface.py::test_declarative_surface_literals_are_present'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py'],
+        'doc_paths': [
+            'pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py',
+            'pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/op.py',
+            'pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/hook.py',
+        ],
+    },
+    'NEXT-004': {
+        'lane_classes': ['policy governance'],
+        'tests': [
+            'pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py::test_declared_surface_docs_derive_from_bindings',
+            'pkgs/core/tigrbl_concrete/tests/test_phase2_transport_docs.py::test_transport_docs_follow_declared_bindings',
+        ],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py'],
+        'doc_paths': [
+            'pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py',
+            'pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py',
+            'pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py',
+        ],
+    },
+    'NEXT-005': {
+        'lane_classes': ['policy governance'],
+        'tests': ['tools/ci/tests/test_declared_surface.py::test_phase1_declared_surface_validator_passes'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['tools/ci/validate_declared_surface.py'],
+        'doc_paths': ['tools/ci/validate_declared_surface.py', 'docs/developer/CI_VALIDATION.md'],
+    },
+    'NEXT-006': {
+        'lane_classes': ['policy governance'],
+        'tests': ['tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': [
+            '.ssot/reports/transport-dispatch-track-setup.md',
+            '.ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json',
+        ],
+        'doc_paths': [
+            'docs/conformance/NEXT_TARGETS.md',
+            '.ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.yaml',
+            '.ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.yaml',
+        ],
+    },
+    'NEXT-007': {
+        'lane_classes': ['next-target planning'],
+        'tests': ['pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml'],
+        'doc_paths': [
+            '.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml',
+            '.ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.yaml',
+        ],
+    },
+    'NEXT-008': {
+        'lane_classes': ['next-target planning'],
+        'tests': ['pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['.ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml'],
+        'doc_paths': [
+            '.ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml',
+            '.ssot/specs/SPEC-2015-endpoint-keyed-jsonrpc-bindings.yaml',
+            '.ssot/specs/SPEC-2016-core-default-endpoint-mappings.yaml',
+        ],
+    },
+    'NEXT-009': {
+        'lane_classes': ['next-target planning'],
+        'tests': [
+            'pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching',
+            'pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity',
+        ],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['.ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.yaml'],
+        'doc_paths': ['.ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.yaml'],
+    },
+    'NEXT-010': {
+        'lane_classes': ['next-target planning'],
+        'tests': ['pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml'],
+        'doc_paths': ['.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml'],
+    },
+    'NEXT-011': {
+        'lane_classes': ['next-target planning'],
+        'tests': ['tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': ['.ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json'],
+        'doc_paths': [
+            '.ssot/registry.json',
+            '.ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json',
+        ],
+    },
+    'NEXT-012': {
+        'lane_classes': ['policy governance'],
+        'tests': ['tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes'],
+        'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
+        'artifact_paths': [
+            'tools/ci/validate_transport_dispatch_track.py',
+            'docs/conformance/EVIDENCE_REGISTRY.json',
+        ],
+        'doc_paths': [
+            'tools/ci/validate_transport_dispatch_track.py',
+            'docs/conformance/EVIDENCE_REGISTRY.json',
+        ],
+    },
+}
+
+
 def parse_claim_ids() -> list[str]:
     ids: list[str] = []
     for line in (CONFORMANCE / 'CLAIM_REGISTRY.md').read_text(encoding='utf-8').splitlines():
@@ -225,6 +408,9 @@ def rel(path: Path) -> str:
 def build_registry() -> dict[str, object]:
     claims: dict[str, object] = {}
     for claim_id in parse_claim_ids():
+        if claim_id in CLAIM_OVERRIDES:
+            claims[claim_id] = CLAIM_OVERRIDES[claim_id]
+            continue
         template = GROUPS[classify(claim_id)]
         claims[claim_id] = {
             'lane_classes': template.lane_classes,
