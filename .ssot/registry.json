@@ -13870,6 +13870,36 @@
         "spc:2084",
         "spc:2085"
       ]
+    },
+    {
+      "id": "feat:runtime-executor-doc-endpoint-parity-001",
+      "title": "Runtime executor documentation endpoint parity",
+      "description": "Python runtime executors and the Rust runtime executor expose the same favicon and documentation UI endpoint contract: favicon routes behave as browser favicon routes, Swagger UIX is hosted at /docs, and Lens UIX is hosted at /lens.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2077"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:rust-runtime-demo-favicon-routes",
+        "tst:rust-runtime-demo-swagger-uix",
+        "tst:rust-runtime-demo-lens-uix",
+        "tst:rust-runtime-demo-console-logs"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -27168,7 +27198,8 @@
       "path": "pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_docs_surface.py",
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
-        "feat:static-files-surface-001"
+        "feat:static-files-surface-001",
+        "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001"
@@ -27186,7 +27217,8 @@
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:swagger-openapi-uix-001",
-        "feat:oas-006"
+        "feat:oas-006",
+        "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001"
@@ -27204,7 +27236,8 @@
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:rpc-003"
+        "feat:rpc-003",
+        "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001"
@@ -27221,7 +27254,8 @@
       "path": "pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_docs_surface.py",
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
-        "feat:operator-surface-smoke-runtime-parity-001"
+        "feat:operator-surface-smoke-runtime-parity-001",
+        "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001"
@@ -31443,7 +31477,8 @@
         "feat:executor-dispatch-removal-001",
         "feat:kernelplan-dispatch-ownership-001",
         "feat:transport-bypass-removal-001",
-        "feat:transport-parity-contract-001"
+        "feat:transport-parity-contract-001",
+        "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "test_ids": [
         "tst:http-route-jsonrpc-openrpc-surface",
@@ -40010,7 +40045,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "ece7e0acfb312861aa3d522b8776ec850d71f9c35a8bed88c06d17cb5ae1b20f",
+      "content_sha256": "82ef660694e7d10c9d86a1f0932d09934288f64fe0df53abfaf38b78e60f818e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -40024,6 +40059,11 @@
           "status": "draft",
           "note": "Updated docs route surface with mount evidence.",
           "at": "2026-04-21T08:15:23Z"
+        },
+        {
+          "status": "draft",
+          "note": "Specified favicon, Swagger UIX, Lens UIX, and runtime executor endpoint parity contract.",
+          "at": "2026-04-24T10:54:06Z"
         }
       ],
       "kind": "local-policy",
