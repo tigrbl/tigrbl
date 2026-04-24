@@ -6,7 +6,12 @@ use tigrbl_rs_runtime::channel::{
 #[test]
 fn runtime_channel_adapter_derives_socket_channels() {
     let adapter = RuntimeChannelAdapter::default();
-    let channel = adapter.bind("wss", "/ws/widgets/{id}", "bidirectional_stream", Some("jsonrpc"));
+    let channel = adapter.bind(
+        "wss",
+        "/ws/widgets/{id}",
+        "bidirectional_stream",
+        Some("jsonrpc"),
+    );
 
     assert_eq!(channel.kind, "websocket");
     assert_eq!(channel.family, ChannelFamily::Socket);
@@ -18,7 +23,10 @@ fn runtime_channel_adapter_derives_socket_channels() {
 
 #[test]
 fn runtime_channel_adapter_derives_stream_families() {
-    assert_eq!(derive_family("https", "server_stream"), ChannelFamily::Stream);
+    assert_eq!(
+        derive_family("https", "server_stream"),
+        ChannelFamily::Stream
+    );
     assert_eq!(derive_kind("https", "event_stream"), "sse");
     assert_eq!(
         derive_subevents("https", "event_stream"),
@@ -29,5 +37,8 @@ fn runtime_channel_adapter_derives_stream_families() {
         ]
     );
     assert_eq!(normalize_exchange("bidirectional"), "bidirectional_stream");
-    assert_eq!(derive_family("https", "fire_and_forget"), ChannelFamily::Request);
+    assert_eq!(
+        derive_family("https", "fire_and_forget"),
+        ChannelFamily::Request
+    );
 }

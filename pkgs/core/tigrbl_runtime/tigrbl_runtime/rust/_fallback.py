@@ -51,6 +51,7 @@ def compile_spec(spec_json: str) -> str:
     engine_kind = engine.get("kind", "inmemory")
     engine_language = engine.get("language", "rust")
     engine_callback = engine.get("callback")
+    engine_options = dict(engine.get("options") or {})
     callbacks = [item.get("name", "") for item in spec.get("callbacks", [])]
     bindings = []
     routes = []
@@ -95,6 +96,7 @@ def compile_spec(spec_json: str) -> str:
             "engine_kind": engine_kind,
             "engine_language": engine_language,
             "engine_callback": engine_callback,
+            "engine_options": deepcopy(engine_options),
         }
         bindings.append(item)
         routes.append(
@@ -113,6 +115,7 @@ def compile_spec(spec_json: str) -> str:
         "title": spec.get("title", spec.get("name", "")),
         "version": spec.get("version", "0.1.0"),
         "engine_kind": engine_kind,
+        "engine_options": deepcopy(engine_options),
         "binding_count": len(bindings),
         "route_count": len(routes),
         "callbacks": callbacks,

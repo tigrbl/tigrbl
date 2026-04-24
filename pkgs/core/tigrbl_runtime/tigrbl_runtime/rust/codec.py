@@ -281,13 +281,21 @@ def _lower_declared_engines(source: dict[str, Any], app: Any) -> list[dict[str, 
         spec = None
 
     kind = "inmemory"
+    options: dict[str, Any] = {}
     if spec is not None and getattr(spec, "kind", None):
         if spec.kind == "sqlite" and getattr(spec, "memory", False):
             kind = "inmemory"
         else:
             kind = str(spec.kind)
+        path = getattr(spec, "path", None)
+        if isinstance(path, str) and path:
+            options["path"] = path
+        dsn = getattr(spec, "dsn", None)
+        if isinstance(dsn, str) and dsn:
+            options["dsn"] = dsn
+        options["memory"] = bool(getattr(spec, "memory", False))
 
-    return [{"name": "default", "kind": kind, "language": "rust"}]
+    return [{"name": "default", "kind": kind, "language": "rust", "options": options}]
 
 
 def _callable_name(value: Any) -> str:
