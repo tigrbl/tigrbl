@@ -20,6 +20,7 @@ CARGO_WORKSPACE_VERSION_RE = re.compile(
 )
 CARGO_PACKAGE_NAME_RE = re.compile(r'(?m)^name\s*=\s*"([^"]+)"')
 CARGO_DEP_RE = re.compile(r'^(\s*)([A-Za-z0-9_-]+)\s*=\s*\{([^}]*)\}(\s*)$')
+PACKAGE_SPLIT_RE = re.compile(r"[\s,]+")
 
 
 @dataclass(frozen=True)
@@ -157,6 +158,40 @@ def cargo_publish_order(projects: Iterable[dict[str, str]]) -> list[str]:
     return [name for name in preferred if name in names]
 
 
+def parse_package_selection(value: str | None) -> set[str] | None:
+    if value is None:
+        return None
+    selected = {item for item in PACKAGE_SPLIT_RE.split(value.strip()) if item}
+    if not selected or selected == {"all"}:
+        return None
+    if "all" in selected:
+        raise ValueError("package selection must be 'all' or a package list, not both")
+    return selected
+
+
+def filter_projects(
+    projects: list[dict[str, str]], selected: set[str] | None
+) -> list[dict[str, str]]:
+    if selected is None:
+        return projects
+    return [project for project in projects if project["name"] in selected]
+
+
+def validate_package_selection(
+    selected: set[str] | None,
+    py_projects: list[dict[str, str]],
+    cargo: list[dict[str, str]],
+) -> None:
+    if selected is None:
+        return
+    known = {project["name"] for project in [*py_projects, *cargo]}
+    unknown = selected.difference(known)
+    if unknown:
+        known_list = ", ".join(sorted(known))
+        unknown_list = ", ".join(sorted(unknown))
+        raise ValueError(f"unknown package(s): {unknown_list}. Known packages: {known_list}")
+
+
 def replace_python_version(path: Path, new_version: str) -> bool:
     text = read(path)
     updated, count = PYPROJECT_VERSION_RE.subn(rf'\g<1>"{new_version}"', text, count=1)
@@ -203,9 +238,15 @@ def update_cargo_internal_dependency_versions(
     return changed
 
 
-def build_plan(semver: str, *, write_changes: bool) -> dict[str, object]:
-    py_projects = python_projects()
-    cargo = cargo_projects()
+def build_plan(
+    semver: str, *, write_changes: bool, packages: str | None = None
+) -> dict[str, object]:
+    all_py_projects = python_projects()
+    all_cargo = cargo_projects()
+    selected = parse_package_selection(packages)
+    validate_package_selection(selected, all_py_projects, all_cargo)
+    py_projects = filter_projects(all_py_projects, selected)
+    cargo = filter_projects(all_cargo, selected)
     changed: list[str] = []
 
     py_releases: list[dict[str, str]] = []
@@ -215,20 +256,24 @@ def build_plan(semver: str, *, write_changes: bool) -> dict[str, object]:
         if write_changes and replace_python_version(ROOT / project["path"], new_version):
             changed.append(project["path"])
 
-    cargo_old_version = cargo_workspace_version()
-    cargo_new_version = str(Version.parse(cargo_old_version, cargo=True).bump(semver))
-    cargo_releases = [
-        {**project, "old_version": cargo_old_version, "version": cargo_new_version}
-        for project in cargo
-    ]
-    if write_changes and replace_cargo_workspace_version(cargo_new_version):
-        changed.append("Cargo.toml")
-    if write_changes:
-        changed.extend(
-            update_cargo_internal_dependency_versions(
-                cargo_members(), {project["name"] for project in cargo}, cargo_new_version
+    cargo_releases: list[dict[str, str]] = []
+    if cargo:
+        cargo_old_version = cargo_workspace_version()
+        cargo_new_version = str(Version.parse(cargo_old_version, cargo=True).bump(semver))
+        cargo_releases = [
+            {**project, "old_version": cargo_old_version, "version": cargo_new_version}
+            for project in cargo
+        ]
+        if write_changes and replace_cargo_workspace_version(cargo_new_version):
+            changed.append("Cargo.toml")
+        if write_changes:
+            changed.extend(
+                update_cargo_internal_dependency_versions(
+                    cargo_members(),
+                    {project["name"] for project in all_cargo},
+                    cargo_new_version,
+                )
             )
-        )
 
     all_releases = [
         {"kind": "pypi", "tag": f'{release["name"]}=={release["version"]}', **release}
@@ -240,6 +285,7 @@ def build_plan(semver: str, *, write_changes: bool) -> dict[str, object]:
 
     return {
         "semver": semver,
+        "package_selection": sorted(selected) if selected is not None else "all",
         "python": py_releases,
         "crates": cargo_releases,
         "crate_publish_order": cargo_publish_order(cargo_releases),
@@ -257,8 +303,41 @@ def git_output(args: list[str]) -> str:
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
+def git_config_value(key: str) -> str:
+    result = subprocess.run(
+        ["git", "config", key],
+        cwd=ROOT,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        check=False,
+    )
+    if result.returncode != 0:
+        return ""
+    return result.stdout.strip()
+
+
+def ensure_git_identity() -> None:
+    name = git_config_value("user.name")
+    email = git_config_value("user.email")
+    if name and email:
+        return
+    if not name:
+        run(["git", "config", "user.name", "github-actions[bot]"])
+    if not email:
+        run(
+            [
+                "git",
+                "config",
+                "user.email",
+                "41898282+github-actions[bot]@users.noreply.github.com",
+            ]
+        )
+
+
 def create_github_releases(plan_path: Path) -> None:
     plan = json.loads(read(plan_path))
+    ensure_git_identity()
     head = git_output(["rev-parse", "HEAD"])
     tags: list[str] = []
     for release in plan["github_releases"]:
@@ -323,6 +402,8 @@ def create_github_releases(plan_path: Path) -> None:
 
 def publish_crates(plan_path: Path, *, dry_run: bool) -> None:
     plan = json.loads(read(plan_path))
+    if not plan["crate_publish_order"]:
+        raise RuntimeError("release plan does not include any Rust crates")
     for crate in plan["crate_publish_order"]:
         command = ["cargo", "publish", "-p", crate, "--locked"]
         if dry_run:
@@ -334,6 +415,14 @@ def publish_crates(plan_path: Path, *, dry_run: bool) -> None:
             time.sleep(20)
 
 
+def build_pypi_packages(plan_path: Path, *, out_dir: str) -> None:
+    plan = json.loads(read(plan_path))
+    if not plan["python"]:
+        raise RuntimeError("release plan does not include any Python packages")
+    for project in plan["python"]:
+        run(["uv", "build", "--package", project["name"], "--out-dir", out_dir])
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -341,6 +430,11 @@ def main(argv: list[str] | None = None) -> int:
     bump = subparsers.add_parser("bump")
     bump.add_argument("--semver", choices=["patch", "minor", "major", "finalize"], required=True)
     bump.add_argument("--summary", type=Path, required=True)
+    bump.add_argument(
+        "--packages",
+        default="all",
+        help="Comma- or whitespace-separated package names to include, or 'all'.",
+    )
     bump.add_argument("--write", action="store_true")
 
     gh = subparsers.add_parser("create-github-releases")
@@ -350,10 +444,14 @@ def main(argv: list[str] | None = None) -> int:
     crates.add_argument("--summary", type=Path, required=True)
     crates.add_argument("--dry-run", action="store_true")
 
+    pypi = subparsers.add_parser("build-pypi-packages")
+    pypi.add_argument("--summary", type=Path, required=True)
+    pypi.add_argument("--out-dir", default="dist")
+
     args = parser.parse_args(argv)
 
     if args.command == "bump":
-        plan = build_plan(args.semver, write_changes=args.write)
+        plan = build_plan(args.semver, write_changes=args.write, packages=args.packages)
         args.summary.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(plan, indent=2))
         return 0
@@ -364,6 +462,9 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "publish-crates":
         publish_crates(args.summary, dry_run=args.dry_run)
+        return 0
+    if args.command == "build-pypi-packages":
+        build_pypi_packages(args.summary, out_dir=args.out_dir)
         return 0
     raise AssertionError(args.command)
 

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from tools.release.release_automation import Version, build_plan
 
 
@@ -26,5 +28,42 @@ def test_release_plan_uses_required_github_tag_shape() -> None:
     plan = build_plan("patch", write_changes=False)
     tags = [release["tag"] for release in plan["github_releases"]]
     assert "tigrbl==0.3.20.dev1" in tags
-    assert "tigrbl_rs_spec==0.1.1-dev.1" in tags
+    assert "tigrbl_rs_spec==0.1.2-dev.1" in tags
     assert all("==" in tag for tag in tags)
+
+
+def test_release_plan_can_select_one_python_package() -> None:
+    plan = build_plan("patch", write_changes=False, packages="tigrbl_acme_ca")
+
+    assert [release["name"] for release in plan["python"]] == ["tigrbl_acme_ca"]
+    assert plan["crates"] == []
+    assert plan["crate_publish_order"] == []
+    assert [release["tag"] for release in plan["github_releases"]] == [
+        "tigrbl_acme_ca==0.1.3.dev1"
+    ]
+    assert plan["package_selection"] == ["tigrbl_acme_ca"]
+
+
+def test_release_plan_can_select_package_subset() -> None:
+    plan = build_plan(
+        "patch",
+        write_changes=False,
+        packages="tigrbl_acme_ca,tigrbl_rs_spec tigrbl_rs_ports",
+    )
+
+    assert [release["name"] for release in plan["python"]] == ["tigrbl_acme_ca"]
+    assert [release["name"] for release in plan["crates"]] == [
+        "tigrbl_rs_spec",
+        "tigrbl_rs_ports",
+    ]
+    assert plan["crate_publish_order"] == ["tigrbl_rs_spec", "tigrbl_rs_ports"]
+    assert plan["package_selection"] == [
+        "tigrbl_acme_ca",
+        "tigrbl_rs_ports",
+        "tigrbl_rs_spec",
+    ]
+
+
+def test_unknown_package_selection_fails() -> None:
+    with pytest.raises(ValueError, match="unknown package"):
+        build_plan("patch", write_changes=False, packages="does-not-exist")
