@@ -42841,6 +42841,28 @@
           "at": "2026-04-24T14:15:06Z"
         }
       ]
+    },
+    {
+      "id": "adr:1087",
+      "number": 1087,
+      "slug": "default-root-path-runtime-boundary",
+      "title": "Default root path runtime boundary",
+      "path": ".ssot/adr/ADR-1087-default-root-path-runtime-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "f763f71336a4a8197d1946a31d7a35883a598c4913189b8ac106796f5a376178",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted default GET / behavior for all Tigrbl apps and Python/Rust runtimes unless explicitly overridden.",
+          "at": "2026-04-24T20:24:13Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -45114,6 +45136,32 @@
         "adr:1082",
         "adr:1085",
         "adr:1086"
+      ]
+    },
+    {
+      "id": "spc:2091",
+      "number": 2091,
+      "slug": "default-root-path-contract",
+      "title": "Default root path contract",
+      "path": ".ssot/specs/SPEC-2091-default-root-path-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "cd720c57bb34027145df5e673dba7795b8bbb93869bd8251ec3363bab735fb23",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted cross-runtime default root path contract.",
+          "at": "2026-04-24T20:24:31Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1087"
       ]
     }
   ],
