@@ -17,34 +17,40 @@ CREATE INDEX IF NOT EXISTS idx_tigrbl_rows_table_key
 
 pub struct SqliteTransaction {
     connection: Mutex<Connection>,
+    tables: Vec<String>,
 }
 
 impl SqliteTransaction {
-    pub fn begin(path: String) -> PortResult<Self> {
+    pub fn begin(path: String, tables: Vec<String>) -> PortResult<Self> {
         let is_memory = is_memory_path(&path);
         let connection = Connection::open(path).map_err(sqlite_error)?;
         if is_memory {
-            initialize_schema_on(&connection)?;
+            initialize_schema_on(&connection, &tables)?;
         }
         connection
             .execute_batch("BEGIN IMMEDIATE;")
             .map_err(sqlite_error)?;
         Ok(Self {
             connection: Mutex::new(connection),
+            tables,
         })
     }
 }
 
-pub fn initialize_schema(path: &str) -> PortResult<()> {
+pub fn initialize_schema(path: &str, tables: &[String]) -> PortResult<()> {
     if is_memory_path(path) {
         return Ok(());
     }
     let connection = Connection::open(path).map_err(sqlite_error)?;
-    initialize_schema_on(&connection)
+    initialize_schema_on(&connection, tables)
 }
 
-fn initialize_schema_on(connection: &Connection) -> PortResult<()> {
-    connection.execute_batch(SCHEMA_SQL).map_err(sqlite_error)
+fn initialize_schema_on(connection: &Connection, tables: &[String]) -> PortResult<()> {
+    connection.execute_batch(SCHEMA_SQL).map_err(sqlite_error)?;
+    for table in tables {
+        create_relational_table(connection, table)?;
+    }
+    Ok(())
 }
 
 fn is_memory_path(path: &str) -> bool {
@@ -72,10 +78,13 @@ impl TransactionPort for SqliteTransaction {
         match kind {
             "create" => {
                 let row = body_object(&request.body)?;
+                let connection = self.connection()?;
+                if self.uses_relational_table(table) {
+                    return create_relational_row(&connection, table, row);
+                }
                 let row_key = find_id(request).map(value_key);
                 let row_json = serde_json::to_string(&value_to_json(&Value::Object(row.clone())))
                     .map_err(json_error)?;
-                let connection = self.connection()?;
                 connection
                     .execute(
                         "INSERT INTO _tigrbl_rows(table_name, row_key, row_json)
@@ -94,6 +103,15 @@ impl TransactionPort for SqliteTransaction {
                     .map(value_key)
                     .ok_or_else(|| PortError::Message("missing id for read".to_string()))?;
                 let connection = self.connection()?;
+                if self.uses_relational_table(table) {
+                    let row = select_relational_row(&connection, table, &row_key)?
+                        .ok_or_else(|| PortError::Message(format!("row not found in {table}")))?;
+                    return Ok(ResponseEnvelope {
+                        status: 200,
+                        headers: BTreeMap::new(),
+                        body: Value::Object(row),
+                    });
+                }
                 let row = select_row(&connection, table, &row_key)?
                     .ok_or_else(|| PortError::Message(format!("row not found in {table}")))?;
                 Ok(ResponseEnvelope {
@@ -158,6 +176,9 @@ impl TransactionPort for SqliteTransaction {
             }
             "list" => {
                 let connection = self.connection()?;
+                if self.uses_relational_table(table) {
+                    return list_relational_rows(&connection, table);
+                }
                 let mut statement = connection
                     .prepare(
                         "SELECT row_json FROM _tigrbl_rows
@@ -189,6 +210,115 @@ impl SqliteTransaction {
             .lock()
             .map_err(|_| PortError::Message("sqlite connection mutex poisoned".to_string()))
     }
+
+    fn uses_relational_table(&self, table: &str) -> bool {
+        self.tables.iter().any(|item| item == table)
+    }
+}
+
+fn create_relational_table(connection: &Connection, table: &str) -> PortResult<()> {
+    let table = quote_identifier(table)?;
+    connection
+        .execute_batch(&format!(
+            "CREATE TABLE IF NOT EXISTS {table} (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL
+            );"
+        ))
+        .map_err(sqlite_error)
+}
+
+fn create_relational_row(
+    connection: &Connection,
+    table: &str,
+    row: BTreeMap<String, Value>,
+) -> PortResult<ResponseEnvelope> {
+    let name = match row.get("name") {
+        Some(Value::String(value)) => value.clone(),
+        _ => {
+            return Err(PortError::Message(
+                "request body must include string field name".to_string(),
+            ))
+        }
+    };
+    let table = quote_identifier(table)?;
+    connection
+        .execute(
+            &format!("INSERT INTO {table}(name) VALUES (?1)"),
+            params![name],
+        )
+        .map_err(sqlite_error)?;
+    let mut response = BTreeMap::new();
+    response.insert(
+        "id".to_string(),
+        Value::Integer(connection.last_insert_rowid()),
+    );
+    response.insert("name".to_string(), Value::String(name));
+    Ok(ResponseEnvelope {
+        status: 201,
+        headers: BTreeMap::new(),
+        body: Value::Object(response),
+    })
+}
+
+fn select_relational_row(
+    connection: &Connection,
+    table: &str,
+    row_key: &str,
+) -> PortResult<Option<BTreeMap<String, Value>>> {
+    let table = quote_identifier(table)?;
+    let raw = connection
+        .query_row(
+            &format!("SELECT id, name FROM {table} WHERE id = ?1 LIMIT 1"),
+            params![row_key],
+            |row| Ok((row.get::<_, i64>(0)?, row.get::<_, String>(1)?)),
+        )
+        .optional()
+        .map_err(sqlite_error)?;
+    Ok(raw.map(|(id, name)| {
+        BTreeMap::from([
+            ("id".to_string(), Value::Integer(id)),
+            ("name".to_string(), Value::String(name)),
+        ])
+    }))
+}
+
+fn list_relational_rows(connection: &Connection, table: &str) -> PortResult<ResponseEnvelope> {
+    let table = quote_identifier(table)?;
+    let mut statement = connection
+        .prepare(&format!("SELECT id, name FROM {table} ORDER BY id"))
+        .map_err(sqlite_error)?;
+    let rows = statement
+        .query_map([], |row| {
+            Ok((row.get::<_, i64>(0)?, row.get::<_, String>(1)?))
+        })
+        .map_err(sqlite_error)?
+        .map(|item| {
+            let (id, name) = item.map_err(sqlite_error)?;
+            Ok(Value::Object(BTreeMap::from([
+                ("id".to_string(), Value::Integer(id)),
+                ("name".to_string(), Value::String(name)),
+            ])))
+        })
+        .collect::<PortResult<Vec<_>>>()?;
+    Ok(ResponseEnvelope {
+        status: 200,
+        headers: BTreeMap::new(),
+        body: Value::Array(rows),
+    })
+}
+
+fn quote_identifier(identifier: &str) -> PortResult<String> {
+    if identifier.is_empty()
+        || !identifier
+            .chars()
+            .all(|item| item.is_ascii_alphanumeric() || item == '_')
+    {
+        return Err(PortError::Message(format!(
+            "unsupported sqlite identifier {identifier}"
+        )));
+    }
+    Ok(format!("\"{}\"", identifier.replace('"', "\"\"")))
 }
 
 fn select_row(

@@ -23,6 +23,32 @@ GATE_CLAIMS: dict[str, tuple[str, ...]] = {
 
 PASSING_CLAIM_STATUSES = {"asserted", "accepted", "certified", "evidenced", "implemented", "passed", "verified"}
 PASSING_EVIDENCE_STATUSES = {"passed", "accepted", "certified", "evidenced", "verified"}
+RUNTIME_LANE_APPLICABILITY = {"required", "void", "not_applicable"}
+RUNTIME_LANE_PATTERNS = (
+    "runtime",
+    "transport",
+    "kernel",
+    "canonical",
+    "oltp",
+    "sqlite",
+    "postgres",
+    "rest",
+    "json-rpc",
+    "jsonrpc",
+    "websocket",
+    "sse",
+    "stream",
+    "request envelope",
+    "engine",
+    "session",
+    "transaction",
+    "error",
+    "performance",
+    "parity",
+    "docs/runtime",
+    "status parity",
+    "status projection",
+)
 
 OUTCOME_STATUS = {
     "pass": "passing",
@@ -59,6 +85,80 @@ def linked_ids(registry: dict[str, Any], entity_key: str, link_field: str, targe
         for linked_id in item.get(link_field, []):
             if linked_id not in target_ids:
                 errors.append(f"{item['id']} links missing {link_field[:-4]} {linked_id}")
+    return errors
+
+
+def _runtime_lane_sensitive(feature: dict[str, Any]) -> bool:
+    text = " ".join(str(feature.get(field, "")) for field in ("id", "title", "description")).lower()
+    return any(pattern in text for pattern in RUNTIME_LANE_PATTERNS)
+
+
+def _linked_rust_evidence(feature: dict[str, Any], tests: dict[str, dict[str, Any]], claims: dict[str, dict[str, Any]], evidence: dict[str, dict[str, Any]]) -> bool:
+    def has_rust_text(item: dict[str, Any] | None) -> bool:
+        if not item:
+            return False
+        text = " ".join(str(item.get(field, "")) for field in ("id", "title", "description", "path", "kind")).lower()
+        return "rust" in text
+
+    if feature["id"].startswith("feat:rust-"):
+        return True
+    if any(has_rust_text(claims.get(claim_id)) for claim_id in feature.get("claim_ids", [])):
+        return True
+    if any(has_rust_text(tests.get(test_id)) for test_id in feature.get("test_ids", [])):
+        return True
+    evidence_ids = {
+        evidence_id
+        for claim_id in feature.get("claim_ids", [])
+        for evidence_id in claims.get(claim_id, {}).get("evidence_ids", [])
+    }
+    evidence_ids.update(
+        evidence_id
+        for test_id in feature.get("test_ids", [])
+        for evidence_id in tests.get(test_id, {}).get("evidence_ids", [])
+    )
+    return any(has_rust_text(evidence.get(evidence_id)) for evidence_id in evidence_ids)
+
+
+def validate_runtime_lanes(registry: dict[str, Any]) -> list[str]:
+    errors: list[str] = []
+    features = by_id(registry, "features")
+    tests = by_id(registry, "tests")
+    claims = by_id(registry, "claims")
+    evidence = by_id(registry, "evidence")
+
+    for feature in features.values():
+        if not _runtime_lane_sensitive(feature):
+            continue
+
+        lanes = feature.get("runtime_lanes")
+        if not isinstance(lanes, dict):
+            errors.append(f"{feature['id']} is runtime-sensitive but has no runtime_lanes metadata")
+            continue
+        for lane in ("python", "rust"):
+            lane_data = lanes.get(lane)
+            if not isinstance(lane_data, dict):
+                errors.append(f"{feature['id']} missing runtime_lanes.{lane}")
+                continue
+            applicability = lane_data.get("applicability")
+            if applicability not in RUNTIME_LANE_APPLICABILITY:
+                errors.append(f"{feature['id']} has invalid runtime_lanes.{lane}.applicability {applicability!r}")
+                continue
+            if applicability in {"void", "not_applicable"} and not str(lane_data.get("reason", "")).strip():
+                errors.append(f"{feature['id']} runtime_lanes.{lane} {applicability} must include a reason")
+
+        rust_lane = lanes.get("rust", {})
+        if rust_lane.get("applicability") != "required":
+            continue
+        pair_ids = rust_lane.get("paired_feature_ids", [])
+        if not isinstance(pair_ids, list):
+            errors.append(f"{feature['id']} runtime_lanes.rust.paired_feature_ids must be a list")
+            pair_ids = []
+        missing_pairs = [pair_id for pair_id in pair_ids if pair_id not in features]
+        for pair_id in missing_pairs:
+            errors.append(f"{feature['id']} runtime_lanes.rust links missing paired feature {pair_id}")
+        if pair_ids or _linked_rust_evidence(feature, tests, claims, evidence):
+            continue
+        errors.append(f"{feature['id']} requires Rust parity but has no Rust pair, claim, test, or evidence")
     return errors
 
 
@@ -99,6 +199,7 @@ def validate_authority_model(registry: dict[str, Any]) -> list[str]:
     errors.extend(linked_ids(registry, "tests", "evidence_ids", "evidence"))
     errors.extend(linked_ids(registry, "evidence", "claim_ids", "claims"))
     errors.extend(linked_ids(registry, "evidence", "test_ids", "tests"))
+    errors.extend(validate_runtime_lanes(registry))
 
     for path in ("docs/conformance/GATE_MODEL.md", "docs/developer/CI_VALIDATION.md"):
         text = (ROOT / path).read_text(encoding="utf-8")

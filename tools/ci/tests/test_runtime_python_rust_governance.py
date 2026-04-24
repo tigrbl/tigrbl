@@ -33,7 +33,7 @@ FEATURES = {
 }
 
 ADRS = {"adr:1083", "adr:1084", "adr:1085", "adr:1086"}
-SPECS = {"spc:2086", "spc:2087", "spc:2088", "spc:2089"}
+SPECS = {"spc:2086", "spc:2087", "spc:2088", "spc:2089", "spc:2090"}
 
 
 def _registry() -> dict:

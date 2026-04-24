@@ -12,7 +12,7 @@ from tigrbl.types import Column, Integer, String
 
 def _build_benchmark_item_model() -> type[TableBase]:
     class TigrblBenchmarkItem(TableBase):
-        __tablename__ = "benchmark_tigrbl_item"
+        __tablename__ = "benchmark_item"
         __allow_unmapped__ = True
 
         id = Column(Integer, primary_key=True, autoincrement=True)
@@ -50,7 +50,7 @@ async def dispose_tigrbl_app(app: TigrblApp) -> None:
 def fetch_tigrbl_names(db_path: Path) -> list[str]:
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute(
-            "SELECT name FROM benchmark_tigrbl_item ORDER BY rowid"
+            "SELECT name FROM benchmark_item ORDER BY id"
         ).fetchall()
     return [row[0] for row in rows]
 

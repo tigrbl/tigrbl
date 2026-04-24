@@ -17,7 +17,7 @@ class Base(DeclarativeBase):
 
 
 class FastApiBenchmarkItem(Base):
-    __tablename__ = "benchmark_fastapi_item"
+    __tablename__ = "benchmark_item"
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
@@ -80,7 +80,7 @@ async def dispose_fastapi_app(app: FastAPI) -> None:
 def fetch_fastapi_names(db_path: Path) -> list[str]:
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute(
-            "SELECT name FROM benchmark_fastapi_item ORDER BY id"
+            "SELECT name FROM benchmark_item ORDER BY id"
         ).fetchall()
     return [row[0] for row in rows]
 

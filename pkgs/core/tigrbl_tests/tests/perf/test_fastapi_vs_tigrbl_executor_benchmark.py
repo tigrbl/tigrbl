@@ -49,7 +49,7 @@ SCENARIOS = ("fastapi", "tigrbl_python_executor", "tigrbl_rust_executor")
 
 
 class RustBenchmarkItem(TableBase):
-    __tablename__ = "benchmark_rust_item"
+    __tablename__ = "benchmark_item"
     __resource__ = "items"
 
     id = ColumnBase(storage=StorageSpec(type_=String, primary_key=True))
@@ -227,10 +227,9 @@ def _pairwise_deltas(
 def fetch_tigrbl_rust_names(_app: TigrblRustExecutorCreateApp, db_path: Path) -> list[str]:
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute(
-            "SELECT row_json FROM _tigrbl_rows "
-            "WHERE table_name = 'benchmark_rust_item' ORDER BY rowid"
+            "SELECT name FROM benchmark_item ORDER BY id"
         ).fetchall()
-    return [json.loads(row[0])["name"] for row in rows]
+    return [row[0] for row in rows]
 
 
 def dispose_tigrbl_rust_app(app: TigrblRustExecutorCreateApp) -> None:
