@@ -19,8 +19,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install minimal CLI smoke dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic jinja2 uvicorn hypercorn gunicorn typing_extensions
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -42,4 +44,4 @@ jobs:
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Run CLI smoke and server-compat tests
-        run: python -m pytest --noconftest -q pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py -p no:cacheprovider
+        run: uv run --no-sync python -m pytest --noconftest -q pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py -p no:cacheprovider

@@ -19,8 +19,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Gate B dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic jinja2 uvicorn hypercorn gunicorn typing_extensions
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -42,11 +44,11 @@ jobs:
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Validate Gate B surface closure
-        run: python tools/ci/validate_gate_b_surface_closure.py
+        run: uv run --no-sync python tools/ci/validate_gate_b_surface_closure.py
 
       - name: Run Gate B surface tests
         run: >-
-          python -m pytest --noconftest -q
+          uv run --no-sync python -m pytest --noconftest -q
           pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
           pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
           pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
