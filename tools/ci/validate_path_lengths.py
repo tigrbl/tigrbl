@@ -20,9 +20,24 @@ EXCLUDED_ROOTS = {
     ROOT / 'target',
 }
 
+EXCLUDED_NAMES = {
+    '__pycache__',
+    '.pytest_cache',
+    '.ruff_cache',
+    '.mypy_cache',
+}
+
+EXCLUDED_SUFFIXES = {
+    '.pyc',
+}
+
 
 def is_excluded(path: Path) -> bool:
-    return any(path == ex or ex in path.parents for ex in EXCLUDED_ROOTS)
+    if any(path == ex or ex in path.parents for ex in EXCLUDED_ROOTS):
+        return True
+    if any(part in EXCLUDED_NAMES for part in path.parts):
+        return True
+    return path.suffix in EXCLUDED_SUFFIXES
 
 
 def main() -> None:

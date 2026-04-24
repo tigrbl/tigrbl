@@ -39,7 +39,7 @@ from tigrbl_runtime import Runtime, compiled_extension_available
 
 
 RESULTS_PATH = Path(__file__).with_name(
-    "benchmark_results_fastapi_tigrbl_executors_sequential_10_rounds.json"
+    "benchmark_results_executors_seq_10_rounds.json"
 )
 REPO_ROOT = Path(__file__).resolve().parents[5]
 BENCH_TMP_ROOT = REPO_ROOT / ".tmp" / "perf-benchmarks"

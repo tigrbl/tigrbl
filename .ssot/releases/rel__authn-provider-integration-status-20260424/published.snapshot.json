@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "kind": "published_snapshot",
+  "generated_at": "2026-04-24T13:26:49Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "3ce51c12117b4d5ea0fabeac5ec66fb19270d253dfc1448eda697516aef08b93",
+  "release": {
+    "id": "rel:authn-provider-integration-status-20260424",
+    "version": "authn-provider-integration-status-20260424",
+    "status": "published",
+    "boundary_id": "bnd:authn-provider-integration-status-001",
+    "claim_ids": [
+      "clm:authn-provider-integration-status-20260424"
+    ],
+    "evidence_ids": [
+      "evd:authn-provider-integration-status-20260424"
+    ]
+  },
+  "boundary": {
+    "id": "bnd:authn-provider-integration-status-001",
+    "title": "AuthN provider integration status-code closure lane",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:authn-provider-missing-credentials-status-001",
+      "feat:auth-failure-projection-parity-001",
+      "feat:anon-access-rest-status-parity-001",
+      "feat:httpbearer-security-dependency-001"
+    ],
+    "profile_ids": []
+  },
+  "claims": [
+    {
+      "id": "clm:authn-provider-integration-status-20260424",
+      "title": "AuthN provider integration status-code closure",
+      "status": "published",
+      "tier": "T2",
+      "kind": "authn-provider-integration",
+      "description": "The AuthN provider integration preserves governed status-code behavior: missing credentials on required provider auth return 403 and wrong bearer credentials return 401, while direct HTTPBearer challenge behavior remains separately verified.",
+      "feature_ids": [
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:anon-access-rest-status-parity-001",
+        "feat:httpbearer-security-dependency-001"
+      ],
+      "test_ids": [
+        "tst:authn-provider-unauthorized-errors-status",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:closure-case-authn-unauthorized-errors"
+      ],
+      "evidence_ids": [
+        "evd:authn-provider-integration-status-20260424"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd:authn-provider-integration-status-20260424",
+      "title": "AuthN provider integration status pytest 2026-04-24",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/authn-provider-integration-status-20260424.md",
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424"
+      ],
+      "test_ids": [
+        "tst:authn-provider-unauthorized-errors-status",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:closure-case-authn-unauthorized-errors"
+      ]
+    }
+  ],
+  "summary": {
+    "release_id": "rel:authn-provider-integration-status-20260424",
+    "version": "authn-provider-integration-status-20260424",
+    "status": "published",
+    "claim_count": 1,
+    "evidence_count": 1
+  }
+}
