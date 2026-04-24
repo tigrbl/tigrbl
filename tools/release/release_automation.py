@@ -283,8 +283,14 @@ def build_plan(
         for release in cargo_releases
     ]
 
+    is_prerelease = any(
+        Version.parse(release["version"], cargo=release["kind"] == "crate").dev is not None
+        for release in all_releases
+    )
+
     return {
         "semver": semver,
+        "prerelease": is_prerelease,
         "package_selection": sorted(selected) if selected is not None else "all",
         "python": py_releases,
         "crates": cargo_releases,
@@ -292,6 +298,47 @@ def build_plan(
         "github_releases": all_releases,
         "changed_files": sorted(set(changed)),
     }
+
+
+def matrix_output(plan_path: Path, *, python_versions: str, output: Path | None) -> None:
+    plan = json.loads(read(plan_path))
+    versions = [version for version in PACKAGE_SPLIT_RE.split(python_versions.strip()) if version]
+    if not versions:
+        raise ValueError("at least one Python version is required")
+
+    python_validation = {
+        "include": [
+            {
+                "package": project["name"],
+                "path": project["path"],
+                "python-version": version,
+            }
+            for project in plan["python"]
+            for version in versions
+        ]
+    }
+    python_build = {
+        "include": [
+            {
+                "package": project["name"],
+                "path": project["path"],
+                "artifact": f'python-dist-{project["name"].replace("_", "-")}',
+            }
+            for project in plan["python"]
+        ]
+    }
+    values = {
+        "has_python": "true" if plan["python"] else "false",
+        "has_crates": "true" if plan["crates"] else "false",
+        "python_validation_matrix": json.dumps(python_validation, separators=(",", ":")),
+        "python_build_matrix": json.dumps(python_build, separators=(",", ":")),
+    }
+    if output is None:
+        print(json.dumps(values, indent=2))
+        return
+    with output.open("a", encoding="utf-8") as out:
+        for key, value in values.items():
+            out.write(f"{key}={value}\n")
 
 
 def run(args: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
@@ -380,27 +427,31 @@ def create_github_releases(plan_path: Path) -> None:
                 stderr=subprocess.DEVNULL,
             )
             if existing.returncode == 0:
-                run(["gh", "release", "edit", tag, "--title", title, "--notes-file", notes_path])
+                command = ["gh", "release", "edit", tag, "--title", title, "--notes-file", notes_path]
+                if plan["prerelease"]:
+                    command.append("--prerelease")
+                run(command)
             else:
-                run(
-                    [
-                        "gh",
-                        "release",
-                        "create",
-                        tag,
-                        "--title",
-                        title,
-                        "--notes-file",
-                        notes_path,
-                        "--target",
-                        head,
-                    ]
-                )
+                command = [
+                    "gh",
+                    "release",
+                    "create",
+                    tag,
+                    "--title",
+                    title,
+                    "--notes-file",
+                    notes_path,
+                    "--target",
+                    head,
+                ]
+                if plan["prerelease"]:
+                    command.append("--prerelease")
+                run(command)
         finally:
             Path(notes_path).unlink(missing_ok=True)
 
 
-def publish_crates(plan_path: Path, *, dry_run: bool) -> None:
+def publish_crates(plan_path: Path, *, dry_run: bool, verify: bool = True) -> None:
     plan = json.loads(read(plan_path))
     if not plan["crate_publish_order"]:
         raise RuntimeError("release plan does not include any Rust crates")
@@ -409,10 +460,10 @@ def publish_crates(plan_path: Path, *, dry_run: bool) -> None:
         if dry_run:
             run([*command, "--dry-run"])
             continue
-        run([*command, "--dry-run"])
+        if verify:
+            run([*command, "--dry-run"])
         run(command)
-        if not dry_run:
-            time.sleep(20)
+        time.sleep(20)
 
 
 def build_pypi_packages(plan_path: Path, *, out_dir: str) -> None:
@@ -437,12 +488,22 @@ def main(argv: list[str] | None = None) -> int:
     )
     bump.add_argument("--write", action="store_true")
 
+    matrices = subparsers.add_parser("github-matrices")
+    matrices.add_argument("--summary", type=Path, required=True)
+    matrices.add_argument(
+        "--python-versions",
+        default="3.10,3.11,3.12,3.13",
+        help="Comma- or whitespace-separated Python versions for validation.",
+    )
+    matrices.add_argument("--github-output", type=Path)
+
     gh = subparsers.add_parser("create-github-releases")
     gh.add_argument("--summary", type=Path, required=True)
 
     crates = subparsers.add_parser("publish-crates")
     crates.add_argument("--summary", type=Path, required=True)
     crates.add_argument("--dry-run", action="store_true")
+    crates.add_argument("--skip-dry-run", action="store_true")
 
     pypi = subparsers.add_parser("build-pypi-packages")
     pypi.add_argument("--summary", type=Path, required=True)
@@ -455,13 +516,20 @@ def main(argv: list[str] | None = None) -> int:
         args.summary.write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(plan, indent=2))
         return 0
+    if args.command == "github-matrices":
+        matrix_output(
+            args.summary,
+            python_versions=args.python_versions,
+            output=args.github_output,
+        )
+        return 0
     if args.command == "create-github-releases":
         if not os.environ.get("GH_TOKEN") and not os.environ.get("GITHUB_TOKEN"):
             raise RuntimeError("GH_TOKEN or GITHUB_TOKEN is required")
         create_github_releases(args.summary)
         return 0
     if args.command == "publish-crates":
-        publish_crates(args.summary, dry_run=args.dry_run)
+        publish_crates(args.summary, dry_run=args.dry_run, verify=not args.skip_dry_run)
         return 0
     if args.command == "build-pypi-packages":
         build_pypi_packages(args.summary, out_dir=args.out_dir)

@@ -48,6 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
+      has_python: ${{ steps.matrices.outputs.has_python }}
+      has_crates: ${{ steps.matrices.outputs.has_crates }}
+      python_validation_matrix: ${{ steps.matrices.outputs.python_validation_matrix }}
+      python_build_matrix: ${{ steps.matrices.outputs.python_build_matrix }}
     steps:
       - name: Validate target selection
         if: ${{ !inputs.gh && !inputs.pypi && !inputs.crates }}
@@ -91,6 +95,13 @@ jobs:
             git push origin HEAD:${{ github.ref_name }}
           fi
           echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Generate release matrices
+        id: matrices
+        run: >-
+          python tools/release/release_automation.py github-matrices
+          --summary release-plan.json
+          --github-output "$GITHUB_OUTPUT"
 
       - name: Upload release plan
         uses: actions/upload-artifact@v4
@@ -146,18 +157,14 @@ jobs:
           PY
 
   validate-python-packages:
-    name: Validate Python packages (${{ matrix.python-version }})
+    name: Validate Python package (${{ matrix.package }}, ${{ matrix.python-version }})
+    if: ${{ needs.prepare-release.outputs.has_python == 'true' }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
     strategy:
       fail-fast: false
-      matrix:
-        python-version:
-          - "3.10"
-          - "3.11"
-          - "3.12"
-          - "3.13"
+      matrix: ${{ fromJson(needs.prepare-release.outputs.python_validation_matrix) }}
     env:
       PYTHONDONTWRITEBYTECODE: "1"
     steps:
@@ -174,18 +181,77 @@ jobs:
       - name: Install uv
         run: python -m pip install --upgrade pip uv
 
-      - name: Sync all Python workspace packages
-        run: uv sync --all-groups --all-packages --frozen
-
-      - name: Build all Python workspace packages
+      - name: Build package in isolation
         run: >-
           uv build
-          --all-packages
+          --package "${{ matrix.package }}"
           --python "${{ matrix.python-version }}"
-          --out-dir "dist/python-${{ matrix.python-version }}"
+          --out-dir "dist/${{ matrix.package }}-${{ matrix.python-version }}"
+
+      - name: Test package in isolated uv environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          package_dir="${{ matrix.path }}"
+          package_dir="${package_dir%/pyproject.toml}"
+          if [[ ! -d "${package_dir}/tests" ]]; then
+            echo "No package-local tests found at ${package_dir}/tests"
+            exit 0
+          fi
+          uv run \
+            --isolated \
+            --package "${{ matrix.package }}" \
+            --group dev \
+            --frozen \
+            --python "${{ matrix.python-version }}" \
+            python -m pytest "${package_dir}/tests"
+
+  build-python-packages:
+    name: Build Python package (${{ matrix.package }})
+    if: ${{ inputs.pypi && needs.prepare-release.outputs.has_python == 'true' }}
+    runs-on: ubuntu-latest
+    needs:
+      - prepare-release
+      - validate-python-packages
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare-release.outputs.python_build_matrix) }}
+    steps:
+      - name: Check out prepared release commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: python -m pip install --upgrade pip uv
+
+      - name: Download release plan
+        uses: actions/download-artifact@v4
+        with:
+          name: release-plan
+          path: .
+
+      - name: Build selected Python distributions
+        run: >-
+          uv build
+          --package "${{ matrix.package }}"
+          --out-dir dist
+
+      - name: Upload selected Python distributions
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist/*
+          if-no-files-found: error
 
   validate-rust-crates:
     name: Validate Rust crates (${{ matrix.toolchain }})
+    if: ${{ needs.prepare-release.outputs.has_crates == 'true' }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
@@ -207,9 +273,37 @@ jobs:
       - name: Test all Rust workspace crates
         run: cargo test --workspace --locked --all-targets
 
+  dry-run-crates:
+    name: Dry-run crates.io packages
+    if: ${{ inputs.crates && needs.prepare-release.outputs.has_crates == 'true' }}
+    runs-on: ubuntu-latest
+    needs:
+      - prepare-release
+      - validate-rust-crates
+    steps:
+      - name: Check out prepared release commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Download release plan
+        uses: actions/download-artifact@v4
+        with:
+          name: release-plan
+          path: .
+
+      - name: Dry-run crates.io packages
+        run: >-
+          python tools/release/release_automation.py publish-crates
+          --summary release-plan.json
+          --dry-run
+
   github-release:
     name: Create GitHub releases
-    if: ${{ inputs.gh }}
+    if: ${{ inputs.gh && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
@@ -242,13 +336,17 @@ jobs:
           --summary release-plan.json
 
   publish-pypi:
-    name: Publish PyPI packages
-    if: ${{ inputs.pypi }}
+    name: Publish PyPI package (${{ matrix.package }})
+    if: ${{ inputs.pypi && needs.prepare-release.outputs.has_python == 'true' && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
       - validate-python-packages
       - validate-rust-crates
+      - build-python-packages
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare-release.outputs.python_build_matrix) }}
     steps:
       - name: Check out prepared release commit
         uses: actions/checkout@v4
@@ -269,29 +367,36 @@ jobs:
           name: release-plan
           path: .
 
-      - name: Build selected Python packages
-        run: >-
-          python tools/release/release_automation.py build-pypi-packages
-          --summary release-plan.json
-          --out-dir dist
+      - name: Download selected Python distributions
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: dist
+
+      - name: Validate PyPI token
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        run: test -n "${UV_PUBLISH_TOKEN}"
 
       - name: Publish selected Python packages
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         run: >-
           uv publish
-          --trusted-publishing automatic
           --check-url https://pypi.org/simple/
           dist/*
 
   publish-crates:
     name: Publish crates.io packages
-    if: ${{ inputs.crates }}
+    if: ${{ inputs.crates && needs.prepare-release.outputs.has_crates == 'true' && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
       - validate-python-packages
       - validate-rust-crates
+      - dry-run-crates
     env:
-      CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_API_TOKEN }}
+      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_API_TOKEN }}
     steps:
       - name: Check out prepared release commit
         uses: actions/checkout@v4
@@ -307,7 +412,11 @@ jobs:
           name: release-plan
           path: .
 
+      - name: Validate crates.io token
+        run: test -n "${CARGO_REGISTRY_TOKEN}"
+
       - name: Publish crates.io packages
         run: >-
           python tools/release/release_automation.py publish-crates
           --summary release-plan.json
+          --skip-dry-run
