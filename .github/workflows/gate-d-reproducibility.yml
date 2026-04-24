@@ -20,7 +20,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install Gate D dependencies
-        run: python -m pip install --upgrade pip pytest build
+        run: python -m pip install --upgrade pip pytest build poetry-core
 
       - name: Run Gate D package and installed-package smokes
         run: |
