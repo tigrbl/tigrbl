@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -92,6 +93,13 @@ def inspect_sdist(sdist_path: Path) -> dict[str, bool]:
         'contains_readme': any(name.endswith('/README.md') for name in names),
         'contains_cli': any(name.endswith('/tigrbl/cli.py') for name in names),
     }
+
+
+def uv_pip_install(site_dir: Path, *args: str) -> None:
+    uv = shutil.which('uv')
+    if uv is None:
+        raise SystemExit("installed-package smoke requires 'uv' for target installs")
+    run([uv, 'pip', 'install', '--python', sys.executable, '--target', str(site_dir), *args])
 
 
 def create_app_fixture(dirpath: Path) -> Path:
@@ -217,31 +225,19 @@ def main() -> None:
         wheel_eps = wheel_entry_points(wheel)
         sdist_info = inspect_sdist(sdist)
 
-        run([sys.executable, '-m', 'pip', 'install', '--target', str(site), *TARGET_DEPS])
+        uv_pip_install(site, *TARGET_DEPS)
         for pkg in CORE_INSTALL_DIRS:
-            run([
-                sys.executable,
-                '-m',
-                'pip',
-                'install',
-                '--ignore-requires-python',
+            uv_pip_install(
+                site,
                 '--no-deps',
                 '--no-build-isolation',
-                '--target',
-                str(site),
                 str(pkg),
-            ])
-        run([
-            sys.executable,
-            '-m',
-            'pip',
-            'install',
-            '--ignore-requires-python',
+            )
+        uv_pip_install(
+            site,
             '--no-deps',
-            '--target',
-            str(site),
             str(wheel),
-        ])
+        )
 
         fixture = create_app_fixture(tmp)
         target = f'{fixture}:app'
