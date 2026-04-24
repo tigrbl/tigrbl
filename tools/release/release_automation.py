@@ -49,17 +49,27 @@ class Version:
         )
 
     def bump(self, semver: str) -> "Version":
-        if semver == "finalize":
+        segment = semver.lower()
+        if segment in {"w", "major"}:
+            raise ValueError("w/major bumps are disallowed in the release workflow")
+        if segment in {"x", "minor"}:
+            segment = "x"
+        elif segment in {"y", "patch"}:
+            segment = "y"
+        elif segment in {"z", "dev"}:
+            segment = "z"
+
+        if segment == "finalize":
             if self.dev is None:
                 return self
             return Version(self.major, self.minor, self.patch, cargo=self.cargo)
-        if semver == "patch":
-            return Version(self.major, self.minor, self.patch + 1, 1, self.cargo)
-        if semver == "minor":
+        if segment == "x":
             return Version(self.major, self.minor + 1, 0, 1, self.cargo)
-        if semver == "major":
-            return Version(self.major + 1, 0, 0, 1, self.cargo)
-        raise ValueError(f"unsupported semver action {semver!r}")
+        if segment in {"y", "z"}:
+            if self.dev is None:
+                return Version(self.major, self.minor, self.patch + 1, 1, self.cargo)
+            return Version(self.major, self.minor, self.patch, self.dev + 1, self.cargo)
+        raise ValueError(f"unsupported semver bump action {semver!r}")
 
     def __str__(self) -> str:
         base = f"{self.major}.{self.minor}.{self.patch}"
@@ -311,10 +321,8 @@ def matrix_output(plan_path: Path, *, python_versions: str, output: Path | None)
             {
                 "package": project["name"],
                 "path": project["path"],
-                "python-version": version,
             }
             for project in plan["python"]
-            for version in versions
         ]
     }
     python_build = {
@@ -493,7 +501,16 @@ def main(argv: list[str] | None = None) -> int:
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     bump = subparsers.add_parser("bump")
-    bump.add_argument("--semver", choices=["patch", "minor", "major", "finalize"], required=True)
+    bump.add_argument(
+        "--semver",
+        choices=["x", "y", "z", "patch", "minor", "finalize"],
+        required=True,
+        help=(
+            "Canonical bump names are x, y, and z for w.x.y.devZ workflow versions; "
+            "finalize removes the dev suffix. "
+            "Legacy aliases 'minor' and 'patch' map to x and y."
+        ),
+    )
     bump.add_argument("--summary", type=Path, required=True)
     bump.add_argument(
         "--packages",

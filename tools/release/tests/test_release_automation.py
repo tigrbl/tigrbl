@@ -10,7 +10,7 @@ from tools.release.release_automation import Version, build_plan
 
 
 def test_python_patch_bump_always_targets_dev_release() -> None:
-    assert str(Version.parse("0.3.19.dev1").bump("patch")) == "0.3.20.dev1"
+    assert str(Version.parse("0.3.19.dev1").bump("patch")) == "0.3.19.dev2"
     assert str(Version.parse("0.3.19").bump("patch")) == "0.3.20.dev1"
 
 
@@ -23,13 +23,30 @@ def test_cargo_dev_release_uses_semver_prerelease() -> None:
     assert str(Version.parse("0.2.0-dev.1", cargo=True).bump("finalize")) == "0.2.0"
 
 
+def test_python_bump_x_y_z_actions_map_to_expected_behavior() -> None:
+    assert str(Version.parse("0.3.19").bump("x")) == "0.4.0.dev1"
+    assert str(Version.parse("0.3.19").bump("y")) == "0.3.20.dev1"
+    assert str(Version.parse("0.3.19").bump("z")) == "0.3.20.dev1"
+    assert str(Version.parse("0.3.19.dev1").bump("z")) == "0.3.19.dev2"
+
+
+def test_patch_minor_aliases_map_to_y_and_x() -> None:
+    assert str(Version.parse("0.3.19").bump("patch")) == str(Version.parse("0.3.19").bump("y"))
+    assert str(Version.parse("0.3.19").bump("minor")) == str(Version.parse("0.3.19").bump("x"))
+
+
+def test_w_major_bump_is_rejected() -> None:
+    with pytest.raises(ValueError, match="disallowed"):
+        Version.parse("0.3.19").bump("w")
+
+
 def test_finalize_keeps_already_stable_versions() -> None:
     assert str(Version.parse("0.3.19").bump("finalize")) == "0.3.19"
     assert str(Version.parse("0.1.0", cargo=True).bump("finalize")) == "0.1.0"
 
 
 def test_release_plan_uses_required_github_tag_shape() -> None:
-    plan = build_plan("patch", write_changes=False)
+    plan = build_plan("y", write_changes=False)
     tags = [release["tag"] for release in plan["github_releases"]]
     assert "tigrbl==0.3.20.dev1" in tags
     assert "tigrbl_rs_spec==0.1.2-dev.1" in tags
@@ -37,7 +54,7 @@ def test_release_plan_uses_required_github_tag_shape() -> None:
 
 
 def test_release_plan_can_select_one_python_package() -> None:
-    plan = build_plan("patch", write_changes=False, packages="tigrbl_acme_ca")
+    plan = build_plan("y", write_changes=False, packages="tigrbl_acme_ca")
 
     assert [release["name"] for release in plan["python"]] == ["tigrbl_acme_ca"]
     assert plan["crates"] == []
@@ -50,7 +67,7 @@ def test_release_plan_can_select_one_python_package() -> None:
 
 def test_release_plan_can_select_package_subset() -> None:
     plan = build_plan(
-        "patch",
+        "y",
         write_changes=False,
         packages="tigrbl_acme_ca,tigrbl_rs_spec tigrbl_rs_ports",
     )
@@ -70,7 +87,7 @@ def test_release_plan_can_select_package_subset() -> None:
 
 def test_unknown_package_selection_fails() -> None:
     with pytest.raises(ValueError, match="unknown package"):
-        build_plan("patch", write_changes=False, packages="does-not-exist")
+        build_plan("y", write_changes=False, packages="does-not-exist")
 
 
 def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
