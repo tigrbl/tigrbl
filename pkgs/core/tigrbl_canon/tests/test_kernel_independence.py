@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import ast
-import tomllib
 from pathlib import Path
 
 import pytest
@@ -32,7 +31,16 @@ def test_01_tigrbl_canon_does_not_import_tigrbl_kernel() -> None:
 
 @pytest.mark.order(1)
 def test_01_tigrbl_canon_does_not_depend_on_tigrbl_kernel() -> None:
-    pyproject_data = tomllib.loads(PYPROJECT_PATH.read_text(encoding="utf-8"))
-    declared_dependencies = pyproject_data["project"]["dependencies"]
+    declared_dependencies: list[str] = []
+    in_dependencies = False
+    for line in PYPROJECT_PATH.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped == "dependencies = [":
+            in_dependencies = True
+            continue
+        if in_dependencies and stripped == "]":
+            break
+        if in_dependencies and stripped.startswith('"'):
+            declared_dependencies.append(stripped.strip('",'))
 
     assert "tigrbl-kernel" not in declared_dependencies

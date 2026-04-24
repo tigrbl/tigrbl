@@ -26,7 +26,7 @@ def _collect_top_level_imports(package_dir: Path) -> set[str]:
     imports: set[str] = set()
     for module_file in package_dir.rglob("*.py"):
         tree = ast.parse(
-            module_file.read_text(encoding="utf-8"), filename=str(module_file)
+            module_file.read_text(encoding="utf-8-sig"), filename=str(module_file)
         )
         for node in ast.walk(tree):
             if isinstance(node, ast.Import):

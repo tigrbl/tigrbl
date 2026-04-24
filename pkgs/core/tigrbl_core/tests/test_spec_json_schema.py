@@ -47,8 +47,9 @@ def test_binding_and_column_specs_reference_nested_spec_shapes() -> None:
     column_spec = schemas["ColumnSpec"]
 
     assert binding_spec["properties"]["spec"] == {"$ref": "./shared.json#/$defs/TransportBindingSpec"}
-    assert column_spec["properties"]["storage"]["anyOf"][0] == {"$ref": "./StorageSpec.json"}
-    assert column_spec["properties"]["storage"]["anyOf"][1] == {
+    storage_any_of = column_spec["properties"]["storage"]["anyOf"][0]["anyOf"]
+    assert storage_any_of[0] == {"$ref": "./StorageSpec.json"}
+    assert storage_any_of[1] == {
         "$ref": "./StorageSpec.json#/$defs/StorageSpecEnvelope"
     }
     assert schemas["ColumnSpec"]["$defs"]["ColumnSpecEnvelope"]["properties"]["__dataclass__"]["const"] == (

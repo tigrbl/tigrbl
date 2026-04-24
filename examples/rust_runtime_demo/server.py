@@ -10,6 +10,7 @@ from typing import Any
 from urllib.parse import urlparse
 
 from app_spec import build_rust_payload, compose_app_spec
+from tigrbl_core.config.constants import DEFAULT_ROOT_RESPONSE
 from tigrbl_runtime import Runtime, compiled_extension_available
 
 
@@ -19,6 +20,7 @@ FAVICON_SVG = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <path d="M18 16h28v8H36v24h-8V24H18z" fill="#f8fafc"/>
 </svg>
 """
+REQUEST_READ_TIMEOUT_SECONDS = 0.5
 
 APP_SPEC = compose_app_spec()
 RUST_PAYLOAD = build_rust_payload()
@@ -269,6 +271,10 @@ class RustRuntimeDemoHandler(BaseHTTPRequestHandler):
 
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path
+        if path == "/":
+            self._write_json(HTTPStatus.OK, dict(DEFAULT_ROOT_RESPONSE))
+            return
+
         if path == "/healthz":
             self._write_json(
                 HTTPStatus.OK,
@@ -420,7 +426,7 @@ class RustRuntimeDemoHandler(BaseHTTPRequestHandler):
         payload = {
             "event": event,
             "client": self.client_address[0] if self.client_address else None,
-            "request": self.requestline,
+            "request": getattr(self, "requestline", ""),
             **fields,
         }
         sys.stderr.write(json.dumps(payload, sort_keys=True) + "\n")
@@ -475,6 +481,18 @@ class RustRuntimeDemoHandler(BaseHTTPRequestHandler):
         self.wfile.write(encoded)
 
 
+class RustRuntimeDemoServer(HTTPServer):
+    request_queue_size = 64
+
+    def get_request(self) -> tuple[Any, Any]:
+        request, client_address = super().get_request()
+        # Browsers may open speculative sockets during reloads and leave them
+        # idle. Keep runtime execution on the main thread, but do not let one
+        # idle accepted socket block the demo server indefinitely.
+        request.settimeout(REQUEST_READ_TIMEOUT_SECONDS)
+        return request, client_address
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Serve a Python-authored Tigrbl AppSpec via the Rust runtime."
@@ -486,7 +504,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    server = HTTPServer((args.host, args.port), RustRuntimeDemoHandler)
+    server = RustRuntimeDemoServer((args.host, args.port), RustRuntimeDemoHandler)
     print(
         json.dumps(
             {

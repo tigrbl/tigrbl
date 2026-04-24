@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -10,6 +11,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[4]
 EXAMPLE_DIR = REPO_ROOT / "examples" / "rust_runtime_demo"
 SERVER = EXAMPLE_DIR / "server.py"
+CURL = shutil.which("curl") or shutil.which("curl.exe") or "curl"
 
 
 def _server_env() -> dict[str, str]:
@@ -27,10 +29,10 @@ def _wait_for_server() -> None:
     while time.time() < deadline:
         probe = subprocess.run(
             [
-                "curl.exe",
+                CURL,
                 "--silent",
                 "--output",
-                "NUL",
+                os.devnull,
                 "--write-out",
                 "%{http_code}",
                 "http://127.0.0.1:8765/healthz",
@@ -83,7 +85,7 @@ def test_python_authored_spec_executes_via_rust_runtime_with_curl() -> None:
 
         create = subprocess.run(
             [
-                "curl.exe",
+                CURL,
                 "--silent",
                 "--show-error",
                 "--request",
@@ -104,7 +106,7 @@ def test_python_authored_spec_executes_via_rust_runtime_with_curl() -> None:
 
         read = subprocess.run(
             [
-                "curl.exe",
+                CURL,
                 "--silent",
                 "--show-error",
                 "http://127.0.0.1:8765/users/u1",
@@ -119,7 +121,7 @@ def test_python_authored_spec_executes_via_rust_runtime_with_curl() -> None:
 
         rpc_create = subprocess.run(
             [
-                "curl.exe",
+                CURL,
                 "--silent",
                 "--show-error",
                 "--request",
@@ -139,7 +141,7 @@ def test_python_authored_spec_executes_via_rust_runtime_with_curl() -> None:
 
         rpc_read = subprocess.run(
             [
-                "curl.exe",
+                CURL,
                 "--silent",
                 "--show-error",
                 "--request",

@@ -17,6 +17,11 @@ from tigrbl_core._spec.binding_spec import (
     WebTransportBindingSpec,
     WsBindingSpec,
 )
+from tigrbl_core.config.constants import (
+    TIGRBL_DEFAULT_ROOT_ALIAS,
+    TIGRBL_DEFAULT_ROOT_METHOD,
+    TIGRBL_DEFAULT_ROOT_PATH,
+)
 from tigrbl_core._spec.op_spec import OpSpec
 
 from ._response import Response
@@ -58,6 +63,7 @@ class Route:
     tigrbl_binding: Any | None = None
     tigrbl_exchange: str | None = None
     tigrbl_tx_scope: str | None = None
+    tigrbl_default_root: bool = False
 
     @property
     def path(self) -> str:
@@ -266,6 +272,39 @@ def _rebuild_ops_namespace(specs: Sequence[OpSpec]) -> SimpleNamespace:
     return SimpleNamespace(all=tuple(specs), by_alias=by_alias, by_key=by_key)
 
 
+def _remove_route_opspec(owner: Any, alias: str) -> None:
+    model = ensure_route_ops_model(owner)
+    if model is None:
+        return
+
+    ops = tuple(getattr(getattr(model, "opspecs", None), "all", ()) or ())
+    retained = tuple(item for item in ops if getattr(item, "alias", None) != alias)
+    if retained == ops:
+        return
+
+    updated_ops = _rebuild_ops_namespace(retained)
+    model.ops = updated_ops
+    model.opspecs = updated_ops
+
+    hooks = getattr(model, "hooks", None)
+    if hooks is not None and hasattr(hooks, alias):
+        delattr(hooks, alias)
+
+
+def _route_is_default_root(route: Any) -> bool:
+    return bool(
+        getattr(route, "tigrbl_default_root", False)
+        or getattr(route, "name", None) == TIGRBL_DEFAULT_ROOT_ALIAS
+    )
+
+
+def _remove_default_root(owner: Any) -> None:
+    routes = getattr(owner, "routes", None)
+    if isinstance(routes, list):
+        routes[:] = [route for route in routes if not _route_is_default_root(route)]
+    _remove_route_opspec(owner, TIGRBL_DEFAULT_ROOT_ALIAS)
+
+
 def _route_request(route: Route, ctx: Any) -> Any:
     request = getattr(ctx, "request", None)
     if request is not None:
@@ -445,6 +484,11 @@ def add_route(
     full_path = f"{base_prefix}{path}" if base_prefix else path
     normalized_path = full_path.rstrip("/") or "/"
     pattern, param_names = compile_path(normalized_path)
+    is_default_root = bool(kwargs.pop("tigrbl_default_root", False))
+    if normalized_path == TIGRBL_DEFAULT_ROOT_PATH and (
+        is_default_root or TIGRBL_DEFAULT_ROOT_METHOD in normalized_methods
+    ):
+        _remove_default_root(owner)
 
     binding = kwargs.pop("tigrbl_binding", None)
     if binding is None:
@@ -485,6 +529,7 @@ def add_route(
         tigrbl_binding=binding,
         tigrbl_exchange=kwargs.pop("tigrbl_exchange", None),
         tigrbl_tx_scope=kwargs.pop("tigrbl_tx_scope", None),
+        tigrbl_default_root=is_default_root,
     )
     owner.routes.append(route)
 
@@ -646,6 +691,7 @@ def include_router_routes(owner: Any, router: Any, *, prefix: str = "") -> None:
             tigrbl_binding=_prefix_transport_binding(route.tigrbl_binding, nested_prefix),
             tigrbl_exchange=route.tigrbl_exchange,
             tigrbl_tx_scope=route.tigrbl_tx_scope,
+            tigrbl_default_root=getattr(route, "tigrbl_default_root", False),
         )
 
 

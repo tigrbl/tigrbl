@@ -11,7 +11,13 @@ from ..utils import namely_model
 from tigrbl_core._spec.column_spec import ColumnSpec
 from .cache import _SchemaCache
 from .extras import _merge_request_extras, _merge_response_extras
-from .helpers import _add_field, _is_required, _normalize_py_type, _python_type
+from .helpers import (
+    _add_field,
+    _is_required,
+    _normalize_py_type,
+    _python_type,
+    _storage_python_type,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -98,10 +104,7 @@ def _build_schema(
             py_t = _normalize_py_type(py_t)
             if py_t is Any:
                 storage_type = getattr(storage, "type_", None)
-                try:
-                    py_t = storage_type.python_type
-                except Exception:
-                    py_t = Any
+                py_t = _storage_python_type(storage_type)
 
             is_nullable = bool(getattr(storage, "nullable", True))
             has_default = (getattr(storage, "default", None) is not None) or (

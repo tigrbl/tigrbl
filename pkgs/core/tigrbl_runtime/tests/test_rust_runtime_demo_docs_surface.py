@@ -114,6 +114,20 @@ def test_rust_runtime_demo_swagger_uix() -> None:
     assert redirect_target == "/docs"
 
 
+def test_rust_runtime_demo_swagger_uix_does_not_stall_on_idle_browser_socket() -> None:
+    server = DemoServer()
+    with server:
+        with socket.create_connection(("127.0.0.1", server.port), timeout=2) as idle:
+            swagger = _read_text(f"{server.base_url}/docs")
+            idle.close()
+            _, stderr = server.stop()
+
+    assert "swagger-ui" in swagger.lower()
+    assert 'url: "/openapi.json"' in swagger
+    assert "Traceback" not in stderr
+    assert "AttributeError" not in stderr
+
+
 def test_rust_runtime_demo_lens_uix() -> None:
     with DemoServer() as server:
         lens = _read_text(f"{server.base_url}/lens")

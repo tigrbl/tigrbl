@@ -141,6 +141,78 @@ fn runtime_executes_crud_against_inmemory_engine() {
 }
 
 #[test]
+fn runtime_returns_default_root_without_bindings() {
+    let app = AppSpec {
+        name: "demo".to_string(),
+        ..AppSpec::default()
+    };
+    let plan = KernelCompiler.compile(&app);
+    let runtime = RustRuntime::new(RuntimeConfig::default());
+    let handle = runtime.instantiate(plan);
+
+    let response = handle
+        .execute_rest(RequestEnvelope {
+            transport: "rest".to_string(),
+            path: "/".to_string(),
+            method: "GET".to_string(),
+            ..RequestEnvelope::default()
+        })
+        .unwrap();
+
+    assert_eq!(response.status, 200);
+    assert_eq!(
+        response.body,
+        Value::Object(
+            [("ok".to_string(), Value::Bool(true))]
+                .into_iter()
+                .collect(),
+        )
+    );
+}
+
+#[test]
+fn runtime_prefers_explicit_root_binding_over_default_root() {
+    let mut app = AppSpec {
+        name: "demo".to_string(),
+        ..AppSpec::default()
+    };
+    app.bindings.push(BindingSpec {
+        alias: "root.list".to_string(),
+        transport: "rest".to_string(),
+        path: Some("/".to_string()),
+        op: OpSpec {
+            kind: OpKind::List,
+            name: "list".to_string(),
+            route: Some("/".to_string()),
+            exchange: Exchange::RequestResponse,
+            tx_scope: TxScope::ReadOnly,
+            subevents: vec![],
+        },
+        table: Some(tigrbl_rs_spec::TableSpec {
+            name: "root".to_string(),
+            columns: vec![],
+        }),
+        ..BindingSpec::default()
+    });
+
+    let plan = KernelCompiler.compile(&app);
+    let runtime = RustRuntime::new(RuntimeConfig::default());
+    let handle = runtime.instantiate(plan);
+
+    let response = handle
+        .execute_rest(RequestEnvelope {
+            transport: "rest".to_string(),
+            path: "/".to_string(),
+            method: "GET".to_string(),
+            ..RequestEnvelope::default()
+        })
+        .unwrap();
+
+    assert_eq!(response.status, 200);
+    assert_eq!(response.body, Value::Array(vec![]));
+}
+
+#[test]
 fn runtime_rejects_python_engine_without_callback() {
     let mut app = AppSpec {
         name: "demo".to_string(),

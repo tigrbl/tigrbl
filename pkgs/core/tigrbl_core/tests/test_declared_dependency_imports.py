@@ -12,6 +12,7 @@ ALLOWED_TOP_LEVEL_IMPORTS = {
     "tigrbl_typing",
     "tomli_w",
     "tomli",
+    "tomllib",
     "yaml",
     "tigrbl_atoms",
     "pydantic",
