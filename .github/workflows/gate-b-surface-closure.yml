@@ -20,7 +20,7 @@ jobs:
           python-version: "3.12"
 
       - name: Install Gate B dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic uvicorn hypercorn gunicorn typing_extensions
+        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic jinja2 uvicorn hypercorn gunicorn typing_extensions
 
       - name: Compute workspace PYTHONPATH
         shell: bash

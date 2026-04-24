@@ -186,8 +186,15 @@ def declarative_base(*args: Any, **kwargs: Any):
     return _Base
 
 
-def declared_attr(fn):
-    return property(fn)
+class _DeclaredAttr:
+    def __call__(self, fn):
+        return property(fn)
+
+    def directive(self, fn):
+        return property(fn)
+
+
+declared_attr = _DeclaredAttr()
 
 
 def relationship(*args: Any, **kwargs: Any) -> Any:

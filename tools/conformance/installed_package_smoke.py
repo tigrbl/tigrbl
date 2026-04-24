@@ -20,7 +20,6 @@ CORE_INSTALL_DIRS = [
     ROOT / 'pkgs' / 'core' / 'tigrbl_base',
     ROOT / 'pkgs' / 'core' / 'tigrbl_core',
     ROOT / 'pkgs' / 'core' / 'tigrbl_canon',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_runtime',
     ROOT / 'pkgs' / 'core' / 'tigrbl_atoms',
     ROOT / 'pkgs' / 'core' / 'tigrbl_kernel',
     ROOT / 'pkgs' / 'core' / 'tigrbl_ops_oltp',
@@ -30,6 +29,12 @@ CORE_INSTALL_DIRS = [
 TARGET_DEPS = [
     'sqlalchemy>=2.0',
     'aiosqlite>=0.19.0',
+    'greenlet>=3.2.3',
+    'httpx>=0.27.0,<0.28',
+    'jinja2>=3.1',
+    'pydantic>=2.10,<3',
+    'typing-extensions>=4.0',
+    'uvicorn',
 ]
 
 
