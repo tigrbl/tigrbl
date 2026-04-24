@@ -24,7 +24,7 @@ def main() -> int:
     healthz = curl(f"{BASE_URL}/healthz")
     openapi = curl(f"{BASE_URL}/openapi.json")
     openrpc = curl(f"{BASE_URL}/openrpc.json")
-    swagger = curl(f"{BASE_URL}/swagger")
+    swagger = curl(f"{BASE_URL}/docs")
     lens = curl(f"{BASE_URL}/lens")
     favicon = curl(f"{BASE_URL}/favicon.svg")
     rest_create = curl(

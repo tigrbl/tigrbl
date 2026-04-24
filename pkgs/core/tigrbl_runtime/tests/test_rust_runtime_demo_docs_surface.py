@@ -103,12 +103,15 @@ def test_rust_runtime_demo_favicon_routes() -> None:
 
 def test_rust_runtime_demo_swagger_uix() -> None:
     with DemoServer() as server:
-        swagger = _read_text(f"{server.base_url}/swagger")
+        swagger = _read_text(f"{server.base_url}/docs")
+        redirect_code, redirect_target = _read_redirect(f"{server.base_url}/swagger")
 
     assert "swagger-ui" in swagger.lower()
     assert 'url: "/openapi.json"' in swagger
     assert "console.info" in swagger
     assert 'href="/favicon.svg"' in swagger
+    assert redirect_code == 307
+    assert redirect_target == "/docs"
 
 
 def test_rust_runtime_demo_lens_uix() -> None:
@@ -125,11 +128,11 @@ def test_rust_runtime_demo_console_logs() -> None:
     server = DemoServer()
     with server:
         _read_text(f"{server.base_url}/docs")
-        _read_text(f"{server.base_url}/swagger")
         _read_text(f"{server.base_url}/lens")
+        _read_text(f"{server.base_url}/console")
         _, stderr = server.stop()
 
     assert '"event": "http.request"' in stderr
     assert "/docs" in stderr
-    assert "/swagger" in stderr
     assert "/lens" in stderr
+    assert "/console" in stderr

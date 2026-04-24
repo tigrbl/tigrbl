@@ -223,7 +223,7 @@ def build_lens_page() -> str:
 """
 
 
-def build_docs_page() -> str:
+def build_console_page() -> str:
     example = (
         'curl -s -X POST -H "Content-Type: application/json" '
         "--data '{\"id\":\"u1\",\"name\":\"Ada\"}' http://127.0.0.1:8765/users"
@@ -250,8 +250,8 @@ def build_docs_page() -> str:
     <li><a href="/openapi.json">/openapi.json</a></li>
     <li><a href="/openrpc.json">/openrpc.json</a></li>
     <li><a href="/docs">/docs</a></li>
-    <li><a href="/swagger">/swagger</a></li>
     <li><a href="/lens">/lens</a></li>
+    <li><a href="/console">/console</a></li>
     <li><a href="/favicon.svg">/favicon.svg</a></li>
   </ul>
   <h2>Try it</h2>
@@ -291,11 +291,18 @@ class RustRuntimeDemoHandler(BaseHTTPRequestHandler):
             return
 
         if path == "/docs":
-            self._write_html(HTTPStatus.OK, build_docs_page())
+            self._write_html(HTTPStatus.OK, build_swagger_page())
             return
 
         if path == "/swagger":
-            self._write_html(HTTPStatus.OK, build_swagger_page())
+            self.send_response(HTTPStatus.TEMPORARY_REDIRECT)
+            self.send_header("Location", "/docs")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+
+        if path == "/console":
+            self._write_html(HTTPStatus.OK, build_console_page())
             return
 
         if path in {"/lens", "/rdocs"}:

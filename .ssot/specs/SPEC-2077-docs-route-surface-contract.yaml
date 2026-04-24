@@ -20,6 +20,10 @@ status_notes:
     status: "draft"
     note: "Updated docs route surface with mount evidence."
     at: "2026-04-21T08:15:23Z"
+  -
+    status: "draft"
+    note: "Specified favicon, Swagger UIX, Lens UIX, and runtime executor endpoint parity contract."
+    at: "2026-04-24T10:54:06Z"
 references: []
 body: |-
   ## Decision
@@ -29,6 +33,17 @@ body: |-
   3. Route registration for docs surfaces MUST be derived from canonical route materialization and MUST NOT use a side registration subsystem.
   4. Authn/authz behavior on docs routes is normative and testable.
   5. OpenAPI, OpenRPC, Swagger, Lens, and favicon documentation route mounts must work for both app and router mounting forms where supported.
+  6. Python runtime executors and the Rust runtime executor MUST expose the same default documentation endpoint contract for these surfaces.
+  
+  ## Endpoint Contract
+  
+  - `/openapi.json` serves the OpenAPI document.
+  - `/openrpc.json` serves the OpenRPC document.
+  - `/docs` hosts the Swagger UIX for the OpenAPI document. Swagger UIX MUST NOT require a separate canonical `/swagger` endpoint; any `/swagger` compatibility route must redirect or delegate to `/docs`.
+  - `/lens` hosts the Lens UIX for the OpenRPC document.
+  - `/favicon.svg` serves the default SVG favicon payload where the default favicon is enabled.
+  - `/favicon.ico` behaves as a browser favicon endpoint and redirects or delegates to the canonical favicon payload unless an explicit `.ico` asset is configured.
+  - Runtime-specific console or diagnostic pages MUST NOT occupy `/docs` or `/lens`.
   
   ## Integration Coverage
   
@@ -37,11 +52,13 @@ body: |-
   - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
   - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_favicon_uvicorn.py`
+  - `pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_docs_surface.py`
   
   ## Traceability
   
   - ADRs: `adr:1080`, `adr:1030`, `adr:1028`
   - Related specs: `spc:2079`, `spc:2080`
+  - Related features: `feat:docs-mount-runtime-surface-parity-001`, `feat:runtime-executor-doc-endpoint-parity-001`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"
