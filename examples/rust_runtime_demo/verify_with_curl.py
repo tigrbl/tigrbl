@@ -22,6 +22,11 @@ def curl(*args: str) -> str:
 
 def main() -> int:
     healthz = curl(f"{BASE_URL}/healthz")
+    openapi = curl(f"{BASE_URL}/openapi.json")
+    openrpc = curl(f"{BASE_URL}/openrpc.json")
+    swagger = curl(f"{BASE_URL}/docs")
+    lens = curl(f"{BASE_URL}/lens")
+    favicon = curl(f"{BASE_URL}/favicon.svg")
     rest_create = curl(
         "--request",
         "POST",
@@ -51,11 +56,16 @@ def main() -> int:
         f"{BASE_URL}/rpc",
     )
     payload = {
+        "favicon_available": "<svg" in favicon,
         "healthz": json.loads(healthz),
+        "lens_available": "@tigrbljs/tigrbl-lens" in lens,
+        "openapi": json.loads(openapi),
+        "openrpc": json.loads(openrpc),
         "rest_create": json.loads(rest_create),
         "rest_read": json.loads(rest_read),
         "rpc_create": json.loads(rpc_create),
         "rpc_read": json.loads(rpc_read),
+        "swagger_available": "swagger-ui" in swagger.lower(),
     }
     json.dump(payload, sys.stdout, indent=2, sort_keys=True)
     sys.stdout.write("\n")
