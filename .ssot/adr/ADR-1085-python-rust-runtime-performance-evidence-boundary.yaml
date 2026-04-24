@@ -1,0 +1,47 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1085"
+number: 1085
+slug: "python-rust-runtime-performance-evidence-boundary"
+title: "Python/Rust runtime performance evidence boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The executor benchmark compares FastAPI, the Tigrbl Python executor, and the Tigrbl Rust executor under Uvicorn. The generated callgraphs and direct-handle microbenchmarks show that instrumented callgraph throughput is not equivalent to benchmark throughput and that direct runtime/storage measurements are needed to explain hot spots."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted comparable performance evidence boundary for Python and Rust runtime claims."
+    at: "2026-04-24T14:14:58Z"
+references: []
+body: |-
+  ## Context
+  
+  The executor benchmark compares FastAPI, the Tigrbl Python executor, and the Tigrbl Rust executor under Uvicorn. The generated callgraphs and direct-handle microbenchmarks show that instrumented callgraph throughput is not equivalent to benchmark throughput and that direct runtime/storage measurements are needed to explain hot spots.
+  
+  The project needs a decision boundary for performance claims so future changes do not compare unrelated paths or confuse profiling overhead with runtime throughput.
+  
+  ## Decision
+  
+  Python/Rust runtime performance claims must be backed by comparable, reproducible evidence.
+  
+  1. Benchmark evidence must separate Python executor, Rust executor, and server/ASGI path measurements.
+  2. Instrumented callgraph throughput must not be used as the primary throughput claim.
+  3. Direct runtime-handle microbenchmarks must be used to isolate runtime/storage cost from Uvicorn/httpx/ASGI overhead.
+  4. Performance artifacts must include machine-readable outputs suitable for review, such as JSON, CSV, or XLSX tables.
+  5. Python and Rust features must carry equivalent evidence lanes where parity or relative performance is claimed.
+  
+  ## Consequences
+  
+  - A Rust 2x Python throughput target must cite the Python baseline, Rust executor benchmark, and direct Rust runtime microbenchmarks.
+  - Callgraph artifacts are diagnostic evidence, not the sole performance gate.
+  - Runtime changes that improve one path must update the comparable evidence lane before claims are accepted.
+  
+  ## Rejected alternatives
+  
+  - Using profiler-instrumented ops/sec as release throughput evidence.
+  - Comparing Rust direct-handle throughput to Python Uvicorn throughput without labeling the boundary difference.
+  - Recording Rust performance claims without an equivalent Python baseline.

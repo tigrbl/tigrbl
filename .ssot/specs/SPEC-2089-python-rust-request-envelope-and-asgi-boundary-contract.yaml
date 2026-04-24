@@ -1,0 +1,59 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2089"
+number: 2089
+slug: "python-rust-request-envelope-and-asgi-boundary-contract"
+title: "Python/Rust request envelope and ASGI boundary contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Declare the Python/Rust request-envelope and ASGI boundary contract for runtime execution under Uvicorn and future server paths."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted request envelope and ASGI boundary contract for Python and Rust runtime paths."
+    at: "2026-04-24T14:18:55Z"
+references: []
+body: |-
+  ## Purpose
+  
+  Declare the Python/Rust request-envelope and ASGI boundary contract for runtime execution under Uvicorn and future server paths.
+  
+  ## Scope
+  
+  This SPEC applies to Python ASGI request handling, Rust executor invocation through PyO3, request/response envelope conversion, and evidence labeling for Uvicorn versus direct runtime and future Rust-native server paths.
+  
+  ## Requirements
+  
+  1. Under Uvicorn, Python ASGI scope, receive, and send MUST be treated as part of the request path.
+  2. Rust executor invocation under Uvicorn MUST NOT claim to remove Python ASGI scope bridging.
+  3. PyO3 request/response envelope optimizations MAY reduce bridge overhead but MUST preserve Python/Rust semantic equivalence.
+  4. Current JSON string envelope compatibility MAY remain supported while native mapping, bytes, or response-object paths are added.
+  5. Response shaping MUST preserve status, headers, body semantics, and error behavior across Python and Rust paths.
+  6. Evidence MUST label whether a measurement covers Uvicorn/Python ASGI, PyO3 bridge, direct runtime handle, or future Rust-native server behavior.
+  7. A Rust-native server or Rust-native ASGI/server adapter MUST be governed by a separate boundary before it is used for server-path performance claims.
+  
+  ## Python Runtime Requirements
+  
+  1. Python ASGI adapters MUST preserve canonical request semantics before optimizing envelope shape.
+  2. Python tests MUST verify request body parsing, response status/body shaping, and error propagation for the Python path.
+  
+  ## Rust Runtime Requirements
+  
+  1. Rust executor bridge code MUST preserve canonical request semantics across JSON and any future native envelope path.
+  2. Rust tests MUST verify request body parsing, response status/body shaping, error propagation, and bridge compatibility.
+  3. Rust performance evidence MUST distinguish PyO3 bridge cost from Rust runtime/storage cost.
+  
+  ## Non-Goals
+  
+  - This SPEC does not require replacing Uvicorn.
+  - This SPEC does not define the future Rust-native server contract.
+  - This SPEC does not weaken the ASGI-first server-agnostic runtime strategy.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1086"
+  - "adr:1038"
+  - "adr:1085"
