@@ -65,3 +65,18 @@ def test_compile_opview_from_specs_adds_header_and_py_type_metadata() -> None:
     assert opview.schema_in.by_field["request_id"]["header_in"] == "X-Request-Id"
     assert opview.schema_in.by_field["request_id"]["header_required_in"] is True
     assert opview.schema_out.by_field["request_id"]["py_type"] == "str"
+
+
+def test_compile_opview_from_specs_requires_non_nullable_create_storage() -> None:
+    columns = {
+        "label": ColumnSpec(
+            storage=StorageSpec(type_=str, nullable=False),
+            field=FieldSpec(py_type=str),
+            io=IOSpec(in_verbs=("create",), out_verbs=("read",)),
+        ),
+    }
+    op_spec = OpSpec(alias="create", target="create")
+
+    opview = _compile_opview_from_specs(self=None, specs=columns, sp=op_spec)
+
+    assert opview.schema_in.by_field["label"]["required"] is True

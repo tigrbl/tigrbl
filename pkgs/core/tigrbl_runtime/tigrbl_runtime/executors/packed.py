@@ -67,7 +67,31 @@ class PackedPlanExecutor(ExecutorBase):
         return StatusDetailError, create_standardized_error
 
     @staticmethod
-    def _jsonrpc_error_payload(ctx: _Ctx, status_code: int, detail: Any) -> dict[str, Any] | None:
+    def _is_persistence_exception(exc: BaseException) -> bool:
+        from tigrbl_typing.status.utils import (
+            DBAPIError,
+            IntegrityError,
+            OperationalError,
+            _is_asyncpg_constraint_error,
+        )
+
+        if _is_asyncpg_constraint_error(exc):
+            return True
+        candidates = tuple(
+            typ
+            for typ in (DBAPIError, IntegrityError, OperationalError)
+            if isinstance(typ, type)
+        )
+        return bool(candidates) and isinstance(exc, candidates)
+
+    @staticmethod
+    def _jsonrpc_error_payload(
+        ctx: _Ctx,
+        status_code: int,
+        detail: Any,
+        *,
+        sanitize_detail: bool = False,
+    ) -> dict[str, Any] | None:
         temp = getattr(ctx, "temp", None)
         if not isinstance(temp, dict):
             return None
@@ -89,6 +113,10 @@ class PackedPlanExecutor(ExecutorBase):
             return None
 
         from tigrbl_typing.status.mappings import ERROR_MESSAGES, _HTTP_TO_RPC
+
+        if sanitize_detail:
+            status_code = 500
+            detail = {"detail": "Internal error"}
 
         rpc_code = _HTTP_TO_RPC.get(int(status_code), -32603)
         data = dict(detail) if isinstance(detail, Mapping) else {"detail": detail}
@@ -860,7 +888,13 @@ class PackedPlanExecutor(ExecutorBase):
                     except Exception:
                         pass
                 status_code = int(getattr(std, "status_code", 500) or 500)
-                payload = self._jsonrpc_error_payload(ctx, status_code, detail)
+                persistence_error = self._is_persistence_exception(exc)
+                payload = self._jsonrpc_error_payload(
+                    ctx,
+                    status_code,
+                    detail,
+                    sanitize_detail=persistence_error,
+                )
                 await _send_json(
                     env,
                     200 if payload is not None else status_code,
