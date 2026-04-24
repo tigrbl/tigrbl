@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from types import SimpleNamespace
 
-from tigrbl_kernel.models import OpKey
 from tigrbl_atoms.atoms.dispatch import (
     REGISTRY,
     binding_match,
@@ -12,6 +12,12 @@ from tigrbl_atoms.atoms.dispatch import (
     op_resolve,
 )
 from tigrbl_atoms.types import Atom
+
+
+@dataclass(frozen=True, slots=True)
+class OpKey:
+    proto: str
+    selector: str
 
 
 def test_dispatch_registry_contains_expected_atoms() -> None:
