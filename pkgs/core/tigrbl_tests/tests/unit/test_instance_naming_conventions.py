@@ -13,7 +13,8 @@ DISALLOWED_NAMES = {
 }
 
 DISALLOWED_NAME_EXCEPTIONS = {
-    Path("tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py")
+    Path("tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py"),
+    Path("tests/perf/test_fastapi_vs_tigrbl_executor_benchmark.py"),
 }
 
 

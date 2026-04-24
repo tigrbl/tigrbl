@@ -77,6 +77,47 @@ def _run(obj: Optional[object], ctx: Any) -> None:
 
     logger.debug("Running wire:build_in")
     temp = _ensure_temp(ctx)
+    by_field: Mapping[str, Mapping[str, Any]] = schema_in.get("by_field", {})  # type: ignore[assignment]
+    # Build alias→field and ingress whitelist (field and alias forms)
+    alias_to_field: Dict[str, str] = {}
+    ingress_keys: set[str] = set()
+
+    for fname, entry in by_field.items():
+        alias = _safe_str(entry.get("alias_in"))
+        ingress_keys.add(fname)
+        if alias:
+            alias_to_field[alias] = fname
+            ingress_keys.add(alias)
+
+    if isinstance(payload, list):
+        normalized_items: list[Any] = []
+        handler_items: list[Any] = []
+        present_by_index: list[tuple[str, ...]] = []
+        unknown_by_index: dict[int, tuple[str, ...]] = {}
+        for index, item in enumerate(payload):
+            if not isinstance(item, Mapping):
+                normalized_items.append(item)
+                handler_items.append(item)
+                continue
+            in_values, present_fields, unknown_keys = _normalize_mapping_payload(
+                item, by_field=by_field, alias_to_field=alias_to_field
+            )
+            normalized_items.append(in_values)
+            handler_item = dict(item)
+            handler_item.update(in_values)
+            handler_items.append(handler_item)
+            present_by_index.append(tuple(sorted(present_fields)))
+            if unknown_keys:
+                unknown_by_index[index] = tuple(sorted(unknown_keys.keys()))
+
+        temp["in_values"] = normalized_items
+        temp["in_present"] = tuple(present_by_index)
+        if unknown_by_index:
+            temp["in_unknown"] = unknown_by_index
+        setattr(ctx, "payload", handler_items)
+        logger.debug("Normalized bulk inbound values: %s", normalized_items)
+        return
+
     if not isinstance(payload, Mapping):
         logger.debug("Payload is not a mapping; skipping normalization")
         # Non-mapping payloads are ignored here; adapters can pre-normalize.
@@ -98,18 +139,6 @@ def _run(obj: Optional[object], ctx: Any) -> None:
             )
             return
         raise
-
-    by_field: Mapping[str, Mapping[str, Any]] = schema_in.get("by_field", {})  # type: ignore[assignment]
-    # Build alias→field and ingress whitelist (field and alias forms)
-    alias_to_field: Dict[str, str] = {}
-    ingress_keys: set[str] = set()
-
-    for fname, entry in by_field.items():
-        alias = _safe_str(entry.get("alias_in"))
-        ingress_keys.add(fname)
-        if alias:
-            alias_to_field[alias] = fname
-            ingress_keys.add(alias)
 
     # Normalize
     in_values: Dict[str, Any] = {}
@@ -212,6 +241,37 @@ def _coerce_payload(ctx: Any) -> Mapping[str, Any] | Any:
 
 def _safe_str(v: Any) -> Optional[str]:
     return v if isinstance(v, str) and v else None
+
+
+def _normalize_mapping_payload(
+    payload: Mapping[str, Any],
+    *,
+    by_field: Mapping[str, Mapping[str, Any]],
+    alias_to_field: Mapping[str, str],
+) -> tuple[Dict[str, Any], set[str], Dict[str, Any]]:
+    in_values: Dict[str, Any] = {}
+    present_fields: set[str] = set()
+    unknown_keys: Dict[str, Any] = {}
+
+    # First pass: direct field-name matches win.
+    for key, val in payload.items():
+        if key in by_field:
+            in_values[key] = val
+            present_fields.add(key)
+        else:
+            # Track unknowns for now; we may reclassify as alias below.
+            unknown_keys[key] = val
+
+    # Second pass: alias matches for anything not already set.
+    for key, val in list(unknown_keys.items()):
+        target = alias_to_field.get(key)
+        if target and target not in in_values:
+            logger.debug("Resolved alias %s -> %s", key, target)
+            in_values[target] = val
+            present_fields.add(target)
+            unknown_keys.pop(key, None)
+
+    return in_values, present_fields, unknown_keys
 
 
 def _reject_unknown(ctx: Any) -> bool:
