@@ -27,11 +27,11 @@ on:
         description: Version action
         required: true
         type: choice
-        default: y
+        default: patch
         options:
-          - x
-          - y
-          - z
+          - minor
+          - patch
+          - dev
           - finalize
 
 permissions:

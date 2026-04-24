@@ -53,19 +53,19 @@ class Version:
         if segment in {"w", "major"}:
             raise ValueError("w/major bumps are disallowed in the release workflow")
         if segment in {"x", "minor"}:
-            segment = "x"
+            segment = "minor"
         elif segment in {"y", "patch"}:
-            segment = "y"
+            segment = "patch"
         elif segment in {"z", "dev"}:
-            segment = "z"
+            segment = "dev"
 
         if segment == "finalize":
             if self.dev is None:
                 return self
             return Version(self.major, self.minor, self.patch, cargo=self.cargo)
-        if segment == "x":
+        if segment == "minor":
             return Version(self.major, self.minor + 1, 0, 1, self.cargo)
-        if segment in {"y", "z"}:
+        if segment in {"patch", "dev"}:
             if self.dev is None:
                 return Version(self.major, self.minor, self.patch + 1, 1, self.cargo)
             return Version(self.major, self.minor, self.patch, self.dev + 1, self.cargo)
@@ -503,12 +503,13 @@ def main(argv: list[str] | None = None) -> int:
     bump = subparsers.add_parser("bump")
     bump.add_argument(
         "--semver",
-        choices=["x", "y", "z", "patch", "minor", "finalize"],
+        choices=["minor", "patch", "dev", "x", "y", "z", "finalize"],
         required=True,
         help=(
-            "Canonical bump names are x, y, and z for w.x.y.devZ workflow versions; "
+            "Canonical bump names are minor, patch, and dev for "
+            "w.x.y.devZ workflow versions; "
             "finalize removes the dev suffix. "
-            "Legacy aliases 'minor' and 'patch' map to x and y."
+            "Legacy aliases x/y/z are also accepted."
         ),
     )
     bump.add_argument("--summary", type=Path, required=True)
