@@ -456,13 +456,14 @@ def publish_crates(plan_path: Path, *, dry_run: bool, verify: bool = True) -> No
     if not plan["crate_publish_order"]:
         raise RuntimeError("release plan does not include any Rust crates")
     for crate in plan["crate_publish_order"]:
-        command = ["cargo", "publish", "-p", crate, "--locked"]
+        package_command = ["cargo", "package", "-p", crate, "--locked"]
+        publish_command = ["cargo", "publish", "-p", crate, "--locked"]
         if dry_run:
-            run([*command, "--dry-run"])
+            run(package_command)
             continue
         if verify:
-            run([*command, "--dry-run"])
-        run(command)
+            run(package_command)
+        run(publish_command)
         time.sleep(20)
 
 
