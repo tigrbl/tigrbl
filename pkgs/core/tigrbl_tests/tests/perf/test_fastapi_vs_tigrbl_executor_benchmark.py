@@ -93,6 +93,10 @@ class TigrblRustExecutorCreateApp:
         self.runtime = Runtime(executor_backend="rust")
         self.handle = self.runtime.rust_handle(self.spec)
 
+    def close(self) -> None:
+        self.handle = None
+        self.runtime = None
+
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
         if scope["type"] == "lifespan":
             await self._lifespan(receive, send)
@@ -229,6 +233,10 @@ def fetch_tigrbl_rust_names(_app: TigrblRustExecutorCreateApp, db_path: Path) ->
     return [json.loads(row[0])["name"] for row in rows]
 
 
+def dispose_tigrbl_rust_app(app: TigrblRustExecutorCreateApp) -> None:
+    app.close()
+
+
 async def _benchmark_app(
     *,
     scenario: str,
@@ -317,7 +325,7 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
             endpoint_path="/items",
             fetch_names=fetch_tigrbl_rust_names,
             initialize=None,
-            dispose_app=None,
+            dispose_app=dispose_tigrbl_rust_app,
         ),
     }
     order_rng = random.Random(20260424)

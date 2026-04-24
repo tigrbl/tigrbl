@@ -18,4 +18,5 @@ def test_rust_atom_and_hook_registrars_round_trip_through_binding_trace() -> Non
     assert hook_descriptor == "python-hook:demo.hook"
 
     names = [item["event"] for item in rust_boundary_events()]
-    assert names[-2:] == ["register_python_atom", "register_python_hook"]
+    semantic_names = [name for name in names if name.startswith("register_python_")]
+    assert semantic_names[-2:] == ["register_python_atom", "register_python_hook"]

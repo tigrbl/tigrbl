@@ -1,7 +1,7 @@
 use tigrbl_rs_kernel::KernelCompiler;
 use tigrbl_rs_runtime::{RuntimeConfig, RustRuntime};
 use tigrbl_rs_spec::{
-    AppSpec, BindingSpec, Exchange, OpKind, OpSpec, RequestEnvelope, TxScope, Value,
+    AppSpec, BindingSpec, EngineSpec, Exchange, OpKind, OpSpec, RequestEnvelope, TxScope, Value,
 };
 
 #[test]
@@ -138,6 +138,62 @@ fn runtime_executes_crud_against_inmemory_engine() {
             .collect(),
         )
     );
+}
+
+#[test]
+fn runtime_rejects_python_engine_without_callback() {
+    let mut app = AppSpec {
+        name: "demo".to_string(),
+        ..AppSpec::default()
+    };
+    app.engines.push(EngineSpec {
+        name: "legacy".to_string(),
+        kind: "sqlite".to_string(),
+        language: "python".to_string(),
+        callback: None,
+        options: Default::default(),
+    });
+    app.bindings.push(BindingSpec {
+        alias: "users.create".to_string(),
+        transport: "rest".to_string(),
+        path: Some("/users".to_string()),
+        op: OpSpec {
+            kind: OpKind::Create,
+            name: "create".to_string(),
+            route: Some("/users".to_string()),
+            exchange: Exchange::RequestResponse,
+            tx_scope: TxScope::ReadWrite,
+            subevents: vec![],
+        },
+        table: Some(tigrbl_rs_spec::TableSpec {
+            name: "users".to_string(),
+            columns: vec![],
+        }),
+        ..BindingSpec::default()
+    });
+
+    let plan = KernelCompiler.compile(&app);
+    let runtime = RustRuntime::new(RuntimeConfig::default());
+    let handle = runtime.instantiate(plan);
+
+    let err = handle
+        .execute_rest(RequestEnvelope {
+            operation: "users.create".to_string(),
+            transport: "rest".to_string(),
+            path: "/users".to_string(),
+            method: "POST".to_string(),
+            body: Value::Object(
+                [("id".to_string(), Value::String("u1".to_string()))]
+                    .into_iter()
+                    .collect(),
+            ),
+            ..RequestEnvelope::default()
+        })
+        .unwrap_err();
+
+    assert!(err
+        .to_string()
+        .contains("python-backed engine missing callback"));
 }
 
 #[test]
