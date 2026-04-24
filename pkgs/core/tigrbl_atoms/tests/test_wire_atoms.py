@@ -61,6 +61,47 @@ def test_build_in_maps_aliases_and_tracks_unknown_keys() -> None:
     assert ctx.temp["in_unknown_samples"] == {"extra": 9}
 
 
+def test_build_in_uses_jsonrpc_params_not_request_envelope() -> None:
+    ctx = SimpleNamespace(
+        body={
+            "jsonrpc": "2.0",
+            "method": "Widget.create",
+            "params": {"display_name": "Ada"},
+            "id": 1,
+        },
+        temp={
+            "dispatch": {
+                "binding_protocol": "http.jsonrpc",
+                "parsed_payload": {"display_name": "Ada"},
+                "rpc": {
+                    "jsonrpc": "2.0",
+                    "method": "Widget.create",
+                    "params": {"display_name": "Ada"},
+                    "id": 1,
+                },
+            },
+            "route": {
+                "rpc_envelope": {
+                    "jsonrpc": "2.0",
+                    "method": "Widget.create",
+                    "params": {"display_name": "Ada"},
+                    "id": 1,
+                }
+            },
+            "schema_in": {
+                "fields": ("name",),
+                "by_field": {"name": {"alias_in": "display_name"}},
+                "required": ("name",),
+            },
+        },
+    )
+
+    build_in._run(None, ctx)
+
+    assert ctx.temp["in_values"] == {"name": "Ada"}
+    assert "jsonrpc" not in ctx.temp
+
+
 def test_build_in_rejects_disallowed_wrapper_keys() -> None:
     ctx = SimpleNamespace(
         payload={"data": {"name": "Ada"}},

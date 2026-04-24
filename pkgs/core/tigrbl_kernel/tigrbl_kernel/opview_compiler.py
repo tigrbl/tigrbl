@@ -5,6 +5,23 @@ from typing import Any, Dict, Mapping
 from .models import OpView, SchemaIn, SchemaOut
 
 
+def _storage_requires_input(storage: Any, alias: str) -> bool:
+    if storage is None or alias == "update":
+        return False
+    if bool(getattr(storage, "primary_key", False)):
+        if alias in {"replace", "delete"}:
+            return True
+        auto = getattr(storage, "autoincrement", False)
+        if auto not in (False, None) or getattr(storage, "identity", None) is not None:
+            return False
+    has_default = (
+        getattr(storage, "default", None) is not None
+        or getattr(storage, "server_default", None) is not None
+        or callable(getattr(storage, "default_factory", None))
+    )
+    return not bool(getattr(storage, "nullable", True)) and not has_default
+
+
 def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
     """Build a basic OpView from collected specs when no app/model is present."""
     alias = getattr(sp, "alias", "")
@@ -38,7 +55,10 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
                 meta["header_required_in"] = bool(
                     getattr(io, "header_required_in", False)
                 )
-            required = bool(fs and alias in getattr(fs, "required_in", ()))
+            required = bool(
+                (fs and alias in getattr(fs, "required_in", ()))
+                or _storage_requires_input(storage, alias)
+            )
             meta["required"] = required
             base_nullable = (
                 True if storage is None else getattr(storage, "nullable", True)

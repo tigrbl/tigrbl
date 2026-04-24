@@ -1,0 +1,915 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "order": [
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor",
+        "fastapi"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.0975728000048548,
+          "execution_total_seconds": 0.08201229997212067,
+          "ops_per_second": 304.83232403552296,
+          "time_per_op_seconds": {
+            "min": 0.002889900002628565,
+            "mean": 0.003270491997245699,
+            "max": 0.00537669996265322
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.0537493999581784,
+          "execution_total_seconds": 0.026450300007127225,
+          "ops_per_second": 945.1688636145362,
+          "time_per_op_seconds": {
+            "min": 0.0009111000108532608,
+            "mean": 0.0010499399970285595,
+            "max": 0.0012798000243492424
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.08550729998387396,
+          "execution_total_seconds": 0.21964460000162944,
+          "ops_per_second": 113.82023505159943,
+          "time_per_op_seconds": {
+            "min": 0.007368699996732175,
+            "mean": 0.008769007998052985,
+            "max": 0.018464700027834624
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.07127700001001358,
+          "execution_total_seconds": 0.20966549997683614,
+          "ops_per_second": 119.23754743990786,
+          "time_per_op_seconds": {
+            "min": 0.0072898000362329185,
+            "mean": 0.008370516004506499,
+            "max": 0.014231499982997775
+          }
+        },
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08324359997641295,
+          "execution_total_seconds": 0.08598779997555539,
+          "ops_per_second": 290.738918859501,
+          "time_per_op_seconds": {
+            "min": 0.00318250001873821,
+            "mean": 0.003429263997823,
+            "max": 0.005388999998103827
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.06638879998354241,
+          "execution_total_seconds": 0.026644300029147416,
+          "ops_per_second": 938.2869871849273,
+          "time_per_op_seconds": {
+            "min": 0.0010287999757565558,
+            "mean": 0.0010574360005557537,
+            "max": 0.0012734999763779342
+          }
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "order": [
+        "tigrbl_python_executor",
+        "fastapi",
+        "tigrbl_rust_executor"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.07349739997880533,
+          "execution_total_seconds": 0.09426419995725155,
+          "ops_per_second": 265.21203183538825,
+          "time_per_op_seconds": {
+            "min": 0.003265000006649643,
+            "mean": 0.00375916400924325,
+            "max": 0.004887999966740608
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.07324669999070466,
+          "execution_total_seconds": 0.21083029999863356,
+          "ops_per_second": 118.57878113422042,
+          "time_per_op_seconds": {
+            "min": 0.0071084999945014715,
+            "mean": 0.00841327999951318,
+            "max": 0.014330999983940274
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.05597400001715869,
+          "execution_total_seconds": 0.029594300023745745,
+          "ops_per_second": 844.7572667689592,
+          "time_per_op_seconds": {
+            "min": 0.0009355000220239162,
+            "mean": 0.0011755319964140655,
+            "max": 0.003969600016716868
+          }
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "order": [
+        "fastapi",
+        "tigrbl_rust_executor",
+        "tigrbl_python_executor"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.07335759996203706,
+          "execution_total_seconds": 0.21964550000848249,
+          "ops_per_second": 113.81976866830655,
+          "time_per_op_seconds": {
+            "min": 0.00727920001372695,
+            "mean": 0.008767660004086792,
+            "max": 0.014552699984051287
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.05659010005183518,
+          "execution_total_seconds": 0.025793900014832616,
+          "ops_per_second": 969.221404503542,
+          "time_per_op_seconds": {
+            "min": 0.0009179000044241548,
+            "mean": 0.001023699997458607,
+            "max": 0.0012187999673187733
+          }
+        },
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08579660003306344,
+          "execution_total_seconds": 0.08326559996930882,
+          "ops_per_second": 300.2440384650425,
+          "time_per_op_seconds": {
+            "min": 0.0030606999644078314,
+            "mean": 0.003320355995092541,
+            "max": 0.0047984999837353826
+          }
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.06815760000608861,
+          "execution_total_seconds": 0.18946650001453236,
+          "ops_per_second": 131.9494475175425,
+          "time_per_op_seconds": {
+            "min": 0.006828600016888231,
+            "mean": 0.007564012000802905,
+            "max": 0.013785100018139929
+          }
+        },
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08670749998418614,
+          "execution_total_seconds": 0.08228470000904053,
+          "ops_per_second": 303.8231894538508,
+          "time_per_op_seconds": {
+            "min": 0.002886399975977838,
+            "mean": 0.003281312002800405,
+            "max": 0.0044565999996848404
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.05259010003646836,
+          "execution_total_seconds": 0.025219300005119294,
+          "ops_per_second": 991.3042786645633,
+          "time_per_op_seconds": {
+            "min": 0.0009007000480778515,
+            "mean": 0.0010009599989280105,
+            "max": 0.0011327999527566135
+          }
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "order": [
+        "tigrbl_rust_executor",
+        "fastapi",
+        "tigrbl_python_executor"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.06670500000473112,
+          "execution_total_seconds": 0.02777579997200519,
+          "ops_per_second": 900.0640854699819,
+          "time_per_op_seconds": {
+            "min": 0.0009413000079803169,
+            "mean": 0.0011012959969229996,
+            "max": 0.0013204000424593687
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.06930339999962598,
+          "execution_total_seconds": 0.18983629997819662,
+          "ops_per_second": 131.69241079220012,
+          "time_per_op_seconds": {
+            "min": 0.00684360001469031,
+            "mean": 0.0075793999992311,
+            "max": 0.013983700016979128
+          }
+        },
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08662459999322891,
+          "execution_total_seconds": 0.08063229999970645,
+          "ops_per_second": 310.0494466868862,
+          "time_per_op_seconds": {
+            "min": 0.002942000050097704,
+            "mean": 0.0032158480095677076,
+            "max": 0.004171899985522032
+          }
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.05337760003749281,
+          "execution_total_seconds": 0.19572560000233352,
+          "ops_per_second": 127.72984218570254,
+          "time_per_op_seconds": {
+            "min": 0.006825099990237504,
+            "mean": 0.007813843996264041,
+            "max": 0.013955999980680645
+          }
+        },
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08868729998357594,
+          "execution_total_seconds": 0.14879159996053204,
+          "ops_per_second": 168.02023774615915,
+          "time_per_op_seconds": {
+            "min": 0.003077100031077862,
+            "mean": 0.005941692008636892,
+            "max": 0.07026030000997707
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.055747599981259555,
+          "execution_total_seconds": 0.027691799972672015,
+          "ops_per_second": 902.7943298980763,
+          "time_per_op_seconds": {
+            "min": 0.0009438999695703387,
+            "mean": 0.0010994479921646416,
+            "max": 0.0013795000268146396
+          }
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "order": [
+        "tigrbl_python_executor",
+        "fastapi",
+        "tigrbl_rust_executor"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08381539996480569,
+          "execution_total_seconds": 0.08911290002288297,
+          "ops_per_second": 280.54299650870234,
+          "time_per_op_seconds": {
+            "min": 0.0032100999960675836,
+            "mean": 0.003551824002061039,
+            "max": 0.0045134000247344375
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.05797540000639856,
+          "execution_total_seconds": 0.193860900006257,
+          "ops_per_second": 128.95844391103677,
+          "time_per_op_seconds": {
+            "min": 0.006798800022806972,
+            "mean": 0.0077391520026139915,
+            "max": 0.011624400038272142
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.05567880003945902,
+          "execution_total_seconds": 0.029113999975379556,
+          "ops_per_second": 858.693412830302,
+          "time_per_op_seconds": {
+            "min": 0.0009085999918170273,
+            "mean": 0.001154939995612949,
+            "max": 0.0035800000187009573
+          }
+        }
+      ]
+    },
+    {
+      "round": 9,
+      "order": [
+        "tigrbl_python_executor",
+        "fastapi",
+        "tigrbl_rust_executor"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08467319997726008,
+          "execution_total_seconds": 0.08820559998275712,
+          "ops_per_second": 283.42871659948037,
+          "time_per_op_seconds": {
+            "min": 0.0029020000365562737,
+            "mean": 0.0035171520058065653,
+            "max": 0.005849800014402717
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.05307209998136386,
+          "execution_total_seconds": 0.20776100002694875,
+          "ops_per_second": 120.33057213219632,
+          "time_per_op_seconds": {
+            "min": 0.006875700026284903,
+            "mean": 0.008292139992117881,
+            "max": 0.010203999991063029
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.05594740004744381,
+          "execution_total_seconds": 0.026192399964202195,
+          "ops_per_second": 954.4753452974192,
+          "time_per_op_seconds": {
+            "min": 0.0009139999747276306,
+            "mean": 0.0010396079975180327,
+            "max": 0.0012992999982088804
+          }
+        }
+      ]
+    },
+    {
+      "round": 10,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "ops": 25,
+          "first_start_seconds": 0.057608600007370114,
+          "execution_total_seconds": 0.19135799998184666,
+          "ops_per_second": 130.64517816015868,
+          "time_per_op_seconds": {
+            "min": 0.006819100002758205,
+            "mean": 0.007640328002162277,
+            "max": 0.009825700020883232
+          }
+        },
+        {
+          "scenario": "tigrbl_python_executor",
+          "ops": 25,
+          "first_start_seconds": 0.08820219995686784,
+          "execution_total_seconds": 0.08347740001045167,
+          "ops_per_second": 299.48225503992586,
+          "time_per_op_seconds": {
+            "min": 0.0029895000043325126,
+            "mean": 0.0033288679970428347,
+            "max": 0.004301799985114485
+          }
+        },
+        {
+          "scenario": "tigrbl_rust_executor",
+          "ops": 25,
+          "first_start_seconds": 0.05239730002358556,
+          "execution_total_seconds": 0.02644980000331998,
+          "ops_per_second": 945.1867309719544,
+          "time_per_op_seconds": {
+            "min": 0.0009188000112771988,
+            "mean": 0.0010495880036614836,
+            "max": 0.0013413000269792974
+          }
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "order": [
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor",
+        "fastapi"
+      ],
+      "ops_per_second": {
+        "fastapi": 113.82023505159943,
+        "tigrbl_python_executor": 304.83232403552296,
+        "tigrbl_rust_executor": 945.1688636145362
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -191.01208898392355,
+          "throughput_ratio": 0.37338637039796224
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -831.3486285629368,
+          "throughput_ratio": 0.12042317455986172
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 191.01208898392355,
+          "throughput_ratio": 2.6781909552139815
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -640.3365395790133,
+          "throughput_ratio": 0.3225162569043761
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 831.3486285629368,
+          "throughput_ratio": 8.304049479304378
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 640.3365395790133,
+          "throughput_ratio": 3.1006188946825506
+        }
+      }
+    },
+    {
+      "step": 2,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 119.23754743990786,
+        "tigrbl_python_executor": 290.738918859501,
+        "tigrbl_rust_executor": 938.2869871849273
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -171.5013714195931,
+          "throughput_ratio": 0.41011897515354373
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -819.0494397450194,
+          "throughput_ratio": 0.12708003954914412
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 171.5013714195931,
+          "throughput_ratio": 2.438316831416083
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -647.5480683254264,
+          "throughput_ratio": 0.30986139936969964
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 819.0494397450194,
+          "throughput_ratio": 7.869056411595481
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 647.5480683254264,
+          "throughput_ratio": 3.2272493509489615
+        }
+      }
+    },
+    {
+      "step": 3,
+      "order": [
+        "tigrbl_python_executor",
+        "fastapi",
+        "tigrbl_rust_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 118.57878113422042,
+        "tigrbl_python_executor": 265.21203183538825,
+        "tigrbl_rust_executor": 844.7572667689592
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -146.6332507011678,
+          "throughput_ratio": 0.44710935742093283
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -726.1784856347388,
+          "throughput_ratio": 0.14037024101344803
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 146.6332507011678,
+          "throughput_ratio": 2.2365892894040824
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -579.545234933571,
+          "throughput_ratio": 0.3139505776017475
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 726.1784856347388,
+          "throughput_ratio": 7.124017119157015
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 579.545234933571,
+          "throughput_ratio": 3.1852147164020184
+        }
+      }
+    },
+    {
+      "step": 4,
+      "order": [
+        "fastapi",
+        "tigrbl_rust_executor",
+        "tigrbl_python_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 113.81976866830655,
+        "tigrbl_python_executor": 300.2440384650425,
+        "tigrbl_rust_executor": 969.221404503542
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -186.42426979673593,
+          "throughput_ratio": 0.37909085306137935
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -855.4016358352354,
+          "throughput_ratio": 0.11743422930966708
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 186.42426979673593,
+          "throughput_ratio": 2.637890078128812
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -668.9773660384994,
+          "throughput_ratio": 0.30977858832867455
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 855.4016358352354,
+          "throughput_ratio": 8.515404800444164
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 668.9773660384994,
+          "throughput_ratio": 3.2281120699633434
+        }
+      }
+    },
+    {
+      "step": 5,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 131.9494475175425,
+        "tigrbl_python_executor": 303.8231894538508,
+        "tigrbl_rust_executor": 991.3042786645633
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -171.87374193630828,
+          "throughput_ratio": 0.4342968282135849
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -859.3548311470208,
+          "throughput_ratio": 0.1331069080981859
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 171.87374193630828,
+          "throughput_ratio": 2.3025726531629314
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -687.4810892107125,
+          "throughput_ratio": 0.30648832653395436
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 859.3548311470208,
+          "throughput_ratio": 7.512758085120218
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 687.4810892107125,
+          "throughput_ratio": 3.2627670075036765
+        }
+      }
+    },
+    {
+      "step": 6,
+      "order": [
+        "tigrbl_rust_executor",
+        "fastapi",
+        "tigrbl_python_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 131.69241079220012,
+        "tigrbl_python_executor": 310.0494466868862,
+        "tigrbl_rust_executor": 900.0640854699819
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -178.35703589468608,
+          "throughput_ratio": 0.4247464789872504
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -768.3716746777818,
+          "throughput_ratio": 0.1463144823998115
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 178.35703589468608,
+          "throughput_ratio": 2.354345590773024
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -590.0146387830957,
+          "throughput_ratio": 0.34447485650423354
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 768.3716746777818,
+          "throughput_ratio": 6.834593429155228
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 590.0146387830957,
+          "throughput_ratio": 2.9029694943430804
+        }
+      }
+    },
+    {
+      "step": 7,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 127.72984218570254,
+        "tigrbl_python_executor": 168.02023774615915,
+        "tigrbl_rust_executor": 902.7943298980763
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -40.290395560456616,
+          "throughput_ratio": 0.7602051032606777
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -775.0644877123738,
+          "throughput_ratio": 0.14148276961389755
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 40.290395560456616,
+          "throughput_ratio": 1.315434473816069
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -734.7740921519171,
+          "throughput_ratio": 0.18611131260109742
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 775.0644877123738,
+          "throughput_ratio": 7.067998475920224
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 734.7740921519171,
+          "throughput_ratio": 5.373128511233246
+        }
+      }
+    },
+    {
+      "step": 8,
+      "order": [
+        "tigrbl_python_executor",
+        "fastapi",
+        "tigrbl_rust_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 128.95844391103677,
+        "tigrbl_python_executor": 280.54299650870234,
+        "tigrbl_rust_executor": 858.693412830302
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -151.58455259766558,
+          "throughput_ratio": 0.45967443677403125
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -729.7349689192653,
+          "throughput_ratio": 0.15017984531403641
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 151.58455259766558,
+          "throughput_ratio": 2.17545271174517
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -578.1504163215997,
+          "throughput_ratio": 0.32670915173789067
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 729.7349689192653,
+          "throughput_ratio": 6.65868311362907
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 578.1504163215997,
+          "throughput_ratio": 3.060826409914195
+        }
+      }
+    },
+    {
+      "step": 9,
+      "order": [
+        "tigrbl_python_executor",
+        "fastapi",
+        "tigrbl_rust_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 120.33057213219632,
+        "tigrbl_python_executor": 283.42871659948037,
+        "tigrbl_rust_executor": 954.4753452974192
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -163.09814446728404,
+          "throughput_ratio": 0.42455321244755245
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -834.1447731652229,
+          "throughput_ratio": 0.12606985892831074
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 163.09814446728404,
+          "throughput_ratio": 2.355417343882508
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -671.0466286979388,
+          "throughput_ratio": 0.29694713226056413
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 834.1447731652229,
+          "throughput_ratio": 7.932110089602361
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 671.0466286979388,
+          "throughput_ratio": 3.3676028200283254
+        }
+      }
+    },
+    {
+      "step": 10,
+      "order": [
+        "fastapi",
+        "tigrbl_python_executor",
+        "tigrbl_rust_executor"
+      ],
+      "ops_per_second": {
+        "fastapi": 130.64517816015868,
+        "tigrbl_python_executor": 299.48225503992586,
+        "tigrbl_rust_executor": 945.1867309719544
+      },
+      "pairwise_deltas": {
+        "fastapi_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": -168.83707687976718,
+          "throughput_ratio": 0.4362367918684917
+        },
+        "fastapi_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -814.5415528117957,
+          "throughput_ratio": 0.13822155334937217
+        },
+        "tigrbl_python_executor_minus_fastapi": {
+          "delta_ops_per_second": 168.83707687976718,
+          "throughput_ratio": 2.2923330141797416
+        },
+        "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+          "delta_ops_per_second": -645.7044759320286,
+          "throughput_ratio": 0.31684983001397227
+        },
+        "tigrbl_rust_executor_minus_fastapi": {
+          "delta_ops_per_second": 814.5415528117957,
+          "throughput_ratio": 7.234761697926919
+        },
+        "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+          "delta_ops_per_second": 645.7044759320286,
+          "throughput_ratio": 3.1560692330366806
+        }
+      }
+    }
+  ],
+  "summary": {
+    "round_count": 10,
+    "step_count": 10,
+    "ops_per_second": {
+      "fastapi": {
+        "min": 113.81976866830655,
+        "max": 131.9494475175425,
+        "mean": 123.67622269928712,
+        "stddev": 6.9048885391528865,
+        "median": 124.03020715894942,
+        "iqr": 11.480021887235907,
+        "outliers": 0
+      },
+      "tigrbl_python_executor": {
+        "min": 168.02023774615915,
+        "max": 310.0494466868862,
+        "mean": 280.63741552304595,
+        "stddev": 39.69634840402223,
+        "median": 295.1105869497134,
+        "iqr": 21.663975175251835,
+        "outliers": 1
+      },
+      "tigrbl_rust_executor": {
+        "min": 844.7572667689592,
+        "max": 991.3042786645633,
+        "mean": 924.9952705204262,
+        "stddev": 44.901857750107716,
+        "median": 941.7279253997317,
+        "iqr": 51.406545139047466,
+        "outliers": 0
+      }
+    },
+    "pairwise_deltas": {
+      "fastapi_minus_tigrbl_python_executor": {
+        "delta_ops_per_second": -156.96119282375884,
+        "throughput_ratio": 0.44069755441833036
+      },
+      "fastapi_minus_tigrbl_rust_executor": {
+        "delta_ops_per_second": -801.3190478211391,
+        "throughput_ratio": 0.13370470816537655
+      },
+      "tigrbl_python_executor_minus_fastapi": {
+        "delta_ops_per_second": 156.96119282375884,
+        "throughput_ratio": 2.269129905474252
+      },
+      "tigrbl_python_executor_minus_tigrbl_rust_executor": {
+        "delta_ops_per_second": -644.3578549973802,
+        "throughput_ratio": 0.3033933518007634
+      },
+      "tigrbl_rust_executor_minus_fastapi": {
+        "delta_ops_per_second": 801.3190478211391,
+        "throughput_ratio": 7.479168188775528
+      },
+      "tigrbl_rust_executor_minus_tigrbl_python_executor": {
+        "delta_ops_per_second": 644.3578549973802,
+        "throughput_ratio": 3.2960511298767488
+      }
+    }
+  }
+}

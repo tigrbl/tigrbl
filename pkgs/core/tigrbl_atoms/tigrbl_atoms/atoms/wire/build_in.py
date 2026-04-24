@@ -162,6 +162,24 @@ def _coerce_payload(ctx: Any) -> Mapping[str, Any] | Any:
     Try to obtain a dict-like payload from common places on the context.
     Accepts Pydantic v1/v2 models and simple dataclasses.
     """
+    temp = getattr(ctx, "temp", None)
+    if isinstance(temp, Mapping):
+        route = temp.get("route")
+        dispatch = temp.get("dispatch")
+        is_jsonrpc = False
+        staged = None
+        if isinstance(dispatch, Mapping):
+            is_jsonrpc = str(dispatch.get("binding_protocol") or "").endswith(
+                ".jsonrpc"
+            ) or isinstance(dispatch.get("rpc"), Mapping)
+            staged = dispatch.get("parsed_payload")
+        if isinstance(route, Mapping):
+            is_jsonrpc = is_jsonrpc or isinstance(route.get("rpc_envelope"), Mapping)
+            if staged is None:
+                staged = route.get("payload")
+        if is_jsonrpc and staged is not None:
+            return staged
+
     # Preferred explicit staging from router/adapters
     for name in ("in_data", "payload", "data", "body"):
         val = getattr(ctx, name, None)
