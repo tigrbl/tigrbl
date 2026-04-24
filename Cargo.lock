@@ -324,7 +324,7 @@ checksum = "61c41af27dd6d1e27b1b16b489db798443478cef1f06a660c96db617ba5de3b1"
 
 [[package]]
 name = "tigrbl_rs_atoms"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_ports",
  "tigrbl_rs_spec",
@@ -332,7 +332,7 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_rs_engine_inmemory"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_ports",
  "tigrbl_rs_spec",
@@ -340,7 +340,7 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_rs_engine_postgres"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_ports",
  "tigrbl_rs_spec",
@@ -348,7 +348,7 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_rs_engine_sqlite"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "rusqlite",
  "serde_json",
@@ -358,7 +358,7 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_rs_kernel"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_atoms",
  "tigrbl_rs_ports",
@@ -367,14 +367,14 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_rs_ops_olap"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_spec",
 ]
 
 [[package]]
 name = "tigrbl_rs_ops_oltp"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_ports",
  "tigrbl_rs_spec",
@@ -382,21 +382,21 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_rs_ops_realtime"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_spec",
 ]
 
 [[package]]
 name = "tigrbl_rs_ports"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_spec",
 ]
 
 [[package]]
 name = "tigrbl_rs_runtime"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "tigrbl_rs_atoms",
  "tigrbl_rs_engine_inmemory",
@@ -410,7 +410,7 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_rs_spec"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "serde",
  "serde_json",
@@ -418,7 +418,7 @@ dependencies = [
 
 [[package]]
 name = "tigrbl_runtime_bindings"
-version = "0.1.5-dev.1"
+version = "0.1.6-dev.1"
 dependencies = [
  "pyo3",
  "serde_json",
