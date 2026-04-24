@@ -56,19 +56,22 @@
       "id": "feat:anon-access-rest-status-parity-001",
       "title": "Anonymous access and REST create status parity",
       "description": "Recover allow-anon behavior and REST create-status projection so runtime and docs derive from one canonical outcome, per adr/ADR-0031 and specs/status-auth-and-error-parity.md.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
         "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
@@ -5476,12 +5479,15 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
         "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
@@ -10631,22 +10637,25 @@
       "id": "feat:httpbearer-security-dependency-001",
       "title": "HTTPBearer security dependency",
       "description": "Tracks HTTPBearer as a concrete first-class security dependency surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
         "spc:2012"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
         "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
@@ -13981,7 +13990,8 @@
         "spc:2080"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424"
       ],
       "test_ids": [
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
@@ -20621,7 +20631,7 @@
     {
       "id": "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
       "title": "Authn provider integration",
-      "status": "failing",
+      "status": "passing",
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py",
       "feature_ids": [
@@ -20632,12 +20642,14 @@
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:tigrbl-tests-failing-case-closure-001"
+        "clm:tigrbl-tests-failing-case-closure-001",
+        "clm:authn-provider-integration-status-20260424"
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
         "evd:tigrbl-tests-current-failing-pytest",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:authn-provider-integration-status-20260424"
       ]
     },
     {
@@ -26843,7 +26855,7 @@
     {
       "id": "tst:closure-case-authn-unauthorized-errors",
       "title": "Closure case: test_authn_unauthorized_errors",
-      "status": "failing",
+      "status": "passing",
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py",
       "feature_ids": [
@@ -26851,12 +26863,11 @@
         "feat:authn-provider-missing-credentials-status-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failing-case-closure-001",
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:authn-provider-integration-status-20260424"
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
-        "evd:tigrbl-tests-current-failing-pytest"
+        "evd:authn-provider-integration-status-20260424"
       ]
     },
     {
@@ -27394,7 +27405,7 @@
     {
       "id": "tst:authn-provider-unauthorized-errors-status",
       "title": "AuthN provider unauthorized-errors status case",
-      "status": "failing",
+      "status": "passing",
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py",
       "feature_ids": [
@@ -27403,10 +27414,10 @@
         "feat:anon-access-rest-status-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:authn-provider-integration-status-20260424"
       ],
       "evidence_ids": [
-        "evd:tigrbl-tests-current-failing-pytest"
+        "evd:authn-provider-integration-status-20260424"
       ]
     }
   ],
@@ -31636,7 +31647,10 @@
         "feat:transport-bypass-removal-001",
         "feat:transport-parity-contract-001",
         "feat:runtime-executor-doc-endpoint-parity-001",
-        "feat:authn-provider-missing-credentials-status-001"
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:anon-access-rest-status-parity-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:httpbearer-security-dependency-001"
       ],
       "test_ids": [
         "tst:http-route-jsonrpc-openrpc-surface",
@@ -31655,13 +31669,12 @@
         "tst:rust-runtime-demo-favicon-routes",
         "tst:rust-runtime-demo-swagger-uix",
         "tst:rust-runtime-demo-lens-uix",
-        "tst:rust-runtime-demo-console-logs",
-        "tst:authn-provider-unauthorized-errors-status",
-        "tst:closure-case-authn-unauthorized-errors"
+        "tst:rust-runtime-demo-console-logs"
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
-        "evd:rust-runtime-demo-docs-surface-pytest"
+        "evd:rust-runtime-demo-docs-surface-pytest",
+        "evd:authn-provider-integration-status-20260424"
       ]
     },
     {
@@ -31688,7 +31701,6 @@
         "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
         "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
         "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
-        "tst:closure-case-authn-unauthorized-errors",
         "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-sync",
         "tst:closure-case-opspec-pre-tx-deps-execute-rest-rpc-async",
         "tst:closure-case-opspec-dep-failure-aborts-pre-tx-sync",
@@ -31812,6 +31824,28 @@
       ],
       "evidence_ids": [
         "evd:ssot-authority-model-validation"
+      ]
+    },
+    {
+      "id": "clm:authn-provider-integration-status-20260424",
+      "title": "AuthN provider integration status-code closure",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "authn-provider-integration",
+      "description": "The AuthN provider integration preserves governed status-code behavior: missing credentials on required provider auth return 403 and wrong bearer credentials return 401, while direct HTTPBearer challenge behavior remains separately verified.",
+      "feature_ids": [
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:anon-access-rest-status-parity-001",
+        "feat:httpbearer-security-dependency-001"
+      ],
+      "test_ids": [
+        "tst:authn-provider-unauthorized-errors-status",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:closure-case-authn-unauthorized-errors"
+      ],
+      "evidence_ids": [
+        "evd:authn-provider-integration-status-20260424"
       ]
     }
   ],
@@ -35833,9 +35867,7 @@
         "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
         "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
-        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
-        "tst:authn-provider-unauthorized-errors-status",
-        "tst:closure-case-authn-unauthorized-errors"
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs"
       ]
     },
     {
@@ -36042,6 +36074,23 @@
       ],
       "test_ids": [
         "tst:jsonrpc-persistence-exception-sanitized"
+      ]
+    },
+    {
+      "id": "evd:authn-provider-integration-status-20260424",
+      "title": "AuthN provider integration status pytest 2026-04-24",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/authn-provider-integration-status-20260424.md",
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424"
+      ],
+      "test_ids": [
+        "tst:authn-provider-unauthorized-errors-status",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:closure-case-authn-unauthorized-errors"
       ]
     }
   ],
@@ -36395,8 +36444,8 @@
     {
       "id": "bnd:authn-provider-integration-status-001",
       "title": "AuthN provider integration status-code closure lane",
-      "status": "active",
-      "frozen": false,
+      "status": "frozen",
+      "frozen": true,
       "feature_ids": [
         "feat:authn-provider-missing-credentials-status-001",
         "feat:auth-failure-projection-parity-001",
@@ -36650,6 +36699,18 @@
         "evd:ssot-gate-evaluation",
         "evd:ssot-status-sync-dry-run",
         "evd:docs-ci-projection-drift"
+      ]
+    },
+    {
+      "id": "rel:authn-provider-integration-status-20260424",
+      "version": "authn-provider-integration-status-20260424",
+      "status": "candidate",
+      "boundary_id": "bnd:authn-provider-integration-status-001",
+      "claim_ids": [
+        "clm:authn-provider-integration-status-20260424"
+      ],
+      "evidence_ids": [
+        "evd:authn-provider-integration-status-20260424"
       ]
     }
   ],

@@ -1,69 +1,129 @@
 {
-  "passed": true,
+  "passed": false,
   "registry_path": ".ssot/registry.json",
   "release": {
-    "release_id": "rel:tigrbl-tests-failing-case-closure-cases-20260421",
-    "passed": true,
-    "failures": [],
+    "release_id": "rel:authn-provider-integration-status-20260424",
+    "passed": false,
+    "failures": [
+      "Boundary bnd:authn-provider-integration-status-001 contains feature feat:anon-access-rest-status-parity-001 that is not current or explicit",
+      "Boundary bnd:authn-provider-integration-status-001 contains feature feat:auth-failure-projection-parity-001 that is not current or explicit",
+      "Boundary bnd:authn-provider-integration-status-001 contains feature feat:httpbearer-security-dependency-001 that is not current or explicit",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:docs-support-001 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:docs-support-001 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:http-route-001 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:http-route-001 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:docs-support-001 requires feat:http-route-001 to be passing: Required feature feat:http-route-001 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:docs-support-001 requires feat:http-route-001 to be passing: Required feature feat:http-route-001 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-003 to be passing: Required feature feat:op-003 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-003 to be passing: Required feature feat:op-003 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-004 to be passing: Required feature feat:op-004 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-004 to be passing: Required feature feat:op-004 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-005 to be passing: Required feature feat:op-005 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-005 to be passing: Required feature feat:op-005 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-006 to be passing: Required feature feat:op-006 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-006 to be passing: Required feature feat:op-006 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-007 to be passing: Required feature feat:op-007 has non-passed linked evidence",
+      "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-007 to be passing: Required feature feat:op-007 is not implemented",
+      "Claim clm:tigrbl-tests-failure-closure-001 requires all linked tests to be passing",
+      "Claim clm:tigrbl-tests-failure-closure-001 requires implemented linked features",
+      "Evidence evd:authn-provider-integration-status-20260424 has non-passing linked tests",
+      "Evidence evd:tigrbl-tests-failure-closure-final-pytest-20260421 has non-passing linked tests"
+    ],
     "warnings": [],
     "claims": [
       {
-        "claim_id": "clm:tigrbl-tests-failing-case-closure-001",
-        "passed": true,
-        "failures": [],
+        "claim_id": "clm:tigrbl-tests-failure-closure-001",
+        "passed": false,
+        "failures": [
+          "Claim clm:tigrbl-tests-failure-closure-001 requires implemented linked features",
+          "Claim clm:tigrbl-tests-failure-closure-001 requires all linked tests to be passing",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:docs-support-001 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:docs-support-001 is not implemented",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:http-route-001 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:declared-surface-docs-extension-001 requires feat:docs-support-001 to be passing: Required feature feat:http-route-001 is not implemented",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:docs-support-001 requires feat:http-route-001 to be passing: Required feature feat:http-route-001 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:docs-support-001 requires feat:http-route-001 to be passing: Required feature feat:http-route-001 is not implemented",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-003 to be passing: Required feature feat:op-003 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-003 to be passing: Required feature feat:op-003 is not implemented",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-004 to be passing: Required feature feat:op-004 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-004 to be passing: Required feature feat:op-004 is not implemented",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-005 to be passing: Required feature feat:op-005 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-005 to be passing: Required feature feat:op-005 is not implemented",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-006 to be passing: Required feature feat:op-006 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-006 to be passing: Required feature feat:op-006 is not implemented",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-007 to be passing: Required feature feat:op-007 has non-passed linked evidence",
+          "Claim clm:tigrbl-tests-failure-closure-001 linked feature requirement failure: Feature feat:operator-surface-framing-semantics-001 requires feat:op-007 to be passing: Required feature feat:op-007 is not implemented"
+        ],
         "checks": {
-          "implemented_features": true,
-          "tests_passing": true,
+          "implemented_features": false,
+          "tests_passing": false,
           "evidence_passing": true,
           "no_failed_or_stale_evidence": true,
           "evidence_tier_alignment": true,
           "feature_target_alignment": true,
-          "required_features_passing": true
+          "required_features_passing": false
         },
-        "recommended_status": "published"
+        "recommended_status": "evidenced"
       }
     ],
     "evidence": [
       {
-        "evidence_id": "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evidence_id": "evd:authn-provider-integration-status-20260424",
+        "passed": false,
+        "failures": [
+          "Evidence evd:authn-provider-integration-status-20260424 has non-passing linked tests"
+        ]
+      },
+      {
+        "evidence_id": "evd:rust-runtime-demo-docs-surface-pytest",
         "passed": true,
         "failures": []
+      },
+      {
+        "evidence_id": "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "passed": false,
+        "failures": [
+          "Evidence evd:tigrbl-tests-failure-closure-final-pytest-20260421 has non-passing linked tests"
+        ]
       }
     ],
     "profiles": [],
     "boundary": {
-      "id": "bnd:tigrbl-tests-failing-case-closure-001",
+      "id": "bnd:authn-provider-integration-status-001",
       "profile_ids": [],
       "resolved_feature_ids": [
-        "feat:tigrbl-tests-failing-case-closure-001"
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:anon-access-rest-status-parity-001",
+        "feat:httpbearer-security-dependency-001"
       ]
     },
     "summary": {
-      "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
-      "boundary_feature_count": 1,
+      "boundary_id": "bnd:authn-provider-integration-status-001",
+      "boundary_feature_count": 4,
       "boundary_profile_count": 0,
       "release_claim_count": 1,
-      "release_evidence_count": 1
+      "release_evidence_count": 3
     }
   },
   "boundary_scope": {
-    "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "boundary_id": "bnd:authn-provider-integration-status-001",
     "profile_ids": [],
     "feature_ids": []
   },
   "summary": {
     "counts": {
-      "features": 372,
+      "features": 384,
       "profiles": 0,
-      "tests": 548,
-      "claims": 161,
-      "evidence": 196,
-      "issues": 0,
+      "tests": 562,
+      "claims": 167,
+      "evidence": 205,
+      "issues": 1,
       "risks": 0,
-      "boundaries": 7,
-      "releases": 5,
-      "adrs": 92,
-      "specs": 88
+      "boundaries": 10,
+      "releases": 7,
+      "adrs": 94,
+      "specs": 91
     },
     "profile_status": {
       "passing": 0,
