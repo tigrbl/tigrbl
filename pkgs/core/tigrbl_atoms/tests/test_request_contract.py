@@ -28,10 +28,10 @@ def _class_members(path: Path, class_name: str) -> tuple[set[str], set[str]]:
 
 
 def test_atoms_request_contract_matches_request_spec_shape() -> None:
-    repo_root = Path(__file__).resolve().parents[3]
+    packages_root = Path(__file__).resolve().parents[3]
     request_spec_path = (
-        repo_root
-        / "standards"
+        packages_root
+        / "core"
         / "tigrbl_core"
         / "tigrbl_core"
         / "_spec"
