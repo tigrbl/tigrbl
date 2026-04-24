@@ -1,0 +1,70 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2087"
+number: 2087
+slug: "runtime-engine-session-and-transaction-contract"
+title: "Runtime engine session and transaction contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Declare the runtime-wide engine, session, and transaction lifecycle contract for Python and Rust runtimes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted runtime-wide engine/session/transaction lifecycle contract for Python and Rust."
+    at: "2026-04-24T14:18:37Z"
+references: []
+body: |-
+  ## Purpose
+  
+  Declare the runtime-wide engine, session, and transaction lifecycle contract for Python and Rust runtimes.
+  
+  ## Scope
+  
+  This SPEC applies to runtime engine adapters, executor integration, transaction lifecycle, resource ownership, and request hot paths for Python and Rust implementations.
+  
+  ## Lifecycle Model
+  
+  1. Engine configuration: parse and validate engine configuration.
+  2. Engine initialization: allocate durable engine state, pools, registries, or handles.
+  3. Schema readiness: prepare required database structures through governed initialization, bootstrap, migration, or explicit DDL/admin work.
+  4. Session acquisition or reuse: acquire, borrow, or reuse a session/connection for request work.
+  5. Transaction begin: begin the request transaction when required by operation semantics.
+  6. Operation execution: execute the canonical operation.
+  7. Completion: commit on success or rollback on failure.
+  8. Resource release: return, recycle, or close request-scoped resources.
+  9. Disposal: release runtime/application-level resources during shutdown.
+  
+  ## Requirements
+  
+  1. Python and Rust implementations MUST keep lifecycle phases observable enough for tests and diagnostics.
+  2. Request execution MAY acquire or reuse a session, begin a transaction, execute the operation, commit, rollback, and release request-scoped resources.
+  3. Request execution MUST NOT perform engine initialization, schema readiness, or disposal unless the operation is explicitly an administrative lifecycle operation.
+  4. Engine implementations SHOULD reuse long-lived engine state and poolable/reusable sessions where appropriate.
+  5. Missing lifecycle preconditions MUST fail closed with clear errors rather than silently repairing state during ordinary requests.
+  6. Python and Rust implementations MUST document equivalent lifecycle placement even when implementation details differ.
+  
+  ## Python Runtime Requirements
+  
+  1. Python SQLAlchemy-backed execution MUST treat engine construction and metadata/schema setup as initialization or explicit DDL/admin work.
+  2. Python request handling MAY use request-scoped sessions and transactions.
+  3. Python tests MUST show that ordinary request execution is limited to request lifecycle phases.
+  
+  ## Rust Runtime Requirements
+  
+  1. Rust engine adapters MUST separate engine state from request transactions.
+  2. Rust SQLite MUST avoid per-request durable engine construction where a reusable connection or pool is appropriate.
+  3. Rust tests MUST show connection/session lifecycle placement separately from transaction begin and operation execution.
+  
+  ## Evidence Requirements
+  
+  - Python lifecycle tests for initialization, request transaction, commit/rollback, and disposal behavior.
+  - Rust lifecycle tests for initialization, request transaction, commit/rollback, and disposal behavior.
+  - Performance evidence separating request execution from initialization and disposal costs.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1084"
+  - "adr:1083"

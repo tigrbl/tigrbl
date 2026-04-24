@@ -1,0 +1,47 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1086"
+number: 1086
+slug: "python-rust-ffi-and-asgi-boundary"
+title: "Python/Rust FFI and ASGI boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Under Uvicorn, requests enter Tigrbl through Python ASGI scope, receive, and send callables. The Rust executor is invoked from that Python ASGI path through PyO3. Optimizing the PyO3 envelope can reduce Python/Rust bridge overhead, but it does not remove the Python ASGI boundary while Uvicorn remains the server."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted separation of Python ASGI scope bridging, PyO3 envelope optimization, and future Rust-native server scope."
+    at: "2026-04-24T14:15:06Z"
+references: []
+body: |-
+  ## Context
+  
+  Under Uvicorn, requests enter Tigrbl through Python ASGI scope, receive, and send callables. The Rust executor is invoked from that Python ASGI path through PyO3. Optimizing the PyO3 envelope can reduce Python/Rust bridge overhead, but it does not remove the Python ASGI boundary while Uvicorn remains the server.
+  
+  The project needs a decision that separates Rust executor optimization under Python ASGI from a future Rust-native server boundary.
+  
+  ## Decision
+  
+  Python ASGI and Python/Rust FFI boundaries are separate runtime boundaries.
+  
+  1. When Tigrbl runs under Uvicorn, Python ASGI scope, receive, and send remain in the request path.
+  2. Rust executor optimization under Uvicorn may reduce PyO3 envelope conversion, response shaping, and Rust runtime hot-path work.
+  3. Rust executor optimization under Uvicorn does not claim to remove Python ASGI scope bridging.
+  4. A Rust-native server or Rust-native ASGI/server adapter is a separate future boundary and must be governed independently.
+  5. Python and Rust request-envelope behavior must remain semantically equivalent across supported runtimes.
+  
+  ## Consequences
+  
+  - Work to reduce JSON string envelopes across PyO3 is in scope for Rust executor optimization but is not a substitute for a Rust server.
+  - Performance evidence must label whether it measures Uvicorn/Python ASGI, direct runtime handle, or a future Rust-native server path.
+  - Runtime equivalence work must preserve Python and Rust request/response semantics before optimizing boundary representation.
+  
+  ## Rejected alternatives
+  
+  - Treating PyO3 bridge optimization as equivalent to replacing Uvicorn.
+  - Hiding the Python ASGI boundary in Rust executor performance claims.
+  - Folding a future Rust-native server into the current Uvicorn executor optimization scope.

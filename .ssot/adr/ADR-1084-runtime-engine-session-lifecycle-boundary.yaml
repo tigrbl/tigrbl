@@ -1,0 +1,49 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1084"
+number: 1084
+slug: "runtime-engine-session-lifecycle-boundary"
+title: "Runtime engine session lifecycle boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The Python and Rust runtimes both execute compiled operation semantics through engine/session/transaction concepts. Performance and correctness drift when a request path combines engine construction, schema readiness, session acquisition, transaction begin, operation execution, commit/rollback, and disposal into one undifferentiated action."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted runtime-wide engine/session lifecycle boundary for Python and Rust implementations."
+    at: "2026-04-24T14:14:51Z"
+references: []
+body: |-
+  ## Context
+  
+  The Python and Rust runtimes both execute compiled operation semantics through engine/session/transaction concepts. Performance and correctness drift when a request path combines engine construction, schema readiness, session acquisition, transaction begin, operation execution, commit/rollback, and disposal into one undifferentiated action.
+  
+  The Rust executor investigation exposed this most clearly in the SQLite implementation, where the per-request transaction path opens a new connection and performs schema setup before beginning the transaction. Python must remain governed by the same lifecycle boundary even where SQLAlchemy hides part of the machinery.
+  
+  ## Decision
+  
+  Tigrbl defines a runtime-wide engine/session lifecycle boundary for Python and Rust.
+  
+  1. Engine configuration and engine initialization are distinct from request execution.
+  2. Schema readiness is distinct from session acquisition.
+  3. Session acquisition or reuse is distinct from transaction begin.
+  4. Transaction begin, operation execution, commit, rollback, and resource release are request-path operations.
+  5. Disposal is a runtime/application lifecycle operation, not ordinary request work.
+  6. Python and Rust engine implementations must document and test their lifecycle placement.
+  
+  ## Consequences
+  
+  - Rust engines should support long-lived engine state and reusable/poolable sessions where appropriate.
+  - Python and Rust test evidence must identify where initialization, session acquisition, and transaction work occur.
+  - Runtime performance claims must not include one-time initialization costs as request execution costs.
+  - Missing lifecycle state should produce clear fail-closed errors rather than implicit lifecycle repair during ordinary requests.
+  
+  ## Rejected alternatives
+  
+  - Treating engine open and transaction begin as the same lifecycle step.
+  - Letting request execution repair missing initialization state opportunistically.
+  - Allowing Rust and Python runtimes to use different lifecycle definitions for equivalent semantics.

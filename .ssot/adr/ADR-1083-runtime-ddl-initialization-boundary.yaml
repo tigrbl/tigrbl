@@ -1,0 +1,48 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1083"
+number: 1083
+slug: "runtime-ddl-initialization-boundary"
+title: "Runtime DDL initialization boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl now has both Python and Rust runtime execution paths. The Rust executor performance investigation showed that the disk SQLite Rust path runs connection open, table creation, index creation, transaction begin, operation execution, and commit inside the per-request execution path. That mixes schema readiness work with ordinary request handling and makes request latency reflect bootstrap cost."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted runtime-wide DDL initialization boundary for Python and Rust request execution."
+    at: "2026-04-24T14:14:42Z"
+references: []
+body: |-
+  ## Context
+  
+  Tigrbl now has both Python and Rust runtime execution paths. The Rust executor performance investigation showed that the disk SQLite Rust path runs connection open, table creation, index creation, transaction begin, operation execution, and commit inside the per-request execution path. That mixes schema readiness work with ordinary request handling and makes request latency reflect bootstrap cost.
+  
+  The same boundary applies to Python. Python initialization and explicit DDL/admin operations may prepare schema state, but ordinary CRUD request execution must not silently create tables, create indexes, run migrations, or perform implicit schema readiness work.
+  
+  ## Decision
+  
+  DDL and schema readiness are initialization, bootstrap, migration, or explicit DDL/admin work across all Tigrbl runtimes.
+  
+  1. Python and Rust ordinary request execution must not run DDL, schema migration, table creation, index creation, or implicit schema readiness checks.
+  2. Runtime initialization, engine initialization, explicit bootstrap, explicit migration, and explicit DDL/admin operations may run DDL when they are the declared operation.
+  3. Idempotent DDL is still DDL and belongs outside ordinary request execution.
+  4. If required schema readiness has not been established, ordinary request execution must fail closed with a clear runtime or configuration error unless a deliberately configured development auto-initialization mode is in scope.
+  5. Python and Rust conformance must be evidenced separately.
+  
+  ## Consequences
+  
+  - Rust SQLite must move `_tigrbl_rows` table/index initialization out of transaction begin and into a runtime or engine readiness phase.
+  - Python request paths must preserve the same invariant and prove that `create_all`, schema reflection, or implicit bootstrap do not happen during ordinary CRUD requests.
+  - Performance evidence can distinguish runtime execution from schema/bootstrap work.
+  - Future engines inherit the same lifecycle boundary.
+  
+  ## Rejected alternatives
+  
+  - Allowing each runtime to decide independently whether idempotent DDL can run per request.
+  - Treating per-request `CREATE TABLE IF NOT EXISTS` as acceptable because it is idempotent.
+  - Recording the rule as Rust-only even though the architectural boundary is runtime-wide.

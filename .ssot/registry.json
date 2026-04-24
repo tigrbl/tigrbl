@@ -38503,6 +38503,94 @@
         }
       ],
       "summary": "Make SSOT the authority for governance state and define tests, evidence, claims, and gates as separate synchronized entities."
+    },
+    {
+      "id": "adr:1083",
+      "number": 1083,
+      "slug": "runtime-ddl-initialization-boundary",
+      "title": "Runtime DDL initialization boundary",
+      "path": ".ssot/adr/ADR-1083-runtime-ddl-initialization-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "2fd5e1f3b6de0a0295d282627d967a4aec61e5a9764befb6ae53587892cd034f",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted runtime-wide DDL initialization boundary for Python and Rust request execution.",
+          "at": "2026-04-24T14:14:42Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1084",
+      "number": 1084,
+      "slug": "runtime-engine-session-lifecycle-boundary",
+      "title": "Runtime engine session lifecycle boundary",
+      "path": ".ssot/adr/ADR-1084-runtime-engine-session-lifecycle-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "e55622c2a53928f7b4d5adfda01bc30a8da220498b03fe1ec11038ed612b638f",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted runtime-wide engine/session lifecycle boundary for Python and Rust implementations.",
+          "at": "2026-04-24T14:14:51Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1085",
+      "number": 1085,
+      "slug": "python-rust-runtime-performance-evidence-boundary",
+      "title": "Python/Rust runtime performance evidence boundary",
+      "path": ".ssot/adr/ADR-1085-python-rust-runtime-performance-evidence-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "b945644bbd8c82bc1d19aa9ef58710d2003a535a2962c6f6ec6ab4bb1d1700f9",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted comparable performance evidence boundary for Python and Rust runtime claims.",
+          "at": "2026-04-24T14:14:58Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1086",
+      "number": 1086,
+      "slug": "python-rust-ffi-and-asgi-boundary",
+      "title": "Python/Rust FFI and ASGI boundary",
+      "path": ".ssot/adr/ADR-1086-python-rust-ffi-and-asgi-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "e2c295febc2fe1ac43b60429d51f7f07b31748bbe2cdaa2be96091c712924dc2",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted separation of Python ASGI scope bridging, PyO3 envelope optimization, and future Rust-native server scope.",
+          "at": "2026-04-24T14:15:06Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -40638,6 +40726,116 @@
         "adr:1082"
       ],
       "summary": "Defines deterministic test selection and auditable status synchronization from SSOT boundary and release state."
+    },
+    {
+      "id": "spc:2086",
+      "number": 2086,
+      "slug": "runtime-ddl-and-schema-readiness-lifecycle-contract",
+      "title": "Runtime DDL and schema readiness lifecycle contract",
+      "path": ".ssot/specs/SPEC-2086-runtime-ddl-and-schema-readiness-lifecycle-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "61843fdea54b5796c19e704fdb1986d7d0b13a596fd6df3ead9389de666e1eb3",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted runtime-wide DDL/schema readiness lifecycle contract for Python and Rust.",
+          "at": "2026-04-24T14:18:27Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1083",
+        "adr:1084"
+      ]
+    },
+    {
+      "id": "spc:2087",
+      "number": 2087,
+      "slug": "runtime-engine-session-and-transaction-contract",
+      "title": "Runtime engine session and transaction contract",
+      "path": ".ssot/specs/SPEC-2087-runtime-engine-session-and-transaction-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "f5128f3cd6fcc9f8dfb80097d24175df2aea291f17a312b8212eac296a507d22",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted runtime-wide engine/session/transaction lifecycle contract for Python and Rust.",
+          "at": "2026-04-24T14:18:37Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1084",
+        "adr:1083"
+      ]
+    },
+    {
+      "id": "spc:2088",
+      "number": 2088,
+      "slug": "python-rust-runtime-performance-evidence-contract",
+      "title": "Python/Rust runtime performance evidence contract",
+      "path": ".ssot/specs/SPEC-2088-python-rust-runtime-performance-evidence-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "339b83837450d149e8a2fbdd32d515fa98a31938cbdd2d8548d46d70c2a0db32",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted comparable evidence requirements for Python and Rust runtime performance claims.",
+          "at": "2026-04-24T14:18:46Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1085",
+        "adr:1083",
+        "adr:1084"
+      ]
+    },
+    {
+      "id": "spc:2089",
+      "number": 2089,
+      "slug": "python-rust-request-envelope-and-asgi-boundary-contract",
+      "title": "Python/Rust request envelope and ASGI boundary contract",
+      "path": ".ssot/specs/SPEC-2089-python-rust-request-envelope-and-asgi-boundary-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "3672a230552e2757b528bed2472b006fda176fa01e75ffacbf993e2c3d8484a1",
+      "status": "accepted",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "accepted",
+          "note": "Accepted request envelope and ASGI boundary contract for Python and Rust runtime paths.",
+          "at": "2026-04-24T14:18:55Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1086",
+        "adr:1038",
+        "adr:1085"
+      ]
     }
   ],
   "profiles": []

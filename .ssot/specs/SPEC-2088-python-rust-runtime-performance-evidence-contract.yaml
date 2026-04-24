@@ -1,0 +1,67 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2088"
+number: 2088
+slug: "python-rust-runtime-performance-evidence-contract"
+title: "Python/Rust runtime performance evidence contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Declare the evidence contract for Python and Rust runtime performance claims."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted comparable evidence requirements for Python and Rust runtime performance claims."
+    at: "2026-04-24T14:18:46Z"
+references: []
+body: |-
+  ## Purpose
+  
+  Declare the evidence contract for Python and Rust runtime performance claims.
+  
+  ## Scope
+  
+  This SPEC applies to benchmark artifacts, callgraphs, direct runtime microbenchmarks, Uvicorn/httpx request benchmarks, and any claim comparing Python executor, Rust executor, FastAPI, or future server paths.
+  
+  ## Requirements
+  
+  1. Throughput claims MUST cite benchmark evidence collected without profiler instrumentation unless explicitly labeled as profiled diagnostic output.
+  2. Callgraph artifacts MAY diagnose hot spots but MUST NOT be the sole throughput claim.
+  3. Runtime/storage cost MUST be isolated with direct runtime-handle or equivalent microbenchmarks.
+  4. Server/ASGI cost MUST be measured separately from direct runtime execution.
+  5. Python and Rust comparison claims MUST include equivalent evidence lanes for both runtimes.
+  6. Evidence artifacts SHOULD be machine-readable and reviewable, including JSON, CSV, XLSX, or equivalent structured outputs.
+  7. Performance evidence MUST label whether it measures FastAPI, Python executor, Rust executor under Python ASGI, direct Rust runtime handle, direct Python runtime path, or a future Rust-native server path.
+  
+  ## Required Evidence Lanes
+  
+  1. FastAPI baseline where relevant.
+  2. Tigrbl Python executor under Uvicorn.
+  3. Tigrbl Rust executor under Uvicorn.
+  4. Direct Python runtime or executor microbenchmark where applicable.
+  5. Direct Rust runtime handle microbenchmark.
+  6. Callgraph tables for diagnostic hot spots.
+  7. Per-operation decomposition when diagnosing a performance regression or target.
+  
+  ## 2x Target Requirements
+  
+  Any claim that Rust reaches at least 2x Python executor throughput MUST include:
+  
+  1. Python executor baseline under the same benchmark harness.
+  2. Rust executor throughput under the same benchmark harness.
+  3. Direct Rust runtime/storage microbenchmarks explaining the hot path.
+  4. Evidence that initialization, DDL, and profiler overhead are excluded from the throughput comparison.
+  
+  ## Non-Goals
+  
+  - This SPEC does not set a universal throughput target.
+  - This SPEC does not require a Rust-native server.
+  - This SPEC does not replace correctness, parity, or conformance tests.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1085"
+  - "adr:1083"
+  - "adr:1084"
