@@ -4,6 +4,7 @@ import asyncio
 import json
 import logging
 import random
+import sqlite3
 from pathlib import Path
 from statistics import mean, median, pstdev
 from tempfile import TemporaryDirectory
@@ -78,18 +79,19 @@ class RustBenchmarkAppSpec(AppBase):
     VERSION = "0.1.0"
     DESCRIPTION = "Tigrbl create benchmark served by the Rust executor."
     EXECUTION_BACKEND = "rust"
-    ENGINE = EngineSpec.from_any({"kind": "sqlite", "mode": "memory", "async": False})
     TABLES = (RustBenchmarkItem,)
 
 
 class TigrblRustExecutorCreateApp:
     """Small ASGI adapter that sends HTTP create requests to Runtime(..., rust)."""
 
-    def __init__(self) -> None:
+    def __init__(self, db_path: Path) -> None:
         self.spec: AppSpec = AppBase.collect_spec(RustBenchmarkAppSpec)
+        self.spec.engine = EngineSpec.from_any(
+            {"kind": "sqlite", "path": str(db_path), "async": False}
+        )
         self.runtime = Runtime(executor_backend="rust")
         self.handle = self.runtime.rust_handle(self.spec)
-        self.created_names: list[str] = []
 
     async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
         if scope["type"] == "lifespan":
@@ -130,9 +132,6 @@ class TigrblRustExecutorCreateApp:
             }
         )
         body = dict(response.get("body") or {})
-        name = body.get("name")
-        if isinstance(name, str):
-            self.created_names.append(name)
         await self._send_json(send, int(response["status"]), body)
 
     @staticmethod
@@ -221,6 +220,15 @@ def _pairwise_deltas(
     return deltas
 
 
+def fetch_tigrbl_rust_names(_app: TigrblRustExecutorCreateApp, db_path: Path) -> list[str]:
+    with sqlite3.connect(db_path) as conn:
+        rows = conn.execute(
+            "SELECT row_json FROM _tigrbl_rows "
+            "WHERE table_name = 'items' ORDER BY rowid"
+        ).fetchall()
+    return [json.loads(row[0])["name"] for row in rows]
+
+
 async def _benchmark_app(
     *,
     scenario: str,
@@ -305,9 +313,9 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
             dispose_app=dispose_tigrbl_app,
         ),
         "tigrbl_rust_executor": dict(
-            create_app=lambda _db_path: TigrblRustExecutorCreateApp(),
+            create_app=lambda db_path: TigrblRustExecutorCreateApp(db_path),
             endpoint_path="/items",
-            fetch_names=lambda app, _db_path: list(app.created_names),
+            fetch_names=fetch_tigrbl_rust_names,
             initialize=None,
             dispose_app=None,
         ),

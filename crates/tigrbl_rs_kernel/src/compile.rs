@@ -15,6 +15,10 @@ impl KernelCompiler {
             .as_ref()
             .map(|engine| engine.language.clone())
             .unwrap_or_else(|| "rust".to_string());
+        let default_engine_options = default_engine
+            .as_ref()
+            .map(|engine| tigrbl_rs_spec::Value::Object(engine.options.clone()))
+            .unwrap_or(tigrbl_rs_spec::Value::Null);
         let default_engine_callback = default_engine.and_then(|engine| engine.callback);
 
         let bindings = app
@@ -52,6 +56,7 @@ impl KernelCompiler {
                 engine_kind: default_engine_kind.clone(),
                 engine_language: default_engine_language.clone(),
                 engine_callback: default_engine_callback.clone(),
+                engine_options: default_engine_options.clone(),
             })
             .collect::<Vec<_>>();
         let routes = bindings
@@ -74,6 +79,7 @@ impl KernelCompiler {
             bindings,
             routes,
             engine_kind: default_engine_kind,
+            engine_options: default_engine_options,
             callbacks: app
                 .callbacks
                 .iter()

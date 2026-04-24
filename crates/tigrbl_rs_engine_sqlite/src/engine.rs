@@ -2,8 +2,35 @@ use tigrbl_rs_ports::{engines::EnginePort, errors::PortResult, sessions::Session
 
 use crate::session::SqliteSession;
 
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
-pub struct SqliteEngine;
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct SqliteEngine {
+    path: String,
+}
+
+impl Default for SqliteEngine {
+    fn default() -> Self {
+        Self::memory()
+    }
+}
+
+impl SqliteEngine {
+    pub fn new(path: Option<String>) -> Self {
+        match path {
+            Some(path) if !path.trim().is_empty() => Self { path },
+            _ => Self::memory(),
+        }
+    }
+
+    pub fn memory() -> Self {
+        Self {
+            path: ":memory:".to_string(),
+        }
+    }
+
+    pub fn path(&self) -> &str {
+        &self.path
+    }
+}
 
 impl EnginePort for SqliteEngine {
     fn kind(&self) -> &str {
@@ -11,6 +38,6 @@ impl EnginePort for SqliteEngine {
     }
 
     fn open(&self) -> PortResult<Box<dyn SessionPort>> {
-        Ok(Box::new(SqliteSession::default()))
+        Ok(Box::new(SqliteSession::new(self.path.clone())))
     }
 }

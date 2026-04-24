@@ -7,11 +7,7 @@ use tigrbl_rs_ports::{
     errors::{PortError, PortResult},
     transactions::TransactionPort,
 };
-use tigrbl_rs_spec::{
-    request::RequestEnvelope,
-    response::ResponseEnvelope,
-    values::Value,
-};
+use tigrbl_rs_spec::{request::RequestEnvelope, response::ResponseEnvelope, values::Value};
 
 pub(crate) type Row = BTreeMap<String, Value>;
 pub(crate) type TableRows = Vec<Row>;

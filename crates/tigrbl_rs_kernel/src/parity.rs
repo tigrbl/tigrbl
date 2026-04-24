@@ -115,8 +115,7 @@ pub fn build_parity_snapshot(app: &AppSpec, plan: &KernelPlan) -> KernelParitySn
         phase_plans.insert(binding.alias.clone(), phase_plan(binding));
 
         if let Some(path) = route.clone() {
-            if exchange == "request_response" && (transport == "rest" || transport == "jsonrpc")
-            {
+            if exchange == "request_response" && (transport == "rest" || transport == "jsonrpc") {
                 openapi_paths.push(path.clone());
             }
             if exchange != "request_response" {

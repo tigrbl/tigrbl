@@ -1,7 +1,7 @@
 use crate::plan::packed::PackedPlan;
 use tigrbl_rs_spec::{Exchange, OpKind, TxScope, Value};
 
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct PlanBinding {
     pub alias: String,
     pub op_name: String,

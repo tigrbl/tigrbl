@@ -1,5 +1,7 @@
 use tigrbl_rs_kernel::{build_parity_snapshot, KernelCompiler};
-use tigrbl_rs_spec::{AppSpec, BindingSpec, Exchange, HookSpec, HookPhase, OpKind, OpSpec, TxScope};
+use tigrbl_rs_spec::{
+    AppSpec, BindingSpec, Exchange, HookPhase, HookSpec, OpKind, OpSpec, TxScope,
+};
 
 #[test]
 fn kernel_parity_snapshot_covers_routes_opviews_phases_packed_and_docs() {
