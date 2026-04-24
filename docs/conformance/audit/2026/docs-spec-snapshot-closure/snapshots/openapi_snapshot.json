@@ -1,0 +1,3402 @@
+{
+  "components": {
+    "schemas": {
+      "SpecSnapshotBasicDocsTableClearRequest": {
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBasicDocsTableClearRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableClearResponse": {
+        "description": "clear response schema for SpecSnapshotBasicDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotBasicDocsTableClearResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBasicDocsTableCreateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableCreateResponse": {
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBasicDocsTableCreateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "SpecSnapshotBasicDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableDeleteResponse": {
+        "description": "delete response schema for SpecSnapshotBasicDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotBasicDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableListResponse": {
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBasicDocsTableListResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableReadResponse": {
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBasicDocsTableReadResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBasicDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBasicDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotBasicDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBasicDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBasicDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotBasicDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableClearRequest": {
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBearerDocsTableClearRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableClearResponse": {
+        "description": "clear response schema for SpecSnapshotBearerDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotBearerDocsTableClearResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBearerDocsTableCreateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableCreateResponse": {
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBearerDocsTableCreateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "SpecSnapshotBearerDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableDeleteResponse": {
+        "description": "delete response schema for SpecSnapshotBearerDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotBearerDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableListResponse": {
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBearerDocsTableListResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableReadResponse": {
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBearerDocsTableReadResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBearerDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotBearerDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotBearerDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotBearerDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotBearerDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotBearerDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotCreateWidget": {
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotCreateWidget",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableClearRequest": {
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotRouterDocsTableClearRequest",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableClearResponse": {
+        "description": "clear response schema for SpecSnapshotRouterDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotRouterDocsTableClearResponse",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotRouterDocsTableCreateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableCreateResponse": {
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotRouterDocsTableCreateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "SpecSnapshotRouterDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableDeleteResponse": {
+        "description": "delete response schema for SpecSnapshotRouterDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotRouterDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableListResponse": {
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotRouterDocsTableListResponse",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableReadResponse": {
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotRouterDocsTableReadResponse",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotRouterDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotRouterDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotRouterDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotRouterDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotRouterDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotRouterDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableClearRequest": {
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable clear schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotTableDocsTableClearRequest",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableClearResponse": {
+        "description": "clear response schema for SpecSnapshotTableDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotTableDocsTableClearResponse",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableCreateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable create schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotTableDocsTableCreateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableCreateResponse": {
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotTableDocsTableCreateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableDeleteRequest": {
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable delete schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "id"
+        ],
+        "title": "SpecSnapshotTableDocsTableDeleteRequest",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableDeleteResponse": {
+        "description": "delete response schema for SpecSnapshotTableDocsTable",
+        "examples": [
+          {
+            "deleted": 0
+          }
+        ],
+        "properties": {
+          "deleted": {
+            "examples": [
+              0
+            ],
+            "title": "Deleted",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "title": "SpecSnapshotTableDocsTableDeleteResponse",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableListResponse": {
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable list schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotTableDocsTableListResponse",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableReadResponse": {
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable read schema",
+        "properties": {
+          "id": {
+            "default": null,
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotTableDocsTableReadResponse",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableReplaceRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotTableDocsTableReplaceRequest",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableReplaceResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable replace schema",
+        "properties": {
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "title": "SpecSnapshotTableDocsTableReplaceResponse",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableUpdateRequest": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotTableDocsTableUpdateRequest",
+        "type": "object"
+      },
+      "SpecSnapshotTableDocsTableUpdateResponse": {
+        "additionalProperties": false,
+        "description": "Tigrbl v3 SpecSnapshotTableDocsTable update schema",
+        "properties": {
+          "id": {
+            "examples": [
+              "00000000-dead-beef-cafe-000000000000"
+            ],
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "default": null,
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "title": "SpecSnapshotTableDocsTableUpdateResponse",
+        "type": "object"
+      },
+      "SpecSnapshotWidgetOut": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "SpecSnapshotWidgetOut",
+        "type": "object"
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      },
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      },
+      "BearerAuth": {
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "MutualTLSAuth": {
+        "type": "mutualTLS"
+      },
+      "OAuth2Auth": {
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://issuer.example/token"
+          }
+        },
+        "type": "oauth2"
+      },
+      "OpenIdAuth": {
+        "openIdConnectUrl": "https://issuer.example/.well-known/openid-configuration",
+        "type": "openIdConnect"
+      }
+    }
+  },
+  "info": {
+    "title": "Spec Snapshot API",
+    "version": "5.0.0"
+  },
+  "jsonSchemaDialect": "https://json-schema.org/draft/2020-12/schema",
+  "openapi": "3.1.0",
+  "paths": {
+    "/specsnapshotbasicdocstable": {
+      "delete": {
+        "operationId": "SpecSnapshotBasicDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBasicDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbasicdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshotbasicdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBasicDocsTable.clear"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotBasicDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBasicDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbasicdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshotbasicdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBasicDocsTable.list"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "post": {
+        "operationId": "SpecSnapshotBasicDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBasicDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshotbasicdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "POST"
+              ],
+              "path": "/specsnapshotbasicdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBasicDocsTable.create"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/specsnapshotbasicdocstable/{item_id}": {
+      "delete": {
+        "operationId": "SpecSnapshotBasicDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBasicDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshotbasicdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBasicDocsTable.delete"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotBasicDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "tags": [
+          "SpecSnapshotBasicDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshotbasicdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBasicDocsTable.read"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "patch": {
+        "operationId": "SpecSnapshotBasicDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBasicDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PATCH"
+              ],
+              "path": "/specsnapshotbasicdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBasicDocsTable.update"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "put": {
+        "operationId": "SpecSnapshotBasicDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBasicDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBasicDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PUT"
+              ],
+              "path": "/specsnapshotbasicdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBasicDocsTable.replace"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/specsnapshotbearerdocstable": {
+      "delete": {
+        "operationId": "SpecSnapshotBearerDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBearerDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbearerdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshotbearerdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBearerDocsTable.clear"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotBearerDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBearerDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbearerdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshotbearerdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBearerDocsTable.list"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "post": {
+        "operationId": "SpecSnapshotBearerDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBearerDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshotbearerdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "POST"
+              ],
+              "path": "/specsnapshotbearerdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBearerDocsTable.create"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/specsnapshotbearerdocstable/{item_id}": {
+      "delete": {
+        "operationId": "SpecSnapshotBearerDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBearerDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshotbearerdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBearerDocsTable.delete"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotBearerDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "tags": [
+          "SpecSnapshotBearerDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshotbearerdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBearerDocsTable.read"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "patch": {
+        "operationId": "SpecSnapshotBearerDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBearerDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PATCH"
+              ],
+              "path": "/specsnapshotbearerdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBearerDocsTable.update"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "put": {
+        "operationId": "SpecSnapshotBearerDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotBearerDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotBearerDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PUT"
+              ],
+              "path": "/specsnapshotbearerdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotBearerDocsTable.replace"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/specsnapshotrouterdocstable": {
+      "delete": {
+        "operationId": "SpecSnapshotRouterDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotRouterDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotrouterdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshotrouterdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotRouterDocsTable.clear"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotRouterDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotRouterDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotrouterdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshotrouterdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotRouterDocsTable.list"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "post": {
+        "operationId": "SpecSnapshotRouterDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotRouterDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshotrouterdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "POST"
+              ],
+              "path": "/specsnapshotrouterdocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotRouterDocsTable.create"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/specsnapshotrouterdocstable/{item_id}": {
+      "delete": {
+        "operationId": "SpecSnapshotRouterDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotRouterDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshotrouterdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotRouterDocsTable.delete"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotRouterDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "tags": [
+          "SpecSnapshotRouterDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshotrouterdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotRouterDocsTable.read"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "patch": {
+        "operationId": "SpecSnapshotRouterDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotRouterDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PATCH"
+              ],
+              "path": "/specsnapshotrouterdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotRouterDocsTable.update"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "put": {
+        "operationId": "SpecSnapshotRouterDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotRouterDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotRouterDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PUT"
+              ],
+              "path": "/specsnapshotrouterdocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotRouterDocsTable.replace"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/specsnapshottabledocstable": {
+      "delete": {
+        "operationId": "SpecSnapshotTableDocsTable.clear",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotTableDocsTableClearRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotTableDocsTableClearResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotTableDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshottabledocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshottabledocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotTableDocsTable.clear"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotTableDocsTable.list",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotTableDocsTableListResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotTableDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshottabledocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshottabledocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotTableDocsTable.list"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "post": {
+        "operationId": "SpecSnapshotTableDocsTable.create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotTableDocsTableCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotTableDocsTableCreateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotTableDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshottabledocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "POST"
+              ],
+              "path": "/specsnapshottabledocstable",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotTableDocsTable.create"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/specsnapshottabledocstable/{item_id}": {
+      "delete": {
+        "operationId": "SpecSnapshotTableDocsTable.delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotTableDocsTableDeleteRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotTableDocsTableDeleteResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotTableDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "DELETE"
+              ],
+              "path": "/specsnapshottabledocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotTableDocsTable.delete"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "get": {
+        "operationId": "SpecSnapshotTableDocsTable.read",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "id",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotTableDocsTableReadResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "security": [
+          {
+            "OAuth2Auth": []
+          },
+          {
+            "OpenIdAuth": []
+          },
+          {
+            "MutualTLSAuth": []
+          }
+        ],
+        "tags": [
+          "SpecSnapshotTableDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "GET"
+              ],
+              "path": "/specsnapshottabledocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotTableDocsTable.read"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "patch": {
+        "operationId": "SpecSnapshotTableDocsTable.update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotTableDocsTableUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotTableDocsTableUpdateResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotTableDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PATCH"
+              ],
+              "path": "/specsnapshottabledocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotTableDocsTable.update"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      },
+      "put": {
+        "operationId": "SpecSnapshotTableDocsTable.replace",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "item_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotTableDocsTableReplaceRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotTableDocsTableReplaceResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "tags": [
+          "SpecSnapshotTableDocsTable"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "bindings": [
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "json",
+              "methods": [
+                "PUT"
+              ],
+              "path": "/specsnapshottabledocstable/{item_id}",
+              "proto": "http.rest",
+              "rpcMethod": null
+            },
+            {
+              "exchange": "request_response",
+              "family": "request",
+              "framing": "jsonrpc",
+              "methods": null,
+              "path": null,
+              "proto": "http.jsonrpc",
+              "rpcMethod": "SpecSnapshotTableDocsTable.replace"
+            }
+          ],
+          "exchange": "request_response",
+          "family": "crud",
+          "subevents": [],
+          "txScope": "inherit"
+        }
+      }
+    },
+    "/system/healthz": {
+      "get": {
+        "description": "Database connectivity check.",
+        "operationId": "healthz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Health",
+        "tags": [
+          "system"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/system/healthz",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "exchange": null,
+          "txScope": null
+        }
+      }
+    },
+    "/system/hookz": {
+      "get": {
+        "description": "Expose hook execution order for each method.\n\nPhases appear in runner order; error phases trail.\nWithin each phase, hooks are listed in execution order: global (None) hooks, then method-specific hooks.",
+        "operationId": "hookz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Hooks",
+        "tags": [
+          "system"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/system/hookz",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "exchange": null,
+          "txScope": null
+        }
+      }
+    },
+    "/system/kernelz": {
+      "get": {
+        "description": "Phase-chain plan as built by the kernel per operation.",
+        "operationId": "kernelz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Kernel Plan",
+        "tags": [
+          "system"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/system/kernelz",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "exchange": null,
+          "txScope": null
+        }
+      }
+    },
+    "/system/methodz": {
+      "get": {
+        "description": "Ordered, canonical operation list.",
+        "operationId": "methodz",
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Methods",
+        "tags": [
+          "system"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/system/methodz",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "exchange": null,
+          "txScope": null
+        }
+      }
+    },
+    "/widgets/{widget_id}": {
+      "post": {
+        "description": "Create or update a widget",
+        "operationId": "create",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "widget_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "verbose",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecSnapshotCreateWidget"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecSnapshotWidgetOut"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Create widget",
+        "tags": [
+          "widgets"
+        ],
+        "x-tigrbl-surface": {
+          "binding": {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/widgets/{widget_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          "exchange": null,
+          "txScope": null
+        }
+      }
+    }
+  }
+}

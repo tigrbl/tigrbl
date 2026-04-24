@@ -1,6 +1,6 @@
 # Post-promotion handoff summary
 
-The Phase 14 handoff is verified in the checkpoint tree.
+The Post-promotion handoff is verified in the checkpoint tree.
 
 ## Recorded facts
 

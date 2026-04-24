@@ -8,7 +8,7 @@ from tigrbl.orm.mixins import GUIDPk, KeyDigest
 from tigrbl.orm.tables import TableBase
 from tigrbl.schema import _build_schema
 from tigrbl._spec import IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import String
 
 
@@ -116,3 +116,4 @@ def test_default_custom_target_uses_alias_specific_io_sets():
 
     assert defaults["in_"] is None
     assert defaults["out"] is None
+

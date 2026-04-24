@@ -161,8 +161,8 @@ def _route_payload_template() -> dict[str, Any]:
     return {
         "http.rest": {"exact": {}, "templated": []},
         "https.rest": {"exact": {}, "templated": []},
-        "http.jsonrpc": {},
-        "https.jsonrpc": {},
+        "http.jsonrpc": {"endpoints": {}},
+        "https.jsonrpc": {"endpoints": {}},
         "ws": {"exact": {}, "templated": []},
         "wss": {"exact": {}, "templated": []},
     }

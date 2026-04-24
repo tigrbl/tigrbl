@@ -6,7 +6,7 @@ Prove that the frozen current-target docs UI, operator-surface, and CLI rows are
 
 ## Current status
 
-Passed in the Phase 10 checkpoint.
+Passed in the Gate B surface-closure checkpoint.
 
 What is now established:
 

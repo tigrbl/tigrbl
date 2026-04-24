@@ -1,0 +1,63 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1004"
+number: 1004
+slug: "specification-merge-precedence"
+title: "Specification merge precedence"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "a. framework hard defaults;"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated spec merge precedence to require generic monotone roll-up operators."
+    at: "2026-04-21T23:40:51Z"
+  -
+    status: "draft"
+    note: "Updated spec merge precedence summary and monotone operator contract."
+    at: "2026-04-21T23:42:02Z"
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-14
+  - **Related ADRs:** ADR-0003, ADR-0006, ADR-0010, ADR-0011, ADR-0016, ADR-0017, ADR-0018, ADR-0019
+  
+  1. Specification merging is precedence-based and deterministic.
+  2. Precedence order is frozen as:
+     a. framework hard defaults;
+     b. package/module defaults;
+     c. app/model defaults;
+     d. decorator-declared values;
+     e. operation-local explicit overrides;
+     f. operator/environment overrides, but only for fields declared overridable.
+  3. Spec merge precedence is modeled as a monotone roll-up over partially ordered declaration states. Missing declarations are bottom values; omission preserves inherited state and does not delete it.
+  4. Scalar fields resolve by a `highest_precedence` operator: the highest-precedence non-unset value wins, otherwise the inherited value is preserved.
+  5. Mapping fields resolve by a `mapping_overlay` operator: mappings shallow-merge by key, later/higher-precedence keys override earlier keys, and absent keys preserve inherited values unless the field explicitly declares deep-merge semantics.
+  6. Keyed declaration collections resolve by a `keyed_overlay` or `stable_keyed_overlay` operator: declarations are grouped by normalized identity, later declarations replace earlier values for the same identity, and stable output order remains deterministic.
+  7. Sequence fields resolve by `sequence_union`: concatenate in precedence order, then apply stable de-duplication unless the field explicitly permits duplicates.
+     - `security_deps` and `deps`: concatenate in precedence order, then de-duplicate by stable identity;
+     - `bindings`: concatenate in precedence order, then canonicalize and de-duplicate by normalized binding identity;
+     - hooks/selectors: concatenate in precedence order, then preserve stable ordering while removing duplicate identities.
+  8. MRO-derived sequence and mapping fields use domain-agnostic MRO roll-up operators, not ad hoc per-field loops.
+  9. Destructive clearing of inherited collections requires an explicit reset form; omission does not imply deletion.
+  10. Mutually exclusive values that cannot be reconciled fail closed and produce a specification error rather than a silent merge.
+  
+  ## Context
+  
+  Tigrbl composes behavior from defaults, package-level configuration, app-level declarations, decorators, and operation-local overrides.
+  Without an explicit merge lattice, spec-first behavior becomes ambiguous and different code paths can resolve the same declared intent differently.
+  
+  The monotone operator layer makes the merge contract reusable outside any specific `OpSpec`, hook, binding, dependency, or MRO surface. It also makes implementation review easier: a merge implementation should be describable as one of the governed operators instead of inventing a new local precedence rule.
+  
+  ## Rejected Alternatives
+  
+  - Ad hoc field-by-field merge logic implemented independently in decorators, runtime, and compiler.
+  - Silent last-writer-wins for all fields.
+  - Implicit destructive clears based on omission.
+  - Domain-specific operator names that cannot be reused outside operation specs.

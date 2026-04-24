@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tests.conftest import mro_collect_app_spec
-from tigrbl.shortcuts.app import defineAppSpec
+from tigrbl.factories.app import defineAppSpec
 
 
 def test_app_mro_precedence() -> None:
@@ -19,3 +19,4 @@ def test_app_mro_precedence() -> None:
     spec = mro_collect_app_spec(AppCls)
     assert spec.title == "Override"
     assert spec.routers == ("base", "base", "extra", "extra", "extra")
+

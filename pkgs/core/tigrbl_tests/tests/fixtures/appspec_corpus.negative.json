@@ -1,0 +1,44 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "appspec_corpus",
+  "lane": "negative",
+  "cases": [
+    {
+      "id": "appspec-negative-no-rpc-binding-no-mount-001",
+      "title": "Fail closed when AppSpec has no JSON-RPC bindings",
+      "mode": "no_rpc_binding_no_mount",
+      "app": {
+        "title": "CorpusHarnessNegative",
+        "version": "0.0.0",
+        "jsonrpc_prefix": "/rpcx",
+        "system_prefix": "/system"
+      },
+      "table": {
+        "tablename": "harness_appspec_corpus_no_rpc",
+        "resource": "widget"
+      },
+      "expect": {
+        "rpc_mount_absent": true
+      }
+    },
+    {
+      "id": "appspec-negative-unknown-rpc-method-404-002",
+      "title": "Fail closed when RPC method is not declared",
+      "mode": "unknown_rpc_method_404",
+      "app": {
+        "title": "CorpusHarnessNegative",
+        "version": "0.0.0",
+        "jsonrpc_prefix": "/rpcx",
+        "system_prefix": "/system"
+      },
+      "table": {
+        "tablename": "harness_appspec_corpus_unknown_rpc",
+        "resource": "widget"
+      },
+      "expect": {
+        "status": 404,
+        "detail": "No runtime operation matched request."
+      }
+    }
+  ]
+}

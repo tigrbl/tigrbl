@@ -7,7 +7,7 @@ configuration.
 """
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -44,3 +44,4 @@ def test_jsonrpc_mount_uses_configured_prefix():
     router = app.mount_jsonrpc()
 
     assert router is not None
+

@@ -9,7 +9,7 @@ from tigrbl_client import TigrblClient
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -50,7 +50,9 @@ async def test_rpc_parity_with_httpx() -> None:
             http_result = await http_client.post("/rpc", json=payload)
 
         assert http_result.status_code == 200
-        assert http_result.json().get("result") == rpc_result
+        http_created = http_result.json().get("result")
+        assert http_created["name"] == rpc_result["name"]
+        assert http_created["id"] != rpc_result["id"]
 
         # Validate list parity over the same JSON-RPC transport contract.
         rpc_list = await client.acall("Widget.list", params={})
@@ -66,3 +68,4 @@ async def test_rpc_parity_with_httpx() -> None:
         assert http_list.json().get("result") == rpc_list
     finally:
         await stop_uvicorn(server, task)
+

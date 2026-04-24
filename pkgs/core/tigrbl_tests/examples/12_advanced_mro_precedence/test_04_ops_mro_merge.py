@@ -1,5 +1,5 @@
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.app import defineAppSpec
+from tigrbl.factories.app import defineAppSpec
 
 
 def test_ops_sequence_merges_across_mro():
@@ -20,3 +20,4 @@ def test_ops_sequence_merges_across_mro():
     app = ChildApp()
     # Assertion: op precedence is defined by explicit composition.
     assert app.ops == ("base", "child")
+

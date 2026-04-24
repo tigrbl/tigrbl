@@ -4,7 +4,7 @@ from sqlalchemy.orm import declarative_base
 
 from tigrbl.core import crud
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Integer, Session, String
 
 TableBase = declarative_base()
@@ -159,3 +159,4 @@ async def test_bulk_delete_removes_ids(mode, expected, session):
     assert res == {"deleted": expected}
     remaining = await crud.list(Widget, db=session)
     assert len(remaining) == len(ids) - expected
+

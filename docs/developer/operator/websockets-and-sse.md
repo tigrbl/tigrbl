@@ -7,7 +7,7 @@ The framework now exposes a first-class websocket route surface:
 - `router.websocket("/path")`
 - `app.websocket("/path")`
 - websocket route declarations are compiled into runtime-owned channel ops
-- websocket dispatch and echo-style send/receive behavior are covered by the Phase 7 operator tests
+- websocket dispatch and echo-style send/receive behavior are covered by the operator-surface tests
 
 ## WHATWG SSE
 
@@ -15,7 +15,7 @@ The framework now exposes a first-class SSE surface:
 
 - `EventStreamResponse(...)`
 - event dictionaries are encoded to `text/event-stream`
-- SSE body framing is covered by the Phase 7 operator tests
+- SSE body framing is covered by the operator-surface tests
 
 ## Notes
 

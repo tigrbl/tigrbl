@@ -4,7 +4,7 @@ import pytest_asyncio
 from tigrbl import TigrblApp, TigrblRouter
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import Mapped, String
 
@@ -69,3 +69,4 @@ async def test_header_in_out(running_app, headers, status, expected_worker_key):
     if status == 201:
         body = resp.json()
         assert body["worker_key"] == expected_worker_key
+

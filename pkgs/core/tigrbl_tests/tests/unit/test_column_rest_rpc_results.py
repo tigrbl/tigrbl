@@ -3,8 +3,8 @@ from httpx import ASGITransport, Client
 
 from tigrbl import TigrblApp, TigrblRouter, alias_ctx
 from tigrbl._spec import FieldSpec as F, IOSpec as IO, S
-from tigrbl.shortcuts.column import makeColumn, makeVirtualColumn
-from tigrbl.shortcuts.engine import engine, mem
+from tigrbl.factories.column import makeColumn, makeVirtualColumn
+from tigrbl.factories.engine import engine, mem
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import Integer, Mapped, String
 
@@ -316,3 +316,4 @@ async def test_make_column_and_virtual_with_alias_rest_rpc(use_mapped):
         client.close()
         raw_eng, _ = eng.raw()
         raw_eng.dispose()
+

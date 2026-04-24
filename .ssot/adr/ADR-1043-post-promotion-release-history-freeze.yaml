@@ -1,0 +1,37 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1043"
+number: 1043
+slug: "post-promotion-release-history-freeze"
+title: "Post-promotion release-history freeze"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "﻿"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  ﻿
+  Accepted.
+  
+  After stable release promotion, freeze the promoted release bundle as governed release history and open any subsequent work on a separate development line.
+  
+  For the current checkpoint this means:
+  
+  - stable release `0.3.18` remains the frozen current-boundary release history
+  - promotion-source dev bundle `0.3.18.dev1` remains the exact source evidence for that release
+  - the working-tree line advances independently to `0.3.19.dev1`
+  - the active development line may not reuse Tier 3 certification wording without a later governed closure
+  
+  ## Rationale
+  
+  This prevents the repository from blurring three different states:
+  
+  1. frozen release history
+  2. active development metadata
+  3. next-target planning work

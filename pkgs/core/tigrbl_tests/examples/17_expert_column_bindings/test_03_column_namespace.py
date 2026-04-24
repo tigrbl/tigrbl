@@ -8,7 +8,7 @@ consistent introspection across models.
 
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import ColumnSpec, F, IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl import Table
 from tigrbl.types import String
 
@@ -41,3 +41,4 @@ def test_column_namespace_includes_field_and_storage():
     spec = LessonColumnNamespaceMeta.columns.name
     assert spec.field.py_type is str
     assert spec.storage.nullable is False
+

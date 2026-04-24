@@ -14,7 +14,7 @@ from __future__ import annotations
 import inspect
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl_kernel import _default_kernel
 from tigrbl.types import Column, String
@@ -67,3 +67,4 @@ def test_opview_is_compiled_once_per_model_alias() -> None:
     view2 = _default_kernel.get_opview(app, Widget, "create")
 
     assert view1 is view2
+

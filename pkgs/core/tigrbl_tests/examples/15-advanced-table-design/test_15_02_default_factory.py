@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tigrbl._spec import ColumnSpec, F, IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import String
 
 
@@ -17,3 +17,4 @@ def test_default_factory_for_column_spec() -> None:
     )
     col = acol(spec=spec)
     assert col.default_factory is make_default
+

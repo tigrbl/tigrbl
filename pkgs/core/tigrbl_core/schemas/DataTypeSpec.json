@@ -1,0 +1,57 @@
+{
+  "$defs": {
+    "DataTypeSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.datatypes:DataTypeSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "DataTypeSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "DataTypeSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "logical_name": {
+      "enum": [
+        "string",
+        "integer",
+        "number",
+        "decimal",
+        "boolean",
+        "bytes",
+        "date",
+        "datetime",
+        "time",
+        "duration",
+        "json",
+        "object",
+        "array",
+        "uuid",
+        "ulid"
+      ],
+      "type": "string"
+    },
+    "nullable": {
+      "type": "boolean"
+    },
+    "options": {
+      "$ref": "./shared.json#/$defs/AnyMap"
+    }
+  },
+  "required": [
+    "logical_name",
+    "nullable",
+    "options"
+  ],
+  "title": "DataTypeSpec",
+  "type": "object"
+}

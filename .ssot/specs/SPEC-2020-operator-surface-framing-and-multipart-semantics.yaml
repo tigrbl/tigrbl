@@ -1,0 +1,44 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2020"
+number: 2020
+slug: "operator-surface-framing-and-multipart-semantics"
+title: "Operator-surface framing and multipart semantics"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Operator-surface framing and multipart semantics"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated operator framing with JSON-RPC batch semantics."
+    at: "2026-04-21T07:42:30Z"
+  -
+    status: "draft"
+    note: "Updated operator framing with JSON-RPC batch semantics."
+    at: "2026-04-21T08:15:21Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Operator framing, multipart, stream, and upload semantics remain runtime contracts.
+  2. Documentation projections for those operator surfaces are required parity outputs.
+  3. Phase-closure conformance includes runtime/docs parity checks for operator surfaces.
+  4. JSON-RPC batch framing is an operator-surface framing contract: batch requests execute in request order and return one result or error projection per request item unless protocol rules explicitly omit a response.
+  5. Per-item JSON-RPC batch failures must remain isolated to the failed item and must not cancel sibling items by default.
+  
+  ## Integration Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1041`, `adr:1014`
+  - Related specs: `spc:2012`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1041"
+  - "adr:1014"

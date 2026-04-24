@@ -1,0 +1,50 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1078"
+number: 1078
+slug: "pre-tx-dependency-execution-boundary"
+title: "Pre-TX dependency execution boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The pre-transaction dependency tests assert that `secdeps` and `deps` execute in `PRE_TX_BEGIN`, that failures abort before `START_TX`, and that kernel diagnostics expose dependency placement. Existing dependency ordering and database guardrail ADRs cover the broad intent, but the tests rely on a sharper phase and transaction boundary."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from legacy package edge test inventory to make pre-TX dependency edge-row verification explicit."
+    at: "2026-04-21T08:39:29Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Operation security dependencies and ordinary dependencies are pre-transaction gates.
+  2. Security dependencies execute before ordinary dependencies.
+  3. Dependency failures fail closed before `START_TX`, handler execution, persistence, or commit-side effects.
+  4. The pre-transaction dependency boundary is operation-level and must project consistently through REST, JSON-RPC, diagnostics, and kernel-step views where the transport executes the semantic operation.
+  5. Diagnostics may expose dependency placement and ordering, but diagnostics do not redefine the execution boundary.
+  
+  ## Context
+  
+  The pre-transaction dependency tests assert that `secdeps` and `deps` execute in `PRE_TX_BEGIN`, that failures abort before `START_TX`, and that kernel diagnostics expose dependency placement. Existing dependency ordering and database guardrail ADRs cover the broad intent, but the tests rely on a sharper phase and transaction boundary.
+  
+  The legacy package edge inventory also identifies `pkgs/core/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py` as the concrete edge-row verification for this boundary. That test should be treated as evidence for this ADR and for the companion contract `spc:2074`, rather than being mapped only to broader status/auth/error or OAS security decisions.
+  
+  ## Consequences
+  
+  - Dependency execution can be verified before transaction start rather than inferred from handler behavior.
+  - REST, JSON-RPC, and diagnostics parity can be specified against one operation-level boundary.
+  - Runtime implementations must keep dependency gates out of transport-local bypass paths.
+  - SSOT test-to-feature mapping should prefer `feat:pre-tx-dependency-execution-001` and `feat:pre-tx-security-dependency-execution-001` for this edge-row test.
+  
+  ## Verification
+  
+  - `pkgs/core/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py`
+  
+  ## Rejected Alternatives
+  
+  - Running dependencies inside `START_TX` for convenience.
+  - Allowing transports to decide dependency timing independently.
+  - Treating diagnostics-only ordering as a substitute for execution ordering.

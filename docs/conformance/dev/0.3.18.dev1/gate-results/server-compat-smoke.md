@@ -15,7 +15,7 @@ It does **not** yet claim full live-network or clean-room installed-package comp
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py`
 
 ## Source audit logs
 

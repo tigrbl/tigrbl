@@ -1,0 +1,37 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1079"
+number: 1079
+slug: "rfc-8785-jcs-canonicalization-boundary"
+title: "RFC 8785 JCS canonicalization boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The project already treats registry and release artifacts as canonical JSON data, but it does not yet declare RFC 8785 JCS as the required canonicalization profile for proof-oriented payloads. Without an explicit boundary, serializer drift can produce byte-level instability across runtimes and versions."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Canonical JSON emitted for signature, digest, and proof-bound payloads must follow RFC 8785 (JSON Canonicalization Scheme, JCS).
+  2. Canonicalization is a semantic boundary concern and must not vary by transport or serializer implementation details.
+  3. Any payload that cannot be represented under the JCS constraints must fail closed with deterministic validation errors.
+  4. Runtime and tooling outputs that claim canonical JSON compatibility must derive from one governed JCS implementation contract.
+  
+  ## Context
+  
+  The project already treats registry and release artifacts as canonical JSON data, but it does not yet declare RFC 8785 JCS as the required canonicalization profile for proof-oriented payloads. Without an explicit boundary, serializer drift can produce byte-level instability across runtimes and versions.
+  
+  ## Consequences
+  
+  - Byte-stable canonical JSON can be asserted in tests and evidence chains.
+  - Signature and hash workflows can depend on one canonicalization profile.
+  - Implementations must handle JCS rejection cases explicitly instead of silently normalizing non-conforming input.
+  
+  ## Rejected Alternatives
+  
+  - Allowing per-runtime serializer defaults to define canonical JSON behavior.
+  - Defining an ad-hoc canonicalization profile that diverges from RFC 8785.

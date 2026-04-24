@@ -3,7 +3,7 @@ import pytest
 from tigrbl import TableBase, TigrblRouter
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Mapped, String
 
 
@@ -36,3 +36,4 @@ def test_tigrbl_router_subclass_declares_metadata() -> None:
     assert WidgetRouter.TABLES == (Widget,)
     assert WidgetRouter.TAGS == ("widgets",)
     assert WidgetRouter.PREFIX == "/widgets"
+

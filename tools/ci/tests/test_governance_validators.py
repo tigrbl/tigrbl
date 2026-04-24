@@ -19,11 +19,12 @@ SCRIPTS = [
     'tools/ci/lint_release_note_claims.py',
     'tools/ci/validate_evidence_registry.py',
     'tools/ci/validate_evidence_bundles.py',
+    'tools/ci/validate_ssot_authority_model.py',
     'tools/ci/validate_gate_b_surface_closure.py',
     'tools/ci/validate_gate_c_conformance_security.py',
     'tools/ci/validate_gate_d_reproducibility.py',
     'tools/ci/validate_gate_e_promotion.py',
-    'tools/ci/validate_phase14_handoff.py',
+    'tools/ci/validate_post_promotion_handoff.py',
 ]
 
 

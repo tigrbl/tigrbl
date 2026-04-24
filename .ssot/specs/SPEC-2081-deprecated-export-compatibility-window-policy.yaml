@@ -1,0 +1,43 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2081"
+number: 2081
+slug: "deprecated-export-compatibility-window-policy"
+title: "Deprecated export compatibility window policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Deprecated export compatibility window policy"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created SPEC for deprecated-export compatibility window policy reflected by integration tests."
+    at: "2026-04-21T07:43:18Z"
+  -
+    status: "draft"
+    note: "Created SPEC for deprecated-export compatibility window policy reflected by integration tests."
+    at: "2026-04-21T08:15:25Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Deprecated public exports may remain available only inside an explicitly declared compatibility window.
+  2. The compatibility window must identify the version where deprecation starts and the version boundary where removal is expected.
+  3. Deprecated exports must remain discoverable as deprecated while they are still exposed.
+  4. After the declared removal boundary, the deprecated export must be absent unless a later accepted ADR extends the window.
+  5. Release promotion may treat stale deprecated exports as non-conforming when the removal boundary has passed.
+  
+  ## Integration Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_types_deprecation_exports.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1035`
+  - Related specs: `spc:0611`, `spc:0603`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1035"

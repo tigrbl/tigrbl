@@ -31,6 +31,10 @@ async def invoke_op(
     seed_ctx.setdefault("model", model)
     seed_ctx.setdefault("op", alias)
     seed_ctx.setdefault("method", alias)
+    if request is not None:
+        seed_ctx.setdefault("request", request)
+    if db is not None:
+        seed_ctx.setdefault("db", db)
     if seed_ctx.get("env") is None:
         seed_ctx["env"] = SimpleNamespace(method=alias)
     seed_ctx.setdefault("skip_egress", True)

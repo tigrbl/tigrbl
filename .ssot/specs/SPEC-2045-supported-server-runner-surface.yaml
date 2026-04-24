@@ -1,0 +1,47 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2045"
+number: 2045
+slug: "supported-server-runner-surface"
+title: "Supported server runner surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Supported server runner surface"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated server runner surface with Uvicorn protocol-mode semantic invariants."
+    at: "2026-04-21T07:42:35Z"
+  -
+    status: "draft"
+    note: "Updated server runner surface with Uvicorn protocol-mode semantic invariants."
+    at: "2026-04-21T08:15:22Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Supported server runner surface is normative for declared runners.
+  2. Runner support includes preserving required docs route/payload/UI availability where applicable.
+  3. Runner compatibility and failure behavior must be testable and classification-stable.
+  4. Uvicorn-backed protocol modes must preserve Tigrbl-owned application semantics: routing, dispatch, validation, status projection, and error mapping.
+  5. Runner-specific behavior is non-semantic unless a SPEC explicitly marks it as part of the Tigrbl contract.
+  
+  ## Integration Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_uvicorn_transport_behavior.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_api_uvicorn.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1039`, `adr:1022`, `adr:1038`
+  - Related specs: `spc:2011`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1039"
+  - "adr:1022"
+  - "adr:1038"

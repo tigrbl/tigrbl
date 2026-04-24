@@ -4,6 +4,7 @@ from dataclasses import replace
 from typing import Dict
 
 from tigrbl_core._spec import OpSpec
+from tigrbl_core._spec.monotone import highest_precedence, keyed_overlay
 from .context import MappingKey
 
 
@@ -18,7 +19,7 @@ def merge_op_specs(
     base_specs: tuple[OpSpec, ...], ctx_specs: tuple[OpSpec, ...]
 ) -> tuple[OpSpec, ...]:
     """Apply OpSpec-over-base precedence for operation mapping resolution."""
-    merged_by_key: Dict[MappingKey, OpSpec] = {key_for(sp): sp for sp in base_specs}
+    merged_by_key: Dict[MappingKey, OpSpec] = keyed_overlay(base_specs, key=key_for)
 
     for sp in ctx_specs:
         key = key_for(sp)
@@ -29,17 +30,17 @@ def merge_op_specs(
 
         merged_by_key[key] = replace(
             sp,
-            http_methods=sp.http_methods or base.http_methods,
-            path_suffix=sp.path_suffix or base.path_suffix,
-            tags=sp.tags or base.tags,
-            deps=sp.deps or base.deps,
-            secdeps=sp.secdeps or base.secdeps,
-            request_model=sp.request_model
-            if sp.request_model is not None
-            else base.request_model,
-            response_model=sp.response_model
-            if sp.response_model is not None
-            else base.response_model,
+            http_methods=highest_precedence(
+                base.http_methods, sp.http_methods, is_set=bool
+            ),
+            path_suffix=highest_precedence(
+                base.path_suffix, sp.path_suffix, is_set=bool
+            ),
+            tags=highest_precedence(base.tags, sp.tags, is_set=bool),
+            deps=highest_precedence(base.deps, sp.deps, is_set=bool),
+            secdeps=highest_precedence(base.secdeps, sp.secdeps, is_set=bool),
+            request_model=highest_precedence(base.request_model, sp.request_model),
+            response_model=highest_precedence(base.response_model, sp.response_model),
         )
 
     return tuple(merged_by_key.values())

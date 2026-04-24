@@ -5,7 +5,7 @@ import pytest
 from tigrbl import TableBase, TigrblApp, hook_ctx, TigrblRouter
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -42,3 +42,4 @@ async def test_diagnostics_hookz_reports_hooks():
         response = await client.get("/hookz")
         assert response.status_code == 200
     await stop_uvicorn(server, task)
+

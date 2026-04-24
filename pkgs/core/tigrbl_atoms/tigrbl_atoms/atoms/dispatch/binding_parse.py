@@ -37,20 +37,13 @@ def _run(obj: object | None, ctx: Any) -> None:
         except Exception:
             body = None
 
-    if not protocol and isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
-        dispatch.setdefault("binding_protocol", "http.jsonrpc")
-        dispatch["binding_selector"] = body.get("method")
-        dispatch["rpc"] = dict(body)
-        dispatch["rpc_method"] = body.get("method")
-        dispatch["parsed_payload"] = body.get("params", {})
-        if isinstance(route, dict):
-            route["protocol"] = dispatch.get("binding_protocol")
-            route["selector"] = dispatch.get("binding_selector")
-            route["rpc_envelope"] = dict(body)
-            route["payload"] = dispatch["parsed_payload"]
-        return
-
     if not protocol and isinstance(body, list):
+        endpoint = dispatch.get("endpoint") or route.get("endpoint")
+        if not isinstance(endpoint, str) or not endpoint:
+            dispatch["parsed_payload"] = body
+            if isinstance(route, dict):
+                route["payload"] = body
+            return
         is_jsonrpc_batch = all(
             isinstance(item, Mapping) and item.get("jsonrpc") == "2.0" for item in body
         )
@@ -63,12 +56,39 @@ def _run(obj: object | None, ctx: Any) -> None:
 
     if protocol.endswith(".jsonrpc"):
         if isinstance(body, Mapping):
-            dispatch.setdefault("binding_selector", body.get("method"))
+            endpoint = str(
+                dispatch.get("endpoint")
+                or route.get("endpoint")
+                or ""
+            )
+            method = body.get("method")
+            if isinstance(temp, dict):
+                temp["jsonrpc_request_id"] = body.get("id")
+            dispatch["endpoint"] = endpoint
+            dispatch.setdefault(
+                "binding_selector",
+                f"{endpoint}:{method}" if isinstance(method, str) and method else method,
+            )
             dispatch["rpc"] = dict(body)
-            dispatch["rpc_method"] = body.get("method")
-            dispatch["parsed_payload"] = body.get("params", {})
+            dispatch["rpc_method"] = method
+            params = body.get("params", {})
+            if isinstance(params, Mapping) and set(params) == {"params"}:
+                dispatch.pop("binding_selector", None)
+                egress = temp.setdefault("egress", {}) if isinstance(temp, dict) else {}
+                if isinstance(egress, dict):
+                    egress["transport_response"] = {
+                        "status_code": 204,
+                        "body": b"",
+                    }
+                if isinstance(route, dict):
+                    route.pop("selector", None)
+                    route["short_circuit"] = True
+                    route["rpc_envelope"] = dict(body)
+                return
+            dispatch["parsed_payload"] = params
             if isinstance(route, dict):
                 route["selector"] = dispatch.get("binding_selector")
+                route["endpoint"] = endpoint
                 route["rpc_envelope"] = dict(body)
         elif isinstance(body, list):
             dispatch["rpc_batch"] = [
@@ -142,8 +162,18 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
         ctx: Any, batch_payload: list[Any]
     ) -> list[dict[str, Any]]:
         router_or_app = getattr(ctx, "router", None) or getattr(ctx, "app", None)
-        request = getattr(ctx, "request", None)
-        rpc_call = getattr(router_or_app, "rpc_call", None)
+        raw = getattr(ctx, "raw", None)
+        scope = dict(getattr(raw, "scope", {}) or {})
+        if scope:
+            scope["method"] = "POST"
+            headers = list(scope.get("headers", ()) or ())
+            if not any(
+                bytes(key).lower() == b"content-type"
+                for key, _value in headers
+                if isinstance(key, (bytes, bytearray))
+            ):
+                headers.append((b"content-type", b"application/json"))
+            scope["headers"] = headers
         responses: list[dict[str, Any]] = []
 
         for item in batch_payload:
@@ -159,7 +189,7 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
 
             rpc_id = item.get("id")
             method = item.get("method")
-            if not isinstance(method, str) or "." not in method:
+            if not isinstance(method, str):
                 responses.append(
                     {
                         "jsonrpc": "2.0",
@@ -169,7 +199,7 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
                 )
                 continue
 
-            if not callable(rpc_call):
+            if not callable(router_or_app) or not scope:
                 responses.append(
                     {
                         "jsonrpc": "2.0",
@@ -183,28 +213,20 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
                 )
                 continue
 
-            model_name, op_alias = method.split(".", 1)
-            params = item.get("params", {})
-            if params is None:
-                params = {}
+            body = json.dumps(dict(item), separators=(",", ":")).encode("utf-8")
+            messages = [{"type": "http.request", "body": body, "more_body": False}]
+            sent: list[dict[str, Any]] = []
 
             try:
-                result = await rpc_call(
-                    model_name,
-                    op_alias,
-                    params,
-                    request=request,
-                    ctx={},
-                )
-            except AttributeError:
-                responses.append(
-                    {
-                        "jsonrpc": "2.0",
-                        "error": {"code": -32601, "message": "Method not found"},
-                        "id": rpc_id,
-                    }
-                )
-                continue
+                async def _receive() -> dict[str, Any]:
+                    if messages:
+                        return messages.pop(0)
+                    return {"type": "http.request", "body": b"", "more_body": False}
+
+                async def _send(message: dict[str, Any]) -> None:
+                    sent.append(dict(message))
+
+                await router_or_app(dict(scope), _receive, _send)
             except Exception as exc:
                 responses.append(
                     {
@@ -219,7 +241,45 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
                 )
                 continue
 
-            responses.append({"jsonrpc": "2.0", "result": result, "id": rpc_id})
+            body_parts = [
+                message.get("body", b"")
+                for message in sent
+                if message.get("type") == "http.response.body"
+            ]
+            response_body = b"".join(
+                bytes(part) if isinstance(part, (bytes, bytearray)) else b""
+                for part in body_parts
+            )
+            if not response_body:
+                continue
+            try:
+                decoded = json.loads(response_body.decode("utf-8"))
+            except Exception:
+                decoded = {
+                    "jsonrpc": "2.0",
+                    "error": {
+                        "code": -32603,
+                        "message": "Internal error",
+                        "data": {"detail": response_body.decode("utf-8", errors="replace")},
+                    },
+                    "id": rpc_id,
+                }
+            if isinstance(decoded, Mapping):
+                response = dict(decoded)
+                if response.get("id") is None:
+                    response["id"] = rpc_id
+                error = response.get("error")
+                if isinstance(error, dict):
+                    data = error.get("data")
+                    detail = data.get("detail") if isinstance(data, Mapping) else None
+                    if detail == "No runtime operation matched request.":
+                        error["code"] = -32601
+                        error["message"] = "Method not found"
+                responses.append(response)
+                continue
+            responses.append(
+                {"jsonrpc": "2.0", "result": decoded, "id": rpc_id}
+            )
 
         return responses
 

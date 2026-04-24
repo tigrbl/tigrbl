@@ -2,7 +2,7 @@
 """
 Triage Test Runner for tigrbl_tests.
 
-Runs pytest with --json-report, then categorizes failures into priority
+Runs pytest with --json-report, then categorizes failures into concern
 buckets grouped by error signature. Helps identify root causes quickly.
 
 Usage:
@@ -24,32 +24,32 @@ from collections import defaultdict
 from dataclasses import dataclass, field
 from pathlib import Path
 
-# ── Priority Definitions ────────────────────────────────────────────────
+# ── Concern Definitions ────────────────────────────────────────────────
 
-PRIORITIES = [
+CONCERNS = [
     (
-        "P0",
+        "COLLECTION",
         "COLLECTION ERRORS",
         "These tests could not even be imported/collected. Fix these first.",
     ),
     (
-        "P1",
+        "UNIT",
         "UNIT TEST FAILURES",
         "Core logic is broken. These indicate bugs in tigrbl internals.",
     ),
     (
-        "P2",
+        "INTEGRATION",
         "INTEGRATION TEST FAILURES",
         "End-to-end flows are broken (HTTP, DB, uvicorn).",
     ),
     (
-        "P3",
+        "HARNESS",
         "ARCHITECTURE / HARNESS FAILURES",
         "Design constraints or compilation contracts violated.",
     ),
-    ("P4", "ACCEPTANCE / PERF / OTHER", "Non-critical. Address after P0\u2013P3."),
+    ("OTHER", "ACCEPTANCE / PERF / OTHER", "Non-critical. Address after collection, unit, integration, and harness failures."),
     (
-        "P5",
+        "XFAIL",
         "EXPECTED FAILURES",
         "xfail tests that unexpectedly passed (investigate marker removal).",
     ),
@@ -58,12 +58,12 @@ PRIORITIES = [
 # ── ANSI Colors ─────────────────────────────────────────────────────────
 
 _COLOR = {
-    "P0": "\033[1;31m",  # bold red
-    "P1": "\033[0;31m",  # red
-    "P2": "\033[0;33m",  # yellow
-    "P3": "\033[0;36m",  # cyan
-    "P4": "\033[0;37m",  # white
-    "P5": "\033[2m",  # dim
+    "COLLECTION": "\033[1;31m",  # bold red
+    "UNIT": "\033[0;31m",  # red
+    "INTEGRATION": "\033[0;33m",  # yellow
+    "HARNESS": "\033[0;36m",  # cyan
+    "OTHER": "\033[0;37m",  # white
+    "XFAIL": "\033[2m",  # dim
     "reset": "\033[0m",
     "bold": "\033[1m",
     "dim": "\033[2m",
@@ -100,42 +100,42 @@ class ErrorGroup:
 
 # Path-based classification patterns
 _PATH_RULES: list[tuple[str, re.Pattern]] = [
-    ("P1", re.compile(r"tests/unit/")),
-    ("P2", re.compile(r"tests/i9n/")),
-    ("P3", re.compile(r"tests/(architecture|harness|harness_e2e|harness_v3|parity)/")),
-    ("P4", re.compile(r"tests/(perf|acceptance)/")),
+    ("UNIT", re.compile(r"tests/unit/")),
+    ("INTEGRATION", re.compile(r"tests/i9n/")),
+    ("HARNESS", re.compile(r"tests/(architecture|harness|harness_e2e|harness_v3|parity)/")),
+    ("OTHER", re.compile(r"tests/(perf|acceptance)/")),
 ]
 
 # Marker-based fallback
 _MARKER_MAP = {
-    "unit": "P1",
-    "i9n": "P2",
-    "acceptance": "P4",
-    "perf": "P4",
+    "unit": "UNIT",
+    "i9n": "INTEGRATION",
+    "acceptance": "OTHER",
+    "perf": "OTHER",
 }
 
 
 def _classify_test(nodeid: str, markers: list[str], outcome: str) -> str:
-    """Return priority bucket for a test."""
-    # Collection errors are always P0
+    """Return concern bucket for a test."""
+    # Collection errors always block all other failure analysis.
     if outcome == "error":
-        return "P0"
+        return "COLLECTION"
 
     # xfail that unexpectedly passed
     if outcome == "xpassed":
-        return "P5"
+        return "XFAIL"
 
     # Path-based (most reliable)
-    for priority, pattern in _PATH_RULES:
+    for concern, pattern in _PATH_RULES:
         if pattern.search(nodeid):
-            return priority
+            return concern
 
     # Marker-based fallback
     for marker in markers:
         if marker in _MARKER_MAP:
             return _MARKER_MAP[marker]
 
-    return "P4"
+    return "OTHER"
 
 
 # ── Error Signature Extraction ──────────────────────────────────────────
@@ -215,7 +215,7 @@ def _parse_longrepr(test_entry: dict) -> str:
 
 
 def parse_report(report: dict) -> dict[str, list[ErrorGroup]]:
-    """Parse JSON report into priority buckets of error groups."""
+    """Parse JSON report into concern buckets of error groups."""
     buckets: dict[str, list[FailureRecord]] = defaultdict(list)
 
     tests = report.get("tests", [])
@@ -233,8 +233,8 @@ def parse_report(report: dict) -> dict[str, list[ErrorGroup]]:
         # xpassed = xfail that unexpectedly passed
         if outcome == "xpassed":
             markers = _get_markers(t)
-            priority = _classify_test(nodeid, markers, outcome)
-            buckets[priority].append(
+            concern = _classify_test(nodeid, markers, outcome)
+            buckets[concern].append(
                 FailureRecord(
                     nodeid=nodeid,
                     error_type="UnexpectedPass",
@@ -251,9 +251,9 @@ def parse_report(report: dict) -> dict[str, list[ErrorGroup]]:
         longrepr = _parse_longrepr(t)
         error_type = _extract_error_type(longrepr)
         error_message = _extract_error_message(longrepr, error_type)
-        priority = _classify_test(nodeid, markers, outcome)
+        concern = _classify_test(nodeid, markers, outcome)
 
-        buckets[priority].append(
+        buckets[concern].append(
             FailureRecord(
                 nodeid=nodeid,
                 error_type=error_type,
@@ -272,7 +272,7 @@ def parse_report(report: dict) -> dict[str, list[ErrorGroup]]:
         error_type = _extract_error_type(longrepr)
         error_message = _extract_error_message(longrepr, error_type)
 
-        buckets["P0"].append(
+        buckets["COLLECTION"].append(
             FailureRecord(
                 nodeid=nodeid,
                 error_type=error_type,
@@ -283,9 +283,9 @@ def parse_report(report: dict) -> dict[str, list[ErrorGroup]]:
 
     # Group failures by error signature within each bucket
     grouped: dict[str, list[ErrorGroup]] = {}
-    for priority in ("P0", "P1", "P2", "P3", "P4", "P5"):
+    for concern in ("COLLECTION", "UNIT", "INTEGRATION", "HARNESS", "OTHER", "XFAIL"):
         sig_map: dict[str, ErrorGroup] = {}
-        for rec in buckets.get(priority, []):
+        for rec in buckets.get(concern, []):
             sig = _make_signature(rec.error_type, rec.error_message)
             if sig not in sig_map:
                 display = (
@@ -296,7 +296,7 @@ def parse_report(report: dict) -> dict[str, list[ErrorGroup]]:
                 sig_map[sig] = ErrorGroup(signature=sig, display_message=display)
             sig_map[sig].tests.append(rec.nodeid)
         # Sort groups by number of tests (largest first)
-        grouped[priority] = sorted(
+        grouped[concern] = sorted(
             sig_map.values(), key=lambda g: len(g.tests), reverse=True
         )
 
@@ -346,34 +346,34 @@ def render_report(
     )
     lines.append(f"{c['bold']}{'=' * W}{c['reset']}")
 
-    # Priority icons
+    # Concern icons
     icons = {
-        "P0": "\U0001f534",
-        "P1": "\U0001f534",
-        "P2": "\U0001f7e1",
-        "P3": "\U0001f535",
-        "P4": "\u26aa",
-        "P5": "\u2b1c",
+        "COLLECTION": "\U0001f534",
+        "UNIT": "\U0001f534",
+        "INTEGRATION": "\U0001f7e1",
+        "HARNESS": "\U0001f535",
+        "OTHER": "\u26aa",
+        "XFAIL": "\u2b1c",
     }
 
     total_failures = 0
     total_root_causes = 0
     bucket_summaries: list[tuple[str, str, int, int]] = []
 
-    for priority, label, description in PRIORITIES:
-        groups = grouped.get(priority, [])
+    for concern, label, description in CONCERNS:
+        groups = grouped.get(concern, [])
         test_count = sum(len(g.tests) for g in groups)
         root_causes = len(groups)
 
         total_failures += test_count
         total_root_causes += root_causes
-        bucket_summaries.append((priority, label, test_count, root_causes))
+        bucket_summaries.append((concern, label, test_count, root_causes))
 
-        icon = icons.get(priority, "")
-        color = c.get(priority, "")
+        icon = icons.get(concern, "")
+        color = c.get(concern, "")
         lines.append("")
         lines.append(
-            f"{color}{icon} {priority} \u2014 {label} ({test_count} tests){c['reset']}"
+            f"{color}{icon} {concern} \u2014 {label} ({test_count} tests){c['reset']}"
         )
         lines.append(f"   {c['dim']}{description}{c['reset']}")
 
@@ -421,7 +421,7 @@ def render_report(
     lines.append(f"{c['bold']}  TRIAGE SUMMARY{c['reset']}")
     lines.append(f"{'─' * W}")
 
-    for priority, label, test_count, root_causes in bucket_summaries:
+    for concern, label, test_count, root_causes in bucket_summaries:
         # Pad label to align counts
         padded_label = f"{label} ".ljust(26, ".")
         rc_text = (
@@ -429,7 +429,7 @@ def render_report(
             if root_causes
             else ""
         )
-        lines.append(f"  {priority}  {padded_label} {test_count}{rc_text}")
+        lines.append(f"  {concern}  {padded_label} {test_count}{rc_text}")
 
     lines.append(f"{'─' * W}")
     lines.append(
@@ -438,10 +438,10 @@ def render_report(
     )
 
     # Suggest what to fix first
-    for priority, label, test_count, root_causes in bucket_summaries:
+    for concern, label, test_count, root_causes in bucket_summaries:
         if root_causes > 0:
             lines.append(
-                f"  {c['bold']}Fix the {root_causes} {priority} root cause{'s' if root_causes != 1 else ''} "
+                f"  {c['bold']}Fix the {root_causes} {concern} root cause{'s' if root_causes != 1 else ''} "
                 f"first \u2014 {'it' if root_causes == 1 else 'they'} likely "
                 f"unblock{'s' if root_causes == 1 else ''} {test_count} tests.{c['reset']}"
             )
@@ -549,10 +549,10 @@ def main(argv: list[str] | None = None) -> int:
                 f"\n{c['bold']}Full report written to: {out_path.resolve()}{c['reset']}"
             )
 
-        # Exit code = number of P0 + P1 failures (capped at 125 for POSIX)
-        p0_count = sum(len(g.tests) for g in grouped.get("P0", []))
-        p1_count = sum(len(g.tests) for g in grouped.get("P1", []))
-        critical = p0_count + p1_count
+        # Exit code = number of collection + unit failures (capped at 125 for POSIX)
+        collection_count = sum(len(g.tests) for g in grouped.get("COLLECTION", []))
+        unit_count = sum(len(g.tests) for g in grouped.get("UNIT", []))
+        critical = collection_count + unit_count
         return min(critical, 125) if critical > 0 else result.returncode
 
     finally:

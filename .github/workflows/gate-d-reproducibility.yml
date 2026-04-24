@@ -19,16 +19,18 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Gate D dependencies
-        run: python -m pip install --upgrade pip pytest build
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Run Gate D package and installed-package smokes
         run: |
-          python tools/conformance/clean_room_package_smoke.py --manifest-out docs/conformance/dev/0.3.18.dev1/artifacts/clean-room-package-manifest.json
-          python tools/conformance/installed_package_smoke.py --manifest-out docs/conformance/dev/0.3.18.dev1/artifacts/installed-package-smoke-manifest.json
+          uv run --no-sync python tools/conformance/clean_room_package_smoke.py --manifest-out docs/conformance/dev/0.3.18.dev1/artifacts/clean-room-package-manifest.json
+          uv run --no-sync python tools/conformance/installed_package_smoke.py --manifest-out docs/conformance/dev/0.3.18.dev1/artifacts/installed-package-smoke-manifest.json
 
       - name: Validate Gate D reproducibility closure
-        run: python tools/ci/validate_gate_d_reproducibility.py
+        run: uv run --no-sync python tools/ci/validate_gate_d_reproducibility.py
 
       - name: Run Gate D validator tests
-        run: python -m pytest -q tools/ci/tests/test_gate_d_reproducibility.py -p no:cacheprovider
+        run: uv run --no-sync python -m pytest -q tools/ci/tests/test_gate_d_reproducibility.py -p no:cacheprovider

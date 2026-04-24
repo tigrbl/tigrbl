@@ -19,10 +19,10 @@ import uvicorn
 from tigrbl_client import TigrblClient
 
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl._spec import ForeignKeySpec
 from tigrbl.system import stop_uvicorn_server
 from tigrbl.types import Mapped, PgUUID, String, UUID, relationship
@@ -144,3 +144,4 @@ async def test_one_to_one_relationship_storage_field_io_client_experience() -> N
     finally:
         # Always stop the server task so no background process leaks.
         await stop_uvicorn_server(server, task)
+

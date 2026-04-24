@@ -5,7 +5,7 @@ from tigrbl_concrete._mapping.model import bind
 from tigrbl_atoms.atoms.schema.collect_in import _run as collect_in_run
 from tigrbl_atoms.atoms.schema.collect_out import _run as collect_out_run
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts.column import acol, vcol
+from tigrbl.factories.column import acol, vcol
 from tigrbl.orm.tables import TableBase
 from sqlalchemy import Integer, String
 from sqlalchemy.orm import Mapped
@@ -95,3 +95,4 @@ def test_field_spec_allow_null_in_overrides_nullable():
     # relaxes nullability when the storage layer permits it. Expect the field to
     # remain non-nullable in the inbound schema.
     assert schema_in["by_field"]["bio"]["nullable"] is False
+

@@ -213,6 +213,10 @@ TIGRBL_AUTH_CONTEXT_ATTR = "__tigrbl_auth_context__"
 
 # Regex for safe SQL identifiers
 __SAFE_IDENT__ = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+__JSONRPC_DEFAULT_ENDPOINT__ = "default"
+__JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__ = {
+    __JSONRPC_DEFAULT_ENDPOINT__: "/rpc",
+}
 
 __all__ = [
     "ALL_VERBS",
@@ -267,4 +271,6 @@ __all__ = [
     "CTX_TX_SCOPE_KEY",
     "TIGRBL_AUTH_CONTEXT_ATTR",
     "__SAFE_IDENT__",
+    "__JSONRPC_DEFAULT_ENDPOINT__",
+    "__JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__",
 ]

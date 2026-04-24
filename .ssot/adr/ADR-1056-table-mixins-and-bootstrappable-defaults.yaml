@@ -1,0 +1,55 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1056"
+number: 1056
+slug: "table-mixins-and-bootstrappable-defaults"
+title: "Table mixins and bootstrappable defaults"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`tigrbl_orm.orm.mixins` already provides reusable ORM mixins, and `Bootstrappable` already provides default-row seeding behavior. The repo also relies on MRO-based spec collection for mixin-defined columns and policies, but the current SSOT set does not yet define table mixins and bootstrappable defaults as governed surfaces."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from legacy package edge test inventory to cover Bootstrappable compatibility projection through tigrbl.orm.mixins."
+    at: "2026-04-21T08:39:29Z"
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1053, ADR-1055, ADR-1018
+  
+  1. Table mixins are a governed ORM extension surface within the repo boundary.
+  2. Mixin-defined columns, hooks, schemas, deps, and security deps participate in normal MRO collection and do not bypass canonical table contracts.
+  3. `Bootstrappable` is the canonical table-level default-row and seeding mixin surface in the current cycle.
+  4. Default-row seeding remains class-local, bounded to mapped columns on the owning class, and only claims idempotency when primary-key material permits it.
+  5. Mixins may enrich table behavior, but they may not redefine engine ownership, session ownership, or DDL initialization rules.
+  6. `tigrbl.orm.mixins.Bootstrappable` is a compatibility projection of the governed Bootstrappable mixin surface, not a separate canonical owner.
+  
+  ## Context
+  
+  `tigrbl_orm.orm.mixins` already provides reusable ORM mixins, and `Bootstrappable` already provides default-row seeding behavior. The repo also relies on MRO-based spec collection for mixin-defined columns and policies, but the current SSOT set does not yet define table mixins and bootstrappable defaults as governed surfaces.
+  
+  The legacy package edge inventory shows `pkgs/core/tigrbl_tests/tigrbl_tests/tests/test_orm_alias_exports.py` asserting that `Bootstrappable` remains available through `tigrbl.orm.mixins`. This should strengthen the traceability of the compatibility projection while keeping canonical mixin ownership under the table-mixin surface.
+  
+  ## Consequences
+  
+  - Table-mixin semantics can now be tracked independently from generic table contracts.
+  - Bootstrappable default rows and seeding behavior can be specified without overloading the generic DDL surface.
+  - The `tigrbl.orm.mixins` path can be verified as an alias/projection path without implying a separate ORM authority.
+  
+  ## Verification
+  
+  - `pkgs/core/tigrbl_tests/tigrbl_tests/tests/test_orm_alias_exports.py`
+  
+  ## Rejected Alternatives
+  
+  - Treat mixins as purely incidental implementation details with no SSOT coverage.
+  - Let default-row seeding remain an undocumented convention.
+  - Permit mixins to bypass canonical table, engine, or session rules.
+  - Treat `tigrbl.orm.mixins` as an independent canonical package surface.

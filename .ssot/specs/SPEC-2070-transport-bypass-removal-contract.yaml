@@ -1,0 +1,41 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2070"
+number: 2070
+slug: "transport-bypass-removal-contract"
+title: "Transport bypass removal contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract makes removed transport-owned dispatch modules, files, and public facade exports explicitly non-conforming."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This contract makes removed transport-owned dispatch modules, files, and public facade exports explicitly non-conforming.
+  
+  ## Contract
+  
+  1. `tigrbl.transport.contracts`, `tigrbl.transport.dispatch`, `tigrbl.transport.dispatcher`, `tigrbl.transport.gateway`, `tigrbl.transport.gw`, `tigrbl.transport.headers`, `tigrbl.transport.httpx`, `tigrbl.transport.request`, `tigrbl.transport.request_adapters`, and `tigrbl.transport.responses` must remain absent as importable modules unless a later accepted ADR supersedes this contract.
+  2. Removed transport dispatcher and gateway runtime files must not be reintroduced as compatibility shims, forwarding wrappers, or alternate operation execution paths.
+  3. Top-level or public facade exports named `dispatch_operation` or `resolve_operation` must not be restored to preserve compatibility with removed transport bypasses.
+  4. Transport packages may normalize ingress envelopes and protocol-specific request data, but they must not own semantic operation lookup or execution.
+  5. Boundary tests that assert module, file, and export absence are valid conformance tests for this contract.
+  
+  ## Related Decisions
+  
+  - ADR-1047 establishes KernelPlan-owned transport dispatch.
+  - ADR-1076 establishes the negative transport bypass removal boundary.
+  
+  ## Verification
+  
+  - Architecture tests should assert the removed modules and files are absent.
+  - Architecture tests should assert removed public dispatch exports are not present.
+  - Runtime transport parity tests should prove operation execution uses the active KernelPlan path rather than a revived transport bypass.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1076"

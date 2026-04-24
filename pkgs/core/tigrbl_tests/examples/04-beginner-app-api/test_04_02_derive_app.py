@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tests.conftest import mro_collect_app_spec
-from tigrbl.shortcuts.app import deriveApp
+from tigrbl.factories.app import deriveApp
 
 
 def test_derive_app_spec_values() -> None:
@@ -9,3 +9,4 @@ def test_derive_app_spec_values() -> None:
     spec = mro_collect_app_spec(AppCls)
     assert spec.title == "Example"
     assert spec.version == "2.0"
+

@@ -57,7 +57,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/server-compat-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/cli-smoke.yml#phase8-cli",
+        ".github/workflows/cli-smoke.yml#cli-smoke",
         ".github/workflows/evidence-lanes.yml#evidence-lane[cli-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[server-compat-smoke]"
       ],
@@ -70,8 +70,8 @@
         "server compatibility smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
       ]
     },
     "CLI-002": {
@@ -80,7 +80,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/server-compat-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/cli-smoke.yml#phase8-cli",
+        ".github/workflows/cli-smoke.yml#cli-smoke",
         ".github/workflows/evidence-lanes.yml#evidence-lane[cli-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[server-compat-smoke]"
       ],
@@ -93,8 +93,8 @@
         "server compatibility smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
       ]
     },
     "EVID-001": {
@@ -457,7 +457,7 @@
         "integration"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
@@ -831,10 +831,10 @@
     "HANDOFF-001": {
       "artifact_paths": [
         "docs/conformance/dev/0.3.19.dev1/gate-results/post-promotion-handoff.md",
-        "docs/conformance/audit/2026/p14-post-promotion-handoff/README.md"
+        "docs/conformance/audit/2026/post-promotion-handoff/README.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff",
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff",
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
@@ -848,28 +848,28 @@
         "policy governance"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes",
-        "tools/ci/tests/test_phase14_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes",
+        "tools/ci/tests/test_post_promotion_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
       ]
     },
     "HANDOFF-002": {
       "artifact_paths": [
-        "docs/conformance/audit/2026/p14-post-promotion-handoff/README.md"
+        "docs/conformance/audit/2026/post-promotion-handoff/README.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff"
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff"
       ],
       "doc_paths": [
-        "tools/ci/validate_phase14_handoff.py",
-        "tools/ci/tests/test_phase14_handoff.py",
-        ".github/workflows/phase14-post-promotion-handoff.yml",
+        "tools/ci/validate_post_promotion_handoff.py",
+        "tools/ci/tests/test_post_promotion_handoff.py",
+        ".github/workflows/post-promotion-handoff.yml",
         "docs/developer/CI_VALIDATION.md"
       ],
       "lane_classes": [
         "post-promotion handoff"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes"
       ]
     },
     "NEXT-001": {
@@ -878,7 +878,7 @@
         "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff",
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff",
         ".github/workflows/policy-governance.yml#validate-policy"
       ],
       "doc_paths": [
@@ -892,30 +892,216 @@
         "policy governance"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_next_line_and_next_target_claim_rows_exist",
-        "tools/ci/tests/test_phase14_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_next_line_and_next_target_claim_rows_exist",
+        "tools/ci/tests/test_post_promotion_handoff.py::test_current_docs_record_active_dev_line_and_frozen_release_history"
       ]
     },
     "NEXT-002": {
       "artifact_paths": [
         "docs/conformance/NEXT_TARGETS.md",
-        "docs/notes/archive/2026/p14-post-promotion-handoff/README.md"
+        "docs/notes/archive/2026/post-promotion-handoff/README.md"
       ],
       "ci_jobs": [
-        ".github/workflows/phase14-post-promotion-handoff.yml#phase14-post-promotion-handoff"
+        ".github/workflows/post-promotion-handoff.yml#post-promotion-handoff"
       ],
       "doc_paths": [
         "docs/conformance/NEXT_TARGETS.md",
-        "docs/adr/ADR-0010-deferred-next-target-datatype-table-program.md",
-        "docs/adr/ADR-0011-post-promotion-release-history-freeze.md",
-        "docs/adr/ADR-0012-next-target-datatype-table-program-activation.md"
+        ".ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.yaml",
+        ".ssot/adr/ADR-1043-post-promotion-release-history-freeze.yaml",
+        ".ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml"
       ],
       "lane_classes": [
         "post-promotion handoff"
       ],
       "tests": [
-        "tools/ci/tests/test_phase14_handoff.py::test_next_line_and_next_target_claim_rows_exist",
-        "tools/ci/tests/test_phase14_handoff.py::test_phase14_handoff_validator_passes"
+        "tools/ci/tests/test_post_promotion_handoff.py::test_next_line_and_next_target_claim_rows_exist",
+        "tools/ci/tests/test_post_promotion_handoff.py::test_post_promotion_handoff_validator_passes"
+      ]
+    },
+    "NEXT-003": {
+      "artifact_paths": [
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/op.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/hook.py"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/decorators/test_declarative_surface.py::test_declarative_surface_literals_are_present"
+      ]
+    },
+    "NEXT-004": {
+      "artifact_paths": [
+        "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py",
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py::test_declared_surface_docs_derive_from_bindings",
+        "pkgs/core/tigrbl_concrete/tests/test_phase2_transport_docs.py::test_transport_docs_follow_declared_bindings"
+      ]
+    },
+    "NEXT-005": {
+      "artifact_paths": [
+        "tools/ci/validate_declared_surface.py"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "tools/ci/validate_declared_surface.py",
+        "docs/developer/CI_VALIDATION.md"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_declared_surface.py::test_phase1_declared_surface_validator_passes"
+      ]
+    },
+    "NEXT-006": {
+      "artifact_paths": [
+        ".ssot/reports/transport-dispatch-track-setup.md",
+        ".ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "docs/conformance/NEXT_TARGETS.md",
+        ".ssot/adr/ADR-1045-transport-dispatch-track-boundary-and-sequencing.yaml",
+        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.yaml"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes"
+      ]
+    },
+    "NEXT-007": {
+      "artifact_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml",
+        ".ssot/specs/SPEC-2013-transport-ingress-single-dispatch-flow.yaml"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching"
+      ]
+    },
+    "NEXT-008": {
+      "artifact_paths": [
+        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml",
+        ".ssot/specs/SPEC-2015-endpoint-keyed-jsonrpc-bindings.yaml",
+        ".ssot/specs/SPEC-2016-core-default-endpoint-mappings.yaml"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity"
+      ]
+    },
+    "NEXT-009": {
+      "artifact_paths": [
+        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.yaml"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.yaml"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching",
+        "pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity"
+      ]
+    },
+    "NEXT-010": {
+      "artifact_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching"
+      ]
+    },
+    "NEXT-011": {
+      "artifact_paths": [
+        ".ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        ".ssot/registry.json",
+        ".ssot/releases/boundaries/bnd_transport-dispatch-track-001.snapshot.json"
+      ],
+      "lane_classes": [
+        "next-target planning"
+      ],
+      "tests": [
+        "tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes"
+      ]
+    },
+    "NEXT-012": {
+      "artifact_paths": [
+        "tools/ci/validate_transport_dispatch_track.py",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/policy-governance.yml#validate-policy"
+      ],
+      "doc_paths": [
+        "tools/ci/validate_transport_dispatch_track.py",
+        "docs/conformance/EVIDENCE_REGISTRY.json"
+      ],
+      "lane_classes": [
+        "policy governance"
+      ],
+      "tests": [
+        "tools/ci/tests/test_transport_dispatch_track.py::test_transport_dispatch_track_validator_passes"
       ]
     },
     "OAS-001": {
@@ -950,7 +1136,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -986,7 +1172,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -1022,7 +1208,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -1058,7 +1244,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -1094,7 +1280,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -1130,7 +1316,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -1163,7 +1349,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1177,8 +1363,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-002": {
@@ -1187,7 +1373,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1201,8 +1387,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-003": {
@@ -1211,7 +1397,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1225,8 +1411,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-004": {
@@ -1235,7 +1421,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1249,8 +1435,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-005": {
@@ -1259,7 +1445,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1273,8 +1459,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-006": {
@@ -1283,7 +1469,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1297,8 +1483,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-007": {
@@ -1307,7 +1493,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1321,8 +1507,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-008": {
@@ -1331,7 +1517,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1345,8 +1531,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-009": {
@@ -1355,7 +1541,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1369,8 +1555,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-010": {
@@ -1379,7 +1565,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1393,8 +1579,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-011": {
@@ -1403,7 +1589,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1417,8 +1603,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "OP-012": {
@@ -1427,7 +1613,7 @@
         "docs/conformance/dev/0.3.18.dev1/gate-results/docs-ui-smoke.md"
       ],
       "ci_jobs": [
-        ".github/workflows/operator-surface.yml#phase7-operator-surface",
+        ".github/workflows/operator-surface.yml#operator-surface",
         ".github/workflows/evidence-lanes.yml#evidence-lane[operator-surface-smoke]",
         ".github/workflows/evidence-lanes.yml#evidence-lane[docs-ui-smoke]"
       ],
@@ -1441,8 +1627,8 @@
         "docs UI smoke"
       ],
       "tests": [
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py"
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py"
       ]
     },
     "PATH-001": {
@@ -1785,7 +1971,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -1821,7 +2007,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },
@@ -1857,7 +2043,7 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
-        "pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py",
+        "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
         "tools/ci/tests/test_gate_c_conformance_security.py"
       ]
     },

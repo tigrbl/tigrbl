@@ -6,7 +6,6 @@ from pydantic import BaseModel
 
 from tigrbl_concrete._concrete._response import Response
 from tigrbl_core._spec import OpSpec
-from tigrbl_concrete.system.docs.runtime_ops import register_runtime_get_route
 from .openapi.helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
@@ -254,13 +253,6 @@ def mount_openrpc(
     def _openrpc_endpoint(request: Any) -> Response:
         return Response.json(build_openrpc_spec(router, request=request))
 
-    register_runtime_get_route(
-        router,
-        path=normalized_path,
-        alias=name,
-        endpoint=_openrpc_endpoint,
-    )
-
     router.add_route(
         normalized_path,
         _openrpc_endpoint,
@@ -270,6 +262,7 @@ def mount_openrpc(
         tags=list(tags) if tags else None,
         summary="OpenRPC",
         description="OpenRPC 1.2.6 schema for JSON-RPC methods.",
+        inherit_owner_dependencies=False,
     )
     return router
 

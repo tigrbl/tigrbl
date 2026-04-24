@@ -1,9 +1,9 @@
-"""Smoother Swarmauri/Tigrbl integration with direct model returns.
+﻿"""Smoother Swarmauri/Tigrbl integration with direct model returns.
 
 This example focuses on a lower-friction pattern:
 - Reuse concrete Swarmauri subclasses (`HumanMessage`) directly.
 - Use Tigrbl hooks + default `create` persistence to normalize payloads.
-- Model a Conversation↔Message relationship with built-in persistence.
+- Model a Conversationâ†”Message relationship with built-in persistence.
 - Expose an op that returns `HumanMessage.model_validate_json(...)` directly.
 - Keep request/response schemas free of extra `json_schema` payload fields.
 - Mount OpenAPI and OpenRPC from the same model + op metadata.
@@ -15,7 +15,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field
 from tigrbl import Base, TigrblApp, engine_ctx, hook_ctx, op_ctx
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl_core._spec import F, IO, S
 from tigrbl.specs.storage_spec import ForeignKeySpec
 from tigrbl.types import JSON, Mapped, String, relationship
@@ -114,3 +114,4 @@ VALIDATE_IN_SCHEMA = ValidateHumanMessageIn.model_json_schema()
 VALIDATE_OUT_SCHEMA = HumanMessage.model_json_schema()
 OPENAPI_SPEC = app.openapi()
 OPENRPC_SPEC = app.openrpc()
+

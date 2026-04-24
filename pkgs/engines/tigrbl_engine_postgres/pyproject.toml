@@ -34,3 +34,6 @@ postgres = "tigrbl_engine_postgres:register"
 dev = [
     "ruff>=0.11.0",
 ]
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

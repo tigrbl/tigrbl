@@ -1,0 +1,62 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2028"
+number: 2028
+slug: "hook-extension-surface"
+title: "Hook Extension Surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the governed hook extension surface for Tigrbl."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the governed hook extension surface for Tigrbl.
+  
+  ## Canonical Surface
+  
+  - The hook extension surface includes `HookSpec`, `HookPhase`, and the canonical hook phase/type layer.
+  - Hook attachment through app, router, table, and op declarations is part of the hook surface because it governs where hook behavior may be declared.
+  - Phase legality, selector semantics, and deterministic execution ordering remain part of the hook extension surface.
+  - Hooks remain distinct from middleware: hooks participate in phase-bound semantic execution, while middleware wraps the transport/runtime boundary.
+  
+  ## Public, Base, and Authoring Projection
+  
+  - Public or base projection may appear through `tigrbl`, `tigrbl_base`, `hook_ctx`, and diagnostics builders such as hook-oriented system endpoints.
+  - Private authoring projection may appear through helper surfaces such as `build_hooks()`.
+  - Projection does not widen the legal hook model beyond the canonical spec-layer contract, and authoring helpers do not become public operator surfaces merely because they are importable.
+  
+  ## Phase Boundary Rules
+  
+  - The public hook phase vocabulary is limited to the governed hook phase set and does not include ingress routing phases or runtime completion fences.
+  - `INGRESS_ROUTE` remains runtime-owned and is not a hook phase.
+  - `POST_EMIT` remains a runtime-owned completion fence and is not a hook phase.
+  - `INGRESS_DISPATCH` is invalid in hook declarations, selector semantics, and hook-oriented diagnostics.
+  
+  ## Feature Granularity
+  
+  - One parent feature may track the hook extension surface as a whole.
+  - Separate child features may track:
+    - phase and selector semantics;
+    - attachment and ordering behavior;
+    - public/base projection of hook-facing contracts;
+    - private authoring projection of hook materialization helpers.
+  
+  ## Classification Rules
+  
+  - phase/selector feature: legal phases and selector vocabulary
+  - attachment/ordering feature: declaration surfaces and deterministic execution order
+  - projection feature: public or base export surfaces that project hook contracts
+  - authoring-helper feature: private authoring helpers that materialize hook-facing declarations
+  
+  ## Traceability
+  
+  - ADRs: `adr:1004`, `adr:1009`, `adr:1010`, `adr:1052`, `adr:1053`, `adr:1062`, `adr:1063`, `adr:1070`
+  - Related specs: `spc:2025`, `spc:2026`, `spc:2060`, `spc:2061`
+spec_kind: "local-policy"
+adr_ids: []

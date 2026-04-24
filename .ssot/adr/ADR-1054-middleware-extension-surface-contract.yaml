@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1054"
+number: 1054
+slug: "middleware-extension-surface-contract"
+title: "Middleware Extension Surface Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl already exposes middleware as part of the operator surface and the `_spec` layer, but the current SSOT set does not yet govern middleware as its own extension surface."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-0010, ADR-0011, ADR-0013, ADR-1041
+  
+  1. Middleware is a separate governed extension surface from hooks, ops, engines, and auth dependencies.
+  2. The canonical middleware surface is the protocol and wrapper-composition layer around app execution, not a semantic op-definition layer.
+  3. Middleware ordering is explicit and framework-owned through declared stack order and deterministic wrapper composition.
+  4. The current-cycle built-in middleware catalog remains bounded to `Middleware` and `CORSMiddleware`.
+  5. Generic auth remains dependency/hook-based only in the current cycle; middleware does not become a competing monolithic auth abstraction.
+  6. Middleware may enrich request or runtime context and may handle cross-cutting transport concerns, but it may not redefine canonical op semantics, hook legality, or engine ownership.
+  
+  ## Context
+  
+  Tigrbl already exposes middleware as part of the operator surface and the `_spec` layer, but the current SSOT set does not yet govern middleware as its own extension surface.
+  Without an explicit decision, middleware can be conflated with hooks, generic auth, or transport-specific behavior, which weakens surface boundaries and makes later surface inventory less reliable.
+  
+  ## Rejected Alternatives
+  
+  - Treat middleware as interchangeable with hooks.
+  - Introduce a broad generic auth middleware abstraction in the current cycle.
+  - Allow transport-specific middleware systems to redefine canonical op behavior.

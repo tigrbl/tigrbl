@@ -1,7 +1,7 @@
 import pytest
 
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 
 @pytest.mark.unit
@@ -18,3 +18,4 @@ def test_tigrbl_app_state_allows_attribute_assignment() -> None:
     app.state.tenant = "tenant-123"
 
     assert app.state.tenant == "tenant-123"
+

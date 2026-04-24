@@ -15,6 +15,7 @@ from typing import (
 )
 
 from .binding_spec import Exchange, TransportBindingSpec
+from .monotone import keyed_overlay, merge_mro_mapping_attr
 
 from .._spec.hook_spec import HookSpec as OpHook
 
@@ -297,12 +298,16 @@ def _collect_registry(model: type) -> List["OpSpec"]:
 def _dedupe(
     existing: Dict[Tuple[str, str], "OpSpec"], incoming: Iterable["OpSpec"]
 ) -> None:
+    valid_specs = []
     for sp in incoming:
         if not hasattr(sp, "alias") or not hasattr(sp, "target"):
             continue
         if not sp.alias or not sp.target:
             continue
-        existing[(sp.alias, sp.target)] = sp
+        valid_specs.append(sp)
+    existing.update(
+        keyed_overlay(valid_specs, key=lambda sp: (sp.alias, sp.target))
+    )
 
 
 def _apply_alias_ctx_to_canon(specs: List["OpSpec"], model: type) -> List["OpSpec"]:
@@ -389,10 +394,7 @@ def _ensure_ctx(
 
 
 def _merge_mro_dict(model: type, attr: str) -> Dict[str, Any]:
-    merged: Dict[str, Any] = {}
-    for base in reversed(model.__mro__):
-        merged.update(getattr(base, attr, {}) or {})
-    return merged
+    return merge_mro_mapping_attr(model, attr)
 
 
 def _mro_alias_map_for(table: type) -> Dict[str, str]:

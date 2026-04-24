@@ -1,0 +1,42 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2063"
+number: 2063
+slug: "op-decorator-binding-and-attachment-contract"
+title: "Op decorator binding and attachment contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the contract for attaching operation declarations through `op_ctx`, `op_alias`, `alias_ctx`, and equivalent authoring helpers."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the contract for attaching operation declarations through `op_ctx`, `op_alias`, `alias_ctx`, and equivalent authoring helpers.
+  
+  ## Canonical Surface
+  
+  - Internal decorator attachment and external `bind=` attachment must produce canonical owner-local operation declarations.
+  - Attachment targets include model classes, app classes, app instances, router classes, plain objects, and explicit collections of bind targets.
+  - Multiple-target binding must place equivalent declarations on each target without sharing mutable declaration state.
+  - Dynamic attachment must be discoverable by the same owner-local operation registry used for inline declarations.
+  - Attachment helpers may wrap callables for descriptor behavior, but the canonical operation declaration remains inspectable on the attached callable or owner carrier.
+  
+  ## Projection Rules
+  
+  - Authoring helpers normalize public decorator inputs before attachment.
+  - Attachment does not decide transport eligibility, core handler selection, persistence behavior, or documentation output by itself.
+  - Owner-local registries remain the source consumed by later builders such as schema, hook, handler, REST, RPC, and docs projections.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1001`, `adr:1003`, `adr:1017`, `adr:1052`, `adr:1070`, `adr:1071`
+  - Related specs: `spc:2025`, `spc:2029`, `spc:2060`
+  - Related features: `feat:op-extension-surface-001`, `feat:op-surface-public-projection-001`, `feat:bind-helper-surface-001`, `feat:opspec-contract-001`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1071"

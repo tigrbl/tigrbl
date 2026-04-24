@@ -11,21 +11,17 @@ from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_core._spec.app_spec import _seqify
 from tigrbl_core._spec.engine_spec import EngineCfg
 from ._table_registry import TableRegistry
-
-from ._routing import (
+from ._httpx import ensure_httpx_sync_transport
+from ._route import (
+    Route,
     add_route as _add_route_impl,
-    include_router as _include_router_impl,
+    compile_path,
+    include_router_routes as _include_router_impl,
     merge_tags,
     normalize_prefix,
-    route,
+    route as _route_impl,
 )
-from ._httpx import ensure_httpx_sync_transport
-
-from ._route import Route, compile_path
 from ._websocket import WebSocketRoute
-from tigrbl_concrete.system.docs.openapi.metadata import (
-    is_metadata_route as _is_metadata_route_impl,
-)
 
 Handler = Callable[..., Any]
 
@@ -205,6 +201,15 @@ class Router(RouterBase):
             self._runtime_plan_revision = int(current) + 1
         except Exception:
             self._runtime_plan_revision = 1
+        kernels = []
+        runtime = getattr(self, "_runtime_instance", None)
+        kernel = getattr(runtime, "kernel", None)
+        if kernel is not None:
+            kernels.append(kernel)
+        for kernel in kernels:
+            invalidate = getattr(kernel, "invalidate_kernelz_payload", None)
+            if callable(invalidate):
+                invalidate(self)
 
     def add_route(
         self,
@@ -229,7 +234,7 @@ class Router(RouterBase):
     def route(
         self, path: str, *, methods: Any, **kwargs: Any
     ) -> Callable[[Handler], Handler]:
-        return route(self, path, methods=methods, **kwargs)
+        return _route_impl(self, path, methods=methods, **kwargs)
 
     def get(self, path: str, **kwargs: Any) -> Callable[[Handler], Handler]:
         return _rest_get(self, path, **kwargs)
@@ -315,9 +320,6 @@ class Router(RouterBase):
     async def _execute_route_dependencies(self, route: Route, req: Any) -> None:
         del route, req
         raise RuntimeError("Route dependencies are executed by the runtime/app layer.")
-
-    def _is_metadata_route(self, route: Route) -> bool:
-        return _is_metadata_route_impl(self, route)
 
     async def _execute_dependency_tokens(
         self, kwargs: dict[str, Any], req: Any

@@ -1,0 +1,44 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2015"
+number: 2015
+slug: "endpoint-keyed-jsonrpc-bindings"
+title: "Endpoint-Keyed JSON-RPC Bindings"
+status: "superseded"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Date: 2026-04-18"
+supersedes: []
+superseded_by:
+  - "spc:2024"
+status_notes:
+  -
+    status: "superseded"
+    note: "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract."
+    at: "2026-04-20T10:29:37Z"
+references: []
+body: |-
+  ## Content
+  
+  Date: 2026-04-18
+  Kind: repo-local
+  
+  ## Intent
+  
+  This document defines endpoint-keyed JSON-RPC binding identity for multiplexed ingress surfaces.
+  
+  ## Canonical Model
+  
+  - `HttpJsonRpcBindingSpec` includes `endpoint`
+  - `endpoint` identifies the logical multiplexed ingress surface for the binding
+  - the default endpoint value comes from a governed `tigrbl_core` constant
+  - app/router `mount_jsonrpc(...)` maps endpoint identity to concrete ingress paths
+  - kernel compilation resolves JSON-RPC ops by endpoint plus `rpc_method`
+  
+  ## Traceability
+  
+  - ADRs:
+    - `.ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml`
+spec_kind: "local-policy"
+adr_ids: []

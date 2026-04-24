@@ -1,0 +1,42 @@
+{
+  "$defs": {
+    "BindingRegistrySpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:BindingRegistrySpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "BindingRegistrySpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "BindingRegistrySpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "_bindings": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "./BindingSpec.json"
+          },
+          {
+            "$ref": "./BindingSpec.json#/$defs/BindingSpecEnvelope"
+          }
+        ]
+      },
+      "type": "object"
+    }
+  },
+  "required": [
+    "_bindings"
+  ],
+  "title": "BindingRegistrySpec",
+  "type": "object"
+}

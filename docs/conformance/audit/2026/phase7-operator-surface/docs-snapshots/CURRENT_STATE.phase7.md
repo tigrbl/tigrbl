@@ -58,13 +58,13 @@ The current cycle keeps the emitted spec endpoints and de-scopes the missing int
 
 | Surface | Current state | Evidence |
 |---|---|---|
-| static files | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/static.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| cookies | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| streaming responses | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_streaming_response.py`, `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/asgi_send.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| WebSockets | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_websocket.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| WHATWG SSE | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_event_stream_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| forms / multipart | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
-| upload handling | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` |
+| static files | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/static.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| cookies | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| streaming responses | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_streaming_response.py`, `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/asgi_send.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| WebSockets | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_websocket.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_app.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| WHATWG SSE | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_event_stream_response.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| forms / multipart | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
+| upload handling | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_request.py`, `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` |
 | bounded built-in middleware catalog | closed | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_middleware.py`, `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_cors_middleware.py`, docs under `docs/developer/operator/middleware-catalog.md` |
 
 ### Auth-surface decision closed now

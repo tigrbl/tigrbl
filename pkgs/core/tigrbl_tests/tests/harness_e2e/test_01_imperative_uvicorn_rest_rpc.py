@@ -5,7 +5,7 @@ import inspect
 import httpx
 import pytest
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 from tigrbl_client import TigrblClient
@@ -123,3 +123,4 @@ async def test_imperative_to_uvicorn_rest_and_rpc_parity_e2e() -> None:
             await rpc.aclose()
     finally:
         await stop_uvicorn(server, task)
+

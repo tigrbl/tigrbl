@@ -82,3 +82,5 @@ __all__ = [
     "normalize_rust_spec",
     "plan_labels",
 ]
+
+_default_kernel = _kernel()

@@ -19,8 +19,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install Gate C dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic uvicorn hypercorn gunicorn typing_extensions build
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -42,12 +44,12 @@ jobs:
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Validate Gate C conformance/security closure
-        run: python tools/ci/validate_gate_c_conformance_security.py
+        run: uv run --no-sync python tools/ci/validate_gate_c_conformance_security.py
 
       - name: Run Gate C conformance/security tests
         run: >-
-          python -m pytest --noconftest -q
-          pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py
+          uv run --no-sync python -m pytest --noconftest -q
+          pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py
           pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
           pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
           pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py

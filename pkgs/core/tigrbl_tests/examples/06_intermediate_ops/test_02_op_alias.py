@@ -1,7 +1,7 @@
 """Lesson 06.2: Renaming canonical operations with `op_alias`."""
 
 from tigrbl import TableBase, TigrblApp, op_alias
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -62,3 +62,4 @@ def test_op_alias_override_applies_arity():
     # Assertion: the alias keeps the canonical target but updates arity.
     assert spec.target == "read"
     assert spec.arity == "member"
+

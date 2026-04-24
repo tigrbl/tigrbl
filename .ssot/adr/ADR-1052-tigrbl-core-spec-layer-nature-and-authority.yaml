@@ -1,0 +1,63 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1052"
+number: 1052
+slug: "tigrbl-core-spec-layer-nature-and-authority"
+title: "tigrbl_core._spec Layer Nature and Authority"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`tigrbl_core._spec` is the canonical typed contract layer for Tigrbl's spec-owned surfaces."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-04-20T21:50:19Z"
+    note: "Documents the active-line decision that tigrbl_core._spec owns the canonical spec layer while public facade exposure remains a separate projection boundary."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated from legacy package edge test inventory to cover AppSpec/RouterSpec nested composition and TableSpec model_ref."
+    at: "2026-04-21T08:39:29Z"
+references: []
+body: |-
+  ## Decision
+  
+  `tigrbl_core._spec` is the canonical typed contract layer for Tigrbl's spec-owned surfaces.
+  
+  1. The `_spec` package owns the normalized Python-side contract objects, enums, aliases, and helper constructs that define what tables, ops, bindings, sessions, schemas, requests, responses, routers, and storage contracts mean before any concrete runtime or facade projection is applied.
+  2. The module-export surface declared by `tigrbl_core._spec.__init__` is the governed authority for the repo-local `_spec` layer.
+  3. Public exposure through `tigrbl.__all__` is a deliberate facade/operator projection layered on top of `_spec`; it does not change `_spec` ownership.
+  4. Exported `_spec` symbols that are not re-exported by `tigrbl` remain private or internal-facing `_spec` surface even when they stay importable from `tigrbl_core._spec`.
+  5. `AppSpec`, `RouterSpec`, `TableSpec`, `ColumnSpec`, `FieldSpec`, `IOSpec`, `ForeignKeySpec`, and `ResponseSpec` are governed typed contract objects when used as nested declarative composition surfaces.
+  6. `RouterSpec.tables` owns router-scoped table composition through nested `TableSpec` values, and `TableSpec.model_ref` is a portable model-reference contract rather than a runtime-only convenience.
+  
+  ## Context
+  
+  The repository already treats the spec layer as authoritative in code and prior SSOT records, but it does not yet have one ADR that explicitly names `tigrbl_core._spec` as a governed layer with both internal and public-facing export boundaries. The current codebase has three relevant realities:
+  
+  - `tigrbl_core._spec.__init__` defines the canonical export map for the spec layer.
+  - `tigrbl.__init__` selectively re-exports a subset of those symbols as framework/facade surface.
+  - additional helpers, lowerers, and datatype support remain `_spec` concerns without being promoted to the top-level operator facade.
+  
+  The legacy package edge inventory shows `pkgs/core/tigrbl_tests/v4/tests/spec/test_master_app_spec_surface.py` exercising a master AppSpec shape with router-owned tables, model reference strings, nested column/field/io/storage metadata, foreign keys, and response defaults. That test reflects a spec-layer composition decision, not only export inventory.
+  
+  ## Consequences
+  
+  - The SSOT may track `_spec` modules, `_spec` exports, public facade re-exports, and nested composition behaviors as separate features.
+  - A symbol can be a valid governed `_spec` export without also being a governed public operator surface.
+  - Future additions to `tigrbl_core._spec.__init__._EXPORTS` or its special-case aliases must be evaluated as `_spec` surface changes even if the top-level facade does not re-export them.
+  - Facade removals or additions do not by themselves redefine `_spec` ownership.
+  - Router-owned table composition and portable model references need explicit spec/feature traceability instead of relying only on generic AppSpec export coverage.
+  
+  ## Verification
+  
+  - `pkgs/core/tigrbl_tests/v4/tests/spec/test_master_app_spec_surface.py`
+  
+  ## Rejected Alternatives
+  
+  - Treating `tigrbl.__all__` as the sole authority for the `_spec` layer.
+  - Treating every importable `_spec` helper module as automatically public operator surface.
+  - Folding `_spec` ownership into `tigrbl_base` or `tigrbl_concrete` instead of keeping it as its own governed layer.
+  - Treating router-owned tables or `model_ref` as incidental runtime conveniences outside the typed spec contract.

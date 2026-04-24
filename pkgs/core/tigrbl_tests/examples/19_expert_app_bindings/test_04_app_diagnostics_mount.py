@@ -6,7 +6,7 @@ configuration and avoids manual router wiring.
 """
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -46,3 +46,4 @@ def test_app_diagnostics_attach_to_host_routes():
     assert any(
         route.path == f"{app.system_prefix}/healthz" for route in app.router.routes
     )
+

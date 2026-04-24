@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from tigrbl.shortcuts.engine import (
+from tigrbl.factories.engine import (
     engine_spec,
     engine,
     mem,
@@ -83,7 +83,7 @@ def test_engine_builds_from_dsn_postgres():
 def test_prov_lazily_constructs_and_sessions_are_fresh_sync(tmp_path):
     p = prov(
         sqlitef(str(tmp_path / "x.sqlite"))
-    )  # mapping helper → Provider  :contentReference[oaicite:6]{index=6}
+    )  # mapping helper â†’ Provider  :contentReference[oaicite:6]{index=6}
     assert p.kind == "sync"
     s1 = p.session()
     s2 = p.session()
@@ -104,3 +104,4 @@ async def test_engine_async_context_manager_ok():
         # smoke: check basic API surface
         close = getattr(s, "close", None)
         assert close is not None
+

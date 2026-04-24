@@ -6,7 +6,7 @@ discover model-level metadata without duplicating model discovery logic.
 """
 
 from tigrbl import TableBase, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -49,3 +49,4 @@ def test_model_registry_supports_multiple_models():
 
     assert router.tables[Widget.__name__] is Widget
     assert router.tables[Gadget.__name__] is Gadget
+

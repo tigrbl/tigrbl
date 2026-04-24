@@ -20,15 +20,7 @@ from typing import (
 
 from ._app import App as _App
 from .tigrbl_router import TigrblRouter
-from ._routing import add_route as _add_route_impl
 from tigrbl_core._spec.op_spec import OpSpec
-from tigrbl_core._spec.binding_spec import (
-    HttpRestBindingSpec,
-    HttpStreamBindingSpec,
-    SseBindingSpec,
-    WebTransportBindingSpec,
-    WsBindingSpec,
-)
 from tigrbl_core._spec.engine_spec import EngineCfg
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
@@ -51,15 +43,22 @@ from tigrbl_concrete.system import build_json_schema_bundle as _build_json_schem
 from tigrbl_concrete.system import build_openrpc_spec as _build_openrpc_spec
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from ._op_registry import get_registry
-from ._route import compile_path
+from ._route import (
+    ROUTE_OPS_MODEL_NAME,
+    add_jsonrpc_mount,
+    compile_path,
+    prefix_model_bindings as _prefix_model_bindings,
+    upsert_route_opspec,
+)
 from ._websocket import WebSocketRoute
 from ._table_registry import TableRegistry
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
-from tigrbl_core.config.constants import TIGRBL_GET_DB_ATTR
+from tigrbl_core.config.constants import (
+    TIGRBL_GET_DB_ATTR,
+    __JSONRPC_DEFAULT_ENDPOINT__,
+)
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
-from tigrbl_concrete.system.docs.runtime_ops import register_runtime_route
-from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from ._rust_backend import (
     clear_ffi_boundary_events as _clear_rust_boundary_events,
     ffi_boundary_events as _rust_boundary_events,
@@ -150,19 +149,7 @@ class TigrblApp(_App):
             for binding in tuple(getattr(op_spec, "bindings", ()) or ())
         )
         if has_jsonrpc_binding:
-            app._ensure_default_router()
-            existing_paths = {
-                getattr(route, "path", None) for route in getattr(app, "routes", ())
-            }
-            if (
-                spec.jsonrpc_prefix not in existing_paths
-                and f"{spec.jsonrpc_prefix}/" not in existing_paths
-            ):
-                app.add_route(
-                    spec.jsonrpc_prefix,
-                    lambda *_args, **_kwargs: None,
-                    methods=["POST"],
-                )
+            app.mount_jsonrpc(prefix=spec.jsonrpc_prefix)
         return app
 
     def __init__(
@@ -241,6 +228,7 @@ class TigrblApp(_App):
         self.routers: Dict[str, Any] = {}
         self.websocket_routes: list[WebSocketRoute] = []
         self._static_mounts: list[dict[str, str]] = []
+        self._jsonrpc_endpoint_mounts: dict[str, str] = {}
         self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
         self._tigrbl_runtime_acquire_db = _resolver.acquire
         self.tables = AttrDict(self._table_registry)
@@ -491,18 +479,6 @@ class TigrblApp(_App):
         if has_rpc_binding:
             self.mount_jsonrpc()
 
-    def _ensure_system_route_model(self) -> type:
-        model_name = "__tigrbl_system_routes__"
-        model = self.tables.get(model_name)
-        if model is None:
-            model = type("TigrblSystemRoutes", (), {})
-            model.resource_name = "system_routes"
-            model.hooks = SimpleNamespace()
-            model.ops = SimpleNamespace(by_alias={})
-            model.opspecs = SimpleNamespace(all=())
-            self.tables[model_name] = model
-        return model
-
     def _sync_default_router_namespaces(self) -> None:
         """Mirror the auto-created Router registries onto the app facade."""
         if self._default_router is None:
@@ -545,79 +521,6 @@ class TigrblApp(_App):
             if not token.startswith("/"):
                 token = f"/{token}"
             return token.rstrip("/")
-
-        def _apply_mount_prefix_to_model_bindings(
-            model: type, mount_prefix: str
-        ) -> None:
-            if not mount_prefix:
-                return
-
-            ops_ns = getattr(model, "ops", None)
-            specs = tuple(getattr(ops_ns, "all", ()) or ())
-            if not specs:
-                return
-
-            updated_specs: list[Any] = []
-            changed = False
-            for spec in specs:
-                bindings = tuple(getattr(spec, "bindings", ()) or ())
-                updated_bindings: list[Any] = []
-                local_changed = False
-                for binding in bindings:
-                    if not isinstance(
-                        binding,
-                        (
-                            HttpRestBindingSpec,
-                            HttpStreamBindingSpec,
-                            SseBindingSpec,
-                            WsBindingSpec,
-                            WebTransportBindingSpec,
-                        ),
-                    ):
-                        updated_bindings.append(binding)
-                        continue
-
-                    path = str(binding.path or "")
-                    if not path.startswith("/"):
-                        path = f"/{path}"
-                    prefixed_path = (
-                        path
-                        if path == mount_prefix or path.startswith(f"{mount_prefix}/")
-                        else f"{mount_prefix}{path}"
-                    )
-                    if prefixed_path != binding.path:
-                        local_changed = True
-                        updated_bindings.append(replace(binding, path=prefixed_path))
-                    else:
-                        updated_bindings.append(binding)
-
-                if local_changed:
-                    changed = True
-                    updated_specs.append(
-                        replace(spec, bindings=tuple(updated_bindings))
-                    )
-                else:
-                    updated_specs.append(spec)
-
-            if not changed:
-                return
-
-            updated_all = tuple(updated_specs)
-            by_alias: dict[str, _OpSpecGroup] = {}
-            grouped_specs: dict[str, list[Any]] = {}
-            by_key: dict[tuple[str, str], Any] = {}
-            for spec in updated_all:
-                grouped_specs.setdefault(spec.alias, []).append(spec)
-                by_key[(spec.alias, spec.target)] = spec
-
-            for alias, specs_for_alias in grouped_specs.items():
-                by_alias[alias] = _OpSpecGroup(tuple(specs_for_alias))
-
-            updated_ops_ns = SimpleNamespace(
-                all=updated_all, by_alias=by_alias, by_key=by_key
-            )
-            model.ops = updated_ops_ns
-            model.opspecs = updated_ops_ns
 
         mount_prefix = _normalize_mount_prefix(
             prefix if prefix is not None else getattr(router, "prefix", None)
@@ -671,10 +574,33 @@ class TigrblApp(_App):
                     resolved_tables.setdefault(getattr(model, "__name__", name), model)
 
             for name, table in resolved_tables.items():
-                self.tables.setdefault(name, table)
+                if name == ROUTE_OPS_MODEL_NAME or getattr(table, "__name__", None) == "TigrblRouteOps":
+                    existing_route_ops = self.tables.get(ROUTE_OPS_MODEL_NAME)
+                    if isinstance(existing_route_ops, type) and existing_route_ops is not table:
+                        hooks = getattr(table, "hooks", None)
+                        for spec in tuple(getattr(getattr(table, "ops", None), "all", ()) or ()):
+                            handler_step = None
+                            if hooks is not None:
+                                hook_ns = getattr(hooks, getattr(spec, "alias", ""), None)
+                                handler_steps = getattr(hook_ns, "HANDLER", None)
+                                if handler_steps:
+                                    handler_step = handler_steps[0]
+                            upsert_route_opspec(self, spec, handler_step=handler_step)
+                        table = self.tables.get(ROUTE_OPS_MODEL_NAME, existing_route_ops)
+                    else:
+                        self.tables[name] = table
+                    self.tables[ROUTE_OPS_MODEL_NAME] = table
+                    self.tables["TigrblRouteOps"] = table
+                else:
+                    self.tables.setdefault(name, table)
             if self._default_router is not None and self._default_router is not router:
                 for name, table in resolved_tables.items():
-                    self._default_router.tables.setdefault(name, table)
+                    if name == ROUTE_OPS_MODEL_NAME or getattr(table, "__name__", None) == "TigrblRouteOps":
+                        route_ops_model = self.tables.get(ROUTE_OPS_MODEL_NAME, table)
+                        self._default_router.tables[ROUTE_OPS_MODEL_NAME] = route_ops_model
+                        self._default_router.tables["TigrblRouteOps"] = route_ops_model
+                    else:
+                        self._default_router.tables.setdefault(name, table)
 
         if self._default_router is not None and self._default_router is not router:
             incoming_get_db = getattr(router, "get_db", None)
@@ -700,55 +626,28 @@ class TigrblApp(_App):
 
         if route_models:
             for table in route_models.values():
-                _apply_mount_prefix_to_model_bindings(table, mount_prefix)
+                _prefix_model_bindings(table, mount_prefix)
             for name, table in route_models.items():
                 self.tables.setdefault(name, table)
             if self._default_router is not None and self._default_router is not router:
                 for name, table in route_models.items():
                     self._default_router.tables.setdefault(name, table)
 
-        for route in getattr(router, "routes", ()):
-            if getattr(route, "tigrbl_model", None) is not None:
-                continue
-            endpoint = getattr(route, "endpoint", None)
-            path = getattr(route, "path", None)
-            methods = tuple(
-                sorted(
-                    str(method).upper()
-                    for method in (getattr(route, "methods", ()) or ())
-                    if str(method).upper() not in {"HEAD", "OPTIONS"}
-                )
-            )
-            if not callable(endpoint) or not isinstance(path, str) or not methods:
-                continue
-            full_path = (
-                path
-                if not mount_prefix
-                else path
-                if path == mount_prefix or path.startswith(f"{mount_prefix}/")
-                else f"{mount_prefix}{path if path.startswith('/') else '/' + path}"
-            )
-            alias = f"route_{'_'.join(methods).lower()}_{full_path.strip('/').replace('/', '_').replace('{', '').replace('}', '') or 'root'}"
-            register_runtime_route(
-                self,
-                path=full_path,
-                methods=methods,
-                alias=alias,
-                endpoint=endpoint,
-            )
-
         if not mount_router:
             return router
         super().include_router(router, prefix=prefix)
+        bump = getattr(self, "_bump_runtime_plan_revision", None)
+        if callable(bump):
+            bump()
         return router
 
     def add_router_route(self, path: str, endpoint: Any, **kwargs: Any) -> None:
         """Register a route directly on this app instance."""
-        _add_route_impl(self, path, endpoint, **kwargs)
+        super().add_route(path, endpoint, **kwargs)
 
     def add_route(self, path: str, endpoint: Any, **kwargs: Any) -> None:
         """Register a route directly on this app instance."""
-        _add_route_impl(self, path, endpoint, **kwargs)
+        super().add_route(path, endpoint, **kwargs)
 
     def include_routers(self, routers: Sequence[Any]) -> None:
         """Mount multiple Routers, supporting optional per-item prefixes."""
@@ -853,21 +752,24 @@ class TigrblApp(_App):
 
     # ------------------------- extras / mounting -------------------------
 
-    def mount_jsonrpc(self, *, prefix: str | None = None) -> Any:
+    def mount_jsonrpc(
+        self,
+        *,
+        prefix: str | None = None,
+        endpoint: str = __JSONRPC_DEFAULT_ENDPOINT__,
+    ) -> Any:
         if prefix is not None:
             self.jsonrpc_prefix = prefix
+        endpoint = str(endpoint or __JSONRPC_DEFAULT_ENDPOINT__)
 
         router = self._ensure_default_router()
-        existing_paths = {getattr(route, "path", None) for route in self.routes}
         base_prefix = self.jsonrpc_prefix.rstrip("/") or "/"
         candidate_paths = (
             base_prefix,
             f"{base_prefix}/" if base_prefix != "/" else "/",
         )
         for path in candidate_paths:
-            if path in existing_paths:
-                continue
-            self.add_route(path, lambda *_args, **_kwargs: None, methods=["POST"])
+            add_jsonrpc_mount(self, path, endpoint=endpoint)
         return router
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:

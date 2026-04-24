@@ -1,0 +1,31 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1040"
+number: 1040
+slug: "docs-ui-contract"
+title: "Docs UI contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Docs UI behavior must be stable without conflating UI concerns with payload or runtime conformance contracts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. This ADR is scoped to documentation UI surface only.
+  2. It defines supported UI mount points and UI availability semantics.
+  3. It explicitly excludes payload-shape semantics and runtime parity semantics.
+  4. UI surfaces MUST consume canonical docs payload surfaces and MUST NOT define independent payload generation logic.
+  
+  ## Context
+  
+  Docs UI behavior must be stable without conflating UI concerns with payload or runtime conformance contracts.
+  
+  ## Consequences
+  
+  - UI contracts can evolve independently from payload contracts.
+  - Payload and parity obligations are tracked by separate ADRs/SPECs.

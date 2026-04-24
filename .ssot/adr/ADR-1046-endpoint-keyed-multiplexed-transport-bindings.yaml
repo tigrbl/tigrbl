@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1046"
+number: 1046
+slug: "endpoint-keyed-multiplexed-transport-bindings"
+title: "ADR-1046 - Endpoint-Keyed Multiplexed Transport Bindings"
+status: "superseded"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "JSON-RPC is multiplexed: many operations share one concrete ingress such as `/rpc`. The binding model already treats transport support as op-centric metadata, but JSON-RPC currently lacks a first-class endpoint identity that can distinguish multiple mounted multiplexed surfaces without hard-coding concrete paths into every operation binding."
+supersedes: []
+superseded_by:
+  - "adr:1051"
+status_notes:
+  -
+    status: "superseded"
+    note: "Concrete (scope, path, method) routing is now canonical for the public contract; JSON-RPC endpoint identity remains an internal or derived detail for multiplexed mounts and compilation."
+    at: "2026-04-20T10:28:42Z"
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Accepted
+  - **Date:** 2026-04-18
+  - **Related ADRs:** ADR-1006, ADR-1007, ADR-1014, ADR-1023
+  
+  1. Multiplexed transport bindings use a logical endpoint identity in addition to the protocol binding key.
+  2. `HttpJsonRpcBindingSpec` gains an `endpoint` field whose default value is the governed default endpoint constant from `tigrbl_core`.
+  3. Concrete mounts such as `mount_jsonrpc(prefix="/rpc", endpoint=...)` map endpoint identity to a concrete ingress path.
+  4. Stream, SSE, and websocket bindings remain path-based unless they later need multiplexed endpoint identity.
+  5. Endpoint defaults and default endpoint mappings are owned by `tigrbl_core` and exposed as uppercase double-underscore constants.
+  
+  ## Context
+  
+  JSON-RPC is multiplexed: many operations share one concrete ingress such as `/rpc`. The binding model already treats transport support as op-centric metadata, but JSON-RPC currently lacks a first-class endpoint identity that can distinguish multiple mounted multiplexed surfaces without hard-coding concrete paths into every operation binding.
+  
+  ## Rejected Alternatives
+  
+  - encoding concrete `/rpc` paths directly into every JSON-RPC op binding
+  - letting app/router-local JSON-RPC handlers perform their own method lookup
+  - introducing a transport-specific route registry for multiplexed RPC ingress

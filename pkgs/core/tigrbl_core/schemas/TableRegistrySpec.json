@@ -1,0 +1,32 @@
+{
+  "$defs": {
+    "TableRegistrySpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.table_registry_spec:TableRegistrySpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "TableRegistrySpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "TableRegistrySpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "tables": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    }
+  },
+  "required": [
+    "tables"
+  ],
+  "title": "TableRegistrySpec",
+  "type": "object"
+}

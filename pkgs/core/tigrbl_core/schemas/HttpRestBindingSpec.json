@@ -1,0 +1,52 @@
+{
+  "$defs": {
+    "HttpRestBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:HttpRestBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HttpRestBindingSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "HttpRestBindingSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "exchange": {
+      "type": "string"
+    },
+    "framing": {
+      "type": "string"
+    },
+    "methods": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "path": {
+      "type": "string"
+    },
+    "proto": {
+      "enum": [
+        "http.rest",
+        "https.rest"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "proto",
+    "methods",
+    "path",
+    "exchange",
+    "framing"
+  ],
+  "title": "HttpRestBindingSpec",
+  "type": "object"
+}

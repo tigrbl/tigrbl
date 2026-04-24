@@ -1,0 +1,24 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2008"
+number: 2008
+slug: "http-route-registration"
+title: "Canonical HTTP Route Registration"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Canonical HTTP Route Registration"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Canonical route registration governs route exposure for runtime and docs projection surfaces.
+  2. Declarative route registration effects on REST and JSON-RPC/OpenRPC visibility are normative.
+  3. Registration/materialization parity is required across runtime and docs outputs.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1028"

@@ -1,0 +1,26 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1033"
+number: 1033
+slug: "current-target-boundary"
+title: "Current target boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "﻿"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  ﻿
+  Accepted.
+  
+  Treat application/API/auth semantics and framework-owned docs/operator surfaces as in-boundary. Treat HTTP/2, HTTP/3, QUIC, HPACK, QPACK, and server-side TLS termination as outside the current framework boundary.
+  
+  ## Context
+  
+  The repository needs an explicit line between framework-owned semantics and server/runtime-owned transport behavior.

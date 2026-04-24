@@ -1,7 +1,7 @@
 """Lesson 07.4: Scoping hooks to specific operations."""
 
 from tigrbl import TableBase, TigrblApp, hook_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -74,3 +74,4 @@ def test_hook_scopes_exclude_unlisted_ops():
 
     # Assertion: create has no hooks because it was not listed.
     assert create_hooks == []
+

@@ -20,4 +20,4 @@ The framework now closes the request-body operator surface for:
 
 ## Notes
 
-The Phase 7 operator tests verify a multipart submission with scalar fields plus an uploaded text file and confirm that the request model round-trips the parsed values correctly.
+The operator-surface tests verify a multipart submission with scalar fields plus an uploaded text file and confirm that the request model round-trips the parsed values correctly.

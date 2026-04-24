@@ -9,7 +9,7 @@ keeping persistence and schema layers in sync.
 from tigrbl import TableBase
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import String
 
 
@@ -44,3 +44,4 @@ def test_materialized_columns_preserve_table_name():
         )
 
     assert Widget.__table__.name == "lessoncolumntablenames"
+

@@ -4,7 +4,7 @@ import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from tigrbl import TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import BulkCapable, GUIDPk, Replaceable
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import Column, String
@@ -117,3 +117,4 @@ async def test_bulk_delete(v3_client) -> None:
     # verify items are gone
     listed = (await client.get("/widget")).json()
     assert listed == []
+

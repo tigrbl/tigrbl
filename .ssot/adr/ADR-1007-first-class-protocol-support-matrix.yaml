@@ -1,0 +1,55 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1007"
+number: 1007
+slug: "first-class-protocol-support-matrix"
+title: "ADR-0007 \u00e2\u20ac\u201d First-Class Protocol Support Matrix"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the active-line first-class protocol set and distinguish it from frozen current-target certification."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1005, ADR-1006, ADR-1014, ADR-1016, ADR-1021, ADR-1022, ADR-1023, ADR-1024, ADR-1025
+
+  1. A protocol or binding is first-class only if it has:
+     - a canonical binding spec;
+     - a supported public declaration path;
+     - a compiled kernel path;
+     - a runtime execution path;
+     - docs projection support; and
+     - direct test coverage.
+  2. The active-line first-class protocol set is:
+     - REST over HTTP/HTTPS;
+     - JSON-RPC over HTTP/HTTPS;
+     - HTTP stream over HTTP/HTTPS;
+     - SSE over HTTP/HTTPS;
+     - WebSocket over WS/WSS; and
+     - JSON-RPC over WS/WSS through websocket framing.
+  3. WebTransport and app-framed WebTransport are governed provisional surfaces rather than first-class support in this checkpoint.
+  4. HTTP/3 and QUIC are transport substrates, not separate semantic bindings.
+  5. Protocols not in the governed first-class set are non-first-class by default and may not be implied by analogy.
+  6. First-class status requires public docs and tests, not just internal code paths.
+  7. Frozen current-target certification is stricter than active-line first-class support and is governed separately by conformance target documents.
+  8. First-class protocol support requires the canonical ingress-routing phase label `INGRESS_ROUTE`.
+  9. `INGRESS_DISPATCH` is not an allowed public, diagnostics, or compatibility phase label for first-class protocol support.
+
+  ## Context
+
+  Tigrbl needs an explicit statement of which protocols are first-class and what first-class means.
+  Without this, the repo can accidentally imply support levels that are only partial, experimental, or transport-adapter-only.
+
+  ## Rejected Alternatives
+
+  - Implicit support claims based on partial internal code.
+  - Treating transport substrate changes as new semantic bindings.
+  - Promoting protocols to first-class status without docs and tests.
+  - Treating `INGRESS_ROUTE` and `INGRESS_DISPATCH` as interchangeable routing labels.

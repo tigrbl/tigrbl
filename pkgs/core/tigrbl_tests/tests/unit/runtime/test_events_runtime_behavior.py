@@ -16,7 +16,7 @@ def test_prune_events_for_persist_keeps_non_persist_tied_only() -> None:
     ]
 
 
-def test_phases_follow_expected_kernel_execution_order() -> None:
+def test_stages_follow_expected_kernel_execution_order() -> None:
     assert _ev.PHASES == (
         "INGRESS_BEGIN",
         "INGRESS_PARSE",

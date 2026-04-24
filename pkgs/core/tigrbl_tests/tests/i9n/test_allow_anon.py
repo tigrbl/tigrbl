@@ -3,7 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from tigrbl import TigrblApp, TigrblRouter
 from tigrbl_core.config.constants import TIGRBL_AUTH_CONTEXT_ATTR
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl import Request
@@ -257,3 +257,4 @@ def test_allow_anon_list_and_read_attr():
         assert client.post("/item", json=payload).status_code == 409
     finally:
         client.close()
+

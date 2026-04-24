@@ -1,0 +1,43 @@
+{
+  "$defs": {
+    "StorageTypeRefEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.datatypes:StorageTypeRef"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "StorageTypeRefEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "StorageTypeRef.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "engine_kind": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "physical_name": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "physical_name",
+    "engine_kind"
+  ],
+  "title": "StorageTypeRef",
+  "type": "object"
+}

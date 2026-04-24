@@ -79,7 +79,7 @@ class HTTPBearer(OpenAPISecurityDependency):
         header = request.headers.get("authorization")
         if not header:
             if self.auto_error:
-                self._unauthorized()
+                self._unauthorized(detail="Not authenticated")
             return None
 
         try:

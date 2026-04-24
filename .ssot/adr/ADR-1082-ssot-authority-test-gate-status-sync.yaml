@@ -1,0 +1,44 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1082"
+number: 1082
+slug: "ssot-authority-test-gate-status-sync"
+title: "SSOT authority, test alignment, and gate status synchronization"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Make SSOT the authority for governance state and define tests, evidence, claims, and gates as separate synchronized entities."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted as part of SSOT authority, test alignment, and gate model migration."
+    at: "2026-04-22T00:00:00Z"
+references: []
+body: |-
+  ## Context
+  
+  Repository governance currently depends on several visible surfaces: SSOT registry data, ADR/SPEC documents, human docs, CI scripts, workflows, gate validators, evidence bundles, and pytest coverage. Treating those surfaces as equivalent creates drift because docs and CI can preserve stale policy after SSOT changes.
+  
+  ## Decision
+  
+  1. `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs/` are the authoritative governance source for features, claims, tests, evidence, boundaries, releases, and gate decisions.
+  2. `docs/` files are projection surfaces. They explain SSOT-backed state, record evidence bundles, or present operator guidance, but they do not define independent policy.
+  3. `tools/ci/` files are executable projection surfaces. They validate, select, ingest, evaluate, or report SSOT-backed state, but they do not define independent authority.
+  4. Gates are release-decision aggregators over SSOT claims and evidence. They are not tests and they are not feature implementations.
+  5. Tests produce result artifacts. Evidence records proof from those artifacts. Claims assert what the evidence proves. Gates aggregate the required claim and evidence state for a boundary or release decision.
+  6. Boundary-scoped test selection and status synchronization must be deterministic, auditable, and derived from SSOT links.
+  
+  ## Consequences
+  
+  - Every in-scope feature must link to executable verification or to an SSOT governance validator that records why runtime testing is not the authority mechanism for that feature.
+  - Gate validators must check SSOT-backed claims and evidence rather than hard-code a parallel policy model.
+  - CI may fail closed on drift, but registry mutation must be deliberate and auditable.
+  
+  ## Rejected alternatives
+  
+  - Treating docs as the canonical feature, test, claim, or gate registry.
+  - Treating CI scripts as normative definitions of release policy.
+  - Adding ad hoc first-class gate or lane schema before the existing SSOT schema requires it.

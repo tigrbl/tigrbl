@@ -1,0 +1,33 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2043"
+number: 2043
+slug: "schema-migration-runtime-surface"
+title: "Schema migration runtime surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed runtime boundary for schema migration as distinct from bootstrap-only DDL helpers."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed runtime boundary for schema migration as distinct from bootstrap-only DDL helpers.
+  
+  ## Invariants
+  
+  - Schema migration is a distinct runtime surface from bootstrap-only DDL helpers such as `initialize()`, `ensure_schemas()`, `bootstrap_dbschema()`, and `register_sqlite_attach()`.
+  - Migration ownership includes versioned changesets, planning, upgrade/downgrade execution, and compatibility boundaries across engines.
+  - The active line may track the migration surface as absent or backlog work without treating that absence as an inventory gap.
+  - Future migration work must not overload bootstrap helpers with version-history semantics.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1055`
+  - Related features: `feat:schema-migration-runtime-surface-001`
+spec_kind: "local-policy"
+adr_ids: []

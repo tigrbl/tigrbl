@@ -1,0 +1,29 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1026"
+number: 1026
+slug: "certification-truth-model"
+title: "ADR-0001 Certification Truth Model"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The repository adopts `.ssot/registry.json` as the authoritative machine-readable truth model for planning, features, claims, tests, evidence, boundaries, releases, ADRs, and specs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  The repository adopts `.ssot/registry.json` as the authoritative machine-readable truth model for planning, features, claims, tests, evidence, boundaries, releases, ADRs, and specs.
+  
+  The authored policy documents that govern that registry live under `.ssot/adr/` and `.ssot/specs/`.
+  
+  The `certification/` tree is a derived certification projection and historical bundle layer. Files such as `certification/claims/target.yaml` and `certification/targets/next_target.yaml` are deprecated projection artifacts and must not receive new source edits.
+  
+  Narrative certification prose under `docs/` is subordinate to the SSOT and must agree with SSOT-backed projections.
+  
+  ## Rationale
+  
+  The existing registry and conformance documents provide strong traceability, but the authoritative mutation surface now lives in the SSOT so planning, boundary changes, and target setting happen in one normalized graph.

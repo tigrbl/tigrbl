@@ -6,10 +6,10 @@ from tigrbl.types import Integer, Mapped, String
 from tigrbl import TigrblApp, TigrblRouter
 import tigrbl_ops_oltp as _oltp_pkg
 from tigrbl.core import crud
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.tables import TableBase as Base3
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 
 
 @pytest_asyncio.fixture()
@@ -78,3 +78,4 @@ async def test_rest_read_and_list_with_row_results(client_and_model, monkeypatch
     assert resp_list.status_code == 200
     data = resp_list.json()
     assert data is not None
+

@@ -1,7 +1,7 @@
 from types import SimpleNamespace
 
-from tigrbl.shortcuts.engine import pga, pgs, prov, sqlitef
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import pga, pgs, prov, sqlitef
+from tigrbl.factories.engine import mem
 from tigrbl import resolver
 
 
@@ -12,7 +12,7 @@ def test_precedence_op_over_model_over_router_over_app(tmp_path):
     _model_prov = prov(mem(async_=False))
     _op_prov = prov(pga(host="db", name="op_db"))
 
-    # Fake “router” and “model” identities
+    # Fake â€œrouterâ€ and â€œmodelâ€ identities
     router = SimpleNamespace()
 
     class Model:
@@ -48,3 +48,4 @@ def test_precedence_op_over_model_over_router_over_app(tmp_path):
         assert db is not None
     finally:
         release()
+

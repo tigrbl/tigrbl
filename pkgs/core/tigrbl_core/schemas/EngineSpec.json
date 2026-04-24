@@ -1,0 +1,154 @@
+{
+  "$defs": {
+    "EngineSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.engine_spec:EngineSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "EngineSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "EngineSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "async_": {
+      "type": "boolean"
+    },
+    "dsn": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "host": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "kind": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "mapping": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeObject"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "max": {
+      "type": "integer"
+    },
+    "memory": {
+      "type": "boolean"
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pool": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pool_size": {
+      "type": "integer"
+    },
+    "port": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pwd": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "user": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "kind",
+    "async_",
+    "dsn",
+    "mapping",
+    "path",
+    "memory",
+    "pool",
+    "user",
+    "pwd",
+    "host",
+    "port",
+    "name",
+    "pool_size",
+    "max"
+  ],
+  "title": "EngineSpec",
+  "type": "object"
+}

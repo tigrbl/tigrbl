@@ -9,6 +9,7 @@ _MODULES = (
     "hook",
     "op",
     "responses",
+    "rest",
     "router",
     "schema",
     "table",

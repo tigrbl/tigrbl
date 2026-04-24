@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from tigrbl.shortcuts.app import deriveApp
-from tigrbl.shortcuts.router import deriveRouter
-from tigrbl.shortcuts.table import defineTableSpec
+from tigrbl.factories.app import deriveApp
+from tigrbl.factories.router import deriveRouter
+from tigrbl.factories.table import defineTableSpec
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from sqlalchemy import Column, String
@@ -34,3 +34,4 @@ def test_table_houses_schemas():
         name = Column(String)
 
     assert ExSchema in Model.SCHEMAS
+

@@ -1,0 +1,32 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2010"
+number: 2010
+slug: "documentation-support"
+title: "Documentation Support and Metadata Ownership"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "SPEC-2010 is the umbrella documentation contract and index."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  SPEC-2010 is the umbrella documentation contract and index.
+  
+  1. Route support requirements are delegated to SPEC-2077.
+  2. Payload projection requirements are delegated to SPEC-2078.
+  3. UI support requirements are delegated to SPEC-2079.
+  4. Runtime/docs parity requirements are delegated to SPEC-2080.
+  
+  ## Normative Statement
+  
+  Implementations claiming documentation support MUST satisfy all applicable delegated docs contracts.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1080"
+  - "adr:1030"

@@ -15,7 +15,7 @@ The current target defines what the repository is attempting to close for the pr
 
 ## Gate B status
 
-- Gate B status: passed in the Phase 10 checkpoint
+- Gate B status: passed in the Gate B surface-closure checkpoint
 - Gate B validator: `tools/ci/validate_gate_b_surface_closure.py`
 - Gate B workflow: `.github/workflows/gate-b-surface-closure.yml`
 
@@ -74,7 +74,7 @@ Tigrbl currently targets framework ownership over:
 - RFC 7617 — HTTP Basic parsing and challenge behavior
 - RFC 6750 — HTTP Bearer token parsing and challenge behavior
 
-### Operator surfaces closed in Phase 7 and proved in Gate B
+### Operator surfaces closed by operator-surface checkpoint and proved in Gate B
 
 - static files
 - cookies
@@ -86,7 +86,7 @@ Tigrbl currently targets framework ownership over:
 - bounded built-in middleware catalog
 - generic auth surface explicitly kept dependency/hook-based only
 
-### CLI surface closed in Phase 8 and proved in Gate B
+### CLI surface closed by CLI checkpoint and proved in Gate B
 
 - `tigrbl run`
 - `tigrbl serve`
@@ -109,9 +109,9 @@ Tigrbl currently targets framework ownership over:
 - `--openrpc-path`
 - `--lens-path`
 
-## Certification infrastructure established in Phase 9
+## Certification infrastructure established by evidence-model checkpoint
 
-Phase 9 did not change the already-closed current-target surface. It added the durable evidence model required to certify that surface later.
+The evidence-model checkpoint did not change the already-closed current-target surface. It added the durable evidence model required to certify that surface later.
 
 Established now:
 
@@ -132,7 +132,7 @@ Established now:
 
 ## Current-target rows explicitly de-scoped before Gate C
 
-### Exact RFC rows de-scoped in Phase 6
+### Exact RFC rows de-scoped by RFC/security boundary review
 
 - OIDC Core 1.0 exact closure
 - RFC 6749 exact OAuth 2.0 closure
@@ -143,7 +143,7 @@ Established now:
 - RFC 9110 exact framework-owned semantics row
 - RFC 9449 exact DPoP closure
 
-### Docs/UI rows de-scoped in Phase 7
+### Docs/UI rows de-scoped by docs/operator closure
 
 - AsyncAPI UI (spec emission kept)
 - JSON Schema UI (spec emission kept)

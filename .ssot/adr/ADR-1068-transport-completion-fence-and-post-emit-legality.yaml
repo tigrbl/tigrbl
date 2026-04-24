@@ -1,0 +1,45 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1068"
+number: 1068
+slug: "transport-completion-fence-and-post-emit-legality"
+title: "Transport completion fence and POST_EMIT legality"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Govern `POST_EMIT` as a runtime-owned transport completion fence without widening the public hook phase set."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1009, ADR-1010, ADR-1024, ADR-1025, ADR-1041, ADR-1067
+
+  1. `POST_EMIT` is a governed runtime completion fence for transports whose emission completes after response assembly.
+  2. `POST_EMIT` is runtime-owned and diagnostics-visible on the active line, but it is not a public hook phase in this checkpoint.
+  3. `POST_RESPONSE` remains the last public hook phase and operates after canonical routing through `INGRESS_ROUTE` and before final transport completion.
+  4. `EGRESS_SHAPE` and `EGRESS_FINALIZE` remain runtime-owned egress phases.
+  5. Stream, socket, and session transports may project `POST_EMIT`; plain request-response HTTP may elide it when completion is synchronous or implicit.
+  6. Any future public post-send hook phase requires a separate ADR.
+
+  ## Context
+
+  The active line already uses `POST_EMIT` as a real completion fence, but the public hook phase vocabulary stops at `POST_RESPONSE`.
+  That creates ambiguity unless the runtime-owned completion boundary is governed directly.
+
+  ## Consequences
+
+  - Runtime and diagnostics layers can surface `POST_EMIT` without implying that users may attach hooks there.
+  - Public hook legality remains stable while stream and socket transports keep an explicit completion boundary.
+  - Future post-send hook work has a clear architectural escalation path instead of silently widening hook legality.
+
+  ## Rejected Alternatives
+
+  - Exposing `POST_EMIT` immediately as a public hook phase.
+  - Keeping post-send completion as undocumented adapter state.
+  - Folding completion into `POST_RESPONSE` and losing the emission boundary.

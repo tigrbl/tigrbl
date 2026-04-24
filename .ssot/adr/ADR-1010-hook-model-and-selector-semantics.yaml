@@ -1,0 +1,60 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1010"
+number: 1010
+slug: "hook-model-and-selector-semantics"
+title: "ADR-0010 â€” Hook Model and Selector Semantics"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Hooks are part of the framework contract, not a best-effort extension point. They need deterministic attachment, ordering, and scope rules."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated from example, performance, and options test inventory to include hook lifecycle diagnostics and hookz traceability."
+    at: "2026-04-21T08:06:01Z"
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-14
+  - **Related ADRs:** ADR-0004, ADR-0008, ADR-0009, ADR-0011, ADR-0012, ADR-0017, ADR-0018, ADR-0023, ADR-0024, ADR-1050
+  
+  1. Hooks attach only to declared legal phases.
+  2. Hook selection is deterministic and phase-bound.
+  3. The required selector surface for the foundation layer is:
+     - operation identity or operation class;
+     - phase;
+     - binding where relevant.
+  4. The hook system reserves extension points for later execution classifiers without reopening the basic hook model.
+  5. Hook execution ordering is stable and explicit:
+     - by precedence class;
+     - then by declaration order within class.
+  6. Hooks may observe and transform only the state legal for their phase.
+  7. Hooks may not bypass guards, dependency ordering, or transaction ownership.
+  8. Hook lifecycle diagnostics are part of the governed hook model when they expose phase legality, selector matching, attachment order, or operation-level hook placement.
+  9. `hookz`-style diagnostics must project from materialized hook state and may not infer hook ordering from transport routes or decorator syntax alone.
+  
+  ## Context
+  
+  Hooks are part of the framework contract, not a best-effort extension point. They need deterministic attachment, ordering, and scope rules.
+  The current architecture requires phase-bound hookability and leaves room for later classifier extensions.
+  
+  The example and performance tests exercise hook context binding, hook ordering, hook scopes, hook/post-response behavior, custom-op hooks, hook diagnostics, and hook performance. Those tests reflect the same architectural decision: hooks are governed semantic execution participants, and diagnostics that expose them must preserve the canonical lifecycle and ordering model.
+  
+  ## Traceability
+  
+  - Companion specs: `spc:2028`, `spc:2057`, proposed `spc:2048`
+  - Candidate features: `feat:hook-extension-surface-001`, `feat:hook-surface-phase-selector-001`, `feat:hook-surface-attachment-ordering-001`, `feat:hook-surface-public-projection-001`, `feat:build-hooks-helper-surface-001`, `feat:hookz-payload-surface-001`
+  - Concern groups: Hooks and Lifecycle Diagnostics, System/Docs/Health Endpoints, Performance and Benchmarking
+  
+  ## Rejected Alternatives
+  
+  - Free-form middleware-style hooks with no phase constraints.
+  - Transport-specific hook systems.
+  - Implicit ordering driven by import order or container iteration order.
+  - Diagnostics that reconstruct hook behavior independently of the materialized hook lifecycle.

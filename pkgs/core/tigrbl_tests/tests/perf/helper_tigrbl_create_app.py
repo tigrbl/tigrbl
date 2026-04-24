@@ -3,9 +3,10 @@ from __future__ import annotations
 import inspect
 import sqlite3
 from pathlib import Path
+from typing import Any
 
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import sqlitef
+from tigrbl.factories.engine import sqlitef
 from tigrbl.types import Column, Integer, String
 
 
@@ -34,6 +35,18 @@ async def initialize_tigrbl_app(app: TigrblApp) -> None:
         await init_result
 
 
+async def dispose_tigrbl_app(app: TigrblApp) -> None:
+    engine = getattr(app, "engine", None)
+    provider = getattr(engine, "provider", None)
+    raw_engine = getattr(provider, "_engine", None)
+    dispose = getattr(raw_engine, "dispose", None)
+    if not callable(dispose):
+        return
+    result: Any = dispose()
+    if inspect.isawaitable(result):
+        await result
+
+
 def fetch_tigrbl_names(db_path: Path) -> list[str]:
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute(
@@ -44,3 +57,4 @@ def fetch_tigrbl_names(db_path: Path) -> list[str]:
 
 def tigrbl_create_path() -> str:
     return "/tigrblbenchmarkitem"
+

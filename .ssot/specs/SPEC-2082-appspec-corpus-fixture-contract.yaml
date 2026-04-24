@@ -1,0 +1,38 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2082"
+number: 2082
+slug: "appspec-corpus-fixture-contract"
+title: "AppSpec corpus fixture contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The release chain for this corpus target binds feature, claim, test, and evidence rows and is frozen through a dedicated boundary snapshot."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Contract
+  
+  - Canonical corpus file: `pkgs/core/tigrbl_tests/tests/fixtures/appspec_corpus.canonical.json`
+  - Negative corpus file: `pkgs/core/tigrbl_tests/tests/fixtures/appspec_corpus.negative.json`
+  - Loader/validator contract: corpus docs MUST provide `schema_version`, `kind`, `lane`, and case objects with stable IDs.
+  - Case IDs MUST match normalized stable format: lowercase hyphenated tokens with `-NNN` suffix.
+  - Positive lanes MUST prove AppSpec materialization and REST/JSON-RPC runtime parity behavior.
+  - Negative lanes MUST prove fail-closed runtime behavior.
+  - Certification projection report for this lane: `reports/certification_state/2026-04-21-appspec-corpus-fixture.md`.
+  
+  ## Execution Lanes
+  
+  1. Harness lane validates fixture schema and mount-level contracts.
+  2. E2E lane validates uvicorn-backed REST/JSON-RPC positive behavior.
+  3. E2E negative lane validates unknown RPC dispatch failure contract.
+  
+  ## Evidence Binding
+  
+  The release chain for this corpus target binds feature, claim, test, and evidence rows and is frozen through a dedicated boundary snapshot.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1081"

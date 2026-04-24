@@ -1,0 +1,48 @@
+{
+  "$defs": {
+    "HttpJsonRpcBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:HttpJsonRpcBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HttpJsonRpcBindingSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "HttpJsonRpcBindingSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "exchange": {
+      "type": "string"
+    },
+    "framing": {
+      "type": "string"
+    },
+    "proto": {
+      "enum": [
+        "http.jsonrpc",
+        "https.jsonrpc"
+      ],
+      "type": "string"
+    },
+    "rpc_method": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "proto",
+    "rpc_method",
+    "exchange",
+    "framing"
+  ],
+  "title": "HttpJsonRpcBindingSpec",
+  "type": "object"
+}

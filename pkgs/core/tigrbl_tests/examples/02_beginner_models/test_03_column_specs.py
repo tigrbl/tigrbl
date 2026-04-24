@@ -1,7 +1,7 @@
 from tigrbl import TableBase
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import String
 
 
@@ -57,3 +57,4 @@ def test_column_specs_preserve_storage_metadata():
     # Assertion: storage rules are respected in the column configuration.
     assert display_column.nullable is False
     assert isinstance(display_column.type, String)
+

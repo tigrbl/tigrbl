@@ -1,25 +1,37 @@
 # Gate Model
 
+This document is a non-authoritative projection of SSOT-backed governance state. `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs/` remain authoritative for gate features, claims, tests, evidence, boundaries, and releases.
+
+## Tool, test, evidence, claim, and gate separation
+
+- Tools run checks, generate projections, select boundary-scoped tests, ingest result artifacts, evaluate gate state, or report drift.
+- Tests verify behavior or governance invariants and produce result artifacts.
+- Evidence records proof from test/tool outputs and links that proof to claims.
+- Claims state what the linked evidence proves for a feature, boundary, or release.
+- Gates aggregate required SSOT claims and evidence into release decisions.
+
+ADR/SPEC conformance test passing is evidence for a claim; it is not itself a feature. A feature is complete only when implementation status, linked tests, linked claims, and linked evidence agree under SSOT validation.
+
 ## Current position
 
 Gate A remains passed for the current cycle.
 
-Checkpoints 5 through 13 establish the closed current-target release bundle, and Phase 14 establishes the post-promotion handoff.
+The closed current-target release bundle is established by named gate, surface, evidence, and promotion checkpoints; post-promotion handoff establishes the release-history split.
 
 What is now true:
 
 - the current-target cycle still has a machine-checked freeze marker and manifest
 - path-length governance is enforced alongside layout/pointer/root-clutter/claim-language checks
-- the retained RFC/security rows are narrower and more explicit than they were before Phase 6
+- the retained RFC/security rows are narrower and more explicit than they were before the RFC/security boundary review
 - the docs/operator surface boundary is explicit and closed for this cycle
 - the CLI boundary is explicit and closed for this cycle
 - Gate B is passed at checkpoint quality and machine-checked in CI
 - Gate C is passed at checkpoint quality and machine-checked in CI
 - Gate D is passed at checkpoint quality and machine-checked in CI
-- Gate E is passed in the Phase 13 promotion checkpoint and machine-checked in CI
+- Gate E is passed in the Gate E promotion checkpoint and machine-checked in CI
 - the certification program has explicit lane classes, a machine-readable evidence registry, governed dev/release bundle roots, explicit gate result artifacts, and a promoted stable release bundle
 - the package has Tier 3 current-boundary certification status for stable release `0.3.18`
-- Phase 14 freezes `0.3.18` as release history and opens governed next-target planning on `0.3.19.dev1`
+- Post-promotion handoff freezes `0.3.18` as release history and opens governed next-target planning on `0.3.19.dev1`
 
 What is not yet true:
 
@@ -35,7 +47,9 @@ What is not yet true:
 - Gate D — reproducibility and package assembly
 - Gate E — promotion and release
 
-## Phase 7 release-decision map
+Gates are sequential for release decisions because later gates depend on earlier gate state. The underlying tests and evidence lanes may run in parallel after the boundary is known.
+
+## Release-decision map
 
 For certification-bundle lifecycle and release-decision reporting, the repo also preserves the following explicit A-E interpretation:
 
@@ -45,6 +59,6 @@ For certification-bundle lifecycle and release-decision reporting, the repo also
 - Gate D: performance/operability
 - Gate E: security/abuse
 
-This mapping is preserved in the Phase 7 certification bundle so release decisions are machine-checkable without implying undeclared RFC or feature scope.
+This mapping is preserved in the certification bundle so release decisions are machine-checkable without implying undeclared RFC or feature scope.
 
-See `gates/` for the per-gate condition documents. Phase 14 is a post-promotion handoff checkpoint rather than a new certification gate.
+See `gates/` for the per-gate condition documents. Post-promotion handoff is a post-promotion handoff checkpoint rather than a new certification gate.

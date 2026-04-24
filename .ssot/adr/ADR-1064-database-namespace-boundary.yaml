@@ -1,0 +1,32 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1064"
+number: 1064
+slug: "database-namespace-boundary"
+title: "Database namespace boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl uses the word \"schema\" in multiple domains. Without a dedicated namespace-boundary ADR, helper and DDL docs drift into ambiguity between Pydantic/model schema materialization and database namespace preparation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Database namespace behavior is a governed architectural surface distinct from model/table/column/datatype schema definitions.
+  2. The namespace concept covered here is the PostgreSQL schema-like namespace and its cross-engine equivalents such as SQLite attachment maps.
+  3. Namespace ensuring, bootstrap orchestration, namespace parity, and migration are separate concerns and must not be collapsed into one undifferentiated "schema" surface.
+  4. Database namespace behavior is owned jointly by the DDL/bootstrap family and its companion namespace specs, not by transport or docs projections.
+  
+  ## Context
+  
+  Tigrbl uses the word "schema" in multiple domains. Without a dedicated namespace-boundary ADR, helper and DDL docs drift into ambiguity between Pydantic/model schema materialization and database namespace preparation.
+  
+  ## Consequences
+  
+  - `ensure_schemas()` and SQLite attachment behavior can be specified precisely without colliding with `_spec` and model-schema terminology.
+  - Migration stays distinct from namespace ensuring and bootstrap orchestration.
+  - Traceability around PostgreSQL namespaces and SQLite attachments becomes unambiguous.

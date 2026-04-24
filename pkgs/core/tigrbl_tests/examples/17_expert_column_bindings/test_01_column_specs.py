@@ -9,7 +9,7 @@ field rules in a single declarative object per attribute.
 from tigrbl import TableBase, bind
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import IO, ColumnSpec, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import String
 
 
@@ -50,3 +50,4 @@ def test_column_specs_expose_field_metadata():
 
     field_spec = Widget.__tigrbl_cols__["name"].field
     assert field_spec.py_type is str
+

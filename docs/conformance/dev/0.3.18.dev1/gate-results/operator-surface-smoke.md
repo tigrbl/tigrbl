@@ -4,8 +4,8 @@ This lane covers the current operator-surface closure tests.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py`
 
 ## Source audit logs
 

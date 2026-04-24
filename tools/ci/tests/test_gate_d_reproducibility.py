@@ -47,6 +47,6 @@ def test_current_docs_record_gate_d_pass_and_clean_room_success() -> None:
     current_target = CURRENT_TARGET.read_text(encoding='utf-8')
     current_state = CURRENT_STATE.read_text(encoding='utf-8')
     gate_model = GATE_MODEL.read_text(encoding='utf-8')
-    assert '- Gate D status: passed in the Phase 12 checkpoint' in current_target
+    assert '- Gate D status: passed in the Gate D reproducibility checkpoint' in current_target
     assert 'clean-room evidence passes on the selected candidate build' in current_state
     assert 'Gate D is passed at checkpoint quality and machine-checked in CI' in gate_model

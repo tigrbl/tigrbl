@@ -1,0 +1,34 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2040"
+number: 2040
+slug: "static-files-surface"
+title: "Static files surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed static-files surface for concrete app and router mounts."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed static-files surface for concrete app and router mounts.
+  
+  ## Invariants
+  
+  - `mount_static()` records explicit static mount declarations.
+  - Static serving uses traversal-safe path resolution beneath the configured mount root.
+  - Only existing regular files are served.
+  - Static misses return normal not-found responses.
+  - Static serving is distinct from docs payload mounts and UIX rendering.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1057`
+  - Related features: `feat:static-files-surface-001`
+spec_kind: "local-policy"
+adr_ids: []

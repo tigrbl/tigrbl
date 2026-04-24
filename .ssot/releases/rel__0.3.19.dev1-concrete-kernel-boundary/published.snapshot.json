@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "kind": "published_snapshot",
+  "generated_at": "2026-04-21T21:40:33Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "494d9c6b5f3fe49806d1d299976676b5d44dad67dd1e561649a23a96d8f866c0",
+  "release": {
+    "id": "rel:0.3.19.dev1-concrete-kernel-boundary",
+    "version": "0.3.19.dev1-concrete-kernel-boundary",
+    "status": "published",
+    "boundary_id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+    "claim_ids": [
+      "clm:tigrbl-concrete-kernel-import-boundary-001"
+    ],
+    "evidence_ids": [
+      "evd:tigrbl-concrete-kernel-independence-pytest"
+    ]
+  },
+  "boundary": {
+    "id": "bnd:tigrbl-concrete-kernel-import-boundary-001",
+    "title": "tigrbl_concrete kernel import boundary closure",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:tigrbl-concrete-kernel-import-boundary-001"
+    ],
+    "profile_ids": []
+  },
+  "claims": [
+    {
+      "id": "clm:tigrbl-concrete-kernel-import-boundary-001",
+      "title": "tigrbl_concrete does not import tigrbl_kernel",
+      "status": "published",
+      "tier": "T2",
+      "kind": "architecture-boundary",
+      "description": "tigrbl_concrete does not statically or dynamically import tigrbl_kernel, does not declare tigrbl-kernel as a dependency, and package import does not load tigrbl_kernel; only tigrbl_runtime owns kernel integration.",
+      "feature_ids": [
+        "feat:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-concrete-tests-test-kernel-independence"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-concrete-kernel-independence-pytest"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd:tigrbl-concrete-kernel-independence-pytest",
+      "title": "tigrbl_concrete kernel independence pytest",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-kernel-independence-pytest.txt",
+      "claim_ids": [
+        "clm:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-concrete-tests-test-kernel-independence"
+      ]
+    }
+  ],
+  "summary": {
+    "release_id": "rel:0.3.19.dev1-concrete-kernel-boundary",
+    "version": "0.3.19.dev1-concrete-kernel-boundary",
+    "status": "published",
+    "claim_count": 1,
+    "evidence_count": 1
+  }
+}

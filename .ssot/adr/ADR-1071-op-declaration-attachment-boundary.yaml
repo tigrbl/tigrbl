@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1071"
+number: 1071
+slug: "op-declaration-attachment-boundary"
+title: "Op declaration attachment boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Op authoring helpers attach canonical operation declarations to owner-local spec carriers; they do not create separate runtime or transport semantics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. `op_ctx`, `op_alias`, `alias_ctx`, and equivalent authoring helpers attach canonical operation declarations to owner-local spec carriers.
+  2. Attachment may target model classes, app classes or instances, router classes, plain objects, and explicit `bind=` targets.
+  3. External binding to one or more targets is a declaration-placement behavior, not a distinct operation model.
+  4. Dynamic attachment and later owner discovery must expose the same canonical declarations as inline decorator attachment.
+  5. Attachment helpers may normalize public authoring inputs, but they may not create hidden runtime behavior outside the canonical spec layer.
+  
+  ## Context
+  
+  operation contract tests exercise operation declarations attached through internal decorators, external binding, app and router owners, plain objects, multiple table targets, and dynamic attachment after owner construction. Existing ADRs already say decorators are declarative sugar and that specs are authoritative, but they do not explicitly freeze the placement boundary for operation declarations.
+  
+  ## Consequences
+  
+  - Tests can assert one attachment contract across internal and external authoring forms.
+  - Feature and spec linkage can distinguish declaration placement from operation semantics.
+  - Implementations must keep owner-local spec carriers inspectable regardless of how the declaration was attached.
+  
+  ## Rejected Alternatives
+  
+  - Treating each attachment target as a separate operation subsystem.
+  - Letting app, router, or plain-object binding introduce semantics unavailable through model-local declarations.
+  - Making dynamic attach behavior an untracked compatibility path.

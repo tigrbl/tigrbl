@@ -51,7 +51,7 @@ The same Rust pipeline is used, but Python callbacks are allowed at explicit fen
 - `pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_curl.py`
 - `crates/tigrbl_rs_runtime/tests/runtime_contract.rs`
 
-## Added in Phase 4 parity closure
+## Added in Rust parity closure
 
 - differential snapshots between Python and Rust kernel plans via the shared
   parity-contract layer

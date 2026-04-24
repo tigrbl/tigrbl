@@ -15,6 +15,7 @@ import pytest
 from tests.i9n.uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
 from tests.perf.helper_tigrbl_create_app import (
     create_tigrbl_app,
+    dispose_tigrbl_app,
     fetch_tigrbl_names,
     initialize_tigrbl_app,
     tigrbl_create_path,
@@ -83,7 +84,7 @@ def _build_call_edges(stats: pstats.Stats, *, limit: int) -> list[dict[str, Any]
 
 
 async def _profile_create_call_graph(*, results_path: Path) -> dict[str, Any]:
-    with TemporaryDirectory() as tmp_dir:
+    with TemporaryDirectory(ignore_cleanup_errors=True) as tmp_dir:
         base_dir = Path(tmp_dir)
         db_path = base_dir / "tigrbl-create-call-graph.sqlite3"
 
@@ -112,6 +113,7 @@ async def _profile_create_call_graph(*, results_path: Path) -> dict[str, Any]:
                 profiler.disable()
         finally:
             await stop_uvicorn_server(server, task)
+            await dispose_tigrbl_app(app)
 
         persisted_names = fetch_tigrbl_names(db_path)
         assert persisted_names == expected_names

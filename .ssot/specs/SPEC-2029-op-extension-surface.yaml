@@ -1,0 +1,55 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2029"
+number: 2029
+slug: "op-extension-surface"
+title: "Op Extension Surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the governed op extension surface for Tigrbl."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the governed op extension surface for Tigrbl.
+  
+  ## Canonical Surface
+  
+  - The op extension surface includes `OpSpec`, `TargetOp`, `Arity`, `PersistPolicy`, and `TxScope`.
+  - The frozen default canonical OLTP family, the separately governed non-OLTP families, and the explicit `custom` target all belong to the op extension surface.
+  - Op-owned bindings, hooks, dependency attachments, and engine overrides remain part of the op extension surface because they extend or specialize operation behavior without creating a second semantic model.
+  - Custom ops remain a governed extension point, but they do not redefine the meaning of canonical verbs.
+  
+  ## Public and Authoring Projection
+  
+  - Public projection may appear through `tigrbl` exports and declarative surfaces such as `op_ctx`.
+  - Private authoring projection may appear through helpers such as `build_handlers()` and `build_rest()`.
+  - Public projection does not create a second op model, and authoring helpers do not become public operator surfaces merely because they are importable.
+  
+  ## Feature Granularity
+  
+  - One parent feature may track the op extension surface as a whole.
+  - Separate child features may track:
+    - the default canonical OLTP family;
+    - the custom-op extension contract;
+    - public projection of op-facing contracts;
+    - private authoring projection of op-facing materialization helpers.
+  
+  ## Classification Rules
+  
+  - canonical-family feature: governed canonical verb sets and their obligations
+  - custom-op feature: governed explicit extension point for non-canonical operations
+  - projection feature: public export and declarative surfaces that project op contracts
+  - authoring-helper feature: private authoring helpers that materialize op-facing behavior
+  
+  ## Traceability
+  
+  - ADRs: `adr:1001`, `adr:1013`, `adr:1015`, `adr:1049`, `adr:1052`, `adr:1070`, `adr:1062`, `adr:1063`
+  - Related specs: `spc:2022`, `spc:2023`, `spc:2025`, `spc:2060`
+spec_kind: "local-policy"
+adr_ids: []

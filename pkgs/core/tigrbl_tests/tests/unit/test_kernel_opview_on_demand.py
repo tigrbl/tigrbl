@@ -2,7 +2,7 @@ from tigrbl import TigrblApp
 from tigrbl_concrete._mapping.model import bind
 from tigrbl_kernel import _default_kernel as K
 from tigrbl._spec import S, IO
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import Integer as IntType
 
@@ -41,3 +41,4 @@ def test_compiles_opview_for_new_model_after_prime():
     K._opviews.pop(app, None)
     K._kernelz_payload.pop(app, None)
     K._primed.pop(app, None)
+

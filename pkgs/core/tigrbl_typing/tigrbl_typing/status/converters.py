@@ -134,7 +134,16 @@ def _classify_exception(
         msg = _stringify_exc(exc)
         lower_msg = msg.lower()
         if "not null constraint" in lower_msg or "check constraint" in lower_msg:
-            return status.HTTP_422_UNPROCESSABLE_ENTITY, msg, None
+            data: dict[str, Any] = {"detail": msg}
+            marker = "not null constraint failed:"
+            if marker in lower_msg:
+                raw_field = msg[lower_msg.index(marker) + len(marker):].strip()
+                field = raw_field.splitlines()[0].split(".")[-1].strip()
+                if field:
+                    data["loc"] = ["body", field]
+                    data["msg"] = "Field required"
+                    data["type"] = "missing"
+            return status.HTTP_422_UNPROCESSABLE_ENTITY, msg, data
         return status.HTTP_409_CONFLICT, msg, None
 
     if (OperationalError is not None) and isinstance(exc, OperationalError):

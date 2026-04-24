@@ -2,11 +2,11 @@ from __future__ import annotations
 import pytest
 from tigrbl import alias_ctx
 from tigrbl import response_ctx
-from tigrbl.shortcuts.engine import engine, mem
+from tigrbl.factories.engine import engine, mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl._spec import IO, S, F
-from tigrbl.shortcuts.column import acol as spec_acol
+from tigrbl.factories.column import acol as spec_acol
 from tigrbl.types import String
 from tigrbl import TigrblRouter
 
@@ -39,3 +39,4 @@ async def test_response_ctx_alias_table_rpc():
             assert fetched["id"] == created["id"]
     finally:
         raw_eng.dispose()
+

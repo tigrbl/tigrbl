@@ -1,0 +1,33 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2035"
+number: 2035
+slug: "engine-session-pairing"
+title: "Engine-session pairing"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed pairing between engine providers and session acquisition surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed pairing between engine providers and session acquisition surfaces.
+  
+  ## Invariants
+  
+  - Engine providers own how sessions are acquired for runtime and DDL work.
+  - Session pairing may be expressed through provider `get_db()`, `sessionmaker`, `async_sessionmaker`, or wrapped factory behavior.
+  - `wrap_sessionmaker()` is the canonical concrete helper for applying `SessionSpec` to provider factories.
+  - Concrete runtime surfaces may depend on the pairing, but they do not redefine it.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1015`, `adr:1055`
+  - Related features: `feat:engine-session-runtime-surface-001`, `feat:defaultsession-concrete-session-class-001`
+spec_kind: "local-policy"
+adr_ids: []

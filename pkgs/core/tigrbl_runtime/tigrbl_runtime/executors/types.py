@@ -126,6 +126,22 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         "plan",
     }
 
+    @staticmethod
+    def _field_exists(name: str) -> bool:
+        return any(field.name == name for field in fields(BaseCtx))
+
+    def _get_field_value(self, name: str) -> Any:
+        try:
+            return object.__getattribute__(self, name)
+        except AttributeError:
+            return object.__getattribute__(self, "bag").get(name)
+
+    def _set_field_value(self, name: str, value: Any) -> None:
+        if self._field_exists(name):
+            object.__setattr__(self, name, value)
+            return
+        object.__getattribute__(self, "bag")[name] = value
+
     def __getattribute__(self, name: str) -> Any:
         # Keep core context methods callable even when runtime data shadows
         # method names (for example: ctx["promote"] = None).
@@ -144,7 +160,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
 
     def __getitem__(self, key: str) -> Any:
         if key in self._FIELD_NAMES:
-            return object.__getattribute__(self, key)
+            return self._get_field_value(key)
         bag = object.__getattribute__(self, "bag")
         if key == "response" and key not in bag:
             bag[key] = _ResponseState(self)
@@ -152,16 +168,15 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
 
     def get(self, key: str, default: Any = None) -> Any:
         if key in self._FIELD_NAMES:
-            return object.__getattribute__(self, key)
+            value = self._get_field_value(key)
+            return default if value is None else value
         bag = object.__getattribute__(self, "bag")
         if key == "response" and key not in bag:
             bag[key] = _ResponseState(self)
         return bag.get(key, default)
 
     def items(self):
-        merged = {
-            name: object.__getattribute__(self, name) for name in self._FIELD_NAMES
-        }
+        merged = {name: self._get_field_value(name) for name in self._FIELD_NAMES}
         merged.update(object.__getattribute__(self, "bag"))
         return merged.items()
 
@@ -191,7 +206,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
 
     def __setitem__(self, key: str, value: Any) -> None:
         if key in self._FIELD_NAMES:
-            object.__setattr__(self, key, value)
+            self._set_field_value(key, value)
             return
 
         bag = object.__getattribute__(self, "bag")
@@ -219,7 +234,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
 
     def __setattr__(self, name: str, value: Any) -> None:
         if name in self._FIELD_NAMES:
-            object.__setattr__(self, name, value)
+            self._set_field_value(name, value)
             return
         self.__setitem__(name, value)
 
@@ -237,7 +252,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
             if name in updates:
                 continue
             if name in self._FIELD_NAMES:
-                data[name] = object.__getattribute__(self, name)
+                data[name] = self._get_field_value(name)
                 continue
             if name in bag:
                 data[name] = bag[name]
@@ -308,7 +323,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         if db is not None:
             ctx._raw_db = db
             if "db" not in ctx:
-                ctx.db = None
+                ctx.db = db
         if not isinstance(getattr(ctx, "temp", None), dict):
             ctx.temp = {}
         return ctx

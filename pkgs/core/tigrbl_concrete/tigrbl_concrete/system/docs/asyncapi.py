@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import Any
 
 from tigrbl_concrete._concrete._response import Response
-from tigrbl_concrete.system.docs.runtime_ops import register_runtime_get_route
 from tigrbl_core._spec.binding_spec import (
     SseBindingSpec,
     WebTransportBindingSpec,
@@ -73,15 +72,13 @@ def _mount_asyncapi(
     def _asyncapi_handler(_request: Any) -> Response:
         return Response.json(_build_asyncapi_spec(router))
 
-    register_runtime_get_route(
-        router, path=normalized_path, alias=name, endpoint=_asyncapi_handler
-    )
     router.add_route(
         normalized_path,
         _asyncapi_handler,
         methods=["GET"],
         name=name,
         include_in_schema=False,
+        inherit_owner_dependencies=False,
     )
     return router
 

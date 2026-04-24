@@ -1,0 +1,43 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1000"
+number: 1000
+slug: "concrete-runtime-kernel-import-boundary"
+title: "Concrete runtime-kernel import boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`tigrbl_concrete` provides concrete authoring, route, docs, dependency, and response surfaces. The kernel is a lower execution authority and must remain behind `tigrbl_runtime` so concrete surfaces cannot bypass runtime compilation or own kernel lifecycle details."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to enforce that only tigrbl_runtime imports tigrbl_kernel."
+    at: "2026-04-21T12:43:31Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. `tigrbl_concrete` must not import `tigrbl_kernel` directly or indirectly through literal dynamic import calls.
+  2. `tigrbl_runtime` is the only package allowed to import and own `tigrbl_kernel` integration.
+  3. Concrete App and Router objects may notify an already-attached runtime instance that its compiled plan changed, but they must not reach into the default kernel singleton.
+  4. Runtime-owned kernel invalidation remains valid only through runtime-owned objects and APIs.
+  5. Package metadata for `tigrbl_concrete` must not declare a direct dependency on `tigrbl-kernel`.
+  
+  ## Context
+  
+  `tigrbl_concrete` provides concrete authoring, route, docs, dependency, and response surfaces. The kernel is a lower execution authority and must remain behind `tigrbl_runtime` so concrete surfaces cannot bypass runtime compilation or own kernel lifecycle details.
+  
+  ## Consequences
+  
+  - Concrete package code remains an authoring/projection layer, not a kernel integration layer.
+  - Kernel cache and plan invalidation are runtime responsibilities.
+  - Any future concrete-to-kernel import is a governed architecture violation.
+  
+  ## Rejected Alternatives
+  
+  - Allowing concrete App or Router objects to import `_default_kernel` for convenience.
+  - Treating default-kernel invalidation as a concrete package responsibility.
+  - Relying only on dependency metadata without static source guards.

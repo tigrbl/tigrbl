@@ -1,7 +1,7 @@
 """Lesson 06.3: Verifying payload handlers for custom operations."""
 
 from tigrbl import TableBase, TigrblApp, op_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -74,3 +74,4 @@ def test_custom_op_exposes_target_and_handler():
     # Assertion: the spec advertises the custom target and a handler.
     assert spec.target == "custom"
     assert spec.handler is not None
+

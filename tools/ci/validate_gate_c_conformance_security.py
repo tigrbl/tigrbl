@@ -89,15 +89,15 @@ def main() -> None:
     dev_index_text = DEV_INDEX.read_text(encoding='utf-8')
     rel_index_text = REL_INDEX.read_text(encoding='utf-8')
 
-    if '- Gate C status: passed in the Phase 11 checkpoint' not in current_target_text:
-        errors.append('docs/conformance/CURRENT_TARGET.md must record Gate C as passed in Phase 11')
+    if '- Gate C status: passed in the Gate C conformance/security checkpoint' not in current_target_text:
+        errors.append('docs/conformance/CURRENT_TARGET.md must record Gate C as passed in the Gate C conformance/security checkpoint')
     if 'no unresolved retained spec/security gaps remain' not in current_state_text:
         errors.append('docs/conformance/CURRENT_STATE.md must declare no unresolved retained spec/security gaps remain')
     if 'Gate C is passed at checkpoint quality and machine-checked in CI' not in gate_model_text:
         errors.append('docs/conformance/GATE_MODEL.md must record Gate C as passed at checkpoint quality')
-    if 'Passed in the Phase 11 checkpoint.' not in gate_c_text:
-        errors.append('docs/conformance/gates/GATE_C_CONFORMANCE_SECURITY.md must record Gate C as passed in Phase 11')
-    if '| Gate C | passed in Phase 11 checkpoint |' not in dev_index_text:
+    if 'Passed in the Gate C conformance/security checkpoint.' not in gate_c_text:
+        errors.append('docs/conformance/gates/GATE_C_CONFORMANCE_SECURITY.md must record Gate C as passed in the Gate C conformance/security checkpoint')
+    if '| Gate C | passed in Gate C conformance/security checkpoint |' not in dev_index_text:
         errors.append('dev evidence index must include the Gate C gate-result row')
     if 'gate-c-conformance-security.md' not in rel_index_text:
         errors.append('release evidence index must include the Gate C gate-result file')

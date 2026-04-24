@@ -1,0 +1,35 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1030"
+number: 1030
+slug: "documentation-support-uses-canonical-metadata-sources"
+title: "ADR-0029 - Documentation Support Uses Canonical Metadata Sources"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Documentation authority is partitioned by surface:"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  Documentation authority is partitioned by surface:
+  
+  1. Route authority is owned by routing/materialization contracts.
+  2. Payload authority is owned by canonical operation/spec projection contracts.
+  3. UI authority is owned by docs UI mount contracts.
+  4. Parity authority is owned by conformance contracts requiring runtime/docs equivalence.
+  
+  Any documentation projection that bypasses canonical payload generation is non-conforming.
+  
+  ## Context
+  
+  Documentation support currently spans multiple concerns and needs explicit authority boundaries so traceability remains deterministic.
+  
+  ## Consequences
+  
+  - Cross-surface ownership disputes are resolved by the owning surface contract.
+  - Docs generation remains canonical-source first.

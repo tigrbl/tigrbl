@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1059"
+number: 1059
+slug: "concrete-dependency-helper-surface-contract"
+title: "Concrete dependency helper surface contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl already exposes `Depends` as a concrete runtime helper and uses it across REST, JSON-RPC, and system-route builder normalization."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1011, ADR-1032, ADR-1054
+  
+  1. `Depends()` is a first-class governed concrete helper surface within the repo boundary.
+  2. The helper's job is bounded to carrying dependency metadata into transport and runtime binding; it does not become a general-purpose dependency-injection container.
+  3. Transport builders may accept plain callables or `Depends(...)` values, but normalization must preserve a single canonical dependency-helper contract.
+  4. The helper does not redefine auth ordering, failure semantics, or middleware ownership; those remain governed by the existing security, status, and middleware decisions.
+  5. Public projection through `tigrbl` and `tigrbl_concrete` does not widen the helper into an unbounded framework abstraction.
+  
+  ## Context
+  
+  Tigrbl already exposes `Depends` as a concrete runtime helper and uses it across REST, JSON-RPC, and system-route builder normalization.
+  Until now the SSOT set carried only feature/spec-level coverage for that helper and relied on adjacent ADRs for ordering and auth behavior, which left the helper itself without a dedicated architectural boundary.
+  
+  ## Consequences
+  
+  - `Depends` now has direct ADR coverage rather than only indirect adjacency to security and middleware decisions.
+  - Future companion helper work can either extend this boundary or split into additional ADRs if the helper family meaningfully widens.
+  
+  ## Rejected Alternatives
+  
+  - Treat `Depends` as incidental implementation glue with no dedicated architecture coverage.
+  - Let `Depends` evolve into a general-purpose DI container abstraction.
+  - Fold the helper entirely into middleware or auth policy decisions.

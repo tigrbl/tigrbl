@@ -1,5 +1,5 @@
 from tests.conftest import mro_collect_router_hooks
-from tigrbl.shortcuts.router import defineRouterSpec, deriveRouter
+from tigrbl.factories.router import defineRouterSpec, deriveRouter
 from tigrbl_core.config.constants import TIGRBL_ROUTER_HOOKS_ATTR
 
 
@@ -48,3 +48,4 @@ def test_router_hook_mro_collection():
     hooks = mro_collect_router_hooks(Child)
     assert hooks["read"]["pre"] == [_sample_hook, _override_hook]
     assert hooks["list"]["post"] == [_sample_hook]
+

@@ -46,7 +46,7 @@ Hybrid Python/Rust packages may additionally contain `src/` for the Rust extensi
 
 All authoritative repository documentation lives under `docs/`.
 
-Package-local `README.md` files are allowed only as package distribution entry points. They must point readers back to the authoritative docs tree. Long-form Markdown files inside package directories are not authoritative and should be moved into `docs/` or archived under `docs/notes/archive/`.
+Package-local `README.md` files are allowed only as package distribution entry points. They must point readers back to the governed docs projection tree. Long-form Markdown files inside package directories are not authoritative and should be moved into `docs/` or archived under `docs/notes/archive/`.
 
 ## Rust crate layout
 
@@ -58,7 +58,7 @@ Each crate under `crates/` must contain:
 
 ## Documentation authority
 
-The supplied archive already contained `docs/architecture/`, `docs/migration/`, and `docs/testing/`. Those directories remain part of the authoritative docs tree. New governance and conformance content must use the governed locations created in the Phase 0 and Phase 2 checkpoints.
+The supplied archive already contained `docs/architecture/`, `docs/migration/`, and `docs/testing/`. Those directories remain part of the governed docs projection tree. New governance and conformance projections must use the governed locations created in the authority-reset and package-layout checkpoints.
 
 ## Path-length rule
 

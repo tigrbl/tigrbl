@@ -6,11 +6,11 @@ on:
   workflow_dispatch:
 
 jobs:
-  phase7-operator-surface:
+  operator-surface:
     runs-on: ubuntu-latest
     env:
       PYTHONDONTWRITEBYTECODE: '1'
-      PYTHONPATH: ${{ github.workspace }}/tools/stubs:${{ github.workspace }}/pkgs/core/tigrbl:${{ github.workspace }}/pkgs/core/tigrbl_atoms:${{ github.workspace }}/pkgs/core/tigrbl_base:${{ github.workspace }}/pkgs/core/tigrbl_canon:${{ github.workspace }}/pkgs/core/tigrbl_client:${{ github.workspace }}/pkgs/core/tigrbl_concrete:${{ github.workspace }}/pkgs/core/tigrbl_core:${{ github.workspace }}/pkgs/core/tigrbl_kernel:${{ github.workspace }}/pkgs/core/tigrbl_ops_olap:${{ github.workspace }}/pkgs/core/tigrbl_ops_oltp:${{ github.workspace }}/pkgs/core/tigrbl_orm:${{ github.workspace }}/pkgs/core/tigrbl_runtime:${{ github.workspace }}/pkgs/core/tigrbl_spec:${{ github.workspace }}/pkgs/core/tigrbl_tests:${{ github.workspace }}/pkgs/core/tigrbl_typing:${{ github.workspace }}/pkgs/core/tigrbl_runtime:${{ github.workspace }}
+      PYTHONPATH: ${{ github.workspace }}/tools/stubs:${{ github.workspace }}/pkgs/core/tigrbl:${{ github.workspace }}/pkgs/core/tigrbl_atoms:${{ github.workspace }}/pkgs/core/tigrbl_base:${{ github.workspace }}/pkgs/core/tigrbl_canon:${{ github.workspace }}/pkgs/core/tigrbl_client:${{ github.workspace }}/pkgs/core/tigrbl_concrete:${{ github.workspace }}/pkgs/core/tigrbl_core:${{ github.workspace }}/pkgs/core/tigrbl_kernel:${{ github.workspace }}/pkgs/core/tigrbl_ops_olap:${{ github.workspace }}/pkgs/core/tigrbl_ops_oltp:${{ github.workspace }}/pkgs/core/tigrbl_ops_realtime:${{ github.workspace }}/pkgs/core/tigrbl_orm:${{ github.workspace }}/pkgs/core/tigrbl_runtime:${{ github.workspace }}/pkgs/core/tigrbl_spec:${{ github.workspace }}/pkgs/core/tigrbl_tests:${{ github.workspace }}/pkgs/core/tigrbl_typing:${{ github.workspace }}/pkgs/core/tigrbl_runtime:${{ github.workspace }}
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -20,8 +20,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install minimal operator-surface test dependencies
-        run: python -m pip install --upgrade pip pytest "httpx<0.28" pydantic typing_extensions
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
-      - name: Run Phase 7 operator-surface closure tests
-        run: python -m pytest --noconftest -q pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py -p no:cacheprovider
+      - name: Run operator-surface closure tests
+        run: uv run --no-sync python -m pytest --noconftest -q pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py -p no:cacheprovider

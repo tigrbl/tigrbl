@@ -1,6 +1,6 @@
 from tigrbl._base._table_base import _materialize_colspecs_to_sqla
 from tigrbl._spec import S, F, IO
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Integer, String
 from tigrbl.schema import _build_list_params
 from sqlalchemy.orm import Mapped, DeclarativeBase
@@ -32,3 +32,4 @@ def test_build_list_params_with_spec_only_model():
     fields = set(params.model_fields.keys())
     assert "name" in fields
     assert "name__like" in fields
+

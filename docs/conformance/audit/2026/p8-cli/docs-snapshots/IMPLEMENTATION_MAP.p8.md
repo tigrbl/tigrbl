@@ -56,13 +56,13 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 
 | Target | Status | Owner | Code locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
-| static files | verified in checkpoint | Operator Surface | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/static.py` | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` | — | preserve mount semantics |
-| cookies | verified in checkpoint | Operator Surface | request/response cookie helpers | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` | — | preserve round-trip semantics |
-| streaming responses | verified in checkpoint | Operator Surface | `_streaming_response.py` + ASGI send path | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` | — | preserve multi-frame body semantics |
-| WebSockets | verified in checkpoint | Operator Surface | `_websocket.py`, `_app.py`, router websocket decorators | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` | — | preserve websocket dispatch semantics |
-| WHATWG SSE | verified in checkpoint | Operator Surface | `_event_stream_response.py` | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` | — | preserve event-stream framing |
-| forms / multipart | verified in checkpoint | Operator Surface | `_request.py` form parsing | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` | — | preserve parsing semantics |
-| upload handling | verified in checkpoint | Operator Surface | `_request.py` uploaded-file model | `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py` | — | preserve file metadata + body semantics |
+| static files | verified in checkpoint | Operator Surface | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/static.py` | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve mount semantics |
+| cookies | verified in checkpoint | Operator Surface | request/response cookie helpers | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve round-trip semantics |
+| streaming responses | verified in checkpoint | Operator Surface | `_streaming_response.py` + ASGI send path | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve multi-frame body semantics |
+| WebSockets | verified in checkpoint | Operator Surface | `_websocket.py`, `_app.py`, router websocket decorators | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve websocket dispatch semantics |
+| WHATWG SSE | verified in checkpoint | Operator Surface | `_event_stream_response.py` | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve event-stream framing |
+| forms / multipart | verified in checkpoint | Operator Surface | `_request.py` form parsing | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve parsing semantics |
+| upload handling | verified in checkpoint | Operator Surface | `_request.py` uploaded-file model | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve file metadata + body semantics |
 | bounded middleware catalog | verified in checkpoint | Operator Surface | `_middleware.py`, `_cors_middleware.py`, operator docs | docs parity + existing middleware tests | — | preserve the bounded catalog boundary |
 | generic auth surface kept dependency/hook-based only | verified in checkpoint | Operator Surface | existing auth deps + governed docs | docs parity pages | deliberate non-addition of a new auth middleware | preserve this decision in current target docs |
 | AsyncAPI UI | de-scoped | Governance + Operator Surface | current target docs + operator docs | docs parity pages | interactive UI not implemented | keep de-scoped this cycle |
@@ -73,8 +73,8 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 
 | Target | Status | Owner | Code locations | Test evidence | Blocker / gap | Closure path |
 |---|---|---|---|---|---|---|
-| unified `tigrbl` CLI and required commands/flags | verified in checkpoint | CLI / Developer Experience | `pkgs/core/tigrbl/tigrbl/cli.py`<br>`pkgs/core/tigrbl/tigrbl/__main__.py`<br>`pkgs/core/tigrbl/pyproject.toml` | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py`<br>`pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` | later installed-package/live-network smoke remains part of the evidence/reproducibility gates | preserve the command/flag surface and carry it into the later clean-room evidence lanes |
-| supported-server runner dispatch/config smoke | verified in checkpoint | CLI / Developer Experience | `pkgs/core/tigrbl/tigrbl/cli.py`<br>`.github/workflows/cli-smoke.yml` | `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py` | this is runner-dispatch/config smoke, not yet full installed-package compatibility certification | preserve this lane and extend it in later evidence/reproducibility gates |
+| unified `tigrbl` CLI and required commands/flags | verified in checkpoint | CLI / Developer Experience | `pkgs/core/tigrbl/tigrbl/cli.py`<br>`pkgs/core/tigrbl/tigrbl/__main__.py`<br>`pkgs/core/tigrbl/pyproject.toml` | `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py`<br>`pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py` | later installed-package/live-network smoke remains part of the evidence/reproducibility gates | preserve the command/flag surface and carry it into the later clean-room evidence lanes |
+| supported-server runner dispatch/config smoke | verified in checkpoint | CLI / Developer Experience | `pkgs/core/tigrbl/tigrbl/cli.py`<br>`.github/workflows/cli-smoke.yml` | `pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py` | this is runner-dispatch/config smoke, not yet full installed-package compatibility certification | preserve this lane and extend it in later evidence/reproducibility gates |
 
 ## Deferred next-target rows
 

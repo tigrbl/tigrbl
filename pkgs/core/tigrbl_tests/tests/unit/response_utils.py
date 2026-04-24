@@ -11,7 +11,7 @@ from tigrbl_core._spec.op_spec import _mro_collect_decorated_ops
 
 from tigrbl import response_ctx
 from tigrbl_atoms.atoms.response.templates import render_template
-from tigrbl.shortcuts.responses import (
+from tigrbl.factories.responses import (
     as_file,
     as_html,
     as_json,
@@ -150,3 +150,4 @@ def build_model_for_jinja_response(tmp_path) -> type:
     build_rest(Widget, specs)
     register_rpc(Widget, specs)
     return Widget
+

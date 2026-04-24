@@ -5,7 +5,7 @@ import pytest
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -39,3 +39,4 @@ async def test_diagnostics_methodz_lists_operations():
         methods = {entry["method"] for entry in response.json()["methods"]}
         assert f"{Widget.__name__}.list" in methods
     await stop_uvicorn(server, task)
+

@@ -1,0 +1,42 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1058"
+number: 1058
+slug: "concrete-response-type-surface-boundary"
+title: "Concrete response type surface boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`tigrbl_concrete` exports concrete response classes for JSON, HTML, text, file, redirect, stream, and SSE behavior, and it also exports a background-task helper and a `TransportResponse` facade symbol."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1032, ADR-1041, ADR-1053
+  
+  1. Concrete response classes are first-class runtime/operator surfaces within the repo boundary.
+  2. The governed response-type family includes `Response`, the exported `TransportResponse` surface, JSON/HTML/plain-text responses, streaming and SSE responses, file and redirect responses, and background task execution coupled to response completion.
+  3. Streaming and SSE classes inherit framing and ordering guarantees already governed elsewhere, while this ADR fixes their class-level runtime surface as public inventory.
+  4. Response-family governance covers concrete export and expected runtime behavior even when an exported alias or facade name is not yet backed by a distinct implementation object.
+  
+  ## Context
+  
+  `tigrbl_concrete` exports concrete response classes for JSON, HTML, text, file, redirect, stream, and SSE behavior, and it also exports a background-task helper and a `TransportResponse` facade symbol.
+  The repo does not yet carry a single SSOT decision that defines the governed concrete response-type surface.
+  
+  ## Consequences
+  
+  - Class-level response rows can point to a single architectural boundary instead of only to umbrella parity docs.
+  - Missing or alias-only export surfaces can be tracked as intentionally absent implementation states instead of falling through inventory gaps.
+  
+  ## Rejected Alternatives
+  
+  - Track concrete response types only indirectly through generic response parity language.
+  - Treat stream/SSE/file/redirect/background variants as internal details rather than governed public inventory.
+  - Ignore exported alias surfaces when they do not yet have distinct implementation objects.

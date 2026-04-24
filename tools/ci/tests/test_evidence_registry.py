@@ -9,6 +9,10 @@ import json
 import re
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO_ROOT / 'tools' / 'conformance'))
+
+import build_phase9_evidence  # noqa: E402
+
 CLAIM_REGISTRY = REPO_ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
 EVIDENCE_REGISTRY = REPO_ROOT / 'docs' / 'conformance' / 'EVIDENCE_REGISTRY.json'
 CLAIM_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|')
@@ -57,3 +61,20 @@ def test_evidence_registry_and_bundle_validators_pass() -> None:
         if result.returncode != 0:
             failures.append(f"{script}\nSTDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}")
     assert not failures, '\n\n'.join(failures)
+
+
+def test_phase9_evidence_generator_covers_current_claims_with_existing_paths() -> None:
+    registry = build_phase9_evidence.build_registry()
+    generated_claims = registry['claims']
+
+    assert _claim_ids() <= set(generated_claims)
+
+    missing: list[str] = []
+    for claim_id, entry in generated_claims.items():
+        for field in ('tests', 'artifact_paths', 'doc_paths'):
+            for spec in entry[field]:
+                path_part = spec.split('::', 1)[0].split('#', 1)[0]
+                if not (REPO_ROOT / path_part).exists():
+                    missing.append(f'{claim_id} {field}: {spec}')
+
+    assert not missing, '\n'.join(missing)

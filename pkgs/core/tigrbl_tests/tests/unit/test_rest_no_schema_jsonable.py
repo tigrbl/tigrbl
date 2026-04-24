@@ -6,9 +6,9 @@ from tigrbl.types import Integer, Mapped, String
 
 from tigrbl import TigrblApp
 from tigrbl_ops_oltp import crud
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.orm.tables import TableBase as Base3
 
 
@@ -83,3 +83,4 @@ async def test_rest_read_and_list_without_schema(client_and_model, monkeypatch):
         assert data == [] or "name" in data[0]
     else:
         assert "name" in data
+

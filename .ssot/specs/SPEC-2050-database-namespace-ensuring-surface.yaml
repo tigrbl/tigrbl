@@ -1,0 +1,43 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2050"
+number: 2050
+slug: "database-namespace-ensuring-surface"
+title: "Database namespace ensuring surface"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed database-namespace ensuring surface for `ensure_schemas()` and equivalent engine-aware namespace preparation behavior."
+supersedes:
+  - "spc:2031"
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Namespace ensuring is split from the old generic database-schema surface."
+    at: "2026-04-20T21:50:26Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed database-namespace ensuring surface for `ensure_schemas()` and equivalent engine-aware namespace preparation behavior.
+  
+  ## Canonical Surface
+  
+  - `ensure_schemas()` is the governed namespace-ensuring surface.
+  - Namespace ensuring is explicit, engine-aware, and separate from model-schema materialization, bootstrap timing, and migration history.
+  - Namespace ensuring is best-effort preparation of database namespaces; it is not a migration planner or version-table owner.
+  - Namespace ensuring may be invoked by bootstrap helpers, but it remains a distinct governed concern.
+  
+  ## Invariants
+  
+  - The word "schema" in this spec refers to database namespace semantics such as PostgreSQL schemas, not `_spec`/Pydantic/model schema objects.
+  - Namespace ensuring behavior must not be used to widen public operator or authoring-helper semantics.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1055`, `adr:1064`
+  - Related features: `feat:ensure-schemas-runtime-surface-001`
+spec_kind: "local-policy"
+adr_ids: []

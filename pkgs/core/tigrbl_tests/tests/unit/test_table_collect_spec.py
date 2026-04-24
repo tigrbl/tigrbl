@@ -1,5 +1,5 @@
 from tests.conftest import mro_collect_table_spec
-from tigrbl.shortcuts.table import defineTableSpec
+from tigrbl.factories.table import defineTableSpec
 from tigrbl.orm.tables import TableBase
 from tigrbl.orm.mixins import GUIDPk
 
@@ -40,3 +40,4 @@ def test_collect_table_spec_merges_mro():
     assert spec.hooks == ("hook_a", "hook_b")
     assert spec.security_deps == ("sec_a", "sec_b")
     assert spec.deps == ("dep_a", "dep_b")
+
