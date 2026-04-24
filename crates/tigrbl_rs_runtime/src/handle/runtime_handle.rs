@@ -45,6 +45,11 @@ impl RuntimeHandle {
         request: RequestEnvelope,
     ) -> Result<ResponseEnvelope, PortError> {
         let binding = self.resolve_binding(transport, &request)?;
+        if binding.engine_language != "rust" && binding.engine_callback.is_none() {
+            return Err(PortError::Message(
+                "python-backed engine missing callback".to_string(),
+            ));
+        }
         let engine = self
             .engine_resolver
             .resolve(&self.engine_registry, &binding.engine_kind)?;
