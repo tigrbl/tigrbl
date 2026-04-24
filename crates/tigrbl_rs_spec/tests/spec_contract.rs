@@ -35,7 +35,10 @@ fn hook_phases_cover_transaction_and_response_lifecycle() {
 fn exchange_and_tx_scope_match_python_surface_literals() {
     assert_eq!(Exchange::RequestResponse.as_str(), "request_response");
     assert_eq!(Exchange::ServerStream.as_str(), "server_stream");
-    assert_eq!(Exchange::BidirectionalStream.as_str(), "bidirectional_stream");
+    assert_eq!(
+        Exchange::BidirectionalStream.as_str(),
+        "bidirectional_stream"
+    );
     assert_eq!(TxScope::Inherit.as_str(), "inherit");
     assert_eq!(TxScope::ReadOnly.as_str(), "read_only");
     assert_eq!(TxScope::ReadWrite.as_str(), "read_write");

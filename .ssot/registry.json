@@ -13900,6 +13900,63 @@
         "tst:rust-runtime-demo-console-logs"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:jsonrpc-input-validation-before-persistence-001",
+      "title": "JSON-RPC input validation before persistence",
+      "description": "Validate generated operation input models for JSON-RPC table CRUD before invoking handlers or persistence so missing required create params return protocol-native invalid params.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "jsonrpc-validation-hardening",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012",
+        "spc:2014"
+      ],
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:jsonrpc-create-missing-required-fields-invalid-params"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:jsonrpc-persistence-error-sanitization-001",
+      "title": "JSON-RPC persistence exception response sanitization",
+      "description": "Sanitize persistence-layer exceptions at the JSON-RPC framework boundary so client responses never expose ORM, DBAPI, SQL text, table names, or bound parameters.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "jsonrpc-validation-hardening",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:jsonrpc-persistence-exception-sanitized"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -27263,6 +27320,40 @@
       "evidence_ids": [
         "evd:rust-runtime-demo-docs-surface-pytest"
       ]
+    },
+    {
+      "id": "tst:jsonrpc-create-missing-required-fields-invalid-params",
+      "title": "JSON-RPC create missing required fields returns invalid params",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:jsonrpc-input-validation-before-persistence-001"
+      ],
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:jsonrpc-create-missing-required-fields-invalid-params"
+      ]
+    },
+    {
+      "id": "tst:jsonrpc-persistence-exception-sanitized",
+      "title": "JSON-RPC persistence exception responses are sanitized",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:jsonrpc-persistence-error-sanitization-001"
+      ],
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:jsonrpc-persistence-exception-sanitized"
+      ]
     }
   ],
   "claims": [
@@ -30346,7 +30437,9 @@
       "kind": "conformance",
       "description": "Asserts conformance surface RPC-001: JSON-RPC 2.0 current-target surface is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py`",
       "feature_ids": [
-        "feat:rpc-001"
+        "feat:rpc-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -30358,7 +30451,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py"
+        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
+        "tst:jsonrpc-create-missing-required-fields-invalid-params",
+        "tst:jsonrpc-persistence-exception-sanitized"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_state.md",
@@ -30369,7 +30464,9 @@
         "evd:docs-conformance-implementation_map.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:jsonrpc-create-missing-required-fields-invalid-params",
+        "evd:jsonrpc-persistence-exception-sanitized"
       ]
     },
     {
@@ -30639,13 +30736,19 @@
       "kind": "repo-claim",
       "description": "The transport-dispatch track preserves REST and JSON-RPC parity as a semantic contract and rejects test-only relaxation as the repair strategy.",
       "feature_ids": [
-        "feat:transport-parity-contract-001"
+        "feat:transport-parity-contract-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001"
       ],
       "test_ids": [
-        "tst:transport-dispatch-parity-contract"
+        "tst:transport-dispatch-parity-contract",
+        "tst:jsonrpc-create-missing-required-fields-invalid-params",
+        "tst:jsonrpc-persistence-exception-sanitized"
       ],
       "evidence_ids": [
-        "evd:transport-dispatch-parity-test"
+        "evd:transport-dispatch-parity-test",
+        "evd:jsonrpc-create-missing-required-fields-invalid-params",
+        "evd:jsonrpc-persistence-exception-sanitized"
       ]
     },
     {
@@ -35851,9 +35954,81 @@
         "tst:rust-runtime-demo-lens-uix",
         "tst:rust-runtime-demo-console-logs"
       ]
+    },
+    {
+      "id": "evd:jsonrpc-create-missing-required-fields-invalid-params",
+      "title": "Evidence for JSON-RPC missing required create params regression",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:jsonrpc-create-missing-required-fields-invalid-params"
+      ]
+    },
+    {
+      "id": "evd:jsonrpc-persistence-exception-sanitized",
+      "title": "Evidence for JSON-RPC persistence exception sanitization",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:jsonrpc-persistence-exception-sanitized"
+      ]
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "id": "iss:jsonrpc-create-missing-required-fields-leaks-persistence-errors-001",
+      "title": "JSON-RPC create with missing required fields leaks persistence internals",
+      "status": "open",
+      "severity": "high",
+      "description": "JSON-RPC table-backed CRUD dispatch allows Thing.create-style requests with missing required create params to reach persistence, causing database NOT NULL failures and leaking SQLAlchemy/DBAPI details, SQL text, table/column names, and bound parameters in the JSON-RPC -32602 response. Framework must validate generated operation input before persistence and sanitize persistence exceptions at the JSON-RPC boundary.",
+      "plan": {
+        "horizon": "current",
+        "slot": "jsonrpc-validation-hardening"
+      },
+      "feature_ids": [
+        "feat:rpc-001",
+        "feat:validation-failure-projection-parity-001",
+        "feat:error-envelope-structure-parity-001",
+        "feat:error-parity-response-structure-001",
+        "feat:binding-driven-ingress-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:canonical-op-bulk-create-001",
+        "feat:canonical-op-bulk-update-001",
+        "feat:canonical-op-bulk-replace-001",
+        "feat:canonical-op-bulk-delete-001",
+        "feat:canonical-op-bulk-merge-001"
+      ],
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:jsonrpc-create-missing-required-fields-invalid-params",
+        "tst:jsonrpc-persistence-exception-sanitized",
+        "tst:tigrbl-tests-tests-unit-test-rpc-all-default-op-verbs"
+      ],
+      "evidence_ids": [
+        "evd:jsonrpc-create-missing-required-fields-invalid-params",
+        "evd:jsonrpc-persistence-exception-sanitized"
+      ],
+      "risk_ids": [],
+      "release_blocking": true
+    }
+  ],
   "risks": [],
   "boundaries": [
     {
@@ -36133,6 +36308,28 @@
         "feat:status-sync-engine-001",
         "feat:gate-evaluator-model-001",
         "feat:docs-ci-projection-validation-001"
+      ],
+      "profile_ids": []
+    },
+    {
+      "id": "bnd:jsonrpc-validation-hardening-001",
+      "title": "JSON-RPC validation hardening release lane",
+      "status": "active",
+      "frozen": false,
+      "feature_ids": [
+        "feat:rpc-001",
+        "feat:validation-failure-projection-parity-001",
+        "feat:error-envelope-structure-parity-001",
+        "feat:error-parity-response-structure-001",
+        "feat:binding-driven-ingress-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:canonical-op-bulk-create-001",
+        "feat:canonical-op-bulk-update-001",
+        "feat:canonical-op-bulk-replace-001",
+        "feat:canonical-op-bulk-delete-001",
+        "feat:canonical-op-bulk-merge-001"
       ],
       "profile_ids": []
     }

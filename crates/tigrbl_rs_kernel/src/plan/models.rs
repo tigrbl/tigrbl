@@ -1,7 +1,7 @@
 use crate::plan::packed::PackedPlan;
 use tigrbl_rs_spec::{Exchange, OpKind, TxScope, Value};
 
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
+#[derive(Debug, Clone, Default, PartialEq)]
 pub struct PlanBinding {
     pub alias: String,
     pub op_name: String,
@@ -21,6 +21,7 @@ pub struct PlanBinding {
     pub engine_kind: String,
     pub engine_language: String,
     pub engine_callback: Option<String>,
+    pub engine_options: Value,
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
@@ -42,6 +43,7 @@ pub struct KernelPlan {
     pub bindings: Vec<PlanBinding>,
     pub routes: Vec<PlanRoute>,
     pub engine_kind: String,
+    pub engine_options: Value,
     pub callbacks: Vec<String>,
     pub runtime: Value,
     pub metadata: Value,
