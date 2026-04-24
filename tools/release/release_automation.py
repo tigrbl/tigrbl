@@ -476,7 +476,13 @@ def publish_crates(plan_path: Path, *, dry_run: bool, verify: bool = True) -> No
                     f'patch.crates-io.{packaged}.path="{package_dir.as_posix()}"',
                 ]
             )
-        package_command = ["cargo", "package", "-p", crate, "--locked", *patch_args]
+        # `cargo package` verification uses transient local path patches for
+        # previously packaged internal crates. Those patch sources are not part
+        # of the committed workspace lockfile, so `--locked` can reject the
+        # package-only resolver update before verification starts. Keep the real
+        # publish command locked; only the local packaging verification needs to
+        # resolve these temporary patch paths.
+        package_command = ["cargo", "package", "-p", crate, *patch_args]
         publish_command = ["cargo", "publish", "-p", crate, "--locked"]
         if dry_run:
             run(package_command)

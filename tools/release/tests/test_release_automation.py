@@ -171,13 +171,12 @@ def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: 
     release_automation.publish_crates(summary, dry_run=True)
 
     assert calls == [
-        ["cargo", "package", "-p", "tigrbl_rs_spec", "--locked"],
+        ["cargo", "package", "-p", "tigrbl_rs_spec"],
         [
             "cargo",
             "package",
             "-p",
             "tigrbl_rs_ports",
-            "--locked",
             "--config",
             f'patch.crates-io.tigrbl_rs_spec.path="{release_automation.ROOT.joinpath("target", "package", "tigrbl_rs_spec-0.1.10-dev.1").as_posix()}"',
         ],
@@ -205,6 +204,6 @@ def test_publish_crates_verify_uses_package_before_publish(
     release_automation.publish_crates(summary, dry_run=False, verify=True)
 
     assert calls == [
-        ["cargo", "package", "-p", "tigrbl_rs_spec", "--locked"],
+        ["cargo", "package", "-p", "tigrbl_rs_spec"],
         ["cargo", "publish", "-p", "tigrbl_rs_spec", "--locked"],
     ]
