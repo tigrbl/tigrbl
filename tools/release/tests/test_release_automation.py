@@ -76,7 +76,15 @@ def test_unknown_package_selection_fails() -> None:
 def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     summary = tmp_path / "release-plan.json"
     summary.write_text(
-        json.dumps({"crate_publish_order": ["tigrbl_rs_spec", "tigrbl_rs_ports"]}),
+        json.dumps(
+            {
+                "crates": [
+                    {"name": "tigrbl_rs_spec", "version": "0.1.10-dev.1"},
+                    {"name": "tigrbl_rs_ports", "version": "0.1.10-dev.1"},
+                ],
+                "crate_publish_order": ["tigrbl_rs_spec", "tigrbl_rs_ports"],
+            }
+        ),
         encoding="utf-8",
     )
     calls: list[list[str]] = []
@@ -87,7 +95,15 @@ def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: 
 
     assert calls == [
         ["cargo", "package", "-p", "tigrbl_rs_spec", "--locked"],
-        ["cargo", "package", "-p", "tigrbl_rs_ports", "--locked"],
+        [
+            "cargo",
+            "package",
+            "-p",
+            "tigrbl_rs_ports",
+            "--locked",
+            "--config",
+            f"patch.crates-io.tigrbl_rs_spec.path={release_automation.ROOT.joinpath('target', 'package', 'tigrbl_rs_spec-0.1.10-dev.1').as_posix()}",
+        ],
     ]
 
 
@@ -96,7 +112,12 @@ def test_publish_crates_verify_uses_package_before_publish(
 ) -> None:
     summary = tmp_path / "release-plan.json"
     summary.write_text(
-        json.dumps({"crate_publish_order": ["tigrbl_rs_spec"]}),
+        json.dumps(
+            {
+                "crates": [{"name": "tigrbl_rs_spec", "version": "0.1.10-dev.1"}],
+                "crate_publish_order": ["tigrbl_rs_spec"],
+            }
+        ),
         encoding="utf-8",
     )
     calls: list[list[str]] = []

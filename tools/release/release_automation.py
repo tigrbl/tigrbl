@@ -455,15 +455,28 @@ def publish_crates(plan_path: Path, *, dry_run: bool, verify: bool = True) -> No
     plan = json.loads(read(plan_path))
     if not plan["crate_publish_order"]:
         raise RuntimeError("release plan does not include any Rust crates")
+    versions = {crate["name"]: crate["version"] for crate in plan["crates"]}
+    packaged_locally: list[str] = []
     for crate in plan["crate_publish_order"]:
-        package_command = ["cargo", "package", "-p", crate, "--locked"]
+        patch_args: list[str] = []
+        for packaged in packaged_locally:
+            package_dir = ROOT / "target" / "package" / f"{packaged}-{versions[packaged]}"
+            patch_args.extend(
+                [
+                    "--config",
+                    f"patch.crates-io.{packaged}.path={package_dir.as_posix()}",
+                ]
+            )
+        package_command = ["cargo", "package", "-p", crate, "--locked", *patch_args]
         publish_command = ["cargo", "publish", "-p", crate, "--locked"]
         if dry_run:
             run(package_command)
+            packaged_locally.append(crate)
             continue
         if verify:
             run(package_command)
         run(publish_command)
+        packaged_locally.append(crate)
         time.sleep(20)
 
 
