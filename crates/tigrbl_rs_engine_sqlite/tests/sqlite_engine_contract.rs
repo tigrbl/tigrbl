@@ -18,6 +18,33 @@ fn sqlite_engine_opens_session_and_transaction() {
 }
 
 #[test]
+fn sqlite_engine_initializes_file_schema_when_session_opens() {
+    let path = std::env::temp_dir().join(format!(
+        "tigrbl-rs-engine-sqlite-schema-{}.sqlite3",
+        std::process::id()
+    ));
+    let _ = std::fs::remove_file(&path);
+
+    let engine = SqliteEngine::new(Some(path.to_string_lossy().into_owned()));
+    let _session = engine.open().expect("session");
+
+    let connection = rusqlite::Connection::open(&path).expect("sqlite connection");
+    let exists: bool = connection
+        .query_row(
+            "SELECT EXISTS(
+                SELECT 1 FROM sqlite_master
+                WHERE type = 'table' AND name = '_tigrbl_rows'
+            )",
+            [],
+            |row| row.get(0),
+        )
+        .expect("schema probe");
+
+    assert!(exists);
+    let _ = std::fs::remove_file(path);
+}
+
+#[test]
 fn sqlite_engine_persists_create_rows_to_file() {
     let path = std::env::temp_dir().join(format!(
         "tigrbl-rs-engine-sqlite-{}.sqlite3",

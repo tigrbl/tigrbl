@@ -38087,6 +38087,37 @@
         "feat:httpbearer-security-dependency-001"
       ],
       "profile_ids": []
+    },
+    {
+      "id": "bnd:runtime-python-rust-hot-path-001",
+      "title": "Runtime Python Rust Hot Path Delivery Boundary",
+      "status": "frozen",
+      "frozen": true,
+      "feature_ids": [
+        "feat:python-runtime-ddl-initialization-boundary-001",
+        "feat:rust-runtime-ddl-initialization-boundary-001",
+        "feat:python-request-hot-path-no-ddl-001",
+        "feat:rust-request-hot-path-no-ddl-001",
+        "feat:python-schema-readiness-fail-closed-001",
+        "feat:rust-schema-readiness-fail-closed-001",
+        "feat:python-engine-session-lifecycle-001",
+        "feat:rust-engine-session-lifecycle-001",
+        "feat:python-transaction-hot-path-001",
+        "feat:rust-transaction-hot-path-001",
+        "feat:python-runtime-performance-baseline-001",
+        "feat:rust-runtime-performance-baseline-001",
+        "feat:python-runtime-callgraph-export-001",
+        "feat:rust-runtime-callgraph-export-001",
+        "feat:python-direct-runtime-microbench-001",
+        "feat:rust-direct-runtime-microbench-001",
+        "feat:python-request-envelope-contract-001",
+        "feat:rust-request-envelope-contract-001",
+        "feat:python-asgi-boundary-evidence-001",
+        "feat:rust-asgi-boundary-evidence-001",
+        "feat:python-runtime-2x-target-comparison-001",
+        "feat:rust-runtime-2x-python-target-001"
+      ],
+      "profile_ids": []
     }
   ],
   "releases": [

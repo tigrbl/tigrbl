@@ -3,7 +3,7 @@ use tigrbl_rs_ports::engines::EnginePort;
 
 #[test]
 fn inmemory_engine_opens_session_and_transaction() {
-    let engine = InmemoryEngine;
+    let engine = InmemoryEngine::new();
     assert_eq!(engine.kind(), "inmemory");
 
     let session = engine.open().expect("session");

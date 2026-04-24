@@ -1,6 +1,6 @@
 use tigrbl_rs_ports::{errors::PortResult, sessions::SessionPort, transactions::TransactionPort};
 
-use crate::tx::SqliteTransaction;
+use crate::tx::{initialize_schema, SqliteTransaction};
 
 #[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct SqliteSession {
@@ -8,8 +8,9 @@ pub struct SqliteSession {
 }
 
 impl SqliteSession {
-    pub fn new(path: String) -> Self {
-        Self { path }
+    pub fn new(path: String) -> PortResult<Self> {
+        initialize_schema(&path)?;
+        Ok(Self { path })
     }
 }
 

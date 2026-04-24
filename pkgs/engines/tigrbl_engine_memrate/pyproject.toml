@@ -1,7 +1,11 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
 [project]
 name = "tigrbl_engine_memrate"
 version = "0.1.3.dev1"
-requires-python = ">=3.12"
+requires-python = ">=3.10,<3.14"
 dependencies = ["tigrbl"]
 
 [project.entry-points."tigrbl.engine"]
