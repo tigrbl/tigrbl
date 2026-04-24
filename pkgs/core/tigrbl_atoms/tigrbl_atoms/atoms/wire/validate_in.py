@@ -52,9 +52,49 @@ def _run(obj: Optional[object], ctx: Any) -> None:
         return
     schema_in = _ensure_schema_in(ctx)
 
-    in_values: Dict[str, Any] = dict(temp.get("in_values") or {})
+    raw_in_values = temp.get("in_values")
     by_field: Mapping[str, Mapping[str, Any]] = schema_in.get("by_field", {})  # type: ignore[assignment]
     required: Tuple[str, ...] = tuple(schema_in.get("required", ()))  # type: ignore[assignment]
+
+    if isinstance(raw_in_values, list):
+        errors: list[Dict[str, Any]] = []
+        coerced: list[str] = []
+        normalized_items: list[Any] = []
+        for index, item in enumerate(raw_in_values):
+            if not isinstance(item, Mapping):
+                if required:
+                    errors.append(
+                        _err(
+                            str(index),
+                            "type_mismatch",
+                            "Bulk payload item must be an object.",
+                        )
+                    )
+                normalized_items.append(item)
+                continue
+
+            item_errors, item_coerced, item_values = _validate_mapping_item(
+                dict(item), by_field=by_field, required=required, ctx=ctx
+            )
+            errors.extend(_index_error(index, error) for error in item_errors)
+            coerced.extend(f"{index}.{field}" for field in item_coerced)
+            normalized_items.append(item_values)
+
+        temp["in_values"] = normalized_items
+        if coerced:
+            temp["in_coerced"] = tuple(coerced)
+        if errors:
+            temp["in_errors"] = errors
+            temp["in_invalid"] = True
+            logger.debug("Validation errors found: %s", errors)
+            raise HTTPException(
+                status_code=_status.HTTP_422_UNPROCESSABLE_ENTITY, detail=errors
+            )
+        temp["in_invalid"] = False
+        logger.debug("Bulk inbound payload validated successfully")
+        return
+
+    in_values: Dict[str, Any] = dict(raw_in_values or {})
 
     errors: list[Dict[str, Any]] = []
     coerced: list[str] = []
@@ -175,6 +215,87 @@ def _reject_unknown(ctx: Any) -> bool:
 
 def _err(field: str, code: str, msg: str) -> Dict[str, Any]:
     return {"field": field, "code": code, "message": msg}
+
+
+def _index_error(index: int, error: Mapping[str, Any]) -> Dict[str, Any]:
+    out = dict(error)
+    field = out.get("field")
+    out["field"] = f"{index}.{field}" if field else str(index)
+    return out
+
+
+def _validate_mapping_item(
+    in_values: Dict[str, Any],
+    *,
+    by_field: Mapping[str, Mapping[str, Any]],
+    required: Tuple[str, ...],
+    ctx: Any,
+) -> tuple[list[Dict[str, Any]], list[str], Dict[str, Any]]:
+    errors: list[Dict[str, Any]] = []
+    coerced: list[str] = []
+
+    for name in required:
+        if name not in in_values:
+            logger.debug("Required field %s missing", name)
+            errors.append(
+                _err(name, "required", "Field is required but was not provided.")
+            )
+
+    for name, value in list(in_values.items()):
+        entry = by_field.get(name) or {}
+        nullable = entry.get("nullable", None)
+        if value is None and nullable is False:
+            logger.debug("Field %s is null but not nullable", name)
+            errors.append(
+                _err(name, "null_not_allowed", "Null is not allowed for this field.")
+            )
+            continue
+
+        target_type = entry.get("py_type")
+        if value is not None and isinstance(target_type, type):
+            allow_coerce = bool(entry.get("coerce", True))
+            ok, new_val, msg = _coerce_if_needed(value, target_type, allow=allow_coerce)
+            if not ok:
+                logger.debug("Type mismatch for field %s", name)
+                errors.append(
+                    _err(
+                        name,
+                        "type_mismatch",
+                        msg or f"Expected {_type_name(target_type)}.",
+                    )
+                )
+                continue
+            if new_val is not value:
+                in_values[name] = new_val
+                coerced.append(name)
+
+        max_len = entry.get("max_length", None)
+        if (
+            isinstance(max_len, int)
+            and max_len > 0
+            and isinstance(in_values.get(name), str)
+        ):
+            if len(in_values[name]) > max_len:
+                logger.debug("Field %s exceeds max_length %d", name, max_len)
+                errors.append(
+                    _err(name, "max_length", f"String exceeds max_length={max_len}.")
+                )
+                continue
+
+        vfn = entry.get("validator")
+        if callable(vfn) and in_values.get(name) is not None:
+            try:
+                out = vfn(in_values[name], ctx)
+                if out is not None:
+                    in_values[name] = out
+            except Exception as e:
+                logger.debug("Validator failed for field %s: %s", name, e)
+                errors.append(
+                    _err(name, "validator_failed", f"{type(e).__name__}: {e}")
+                )
+                continue
+
+    return errors, coerced, in_values
 
 
 def _type_name(t: type) -> str:
