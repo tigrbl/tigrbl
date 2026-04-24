@@ -100,7 +100,19 @@ async def _run(dep: object | None, ctx: Any) -> Any:
     router = getattr(ctx, "router", None) or ctx_map.get("router")
 
     if req is not None and router is not None:
-        value = await invoke_dependency(router, fn, req)
+        try:
+            value = await invoke_dependency(router, fn, req)
+        except HTTPException as exc:
+            if (
+                getattr(fn, "__tigrbl_require_auth__", False)
+                and exc.status_code == status.HTTP_401_UNAUTHORIZED
+                and exc.detail == "Not authenticated"
+            ):
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="Forbidden",
+                ) from exc
+            raise
         if getattr(fn, "__tigrbl_require_auth__", False) and value is None:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,

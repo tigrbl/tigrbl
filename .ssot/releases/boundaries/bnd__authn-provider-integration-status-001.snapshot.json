@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-24T13:22:42Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "9792aed04dfcdc49dccacfb39952831f463ee03a36087132c0a7b7045ca6f372",
+  "boundary": {
+    "id": "bnd:authn-provider-integration-status-001",
+    "title": "AuthN provider integration status-code closure lane",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:authn-provider-missing-credentials-status-001",
+      "feat:auth-failure-projection-parity-001",
+      "feat:anon-access-rest-status-parity-001",
+      "feat:httpbearer-security-dependency-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:authn-provider-missing-credentials-status-001",
+      "title": "AuthN provider missing-credential status projection",
+      "description": "Track the integration defect in test_authn_unauthorized_errors: routes protected through AuthNProvider via app.set_auth must project missing bearer credentials consistently with the REST authn provider contract; current runtime returns 401 where the governed test expects 403. Related surfaces include auth-failure projection parity and anonymous-access REST status parity.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "authn-provider-integration-status",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012",
+        "spc:2080"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:closure-case-authn-unauthorized-errors",
+        "tst:authn-provider-unauthorized-errors-status"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:auth-failure-projection-parity-001",
+      "title": "Authorization failure projection parity",
+      "description": "Project authentication and authorization failures consistently across REST and JSON-RPC for equivalent canonical outcomes.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [
+        "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
+        "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
+        "tst:tcase-0012",
+        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
+        "tst:authn-provider-unauthorized-errors-status"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012",
+        "spc:2080"
+      ]
+    },
+    {
+      "id": "feat:anon-access-rest-status-parity-001",
+      "title": "Anonymous access and REST create status parity",
+      "description": "Recover allow-anon behavior and REST create-status projection so runtime and docs derive from one canonical outcome, per adr/ADR-0031 and specs/status-auth-and-error-parity.md.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [],
+      "test_ids": [
+        "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
+        "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
+        "tst:tcase-0012",
+        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
+        "tst:authn-provider-unauthorized-errors-status"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2012"
+      ]
+    },
+    {
+      "id": "feat:httpbearer-security-dependency-001",
+      "title": "HTTPBearer security dependency",
+      "description": "Tracks HTTPBearer as a concrete first-class security dependency surface.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "surface-inventory",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
+        "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
+        "tst:tcase-0012",
+        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:authn-provider-integration-status-001",
+    "feature_count": 4,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

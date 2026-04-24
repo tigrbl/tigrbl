@@ -224,7 +224,7 @@ def fetch_tigrbl_rust_names(_app: TigrblRustExecutorCreateApp, db_path: Path) ->
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute(
             "SELECT row_json FROM _tigrbl_rows "
-            "WHERE table_name = 'items' ORDER BY rowid"
+            "WHERE table_name = 'benchmark_rust_item' ORDER BY rowid"
         ).fetchall()
     return [json.loads(row[0])["name"] for row in rows]
 
