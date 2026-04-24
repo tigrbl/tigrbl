@@ -5472,7 +5472,7 @@
       "id": "feat:auth-failure-projection-parity-001",
       "title": "Authorization failure projection parity",
       "description": "Project authentication and authorization failures consistently across REST and JSON-RPC for equivalent canonical outcomes.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13973,7 +13973,7 @@
       "id": "feat:authn-provider-missing-credentials-status-001",
       "title": "AuthN provider missing-credential status projection",
       "description": "Track the integration defect in test_authn_unauthorized_errors: routes protected through AuthNProvider via app.set_auth must project missing bearer credentials consistently with the REST authn provider contract; current runtime returns 401 where the governed test expects 403. Related surfaces include auth-failure projection parity and anonymous-access REST status parity.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -31829,7 +31829,7 @@
     {
       "id": "clm:authn-provider-integration-status-20260424",
       "title": "AuthN provider integration status-code closure",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "authn-provider-integration",
       "description": "The AuthN provider integration preserves governed status-code behavior: missing credentials on required provider auth return 403 and wrong bearer credentials return 401, while direct HTTPBearer challenge behavior remains separately verified.",
@@ -36704,7 +36704,7 @@
     {
       "id": "rel:authn-provider-integration-status-20260424",
       "version": "authn-provider-integration-status-20260424",
-      "status": "candidate",
+      "status": "published",
       "boundary_id": "bnd:authn-provider-integration-status-001",
       "claim_ids": [
         "clm:authn-provider-integration-status-20260424"
