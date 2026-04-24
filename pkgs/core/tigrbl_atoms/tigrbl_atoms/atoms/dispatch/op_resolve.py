@@ -5,7 +5,6 @@ from typing import Any
 from ... import events as _ev
 from ...stages import Bound, Planned
 from ...types import Atom, Ctx, PlannedCtx
-from tigrbl_kernel.models import OpKey
 
 ANCHOR = _ev.DISPATCH_OP_RESOLVE
 
@@ -27,6 +26,26 @@ def _default_status(op_alias: str, target: str | None = None) -> int:
     return 201 if verb in {"create", "bulk_create"} else 200
 
 
+def _lookup_op_index(plan: object, protocol: str, selector: str) -> int | None:
+    opkey_to_meta = getattr(plan, "opkey_to_meta", {})
+    if not isinstance(opkey_to_meta, dict):
+        return None
+
+    maybe = opkey_to_meta.get((protocol, selector))
+    if isinstance(maybe, int) and maybe >= 0:
+        return maybe
+
+    for key, value in opkey_to_meta.items():
+        if (
+            getattr(key, "proto", None) == protocol
+            and getattr(key, "selector", None) == selector
+            and isinstance(value, int)
+            and value >= 0
+        ):
+            return value
+    return None
+
+
 def _run(obj: object | None, ctx: Any) -> None:
     del obj
     dispatch = _dispatch_dict(ctx)
@@ -40,11 +59,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     protocol = dispatch.get("binding_protocol")
     op_index: int | None = None
     if isinstance(protocol, str) and isinstance(selector, str):
-        maybe = getattr(plan, "opkey_to_meta", {}).get(
-            OpKey(proto=protocol, selector=selector)
-        )
-        if isinstance(maybe, int) and maybe >= 0:
-            op_index = maybe
+        op_index = _lookup_op_index(plan, protocol, selector)
 
     if op_index is None:
         return
