@@ -6,3 +6,6 @@ dependencies = ["tigrbl"]
 
 [project.entry-points."tigrbl.engine"]
 memrate = "tigrbl_engine_memrate.plugin:register"
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

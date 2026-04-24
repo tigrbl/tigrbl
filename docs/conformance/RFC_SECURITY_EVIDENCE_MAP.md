@@ -1,10 +1,10 @@
 # RFC Security Evidence Map
 
-This file is the Phase 11 per-RFC evidence mapping for the current target.
+This file is the Gate C per-RFC evidence mapping for the current target.
 
 ## Retained and proved in Gate C
 
-| Row | Phase 11 status | Owner | Code | Tests / evidence | Notes |
+| Row | Gate C status | Owner | Code | Tests / evidence | Notes |
 |---|---|---|---|---|---|
 | RFC 7235 | Gate C passed | Auth & Security | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_security/http_basic.py`<br>`pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_security/http_bearer.py`<br>`pkgs/core/tigrbl_runtime/tigrbl_runtime/executors/packed.py`<br>`pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/asgi_send.py` | `tools/ci/tests/test_http_auth_challenges.py`<br>`docs/conformance/audit/2026/p11-gate-c/pytest_gate_c_conformance_security.log` | The retained framework-owned scope is HTTP authentication challenge semantics and header propagation. |
 | RFC 7617 | Gate C passed | Auth & Security | `pkgs/core/tigrbl_concrete/tigrbl_concrete/_concrete/_security/http_basic.py` | `tools/ci/tests/test_http_auth_challenges.py`<br>`docs/conformance/audit/2026/p11-gate-c/pytest_gate_c_conformance_security.log` | The retained scope is Basic credentials parsing plus `WWW-Authenticate: Basic ...` challenge behavior. |

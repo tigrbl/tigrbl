@@ -1,0 +1,2442 @@
+{
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "in": "header",
+        "name": "X-API-Key",
+        "type": "apiKey"
+      },
+      "BasicAuth": {
+        "scheme": "basic",
+        "type": "http"
+      },
+      "BearerAuth": {
+        "scheme": "bearer",
+        "type": "http"
+      },
+      "MutualTLSAuth": {
+        "type": "mutualTLS"
+      },
+      "OAuth2Auth": {
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://issuer.example/token"
+          }
+        },
+        "type": "oauth2"
+      },
+      "OpenIdAuth": {
+        "openIdConnectUrl": "https://issuer.example/.well-known/openid-configuration",
+        "type": "openIdConnect"
+      }
+    }
+  },
+  "info": {
+    "title": "Spec Snapshot API JSON-RPC API",
+    "version": "5.0.0"
+  },
+  "methods": [
+    {
+      "description": "RPC method for SpecSnapshotBasicDocsTable.clear (clear)",
+      "name": "SpecSnapshotBasicDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBasicDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBasicDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for SpecSnapshotBasicDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotBasicDocsTableClearResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbasicdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBasicDocsTable.clear"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBasicDocsTable.create (create)",
+      "name": "SpecSnapshotBasicDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotBasicDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBasicDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotBasicDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBasicDocsTableCreateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshotbasicdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBasicDocsTable.create"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBasicDocsTable.delete (delete)",
+      "name": "SpecSnapshotBasicDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBasicDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "SpecSnapshotBasicDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for SpecSnapshotBasicDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotBasicDocsTableDeleteResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBasicDocsTable.delete"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBasicDocsTable.list (list)",
+      "name": "SpecSnapshotBasicDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBasicDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBasicDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotBasicDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBasicDocsTableListResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbasicdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBasicDocsTable.list"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBasicDocsTable.read (read)",
+      "name": "SpecSnapshotBasicDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBasicDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBasicDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotBasicDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBasicDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "BasicAuth": []
+        }
+      ],
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBasicDocsTable.read"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBasicDocsTable.replace (replace)",
+      "name": "SpecSnapshotBasicDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotBasicDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBasicDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotBasicDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBasicDocsTableReplaceResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBasicDocsTable.replace"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBasicDocsTable.update (update)",
+      "name": "SpecSnapshotBasicDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotBasicDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "SpecSnapshotBasicDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotBasicDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "SpecSnapshotBasicDocsTableUpdateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshotbasicdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBasicDocsTable.update"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBearerDocsTable.clear (clear)",
+      "name": "SpecSnapshotBearerDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBearerDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBearerDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for SpecSnapshotBearerDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotBearerDocsTableClearResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbearerdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBearerDocsTable.clear"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBearerDocsTable.create (create)",
+      "name": "SpecSnapshotBearerDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotBearerDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBearerDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotBearerDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBearerDocsTableCreateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshotbearerdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBearerDocsTable.create"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBearerDocsTable.delete (delete)",
+      "name": "SpecSnapshotBearerDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBearerDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "SpecSnapshotBearerDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for SpecSnapshotBearerDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotBearerDocsTableDeleteResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBearerDocsTable.delete"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBearerDocsTable.list (list)",
+      "name": "SpecSnapshotBearerDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBearerDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBearerDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotBearerDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBearerDocsTableListResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbearerdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBearerDocsTable.list"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBearerDocsTable.read (read)",
+      "name": "SpecSnapshotBearerDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotBearerDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBearerDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotBearerDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBearerDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "BearerAuth": []
+        }
+      ],
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBearerDocsTable.read"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBearerDocsTable.replace (replace)",
+      "name": "SpecSnapshotBearerDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotBearerDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotBearerDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotBearerDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotBearerDocsTableReplaceResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBearerDocsTable.replace"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotBearerDocsTable.update (update)",
+      "name": "SpecSnapshotBearerDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotBearerDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "SpecSnapshotBearerDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotBearerDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "SpecSnapshotBearerDocsTableUpdateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshotbearerdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotBearerDocsTable.update"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotRouterDocsTable.clear (clear)",
+      "name": "SpecSnapshotRouterDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotRouterDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotRouterDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for SpecSnapshotRouterDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotRouterDocsTableClearResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotrouterdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotRouterDocsTable.clear"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotRouterDocsTable.create (create)",
+      "name": "SpecSnapshotRouterDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotRouterDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotRouterDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotRouterDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotRouterDocsTableCreateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshotrouterdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotRouterDocsTable.create"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotRouterDocsTable.delete (delete)",
+      "name": "SpecSnapshotRouterDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotRouterDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "SpecSnapshotRouterDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for SpecSnapshotRouterDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotRouterDocsTableDeleteResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotRouterDocsTable.delete"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotRouterDocsTable.list (list)",
+      "name": "SpecSnapshotRouterDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotRouterDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotRouterDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotRouterDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotRouterDocsTableListResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotrouterdocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotRouterDocsTable.list"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotRouterDocsTable.read (read)",
+      "name": "SpecSnapshotRouterDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotRouterDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotRouterDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotRouterDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotRouterDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "ApiKeyAuth": []
+        }
+      ],
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotRouterDocsTable.read"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotRouterDocsTable.replace (replace)",
+      "name": "SpecSnapshotRouterDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotRouterDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotRouterDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotRouterDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotRouterDocsTableReplaceResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotRouterDocsTable.replace"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotRouterDocsTable.update (update)",
+      "name": "SpecSnapshotRouterDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotRouterDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "SpecSnapshotRouterDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotRouterDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "SpecSnapshotRouterDocsTableUpdateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshotrouterdocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotRouterDocsTable.update"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotTableDocsTable.clear (clear)",
+      "name": "SpecSnapshotTableDocsTable.clear",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotTableDocsTable clear schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotTableDocsTableClearRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "clear response schema for SpecSnapshotTableDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotTableDocsTableClearResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshottabledocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotTableDocsTable.clear"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotTableDocsTable.create (create)",
+      "name": "SpecSnapshotTableDocsTable.create",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotTableDocsTable create schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotTableDocsTableCreateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotTableDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotTableDocsTableCreateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "POST"
+            ],
+            "path": "/specsnapshottabledocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotTableDocsTable.create"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotTableDocsTable.delete (delete)",
+      "name": "SpecSnapshotTableDocsTable.delete",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotTableDocsTable delete schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name",
+              "id"
+            ],
+            "title": "SpecSnapshotTableDocsTableDeleteRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "delete response schema for SpecSnapshotTableDocsTable",
+          "examples": [
+            {
+              "deleted": 0
+            }
+          ],
+          "properties": {
+            "deleted": {
+              "examples": [
+                0
+              ],
+              "title": "Deleted",
+              "type": "integer"
+            }
+          },
+          "required": [
+            "deleted"
+          ],
+          "title": "SpecSnapshotTableDocsTableDeleteResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "DELETE"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotTableDocsTable.delete"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotTableDocsTable.list (list)",
+      "name": "SpecSnapshotTableDocsTable.list",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotTableDocsTable list schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotTableDocsTableListRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotTableDocsTable list schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotTableDocsTableListResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshottabledocstable",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotTableDocsTable.list"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotTableDocsTable.read (read)",
+      "name": "SpecSnapshotTableDocsTable.read",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "description": "Tigrbl v3 SpecSnapshotTableDocsTable read schema",
+            "properties": {
+              "id": {
+                "default": null,
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotTableDocsTableReadRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "description": "Tigrbl v3 SpecSnapshotTableDocsTable read schema",
+          "properties": {
+            "id": {
+              "default": null,
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotTableDocsTableReadResponse",
+          "type": "object"
+        }
+      },
+      "security": [
+        {
+          "OAuth2Auth": []
+        },
+        {
+          "OpenIdAuth": []
+        },
+        {
+          "MutualTLSAuth": []
+        }
+      ],
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "GET"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotTableDocsTable.read"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotTableDocsTable.replace (replace)",
+      "name": "SpecSnapshotTableDocsTable.replace",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotTableDocsTable replace schema",
+            "properties": {
+              "name": {
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "name"
+            ],
+            "title": "SpecSnapshotTableDocsTableReplaceRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotTableDocsTable replace schema",
+          "properties": {
+            "name": {
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "name"
+          ],
+          "title": "SpecSnapshotTableDocsTableReplaceResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PUT"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotTableDocsTable.replace"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    },
+    {
+      "description": "RPC method for SpecSnapshotTableDocsTable.update (update)",
+      "name": "SpecSnapshotTableDocsTable.update",
+      "paramStructure": "by-name",
+      "params": [
+        {
+          "name": "params",
+          "required": true,
+          "schema": {
+            "additionalProperties": false,
+            "description": "Tigrbl v3 SpecSnapshotTableDocsTable update schema",
+            "properties": {
+              "id": {
+                "examples": [
+                  "00000000-dead-beef-cafe-000000000000"
+                ],
+                "format": "uuid",
+                "title": "Id",
+                "type": "string"
+              },
+              "name": {
+                "default": null,
+                "title": "Name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id"
+            ],
+            "title": "SpecSnapshotTableDocsTableUpdateRequest",
+            "type": "object"
+          }
+        }
+      ],
+      "result": {
+        "name": "result",
+        "schema": {
+          "additionalProperties": false,
+          "description": "Tigrbl v3 SpecSnapshotTableDocsTable update schema",
+          "properties": {
+            "id": {
+              "examples": [
+                "00000000-dead-beef-cafe-000000000000"
+              ],
+              "format": "uuid",
+              "title": "Id",
+              "type": "string"
+            },
+            "name": {
+              "default": null,
+              "title": "Name",
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "title": "SpecSnapshotTableDocsTableUpdateResponse",
+          "type": "object"
+        }
+      },
+      "x-tigrbl-surface": {
+        "bindings": [
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "json",
+            "methods": [
+              "PATCH"
+            ],
+            "path": "/specsnapshottabledocstable/{item_id}",
+            "proto": "http.rest",
+            "rpcMethod": null
+          },
+          {
+            "exchange": "request_response",
+            "family": "request",
+            "framing": "jsonrpc",
+            "methods": null,
+            "path": null,
+            "proto": "http.jsonrpc",
+            "rpcMethod": "SpecSnapshotTableDocsTable.update"
+          }
+        ],
+        "exchange": "request_response",
+        "family": "crud",
+        "subevents": [],
+        "txScope": "inherit"
+      }
+    }
+  ],
+  "openrpc": "1.2.6",
+  "servers": [
+    {
+      "name": "Spec Snapshot API",
+      "url": "/rpc"
+    }
+  ]
+}

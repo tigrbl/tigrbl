@@ -1,0 +1,36 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1041"
+number: 1041
+slug: "operator-surface-boundary"
+title: "Operator-surface boundary"
+status: "superseded"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Operator-surface tests validate both runtime behavior and docs projection consistency; both need explicit boundary language."
+supersedes: []
+superseded_by:
+  - "adr:1063"
+status_notes:
+  -
+    status: "superseded"
+    note: "Public operator support is now explicit and excludes facade authoring helpers other than get_schema()."
+    at: "2026-04-20T21:50:21Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Operator-surface closure includes runtime exposure and docs projection parity obligations.
+  2. Framing, multipart, stream, and upload behavior remain primary runtime contracts.
+  3. Documentation parity for those operator surfaces is a required secondary conformance boundary.
+  4. Phase-closure conformance must include cross-projection verification between runtime operator behavior and docs projections.
+  
+  ## Context
+  
+  Operator-surface tests validate both runtime behavior and docs projection consistency; both need explicit boundary language.
+  
+  ## Consequences
+  
+  - Operator conformance gates include docs parity checks.
+  - Runtime-only closure claims are insufficient without projection parity evidence.

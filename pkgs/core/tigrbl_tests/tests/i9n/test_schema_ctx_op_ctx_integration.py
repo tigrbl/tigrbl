@@ -4,7 +4,7 @@ from httpx import ASGITransport, AsyncClient
 from pydantic import BaseModel
 from sqlalchemy import Column, String
 from tigrbl import TableBase, TigrblApp, TigrblRouter, op_ctx, schema_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 
 
@@ -84,3 +84,4 @@ async def test_schema_ctx_rest_and_rpc(widget_client):
     res_rpc = await client.post("/rpc/", json=rpc_payload)
     assert res_rpc.status_code == 200
     assert res_rpc.json()["result"] == {"name": "bar"}
+

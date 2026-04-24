@@ -1,0 +1,49 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1067"
+number: 1067
+slug: "canonical-exchange-vocabulary-aliasing-and-provisional-token-policy"
+title: "Canonical exchange vocabulary, aliasing, and provisional token policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the public canonical exchange vocabulary, alias normalization, and provisional-token policy on the active line."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1007, ADR-1009, ADR-1023, ADR-1024, ADR-1025, ADR-1041
+
+  1. The active-line public canonical exchange vocabulary is:
+     - `request_response`;
+     - `server_stream`; and
+     - `bidirectional_stream`.
+  2. `event_stream` is not a separate semantic exchange class; it is an SSE-facing compatibility token whose canonical semantic exchange is `server_stream` and whose concrete framing is `sse`.
+  3. `bidirectional` is a legacy alias and must normalize to `bidirectional_stream`.
+  4. `client_stream` and `fire_and_forget` remain provisional tokens and must not be used as first-class or current-target support claims until separately governed.
+  5. Exchange normalization occurs before hook selection, docs emission, parity projection, channel derivation, and diagnostics rendering.
+  6. The canonical exchange vocabulary is public, while compatibility tokens remain compatibility-only unless separately promoted through SSOT governance.
+  7. Introducing a new public exchange class, renaming the canonical public exchange vocabulary, or promoting a provisional token requires a new ADR.
+
+  ## Context
+
+  The active line currently exposes overlapping exchange tokens across Python bindings, runtime adapters, Rust specs, and draft architecture notes.
+  That drift makes support claims, selector semantics, and docs parity ambiguous unless the public vocabulary and alias policy are governed directly.
+
+  ## Consequences
+
+  - Public docs and diagnostics can normalize visible exchange tokens before presenting support claims.
+  - Compatibility tokens remain usable for migration and parser tolerance without becoming first-class by accident.
+  - Future exchange expansion must be explicit rather than inferred from enum growth in one language binding.
+
+  ## Rejected Alternatives
+
+  - Immediate renaming to `unary` and `duplex` without a governed migration path.
+  - Treating `event_stream` as a fourth semantic exchange class.
+  - Leaving exchange normalization as transport-adapter-specific behavior only.

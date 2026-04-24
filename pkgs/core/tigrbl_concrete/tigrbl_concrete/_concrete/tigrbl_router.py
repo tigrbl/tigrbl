@@ -18,6 +18,7 @@ from typing import (
 
 from ._router import Router as _Router
 from tigrbl_core._spec.engine_spec import EngineCfg
+from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
 from tigrbl_concrete._mapping.router.include import (
     include_table as _include_table,
@@ -28,8 +29,7 @@ from tigrbl_concrete._mapping.model import rebind as _rebind, bind as _bind
 from ._op_registry import get_registry
 from tigrbl_core._spec import OpSpec
 from ._table_registry import TableRegistry
-from ._routing import include_router as _include_router_impl
-from ._route import compile_path
+from ._route import add_jsonrpc_mount, compile_path
 from ._websocket import WebSocketRoute
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
@@ -139,6 +139,7 @@ class TigrblRouter(_Router):
         self.core_raw = SimpleNamespace()
         self.websocket_routes: list[WebSocketRoute] = []
         self._static_mounts: list[dict[str, str]] = []
+        self._jsonrpc_endpoint_mounts: dict[str, str] = {}
         self._tigrbl_runtime_resolve_provider = _resolver.resolve_provider
         self._tigrbl_runtime_acquire_db = _resolver.acquire
 
@@ -204,7 +205,7 @@ class TigrblRouter(_Router):
             self, model, app=None, prefix=prefix, mount_router=mount_router
         )
         if mount_router and router is not None:
-            _include_router_impl(self, router, prefix=prefix)
+            self.include_router(router, prefix=prefix)
         return included_table, router
 
     def include_tables(
@@ -226,7 +227,7 @@ class TigrblRouter(_Router):
         if mount_router:
             for router in included.values():
                 if router is not None:
-                    _include_router_impl(self, router, prefix=base_prefix)
+                    self.include_router(router, prefix=base_prefix)
         return included
 
     def install_engines(
@@ -296,22 +297,23 @@ class TigrblRouter(_Router):
         )
 
     def mount_jsonrpc(
-        self, *, prefix: str | None = None, tags: Sequence[str] | None = ("rpc",)
+        self,
+        *,
+        prefix: str | None = None,
+        endpoint: str = __JSONRPC_DEFAULT_ENDPOINT__,
+        tags: Sequence[str] | None = ("rpc",),
     ) -> Any:
         del tags
         if prefix is not None:
             self.jsonrpc_prefix = prefix
+        endpoint = str(endpoint or __JSONRPC_DEFAULT_ENDPOINT__)
 
-        existing_paths = {getattr(route, "path", None) for route in self.routes}
-        if (
-            self.jsonrpc_prefix not in existing_paths
-            and f"{self.jsonrpc_prefix}/" not in existing_paths
-        ):
-            self.add_route(
-                self.jsonrpc_prefix,
-                lambda *_args, **_kwargs: None,
-                methods=["POST"],
-            )
+        candidate_paths = (
+            self.jsonrpc_prefix,
+            f"{self.jsonrpc_prefix}/" if self.jsonrpc_prefix != "/" else "/",
+        )
+        for path in candidate_paths:
+            add_jsonrpc_mount(self, path, endpoint=endpoint)
         return self
 
     def mount_openrpc(
@@ -397,7 +399,7 @@ class TigrblRouter(_Router):
         prov = _resolver.resolve_provider(router=self)
         get_db = prov.get_db if prov else None
         router = _mount_diagnostics(self, get_db=get_db)
-        _include_router_impl(self, router, prefix=px)
+        self.include_router(router, prefix=px)
         if app is not None and app is not self:
             include_other = getattr(app, "include_router", None)
             if callable(include_other):

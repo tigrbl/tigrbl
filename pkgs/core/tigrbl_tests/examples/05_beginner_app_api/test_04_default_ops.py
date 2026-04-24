@@ -1,5 +1,5 @@
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -54,3 +54,4 @@ def test_default_ops_are_exposed_as_aliases():
     # Assertion: common aliases like create/list are always available.
     assert "create" in aliases
     assert "list" in aliases
+

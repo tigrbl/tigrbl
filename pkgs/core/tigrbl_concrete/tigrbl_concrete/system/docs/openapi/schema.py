@@ -14,6 +14,7 @@ from .helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
+from ..surface import binding_surface, op_surface
 
 
 def openapi(router: Any) -> dict[str, Any]:
@@ -138,10 +139,12 @@ def openapi(router: Any) -> dict[str, Any]:
             security_deps.extend(
                 list(getattr(route, "security_dependencies", None) or ())
             )
+            surface_spec = None
             if model is not None and isinstance(alias, str):
                 specs = getattr(getattr(model, "ops", None), "by_alias", {})
                 sp_list = specs.get(alias) or ()
                 if sp_list:
+                    surface_spec = sp_list[0]
                     security_deps.extend(
                         list(getattr(sp_list[0], "security_deps", ()) or ())
                     )
@@ -157,18 +160,18 @@ def openapi(router: Any) -> dict[str, Any]:
                     _security_schemes_from_dependencies(security_deps)
                 )
 
-            op["x-tigrbl-surface"] = {
-                "binding": {
-                    "proto": getattr(binding, "proto", None),
-                    "path": getattr(binding, "path", None),
-                    "framing": getattr(binding, "framing", None),
-                    "exchange": getattr(binding, "exchange", None),
+            surface = (
+                op_surface(surface_spec)
+                if surface_spec is not None
+                else {
+                    "exchange": getattr(route, "tigrbl_exchange", None),
+                    "txScope": getattr(route, "tigrbl_tx_scope", None),
                 }
-                if binding is not None
-                else None,
-                "exchange": getattr(route, "tigrbl_exchange", None),
-                "txScope": getattr(route, "tigrbl_tx_scope", None),
-            }
+            )
+            surface["binding"] = (
+                binding_surface(binding) if binding is not None else None
+            )
+            op["x-tigrbl-surface"] = surface
 
             path_item[method.lower()] = op
 

@@ -1,0 +1,49 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1035"
+number: 1035
+slug: "versioning-and-promotion-policy"
+title: "Versioning and promotion policy"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Use `0.x.y.devN` for development checkpoints and `0.x.y` for stable releases. Do not use release candidates in the current program."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Updated versioning policy with deprecated-export compatibility-window governance."
+    at: "2026-04-21T07:11:59Z"
+references: []
+body: |-
+  ## Decision
+  
+  Use `0.x.y.devN` for development checkpoints and `0.x.y` for stable releases. Do not use release candidates in the current program.
+  
+  Deprecated public exports follow an explicit compatibility-window policy tied to version boundaries and promotion gates.
+  
+  1. Deprecated exports may remain only within a declared compatibility window.
+  2. The deprecation record must identify the first version where the export is deprecated and the target version boundary where removal is expected.
+  3. Deprecated exports must be discoverable as deprecated while they remain available.
+  4. Promotion checks may fail when deprecated exports exceed their declared compatibility window.
+  5. Documentation and release notes must state the deprecation start and intended removal boundary.
+  
+  ## Context
+  
+  Versioning and promotion policy governs how users interpret development checkpoints and stable release boundaries. integration coverage now asserts that deprecated type exports exist only before the next minor boundary. That is a versioning decision, not only a packaging detail.
+  
+  The policy should make compatibility windows machine-checkable enough for tests, release notes, and promotion gates to agree.
+  
+  ## Consequences
+  
+  - Deprecated export behavior becomes part of release governance.
+  - Compatibility windows must be expressed in SSOT metadata or a spec governed by this ADR.
+  - Tests may assert both the presence of deprecated exports inside the window and their absence after the removal boundary.
+  - Release promotion should treat stale deprecated exports as policy violations when the removal boundary has passed.
+  
+  ## Evidence
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_types_deprecation_exports.py`
+  - `pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py`

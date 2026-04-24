@@ -1,0 +1,93 @@
+{
+  "$defs": {
+    "RouterSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.router_spec:RouterSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "RouterSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "RouterSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "deps": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "engine": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "hooks": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "name": {
+      "type": "string"
+    },
+    "ops": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "prefix": {
+      "type": "string"
+    },
+    "response": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./ResponseSpec.json"
+            },
+            {
+              "$ref": "./ResponseSpec.json#/$defs/ResponseSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "schemas": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "security_deps": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "tables": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "tags": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    }
+  },
+  "required": [
+    "name",
+    "prefix",
+    "engine",
+    "tags",
+    "ops",
+    "schemas",
+    "hooks",
+    "security_deps",
+    "deps",
+    "response",
+    "tables"
+  ],
+  "title": "RouterSpec",
+  "type": "object"
+}

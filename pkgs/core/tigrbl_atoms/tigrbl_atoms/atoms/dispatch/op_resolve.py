@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import Any, Mapping
+from typing import Any
 
 from ... import events as _ev
 from ...stages import Bound, Planned
 from ...types import Atom, Ctx, PlannedCtx
+from tigrbl_kernel.models import OpKey
 
 ANCHOR = _ev.DISPATCH_OP_RESOLVE
 
@@ -37,29 +38,13 @@ def _run(obj: object | None, ctx: Any) -> None:
 
     selector = dispatch.get("binding_selector")
     protocol = dispatch.get("binding_protocol")
-    packed = getattr(plan, "packed", None)
-    selector_to_id = getattr(packed, "selector_to_id", {}) if packed is not None else {}
-    proto_to_id = getattr(packed, "proto_to_id", {}) if packed is not None else {}
-    route_to_program = (
-        getattr(packed, "route_to_program", None) if packed is not None else None
-    )
-
-    selector_id = (
-        selector_to_id.get(selector) if isinstance(selector_to_id, Mapping) else None
-    )
-    proto_id = proto_to_id.get(protocol) if isinstance(proto_to_id, Mapping) else None
     op_index: int | None = None
-    if (
-        isinstance(proto_id, int)
-        and isinstance(selector_id, int)
-        and route_to_program is not None
-    ):
-        if 0 <= proto_id < len(route_to_program):
-            row = route_to_program[proto_id]
-            if 0 <= selector_id < len(row):
-                maybe = row[selector_id]
-                if isinstance(maybe, int) and maybe >= 0:
-                    op_index = maybe
+    if isinstance(protocol, str) and isinstance(selector, str):
+        maybe = getattr(plan, "opkey_to_meta", {}).get(
+            OpKey(proto=protocol, selector=selector)
+        )
+        if isinstance(maybe, int) and maybe >= 0:
+            op_index = maybe
 
     if op_index is None:
         return

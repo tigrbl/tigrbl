@@ -1,0 +1,47 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1048"
+number: 1048
+slug: "kernel-priming-singleton-and-opview-cache-ownership"
+title: "Kernel priming, singleton, and OpView cache ownership"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The runtime, harness, and AppSpec parity lanes depend on a stable kernel identity,"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  The runtime, harness, and AppSpec parity lanes depend on a stable kernel identity,
+  idempotent priming, and predictable on-demand OpView materialization. Those
+  expectations are implied across existing parity and dispatch documents, but the
+  ownership rules for `_default_kernel`, `ensure_primed()`, and OpView cache
+  lifecycle are not stated explicitly in one place.
+  
+  ## Decision
+  
+  1. Kernel priming is owned by the runtime/kernel-plan lifecycle rather than by
+     transport adapters or test harnesses.
+  2. A materialized app or router surface has one logical default kernel identity
+     for its compiled plan scope.
+  3. `ensure_primed()` is idempotent. Repeated priming requests may reuse existing
+     compiled state, but they may not null out or silently replace the active
+     default kernel absent explicit invalidation.
+  4. OpViews may be compiled lazily, but on-demand compilation must attach to the
+     same stable kernel identity and reuse cache entries keyed by canonical op
+     identity.
+  5. Cache invalidation is explicit. New app materialization, binding changes, or
+     canonical surface changes may force a rebuild; ordinary reads, docs
+     generation, and repeated transport ingress must not.
+  6. Harnesses and concrete transports may request priming, but they do not own
+     the priming contract or cache replacement rules.
+  
+  ## Traceability
+  
+  - Related ADRs: `adr:1016`, `adr:1031`, `adr:1047`
+  - Companion spec: `spc:2018`
+  - Related feature: `feat:kernel-prime-opview-cache-001`

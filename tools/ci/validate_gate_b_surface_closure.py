@@ -79,8 +79,8 @@ def main() -> None:
         errors.append('docs/conformance/CURRENT_TARGET.md must declare no current-target surfaces still missing')
     if 'no unresolved current-target surface gaps' not in current_state_text:
         errors.append('docs/conformance/CURRENT_STATE.md must declare that no unresolved current-target surface gaps remain')
-    if 'Passed in the Phase 10 checkpoint.' not in gate_b_text:
-        errors.append('docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md must record Gate B as passed in the Phase 10 checkpoint')
+    if 'Passed in the Gate B surface-closure checkpoint.' not in gate_b_text:
+        errors.append('docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md must record Gate B as passed in the Gate B surface-closure checkpoint')
 
     for path in REQUIRED_PATHS:
         if not path.exists():

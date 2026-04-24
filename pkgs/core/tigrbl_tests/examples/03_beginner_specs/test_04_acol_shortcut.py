@@ -1,7 +1,7 @@
 from tigrbl import TableBase
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import String
 
 
@@ -47,3 +47,4 @@ def test_acol_respects_storage_configuration():
     # Assertion: storage settings are honored.
     assert column.nullable is False
     assert isinstance(column.type, String)
+

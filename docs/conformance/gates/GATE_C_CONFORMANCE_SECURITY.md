@@ -6,11 +6,11 @@ Prove the retained spec/security claims with aligned docs, emitted behavior, run
 
 ## Status
 
-Passed in the Phase 11 checkpoint.
+Passed in the Gate C conformance/security checkpoint.
 
 ## What Gate C proves in this checkpoint
 
-The Phase 11 checkpoint proves that the retained exact spec/security claim set is closed at checkpoint quality:
+The Gate C checkpoint proves that the retained exact spec/security claim set is closed at checkpoint quality:
 
 - OpenAPI 3.1 docs and emitted behavior are aligned
 - explicit JSON Schema Draft 2020-12 behavior is present and tested

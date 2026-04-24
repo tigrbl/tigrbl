@@ -8,7 +8,7 @@ preferred design for reusable identifiers like primary keys.
 from tigrbl import TableBase, bind
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import String
 
 
@@ -47,3 +47,4 @@ def test_mixin_column_spec_matches_table_column():
     bind(Widget)
 
     assert set(Widget.__table__.primary_key.columns.keys()) == {"id"}
+

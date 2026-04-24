@@ -6,7 +6,7 @@ behavior (like auditing) to be configured once at the API layer.
 """
 
 from tigrbl import TableBase, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -50,3 +50,4 @@ def test_router_hook_binding_respects_alias_namespace():
     router.include_table(Widget)
 
     assert isinstance(Widget.hooks.create.PRE_HANDLER, list)
+

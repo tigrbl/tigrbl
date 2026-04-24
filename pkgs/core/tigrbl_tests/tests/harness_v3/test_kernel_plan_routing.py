@@ -2,7 +2,7 @@
 
 Contract (TDD):
 - Kernel.compile_plan(app) produces plain selector maps for REST and JSON-RPC.
-- REST path/template matching is performed by runtime route atoms, not kernel core.
+- REST path/template matching is performed by route-binding dispatch helpers, not kernel core.
 """
 
 from __future__ import annotations
@@ -12,7 +12,7 @@ import pytest
 from tigrbl import TableBase, TigrblApp
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl_kernel import _default_kernel
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.types import Column, String
 
 
@@ -65,3 +65,4 @@ def test_route_atom_matcher_returns_not_found_for_misses(
     method: str, path: str
 ) -> None:
     pass
+

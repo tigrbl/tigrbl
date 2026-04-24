@@ -155,6 +155,10 @@ async def _send_transport_response(env: Any, ctx: Any) -> None:
         body_obj = getattr(ctx, "result", None)
         if body_obj is None and status == 200:
             status = 204
+    if is_response_like(body_obj):
+        await _send_response_like(env, body_obj)
+        egress["response_sent"] = True
+        return
 
     if isinstance(body_obj, Mapping) and set(body_obj.keys()) == {"body"}:
         nested = body_obj.get("body")
@@ -224,6 +228,35 @@ def _json_bytes(obj: Any) -> bytes:
     ).encode("utf-8")
 
 
+async def _send_response_like(env: Any, resp: Any) -> None:
+    status = int(getattr(resp, "status_code", 200) or 200)
+    headers = list(getattr(resp, "raw_headers", ()) or ())
+    body_iterator = getattr(resp, "body_iterator", None)
+    if body_iterator is not None:
+        await env.send(
+            {"type": "http.response.start", "status": status, "headers": headers}
+        )
+        async for chunk in body_iterator:
+            await env.send(
+                {
+                    "type": "http.response.body",
+                    "body": bytes(chunk),
+                    "more_body": True,
+                }
+            )
+        await env.send({"type": "http.response.body", "body": b"", "more_body": False})
+        return
+
+    body = getattr(resp, "body", None) or b""
+    if not isinstance(body, (bytes, bytearray)):
+        body = _json_bytes(body)
+    headers, body = finalize_transport_response(env.scope, status, headers, bytes(body))
+    await env.send(
+        {"type": "http.response.start", "status": status, "headers": headers}
+    )
+    await env.send({"type": "http.response.body", "body": body, "more_body": False})
+
+
 def _to_headers_mapping(headers: Any) -> dict[str, Any]:
     if isinstance(headers, dict):
         return dict(headers)
@@ -276,6 +309,10 @@ async def _run(obj: object | None, ctx: Any) -> None:
             body_obj = getattr(ctx, "result", None)
             if body_obj is None and status == 200:
                 status = 204
+        if is_response_like(body_obj):
+            await _send_response_like(raw, body_obj)
+            egress["response_sent"] = True
+            return
 
         if isinstance(body_obj, (bytes, bytearray)):
             body = bytes(body_obj)

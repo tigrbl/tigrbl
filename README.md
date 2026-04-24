@@ -7,13 +7,13 @@ This repository is a mixed Python + Rust workspace for Tigrbl. It contains:
 - Python application packages under `pkgs/apps/`
 - Non-authoritative examples under `examples/`
 - Rust crates under `crates/`
-- The Python↔Rust runtime bridge under `pkgs/core/tigrbl_runtime/`
+- The Python?Rust runtime bridge under `pkgs/core/tigrbl_runtime/`
 
 The root `pyproject.toml` is configured as a uv workspace with packaging disabled. The root `Cargo.toml` is configured as a Rust workspace for the additive Rust substrate.
 
 ## Repository status
 
-This checkpoint completes **Phase 14 - post-promotion handoff** on top of the already-passed **Phase 13 - Gate E promotion and release**.
+This checkpoint completes the **post-promotion handoff** on top of the already-passed **Gate E promotion and release**.
 
 The repository now records:
 
@@ -21,8 +21,8 @@ The repository now records:
 - promotion-source dev bundle `0.3.18.dev1` retained unchanged under `docs/conformance/dev/0.3.18.dev1/`
 - active working-tree version advanced to `0.3.19.dev1` at `pkgs/core/tigrbl/pyproject.toml`
 - a governed next-target planning document at `docs/conformance/NEXT_TARGETS.md`
-- next-target ADRs for the datatype/table program under `docs/adr/`
-- archived promotion-only WIP notes under `docs/notes/archive/2026/p14-post-promotion-handoff/`
+- next-target ADRs for the datatype/table program under `.ssot/adr/`
+- archived promotion-only WIP notes under `docs/notes/archive/2026/post-promotion-handoff/`
 
 Boundary note: the existing Tier 3 certification wording still applies only to the frozen stable release `0.3.18` within the declared current target boundary in `docs/governance/TARGET_BOUNDARY.md`. The active `0.3.19.dev1` line is a governed next-target planning line and is **not** described here as a new promoted Tier 3 release.
 

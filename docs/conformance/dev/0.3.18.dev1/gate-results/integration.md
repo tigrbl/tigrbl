@@ -11,5 +11,5 @@ This lane keeps the integration evidence paths visible and durable.
 
 ## Source audit logs
 
-- `docs/conformance/audit/2026/phase5-oas-jsonschema-jsonrpc-openrpc-closure/phase5_targeted_pytest.log`
+- `docs/conformance/audit/2026/docs-spec-snapshot-closure/phase5_targeted_pytest.log`
 - `docs/conformance/audit/2026/phase7-operator-surface/phase7_operator_pytest.log`

@@ -1,6 +1,6 @@
 # Evidence Model
 
-This gate-result file records the durable evidence-model scaffolding introduced in Phase 9.
+This gate-result file records the durable evidence-model scaffolding introduced by the evidence-model checkpoint.
 
 ## Source documents
 

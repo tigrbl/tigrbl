@@ -39,7 +39,7 @@ def payload(ctx: Mapping[str, Any]) -> Any:
 
 
 def db(ctx: Mapping[str, Any]) -> Any:
-    return _ctx_get(ctx, "db")
+    return _ctx_get(ctx, "db") or _ctx_get(ctx, "_raw_db")
 
 
 def request(ctx: Mapping[str, Any]) -> Any:

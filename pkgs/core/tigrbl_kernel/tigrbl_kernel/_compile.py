@@ -4,6 +4,7 @@ from dataclasses import replace
 from typing import Any, Mapping
 
 from tigrbl_atoms import StepFn
+from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
 
 from . import events as _ev
 from .models import KernelPlan, OpKey, OpMeta, OpView
@@ -100,12 +101,27 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                                 )
 
                 elif isinstance(binding, HttpJsonRpcBindingSpec):
-                    opkey_to_meta[
-                        OpKey(proto=binding.proto, selector=binding.rpc_method)
-                    ] = meta_index
-                    route_data.setdefault(binding.proto, {})[binding.rpc_method] = (
+                    endpoint = str(
+                        getattr(binding, "endpoint", __JSONRPC_DEFAULT_ENDPOINT__)
+                        or __JSONRPC_DEFAULT_ENDPOINT__
+                    )
+                    selector = f"{endpoint}:{binding.rpc_method}"
+                    opkey_to_meta[OpKey(proto=binding.proto, selector=selector)] = (
                         meta_index
                     )
+                    proto_bucket = route_data.setdefault(
+                        binding.proto, {"endpoints": {}}
+                    )
+                    endpoint_bucket = proto_bucket.setdefault("endpoints", {}).setdefault(
+                        endpoint, {}
+                    )
+                    proto_bucket[binding.rpc_method] = meta_index
+                    endpoint_bucket[binding.rpc_method] = {
+                        "meta_index": meta_index,
+                        "selector": selector,
+                        "rpc_method": binding.rpc_method,
+                        "endpoint": endpoint,
+                    }
 
                 elif isinstance(binding, (WsBindingSpec, WebTransportBindingSpec)):
                     bucket = route_data.setdefault(

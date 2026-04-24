@@ -4,15 +4,16 @@ import httpx
 import pytest
 
 from tigrbl import TableBase, TigrblApp, hook_ctx, op_ctx, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Integer, Mapped, String
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 
 
 @pytest.mark.asyncio
+@pytest.mark.timeout(5)
 async def test_custom_op_with_hook() -> None:
     class Widget(TableBase):
         __tablename__ = "hook_ops_widgets"
@@ -52,3 +53,4 @@ async def test_custom_op_with_hook() -> None:
         assert response.json()["meta"] == "hooked"
     finally:
         await stop_uvicorn(server, task)
+

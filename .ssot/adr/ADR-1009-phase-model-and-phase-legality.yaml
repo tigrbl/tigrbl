@@ -1,0 +1,52 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1009"
+number: 1009
+slug: "phase-model-and-phase-legality"
+title: "ADR-0009 \u00e2\u20ac\u201d Phase Model and Phase Legality"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Freeze the canonical active-line phase vocabulary, legality rules, and public hook boundary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  - **Status:** Proposed
+  - **Date:** 2026-04-20
+  - **Related ADRs:** ADR-1008, ADR-1010, ADR-1011, ADR-1012, ADR-1016, ADR-1023, ADR-1024, ADR-1025
+
+  1. Tigrbl execution is phase-based and legality is phase-constrained.
+  2. The implementation-compatible phase set is frozen around the current named phases, grouped conceptually as:
+     - ingress: `INGRESS_BEGIN`, `INGRESS_PARSE`, `INGRESS_ROUTE`;
+     - guarded execution: `PRE_TX_BEGIN`, `START_TX`, `PRE_HANDLER`, `HANDLER`, `POST_HANDLER`, `PRE_COMMIT`, `END_TX`, `POST_COMMIT`;
+     - egress: `POST_RESPONSE`, `EGRESS_SHAPE`, `EGRESS_FINALIZE`;
+     - runtime completion fence: `POST_EMIT`; and
+     - error and rollback phases.
+  3. Work legality is frozen:
+     - dependency resolution occurs before handler execution;
+     - transaction entry and commit or rollback are phase-owned;
+     - transport emission occurs only in egress or runtime completion phases; and
+     - post-send behavior occurs only after `POST_EMIT` when the selected transport exposes an explicit completion fence.
+  4. `INGRESS_ROUTE` is the only allowed ingress routing phase label on the active line.
+  5. `INGRESS_DISPATCH` must not appear as an interchangeable alias, compatibility projection, docs label, parity label, or diagnostics-facing phase name.
+  6. `POST_RESPONSE` remains the last public hook phase.
+  7. `POST_EMIT` is a runtime-owned completion fence and is not a public hook phase.
+  8. Atoms, hooks, and guards must declare their legal phases.
+  9. Phase names may be normalized internally over time, but the legality model may not drift without an ADR.
+
+  ## Context
+
+  Tigrbl execution is phase-driven. The active line already has concrete phase names and a real runtime completion fence.
+  This ADR freezes the legality model so hooks, deps, atoms, guards, routing, and compilation all share the same lifecycle grammar.
+
+  ## Rejected Alternatives
+
+  - Protocol-specific phase systems.
+  - Allowing handlers or deps to choose their own lifecycle points.
+  - Phase drift driven by transport adapters.
+  - Maintaining interchangeable `INGRESS_ROUTE` and `INGRESS_DISPATCH` labels.

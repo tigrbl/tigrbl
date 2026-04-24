@@ -6,7 +6,7 @@ Promote an exact dev build to a stable release with synchronized evidence, claim
 
 ## Status
 
-Passed in the Phase 13 promotion checkpoint.
+Passed in the Gate E promotion checkpoint.
 
 ## Exact promotion identity
 

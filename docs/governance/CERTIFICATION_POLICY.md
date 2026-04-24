@@ -4,13 +4,13 @@
 
 Certification language is controlled. This repository may only use certification wording when the documented claim tier permits it.
 
-The root `certification/` tree is the authoritative certification control surface. Narrative conformance docs must agree with that tree.
+The authoritative certification control surface is the SSOT at `.ssot/registry.json` together with `.ssot/adr/` and `.ssot/specs/`. The `certification/` tree is a derived projection layer. Narrative conformance docs and certification projections must agree with the SSOT.
 
 ## Boundary rule
 
 Certification applies only within the declared current target boundary. Server/runtime transport ownership remains outside the framework claim set unless explicitly added later.
 
-The authoritative boundary record is `certification/boundary.yaml`.
+The authoritative machine-readable boundary record lives in `.ssot/registry.json`. `certification/boundary.yaml` is the derived certification projection entry point.
 
 ## Claim language rule
 
@@ -47,4 +47,4 @@ The promoted stable release `0.3.18` satisfies the governed Gate A through Gate 
 
 The active `0.3.19.dev1` line is a next-target planning checkpoint and does **not** use Tier 3 certification wording.
 
-The Phase 0 certification authority reset is complete when the exit criteria in `certification/targets/next_target.yaml` remain true.
+The certification authority reset remains complete while the SSOT registry and its derived certification projections remain validated and in sync.

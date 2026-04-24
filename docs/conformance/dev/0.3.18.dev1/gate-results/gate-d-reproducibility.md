@@ -1,6 +1,6 @@
 # Gate D Reproducibility
 
-This gate-result file records the dedicated Gate D proof added in Phase 12.
+This gate-result file records the dedicated Gate D proof added by the Gate D reproducibility checkpoint.
 
 ## Source validator
 

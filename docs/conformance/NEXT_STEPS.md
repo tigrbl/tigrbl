@@ -1,6 +1,6 @@
 # Next Steps
 
-## Position after the Phase 14 handoff checkpoint
+## Position after the Post-promotion handoff checkpoint
 
 The repository now has:
 
@@ -8,7 +8,7 @@ The repository now has:
 - a retained promotion-source dev bundle at `docs/conformance/dev/0.3.18.dev1/`
 - an active next-line dev bundle scaffold at `docs/conformance/dev/0.3.19.dev1/`
 - a governed next-target planning document at `docs/conformance/NEXT_TARGETS.md`
-- next-target ADRs for the datatype/table program under `docs/adr/`
+- next-target ADRs for the datatype/table program under `.ssot/adr/`
 
 No in-boundary gates remain open for release `0.3.18`.
 

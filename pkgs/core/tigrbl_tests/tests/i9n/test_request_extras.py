@@ -6,7 +6,7 @@ from httpx import ASGITransport, AsyncClient
 from pydantic import Field
 from sqlalchemy import Column, String
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.schema import _build_schema
 
 
@@ -71,3 +71,4 @@ async def test_request_extras_runtime(app_client_with_extras):
 
     body = res.json()
     assert "token" not in body and "update_flag" not in body
+

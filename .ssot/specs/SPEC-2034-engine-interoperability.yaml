@@ -1,0 +1,33 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2034"
+number: 2034
+slug: "engine-interoperability"
+title: "Engine interoperability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed engine-interoperability surface across multiple providers and bootstrap paths."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed engine-interoperability surface across multiple providers and bootstrap paths.
+  
+  ## Invariants
+  
+  - Engine interoperability includes provider resolution across app, router, table, and op scopes.
+  - Multi-provider bootstrap may group tables by resolved provider before DDL execution.
+  - Interoperability includes both sync and async provider binds.
+  - Transport projection may depend on resolved engines but does not redefine engine behavior.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1015`, `adr:1055`
+  - Related features: `feat:engine-surface-contract-001`, `feat:multi-engine-interop-runtime-surface-001`
+spec_kind: "local-policy"
+adr_ids: []

@@ -1,0 +1,62 @@
+{
+  "$defs": {
+    "SchemaSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.schema_spec:SchemaSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SchemaSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "SchemaSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "alias": {
+      "type": "string"
+    },
+    "for_": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "kind": {
+      "enum": [
+        "in",
+        "out"
+      ],
+      "type": "string"
+    },
+    "schema": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "alias",
+    "kind",
+    "for_",
+    "schema"
+  ],
+  "title": "SchemaSpec",
+  "type": "object"
+}

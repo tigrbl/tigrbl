@@ -2,7 +2,7 @@ Supported claim ids: GATE-011, GATE-012
 
 # Gate D Reproducibility
 
-This release-bundle gate result points to the Phase 12 Gate D reproducibility proof for the exact chosen source build.
+This release-bundle gate result points to the Gate D reproducibility proof for the exact chosen source build.
 
 ## Source artifacts
 

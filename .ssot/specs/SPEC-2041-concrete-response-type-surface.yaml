@@ -1,0 +1,35 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2041"
+number: 2041
+slug: "concrete-response-type-surface"
+title: "Concrete response type surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed concrete response-type surface exposed by `tigrbl_concrete`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed concrete response-type surface exposed by `tigrbl_concrete`.
+  
+  ## Canonical Surface
+  
+  - The response-type family includes `Response`, the exported `TransportResponse` facade surface, `JSONResponse`, `HTMLResponse`, `PlainTextResponse`, `StreamingResponse`, `EventStreamResponse`, `FileResponse`, `RedirectResponse`, and `BackgroundTask`.
+  - `Response` owns header/cookie mutation and ASGI send behavior for non-stream responses.
+  - `StreamingResponse` owns ordered byte-chunk iteration for sync and async sources.
+  - `EventStreamResponse` owns concrete SSE encoding and response headers for event streams.
+  - File and redirect responses remain concrete transport-response variants.
+  - `TransportResponse` is a tracked export-level surface even when a distinct backing implementation is currently absent.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1058`, `adr:1041`
+  - Related features: `feat:response-concrete-response-class-001`, `feat:streamingresponse-concrete-stream-class-001`, `feat:eventstreamresponse-concrete-sse-class-001`, `feat:transportresponse-concrete-response-class-001`
+spec_kind: "local-policy"
+adr_ids: []

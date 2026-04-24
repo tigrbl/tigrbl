@@ -1,0 +1,43 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2071"
+number: 2071
+slug: "mapping-dispatch-convergence-contract"
+title: "Mapping dispatch convergence contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This contract keeps mapping and canonical route projection code converged on declaration materialization instead of semantic dispatch."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Purpose
+  
+  This contract keeps mapping and canonical route projection code converged on declaration materialization instead of semantic dispatch.
+  
+  ## Contract
+  
+  1. Mapping-layer modules must not import removed transport dispatch modules or call removed transport dispatcher functions.
+  2. Canonical mapping modules must not call private runtime invocation helpers such as `_invoke` as a substitute for materialized operation projection.
+  3. Route and RPC mapping code may compute visible operation projections, route metadata, method names, and binding inputs, but it must not execute the semantic operation.
+  4. Mapping code must consume collected declarations, merged operation specs, and binding materialization inputs rather than resolving operations by transport-local dispatch.
+  5. If mapping code requires new execution-time data, that data must be added to the materialized operation contract rather than obtained through a dispatch bypass.
+  
+  ## Related Decisions
+  
+  - ADR-1047 establishes KernelPlan-owned transport dispatch.
+  - ADR-1076 excludes removed transport dispatch bypasses.
+  - ADR-1077 defines mapping as a compilation boundary, not an execution boundary.
+  
+  ## Verification
+  
+  - Architecture tests should assert canonical mapping files do not import removed dispatch modules.
+  - Architecture tests should assert canonical mapping files do not call removed runtime invocation helpers.
+  - Harness tests should verify mapping outputs as projections or materialization inputs, not execution results.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1076"
+  - "adr:1077"

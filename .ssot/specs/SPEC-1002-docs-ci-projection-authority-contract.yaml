@@ -1,0 +1,46 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:1002"
+number: 1002
+slug: "docs-ci-projection-authority-contract"
+title: "Docs and CI projection authority contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This specification governs repository documentation under `docs/` and validation tooling under `tools/ci/` when those files describe certification, claims, evidence, gates, boundaries, releases, features, ADRs, or specs."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted contract making docs and CI non-authoritative projections of SSOT state."
+    at: "2026-04-22T09:37:11Z"
+references: []
+body: |-
+  ## Scope
+  
+  This specification governs repository documentation under `docs/` and validation tooling under `tools/ci/` when those files describe certification, claims, evidence, gates, boundaries, releases, features, ADRs, or specs.
+  
+  ## Normative Rules
+  
+  1. Authoritative governed facts MUST be represented in `.ssot/registry.json`, `.ssot/adr/`, or `.ssot/specs/` before docs or CI rely on them.
+  2. `docs/` files MUST be treated as narrative, evidence, release-bundle, audit, or operator projections of SSOT state.
+  3. `tools/ci/` files MUST be treated as validators and fail-closed guardrails over SSOT-backed state, not as independent definitions of repository truth.
+  4. A docs-only or CI-only change MUST NOT create a new claim, feature, gate, boundary, release, ADR, or SPEC unless the corresponding SSOT entity is also created or updated.
+  5. When a validator embeds required strings, paths, or identifiers, those checks SHOULD be derived from or synchronized with SSOT-backed entities and MUST be updated when SSOT authority changes.
+  6. When docs, CI, and SSOT disagree, the repository MUST resolve the disagreement by preserving SSOT authority and repairing derived projections unless an explicit SSOT mutation supersedes the prior truth.
+  
+  ## Projection Classes
+  
+  - Narrative projection: explanatory files such as reader maps, operator docs, and governance prose.
+  - Evidence projection: logs, snapshots, audit notes, and bundle indexes that support linked evidence.
+  - Validation projection: CI scripts and workflows that check consistency or proof completeness.
+  - Release projection: dev and release bundle files that package SSOT-backed release state.
+  
+  ## Non-Goals
+  
+  This specification does not remove docs or CI from the repository. It narrows their authority role so they can explain and verify SSOT-backed state without becoming a second source of truth.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1060"

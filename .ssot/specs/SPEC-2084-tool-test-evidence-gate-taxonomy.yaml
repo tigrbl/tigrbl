@@ -1,0 +1,48 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2084"
+number: 2084
+slug: "tool-test-evidence-gate-taxonomy"
+title: "Tool, test, evidence, and gate taxonomy"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the SSOT taxonomy that separates tools, tests, evidence, claims, and gates."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted as part of SSOT authority, test alignment, and gate model migration."
+    at: "2026-04-22T00:00:00Z"
+references: []
+body: |-
+  ## Scope
+  
+  This specification defines the repository taxonomy for tools, tests, evidence lanes, claims, and gates when they participate in SSOT-backed governance.
+  
+  ## Terms
+  
+  - Tool: an executable helper that validates, selects, generates, ingests, evaluates, or reports SSOT-backed state.
+  - Test: an executable verification unit that produces a pass, fail, error, skip, or missing result.
+  - Evidence: a durable proof artifact linked to tests and claims.
+  - Evidence lane: a category of evidence such as unit, integration, spec conformance, security, docs UI smoke, CLI smoke, operator surface smoke, server compatibility smoke, or clean-room package validation.
+  - Claim: an SSOT assertion about repository behavior, governance, conformance, or release readiness.
+  - Gate: a release-decision checkpoint that aggregates required claims and evidence for a boundary or release.
+  
+  ## Normative Rules
+  
+  1. Tools MUST NOT be treated as authoritative policy definitions.
+  2. Tests MUST be represented as SSOT test entities when they support feature, claim, evidence, boundary, or release decisions.
+  3. Evidence MUST link to the claims and tests it supports.
+  4. Gates MUST be evaluated from SSOT claims and evidence rather than from untracked prose or standalone CI status.
+  5. ADR/SPEC conformance passing is evidence for a claim; it is not itself a feature.
+  6. A feature is complete only when implementation status, linked tests, linked claims, and linked evidence agree under SSOT validation.
+  
+  ## Gate Order
+  
+  Gate A freezes the boundary. Gate B closes surface scope. Gate C closes ADR/SPEC/security/conformance requirements. Gate D closes reproducibility and package assembly. Gate E closes promotion readiness. Post-promotion handoff is a handoff checkpoint, not a gate.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1082"

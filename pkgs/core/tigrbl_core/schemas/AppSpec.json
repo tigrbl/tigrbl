@@ -1,0 +1,131 @@
+{
+  "$defs": {
+    "AppSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.app_spec:AppSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "AppSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "AppSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "deps": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "engine": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "execution_backend": {
+      "type": "string"
+    },
+    "hooks": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "jsonrpc_prefix": {
+      "type": "string"
+    },
+    "lifespan": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "middlewares": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "ops": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "response": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./ResponseSpec.json"
+            },
+            {
+              "$ref": "./ResponseSpec.json#/$defs/ResponseSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "routers": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "schemas": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "security_deps": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "system_prefix": {
+      "type": "string"
+    },
+    "tables": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "title": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "version",
+    "execution_backend",
+    "engine",
+    "routers",
+    "ops",
+    "tables",
+    "schemas",
+    "hooks",
+    "security_deps",
+    "deps",
+    "response",
+    "jsonrpc_prefix",
+    "system_prefix",
+    "middlewares",
+    "lifespan"
+  ],
+  "title": "AppSpec",
+  "type": "object"
+}

@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  phase8-cli:
+  cli-smoke:
     runs-on: ubuntu-latest
     env:
       PYTHONDONTWRITEBYTECODE: '1'
@@ -19,8 +19,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install minimal CLI smoke dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic uvicorn hypercorn gunicorn typing_extensions
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -41,5 +43,5 @@ jobs:
           PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/core/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
-      - name: Run Phase 8 CLI smoke and server-compat tests
-        run: python -m pytest --noconftest -q pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_cmds.py pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py -p no:cacheprovider
+      - name: Run CLI smoke and server-compat tests
+        run: uv run --no-sync python -m pytest --noconftest -q pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py -p no:cacheprovider

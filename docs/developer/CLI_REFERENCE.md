@@ -182,7 +182,7 @@ The CLI validates these values before runner dispatch and exposes the resolved o
 
 ## Tigrcorn hardening profiles
 
-The current Phase 6 checkpoint publishes five blessed deployment profiles:
+The current Tigrcorn hardening checkpoint publishes five blessed deployment profiles:
 
 - `strict-h1-origin`
 - `strict-h2-origin`

@@ -13,7 +13,7 @@ from tigrbl.orm.tables import TableBase
 from tigrbl.runtime import system as runtime_system
 from tigrbl_kernel import build_phase_chains
 from tigrbl._spec import IO, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 
 # --- models --------------------------------------------------------------------
 
@@ -192,3 +192,4 @@ def test_system_step_registry():
     assert ("txn", "begin") in subjects
     assert ("handler", "crud") in subjects
     assert ("txn", "commit") in subjects
+

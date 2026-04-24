@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "kind": "release_snapshot",
+  "generated_at": "2026-04-21T21:53:05Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "77d12f9be188c7e396baa5487c36794006f100733c6da62bfc1b47266d298bac",
+  "release": {
+    "id": "rel:0.3.19.dev1-appspec-corpus-fixture",
+    "version": "0.3.19.dev1-appspec-corpus-fixture",
+    "status": "promoted",
+    "boundary_id": "bnd:appspec-corpus-fixture-001",
+    "claim_ids": [
+      "clm:appspec-corpus-canonical-parity-001",
+      "clm:appspec-corpus-negative-fail-closed-001"
+    ],
+    "evidence_ids": [
+      "evd:appspec-corpus-pytest"
+    ]
+  },
+  "boundary": {
+    "id": "bnd:appspec-corpus-fixture-001",
+    "title": "AppSpec corpus fixture boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:appspec-corpus-canonical-fixture-001",
+      "feat:appspec-corpus-negative-fail-closed-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:appspec-corpus-canonical-fixture-001",
+      "title": "AppSpec canonical corpus fixture",
+      "description": "Govern canonical AppSpec corpus fixture as test-owned source of truth.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "appspec-corpus",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2082"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:appspec-corpus-negative-fail-closed-001",
+      "title": "AppSpec negative corpus fail-closed lane",
+      "description": "Govern fail-closed AppSpec negative corpus runtime behavior.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "appspec-corpus",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2082"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "requires": []
+    }
+  ],
+  "profiles": [],
+  "profile_evaluations": [],
+  "claims": [
+    {
+      "id": "clm:appspec-corpus-canonical-parity-001",
+      "title": "Canonical AppSpec corpus preserves REST and JSON-RPC parity",
+      "status": "promoted",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Canonical AppSpec corpus cases materialize and execute under uvicorn with stable REST/JSON-RPC parity behavior.",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    },
+    {
+      "id": "clm:appspec-corpus-negative-fail-closed-001",
+      "title": "Negative AppSpec corpus lanes fail closed",
+      "status": "promoted",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "Negative AppSpec corpus cases preserve fail-closed runtime behavior for unsupported dispatch paths.",
+      "feature_ids": [
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn",
+      "title": "AppSpec corpus uvicorn e2e",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/harness_e2e/test_01_appspec_corpus_uvicorn.py",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+      "title": "AppSpec corpus fixture harness",
+      "status": "passing",
+      "kind": "acceptance",
+      "path": "pkgs/core/tigrbl_tests/tests/harness/test_04_appspec_corpus_fixture.py",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "evd:appspec-corpus-pytest",
+      "title": "AppSpec corpus pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": "reports/certification_state/2026-04-21-appspec-corpus-fixture.md",
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+      ]
+    }
+  ],
+  "file_hashes": {
+    "pkgs/core/tigrbl_tests/tests/harness/test_04_appspec_corpus_fixture.py": "852adf05500e08628fb18482ac1904117fc88ab7408cec7c236a6f58932cff54",
+    "pkgs/core/tigrbl_tests/tests/harness_e2e/test_01_appspec_corpus_uvicorn.py": "d476f6618d9397fc8502e7be5562d694c957a6aba414dfd0efd1a37f9b9610b0",
+    "reports/certification_state/2026-04-21-appspec-corpus-fixture.md": "295111745d97e05b1d91ed9573ff191c06e965b37f23ca35b9180ef2289dec77"
+  },
+  "summary": {
+    "release_id": "rel:0.3.19.dev1-appspec-corpus-fixture",
+    "version": "0.3.19.dev1-appspec-corpus-fixture",
+    "boundary_id": "bnd:appspec-corpus-fixture-001",
+    "feature_count": 2,
+    "profile_count": 0,
+    "claim_count": 2,
+    "test_count": 2,
+    "evidence_count": 1,
+    "status": "promoted"
+  }
+}

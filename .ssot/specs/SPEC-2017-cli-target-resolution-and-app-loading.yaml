@@ -1,0 +1,25 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2017"
+number: 2017
+slug: "cli-target-resolution-and-app-loading"
+title: "CLI target resolution and app loading"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "CLI target resolution and app loading"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. CLI target resolution behavior is canonical and shared.
+  2. Target resolution error classification is normative.
+  3. CLI-resolved targets must preserve required docs and server-runner contract behavior.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1039"
+  - "adr:1022"

@@ -66,6 +66,6 @@ def test_current_docs_record_gate_c_pass_and_no_open_spec_security_gaps() -> Non
     current_target = CURRENT_TARGET.read_text(encoding='utf-8')
     current_state = CURRENT_STATE.read_text(encoding='utf-8')
     gate_model = GATE_MODEL.read_text(encoding='utf-8')
-    assert '- Gate C status: passed in the Phase 11 checkpoint' in current_target
+    assert '- Gate C status: passed in the Gate C conformance/security checkpoint' in current_target
     assert 'no unresolved retained spec/security gaps remain' in current_state
     assert 'Gate C is passed at checkpoint quality and machine-checked in CI' in gate_model

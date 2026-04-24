@@ -275,6 +275,12 @@ class Request(RequestBase):
         self._json_loaded = True
         return self._json_cache
 
+    def b64url_encode(self, data: bytes) -> str:
+        return _b64url_encode(data)
+
+    def b64url_decode(self, data: str) -> bytes:
+        return _b64url_decode(data)
+
     def form(self) -> AwaitableValue:
         return AwaitableValue(self.form_sync())
 

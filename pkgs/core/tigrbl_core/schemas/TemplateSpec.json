@@ -1,0 +1,69 @@
+{
+  "$defs": {
+    "TemplateSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.response_spec:TemplateSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "TemplateSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "TemplateSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "auto_reload": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "filters": {
+      "$ref": "./shared.json#/$defs/SerdeObject"
+    },
+    "globals": {
+      "$ref": "./shared.json#/$defs/SerdeObject"
+    },
+    "name": {
+      "type": "string"
+    },
+    "package": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "search_paths": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    }
+  },
+  "required": [
+    "name",
+    "search_paths",
+    "package",
+    "auto_reload",
+    "filters",
+    "globals"
+  ],
+  "title": "TemplateSpec",
+  "type": "object"
+}

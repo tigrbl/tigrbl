@@ -1,0 +1,44 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1044"
+number: 1044
+slug: "next-target-datatype-table-program-activation"
+title: "Next-target datatype/table program activation"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "﻿"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  ﻿
+  Accepted.
+  
+  Activate the datatype/table architecture as the governed next-target program for the active line `0.3.19.dev1`.
+  
+  The governed next-target program now includes:
+  
+  - canonical datatype declarations via `DataTypeSpec`
+  - engine-agnostic storage intent via `StorageTypeRef`
+  - executable semantic behavior via `TypeAdapter` and `TypeRegistry`
+  - engine-owned lowering via `EngineTypeLowerer`, `EngineRegistry`, and `EngineDatatypeBridge`
+  - `ColumnSpec.datatype` integration and related spec cleanup
+  - multi-engine table portability and interoperability planning
+  - reflection-driven round-trip recovery planning
+  
+  ## Sequencing
+  
+  1. semantic datatype core
+  2. engine bridge and lowering
+  3. column/field/storage integration
+  4. table program and portability rules
+  5. reflection and reverse mapping
+  
+  ## Rationale
+  
+  The release `0.3.18` already closed its governed current-boundary target. The datatype/table program should therefore progress as isolated next-target work rather than as a silent extension of the frozen release claim set.

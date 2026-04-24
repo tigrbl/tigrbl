@@ -1,0 +1,159 @@
+{
+  "$defs": {
+    "IOSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.io_spec:IOSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "IOSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "IOSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "_assemble": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "_paired": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "_readtime_aliases": {
+      "$ref": "./shared.json#/$defs/StepFnTuple"
+    },
+    "alias_in": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "alias_out": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "allow_in": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "allow_out": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "filter_ops": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "header_in": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "header_out": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "header_required_in": {
+      "type": "boolean"
+    },
+    "in_verbs": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "mutable_verbs": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "out_verbs": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "redact_last": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "sensitive": {
+      "type": "boolean"
+    },
+    "sortable": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "in_verbs",
+    "out_verbs",
+    "mutable_verbs",
+    "alias_in",
+    "alias_out",
+    "header_in",
+    "header_out",
+    "header_required_in",
+    "sensitive",
+    "redact_last",
+    "filter_ops",
+    "sortable",
+    "allow_in",
+    "allow_out",
+    "_paired",
+    "_assemble",
+    "_readtime_aliases"
+  ],
+  "title": "IOSpec",
+  "type": "object"
+}

@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tigrbl import TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 from tigrbl_tests.examples.lesson_support import make_widget_model
 
@@ -17,3 +17,4 @@ async def test_app_includes_model_namespaces() -> None:
 
     assert "WidgetRouter" in router.tables
     assert router.tables["WidgetRouter"] is widget
+

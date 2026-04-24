@@ -5,10 +5,10 @@ from sqlalchemy import Integer, String, select
 from sqlalchemy.orm import Mapped
 from tigrbl import TigrblApp, TigrblRouter
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.tables import TableBase as Base3
 from tigrbl._spec import S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 
 
 @pytest_asyncio.fixture()
@@ -81,3 +81,4 @@ async def test_read_and_list_with_row_result(client):
     resp = await client.get("/widget")
     assert resp.status_code == 200
     assert resp.json()[0]["name"] == "A"
+

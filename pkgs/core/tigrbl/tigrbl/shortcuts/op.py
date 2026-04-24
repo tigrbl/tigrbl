@@ -1,14 +1,2 @@
-from __future__ import annotations
+﻿from tigrbl.factories.op import *  # noqa: F401,F403
 
-from typing import Any
-
-
-def make(**kwargs: Any):
-    from tigrbl import Op
-
-    return Op(**kwargs)
-
-
-op = make
-
-__all__ = ["make", "op"]

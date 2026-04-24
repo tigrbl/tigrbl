@@ -1,10 +1,10 @@
 import pytest
 from httpx import ASGITransport, AsyncClient
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Mapped, String
 
 
@@ -80,3 +80,4 @@ async def test_openapi_examples_and_schemas_present(db_mode):
         op_ns = getattr(widget_ns, alias)
         assert hasattr(op_ns, "in_")
         assert hasattr(op_ns, "out")
+

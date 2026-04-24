@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "registry_path": ".ssot/registry.json",
+  "release": {
+    "release_id": "rel:tigrbl-tests-failing-case-closure-cases-20260421",
+    "passed": true,
+    "failures": [],
+    "warnings": [],
+    "claims": [
+      {
+        "claim_id": "clm:tigrbl-tests-failing-case-closure-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "published"
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "passed": true,
+        "failures": []
+      }
+    ],
+    "profiles": [],
+    "boundary": {
+      "id": "bnd:tigrbl-tests-failing-case-closure-001",
+      "profile_ids": [],
+      "resolved_feature_ids": [
+        "feat:tigrbl-tests-failing-case-closure-001"
+      ]
+    },
+    "summary": {
+      "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
+      "boundary_feature_count": 1,
+      "boundary_profile_count": 0,
+      "release_claim_count": 1,
+      "release_evidence_count": 1
+    }
+  },
+  "boundary_scope": {
+    "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "profile_ids": [],
+    "feature_ids": []
+  },
+  "summary": {
+    "counts": {
+      "features": 372,
+      "profiles": 0,
+      "tests": 548,
+      "claims": 161,
+      "evidence": 196,
+      "issues": 0,
+      "risks": 0,
+      "boundaries": 7,
+      "releases": 5,
+      "adrs": 92,
+      "specs": 88
+    },
+    "profile_status": {
+      "passing": 0,
+      "failing": 0,
+      "draft": 0
+    }
+  }
+}

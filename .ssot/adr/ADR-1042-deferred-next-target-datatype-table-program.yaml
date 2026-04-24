@@ -1,0 +1,26 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1042"
+number: 1042
+slug: "deferred-next-target-datatype-table-program"
+title: "Deferred next-target datatype/table program"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "﻿"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  ﻿
+  Accepted.
+  
+  Defer the datatype semantic-center migration, table spec, table portability/interoperability, and reflection-driven round-trip recovery to the next-target program. Do not let them block current-target certification.
+  
+  ## Post-promotion handoff Note
+  
+  The program deferred here is now activated for governed planning under `ADR-0012-next-target-datatype-table-program-activation.md`. It remains outside the frozen `0.3.18` release certification boundary.

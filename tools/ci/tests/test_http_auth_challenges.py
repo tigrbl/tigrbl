@@ -25,6 +25,20 @@ def _load_module(name: str, path: Path):
 
 
 # Minimal dependency stubs for direct module loading.
+_previous_modules = {
+    name: sys.modules.get(name)
+    for name in [
+        'tigrbl_runtime',
+        'tigrbl_runtime.runtime',
+        'tigrbl_runtime.runtime.status',
+        'tigrbl_runtime.runtime.status.exceptions',
+        'tigrbl_runtime.runtime.status.mappings',
+        'tigrbl_base',
+        'tigrbl_base._base',
+        'tigrbl_base._base._security_base',
+    ]
+}
+
 for package_name in [
     'tigrbl_runtime',
     'tigrbl_runtime.runtime',
@@ -76,15 +90,21 @@ base_module.OpenAPISecurityDependency = OpenAPISecurityDependency
 _register_module('tigrbl_base._base._security_base', base_module)
 
 http_basic_module = _load_module(
-    'phase6_http_basic',
+    'http_basic',
     REPO_ROOT / 'pkgs' / 'core' / 'tigrbl_concrete' / 'tigrbl_concrete' / '_concrete' / '_security' / 'http_basic.py',
 )
 http_bearer_module = _load_module(
-    'phase6_http_bearer',
+    'http_bearer',
     REPO_ROOT / 'pkgs' / 'core' / 'tigrbl_concrete' / 'tigrbl_concrete' / '_concrete' / '_security' / 'http_bearer.py',
 )
 HTTPBasic = http_basic_module.HTTPBasic
 HTTPBearer = http_bearer_module.HTTPBearer
+
+for _name, _module in _previous_modules.items():
+    if _module is None:
+        sys.modules.pop(_name, None)
+    else:
+        sys.modules[_name] = _module
 
 
 def test_http_basic_missing_header_emits_401_challenge() -> None:

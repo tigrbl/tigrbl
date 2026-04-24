@@ -1,0 +1,38 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2044"
+number: 2044
+slug: "concrete-dependency-helper-surface"
+title: "Concrete dependency helper surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed concrete dependency-helper surface exposed through `Depends`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed concrete dependency-helper surface exposed through `Depends`.
+  
+  ## Canonical Surface
+  
+  - `Depends()` is the bounded concrete helper that wraps injection callables into dependency metadata objects.
+  - REST, JSON-RPC, and system-route builders may accept either plain callables or `Depends(...)` values and normalize them into the same dependency-helper contract.
+  - The helper exists to carry dependency metadata into runtime binding; it does not become a general-purpose container or a competing auth abstraction.
+  - Generic auth and failure semantics remain governed by canonical dependency and security ordering rather than by widening the helper itself.
+  
+  ## Public Projection
+  
+  - Public projection may appear through `tigrbl.Depends` and the `tigrbl_concrete` export surface.
+  - Projection does not widen the helper into a full dependency-injection framework.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1011`, `adr:1032`, `adr:1054`, `adr:1059`
+  - Related features: `feat:depends-concrete-dependency-helper-001`
+spec_kind: "local-policy"
+adr_ids: []

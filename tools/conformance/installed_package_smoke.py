@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
 import subprocess
 import sys
 import tarfile
@@ -20,21 +21,40 @@ CORE_INSTALL_DIRS = [
     ROOT / 'pkgs' / 'core' / 'tigrbl_base',
     ROOT / 'pkgs' / 'core' / 'tigrbl_core',
     ROOT / 'pkgs' / 'core' / 'tigrbl_canon',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_runtime',
     ROOT / 'pkgs' / 'core' / 'tigrbl_atoms',
     ROOT / 'pkgs' / 'core' / 'tigrbl_kernel',
+    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_olap',
     ROOT / 'pkgs' / 'core' / 'tigrbl_ops_oltp',
+    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_realtime',
     ROOT / 'pkgs' / 'core' / 'tigrbl_orm',
     ROOT / 'pkgs' / 'core' / 'tigrbl_concrete',
 ]
 TARGET_DEPS = [
     'sqlalchemy>=2.0',
     'aiosqlite>=0.19.0',
+    'greenlet>=3.2.3',
+    'httpx>=0.27.0,<0.28',
+    'jinja2>=3.1',
+    'pydantic>=2.10,<3',
+    'typing-extensions>=4.0',
+    'uvicorn',
 ]
 
 
 def run(cmd: list[str], *, cwd: Path | None = None, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(cmd, cwd=cwd or ROOT, env=env, check=True, capture_output=True, text=True)
+    cp = subprocess.run(cmd, cwd=cwd or ROOT, env=env, capture_output=True, text=True)
+    if cp.returncode != 0:
+        sys.stderr.write(f"Command failed with exit code {cp.returncode}: {' '.join(cmd)}\n")
+        if cp.stdout:
+            sys.stderr.write("stdout:\n" + cp.stdout)
+            if not cp.stdout.endswith("\n"):
+                sys.stderr.write("\n")
+        if cp.stderr:
+            sys.stderr.write("stderr:\n" + cp.stderr)
+            if not cp.stderr.endswith("\n"):
+                sys.stderr.write("\n")
+        cp.check_returncode()
+    return cp
 
 
 def build_artifacts(out_dir: Path) -> tuple[Path, Path]:
@@ -73,6 +93,13 @@ def inspect_sdist(sdist_path: Path) -> dict[str, bool]:
         'contains_readme': any(name.endswith('/README.md') for name in names),
         'contains_cli': any(name.endswith('/tigrbl/cli.py') for name in names),
     }
+
+
+def uv_pip_install(site_dir: Path, *args: str) -> None:
+    uv = shutil.which('uv')
+    if uv is None:
+        raise SystemExit("installed-package smoke requires 'uv' for target installs")
+    run([uv, 'pip', 'install', '--python', sys.executable, '--target', str(site_dir), *args])
 
 
 def create_app_fixture(dirpath: Path) -> Path:
@@ -198,31 +225,19 @@ def main() -> None:
         wheel_eps = wheel_entry_points(wheel)
         sdist_info = inspect_sdist(sdist)
 
-        run([sys.executable, '-m', 'pip', 'install', '--target', str(site), *TARGET_DEPS])
+        uv_pip_install(site, *TARGET_DEPS)
         for pkg in CORE_INSTALL_DIRS:
-            run([
-                sys.executable,
-                '-m',
-                'pip',
-                'install',
-                '--ignore-requires-python',
+            uv_pip_install(
+                site,
                 '--no-deps',
                 '--no-build-isolation',
-                '--target',
-                str(site),
                 str(pkg),
-            ])
-        run([
-            sys.executable,
-            '-m',
-            'pip',
-            'install',
-            '--ignore-requires-python',
+            )
+        uv_pip_install(
+            site,
             '--no-deps',
-            '--target',
-            str(site),
             str(wheel),
-        ])
+        )
 
         fixture = create_app_fixture(tmp)
         target = f'{fixture}:app'

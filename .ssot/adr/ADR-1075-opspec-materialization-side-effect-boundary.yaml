@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1075"
+number: 1075
+slug: "opspec-materialization-side-effect-boundary"
+title: "OpSpec materialization side-effect boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A canonical OpSpec is the source for downstream schemas, routes, RPC methods, hooks, handler atoms, persistence, docs, and system registry projections."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. `OpSpec` materialization is the governed source for downstream operation projections.
+  2. Schema construction, route construction, RPC exposure, hook chain construction, handler atom selection, persistence wiring, documentation emission, and system-step registry entries must derive from the same materialized operation declaration.
+  3. Builders may project different views of an operation, but they may not invent independent operation semantics.
+  4. Projection side effects must remain inspectable and testable from the materialized operation and owner-local registries.
+  5. A projection gap is an implementation-status issue, not a license for a second source of truth.
+  
+  ## Context
+  
+  operation contract tests exercise `OpSpec` effects across schemas, columns, defaults, storage, REST routes, RPC methods, core CRUD handlers, hooks, atom injection, and system-step registry behavior. Existing ADRs establish a spec-first architecture and one semantic operation model, but they do not explicitly name the materialization side-effect boundary that these tests rely on.
+  
+  ## Consequences
+  
+  - Unit tests can be linked to one materialization boundary instead of many unrelated helper surfaces.
+  - Projection builders must remain consumers of materialized operation declarations.
+  - Missing projections can be tracked as gaps against the canonical operation materialization contract.
+  
+  ## Rejected Alternatives
+  
+  - Letting schema, route, RPC, hook, and handler builders each reinterpret raw decorator arguments.
+  - Treating registry and documentation side effects as incidental build artifacts.
+  - Fixing projection gaps by adding local bypasses around `OpSpec` materialization.

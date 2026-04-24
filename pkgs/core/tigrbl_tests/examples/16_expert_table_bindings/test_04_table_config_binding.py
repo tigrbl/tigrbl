@@ -7,7 +7,7 @@ searching the class hierarchy manually.
 """
 
 from tigrbl import TableBase, TigrblRouter, engine_ctx
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -55,3 +55,4 @@ def test_table_config_registry_is_model_specific():
 
     assert router.table_config[Widget.__name__]["engine"]["kind"] == "sqlite"
     assert router.table_config[Gadget.__name__]["engine"]["kind"] == "sqlite"
+

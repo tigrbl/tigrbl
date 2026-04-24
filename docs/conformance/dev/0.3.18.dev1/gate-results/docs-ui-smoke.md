@@ -8,7 +8,7 @@ This lane covers the mounted docs/spec endpoints and parity docs.
 - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
 - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`
 - `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py`
+- `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py`
 
 ## Source audit logs
 

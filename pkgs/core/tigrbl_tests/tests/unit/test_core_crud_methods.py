@@ -5,10 +5,10 @@ from typing import Any, Mapping
 import pytest
 from tigrbl.core import crud
 from tigrbl.core.crud import helpers
-from tigrbl.shortcuts.engine import engine
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import engine
+from tigrbl.factories.engine import mem
 from tigrbl._spec import IO, S, F
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import Column, Integer, SAEnum, SimpleNamespace, String
 from sqlalchemy import select
 from sqlalchemy.orm import declarative_base
@@ -337,3 +337,4 @@ async def test_clear_bulk_and_delete(session):
     assert res == {"deleted": 2}
     remaining = await crud.list(Widget, db=session)
     assert [r.name for r in remaining] == ["b"]
+

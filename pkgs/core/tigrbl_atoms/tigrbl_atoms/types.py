@@ -56,6 +56,7 @@ class BaseCtx(Generic[S, E]):
     bag: dict[str, object] = field(default_factory=dict)
     temp: dict[str, object] = field(default_factory=dict)
     error: E | None = None
+    phase: str | None = None
     current_phase: str | None = None
     error_phase: str | None = None
 

@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-18T00:00:00Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "35926e962bd70cb30235124f78fa2d82da309d875690aa7dcf99530e55cbdfda",
+  "boundary": {
+    "id": "bnd:transport-dispatch-track-001",
+    "title": "Transport-dispatch track boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:transport-dispatch-governance-001",
+      "feat:transport-bypass-removal-001",
+      "feat:binding-driven-ingress-001",
+      "feat:kernelplan-dispatch-ownership-001",
+      "feat:executor-dispatch-removal-001",
+      "feat:jsonrpc-endpoint-key-001",
+      "feat:transport-parity-contract-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:binding-driven-ingress-001",
+      "title": "Binding-driven REST and JSON-RPC ingress materialization",
+      "description": "Track binding-driven concrete ingress materialization for REST and JSON-RPC without transport-owned semantic dispatch.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "transport-dispatch",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:binding-driven-ingress-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-kernelplan-contract",
+        "tst:jsonrpc-endpoint-binding-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:executor-dispatch-removal-001",
+      "title": "Executors do not perform transport matching",
+      "description": "Track removal of HTTP path and JSON-RPC method matching from executors so they only execute compiled plans.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "transport-dispatch",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:executor-dispatch-removal-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-kernelplan-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:jsonrpc-endpoint-key-001",
+      "title": "Endpoint-keyed JSON-RPC multiplexing",
+      "description": "Track endpoint-keyed JSON-RPC binding identity, concrete endpoint mounting, and default endpoint ownership in tigrbl_core.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "transport-dispatch",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:jsonrpc-endpoint-key-001"
+      ],
+      "test_ids": [
+        "tst:jsonrpc-endpoint-binding-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:kernelplan-dispatch-ownership-001",
+      "title": "KernelPlan and atoms own transport lookup and matching",
+      "description": "Track the return of transport lookup, endpoint resolution, and operation matching to the compiled KernelPlan and atom chain.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "transport-dispatch",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:kernelplan-dispatch-ownership-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-kernelplan-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-bypass-removal-001",
+      "title": "Remove non-conforming transport bypasses",
+      "description": "Track removal of app-local HTTP dispatch and other transport bypasses that avoid the kernel-owned dispatch path.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "transport-dispatch",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:transport-bypass-removal-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-kernelplan-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-dispatch-governance-001",
+      "title": "Transport-dispatch governance track setup",
+      "description": "Create the governed transport-dispatch track resources, boundary, validator, and setup evidence before implementation delivery starts.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:transport-dispatch-governance-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-track-governance"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-parity-contract-001",
+      "title": "REST and JSON-RPC parity through the shared dispatch path",
+      "description": "Track restoration of REST and JSON-RPC semantic parity through the shared transport-dispatch path without test-only relaxation.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": "transport-dispatch",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-parity-contract"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:transport-dispatch-track-001",
+    "feature_count": 7,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

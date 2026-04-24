@@ -1,5 +1,5 @@
-from tigrbl.shortcuts.app import deriveApp
-from tigrbl.shortcuts.router import deriveRouter
+from tigrbl.factories.app import deriveApp
+from tigrbl.factories.router import deriveRouter
 
 
 class Model:
@@ -25,3 +25,4 @@ def test_registry_includes_alias_and_name() -> None:
     RouterCls = deriveRouter(tables=[AliasModel])
     router = RouterCls()
     assert router.tables["AliasModel"] is AliasModel
+

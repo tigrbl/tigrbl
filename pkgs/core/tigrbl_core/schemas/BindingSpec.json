@@ -1,0 +1,36 @@
+{
+  "$defs": {
+    "BindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:BindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "BindingSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "BindingSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "spec": {
+      "$ref": "./shared.json#/$defs/TransportBindingSpec"
+    }
+  },
+  "required": [
+    "name",
+    "spec"
+  ],
+  "title": "BindingSpec",
+  "type": "object"
+}

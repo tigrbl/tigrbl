@@ -3,8 +3,8 @@ import inspect
 from tigrbl._concrete._engine import Engine, Provider
 from tigrbl.decorators.engine import engine_ctx
 from tigrbl._spec import EngineSpec, EngineProviderSpec
-from tigrbl.shortcuts.engine import engine, mem
-from tigrbl.shortcuts.engine import engine_spec, prov
+from tigrbl.factories.engine import engine, mem
+from tigrbl.factories.engine import engine_spec, prov
 
 
 def test_engine_spec_parses_sqlite_dsn():
@@ -59,3 +59,4 @@ def test_engine_shortcuts_build_expected_types():
     assert engine_instance.spec == spec
     assert engine_instance.is_async is True
     assert inspect.isfunction(provider.get_db)
+

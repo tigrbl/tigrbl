@@ -11,7 +11,7 @@ import pytest
 from sqlalchemy import Column, String
 from tigrbl import TableBase, TigrblApp, TigrblRouter, engine_ctx, op_ctx
 from tigrbl import resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 
 from .uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
@@ -260,3 +260,4 @@ async def test_multi_router_precedence_dedupe_and_op_engine_uvicorn() -> None:
         assert rpc_response.json()["result"]["status"] == "ok"
     finally:
         await stop_uvicorn_server(server, task)
+

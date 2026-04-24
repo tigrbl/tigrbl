@@ -1,0 +1,50 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1053"
+number: 1053
+slug: "tigrbl-base-layer-nature-and-authority"
+title: "tigrbl_base Layer Nature and Authority"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`tigrbl_base` is the canonical base-class layer for Tigrbl's inheritance-oriented contract surfaces."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Documents the active-line decision that tigrbl_base owns the canonical base layer while top-level facade exposure remains a separate projection boundary."
+    at: "2026-04-20T21:50:19Z"
+references: []
+body: |-
+  ## Decision
+  
+  `tigrbl_base` is the canonical base-class layer for Tigrbl's inheritance-oriented contract surfaces.
+  
+  1. `tigrbl_base._base.__init__` is the governed authority for which base classes and base-layer support types are part of the repo-local base surface.
+  2. `tigrbl_base` owns reusable inheritance contracts, base mixins, and typed base abstractions that sit beneath facade exports and concrete implementations.
+  3. Public exposure through `tigrbl.__all__` is a deliberate operator/facade projection of selected base classes, not the authoritative definition of the base layer itself.
+  4. Base-layer exports that are not re-exported at the facade remain governed internal base surface.
+  
+  ## Context
+  
+  The codebase already separates the base layer from concrete and facade layers:
+  
+  - `tigrbl_base._base.__init__` enumerates the canonical base exports.
+  - `tigrbl.__init__` promotes only a subset of those base classes into the public facade.
+  - concrete classes and runtime/facade helpers depend on those bases without making every base symbol a public operator primitive.
+  
+  The SSOT needs an explicit decision record for that distinction so feature coverage can track base-layer ownership separately from facade exposure.
+  
+  ## Consequences
+  
+  - The SSOT may track one feature per governed base export and one additional feature for each public facade re-export of a base class.
+  - Changes to `tigrbl_base._base.__init__._EXPORTS` are governed base-layer changes even when they do not affect `tigrbl.__all__`.
+  - Public operator changes for base classes must be understood as promotion or removal decisions on top of the base layer, not as redefinition of base ownership.
+  
+  ## Rejected Alternatives
+  
+  - Treating all base exports as automatically public.
+  - Treating `tigrbl.__all__` as the sole authority for which bases exist.
+  - Folding base-layer governance into concrete-class governance instead of preserving a separate base layer.

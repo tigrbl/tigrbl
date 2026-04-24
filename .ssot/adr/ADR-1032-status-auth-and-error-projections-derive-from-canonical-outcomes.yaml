@@ -1,0 +1,30 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1032"
+number: 1032
+slug: "status-auth-and-error-projections-derive-from-canonical-outcomes"
+title: "Status, Auth, and Error Projections Derive from Canonical Outcomes"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Security parity tests cover both runtime and docs surfaces; parity requirements must be explicit at the decision level."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Status/auth/error projections derive from canonical runtime outcomes.
+  2. OpenAPI/OpenRPC security projections MUST reflect runtime auth challenge and authorization behavior.
+  3. Divergence between runtime security behavior and documented security requirements is non-conforming.
+  
+  ## Context
+  
+  Security parity tests cover both runtime and docs surfaces; parity requirements must be explicit at the decision level.
+  
+  ## Consequences
+  
+  - Security docs are normative projections, not advisory metadata.
+  - Auth and error conformance requires runtime/docs equivalence evidence.

@@ -1,30 +1,63 @@
-"""Reusable HTTP verb route decorators for router-like objects."""
+"""Reusable REST decorator aliases over ``op_ctx``."""
 
 from __future__ import annotations
 
-from typing import Any, Callable
+from collections.abc import Iterable
+from typing import Any
 
-Handler = Callable[..., Any]
+from tigrbl_core._spec.binding_spec import HttpRestBindingSpec, TransportBindingSpec
 
-
-def get(router: Any, path: str, **kwargs: Any) -> Callable[[Handler], Handler]:
-    return router.route(path, methods=["GET"], **kwargs)
-
-
-def post(router: Any, path: str, **kwargs: Any) -> Callable[[Handler], Handler]:
-    return router.route(path, methods=["POST"], **kwargs)
+from .op import op_ctx
 
 
-def put(router: Any, path: str, **kwargs: Any) -> Callable[[Handler], Handler]:
-    return router.route(path, methods=["PUT"], **kwargs)
+def _normalize_path(path: str) -> str:
+    value = str(path or "").strip()
+    if not value:
+        return "/"
+    if not value.startswith("/"):
+        value = f"/{value}"
+    return value.rstrip("/") or "/"
 
 
-def patch(router: Any, path: str, **kwargs: Any) -> Callable[[Handler], Handler]:
-    return router.route(path, methods=["PATCH"], **kwargs)
+def _merge_bindings(
+    binding: TransportBindingSpec,
+    bindings: TransportBindingSpec | Iterable[TransportBindingSpec] | None,
+) -> tuple[TransportBindingSpec, ...]:
+    if bindings is None:
+        return (binding,)
+    if isinstance(bindings, Iterable) and not isinstance(bindings, (str, bytes)):
+        return (binding, *tuple(bindings))
+    return (binding, bindings)
 
 
-def delete(router: Any, path: str, **kwargs: Any) -> Callable[[Handler], Handler]:
-    return router.route(path, methods=["DELETE"], **kwargs)
+def _rest_ctx(path: str, *, method: str, **kwargs: Any):
+    existing_bindings = kwargs.pop("bindings", None)
+    binding = HttpRestBindingSpec(
+        proto="http.rest",
+        path=_normalize_path(path),
+        methods=(str(method).upper(),),
+    )
+    return op_ctx(bindings=_merge_bindings(binding, existing_bindings), **kwargs)
+
+
+def get(path: str, **kwargs: Any):
+    return _rest_ctx(path, method="GET", **kwargs)
+
+
+def post(path: str, **kwargs: Any):
+    return _rest_ctx(path, method="POST", **kwargs)
+
+
+def put(path: str, **kwargs: Any):
+    return _rest_ctx(path, method="PUT", **kwargs)
+
+
+def patch(path: str, **kwargs: Any):
+    return _rest_ctx(path, method="PATCH", **kwargs)
+
+
+def delete(path: str, **kwargs: Any):
+    return _rest_ctx(path, method="DELETE", **kwargs)
 
 
 __all__ = ["get", "post", "put", "patch", "delete"]

@@ -8,7 +8,7 @@ import pytest
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, ForeignKey, String
 from tigrbl import TableBase, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.decorators.hook import hook_ctx
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import PgUUID
@@ -33,7 +33,7 @@ async def setup_client(db_mode, Tenant, Item):
 
 @pytest.mark.i9n
 @pytest.mark.asyncio
-async def test_hook_phases_execution_order(db_mode):
+async def test_hook_lifecycle_execution_order(db_mode):
     """Test that all hook phases execute in the correct order."""
 
     execution_order: list[str] = []
@@ -407,7 +407,7 @@ async def test_catch_all_hooks(db_mode):
 
 @pytest.mark.i9n
 @pytest.mark.asyncio
-async def test_multiple_hooks_same_phase(db_mode):
+async def test_multiple_hooks_same_lifecycle_anchor(db_mode):
     """Test that multiple hooks for the same phase execute correctly."""
 
     executions: list[str] = []
@@ -448,3 +448,4 @@ async def test_multiple_hooks_same_phase(db_mode):
     assert "second" in executions
     assert "third" in executions
     await client.aclose()
+

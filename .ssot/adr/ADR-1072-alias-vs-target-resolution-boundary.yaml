@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1072"
+number: 1072
+slug: "alias-vs-target-resolution-boundary"
+title: "Alias versus target resolution boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Operation alias controls public exposure while target selects the canonical semantic operation and core handler behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. `alias` identifies the public operation name exposed through owner surfaces, handlers, REST, RPC, docs, and lookup helpers.
+  2. `target` identifies the canonical semantic operation that supplies default arity, default handler behavior, capability expectations, and transport projections.
+  3. Aliasing a canonical target must preserve that target's core behavior unless an explicit custom handler override is declared.
+  4. A custom target is a first-class operation extension, but it does not redefine canonical target semantics.
+  5. Alias expansion must remain deterministic, inspectable, and representable as canonical operation declarations.
+  
+  ## Context
+  
+  operation contract tests cover aliasing canonical verbs, preserving canonical core handlers, overriding canonical behavior through explicit aliases, and using custom aliases and targets. Existing shortcut and alias ADRs establish that aliases expand to canonical forms, but the tests reveal a sharper architectural line: alias is exposure identity, target is semantic identity.
+  
+  ## Consequences
+  
+  - Registry features can link alias coverage without duplicating canonical op feature trees.
+  - Handler and transport tests can assert alias lookup separately from semantic target execution.
+  - Specs can define collisions, overrides, and default behavior without treating alias names as new canonical verbs.
+  
+  ## Rejected Alternatives
+  
+  - Treating every alias as a new semantic operation.
+  - Letting alias names choose core behavior independently from target.
+  - Allowing custom targets to mutate canonical target meanings.

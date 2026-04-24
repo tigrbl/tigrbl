@@ -4,8 +4,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, sessionmaker
 from sqlalchemy.pool import StaticPool
 from tigrbl import TigrblApp
-from tigrbl.shortcuts.engine import engine as engine_factory
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import engine as engine_factory
+from tigrbl.factories.engine import mem
 from tigrbl_concrete._mapping.model import bind
 from tests.conftest import _build_router
 from tigrbl_base._base._rpc_map import register_and_attach
@@ -18,7 +18,7 @@ from tigrbl_atoms.atoms.schema.collect_out import _run as collect_out_run
 from tigrbl_kernel import _default_kernel as K
 from tigrbl_kernel import build_phase_chains
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol, vcol
+from tigrbl.factories.column import acol, vcol
 from tigrbl.types import Integer as IntType
 from tigrbl.types import SimpleNamespace
 from tigrbl.types import String as StrType
@@ -356,7 +356,7 @@ def test_atoms_execute_with_iospec():
 
 
 @pytest.mark.i9n
-def test_system_phase_chain_includes_system_steps():
+def test_system_lifecycle_chain_includes_system_steps():
     class Thing(TableBase):
         __tablename__ = "iospec_system_i9n"
         __allow_unmapped__ = True
@@ -373,3 +373,4 @@ def test_system_phase_chain_includes_system_steps():
     chains = build_phase_chains(Thing, "create")
     assert "HANDLER" in chains
     assert any(chains[ph] for ph in chains)
+

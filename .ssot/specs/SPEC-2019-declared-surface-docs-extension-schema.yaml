@@ -1,0 +1,25 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2019"
+number: 2019
+slug: "declared-surface-docs-extension-schema"
+title: "Declared-surface docs extension schema"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Declared-surface docs extension schema"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Declared-surface docs extensions define required vs optional metadata emission.
+  2. Omission rules are normative and explicit.
+  3. Cross-projection docs parity must preserve declared metadata constraints.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1041"
+  - "adr:1030"

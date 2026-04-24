@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 
 import pytest
 from tigrbl import TableBase
-from tigrbl.shortcuts.column import IO, F, S, acol
+from tigrbl.factories.column import IO, F, S, acol
 from tigrbl import resolver as _resolver
 from tigrbl.orm.mixins import (
     ActiveToggle,
@@ -531,3 +531,4 @@ async def test_multiple_mixins_combination(create_test_app):
     assert "updated_at" not in create_schema.model_fields
     assert "created_at" in read_schema.model_fields
     assert "updated_at" in read_schema.model_fields
+

@@ -24,19 +24,21 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install governance dependencies
-        run: python -m pip install --upgrade pip pytest pyyaml tomli-w
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Validate certification authority and lifecycle gates
         run: >-
-          python tools/ci/validate_certification_tree.py
-          && python tools/ci/validate_phase7_claim_lifecycle.py
+          uv run --no-sync python tools/ci/validate_certification_tree.py
+          && uv run --no-sync python tools/ci/validate_claim_lifecycle.py
 
       - name: Run governance pytest slices
         run: >-
-          python -m pytest -q
+          uv run --no-sync python -m pytest -q
           tools/ci/tests/test_certification_tree.py
-          tools/ci/tests/test_phase7_claim_lifecycle.py
+          tools/ci/tests/test_claim_lifecycle.py
           -p no:cacheprovider
 
   next-target-python:
@@ -53,8 +55,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install next-target dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy pydantic pyyaml tomli-w "httpx<0.28"
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -76,7 +80,7 @@ jobs:
 
       - name: Run next-target datatype tests
         run: >-
-          python -m pytest -q
+          uv run --no-sync python -m pytest -q
           pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
           pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
           pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
@@ -102,7 +106,7 @@ jobs:
           - lane: spec-conformance
             cmd: >-
               python -m pytest --noconftest -q
-              pkgs/core/tigrbl_tests/tests/unit/test_phase5_spec_snapshots.py
+              pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py
               pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py
               pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py
               pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py
@@ -140,8 +144,10 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install evidence-lane dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic uvicorn hypercorn gunicorn typing_extensions build
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -164,7 +170,7 @@ jobs:
 
       - name: Run ${{ matrix.lane }} lane
         shell: bash
-        run: ${{ matrix.cmd }}
+        run: uv run --no-sync ${{ matrix.cmd }}
 
   bundle-dry-run:
     runs-on: ubuntu-latest
@@ -181,13 +187,15 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install bundle dependencies
-        run: python -m pip install --upgrade pip pyyaml tomli-w
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Validate release promotion and handoff gates
         run: >-
-          python tools/ci/validate_gate_e_promotion.py
-          && python tools/ci/validate_phase14_handoff.py
+          uv run --no-sync python tools/ci/validate_gate_e_promotion.py
+          && uv run --no-sync python tools/ci/validate_post_promotion_handoff.py
 
       - name: Assemble certification dry-run bundle
         shell: bash

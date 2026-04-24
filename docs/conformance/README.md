@@ -22,4 +22,4 @@ This section defines the frozen current target, the current repository state, th
 - `audit/2026/p11-gate-c/README.md`
 - `audit/2026/p12-gate-d/README.md`
 - `audit/2026/p13-gate-e/README.md`
-- `audit/2026/p14-post-promotion-handoff/README.md`
+- `audit/2026/post-promotion-handoff/README.md`

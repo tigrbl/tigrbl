@@ -16,11 +16,13 @@ import pytest
 from tests.i9n.uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
 from tests.perf.helper_fastapi_create_app import (
     create_fastapi_app,
+    dispose_fastapi_app,
     fastapi_create_path,
     fetch_fastapi_names,
 )
 from tests.perf.helper_tigrbl_create_app import (
     create_tigrbl_app,
+    dispose_tigrbl_app,
     fetch_tigrbl_names,
     initialize_tigrbl_app,
     tigrbl_create_path,
@@ -81,8 +83,9 @@ async def _benchmark_app(
     endpoint_path: str,
     fetch_names: Callable[[Path], list[str]],
     initialize: Callable[[Any], Any] | None = None,
+    dispose_app: Callable[[Any], Any] | None = None,
 ) -> dict[str, Any]:
-    with TemporaryDirectory() as tmpdir:
+    with TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
         db_path = Path(tmpdir) / f"{scenario}.sqlite3"
         expected_names = [f"{scenario}-{i}" for i in range(OPS_COUNT)]
 
@@ -130,6 +133,10 @@ async def _benchmark_app(
             assert persisted_names == expected_names
         finally:
             await stop_uvicorn_server(server, task)
+            if dispose_app is not None:
+                dispose_result = dispose_app(app)
+                if hasattr(dispose_result, "__await__"):
+                    await dispose_result
 
     per_op_s = _summarize(op_durations)
 
@@ -150,12 +157,14 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
             endpoint_path=tigrbl_create_path(),
             fetch_names=fetch_tigrbl_names,
             initialize=initialize_tigrbl_app,
+            dispose_app=dispose_tigrbl_app,
         ),
         "fastapi": dict(
             create_app=create_fastapi_app,
             endpoint_path=fastapi_create_path(),
             fetch_names=fetch_fastapi_names,
             initialize=None,
+            dispose_app=dispose_fastapi_app,
         ),
     }
     order_rng = random.Random(20260319)
@@ -174,6 +183,7 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
                 endpoint_path=scenario_runner[scenario]["endpoint_path"],
                 fetch_names=scenario_runner[scenario]["fetch_names"],
                 initialize=scenario_runner[scenario]["initialize"],
+                dispose_app=scenario_runner[scenario]["dispose_app"],
             )
             round_results.append(result)
 

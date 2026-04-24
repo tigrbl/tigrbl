@@ -1,0 +1,2945 @@
+{
+  "$defs": {
+    "AnyMap": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "type": "object"
+    },
+    "AppSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "engine": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "execution_backend": {
+          "type": "string"
+        },
+        "hooks": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "jsonrpc_prefix": {
+          "type": "string"
+        },
+        "lifespan": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "middlewares": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "ops": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "response": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ResponseSpec"
+                },
+                {
+                  "$ref": "#/$defs/ResponseSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "routers": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "schemas": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "security_deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "system_prefix": {
+          "type": "string"
+        },
+        "tables": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "title": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "version",
+        "execution_backend",
+        "engine",
+        "routers",
+        "ops",
+        "tables",
+        "schemas",
+        "hooks",
+        "security_deps",
+        "deps",
+        "response",
+        "jsonrpc_prefix",
+        "system_prefix",
+        "middlewares",
+        "lifespan"
+      ],
+      "title": "AppSpec",
+      "type": "object"
+    },
+    "AppSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.app_spec:AppSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "AppSpecEnvelope",
+      "type": "object"
+    },
+    "BindingRegistrySpec": {
+      "additionalProperties": false,
+      "properties": {
+        "_bindings": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/BindingSpec"
+              },
+              {
+                "$ref": "#/$defs/BindingSpecEnvelope"
+              }
+            ]
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "_bindings"
+      ],
+      "title": "BindingRegistrySpec",
+      "type": "object"
+    },
+    "BindingRegistrySpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:BindingRegistrySpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "BindingRegistrySpecEnvelope",
+      "type": "object"
+    },
+    "BindingSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "spec": {
+          "$ref": "#/$defs/TransportBindingSpec"
+        }
+      },
+      "required": [
+        "name",
+        "spec"
+      ],
+      "title": "BindingSpec",
+      "type": "object"
+    },
+    "BindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:BindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "BindingSpecEnvelope",
+      "type": "object"
+    },
+    "ColumnSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "datatype": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/DataTypeSpec"
+                },
+                {
+                  "$ref": "#/$defs/DataTypeSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "default_factory": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "field": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/FieldSpec"
+                },
+                {
+                  "$ref": "#/$defs/FieldSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "io": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/IOSpec"
+                },
+                {
+                  "$ref": "#/$defs/IOSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "read_producer": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "storage": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/StorageSpec"
+                },
+                {
+                  "$ref": "#/$defs/StorageSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "storage",
+        "field",
+        "io",
+        "datatype",
+        "default_factory",
+        "read_producer"
+      ],
+      "title": "ColumnSpec",
+      "type": "object"
+    },
+    "ColumnSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.column_spec:ColumnSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "ColumnSpecEnvelope",
+      "type": "object"
+    },
+    "DataTypeSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "logical_name": {
+          "enum": [
+            "string",
+            "integer",
+            "number",
+            "decimal",
+            "boolean",
+            "bytes",
+            "date",
+            "datetime",
+            "time",
+            "duration",
+            "json",
+            "object",
+            "array",
+            "uuid",
+            "ulid"
+          ],
+          "type": "string"
+        },
+        "nullable": {
+          "type": "boolean"
+        },
+        "options": {
+          "$ref": "#/$defs/AnyMap"
+        }
+      },
+      "required": [
+        "logical_name",
+        "nullable",
+        "options"
+      ],
+      "title": "DataTypeSpec",
+      "type": "object"
+    },
+    "DataTypeSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.datatypes:DataTypeSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "DataTypeSpecEnvelope",
+      "type": "object"
+    },
+    "EngineProviderSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "spec": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EngineSpec"
+            },
+            {
+              "$ref": "#/$defs/EngineSpecEnvelope"
+            }
+          ]
+        }
+      },
+      "required": [
+        "spec"
+      ],
+      "title": "EngineProviderSpec",
+      "type": "object"
+    },
+    "EngineProviderSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.engine_spec:EngineProviderSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "EngineProviderSpecEnvelope",
+      "type": "object"
+    },
+    "EngineSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "async_": {
+          "type": "boolean"
+        },
+        "dsn": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "host": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "mapping": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeObject"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max": {
+          "type": "integer"
+        },
+        "memory": {
+          "type": "boolean"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pool": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pool_size": {
+          "type": "integer"
+        },
+        "port": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pwd": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "user": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "async_",
+        "dsn",
+        "mapping",
+        "path",
+        "memory",
+        "pool",
+        "user",
+        "pwd",
+        "host",
+        "port",
+        "name",
+        "pool_size",
+        "max"
+      ],
+      "title": "EngineSpec",
+      "type": "object"
+    },
+    "EngineSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.engine_spec:EngineSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "EngineSpecEnvelope",
+      "type": "object"
+    },
+    "FieldSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "allow_null_in": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "constraints": {
+          "$ref": "#/$defs/AnyMap"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "py_type": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "required_in": {
+          "$ref": "#/$defs/StringTuple"
+        }
+      },
+      "required": [
+        "py_type",
+        "constraints",
+        "description",
+        "required_in",
+        "allow_null_in"
+      ],
+      "title": "FieldSpec",
+      "type": "object"
+    },
+    "FieldSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.field_spec:FieldSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "FieldSpecEnvelope",
+      "type": "object"
+    },
+    "ForeignKeySpec": {
+      "additionalProperties": false,
+      "properties": {
+        "deferrable": {
+          "type": "boolean"
+        },
+        "initially_deferred": {
+          "type": "boolean"
+        },
+        "match": {
+          "enum": [
+            "FULL",
+            "PARTIAL",
+            "SIMPLE"
+          ],
+          "type": "string"
+        },
+        "on_delete": {
+          "enum": [
+            "CASCADE",
+            "RESTRICT",
+            "SET NULL",
+            "SET DEFAULT"
+          ],
+          "type": "string"
+        },
+        "on_update": {
+          "enum": [
+            "CASCADE",
+            "RESTRICT",
+            "SET NULL",
+            "SET DEFAULT"
+          ],
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "on_delete",
+        "on_update",
+        "deferrable",
+        "initially_deferred",
+        "match"
+      ],
+      "title": "ForeignKeySpec",
+      "type": "object"
+    },
+    "ForeignKeySpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.storage_spec:ForeignKeySpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "ForeignKeySpecEnvelope",
+      "type": "object"
+    },
+    "HookFamilyTuple": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "HookSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "bindings": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "description": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exchange": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "family": {
+          "$ref": "#/$defs/HookFamilyTuple"
+        },
+        "fn": {
+          "$ref": "#/$defs/SerdeValue"
+        },
+        "name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ops": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/$defs/StringTuple"
+            }
+          ]
+        },
+        "order": {
+          "type": "integer"
+        },
+        "phase": {
+          "type": "string"
+        },
+        "subevents": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "when": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "phase",
+        "fn",
+        "ops",
+        "bindings",
+        "exchange",
+        "family",
+        "subevents",
+        "order",
+        "when",
+        "name",
+        "description"
+      ],
+      "title": "HookSpec",
+      "type": "object"
+    },
+    "HookSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.hook_spec:HookSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HookSpecEnvelope",
+      "type": "object"
+    },
+    "HttpJsonRpcBindingSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "exchange": {
+          "type": "string"
+        },
+        "framing": {
+          "type": "string"
+        },
+        "proto": {
+          "enum": [
+            "http.jsonrpc",
+            "https.jsonrpc"
+          ],
+          "type": "string"
+        },
+        "rpc_method": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "proto",
+        "rpc_method",
+        "exchange",
+        "framing"
+      ],
+      "title": "HttpJsonRpcBindingSpec",
+      "type": "object"
+    },
+    "HttpJsonRpcBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:HttpJsonRpcBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HttpJsonRpcBindingSpecEnvelope",
+      "type": "object"
+    },
+    "HttpRestBindingSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "exchange": {
+          "type": "string"
+        },
+        "framing": {
+          "type": "string"
+        },
+        "methods": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "path": {
+          "type": "string"
+        },
+        "proto": {
+          "enum": [
+            "http.rest",
+            "https.rest"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "proto",
+        "methods",
+        "path",
+        "exchange",
+        "framing"
+      ],
+      "title": "HttpRestBindingSpec",
+      "type": "object"
+    },
+    "HttpRestBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:HttpRestBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HttpRestBindingSpecEnvelope",
+      "type": "object"
+    },
+    "HttpStreamBindingSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "exchange": {
+          "type": "string"
+        },
+        "framing": {
+          "type": "string"
+        },
+        "methods": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "path": {
+          "type": "string"
+        },
+        "proto": {
+          "enum": [
+            "http.stream",
+            "https.stream"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "proto",
+        "path",
+        "methods",
+        "exchange",
+        "framing"
+      ],
+      "title": "HttpStreamBindingSpec",
+      "type": "object"
+    },
+    "HttpStreamBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:HttpStreamBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HttpStreamBindingSpecEnvelope",
+      "type": "object"
+    },
+    "IOSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "_assemble": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "_paired": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "_readtime_aliases": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "alias_in": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "alias_out": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allow_in": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "allow_out": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filter_ops": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "header_in": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "header_out": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "header_required_in": {
+          "type": "boolean"
+        },
+        "in_verbs": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "mutable_verbs": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "out_verbs": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "redact_last": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sensitive": {
+          "type": "boolean"
+        },
+        "sortable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "in_verbs",
+        "out_verbs",
+        "mutable_verbs",
+        "alias_in",
+        "alias_out",
+        "header_in",
+        "header_out",
+        "header_required_in",
+        "sensitive",
+        "redact_last",
+        "filter_ops",
+        "sortable",
+        "allow_in",
+        "allow_out",
+        "_paired",
+        "_assemble",
+        "_readtime_aliases"
+      ],
+      "title": "IOSpec",
+      "type": "object"
+    },
+    "IOSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.io_spec:IOSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "IOSpecEnvelope",
+      "type": "object"
+    },
+    "ImportPath": {
+      "description": "Python import path in module:qualname form.",
+      "pattern": "^.+:.+$",
+      "type": "string"
+    },
+    "OpSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "arity": {
+          "enum": [
+            "collection",
+            "member"
+          ],
+          "type": "string"
+        },
+        "bindings": {
+          "additionalProperties": false,
+          "properties": {
+            "__tuple__": {
+              "items": {
+                "$ref": "#/$defs/TransportBindingSpec"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "__tuple__"
+          ],
+          "type": "object"
+        },
+        "core": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "core_raw": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "engine": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "exchange": {
+          "type": "string"
+        },
+        "expose_method": {
+          "type": "boolean"
+        },
+        "expose_routes": {
+          "type": "boolean"
+        },
+        "expose_rpc": {
+          "type": "boolean"
+        },
+        "extra": {
+          "$ref": "#/$defs/AnyMap"
+        },
+        "handler": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hooks": {
+          "additionalProperties": false,
+          "properties": {
+            "__tuple__": {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/HookSpec"
+                  },
+                  {
+                    "$ref": "#/$defs/HookSpecEnvelope"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "__tuple__"
+          ],
+          "type": "object"
+        },
+        "http_methods": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StringTuple"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "path_suffix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "persist": {
+          "type": "string"
+        },
+        "request_model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "response": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ResponseSpec"
+                },
+                {
+                  "$ref": "#/$defs/ResponseSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "response_model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "returns": {
+          "enum": [
+            "raw",
+            "model"
+          ],
+          "type": "string"
+        },
+        "secdeps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "security_deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "status_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subevents": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "table": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tags": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "target": {
+          "type": "string"
+        },
+        "tx_scope": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "alias",
+        "target",
+        "table",
+        "expose_routes",
+        "expose_rpc",
+        "expose_method",
+        "bindings",
+        "exchange",
+        "tx_scope",
+        "subevents",
+        "engine",
+        "arity",
+        "http_methods",
+        "path_suffix",
+        "tags",
+        "status_code",
+        "response",
+        "persist",
+        "request_model",
+        "response_model",
+        "returns",
+        "handler",
+        "hooks",
+        "core",
+        "core_raw",
+        "extra",
+        "deps",
+        "security_deps",
+        "secdeps"
+      ],
+      "title": "OpSpec",
+      "type": "object"
+    },
+    "OpSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.op_spec:OpSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "OpSpecEnvelope",
+      "type": "object"
+    },
+    "RequestSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "app": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "body": {
+          "type": "string"
+        },
+        "headers": {
+          "$ref": "#/$defs/StringMap"
+        },
+        "method": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "path_params": {
+          "$ref": "#/$defs/StringMap"
+        },
+        "query": {
+          "$ref": "#/$defs/StringListMap"
+        },
+        "script_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "method",
+        "path",
+        "headers",
+        "query",
+        "path_params",
+        "body",
+        "script_name",
+        "app"
+      ],
+      "title": "RequestSpec",
+      "type": "object"
+    },
+    "RequestSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.request_spec:RequestSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "RequestSpecEnvelope",
+      "type": "object"
+    },
+    "ResponseSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "cache_control": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "download": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "envelope": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "etag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filename": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "headers": {
+          "$ref": "#/$defs/StringMap"
+        },
+        "kind": {
+          "enum": [
+            "auto",
+            "json",
+            "html",
+            "text",
+            "file",
+            "stream",
+            "redirect"
+          ],
+          "type": "string"
+        },
+        "media_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "redirect_to": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status_code": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "template": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/TemplateSpec"
+                },
+                {
+                  "$ref": "#/$defs/TemplateSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "kind",
+        "media_type",
+        "status_code",
+        "headers",
+        "envelope",
+        "template",
+        "filename",
+        "download",
+        "etag",
+        "cache_control",
+        "redirect_to"
+      ],
+      "title": "ResponseSpec",
+      "type": "object"
+    },
+    "ResponseSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.response_spec:ResponseSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "ResponseSpecEnvelope",
+      "type": "object"
+    },
+    "RouterSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "engine": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hooks": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ops": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "prefix": {
+          "type": "string"
+        },
+        "response": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ResponseSpec"
+                },
+                {
+                  "$ref": "#/$defs/ResponseSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schemas": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "security_deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "tables": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "tags": {
+          "$ref": "#/$defs/StringTuple"
+        }
+      },
+      "required": [
+        "name",
+        "prefix",
+        "engine",
+        "tags",
+        "ops",
+        "schemas",
+        "hooks",
+        "security_deps",
+        "deps",
+        "response",
+        "tables"
+      ],
+      "title": "RouterSpec",
+      "type": "object"
+    },
+    "RouterSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.router_spec:RouterSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "RouterSpecEnvelope",
+      "type": "object"
+    },
+    "SchemaRef": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "in",
+            "out"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "alias",
+        "kind"
+      ],
+      "title": "SchemaRef",
+      "type": "object"
+    },
+    "SchemaRefEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.schema_spec:SchemaRef"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SchemaRefEnvelope",
+      "type": "object"
+    },
+    "SchemaSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "alias": {
+          "type": "string"
+        },
+        "for_": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kind": {
+          "enum": [
+            "in",
+            "out"
+          ],
+          "type": "string"
+        },
+        "schema": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "alias",
+        "kind",
+        "for_",
+        "schema"
+      ],
+      "title": "SchemaSpec",
+      "type": "object"
+    },
+    "SchemaSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.schema_spec:SchemaSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SchemaSpecEnvelope",
+      "type": "object"
+    },
+    "SerdeArray": {
+      "items": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "type": "array"
+    },
+    "SerdeCallableEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "__callable__": {
+          "$ref": "#/$defs/ImportPath"
+        }
+      },
+      "required": [
+        "__callable__"
+      ],
+      "title": "SerdeCallableEnvelope",
+      "type": "object"
+    },
+    "SerdeClassEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "__class__": {
+          "$ref": "#/$defs/ImportPath"
+        }
+      },
+      "required": [
+        "__class__"
+      ],
+      "title": "SerdeClassEnvelope",
+      "type": "object"
+    },
+    "SerdeDataclassEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "$ref": "#/$defs/ImportPath"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SerdeDataclassEnvelope",
+      "type": "object"
+    },
+    "SerdeObject": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "type": "object"
+    },
+    "SerdeTupleEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "$ref": "#/$defs/SerdeValue"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "SerdeValue": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "#/$defs/SerdeArray"
+        },
+        {
+          "$ref": "#/$defs/SerdeObject"
+        },
+        {
+          "$ref": "#/$defs/SerdeTupleEnvelope"
+        },
+        {
+          "$ref": "#/$defs/SerdeClassEnvelope"
+        },
+        {
+          "$ref": "#/$defs/SerdeCallableEnvelope"
+        },
+        {
+          "$ref": "#/$defs/SerdeDataclassEnvelope"
+        }
+      ],
+      "title": "SerdeValue"
+    },
+    "SessionSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "as_of_ts": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "audit": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "autobegin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "backoff_jitter": {
+          "type": "boolean"
+        },
+        "backoff_ms": {
+          "type": "integer"
+        },
+        "cache_read": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "cache_write": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "classification": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "consistency": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expire_on_commit": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fetch_rows": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "idempotency_key": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "isolation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "kms_key_alias": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lock_timeout_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "max_retries": {
+          "type": "integer"
+        },
+        "min_lsn": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "namespace": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "page_snapshot": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "query_tag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "read_only": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retry_on_conflict": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rls_context": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StringMap"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "staleness_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "statement_timeout_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stream_chunk_rows": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "trace_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tracing_sample": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "isolation",
+        "read_only",
+        "autobegin",
+        "expire_on_commit",
+        "retry_on_conflict",
+        "max_retries",
+        "backoff_ms",
+        "backoff_jitter",
+        "statement_timeout_ms",
+        "lock_timeout_ms",
+        "fetch_rows",
+        "stream_chunk_rows",
+        "min_lsn",
+        "as_of_ts",
+        "consistency",
+        "staleness_ms",
+        "tenant_id",
+        "role",
+        "rls_context",
+        "trace_id",
+        "query_tag",
+        "tag",
+        "tracing_sample",
+        "cache_read",
+        "cache_write",
+        "namespace",
+        "kms_key_alias",
+        "classification",
+        "audit",
+        "idempotency_key",
+        "page_snapshot"
+      ],
+      "title": "SessionSpec",
+      "type": "object"
+    },
+    "SessionSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.session_spec:SessionSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SessionSpecEnvelope",
+      "type": "object"
+    },
+    "SseBindingSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "exchange": {
+          "type": "string"
+        },
+        "framing": {
+          "type": "string"
+        },
+        "methods": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "path": {
+          "type": "string"
+        },
+        "proto": {
+          "enum": [
+            "http.sse",
+            "https.sse"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "proto",
+        "path",
+        "methods",
+        "exchange",
+        "framing"
+      ],
+      "title": "SseBindingSpec",
+      "type": "object"
+    },
+    "SseBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:SseBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SseBindingSpecEnvelope",
+      "type": "object"
+    },
+    "StepFnTuple": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "$ref": "#/$defs/SerdeValue"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "StorageSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "autoincrement": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "check": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "comment": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "default": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fk": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ForeignKeySpec"
+                },
+                {
+                  "$ref": "#/$defs/ForeignKeySpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "index": {
+          "type": "boolean"
+        },
+        "nullable": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "onupdate": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_type": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/StorageTypeRef"
+                },
+                {
+                  "$ref": "#/$defs/StorageTypeRefEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "primary_key": {
+          "type": "boolean"
+        },
+        "refresh_on_return": {
+          "type": "boolean"
+        },
+        "server_default": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transform": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/StorageTransformSpec"
+                },
+                {
+                  "$ref": "#/$defs/StorageTransformSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "type_": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unique": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "type_",
+        "physical_type",
+        "nullable",
+        "unique",
+        "index",
+        "primary_key",
+        "autoincrement",
+        "default",
+        "onupdate",
+        "server_default",
+        "refresh_on_return",
+        "transform",
+        "fk",
+        "check",
+        "comment"
+      ],
+      "title": "StorageSpec",
+      "type": "object"
+    },
+    "StorageSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.storage_spec:StorageSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "StorageSpecEnvelope",
+      "type": "object"
+    },
+    "StorageTransformSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "from_stored": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to_stored": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "to_stored",
+        "from_stored"
+      ],
+      "title": "StorageTransformSpec",
+      "type": "object"
+    },
+    "StorageTransformSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.storage_spec:StorageTransformSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "StorageTransformSpecEnvelope",
+      "type": "object"
+    },
+    "StorageTypeRef": {
+      "additionalProperties": false,
+      "properties": {
+        "engine_kind": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "physical_name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "physical_name",
+        "engine_kind"
+      ],
+      "title": "StorageTypeRef",
+      "type": "object"
+    },
+    "StorageTypeRefEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.datatypes:StorageTypeRef"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "StorageTypeRefEnvelope",
+      "type": "object"
+    },
+    "StringListMap": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "StringMap": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "StringTuple": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "TableRegistrySpec": {
+      "additionalProperties": false,
+      "properties": {
+        "tables": {
+          "$ref": "#/$defs/StepFnTuple"
+        }
+      },
+      "required": [
+        "tables"
+      ],
+      "title": "TableRegistrySpec",
+      "type": "object"
+    },
+    "TableRegistrySpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.table_registry_spec:TableRegistrySpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "TableRegistrySpecEnvelope",
+      "type": "object"
+    },
+    "TableSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "columns": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/StepFnTuple"
+            },
+            {
+              "$ref": "#/$defs/SerdeObject"
+            }
+          ]
+        },
+        "deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "engine": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hooks": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "interoperable_with": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "model": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SerdeValue"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "model_ref": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ops": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "portability_class": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "response": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/ResponseSpec"
+                },
+                {
+                  "$ref": "#/$defs/ResponseSpecEnvelope"
+                }
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "roundtrip_mode": {
+          "type": "string"
+        },
+        "schemas": {
+          "$ref": "#/$defs/StepFnTuple"
+        },
+        "security_deps": {
+          "$ref": "#/$defs/StepFnTuple"
+        }
+      },
+      "required": [
+        "model",
+        "model_ref",
+        "engine",
+        "ops",
+        "columns",
+        "schemas",
+        "hooks",
+        "security_deps",
+        "deps",
+        "portability_class",
+        "interoperable_with",
+        "roundtrip_mode",
+        "response"
+      ],
+      "title": "TableSpec",
+      "type": "object"
+    },
+    "TableSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.table_spec:TableSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "TableSpecEnvelope",
+      "type": "object"
+    },
+    "TemplateSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "auto_reload": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filters": {
+          "$ref": "#/$defs/SerdeObject"
+        },
+        "globals": {
+          "$ref": "#/$defs/SerdeObject"
+        },
+        "name": {
+          "type": "string"
+        },
+        "package": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "search_paths": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "name",
+        "search_paths",
+        "package",
+        "auto_reload",
+        "filters",
+        "globals"
+      ],
+      "title": "TemplateSpec",
+      "type": "object"
+    },
+    "TemplateSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.response_spec:TemplateSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "TemplateSpecEnvelope",
+      "type": "object"
+    },
+    "TransportBindingSpec": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HttpRestBindingSpec"
+        },
+        {
+          "$ref": "#/$defs/HttpJsonRpcBindingSpec"
+        },
+        {
+          "$ref": "#/$defs/HttpStreamBindingSpec"
+        },
+        {
+          "$ref": "#/$defs/SseBindingSpec"
+        },
+        {
+          "$ref": "#/$defs/WsBindingSpec"
+        },
+        {
+          "$ref": "#/$defs/WebTransportBindingSpec"
+        },
+        {
+          "$ref": "#/$defs/HttpRestBindingSpecEnvelope"
+        },
+        {
+          "$ref": "#/$defs/HttpJsonRpcBindingSpecEnvelope"
+        },
+        {
+          "$ref": "#/$defs/HttpStreamBindingSpecEnvelope"
+        },
+        {
+          "$ref": "#/$defs/SseBindingSpecEnvelope"
+        },
+        {
+          "$ref": "#/$defs/WsBindingSpecEnvelope"
+        },
+        {
+          "$ref": "#/$defs/WebTransportBindingSpecEnvelope"
+        }
+      ]
+    },
+    "WebTransportBindingSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "exchange": {
+          "type": "string"
+        },
+        "framing": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "proto": {
+          "const": "webtransport",
+          "type": "string"
+        }
+      },
+      "required": [
+        "proto",
+        "path",
+        "exchange",
+        "framing"
+      ],
+      "title": "WebTransportBindingSpec",
+      "type": "object"
+    },
+    "WebTransportBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:WebTransportBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "WebTransportBindingSpecEnvelope",
+      "type": "object"
+    },
+    "WsBindingSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "exchange": {
+          "type": "string"
+        },
+        "framing": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "proto": {
+          "enum": [
+            "ws",
+            "wss"
+          ],
+          "type": "string"
+        },
+        "subprotocols": {
+          "$ref": "#/$defs/StringTuple"
+        }
+      },
+      "required": [
+        "proto",
+        "path",
+        "subprotocols",
+        "exchange",
+        "framing"
+      ],
+      "title": "WsBindingSpec",
+      "type": "object"
+    },
+    "WsBindingSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.binding_spec:WsBindingSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "WsBindingSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "bundle.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schemas": {
+    "AppSpec": "#/$defs/AppSpec",
+    "BindingRegistrySpec": "#/$defs/BindingRegistrySpec",
+    "BindingSpec": "#/$defs/BindingSpec",
+    "ColumnSpec": "#/$defs/ColumnSpec",
+    "DataTypeSpec": "#/$defs/DataTypeSpec",
+    "EngineProviderSpec": "#/$defs/EngineProviderSpec",
+    "EngineSpec": "#/$defs/EngineSpec",
+    "FieldSpec": "#/$defs/FieldSpec",
+    "ForeignKeySpec": "#/$defs/ForeignKeySpec",
+    "HookSpec": "#/$defs/HookSpec",
+    "HttpJsonRpcBindingSpec": "#/$defs/HttpJsonRpcBindingSpec",
+    "HttpRestBindingSpec": "#/$defs/HttpRestBindingSpec",
+    "HttpStreamBindingSpec": "#/$defs/HttpStreamBindingSpec",
+    "IOSpec": "#/$defs/IOSpec",
+    "OpSpec": "#/$defs/OpSpec",
+    "RequestSpec": "#/$defs/RequestSpec",
+    "ResponseSpec": "#/$defs/ResponseSpec",
+    "RouterSpec": "#/$defs/RouterSpec",
+    "SchemaRef": "#/$defs/SchemaRef",
+    "SchemaSpec": "#/$defs/SchemaSpec",
+    "SessionSpec": "#/$defs/SessionSpec",
+    "SseBindingSpec": "#/$defs/SseBindingSpec",
+    "StorageSpec": "#/$defs/StorageSpec",
+    "StorageTransformSpec": "#/$defs/StorageTransformSpec",
+    "StorageTypeRef": "#/$defs/StorageTypeRef",
+    "TableRegistrySpec": "#/$defs/TableRegistrySpec",
+    "TableSpec": "#/$defs/TableSpec",
+    "TemplateSpec": "#/$defs/TemplateSpec",
+    "WebTransportBindingSpec": "#/$defs/WebTransportBindingSpec",
+    "WsBindingSpec": "#/$defs/WsBindingSpec"
+  },
+  "title": "Tigrbl Core Spec Schema Bundle"
+}

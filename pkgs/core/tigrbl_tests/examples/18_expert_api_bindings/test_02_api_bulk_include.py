@@ -6,7 +6,7 @@ bootstrapping a service with several models.
 """
 
 from tigrbl import TableBase, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -54,3 +54,4 @@ def test_bulk_include_populates_schema_namespaces():
 
     assert hasattr(router.schemas, Widget.__name__)
     assert hasattr(router.schemas, Gadget.__name__)
+

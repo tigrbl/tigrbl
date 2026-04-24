@@ -3,7 +3,7 @@ import pytest
 from tigrbl import TableBase, TigrblApp
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Mapped, String
 
 
@@ -36,3 +36,4 @@ def test_tigrbl_app_subclass_declares_metadata() -> None:
     assert WidgetApp.TITLE == "Widget App"
     assert WidgetApp.VERSION == "1.0.0"
     assert WidgetApp.TABLES == (Widget,)
+

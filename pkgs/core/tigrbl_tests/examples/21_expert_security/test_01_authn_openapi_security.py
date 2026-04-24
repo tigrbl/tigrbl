@@ -10,7 +10,7 @@ import inspect
 import httpx
 import pytest
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl import JSONResponse
 from tigrbl import HTTPBearer
@@ -21,6 +21,7 @@ from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop
 
 
 @pytest.mark.asyncio
+@pytest.mark.timeout(5)
 async def test_openapi_security_from_app_authn_dependency() -> None:
     """Show app-level authn dependencies mark secured routes in OpenAPI.
 
@@ -189,3 +190,4 @@ def test_app_set_auth_refreshes_security_for_preincluded_tables() -> None:
     ops_by_alias = getattr(SecurityRefreshWidget.ops, "by_alias", {})
     assert tuple(ops_by_alias["list"])[0].secdeps == ()
     assert tuple(ops_by_alias["create"])[0].secdeps == (app._authn,)
+

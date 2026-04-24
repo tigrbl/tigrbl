@@ -8,7 +8,7 @@ from tigrbl_kernel import (
     _default_kernel as K,
 )
 from tigrbl._spec import S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl._spec import ForeignKeySpec, StorageTransform
 from tigrbl.orm.tables import TableBase
 from sqlalchemy import Integer, String, text
@@ -249,3 +249,4 @@ def test_comment_is_set_on_column():
         notes: Mapped[str] = acol(storage=S(type_=String, comment="sample"))
 
     assert Thing.__table__.c.notes.comment == "sample"
+

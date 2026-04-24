@@ -6,12 +6,12 @@ from httpx import ASGITransport, AsyncClient
 from sqlalchemy.orm import sessionmaker
 from tigrbl import TigrblApp, TigrblRouter
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl_atoms.atoms.schema.collect_in import _run as collect_in_run
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 from tigrbl.types import String
 
 
@@ -114,3 +114,4 @@ async def test_field_spec_collect_in_atom(fs_app):
     collect_in_run(None, ctx)
     schema = ctx.temp["schema_in"]
     assert schema["by_field"]["name"]["required"] is True
+

@@ -66,6 +66,42 @@ class PackedPlanExecutor(ExecutorBase):
 
         return StatusDetailError, create_standardized_error
 
+    @staticmethod
+    def _jsonrpc_error_payload(ctx: _Ctx, status_code: int, detail: Any) -> dict[str, Any] | None:
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            return None
+
+        rpc_id = temp.get("jsonrpc_request_id")
+        is_jsonrpc = "jsonrpc_request_id" in temp
+        for section_key in ("route", "dispatch"):
+            section = temp.get(section_key)
+            if not isinstance(section, Mapping):
+                continue
+            for payload_key in ("rpc_envelope", "rpc"):
+                payload = section.get(payload_key)
+                if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
+                    is_jsonrpc = True
+                    if rpc_id is None:
+                        rpc_id = payload.get("id")
+
+        if not is_jsonrpc:
+            return None
+
+        from tigrbl_typing.status.mappings import ERROR_MESSAGES, _HTTP_TO_RPC
+
+        rpc_code = _HTTP_TO_RPC.get(int(status_code), -32603)
+        data = dict(detail) if isinstance(detail, Mapping) else {"detail": detail}
+        return {
+            "jsonrpc": "2.0",
+            "error": {
+                "code": rpc_code,
+                "message": ERROR_MESSAGES.get(rpc_code, "Internal error"),
+                "data": data,
+            },
+            "id": rpc_id,
+        }
+
     def _resolve_segments_for_program(
         self, packed: PackedKernel, program_id: int
     ) -> tuple[tuple[int, ...], tuple[int, ...]]:
@@ -361,20 +397,7 @@ class PackedPlanExecutor(ExecutorBase):
         if isinstance(temp, dict):
             temp["ingress_probed"] = True
 
-        program_id = self._require_program_id_from_ctx(ctx)
-        if (
-            program_id < 0
-            and isinstance(getattr(ctx, "method", None), str)
-            and isinstance(getattr(ctx, "path", None), str)
-        ):
-            program_id = self._resolve_program_id_from_exact_route(
-                packed, str(ctx.method), str(ctx.path)
-            )
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_dispatch(ctx, packed)
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_request(ctx, plan)
-        return program_id
+        return self._require_program_id_from_ctx(ctx)
 
     def _resolve_segment_step_ids(
         self, packed: PackedKernel
@@ -572,6 +595,7 @@ class PackedPlanExecutor(ExecutorBase):
         if hint == "model_get_db" and callable(
             getattr(model, "__tigrbl_get_db__", None)
         ):
+            from tigrbl_concrete._concrete import engine_resolver as _resolver
 
             def _acquire(_ctx: _Ctx) -> tuple[Any, Any]:
                 return _resolver.acquire(model=model)
@@ -699,22 +723,6 @@ class PackedPlanExecutor(ExecutorBase):
             temp = ctx.temp
 
         program_id = self._require_program_id_from_ctx(ctx)
-        resolved_from_exact_route = False
-        if (
-            program_id < 0
-            and isinstance(getattr(ctx, "method", None), str)
-            and isinstance(getattr(ctx, "path", None), str)
-        ):
-            program_id = self._resolve_program_id_from_exact_route(
-                packed, str(ctx.method), str(ctx.path)
-            )
-            resolved_from_exact_route = program_id >= 0
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_dispatch(ctx, packed)
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_channel(ctx, plan)
-        if program_id < 0:
-            program_id = self._resolve_program_id_from_request(ctx, plan)
         if program_id < 0:
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
@@ -742,20 +750,12 @@ class PackedPlanExecutor(ExecutorBase):
             return
 
         temp["program_id"] = program_id
-        if resolved_from_exact_route:
-            temp["_tigrbl_hot_exact_route"] = True
 
         hot_op_plan = (
             packed.hot_op_plans[program_id]
             if program_id < len(getattr(packed, "hot_op_plans", ()))
             else None
         )
-        if (
-            resolved_from_exact_route
-            and hot_op_plan is not None
-            and str(getattr(hot_op_plan, "target", "")).lower() == "create"
-        ):
-            temp["_tigrbl_hot_direct_create"] = True
 
         if program_id >= len(plan.opmeta):
             await _send_json(
@@ -814,11 +814,8 @@ class PackedPlanExecutor(ExecutorBase):
                     packed,
                     program_id,
                     hot_op_plan,
-                    skip_dispatch=resolved_from_exact_route,
-                    fast_direct_create=bool(
-                        isinstance(temp, dict)
-                        and temp.get("_tigrbl_hot_direct_create") is True
-                    ),
+                    skip_dispatch=False,
+                    fast_direct_create=False,
                 )(ctx)
             except StatusDetailError as exc:
                 detail = (
@@ -836,10 +833,12 @@ class PackedPlanExecutor(ExecutorBase):
                         await self._run_segment(ctx, packed, seg_id)
                     except Exception:
                         pass
+                status_code = int(getattr(exc, "status_code", 500) or 500)
+                payload = self._jsonrpc_error_payload(ctx, status_code, detail)
                 await _send_json(
                     env,
-                    int(getattr(exc, "status_code", 500) or 500),
-                    {"detail": detail},
+                    200 if payload is not None else status_code,
+                    payload or {"detail": detail},
                     headers=getattr(exc, "headers", None),
                 )
                 return
@@ -860,10 +859,12 @@ class PackedPlanExecutor(ExecutorBase):
                         await self._run_segment(ctx, packed, seg_id)
                     except Exception:
                         pass
+                status_code = int(getattr(std, "status_code", 500) or 500)
+                payload = self._jsonrpc_error_payload(ctx, status_code, detail)
                 await _send_json(
                     env,
-                    int(getattr(std, "status_code", 500) or 500),
-                    {"detail": detail},
+                    200 if payload is not None else status_code,
+                    payload or {"detail": detail},
                     headers=getattr(std, "headers", None),
                 )
                 return

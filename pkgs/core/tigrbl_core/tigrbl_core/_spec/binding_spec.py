@@ -3,7 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal, Optional, Type, Union
 
-from ..config.constants import TIGRBL_NESTED_PATHS_ATTR
+from ..config.constants import (
+    TIGRBL_NESTED_PATHS_ATTR,
+    __JSONRPC_DEFAULT_ENDPOINT__,
+)
 from .serde import SerdeMixin
 
 Exchange = Literal[
@@ -31,6 +34,7 @@ class HttpRestBindingSpec(SerdeMixin):
 class HttpJsonRpcBindingSpec(SerdeMixin):
     proto: Literal["http.jsonrpc", "https.jsonrpc"]
     rpc_method: str
+    endpoint: str = __JSONRPC_DEFAULT_ENDPOINT__
     exchange: Exchange = "request_response"
     framing: Framing = "jsonrpc"
 

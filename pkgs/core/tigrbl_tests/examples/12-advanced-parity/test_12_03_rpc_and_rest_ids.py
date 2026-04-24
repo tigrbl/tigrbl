@@ -9,7 +9,7 @@ from tigrbl_client import TigrblClient
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -46,3 +46,4 @@ async def test_rest_and_rpc_ids_align() -> None:
         assert rpc["id"] == rest_id
     finally:
         await stop_uvicorn(server, task)
+

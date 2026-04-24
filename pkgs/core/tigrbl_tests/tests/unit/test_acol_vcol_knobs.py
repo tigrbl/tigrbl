@@ -6,7 +6,7 @@ from tigrbl_atoms.atoms.schema.collect_in import _run as collect_in_run
 from tigrbl_atoms.atoms.schema.collect_out import _run as collect_out_run
 from tigrbl_kernel import _default_kernel as K
 from tigrbl._spec import ColumnSpec, F, IO, S
-from tigrbl.shortcuts.column import acol, vcol
+from tigrbl.factories.column import acol, vcol
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import (
     Column,
@@ -96,3 +96,4 @@ def test_acol_vcol_knobs_affect_bindings_and_schemas():
     # binding of ops on model
     assert "create" in Thing.opspecs.by_alias
     assert "read" in Thing.opspecs.by_alias
+

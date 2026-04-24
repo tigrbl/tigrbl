@@ -1,0 +1,91 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2024"
+number: 2024
+slug: "canonical-transport-routing-tuple-and-kernelplan-index-contract"
+title: "Canonical Transport Routing Tuple and KernelPlan Index Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the canonical transport-routing tuple and the normative public `KernelPlan` index contract for all governed transport surfaces."
+supersedes:
+  - "spc:2013"
+  - "spc:2015"
+  - "spc:2016"
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "SPEC-2024 now consolidates the canonical public transport-routing contract under (scope, path, method); the prior split draft specs are superseded by that single contract."
+    at: "2026-04-20T10:29:37Z"
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the canonical transport-routing tuple and the normative public `KernelPlan` index contract for all governed transport surfaces.
+  
+  ## Canonical Contract
+  
+  - The authoritative public and debug shape is `KernelPlan.proto_indices[scope][path][method] = meta_index`.
+  - `scope` is the transport or binding family key.
+  - `path` is the concrete mounted ingress address.
+  - `method` is the required operation discriminator at that path for the selected transport.
+  - All served surfaces have a mounted `path`, but not all surfaces use HTTP verbs.
+  - Runtime implementations may maintain internal exact-match tables, templated matchers, endpoint maps, or selector keys, but those are implementation details or compatibility projections and not the normative public contract.
+  
+  ## Transport Semantics
+  
+  - REST over HTTP/HTTPS uses HTTP verbs as `method`.
+  - HTTP stream over HTTP/HTTPS uses HTTP verbs as `method`, typically `GET`.
+  - SSE over HTTP/HTTPS uses HTTP verbs as `method`, typically `GET`.
+  - JSON-RPC over HTTP/HTTPS uses the RPC method name as `method`.
+  - WS and WSS use `$connect` for current connection-level dispatch.
+  - WebTransport uses `$connect` for current session-level dispatch.
+  - Future message-level websocket or WebTransport dispatch may add additional transport-specific method values under the same `(scope, path, method)` model.
+  
+  ## Path Templates
+  
+  - Exact routes use their concrete mounted path string as the `path` key.
+  - Templated routes use the canonical template string as the `path` key, for example `"/widgets/{widget_id}"`.
+  - Runtime matchers may preserve separate exact and templated lookup tables internally, but the canonical public index projects templated paths using the declared template string.
+  
+  ## Canonical Examples
+  
+  ```python
+  index["http.rest"]["/widgets"]["GET"] = 0
+  index["http.rest"]["/widgets"]["POST"] = 1
+  index["http.rest"]["/widgets/{widget_id}"]["PATCH"] = 2
+  
+  index["https.rest"]["/widgets/{widget_id}"]["GET"] = 3
+  
+  index["http.jsonrpc"]["/rpc"]["Widget.create"] = 10
+  index["http.jsonrpc"]["/rpc"]["Widget.read"] = 11
+  index["http.jsonrpc"]["/admin-rpc"]["Admin.reindex"] = 12
+  
+  index["https.jsonrpc"]["/rpc"]["Widget.create"] = 13
+  
+  index["http.stream"]["/stream/widgets"]["GET"] = 20
+  index["https.stream"]["/stream/widgets"]["GET"] = 21
+  
+  index["http.sse"]["/events/widgets"]["GET"] = 30
+  index["https.sse"]["/events/widgets"]["GET"] = 31
+  
+  index["ws"]["/ws/echo"]["$connect"] = 40
+  index["wss"]["/ws/echo"]["$connect"] = 41
+  
+  index["webtransport"]["/transport"]["$connect"] = 50
+  ```
+  
+  ## Compatibility
+  
+  - Existing mixed selector representations such as `OpKey(proto, selector)` remain valid internal runtime forms.
+  - Existing nested JSON-RPC endpoint maps remain valid internal or compatibility shapes if they project losslessly to concrete `(scope, path, method)` entries.
+  - Concrete path identity is canonical for the public contract even when logical endpoint identity is still used internally for mount configuration or binding materialization.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1047`, `adr:1048`, `adr:1051`
+  - Supersedes the overlapping public-contract portions of `spc:2013`, `spc:2015`, and `spc:2016`.
+spec_kind: "local-policy"
+adr_ids: []

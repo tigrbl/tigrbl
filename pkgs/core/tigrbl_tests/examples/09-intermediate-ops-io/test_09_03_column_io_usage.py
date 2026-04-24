@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Integer
 
 
@@ -13,3 +13,4 @@ def test_column_io_metadata() -> None:
     )
     assert col.io.in_verbs == ("create",)
     assert col.io.out_verbs == ("read", "list")
+

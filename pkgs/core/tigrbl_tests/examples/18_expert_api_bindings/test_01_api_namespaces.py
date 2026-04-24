@@ -7,7 +7,7 @@ and avoids leaking implementation details into unrelated modules.
 """
 
 from tigrbl import TableBase, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
@@ -44,3 +44,4 @@ def test_router_namespace_entries_are_model_scoped():
 
     assert Widget.__name__ in router.schemas.__dict__
     assert Widget.__name__ in router.handlers.__dict__
+

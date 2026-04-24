@@ -1,0 +1,30 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1039"
+number: 1039
+slug: "cli-contract-and-server-selection-contract"
+title: "CLI contract and server-selection contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "CLI contract tests validate target loading, target error behavior, and server support expectations as one cohesive contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. CLI target resolution is canonical and shared across relevant CLI command families.
+  2. Server-runner selection MUST preserve required docs route/payload availability for selected targets.
+  3. Target-resolution and server-selection error classification is normative and stable.
+  
+  ## Context
+  
+  CLI contract tests validate target loading, target error behavior, and server support expectations as one cohesive contract.
+  
+  ## Consequences
+  
+  - CLI/server regressions are conformance issues, not implementation details.
+  - Docs/server behavior remains tied to canonical target resolution.

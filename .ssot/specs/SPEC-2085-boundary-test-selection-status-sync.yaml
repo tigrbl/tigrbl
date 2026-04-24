@@ -1,0 +1,46 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2085"
+number: 2085
+slug: "boundary-test-selection-status-sync"
+title: "Boundary-scoped test selection and status synchronization"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines deterministic test selection and auditable status synchronization from SSOT boundary and release state."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted as part of SSOT authority, test alignment, and gate model migration."
+    at: "2026-04-22T00:00:00Z"
+references: []
+body: |-
+  ## Scope
+  
+  This specification defines deterministic test selection and status synchronization from SSOT boundaries and releases.
+  
+  ## Boundary-Scoped Selection
+  
+  1. Input MUST be either a boundary id or a release id.
+  2. A release id MUST resolve to its boundary id before selecting tests.
+  3. Selected features MUST be the boundary feature set.
+  4. Selected claims MUST include feature-linked claims and release-linked claims when a release id is provided.
+  5. Selected tests MUST include feature-linked tests and claim-linked tests.
+  6. Selected evidence MUST include claim-linked evidence and test-linked evidence.
+  7. Output ordering MUST be deterministic and stable by entity id.
+  
+  ## Status Synchronization
+  
+  1. CI result ingestion MUST consume machine-readable test result artifacts.
+  2. Test outcomes map to SSOT test status as: pass to passing, fail/error to failing, skip to blocked, and missing to not_run.
+  3. Evidence status derives from linked test outcomes unless the evidence artifact is explicitly recorded as static proof.
+  4. Claim status derives from required evidence and linked tests for the selected boundary or release.
+  5. Gate status derives from required claim and evidence status and from prior gate status in A through E order.
+  6. Ordinary pull-request CI SHOULD report proposed status changes without mutating SSOT.
+  7. Trusted promotion workflows MAY apply status updates only after writing an audit artifact.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1082"

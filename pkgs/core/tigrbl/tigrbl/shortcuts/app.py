@@ -1,3 +1,2 @@
-from tigrbl_concrete.shortcuts.app import defineAppSpec, deriveApp
+﻿from tigrbl.factories.app import *  # noqa: F401,F403
 
-__all__ = ["defineAppSpec", "deriveApp"]

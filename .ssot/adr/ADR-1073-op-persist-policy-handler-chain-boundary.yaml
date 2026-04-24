@@ -1,0 +1,39 @@
+schema_version: "0.1.0"
+kind: "adr"
+id: "adr:1073"
+number: 1073
+slug: "op-persist-policy-handler-chain-boundary"
+title: "Op persist policy and handler chain boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Persist policy is an operation-level handler-chain and transaction projection, not a transport-specific or decorator-only concern."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Persist policy belongs to the canonical operation declaration.
+  2. Persist policy controls handler-chain and transaction projection for the operation.
+  3. Persist policy is independent of REST, RPC, docs, and other transport surfaces.
+  4. Public authoring tokens for persist policy must normalize into a closed canonical policy vocabulary before runtime projection.
+  5. Custom operations and canonical operations use the same persist-policy boundary.
+  
+  ## Context
+  
+  operation contract tests cover persist overrides, token normalization, custom-target persist behavior, and handler-chain ordering. Existing ADRs discuss database guardrails and canonical operation semantics, but persist policy needs an explicit boundary so future transport or decorator changes do not reinterpret persistence behavior locally.
+  
+  ## Consequences
+  
+  - Tests can assert persist normalization and transaction behavior at the operation layer.
+  - Runtime builders must consume normalized operation policy rather than raw decorator arguments.
+  - Transport projections may expose or document persistence effects, but they do not own the policy.
+  
+  ## Rejected Alternatives
+  
+  - Treating persist as a REST-only or RPC-only projection flag.
+  - Letting decorators inject handler-chain steps outside canonical operation materialization.
+  - Using open-ended persist strings without canonical normalization.

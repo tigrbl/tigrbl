@@ -1,0 +1,48 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2078"
+number: 2078
+slug: "docs-payload-projection-contract"
+title: "Documentation payload projection contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Documentation payload projection contract"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated docs payload projection with schema and payload evidence."
+    at: "2026-04-21T07:43:02Z"
+  -
+    status: "draft"
+    note: "Updated docs payload projection with schema and payload evidence."
+    at: "2026-04-21T08:15:24Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Documentation payloads (OpenAPI/OpenRPC and related docs artifacts) are canonical projections.
+  2. Payload generation MUST be deterministic for equivalent canonical inputs.
+  3. Security, operation visibility, request/response schema references, and status/error metadata emitted in payloads are normative.
+  4. Payload projections MUST derive from canonical metadata ownership boundaries.
+  5. Bulk operation schemas, clear response schemas, schema examples, and client-facing request/response schema objects are part of the payload projection contract.
+  
+  ## Integration Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_bulk_docs_client.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_clear_response_schema.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_schema.py`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1080`, `adr:1030`, `adr:1014`
+  - Related specs: `spc:2069`, `spc:2080`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1080"
+  - "adr:1030"
+  - "adr:1014"

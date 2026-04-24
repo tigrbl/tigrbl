@@ -3,12 +3,12 @@ from collections.abc import Iterator
 
 from tigrbl import TigrblApp
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl._spec import OpSpec
 from tigrbl.orm.mixins import BulkCapable, GUIDPk, Replaceable
 from tigrbl.orm.tables import TableBase
 from tigrbl._spec import IO, S, F
-from tigrbl.shortcuts.column import acol as spec_acol
+from tigrbl.factories.column import acol as spec_acol
 from tigrbl.types import Session, String, uuid4
 
 
@@ -223,3 +223,4 @@ OPS = [
 async def test_rpc_all_default_op_verbs(op, app_and_session):
     app, db = app_and_session
     await op(app, db)
+

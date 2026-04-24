@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-22T00:32:54Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "15b2227e9e5d61dccb31a9270643a7de11cf212eabc4c645a8610404f0d2ed99",
+  "boundary": {
+    "id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "title": "tigrbl_tests failing-case closure boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:tigrbl-tests-failing-case-closure-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:tigrbl-tests-failing-case-closure-001",
+      "title": "tigrbl_tests failing-case closure",
+      "description": "Certifiable closure feature for every pytest case that was failing in the tigrbl_tests closure sweep; the feature is implemented only by the repairs that make those cases and the full tigrbl_tests suite pass.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "explicit",
+        "slot": "rel:tigrbl-tests-failing-case-closure-20260421",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2002",
+        "spc:0608"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failing-case-closure-001"
+      ],
+      "test_ids": [
+        "tst:http-route-jsonrpc-openrpc-surface",
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_phase7_operator_surface_closure.py",
+        "tst:tcase-0013",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
+        "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
+        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-phase-window-static",
+        "tst:tigrbl-tests-tests-unit-test-phase1-declared-surface-docs",
+        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-tests-failing-case-closure-001",
+    "feature_count": 1,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

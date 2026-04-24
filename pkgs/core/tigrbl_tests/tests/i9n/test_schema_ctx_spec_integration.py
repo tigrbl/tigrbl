@@ -8,11 +8,11 @@ from tigrbl import TigrblApp
 from tigrbl._spec import StorageTransform
 from tigrbl.core import crud
 from tigrbl import resolver as _resolver
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.tables import TableBase as Base3
 from tigrbl.decorators.schema import schema_ctx
 from tigrbl._spec import IO, F, S
-from tigrbl.shortcuts.column import acol
+from tigrbl.factories.column import acol
 
 
 @pytest_asyncio.fixture
@@ -204,3 +204,4 @@ async def test_schema_ctx_system_steps(schema_ctx_client):
     kernelz = (await client.get("/system/kernelz")).json()
     assert "Widget" in kernelz
     assert "create" in kernelz["Widget"]
+

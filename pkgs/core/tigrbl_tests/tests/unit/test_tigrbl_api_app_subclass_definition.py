@@ -3,7 +3,7 @@ import pytest
 from tigrbl import TableBase, TigrblRouter, TigrblApp
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl._spec import F, IO, S
-from tigrbl.shortcuts import acol
+from tigrbl.factories import acol
 from tigrbl.types import Mapped, String
 
 
@@ -37,3 +37,4 @@ def test_tigrbl_router_app_subclass_declares_composition() -> None:
     assert "ROUTERS" in app_dir
     assert ZetaRouter.TABLES == (Zeta,)
     assert ZetaApp.ROUTERS == (ZetaRouter,)
+

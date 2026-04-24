@@ -1,6 +1,6 @@
 # Operator Surface Reference
 
-This section documents the current-target framework/operator surfaces that remain in scope after the Phase 7 closure decisions.
+This section documents the current-target framework/operator surfaces that remain in scope after the operator-surface closure decisions.
 
 ## Surfaces documented here
 

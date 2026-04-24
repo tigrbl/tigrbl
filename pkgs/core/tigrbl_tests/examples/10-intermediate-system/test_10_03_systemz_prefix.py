@@ -7,12 +7,13 @@ import pytest
 
 from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 from tigrbl import TableBase, TigrblApp, TigrblRouter
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.types import Column, String
 
 
 @pytest.mark.asyncio
+@pytest.mark.timeout(5)
 async def test_systemz_prefix_routes() -> None:
     class Widget(TableBase, GUIDPk):
         __tablename__ = "lesson_systemz_widget"
@@ -39,3 +40,4 @@ async def test_systemz_prefix_routes() -> None:
         assert response.json()["ok"] is True
     finally:
         await stop_uvicorn(server, task)
+

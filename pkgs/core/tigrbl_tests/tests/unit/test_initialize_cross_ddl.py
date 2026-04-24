@@ -2,8 +2,8 @@ import pytest
 
 from tigrbl import TableBase, TigrblApp
 from tigrbl._spec import S
-from tigrbl.shortcuts.column import acol
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.column import acol
+from tigrbl.factories.engine import mem
 from sqlalchemy import Integer
 from sqlalchemy.orm import Mapped
 
@@ -25,3 +25,4 @@ async def test_initialize_with_sync_engine():
     app.include_table(Widget)
     await app.initialize()
     assert getattr(app.tables, "Widget").name == "widgets"
+

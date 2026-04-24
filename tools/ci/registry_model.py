@@ -61,6 +61,10 @@ def classify_bundle(path: str) -> str:
         return "/".join(parts[:2])
     if path.startswith("tools/") and len(parts) >= 2:
         return "/".join(parts[:2])
+    if path.startswith(".ssot/specs/"):
+        return ".ssot/specs"
+    if path.startswith(".ssot/adr/"):
+        return ".ssot/adr"
     if path.startswith("specs/"):
         return "specs"
     if path.startswith("adr/"):

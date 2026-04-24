@@ -1,7 +1,7 @@
 from tigrbl.engine.bind import install_from_objects
 from tigrbl.engine import resolver
-from tigrbl.shortcuts.engine import pga, pgs, sqlitef
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import pga, pgs, sqlitef
+from tigrbl.factories.engine import mem
 from tigrbl._concrete._op import Op
 
 
@@ -38,3 +38,4 @@ def test_op_table_router_app_engines(tmp_path):
     assert p_router is not None and p_router is not p_app and p_router.kind == "sync"
     assert p_table is not None and p_table is not p_router and p_table.kind == "sync"
     assert p_op is not None and p_op is not p_table and p_op.kind == "async"
+

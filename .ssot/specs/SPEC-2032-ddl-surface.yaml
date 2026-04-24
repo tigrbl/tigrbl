@@ -1,0 +1,40 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2032"
+number: 2032
+slug: "ddl-surface"
+title: "Non-bootstrap DDL contract surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed non-bootstrap DDL contract surface for Tigrbl concrete behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed non-bootstrap DDL contract surface for Tigrbl concrete behavior.
+  
+  ## Canonical Surface
+  
+  - The DDL contract surface governs concrete table/metadata creation behavior exposed through the DDL family.
+  - The DDL contract groups tables by resolved engine/provider and applies schema/table creation on the selected bind.
+  - The DDL contract remains separate from bootstrap timing, namespace ensuring, namespace parity, and migration history/versioning.
+  - Transport projection, docs projection, and public operator surfaces do not redefine DDL meaning.
+  
+  ## Exclusions
+  
+  - `ensure_schemas()` is governed as namespace ensuring, not as generic DDL contract.
+  - `register_sqlite_attach()` is governed as namespace parity, not as generic DDL contract.
+  - `bootstrap_dbschema()` and `initialize()` bootstrap timing/mode behavior are governed by the bootstrap execution spec.
+  - Schema migration remains governed separately.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1055`, `adr:1064`
+  - Related features: `feat:ddl-runtime-surface-001`
+spec_kind: "local-policy"
+adr_ids: []

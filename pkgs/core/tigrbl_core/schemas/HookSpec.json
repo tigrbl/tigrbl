@@ -1,0 +1,107 @@
+{
+  "$defs": {
+    "HookSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.hook_spec:HookSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HookSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "HookSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "bindings": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "exchange": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "family": {
+      "$ref": "./shared.json#/$defs/HookFamilyTuple"
+    },
+    "fn": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ops": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "./shared.json#/$defs/StringTuple"
+        }
+      ]
+    },
+    "order": {
+      "type": "integer"
+    },
+    "phase": {
+      "type": "string"
+    },
+    "subevents": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "when": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "phase",
+    "fn",
+    "ops",
+    "bindings",
+    "exchange",
+    "family",
+    "subevents",
+    "order",
+    "when",
+    "name",
+    "description"
+  ],
+  "title": "HookSpec",
+  "type": "object"
+}

@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy import Column, Integer
 
 from tigrbl import TableBase, TigrblRouter, TigrblApp
-from tigrbl.shortcuts.engine import mem
+from tigrbl.factories.engine import mem
 
 
 class AsyncWidget(TableBase):
@@ -38,3 +38,4 @@ async def test_initialize_handles_mixed_sync_async_routers():
     await result
 
     assert getattr(app, "_ddl_executed", False) is True
+

@@ -1,0 +1,47 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2026"
+number: 2026
+slug: "tigrbl-base-private-and-public-export-surface"
+title: "tigrbl_base Private and Public Export Surface"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document defines the governed export and public-facade projection surface for `tigrbl_base`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  This document defines the governed export and public-facade projection surface for `tigrbl_base`.
+  
+  ## Canonical Base Surface
+  
+  - The canonical base-layer export surface is the full key set of `tigrbl_base._base.__init__._EXPORTS`.
+  - Each governed base export identifies a reusable base-layer class, protocol, or support type owned by the `tigrbl_base` package.
+  - The base layer remains distinct from `tigrbl_concrete`, `tigrbl_core._spec`, and the top-level facade.
+  
+  ## Public Operator Projection
+  
+  - The governed public base-class projection is the intersection of `tigrbl_base._base.__init__._EXPORTS` with `tigrbl.__all__`.
+  - A public base export is an explicit facade/operator-surface promotion of a base-layer symbol.
+  - Base exports that are not re-exported through `tigrbl.__all__` remain governed private/internal base-layer surface.
+  
+  ## Feature Granularity
+  
+  - One feature row may track each governed `tigrbl_base` export/class.
+  - One additional feature row may track each base export that is promoted into the public `tigrbl` facade.
+  
+  ## Classification Rules
+  
+  - base feature: ownership of the base-layer export/class inside `tigrbl_base`
+  - public export feature: facade/operator-surface exposure of a base-layer export through `tigrbl`
+  
+  ## Traceability
+  
+  - ADRs: `adr:1002`, `adr:1053`
+spec_kind: "local-policy"
+adr_ids: []

@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0.0",
+  "kind": "appspec_corpus",
+  "lane": "canonical",
+  "cases": [
+    {
+      "id": "appspec-canonical-rest-rpc-roundtrip-001",
+      "title": "Canonical REST and JSON-RPC create roundtrip",
+      "mode": "rest_rpc_roundtrip",
+      "app": {
+        "title": "CorpusHarness",
+        "version": "0.0.0",
+        "jsonrpc_prefix": "/rpcx",
+        "system_prefix": "/system"
+      },
+      "table": {
+        "tablename": "harness_appspec_corpus_roundtrip",
+        "resource": "widget"
+      },
+      "expect": {
+        "rest_status": [
+          200,
+          201
+        ],
+        "rpc_status": [
+          200
+        ]
+      }
+    },
+    {
+      "id": "appspec-canonical-rest-rpc-parity-002",
+      "title": "Canonical REST write is visible to JSON-RPC list",
+      "mode": "rest_rpc_parity",
+      "app": {
+        "title": "CorpusHarness",
+        "version": "0.0.0",
+        "jsonrpc_prefix": "/rpcx",
+        "system_prefix": "/system"
+      },
+      "table": {
+        "tablename": "harness_appspec_corpus_parity",
+        "resource": "widget"
+      },
+      "expect": {
+        "rest_status": [
+          200,
+          201
+        ],
+        "rpc_status": [
+          200
+        ]
+      }
+    }
+  ]
+}

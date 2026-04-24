@@ -1,0 +1,224 @@
+{
+  "$defs": {
+    "AnyMap": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "type": "object"
+    },
+    "HookFamilyTuple": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "ImportPath": {
+      "description": "Python import path in module:qualname form.",
+      "pattern": "^.+:.+$",
+      "type": "string"
+    },
+    "SerdeArray": {
+      "items": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "type": "array"
+    },
+    "SerdeCallableEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "__callable__": {
+          "$ref": "./shared.json#/$defs/ImportPath"
+        }
+      },
+      "required": [
+        "__callable__"
+      ],
+      "title": "SerdeCallableEnvelope",
+      "type": "object"
+    },
+    "SerdeClassEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "__class__": {
+          "$ref": "./shared.json#/$defs/ImportPath"
+        }
+      },
+      "required": [
+        "__class__"
+      ],
+      "title": "SerdeClassEnvelope",
+      "type": "object"
+    },
+    "SerdeDataclassEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "$ref": "./shared.json#/$defs/ImportPath"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "SerdeDataclassEnvelope",
+      "type": "object"
+    },
+    "SerdeObject": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "type": "object"
+    },
+    "SerdeTupleEnvelope": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "$ref": "./shared.json#/$defs/SerdeValue"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "SerdeValue": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "integer"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "string"
+        },
+        {
+          "$ref": "./shared.json#/$defs/SerdeArray"
+        },
+        {
+          "$ref": "./shared.json#/$defs/SerdeObject"
+        },
+        {
+          "$ref": "./shared.json#/$defs/SerdeTupleEnvelope"
+        },
+        {
+          "$ref": "./shared.json#/$defs/SerdeClassEnvelope"
+        },
+        {
+          "$ref": "./shared.json#/$defs/SerdeCallableEnvelope"
+        },
+        {
+          "$ref": "./shared.json#/$defs/SerdeDataclassEnvelope"
+        }
+      ],
+      "title": "SerdeValue"
+    },
+    "StepFnTuple": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "$ref": "./shared.json#/$defs/SerdeValue"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "StringListMap": {
+      "additionalProperties": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "type": "object"
+    },
+    "StringMap": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "StringTuple": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "TransportBindingSpec": {
+      "anyOf": [
+        {
+          "$ref": "./HttpRestBindingSpec.json"
+        },
+        {
+          "$ref": "./HttpJsonRpcBindingSpec.json"
+        },
+        {
+          "$ref": "./HttpStreamBindingSpec.json"
+        },
+        {
+          "$ref": "./SseBindingSpec.json"
+        },
+        {
+          "$ref": "./WsBindingSpec.json"
+        },
+        {
+          "$ref": "./WebTransportBindingSpec.json"
+        },
+        {
+          "$ref": "./HttpRestBindingSpec.json#/$defs/HttpRestBindingSpecEnvelope"
+        },
+        {
+          "$ref": "./HttpJsonRpcBindingSpec.json#/$defs/HttpJsonRpcBindingSpecEnvelope"
+        },
+        {
+          "$ref": "./HttpStreamBindingSpec.json#/$defs/HttpStreamBindingSpecEnvelope"
+        },
+        {
+          "$ref": "./SseBindingSpec.json#/$defs/SseBindingSpecEnvelope"
+        },
+        {
+          "$ref": "./WsBindingSpec.json#/$defs/WsBindingSpecEnvelope"
+        },
+        {
+          "$ref": "./WebTransportBindingSpec.json#/$defs/WebTransportBindingSpecEnvelope"
+        }
+      ]
+    }
+  },
+  "$id": "shared.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tigrbl Core Shared JSON Schema Definitions"
+}

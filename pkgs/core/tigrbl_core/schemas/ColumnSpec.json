@@ -1,0 +1,122 @@
+{
+  "$defs": {
+    "ColumnSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.column_spec:ColumnSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "ColumnSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "ColumnSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "datatype": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./DataTypeSpec.json"
+            },
+            {
+              "$ref": "./DataTypeSpec.json#/$defs/DataTypeSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "default_factory": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "field": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./FieldSpec.json"
+            },
+            {
+              "$ref": "./FieldSpec.json#/$defs/FieldSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "io": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./IOSpec.json"
+            },
+            {
+              "$ref": "./IOSpec.json#/$defs/IOSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "read_producer": {
+      "anyOf": [
+        {
+          "$ref": "./shared.json#/$defs/SerdeValue"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "storage": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "./StorageSpec.json"
+            },
+            {
+              "$ref": "./StorageSpec.json#/$defs/StorageSpecEnvelope"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "storage",
+    "field",
+    "io",
+    "datatype",
+    "default_factory",
+    "read_producer"
+  ],
+  "title": "ColumnSpec",
+  "type": "object"
+}

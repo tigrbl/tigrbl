@@ -1,0 +1,69 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2011"
+number: 2011
+slug: "appspec-harness-uvicorn-parity"
+title: "AppSpec, Harness, and Uvicorn Parity"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This document governs the recovery lane for AppSpec materialization, imperative harness assembly, and Uvicorn-backed REST / JSON-RPC execution."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated AppSpec/Uvicorn parity with app/API runtime evidence."
+    at: "2026-04-21T07:42:18Z"
+  -
+    status: "draft"
+    note: "Updated AppSpec/Uvicorn parity with app/API runtime evidence."
+    at: "2026-04-21T08:14:33Z"
+references: []
+body: |-
+  ## Intent
+  
+  This document governs the recovery lane for AppSpec materialization, imperative harness assembly, and Uvicorn-backed REST / JSON-RPC execution.
+  
+  ## Invariants
+  
+  - Equivalent AppSpec and imperative declarations compile to the same semantic kernel plan.
+  - Harness execution uses the same compiled routing and projection rules as ordinary runtime execution.
+  - REST and JSON-RPC consume the same canonical operation result under Uvicorn-backed execution.
+  - Request/response JSON-RPC calls return JSON-RPC envelopes and only notifications may project to `204 No Content`.
+  - Engine resolver precedence is transport-agnostic and resolves before final projection.
+  - Mounted and prefixed Uvicorn scenarios preserve the same routing semantics.
+  - Multi-table routing preserves the same semantic behavior across REST and JSON-RPC.
+  - App, API, include-API, and multi-API Uvicorn forms are equivalent runtime projections of the same canonical declarations.
+  
+  Kernel bootstrap, priming, and OpView cache lifecycle are governed normatively by `spc:2018`.
+  
+  ## Integration Coverage
+  
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_engine_resolver_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_engine_install_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_usage_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_include_api_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_app_multi_api_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_api_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_api_usage_uvicorn.py`
+  - `pkgs/core/tigrbl_tests/tests/i9n/test_tigrbl_api_app_usage_uvicorn.py`
+  
+  ## Implementation Expectations
+  
+  - Fixes must converge on one compiled-plan and one projection path rather than introducing harness-only or transport-specific branches.
+  - Resolver and multi-table behavior must be verified in both mounted and prefixed Uvicorn scenarios.
+  - Regression proof should prefer the existing `tigrbl_tests` parity lanes rather than adding bespoke smoke tests first.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1031`, `adr:1038`, `adr:1014`
+  - Specs: `spc:2018`, `spc:2045`
+  - Related feature granularity lives in the registry layer.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1031"
+  - "adr:1038"
+  - "adr:1014"

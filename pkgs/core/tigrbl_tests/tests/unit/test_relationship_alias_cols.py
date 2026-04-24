@@ -1,6 +1,6 @@
 import pytest
 from tigrbl._spec import F, S
-from tigrbl.shortcuts.column import acol, vcol
+from tigrbl.factories.column import acol, vcol
 from tigrbl.decorators.op import alias_ctx
 from tigrbl.orm.tables import TableBase
 from tigrbl.types import (
@@ -97,3 +97,4 @@ def test_relationship_acol_vcol_alias(col_variant, aliasing, use_mapped):
         session.refresh(p)
         assert c.parent is p
         assert p.children[0] is c
+

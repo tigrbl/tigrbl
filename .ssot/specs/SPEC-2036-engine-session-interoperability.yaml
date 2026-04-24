@@ -1,0 +1,33 @@
+schema_version: "0.1.0"
+kind: "spec"
+id: "spc:2036"
+number: 2036
+slug: "engine-session-interoperability"
+title: "Engine-session interoperability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define engine-session interoperability for the concrete runtime session wrapper."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define engine-session interoperability for the concrete runtime session wrapper.
+  
+  ## Invariants
+  
+  - `DefaultSession` delegates transaction and CRUD methods to the underlying provider session with awaitable awareness.
+  - The session wrapper may expose `run_sync()` for sync work on async-backed providers.
+  - Interoperability does not invent provider methods that the underlying session does not implement.
+  - Session interoperability must cover sync, async, and mixed bootstrap paths.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1015`, `adr:1055`
+  - Related features: `feat:engine-session-runtime-surface-001`, `feat:defaultsession-concrete-session-class-001`
+spec_kind: "local-policy"
+adr_ids: []
