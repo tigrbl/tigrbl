@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
+
 import pytest
 
+from tools.release import release_automation
 from tools.release.release_automation import Version, build_plan
 
 
@@ -67,3 +71,42 @@ def test_release_plan_can_select_package_subset() -> None:
 def test_unknown_package_selection_fails() -> None:
     with pytest.raises(ValueError, match="unknown package"):
         build_plan("patch", write_changes=False, packages="does-not-exist")
+
+
+def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    summary = tmp_path / "release-plan.json"
+    summary.write_text(
+        json.dumps({"crate_publish_order": ["tigrbl_rs_spec", "tigrbl_rs_ports"]}),
+        encoding="utf-8",
+    )
+    calls: list[list[str]] = []
+
+    monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: calls.append(args))
+
+    release_automation.publish_crates(summary, dry_run=True)
+
+    assert calls == [
+        ["cargo", "package", "-p", "tigrbl_rs_spec", "--locked"],
+        ["cargo", "package", "-p", "tigrbl_rs_ports", "--locked"],
+    ]
+
+
+def test_publish_crates_verify_uses_package_before_publish(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    summary = tmp_path / "release-plan.json"
+    summary.write_text(
+        json.dumps({"crate_publish_order": ["tigrbl_rs_spec"]}),
+        encoding="utf-8",
+    )
+    calls: list[list[str]] = []
+
+    monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: calls.append(args))
+    monkeypatch.setattr(release_automation.time, "sleep", lambda seconds: None)
+
+    release_automation.publish_crates(summary, dry_run=False, verify=True)
+
+    assert calls == [
+        ["cargo", "package", "-p", "tigrbl_rs_spec", "--locked"],
+        ["cargo", "publish", "-p", "tigrbl_rs_spec", "--locked"],
+    ]
