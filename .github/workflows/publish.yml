@@ -92,12 +92,123 @@ jobs:
           name: release-plan
           path: release-plan.json
 
+  resolve-rust-toolchains:
+    name: Resolve latest Rust toolchains
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.resolve.outputs.matrix }}
+    steps:
+      - name: Resolve latest three stable Rust releases
+        id: resolve
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import os
+          import re
+          import urllib.request
+
+          request = urllib.request.Request(
+              "https://api.github.com/repos/rust-lang/rust/releases?per_page=100",
+              headers={
+                  "Accept": "application/vnd.github+json",
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "X-GitHub-Api-Version": "2022-11-28",
+              },
+          )
+          releases = json.load(urllib.request.urlopen(request, timeout=30))
+          versions = {}
+          for release in releases:
+              tag = release.get("tag_name", "")
+              match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", tag)
+              if not match:
+                  continue
+              version = tuple(int(part) for part in match.groups())
+              series = version[:2]
+              if series not in versions or version > versions[series]:
+                  versions[series] = version
+
+          latest = sorted(versions.values(), reverse=True)[:3]
+          if len(latest) != 3:
+              raise SystemExit("failed to resolve three Rust stable releases")
+          matrix = {"toolchain": [".".join(map(str, version)) for version in latest]}
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"matrix={json.dumps(matrix, separators=(',', ':'))}\n")
+          PY
+
+  validate-python-packages:
+    name: Validate Python packages (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    needs:
+      - prepare-release
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out prepared release commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        run: python -m pip install --upgrade pip uv
+
+      - name: Sync all Python workspace packages
+        run: uv sync --all-groups --all-packages --frozen
+
+      - name: Build all Python workspace packages
+        run: >-
+          uv build
+          --all-packages
+          --python "${{ matrix.python-version }}"
+          --out-dir "dist/python-${{ matrix.python-version }}"
+
+  validate-rust-crates:
+    name: Validate Rust crates (${{ matrix.toolchain }})
+    runs-on: ubuntu-latest
+    needs:
+      - prepare-release
+      - resolve-rust-toolchains
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.resolve-rust-toolchains.outputs.matrix) }}
+    steps:
+      - name: Check out prepared release commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+
+      - name: Set up Rust ${{ matrix.toolchain }}
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+
+      - name: Test all Rust workspace crates
+        run: cargo test --workspace --locked --all-targets
+
   github-release:
     name: Create GitHub releases
     if: ${{ inputs.gh }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
+      - validate-python-packages
+      - validate-rust-crates
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -130,6 +241,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare-release
+      - validate-python-packages
+      - validate-rust-crates
     steps:
       - name: Check out prepared release commit
         uses: actions/checkout@v4
@@ -169,6 +282,8 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare-release
+      - validate-python-packages
+      - validate-rust-crates
     env:
       CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_API_TOKEN }}
     steps:

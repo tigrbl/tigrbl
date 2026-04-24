@@ -38,6 +38,7 @@ impl EnginePort for SqliteEngine {
     }
 
     fn open(&self) -> PortResult<Box<dyn SessionPort>> {
-        Ok(Box::new(SqliteSession::new(self.path.clone())))
+        SqliteSession::new(self.path.clone())
+            .map(|session| Box::new(session) as Box<dyn SessionPort>)
     }
 }

@@ -7,29 +7,48 @@ use tigrbl_rs_ports::{
 };
 use tigrbl_rs_spec::{request::RequestEnvelope, response::ResponseEnvelope, values::Value};
 
+const SCHEMA_SQL: &str = "CREATE TABLE IF NOT EXISTS _tigrbl_rows (
+    table_name TEXT NOT NULL,
+    row_key TEXT,
+    row_json TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_tigrbl_rows_table_key
+    ON _tigrbl_rows(table_name, row_key);";
+
 pub struct SqliteTransaction {
     connection: Mutex<Connection>,
 }
 
 impl SqliteTransaction {
     pub fn begin(path: String) -> PortResult<Self> {
+        let is_memory = is_memory_path(&path);
         let connection = Connection::open(path).map_err(sqlite_error)?;
+        if is_memory {
+            initialize_schema_on(&connection)?;
+        }
         connection
-            .execute_batch(
-                "CREATE TABLE IF NOT EXISTS _tigrbl_rows (
-                    table_name TEXT NOT NULL,
-                    row_key TEXT,
-                    row_json TEXT NOT NULL
-                );
-                CREATE INDEX IF NOT EXISTS idx_tigrbl_rows_table_key
-                    ON _tigrbl_rows(table_name, row_key);
-                BEGIN IMMEDIATE;",
-            )
+            .execute_batch("BEGIN IMMEDIATE;")
             .map_err(sqlite_error)?;
         Ok(Self {
             connection: Mutex::new(connection),
         })
     }
+}
+
+pub fn initialize_schema(path: &str) -> PortResult<()> {
+    if is_memory_path(path) {
+        return Ok(());
+    }
+    let connection = Connection::open(path).map_err(sqlite_error)?;
+    initialize_schema_on(&connection)
+}
+
+fn initialize_schema_on(connection: &Connection) -> PortResult<()> {
+    connection.execute_batch(SCHEMA_SQL).map_err(sqlite_error)
+}
+
+fn is_memory_path(path: &str) -> bool {
+    path == ":memory:"
 }
 
 impl TransactionPort for SqliteTransaction {
