@@ -13999,6 +13999,518 @@
         "tst:authn-provider-unauthorized-errors-status"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:python-runtime-ddl-initialization-boundary-001",
+      "title": "Python runtime DDL initialization boundary",
+      "description": "Track Python runtime conformance to the runtime-wide rule that DDL and schema readiness occur during initialization, bootstrap, migration, or explicit DDL/admin work rather than ordinary request execution.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2086"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-runtime-ddl-initialization-boundary-001",
+      "title": "Rust runtime DDL initialization boundary",
+      "description": "Track Rust runtime conformance to the runtime-wide rule that DDL and schema readiness occur during initialization, bootstrap, migration, or explicit DDL/admin work rather than ordinary request execution.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2086"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-request-hot-path-no-ddl-001",
+      "title": "Python request hot path excludes DDL",
+      "description": "Prove that ordinary Python CRUD request execution does not call create_all, migrations, implicit bootstrap, schema reflection, table creation, or index creation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2086",
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-request-hot-path-no-ddl-001",
+      "title": "Rust request hot path excludes DDL",
+      "description": "Prove that ordinary Rust CRUD request execution does not run DDL or schema readiness work such as SQLite table or index creation inside request transactions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2086",
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-schema-readiness-fail-closed-001",
+      "title": "Python schema readiness fail-closed behavior",
+      "description": "Track Python behavior when schema readiness is missing, requiring clear fail-closed runtime or configuration errors outside explicit development auto-initialization.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2086"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-schema-readiness-fail-closed-001",
+      "title": "Rust schema readiness fail-closed behavior",
+      "description": "Track Rust behavior when schema readiness is missing, requiring clear fail-closed runtime or configuration errors outside explicit development auto-initialization.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2086"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-engine-session-lifecycle-001",
+      "title": "Python engine session lifecycle separation",
+      "description": "Track Python engine/session lifecycle separation across engine initialization, schema readiness, session acquisition, transaction begin, execution, commit or rollback, and disposal.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2087"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-engine-session-lifecycle-001",
+      "title": "Rust engine session lifecycle separation",
+      "description": "Track Rust engine/session lifecycle separation across engine initialization, schema readiness, session acquisition, transaction begin, execution, commit or rollback, and disposal.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2087"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-transaction-hot-path-001",
+      "title": "Python transaction hot path evidence",
+      "description": "Track Python transaction hot-path evidence that ordinary request work is limited to session use, transaction begin, operation execution, commit or rollback, and resource release.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2087",
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-transaction-hot-path-001",
+      "title": "Rust transaction hot path optimization",
+      "description": "Track Rust transaction hot-path optimization and evidence that request work avoids per-request engine construction and schema readiness work.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2087",
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-runtime-performance-baseline-001",
+      "title": "Python executor benchmark baseline",
+      "description": "Record the Python executor benchmark baseline used for comparable runtime performance claims and Rust 2x target evaluation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-runtime-performance-baseline-001",
+      "title": "Rust executor benchmark baseline",
+      "description": "Record the Rust executor benchmark baseline used for comparable runtime performance claims against Python executor and FastAPI lanes.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-runtime-callgraph-export-001",
+      "title": "Python executor callgraph export",
+      "description": "Track Python executor callgraph export artifacts, including full function tables, edge tables, and rank/order columns for diagnostic hot-spot review.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-runtime-callgraph-export-001",
+      "title": "Rust executor callgraph export",
+      "description": "Track Rust executor callgraph export artifacts, including full function tables, edge tables, and rank/order columns for diagnostic hot-spot review.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-direct-runtime-microbench-001",
+      "title": "Python direct runtime microbenchmark lane",
+      "description": "Track a direct Python runtime or executor microbenchmark lane that separates runtime cost from Uvicorn, httpx, and ASGI overhead.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-direct-runtime-microbench-001",
+      "title": "Rust direct runtime microbenchmark lane",
+      "description": "Track a direct Rust runtime handle microbenchmark lane that separates Rust runtime and storage cost from Uvicorn, httpx, and ASGI overhead.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-request-envelope-contract-001",
+      "title": "Python request envelope contract",
+      "description": "Track Python request envelope semantics for body parsing, response status and body shaping, and error propagation under supported runtime paths.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2089"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-request-envelope-contract-001",
+      "title": "Rust request envelope contract",
+      "description": "Track Rust request envelope semantics across current JSON string bridge compatibility and future native PyO3 mapping, bytes, or response-object paths.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2089"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-asgi-boundary-evidence-001",
+      "title": "Python ASGI boundary evidence",
+      "description": "Track Python ASGI scope, receive, and send boundary evidence under Uvicorn for comparable runtime performance and semantic claims.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2089",
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-asgi-boundary-evidence-001",
+      "title": "Rust executor under Python ASGI boundary evidence",
+      "description": "Track Rust executor evidence under Uvicorn showing that Python ASGI scope bridging remains in the path while PyO3 and Rust runtime costs are measured separately.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2089",
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:python-runtime-2x-target-comparison-001",
+      "title": "Python baseline for Rust 2x comparison",
+      "description": "Track the Python executor baseline used to evaluate any claim that the Rust executor reaches at least 2x Python throughput under comparable benchmark conditions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:rust-runtime-2x-python-target-001",
+      "title": "Rust executor 2x Python throughput target",
+      "description": "Track the Rust executor target and evidence requirements for reaching at least 2x Python executor throughput under comparable benchmark conditions.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2088"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
     }
   ],
   "tests": [
