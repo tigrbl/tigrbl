@@ -95,6 +95,61 @@ def test_unknown_package_selection_fails() -> None:
         build_plan("patch", write_changes=False, packages="does-not-exist")
 
 
+def test_create_github_releases_marks_dev_tags_as_prereleases(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    summary = tmp_path / "release-plan.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "semver": "patch",
+                "prerelease": False,
+                "github_releases": [
+                    {
+                        "name": "tigrbl",
+                        "kind": "pypi",
+                        "path": "pkgs/tigrbl/pyproject.toml",
+                        "version": "0.3.20.dev1",
+                        "tag": "tigrbl==0.3.20.dev1",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    run_calls: list[list[str]] = []
+
+    class _Completed:
+        def __init__(self, returncode: int, stdout: str = "") -> None:
+            self.returncode = returncode
+            self.stdout = stdout
+
+    def fake_subprocess_run(args: list[str], **kwargs) -> _Completed:
+        if args[:3] == ["gh", "release", "view"]:
+            return _Completed(1)
+        if args[:2] == ["git", "rev-list"]:
+            return _Completed(0, stdout="c0ffee")
+        if args[:2] == ["git", "rev-parse"]:
+            return _Completed(1)
+        if args[:2] == ["git", "config"]:
+            return _Completed(0)
+        return _Completed(0)
+
+    monkeypatch.setattr(release_automation, "ensure_git_identity", lambda: None)
+    monkeypatch.setattr(release_automation, "git_output", lambda args: "deadbeef")
+    monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: run_calls.append(args))
+    monkeypatch.setattr(release_automation.subprocess, "run", fake_subprocess_run)
+
+    release_automation.create_github_releases(summary)
+
+    gh_release_commands = [
+        call for call in run_calls if call[:3] == ["gh", "release", "create"]
+    ]
+    assert gh_release_commands, run_calls
+    assert "--prerelease" in gh_release_commands[0]
+
+
 def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     summary = tmp_path / "release-plan.json"
     summary.write_text(

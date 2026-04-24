@@ -417,6 +417,7 @@ def create_github_releases(plan_path: Path) -> None:
     for release in plan["github_releases"]:
         tag = release["tag"]
         title = tag
+        is_prerelease = "dev" in tag
         body = (
             f'Automated {release["kind"]} release for `{release["name"]}`.\n\n'
             f'- version: `{release["version"]}`\n'
@@ -436,7 +437,7 @@ def create_github_releases(plan_path: Path) -> None:
             )
             if existing.returncode == 0:
                 command = ["gh", "release", "edit", tag, "--title", title, "--notes-file", notes_path]
-                if plan["prerelease"]:
+                if is_prerelease or plan["prerelease"]:
                     command.append("--prerelease")
                 run(command)
             else:
@@ -452,7 +453,7 @@ def create_github_releases(plan_path: Path) -> None:
                     "--target",
                     head,
                 ]
-                if plan["prerelease"]:
+                if is_prerelease or plan["prerelease"]:
                     command.append("--prerelease")
                 run(command)
         finally:
