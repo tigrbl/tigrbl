@@ -55,6 +55,10 @@ from ._table_registry import TableRegistry
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
 from tigrbl_core.config.constants import (
+    DEFAULT_ROOT_RESPONSE,
+    TIGRBL_DEFAULT_ROOT_ALIAS,
+    TIGRBL_DEFAULT_ROOT_METHOD,
+    TIGRBL_DEFAULT_ROOT_PATH,
     TIGRBL_GET_DB_ATTR,
     __JSONRPC_DEFAULT_ENDPOINT__,
 )
@@ -71,6 +75,10 @@ try:
     from .compat.transactional import transactional as _txn_decorator
 except Exception:  # pragma: no cover
     _txn_decorator = None
+
+
+async def _default_root_endpoint() -> dict[str, Any]:
+    return dict(DEFAULT_ROOT_RESPONSE)
 
 
 class TigrblApp(_App):
@@ -245,6 +253,7 @@ class TigrblApp(_App):
 
         # Router-level hooks map (merged into each table at include-time; precedence handled in bindings.hooks)
         self._router_hooks_map = copy.deepcopy(router_hooks) if router_hooks else None
+        self._install_default_root()
         if self.mount_system:
             self.mount_openapi(path="/openapi.json")
             _mount_swagger(self, path="/docs")
@@ -354,6 +363,17 @@ class TigrblApp(_App):
 
     def _install_favicon(self) -> None:
         self.mount_favicon(file_path=self._favicon_path)
+
+    def _install_default_root(self) -> None:
+        self.add_route(
+            TIGRBL_DEFAULT_ROOT_PATH,
+            _default_root_endpoint,
+            methods=[TIGRBL_DEFAULT_ROOT_METHOD],
+            name=TIGRBL_DEFAULT_ROOT_ALIAS,
+            include_in_schema=False,
+            inherit_owner_dependencies=False,
+            tigrbl_default_root=True,
+        )
 
     # ------------------------- internal helpers -------------------------
 

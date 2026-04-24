@@ -4,7 +4,6 @@ import ast
 import re
 import subprocess
 import sys
-import tomllib
 from pathlib import Path
 
 PACKAGE_IMPORT = "tigrbl_kernel"
@@ -62,11 +61,17 @@ def test_01_tigrbl_concrete_does_not_import_tigrbl_kernel() -> None:
 
 
 def test_01_tigrbl_concrete_does_not_depend_on_tigrbl_kernel() -> None:
-    pyproject_data = tomllib.loads(PYPROJECT_PATH.read_text(encoding="utf-8"))
-    project = pyproject_data["project"]
-    declared_dependencies = list(project["dependencies"])
-    for optional_group in project.get("optional-dependencies", {}).values():
-        declared_dependencies.extend(optional_group)
+    declared_dependencies: list[str] = []
+    in_dependencies = False
+    for line in PYPROJECT_PATH.read_text(encoding="utf-8").splitlines():
+        stripped = line.strip()
+        if stripped == "dependencies = [":
+            in_dependencies = True
+            continue
+        if in_dependencies and stripped == "]":
+            break
+        if in_dependencies and stripped.startswith('"'):
+            declared_dependencies.append(stripped.strip('",'))
 
     normalized_dependencies = {_dependency_name(dep) for dep in declared_dependencies}
 

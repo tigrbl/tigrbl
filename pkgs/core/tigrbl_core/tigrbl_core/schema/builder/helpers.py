@@ -67,6 +67,25 @@ def _python_type(col: Any) -> type | Any:
         return Any
 
 
+def _storage_python_type(storage_type: Any) -> type | Any:
+    """Resolve a StorageSpec type reference to a concrete Python type."""
+    candidates = [storage_type]
+    if isinstance(storage_type, type):
+        try:
+            candidates.append(storage_type())
+        except Exception:  # pragma: no cover
+            pass
+
+    for candidate in candidates:
+        try:
+            py_t = _normalize_py_type(candidate.python_type)
+        except Exception:
+            continue
+        if py_t is not Any:
+            return py_t
+    return Any
+
+
 def _is_required(col: Any, verb: str) -> bool:
     """Decide if a column should be required for the given verb."""
     if getattr(col, "primary_key", False):
@@ -84,4 +103,11 @@ def _is_required(col: Any, verb: str) -> bool:
     return not is_nullable and not has_default
 
 
-__all__ = ["_bool", "_add_field", "_normalize_py_type", "_python_type", "_is_required"]
+__all__ = [
+    "_bool",
+    "_add_field",
+    "_normalize_py_type",
+    "_python_type",
+    "_storage_python_type",
+    "_is_required",
+]

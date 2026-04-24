@@ -4,7 +4,9 @@ from importlib import import_module
 from typing import Any, Dict, List, Mapping
 
 try:  # pragma: no cover - additive optional integration
-    from tigrbl_runtime.rust import ExecutionBackend, RustBackendConfig
+    _runtime_rust = import_module("tigrbl_runtime.rust")
+    ExecutionBackend = _runtime_rust.ExecutionBackend
+    RustBackendConfig = _runtime_rust.RustBackendConfig
 except Exception:  # pragma: no cover
     ExecutionBackend = RustBackendConfig = None
 

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+from importlib import import_module
 from typing import Any, ClassVar, Mapping
 from operator import attrgetter
 from types import SimpleNamespace
@@ -623,7 +624,7 @@ class PackedPlanExecutor(ExecutorBase):
         if hint == "model_get_db" and callable(
             getattr(model, "__tigrbl_get_db__", None)
         ):
-            from tigrbl_concrete._concrete import engine_resolver as _resolver
+            _resolver = import_module("tigrbl_concrete._concrete").engine_resolver
 
             def _acquire(_ctx: _Ctx) -> tuple[Any, Any]:
                 return _resolver.acquire(model=model)

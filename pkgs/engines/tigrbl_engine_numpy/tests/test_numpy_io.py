@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 from tigrbl.specs import F, IO, S
 from tigrbl.shortcuts import acol
-from tigrbl.table import Table
+from tigrbl import Table
 from tigrbl.types import Mapped, String
 
 from tigrbl_engine_numpy import numpy_engine

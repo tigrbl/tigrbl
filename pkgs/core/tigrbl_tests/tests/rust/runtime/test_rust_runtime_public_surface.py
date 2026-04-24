@@ -6,6 +6,7 @@ from tigrbl_runtime import (
     rust_boundary_events,
     rust_transport_trace,
 )
+from tigrbl_core.config.constants import DEFAULT_ROOT_RESPONSE
 
 
 def test_rust_runtime_surface_exposes_boundary_trace_helpers() -> None:
@@ -23,3 +24,36 @@ def test_rust_runtime_surface_exposes_boundary_trace_helpers() -> None:
         "response_exit",
     ]
     assert rust_transport_trace("rest", include_hook=True)[-1]["event"] == "response_exit"
+
+
+def test_rust_runtime_returns_default_root_without_bindings() -> None:
+    handle = Runtime(executor_backend="rust").rust_handle({"name": "runtime-demo"})
+
+    response = handle.execute_rest(
+        {"transport": "rest", "path": "/", "method": "GET"}
+    )
+
+    assert response == {"status": 200, "headers": {}, "body": dict(DEFAULT_ROOT_RESPONSE)}
+
+
+def test_rust_runtime_explicit_root_binding_overrides_default_root() -> None:
+    handle = Runtime(executor_backend="rust").rust_handle(
+        {
+            "name": "runtime-demo",
+            "bindings": [
+                {
+                    "alias": "root.list",
+                    "transport": "rest",
+                    "path": "/",
+                    "op": {"name": "list", "kind": "list", "route": "/"},
+                    "table": {"name": "root"},
+                }
+            ],
+        }
+    )
+
+    response = handle.execute_rest(
+        {"transport": "rest", "path": "/", "method": "GET"}
+    )
+
+    assert response == {"status": 200, "headers": {}, "body": []}
