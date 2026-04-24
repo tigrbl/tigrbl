@@ -102,7 +102,7 @@ def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: 
             "tigrbl_rs_ports",
             "--locked",
             "--config",
-            f"patch.crates-io.tigrbl_rs_spec.path={release_automation.ROOT.joinpath('target', 'package', 'tigrbl_rs_spec-0.1.10-dev.1').as_posix()}",
+            f'patch.crates-io.tigrbl_rs_spec.path="{release_automation.ROOT.joinpath("target", "package", "tigrbl_rs_spec-0.1.10-dev.1").as_posix()}"',
         ],
     ]
 
