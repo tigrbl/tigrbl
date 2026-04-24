@@ -74,7 +74,8 @@
         "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
         "tst:tcase-0012",
         "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
+        "tst:authn-provider-unauthorized-errors-status"
       ],
       "requires": [],
       "spec_ids": [
@@ -5486,7 +5487,8 @@
         "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
         "tst:tcase-0012",
         "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
+        "tst:authn-provider-unauthorized-errors-status"
       ],
       "requires": [],
       "spec_ids": [
@@ -13957,6 +13959,36 @@
         "tst:jsonrpc-persistence-exception-sanitized"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:authn-provider-missing-credentials-status-001",
+      "title": "AuthN provider missing-credential status projection",
+      "description": "Track the integration defect in test_authn_unauthorized_errors: routes protected through AuthNProvider via app.set_auth must project missing bearer credentials consistently with the REST authn provider contract; current runtime returns 401 where the governed test expects 403. Related surfaces include auth-failure projection parity and anonymous-access REST status parity.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "authn-provider-integration-status",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012",
+        "spc:2080"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
+        "tst:closure-case-authn-unauthorized-errors",
+        "tst:authn-provider-unauthorized-errors-status"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -20589,12 +20621,13 @@
     {
       "id": "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
       "title": "Authn provider integration",
-      "status": "passing",
+      "status": "failing",
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py",
       "feature_ids": [
         "feat:tigrbl-test-suite-coverage-intake-001",
-        "feat:tigrbl-tests-failing-case-closure-001"
+        "feat:tigrbl-tests-failing-case-closure-001",
+        "feat:authn-provider-missing-credentials-status-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
@@ -26810,17 +26843,20 @@
     {
       "id": "tst:closure-case-authn-unauthorized-errors",
       "title": "Closure case: test_authn_unauthorized_errors",
-      "status": "passing",
+      "status": "failing",
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py",
       "feature_ids": [
-        "feat:tigrbl-tests-failing-case-closure-001"
+        "feat:tigrbl-tests-failing-case-closure-001",
+        "feat:authn-provider-missing-credentials-status-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failing-case-closure-001"
+        "clm:tigrbl-tests-failing-case-closure-001",
+        "clm:tigrbl-tests-failure-closure-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:tigrbl-tests-current-failing-pytest"
       ]
     },
     {
@@ -27353,6 +27389,24 @@
       ],
       "evidence_ids": [
         "evd:jsonrpc-persistence-exception-sanitized"
+      ]
+    },
+    {
+      "id": "tst:authn-provider-unauthorized-errors-status",
+      "title": "AuthN provider unauthorized-errors status case",
+      "status": "failing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/i9n/test_authn_provider_integration.py",
+      "feature_ids": [
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:anon-access-rest-status-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-tests-current-failing-pytest"
       ]
     }
   ],
@@ -31581,7 +31635,8 @@
         "feat:kernelplan-dispatch-ownership-001",
         "feat:transport-bypass-removal-001",
         "feat:transport-parity-contract-001",
-        "feat:runtime-executor-doc-endpoint-parity-001"
+        "feat:runtime-executor-doc-endpoint-parity-001",
+        "feat:authn-provider-missing-credentials-status-001"
       ],
       "test_ids": [
         "tst:http-route-jsonrpc-openrpc-surface",
@@ -31600,7 +31655,9 @@
         "tst:rust-runtime-demo-favicon-routes",
         "tst:rust-runtime-demo-swagger-uix",
         "tst:rust-runtime-demo-lens-uix",
-        "tst:rust-runtime-demo-console-logs"
+        "tst:rust-runtime-demo-console-logs",
+        "tst:authn-provider-unauthorized-errors-status",
+        "tst:closure-case-authn-unauthorized-errors"
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
@@ -35776,7 +35833,9 @@
         "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
         "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
-        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs"
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
+        "tst:authn-provider-unauthorized-errors-status",
+        "tst:closure-case-authn-unauthorized-errors"
       ]
     },
     {
@@ -36330,6 +36389,19 @@
         "feat:canonical-op-bulk-replace-001",
         "feat:canonical-op-bulk-delete-001",
         "feat:canonical-op-bulk-merge-001"
+      ],
+      "profile_ids": []
+    },
+    {
+      "id": "bnd:authn-provider-integration-status-001",
+      "title": "AuthN provider integration status-code closure lane",
+      "status": "active",
+      "frozen": false,
+      "feature_ids": [
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:anon-access-rest-status-parity-001",
+        "feat:httpbearer-security-dependency-001"
       ],
       "profile_ids": []
     }
