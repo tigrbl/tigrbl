@@ -58,7 +58,10 @@ pub fn derive_family(protocol: &str, exchange: &str) -> ChannelFamily {
     if protocol == "webtransport" {
         return ChannelFamily::Session;
     }
-    if matches!(exchange, "server_stream" | "bidirectional_stream" | "event_stream") {
+    if matches!(
+        exchange,
+        "server_stream" | "bidirectional_stream" | "event_stream"
+    ) {
         return ChannelFamily::Stream;
     }
     if exchange == "fire_and_forget" {
@@ -79,7 +82,10 @@ pub fn derive_subevents(protocol: &str, exchange: &str) -> Vec<ChannelSubevent> 
             ChannelSubevent::Disconnect,
         ];
     }
-    if matches!(exchange, "server_stream" | "bidirectional_stream" | "event_stream") {
+    if matches!(
+        exchange,
+        "server_stream" | "bidirectional_stream" | "event_stream"
+    ) {
         return vec![
             ChannelSubevent::Receive,
             ChannelSubevent::Emit,

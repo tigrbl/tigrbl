@@ -30,6 +30,7 @@ impl EngineDatatypeBridge {
         engine_kind: &str,
         datatype: &DataTypeSpec,
     ) -> Result<StorageTypeRef, String> {
-        self.registry.lower_strict(engine_kind, &datatype.logical_name)
+        self.registry
+            .lower_strict(engine_kind, &datatype.logical_name)
     }
 }

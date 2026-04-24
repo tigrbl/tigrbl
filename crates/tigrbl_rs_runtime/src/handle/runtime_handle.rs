@@ -18,10 +18,11 @@ impl RuntimeHandle {
             plan.bindings.len(),
             plan.app_name
         );
+        let engine_registry = EngineRegistry::from_plan(&plan);
         Self {
             description,
             plan,
-            engine_registry: EngineRegistry::new(),
+            engine_registry,
             engine_resolver: EngineResolver,
         }
     }
@@ -34,10 +35,7 @@ impl RuntimeHandle {
         self.execute_envelope("rest", request)
     }
 
-    pub fn execute_jsonrpc(
-        &self,
-        request: RequestEnvelope,
-    ) -> Result<ResponseEnvelope, PortError> {
+    pub fn execute_jsonrpc(&self, request: RequestEnvelope) -> Result<ResponseEnvelope, PortError> {
         self.execute_envelope("jsonrpc", request)
     }
 

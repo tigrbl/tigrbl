@@ -1,6 +1,8 @@
 use tigrbl_rs_kernel::KernelCompiler;
-use tigrbl_rs_runtime::{RustRuntime, RuntimeConfig};
-use tigrbl_rs_spec::{AppSpec, BindingSpec, Exchange, OpKind, OpSpec, RequestEnvelope, TxScope, Value};
+use tigrbl_rs_runtime::{RuntimeConfig, RustRuntime};
+use tigrbl_rs_spec::{
+    AppSpec, BindingSpec, Exchange, OpKind, OpSpec, RequestEnvelope, TxScope, Value,
+};
 
 #[test]
 fn runtime_instantiates_handles_from_compiled_plans() {

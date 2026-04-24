@@ -2,7 +2,7 @@ use crate::errors::RustResult;
 use pyo3::prelude::*;
 use serde_json::{json, Map, Value as JsonValue};
 use tigrbl_rs_kernel::KernelPlan;
-use tigrbl_rs_runtime::{RustRuntime, RuntimeConfig};
+use tigrbl_rs_runtime::{RuntimeConfig, RustRuntime};
 use tigrbl_rs_spec::{
     request::RequestEnvelope, response::ResponseEnvelope, serde::json as spec_json, Exchange,
     OpKind, TxScope, Value,
@@ -208,6 +208,7 @@ pub fn encode_plan(plan: &KernelPlan) -> RustResult<String> {
         "title": plan.title,
         "version": plan.version,
         "engine_kind": plan.engine_kind,
+        "engine_options": value_to_json(&plan.engine_options),
         "binding_count": plan.bindings.len(),
         "route_count": plan.routes.len(),
         "callbacks": plan.callbacks,
@@ -233,6 +234,7 @@ pub fn encode_plan(plan: &KernelPlan) -> RustResult<String> {
                 "engine_kind": binding.engine_kind,
                 "engine_language": binding.engine_language,
                 "engine_callback": binding.engine_callback,
+                "engine_options": value_to_json(&binding.engine_options),
             })
         }).collect::<Vec<_>>(),
         "routes": plan.routes.iter().map(|route| {
@@ -287,6 +289,10 @@ pub fn decode_plan(raw: &str) -> RustResult<KernelPlan> {
         bindings,
         routes,
         engine_kind: string_field(object, "engine_kind").unwrap_or_else(|| "inmemory".to_string()),
+        engine_options: object
+            .get("engine_options")
+            .map(value_from_json)
+            .unwrap_or(Value::Null),
         callbacks: array_field(object, "callbacks")
             .map(string_vec)
             .unwrap_or_default(),
@@ -332,6 +338,10 @@ fn decode_binding(value: &JsonValue) -> RustResult<tigrbl_rs_kernel::plan::model
         engine_language: string_field(object, "engine_language")
             .unwrap_or_else(|| "rust".to_string()),
         engine_callback: string_field(object, "engine_callback"),
+        engine_options: object
+            .get("engine_options")
+            .map(value_from_json)
+            .unwrap_or(Value::Null),
     })
 }
 

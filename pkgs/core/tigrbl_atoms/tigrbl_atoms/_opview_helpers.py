@@ -4,6 +4,23 @@ from collections.abc import Mapping
 from typing import Any
 
 
+def _storage_requires_input(storage: Any, op: str) -> bool:
+    if storage is None or op == "update":
+        return False
+    if bool(getattr(storage, "primary_key", False)):
+        if op in {"replace", "delete"}:
+            return True
+        auto = getattr(storage, "autoincrement", False)
+        if auto not in (False, None) or getattr(storage, "identity", None) is not None:
+            return False
+    has_default = (
+        getattr(storage, "default", None) is not None
+        or getattr(storage, "server_default", None) is not None
+        or callable(getattr(storage, "default_factory", None))
+    )
+    return not bool(getattr(storage, "nullable", True)) and not has_default
+
+
 def _ensure_temp(ctx: Any) -> dict[str, Any]:
     tmp = getattr(ctx, "temp", None)
     if not isinstance(tmp, dict):
@@ -61,7 +78,10 @@ def _normalize_schema_from_specs(ctx: Any) -> None:
                     getattr(io, "header_required_in", False)
                 )
 
-            in_meta["required"] = bool(fs and op in getattr(fs, "required_in", ()))
+            in_meta["required"] = bool(
+                (fs and op in getattr(fs, "required_in", ()))
+                or _storage_requires_input(storage, op)
+            )
             in_meta["nullable"] = (
                 True if storage is None else bool(getattr(storage, "nullable", True))
             )

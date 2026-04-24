@@ -4,10 +4,13 @@ import asyncio
 
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import Column, String
+from sqlalchemy.exc import IntegrityError
 
 from tigrbl import TableBase, TigrblRouter, TigrblApp
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.factories.engine import mem
+from tigrbl_runtime.executors.packed import PackedPlanExecutor
+from tigrbl_runtime.executors.types import _Ctx
 
 
 def _build_app():
@@ -129,6 +132,99 @@ def test_jsonrpc_notification_without_id_returns_no_content() -> None:
     response = asyncio.run(_fetch())
     assert response.status_code == 204
     assert response.content == b""
+
+
+def test_jsonrpc_create_missing_required_field_returns_clean_invalid_params() -> None:
+    class Thing(TableBase, GUIDPk):
+        __tablename__ = "things_jsonrpc_missing_required"
+        label = Column(String, nullable=False)
+
+    app = TigrblApp(engine=mem(async_=False))
+    app.include_table(Thing)
+    app.initialize()
+    app.mount_jsonrpc()
+    request_payload = {
+        "jsonrpc": "2.0",
+        "method": f"{Thing.__name__}.create",
+        "params": {},
+        "id": 1,
+    }
+
+    async def _fetch():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            return await client.post("/rpc", json=request_payload)
+
+    response = asyncio.run(_fetch())
+    payload = response.json()
+    response_text = response.text.lower()
+
+    assert response.status_code == 200
+    assert payload["id"] == 1
+    assert payload["error"]["code"] == -32602
+    assert payload["error"]["message"] == "Invalid params"
+    assert "label" in str(payload["error"].get("data", "")).lower()
+    for forbidden in (
+        "sqlalchemy",
+        "sqlite3",
+        "integrityerror",
+        "insert into",
+        "things_jsonrpc_missing_required",
+        "parameters",
+    ):
+        assert forbidden not in response_text
+
+
+def test_jsonrpc_persistence_exception_payload_is_sanitized() -> None:
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "temp": {
+                "jsonrpc_request_id": 7,
+                "route": {
+                    "rpc_envelope": {
+                        "jsonrpc": "2.0",
+                        "method": "Thing.create",
+                        "params": {"label": "ok"},
+                        "id": 7,
+                    }
+                },
+            }
+        },
+    )
+    raw = IntegrityError(
+        "INSERT INTO secret_table (label) VALUES (?)",
+        ("secret-bound-value",),
+        Exception("sqlite3 raw failure"),
+    )
+
+    payload = PackedPlanExecutor._jsonrpc_error_payload(
+        ctx,
+        422,
+        {"detail": str(raw)},
+        sanitize_detail=PackedPlanExecutor._is_persistence_exception(raw),
+    )
+    text = str(payload).lower()
+
+    assert payload == {
+        "jsonrpc": "2.0",
+        "error": {
+            "code": -32603,
+            "message": "Internal error",
+            "data": {"detail": "Internal error"},
+        },
+        "id": 7,
+    }
+    for forbidden in (
+        "sqlalchemy",
+        "sqlite3",
+        "integrityerror",
+        "insert into",
+        "secret_table",
+        "secret-bound-value",
+    ):
+        assert forbidden not in text
 
 
 def test_mount_lens_uses_latest_openrpc_path_by_default() -> None:
