@@ -381,10 +381,21 @@ jobs:
       - name: Publish selected Python packages
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-        run: >-
-          uv publish
-          --check-url https://pypi.org/simple/
-          dist/*
+        run: |
+          shopt -s nullglob
+          artifacts=()
+          for artifact in dist/*; do
+            if [[ "$artifact" == *"linux_x86_64.whl" ]]; then
+              echo "Skipping unsupported wheel tag: ${artifact}"
+              continue
+            fi
+            artifacts+=("$artifact")
+          done
+          if [[ ${#artifacts[@]} -eq 0 ]]; then
+            echo "No publishable artifacts found."
+            exit 1
+          fi
+          uv publish --check-url https://pypi.org/simple/ "${artifacts[@]}"
 
   publish-crates:
     name: Publish crates.io packages

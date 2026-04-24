@@ -464,7 +464,7 @@ def publish_crates(plan_path: Path, *, dry_run: bool, verify: bool = True) -> No
             patch_args.extend(
                 [
                     "--config",
-                    f"patch.crates-io.{packaged}.path={package_dir.as_posix()}",
+                    f'patch.crates-io.{packaged}.path="{package_dir.as_posix()}"',
                 ]
             )
         package_command = ["cargo", "package", "-p", crate, "--locked", *patch_args]
