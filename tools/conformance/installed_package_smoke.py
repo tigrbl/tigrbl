@@ -22,7 +22,9 @@ CORE_INSTALL_DIRS = [
     ROOT / 'pkgs' / 'core' / 'tigrbl_canon',
     ROOT / 'pkgs' / 'core' / 'tigrbl_atoms',
     ROOT / 'pkgs' / 'core' / 'tigrbl_kernel',
+    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_olap',
     ROOT / 'pkgs' / 'core' / 'tigrbl_ops_oltp',
+    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_realtime',
     ROOT / 'pkgs' / 'core' / 'tigrbl_orm',
     ROOT / 'pkgs' / 'core' / 'tigrbl_concrete',
 ]
@@ -39,7 +41,19 @@ TARGET_DEPS = [
 
 
 def run(cmd: list[str], *, cwd: Path | None = None, env: dict[str, str] | None = None) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(cmd, cwd=cwd or ROOT, env=env, check=True, capture_output=True, text=True)
+    cp = subprocess.run(cmd, cwd=cwd or ROOT, env=env, capture_output=True, text=True)
+    if cp.returncode != 0:
+        sys.stderr.write(f"Command failed with exit code {cp.returncode}: {' '.join(cmd)}\n")
+        if cp.stdout:
+            sys.stderr.write("stdout:\n" + cp.stdout)
+            if not cp.stdout.endswith("\n"):
+                sys.stderr.write("\n")
+        if cp.stderr:
+            sys.stderr.write("stderr:\n" + cp.stderr)
+            if not cp.stderr.endswith("\n"):
+                sys.stderr.write("\n")
+        cp.check_returncode()
+    return cp
 
 
 def build_artifacts(out_dir: Path) -> tuple[Path, Path]:

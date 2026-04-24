@@ -95,8 +95,10 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install evidence-lane dependencies
-        run: python -m pip install --upgrade pip pytest sqlalchemy aiosqlite "httpx<0.28" pydantic jinja2 uvicorn hypercorn gunicorn typing_extensions build poetry-core
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Compute workspace PYTHONPATH
         shell: bash
@@ -119,4 +121,4 @@ jobs:
 
       - name: Run ${{ matrix.lane }} lane
         shell: bash
-        run: ${{ matrix.cmd }}
+        run: uv run --no-sync ${{ matrix.cmd }}

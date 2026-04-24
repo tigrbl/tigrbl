@@ -19,11 +19,13 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Gate E dependencies
-        run: python -m pip install --upgrade pip pytest
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
 
       - name: Validate Gate E promotion closure
-        run: python tools/ci/validate_gate_e_promotion.py
+        run: uv run --no-sync python tools/ci/validate_gate_e_promotion.py
 
       - name: Run Gate E validator tests
-        run: python -m pytest -q tools/ci/tests/test_gate_e_promotion.py -p no:cacheprovider
+        run: uv run --no-sync python -m pytest -q tools/ci/tests/test_gate_e_promotion.py -p no:cacheprovider
