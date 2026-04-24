@@ -3810,7 +3810,8 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
-        "tst:tcase-0014"
+        "tst:tcase-0014",
+        "tst:rust-runtime-demo-swagger-uix"
       ],
       "requires": [],
       "spec_ids": []
@@ -4633,7 +4634,8 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
-        "tst:tcase-0014"
+        "tst:tcase-0014",
+        "tst:rust-runtime-demo-lens-uix"
       ],
       "requires": [],
       "spec_ids": []
@@ -6641,7 +6643,8 @@
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
-        "tst:tcase-0015"
+        "tst:tcase-0015",
+        "tst:rust-runtime-demo-console-logs"
       ],
       "requires": [],
       "spec_ids": [
@@ -11860,7 +11863,8 @@
         "tst:tcase-0014",
         "tst:tcase-0015",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:http-route-system-docs-builders",
+        "tst:rust-runtime-demo-swagger-uix"
       ],
       "requires": []
     },
@@ -11900,7 +11904,8 @@
         "tst:tcase-0014",
         "tst:tcase-0015",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:http-route-system-docs-builders",
+        "tst:rust-runtime-demo-lens-uix"
       ],
       "requires": []
     },
@@ -12086,7 +12091,8 @@
       "claim_ids": [],
       "test_ids": [
         "tst:tigrbl-tests-tests-i9n-test-mountable-favicon-uvicorn",
-        "tst:tigrbl-tests-tests-unit-test-v3-favicon-endpoint"
+        "tst:tigrbl-tests-tests-unit-test-v3-favicon-endpoint",
+        "tst:rust-runtime-demo-favicon-routes"
       ],
       "requires": []
     },
@@ -12681,7 +12687,11 @@
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py"
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
+        "tst:rust-runtime-demo-favicon-routes",
+        "tst:rust-runtime-demo-swagger-uix",
+        "tst:rust-runtime-demo-lens-uix",
+        "tst:rust-runtime-demo-console-logs"
       ],
       "requires": []
     },
@@ -13860,6 +13870,36 @@
         "spc:2084",
         "spc:2085"
       ]
+    },
+    {
+      "id": "feat:runtime-executor-doc-endpoint-parity-001",
+      "title": "Runtime executor documentation endpoint parity",
+      "description": "Python runtime executors and the Rust runtime executor expose the same favicon and documentation UI endpoint contract: favicon routes behave as browser favicon routes, Swagger UIX is hosted at /docs, and Lens UIX is hosted at /lens.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2077"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:rust-runtime-demo-favicon-routes",
+        "tst:rust-runtime-demo-swagger-uix",
+        "tst:rust-runtime-demo-lens-uix",
+        "tst:rust-runtime-demo-console-logs"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -27149,6 +27189,80 @@
       "evidence_ids": [
         "evd:ssot-authority-model-validation"
       ]
+    },
+    {
+      "id": "tst:rust-runtime-demo-favicon-routes",
+      "title": "Rust runtime demo favicon routes",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_docs_surface.py",
+      "feature_ids": [
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:static-files-surface-001",
+        "feat:runtime-executor-doc-endpoint-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:rust-runtime-demo-docs-surface-pytest"
+      ]
+    },
+    {
+      "id": "tst:rust-runtime-demo-swagger-uix",
+      "title": "Rust runtime demo Swagger UIX",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_docs_surface.py",
+      "feature_ids": [
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:swagger-openapi-uix-001",
+        "feat:oas-006",
+        "feat:runtime-executor-doc-endpoint-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:rust-runtime-demo-docs-surface-pytest"
+      ]
+    },
+    {
+      "id": "tst:rust-runtime-demo-lens-uix",
+      "title": "Rust runtime demo Lens UIX",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_docs_surface.py",
+      "feature_ids": [
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:tigrbl-lens-openrpc-uix-001",
+        "feat:rpc-003",
+        "feat:runtime-executor-doc-endpoint-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:rust-runtime-demo-docs-surface-pytest"
+      ]
+    },
+    {
+      "id": "tst:rust-runtime-demo-console-logs",
+      "title": "Rust runtime demo console logs",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_runtime/tests/test_rust_runtime_demo_docs_surface.py",
+      "feature_ids": [
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:operator-surface-smoke-runtime-parity-001",
+        "feat:runtime-executor-doc-endpoint-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:rust-runtime-demo-docs-surface-pytest"
+      ]
     }
   ],
   "claims": [
@@ -31363,7 +31477,8 @@
         "feat:executor-dispatch-removal-001",
         "feat:kernelplan-dispatch-ownership-001",
         "feat:transport-bypass-removal-001",
-        "feat:transport-parity-contract-001"
+        "feat:transport-parity-contract-001",
+        "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "test_ids": [
         "tst:http-route-jsonrpc-openrpc-surface",
@@ -31378,10 +31493,15 @@
         "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
         "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
         "tst:tigrbl-tests-tests-unit-test-declared-surface-docs",
-        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops"
+        "tst:tigrbl-tests-tests-i9n-test-v3-default-rpc-ops",
+        "tst:rust-runtime-demo-favicon-routes",
+        "tst:rust-runtime-demo-swagger-uix",
+        "tst:rust-runtime-demo-lens-uix",
+        "tst:rust-runtime-demo-console-logs"
       ],
       "evidence_ids": [
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:rust-runtime-demo-docs-surface-pytest"
       ]
     },
     {
@@ -35714,6 +35834,23 @@
       "test_ids": [
         "tst:docs-ci-projection-drift"
       ]
+    },
+    {
+      "id": "evd:rust-runtime-demo-docs-surface-pytest",
+      "title": "Rust runtime demo docs surface pytest",
+      "status": "passed",
+      "kind": "pytest-log",
+      "tier": "T2",
+      "path": ".ssot/reports/rust-runtime-demo-docs-surface-pytest.txt",
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:rust-runtime-demo-favicon-routes",
+        "tst:rust-runtime-demo-swagger-uix",
+        "tst:rust-runtime-demo-lens-uix",
+        "tst:rust-runtime-demo-console-logs"
+      ]
     }
   ],
   "issues": [],
@@ -36557,7 +36694,7 @@
       "id": "adr:1001",
       "number": 1001,
       "slug": "one-semantic-op-model",
-      "title": "ADR-0001 â€” One Semantic Op Model",
+      "title": "ADR-0001 \u00e2\u20ac\u201d One Semantic Op Model",
       "path": ".ssot/adr/ADR-1001-one-semantic-op-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36574,7 +36711,7 @@
       "id": "adr:1002",
       "number": 1002,
       "slug": "package-dag-and-ownership",
-      "title": "ADR-0002 â€” Package DAG and Ownership",
+      "title": "ADR-0002 \u00e2\u20ac\u201d Package DAG and Ownership",
       "path": ".ssot/adr/ADR-1002-package-dag-and-ownership.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36591,7 +36728,7 @@
       "id": "adr:1003",
       "number": 1003,
       "slug": "spec-first-authoritative-spec-layer",
-      "title": "ADR-0003 â€” Spec-First Authoritative Spec Layer",
+      "title": "ADR-0003 \u00e2\u20ac\u201d Spec-First Authoritative Spec Layer",
       "path": ".ssot/adr/ADR-1003-spec-first-authoritative-spec-layer.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36636,7 +36773,7 @@
       "id": "adr:1005",
       "number": 1005,
       "slug": "asgi3-boundary-and-projection-rules",
-      "title": "ADR-0005 â€” ASGI3 Boundary and Projection Rules",
+      "title": "ADR-0005 \u00e2\u20ac\u201d ASGI3 Boundary and Projection Rules",
       "path": ".ssot/adr/ADR-1005-asgi3-boundary-and-projection-rules.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36653,7 +36790,7 @@
       "id": "adr:1006",
       "number": 1006,
       "slug": "protocol-binding-model",
-      "title": "ADR-0006 â€” Protocol Binding Model",
+      "title": "ADR-0006 \u00e2\u20ac\u201d Protocol Binding Model",
       "path": ".ssot/adr/ADR-1006-protocol-binding-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36670,7 +36807,7 @@
       "id": "adr:1007",
       "number": 1007,
       "slug": "first-class-protocol-support-matrix",
-      "title": "ADR-0007 â€” First-Class Protocol Support Matrix",
+      "title": "ADR-0007 \u00e2\u20ac\u201d First-Class Protocol Support Matrix",
       "path": ".ssot/adr/ADR-1007-first-class-protocol-support-matrix.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36687,7 +36824,7 @@
       "id": "adr:1008",
       "number": 1008,
       "slug": "atom-catalog-and-atom-legality",
-      "title": "ADR-0008 â€” Atom Catalog and Atom Legality",
+      "title": "ADR-0008 \u00e2\u20ac\u201d Atom Catalog and Atom Legality",
       "path": ".ssot/adr/ADR-1008-atom-catalog-and-atom-legality.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36704,7 +36841,7 @@
       "id": "adr:1009",
       "number": 1009,
       "slug": "phase-model-and-phase-legality",
-      "title": "ADR-0009 â€” Phase Model and Phase Legality",
+      "title": "ADR-0009 \u00e2\u20ac\u201d Phase Model and Phase Legality",
       "path": ".ssot/adr/ADR-1009-phase-model-and-phase-legality.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36721,7 +36858,7 @@
       "id": "adr:1010",
       "number": 1010,
       "slug": "hook-model-and-selector-semantics",
-      "title": "ADR-0010 â€” Hook Model and Selector Semantics",
+      "title": "ADR-0010 \u00e2\u20ac\u201d Hook Model and Selector Semantics",
       "path": ".ssot/adr/ADR-1010-hook-model-and-selector-semantics.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36744,7 +36881,7 @@
       "id": "adr:1011",
       "number": 1011,
       "slug": "security-deps-and-deps-ordering",
-      "title": "ADR-0011 â€” Security Deps and Deps Ordering",
+      "title": "ADR-0011 \u00e2\u20ac\u201d Security Deps and Deps Ordering",
       "path": ".ssot/adr/ADR-1011-security-deps-and-deps-ordering.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36761,7 +36898,7 @@
       "id": "adr:1012",
       "number": 1012,
       "slug": "db-guards-and-transaction-guardrails",
-      "title": "ADR-0012 â€” DB Guards and Transaction Guardrails",
+      "title": "ADR-0012 \u00e2\u20ac\u201d DB Guards and Transaction Guardrails",
       "path": ".ssot/adr/ADR-1012-db-guards-and-transaction-guardrails.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36778,7 +36915,7 @@
       "id": "adr:1013",
       "number": 1013,
       "slug": "default-canonical-oltp-ops",
-      "title": "ADR-0013 â€” Default Canonical OLTP Ops",
+      "title": "ADR-0013 \u00e2\u20ac\u201d Default Canonical OLTP Ops",
       "path": ".ssot/adr/ADR-1013-default-canonical-oltp-ops.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36823,7 +36960,7 @@
       "id": "adr:1015",
       "number": 1015,
       "slug": "engine-interoperability-contract",
-      "title": "ADR-0015 â€” Engine Interoperability Contract",
+      "title": "ADR-0015 \u00e2\u20ac\u201d Engine Interoperability Contract",
       "path": ".ssot/adr/ADR-1015-engine-interoperability-contract.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36840,7 +36977,7 @@
       "id": "adr:1016",
       "number": 1016,
       "slug": "kernel-plan-compilation-packing-fusion-compaction",
-      "title": "ADR-0016 â€” Kernel Plan Compilation, Packing, Fusion, and Compaction",
+      "title": "ADR-0016 \u00e2\u20ac\u201d Kernel Plan Compilation, Packing, Fusion, and Compaction",
       "path": ".ssot/adr/ADR-1016-kernel-plan-compilation-packing-fusion-compaction.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36857,7 +36994,7 @@
       "id": "adr:1017",
       "number": 1017,
       "slug": "decorators-are-declarative-sugar",
-      "title": "ADR-0017 â€” Decorators Are Declarative Sugar",
+      "title": "ADR-0017 \u00e2\u20ac\u201d Decorators Are Declarative Sugar",
       "path": ".ssot/adr/ADR-1017-decorators-are-declarative-sugar.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36874,7 +37011,7 @@
       "id": "adr:1018",
       "number": 1018,
       "slug": "shortcuts-and-aliases-expand-to-canonical-forms",
-      "title": "ADR-0018 â€” Shortcuts and Aliases Expand to Canonical Forms",
+      "title": "ADR-0018 \u00e2\u20ac\u201d Shortcuts and Aliases Expand to Canonical Forms",
       "path": ".ssot/adr/ADR-1018-shortcuts-and-aliases-expand-to-canonical-forms.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36897,7 +37034,7 @@
       "id": "adr:1019",
       "number": 1019,
       "slug": "make-define-derive-pattern",
-      "title": "ADR-0019 â€” Make / Define / Derive Pattern",
+      "title": "ADR-0019 \u00e2\u20ac\u201d Make / Define / Derive Pattern",
       "path": ".ssot/adr/ADR-1019-make-define-derive-pattern.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36914,7 +37051,7 @@
       "id": "adr:1020",
       "number": 1020,
       "slug": "python-rust-parity-contract",
-      "title": "ADR-0020 â€” Python / Rust Parity Contract",
+      "title": "ADR-0020 \u00e2\u20ac\u201d Python / Rust Parity Contract",
       "path": ".ssot/adr/ADR-1020-python-rust-parity-contract.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36931,7 +37068,7 @@
       "id": "adr:1021",
       "number": 1021,
       "slug": "certification-boundary-and-promotion-gates",
-      "title": "ADR-0021 â€” Certification Boundary and Promotion Gates",
+      "title": "ADR-0021 \u00e2\u20ac\u201d Certification Boundary and Promotion Gates",
       "path": ".ssot/adr/ADR-1021-certification-boundary-and-promotion-gates.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36948,7 +37085,7 @@
       "id": "adr:1022",
       "number": 1022,
       "slug": "tigrcorn-uvicorn-hypercorn-interop-and-conformance",
-      "title": "ADR-0022 â€” Tigrcorn / Uvicorn / Hypercorn Interop and Conformance",
+      "title": "ADR-0022 \u00e2\u20ac\u201d Tigrcorn / Uvicorn / Hypercorn Interop and Conformance",
       "path": ".ssot/adr/ADR-1022-tigrcorn-uvicorn-hypercorn-interop-and-conformance.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36965,7 +37102,7 @@
       "id": "adr:1023",
       "number": 1023,
       "slug": "exchange-model",
-      "title": "ADR-0023 â€” Exchange Model",
+      "title": "ADR-0023 \u00e2\u20ac\u201d Exchange Model",
       "path": ".ssot/adr/ADR-1023-exchange-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36982,7 +37119,7 @@
       "id": "adr:1024",
       "number": 1024,
       "slug": "runtime-family-model",
-      "title": "ADR-0024 â€” Runtime Family Model",
+      "title": "ADR-0024 \u00e2\u20ac\u201d Runtime Family Model",
       "path": ".ssot/adr/ADR-1024-runtime-family-model.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -36999,7 +37136,7 @@
       "id": "adr:1025",
       "number": 1025,
       "slug": "opchannel-and-runtime-io-abstraction",
-      "title": "ADR-0025 â€” OpChannel and Runtime IO Abstraction",
+      "title": "ADR-0025 \u00e2\u20ac\u201d OpChannel and Runtime IO Abstraction",
       "path": ".ssot/adr/ADR-1025-opchannel-and-runtime-io-abstraction.yaml",
       "origin": "repo-local",
       "managed": false,
@@ -37146,7 +37283,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1034",
@@ -37163,7 +37300,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1035",
@@ -37203,7 +37340,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1037",
@@ -37220,7 +37357,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1038",
@@ -37319,7 +37456,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1043",
@@ -37336,7 +37473,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1044",
@@ -37353,7 +37490,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1045",
@@ -38421,7 +38558,7 @@
       "superseded_by": [],
       "status_notes": [],
       "adr_ids": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "spc:2002",
@@ -39908,7 +40045,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "ece7e0acfb312861aa3d522b8776ec850d71f9c35a8bed88c06d17cb5ae1b20f",
+      "content_sha256": "82ef660694e7d10c9d86a1f0932d09934288f64fe0df53abfaf38b78e60f818e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -39922,6 +40059,11 @@
           "status": "draft",
           "note": "Updated docs route surface with mount evidence.",
           "at": "2026-04-21T08:15:23Z"
+        },
+        {
+          "status": "draft",
+          "note": "Specified favicon, Swagger UIX, Lens UIX, and runtime executor endpoint parity contract.",
+          "at": "2026-04-24T10:54:06Z"
         }
       ],
       "kind": "local-policy",
