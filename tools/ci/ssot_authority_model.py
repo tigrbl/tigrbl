@@ -38,6 +38,7 @@ RUNTIME_LANE_PATTERNS = (
     "websocket",
     "sse",
     "stream",
+    "request",
     "request envelope",
     "engine",
     "session",

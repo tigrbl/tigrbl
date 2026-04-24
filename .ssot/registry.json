@@ -9481,13 +9481,25 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2025"
+        "spc:2025",
+        "spc:2090"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      }
     },
     {
       "id": "feat:schemaspec-contract-001",
@@ -10051,13 +10063,25 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2026"
+        "spc:2026",
+        "spc:2090"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      }
     },
     {
       "id": "feat:schemabase-contract-001",
@@ -13218,7 +13242,8 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2010"
+        "spc:2010",
+        "spc:2090"
       ],
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001"
@@ -13239,7 +13264,16 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
     },
     {
       "id": "feat:json-schema-uix-surface-001",
@@ -13258,7 +13292,8 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2010"
+        "spc:2010",
+        "spc:2090"
       ],
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001"
@@ -13279,7 +13314,16 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
         "tst:http-route-system-docs-builders"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
     },
     {
       "id": "feat:healthz-uix-surface-001",
@@ -13298,13 +13342,23 @@
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
-        "spc:2021"
+        "spc:2021",
+        "spc:2090"
       ],
       "claim_ids": [],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
     },
     {
       "id": "feat:kernelz-uix-surface-001",
@@ -15940,15 +15994,29 @@
       },
       "spec_ids": [
         "spc:2086",
-        "spc:2088"
+        "spc:2088",
+        "spc:2090"
       ],
       "claim_ids": [
-        "clm:python-request-hot-path-no-ddl-governance-001"
+        "clm:python-request-hot-path-no-ddl-governance-001",
+        "clm:runtime-parity-lane-governance-001"
       ],
       "test_ids": [
-        "tst:python-request-hot-path-no-ddl-governance-001"
+        "tst:python-request-hot-path-no-ddl-governance-001",
+        "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required",
+          "paired_feature_ids": [
+            "feat:rust-request-hot-path-no-ddl-001"
+          ]
+        }
+      }
     },
     {
       "id": "feat:rust-request-hot-path-no-ddl-001",
@@ -30618,9 +30686,11 @@
         "feat:enginetypelowerer-protocol-001",
         "feat:engineregistry-contract-001",
         "feat:enginedatatypebridge-contract-001",
+        "feat:requestspec-contract-001",
         "feat:sessionspec-contract-001",
         "feat:enginebase-contract-001",
         "feat:engineproviderbase-contract-001",
+        "feat:requestbase-contract-001",
         "feat:sessionabc-contract-001",
         "feat:tigrblsessionbase-contract-001",
         "feat:engine-session-runtime-surface-001",
@@ -30643,6 +30713,9 @@
         "feat:build-kernelz-endpoint-helper-001",
         "feat:diagnostics-router-mount-surface-001",
         "feat:kernelz-mount-surface-001",
+        "feat:asyncapi-uix-surface-001",
+        "feat:json-schema-uix-surface-001",
+        "feat:healthz-uix-surface-001",
         "feat:kernelz-uix-surface-001",
         "feat:wrap-sessionmaker-helper-surface-001",
         "feat:include-tables-helper-surface-001",
@@ -30673,6 +30746,7 @@
         "feat:authn-provider-missing-credentials-status-001",
         "feat:python-runtime-ddl-initialization-boundary-001",
         "feat:rust-runtime-ddl-initialization-boundary-001",
+        "feat:python-request-hot-path-no-ddl-001",
         "feat:rust-request-hot-path-no-ddl-001",
         "feat:python-schema-readiness-fail-closed-001",
         "feat:rust-schema-readiness-fail-closed-001",
@@ -35607,9 +35681,11 @@
         "feat:enginetypelowerer-protocol-001",
         "feat:engineregistry-contract-001",
         "feat:enginedatatypebridge-contract-001",
+        "feat:requestspec-contract-001",
         "feat:sessionspec-contract-001",
         "feat:enginebase-contract-001",
         "feat:engineproviderbase-contract-001",
+        "feat:requestbase-contract-001",
         "feat:sessionabc-contract-001",
         "feat:tigrblsessionbase-contract-001",
         "feat:engine-session-runtime-surface-001",
@@ -35641,6 +35717,7 @@
         "feat:authn-provider-missing-credentials-status-001",
         "feat:python-runtime-ddl-initialization-boundary-001",
         "feat:rust-runtime-ddl-initialization-boundary-001",
+        "feat:python-request-hot-path-no-ddl-001",
         "feat:rust-request-hot-path-no-ddl-001",
         "feat:python-schema-readiness-fail-closed-001",
         "feat:rust-schema-readiness-fail-closed-001",
