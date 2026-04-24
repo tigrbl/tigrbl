@@ -1,0 +1,54 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2091"
+number: 2091
+slug: "default-root-path-contract"
+title: "Default root path contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Declare the default root-path behavior for all Tigrbl runtimes and apps."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted cross-runtime default root path contract."
+    at: "2026-04-24T20:24:31Z"
+references: []
+body: |-
+  ## Purpose
+  
+  Declare the default root-path behavior for all Tigrbl runtimes and apps.
+  
+  ## Scope
+  
+  This SPEC applies to Tigrbl app instances, Python executor paths, Rust executor paths, direct Rust runtime handles, and framework-owned demos or server adapters that expose Tigrbl runtime behavior.
+  
+  ## Requirements
+  
+  1. A Tigrbl runtime surface MUST treat path `/` with method `GET` as a framework-owned default root request when no explicit non-default root binding is present.
+  2. The default root response MUST use HTTP status `200`.
+  3. The default root response body MUST be the JSON object `{"ok": true}`.
+  4. The default root response shape MUST be identical for Python executor and Rust executor surfaces.
+  5. The default root response MUST be installed for all Tigrbl apps, including apps with system mounts disabled.
+  6. An app, router, or compiled runtime plan that declares an explicit non-default root binding for `/` MUST override the default root response.
+  7. Override detection MUST remove or bypass the framework default before dispatch when the explicit root route is registered on an app.
+  8. Direct Rust runtime handles with no explicit root binding MUST return the default root response instead of raising a missing-binding error for `GET /`.
+  9. Runtime default-root handling MUST NOT acquire an engine session, begin a transaction, or execute persistence work.
+  10. The default root response MUST NOT replace `/system/healthz`, diagnostics endpoints, docs mounts, or application-owned root handlers.
+  11. Conformance tests MUST cover both default root behavior and explicit-root override behavior for Python and Rust runtime lanes.
+  
+  ## Non-Goals
+  
+  - This SPEC does not define health-check semantics beyond the static default root fallback.
+  - This SPEC does not require POST, HEAD, WebSocket, JSON-RPC, or non-GET root behavior.
+  - This SPEC does not require applications to expose docs or system diagnostics at `/`.
+  
+  ## Traceability
+  
+  This SPEC is governed by ADR-1087.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1087"

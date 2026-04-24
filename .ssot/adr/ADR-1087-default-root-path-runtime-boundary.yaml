@@ -1,0 +1,49 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1087"
+number: 1087
+slug: "default-root-path-runtime-boundary"
+title: "Default root path runtime boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl apps now execute through both Python executor paths and Rust executor paths. A request to the root path `/` should not depend on which executor or runtime handle is active. Without a governed default, Python ASGI apps, direct Rust runtime handles, and demo/server surfaces can drift between 404, executor errors, or app-specific behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted default GET / behavior for all Tigrbl apps and Python/Rust runtimes unless explicitly overridden."
+    at: "2026-04-24T20:24:13Z"
+references: []
+body: |-
+  ## Context
+  
+  Tigrbl apps now execute through both Python executor paths and Rust executor paths. A request to the root path `/` should not depend on which executor or runtime handle is active. Without a governed default, Python ASGI apps, direct Rust runtime handles, and demo/server surfaces can drift between 404, executor errors, or app-specific behavior.
+  
+  The root path is also a natural user and health-smoke entry point, but it must not steal authority from application-owned routes.
+  
+  ## Decision
+  
+  Tigrbl SHALL define a runtime-wide default for `GET /`.
+  
+  1. Every Tigrbl app SHALL expose a default response at path `/` for `GET` unless that app explicitly registers or compiles a non-default root binding for `/`.
+  2. The default response SHALL be identical across Python executors, Rust executors, direct Rust runtime handles, and framework-owned demo/server surfaces.
+  3. The default response body SHALL be `{"ok": true}` with HTTP status `200`.
+  4. An explicit app, router, or compiled runtime binding for `GET /` or the root path SHALL override the framework default.
+  5. The default SHALL NOT widen application business semantics, diagnostics semantics, or `/system/healthz` semantics; it is only a framework-owned root fallback.
+  6. Runtime implementations SHALL avoid executing persistence, engine/session acquisition, or custom handlers to produce the default fallback.
+  
+  ## Consequences
+  
+  - Python and Rust runtime behavior for an otherwise empty app converges on the same `GET /` response.
+  - Applications can still own `/` by registering their own root route.
+  - Root smoke checks can assert framework availability without depending on docs, diagnostics, or application tables.
+  - Runtime parity tests must cover both the default and override cases.
+  
+  ## Rejected Alternatives
+  
+  - Leaving empty apps to return 404 or runtime missing-binding errors at `/`.
+  - Redirecting `/` to docs or diagnostics, which would conflate root fallback behavior with optional system or documentation mounts.
+  - Making the default executor-specific.
