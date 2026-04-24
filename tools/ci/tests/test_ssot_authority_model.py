@@ -16,6 +16,7 @@ from ssot_authority_model import (  # noqa: E402
     load_registry,
     selection_manifest,
     validate_authority_model,
+    validate_runtime_lanes,
 )
 
 
@@ -60,6 +61,100 @@ def test_governance_only_feature_with_validator_passes() -> None:
         }
     )
     assert validate_authority_model(registry) == []
+
+
+def test_runtime_sensitive_feature_without_rust_lane_fails() -> None:
+    registry = deepcopy(load_registry())
+    registry["features"].append(
+        {
+            "id": "feat:fixture-runtime-without-rust-lane",
+            "title": "Fixture runtime without Rust lane",
+            "description": "Negative fixture for runtime governance.",
+            "implementation_status": "absent",
+            "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
+            "plan": {"horizon": "out_of_bounds", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
+            "claim_ids": ["clm:ssot-authority-projection-001"],
+            "test_ids": ["tst:ssot-authority-model-validator"],
+            "requires": [],
+            "spec_ids": ["spc:2090"],
+        }
+    )
+    errors = validate_runtime_lanes(registry)
+    assert "feat:fixture-runtime-without-rust-lane is runtime-sensitive but has no runtime_lanes metadata" in errors
+
+
+def test_void_or_not_applicable_runtime_lane_requires_reason() -> None:
+    registry = deepcopy(load_registry())
+    registry["features"].append(
+        {
+            "id": "feat:fixture-runtime-void-without-reason",
+            "title": "Fixture runtime void without reason",
+            "description": "Negative fixture for runtime governance.",
+            "implementation_status": "implemented",
+            "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
+            "plan": {"horizon": "current", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
+            "claim_ids": ["clm:ssot-authority-projection-001"],
+            "test_ids": ["tst:ssot-authority-model-validator"],
+            "requires": [],
+            "spec_ids": ["spc:2090"],
+            "runtime_lanes": {
+                "python": {"applicability": "required"},
+                "rust": {"applicability": "not_applicable"},
+            },
+        }
+    )
+    errors = validate_runtime_lanes(registry)
+    assert "feat:fixture-runtime-void-without-reason runtime_lanes.rust not_applicable must include a reason" in errors
+
+
+def test_required_rust_lane_requires_rust_evidence_or_pair() -> None:
+    registry = deepcopy(load_registry())
+    registry["features"].append(
+        {
+            "id": "feat:fixture-runtime-required-without-rust-evidence",
+            "title": "Fixture runtime required without Rust evidence",
+            "description": "Negative fixture for runtime governance.",
+            "implementation_status": "implemented",
+            "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
+            "plan": {"horizon": "current", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
+            "claim_ids": ["clm:ssot-authority-projection-001"],
+            "test_ids": ["tst:ssot-authority-model-validator"],
+            "requires": [],
+            "spec_ids": ["spc:2090"],
+            "runtime_lanes": {
+                "python": {"applicability": "required"},
+                "rust": {"applicability": "required"},
+            },
+        }
+    )
+    errors = validate_runtime_lanes(registry)
+    assert "feat:fixture-runtime-required-without-rust-evidence requires Rust parity but has no Rust pair, claim, test, or evidence" in errors
+
+
+def test_required_rust_lane_accepts_explicit_pair() -> None:
+    registry = deepcopy(load_registry())
+    registry["features"].append(
+        {
+            "id": "feat:fixture-runtime-required-with-pair",
+            "title": "Fixture runtime required with pair",
+            "description": "Positive fixture for runtime governance.",
+            "implementation_status": "implemented",
+            "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
+            "plan": {"horizon": "current", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
+            "claim_ids": ["clm:ssot-authority-projection-001"],
+            "test_ids": ["tst:ssot-authority-model-validator"],
+            "requires": [],
+            "spec_ids": ["spc:2090"],
+            "runtime_lanes": {
+                "python": {"applicability": "required"},
+                "rust": {
+                    "applicability": "required",
+                    "paired_feature_ids": ["feat:rust-runtime-ddl-initialization-boundary-001"],
+                },
+            },
+        }
+    )
+    assert validate_runtime_lanes(registry) == []
 
 
 def test_boundary_selection_is_deterministic() -> None:

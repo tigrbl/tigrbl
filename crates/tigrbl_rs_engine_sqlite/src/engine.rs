@@ -5,6 +5,7 @@ use crate::session::SqliteSession;
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct SqliteEngine {
     path: String,
+    tables: Vec<String>,
 }
 
 impl Default for SqliteEngine {
@@ -15,15 +16,23 @@ impl Default for SqliteEngine {
 
 impl SqliteEngine {
     pub fn new(path: Option<String>) -> Self {
+        Self::new_with_tables(path, Vec::new())
+    }
+
+    pub fn new_with_tables(path: Option<String>, tables: Vec<String>) -> Self {
         match path {
-            Some(path) if !path.trim().is_empty() => Self { path },
-            _ => Self::memory(),
+            Some(path) if !path.trim().is_empty() => Self { path, tables },
+            _ => Self {
+                path: ":memory:".to_string(),
+                tables,
+            },
         }
     }
 
     pub fn memory() -> Self {
         Self {
             path: ":memory:".to_string(),
+            tables: Vec::new(),
         }
     }
 
@@ -38,7 +47,7 @@ impl EnginePort for SqliteEngine {
     }
 
     fn open(&self) -> PortResult<Box<dyn SessionPort>> {
-        SqliteSession::new(self.path.clone())
+        SqliteSession::new(self.path.clone(), self.tables.clone())
             .map(|session| Box::new(session) as Box<dyn SessionPort>)
     }
 }

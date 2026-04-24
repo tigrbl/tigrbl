@@ -45,6 +45,61 @@ fn sqlite_engine_initializes_file_schema_when_session_opens() {
 }
 
 #[test]
+fn sqlite_engine_with_declared_tables_uses_relational_rows() {
+    let path = std::env::temp_dir().join(format!(
+        "tigrbl-rs-engine-sqlite-relational-{}.sqlite3",
+        std::process::id()
+    ));
+    let _ = std::fs::remove_file(&path);
+
+    let engine = SqliteEngine::new_with_tables(
+        Some(path.to_string_lossy().into_owned()),
+        vec!["benchmark_item".to_string()],
+    );
+    let session = engine.open().expect("session");
+    let tx = session.begin().expect("transaction");
+
+    let response = tx
+        .execute(
+            "benchmark_item",
+            "items.create",
+            "create",
+            &RequestEnvelope {
+                body: Value::Object(
+                    [("name".to_string(), Value::String("Ada".to_string()))]
+                        .into_iter()
+                        .collect(),
+                ),
+                ..Default::default()
+            },
+        )
+        .expect("create response");
+    tx.commit().expect("commit");
+
+    assert_eq!(response.status, 201);
+    assert_eq!(
+        response.body,
+        Value::Object(
+            [
+                ("id".to_string(), Value::Integer(1)),
+                ("name".to_string(), Value::String("Ada".to_string())),
+            ]
+            .into_iter()
+            .collect()
+        )
+    );
+
+    let connection = rusqlite::Connection::open(&path).expect("sqlite connection");
+    let stored: String = connection
+        .query_row("SELECT name FROM benchmark_item ORDER BY id", [], |row| {
+            row.get(0)
+        })
+        .expect("stored row");
+    assert_eq!(stored, "Ada");
+    let _ = std::fs::remove_file(path);
+}
+
+#[test]
 fn sqlite_engine_persists_create_rows_to_file() {
     let path = std::env::temp_dir().join(format!(
         "tigrbl-rs-engine-sqlite-{}.sqlite3",

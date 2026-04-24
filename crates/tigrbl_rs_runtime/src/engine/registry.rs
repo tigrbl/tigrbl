@@ -21,9 +21,10 @@ impl EngineRegistry {
     pub fn from_plan(plan: &KernelPlan) -> Self {
         let mut registry = Self::new();
         if plan.engine_kind == "sqlite" {
-            registry.register(Box::new(SqliteEngine::new(sqlite_path(
-                &plan.engine_options,
-            ))));
+            registry.register(Box::new(SqliteEngine::new_with_tables(
+                sqlite_path(&plan.engine_options),
+                sqlite_tables(plan),
+            )));
         }
         registry
     }
@@ -35,6 +36,18 @@ impl EngineRegistry {
     pub fn get(&self, kind: &str) -> Option<&dyn EnginePort> {
         self.engines.get(kind).map(Box::as_ref)
     }
+}
+
+fn sqlite_tables(plan: &KernelPlan) -> Vec<String> {
+    let mut tables = plan
+        .bindings
+        .iter()
+        .map(|binding| binding.table.clone())
+        .filter(|table| !table.trim().is_empty())
+        .collect::<Vec<_>>();
+    tables.sort();
+    tables.dedup();
+    tables
 }
 
 fn sqlite_path(options: &Value) -> Option<String> {

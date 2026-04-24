@@ -1,0 +1,51 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2090"
+number: 2090
+slug: "runtime-parity-lane-governance"
+title: "Runtime parity lane governance"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Declare how feature rows record Python and Rust runtime-lane applicability without creating a blind Rust mirror for every Python surface."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted Rust parity lane governance for required, void, and not-applicable runtime lanes."
+    at: "2026-04-24T00:00:00Z"
+references: []
+body: |-
+  ## Purpose
+
+  Declare how feature rows record Python and Rust runtime-lane applicability without creating a blind Rust mirror for every Python surface.
+
+  ## Scope
+
+  This SPEC applies to governed features that claim cross-runtime behavior, runtime semantics, transport behavior, kernel or plan behavior, canonical operation semantics, errors, status projection, docs/runtime parity, or performance parity.
+
+  ## Requirements
+
+  1. A runtime-sensitive feature MUST record `runtime_lanes.python.applicability` and `runtime_lanes.rust.applicability`.
+  2. Runtime-lane applicability MUST be one of `required`, `void`, or `not_applicable`.
+  3. `required` means the lane carries implementation, conformance, parity, or evidence obligations.
+  4. `void` means the feature is tracked, but the lane has no product obligation for the current boundary.
+  5. `not_applicable` means the feature is tracked, but the lane is structurally outside the feature's nature.
+  6. `void` and `not_applicable` lane entries MUST include a concrete `reason`.
+  7. A `required` Rust lane MUST be backed by an explicit Rust feature pair, Rust-linked claim, Rust-linked test, or Rust-linked evidence.
+  8. `implementation_status: absent`, `plan.horizon: out_of_bounds`, and runtime-lane `not_applicable` MUST NOT be treated as interchangeable.
+  9. Explicit Rust feature rows are required for applicable Rust work, but Python-only, docs-only, operator-only, or helper-only surfaces MAY remain single feature rows with Rust marked `void` or `not_applicable`.
+  10. Feature-to-SPEC traceability remains on feature entities through `spec_ids`.
+
+  ## Non-Goals
+
+  - This SPEC does not require creating one Rust feature row for every Python feature row.
+  - This SPEC does not redefine feature implementation status, lifecycle stage, or planning horizon.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1020"
+  - "adr:1082"
+  - "adr:1085"
+  - "adr:1086"
