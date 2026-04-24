@@ -66,6 +66,9 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+
       - name: Compute and apply version plan
         run: >-
           python tools/release/release_automation.py bump
@@ -74,13 +77,16 @@ jobs:
           --summary release-plan.json
           --write
 
+      - name: Refresh Rust lockfile
+        run: cargo generate-lockfile
+
       - name: Commit version updates
         id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           if ! git diff --quiet; then
-            git add Cargo.toml pkgs crates
+            git add Cargo.toml Cargo.lock pkgs crates
             git commit -m "release: prepare ${{ inputs.semver }} package versions"
             git push origin HEAD:${{ github.ref_name }}
           fi
