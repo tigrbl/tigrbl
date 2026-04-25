@@ -4,7 +4,6 @@ version = "0.1.12.dev1"
 description = "ORM tables and mixins for the Tigrbl framework."
 license = "Apache-2.0"
 readme = "README.md"
-repository = "http://github.com/swarmauri/swarmauri-sdk"
 requires-python = ">=3.10,<3.14"
 classifiers = [
     "Development Status :: 1 - Planning",
@@ -17,10 +16,17 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
 dependencies = [
     "sqlalchemy>=2.0",
 ]
 keywords = ["tigrbl", "orm", "sqlalchemy", "sdk", "standards"]
+
+
+[project.urls]
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/core/tigrbl_orm"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

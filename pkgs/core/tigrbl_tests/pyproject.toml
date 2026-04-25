@@ -4,7 +4,6 @@ version = "0.3.24.dev1"
 description = "Test suite and fixtures for the Tigrbl framework."
 license = "Apache-2.0"
 readme = "README.md"
-repository = "http://github.com/swarmauri/swarmauri-sdk"
 requires-python = ">=3.10,<3.14"
 classifiers = [
     "Development Status :: 1 - Planning",
@@ -18,6 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
 dependencies = [
     "tigrbl",
     "tigrbl_client",
@@ -45,6 +45,12 @@ keywords = [
     "integration",
     "performance",
 ]
+
+
+[project.urls]
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/core/tigrbl_tests"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [tool.uv.sources]
 tigrbl = { workspace = true }

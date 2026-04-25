@@ -39,11 +39,13 @@ dependencies = [
   "snowflake-connector-python>=3.0,<4.0",
 ]
 
-[project.urls]
-Homepage = "https://github.com/swarmauri/swarmauri-sdk"
-Repository = "https://github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/experimental/tigrbl_engine_snowflake"
-
 # Auto-registration with Tigrbl
+
+[project.urls]
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/engines/tigrbl_engine_snowflake"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
+
 [project.entry-points."tigrbl.engine"]
 snowflake = "tigrbl_engine_snowflake:register"
 

@@ -38,9 +38,11 @@ dependencies = [
   "psycopg[binary]>=3.1,<4.0",  # PostgreSQL driver
 ]
 
+
 [project.urls]
-Homepage = "https://github.com/swarmauri/swarmauri-sdk"
-Repository = "https://github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/experimental/tigrbl_engine_pgsqli_wal"
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/engines/tigrbl_engine_pgsqli_wal"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [project.entry-points."tigrbl.engine"]
 pgsqli_wal = "tigrbl_engine_pgsqli_wal:register"

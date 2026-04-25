@@ -4,7 +4,6 @@ version = "0.1.12.dev1"
 description = "OLAP operation package boundary for analytical Tigrbl workloads."
 license = "Apache-2.0"
 readme = "README.md"
-repository = "http://github.com/swarmauri/swarmauri-sdk"
 requires-python = ">=3.10,<3.14"
 classifiers = [
     "Development Status :: 1 - Planning",
@@ -17,7 +16,14 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
 keywords = ["tigrbl", "sdk", "standards", "framework", "olap", "analytics"]
+
+
+[project.urls]
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/core/tigrbl_ops_olap"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

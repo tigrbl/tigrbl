@@ -4,7 +4,6 @@ version = "0.1.12.dev1"
 description = "OLTP operation implementations for Tigrbl, including CRUD and bulk handlers."
 license = "Apache-2.0"
 readme = "README.md"
-repository = "http://github.com/swarmauri/swarmauri-sdk"
 requires-python = ">=3.10,<3.14"
 classifiers = [
     "Development Status :: 1 - Planning",
@@ -17,12 +16,19 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
 dependencies = [
     "tigrbl-orm",
     "tigrbl-base",
     "tigrbl-core",
 ]
 keywords = ["tigrbl", "sdk", "standards", "framework", "oltp", "crud"]
+
+
+[project.urls]
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/core/tigrbl_ops_oltp"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [tool.uv.sources]
 "tigrbl-orm" = { workspace = true }
