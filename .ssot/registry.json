@@ -12034,6 +12034,33 @@
       }
     },
     {
+      "id": "feat:default-root-path-contract-001",
+      "title": "Default root path contract",
+      "description": "Provide a canonical GET / root operation and default payload for Tigrbl apps and Python/Rust runtimes unless an explicit root binding overrides it.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "runtime-root-surface",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2091"
+      ],
+      "claim_ids": [],
+      "test_ids": [
+        "tst:default-root-path-python-unit-001",
+        "tst:default-root-path-rust-runtime-contract-001",
+        "tst:tigrbl-tests-tests-rust-runtime-test-rust-runtime-public-surface"
+      ],
+      "requires": []
+    },
+    {
       "id": "feat:depends-concrete-dependency-helper-001",
       "title": "Depends concrete dependency helper",
       "description": "Tracks Depends as the concrete dependency helper that wraps injection callables for transport and runtime binding.",
@@ -28519,7 +28546,8 @@
       "kind": "rust",
       "path": "pkgs/core/tigrbl_tests/tests/rust/runtime/test_rust_runtime_public_surface.py",
       "feature_ids": [
-        "feat:tigrbl-test-suite-coverage-intake-001"
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:default-root-path-contract-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -28527,6 +28555,30 @@
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake"
       ]
+    },
+    {
+      "id": "tst:default-root-path-python-unit-001",
+      "title": "Default root path Python unit coverage",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_v3_default_root_endpoint.py",
+      "feature_ids": [
+        "feat:default-root-path-contract-001"
+      ],
+      "claim_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "tst:default-root-path-rust-runtime-contract-001",
+      "title": "Default root path Rust runtime contract coverage",
+      "status": "passing",
+      "kind": "rust",
+      "path": "crates/tigrbl_rs_runtime/tests/runtime_contract.rs",
+      "feature_ids": [
+        "feat:default-root-path-contract-001"
+      ],
+      "claim_ids": [],
+      "evidence_ids": []
     },
     {
       "id": "tst:tigrbl-tests-tests-security-test-dot-notation-schemes",

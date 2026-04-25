@@ -4,6 +4,8 @@ use tigrbl_rs_spec::{
     AppSpec, BindingSpec, EngineSpec, Exchange, OpKind, OpSpec, RequestEnvelope, TxScope, Value,
 };
 
+const DEFAULT_ROOT_ALIAS: &str = "__tigrbl_default_root__";
+
 #[test]
 fn runtime_instantiates_handles_from_compiled_plans() {
     let mut app = AppSpec {
@@ -147,8 +149,29 @@ fn runtime_returns_default_root_without_bindings() {
         ..AppSpec::default()
     };
     let plan = KernelCompiler.compile(&app);
+    let root_binding = plan
+        .bindings
+        .iter()
+        .find(|binding| binding.alias == DEFAULT_ROOT_ALIAS)
+        .expect("expected canonical default root binding")
+        .clone();
+    let root_route = plan
+        .routes
+        .iter()
+        .find(|route| route.binding_alias == DEFAULT_ROOT_ALIAS)
+        .expect("expected canonical default root route")
+        .clone();
     let runtime = RustRuntime::new(RuntimeConfig::default());
     let handle = runtime.instantiate(plan);
+
+    assert_eq!(root_binding.transport, "rest");
+    assert_eq!(root_binding.path, "/");
+    assert_eq!(root_binding.method, "GET");
+    assert_eq!(root_binding.op_name, DEFAULT_ROOT_ALIAS);
+    assert_eq!(root_binding.op_kind, OpKind::Read);
+    assert_eq!(root_binding.table, DEFAULT_ROOT_ALIAS);
+    assert_eq!(root_route.path, "/");
+    assert_eq!(root_route.method, "GET");
 
     let response = handle
         .execute_rest(RequestEnvelope {
@@ -196,6 +219,10 @@ fn runtime_prefers_explicit_root_binding_over_default_root() {
     });
 
     let plan = KernelCompiler.compile(&app);
+    assert!(!plan
+        .bindings
+        .iter()
+        .any(|binding| binding.alias == DEFAULT_ROOT_ALIAS));
     let runtime = RustRuntime::new(RuntimeConfig::default());
     let handle = runtime.instantiate(plan);
 
