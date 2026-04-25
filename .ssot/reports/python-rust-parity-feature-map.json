@@ -1,0 +1,986 @@
+{
+  "adr_ids": [
+    "adr:1088",
+    "adr:1020"
+  ],
+  "boundary_id": "bnd:python-rust-fully-paritable-suite-001",
+  "claim_ids": [
+    "clm:python-rust-atom-inventory-complete",
+    "clm:python-rust-atom-parity-corpus",
+    "clm:python-rust-kernelplan-parity",
+    "clm:python-rust-parity-boundary-closed",
+    "clm:python-rust-parity-evidence-fresh"
+  ],
+  "evidence_ids": [
+    "evd:python-rust-atom-parity-inventory",
+    "evd:python-rust-parity-feature-map",
+    "evd:python-rust-atom-parity-results",
+    "evd:python-rust-kernelplan-parity-results",
+    "evd:python-rust-parity-certification-map"
+  ],
+  "features": [
+    {
+      "atom_id": "dep.extra",
+      "feature_id": "feat:atom-parity-dep-extra-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "dep.param_resolver",
+      "feature_id": "feat:atom-parity-dep-param-resolver-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "dep.security",
+      "feature_id": "feat:atom-parity-dep-security-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "dispatch.binding_match",
+      "feature_id": "feat:atom-parity-dispatch-binding-match-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "dispatch.binding_parse",
+      "feature_id": "feat:atom-parity-dispatch-binding-parse-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "dispatch.input_normalize",
+      "feature_id": "feat:atom-parity-dispatch-input-normalize-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "dispatch.op_resolve",
+      "feature_id": "feat:atom-parity-dispatch-op-resolve-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "egress.asgi_send",
+      "feature_id": "feat:atom-parity-egress-asgi-send-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "egress.envelope_apply",
+      "feature_id": "feat:atom-parity-egress-envelope-apply-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "egress.headers_apply",
+      "feature_id": "feat:atom-parity-egress-headers-apply-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "egress.http_finalize",
+      "feature_id": "feat:atom-parity-egress-http-finalize-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "egress.out_dump",
+      "feature_id": "feat:atom-parity-egress-out-dump-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "egress.result_normalize",
+      "feature_id": "feat:atom-parity-egress-result-normalize-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "egress.to_transport_response",
+      "feature_id": "feat:atom-parity-egress-to-transport-response-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "emit.paired_post",
+      "feature_id": "feat:atom-parity-emit-paired-post-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "emit.paired_pre",
+      "feature_id": "feat:atom-parity-emit-paired-pre-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "emit.readtime_alias",
+      "feature_id": "feat:atom-parity-emit-readtime-alias-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "err.rollback",
+      "feature_id": "feat:atom-parity-err-rollback-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "ingress.ctx_init",
+      "feature_id": "feat:atom-parity-ingress-ctx-init-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "ingress.input_prepare",
+      "feature_id": "feat:atom-parity-ingress-input-prepare-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "ingress.transport_extract",
+      "feature_id": "feat:atom-parity-ingress-transport-extract-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "out.masking",
+      "feature_id": "feat:atom-parity-out-masking-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "refresh.demand",
+      "feature_id": "feat:atom-parity-refresh-demand-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "resolve.assemble",
+      "feature_id": "feat:atom-parity-resolve-assemble-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "resolve.paired_gen",
+      "feature_id": "feat:atom-parity-resolve-paired-gen-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.error_to_transport",
+      "feature_id": "feat:atom-parity-response-error-to-transport-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.headers_from_payload",
+      "feature_id": "feat:atom-parity-response-headers-from-payload-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.negotiate",
+      "feature_id": "feat:atom-parity-response-negotiate-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.negotiation",
+      "feature_id": "feat:atom-parity-response-negotiation-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.render",
+      "feature_id": "feat:atom-parity-response-render-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.renderer",
+      "feature_id": "feat:atom-parity-response-renderer-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.template",
+      "feature_id": "feat:atom-parity-response-template-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "response.templates",
+      "feature_id": "feat:atom-parity-response-templates-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "schema.collect_in",
+      "feature_id": "feat:atom-parity-schema-collect-in-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "schema.collect_out",
+      "feature_id": "feat:atom-parity-schema-collect-out-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "storage.to_stored",
+      "feature_id": "feat:atom-parity-storage-to-stored-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.commit_tx",
+      "feature_id": "feat:atom-parity-sys-commit-tx-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.db",
+      "feature_id": "feat:atom-parity-sys-db-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_aggregate",
+      "feature_id": "feat:atom-parity-sys-handler-aggregate-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_append_chunk",
+      "feature_id": "feat:atom-parity-sys-handler-append-chunk-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_bulk_create",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-create-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_bulk_delete",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-delete-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_bulk_merge",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-merge-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_bulk_replace",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-replace-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_bulk_update",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-update-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_checkpoint",
+      "feature_id": "feat:atom-parity-sys-handler-checkpoint-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_clear",
+      "feature_id": "feat:atom-parity-sys-handler-clear-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_count",
+      "feature_id": "feat:atom-parity-sys-handler-count-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_create",
+      "feature_id": "feat:atom-parity-sys-handler-create-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_custom",
+      "feature_id": "feat:atom-parity-sys-handler-custom-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_delete",
+      "feature_id": "feat:atom-parity-sys-handler-delete-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_download",
+      "feature_id": "feat:atom-parity-sys-handler-download-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_exists",
+      "feature_id": "feat:atom-parity-sys-handler-exists-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_group_by",
+      "feature_id": "feat:atom-parity-sys-handler-group-by-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_list",
+      "feature_id": "feat:atom-parity-sys-handler-list-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_merge",
+      "feature_id": "feat:atom-parity-sys-handler-merge-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_noop",
+      "feature_id": "feat:atom-parity-sys-handler-noop-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_persistence",
+      "feature_id": "feat:atom-parity-sys-handler-persistence-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_publish",
+      "feature_id": "feat:atom-parity-sys-handler-publish-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_read",
+      "feature_id": "feat:atom-parity-sys-handler-read-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_replace",
+      "feature_id": "feat:atom-parity-sys-handler-replace-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_send_datagram",
+      "feature_id": "feat:atom-parity-sys-handler-send-datagram-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_subscribe",
+      "feature_id": "feat:atom-parity-sys-handler-subscribe-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_tail",
+      "feature_id": "feat:atom-parity-sys-handler-tail-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_update",
+      "feature_id": "feat:atom-parity-sys-handler-update-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.handler_upload",
+      "feature_id": "feat:atom-parity-sys-handler-upload-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.oltp_context",
+      "feature_id": "feat:atom-parity-sys-oltp-context-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.phase_db",
+      "feature_id": "feat:atom-parity-sys-phase-db-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "sys.start_tx",
+      "feature_id": "feat:atom-parity-sys-start-tx-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "wire.build_in",
+      "feature_id": "feat:atom-parity-wire-build-in-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "wire.build_out",
+      "feature_id": "feat:atom-parity-wire-build-out-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "wire.dump",
+      "feature_id": "feat:atom-parity-wire-dump-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    },
+    {
+      "atom_id": "wire.validate_in",
+      "feature_id": "feat:atom-parity-wire-validate-in-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      },
+      "state": "matched"
+    }
+  ],
+  "release_id": "rel:python-rust-fully-paritable-suite-001",
+  "schema": "tigrbl.python_rust_parity_feature_map.v1",
+  "spec_ids": [
+    "spc:2090",
+    "spc:2092",
+    "spc:2093"
+  ],
+  "test_ids": [
+    "tst:python-rust-atom-inventory-drift",
+    "tst:python-rust-atom-parity-corpus",
+    "tst:python-rust-kernelplan-parity-snapshot",
+    "tst:python-rust-boundary-certification-graph",
+    "tst:python-rust-parity-evidence-freshness"
+  ]
+}

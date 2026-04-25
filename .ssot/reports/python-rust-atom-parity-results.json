@@ -1,0 +1,815 @@
+{
+  "results": [
+    {
+      "atom_id": "dep.extra",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "dep.param_resolver",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "dep.security",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "dispatch.binding_match",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "dispatch.binding_parse",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "dispatch.input_normalize",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "dispatch.op_resolve",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "egress.asgi_send",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "egress.envelope_apply",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "egress.headers_apply",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "egress.http_finalize",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "egress.out_dump",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "egress.result_normalize",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "egress.to_transport_response",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "emit.paired_post",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "emit.paired_pre",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "emit.readtime_alias",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "err.rollback",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "ingress.ctx_init",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "ingress.input_prepare",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "ingress.transport_extract",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "out.masking",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "refresh.demand",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "resolve.assemble",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "resolve.paired_gen",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.error_to_transport",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.headers_from_payload",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.negotiate",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.negotiation",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.render",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.renderer",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.template",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "response.templates",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "schema.collect_in",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "schema.collect_out",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "storage.to_stored",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.commit_tx",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.db",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_aggregate",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_append_chunk",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_bulk_create",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_bulk_delete",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_bulk_merge",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_bulk_replace",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_bulk_update",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_checkpoint",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_clear",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_count",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_create",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_custom",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_delete",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_download",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_exists",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_group_by",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_list",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_merge",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_noop",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_persistence",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_publish",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_read",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_replace",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_send_datagram",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_subscribe",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_tail",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_update",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.handler_upload",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.oltp_context",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.phase_db",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "sys.start_tx",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "wire.build_in",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "wire.build_out",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "wire.dump",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "wire.validate_in",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": true
+      },
+      "state": "matched",
+      "status": "passed"
+    }
+  ],
+  "schema": "tigrbl.python_rust_atom_parity_results.v1",
+  "status": "passed",
+  "summary": {
+    "matched_count": 73,
+    "python_only_count": 0,
+    "rust_only_count": 0,
+    "unit_count": 73
+  }
+}

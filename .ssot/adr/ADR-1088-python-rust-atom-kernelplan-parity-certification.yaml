@@ -1,0 +1,28 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1088"
+number: 1088
+slug: "python-rust-atom-kernelplan-parity-certification"
+title: "Python/Rust Atom And KernelPlan Parity Certification"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl already governs Python/Rust runtime parity lanes and KernelPlan contracts, but atom parity needs a certifiable suite shape with explicit SSOT entities, evidence, and fail-closed drift checks."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted full-suite parity certification policy for atom, KernelPlan, runtime, claim, test, evidence, boundary, and release closure."
+    at: "2026-04-25T00:14:03Z"
+references: []
+body: |-
+  ## Context
+  Tigrbl already governs Python/Rust runtime parity lanes and KernelPlan contracts, but atom parity needs a certifiable suite shape with explicit SSOT entities, evidence, and fail-closed drift checks.
+  
+  ## Decision
+  The fully paritable suite is certified only through SSOT ADRs, SPECs, features, tests, claims, evidence, a frozen boundary, and a release row. Each governed atom parity unit must be represented as a first-class feature or an explicit not-applicable record. KernelPlan parity remains a separate certifiable surface and composes with atom parity rather than replacing it.
+  
+  ## Consequences
+  Atom inventory drift is release-relevant. Python and Rust atom surfaces must be compared from generated reports and parity corpus evidence before certification.
