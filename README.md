@@ -1,45 +1,42 @@
 # Tigrbl Workspace
 
-This repository is a mixed Python + Rust workspace for Tigrbl. It contains:
+Tigrbl is a mixed Python and Rust workspace for building schema-first REST and
+JSON-RPC APIs around SQLAlchemy models, typed validation, lifecycle hooks, and
+engine-backed execution.
 
-- Python core packages under `pkgs/core/`
-- Python engine packages under `pkgs/engines/`
-- Python application packages under `pkgs/apps/`
-- Non-authoritative examples under `examples/`
-- Rust crates under `crates/`
-- The Python?Rust runtime bridge under `pkgs/core/tigrbl_runtime/`
+The root `pyproject.toml` is a `uv` workspace with packaging disabled. The root
+`Cargo.toml` is a Rust workspace for the additive runtime substrate.
 
-The root `pyproject.toml` is configured as a uv workspace with packaging disabled. The root `Cargo.toml` is configured as a Rust workspace for the additive Rust substrate.
+## Workspace Layout
 
-## Repository status
+- `pkgs/core/` - 16 core Python packages, including the public `tigrbl`
+  distribution and its supporting framework layers.
+- `pkgs/engines/` - 24 Python engine packages.
+- `pkgs/apps/` - 2 application packages.
+- `crates/` - 11 Rust crates for the Rust runtime, bindings, and supporting
+  execution layers.
+- `examples/` - non-authoritative demos and verification helpers.
+- `.ssot/` - authoritative ADR, SPEC, registry, feature, claim, test, evidence,
+  boundary, and release governance data.
+- `docs/` - projected documentation, conformance records, governance policy, and
+  release evidence.
+- `tools/ci/` - repository policy and gate validation scripts.
+- `tools/conformance/` - spec snapshot and conformance generation helpers.
 
-This checkpoint completes the **post-promotion handoff** on top of the already-passed **Gate E promotion and release**.
+## Current Package Line
 
-The repository now records:
+The active workspace package line is declared in
+`pkgs/core/tigrbl/pyproject.toml`. At this checkpoint the public `tigrbl`
+package is on `0.3.30.dev1`.
 
-- stable release `0.3.18` frozen as governed release history under `docs/conformance/releases/0.3.18/`
-- promotion-source dev bundle `0.3.18.dev1` retained unchanged under `docs/conformance/dev/0.3.18.dev1/`
-- active working-tree version advanced to `0.3.19.dev1` at `pkgs/core/tigrbl/pyproject.toml`
-- a governed next-target planning document at `docs/conformance/NEXT_TARGETS.md`
-- next-target ADRs for the datatype/table program under `.ssot/adr/`
-- archived promotion-only WIP notes under `docs/notes/archive/2026/post-promotion-handoff/`
+Stable release evidence and historical conformance records live under
+`docs/conformance/releases/`. Development evidence for active targets lives
+under `docs/conformance/dev/`.
 
-Boundary note: the existing Tier 3 certification wording still applies only to the frozen stable release `0.3.18` within the declared current target boundary in `docs/governance/TARGET_BOUNDARY.md`. The active `0.3.19.dev1` line is a governed next-target planning line and is **not** described here as a new promoted Tier 3 release.
+## Canonical Documentation
 
-## Workspace layout
-
-- `pkgs/core/` - 15 core Python packages
-- `pkgs/engines/` - 22 Python engine packages
-- `pkgs/apps/` - 6 application packages
-- `examples/` - non-authoritative demos and verification helpers
-- `crates/` - 9 Rust crates
-- `docs/` - single authoritative documentation tree
-- `tools/ci/` - repository policy and gate validation scripts
-- `tools/conformance/` - spec snapshot generation helpers
-
-## Canonical documentation
-
-Read the repository in this order:
+Read the repository in this order when orienting on current scope, governance,
+and release status:
 
 1. `docs/conformance/CURRENT_TARGET.md`
 2. `docs/conformance/CURRENT_STATE.md`
@@ -48,9 +45,39 @@ Read the repository in this order:
 5. `docs/conformance/EVIDENCE_MODEL.md`
 6. `docs/conformance/IMPLEMENTATION_MAP.md`
 7. `docs/conformance/NEXT_STEPS.md`
-8. `docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md`
-9. `docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md`
+8. `docs/conformance/dev/`
+9. `docs/conformance/releases/`
 10. `docs/governance/DOC_POINTERS.md`
-11. `CONTRIBUTING.md`
-12. `CODE_OF_CONDUCT.md`
-13. `SECURITY.md`
+11. `docs/governance/TARGET_BOUNDARY.md`
+12. `CONTRIBUTING.md`
+13. `CODE_OF_CONDUCT.md`
+14. `SECURITY.md`
+
+## Governance Model
+
+The `.ssot/` tree is the source of truth for governed entities. Documentation
+under `docs/` should be treated as projected or explanatory unless a specific
+policy document declares otherwise.
+
+Do not use the root README as release certification evidence. Use the
+conformance and governance documents above, plus the SSOT registry, for
+auditable release status.
+
+## Development
+
+Install and work through the workspace with `uv`:
+
+```powershell
+uv sync --all-extras --dev
+```
+
+Common focused checks:
+
+```powershell
+uv run pytest pkgs/core/tigrbl_tests/tests
+uv run ssot validate .
+cargo test --workspace
+```
+
+Some Rust/native-runtime checks require a local Rust toolchain and a compatible
+Python interpreter for the PyO3 bridge.
