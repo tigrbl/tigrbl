@@ -69,21 +69,9 @@ class PackedPlanExecutor(ExecutorBase):
 
     @staticmethod
     def _is_persistence_exception(exc: BaseException) -> bool:
-        from tigrbl_typing.status.utils import (
-            DBAPIError,
-            IntegrityError,
-            OperationalError,
-            _is_asyncpg_constraint_error,
-        )
+        from tigrbl_typing.status.utils import is_persistence_exception
 
-        if _is_asyncpg_constraint_error(exc):
-            return True
-        candidates = tuple(
-            typ
-            for typ in (DBAPIError, IntegrityError, OperationalError)
-            if isinstance(typ, type)
-        )
-        return bool(candidates) and isinstance(exc, candidates)
+        return is_persistence_exception(exc)
 
     @staticmethod
     def _jsonrpc_error_payload(
@@ -890,6 +878,9 @@ class PackedPlanExecutor(ExecutorBase):
                         pass
                 status_code = int(getattr(std, "status_code", 500) or 500)
                 persistence_error = self._is_persistence_exception(exc)
+                if persistence_error:
+                    status_code = 500
+                    detail = "Internal error"
                 payload = self._jsonrpc_error_payload(
                     ctx,
                     status_code,
