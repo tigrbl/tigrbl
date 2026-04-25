@@ -1,0 +1,29 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2095"
+number: 2095
+slug: "package-buildability-and-importability-2"
+title: "Package buildability and importability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC requires a repo-wide check that every active package under `pkgs/` is syntactically valid and importable in CI."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Scope
+  
+  This SPEC requires a repo-wide check that every active package under `pkgs/` is syntactically valid and importable in CI.
+  
+  ## Requirements
+  
+  1. Discover `pyproject.toml` files under `pkgs/` and exclude archive artifacts.
+  2. Ensure package metadata includes a project name.
+  3. Compile package source and import expected module from source trees.
+  4. Fail for any package that cannot be imported.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1089"

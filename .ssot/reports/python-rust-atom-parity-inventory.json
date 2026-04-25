@@ -1,0 +1,668 @@
+{
+  "matched_count": 73,
+  "python_atom_count": 73,
+  "python_only_count": 0,
+  "rust_atom_count": 73,
+  "rust_only_count": 0,
+  "schema": "tigrbl.python_rust_atom_parity_inventory.v1",
+  "unit_count": 73,
+  "units": [
+    {
+      "domain": "dep",
+      "feature_id": "feat:atom-parity-dep-extra-001",
+      "id": "dep.extra",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/dep/extra.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/dep/extra.rs",
+      "state": "matched",
+      "subject": "extra"
+    },
+    {
+      "domain": "dep",
+      "feature_id": "feat:atom-parity-dep-param-resolver-001",
+      "id": "dep.param_resolver",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/dep/_param_resolver.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/dep/param_resolver.rs",
+      "state": "matched",
+      "subject": "param_resolver"
+    },
+    {
+      "domain": "dep",
+      "feature_id": "feat:atom-parity-dep-security-001",
+      "id": "dep.security",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/dep/security.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/dep/security.rs",
+      "state": "matched",
+      "subject": "security"
+    },
+    {
+      "domain": "dispatch",
+      "feature_id": "feat:atom-parity-dispatch-binding-match-001",
+      "id": "dispatch.binding_match",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/dispatch/binding_match.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/dispatch/binding_match.rs",
+      "state": "matched",
+      "subject": "binding_match"
+    },
+    {
+      "domain": "dispatch",
+      "feature_id": "feat:atom-parity-dispatch-binding-parse-001",
+      "id": "dispatch.binding_parse",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/dispatch/binding_parse.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/dispatch/binding_parse.rs",
+      "state": "matched",
+      "subject": "binding_parse"
+    },
+    {
+      "domain": "dispatch",
+      "feature_id": "feat:atom-parity-dispatch-input-normalize-001",
+      "id": "dispatch.input_normalize",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/dispatch/input_normalize.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/dispatch/input_normalize.rs",
+      "state": "matched",
+      "subject": "input_normalize"
+    },
+    {
+      "domain": "dispatch",
+      "feature_id": "feat:atom-parity-dispatch-op-resolve-001",
+      "id": "dispatch.op_resolve",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/dispatch/op_resolve.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/dispatch/op_resolve.rs",
+      "state": "matched",
+      "subject": "op_resolve"
+    },
+    {
+      "domain": "egress",
+      "feature_id": "feat:atom-parity-egress-asgi-send-001",
+      "id": "egress.asgi_send",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/asgi_send.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/egress/asgi_send.rs",
+      "state": "matched",
+      "subject": "asgi_send"
+    },
+    {
+      "domain": "egress",
+      "feature_id": "feat:atom-parity-egress-envelope-apply-001",
+      "id": "egress.envelope_apply",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/envelope_apply.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/egress/envelope_apply.rs",
+      "state": "matched",
+      "subject": "envelope_apply"
+    },
+    {
+      "domain": "egress",
+      "feature_id": "feat:atom-parity-egress-headers-apply-001",
+      "id": "egress.headers_apply",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/headers_apply.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/egress/headers_apply.rs",
+      "state": "matched",
+      "subject": "headers_apply"
+    },
+    {
+      "domain": "egress",
+      "feature_id": "feat:atom-parity-egress-http-finalize-001",
+      "id": "egress.http_finalize",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/http_finalize.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/egress/http_finalize.rs",
+      "state": "matched",
+      "subject": "http_finalize"
+    },
+    {
+      "domain": "egress",
+      "feature_id": "feat:atom-parity-egress-out-dump-001",
+      "id": "egress.out_dump",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/out_dump.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/egress/out_dump.rs",
+      "state": "matched",
+      "subject": "out_dump"
+    },
+    {
+      "domain": "egress",
+      "feature_id": "feat:atom-parity-egress-result-normalize-001",
+      "id": "egress.result_normalize",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/result_normalize.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/egress/result_normalize.rs",
+      "state": "matched",
+      "subject": "result_normalize"
+    },
+    {
+      "domain": "egress",
+      "feature_id": "feat:atom-parity-egress-to-transport-response-001",
+      "id": "egress.to_transport_response",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/egress/to_transport_response.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/egress/to_transport_response.rs",
+      "state": "matched",
+      "subject": "to_transport_response"
+    },
+    {
+      "domain": "emit",
+      "feature_id": "feat:atom-parity-emit-paired-post-001",
+      "id": "emit.paired_post",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/emit/paired_post.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/emit/paired_post.rs",
+      "state": "matched",
+      "subject": "paired_post"
+    },
+    {
+      "domain": "emit",
+      "feature_id": "feat:atom-parity-emit-paired-pre-001",
+      "id": "emit.paired_pre",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/emit/paired_pre.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/emit/paired_pre.rs",
+      "state": "matched",
+      "subject": "paired_pre"
+    },
+    {
+      "domain": "emit",
+      "feature_id": "feat:atom-parity-emit-readtime-alias-001",
+      "id": "emit.readtime_alias",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/emit/readtime_alias.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/emit/readtime_alias.rs",
+      "state": "matched",
+      "subject": "readtime_alias"
+    },
+    {
+      "domain": "err",
+      "feature_id": "feat:atom-parity-err-rollback-001",
+      "id": "err.rollback",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/err/rollback.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/err/rollback.rs",
+      "state": "matched",
+      "subject": "rollback"
+    },
+    {
+      "domain": "ingress",
+      "feature_id": "feat:atom-parity-ingress-ctx-init-001",
+      "id": "ingress.ctx_init",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/ingress/ctx_init.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/ingress/ctx_init.rs",
+      "state": "matched",
+      "subject": "ctx_init"
+    },
+    {
+      "domain": "ingress",
+      "feature_id": "feat:atom-parity-ingress-input-prepare-001",
+      "id": "ingress.input_prepare",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/ingress/input_prepare.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/ingress/input_prepare.rs",
+      "state": "matched",
+      "subject": "input_prepare"
+    },
+    {
+      "domain": "ingress",
+      "feature_id": "feat:atom-parity-ingress-transport-extract-001",
+      "id": "ingress.transport_extract",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/ingress/transport_extract.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/ingress/transport_extract.rs",
+      "state": "matched",
+      "subject": "transport_extract"
+    },
+    {
+      "domain": "out",
+      "feature_id": "feat:atom-parity-out-masking-001",
+      "id": "out.masking",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/out/masking.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/out/masking.rs",
+      "state": "matched",
+      "subject": "masking"
+    },
+    {
+      "domain": "refresh",
+      "feature_id": "feat:atom-parity-refresh-demand-001",
+      "id": "refresh.demand",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/refresh/demand.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/refresh/demand.rs",
+      "state": "matched",
+      "subject": "demand"
+    },
+    {
+      "domain": "resolve",
+      "feature_id": "feat:atom-parity-resolve-assemble-001",
+      "id": "resolve.assemble",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/resolve/assemble.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/resolve/assemble.rs",
+      "state": "matched",
+      "subject": "assemble"
+    },
+    {
+      "domain": "resolve",
+      "feature_id": "feat:atom-parity-resolve-paired-gen-001",
+      "id": "resolve.paired_gen",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/resolve/paired_gen.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/resolve/paired_gen.rs",
+      "state": "matched",
+      "subject": "paired_gen"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-error-to-transport-001",
+      "id": "response.error_to_transport",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/error_to_transport.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/error_to_transport.rs",
+      "state": "matched",
+      "subject": "error_to_transport"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-headers-from-payload-001",
+      "id": "response.headers_from_payload",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/headers_from_payload.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/headers_from_payload.rs",
+      "state": "matched",
+      "subject": "headers_from_payload"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-negotiate-001",
+      "id": "response.negotiate",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/negotiate.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/negotiate.rs",
+      "state": "matched",
+      "subject": "negotiate"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-negotiation-001",
+      "id": "response.negotiation",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/negotiation.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/negotiation.rs",
+      "state": "matched",
+      "subject": "negotiation"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-render-001",
+      "id": "response.render",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/render.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/render.rs",
+      "state": "matched",
+      "subject": "render"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-renderer-001",
+      "id": "response.renderer",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/renderer.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/renderer.rs",
+      "state": "matched",
+      "subject": "renderer"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-template-001",
+      "id": "response.template",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/template.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/template.rs",
+      "state": "matched",
+      "subject": "template"
+    },
+    {
+      "domain": "response",
+      "feature_id": "feat:atom-parity-response-templates-001",
+      "id": "response.templates",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/response/templates.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/response/templates.rs",
+      "state": "matched",
+      "subject": "templates"
+    },
+    {
+      "domain": "schema",
+      "feature_id": "feat:atom-parity-schema-collect-in-001",
+      "id": "schema.collect_in",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/schema/collect_in.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/schema/collect_in.rs",
+      "state": "matched",
+      "subject": "collect_in"
+    },
+    {
+      "domain": "schema",
+      "feature_id": "feat:atom-parity-schema-collect-out-001",
+      "id": "schema.collect_out",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/schema/collect_out.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/schema/collect_out.rs",
+      "state": "matched",
+      "subject": "collect_out"
+    },
+    {
+      "domain": "storage",
+      "feature_id": "feat:atom-parity-storage-to-stored-001",
+      "id": "storage.to_stored",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/storage/to_stored.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/storage/to_stored.rs",
+      "state": "matched",
+      "subject": "to_stored"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-commit-tx-001",
+      "id": "sys.commit_tx",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/commit_tx.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/commit_tx.rs",
+      "state": "matched",
+      "subject": "commit_tx"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-db-001",
+      "id": "sys.db",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/_db.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/db.rs",
+      "state": "matched",
+      "subject": "db"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-aggregate-001",
+      "id": "sys.handler_aggregate",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_aggregate.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_aggregate.rs",
+      "state": "matched",
+      "subject": "handler_aggregate"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-append-chunk-001",
+      "id": "sys.handler_append_chunk",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_append_chunk.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_append_chunk.rs",
+      "state": "matched",
+      "subject": "handler_append_chunk"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-create-001",
+      "id": "sys.handler_bulk_create",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_bulk_create.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_bulk_create.rs",
+      "state": "matched",
+      "subject": "handler_bulk_create"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-delete-001",
+      "id": "sys.handler_bulk_delete",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_bulk_delete.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_bulk_delete.rs",
+      "state": "matched",
+      "subject": "handler_bulk_delete"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-merge-001",
+      "id": "sys.handler_bulk_merge",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_bulk_merge.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_bulk_merge.rs",
+      "state": "matched",
+      "subject": "handler_bulk_merge"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-replace-001",
+      "id": "sys.handler_bulk_replace",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_bulk_replace.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_bulk_replace.rs",
+      "state": "matched",
+      "subject": "handler_bulk_replace"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-bulk-update-001",
+      "id": "sys.handler_bulk_update",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_bulk_update.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_bulk_update.rs",
+      "state": "matched",
+      "subject": "handler_bulk_update"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-checkpoint-001",
+      "id": "sys.handler_checkpoint",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_checkpoint.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_checkpoint.rs",
+      "state": "matched",
+      "subject": "handler_checkpoint"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-clear-001",
+      "id": "sys.handler_clear",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_clear.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_clear.rs",
+      "state": "matched",
+      "subject": "handler_clear"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-count-001",
+      "id": "sys.handler_count",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_count.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_count.rs",
+      "state": "matched",
+      "subject": "handler_count"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-create-001",
+      "id": "sys.handler_create",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_create.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_create.rs",
+      "state": "matched",
+      "subject": "handler_create"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-custom-001",
+      "id": "sys.handler_custom",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_custom.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_custom.rs",
+      "state": "matched",
+      "subject": "handler_custom"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-delete-001",
+      "id": "sys.handler_delete",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_delete.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_delete.rs",
+      "state": "matched",
+      "subject": "handler_delete"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-download-001",
+      "id": "sys.handler_download",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_download.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_download.rs",
+      "state": "matched",
+      "subject": "handler_download"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-exists-001",
+      "id": "sys.handler_exists",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_exists.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_exists.rs",
+      "state": "matched",
+      "subject": "handler_exists"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-group-by-001",
+      "id": "sys.handler_group_by",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_group_by.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_group_by.rs",
+      "state": "matched",
+      "subject": "handler_group_by"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-list-001",
+      "id": "sys.handler_list",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_list.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_list.rs",
+      "state": "matched",
+      "subject": "handler_list"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-merge-001",
+      "id": "sys.handler_merge",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_merge.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_merge.rs",
+      "state": "matched",
+      "subject": "handler_merge"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-noop-001",
+      "id": "sys.handler_noop",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_noop.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_noop.rs",
+      "state": "matched",
+      "subject": "handler_noop"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-persistence-001",
+      "id": "sys.handler_persistence",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_persistence.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_persistence.rs",
+      "state": "matched",
+      "subject": "handler_persistence"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-publish-001",
+      "id": "sys.handler_publish",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_publish.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_publish.rs",
+      "state": "matched",
+      "subject": "handler_publish"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-read-001",
+      "id": "sys.handler_read",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_read.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_read.rs",
+      "state": "matched",
+      "subject": "handler_read"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-replace-001",
+      "id": "sys.handler_replace",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_replace.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_replace.rs",
+      "state": "matched",
+      "subject": "handler_replace"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-send-datagram-001",
+      "id": "sys.handler_send_datagram",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_send_datagram.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_send_datagram.rs",
+      "state": "matched",
+      "subject": "handler_send_datagram"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-subscribe-001",
+      "id": "sys.handler_subscribe",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_subscribe.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_subscribe.rs",
+      "state": "matched",
+      "subject": "handler_subscribe"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-tail-001",
+      "id": "sys.handler_tail",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_tail.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_tail.rs",
+      "state": "matched",
+      "subject": "handler_tail"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-update-001",
+      "id": "sys.handler_update",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_update.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_update.rs",
+      "state": "matched",
+      "subject": "handler_update"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-handler-upload-001",
+      "id": "sys.handler_upload",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/handler_upload.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/handler_upload.rs",
+      "state": "matched",
+      "subject": "handler_upload"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-oltp-context-001",
+      "id": "sys.oltp_context",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/_oltp_context.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/oltp_context.rs",
+      "state": "matched",
+      "subject": "oltp_context"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-phase-db-001",
+      "id": "sys.phase_db",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/phase_db.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/phase_db.rs",
+      "state": "matched",
+      "subject": "phase_db"
+    },
+    {
+      "domain": "sys",
+      "feature_id": "feat:atom-parity-sys-start-tx-001",
+      "id": "sys.start_tx",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/sys/start_tx.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/sys/start_tx.rs",
+      "state": "matched",
+      "subject": "start_tx"
+    },
+    {
+      "domain": "wire",
+      "feature_id": "feat:atom-parity-wire-build-in-001",
+      "id": "wire.build_in",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/wire/build_in.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/wire/build_in.rs",
+      "state": "matched",
+      "subject": "build_in"
+    },
+    {
+      "domain": "wire",
+      "feature_id": "feat:atom-parity-wire-build-out-001",
+      "id": "wire.build_out",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/wire/build_out.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/wire/build_out.rs",
+      "state": "matched",
+      "subject": "build_out"
+    },
+    {
+      "domain": "wire",
+      "feature_id": "feat:atom-parity-wire-dump-001",
+      "id": "wire.dump",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/wire/dump.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/wire/dump.rs",
+      "state": "matched",
+      "subject": "dump"
+    },
+    {
+      "domain": "wire",
+      "feature_id": "feat:atom-parity-wire-validate-in-001",
+      "id": "wire.validate_in",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/wire/validate_in.py",
+      "rust_path": "crates/tigrbl_rs_atoms/src/wire/validate_in.rs",
+      "state": "matched",
+      "subject": "validate_in"
+    }
+  ]
+}

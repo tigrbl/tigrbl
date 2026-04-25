@@ -20,7 +20,7 @@ NEXT_TARGETS = REPO_ROOT / 'docs' / 'conformance' / 'NEXT_TARGETS.md'
 PACKAGE_PYPROJECT = REPO_ROOT / 'pkgs' / 'core' / 'tigrbl' / 'pyproject.toml'
 REGISTRY = REPO_ROOT / '.ssot' / 'registry.json'
 REQUIRED = {'HANDOFF-001', 'HANDOFF-002', 'NEXT-001', 'NEXT-002'}
-DEV_VERSION_RE = re.compile(r'^(\d+)\.(\d+)\.(\d+)\.dev(\d+)$')
+VERSION_RE = re.compile(r'^([0-9]+)\.([0-9]+)\.([0-9]+)(?:\.dev([0-9]+))?$')
 
 
 def _run(script: str) -> subprocess.CompletedProcess[str]:
@@ -41,16 +41,23 @@ def _claim_rows() -> dict[str, tuple[str, str]]:
     return rows
 
 
-def _dev_version_key(version: str) -> tuple[int, int, int, int]:
-    match = DEV_VERSION_RE.fullmatch(version)
-    assert match is not None, f'{version!r} is not a dev checkpoint version'
+def _version_key(version: str, *, require_dev: bool = False) -> tuple[int, int, int, int, int]:
+    match = VERSION_RE.fullmatch(version)
+    assert match is not None, f'{version!r} is not a semver-like version'
     major, minor, patch, dev = match.groups()
-    return int(major), int(minor), int(patch), int(dev)
+    if require_dev:
+        assert dev is not None, f'{version!r} is not a dev checkpoint version'
+    return int(major), int(minor), int(patch), 0 if dev is None else 1, int(dev or 0)
 
 
 def _registry_version() -> str:
     registry = json.loads(REGISTRY.read_text(encoding='utf-8'))
     return str(registry['repo']['version'])
+
+
+def _previous_stable_version() -> str:
+    major, minor, patch, *_ = _version_key(_registry_version(), require_dev=True)
+    return f'{major}.{minor}.{max(patch - 1, 0)}'
 
 
 def _package_version() -> str:
@@ -77,7 +84,8 @@ def test_current_docs_record_active_dev_line_and_frozen_release_history() -> Non
     current_state = CURRENT_STATE.read_text(encoding='utf-8')
     next_targets = NEXT_TARGETS.read_text(encoding='utf-8')
     governed_handoff_version = _registry_version()
+    stable_handoff_version = _previous_stable_version()
     assert f'active next-line dev bundle: `docs/conformance/dev/{governed_handoff_version}/`' in current_target
     assert f'The active working tree is now `{governed_handoff_version}`.' in current_state
-    assert 'Stable release `0.3.18` is frozen as current-boundary release history.' in next_targets
-    assert _dev_version_key(_package_version()) >= _dev_version_key(governed_handoff_version)
+    assert f'Stable release `{stable_handoff_version}` is frozen as current-boundary release history.' in next_targets
+    assert _version_key(_package_version()) >= _version_key(governed_handoff_version, require_dev=True)

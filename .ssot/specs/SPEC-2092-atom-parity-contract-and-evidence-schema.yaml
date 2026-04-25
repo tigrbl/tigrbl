@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2092"
+number: 2092
+slug: "atom-parity-contract-and-evidence-schema"
+title: "Atom Parity Contract And Evidence Schema"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the certifiable atom parity contract for Python and Rust atom surfaces."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted atom parity contract for Python/Rust full-suite certification."
+    at: "2026-04-25T00:14:14Z"
+references: []
+body: |-
+  ## Purpose
+  Define the certifiable atom parity contract for Python and Rust atom surfaces.
+  
+  ## Requirements
+  1. Each governed atom parity feature records Python and Rust lane applicability.
+  2. Matching atom pairs are compared by normalized domain.subject identity, input contract, output contract, side effects, error envelope, phase ordering, and trace label.
+  3. Missing or structurally one-runtime-only atoms are tracked with not_applicable or void lane metadata and a concrete reason.
+  4. Evidence artifacts must include inventory, feature mapping, parity results, and stale/missing surface detection.
+  5. A parity claim is not certifiable unless linked tests and evidence exist and pass.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1088"
+  - "adr:1020"

@@ -30,5 +30,4 @@ pub mod handler_update;
 pub mod handler_upload;
 pub mod oltp_context;
 pub mod phase_db;
-pub mod rollback;
 pub mod start_tx;

@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2093"
+number: 2093
+slug: "fully-paritable-suite-certification-boundary"
+title: "Fully Paritable Suite Certification Boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the boundary and certification rules for the fully paritable suite."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted full current-surface certification boundary for Python/Rust atom and KernelPlan parity."
+    at: "2026-04-25T00:14:22Z"
+references: []
+body: |-
+  ## Purpose
+  Define the boundary and certification rules for the fully paritable suite.
+  
+  ## Requirements
+  1. The suite boundary includes all generated atom parity feature rows, KernelPlan parity features, and parity inventory drift controls.
+  2. Boundary certification requires frozen scope, linked claims, linked tests, linked evidence, and release coverage for every feature.
+  3. Generated reports under .ssot/reports are evidence inputs, not independent authority.
+  4. Certification must fail closed for untracked atoms, stale evidence, missing reciprocal links, or runtime lane gaps.
+  5. Publication must not proceed until release certification succeeds.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1088"
+  - "adr:1082"

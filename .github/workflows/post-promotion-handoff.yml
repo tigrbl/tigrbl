@@ -25,7 +25,28 @@ jobs:
           uv sync --all-groups --no-install-workspace --frozen
 
       - name: Validate Post-promotion handoff
+        id: validate-post-promotion-handoff
+        continue-on-error: true
         run: uv run --no-sync python tools/ci/validate_post_promotion_handoff.py
 
+      - name: Auto-fix post-promotion handoff drift
+        if: ${{ steps.validate-post-promotion-handoff.outcome == 'failure' }}
+        run: uv run --no-sync python tools/ci/fix_post_promotion_handoff.py
+
+      - name: Revalidate Post-promotion handoff
+        if: ${{ steps.validate-post-promotion-handoff.outcome == 'failure' }}
+        id: revalidate-post-promotion-handoff
+        continue-on-error: true
+        run: uv run --no-sync python tools/ci/validate_post_promotion_handoff.py
+
+      - name: Fail when handoff validation stays broken
+        if: ${{ steps.validate-post-promotion-handoff.outcome == 'failure' && steps.revalidate-post-promotion-handoff.outcome == 'failure' }}
+        run: |
+          echo "Post-promotion handoff validation failed and auto-fix did not recover."
+          exit 1
+
       - name: Run Post-promotion handoff validator tests
+        if: >-
+          ${{ steps.validate-post-promotion-handoff.outcome == 'success' ||
+              steps.revalidate-post-promotion-handoff.outcome == 'success' }}
         run: uv run --no-sync python -m pytest -q tools/ci/tests/test_post_promotion_handoff.py -p no:cacheprovider

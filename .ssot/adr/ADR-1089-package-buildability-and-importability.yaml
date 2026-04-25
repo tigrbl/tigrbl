@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1089"
+number: 1089
+slug: "package-buildability-and-importability"
+title: "Package buildability and importability"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Packaging and test surfaces should continue to treat the package topology as an auditable boundary."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Context
+  
+  Packaging and test surfaces should continue to treat the package topology as an auditable boundary.
+  This ADR standardizes that package-level build/import checks are part of governed quality.
+  
+  ## Decision
+  
+  The repo shall maintain at least one package buildability and importability invariant:
+  
+  - each package under `pkgs/` (excluding archive artifacts) must be importable from source roots used by CI,
+  - basic package metadata validity should be verifiable without private runtime side effects,
+  - and verification must be represented with feature/test/claim/evidence rows for auditability.
+  
+  ## Consequences
+  
+  A dedicated CI test file shall check package importability and lightweight syntax viability,
+  and SSOT rows for ADR, SPEC, feature, claim, test, and evidence will trace this requirement.

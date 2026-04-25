@@ -21,13 +21,8 @@ DOC_POINTERS = ROOT / 'docs' / 'governance' / 'DOC_POINTERS.md'
 VERSIONING = ROOT / 'docs' / 'governance' / 'VERSIONING_POLICY.md'
 PACKAGE_PYPROJECT = ROOT / 'pkgs' / 'core' / 'tigrbl' / 'pyproject.toml'
 CLAIM_ROW_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|', re.MULTILINE)
-DEV_VERSION_RE = re.compile(r'^(\d+)\.(\d+)\.(\d+)\.dev(\d+)$')
-REQUIRED_PATHS = [
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'BUILD_NOTES.md',
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'CLAIMS.md',
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'EVIDENCE_INDEX.md',
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'gate-results' / 'README.md',
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.19.dev1' / 'gate-results' / 'post-promotion-handoff.md',
+VERSION_RE = re.compile(r'^([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:\\.dev([0-9]+))?$')
+STATIC_REQUIRED_PATHS = [
     ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'post-promotion-handoff' / 'README.md',
     ROOT / 'docs' / 'notes' / 'archive' / '2026' / 'post-promotion-handoff' / 'README.md',
     ROOT / '.ssot' / 'adr' / 'ADR-1043-post-promotion-release-history-freeze.yaml',
@@ -38,17 +33,39 @@ REQUIRED_PATHS = [
 ]
 
 
-def _dev_version_key(version: str) -> tuple[int, int, int, int] | None:
-    match = DEV_VERSION_RE.fullmatch(version)
+def _version_key(version: str, *, require_dev: bool = False) -> tuple[int, int, int, int, int] | None:
+    match = VERSION_RE.fullmatch(version)
     if not match:
         return None
     major, minor, patch, dev = match.groups()
-    return int(major), int(minor), int(patch), int(dev)
+    if require_dev and dev is None:
+        return None
+    return int(major), int(minor), int(patch), 0 if dev is None else 1, int(dev or 0)
+
+
+def _required_paths(version: str) -> list[Path]:
+    dev_root = ROOT / 'docs' / 'conformance' / 'dev' / version
+    return [
+        dev_root / 'BUILD_NOTES.md',
+        dev_root / 'CLAIMS.md',
+        dev_root / 'EVIDENCE_INDEX.md',
+        dev_root / 'gate-results' / 'README.md',
+        dev_root / 'gate-results' / 'post-promotion-handoff.md',
+        *STATIC_REQUIRED_PATHS,
+    ]
 
 
 def _registry_version() -> str:
     registry = json.loads(REGISTRY.read_text(encoding='utf-8'))
     return str(registry.get('repo', {}).get('version', ''))
+
+
+def _previous_stable_version(governed_version: str) -> str:
+    version = _version_key(governed_version, require_dev=True)
+    if version is None:
+        return ''
+    major, minor, patch, *_ = version
+    return f'{major}.{minor}.{max(patch - 1, 0)}'
 
 
 def _package_version() -> str:
@@ -70,6 +87,7 @@ def main() -> None:
     errors: list[str] = []
     rows = parse_claim_rows()
     governed_dev_version = _registry_version()
+    stable_release_version = _previous_stable_version(governed_dev_version)
     package_version = _package_version()
 
     required_status = {
@@ -97,7 +115,7 @@ def main() -> None:
         errors.append('CURRENT_TARGET.md must record the active next-line dev bundle')
     if f'The active working tree is now `{governed_dev_version}`.' not in current_state_text:
         errors.append(f'CURRENT_STATE.md must record the governed handoff version {governed_dev_version}')
-    if 'Stable release `0.3.18` is frozen as current-boundary release history.' not in next_targets_text:
+    if f'Stable release `{stable_release_version}` is frozen as current-boundary release history.' not in next_targets_text:
         errors.append('NEXT_TARGETS.md must record frozen stable release history')
     if '`DataTypeSpec`' not in next_targets_text or '`TypeAdapter`' not in next_targets_text or '`EngineDatatypeBridge`' not in next_targets_text:
         errors.append('NEXT_TARGETS.md must record the datatype semantic-center and engine bridge scope')
@@ -107,19 +125,19 @@ def main() -> None:
         errors.append('DOC_POINTERS.md must include the active dev bundle path')
     if f'Post-promotion handoff has now opened the next governed development line as `{governed_dev_version}`.' not in versioning_text:
         errors.append('VERSIONING_POLICY.md must record the active next governed line')
-    governed_key = _dev_version_key(governed_dev_version)
-    package_key = _dev_version_key(package_version)
+    governed_key = _version_key(governed_dev_version, require_dev=True)
+    package_key = _version_key(package_version)
     if governed_key is None:
         errors.append(f'.ssot/registry.json repo.version must be a dev checkpoint version, got {governed_dev_version!r}')
     elif package_key is None:
-        errors.append(f'pkgs/core/tigrbl/pyproject.toml must record a dev checkpoint version, got {package_version!r}')
+        errors.append(f'pkgs/core/tigrbl/pyproject.toml must record a valid semver, got {package_version!r}')
     elif package_key < governed_key:
         errors.append(
             'pkgs/core/tigrbl/pyproject.toml must not lag behind '
             f'.ssot/registry.json repo.version {governed_dev_version}; got {package_version}'
         )
 
-    for path in REQUIRED_PATHS:
+    for path in _required_paths(governed_dev_version):
         if not path.exists():
             errors.append(f'missing Post-promotion handoff required path: {path.relative_to(ROOT)}')
 

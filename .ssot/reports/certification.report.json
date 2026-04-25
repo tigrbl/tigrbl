@@ -2,13 +2,73 @@
   "passed": true,
   "registry_path": ".ssot/registry.json",
   "release": {
-    "release_id": "rel:authn-provider-integration-status-20260424",
+    "release_id": "rel:python-rust-fully-paritable-suite-001",
     "passed": true,
     "failures": [],
     "warnings": [],
     "claims": [
       {
-        "claim_id": "clm:authn-provider-integration-status-20260424",
+        "claim_id": "clm:python-rust-atom-inventory-complete",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:python-rust-atom-parity-corpus",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:python-rust-kernelplan-parity",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:python-rust-parity-boundary-closed",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:python-rust-parity-evidence-fresh",
         "passed": true,
         "failures": [],
         "checks": {
@@ -25,48 +85,137 @@
     ],
     "evidence": [
       {
-        "evidence_id": "evd:authn-provider-integration-status-20260424",
+        "evidence_id": "evd:python-rust-atom-parity-inventory",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:python-rust-atom-parity-results",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:python-rust-kernelplan-parity-results",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:python-rust-parity-certification-map",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:python-rust-parity-feature-map",
         "passed": true,
         "failures": []
       }
     ],
     "profiles": [],
     "boundary": {
-      "id": "bnd:authn-provider-integration-status-001",
+      "id": "bnd:python-rust-fully-paritable-suite-001",
       "profile_ids": [],
       "resolved_feature_ids": [
-        "feat:authn-provider-missing-credentials-status-001",
-        "feat:auth-failure-projection-parity-001",
-        "feat:anon-access-rest-status-parity-001",
-        "feat:httpbearer-security-dependency-001"
+        "feat:atom-parity-dep-extra-001",
+        "feat:atom-parity-dep-param-resolver-001",
+        "feat:atom-parity-dep-security-001",
+        "feat:atom-parity-dispatch-binding-match-001",
+        "feat:atom-parity-dispatch-binding-parse-001",
+        "feat:atom-parity-dispatch-input-normalize-001",
+        "feat:atom-parity-dispatch-op-resolve-001",
+        "feat:atom-parity-egress-asgi-send-001",
+        "feat:atom-parity-egress-envelope-apply-001",
+        "feat:atom-parity-egress-headers-apply-001",
+        "feat:atom-parity-egress-http-finalize-001",
+        "feat:atom-parity-egress-out-dump-001",
+        "feat:atom-parity-egress-result-normalize-001",
+        "feat:atom-parity-egress-to-transport-response-001",
+        "feat:atom-parity-emit-paired-post-001",
+        "feat:atom-parity-emit-paired-pre-001",
+        "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-ingress-ctx-init-001",
+        "feat:atom-parity-ingress-input-prepare-001",
+        "feat:atom-parity-ingress-transport-extract-001",
+        "feat:atom-parity-out-masking-001",
+        "feat:atom-parity-refresh-demand-001",
+        "feat:atom-parity-resolve-assemble-001",
+        "feat:atom-parity-resolve-paired-gen-001",
+        "feat:atom-parity-response-error-to-transport-001",
+        "feat:atom-parity-response-headers-from-payload-001",
+        "feat:atom-parity-response-negotiate-001",
+        "feat:atom-parity-response-negotiation-001",
+        "feat:atom-parity-response-render-001",
+        "feat:atom-parity-response-renderer-001",
+        "feat:atom-parity-response-template-001",
+        "feat:atom-parity-response-templates-001",
+        "feat:atom-parity-schema-collect-in-001",
+        "feat:atom-parity-schema-collect-out-001",
+        "feat:atom-parity-storage-to-stored-001",
+        "feat:atom-parity-sys-commit-tx-001",
+        "feat:atom-parity-sys-db-001",
+        "feat:atom-parity-sys-handler-aggregate-001",
+        "feat:atom-parity-sys-handler-append-chunk-001",
+        "feat:atom-parity-sys-handler-bulk-create-001",
+        "feat:atom-parity-sys-handler-bulk-delete-001",
+        "feat:atom-parity-sys-handler-bulk-merge-001",
+        "feat:atom-parity-sys-handler-bulk-replace-001",
+        "feat:atom-parity-sys-handler-bulk-update-001",
+        "feat:atom-parity-sys-handler-checkpoint-001",
+        "feat:atom-parity-sys-handler-clear-001",
+        "feat:atom-parity-sys-handler-count-001",
+        "feat:atom-parity-sys-handler-create-001",
+        "feat:atom-parity-sys-handler-custom-001",
+        "feat:atom-parity-sys-handler-delete-001",
+        "feat:atom-parity-sys-handler-download-001",
+        "feat:atom-parity-sys-handler-exists-001",
+        "feat:atom-parity-sys-handler-group-by-001",
+        "feat:atom-parity-sys-handler-list-001",
+        "feat:atom-parity-sys-handler-merge-001",
+        "feat:atom-parity-sys-handler-noop-001",
+        "feat:atom-parity-sys-handler-persistence-001",
+        "feat:atom-parity-sys-handler-publish-001",
+        "feat:atom-parity-sys-handler-read-001",
+        "feat:atom-parity-sys-handler-replace-001",
+        "feat:atom-parity-sys-handler-send-datagram-001",
+        "feat:atom-parity-sys-handler-subscribe-001",
+        "feat:atom-parity-sys-handler-tail-001",
+        "feat:atom-parity-sys-handler-update-001",
+        "feat:atom-parity-sys-handler-upload-001",
+        "feat:atom-parity-sys-oltp-context-001",
+        "feat:atom-parity-sys-phase-db-001",
+        "feat:atom-parity-sys-start-tx-001",
+        "feat:atom-parity-wire-build-in-001",
+        "feat:atom-parity-wire-build-out-001",
+        "feat:atom-parity-wire-dump-001",
+        "feat:atom-parity-wire-validate-in-001"
       ]
     },
     "summary": {
-      "boundary_id": "bnd:authn-provider-integration-status-001",
-      "boundary_feature_count": 4,
+      "boundary_id": "bnd:python-rust-fully-paritable-suite-001",
+      "boundary_feature_count": 73,
       "boundary_profile_count": 0,
-      "release_claim_count": 1,
-      "release_evidence_count": 1
+      "release_claim_count": 5,
+      "release_evidence_count": 5
     }
   },
   "boundary_scope": {
-    "boundary_id": "bnd:authn-provider-integration-status-001",
+    "boundary_id": "bnd:python-rust-fully-paritable-suite-001",
     "profile_ids": [],
     "feature_ids": []
   },
   "summary": {
     "counts": {
-      "features": 384,
+      "features": 480,
       "profiles": 0,
-      "tests": 562,
-      "claims": 168,
-      "evidence": 205,
+      "tests": 591,
+      "claims": 197,
+      "evidence": 234,
       "issues": 1,
       "risks": 0,
-      "boundaries": 10,
-      "releases": 7,
-      "adrs": 94,
-      "specs": 91
+      "boundaries": 12,
+      "releases": 8,
+      "adrs": 101,
+      "specs": 100
     },
     "profile_status": {
       "passing": 0,
