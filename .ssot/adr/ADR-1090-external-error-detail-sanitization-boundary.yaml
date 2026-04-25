@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1090"
+number: 1090
+slug: "external-error-detail-sanitization-boundary"
+title: "External Error Detail Sanitization Boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags:
+  - "security"
+  - "errors"
+  - "transport"
+summary: "Persistence, ORM, DBAPI, SQL text, table names, bound parameters, and database driver details must never be exposed through external transport responses."
+supersedes: []
+superseded_by: []
+status_notes: []
+references:
+  - "spc:2012"
+body: |-
+  ## Decision
+
+  1. External HTTP and JSON-RPC responses MUST expose only protocol-native status projections and sanitized error bodies.
+  2. Persistence-layer exception details are internal diagnostics. ORM class names, DBAPI driver names, SQL text, table names, constraint text, and bound parameters MUST NOT appear in client-visible response bodies.
+  3. HTTP responses MUST use the canonical HTTP status code and a generic sanitized detail for persistence failures.
+  4. JSON-RPC responses MUST use the canonical JSON-RPC error code/message mapping and sanitized error data for persistence failures.
+  5. Internal logging, tracing, and evidence may retain diagnostic detail, but those details are outside the external response boundary.
+
+  ## Context
+
+  Duplicate-key and other persistence failures can contain database driver text, SQL statements, table names, constraint names, and bound values. Exposing that material in REST or JSON-RPC responses leaks implementation details and can disclose tenant, schema, or data-shape information to callers.
+
+  ## Consequences
+
+  - Transport projections remain protocol-native while diagnostic detail stays internal.
+  - Tests must assert forbidden persistence tokens are absent from external response payloads.
+  - REST and JSON-RPC sanitization are governed together under the status/auth/error parity surface.

@@ -1,0 +1,41 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2096"
+number: 2096
+slug: "external-error-detail-sanitization-contract"
+title: "External Error Detail Sanitization Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags:
+  - "security"
+  - "errors"
+  - "transport"
+summary: "HTTP and JSON-RPC error responses must sanitize persistence-layer exception details and expose only protocol-native status projections."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+
+  1. A persistence-layer exception crossing an external transport boundary MUST be treated as an internal server error unless a canonical non-sensitive outcome is already available.
+  2. HTTP projections MUST return a protocol-native HTTP error status and a sanitized body such as `{"detail": "Internal error"}`.
+  3. JSON-RPC projections MUST return a protocol-native JSON-RPC error envelope with the mapped status code/message and sanitized `error.data`.
+  4. External response bodies MUST NOT contain ORM class names, DBAPI driver names, SQL text, table names, constraint messages, parameter names, parameter values, database URLs, file paths, or raw exception repr text.
+  5. Validation failures may expose field-level validation facts only when those facts are derived from request validation, not from database or persistence exception text.
+
+  ## Integration Coverage
+
+  - `pkgs/core/tigrbl_atoms/tests/test_response_atoms.py`
+  - `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`
+
+  ## Traceability
+
+  - ADRs: `adr:1090`, `adr:1032`, `adr:1014`
+  - Related specs: `spc:2012`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1090"
+  - "adr:1032"
+  - "adr:1014"

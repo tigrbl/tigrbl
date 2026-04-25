@@ -227,6 +227,16 @@ def test_jsonrpc_persistence_exception_payload_is_sanitized() -> None:
         assert forbidden not in text
 
 
+def test_packed_executor_http_persistence_exception_payload_is_sanitized() -> None:
+    raw = IntegrityError(
+        "INSERT INTO secret_table (label) VALUES (?)",
+        ("secret-bound-value",),
+        Exception("sqlite3 raw failure"),
+    )
+
+    assert PackedPlanExecutor._is_persistence_exception(raw)
+
+
 def test_mount_lens_uses_latest_openrpc_path_by_default() -> None:
     app, _ = _build_app()
     app.mount_openrpc(path="/schema/openrpc.json")

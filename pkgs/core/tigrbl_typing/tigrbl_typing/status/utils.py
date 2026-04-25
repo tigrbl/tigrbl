@@ -44,6 +44,17 @@ def _is_asyncpg_constraint_error(exc: BaseException) -> bool:
     )
 
 
+def is_persistence_exception(exc: BaseException) -> bool:
+    if _is_asyncpg_constraint_error(exc):
+        return True
+    candidates = tuple(
+        typ
+        for typ in (DBAPIError, IntegrityError, OperationalError)
+        if isinstance(typ, type)
+    )
+    return bool(candidates) and isinstance(exc, candidates)
+
+
 def _limit(s: str, n: int = 4000) -> str:
     return s if len(s) <= n else s[: n - 3] + "..."
 
@@ -105,6 +116,7 @@ __all__ = [
     "OperationalError",
     "NoResultFound",
     "_is_asyncpg_constraint_error",
+    "is_persistence_exception",
     "_limit",
     "_stringify_exc",
     "_format_validation",

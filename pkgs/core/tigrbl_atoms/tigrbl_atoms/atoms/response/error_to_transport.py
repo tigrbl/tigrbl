@@ -8,6 +8,7 @@ from typing import Any, Mapping
 
 from ... import events as _ev
 from tigrbl_typing.status import create_standardized_error
+from tigrbl_typing.status.utils import is_persistence_exception
 
 ANCHOR = _ev.OUT_DUMP
 
@@ -76,6 +77,9 @@ async def _run(obj: object | None, ctx: Any) -> None:
     std = create_standardized_error(err)
     detail = std.detail if getattr(std, "detail", None) not in (None, "") else str(std)
     status_code = int(getattr(std, "status_code", 500) or 500)
+    if is_persistence_exception(err):
+        status_code = 500
+        detail = "Internal error"
 
     temp = getattr(ctx, "temp", None)
     if not isinstance(temp, dict):

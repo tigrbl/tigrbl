@@ -20107,6 +20107,48 @@
         "tst:tools-ci-tests-test_packages_buildable_importable.py"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:external-error-detail-sanitization-001",
+      "title": "External persistence error detail sanitization",
+      "description": "Sanitize persistence-layer exceptions at external REST and JSON-RPC transport boundaries so client responses expose only protocol-native status projections and never expose ORM, DBAPI, SQL text, table names, or bound parameters.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "external-error-sanitization",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2012",
+        "spc:2096",
+        "spc:2090"
+      ],
+      "claim_ids": [
+        "clm:external-error-detail-sanitization-001",
+        "clm:transport-parity-contract-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:response-error-to-transport-persistence-sanitized",
+        "tst:jsonrpc-persistence-exception-sanitized",
+        "tst:packed-executor-http-persistence-classification",
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      }
     }
   ],
   "tests": [
@@ -33500,11 +33542,13 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
       "feature_ids": [
-        "feat:jsonrpc-persistence-error-sanitization-001"
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:external-error-detail-sanitization-001"
       ],
       "claim_ids": [
         "clm:rpc-001",
-        "clm:transport-parity-contract-001"
+        "clm:transport-parity-contract-001",
+        "clm:external-error-detail-sanitization-001"
       ],
       "evidence_ids": [
         "evd:jsonrpc-persistence-exception-sanitized"
@@ -34077,7 +34121,8 @@
         "feat:python-asgi-boundary-evidence-001",
         "feat:rust-asgi-boundary-evidence-001",
         "feat:python-runtime-2x-target-comparison-001",
-        "feat:rust-runtime-2x-python-target-001"
+        "feat:rust-runtime-2x-python-target-001",
+        "feat:external-error-detail-sanitization-001"
       ],
       "claim_ids": [
         "clm:runtime-parity-lane-governance-001"
@@ -34580,6 +34625,40 @@
       ],
       "evidence_ids": [
         "evd:pkg-buildability-importability-001"
+      ]
+    },
+    {
+      "id": "tst:response-error-to-transport-persistence-sanitized",
+      "title": "REST transport persistence exception responses are sanitized",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_atoms/tests/test_response_atoms.py",
+      "feature_ids": [
+        "feat:external-error-detail-sanitization-001"
+      ],
+      "claim_ids": [
+        "clm:external-error-detail-sanitization-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:response-error-to-transport-persistence-sanitized"
+      ]
+    },
+    {
+      "id": "tst:packed-executor-http-persistence-classification",
+      "title": "Packed executor persistence exception classification guards REST sanitization",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:external-error-detail-sanitization-001"
+      ],
+      "claim_ids": [
+        "clm:external-error-detail-sanitization-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:packed-executor-http-persistence-classification"
       ]
     }
   ],
@@ -37965,17 +38044,22 @@
       "feature_ids": [
         "feat:transport-parity-contract-001",
         "feat:jsonrpc-input-validation-before-persistence-001",
-        "feat:jsonrpc-persistence-error-sanitization-001"
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:external-error-detail-sanitization-001"
       ],
       "test_ids": [
         "tst:transport-dispatch-parity-contract",
         "tst:jsonrpc-create-missing-required-fields-invalid-params",
-        "tst:jsonrpc-persistence-exception-sanitized"
+        "tst:jsonrpc-persistence-exception-sanitized",
+        "tst:response-error-to-transport-persistence-sanitized",
+        "tst:packed-executor-http-persistence-classification"
       ],
       "evidence_ids": [
         "evd:transport-dispatch-parity-test",
         "evd:jsonrpc-create-missing-required-fields-invalid-params",
-        "evd:jsonrpc-persistence-exception-sanitized"
+        "evd:jsonrpc-persistence-exception-sanitized",
+        "evd:response-error-to-transport-persistence-sanitized",
+        "evd:packed-executor-http-persistence-classification"
       ]
     },
     {
@@ -39544,7 +39628,8 @@
         "feat:python-asgi-boundary-evidence-001",
         "feat:rust-asgi-boundary-evidence-001",
         "feat:python-runtime-2x-target-comparison-001",
-        "feat:rust-runtime-2x-python-target-001"
+        "feat:rust-runtime-2x-python-target-001",
+        "feat:external-error-detail-sanitization-001"
       ],
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator"
@@ -40053,6 +40138,27 @@
       ],
       "evidence_ids": [
         "evd:pkg-buildability-importability-001"
+      ]
+    },
+    {
+      "id": "clm:external-error-detail-sanitization-001",
+      "title": "External persistence error details are not exposed",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "security-conformance",
+      "description": "HTTP and JSON-RPC transport error responses sanitize persistence-layer exceptions and do not expose ORM, DBAPI, SQL text, table names, or bound parameters externally.",
+      "feature_ids": [
+        "feat:external-error-detail-sanitization-001"
+      ],
+      "test_ids": [
+        "tst:response-error-to-transport-persistence-sanitized",
+        "tst:jsonrpc-persistence-exception-sanitized",
+        "tst:packed-executor-http-persistence-classification"
+      ],
+      "evidence_ids": [
+        "evd:response-error-to-transport-persistence-sanitized",
+        "evd:jsonrpc-persistence-exception-sanitized",
+        "evd:packed-executor-http-persistence-classification"
       ]
     }
   ],
@@ -44277,7 +44383,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
       "claim_ids": [
         "clm:rpc-001",
-        "clm:transport-parity-contract-001"
+        "clm:transport-parity-contract-001",
+        "clm:external-error-detail-sanitization-001"
       ],
       "test_ids": [
         "tst:jsonrpc-persistence-exception-sanitized"
@@ -44744,6 +44851,36 @@
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_packages_buildable_importable.py"
+      ]
+    },
+    {
+      "id": "evd:response-error-to-transport-persistence-sanitized",
+      "title": "Evidence for REST transport persistence exception sanitization",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_atoms/tests/test_response_atoms.py",
+      "claim_ids": [
+        "clm:external-error-detail-sanitization-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:response-error-to-transport-persistence-sanitized"
+      ]
+    },
+    {
+      "id": "evd:packed-executor-http-persistence-classification",
+      "title": "Evidence for packed executor persistence exception classification",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "claim_ids": [
+        "clm:external-error-detail-sanitization-001",
+        "clm:transport-parity-contract-001"
+      ],
+      "test_ids": [
+        "tst:packed-executor-http-persistence-classification"
       ]
     }
   ],
@@ -46399,7 +46536,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1034",
@@ -46416,7 +46553,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1035",
@@ -46456,7 +46593,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1037",
@@ -46473,7 +46610,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1038",
@@ -46572,7 +46709,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1043",
@@ -46589,7 +46726,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1044",
@@ -46606,7 +46743,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "adr:1045",
@@ -47437,6 +47574,26 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1090",
+      "number": 1090,
+      "slug": "external-error-detail-sanitization-boundary",
+      "title": "External Error Detail Sanitization Boundary",
+      "path": ".ssot/adr/ADR-1090-external-error-detail-sanitization-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.3.19.dev1",
+      "content_sha256": "1a8f8432a66633601c553ada62c5e847d47d4fa3474a3e5d66c0aefa120ce84d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "references": [
+        "spc:2012"
+      ],
+      "summary": "Persistence, ORM, DBAPI, SQL text, table names, bound parameters, and database driver details must never be exposed through external transport responses."
     }
   ],
   "specs": [
@@ -47822,7 +47979,7 @@
       "superseded_by": [],
       "status_notes": [],
       "adr_ids": [],
-      "summary": "\ufeff"
+      "summary": "﻿"
     },
     {
       "id": "spc:2002",
@@ -49811,6 +49968,29 @@
       "adr_ids": [
         "adr:1089"
       ]
+    },
+    {
+      "id": "spc:2096",
+      "number": 2096,
+      "slug": "external-error-detail-sanitization-contract",
+      "title": "External Error Detail Sanitization Contract",
+      "path": ".ssot/specs/SPEC-2096-external-error-detail-sanitization-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.3.19.dev1",
+      "content_sha256": "d8ed478d6f06ad5346a6e2d59d68c37d99bdb17038b88f5738fedd3307dec394",
+      "kind": "local-policy",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "adr_ids": [
+        "adr:1090",
+        "adr:1032",
+        "adr:1014"
+      ],
+      "summary": "HTTP and JSON-RPC error responses must sanitize persistence-layer exception details and expose only protocol-native status projections."
     }
   ],
   "profiles": []

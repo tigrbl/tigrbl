@@ -3,6 +3,8 @@ from __future__ import annotations
 import asyncio
 from types import SimpleNamespace
 
+from sqlalchemy.exc import IntegrityError
+
 from tigrbl_atoms.atoms.response import REGISTRY
 from tigrbl_atoms.atoms.response import (
     error_to_transport,
@@ -105,6 +107,32 @@ def test_error_to_transport_writes_standard_error_payload() -> None:
     assert tr["status_code"] == 400
     assert tr["headers"]["content-type"] == "application/json"
     assert tr["body"]["detail"] == "<class 'ValueError'>: boom"
+
+
+def test_error_to_transport_sanitizes_persistence_errors() -> None:
+    raw = IntegrityError(
+        "INSERT INTO secret_table (name) VALUES (?)",
+        ("secret-bound-value",),
+        Exception("sqlite3 raw failure"),
+    )
+    ctx = SimpleNamespace(error=raw, temp={})
+
+    asyncio.run(error_to_transport._run(None, ctx))
+
+    tr = ctx.temp["egress"]["transport_response"]
+    text = str(tr).lower()
+    assert tr["status_code"] == 500
+    assert tr["headers"]["content-type"] == "application/json"
+    assert tr["body"] == {"detail": "Internal error"}
+    for forbidden in (
+        "sqlalchemy",
+        "sqlite3",
+        "integrityerror",
+        "insert into",
+        "secret_table",
+        "secret-bound-value",
+    ):
+        assert forbidden not in text
 
 
 def test_template_run_sets_html_result_and_media_type(monkeypatch) -> None:
