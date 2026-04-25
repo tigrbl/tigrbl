@@ -1,7 +1,7 @@
 [project]
 name = "tigrbl-runtime"
-version = "0.1.11.dev2"
-description = "Runtime pipeline for Tigrbl with an optional modular Rust execution bridge."
+version = "0.1.11"
+description = "Runtime pipeline and Rust execution bridge for Tigrbl."
 license = "Apache-2.0"
 readme = "README.md"
 repository = "http://github.com/swarmauri/swarmauri-sdk"
@@ -27,9 +27,6 @@ dependencies = [
 ]
 keywords = ["tigrbl", "sdk", "standards", "framework"]
 
-[project.optional-dependencies]
-rust = []
-
 [tool.uv.sources]
 "tigrbl-typing" = { workspace = true }
 "tigrbl-kernel" = { workspace = true }
@@ -38,13 +35,13 @@ rust = []
 "tigrbl-core" = { workspace = true }
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
 
-[tool.poetry]
-packages = [
-    { include = "tigrbl_runtime" },
-]
+[tool.maturin]
+module-name = "tigrbl_runtime.rust._rust"
+python-source = "."
+features = ["pyo3/extension-module"]
 
 [dependency-groups]
 dev = [
