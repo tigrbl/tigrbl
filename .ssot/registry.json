@@ -44925,6 +44925,74 @@
       ],
       "risk_ids": [],
       "release_blocking": true
+    },
+    {
+      "id": "iss:openapi-generated-operations-missing-auth-security-001",
+      "title": "OpenAPI generated operations do not declare authentication",
+      "status": "open",
+      "severity": "high",
+      "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, /openapi.json exposes generated CRUD operations with components.securitySchemes absent and zero operations carrying security requirements. Runtime and contract policy must agree: protected operations should emit security schemes and requirements; public operations should be explicitly limited and documented.",
+      "plan": {
+        "horizon": "current",
+        "slot": "security-contract-auth-metadata"
+      },
+      "feature_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [],
+      "risk_ids": [],
+      "release_blocking": true
+    },
+    {
+      "id": "iss:openrpc-generated-methods-missing-auth-security-001",
+      "title": "OpenRPC generated methods do not declare authentication",
+      "status": "open",
+      "severity": "high",
+      "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, /openrpc.json exposes generated JSON-RPC methods with an empty components.securitySchemes object and zero methods carrying security requirements. Runtime and OpenRPC contract policy must agree: protected methods should declare the security scheme and requirement; public methods should be explicitly identified as unauthenticated.",
+      "plan": {
+        "horizon": "current",
+        "slot": "security-contract-auth-metadata"
+      },
+      "feature_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [],
+      "risk_ids": [],
+      "release_blocking": true
+    },
+    {
+      "id": "iss:generated-rest-read-allows-unauthenticated-access-001",
+      "title": "Generated REST read allows unauthenticated access",
+      "status": "open",
+      "severity": "critical",
+      "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, GET /tenant without an Authorization header returns HTTP 200 OK with tenant records. If generated CRUD routes are protected by default, the request should fail with 401 or 403. If generated CRUD routes are public by default, that public policy must be explicit in the generated contract.",
+      "plan": {
+        "horizon": "current",
+        "slot": "security-contract-auth-enforcement"
+      },
+      "feature_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [],
+      "risk_ids": [],
+      "release_blocking": true
+    },
+    {
+      "id": "iss:generated-jsonrpc-read-allows-unauthenticated-access-001",
+      "title": "Generated JSON-RPC read allows unauthenticated access",
+      "status": "open",
+      "severity": "critical",
+      "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, POST /rpc calling Tenant.list without an Authorization header returns HTTP 200 with a JSON-RPC result payload. If generated JSON-RPC methods are protected by default, unauthenticated calls should fail with an authentication or authorization error. If generated JSON-RPC methods are public by default, that public policy must be explicit in OpenRPC.",
+      "plan": {
+        "horizon": "current",
+        "slot": "security-contract-auth-enforcement"
+      },
+      "feature_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [],
+      "risk_ids": [],
+      "release_blocking": true
     }
   ],
   "risks": [],
