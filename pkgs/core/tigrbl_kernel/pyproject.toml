@@ -4,7 +4,6 @@ version = "0.1.12.dev1"
 description = "Kernel orchestration for Tigrbl runtime composition."
 license = "Apache-2.0"
 readme = "README.md"
-repository = "http://github.com/swarmauri/swarmauri-sdk"
 requires-python = ">=3.10,<3.14"
 classifiers = [
     "Development Status :: 1 - Planning",
@@ -17,12 +16,19 @@ classifiers = [
     "Programming Language :: Python :: 3 :: Only",
 ]
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
 dependencies = [
     "tigrbl-typing",
     "tigrbl-atoms",
     "tigrbl-core",
 ]
 keywords = ["tigrbl", "sdk", "standards", "framework"]
+
+
+[project.urls]
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/core/tigrbl_kernel"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [tool.uv.sources]
 "tigrbl-typing" = { workspace = true }

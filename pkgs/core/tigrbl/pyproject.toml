@@ -17,11 +17,6 @@ classifiers = [
 ]
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
-[project.urls]
-Repository = "https://github.com/swarmauri/tigrbl"
-Homepage = "https://github.com/swarmauri/tigrbl"
-Issues = "https://github.com/swarmauri/tigrbl/issues"
-
 dependencies = [
     "tigrbl-core",
     "tigrbl-base",
@@ -40,6 +35,12 @@ dependencies = [
     "uvicorn",
 ]
 
+
+
+[project.urls]
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [project.scripts]
 tigrbl = "tigrbl.cli:console_main"

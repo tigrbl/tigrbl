@@ -24,8 +24,11 @@ dependencies = [
     "tigrbl_engine_pandas>=0.1.0",
 ]
 
+
 [project.urls]
-Homepage = "https://github.com/swarmauri/swarmauri-sdk"
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/engines/tigrbl_engine_csv"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [project.entry-points."tigrbl.engine"]
 csv = "tigrbl_engine_csv:register"

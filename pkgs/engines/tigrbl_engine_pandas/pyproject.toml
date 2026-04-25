@@ -37,9 +37,11 @@ dependencies = [
   "tigrbl",
 ]
 
+
 [project.urls]
-Homepage = "https://github.com/swarmauri/swarmauri-sdk"
-Repository = "https://github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/experimental/tigrbl_engine_pandas"
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/engines/tigrbl_engine_pandas"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [project.entry-points."tigrbl.engine"]
 pandas = "tigrbl_engine_pandas:register"

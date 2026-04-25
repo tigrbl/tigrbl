@@ -23,9 +23,11 @@ dependencies = [
   "redis>=5.0",
 ]
 
+
 [project.urls]
-Homepage = "https://github.com/swarmauri/swarmauri-sdk"
-Repository = "https://github.com/swarmauri/swarmauri-sdk/tree/master/pkgs/experimental/tigrbl_engine_rediscachethrough"
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/engines/tigrbl_engine_rediscachethrough"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [project.entry-points."tigrbl.engine"]
 rediscachethrough = "tigrbl_engine_rediscachethrough:register"

@@ -20,8 +20,11 @@ classifiers = [
 ]
 dependencies = ["tigrbl>=0.3.0.dev4"]
 
+
 [project.urls]
-Homepage = "https://github.com/swarmauri/swarmauri-sdk"
+Homepage = "https://github.com/swarmauri/tigrbl"
+Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/engines/tigrbl_engine_inmemcache"
+Issues = "https://github.com/swarmauri/tigrbl/issues"
 
 [project.entry-points."tigrbl.engine"]
 inmemcache = "tigrbl_engine_inmemcache.plugin:register"
