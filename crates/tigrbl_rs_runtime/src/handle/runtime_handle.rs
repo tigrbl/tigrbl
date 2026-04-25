@@ -1,8 +1,6 @@
 use tigrbl_rs_kernel::plan::models::{KernelPlan, PlanBinding};
 use tigrbl_rs_ports::errors::PortError;
-use tigrbl_rs_spec::{request::RequestEnvelope, response::ResponseEnvelope, Value};
-
-const DEFAULT_ROOT_ALIAS: &str = "__tigrbl_default_root__";
+use tigrbl_rs_spec::{request::RequestEnvelope, response::ResponseEnvelope};
 
 use crate::engine::{registry::EngineRegistry, resolver::EngineResolver};
 
@@ -46,9 +44,6 @@ impl RuntimeHandle {
         transport: &str,
         request: RequestEnvelope,
     ) -> Result<ResponseEnvelope, PortError> {
-        if self.should_use_default_root(transport, &request) {
-            return Ok(default_root_response());
-        }
         let binding = self.resolve_binding(transport, &request)?;
         if binding.engine_language != "rust" && binding.engine_callback.is_none() {
             return Err(PortError::Message(
@@ -119,45 +114,5 @@ impl RuntimeHandle {
                     request.operation, request.path
                 ))
             })
-    }
-
-    fn should_use_default_root(&self, transport: &str, request: &RequestEnvelope) -> bool {
-        if transport != "rest" || normalize_path(&request.path) != "/" {
-            return false;
-        }
-        let method = if request.method.is_empty() {
-            "GET"
-        } else {
-            request.method.as_str()
-        };
-        if !method.eq_ignore_ascii_case("GET") {
-            return false;
-        }
-        !self.plan.bindings.iter().any(|binding| {
-            binding.transport == "rest"
-                && normalize_path(&binding.path) == "/"
-                && binding.alias != DEFAULT_ROOT_ALIAS
-        })
-    }
-}
-
-fn normalize_path(path: &str) -> String {
-    let trimmed = path.trim_end_matches('/');
-    if trimmed.is_empty() {
-        "/".to_string()
-    } else {
-        trimmed.to_string()
-    }
-}
-
-fn default_root_response() -> ResponseEnvelope {
-    ResponseEnvelope {
-        status: 200,
-        headers: Default::default(),
-        body: Value::Object(
-            [("ok".to_string(), Value::Bool(true))]
-                .into_iter()
-                .collect(),
-        ),
     }
 }

@@ -7,6 +7,8 @@ use tigrbl_rs_ports::{
 };
 use tigrbl_rs_spec::{request::RequestEnvelope, response::ResponseEnvelope, values::Value};
 
+const DEFAULT_ROOT_ALIAS: &str = "__tigrbl_default_root__";
+
 const SCHEMA_SQL: &str = "CREATE TABLE IF NOT EXISTS _tigrbl_rows (
     table_name TEXT NOT NULL,
     row_key TEXT,
@@ -71,10 +73,13 @@ impl TransactionPort for SqliteTransaction {
     fn execute(
         &self,
         table: &str,
-        _operation: &str,
+        operation: &str,
         kind: &str,
         request: &RequestEnvelope,
     ) -> PortResult<ResponseEnvelope> {
+        if kind == "read" && (table == DEFAULT_ROOT_ALIAS || operation == DEFAULT_ROOT_ALIAS) {
+            return Ok(default_root_response());
+        }
         match kind {
             "create" => {
                 let row = body_object(&request.body)?;
@@ -259,6 +264,18 @@ fn create_relational_row(
         headers: BTreeMap::new(),
         body: Value::Object(response),
     })
+}
+
+fn default_root_response() -> ResponseEnvelope {
+    ResponseEnvelope {
+        status: 200,
+        headers: BTreeMap::new(),
+        body: Value::Object(
+            [("ok".to_string(), Value::Bool(true))]
+                .into_iter()
+                .collect(),
+        ),
+    }
 }
 
 fn select_relational_row(

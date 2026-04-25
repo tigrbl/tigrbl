@@ -9,6 +9,8 @@ use tigrbl_rs_ports::{
 };
 use tigrbl_rs_spec::{request::RequestEnvelope, response::ResponseEnvelope, values::Value};
 
+const DEFAULT_ROOT_ALIAS: &str = "__tigrbl_default_root__";
+
 pub(crate) type Row = BTreeMap<String, Value>;
 pub(crate) type TableRows = Vec<Row>;
 pub(crate) type Store = BTreeMap<String, TableRows>;
@@ -54,10 +56,13 @@ impl TransactionPort for InmemoryTransaction {
     fn execute(
         &self,
         table: &str,
-        _operation: &str,
+        operation: &str,
         kind: &str,
         request: &RequestEnvelope,
     ) -> PortResult<ResponseEnvelope> {
+        if kind == "read" && (table == DEFAULT_ROOT_ALIAS || operation == DEFAULT_ROOT_ALIAS) {
+            return Ok(default_root_response());
+        }
         let mut working = self
             .working
             .lock()
@@ -161,4 +166,16 @@ fn find_row<'a>(rows: &'a [Row], request: &RequestEnvelope) -> Option<&'a Row> {
 fn find_row_mut<'a>(rows: &'a mut [Row], request: &RequestEnvelope) -> Option<&'a mut Row> {
     let id = find_id(request)?;
     rows.iter_mut().find(|row| row.get("id") == Some(&id))
+}
+
+fn default_root_response() -> ResponseEnvelope {
+    ResponseEnvelope {
+        status: 200,
+        headers: BTreeMap::new(),
+        body: Value::Object(
+            [("ok".to_string(), Value::Bool(true))]
+                .into_iter()
+                .collect(),
+        ),
+    }
 }

@@ -5,6 +5,12 @@ from collections.abc import Mapping, Sequence
 from types import SimpleNamespace
 from typing import Any
 
+from tigrbl_core.config.constants import (
+    TIGRBL_DEFAULT_ROOT_ALIAS,
+    TIGRBL_DEFAULT_ROOT_METHOD,
+    TIGRBL_DEFAULT_ROOT_PATH,
+)
+
 
 def _table_iter(app: Any) -> tuple[Any, ...]:
     tables = getattr(app, "tables", None)
@@ -157,6 +163,41 @@ def _normalize_transport(proto: str) -> str:
     return mapping.get(proto, proto or "rest")
 
 
+def _normalize_path(path: Any) -> str:
+    return str(path or "/").rstrip("/") or "/"
+
+
+def _is_default_root_binding(binding: Mapping[str, Any]) -> bool:
+    return (
+        binding.get("transport") == "rest"
+        and _normalize_path(binding.get("path")) == "/"
+    )
+
+
+def _has_root_binding(bindings: list[dict[str, Any]]) -> bool:
+    return any(_is_default_root_binding(binding) for binding in bindings)
+
+
+def _default_root_binding() -> dict[str, Any]:
+    return {
+        "alias": TIGRBL_DEFAULT_ROOT_ALIAS,
+        "transport": "rest",
+        "family": "rest",
+        "framing": None,
+        "path": TIGRBL_DEFAULT_ROOT_PATH,
+        "methods": (TIGRBL_DEFAULT_ROOT_METHOD,),
+        "op": {
+            "name": TIGRBL_DEFAULT_ROOT_ALIAS,
+            "kind": "read",
+            "route": TIGRBL_DEFAULT_ROOT_PATH,
+            "exchange": "request_response",
+            "tx_scope": "inherit",
+            "subevents": [],
+        },
+        "table": {"name": TIGRBL_DEFAULT_ROOT_ALIAS},
+    }
+
+
 def _binding_path(binding: Any, *, jsonrpc_prefix: str) -> str:
     path = getattr(binding, "path", None)
     if isinstance(path, str) and path:
@@ -194,7 +235,10 @@ def _lower_declared_bindings(source: dict[str, Any], app: Any) -> list[dict[str,
         ):
             raise TypeError("rust runtime expects app.bindings to be a sequence")
         if raw and all(isinstance(item, Mapping) for item in raw):
-            return [dict(item) for item in raw]
+            payload: list[dict[str, Any]] = [dict(item) for item in raw]
+            if not _has_root_binding(payload):
+                payload.append(_default_root_binding())
+            return payload
 
     payload: list[dict[str, Any]] = []
     jsonrpc_prefix = str(source.get("jsonrpc_prefix", "/rpc") or "/rpc")
@@ -239,6 +283,8 @@ def _lower_declared_bindings(source: dict[str, Any], app: Any) -> list[dict[str,
                         "table": {"name": table_name},
                     }
                 )
+    if not _has_root_binding(payload):
+        payload.append(_default_root_binding())
     return payload
 
 

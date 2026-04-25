@@ -5,10 +5,7 @@ from dataclasses import dataclass
 import json
 from typing import Any
 
-from tigrbl_core.config.constants import (
-    DEFAULT_ROOT_RESPONSE,
-    TIGRBL_DEFAULT_ROOT_ALIAS,
-)
+from tigrbl_core.config.constants import TIGRBL_DEFAULT_ROOT_ALIAS
 
 from .errors import RustBindingsUnavailableError
 from ._load_rust import load_rust_module
@@ -52,32 +49,6 @@ def _coerce_request_payload(envelope: Any) -> str:
             return json.dumps(dict(payload), sort_keys=True)
     raise TypeError("rust runtime expects a request mapping or JSON object")
 
-
-def _normalize_path(path: Any) -> str:
-    return str(path or "/").rstrip("/") or "/"
-
-
-def _is_default_root_request(request: dict[str, Any]) -> bool:
-    return (
-        str(request.get("transport") or "rest") == "rest"
-        and str(request.get("method") or "GET").upper() == "GET"
-        and _normalize_path(request.get("path")) == "/"
-    )
-
-
-def _has_explicit_root_binding(plan: dict[str, Any]) -> bool:
-    bindings = plan.get("bindings")
-    if not isinstance(bindings, list):
-        return False
-    return any(
-        isinstance(binding, dict)
-        and binding.get("transport") == "rest"
-        and _normalize_path(binding.get("path")) == "/"
-        and binding.get("alias") != TIGRBL_DEFAULT_ROOT_ALIAS
-        for binding in bindings
-    )
-
-
 @dataclass(slots=True)
 class RustRuntimeHandle:
     _handle: Any
@@ -92,11 +63,6 @@ class RustRuntimeHandle:
 
     def execute_rest(self, envelope: Any) -> dict[str, object]:
         payload = _coerce_request_payload(envelope)
-        request = json.loads(payload)
-        if _is_default_root_request(request) and not _has_explicit_root_binding(
-            self.plan()
-        ):
-            return {"status": 200, "headers": {}, "body": dict(DEFAULT_ROOT_RESPONSE)}
         if hasattr(self._handle, "execute_rest_json"):
             return json.loads(self._handle.execute_rest_json(payload))
         raise RustBindingsUnavailableError("rust runtime handle cannot execute REST envelopes")

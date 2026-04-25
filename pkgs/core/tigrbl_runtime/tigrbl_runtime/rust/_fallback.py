@@ -5,10 +5,7 @@ from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Any
 
-from tigrbl_core.config.constants import (
-    DEFAULT_ROOT_RESPONSE,
-    TIGRBL_DEFAULT_ROOT_ALIAS,
-)
+from tigrbl_core.config.constants import DEFAULT_ROOT_RESPONSE, TIGRBL_DEFAULT_ROOT_ALIAS
 
 from ._parity_contract import build_parity_snapshot as _build_parity_snapshot
 from ._parity_contract import transport_trace as _transport_trace
@@ -39,29 +36,6 @@ def rust_available() -> bool:
 
 def compiled_extension_available() -> bool:
     return False
-
-
-def _normalize_path(path: Any) -> str:
-    return str(path or "/").rstrip("/") or "/"
-
-
-def _is_default_root_request(transport: str, request: dict[str, Any]) -> bool:
-    method = str(request.get("method") or "GET").upper()
-    return (
-        transport == "rest"
-        and method == "GET"
-        and _normalize_path(request.get("path")) == "/"
-    )
-
-
-def _has_explicit_root_binding(bindings: list[dict[str, Any]]) -> bool:
-    return any(
-        binding.get("transport") == "rest"
-        and _normalize_path(binding.get("path")) == "/"
-        and binding.get("alias") != TIGRBL_DEFAULT_ROOT_ALIAS
-        for binding in bindings
-    )
-
 
 def normalize_spec(spec_json: str) -> str:
     trimmed = str(spec_json or "").strip()
@@ -230,11 +204,6 @@ class RuntimeHandle:
         return ffi_boundary_events()
 
     def _execute(self, transport: str, request: dict[str, Any]) -> dict[str, Any]:
-        if _is_default_root_request(
-            transport, request
-        ) and not _has_explicit_root_binding(self._plan["bindings"]):
-            return {"status": 200, "headers": {}, "body": dict(DEFAULT_ROOT_RESPONSE)}
-
         binding = next(
             (
                 binding
@@ -255,6 +224,11 @@ class RuntimeHandle:
 
         table = self._tables.setdefault(binding["table"], [])
         kind = binding["op_kind"]
+        if kind == "read" and (
+            binding.get("alias") == TIGRBL_DEFAULT_ROOT_ALIAS
+            or binding.get("table") == TIGRBL_DEFAULT_ROOT_ALIAS
+        ):
+            return {"status": 200, "headers": {}, "body": dict(DEFAULT_ROOT_RESPONSE)}
         body = request.get("body") or {}
         row_id = (
             (request.get("path_params") or {}).get("id")
