@@ -1,0 +1,34 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2108"
+number: 2108
+slug: "webtransport-atom-chain-contract"
+title: "WebTransport Atom Chain Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define WebTransport session, stream, datagram, and app-framed atom chains."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define WebTransport session, stream, datagram, and app-framed atom chains.
+  
+  ## Contract
+  
+  WebTransport chains declare session open/accept/ready, stream receive/send, datagram receive/send, app-framed message decode/encode paths, disconnect behavior, subevent ordering, and transport completion.
+  
+  ## Traceability
+  
+  ADRs: adr:1091, adr:1092, adr:1094, adr:1096, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1091"
+  - "adr:1092"
+  - "adr:1094"
+  - "adr:1096"
+  - "adr:1100"

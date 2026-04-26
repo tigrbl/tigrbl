@@ -1,0 +1,32 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2110"
+number: 2110
+slug: "lifespan-atom-chain-contract"
+title: "Lifespan Atom Chain Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed lifespan runtime chain."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed lifespan runtime chain.
+  
+  ## Contract
+  
+  Lifespan handling declares startup and shutdown event order, app readiness state, failure behavior, state mutation boundaries, completion behavior, and whether execution is KernelPlan-owned or an explicit governed out-of-band boundary.
+  
+  ## Traceability
+  
+  ADRs: adr:1005, adr:1097, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1005"
+  - "adr:1097"
+  - "adr:1100"

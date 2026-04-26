@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from common import fail, repo_root
+from policy_workflow_support import policy_workflow_runs_validator
 
 ROOT = repo_root()
 CURRENT_STATE = ROOT / ".ssot" / "reports" / "current_state" / "2026-04-09-phase4-native-parity.md"
@@ -60,7 +61,7 @@ def main() -> None:
     if "validate_rust_parity.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the Rust parity validator")
 
-    if "Validate Rust parity" not in workflow:
+    if not policy_workflow_runs_validator("validate_rust_parity.py"):
         errors.append(".github/workflows/policy-governance.yml must run the Rust parity validator")
 
     if "BLK-004" not in blocked_claims or "Rust backend claims must remain blocked" not in blocked_claims:

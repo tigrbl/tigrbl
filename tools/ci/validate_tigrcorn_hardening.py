@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from common import fail, repo_root
+from policy_workflow_support import policy_workflow_runs_validator
 
 ROOT = repo_root()
 CURRENT_STATE = ROOT / ".ssot" / "reports" / "current_state" / "2026-04-09-phase6-tigrcorn-hardening.md"
@@ -76,7 +77,7 @@ def main() -> None:
     if "validate_tigrcorn_hardening.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the Tigrcorn hardening validator")
 
-    if "Validate Tigrcorn hardening" not in workflow:
+    if not policy_workflow_runs_validator("validate_tigrcorn_hardening.py"):
         errors.append(".github/workflows/policy-governance.yml must run the Tigrcorn hardening validator")
 
     if "BLK-006" not in blocked_claims or "Tigrcorn hardening and negative-certification claims must remain blocked" not in blocked_claims:

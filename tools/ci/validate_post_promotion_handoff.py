@@ -10,6 +10,7 @@ except ModuleNotFoundError:  # pragma: no cover - Python < 3.11 fallback
     import tomli as tomllib
 
 from common import repo_root, fail
+from release_identity import parse_semver, previous_stable_version
 
 ROOT = repo_root()
 REGISTRY = ROOT / '.ssot' / 'registry.json'
@@ -21,7 +22,6 @@ DOC_POINTERS = ROOT / 'docs' / 'governance' / 'DOC_POINTERS.md'
 VERSIONING = ROOT / 'docs' / 'governance' / 'VERSIONING_POLICY.md'
 PACKAGE_PYPROJECT = ROOT / 'pkgs' / 'core' / 'tigrbl' / 'pyproject.toml'
 CLAIM_ROW_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|', re.MULTILINE)
-VERSION_RE = re.compile(r'^([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:\\.dev([0-9]+))?$')
 STATIC_REQUIRED_PATHS = [
     ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'post-promotion-handoff' / 'README.md',
     ROOT / 'docs' / 'notes' / 'archive' / '2026' / 'post-promotion-handoff' / 'README.md',
@@ -34,13 +34,10 @@ STATIC_REQUIRED_PATHS = [
 
 
 def _version_key(version: str, *, require_dev: bool = False) -> tuple[int, int, int, int, int] | None:
-    match = VERSION_RE.fullmatch(version)
-    if not match:
+    try:
+        return parse_semver(version, require_dev=require_dev)
+    except ValueError:
         return None
-    major, minor, patch, dev = match.groups()
-    if require_dev and dev is None:
-        return None
-    return int(major), int(minor), int(patch), 0 if dev is None else 1, int(dev or 0)
 
 
 def _required_paths(version: str) -> list[Path]:
@@ -61,11 +58,10 @@ def _registry_version() -> str:
 
 
 def _previous_stable_version(governed_version: str) -> str:
-    version = _version_key(governed_version, require_dev=True)
-    if version is None:
+    try:
+        return previous_stable_version(governed_version)
+    except ValueError:
         return ''
-    major, minor, patch, *_ = version
-    return f'{major}.{minor}.{max(patch - 1, 0)}'
 
 
 def _package_version() -> str:

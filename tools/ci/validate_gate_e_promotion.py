@@ -5,6 +5,7 @@ import json
 import re
 
 from common import repo_root, fail
+from release_identity import current_stable_release_root, current_stable_release_version, promotion_source_dev_version
 
 ROOT = repo_root()
 CLAIM_REGISTRY = ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
@@ -14,24 +15,7 @@ GATE_MODEL = ROOT / 'docs' / 'conformance' / 'GATE_MODEL.md'
 GATE_E_DOC = ROOT / 'docs' / 'conformance' / 'gates' / 'GATE_E_PROMOTION.md'
 README = ROOT / 'README.md'
 DOC_POINTERS = ROOT / 'docs' / 'governance' / 'DOC_POINTERS.md'
-RELEASE_ROOT = ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18'
-ARTIFACT_MANIFEST = RELEASE_ROOT / 'artifacts' / 'artifact-manifest.json'
 CLAIM_ROW_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|', re.MULTILINE)
-REQUIRED_PATHS = [
-    ROOT / 'tools' / 'ci' / 'validate_gate_e_promotion.py',
-    ROOT / 'tools' / 'ci' / 'tests' / 'test_gate_e_promotion.py',
-    ROOT / '.github' / 'workflows' / 'gate-e-promotion.yml',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'RELEASE_NOTES.md',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'CLAIMS.md',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'EVIDENCE_INDEX.md',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'CURRENT_TARGET_SNAPSHOT.md',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'gate-results' / 'gate-e-promotion.md',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'gate-results' / 'gate-d-reproducibility.md',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'artifacts' / 'artifact-manifest.json',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'artifacts' / 'clean-room-package-manifest.json',
-    ROOT / 'docs' / 'conformance' / 'releases' / '0.3.18' / 'artifacts' / 'installed-package-smoke-manifest.json',
-    ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'p13-gate-e' / 'README.md',
-]
 
 
 def parse_claim_rows() -> dict[str, tuple[str, str, str]]:
@@ -47,6 +31,25 @@ def parse_claim_rows() -> dict[str, tuple[str, str, str]]:
 def main() -> None:
     errors: list[str] = []
     rows = parse_claim_rows()
+    stable_release_version = current_stable_release_version()
+    source_dev_version = promotion_source_dev_version()
+    release_root = current_stable_release_root()
+    artifact_manifest = release_root / 'artifacts' / 'artifact-manifest.json'
+    required_paths = [
+        ROOT / 'tools' / 'ci' / 'validate_gate_e_promotion.py',
+        ROOT / 'tools' / 'ci' / 'tests' / 'test_gate_e_promotion.py',
+        ROOT / '.github' / 'workflows' / 'gate-e-promotion.yml',
+        release_root / 'RELEASE_NOTES.md',
+        release_root / 'CLAIMS.md',
+        release_root / 'EVIDENCE_INDEX.md',
+        release_root / 'CURRENT_TARGET_SNAPSHOT.md',
+        release_root / 'gate-results' / 'gate-e-promotion.md',
+        release_root / 'gate-results' / 'gate-d-reproducibility.md',
+        release_root / 'artifacts' / 'artifact-manifest.json',
+        release_root / 'artifacts' / 'clean-room-package-manifest.json',
+        release_root / 'artifacts' / 'installed-package-smoke-manifest.json',
+        ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'p13-gate-e' / 'README.md',
+    ]
 
     for claim_id in ('GATE-013', 'GATE-014', 'CERT-001', 'CERT-002'):
         if claim_id not in rows:
@@ -84,25 +87,25 @@ def main() -> None:
         errors.append('docs/conformance/GATE_MODEL.md must record Gate E as passed in the Gate E promotion checkpoint')
     if 'Passed in the Gate E promotion checkpoint.' not in gate_e_text:
         errors.append('docs/conformance/gates/GATE_E_PROMOTION.md must record Gate E as passed in the Gate E promotion checkpoint')
-    if '**Gate E promotion and release**' not in readme_text:
-        errors.append('README.md must record the Gate E promotion checkpoint')
-    if f'Current stable release bundle | `docs/conformance/releases/0.3.18/` |' not in pointer_text:
+    if 'docs/conformance/releases/' not in readme_text or 'docs/conformance/dev/' not in readme_text:
+        errors.append('README.md must point readers to release and dev conformance evidence roots')
+    if f'Current stable release bundle | `docs/conformance/releases/{stable_release_version}/` |' not in pointer_text:
         errors.append('docs/governance/DOC_POINTERS.md must point to the promoted stable release bundle')
 
-    for path in REQUIRED_PATHS:
+    for path in required_paths:
         if not path.exists():
             errors.append(f'missing Gate E required path: {path.relative_to(ROOT)}')
 
-    if ARTIFACT_MANIFEST.exists():
+    if artifact_manifest.exists():
         try:
-            manifest = json.loads(ARTIFACT_MANIFEST.read_text(encoding='utf-8'))
+            manifest = json.loads(artifact_manifest.read_text(encoding='utf-8'))
         except json.JSONDecodeError as exc:
             errors.append(f'Gate E artifact manifest must be valid JSON: {exc}')
         else:
-            if manifest.get('release') != '0.3.18':
-                errors.append('Gate E artifact manifest must record release 0.3.18')
-            if manifest.get('source_dev_build') != '0.3.18.dev1':
-                errors.append('Gate E artifact manifest must record source dev build 0.3.18.dev1')
+            if manifest.get('release') != stable_release_version:
+                errors.append(f'Gate E artifact manifest must record release {stable_release_version}')
+            if manifest.get('source_dev_build') != source_dev_version:
+                errors.append(f'Gate E artifact manifest must record source dev build {source_dev_version}')
 
     fail(errors)
     print('Gate E promotion validation passed')

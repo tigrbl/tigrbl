@@ -1,0 +1,32 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2098"
+number: 2098
+slug: "derived-runtime-subevent-taxonomy"
+title: "Derived Runtime Subevent Taxonomy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define qualified runtime subevents derived above transport events."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define qualified runtime subevents derived above transport events.
+  
+  ## Contract
+  
+  Runtime subevents use qualified family leaves for request, response, session, message, stream, and datagram semantics. Coarse transport channel verbs remain compatibility/default vocabulary and do not replace qualified subevents.
+  
+  ## Traceability
+  
+  ADRs: adr:1091, adr:1092, adr:1096.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1091"
+  - "adr:1092"
+  - "adr:1096"

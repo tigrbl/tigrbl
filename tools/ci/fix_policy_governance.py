@@ -33,6 +33,9 @@ POLICY_VALIDATORS = (
     "tools/ci/validate_claim_lifecycle.py",
     "tools/ci/validate_gate_b_surface_closure.py",
     "tools/ci/validate_gate_c_conformance_security.py",
+    "tools/ci/validate_gate_d_reproducibility.py",
+    "tools/ci/validate_gate_e_promotion.py",
+    "tools/ci/validate_post_promotion_handoff.py",
 )
 
 DOC_POINTERS = ROOT / "docs" / "governance" / "DOC_POINTERS.md"

@@ -4,6 +4,8 @@ import inspect
 import logging
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
+from tigrbl_atoms.types import AtomFailure, FailedCtx, build_error_ctx
+
 try:
     from tigrbl_kernel import trace as _trace  # type: ignore
 except Exception:  # pragma: no cover
@@ -83,6 +85,29 @@ async def _run_chain(ctx: Any, chain: Optional[Iterable[Any]], *, phase: str) ->
             rv = step(ctx)
             if isawaitable(rv):
                 rv = await rv  # type: ignore[func-returns-value]
+            if isinstance(rv, FailedCtx):
+                err = getattr(rv, "error", None)
+                if err is None:
+                    err = RuntimeError("atom returned FailedCtx without error")
+                typed = getattr(rv, "typed_error", None)
+                if typed is not None:
+                    try:
+                        setattr(ctx, "typed_error", typed)
+                    except Exception:
+                        pass
+                    temp = getattr(ctx, "temp", None)
+                    if isinstance(temp, dict):
+                        temp["typed_err"] = typed
+                build_error_ctx(
+                    ctx,
+                    err,
+                    failed_phase=phase,
+                    failing_atom_label=label,
+                    failing_anchor=label.rsplit("@", 1)[-1] if "@" in label else None,
+                )
+                if isinstance(err, BaseException):
+                    raise err
+                raise AtomFailure(err)
             if rv is not None and rv is not ctx:
                 ctx.result = rv
             if trace_active:

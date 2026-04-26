@@ -1,0 +1,34 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2114"
+number: 2114
+slug: "protocol-executor-parity-evidence-contract"
+title: "Protocol Executor Parity Evidence Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define evidence requirements for Python and Rust protocol executor parity."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define evidence requirements for Python and Rust protocol executor parity.
+  
+  ## Contract
+  
+  Parity evidence covers atom order, event order, phase tree shape, loop behavior, iterator behavior, WebTransport subevents, callbacks, webhooks, error branches, and transport completion semantics.
+  
+  ## Traceability
+  
+  ADRs: adr:1020, adr:1088, adr:1093, adr:1094, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1020"
+  - "adr:1088"
+  - "adr:1093"
+  - "adr:1094"
+  - "adr:1100"

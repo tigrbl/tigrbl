@@ -1,0 +1,38 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2113"
+number: 2113
+slug: "binding-subevent-phase-atom-legality-matrix"
+title: "Binding Subevent Phase Atom Legality Matrix"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the generated legality matrix for protocol-runtime compilation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the generated legality matrix for protocol-runtime compilation.
+  
+  ## Contract
+  
+  The matrix indexes binding, subevent, phase, segment, and atom with required, optional, repeated, forbidden, transaction unit, hookable, emits-bytes, and requires-channel classifications plus validation and diff output.
+  
+  Matrix rows that participate in compiled phase trees also declare ok_target, err_target, err_ctx, err_kind, rollback_required, and terminal_policy metadata. These columns are validated against the typed ok/err edge and ErrorCtx contract in spc:2115.
+  
+  ## Traceability
+  
+  ADRs: adr:1008, adr:1009, adr:1092, adr:1093, adr:1100.
+  
+  Related SPECs: spc:2115.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1008"
+  - "adr:1009"
+  - "adr:1092"
+  - "adr:1093"
+  - "adr:1100"

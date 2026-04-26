@@ -1,0 +1,31 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2111"
+number: 2111
+slug: "callback-contract"
+title: "Callback Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define first-class runtime callbacks."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define first-class runtime callbacks.
+  
+  ## Contract
+  
+  Callbacks declare registration, invocation, lifecycle, transaction ordering, security context, result handling, cancellation, retry eligibility, error behavior, observability, and Python/Rust executor parity requirements.
+  
+  ## Traceability
+  
+  ADRs: adr:1098, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1098"
+  - "adr:1100"

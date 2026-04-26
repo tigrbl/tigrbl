@@ -20,6 +20,7 @@ from .egress import REGISTRY as _EGRESS
 from .ingress import REGISTRY as _INGRESS
 from .dispatch import REGISTRY as _DISPATCH
 from .sys import REGISTRY as _SYS
+from .err import REGISTRY as _ERR
 
 # Runner signature: (obj|None, ctx) -> None
 RunFn = Callable[[Optional[object], Any], Any]
@@ -58,6 +59,7 @@ _add_bulk(_INGRESS)
 _add_bulk(_DISPATCH)
 _add_bulk(_EGRESS)
 _add_bulk(_SYS)
+_add_bulk(_ERR)
 
 logger.info("Loaded %d runtime atoms", len(REGISTRY))
 

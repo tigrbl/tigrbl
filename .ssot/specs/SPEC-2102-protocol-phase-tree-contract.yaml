@@ -1,0 +1,36 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2102"
+number: 2102
+slug: "protocol-phase-tree-contract"
+title: "Protocol Phase Tree Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the canonical phase tree representation for protocol execution."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the canonical phase tree representation for protocol execution.
+  
+  ## Contract
+  
+  Each phase tree node declares canonical phase name, node identity, typed ok child edge, typed err child edge, terminal behavior, rollback or error routing, and allowed linear projection without renaming canonical phases.
+  
+  Typed ok and err edge algebra, EdgeTarget forms, TypedErr normalization, and ErrorCtx construction are governed by spc:2115. This specification owns the phase tree shape and projection rules; spc:2115 owns the typed edge and error-context payload contract.
+  
+  ## Traceability
+  
+  ADRs: adr:1009, adr:1093, adr:1100.
+  
+  Related SPECs: spc:2115.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1009"
+  - "adr:1093"
+  - "adr:1100"

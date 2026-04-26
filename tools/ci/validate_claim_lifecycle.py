@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 
 from common import fail, repo_root
+from policy_workflow_support import policy_workflow_runs_validator
 from simple_yaml import load_yaml
 
 ROOT = repo_root()
@@ -202,7 +203,7 @@ def main() -> None:
         errors.append("docs/governance/DOC_POINTERS.md must point to both claim-lifecycle reports")
     if "validate_claim_lifecycle.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the claim-lifecycle validator")
-    if "Validate Claim lifecycle and release bundle" not in workflow:
+    if not policy_workflow_runs_validator("validate_claim_lifecycle.py"):
         errors.append(".github/workflows/policy-governance.yml must run the claim-lifecycle validator")
     if "Gate A: surface freeze" not in gate_model or "Gate E: security/abuse" not in gate_model:
         errors.append("docs/conformance/GATE_MODEL.md must record the Release-decision mapping for Gates A-E")

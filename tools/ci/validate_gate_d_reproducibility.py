@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 
 from common import repo_root, fail
+from release_identity import promotion_source_dev_root, promotion_source_dev_version
 
 ROOT = repo_root()
 CLAIM_REGISTRY = ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
@@ -11,22 +12,9 @@ CURRENT_TARGET = ROOT / 'docs' / 'conformance' / 'CURRENT_TARGET.md'
 CURRENT_STATE = ROOT / 'docs' / 'conformance' / 'CURRENT_STATE.md'
 GATE_MODEL = ROOT / 'docs' / 'conformance' / 'GATE_MODEL.md'
 GATE_D_DOC = ROOT / 'docs' / 'conformance' / 'gates' / 'GATE_D_REPRODUCIBILITY.md'
-DEV_INDEX = ROOT / 'docs' / 'conformance' / 'dev' / '0.3.18.dev1' / 'EVIDENCE_INDEX.md'
-BUILD_NOTES = ROOT / 'docs' / 'conformance' / 'dev' / '0.3.18.dev1' / 'BUILD_NOTES.md'
 CLAIM_ROW_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|', re.MULTILINE)
 REQUIRED_CLAIMS = {'GATE-011', 'GATE-012'}
 ALLOWED = {'verified in checkpoint', 'implemented'}
-REQUIRED_PATHS = [
-    ROOT / 'tools' / 'conformance' / 'clean_room_package_smoke.py',
-    ROOT / 'tools' / 'conformance' / 'installed_package_smoke.py',
-    ROOT / 'tools' / 'ci' / 'validate_gate_d_reproducibility.py',
-    ROOT / 'tools' / 'ci' / 'tests' / 'test_gate_d_reproducibility.py',
-    ROOT / '.github' / 'workflows' / 'gate-d-reproducibility.yml',
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.18.dev1' / 'gate-results' / 'gate-d-reproducibility.md',
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.18.dev1' / 'artifacts' / 'clean-room-package-manifest.json',
-    ROOT / 'docs' / 'conformance' / 'dev' / '0.3.18.dev1' / 'artifacts' / 'installed-package-smoke-manifest.json',
-    ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'p12-gate-d' / 'README.md',
-]
 
 
 def parse_claim_rows() -> dict[str, tuple[str, str]]:
@@ -42,6 +30,21 @@ def parse_claim_rows() -> dict[str, tuple[str, str]]:
 def main() -> None:
     errors: list[str] = []
     rows = parse_claim_rows()
+    source_dev_version = promotion_source_dev_version()
+    source_dev_root = promotion_source_dev_root()
+    dev_index = source_dev_root / 'EVIDENCE_INDEX.md'
+    build_notes_path = source_dev_root / 'BUILD_NOTES.md'
+    required_paths = [
+        ROOT / 'tools' / 'conformance' / 'clean_room_package_smoke.py',
+        ROOT / 'tools' / 'conformance' / 'installed_package_smoke.py',
+        ROOT / 'tools' / 'ci' / 'validate_gate_d_reproducibility.py',
+        ROOT / 'tools' / 'ci' / 'tests' / 'test_gate_d_reproducibility.py',
+        ROOT / '.github' / 'workflows' / 'gate-d-reproducibility.yml',
+        source_dev_root / 'gate-results' / 'gate-d-reproducibility.md',
+        source_dev_root / 'artifacts' / 'clean-room-package-manifest.json',
+        source_dev_root / 'artifacts' / 'installed-package-smoke-manifest.json',
+        ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'p12-gate-d' / 'README.md',
+    ]
     for claim_id in sorted(REQUIRED_CLAIMS):
         if claim_id not in rows:
             errors.append(f'missing Gate D claim row: {claim_id}')
@@ -54,8 +57,8 @@ def main() -> None:
     current_state_text = CURRENT_STATE.read_text(encoding='utf-8')
     gate_model_text = GATE_MODEL.read_text(encoding='utf-8')
     gate_d_text = GATE_D_DOC.read_text(encoding='utf-8')
-    dev_index_text = DEV_INDEX.read_text(encoding='utf-8')
-    build_notes = BUILD_NOTES.read_text(encoding='utf-8')
+    dev_index_text = dev_index.read_text(encoding='utf-8')
+    build_notes = build_notes_path.read_text(encoding='utf-8')
 
     if '- Gate D status: passed in the Gate D reproducibility checkpoint' not in current_target_text:
         errors.append('docs/conformance/CURRENT_TARGET.md must record Gate D as passed in the Gate D reproducibility checkpoint')
@@ -67,10 +70,10 @@ def main() -> None:
         errors.append('docs/conformance/gates/GATE_D_REPRODUCIBILITY.md must record Gate D as passed in the Gate D reproducibility checkpoint')
     if '| Gate D | passed in Gate D reproducibility checkpoint |' not in dev_index_text:
         errors.append('dev evidence index must include the Gate D gate-result row')
-    if 'working tree package version is now `0.3.18.dev1`' not in build_notes:
-        errors.append('build notes must record synchronized package metadata for 0.3.18.dev1')
+    if f'working tree package version is now `{source_dev_version}`' not in build_notes:
+        errors.append(f'build notes must record synchronized package metadata for {source_dev_version}')
 
-    for path in REQUIRED_PATHS:
+    for path in required_paths:
         if not path.exists():
             errors.append(f'missing Gate D required path: {path.relative_to(ROOT)}')
 

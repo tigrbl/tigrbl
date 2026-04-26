@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2107"
+number: 2107
+slug: "websocket-and-wss-atom-chain-contract"
+title: "WebSocket And WSS Atom Chain Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define WebSocket and WSS atom chains."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define WebSocket and WSS atom chains.
+  
+  ## Contract
+  
+  WebSocket and WSS chains declare session connect and accept, receive loops, message decode and handling, outbound send, close behavior, per-message transaction options, close code/reason metadata, and WSS TLS metadata projection.
+  
+  ## Traceability
+  
+  ADRs: adr:1092, adr:1094, adr:1095, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1092"
+  - "adr:1094"
+  - "adr:1095"
+  - "adr:1100"

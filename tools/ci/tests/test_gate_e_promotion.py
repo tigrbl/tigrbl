@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -10,7 +11,9 @@ CLAIM_REGISTRY = REPO_ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
 CURRENT_TARGET = REPO_ROOT / 'docs' / 'conformance' / 'CURRENT_TARGET.md'
 CURRENT_STATE = REPO_ROOT / 'docs' / 'conformance' / 'CURRENT_STATE.md'
 GATE_MODEL = REPO_ROOT / 'docs' / 'conformance' / 'GATE_MODEL.md'
+README = REPO_ROOT / 'README.md'
 REQUIRED = {'GATE-013', 'GATE-014', 'CERT-001', 'CERT-002'}
+STABLE_RELEASE_RE = re.compile(r'promoted stable release:\s*`docs/conformance/releases/([^`/]+)/`')
 
 
 def _run(script: str) -> subprocess.CompletedProcess[str]:
@@ -52,7 +55,13 @@ def test_current_docs_record_gate_e_pass_and_frozen_release_history() -> None:
     current_target = CURRENT_TARGET.read_text(encoding='utf-8')
     current_state = CURRENT_STATE.read_text(encoding='utf-8')
     gate_model = GATE_MODEL.read_text(encoding='utf-8')
+    readme = README.read_text(encoding='utf-8')
+    match = STABLE_RELEASE_RE.search(current_target)
+    assert match is not None
+    stable_release_version = match.group(1)
     assert '- Gate E status: passed in the Gate E promotion checkpoint' in current_target
     assert 'Gate E: passed in the Gate E promotion checkpoint' in current_state
     assert 'Gate E is passed in the Gate E promotion checkpoint' in gate_model
-    assert 'promoted stable release: `docs/conformance/releases/0.3.18/`' in current_target
+    assert f'promoted stable release: `docs/conformance/releases/{stable_release_version}/`' in current_target
+    assert 'docs/conformance/releases/' in readme
+    assert 'docs/conformance/dev/' in readme

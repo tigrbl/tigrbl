@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Iterator, Mapping, Tuple
 
+from tigrbl_atoms.types import PhaseTreeNode
+
 try:
     from tigrbl_typing.phases import MAINLINE_PHASES, ERROR_PHASES, phase_info
 except Exception:  # pragma: no cover - compatibility fallback
@@ -138,6 +140,10 @@ class PackedKernel:
     )
     hot_op_plans: tuple[HotOpPlan, ...] = ()
 
+    phase_tree_nodes: tuple[PhaseTreeNode, ...] = ()
+    program_phase_tree_offsets: tuple[int, ...] = ()
+    program_phase_tree_lengths: tuple[int, ...] = ()
+
     ingress_program_id: int = -1
     egress_ok_program_id: int = -1
     egress_err_program_id: int = -1
@@ -158,6 +164,7 @@ class KernelPlan:
     phases: Mapping[str, CompiledPhase] = field(default_factory=dict)
     mainline_phases: tuple[str, ...] = ()
     error_phases: tuple[str, ...] = ()
+    phase_trees: Mapping[int, tuple[PhaseTreeNode, ...]] = field(default_factory=dict)
     packed: PackedKernel | None = None
     _appspec_mapping: Dict[str, Dict[str, list[str]]] = field(
         default_factory=dict, init=False, repr=False, compare=False

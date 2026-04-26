@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2106"
+number: 2106
+slug: "http-stream-and-sse-atom-chain-contract"
+title: "HTTP Stream And SSE Atom Chain Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define HTTP stream and SSE atom chains."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define HTTP stream and SSE atom chains.
+  
+  ## Contract
+  
+  HTTP stream and SSE chains declare inbound and outbound stream lifecycles, SSE session/message/stream subevents, heartbeat and finalization behavior, iterator producers, transport chunk emission, disconnect handling, and POST_EMIT completion fences.
+  
+  ## Traceability
+  
+  ADRs: adr:1092, adr:1094, adr:1095, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1092"
+  - "adr:1094"
+  - "adr:1095"
+  - "adr:1100"

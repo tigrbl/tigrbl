@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2099"
+number: 2099
+slug: "bindingspec-event-and-subevent-projection-contract"
+title: "BindingSpec Event And Subevent Projection Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how BindingSpecs project protocol event metadata into compiled runtime metadata."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define how BindingSpecs project protocol event metadata into compiled runtime metadata.
+  
+  ## Contract
+  
+  BindingSpecs declare or derive transport events, exchange, family, framing, subevents, transaction unit, loop shape, emit behavior, close behavior, and channel requirements used by KernelPlan compilation and hook selection.
+  
+  ## Traceability
+  
+  ADRs: adr:1006, adr:1091, adr:1092, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1006"
+  - "adr:1091"
+  - "adr:1092"
+  - "adr:1100"

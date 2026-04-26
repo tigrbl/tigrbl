@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2105"
+number: 2105
+slug: "http-rest-and-jsonrpc-atom-chain-contract"
+title: "HTTP REST And JSON-RPC Atom Chain Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define unary HTTP REST and HTTP JSON-RPC atom chains."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define unary HTTP REST and HTTP JSON-RPC atom chains.
+  
+  ## Contract
+  
+  REST and HTTP JSON-RPC chains declare ingress, binding match, framing decode where needed, exchange/family/subevent derivation, operation resolution, handler execution, response shaping, framing encode where needed, transport emission, and completion.
+  
+  ## Traceability
+  
+  ADRs: adr:1006, adr:1091, adr:1092, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1006"
+  - "adr:1091"
+  - "adr:1092"
+  - "adr:1100"

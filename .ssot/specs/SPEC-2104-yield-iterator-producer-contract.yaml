@@ -1,0 +1,31 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2104"
+number: 2104
+slug: "yield-iterator-producer-contract"
+title: "Yield Iterator Producer Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define sync and async iterator producers for loop regions."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define sync and async iterator producers for loop regions.
+  
+  ## Contract
+  
+  Iterator producers normalize sync and async iteration, cancellation, finalization, exception mapping, chunk typing, backpressure signals, and terminal emission into executor-visible loop behavior.
+  
+  ## Traceability
+  
+  ADRs: adr:1094, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1094"
+  - "adr:1100"

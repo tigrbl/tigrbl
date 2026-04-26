@@ -1,0 +1,32 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2109"
+number: 2109
+slug: "static-file-atom-chain-contract"
+title: "Static File Atom Chain Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed static-file runtime chain."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed static-file runtime chain.
+  
+  ## Contract
+  
+  Static file handling declares routing, file response or pathsend behavior, range and cache header behavior, traversal and security checks, completion behavior, and whether execution is KernelPlan-owned or an explicit governed out-of-band boundary.
+  
+  ## Traceability
+  
+  ADRs: adr:1057, adr:1097, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1057"
+  - "adr:1097"
+  - "adr:1100"
