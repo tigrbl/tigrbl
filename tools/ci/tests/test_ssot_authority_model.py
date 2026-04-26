@@ -70,9 +70,9 @@ def test_runtime_sensitive_feature_without_rust_lane_fails() -> None:
             "id": "feat:fixture-runtime-without-rust-lane",
             "title": "Fixture runtime without Rust lane",
             "description": "Negative fixture for runtime governance.",
-            "implementation_status": "absent",
+            "implementation_status": "implemented",
             "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
-            "plan": {"horizon": "out_of_bounds", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
+            "plan": {"horizon": "current", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
             "claim_ids": ["clm:ssot-authority-projection-001"],
             "test_ids": ["tst:ssot-authority-model-validator"],
             "requires": [],
@@ -81,6 +81,25 @@ def test_runtime_sensitive_feature_without_rust_lane_fails() -> None:
     )
     errors = validate_runtime_lanes(registry)
     assert "feat:fixture-runtime-without-rust-lane is runtime-sensitive but has no runtime_lanes metadata" in errors
+
+
+def test_future_absent_runtime_feature_does_not_require_runtime_lanes() -> None:
+    registry = deepcopy(load_registry())
+    registry["features"].append(
+        {
+            "id": "feat:fixture-future-runtime-planning-row",
+            "title": "Fixture future runtime planning row",
+            "description": "Planning-only runtime row.",
+            "implementation_status": "absent",
+            "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
+            "plan": {"horizon": "future", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
+            "claim_ids": [],
+            "test_ids": [],
+            "requires": [],
+            "spec_ids": ["spc:2090"],
+        }
+    )
+    assert validate_runtime_lanes(registry) == []
 
 
 def test_void_or_not_applicable_runtime_lane_requires_reason() -> None:

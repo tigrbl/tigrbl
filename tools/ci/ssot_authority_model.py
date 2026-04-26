@@ -94,6 +94,14 @@ def _runtime_lane_sensitive(feature: dict[str, Any]) -> bool:
     return any(pattern in text for pattern in RUNTIME_LANE_PATTERNS)
 
 
+def _feature_requires_verification(feature: dict[str, Any]) -> bool:
+    implementation_status = str(feature.get("implementation_status", "") or "").lower()
+    horizon = str(feature.get("plan", {}).get("horizon", "") or "").lower()
+    if implementation_status in {"implemented", "partial"}:
+        return True
+    return horizon in {"current", "explicit"}
+
+
 def _linked_rust_evidence(feature: dict[str, Any], tests: dict[str, dict[str, Any]], claims: dict[str, dict[str, Any]], evidence: dict[str, dict[str, Any]]) -> bool:
     def has_rust_text(item: dict[str, Any] | None) -> bool:
         if not item:
@@ -128,6 +136,8 @@ def validate_runtime_lanes(registry: dict[str, Any]) -> list[str]:
     evidence = by_id(registry, "evidence")
 
     for feature in features.values():
+        if not _feature_requires_verification(feature):
+            continue
         if not _runtime_lane_sensitive(feature):
             continue
 
@@ -180,7 +190,7 @@ def validate_authority_model(registry: dict[str, Any]) -> list[str]:
             errors.append(f"missing authority SPEC {required}")
 
     for feature in features.values():
-        if not feature.get("test_ids"):
+        if _feature_requires_verification(feature) and not feature.get("test_ids"):
             errors.append(f"{feature['id']} has no linked tests or governance validator")
         for test_id in feature.get("test_ids", []):
             if test_id not in tests:

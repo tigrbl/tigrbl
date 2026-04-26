@@ -8,6 +8,7 @@ from typing import Any, Mapping, MutableMapping, Optional, Union
 from .types import _Ctx, PhaseChains, Request, Session, AsyncSession
 from tigrbl_kernel.helpers import _run_chain, _g
 from tigrbl_atoms.atoms.sys._db import _in_transaction
+from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
 from ..runtime.status import create_standardized_error, to_rpc_error_payload
 from ..config.constants import CTX_SKIP_PERSIST_FLAG
 from tigrbl_ops_oltp.crud import ops as _crud_ops
@@ -285,10 +286,20 @@ async def _invoke(
         try:
             await _run_chain(ctx, chain, phase=name)
         except Exception as exc:
-            ctx.error = exc
+            edge = select_error_edge(
+                name,
+                rollback_required=bool(in_tx and owns_tx_now),
+            )
+            build_error_ctx(
+                ctx,
+                exc,
+                failed_phase=name,
+                err_target=edge.target,
+                rollback_required=edge.target.kind == "rollback",
+            )
             if in_tx:
                 await _rollback_if_owned(db, owns_tx_now, phases=phases, ctx=ctx)
-            err_name = f"ON_{name}_ERROR"
+            err_name = error_phase_for(name)
             try:
                 await _run_chain(
                     ctx, _g(phases, err_name) or _g(phases, "ON_ERROR"), phase=err_name

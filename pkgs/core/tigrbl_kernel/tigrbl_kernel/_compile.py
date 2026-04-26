@@ -168,4 +168,29 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
         )
     except TypeError:
         packed = self._pack_kernel_plan(semantic)
-    return replace(semantic, packed=packed)
+
+    phase_trees = {}
+    has_phase_tree_metadata = all(
+        hasattr(packed, attr)
+        for attr in (
+            "program_phase_tree_offsets",
+            "program_phase_tree_lengths",
+            "phase_tree_nodes",
+        )
+    )
+    if packed is not None and has_phase_tree_metadata:
+        for program_id in range(len(opmeta)):
+            offset = (
+                packed.program_phase_tree_offsets[program_id]
+                if program_id < len(packed.program_phase_tree_offsets)
+                else 0
+            )
+            length = (
+                packed.program_phase_tree_lengths[program_id]
+                if program_id < len(packed.program_phase_tree_lengths)
+                else 0
+            )
+            phase_trees[program_id] = tuple(
+                packed.phase_tree_nodes[offset : offset + length]
+            )
+    return replace(semantic, packed=packed, phase_trees=phase_trees)

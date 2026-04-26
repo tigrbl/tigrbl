@@ -7,6 +7,8 @@ from typing import Any, Dict, List, Mapping
 
 from tigrbl_atoms import StepFn
 from tigrbl_atoms.atoms.sys.phase_db import run as _bind_phase_db
+from tigrbl_atoms.phases import phase_info
+from tigrbl_atoms.types import EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
 
 from . import events as _ev
 from .atoms import (
@@ -280,6 +282,74 @@ def _build_route_matrix(
     return tuple(tuple(row) for row in matrix)
 
 
+def _stage_name(value: Any) -> str | None:
+    return getattr(value, "__name__", None) if value is not None else None
+
+
+def _phase_tree_nodes_for_program(
+    *,
+    program_id: int,
+    segment_ids: tuple[int, ...],
+    segment_phases: tuple[str, ...],
+) -> tuple[PhaseTreeNode, ...]:
+    phase_to_segments: dict[str, list[int]] = {}
+    ordered_phases: list[str] = []
+    for seg_id in segment_ids:
+        phase = str(segment_phases[seg_id])
+        if phase.startswith("ON_"):
+            continue
+        if phase not in phase_to_segments:
+            phase_to_segments[phase] = []
+            ordered_phases.append(phase)
+        phase_to_segments[phase].append(seg_id)
+
+    nodes: list[PhaseTreeNode] = []
+    for idx, phase in enumerate(ordered_phases):
+        node_id = f"program:{program_id}:{phase}"
+        next_node_id = (
+            f"program:{program_id}:{ordered_phases[idx + 1]}"
+            if idx + 1 < len(ordered_phases)
+            else None
+        )
+        try:
+            pinfo = phase_info(phase)  # type: ignore[arg-type]
+            stage_in = _stage_name(pinfo.stage_in)
+            stage_out = _stage_name(pinfo.stage_out)
+            rollback_required = bool(pinfo.in_tx)
+        except Exception:
+            stage_in = None
+            stage_out = None
+            rollback_required = False
+
+        err_phase = error_phase_for(phase)
+        err_target = (
+            EdgeTarget.rollback("ON_ROLLBACK", fallback=err_phase)
+            if rollback_required
+            else EdgeTarget.node(err_phase)
+        )
+        nodes.append(
+            PhaseTreeNode(
+                node_id=node_id,
+                phase=phase,
+                stage_in=stage_in,
+                stage_out=stage_out,
+                segment_ids=tuple(phase_to_segments[phase]),
+                ok_child=PhaseTreeEdge(
+                    kind="ok",
+                    target=(
+                        EdgeTarget.node(next_node_id)
+                        if next_node_id is not None
+                        else EdgeTarget.terminal("ok")
+                    ),
+                ),
+                err_child=PhaseTreeEdge(kind="err", target=err_target),
+                terminal_behavior="continue" if next_node_id is not None else "terminal",
+                linear_index=idx,
+            )
+        )
+    return tuple(nodes)
+
+
 def _pack_kernel_plan(
     self,
     plan: KernelPlan,
@@ -368,6 +438,9 @@ def _pack_kernel_plan(
     )
 
     hot_op_plans: list[HotOpPlan] = []
+    phase_tree_nodes: list[PhaseTreeNode] = []
+    program_phase_tree_offsets: list[int] = []
+    program_phase_tree_lengths: list[int] = []
     for program_id, _meta in enumerate(plan.opmeta):
         meta = plan.opmeta[program_id]
         seg_offset = op_segment_offsets[program_id]
@@ -410,6 +483,15 @@ def _pack_kernel_plan(
                 fusible_sync_segment_ids.append(seg_id)
                 continue
             nonfusible_segment_ids.append(seg_id)
+
+        program_phase_tree_offsets.append(len(phase_tree_nodes))
+        program_nodes = _phase_tree_nodes_for_program(
+            program_id=program_id,
+            segment_ids=tuple((*ordered_segments, *remaining_segments)),
+            segment_phases=tuple(segment_phases),
+        )
+        phase_tree_nodes.extend(program_nodes)
+        program_phase_tree_lengths.append(len(program_nodes))
 
         hot_op_plans.append(
             HotOpPlan(
@@ -459,6 +541,9 @@ def _pack_kernel_plan(
         step_async_flags=tuple(step_async_flags),
         rest_exact_route_to_program=dict(rest_exact_route_to_program or {}),
         hot_op_plans=tuple(hot_op_plans),
+        phase_tree_nodes=tuple(phase_tree_nodes),
+        program_phase_tree_offsets=tuple(program_phase_tree_offsets),
+        program_phase_tree_lengths=tuple(program_phase_tree_lengths),
         executor_kind="python",
     )
     build_python_executor = getattr(self, "_build_python_packed_executor", None)

@@ -1,0 +1,32 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2103"
+number: 2103
+slug: "loop-region-contract"
+title: "Loop Region Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define first-class loop regions for repeated protocol execution."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define first-class loop regions for repeated protocol execution.
+  
+  ## Contract
+  
+  Loop regions declare bounded or unbounded behavior, producer type, stream/message/datagram loop role, break conditions, close and disconnect handling, loop-local errors, and loop-local transaction boundary eligibility.
+  
+  ## Traceability
+  
+  ADRs: adr:1093, adr:1094, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1093"
+  - "adr:1094"
+  - "adr:1100"

@@ -1,0 +1,44 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2115"
+number: 2115
+slug: "typed-ok-err-edge-and-errorctx-contract"
+title: "Typed Ok/Err Edge And ErrorCtx Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the typed ok/err edge algebra and ErrorCtx contract used by compiled protocol phase trees."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the typed ok/err edge algebra and ErrorCtx contract used by compiled protocol phase trees.
+  
+  ## Contract
+  
+  Compiled protocol execution represents every phase tree node with exactly two typed child edges: ok and err. The ok edge advances to the next success node, loop continuation, loop exit, or terminal target. The err edge advances to a governed error target: phase-specific ON_* handling, ON_ERROR fallback, ON_ROLLBACK routing when transaction state requires rollback, or a terminal error target.
+  
+  EdgeKind is limited to ok and err. EdgeTarget identifies a node id, terminal target, loop target, rollback target, or no-op terminal. PhaseTreeNode declares node id, canonical phase, stage input, stage output, segment ids, ok child, err child, terminal behavior, and linear projection metadata.
+  
+  TypedErr is the normalized error value carried by err edges. TypedErr records the original exception class, normalized error code, public/private detail policy, status projection when applicable, persistence-sanitization flag, and retry/cancel/disconnect classification when applicable.
+  
+  ErrorCtx is built when an err edge is taken. ErrorCtx records failing phase, failing atom label and anchor when known, source stage, failed node id, selected err target, transaction ownership/open state, rollback requirement, transport emission/completion state, binding, exchange, runtime family, subevent, scope type, channel ids when present, and the TypedErr value.
+  
+  Atom failures normalize into this contract either by returning FailedCtx through fail(...), raising AtomFailure, or raising an exception that the executor coerces into TypedErr. Individual atoms do not own phase-tree branching; KernelPlan compilation and executors own edge selection and err-edge execution.
+  
+  Stage-specific error contexts may specialize ErrorCtx only when a stage needs additional validated fields. The implementation must not create one bespoke ErrorCtx class per phase unless a field difference is required.
+  
+  Linear phase-chain diagnostics are projections of this typed tree and must preserve observable phase order while omitting edge metadata only in legacy projection views.
+  
+  ## Traceability
+  
+  ADRs: adr:1009, adr:1093, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1009"
+  - "adr:1093"
+  - "adr:1100"

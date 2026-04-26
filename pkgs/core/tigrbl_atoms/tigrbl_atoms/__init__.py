@@ -16,6 +16,12 @@ _LAZY_EXPORTS = {
     "VALID_HOOK_PHASES": "types",
     "StepFn": "types",
     "HookPredicate": "types",
+    "EdgeTarget": "types",
+    "PhaseTreeEdge": "types",
+    "PhaseTreeNode": "types",
+    "TypedErr": "types",
+    "ErrorCtx": "types",
+    "build_error_ctx": "types",
 }
 
 __all__ = [
@@ -28,6 +34,12 @@ __all__ = [
     "VALID_HOOK_PHASES",
     "StepFn",
     "HookPredicate",
+    "EdgeTarget",
+    "PhaseTreeEdge",
+    "PhaseTreeNode",
+    "TypedErr",
+    "ErrorCtx",
+    "build_error_ctx",
     "rust_atoms_enabled",
     "register_rust_atom",
     "register_rust_callback",

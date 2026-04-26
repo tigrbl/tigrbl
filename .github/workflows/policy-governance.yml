@@ -67,4 +67,22 @@ jobs:
         if: >-
           ${{ steps.validate-policy-governance.outcome == 'success' ||
               steps.revalidate-policy-governance.outcome == 'success' }}
-        run: uv run --no-sync python -m pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_ssot_authority_model.py tools/ci/tests/test_declared_surface.py tools/ci/tests/test_rust_parity.py tools/ci/tests/test_tigrcorn_operator_surface.py tools/ci/tests/test_tigrcorn_hardening.py tools/ci/tests/test_claim_lifecycle.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_post_promotion_handoff.py
+        run: |
+          mkdir -p .tmp .uv-cache .uv-pytest-tigrbl-tests
+          export UV_CACHE_DIR="${GITHUB_WORKSPACE}/.uv-cache"
+          export TMPDIR="${GITHUB_WORKSPACE}/.tmp"
+          export TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export TMP="${GITHUB_WORKSPACE}/.tmp"
+          uv run --no-sync python -m pytest -q tools/ci/tests/test_governance_validators.py tools/ci/tests/test_path_length_policy.py tools/ci/tests/test_http_auth_challenges.py tools/ci/tests/test_evidence_registry.py tools/ci/tests/test_certification_tree.py tools/ci/tests/test_ssot_authority_model.py tools/ci/tests/test_declared_surface.py tools/ci/tests/test_rust_parity.py tools/ci/tests/test_tigrcorn_operator_surface.py tools/ci/tests/test_tigrcorn_hardening.py tools/ci/tests/test_claim_lifecycle.py tools/ci/tests/test_gate_b_surface_closure.py tools/ci/tests/test_gate_c_conformance_security.py tools/ci/tests/test_gate_d_reproducibility.py tools/ci/tests/test_gate_e_promotion.py tools/ci/tests/test_post_promotion_handoff.py -p no:cacheprovider --basetemp .uv-pytest-tigrbl-tests
+
+      - name: Run tigrbl_tests gate
+        if: >-
+          ${{ steps.validate-policy-governance.outcome == 'success' ||
+              steps.revalidate-policy-governance.outcome == 'success' }}
+        run: |
+          mkdir -p .tmp .uv-cache .uv-pytest-tigrbl-tests
+          export UV_CACHE_DIR="${GITHUB_WORKSPACE}/.uv-cache"
+          export TMPDIR="${GITHUB_WORKSPACE}/.tmp"
+          export TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export TMP="${GITHUB_WORKSPACE}/.tmp"
+          uv run --no-sync python -m pytest -q pkgs/core/tigrbl_tests/tests -p no:cacheprovider --basetemp .uv-pytest-tigrbl-tests

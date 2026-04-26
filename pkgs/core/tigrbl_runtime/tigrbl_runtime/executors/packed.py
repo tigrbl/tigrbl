@@ -7,6 +7,7 @@ from typing import Any, ClassVar, Mapping
 from operator import attrgetter
 from types import SimpleNamespace
 
+from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
 from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
 
 from .base import ExecutorBase
@@ -699,6 +700,79 @@ class PackedPlanExecutor(ExecutorBase):
         ctx.phase = packed.segment_phases[seg_id]
         await self._resolve_segment_runners(packed)[seg_id](ctx)
 
+    async def _run_error_segments(
+        self,
+        ctx: _Ctx,
+        packed: PackedKernel,
+        error_phase_segments: Mapping[str, tuple[int, ...]],
+        *phase_names: str,
+    ) -> None:
+        seen: set[str] = set()
+        for phase_name in phase_names:
+            if phase_name in seen:
+                continue
+            seen.add(phase_name)
+            for seg_id in error_phase_segments.get(phase_name, ()):
+                try:
+                    await self._run_segment(ctx, packed, seg_id)
+                except Exception:
+                    pass
+
+    async def _run_rollback_edge(
+        self,
+        ctx: _Ctx,
+        packed: PackedKernel,
+        error_phase_segments: Mapping[str, tuple[int, ...]],
+    ) -> None:
+        rollback_segments = error_phase_segments.get("ON_ROLLBACK", ())
+        if rollback_segments:
+            await self._run_error_segments(
+                ctx,
+                packed,
+                error_phase_segments,
+                "ON_ROLLBACK",
+            )
+            return
+
+        db = getattr(ctx, "db", None) or getattr(ctx, "_raw_db", None)
+        rollback = getattr(db, "rollback", None)
+        if not callable(rollback):
+            return
+        rv = rollback()
+        if inspect.isawaitable(rv):
+            await rv
+
+    async def _prepare_error_edge(
+        self,
+        ctx: _Ctx,
+        packed: PackedKernel,
+        error_phase_segments: Mapping[str, tuple[int, ...]],
+        exc: BaseException,
+    ) -> str:
+        failed_phase = str(getattr(ctx, "phase", "") or "")
+        rollback_required = failed_phase in {
+            "START_TX",
+            "PRE_HANDLER",
+            "HANDLER",
+            "POST_HANDLER",
+            "PRE_COMMIT",
+            "END_TX",
+        } and bool(getattr(ctx, "owns_tx", False))
+        edge = select_error_edge(
+            failed_phase,
+            rollback_required=rollback_required,
+        )
+        build_error_ctx(
+            ctx,
+            exc,
+            failed_phase=failed_phase,
+            err_target=edge.target,
+            rollback_required=edge.target.kind == "rollback",
+        )
+        if edge.target.kind == "rollback":
+            await self._run_rollback_edge(ctx, packed, error_phase_segments)
+        return error_phase_for(failed_phase)
+
     def _resolve_error_segments(
         self,
         packed: PackedKernel,
@@ -840,16 +914,20 @@ class PackedPlanExecutor(ExecutorBase):
                     if getattr(exc, "detail", None) not in (None, "")
                     else str(exc)
                 )
-                error_phase = f"ON_{getattr(ctx, 'phase', '')}_ERROR"
+                error_phase = await self._prepare_error_edge(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    exc,
+                )
                 fallback_phase = "ON_ERROR"
-                for seg_id in (
-                    *error_phase_segments.get(error_phase, ()),
-                    *error_phase_segments.get(fallback_phase, ()),
-                ):
-                    try:
-                        await self._run_segment(ctx, packed, seg_id)
-                    except Exception:
-                        pass
+                await self._run_error_segments(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    error_phase,
+                    fallback_phase,
+                )
                 status_code = int(getattr(exc, "status_code", 500) or 500)
                 payload = self._jsonrpc_error_payload(ctx, status_code, detail)
                 await _send_json(
@@ -866,16 +944,20 @@ class PackedPlanExecutor(ExecutorBase):
                     if getattr(std, "detail", None) not in (None, "")
                     else str(std)
                 )
-                error_phase = f"ON_{getattr(ctx, 'phase', '')}_ERROR"
+                error_phase = await self._prepare_error_edge(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    exc,
+                )
                 fallback_phase = "ON_ERROR"
-                for seg_id in (
-                    *error_phase_segments.get(error_phase, ()),
-                    *error_phase_segments.get(fallback_phase, ()),
-                ):
-                    try:
-                        await self._run_segment(ctx, packed, seg_id)
-                    except Exception:
-                        pass
+                await self._run_error_segments(
+                    ctx,
+                    packed,
+                    error_phase_segments,
+                    error_phase,
+                    fallback_phase,
+                )
                 status_code = int(getattr(std, "status_code", 500) or 500)
                 persistence_error = self._is_persistence_exception(exc)
                 if persistence_error:

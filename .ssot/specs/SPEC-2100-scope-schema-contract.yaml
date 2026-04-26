@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2100"
+number: 2100
+slug: "scope-schema-contract"
+title: "Scope Schema Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define canonical scope schemas for protocol runtime surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define canonical scope schemas for protocol runtime surfaces.
+  
+  ## Contract
+  
+  Scope schemas cover HTTP version details, websocket secure and TLS metadata, WebTransport and QUIC extension metadata, lifespan metadata, static-file projection metadata, and validation fixtures for accepted server-boundary inputs.
+  
+  ## Traceability
+  
+  ADRs: adr:1005, adr:1091, adr:1096, adr:1097.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1005"
+  - "adr:1091"
+  - "adr:1096"
+  - "adr:1097"

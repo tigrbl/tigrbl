@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2097"
+number: 2097
+slug: "transport-event-registry-contract"
+title: "Transport Event Registry Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the canonical transport event registry for eventful protocol runtime support."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the canonical transport event registry for eventful protocol runtime support.
+  
+  ## Contract
+  
+  The registry declares inbound and outbound transport events, direction, required or optional status, event-to-scope mapping, extension namespace, and validation expectations for HTTP, WebSocket/WSS, WebTransport, static files, lifespan, callbacks, and webhooks.
+  
+  ## Traceability
+  
+  ADRs: adr:1091, adr:1095, adr:1096, adr:1097.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1091"
+  - "adr:1095"
+  - "adr:1096"
+  - "adr:1097"

@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2101"
+number: 2101
+slug: "kernel-anchor-extension-contract"
+title: "Kernel Anchor Extension Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the additional protocol-runtime kernel anchors."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the additional protocol-runtime kernel anchors.
+  
+  ## Contract
+  
+  The anchor catalog includes dispatch.exchange.select, dispatch.family.derive, dispatch.subevent.derive, framing.decode, framing.encode, transport.accept, transport.emit, transport.close, and transport.emit_complete with stable phase placement and ordering semantics.
+  
+  The typed error branch catalog includes err.ctx.build, err.classify, err.rollback, and err.transport.shape. These anchors are legal only on governed error or rollback edges and are interpreted through the typed ok/err and ErrorCtx contract in spc:2115.
+  
+  ## Traceability
+  
+  ADRs: adr:1008, adr:1091, adr:1095, adr:1100.
+  
+  Related SPECs: spc:2115.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1008"
+  - "adr:1091"
+  - "adr:1095"
+  - "adr:1100"

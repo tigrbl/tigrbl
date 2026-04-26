@@ -30,6 +30,7 @@ from .stages import (
     Emitting,
     Encoded,
     Executing,
+    Failed,
     Ingress,
     Operated,
     Resolved,
@@ -94,6 +95,11 @@ EGRESS_HTTP_FINALIZE = "egress.http.finalize"
 EGRESS_TO_TRANSPORT_RESPONSE = "egress.to_transport_response"
 EGRESS_ASGI_SEND = "egress.asgi.send"
 
+ERR_CTX_BUILD = "err.ctx.build"
+ERR_CLASSIFY = "err.classify"
+ERR_ROLLBACK = "err.rollback"
+ERR_TRANSPORT_SHAPE = "err.transport.shape"
+
 _EVENT_ORDER: Tuple[str, ...] = (
     INGRESS_CTX_INIT,
     INGRESS_TRANSPORT_EXTRACT,
@@ -126,6 +132,10 @@ _EVENT_ORDER: Tuple[str, ...] = (
     EGRESS_HTTP_FINALIZE,
     EGRESS_TO_TRANSPORT_RESPONSE,
     EGRESS_ASGI_SEND,
+    ERR_CTX_BUILD,
+    ERR_CLASSIFY,
+    ERR_ROLLBACK,
+    ERR_TRANSPORT_SHAPE,
 )
 
 
@@ -173,6 +183,10 @@ _ANCHOR_PHASE: Dict[str, Phase] = {
     EGRESS_HTTP_FINALIZE: EGRESS_FINALIZE,
     EGRESS_TO_TRANSPORT_RESPONSE: EGRESS_FINALIZE,
     EGRESS_ASGI_SEND: EGRESS_FINALIZE,
+    ERR_CTX_BUILD: "ON_ERROR",
+    ERR_CLASSIFY: "ON_ERROR",
+    ERR_ROLLBACK: "ON_ROLLBACK",
+    ERR_TRANSPORT_SHAPE: "ON_ERROR",
 }
 
 _ANCHOR_STAGE: Dict[str, Tuple[Stage, Stage]] = {
@@ -207,6 +221,10 @@ _ANCHOR_STAGE: Dict[str, Tuple[Stage, Stage]] = {
     EGRESS_HTTP_FINALIZE: (Emitting, Emitting),
     EGRESS_TO_TRANSPORT_RESPONSE: (Emitting, Egressed),
     EGRESS_ASGI_SEND: (Egressed, Egressed),
+    ERR_CTX_BUILD: (Failed, Failed),
+    ERR_CLASSIFY: (Failed, Failed),
+    ERR_ROLLBACK: (Failed, Failed),
+    ERR_TRANSPORT_SHAPE: (Failed, Failed),
 }
 
 _PERSIST_TIED = {
@@ -216,6 +234,7 @@ _PERSIST_TIED = {
     EMIT_ALIASES_PRE,
     SYS_HANDLER_PERSISTENCE,
     SYS_TX_COMMIT,
+    ERR_ROLLBACK,
     POST_FLUSH,
     EMIT_ALIASES_POST,
 }
@@ -380,6 +399,10 @@ __all__ = [
     "EGRESS_HTTP_FINALIZE",
     "EGRESS_TO_TRANSPORT_RESPONSE",
     "EGRESS_ASGI_SEND",
+    "ERR_CTX_BUILD",
+    "ERR_CLASSIFY",
+    "ERR_ROLLBACK",
+    "ERR_TRANSPORT_SHAPE",
     "AnchorInfo",
     "is_valid_event",
     "phase_for_event",

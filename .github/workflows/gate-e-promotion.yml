@@ -28,4 +28,19 @@ jobs:
         run: uv run --no-sync python tools/ci/validate_gate_e_promotion.py
 
       - name: Run Gate E validator tests
-        run: uv run --no-sync python -m pytest -q tools/ci/tests/test_gate_e_promotion.py -p no:cacheprovider
+        run: |
+          mkdir -p .tmp .uv-cache .uv-pytest-tigrbl-tests
+          export UV_CACHE_DIR="${GITHUB_WORKSPACE}/.uv-cache"
+          export TMPDIR="${GITHUB_WORKSPACE}/.tmp"
+          export TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export TMP="${GITHUB_WORKSPACE}/.tmp"
+          uv run --no-sync python -m pytest -q tools/ci/tests/test_gate_e_promotion.py -p no:cacheprovider --basetemp .uv-pytest-tigrbl-tests
+
+      - name: Run tigrbl_tests gate
+        run: |
+          mkdir -p .tmp .uv-cache .uv-pytest-tigrbl-tests
+          export UV_CACHE_DIR="${GITHUB_WORKSPACE}/.uv-cache"
+          export TMPDIR="${GITHUB_WORKSPACE}/.tmp"
+          export TEMP="${GITHUB_WORKSPACE}/.tmp"
+          export TMP="${GITHUB_WORKSPACE}/.tmp"
+          uv run --no-sync python -m pytest -q pkgs/core/tigrbl_tests/tests -p no:cacheprovider --basetemp .uv-pytest-tigrbl-tests

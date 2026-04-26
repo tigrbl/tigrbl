@@ -1,0 +1,31 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2112"
+number: 2112
+slug: "webhook-delivery-contract"
+title: "Webhook Delivery Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define first-class outbound webhook delivery."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define first-class outbound webhook delivery.
+  
+  ## Contract
+  
+  Webhook delivery declares event schema, outbound transport contract, payload framing, signing and authentication, retry and backoff, timeout, dead-letter handling, idempotency, delivery status, completion subevents, docs projection, and verification behavior.
+  
+  ## Traceability
+  
+  ADRs: adr:1099, adr:1100.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1099"
+  - "adr:1100"

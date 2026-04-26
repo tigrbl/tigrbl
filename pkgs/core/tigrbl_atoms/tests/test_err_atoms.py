@@ -3,11 +3,22 @@ from __future__ import annotations
 import asyncio
 from types import SimpleNamespace
 
-from tigrbl_atoms.atoms.err import rollback
+from tigrbl_atoms import events as _ev
+from tigrbl_atoms.atoms.err import REGISTRY, classify, ctx_build, rollback, transport_shape
 
 
 def test_err_rollback_anchor_constant() -> None:
-    assert rollback.ANCHOR == "ON_ROLLBACK"
+    assert rollback.ANCHOR == _ev.ERR_ROLLBACK
+
+
+def test_err_registry_includes_typed_error_atoms() -> None:
+    assert REGISTRY[("err", "ctx_build")] == (ctx_build.ANCHOR, ctx_build.run)
+    assert REGISTRY[("err", "classify")] == (classify.ANCHOR, classify.run)
+    assert REGISTRY[("err", "rollback")] == (rollback.ANCHOR, rollback.run)
+    assert REGISTRY[("err", "transport_shape")] == (
+        transport_shape.ANCHOR,
+        transport_shape.run,
+    )
 
 
 def test_resolve_db_handle_prefers_db_over_session() -> None:

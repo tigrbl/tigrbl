@@ -3,7 +3,7 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from dataclasses import MISSING, dataclass, field, fields, is_dataclass
 from enum import Enum
-from typing import Any, Awaitable, Callable, Final, Tuple, cast, final
+from typing import Any, Awaitable, Callable, Final, Literal, Tuple, cast, final
 
 from collections.abc import Mapping
 
@@ -26,6 +26,211 @@ S = TypeVar("S")
 T = TypeVar("T")
 U = TypeVar("U")
 E = TypeVar("E", default=Exception)
+
+EdgeKind: TypeAlias = Literal["ok", "err"]
+EdgeTargetKind: TypeAlias = Literal["node", "terminal", "loop", "rollback", "noop"]
+
+_EDGE_KINDS: Final[frozenset[str]] = frozenset(("ok", "err"))
+_EDGE_TARGET_KINDS: Final[frozenset[str]] = frozenset(
+    ("node", "terminal", "loop", "rollback", "noop")
+)
+
+_ERROR_PHASES: Final[frozenset[str]] = frozenset(
+    (
+        "ON_ERROR",
+        "ON_PRE_TX_BEGIN_ERROR",
+        "ON_START_TX_ERROR",
+        "ON_PRE_HANDLER_ERROR",
+        "ON_HANDLER_ERROR",
+        "ON_POST_HANDLER_ERROR",
+        "ON_PRE_COMMIT_ERROR",
+        "ON_END_TX_ERROR",
+        "ON_POST_COMMIT_ERROR",
+        "ON_POST_RESPONSE_ERROR",
+        "ON_ROLLBACK",
+    )
+)
+
+_TX_PHASES: Final[frozenset[str]] = frozenset(
+    (
+        "START_TX",
+        "PRE_HANDLER",
+        "HANDLER",
+        "POST_HANDLER",
+        "PRE_COMMIT",
+        "END_TX",
+    )
+)
+
+
+@dataclass(frozen=True, slots=True)
+class EdgeTarget:
+    kind: EdgeTargetKind
+    ref: str | None = None
+    fallback: str | None = None
+
+    def __post_init__(self) -> None:
+        if self.kind not in _EDGE_TARGET_KINDS:
+            raise ValueError(f"unknown edge target kind: {self.kind!r}")
+        if self.kind in {"node", "terminal", "loop", "rollback"} and not self.ref:
+            raise ValueError(f"{self.kind} edge target requires ref")
+
+    @classmethod
+    def node(cls, node_id: str) -> "EdgeTarget":
+        return cls(kind="node", ref=node_id)
+
+    @classmethod
+    def terminal(cls, name: str) -> "EdgeTarget":
+        return cls(kind="terminal", ref=name)
+
+    @classmethod
+    def loop(cls, node_id: str) -> "EdgeTarget":
+        return cls(kind="loop", ref=node_id)
+
+    @classmethod
+    def rollback(cls, phase: str = "ON_ROLLBACK", *, fallback: str = "ON_ERROR") -> "EdgeTarget":
+        return cls(kind="rollback", ref=phase, fallback=fallback)
+
+    @classmethod
+    def noop(cls) -> "EdgeTarget":
+        return cls(kind="noop")
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseTreeEdge:
+    kind: EdgeKind
+    target: EdgeTarget
+
+    def __post_init__(self) -> None:
+        if self.kind not in _EDGE_KINDS:
+            raise ValueError(f"unknown edge kind: {self.kind!r}")
+
+
+@dataclass(frozen=True, slots=True)
+class PhaseTreeNode:
+    node_id: str
+    phase: str
+    stage_in: str | None
+    stage_out: str | None
+    segment_ids: tuple[int, ...]
+    ok_child: PhaseTreeEdge
+    err_child: PhaseTreeEdge
+    terminal_behavior: str = "continue"
+    linear_index: int = 0
+
+    def __post_init__(self) -> None:
+        if self.ok_child.kind != "ok":
+            raise ValueError("PhaseTreeNode.ok_child must be an ok edge")
+        if self.err_child.kind != "err":
+            raise ValueError("PhaseTreeNode.err_child must be an err edge")
+
+
+@dataclass(frozen=True, slots=True)
+class TypedErr:
+    exc_type: str
+    code: str
+    message: str
+    status_code: int | None = None
+    public_detail: object | None = None
+    detail_is_public: bool = True
+    sanitize_detail: bool = False
+    retryable: bool = False
+    cancellation: bool = False
+    disconnect: bool = False
+
+    @classmethod
+    def from_error(cls, error: object, *, ctx: object | None = None) -> "TypedErr":
+        if isinstance(error, TypedErr):
+            return error
+
+        exc_type = type(error).__name__
+        code = str(getattr(error, "code", None) or exc_type)
+        message = str(error) or exc_type
+        status = getattr(error, "status", None)
+        if status is None:
+            status = getattr(error, "status_code", None)
+        try:
+            status_code = int(status) if status is not None else None
+        except (TypeError, ValueError):
+            status_code = None
+
+        detail = getattr(error, "detail", None)
+        if detail in (None, ""):
+            detail = getattr(error, "details", None)
+        if detail in (None, ""):
+            detail = message
+
+        sanitize = False
+        try:
+            from tigrbl_typing.status.utils import is_persistence_exception
+
+            sanitize = bool(is_persistence_exception(error))
+        except Exception:
+            sanitize = False
+
+        name = exc_type.lower()
+        cancellation = "cancel" in name
+        disconnect = "disconnect" in name or "connectionclosed" in name
+        if sanitize:
+            return cls(
+                exc_type=exc_type,
+                code=code,
+                message=message,
+                status_code=500,
+                public_detail="Internal error",
+                detail_is_public=False,
+                sanitize_detail=True,
+                cancellation=cancellation,
+                disconnect=disconnect,
+            )
+
+        del ctx
+        return cls(
+            exc_type=exc_type,
+            code=code,
+            message=message,
+            status_code=status_code,
+            public_detail=detail,
+            cancellation=cancellation,
+            disconnect=disconnect,
+        )
+
+
+def normalize_typed_err(error: object, *, ctx: object | None = None) -> TypedErr:
+    return TypedErr.from_error(error, ctx=ctx)
+
+
+def error_phase_for(phase: str | None) -> str:
+    if not phase:
+        return "ON_ERROR"
+    phase_name = str(phase)
+    if phase_name in _ERROR_PHASES:
+        return phase_name
+    candidate = f"ON_{phase_name}_ERROR"
+    return candidate if candidate in _ERROR_PHASES else "ON_ERROR"
+
+
+def phase_requires_rollback(
+    phase: str | None,
+    *,
+    tx_open: bool = True,
+    owns_tx: bool = True,
+) -> bool:
+    return bool(tx_open and owns_tx and phase in _TX_PHASES)
+
+
+def select_error_edge(
+    phase: str | None,
+    *,
+    rollback_required: bool = False,
+) -> PhaseTreeEdge:
+    err_phase = error_phase_for(phase)
+    target = (
+        EdgeTarget.rollback("ON_ROLLBACK", fallback=err_phase)
+        if rollback_required
+        else EdgeTarget.node(err_phase)
+    )
+    return PhaseTreeEdge(kind="err", target=target)
 
 
 PHASE_SEQUENCE: Final[tuple[str, ...]] = (
@@ -277,6 +482,30 @@ class EgressedCtx(EmittingCtx[E], Generic[E]):
 @dataclass(slots=True)
 class FailedCtx(BaseCtx[Failed, E], Generic[E]):
     error: E | None = None
+    typed_error: TypedErr | None = None
+
+
+@dataclass(slots=True)
+class ErrorCtx(FailedCtx[E], Generic[E]):
+    failed_phase: str | None = None
+    failed_node_id: str | None = None
+    failing_atom_label: str | None = None
+    failing_anchor: str | None = None
+    source_stage: str | None = None
+    err_target: EdgeTarget | None = None
+    tx_open: bool = False
+    owns_tx: bool = False
+    rollback_required: bool = False
+    transport_started: bool = False
+    transport_complete: bool = False
+    binding: str | None = None
+    exchange: str | None = None
+    family: str | None = None
+    subevent: str | None = None
+    scope_type: str | None = None
+    channel_id: str | None = None
+    stream_id: str | None = None
+    datagram_id: str | None = None
 
 
 AtomResult: TypeAlias = Ctx[T, E] | FailedCtx[E]
@@ -288,6 +517,7 @@ def fail(ctx: Ctx[S, E], error: E, /, **updates: object) -> FailedCtx[E]:
         ctx.promote(
             FailedCtx,
             error=error,
+            typed_error=normalize_typed_err(error, ctx=ctx),
             **updates,
         ),
     )
@@ -302,6 +532,128 @@ class AtomFailure(Exception):
     def __init__(self, error: object) -> None:
         super().__init__(str(error))
         self.error = error
+
+
+def _string_or_none(value: object) -> str | None:
+    return value if isinstance(value, str) and value else None
+
+
+def _ctx_get(ctx: object, key: str, default: object = None) -> object:
+    getter = getattr(ctx, "get", None)
+    if callable(getter):
+        try:
+            return getter(key, default)
+        except Exception:
+            pass
+    value = getattr(ctx, key, default)
+    if value is not default:
+        return value
+    bag = getattr(ctx, "bag", None)
+    if isinstance(bag, Mapping):
+        return bag.get(key, default)
+    return default
+
+
+def _ctx_temp(ctx: object) -> dict[str, object]:
+    temp = getattr(ctx, "temp", None)
+    if not isinstance(temp, dict):
+        temp = {}
+        try:
+            setattr(ctx, "temp", temp)
+        except Exception:
+            return {}
+    return temp
+
+
+def _transport_state(ctx: object) -> tuple[bool, bool]:
+    temp = getattr(ctx, "temp", None)
+    egress = temp.get("egress") if isinstance(temp, dict) else None
+    transport_started = bool(
+        _ctx_get(ctx, "transport_started", False)
+        or (
+            isinstance(egress, dict)
+            and bool(egress.get("transport_response") or egress.get("started"))
+        )
+    )
+    transport_complete = bool(
+        _ctx_get(ctx, "transport_complete", False)
+        or _ctx_get(ctx, "current_phase") == "POST_EMIT"
+        or (
+            isinstance(egress, dict)
+            and bool(egress.get("transport_complete") or egress.get("emit_complete"))
+        )
+    )
+    return transport_started, transport_complete
+
+
+def build_error_ctx(
+    ctx: Ctx[S, E],
+    error: object,
+    *,
+    failed_phase: str | None = None,
+    failed_node_id: str | None = None,
+    failing_atom_label: str | None = None,
+    failing_anchor: str | None = None,
+    err_target: EdgeTarget | None = None,
+    rollback_required: bool = False,
+) -> ErrorCtx[E]:
+    phase = failed_phase or _string_or_none(_ctx_get(ctx, "phase"))
+    phase = phase or _string_or_none(_ctx_get(ctx, "current_phase"))
+    typed_error = normalize_typed_err(error, ctx=ctx)
+    temp = _ctx_temp(ctx)
+    tx_open = bool(
+        _ctx_get(ctx, "tx_open", False)
+        or _ctx_get(ctx, "owns_tx", False)
+        or temp.get("__sys_tx_open__")
+    )
+    owns_tx = bool(_ctx_get(ctx, "owns_tx", False))
+    rollback = bool(
+        rollback_required
+        or phase_requires_rollback(phase, tx_open=tx_open, owns_tx=owns_tx)
+    )
+    edge = err_target or select_error_edge(phase, rollback_required=rollback).target
+    transport_started, transport_complete = _transport_state(ctx)
+    raw = _ctx_get(ctx, "raw")
+    scope = getattr(raw, "scope", None)
+    scope_type = scope.get("type") if isinstance(scope, Mapping) else None
+    channel = _ctx_get(ctx, "channel")
+
+    error_ctx = ctx.promote(
+        ErrorCtx,
+        error=cast(E, error),
+        typed_error=typed_error,
+        failed_phase=phase,
+        failed_node_id=failed_node_id,
+        failing_atom_label=failing_atom_label,
+        failing_anchor=failing_anchor,
+        source_stage=_string_or_none(_ctx_get(ctx, "stage"))
+        or type(ctx).__name__,
+        err_target=edge,
+        tx_open=tx_open,
+        owns_tx=owns_tx,
+        rollback_required=rollback,
+        transport_started=transport_started,
+        transport_complete=transport_complete,
+        binding=_string_or_none(_ctx_get(ctx, "binding")),
+        exchange=_string_or_none(_ctx_get(ctx, "exchange")),
+        family=_string_or_none(_ctx_get(ctx, "family")),
+        subevent=_string_or_none(_ctx_get(ctx, "subevent")),
+        scope_type=_string_or_none(scope_type),
+        channel_id=_string_or_none(getattr(channel, "channel_id", None))
+        or _string_or_none(_ctx_get(ctx, "channel_id")),
+        stream_id=_string_or_none(_ctx_get(ctx, "stream_id")),
+        datagram_id=_string_or_none(_ctx_get(ctx, "datagram_id")),
+    )
+    try:
+        ctx.error = cast(E, error)
+        ctx.error_phase = error_phase_for(phase)
+        setattr(ctx, "typed_error", typed_error)
+        setattr(ctx, "error_ctx", error_ctx)
+    except Exception:
+        pass
+    temp["typed_err"] = typed_error
+    temp["error_ctx"] = error_ctx
+    return error_ctx
 
 
 class Atom(ABC, Generic[S, T, E]):
@@ -376,6 +728,12 @@ __all__ = [
     "VALID_HOOK_PHASES",
     "StepFn",
     "HookPredicate",
+    "EdgeKind",
+    "EdgeTargetKind",
+    "EdgeTarget",
+    "PhaseTreeEdge",
+    "PhaseTreeNode",
+    "TypedErr",
     "AtomResult",
     "BaseCtx",
     "BootCtx",
@@ -391,9 +749,15 @@ __all__ = [
     "EmittingCtx",
     "EgressedCtx",
     "FailedCtx",
+    "ErrorCtx",
     "AtomFailure",
     "Atom",
     "StandardAtom",
+    "normalize_typed_err",
+    "error_phase_for",
+    "phase_requires_rollback",
+    "select_error_edge",
+    "build_error_ctx",
     "promote",
     "fail",
     "has_error",
