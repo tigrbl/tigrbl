@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1092"
+number: 1092
+slug: "runtime-subevent-expansion-boundary"
+title: "Runtime subevent expansion boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Current runtime channels expose coarse subevents. The target protocol model requires request, response, session, message, stream, and datagram leaves to express ordering and loop semantics without creating protocol-specific phase systems."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Tigrbl promotes qualified runtime subevents as first-class contract vocabulary.
+  2. Qualified subevents use the form <family>.<leaf>.
+  3. Coarse transport-derived verbs remain compatibility/default channel vocabulary, not the full semantic subevent model.
+  4. Subevent derivation occurs after binding, exchange, family, scope, and framing normalization.
+  5. Hooks, legality matrices, diagnostics, and executor loops must use normalized subevent names when subevent specificity is required.
+  
+  ## Context
+  
+  Current runtime channels expose coarse subevents. The target protocol model requires request, response, session, message, stream, and datagram leaves to express ordering and loop semantics without creating protocol-specific phase systems.
+  
+  ## Consequences
+  
+  - Subevent expansion is governed separately from transport event naming.
+  - Existing coarse subevents can be migrated through projection rules.
+  - Future message and datagram leaves require explicit SPEC coverage.
+  
+  ## Related
+  
+  ADR-1006, ADR-1010, ADR-1024, ADR-1025, ADR-1091.

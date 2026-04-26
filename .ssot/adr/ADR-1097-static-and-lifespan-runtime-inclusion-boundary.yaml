@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1097"
+number: 1097
+slug: "static-and-lifespan-runtime-inclusion-boundary"
+title: "Static and lifespan runtime inclusion boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Static files and lifespan currently have special handling relative to ordinary operation execution. The target protocol inventory requires clear phase-chain or explicit bypass authority for both."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Static files and lifespan are governed runtime surfaces, not invisible exceptions to the execution contract.
+  2. Each surface must declare whether it enters KernelPlan execution or remains an explicit out-of-band boundary.
+  3. If out-of-band, the bypass is still governed, named, tested, and documented.
+  4. Static file behavior must preserve security, path, file-send, cache, and completion semantics.
+  5. Lifespan behavior must preserve startup, shutdown, app-readiness, and failure ordering semantics.
+  
+  ## Context
+  
+  Static files and lifespan currently have special handling relative to ordinary operation execution. The target protocol inventory requires clear phase-chain or explicit bypass authority for both.
+  
+  ## Consequences
+  
+  - Static and lifespan are included in support and legality inventories.
+  - Bypass behavior cannot reintroduce unmanaged transport paths.
+  - Future KernelPlan inclusion remains a governed implementation choice.
+  
+  ## Related
+  
+  ADR-1005, ADR-1007, ADR-1009, ADR-1057, ADR-1076, ADR-1091, ADR-1093.

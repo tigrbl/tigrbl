@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1100"
+number: 1100
+slug: "protocol-kernelplan-compilation-boundary"
+title: "Protocol KernelPlan compilation boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The target architecture depends on compiling atoms, kernel plans, phase chains, and phase trees from BindingSpecs and tigr-asgi-contract-derived semantics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. BindingSpecs compile into protocol-specific KernelPlan artifacts: atom chains, loop regions, phase trees, and legality metadata.
+  2. Protocol specialization belongs in KernelPlan compilation and runtime executors, not in ad hoc concrete transport bypasses.
+  3. Compiled plans must preserve the semantic operation model while selecting binding, exchange, family, subevent, framing, transport, tx unit, and hook buckets.
+  4. Optimizers may fuse atoms and segments only when declared legality and observable ordering are preserved.
+  5. Python and Rust executors must consume equivalent plan semantics for certified protocol claims.
+  
+  ## Context
+  
+  The target architecture depends on compiling atoms, kernel plans, phase chains, and phase trees from BindingSpecs and tigr-asgi-contract-derived semantics.
+  
+  ## Consequences
+  
+  - Protocol execution becomes inspectable and certifiable at plan level.
+  - Runtime adapters no longer own hidden protocol control flow.
+  - Future profiles can be certified from generated legality and evidence matrices.
+  
+  ## Related
+  
+  ADR-1001, ADR-1003, ADR-1006, ADR-1008, ADR-1016, ADR-1020, ADR-1091, ADR-1093, ADR-1094, ADR-1095.

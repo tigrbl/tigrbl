@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1099"
+number: 1099
+slug: "first-class-webhook-delivery-boundary"
+title: "First-class webhook delivery boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The target runtime needs outbound event delivery without conflating it with in-process hooks or continuation callbacks."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Webhooks are first-class outbound delivery surfaces, separate from hooks and callbacks.
+  2. Webhook delivery is not a userland HTTP side effect hidden inside handlers.
+  3. Webhook events, payload framing, signing/auth, retry, timeout, idempotency, dead-letter, and delivery status require explicit contracts.
+  4. Webhook delivery ordering relative to transactions, egress, callbacks, and POST_EMIT must be explicit.
+  5. Webhook delivery must be observable and testable as a governed runtime surface.
+  
+  ## Context
+  
+  The target runtime needs outbound event delivery without conflating it with in-process hooks or continuation callbacks.
+  
+  ## Consequences
+  
+  - Webhooks receive their own BindingSpec or equivalent delivery specification.
+  - Delivery success, failure, and retry become certifiable behavior.
+  - Hidden handler-owned outbound delivery is non-conforming for first-class webhook claims.
+  
+  ## Related
+  
+  ADR-1006, ADR-1010, ADR-1016, ADR-1020, ADR-1068, ADR-1091, ADR-1098.

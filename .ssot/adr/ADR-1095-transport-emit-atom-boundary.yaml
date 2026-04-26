@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1095"
+number: 1095
+slug: "transport-emit-atom-boundary"
+title: "Transport emit atom boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Protocol-specific response send behavior is currently adapter-backed. The target model needs transport emission to be visible to KernelPlan ordering, diagnostics, and conformance evidence."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Transport accept, emit, close, and emit-complete are governed runtime atom boundaries.
+  2. These atoms belong to runtime/egress execution, not user hooks and not hidden response adapter behavior.
+  3. Transport atoms translate normalized runtime output into ASGI send events or supported server extension events.
+  4. Completed emission is represented by POST_EMIT when the selected transport exposes an explicit completion fence.
+  5. Transport atom implementations must preserve ASGI3 boundaries and Python/Rust executor parity expectations.
+  
+  ## Context
+  
+  Protocol-specific response send behavior is currently adapter-backed. The target model needs transport emission to be visible to KernelPlan ordering, diagnostics, and conformance evidence.
+  
+  ## Consequences
+  
+  - Egress code gains small protocol-neutral atom anchors.
+  - Transport completion is separated from POST_RESPONSE hooks.
+  - Protocol-specific send mechanics remain behind runtime-owned adapters.
+  
+  ## Related
+  
+  ADR-1005, ADR-1008, ADR-1009, ADR-1016, ADR-1068, ADR-1091.
