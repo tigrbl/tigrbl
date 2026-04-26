@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1103"
+number: 1103
+slug: "opchannel-runtime-boundary"
+title: "OpChannel Runtime Boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "OpChannel Runtime Boundary"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nOpChannel protocol/trait belongs at typing/ports boundaries; runtime owns concrete channel adapters; kernel stores only channel requirements and capability masks.`n`n## Rationale`nThis prevents concrete/runtime/kernel coupling while giving transport atoms one execution target.`n`n## Consequences`nPython defines typing protocol in tigrbl_typing and adapters in tigrbl_runtime. Rust defines ports trait and runtime adapters.`n`n## Traceability`nLinks: adr:1002, adr:1005, adr:1025, adr:1086, adr:1095, spc:2099, spc:2108.

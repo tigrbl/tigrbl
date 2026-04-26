@@ -13047,7 +13047,9 @@
       "spec_ids": [
         "spc:2091"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:default-root-path-contract-001"
+      ],
       "test_ids": [
         "tst:default-root-path-python-unit-001",
         "tst:default-root-path-rust-runtime-contract-001",
@@ -21179,6 +21181,278 @@
           "applicability": "required"
         }
       }
+    },
+    {
+      "id": "feat:two-axis-lifecycle-matrix-001",
+      "title": "Two-axis lifecycle matrix",
+      "description": "Tracks the authoritative subevent x phase lifecycle matrix as compiler-governed data.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2116"
+      ],
+      "claim_ids": [
+        "clm:two-axis-lifecycle-matrix-001"
+      ],
+      "test_ids": [
+        "tst:two-axis-lifecycle-matrix-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:eventkey-bit-coded-dispatch-001",
+      "title": "EventKey bit-coded dispatch",
+      "description": "Tracks integer and bit-coded EventKey derivation, packed dispatch buckets, and no hot-path dict/string matching.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2117"
+      ],
+      "claim_ids": [
+        "clm:eventkey-bit-coded-dispatch-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-bit-coded-dispatch-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:opchannel-capability-handshake-001",
+      "title": "OpChannel capability handshake",
+      "description": "Tracks compiled required capability masks versus runtime adapter capabilities.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2118"
+      ],
+      "claim_ids": [
+        "clm:opchannel-capability-handshake-001"
+      ],
+      "test_ids": [
+        "tst:opchannel-capability-handshake-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:subevent-handler-dispatch-001",
+      "title": "Subevent handler dispatch",
+      "description": "Tracks subevent_ctx, handler buckets, EventKey handler selection, and owner-vs-dispatch interaction.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2119",
+        "spc:2120"
+      ],
+      "claim_ids": [
+        "clm:subevent-handler-dispatch-001"
+      ],
+      "test_ids": [
+        "tst:subevent-handler-dispatch-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:owner-dispatch-loop-modes-001",
+      "title": "Owner and dispatch loop modes",
+      "description": "Tracks explicit owner and dispatch loop modes, defaults, invalid combinations, and runtime loop control.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2120"
+      ],
+      "claim_ids": [
+        "clm:owner-dispatch-loop-modes-001"
+      ],
+      "test_ids": [
+        "tst:owner-dispatch-loop-modes-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:completion-fence-emit-complete-001",
+      "title": "Completion fence emit-complete semantics",
+      "description": "Tracks POST_RESPONSE projected as POST_EMIT, emit_complete subevents, and acknowledged-vs-queued send semantics.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2121"
+      ],
+      "claim_ids": [
+        "clm:completion-fence-emit-complete-001"
+      ],
+      "test_ids": [
+        "tst:completion-fence-emit-complete-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:segment-fusion-barrier-policy-001",
+      "title": "Segment fusion barrier policy",
+      "description": "Tracks fusible atom classes and hard barriers across deps, tx, handler, transport, rollback, and completion fences.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2122"
+      ],
+      "claim_ids": [
+        "clm:segment-fusion-barrier-policy-001"
+      ],
+      "test_ids": [
+        "tst:segment-fusion-barrier-policy-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:eventful-protocol-decorator-surface-001",
+      "title": "Eventful protocol decorator surface",
+      "description": "Tracks websocket_ctx, sse_ctx, stream_ctx, webtransport_ctx, subevent_ctx, and optional on mapping sugar.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2123"
+      ],
+      "claim_ids": [
+        "clm:eventful-protocol-decorator-surface-001"
+      ],
+      "test_ids": [
+        "tst:eventful-protocol-decorator-surface-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:primary-secondary-subevent-selection-001",
+      "title": "Primary and secondary subevent selection",
+      "description": "Tracks one-primary-subevent-per-executable-unit and secondary annotation handling.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2116"
+      ],
+      "claim_ids": [
+        "clm:primary-secondary-subevent-selection-001"
+      ],
+      "test_ids": [
+        "tst:primary-secondary-subevent-selection-contract-001"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:eventkey-hook-bucket-compilation-001",
+      "title": "EventKey hook bucket compilation",
+      "description": "Tracks compile-time wildcard expansion and concrete hook bucket generation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "protocol-runtime-governance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2117",
+        "spc:2119"
+      ],
+      "claim_ids": [
+        "clm:eventkey-hook-bucket-compilation-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-hook-bucket-compilation-contract-001"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -29568,8 +29842,12 @@
       "feature_ids": [
         "feat:default-root-path-contract-001"
       ],
-      "claim_ids": [],
-      "evidence_ids": []
+      "claim_ids": [
+        "clm:default-root-path-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:default-root-path-python-unit-001"
+      ]
     },
     {
       "id": "tst:default-root-path-rust-runtime-contract-001",
@@ -29580,8 +29858,12 @@
       "feature_ids": [
         "feat:default-root-path-contract-001"
       ],
-      "claim_ids": [],
-      "evidence_ids": []
+      "claim_ids": [
+        "clm:default-root-path-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:default-root-path-rust-runtime-contract-001"
+      ]
     },
     {
       "id": "tst:tigrbl-tests-tests-security-test-dot-notation-schemes",
@@ -35715,6 +35997,166 @@
       "evidence_ids": [
         "evd:packed-executor-http-persistence-classification"
       ]
+    },
+    {
+      "id": "tst:two-axis-lifecycle-matrix-contract-001",
+      "title": "Two-axis lifecycle matrix contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:two-axis-lifecycle-matrix-001"
+      ],
+      "claim_ids": [
+        "clm:two-axis-lifecycle-matrix-001"
+      ],
+      "evidence_ids": [
+        "evd:two-axis-lifecycle-matrix-contract-001"
+      ]
+    },
+    {
+      "id": "tst:eventkey-bit-coded-dispatch-contract-001",
+      "title": "EventKey bit-coded dispatch contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:eventkey-bit-coded-dispatch-001"
+      ],
+      "claim_ids": [
+        "clm:eventkey-bit-coded-dispatch-001"
+      ],
+      "evidence_ids": [
+        "evd:eventkey-bit-coded-dispatch-contract-001"
+      ]
+    },
+    {
+      "id": "tst:opchannel-capability-handshake-contract-001",
+      "title": "OpChannel capability handshake contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:opchannel-capability-handshake-001"
+      ],
+      "claim_ids": [
+        "clm:opchannel-capability-handshake-001"
+      ],
+      "evidence_ids": [
+        "evd:opchannel-capability-handshake-contract-001"
+      ]
+    },
+    {
+      "id": "tst:subevent-handler-dispatch-contract-001",
+      "title": "Subevent handler dispatch contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:subevent-handler-dispatch-001"
+      ],
+      "claim_ids": [
+        "clm:subevent-handler-dispatch-001"
+      ],
+      "evidence_ids": [
+        "evd:subevent-handler-dispatch-contract-001"
+      ]
+    },
+    {
+      "id": "tst:owner-dispatch-loop-modes-contract-001",
+      "title": "Owner and dispatch loop modes contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:owner-dispatch-loop-modes-001"
+      ],
+      "claim_ids": [
+        "clm:owner-dispatch-loop-modes-001"
+      ],
+      "evidence_ids": [
+        "evd:owner-dispatch-loop-modes-contract-001"
+      ]
+    },
+    {
+      "id": "tst:completion-fence-emit-complete-contract-001",
+      "title": "Completion fence emit-complete contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:completion-fence-emit-complete-001"
+      ],
+      "claim_ids": [
+        "clm:completion-fence-emit-complete-001"
+      ],
+      "evidence_ids": [
+        "evd:completion-fence-emit-complete-contract-001"
+      ]
+    },
+    {
+      "id": "tst:segment-fusion-barrier-policy-contract-001",
+      "title": "Segment fusion barrier policy contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:segment-fusion-barrier-policy-001"
+      ],
+      "claim_ids": [
+        "clm:segment-fusion-barrier-policy-001"
+      ],
+      "evidence_ids": [
+        "evd:segment-fusion-barrier-policy-contract-001"
+      ]
+    },
+    {
+      "id": "tst:eventful-protocol-decorator-surface-contract-001",
+      "title": "Eventful protocol decorator surface contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:eventful-protocol-decorator-surface-001"
+      ],
+      "claim_ids": [
+        "clm:eventful-protocol-decorator-surface-001"
+      ],
+      "evidence_ids": [
+        "evd:eventful-protocol-decorator-surface-contract-001"
+      ]
+    },
+    {
+      "id": "tst:primary-secondary-subevent-selection-contract-001",
+      "title": "Primary and secondary subevent selection contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:primary-secondary-subevent-selection-001"
+      ],
+      "claim_ids": [
+        "clm:primary-secondary-subevent-selection-001"
+      ],
+      "evidence_ids": [
+        "evd:primary-secondary-subevent-selection-contract-001"
+      ]
+    },
+    {
+      "id": "tst:eventkey-hook-bucket-compilation-contract-001",
+      "title": "EventKey hook bucket compilation contract test",
+      "status": "planned",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "feature_ids": [
+        "feat:eventkey-hook-bucket-compilation-001"
+      ],
+      "claim_ids": [
+        "clm:eventkey-hook-bucket-compilation-001"
+      ],
+      "evidence_ids": [
+        "evd:eventkey-hook-bucket-compilation-contract-001"
+      ]
     }
   ],
   "claims": [
@@ -41215,6 +41657,195 @@
         "evd:jsonrpc-persistence-exception-sanitized",
         "evd:packed-executor-http-persistence-classification"
       ]
+    },
+    {
+      "id": "clm:default-root-path-contract-001",
+      "title": "Default root path contract is covered by Python and Rust tests",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The default root path contract has explicit Python unit and Rust runtime contract coverage linked through SSOT evidence rows.",
+      "feature_ids": [
+        "feat:default-root-path-contract-001"
+      ],
+      "test_ids": [
+        "tst:default-root-path-python-unit-001",
+        "tst:default-root-path-rust-runtime-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:default-root-path-python-unit-001",
+        "evd:default-root-path-rust-runtime-contract-001"
+      ]
+    },
+    {
+      "id": "clm:two-axis-lifecycle-matrix-001",
+      "title": "Two-axis lifecycle matrix contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The two-axis lifecycle matrix contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:two-axis-lifecycle-matrix-001"
+      ],
+      "test_ids": [
+        "tst:two-axis-lifecycle-matrix-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:two-axis-lifecycle-matrix-contract-001"
+      ]
+    },
+    {
+      "id": "clm:eventkey-bit-coded-dispatch-001",
+      "title": "EventKey bit-coded dispatch contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The EventKey bit-coded dispatch contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:eventkey-bit-coded-dispatch-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-bit-coded-dispatch-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:eventkey-bit-coded-dispatch-contract-001"
+      ]
+    },
+    {
+      "id": "clm:opchannel-capability-handshake-001",
+      "title": "OpChannel capability handshake contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The OpChannel capability handshake contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:opchannel-capability-handshake-001"
+      ],
+      "test_ids": [
+        "tst:opchannel-capability-handshake-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:opchannel-capability-handshake-contract-001"
+      ]
+    },
+    {
+      "id": "clm:subevent-handler-dispatch-001",
+      "title": "Subevent handler dispatch contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The Subevent handler dispatch contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:subevent-handler-dispatch-001"
+      ],
+      "test_ids": [
+        "tst:subevent-handler-dispatch-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:subevent-handler-dispatch-contract-001"
+      ]
+    },
+    {
+      "id": "clm:owner-dispatch-loop-modes-001",
+      "title": "Owner and dispatch loop modes contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The Owner and dispatch loop modes contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:owner-dispatch-loop-modes-001"
+      ],
+      "test_ids": [
+        "tst:owner-dispatch-loop-modes-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:owner-dispatch-loop-modes-contract-001"
+      ]
+    },
+    {
+      "id": "clm:completion-fence-emit-complete-001",
+      "title": "Completion fence emit-complete contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The Completion fence emit-complete semantics contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:completion-fence-emit-complete-001"
+      ],
+      "test_ids": [
+        "tst:completion-fence-emit-complete-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:completion-fence-emit-complete-contract-001"
+      ]
+    },
+    {
+      "id": "clm:segment-fusion-barrier-policy-001",
+      "title": "Segment fusion barrier policy contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The Segment fusion barrier policy contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:segment-fusion-barrier-policy-001"
+      ],
+      "test_ids": [
+        "tst:segment-fusion-barrier-policy-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:segment-fusion-barrier-policy-contract-001"
+      ]
+    },
+    {
+      "id": "clm:eventful-protocol-decorator-surface-001",
+      "title": "Eventful protocol decorator surface contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The Eventful protocol decorator surface contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:eventful-protocol-decorator-surface-001"
+      ],
+      "test_ids": [
+        "tst:eventful-protocol-decorator-surface-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:eventful-protocol-decorator-surface-contract-001"
+      ]
+    },
+    {
+      "id": "clm:primary-secondary-subevent-selection-001",
+      "title": "Primary and secondary subevent selection contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The Primary and secondary subevent selection contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:primary-secondary-subevent-selection-001"
+      ],
+      "test_ids": [
+        "tst:primary-secondary-subevent-selection-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:primary-secondary-subevent-selection-contract-001"
+      ]
+    },
+    {
+      "id": "clm:eventkey-hook-bucket-compilation-001",
+      "title": "EventKey hook bucket compilation contract is governed",
+      "status": "declared",
+      "tier": "T2",
+      "kind": "repo-claim",
+      "description": "The EventKey hook bucket compilation contract is represented as a governed feature with planned protocol runtime tests.",
+      "feature_ids": [
+        "feat:eventkey-hook-bucket-compilation-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-hook-bucket-compilation-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:eventkey-hook-bucket-compilation-contract-001"
+      ]
     }
   ],
   "evidence": [
@@ -45937,6 +46568,174 @@
       "test_ids": [
         "tst:packed-executor-http-persistence-classification"
       ]
+    },
+    {
+      "id": "evd:default-root-path-python-unit-001",
+      "title": "Default root path Python unit test source",
+      "status": "passed",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_v3_default_root_endpoint.py",
+      "claim_ids": [
+        "clm:default-root-path-contract-001"
+      ],
+      "test_ids": [
+        "tst:default-root-path-python-unit-001"
+      ]
+    },
+    {
+      "id": "evd:default-root-path-rust-runtime-contract-001",
+      "title": "Default root path Rust runtime contract test source",
+      "status": "passed",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "crates/tigrbl_rs_runtime/tests/runtime_contract.rs",
+      "claim_ids": [
+        "clm:default-root-path-contract-001"
+      ],
+      "test_ids": [
+        "tst:default-root-path-rust-runtime-contract-001"
+      ]
+    },
+    {
+      "id": "evd:two-axis-lifecycle-matrix-contract-001",
+      "title": "Two-axis lifecycle matrix planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:two-axis-lifecycle-matrix-001"
+      ],
+      "test_ids": [
+        "tst:two-axis-lifecycle-matrix-contract-001"
+      ]
+    },
+    {
+      "id": "evd:eventkey-bit-coded-dispatch-contract-001",
+      "title": "EventKey bit-coded dispatch planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:eventkey-bit-coded-dispatch-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-bit-coded-dispatch-contract-001"
+      ]
+    },
+    {
+      "id": "evd:opchannel-capability-handshake-contract-001",
+      "title": "OpChannel capability handshake planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:opchannel-capability-handshake-001"
+      ],
+      "test_ids": [
+        "tst:opchannel-capability-handshake-contract-001"
+      ]
+    },
+    {
+      "id": "evd:subevent-handler-dispatch-contract-001",
+      "title": "Subevent handler dispatch planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:subevent-handler-dispatch-001"
+      ],
+      "test_ids": [
+        "tst:subevent-handler-dispatch-contract-001"
+      ]
+    },
+    {
+      "id": "evd:owner-dispatch-loop-modes-contract-001",
+      "title": "Owner and dispatch loop modes planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:owner-dispatch-loop-modes-001"
+      ],
+      "test_ids": [
+        "tst:owner-dispatch-loop-modes-contract-001"
+      ]
+    },
+    {
+      "id": "evd:completion-fence-emit-complete-contract-001",
+      "title": "Completion fence emit-complete planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:completion-fence-emit-complete-001"
+      ],
+      "test_ids": [
+        "tst:completion-fence-emit-complete-contract-001"
+      ]
+    },
+    {
+      "id": "evd:segment-fusion-barrier-policy-contract-001",
+      "title": "Segment fusion barrier policy planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:segment-fusion-barrier-policy-001"
+      ],
+      "test_ids": [
+        "tst:segment-fusion-barrier-policy-contract-001"
+      ]
+    },
+    {
+      "id": "evd:eventful-protocol-decorator-surface-contract-001",
+      "title": "Eventful protocol decorator surface planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:eventful-protocol-decorator-surface-001"
+      ],
+      "test_ids": [
+        "tst:eventful-protocol-decorator-surface-contract-001"
+      ]
+    },
+    {
+      "id": "evd:primary-secondary-subevent-selection-contract-001",
+      "title": "Primary and secondary subevent selection planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:primary-secondary-subevent-selection-001"
+      ],
+      "test_ids": [
+        "tst:primary-secondary-subevent-selection-contract-001"
+      ]
+    },
+    {
+      "id": "evd:eventkey-hook-bucket-compilation-contract-001",
+      "title": "EventKey hook bucket compilation planned contract test source",
+      "status": "planned",
+      "kind": "test-source",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
+      "claim_ids": [
+        "clm:eventkey-hook-bucket-compilation-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-hook-bucket-compilation-contract-001"
+      ]
     }
   ],
   "issues": [
@@ -47076,7 +47875,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "770632a13884f68f6941f674c7b845eded264cdf40151a56e76b71e077135348",
+      "content_sha256": "7fa84527fcccdf74a5df84902edd437dac79e0e18c52dd057eccbd9a2991b4f5",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47093,7 +47892,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "e41c2c0c2e540ed89b60713624279d0d1559a9be343173f012fb4818405644a1",
+      "content_sha256": "95bb311c86368dac98670e67d2392961932acc9c76a5f27fffb39bd8b4b5362a",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47110,7 +47909,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "a0289cb1a69820165f36b8d819b1f4beef5172073952134e6f55596ff1a2d29d",
+      "content_sha256": "8874abbe316d8a9c0cf07c491decaaa387a0e69d725ec4229596b272edba1f27",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47155,7 +47954,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "44b5ca1e0f1fe81231c5020d110cc69907440e43bd961ac121f2db9757de020c",
+      "content_sha256": "18e46a65ba679e0527bda1a782e851157b12a81299ca73129baf28387a7e1747",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47172,7 +47971,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "0d5c65a9777a4b532f2a13ccd9dc645f7d9d90e198818a86c76bbd3ba80ed7e3",
+      "content_sha256": "cefb76611a79585ee580a75a95a5bcc29fe0db5517dde7ee42f35cb43998bc8f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47189,7 +47988,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "b6ccbce9ea692ad54332b272d3787d89dcb6d0eaebbf5525e32630585313d3ab",
+      "content_sha256": "b7bf8a5fd0fe12377066d25a0a834c862003e8bf44baae470022c052cea6291c",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47206,7 +48005,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "c615ed71afa4f3968e196b22e2f305e6b7a9958593f2fae66c0464d949c1c617",
+      "content_sha256": "32edc9fac69b1d370d9cdb041c48e561adb33b1b5b6cf69e99e25531f2f67659",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47223,7 +48022,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "b950aa8fe7c4805cc10fba7d0ab4867b54f3ddeb6195be5dfcc8a3dbb50086e4",
+      "content_sha256": "31409502ba1a7a8878c4a6d0714aac9aa34fe4a51d129077e87442f10ce9f05e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47240,7 +48039,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "097eecdca8845311dc5c5fab10bb286f22e612cc5af2fe9d12e9f48f7fafd5ef",
+      "content_sha256": "e0682f3e1d6a5d9da064419e36a66b0ceb5895d07d3aa224485c982c7f862918",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47263,7 +48062,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "14cbf7ad527f99fb0c6b28bc934a0054be78c7cc5253c77c69a2aca28d6c40ea",
+      "content_sha256": "cf53e5410530156f051e7a3503aa2a55857815721db7350b41ba8230546449e3",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47280,7 +48079,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "1b11760876d730f7a641f450abe70b8a24fa5c7213cff71e5808e8989988e6fb",
+      "content_sha256": "ee355b02ed79ff397b664a90e46a5dbc943095d68ce15b1597841c441d616735",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47297,7 +48096,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "2b7f34ec242e9631af23d732f007672e58061c45e27783f6fa5e31590a4b800d",
+      "content_sha256": "89c0492f011009643c43d8c5954d781f7516371b74c430b77c7ace640003502e",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47342,7 +48141,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "623a63fb1cca0fdc9990e9027aadbed21b8e5b796e3e4d0dc686a89b29158aed",
+      "content_sha256": "00797e684efd005ea312ecdc8042f8a57a3364240b00ecfd8e4b6234071ae7d7",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47359,7 +48158,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "92b7d661b36609a7e5c836609fedcbdc19abb6ee07f56b0d5ebab49da1d30a7b",
+      "content_sha256": "39091d64c3e179ad1bd372a008b6baabadf4af8ea777c55826b814aa3201e45b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47376,7 +48175,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "72fc628245766e2781a7e660951d54ee76d2e2bfac4f23b4de5dcca889ff4cb1",
+      "content_sha256": "aff0840d11d27c6c65904b22c3033ad3d61379e7dea0c0fe426b1af5f9aaa291",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47393,7 +48192,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "02e0d91f4bb061950ea07cb698afde338c8e4f53b6fe06dc45b548d58858b0e2",
+      "content_sha256": "e7413f1258c14bfdbc4d9e0235085a63a7459f221fcd28ffc73c3367bcdd5156",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47416,7 +48215,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "0985fb98f3eb1947436fb8365f868f986d51134a7d70876f12a97b5b33f89a3f",
+      "content_sha256": "bc4fb2705bd0a4d4940ff53c1967211314a36fd7c4d10ff7760d03aeb410baad",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47433,7 +48232,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "5ac6e6931536a5e3c3c73e465afa239d225d4bfd564d24da534d2955c890452b",
+      "content_sha256": "38f0aa48d56204118f1418839048dac5bdc6eb35ce2f7c693a43c6fd5e01f960",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47450,7 +48249,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "ab104cd66ceb0df8babdcea923cf6aff15d5ad7ad22b3dd4a717d7c45cc61344",
+      "content_sha256": "061049524fb5f50249ce7b320a8ba5a80d5b21bca0d06966438b73e2f0854635",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47467,7 +48266,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "eb9e5c4733df82922fe3c11fbd9abce4c3c370bacb56fa4eba5cfbaa7e6e5852",
+      "content_sha256": "dc289a7386cd69cb1a1968fb2d40c1a25ebf1bab8bd8163e2bd0b996b5973ef0",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47484,7 +48283,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "3a585a88be2a494566129f93f99183e6c6d57f8d017bdff1a2885e0b8e5eebd4",
+      "content_sha256": "0393b02d06d6ab950e54f28f9ed623b507238f33abff45c4edfda37c5eb0c60d",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47501,7 +48300,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "6b56aa1319cd854ee4b3a46e66dc190426bea93b23b709f3c68a1d20bcc4e011",
+      "content_sha256": "836997f7cdc22aa35a4eeefcdc3d6f7229b899af9f4046c29494a642cdea1075",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47518,7 +48317,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "a2783d7e3ce152a93d219f6a8b1fa48d33d90b540281347a7e120a4d278cb909",
+      "content_sha256": "7e20a8174e85f858da41dd965b79813404c871f27713b1cc17356b7109826ef0",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -47659,7 +48458,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1034",
@@ -47676,7 +48475,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1035",
@@ -47716,7 +48515,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1037",
@@ -47733,7 +48532,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1038",
@@ -47832,7 +48631,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1043",
@@ -47849,7 +48648,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1044",
@@ -47866,7 +48665,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "adr:1045",
@@ -48897,6 +49696,166 @@
       "status_notes": [],
       "references": [],
       "summary": "The target architecture depends on compiling atoms, kernel plans, phase chains, and phase trees from BindingSpecs and tigr-asgi-contract-derived semantics."
+    },
+    {
+      "id": "adr:1101",
+      "number": 1101,
+      "slug": "two-axis-phase-and-subevent-lifecycle-model",
+      "title": "Two-Axis Phase And Subevent Lifecycle Model",
+      "path": ".ssot/adr/ADR-1101-two-axis-phase-and-subevent-lifecycle-model.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "d55bb8e464b3e7b111b96980d1bfe0efac7e884acb62912860019e602dae34fa",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1102",
+      "number": 1102,
+      "slug": "eventkey-and-bit-coded-runtime-dispatch",
+      "title": "EventKey And Bit-Coded Runtime Dispatch",
+      "path": ".ssot/adr/ADR-1102-eventkey-and-bit-coded-runtime-dispatch.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "6559ded6421edd1490c16328b884397ef77e0fc1da61bb82b4ebebd765d3c30c",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1103",
+      "number": 1103,
+      "slug": "opchannel-runtime-boundary",
+      "title": "OpChannel Runtime Boundary",
+      "path": ".ssot/adr/ADR-1103-opchannel-runtime-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "4fa043eb414a36ad52e19ddcc71938248931f8aace00b4df2b252982cd5d3a3c",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1104",
+      "number": 1104,
+      "slug": "owner-handler-and-event-dispatch-loop-modes",
+      "title": "Owner-Handler And Event-Dispatch Loop Modes",
+      "path": ".ssot/adr/ADR-1104-owner-handler-and-event-dispatch-loop-modes.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "8bea9697872d8f8328fa3b9f417e4407fcf361157fe560165ad10f604eea2ca6",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1105",
+      "number": 1105,
+      "slug": "hook-and-subevent-handler-selector-semantics",
+      "title": "Hook And Subevent Handler Selector Semantics",
+      "path": ".ssot/adr/ADR-1105-hook-and-subevent-handler-selector-semantics.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "ab7a279cd49202d2beebad83e641f2a9f5a7dcd9592f6f5bf746db3411eb09e3",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1106",
+      "number": 1106,
+      "slug": "primary-and-secondary-subevent-semantics",
+      "title": "Primary And Secondary Subevent Semantics",
+      "path": ".ssot/adr/ADR-1106-primary-and-secondary-subevent-semantics.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "2d758e0d56ec0c6b0ce3d11cbfcf838ac68d7cdd329b8842dcbd02509e73284d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1107",
+      "number": 1107,
+      "slug": "completion-fence-and-emit-complete-semantics",
+      "title": "Completion Fence And Emit-Complete Semantics",
+      "path": ".ssot/adr/ADR-1107-completion-fence-and-emit-complete-semantics.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "f268e1c71fcca0fa795729853a15ec9848968ba5029901f235867481a695d337",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1108",
+      "number": 1108,
+      "slug": "segment-fusion-barrier-policy",
+      "title": "Segment Fusion Barrier Policy",
+      "path": ".ssot/adr/ADR-1108-segment-fusion-barrier-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "901e83672872778e62bae325a6d5308920fda5288b9ace92dbd11897d591d0a5",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1109",
+      "number": 1109,
+      "slug": "legality-matrix-as-compiler-authority",
+      "title": "Legality Matrix As Compiler Authority",
+      "path": ".ssot/adr/ADR-1109-legality-matrix-as-compiler-authority.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "a0c820476ad833f2a72d74bd48e89d0446ada532e3f2a6aa68ce183676b20136",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
+    },
+    {
+      "id": "adr:1110",
+      "number": 1110,
+      "slug": "decorator-surface-and-realtime-handler-boundary",
+      "title": "Decorator Surface And Realtime Handler Boundary",
+      "path": ".ssot/adr/ADR-1110-decorator-surface-and-realtime-handler-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "a96f733e41090bd56d95372e0e94446b93fd4d9265582f0ac8ba2efba882bb75",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": []
     }
   ],
   "specs": [
@@ -49282,7 +50241,7 @@
       "superseded_by": [],
       "status_notes": [],
       "adr_ids": [],
-      "summary": "﻿"
+      "summary": "\ufeff"
     },
     {
       "id": "spc:2002",
@@ -51741,6 +52700,172 @@
         "adr:1100"
       ],
       "summary": "Define the typed ok/err edge algebra and ErrorCtx contract used by compiled protocol phase trees."
+    },
+    {
+      "id": "spc:2116",
+      "number": 2116,
+      "slug": "two-axis-lifecycle-matrix-contract",
+      "title": "Two-Axis Lifecycle Matrix Contract",
+      "path": ".ssot/specs/SPEC-2116-two-axis-lifecycle-matrix-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "106a4aa3c90f4c5203b55a979ef007dd1fc9f489d3915c48995e00472fdbef39",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1101",
+        "adr:1106",
+        "adr:1109"
+      ]
+    },
+    {
+      "id": "spc:2117",
+      "number": 2117,
+      "slug": "eventkey-and-bit-coded-dispatch-contract",
+      "title": "EventKey And Bit-Coded Dispatch Contract",
+      "path": ".ssot/specs/SPEC-2117-eventkey-and-bit-coded-dispatch-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "9cb3ff77199ef0b4e9fbc6af7be0f508b9ead6eb97e77be0e885c463d1ef4133",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1102",
+        "adr:1105"
+      ]
+    },
+    {
+      "id": "spc:2118",
+      "number": 2118,
+      "slug": "opchannel-capability-contract",
+      "title": "OpChannel Capability Contract",
+      "path": ".ssot/specs/SPEC-2118-opchannel-capability-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "5b5c22c76e089e0099c826e6055d651d89dfc7dbc59435186dfe5acfc31beac5",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1103"
+      ]
+    },
+    {
+      "id": "spc:2119",
+      "number": 2119,
+      "slug": "subevent-handler-contract",
+      "title": "Subevent Handler Contract",
+      "path": ".ssot/specs/SPEC-2119-subevent-handler-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "f812c34d1ffec7e44b3ef13ad0b6fdd24383a02df4e0ea9e0d791088298709a2",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1105",
+        "adr:1110"
+      ]
+    },
+    {
+      "id": "spc:2120",
+      "number": 2120,
+      "slug": "loop-ownership-mode-contract",
+      "title": "Loop Ownership Mode Contract",
+      "path": ".ssot/specs/SPEC-2120-loop-ownership-mode-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "172728f3c4f33e9b0745e56fe3f334deffcc33619164d68999f7d012a318e171",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1104"
+      ]
+    },
+    {
+      "id": "spc:2121",
+      "number": 2121,
+      "slug": "completion-fence-contract",
+      "title": "Completion Fence Contract",
+      "path": ".ssot/specs/SPEC-2121-completion-fence-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "2a04063c4d77ab70bd2142a333aa4163f7e5e64e63e0ce319bfd91e9d4e3fe57",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1107"
+      ]
+    },
+    {
+      "id": "spc:2122",
+      "number": 2122,
+      "slug": "segment-fusion-barrier-contract",
+      "title": "Segment Fusion Barrier Contract",
+      "path": ".ssot/specs/SPEC-2122-segment-fusion-barrier-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "f1d06e85208d07d3303a29d7a5539d2972d7175f857f3d853df7cf0abddee456",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1108"
+      ]
+    },
+    {
+      "id": "spc:2123",
+      "number": 2123,
+      "slug": "decorator-surface-contract-for-eventful-protocols",
+      "title": "Decorator Surface Contract For Eventful Protocols",
+      "path": ".ssot/specs/SPEC-2123-decorator-surface-contract-for-eventful-protocols.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "aac5bdeae5d6c0d2873142ec93ad4c7a5cf4e910f0dcc108a93565c533dfc96b",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1110",
+        "adr:1104",
+        "adr:1105"
+      ]
     }
   ],
   "profiles": []

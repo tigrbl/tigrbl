@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1104"
+number: 1104
+slug: "owner-handler-and-event-dispatch-loop-modes"
+title: "Owner-Handler And Event-Dispatch Loop Modes"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Owner-Handler And Event-Dispatch Loop Modes"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nTigrbl supports owner and dispatch loop modes. Owner means the main op handler owns the channel/session loop. Dispatch means runtime owns the loop and invokes compiled subevent handler plans. Default is dispatch when subevent handlers exist; otherwise owner.`n`n## Rationale`nThis preserves low-level control while enabling static per-message/chunk/datagram optimization.`n`n## Consequences`nLoop ownership becomes a declared runtime contract.`n`n## Traceability`nLinks: adr:1093, adr:1094, adr:1100, spc:2103, spc:2104.

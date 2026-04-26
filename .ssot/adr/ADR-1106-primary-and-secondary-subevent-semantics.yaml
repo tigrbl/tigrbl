@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1106"
+number: 1106
+slug: "primary-and-secondary-subevent-semantics"
+title: "Primary And Secondary Subevent Semantics"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Primary And Secondary Subevent Semantics"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nEvery executable kernel unit has exactly one primary subevent. Secondary subevents are annotations unless compiled as child units.`n`n## Rationale`nThis avoids ambiguous hook/handler selection when one transport event maps to multiple semantic labels.`n`n## Consequences`nSSE/message/stream examples choose a primary unit based on binding, loop, and tx configuration.`n`n## Traceability`nLinks: adr:1092, adr:1094, adr:1101, spc:2098, spc:2103, spc:2113.

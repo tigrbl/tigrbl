@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1108"
+number: 1108
+slug: "segment-fusion-barrier-policy"
+title: "Segment Fusion Barrier Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Segment Fusion Barrier Policy"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nPure ingress/dispatch/schema/egress-shaping atoms may fuse. Security deps, deps, tx begin/commit/rollback, handlers, transport emit/accept/close, and completion fences are hard barriers.`n`n## Rationale`nThis enables compact segment plans without hiding lifecycle or side-effect boundaries.`n`n## Consequences`nFusion must preserve observable phase, tx, handler, transport, and error ordering.`n`n## Traceability`nLinks: adr:1008, adr:1011, adr:1012, adr:1016, adr:1095, adr:1100.

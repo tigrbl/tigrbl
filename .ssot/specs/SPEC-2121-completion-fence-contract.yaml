@@ -1,0 +1,20 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2121"
+number: 2121
+slug: "completion-fence-contract"
+title: "Completion Fence Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Completion Fence Contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare POST_RESPONSE/POST_EMIT completion fence behavior and emit-complete semantics.`n`n## Contract`n*.emit_complete subevents occur only after runtime/Tigrcorn acknowledges the relevant send completion fence. Queued or scheduled sends are not completion.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1107"

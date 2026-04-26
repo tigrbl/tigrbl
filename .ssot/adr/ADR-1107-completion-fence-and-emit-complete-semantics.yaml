@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1107"
+number: 1107
+slug: "completion-fence-and-emit-complete-semantics"
+title: "Completion Fence And Emit-Complete Semantics"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Completion Fence And Emit-Complete Semantics"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nPOST_RESPONSE is the current canonical internal phase and is projected as POST_EMIT. *.emit_complete subevents occur only after runtime/Tigrcorn acknowledges the relevant send completion fence. Queued or scheduled send is not completion.`n`n## Rationale`nThis gives after-send hooks and callbacks a stable ordering point across HTTP, SSE, WS, WT, callbacks, and webhooks.`n`n## Consequences`nEmit completion requires runtime-owned acknowledgement semantics.`n`n## Traceability`nLinks: adr:1064, adr:1095, adr:1098, adr:1099, spc:2115.

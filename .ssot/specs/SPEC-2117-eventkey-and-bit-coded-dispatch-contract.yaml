@@ -1,0 +1,21 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2117"
+number: 2117
+slug: "eventkey-and-bit-coded-dispatch-contract"
+title: "EventKey And Bit-Coded Dispatch Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "EventKey And Bit-Coded Dispatch Contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare compact EventKey identity and bit-coded runtime dispatch requirements.`n`n## Contract`nHot dispatch uses integer fields for op, binding, exchange, family, subevent, and framing where needed. Wildcards compile into concrete buckets before runtime.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1102"
+  - "adr:1105"

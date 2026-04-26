@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1102"
+number: 1102
+slug: "eventkey-and-bit-coded-runtime-dispatch"
+title: "EventKey And Bit-Coded Runtime Dispatch"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "EventKey And Bit-Coded Runtime Dispatch"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nHot runtime dispatch uses compact integer/bit-coded EventKey fields, not runtime dict/string selector matching. EventKey fields are op_id, binding_id, exchange_id, family_id, subevent_id, and framing_id when needed.`n`n## Rationale`nThis enables O(1) bucket lookup, Python/Rust parity, packed segment dispatch, and no wildcard matching at runtime.`n`n## Consequences`nWildcard selectors compile away before invocation.`n`n## Traceability`nLinks: adr:1016, adr:1047, adr:1092, adr:1100, spc:2098, spc:2113, spc:2114.

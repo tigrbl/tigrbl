@@ -1,0 +1,20 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2120"
+number: 2120
+slug: "loop-ownership-mode-contract"
+title: "Loop Ownership Mode Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Loop Ownership Mode Contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare owner and dispatch loop ownership modes for eventful protocols.`n`n## Contract`nOwner mode gives the main handler the channel loop. Dispatch mode gives the runtime the loop and invokes compiled subevent handlers. Default is dispatch when subevent handlers exist, otherwise owner.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1104"
