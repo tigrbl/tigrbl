@@ -1,0 +1,20 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2122"
+number: 2122
+slug: "segment-fusion-barrier-contract"
+title: "Segment Fusion Barrier Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Segment Fusion Barrier Contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare which atoms may fuse and which execution points are hard barriers.`n`n## Contract`nPure ingress, dispatch, schema, and egress-shaping atoms may fuse. Deps, tx, rollback, handlers, transport accept/emit/close, and completion fences are hard barriers.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1108"

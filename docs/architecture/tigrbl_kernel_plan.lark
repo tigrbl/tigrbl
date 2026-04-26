@@ -1,0 +1,655 @@
+// Tigrbl KernelPlan grammar.
+//
+// This grammar describes the target compiled KernelPlan artifact after the
+// channel/exchange/family/subevent architecture is fully implemented.
+//
+// Boundary intent:
+// - BindingSpecs remain declarative.
+// - KernelPlan remains static and stores no live transport objects.
+// - Runtime owns OpChannel implementations and loop execution.
+// - ASGI3 remains preserved at the Tigrcorn boundary.
+// - Bindings lower to unary | server_stream | duplex exchange templates.
+// - Current phase names remain legal as legacy projections during migration.
+
+start: kernel_plan
+
+kernel_plan: "kernel_plan" qualified_name "{" kernel_plan_item* "}"
+
+kernel_plan_item: version_decl
+                | package_boundary_decl
+                | op_channel_contract
+                | bindingspec_table
+                | exchange_template_table
+                | proto_indices
+                | opmeta_table
+                | phase_catalog
+                | phase_aliases
+                | derivation_table
+                | program
+                | packed_kernel
+                | optimization_policy
+                | shared_error_policy
+
+version_decl: "version" "=" VERSION
+VERSION: /[0-9]+(\.[0-9]+){0,3}([A-Za-z0-9_.+-]+)?/
+
+// ---------------------------------------------------------------------------
+// Package / Crate Boundaries
+// ---------------------------------------------------------------------------
+
+package_boundary_decl: "boundaries" "{" boundary_item* "}"
+
+boundary_item: "typing_channel" "=" python_path
+             | "runtime_channel" "=" python_path
+             | "rust_ports_channel" "=" rust_path
+             | "rust_runtime_channel" "=" rust_path
+             | "forbidden_owner" "=" package_name
+
+package_name: qualified_name
+python_path: qualified_name
+rust_path: qualified_name
+
+// ---------------------------------------------------------------------------
+// OpChannel Contract
+// ---------------------------------------------------------------------------
+
+op_channel_contract: "op_channel" "{" op_channel_item* "}"
+
+op_channel_item: channel_method_decl
+               | channel_capability_decl
+               | channel_adapter_decl
+               | channel_factory_decl
+
+channel_method_decl: "method" channel_method "(" [method_arg ("," method_arg)*] ")" "->" channel_return
+method_arg: CNAME ":" type_name
+channel_return: "none" | "object" | "bytes" | "bool" | "async_iter"
+
+channel_method: "accept"
+              | "close"
+              | "send"
+              | "recv"
+              | "emit_chunk"
+              | "emit_event"
+              | "send_datagram"
+              | "supports_recv"
+              | "supports_send"
+              | "supports_chunks"
+              | "supports_events"
+              | "supports_datagrams"
+
+channel_capability_decl: "capability" "=" channel_capability
+channel_capability: "CAN_ACCEPT"
+                  | "CAN_RECV"
+                  | "CAN_SEND"
+                  | "CAN_EMIT_CHUNK"
+                  | "CAN_EMIT_EVENT"
+                  | "CAN_SEND_DATAGRAM"
+
+channel_adapter_decl: "adapter" binding "->" channel_adapter
+channel_adapter: "none"
+               | "http_stream"
+               | "sse"
+               | "websocket"
+               | "webtransport"
+               | "webtransport_app"
+
+channel_factory_decl: "factory" "=" python_path
+
+// ---------------------------------------------------------------------------
+// BindingSpec Table
+// ---------------------------------------------------------------------------
+
+bindingspec_table: "bindingspecs" "{" bindingspec* "}"
+
+bindingspec: "bindingspec" binding_id ":" bindingspec_kind "{" bindingspec_item* "}"
+
+bindingspec_item: "proto" "=" proto_name
+                | "scope" "=" scope_type
+                | "exchange" "=" exchange
+                | "framing" "=" framing
+                | "families" "=" family_list
+                | "subevents" "=" subevent_list
+                | "tx_unit" "=" tx_unit
+                | "capabilities" "=" capability_set
+                | "loop_shape" "=" loop_shape
+                | "emit_behavior" "=" emit_behavior
+                | "close_behavior" "=" close_behavior
+                | "channel_required" "=" boolean
+
+bindingspec_kind: "HttpRestBindingSpec"
+                | "HttpJsonRpcBindingSpec"
+                | "HttpStreamBindingSpec"
+                | "SseBindingSpec"
+                | "WsBindingSpec"
+                | "WebTransportBindingSpec"
+                | "StaticBindingSpec"
+                | "LifespanBindingSpec"
+
+binding_id: qualified_name
+
+binding: "rest"
+       | "jsonrpc_http"
+       | "http_stream"
+       | "sse"
+       | "ws"
+       | "wss"
+       | "jsonrpc_ws"
+       | "webtransport"
+       | "webtransport_app"
+       | "static"
+       | "lifespan"
+
+proto_name: "http.rest"
+          | "https.rest"
+          | "http.jsonrpc"
+          | "https.jsonrpc"
+          | "http.stream"
+          | "https.stream"
+          | "http.sse"
+          | "https.sse"
+          | "ws"
+          | "wss"
+          | "webtransport"
+          | "static"
+          | "lifespan"
+
+scope_type: "http" | "websocket" | "webtransport" | "lifespan" | "static"
+exchange: "unary" | "server_stream" | "duplex"
+framing: "raw" | "json" | "jsonrpc" | "bytes" | "sse" | "app" | "none"
+
+family_list: "[" [family ("," family)*] "]"
+subevent_list: "[" [subevent ("," subevent)*] "]"
+capability_set: "[" [channel_capability ("," channel_capability)*] "]"
+
+loop_shape: "none" | "bounded" | "unbounded"
+emit_behavior: "none" | "single" | "chunked" | "event" | "message" | "datagram"
+close_behavior: "none" | "http_final_body" | "websocket_close" | "webtransport_close" | "lifespan_complete"
+
+// ---------------------------------------------------------------------------
+// Exchange Templates
+// ---------------------------------------------------------------------------
+
+exchange_template_table: "exchange_templates" "{" exchange_template* "}"
+
+exchange_template: "template" exchange "{" exchange_template_item* "}"
+
+exchange_template_item: "setup" "=" phase_ref_list
+                      | "unit" "=" phase_ref_list
+                      | "loop" "=" loop_shape
+                      | "teardown" "=" phase_ref_list
+                      | "requires_channel" "=" boolean
+
+// ---------------------------------------------------------------------------
+// Dispatch Indexes
+// ---------------------------------------------------------------------------
+
+proto_indices: "proto_indices" "{" proto_index* "}"
+
+proto_index: "proto" proto_bucket "{" selector_index* "}"
+
+proto_bucket: "http" | "websocket" | "webtransport" | "lifespan" | "static"
+
+selector_index: exact_selector
+              | templated_selector
+              | rpc_selector
+              | websocket_selector
+              | webtransport_selector
+              | static_selector
+              | lifespan_selector
+
+exact_selector: "exact" selector_key "->" program_ref
+templated_selector: "templated" route_template "pattern" REGEX "names" name_list "->" program_ref
+rpc_selector: "rpc" rpc_endpoint ":" rpc_method "->" program_ref
+websocket_selector: "websocket" route_template ["subprotocols" name_list] "->" program_ref
+webtransport_selector: "webtransport" route_template "->" program_ref
+static_selector: "static" route_template "->" program_ref
+lifespan_selector: "lifespan" lifespan_event "->" program_ref
+
+program_ref: "program" INT
+selector_key: ESCAPED_STRING
+route_template: ESCAPED_STRING
+rpc_endpoint: ESCAPED_STRING
+rpc_method: qualified_name
+lifespan_event: "startup" | "shutdown"
+
+// ---------------------------------------------------------------------------
+// Operation Metadata
+// ---------------------------------------------------------------------------
+
+opmeta_table: "opmeta" "[" [opmeta ("," opmeta)*] "]"
+
+opmeta: "op" INT "{" opmeta_item* "}"
+
+opmeta_item: "model" "=" qualified_name
+           | "alias" "=" qualified_name
+           | "target" "=" op_target
+           | "builtin_custom" "=" builtin_custom_verb
+           | "bindings" "=" "[" [binding_id ("," binding_id)*] "]"
+           | "exchange" "=" exchange
+           | "tx_scope" "=" tx_unit
+           | "session" "=" session_ref
+           | "opview" "=" opview_ref
+
+op_target: "create"
+         | "read"
+         | "list"
+         | "update"
+         | "replace"
+         | "merge"
+         | "delete"
+         | "clear"
+         | "bulk_create"
+         | "bulk_update"
+         | "bulk_replace"
+         | "bulk_merge"
+         | "bulk_delete"
+         | "count"
+         | "exists"
+         | "aggregate"
+         | "group_by"
+         | "custom"
+
+builtin_custom_verb: "publish"
+                   | "subscribe"
+                   | "unsubscribe"
+                   | "replay"
+                   | "snapshot"
+                   | "ack"
+                   | "nack"
+                   | "heartbeat"
+                   | "sync"
+                   | "tail"
+                   | "follow"
+                   | "upload"
+                   | "download"
+                   | "open_stream"
+                   | "append_chunk"
+                   | "finalize_stream"
+                   | "abort_stream"
+                   | "replicate_stream"
+                   | "import_stream"
+                   | "export_stream"
+                   | "send_datagram"
+                   | "receive_datagram"
+                   | "telemetry_ingest"
+                   | "checkpoint"
+
+session_ref: qualified_name | "none"
+opview_ref: qualified_name | "none"
+
+// ---------------------------------------------------------------------------
+// Phase Catalog
+// ---------------------------------------------------------------------------
+
+phase_catalog: "phases" "{" phase_def* "}"
+
+phase_def: phase ":" stage "->" stage phase_flag*
+phase_flag: "internal" | "public" | "in_tx" | "error" | "hookable" | "runtime_owned"
+
+stage: "Boot"
+     | "Ingress"
+     | "Routed"
+     | "Bound"
+     | "Planned"
+     | "Guarded"
+     | "Executing"
+     | "Resolved"
+     | "Operated"
+     | "Encoded"
+     | "Emitting"
+     | "Egressed"
+     | "Failed"
+
+// Compact target phases.
+phase: "INGRESS_BEGIN"
+     | "INGRESS_PARSE"
+     | "INGRESS_BIND"
+     | "INGRESS_ROUTE"
+     | "PRE_TX"
+     | "START_TX"
+     | "PRE_HANDLER"
+     | "HANDLER"
+     | "POST_HANDLER"
+     | "PRE_COMMIT"
+     | "COMMIT"
+     | "POST_COMMIT"
+     | "PRE_EMIT"
+     | "EMIT"
+     | "POST_EMIT"
+     | "END_TX"
+     | "POST_TX"
+     | error_phase
+
+error_phase: "ON_ERROR"
+           | "ON_TX_ERROR"
+           | "ON_HANDLER_ERROR"
+           | "ON_COMMIT_ERROR"
+           | "ON_EMIT_ERROR"
+           | "ON_ROLLBACK"
+
+// Current repo phase labels remain legal as diagnostic projections.
+legacy_phase: "INGRESS_DISPATCH"
+            | "PRE_TX_BEGIN"
+            | "EGRESS_SHAPE"
+            | "EGRESS_FINALIZE"
+            | "POST_RESPONSE"
+            | "ON_PRE_TX_BEGIN_ERROR"
+            | "ON_START_TX_ERROR"
+            | "ON_PRE_HANDLER_ERROR"
+            | "ON_POST_HANDLER_ERROR"
+            | "ON_PRE_COMMIT_ERROR"
+            | "ON_END_TX_ERROR"
+            | "ON_POST_COMMIT_ERROR"
+            | "ON_POST_RESPONSE_ERROR"
+
+phase_ref: phase | legacy_phase
+phase_ref_list: "[" [phase_ref ("," phase_ref)*] "]"
+
+phase_aliases: "phase_aliases" "{" phase_alias* "}"
+phase_alias: legacy_phase "=>" phase_alias_target
+phase_alias_target: phase | phase_ref_list
+
+// ---------------------------------------------------------------------------
+// Family/Subevent Derivation
+// ---------------------------------------------------------------------------
+
+derivation_table: "derivations" "{" derivation_rule* "}"
+
+derivation_rule: "derive" derivation_key "->" "{" derivation_item* "}"
+
+derivation_key: scope_type ":" transport_event [":" framing]
+
+derivation_item: "exchange" "=" exchange
+               | "family" "=" family
+               | "subevent" "=" subevent
+               | "capabilities" "=" capability_set
+               | "loop_region" "=" loop_id
+
+transport_event: ESCAPED_STRING
+
+family: "request"
+      | "response"
+      | "session"
+      | "message"
+      | "stream"
+      | "datagram"
+      | "static"
+      | "lifespan"
+
+subevent: family "." subevent_leaf
+subevent_leaf: CNAME
+
+// ---------------------------------------------------------------------------
+// Program Plan
+// ---------------------------------------------------------------------------
+
+program: "program" INT "{" program_item* "}"
+
+program_item: "binding" "=" binding_id
+            | "exchange" "=" exchange
+            | "family" "=" family
+            | "subevent" "=" subevent
+            | "tx_unit" "=" tx_unit
+            | "dispatch_key" "=" dispatch_key
+            | "capabilities" "=" capability_set
+            | "channel_adapter" "=" channel_adapter
+            | "exchange_template" "=" exchange
+            | phase_chain
+            | phase_tree
+            | loop_region
+            | hot_op_plan
+
+dispatch_key: proto_bucket ":" selector_key
+
+tx_unit: "default"
+       | "request"
+       | "message"
+       | "stream"
+       | "chunk"
+       | "datagram"
+       | "session"
+       | "none"
+
+// ---------------------------------------------------------------------------
+// Linear Phase Chains
+// ---------------------------------------------------------------------------
+
+phase_chain: "phase_chain" phase_ref "{" step_ref* "}"
+
+step_ref: "step" INT step_field*
+step_field: "label" "=" ESCAPED_STRING
+          | "anchor" "=" anchor
+          | "barrier" "=" barrier_kind
+          | "effect" "=" effect_kind
+
+anchor: ANCHOR_TOKEN | ESCAPED_STRING
+ANCHOR_TOKEN: /[A-Za-z_][A-Za-z0-9_:.@-]*/
+
+barrier_kind: "none" | "dep" | "tx" | "handler" | "transport" | "completion"
+effect_kind: "none" | "db" | "transport" | "schema" | "hook" | "handler" | "error"
+
+// ---------------------------------------------------------------------------
+// Phase Trees
+// ---------------------------------------------------------------------------
+
+phase_tree: "phase_tree" "{" phase_tree_node+ "}"
+
+phase_tree_node: "node" node_id ":" phase_ref "{" phase_tree_node_item* "}"
+
+phase_tree_node_item: "stage" "=" stage "->" stage
+                    | "segments" "=" segment_id_list
+                    | "linear_index" "=" INT
+                    | "ok" "->" edge_target
+                    | "err" "->" edge_target err_payload?
+                    | "terminal_policy" "=" terminal_policy
+                    | "hookable" "=" boolean
+
+edge_target: node_target
+           | terminal_target
+           | loop_target
+           | rollback_target
+           | noop_target
+
+node_target: "node" node_id
+terminal_target: "terminal.ok" | "terminal.err"
+loop_target: "loop" loop_id "." loop_port
+rollback_target: "rollback" error_phase ["fallback" edge_target]
+noop_target: "noop"
+
+loop_port: "next" | "body" | "exit" | "close" | "error"
+
+err_payload: "with" "{" err_payload_item* "}"
+err_payload_item: "err_ctx" "=" boolean
+                | "typed_err" "=" boolean
+                | "err_kind" "=" err_kind
+                | "rollback_required" "=" boolean
+                | "transport_shape" "=" boolean
+
+err_kind: "exception"
+        | "failed_ctx"
+        | "atom_failure"
+        | "validation"
+        | "security"
+        | "transport"
+        | "disconnect"
+        | "cancel"
+        | "timeout"
+        | "unknown"
+
+terminal_policy: "continue"
+               | "complete"
+               | "close"
+               | "noop"
+               | "error_response"
+               | "transport_failed"
+
+// ---------------------------------------------------------------------------
+// Loop Regions
+// ---------------------------------------------------------------------------
+
+loop_region: "loop_region" loop_id "{" loop_region_item* "}"
+
+loop_region_item: "kind" "=" loop_kind
+                | "producer" "=" loop_producer
+                | "family" "=" family
+                | "subevent" "=" subevent
+                | "tx_unit" "=" tx_unit
+                | "bounded" "=" boolean
+                | "break_on" "=" break_condition_list
+                | "channel_required" "=" boolean
+                | "capabilities" "=" capability_set
+                | "body_tree" "=" node_id
+                | "close_tree" "=" node_id
+                | "error_tree" "=" node_id
+
+loop_kind: "bounded" | "unbounded"
+loop_producer: "receive"
+             | "sync_iterator"
+             | "async_iterator"
+             | "channel"
+             | "datagram"
+             | "transport_event"
+
+break_condition_list: "[" [break_condition ("," break_condition)*] "]"
+break_condition: "eof"
+               | "disconnect"
+               | "cancel"
+               | "close"
+               | "iterator_stop"
+               | "max_items"
+               | "deadline"
+               | "error"
+
+// ---------------------------------------------------------------------------
+// Packed Kernel
+// ---------------------------------------------------------------------------
+
+packed_kernel: "packed_kernel" "{" packed_kernel_item* "}"
+
+packed_kernel_item: proto_table
+                  | selector_table
+                  | op_table
+                  | route_table
+                  | segment_table
+                  | step_table
+                  | program_segment_table
+                  | program_phase_tree_table
+                  | program_capability_table
+                  | loop_table
+                  | intern_table
+
+proto_table: "proto_table" "=" name_list
+selector_table: "selector_table" "=" name_list
+op_table: "op_table" "=" name_list
+
+route_table: "route_table" "{" route_entry* "}"
+route_entry: proto_bucket ":" selector_key "->" program_ref
+
+segment_table: "segments" "[" [packed_segment ("," packed_segment)*] "]"
+packed_segment: "segment" INT "{" packed_segment_item* "}"
+
+packed_segment_item: "phase" "=" phase_ref
+                   | "offset" "=" INT
+                   | "length" "=" INT
+                   | "label" "=" ESCAPED_STRING
+                   | "executor" "=" executor_kind
+                   | "fusible" "=" boolean
+                   | "barrier" "=" barrier_kind
+
+executor_kind: "python" | "rust" | "numba" | "callback" | "transport"
+
+step_table: "steps" "[" [packed_step ("," packed_step)*] "]"
+packed_step: "step" INT "{" packed_step_item* "}"
+
+packed_step_item: "label" "=" ESCAPED_STRING
+                | "anchor" "=" anchor
+                | "async" "=" boolean
+                | "effect" "=" effect_kind
+
+program_segment_table: "program_segments" "{" program_segment_entry* "}"
+program_segment_entry: "program" INT "=" segment_id_list
+
+program_phase_tree_table: "program_phase_trees" "{" program_phase_tree_entry* "}"
+program_phase_tree_entry: "program" INT "=" node_id_list
+
+program_capability_table: "program_capabilities" "{" program_capability_entry* "}"
+program_capability_entry: "program" INT "=" capability_set
+
+loop_table: "loops" "{" loop_table_entry* "}"
+loop_table_entry: loop_id "->" program_ref
+
+intern_table: "intern" "{" intern_entry* "}"
+intern_entry: "phase_sequence" qualified_name "=" phase_ref_list
+            | "segment_sequence" qualified_name "=" segment_id_list
+            | "selector" qualified_name "=" selector_key
+
+// ---------------------------------------------------------------------------
+// Hot Op Plan
+// ---------------------------------------------------------------------------
+
+hot_op_plan: "hot_op_plan" "{" hot_op_plan_item* "}"
+
+hot_op_plan_item: "ordered_segments" "=" segment_id_list
+                | "remaining_segments" "=" segment_id_list
+                | "fusible_sync_segments" "=" segment_id_list
+                | "nonfusible_segments" "=" segment_id_list
+                | "capabilities" "=" capability_set
+                | "channel_adapter" "=" channel_adapter
+                | "db_acquire_hint" "=" db_acquire_hint
+
+db_acquire_hint: "resolver" | "always" | "never" | "handler"
+
+// ---------------------------------------------------------------------------
+// Optimization Policy
+// ---------------------------------------------------------------------------
+
+optimization_policy: "optimization" "{" optimization_item* "}"
+
+optimization_item: "normalize_exchanges" "=" boolean
+                 | "derive_family_subevent" "=" boolean
+                 | "intern_segments" "=" boolean
+                 | "fuse_pure_atoms" "=" boolean
+                 | "deforest_temp_objects" "=" boolean
+                 | "specialize_exact_routes" "=" boolean
+                 | "transport_variation_in_runtime" "=" boolean
+                 | "queue_bound_required" "=" boolean
+
+// ---------------------------------------------------------------------------
+// Shared Error Policy
+// ---------------------------------------------------------------------------
+
+shared_error_policy: "shared_error_policy" "{" shared_error_policy_item* "}"
+
+shared_error_policy_item: "default_err" "->" edge_target
+                        | "tx_active_err" "->" edge_target
+                        | "post_emit_err" "->" edge_target
+                        | "transport_started_err" "->" edge_target
+                        | "disconnect_err" "->" edge_target
+                        | "cancel_err" "->" edge_target
+
+// ---------------------------------------------------------------------------
+// Lists and Tokens
+// ---------------------------------------------------------------------------
+
+name_list: "[" [qualified_name ("," qualified_name)*] "]"
+node_id_list: "[" [node_id ("," node_id)*] "]"
+segment_id_list: "[" [INT ("," INT)*] "]"
+
+node_id: qualified_name
+loop_id: qualified_name
+type_name: qualified_name
+
+qualified_name: QUALIFIED_NAME
+QUALIFIED_NAME: /[A-Za-z_][A-Za-z0-9_:.@-]*/
+REGEX: ESCAPED_STRING
+
+boolean: "true" | "false"
+
+%import common.CNAME
+%import common.ESCAPED_STRING
+%import common.INT
+%import common.WS
+%ignore WS
+
+COMMENT: /#[^\n]*/
+%ignore COMMENT

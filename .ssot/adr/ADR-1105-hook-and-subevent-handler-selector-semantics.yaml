@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1105"
+number: 1105
+slug: "hook-and-subevent-handler-selector-semantics"
+title: "Hook And Subevent Handler Selector Semantics"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Hook And Subevent Handler Selector Semantics"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nHooks are phase-bound policy/side-effect callbacks selected by phase plus EventKey filters. subevent_ctx selects the HANDLER slot for a concrete EventKey. Runtime uses compiled buckets, not wildcard scans.`n`n## Rationale`nThis keeps hooks, handlers, and atoms on separate customization axes.`n`n## Consequences`nAmbiguous subevent handlers fail compilation unless explicitly modeled as ordered multi-handler dispatch.`n`n## Traceability`nLinks: adr:1010, adr:1092, adr:1101, adr:1102, spc:2113.

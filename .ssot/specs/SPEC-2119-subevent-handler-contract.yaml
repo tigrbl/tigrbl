@@ -1,0 +1,21 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2119"
+number: 2119
+slug: "subevent-handler-contract"
+title: "Subevent Handler Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Subevent Handler Contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare subevent handler selection and handler-bucket compilation.`n`n## Contract`nsubevent_ctx binds app behavior to HANDLER for a concrete EventKey. Hooks remain phase-bound side-effect callbacks. Ambiguous handlers fail compilation unless ordered multi-handler dispatch is declared.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1105"
+  - "adr:1110"

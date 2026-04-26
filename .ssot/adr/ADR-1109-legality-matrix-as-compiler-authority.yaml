@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1109"
+number: 1109
+slug: "legality-matrix-as-compiler-authority"
+title: "Legality Matrix As Compiler Authority"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Legality Matrix As Compiler Authority"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nThe binding x exchange x family x subevent x phase x segment x atom legality matrix is authoritative compiler input, not documentation only.`n`n## Rationale`nThis gives compiler, tests, and evidence one governable source for protocol legality.`n`n## Consequences`nCells carry required/optional/repeated/forbidden, tx unit, hookable, requires_channel, capability mask, ok_target, err_target, rollback policy, and terminal policy metadata.`n`n## Traceability`nLinks: adr:1008, adr:1009, adr:1093, adr:1100, spc:2113, spc:2115.

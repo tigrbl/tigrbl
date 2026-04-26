@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1110"
+number: 1110
+slug: "decorator-surface-and-realtime-handler-boundary"
+title: "Decorator Surface And Realtime Handler Boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decorator Surface And Realtime Handler Boundary"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nop_ctx remains the semantic root. websocket_ctx, sse_ctx, stream_ctx, and webtransport_ctx are sugar over op_ctx. subevent_ctx is optional dispatch-handler binding. Realtime verbs are builtin custom handlers, not TargetOp expansion.`n`n## Rationale`nThis prevents decorator and target-op explosion while preserving first-class protocol ergonomics.`n`n## Consequences`nDecorator sugar must lower to canonical op/binding specs.`n`n## Traceability`nLinks: adr:1001, adr:1006, adr:1017, adr:1049, adr:1092, adr:1104, adr:1105.

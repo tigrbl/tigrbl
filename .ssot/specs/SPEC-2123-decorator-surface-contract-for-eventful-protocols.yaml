@@ -1,0 +1,22 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2123"
+number: 2123
+slug: "decorator-surface-contract-for-eventful-protocols"
+title: "Decorator Surface Contract For Eventful Protocols"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decorator Surface Contract For Eventful Protocols"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare the decorator surface for eventful protocols.`n`n## Contract`nop_ctx remains the semantic root. websocket_ctx, sse_ctx, stream_ctx, and webtransport_ctx lower to op_ctx plus binding specs. subevent_ctx binds optional dispatch handlers. Realtime verbs remain builtin custom handlers.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1110"
+  - "adr:1104"
+  - "adr:1105"

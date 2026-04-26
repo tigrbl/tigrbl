@@ -1,0 +1,17 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1101"
+number: 1101
+slug: "two-axis-phase-and-subevent-lifecycle-model"
+title: "Two-Axis Phase And Subevent Lifecycle Model"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Two-Axis Phase And Subevent Lifecycle Model"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision`nPhases are execution slots; family and subevent labels are runtime unit selectors. Subevents must not become phases.`n`n## Rationale`nThis prevents phase explosion while preserving protocol-specific lifecycle precision.`n`n## Consequences`nCompiler and runtime selection use both axes together.`n`n## Traceability`nLinks: adr:1009, adr:1091, adr:1092, adr:1093, spc:2098, spc:2102, spc:2115.

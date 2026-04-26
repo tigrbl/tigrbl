@@ -1,0 +1,22 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2116"
+number: 2116
+slug: "two-axis-lifecycle-matrix-contract"
+title: "Two-Axis Lifecycle Matrix Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Two-Axis Lifecycle Matrix Contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare the authoritative two-axis lifecycle matrix where rows are runtime family/subevent selectors and columns are kernel phases.`n`n## Contract`nSubevents are not phases. Every executable unit has exactly one primary subevent. Matrix cells are compiler input and declare participation, hookability, tx unit, loop region, and legality metadata.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1101"
+  - "adr:1106"
+  - "adr:1109"

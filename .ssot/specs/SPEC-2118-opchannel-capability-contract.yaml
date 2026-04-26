@@ -1,0 +1,20 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2118"
+number: 2118
+slug: "opchannel-capability-contract"
+title: "OpChannel Capability Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "OpChannel Capability Contract"
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent`nDeclare the OpChannel runtime capability handshake and adapter boundary.`n`n## Contract`nKernel stores capability requirements and masks. Runtime owns live adapters and verifies accept, recv, send, chunks, events, and datagrams capabilities before execution.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1103"
