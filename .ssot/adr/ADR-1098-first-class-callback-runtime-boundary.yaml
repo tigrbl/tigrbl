@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1098"
+number: 1098
+slug: "first-class-callback-runtime-boundary"
+title: "First-class callback runtime boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The target eventful runtime needs continuation behavior without overloading hooks or hiding callback execution inside handlers."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Callbacks are first-class runtime continuation surfaces, separate from hooks and webhooks.
+  2. Hooks remain in-process phase extension points; callbacks are runtime invocations or continuations with their own lifecycle contract.
+  3. Callback registration, invocation, result handling, cancellation, error behavior, and ordering are governed contract surfaces.
+  4. Callback ordering relative to transaction phases, egress, and POST_EMIT must be explicit.
+  5. Callback behavior must be representable in Python and Rust runtime parity evidence.
+  
+  ## Context
+  
+  The target eventful runtime needs continuation behavior without overloading hooks or hiding callback execution inside handlers.
+  
+  ## Consequences
+  
+  - Callback APIs and executor handling receive separate SPEC coverage.
+  - Callback failure does not implicitly inherit hook semantics.
+  - Callback observability and evidence become certifiable surfaces.
+  
+  ## Related
+  
+  ADR-1010, ADR-1016, ADR-1020, ADR-1068, ADR-1091, ADR-1093, ADR-1094.

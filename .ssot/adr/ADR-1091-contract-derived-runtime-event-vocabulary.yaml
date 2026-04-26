@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1091"
+number: 1091
+slug: "contract-derived-runtime-event-vocabulary"
+title: "Contract-derived runtime event vocabulary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Protocol growth across REST, JSON-RPC, stream, SSE, WebSocket, WebTransport, static, lifespan, callbacks, and webhooks requires a stable split between wire input, semantic runtime classification, and atom execution."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Tigrbl distinguishes three runtime event vocabularies: transport events, derived semantic subevents, and kernel anchor events.
+  2. Transport events are server/ASGI boundary facts.
+  3. Derived subevents are Tigrbl runtime semantics derived after binding, exchange, family, framing, and scope normalization.
+  4. Kernel anchor events are atom-ordering and phase-placement facts.
+  5. No implementation may treat these vocabularies as interchangeable.
+  
+  ## Context
+  
+  Protocol growth across REST, JSON-RPC, stream, SSE, WebSocket, WebTransport, static, lifespan, callbacks, and webhooks requires a stable split between wire input, semantic runtime classification, and atom execution.
+  
+  ## Consequences
+  
+  - Transport adapters preserve ASGI-shaped boundaries.
+  - Runtime planning may derive richer subevents without replacing ASGI.
+  - Kernel compilation keeps atom anchors compact and protocol-neutral.
+  
+  ## Related
+  
+  ADR-1005, ADR-1006, ADR-1008, ADR-1009, ADR-1023, ADR-1024, ADR-1068.

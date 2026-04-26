@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1093"
+number: 1093
+slug: "protocol-phase-trees-and-ok-err-branching"
+title: "Protocol phase trees and ok-err branching"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Stream, SSE, WebSocket, WebTransport, callbacks, and webhooks require branching, repeated regions, and error paths that cannot be represented faithfully by a single success-only phase list."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Protocol execution plans are trees of phase nodes, not only linear phase lists.
+  2. Every compiled phase node has an ok next-leaf and an err next-leaf.
+  3. Tree projection must preserve canonical phase names and may not expose INGRESS_DISPATCH as a public or diagnostics phase.
+  4. Error branches route through governed ON_* and rollback phases according to the failing node.
+  5. Linear call-flow diagrams are allowed only as projections of the canonical tree.
+  
+  ## Context
+  
+  Stream, SSE, WebSocket, WebTransport, callbacks, and webhooks require branching, repeated regions, and error paths that cannot be represented faithfully by a single success-only phase list.
+  
+  ## Consequences
+  
+  - KernelPlan diagnostics must be able to expose tree shape.
+  - Executor implementations must preserve ok/err branch order.
+  - Existing linear tests become projections, not the full contract.
+  
+  ## Related
+  
+  ADR-1008, ADR-1009, ADR-1016, ADR-1068, ADR-1091, ADR-1092.

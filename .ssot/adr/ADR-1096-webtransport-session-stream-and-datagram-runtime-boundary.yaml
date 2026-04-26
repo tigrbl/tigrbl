@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1096"
+number: 1096
+slug: "webtransport-session-stream-and-datagram-runtime-boundary"
+title: "WebTransport session stream and datagram runtime boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "WebTransport is currently visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport subevents to be represented explicitly."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. WebTransport is governed as a session transport with distinct session, stream, datagram, and app-framed execution paths.
+  2. WebTransport support must preserve ASGI3 server-boundary projection and use explicit extension event schemas.
+  3. Session lifecycle, bidirectional stream chunks, datagrams, disconnects, and app-framed messages are separate runtime concerns.
+  4. WebTransport may not be claimed as first-class support until its event, subevent, atom-chain, and executor evidence contracts pass.
+  5. WebTransport implementation must not create a separate programming model outside BindingSpec and KernelPlan compilation.
+  
+  ## Context
+  
+  WebTransport is currently visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport subevents to be represented explicitly.
+  
+  ## Consequences
+  
+  - WebTransport stream and datagram behavior receive separate SPEC coverage.
+  - App-framed WebTransport reuses message-family framing semantics.
+  - Certification requires real runtime and ordering evidence.
+  
+  ## Related
+  
+  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094.

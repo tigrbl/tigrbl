@@ -1,0 +1,37 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1094"
+number: 1094
+slug: "loop-regions-for-stream-sse-websocket-and-webtransport"
+title: "Loop regions for stream SSE WebSocket and WebTransport"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Response-level iteration is insufficient for event ordering, cancellation, backpressure, and executor parity across protocols."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  1. Stream, SSE, WebSocket, and WebTransport repeated execution is represented by first-class loop regions in compiled plans.
+  2. Loop regions declare bounded or unbounded behavior, producer kind, termination conditions, and local error handling.
+  3. Yield iterators and async iterators are producers feeding loop regions, not opaque response adapter details.
+  4. Per-request, per-session, per-stream, per-message, per-chunk, and per-datagram transaction units are selected explicitly by contract.
+  5. Loop completion projects through the governed transport completion fence when transport emission is explicit.
+  
+  ## Context
+  
+  Response-level iteration is insufficient for event ordering, cancellation, backpressure, and executor parity across protocols.
+  
+  ## Consequences
+  
+  - Runtime executors must understand loop entry, iteration, close, abort, and finalization.
+  - KernelPlan optimization can reason about repeated atom chains.
+  - Iterator exceptions become ordered runtime errors instead of adapter surprises.
+  
+  ## Related
+  
+  ADR-1008, ADR-1009, ADR-1016, ADR-1023, ADR-1024, ADR-1068, ADR-1093.
