@@ -29,6 +29,42 @@ def test_websocket_chain_compiles_connect_accept_receive_send_and_close() -> Non
     assert chain["scope_metadata"]["secure"] is True
 
 
+def test_websocket_chain_declares_receive_loop_and_close_metadata() -> None:
+    compile_chain = _require("tigrbl_kernel.protocol_chains.websocket", "compile_websocket_chain")
+
+    chain = compile_chain({"path": "/socket", "scheme": "ws"})
+
+    assert chain["exchange"] == "bidirectional_stream"
+    assert chain["family"] in {"socket", "message"}
+    assert chain["loop_region"]["role"] == "message"
+    assert chain["loop_region"]["break_conditions"] == ("websocket.disconnect",)
+    assert chain["close"]["code"] == 1000
+    assert "reason" in chain["close"]
+
+
+def test_wss_chain_projects_tls_scope_metadata() -> None:
+    compile_chain = _require("tigrbl_kernel.protocol_chains.websocket", "compile_websocket_chain")
+
+    chain = compile_chain(
+        {
+            "path": "/socket",
+            "scheme": "wss",
+            "extensions": {"tls": {"version": "TLSv1.3"}},
+        }
+    )
+
+    assert chain["binding"] in {"wss", "websocket"}
+    assert chain["scope_metadata"]["secure"] is True
+    assert chain["scope_metadata"]["tls"]["version"] == "TLSv1.3"
+
+
+def test_websocket_chain_rejects_unknown_scheme() -> None:
+    compile_chain = _require("tigrbl_kernel.protocol_chains.websocket", "compile_websocket_chain")
+
+    with pytest.raises(ValueError, match="websocket|scheme|ws|wss"):
+        compile_chain({"path": "/socket", "scheme": "http"})
+
+
 @pytest.mark.asyncio
 async def test_websocket_runtime_processes_message_loop_and_clean_close() -> None:
     run_ws = _require("tigrbl_runtime.protocol.websocket", "run_websocket_chain")
@@ -44,6 +80,41 @@ async def test_websocket_runtime_processes_message_loop_and_clean_close() -> Non
     assert result["received"] == ["ping"]
     assert result["closed"] is True
     assert result["close_code"] == 1000
+
+
+@pytest.mark.asyncio
+async def test_websocket_runtime_decodes_text_and_binary_frames_separately() -> None:
+    run_ws = _require("tigrbl_runtime.protocol.websocket", "run_websocket_chain")
+
+    result = await run_ws(
+        {
+            "scope": {"type": "websocket", "scheme": "ws", "path": "/socket"},
+            "messages": [
+                {"type": "websocket.receive", "text": "hello"},
+                {"type": "websocket.receive", "bytes": b"world"},
+                {"type": "websocket.disconnect"},
+            ],
+        }
+    )
+
+    assert result["received_text"] == ["hello"]
+    assert result["received_bytes"] == [b"world"]
+
+
+@pytest.mark.asyncio
+async def test_websocket_runtime_propagates_close_reason_metadata() -> None:
+    run_ws = _require("tigrbl_runtime.protocol.websocket", "run_websocket_chain")
+
+    result = await run_ws(
+        {
+            "scope": {"type": "websocket", "scheme": "wss", "path": "/socket"},
+            "messages": [{"type": "websocket.disconnect", "code": 1001, "reason": "going away"}],
+        }
+    )
+
+    assert result["closed"] is True
+    assert result["close_code"] == 1001
+    assert result["close_reason"] == "going away"
 
 
 @pytest.mark.asyncio

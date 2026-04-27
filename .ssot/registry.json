@@ -6101,8 +6101,8 @@
     },
     {
       "id": "feat:operator-asyncapi-ui-descoped-001",
-      "title": "AsyncAPI UI de-scoped while AsyncAPI spec remains in scope",
-      "description": "Tracks the current-cycle de-scope of AsyncAPI UI while keeping AsyncAPI spec emission in scope, formerly represented by OP-010. Original legacy feature id: feat:op-010.",
+      "title": "AsyncAPI UI out of bounds while AsyncAPI spec remains in scope",
+      "description": "Tracks AsyncAPI UI as explicitly out of bounds while keeping AsyncAPI spec emission in scope, formerly represented by OP-010. Original legacy feature id: feat:op-010.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6110,9 +6110,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
-        "target_claim_tier": "T2",
+        "horizon": "out_of_bounds",
+        "slot": "operator-descoped-surface",
+        "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
@@ -6152,8 +6152,8 @@
     },
     {
       "id": "feat:operator-json-schema-ui-descoped-001",
-      "title": "JSON Schema UI de-scoped while schema bundle remains in scope",
-      "description": "Tracks the current-cycle de-scope of JSON Schema UI while keeping the JSON Schema bundle in scope, formerly represented by OP-011. Original legacy feature id: feat:op-011.",
+      "title": "JSON Schema UI out of bounds while schema bundle remains in scope",
+      "description": "Tracks JSON Schema UI as explicitly out of bounds while keeping the JSON Schema bundle in scope, formerly represented by OP-011. Original legacy feature id: feat:op-011.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6161,9 +6161,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
-        "target_claim_tier": "T2",
+        "horizon": "out_of_bounds",
+        "slot": "operator-descoped-surface",
+        "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
@@ -6203,8 +6203,8 @@
     },
     {
       "id": "feat:operator-oidc-discovery-docs-descoped-001",
-      "title": "OIDC discovery and docs surface de-scoped from current cycle",
-      "description": "Tracks the current-cycle de-scope of OIDC discovery and docs, formerly represented by OP-012. Original legacy feature id: feat:op-012.",
+      "title": "OIDC discovery and docs surface out of bounds",
+      "description": "Tracks OIDC discovery and docs as explicitly out of bounds for the governed operator surface, formerly represented by OP-012. Original legacy feature id: feat:op-012.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6212,9 +6212,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
-        "target_claim_tier": "T2",
+        "horizon": "out_of_bounds",
+        "slot": "operator-descoped-surface",
+        "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [

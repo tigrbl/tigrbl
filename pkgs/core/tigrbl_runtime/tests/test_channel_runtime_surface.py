@@ -5,6 +5,7 @@ from types import SimpleNamespace
 
 from tigrbl_runtime.channel import (
     RuntimeWebSocket,
+    RuntimeWebSocketRoute,
     build_asgi_channel,
     complete_channel,
     normalize_exchange,
@@ -99,6 +100,111 @@ def test_runtime_websocket_replays_buffered_receive_message() -> None:
     websocket = RuntimeWebSocket(channel)
 
     assert asyncio.run(websocket.receive_text()) == "hello"
+
+
+def test_concrete_websocket_export_is_runtime_websocket_facade() -> None:
+    from tigrbl import WebSocket as PublicWebSocket
+    try:
+        from tigrbl_concrete import WebSocket as ConcreteWebSocket
+    except ImportError:
+        import pytest
+
+        pytest.xfail("tigrbl_concrete package root does not export WebSocket yet")
+
+    assert PublicWebSocket is RuntimeWebSocket
+    assert ConcreteWebSocket is RuntimeWebSocket
+
+
+def test_runtime_websocket_route_preserves_binding_metadata() -> None:
+    async def handler(_websocket: RuntimeWebSocket) -> None:
+        return None
+
+    route = RuntimeWebSocketRoute(
+        path_template="/ws/{item_id}",
+        pattern=None,
+        param_names=("item_id",),
+        handler=handler,
+        name="items.ws",
+        protocol="wss",
+        framing="jsonrpc",
+        tags=["items"],
+    )
+
+    assert route.path_template == "/ws/{item_id}"
+    assert route.param_names == ("item_id",)
+    assert route.exchange == "bidirectional_stream"
+    assert route.protocol == "wss"
+    assert route.framing == "jsonrpc"
+    assert route.tags == ["items"]
+
+
+def test_runtime_websocket_accept_send_and_close_delegate_to_channel_send() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    channel = OpChannel(
+        kind="websocket",
+        family="socket",
+        exchange="bidirectional_stream",
+        protocol="wss",
+        path="/ws/echo",
+        send=send,
+    )
+    websocket = RuntimeWebSocket(channel)
+
+    asyncio.run(websocket.accept(subprotocol="jsonrpc"))
+    asyncio.run(websocket.send_text("hello"))
+    asyncio.run(websocket.send_bytes(b"raw"))
+    asyncio.run(websocket.close(code=1001))
+
+    assert sent == [
+        {"type": "websocket.accept", "subprotocol": "jsonrpc"},
+        {"type": "websocket.send", "text": "hello"},
+        {"type": "websocket.send", "bytes": b"raw"},
+        {"type": "websocket.close", "code": 1001},
+    ]
+    assert websocket.accepted is True
+    assert websocket.closed is True
+    assert channel.state["closed"] is True
+
+
+def test_runtime_websocket_receive_disconnect_marks_closed_state() -> None:
+    channel = OpChannel(
+        kind="websocket",
+        family="socket",
+        exchange="bidirectional_stream",
+        protocol="ws",
+        path="/ws/echo",
+        state={"receive_queue": [{"type": "websocket.disconnect", "code": 1001}]},
+    )
+    websocket = RuntimeWebSocket(channel)
+
+    message = asyncio.run(websocket.receive())
+
+    assert message["type"] == "websocket.disconnect"
+    assert websocket.closed is True
+    assert channel.state["disconnected"] is True
+
+
+def test_runtime_websocket_receive_text_raises_on_disconnect() -> None:
+    channel = OpChannel(
+        kind="websocket",
+        family="socket",
+        exchange="bidirectional_stream",
+        protocol="ws",
+        path="/ws/echo",
+        state={"receive_queue": [{"type": "websocket.disconnect", "code": 1006}]},
+    )
+    websocket = RuntimeWebSocket(channel)
+
+    try:
+        asyncio.run(websocket.receive_text())
+    except RuntimeError as exc:
+        assert "disconnected" in str(exc)
+    else:
+        raise AssertionError("receive_text should fail on websocket disconnect")
 
 
 def test_normalize_exchange_maps_legacy_bidirectional_value() -> None:

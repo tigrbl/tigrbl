@@ -38,6 +38,24 @@ async def test_iterator_producer_normalizes_sync_and_async_iterators() -> None:
 
 
 @pytest.mark.asyncio
+async def test_iterator_producer_normalizes_single_yield_callable() -> None:
+    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+
+    producer = normalize(lambda: b"only", chunk_type="bytes")
+
+    assert [item async for item in producer] == [b"only"]
+
+
+@pytest.mark.asyncio
+async def test_iterator_producer_preserves_empty_iterator_completion() -> None:
+    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+
+    producer = normalize(iter(()), chunk_type="bytes")
+
+    assert [item async for item in producer] == []
+
+
+@pytest.mark.asyncio
 async def test_iterator_producer_maps_exceptions_and_runs_finalization() -> None:
     normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
     finalized: list[str] = []
@@ -54,6 +72,22 @@ async def test_iterator_producer_maps_exceptions_and_runs_finalization() -> None
 
 
 @pytest.mark.asyncio
+async def test_iterator_producer_runs_finalizer_on_consumer_cancellation() -> None:
+    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    finalized: list[str] = []
+
+    async def chunks():
+        yield b"a"
+        yield b"b"
+
+    producer = normalize(chunks(), chunk_type="bytes", finalizer=lambda: finalized.append("done"))
+    assert await anext(producer) == b"a"
+    await producer.aclose()
+
+    assert finalized == ["done"]
+
+
+@pytest.mark.asyncio
 async def test_iterator_producer_rejects_invalid_chunk_type_before_transport_emit() -> None:
     normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
 
@@ -64,3 +98,14 @@ async def test_iterator_producer_rejects_invalid_chunk_type_before_transport_emi
     with pytest.raises(TypeError, match="chunk|bytes"):
         [item async for item in producer]
 
+
+@pytest.mark.asyncio
+async def test_iterator_producer_cannot_be_reiterated_after_close() -> None:
+    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+
+    producer = normalize(_sync_chunks(), chunk_type="bytes")
+    assert await anext(producer) == b"a"
+    await producer.aclose()
+
+    with pytest.raises(RuntimeError, match="closed|exhausted|reiterate"):
+        await anext(producer)

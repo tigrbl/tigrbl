@@ -16,6 +16,40 @@ def _require(module_name: str, attr_name: str):
     return value
 
 
+def test_post_emit_completion_fence_compiles_after_emit_for_stream_transports() -> None:
+    compile_fence = _require("tigrbl_kernel.protocol_completion", "compile_completion_fence")
+
+    plan = compile_fence({"binding": "http.stream", "transport": "stream", "phase": "EMIT"})
+
+    assert plan["completion_fence"] == "POST_EMIT"
+    assert plan["runtime_owned"] is True
+    assert plan["public_hook_phase"] is False
+    assert plan["after_phase"] == "EMIT"
+
+
+def test_request_response_completion_fence_can_be_elided_when_send_is_synchronous() -> None:
+    compile_fence = _require("tigrbl_kernel.protocol_completion", "compile_completion_fence")
+
+    plan = compile_fence(
+        {
+            "binding": "http.rest",
+            "transport": "request_response",
+            "send_completion": "synchronous",
+        }
+    )
+
+    assert plan["completion_fence"] in {None, "POST_EMIT"}
+    if plan["completion_fence"] == "POST_EMIT":
+        assert plan["explicit_ack_required"] is True
+
+
+def test_post_emit_completion_fence_is_rejected_as_user_hook_phase() -> None:
+    validate_hook_phase = _require("tigrbl_kernel.protocol_completion", "validate_completion_hook_phase")
+
+    with pytest.raises(ValueError, match="POST_EMIT|runtime-owned|hook"):
+        validate_hook_phase("POST_EMIT")
+
+
 @pytest.mark.asyncio
 async def test_emit_complete_fires_only_after_transport_acknowledges_send() -> None:
     emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
@@ -33,6 +67,24 @@ async def test_emit_complete_fires_only_after_transport_acknowledges_send() -> N
 
     assert trace == ["send-called", "message.emit_complete"]
     assert result["completion_fence"] == "POST_EMIT"
+    assert result["completed"] is True
+
+
+@pytest.mark.asyncio
+async def test_emit_complete_is_emitted_exactly_once_for_multiple_ack_signals() -> None:
+    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    trace: list[str] = []
+
+    async def send(_message: object) -> tuple[str, str]:
+        return ("ack", "ack")
+
+    result = await emit_with_fence(
+        {"subevent": "stream.chunk.emit", "payload": b"ready"},
+        send=send,
+        trace=trace.append,
+    )
+
+    assert trace.count("stream.chunk.emit_complete") == 1
     assert result["completed"] is True
 
 

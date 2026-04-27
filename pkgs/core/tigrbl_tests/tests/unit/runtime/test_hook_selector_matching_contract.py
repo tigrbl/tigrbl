@@ -105,3 +105,73 @@ def test_hook_selector_can_target_message_and_datagram_runtime_families() -> Non
         datagram_hook, {"family": "datagram", "subevent": "datagram.received"}
     )
     assert not _matches(datagram_hook, {"family": "message", "subevent": "message.received"})
+
+
+def test_hook_selector_normalizes_exchange_aliases_before_matching() -> None:
+    hook = HookSpec(
+        phase=HookPhase.PRE_HANDLER,
+        fn=_noop,
+        exchange="server_stream",
+        family=("event_stream",),
+        subevents=("sse.event",),
+    )
+
+    assert _matches(
+        hook,
+        {
+            "exchange": "event_stream",
+            "family": "event_stream",
+            "subevent": "sse.event",
+        },
+    )
+    assert not _matches(
+        hook,
+        {
+            "exchange": "bidirectional_stream",
+            "family": "event_stream",
+            "subevent": "sse.event",
+        },
+    )
+
+
+def test_hook_selector_can_narrow_by_framing_without_cross_binding_leakage() -> None:
+    if "framing" not in getattr(HookSpec, "__dataclass_fields__", {}):
+        pytest.xfail("hook selector framing dimension is not implemented")
+
+    hook = HookSpec(
+        phase=HookPhase.POST_HANDLER,
+        fn=_noop,
+        family=("stream",),
+        subevents=("stream.chunk",),
+        framing=("sse",),
+    )
+
+    assert _matches(
+        hook,
+        {"family": "stream", "subevent": "stream.chunk", "framing": "sse"},
+    )
+    assert not _matches(
+        hook,
+        {"family": "stream", "subevent": "stream.chunk", "framing": "stream"},
+    )
+
+
+def test_hook_selector_rejects_runtime_owned_ingress_route_phase() -> None:
+    try:
+        HookSpec(phase="INGRESS_ROUTE", fn=_noop)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return
+
+    pytest.xfail("HookSpec still accepts runtime-owned INGRESS_ROUTE selectors")
+
+
+def test_hook_selector_keeps_transport_and_semantic_subevents_distinct() -> None:
+    hook = HookSpec(
+        phase=HookPhase.PRE_HANDLER,
+        fn=_noop,
+        family=("message",),
+        subevents=("message.received",),
+    )
+
+    assert _matches(hook, {"family": "message", "subevent": "message.received"})
+    assert not _matches(hook, {"family": "message", "subevent": "transport.accept"})

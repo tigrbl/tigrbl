@@ -151,6 +151,64 @@ def test_message_and_datagram_bindings_project_distinct_runtime_families() -> No
     assert "datagram.received" in datagram["subevents"]
 
 
+def test_message_and_datagram_bindings_do_not_share_subevent_taxonomy() -> None:
+    message_cls = getattr(binding_spec, "MessageBindingSpec", None)
+    datagram_cls = getattr(binding_spec, "DatagramBindingSpec", None)
+    if message_cls is None or datagram_cls is None:
+        pytest.xfail("message/datagram binding families are not implemented")
+
+    message = _project(message_cls(proto="internal.message", topic="inventory.changed"))
+    datagram = _project(datagram_cls(proto="udp.datagram", endpoint="events"))
+
+    message_subevents = set(message["subevents"])
+    datagram_subevents = set(datagram["subevents"])
+
+    assert message_subevents
+    assert datagram_subevents
+    assert message_subevents.isdisjoint(datagram_subevents)
+    assert all(str(value).startswith("message.") for value in message_subevents)
+    assert all(str(value).startswith("datagram.") for value in datagram_subevents)
+
+
+def test_message_and_datagram_bindings_have_distinct_eventkey_families() -> None:
+    compiler = getattr(binding_spec, "compile_binding_event_key", None)
+    message_cls = getattr(binding_spec, "MessageBindingSpec", None)
+    datagram_cls = getattr(binding_spec, "DatagramBindingSpec", None)
+    if compiler is None or message_cls is None or datagram_cls is None:
+        pytest.xfail("message/datagram EventKey family compilation is not implemented")
+
+    message_key = compiler(message_cls(proto="internal.message", topic="inventory.changed"))
+    datagram_key = compiler(datagram_cls(proto="udp.datagram", endpoint="events"))
+
+    assert message_key.family == "message"
+    assert datagram_key.family == "datagram"
+    assert message_key.family_code != datagram_key.family_code
+
+
+def test_message_and_datagram_exchange_overrides_fail_closed() -> None:
+    message_cls = getattr(binding_spec, "MessageBindingSpec", None)
+    datagram_cls = getattr(binding_spec, "DatagramBindingSpec", None)
+    if message_cls is None or datagram_cls is None:
+        pytest.xfail("message/datagram binding families are not implemented")
+
+    with pytest.raises(ValueError, match="exchange|family|canonical|invalid"):
+        _project(
+            message_cls(
+                proto="internal.message",
+                topic="inventory.changed",
+                exchange="server_stream",
+            )
+        )
+    with pytest.raises(ValueError, match="exchange|family|canonical|invalid"):
+        _project(
+            datagram_cls(
+                proto="udp.datagram",
+                endpoint="events",
+                exchange="request_response",
+            )
+        )
+
+
 def test_binding_projection_rejects_noncanonical_exchange_overrides() -> None:
     with pytest.raises(ValueError, match="exchange|canonical|invalid"):
         _project(
