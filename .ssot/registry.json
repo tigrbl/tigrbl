@@ -6492,8 +6492,31 @@
     },
     {
       "id": "feat:rpc-001",
-      "title": "JSON-RPC 2.0 current-target surface is verified",
-      "description": "Tracks conformance surface RPC-001: JSON-RPC 2.0 current-target surface is verified. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py`",
+      "title": "Obsolete alias for JSON-RPC 2.0 runtime surface",
+      "description": "Compatibility row for legacy feature id feat:rpc-001. Replaced by feat:jsonrpc-20-runtime-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:jsonrpc-20-runtime-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:jsonrpc-20-runtime-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:jsonrpc-20-runtime-surface-001",
+      "title": "JSON-RPC 2.0 runtime surface",
+      "description": "Tracks the JSON-RPC 2.0 runtime surface formerly represented by RPC-001. Original legacy feature id: feat:rpc-001.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6541,8 +6564,31 @@
     },
     {
       "id": "feat:rpc-002",
-      "title": "OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified",
-      "description": "Tracks conformance surface RPC-002: OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
+      "title": "Obsolete alias for OpenRPC 1.2.6 JSON document surface",
+      "description": "Compatibility row for legacy feature id feat:rpc-002. Replaced by feat:openrpc-126-json-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:openrpc-126-json-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:openrpc-126-json-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:openrpc-126-json-surface-001",
+      "title": "OpenRPC 1.2.6 JSON document surface",
+      "description": "Tracks OpenRPC 1.2.6 JSON document emission and the mounted /openrpc.json surface formerly represented by RPC-002. Original legacy feature id: feat:rpc-002.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6590,8 +6636,31 @@
     },
     {
       "id": "feat:rpc-003",
-      "title": "Mounted Lens / OpenRPC UI is verified",
-      "description": "Tracks conformance surface RPC-003: Mounted Lens / OpenRPC UI is verified. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
+      "title": "Obsolete alias for Lens OpenRPC UI surface",
+      "description": "Compatibility row for legacy feature id feat:rpc-003. Replaced by feat:openrpc-lens-ui-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:openrpc-lens-ui-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:openrpc-lens-ui-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:openrpc-lens-ui-surface-001",
+      "title": "Lens OpenRPC UI surface",
+      "description": "Tracks the mounted Lens / OpenRPC UI surface formerly represented by RPC-003. Original legacy feature id: feat:rpc-003.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -22162,9 +22231,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -22236,9 +22305,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -22310,9 +22379,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -22384,9 +22453,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -22562,9 +22631,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
@@ -22634,9 +22703,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:tigrbl-tests-failing-case-closure-001"
       ],
       "claim_ids": [
@@ -22685,9 +22754,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
@@ -22757,9 +22826,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
@@ -22829,9 +22898,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003"
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -23373,9 +23442,9 @@
         "feat:openrpc-mount-surface-001",
         "feat:openrpc-payload-surface-001",
         "feat:openrpc-uix-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
@@ -23429,9 +23498,9 @@
         "feat:openrpc-mount-surface-001",
         "feat:openrpc-payload-surface-001",
         "feat:openrpc-uix-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
@@ -23966,9 +24035,9 @@
         "feat:rfc-6750",
         "feat:rfc-7235",
         "feat:rfc-7617",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:sec-001",
         "feat:sec-002",
         "feat:sec-003",
@@ -35289,7 +35358,7 @@
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:rpc-003",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
@@ -35780,9 +35849,9 @@
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:transport-bypass-removal-001",
         "feat:transport-dispatch-governance-001",
         "feat:transport-parity-contract-001",
@@ -39702,7 +39771,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface RPC-001: JSON-RPC 2.0 current-target surface is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py`",
       "feature_ids": [
-        "feat:rpc-001",
+        "feat:jsonrpc-20-runtime-surface-001",
         "feat:jsonrpc-input-validation-before-persistence-001",
         "feat:jsonrpc-persistence-error-sanitization-001"
       ],
@@ -39742,7 +39811,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface RPC-002: OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
-        "feat:rpc-002"
+        "feat:openrpc-126-json-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -39776,7 +39845,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface RPC-003: Mounted Lens / OpenRPC UI is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
-        "feat:rpc-003"
+        "feat:openrpc-lens-ui-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -40833,9 +40902,9 @@
         "feat:op-surface-public-projection-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:sse-event-framing-001",
         "feat:stream-chunk-order-preservation-001",
         "feat:streamingresponse-concrete-stream-class-001",
@@ -41475,9 +41544,9 @@
         "feat:canonical-op-send-datagram-001",
         "feat:canonical-op-checkpoint-001",
         "feat:canonical-op-custom-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:transport-bypass-removal-001",
         "feat:transport-dispatch-governance-001",
         "feat:transport-parity-contract-001",
@@ -47212,7 +47281,7 @@
         "slot": "jsonrpc-validation-hardening"
       },
       "feature_ids": [
-        "feat:rpc-001",
+        "feat:jsonrpc-20-runtime-surface-001",
         "feat:validation-failure-projection-parity-001",
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
@@ -47389,9 +47458,9 @@
         "feat:rfc-8705",
         "feat:rfc-9110",
         "feat:rfc-9449",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:sec-001",
         "feat:sec-002",
         "feat:sec-003",
@@ -47545,9 +47614,9 @@
         "feat:op-surface-public-projection-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
-        "feat:rpc-001",
-        "feat:rpc-002",
-        "feat:rpc-003",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
         "feat:sse-event-framing-001",
         "feat:stream-chunk-order-preservation-001",
         "feat:streamingresponse-concrete-stream-class-001",
@@ -47599,7 +47668,7 @@
       "status": "active",
       "frozen": false,
       "feature_ids": [
-        "feat:rpc-001",
+        "feat:jsonrpc-20-runtime-surface-001",
         "feat:validation-failure-projection-parity-001",
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
