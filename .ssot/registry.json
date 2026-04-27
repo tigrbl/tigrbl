@@ -1988,8 +1988,31 @@
     },
     {
       "id": "feat:gate-009",
-      "title": "Gate C retained spec/security conditions are satisfied and machine-checked in the checkpoint tree",
-      "description": "Tracks conformance surface GATE-009: Gate C retained spec/security conditions are satisfied and machine-checked in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_C_CONFORMANCE_SECURITY.md`, `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/conformance/audit/2026/p11-gate-c/README.md`, `tools/ci/validate_gate_c_conformance_security.py`",
+      "title": "Obsolete alias for Gate C conformance and security checkpoint conditions",
+      "description": "Compatibility row for legacy feature id feat:gate-009. Replaced by feat:gate-c-conformance-security-checkpoint-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:gate-c-conformance-security-checkpoint-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:gate-c-conformance-security-checkpoint-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:gate-c-conformance-security-checkpoint-001",
+      "title": "Gate C conformance and security checkpoint conditions",
+      "description": "Tracks Gate C retained conformance and security conditions formerly represented by GATE-009. Original legacy feature id: feat:gate-009.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5077,8 +5100,31 @@
     },
     {
       "id": "feat:oas-001",
-      "title": "OpenAPI 3.1.0 emission is explicit and verified",
-      "description": "Tracks conformance surface OAS-001: OpenAPI 3.1.0 emission is explicit and verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
+      "title": "Obsolete alias for OpenAPI 3.1.0 document emission",
+      "description": "Compatibility row for legacy feature id feat:oas-001. Replaced by feat:openapi-31-document-emission-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:openapi-31-document-emission-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:openapi-31-document-emission-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:openapi-31-document-emission-001",
+      "title": "OpenAPI 3.1.0 document emission",
+      "description": "Tracks explicit OpenAPI 3.1.0 document emission formerly represented by OAS-001. Original legacy feature id: feat:oas-001.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5125,8 +5171,31 @@
     },
     {
       "id": "feat:oas-002",
-      "title": "JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`",
-      "description": "Tracks conformance surface OAS-002: JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
+      "title": "Obsolete alias for OpenAPI JSON Schema Draft 2020-12 dialect declaration",
+      "description": "Compatibility row for legacy feature id feat:oas-002. Replaced by feat:openapi-json-schema-dialect-2020-12-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:openapi-json-schema-dialect-2020-12-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:openapi-json-schema-dialect-2020-12-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:openapi-json-schema-dialect-2020-12-001",
+      "title": "OpenAPI JSON Schema Draft 2020-12 dialect declaration",
+      "description": "Tracks explicit jsonSchemaDialect declaration for JSON Schema Draft 2020-12 formerly represented by OAS-002. Original legacy feature id: feat:oas-002.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5173,8 +5242,31 @@
     },
     {
       "id": "feat:oas-003",
-      "title": "`components.schemas` emission is verified",
-      "description": "Tracks conformance surface OAS-003: `components.schemas` emission is verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/i9n/test_schema.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`",
+      "title": "Obsolete alias for OpenAPI components.schemas emission",
+      "description": "Compatibility row for legacy feature id feat:oas-003. Replaced by feat:openapi-components-schemas-emission-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:openapi-components-schemas-emission-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:openapi-components-schemas-emission-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:openapi-components-schemas-emission-001",
+      "title": "OpenAPI components.schemas emission",
+      "description": "Tracks OpenAPI components.schemas emission formerly represented by OAS-003. Original legacy feature id: feat:oas-003.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5221,8 +5313,31 @@
     },
     {
       "id": "feat:oas-004",
-      "title": "Request body / response / parameter emission is verified",
-      "description": "Tracks conformance surface OAS-004: Request body / response / parameter emission is verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
+      "title": "Obsolete alias for OpenAPI request body, response, and parameter emission",
+      "description": "Compatibility row for legacy feature id feat:oas-004. Replaced by feat:openapi-request-response-parameter-emission-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:openapi-request-response-parameter-emission-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:openapi-request-response-parameter-emission-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:openapi-request-response-parameter-emission-001",
+      "title": "OpenAPI request body, response, and parameter emission",
+      "description": "Tracks OpenAPI request body, response, and parameter emission formerly represented by OAS-004. Original legacy feature id: feat:oas-004.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5317,8 +5432,31 @@
     },
     {
       "id": "feat:oas-006",
-      "title": "Mounted `/openapi.json` and `/docs` surfaces are verified",
-      "description": "Tracks conformance surface OAS-006: Mounted `/openapi.json` and `/docs` surfaces are verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`",
+      "title": "Obsolete alias for Mounted OpenAPI JSON and Swagger docs surface",
+      "description": "Compatibility row for legacy feature id feat:oas-006. Replaced by feat:openapi-mounted-json-and-docs-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:openapi-mounted-json-and-docs-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:openapi-mounted-json-and-docs-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:openapi-mounted-json-and-docs-surface-001",
+      "title": "Mounted OpenAPI JSON and Swagger docs surface",
+      "description": "Tracks mounted /openapi.json and /docs surfaces formerly represented by OAS-006. Original legacy feature id: feat:oas-006.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5392,8 +5530,31 @@
     },
     {
       "id": "feat:op-001",
-      "title": "OP-001 feature",
-      "description": "Feature row synthesized from claim OP-001.",
+      "title": "Obsolete alias for Static files operator surface",
+      "description": "Compatibility row for legacy feature id feat:op-001. Replaced by feat:operator-static-files-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-static-files-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-static-files-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-static-files-surface-001",
+      "title": "Static files operator surface",
+      "description": "Tracks the static files operator surface formerly represented by OP-001. Original legacy feature id: feat:op-001.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5420,8 +5581,31 @@
     },
     {
       "id": "feat:op-002",
-      "title": "OP-002 feature",
-      "description": "Feature row synthesized from claim OP-002.",
+      "title": "Obsolete alias for Cookie request and response round-trip surface",
+      "description": "Compatibility row for legacy feature id feat:op-002. Replaced by feat:operator-cookie-roundtrip-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-cookie-roundtrip-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-cookie-roundtrip-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-cookie-roundtrip-surface-001",
+      "title": "Cookie request and response round-trip surface",
+      "description": "Tracks request cookie access and response cookie setting formerly represented by OP-002. Original legacy feature id: feat:op-002.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5448,8 +5632,31 @@
     },
     {
       "id": "feat:op-003",
-      "title": "OP-003 feature",
-      "description": "Feature row synthesized from claim OP-003.",
+      "title": "Obsolete alias for Streaming response operator surface",
+      "description": "Compatibility row for legacy feature id feat:op-003. Replaced by feat:operator-streaming-response-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-streaming-response-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-streaming-response-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-streaming-response-surface-001",
+      "title": "Streaming response operator surface",
+      "description": "Tracks streaming response operator behavior formerly represented by OP-003. Original legacy feature id: feat:op-003.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5476,8 +5683,31 @@
     },
     {
       "id": "feat:op-004",
-      "title": "OP-004 feature",
-      "description": "Feature row synthesized from claim OP-004.",
+      "title": "Obsolete alias for WebSocket route operator surface",
+      "description": "Compatibility row for legacy feature id feat:op-004. Replaced by feat:operator-websocket-route-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-websocket-route-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-websocket-route-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-websocket-route-surface-001",
+      "title": "WebSocket route operator surface",
+      "description": "Tracks WebSocket route declaration and dispatch behavior formerly represented by OP-004. Original legacy feature id: feat:op-004.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5504,8 +5734,31 @@
     },
     {
       "id": "feat:op-005",
-      "title": "OP-005 feature",
-      "description": "Feature row synthesized from claim OP-005.",
+      "title": "Obsolete alias for WHATWG SSE event-stream operator surface",
+      "description": "Compatibility row for legacy feature id feat:op-005. Replaced by feat:operator-sse-event-stream-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-sse-event-stream-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-sse-event-stream-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-sse-event-stream-surface-001",
+      "title": "WHATWG SSE event-stream operator surface",
+      "description": "Tracks WHATWG server-sent event response framing formerly represented by OP-005. Original legacy feature id: feat:op-005.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5532,8 +5785,31 @@
     },
     {
       "id": "feat:op-006",
-      "title": "OP-006 feature",
-      "description": "Feature row synthesized from claim OP-006.",
+      "title": "Obsolete alias for Form and multipart request operator surface",
+      "description": "Compatibility row for legacy feature id feat:op-006. Replaced by feat:operator-form-multipart-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-form-multipart-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-form-multipart-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-form-multipart-surface-001",
+      "title": "Form and multipart request operator surface",
+      "description": "Tracks form and multipart request parsing formerly represented by OP-006. Original legacy feature id: feat:op-006.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5560,8 +5836,31 @@
     },
     {
       "id": "feat:op-007",
-      "title": "OP-007 feature",
-      "description": "Feature row synthesized from claim OP-007.",
+      "title": "Obsolete alias for Uploaded file request operator surface",
+      "description": "Compatibility row for legacy feature id feat:op-007. Replaced by feat:operator-uploaded-file-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-uploaded-file-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-uploaded-file-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-uploaded-file-surface-001",
+      "title": "Uploaded file request operator surface",
+      "description": "Tracks uploaded file metadata and body access formerly represented by OP-007. Original legacy feature id: feat:op-007.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5588,8 +5887,31 @@
     },
     {
       "id": "feat:op-008",
-      "title": "OP-008 feature",
-      "description": "Feature row synthesized from claim OP-008.",
+      "title": "Obsolete alias for Bounded built-in middleware catalog",
+      "description": "Compatibility row for legacy feature id feat:op-008. Replaced by feat:operator-bounded-middleware-catalog-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-bounded-middleware-catalog-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-bounded-middleware-catalog-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-bounded-middleware-catalog-001",
+      "title": "Bounded built-in middleware catalog",
+      "description": "Tracks the bounded built-in middleware catalog formerly represented by OP-008. Original legacy feature id: feat:op-008.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5616,8 +5938,31 @@
     },
     {
       "id": "feat:op-009",
-      "title": "OP-009 feature",
-      "description": "Feature row synthesized from claim OP-009.",
+      "title": "Obsolete alias for Dependency and hook based auth operator surface",
+      "description": "Compatibility row for legacy feature id feat:op-009. Replaced by feat:operator-auth-dependency-hook-surface-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-auth-dependency-hook-surface-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-auth-dependency-hook-surface-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-auth-dependency-hook-surface-001",
+      "title": "Dependency and hook based auth operator surface",
+      "description": "Tracks the dependency and hook based auth surface decision formerly represented by OP-009. Original legacy feature id: feat:op-009.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5644,8 +5989,31 @@
     },
     {
       "id": "feat:op-010",
-      "title": "OP-010 feature",
-      "description": "Feature row synthesized from claim OP-010.",
+      "title": "Obsolete alias for AsyncAPI UI de-scoped while AsyncAPI spec remains in scope",
+      "description": "Compatibility row for legacy feature id feat:op-010. Replaced by feat:operator-asyncapi-ui-descoped-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-asyncapi-ui-descoped-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-asyncapi-ui-descoped-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-asyncapi-ui-descoped-001",
+      "title": "AsyncAPI UI de-scoped while AsyncAPI spec remains in scope",
+      "description": "Tracks the current-cycle de-scope of AsyncAPI UI while keeping AsyncAPI spec emission in scope, formerly represented by OP-010. Original legacy feature id: feat:op-010.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5672,8 +6040,31 @@
     },
     {
       "id": "feat:op-011",
-      "title": "OP-011 feature",
-      "description": "Feature row synthesized from claim OP-011.",
+      "title": "Obsolete alias for JSON Schema UI de-scoped while schema bundle remains in scope",
+      "description": "Compatibility row for legacy feature id feat:op-011. Replaced by feat:operator-json-schema-ui-descoped-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-json-schema-ui-descoped-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-json-schema-ui-descoped-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-json-schema-ui-descoped-001",
+      "title": "JSON Schema UI de-scoped while schema bundle remains in scope",
+      "description": "Tracks the current-cycle de-scope of JSON Schema UI while keeping the JSON Schema bundle in scope, formerly represented by OP-011. Original legacy feature id: feat:op-011.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -5700,8 +6091,31 @@
     },
     {
       "id": "feat:op-012",
-      "title": "OP-012 feature",
-      "description": "Feature row synthesized from claim OP-012.",
+      "title": "Obsolete alias for OIDC discovery and docs surface de-scoped from current cycle",
+      "description": "Compatibility row for legacy feature id feat:op-012. Replaced by feat:operator-oidc-discovery-docs-descoped-001.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operator-oidc-discovery-docs-descoped-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operator-oidc-discovery-docs-descoped-001."
+      },
+      "plan": {
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
+      },
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": [],
+      "spec_ids": []
+    },
+    {
+      "id": "feat:operator-oidc-discovery-docs-descoped-001",
+      "title": "OIDC discovery and docs surface de-scoped from current cycle",
+      "description": "Tracks the current-cycle de-scope of OIDC discovery and docs, formerly represented by OP-012. Original legacy feature id: feat:op-012.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
@@ -6741,11 +7155,11 @@
         "tst:tcase-0015"
       ],
       "requires": [
-        "feat:op-003",
-        "feat:op-004",
-        "feat:op-005",
-        "feat:op-006",
-        "feat:op-007"
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-uploaded-file-surface-001"
       ],
       "spec_ids": [
         "spc:2020",
@@ -21689,7 +22103,7 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_jsonrpc_batch_behavior.py",
       "feature_ids": [
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:jsonrpc-batch-framing-001",
         "feat:integration-test-registry-coverage-001",
         "feat:asyncapi-mount-surface-001",
@@ -21741,13 +22155,13 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -21815,13 +22229,13 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -21889,13 +22303,13 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -21963,13 +22377,13 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -22037,7 +22451,7 @@
       "kind": "automated",
       "path": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
       "feature_ids": [
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:rfc-6750",
         "feat:rfc-7235",
         "feat:rfc-7617",
@@ -22081,7 +22495,7 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
       "feature_ids": [
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:rfc-6750",
         "feat:rfc-7235",
         "feat:rfc-7617",
@@ -22141,13 +22555,13 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -22213,13 +22627,13 @@
       "kind": "automated",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -22264,13 +22678,13 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -22336,13 +22750,13 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -22408,13 +22822,13 @@
       "kind": "automated",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "feature_ids": [
-        "feat:gate-009",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003"
@@ -22454,18 +22868,18 @@
       "kind": "automated",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "feature_ids": [
-        "feat:op-001",
-        "feat:op-002",
-        "feat:op-003",
-        "feat:op-004",
-        "feat:op-005",
-        "feat:op-006",
-        "feat:op-007",
-        "feat:op-008",
-        "feat:op-009",
-        "feat:op-010",
-        "feat:op-011",
-        "feat:op-012",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-asyncapi-ui-descoped-001",
+        "feat:operator-json-schema-ui-descoped-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
         "feat:operator-surface-framing-semantics-001",
         "feat:stream-chunk-order-preservation-001",
         "feat:sse-event-framing-001",
@@ -22509,18 +22923,18 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py",
       "feature_ids": [
-        "feat:op-001",
-        "feat:op-002",
-        "feat:op-003",
-        "feat:op-004",
-        "feat:op-005",
-        "feat:op-006",
-        "feat:op-007",
-        "feat:op-008",
-        "feat:op-009",
-        "feat:op-010",
-        "feat:op-011",
-        "feat:op-012",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-asyncapi-ui-descoped-001",
+        "feat:operator-json-schema-ui-descoped-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
         "feat:declared-surface-docs-extension-001",
         "feat:surface-binding-family-emission-001",
         "feat:surface-binding-proto-emission-001",
@@ -22894,7 +23308,7 @@
         "feat:auth-failure-projection-parity-001",
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:httpbasic-security-dependency-001",
         "feat:httpbearer-security-dependency-001",
         "feat:jsonrpc-batch-framing-001",
@@ -22940,19 +23354,19 @@
         "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:http-route-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:openapi-mount-surface-001",
         "feat:openapi-payload-surface-001",
         "feat:openapi-uix-surface-001",
@@ -22997,18 +23411,18 @@
         "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:openapi-mount-surface-001",
         "feat:openapi-payload-surface-001",
         "feat:openapi-uix-surface-001",
@@ -23058,18 +23472,18 @@
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
         "feat:multipart-form-preservation-001",
-        "feat:op-001",
-        "feat:op-002",
-        "feat:op-003",
-        "feat:op-004",
-        "feat:op-005",
-        "feat:op-006",
-        "feat:op-007",
-        "feat:op-008",
-        "feat:op-009",
-        "feat:op-010",
-        "feat:op-011",
-        "feat:op-012",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-asyncapi-ui-descoped-001",
+        "feat:operator-json-schema-ui-descoped-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
         "feat:openapi-mount-surface-001",
         "feat:openapi-payload-surface-001",
         "feat:openapi-uix-surface-001",
@@ -23541,14 +23955,14 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_c_conformance_security.py",
       "feature_ids": [
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:gate-010",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rfc-6750",
         "feat:rfc-7235",
         "feat:rfc-7617",
@@ -23817,7 +24231,7 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_http_auth_challenges.py",
       "feature_ids": [
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:rfc-6750",
         "feat:rfc-7235",
         "feat:rfc-7617",
@@ -34856,7 +35270,7 @@
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:swagger-openapi-uix-001",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
@@ -35360,12 +35774,12 @@
         "feat:canonical-op-send-datagram-001",
         "feat:canonical-op-checkpoint-001",
         "feat:canonical-op-custom-001",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rpc-001",
         "feat:rpc-002",
         "feat:rpc-003",
@@ -37087,7 +37501,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-009: Gate C retained spec/security conditions are satisfied and machine-checked in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_C_CONFORMANCE_SECURITY.md`, `docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md`, `docs/conformance/audit/2026/p11-gate-c/README.md`, `tools/ci/validate_gate_c_conformance_security.py`",
       "feature_ids": [
-        "feat:gate-009"
+        "feat:gate-c-conformance-security-checkpoint-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
@@ -38439,7 +38853,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-001: OpenAPI 3.1.0 emission is explicit and verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
-        "feat:oas-001"
+        "feat:openapi-31-document-emission-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -38473,7 +38887,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-002: JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
-        "feat:oas-002"
+        "feat:openapi-json-schema-dialect-2020-12-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -38507,7 +38921,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-003: `components.schemas` emission is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/i9n/test_schema.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`",
       "feature_ids": [
-        "feat:oas-003"
+        "feat:openapi-components-schemas-emission-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -38541,7 +38955,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-004: Request body / response / parameter emission is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
       "feature_ids": [
-        "feat:oas-004"
+        "feat:openapi-request-response-parameter-emission-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -38609,7 +39023,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-006: Mounted `/openapi.json` and `/docs` surfaces are verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`",
       "feature_ids": [
-        "feat:oas-006"
+        "feat:openapi-mounted-json-and-docs-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -38667,7 +39081,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-001.",
       "feature_ids": [
-        "feat:op-001"
+        "feat:operator-static-files-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38692,7 +39106,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-002.",
       "feature_ids": [
-        "feat:op-002"
+        "feat:operator-cookie-roundtrip-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38717,7 +39131,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-003.",
       "feature_ids": [
-        "feat:op-003"
+        "feat:operator-streaming-response-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38742,7 +39156,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-004.",
       "feature_ids": [
-        "feat:op-004"
+        "feat:operator-websocket-route-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38767,7 +39181,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-005.",
       "feature_ids": [
-        "feat:op-005"
+        "feat:operator-sse-event-stream-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38792,7 +39206,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-006.",
       "feature_ids": [
-        "feat:op-006"
+        "feat:operator-form-multipart-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38817,7 +39231,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-007.",
       "feature_ids": [
-        "feat:op-007"
+        "feat:operator-uploaded-file-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38842,7 +39256,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-008.",
       "feature_ids": [
-        "feat:op-008"
+        "feat:operator-bounded-middleware-catalog-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38867,7 +39281,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-009.",
       "feature_ids": [
-        "feat:op-009"
+        "feat:operator-auth-dependency-hook-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38892,7 +39306,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-010.",
       "feature_ids": [
-        "feat:op-010"
+        "feat:operator-asyncapi-ui-descoped-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38917,7 +39331,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-011.",
       "feature_ids": [
-        "feat:op-011"
+        "feat:operator-json-schema-ui-descoped-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -38942,7 +39356,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-012.",
       "feature_ids": [
-        "feat:op-012"
+        "feat:operator-oidc-discovery-docs-descoped-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -40377,7 +40791,7 @@
         "feat:docs-support-001",
         "feat:error-parity-response-structure-001",
         "feat:eventstreamresponse-concrete-sse-class-001",
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:http-route-001",
         "feat:jsonrpc-batch-framing-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -40387,24 +40801,24 @@
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
         "feat:multipart-form-preservation-001",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
-        "feat:op-001",
-        "feat:op-002",
-        "feat:op-003",
-        "feat:op-004",
-        "feat:op-005",
-        "feat:op-006",
-        "feat:op-007",
-        "feat:op-008",
-        "feat:op-009",
-        "feat:op-010",
-        "feat:op-011",
-        "feat:op-012",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-asyncapi-ui-descoped-001",
+        "feat:operator-json-schema-ui-descoped-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
         "feat:openapi-mount-surface-001",
         "feat:openapi-payload-surface-001",
         "feat:openapi-uix-surface-001",
@@ -46923,7 +47337,7 @@
         "feat:gate-006",
         "feat:gate-007",
         "feat:gate-008",
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:gate-010",
         "feat:gate-011",
         "feat:gate-012",
@@ -46943,25 +47357,25 @@
         "feat:handoff-002",
         "feat:next-001",
         "feat:next-002",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
+        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:oidc-001",
-        "feat:op-001",
-        "feat:op-002",
-        "feat:op-003",
-        "feat:op-004",
-        "feat:op-005",
-        "feat:op-006",
-        "feat:op-007",
-        "feat:op-008",
-        "feat:op-009",
-        "feat:op-010",
-        "feat:op-011",
-        "feat:op-012",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-asyncapi-ui-descoped-001",
+        "feat:operator-json-schema-ui-descoped-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
         "feat:path-001",
         "feat:path-002",
         "feat:path-003",
@@ -47089,7 +47503,7 @@
         "feat:docs-support-001",
         "feat:error-parity-response-structure-001",
         "feat:eventstreamresponse-concrete-sse-class-001",
-        "feat:gate-009",
+        "feat:gate-c-conformance-security-checkpoint-001",
         "feat:http-route-001",
         "feat:jsonrpc-batch-framing-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -47099,24 +47513,24 @@
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
         "feat:multipart-form-preservation-001",
-        "feat:oas-001",
-        "feat:oas-002",
-        "feat:oas-003",
-        "feat:oas-004",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:oas-006",
-        "feat:op-001",
-        "feat:op-002",
-        "feat:op-003",
-        "feat:op-004",
-        "feat:op-005",
-        "feat:op-006",
-        "feat:op-007",
-        "feat:op-008",
-        "feat:op-009",
-        "feat:op-010",
-        "feat:op-011",
-        "feat:op-012",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-asyncapi-ui-descoped-001",
+        "feat:operator-json-schema-ui-descoped-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
         "feat:openapi-mount-surface-001",
         "feat:openapi-payload-surface-001",
         "feat:openapi-uix-surface-001",
