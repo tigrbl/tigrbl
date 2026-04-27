@@ -42,10 +42,30 @@ def _client_with_required_auth() -> Client:
 def test_required_bearer_auth_projects_missing_and_wrong_credentials_statuses() -> None:
     client = _client_with_required_auth()
     try:
-        assert client.get("/secret").status_code == 403
-        assert client.get(
+        missing = client.get("/secret")
+        wrong = client.get(
             "/secret", headers={"Authorization": "Bearer wrong"}
-        ).status_code == 401
+        )
+
+        assert missing.status_code == 403
+        assert wrong.status_code == 401
+        assert "traceback" not in missing.text.lower()
+        assert "traceback" not in wrong.text.lower()
+    finally:
+        client.close()
+
+
+def test_required_bearer_auth_projects_openapi_security_for_protected_route() -> None:
+    client = _client_with_required_auth()
+    try:
+        spec = client.get("/openapi.json").json()
+        security = spec["paths"]["/secret"]["get"]["security"]
+
+        assert security == [{"HTTPBearer": []}]
+        assert spec["components"]["securitySchemes"]["HTTPBearer"] == {
+            "type": "http",
+            "scheme": "bearer",
+        }
     finally:
         client.close()
 
@@ -73,8 +93,10 @@ def test_allow_anon_create_projects_rest_created_status_without_credentials() ->
     try:
         payload = {"id": str(uuid4()), "name": "public"}
         response = client.post("/publicitem", json=payload)
+        openapi = client.get("/openapi.json").json()
 
         assert response.status_code == 201
+        assert openapi["paths"]["/publicitem"]["post"].get("security") in (None, [])
         with SessionLocal() as db:
             assert db.query(PublicItem).count() == 1
     finally:
