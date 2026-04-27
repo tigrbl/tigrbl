@@ -5,11 +5,39 @@ import pytest
 from tigrbl_core._spec import binding_spec
 
 
+def _normalize(exchange: str | None) -> str:
+    normalizer = getattr(binding_spec, "normalize_exchange", None)
+    if normalizer is None:
+        pytest.xfail("binding exchange normalizer is not implemented")
+    return normalizer(exchange)
+
+
 def _project(binding: object) -> dict[str, object]:
     projector = getattr(binding_spec, "project_binding_runtime_metadata", None)
     if projector is None:
         pytest.xfail("binding runtime metadata projector is not implemented")
     return projector(binding)
+
+
+@pytest.mark.parametrize(
+    ("value", "expected"),
+    (
+        ("request_response", "request_response"),
+        ("server_stream", "server_stream"),
+        ("client_stream", "client_stream"),
+        ("bidirectional_stream", "bidirectional_stream"),
+        ("bidirectional", "bidirectional_stream"),
+        ("event_stream", "server_stream"),
+    ),
+)
+def test_exchange_aliases_normalize_to_canonical_tokens(value: str, expected: str) -> None:
+    assert _normalize(value) == expected
+
+
+@pytest.mark.parametrize("value", ("", "streaming", "message", "datagram", "response_stream"))
+def test_invalid_exchange_tokens_fail_closed(value: str) -> None:
+    with pytest.raises(ValueError, match="exchange|canonical|invalid"):
+        _normalize(value)
 
 
 def test_transport_bindings_project_canonical_exchange_family_and_subevents() -> None:
@@ -82,6 +110,29 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
         assert metadata["subevents"]
 
 
+def test_sse_event_stream_compatibility_projects_to_server_stream() -> None:
+    metadata = _project(
+        binding_spec.SseBindingSpec(
+            proto="http.sse",
+            path="/items/events",
+            exchange="event_stream",  # type: ignore[arg-type]
+        )
+    )
+
+    assert metadata["exchange"] == "server_stream"
+    assert metadata["framing"] == "sse"
+
+
+def test_hook_selector_matching_uses_normalized_exchange_token() -> None:
+    matcher = getattr(binding_spec, "matches_exchange_selector", None)
+    if matcher is None:
+        pytest.xfail("binding exchange selector matcher is not implemented")
+
+    assert matcher(selector="server_stream", exchange="event_stream")
+    assert matcher(selector="bidirectional_stream", exchange="bidirectional")
+    assert not matcher(selector="request_response", exchange="server_stream")
+
+
 def test_message_and_datagram_bindings_project_distinct_runtime_families() -> None:
     message_cls = getattr(binding_spec, "MessageBindingSpec", None)
     datagram_cls = getattr(binding_spec, "DatagramBindingSpec", None)
@@ -98,3 +149,15 @@ def test_message_and_datagram_bindings_project_distinct_runtime_families() -> No
     assert datagram["family"] == "datagram"
     assert datagram["exchange"] in {"fire_and_forget", "datagram"}
     assert "datagram.received" in datagram["subevents"]
+
+
+def test_binding_projection_rejects_noncanonical_exchange_overrides() -> None:
+    with pytest.raises(ValueError, match="exchange|canonical|invalid"):
+        _project(
+            binding_spec.HttpRestBindingSpec(
+                proto="http.rest",
+                methods=("GET",),
+                path="/items",
+                exchange="message",  # type: ignore[arg-type]
+            )
+        )
