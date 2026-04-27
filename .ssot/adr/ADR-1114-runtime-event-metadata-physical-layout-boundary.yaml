@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1114"
+number: 1114
+slug: "runtime-event-metadata-physical-layout-boundary"
+title: "Runtime Event Metadata Physical Layout Boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime event metadata has an explicit physical layout boundary. Dispatch-oriented event keys use fixed-width numeric headers and optional references to identity vectors, identity hashes, event-family fields, and chain IDs. Concrete identity values are not inlined into ordinary phase-chain selection."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:06Z"
+references: []
+body: |-
+  ## Decision
+  Runtime event metadata has an explicit physical layout boundary. Dispatch-oriented event keys use fixed-width numeric headers and optional references to identity vectors, identity hashes, event-family fields, and chain IDs. Concrete identity values are not inlined into ordinary phase-chain selection.
+  
+  Wire event metadata and hot runtime metadata are separate formats. Wire format is portable, versioned, and endian-explicit. Hot runtime format may use dense native sidecars and slabs.
+  
+  ## Rationale
+  The kernel needs stable, compact, cache-friendly metadata for routing and phase-chain lookup. Wire compatibility and hot-path speed have different constraints and should not be forced into one representation.
+  
+  ## Consequences
+  RuntimeEventKey layouts must specify field order, field width, bounds, flags, optional tails, and identity-vector linkage. Invalid or unsupported layouts fail before atom execution.
+  
+  ## Traceability
+  Maps to SPEC-2129 and SPEC-2131. Related decisions include ADR-1047, ADR-1100, ADR-1102, ADR-1112, ADR-1113, and ADR-1116.

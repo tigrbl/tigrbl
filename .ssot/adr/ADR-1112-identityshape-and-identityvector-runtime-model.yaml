@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1112"
+number: 1112
+slug: "identityshape-and-identityvector-runtime-model"
+title: "IdentityShape And IdentityVector Runtime Model"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl separates identity structure from identity values. IdentityShape describes semantic identity slots, roles, source parameters, source locations, resource domains, widths, and ordering. IdentityVector carries concrete values in the canonical order defined by IdentityShape."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:05Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl separates identity structure from identity values. IdentityShape describes semantic identity slots, roles, source parameters, source locations, resource domains, widths, and ordering. IdentityVector carries concrete values in the canonical order defined by IdentityShape.
+  
+  ParamShape remains distinct from IdentityShape. ParamShape describes all bound parameters; IdentityShape describes only identity-bearing values.
+  
+  ## Rationale
+  Routes, bindings, policies, audits, cache keys, and runtime events can carry multiple identities. Dispatch should depend on operation and shape, not concrete values. Policy and handlers need semantic roles rather than inferred string parameter names.
+  
+  ## Consequences
+  Identity roles and slots become compiled metadata. Runtime atoms read identities by slot and role. Concrete identity values stay in compact vectors or slabs and are included in dispatch keys only when a cache, dedupe, audit, idempotency, or event-instance use case requires them.
+  
+  ## Traceability
+  Maps to SPEC-2126, SPEC-2127, and SPEC-2128. Related decisions include ADR-1047, ADR-1100, ADR-1102, and ADR-1114.

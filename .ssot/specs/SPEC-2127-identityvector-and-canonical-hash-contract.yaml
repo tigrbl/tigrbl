@@ -1,0 +1,43 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2127"
+number: 2127
+slug: "identityvector-and-canonical-hash-contract"
+title: "IdentityVector And Canonical Hash Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define runtime identity values, canonical vector encoding, and identity hash inputs."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:11Z"
+references: []
+body: |-
+  ## Intent
+  Define runtime identity values, canonical vector encoding, and identity hash inputs.
+  
+  ## Vector Structure
+  IdentityVector contains shape_id:u32, count:u8, and value bytes matching the IdentityShape entries in slot order. Optimized runtime forms may omit repeated entry metadata when the shape is known.
+  
+  ## Canonical Encoding
+  Canonical bytes are shape_id:u32 followed by value bytes for each IdentityShape entry in canonical order. Values must be exactly the width declared by the shape entry.
+  
+  ## Hashes
+  identity_hash_128 and identity_hash_256 are computed from the identity shape identifier and canonical identity vector bytes. The chosen hash algorithm and output width must be declared by the calling format.
+  
+  ## Uses
+  Identity hashes are permitted for cache keys, dedupe keys, audit or event-log uniqueness, idempotency, event instance IDs, and cross-process correlation.
+  
+  ## Non-Use
+  Identity hashes and concrete identity values are not required for ordinary phase-chain dispatch when route, operation, phase, and shape IDs select the same chain.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1112"
+  - "adr:1113"
+  - "adr:1114"
+  - "adr:1116"

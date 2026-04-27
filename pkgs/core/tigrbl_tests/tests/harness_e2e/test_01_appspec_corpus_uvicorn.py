@@ -138,3 +138,49 @@ async def test_negative_corpus_unknown_rpc_method_returns_fail_closed_contract()
         assert body.get("detail") == case["expect"]["detail"]
     finally:
         await stop_uvicorn(server, task)
+
+
+@pytest.mark.acceptance
+@pytest.mark.asyncio
+async def test_negative_corpus_no_rpc_binding_has_no_rpc_runtime_side_effect() -> None:
+    corpus = load_corpus("appspec_corpus.negative.json")
+    validate_corpus(corpus, lane="negative")
+    case = next(c for c in corpus["cases"] if c["mode"] == "no_rpc_binding_no_mount")
+
+    widget = _make_widget_model(
+        tablename=case["table"]["tablename"],
+        resource=case["table"]["resource"],
+        include_jsonrpc=False,
+    )
+    spec = AppSpec(
+        title=case["app"]["title"],
+        version=case["app"]["version"],
+        engine=mem(async_=False),
+        tables=(widget,),
+        jsonrpc_prefix=case["app"]["jsonrpc_prefix"],
+        system_prefix=case["app"]["system_prefix"],
+    )
+    app = TigrblApp.from_spec(spec)
+    port = pick_unique_port()
+    base_url, server, task = await start_uvicorn(app, port=port)
+    try:
+        async with httpx.AsyncClient(base_url=base_url, timeout=10.0) as client:
+            missing_rpc = await client.post(
+                f"{case['app']['jsonrpc_prefix']}/",
+                json={
+                    "jsonrpc": "2.0",
+                    "method": "Widget.create",
+                    "params": {"name": "should-not-execute"},
+                    "id": 44,
+                },
+            )
+            rest = await client.post(
+                f"/{case['table']['resource']}",
+                json={"name": "rest-still-works"},
+            )
+
+        assert missing_rpc.status_code == 404
+        assert missing_rpc.json()["detail"] == "No runtime operation matched request."
+        assert rest.status_code in {200, 201}
+    finally:
+        await stop_uvicorn(server, task)

@@ -102,6 +102,53 @@ def test_future_absent_runtime_feature_does_not_require_runtime_lanes() -> None:
     assert validate_runtime_lanes(registry) == []
 
 
+def test_obsolete_out_of_bounds_alias_does_not_require_verification() -> None:
+    registry = deepcopy(load_registry())
+    registry["features"].append(
+        {
+            "id": "feat:fixture-obsolete-alias",
+            "title": "Fixture obsolete alias",
+            "description": "Compatibility row for a replaced feature.",
+            "implementation_status": "partial",
+            "lifecycle": {
+                "stage": "obsolete",
+                "replacement_feature_ids": ["feat:fixture-governance-only"],
+                "note": "Replaced by explicit feature ID feat:fixture-governance-only.",
+            },
+            "plan": {
+                "horizon": "out_of_bounds",
+                "slot": "legacy-feature-id-alias",
+                "target_claim_tier": None,
+                "target_lifecycle_stage": "obsolete",
+            },
+            "claim_ids": [],
+            "test_ids": [],
+            "requires": [],
+            "spec_ids": [],
+        }
+    )
+    assert validate_authority_model(registry) == []
+
+
+def test_backlog_partial_runtime_feature_does_not_require_runtime_lanes() -> None:
+    registry = deepcopy(load_registry())
+    registry["features"].append(
+        {
+            "id": "feat:fixture-backlog-partial-runtime",
+            "title": "Fixture backlog partial runtime row",
+            "description": "Backlog runtime row with partial implementation evidence elsewhere.",
+            "implementation_status": "partial",
+            "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
+            "plan": {"horizon": "backlog", "slot": None, "target_claim_tier": "T2", "target_lifecycle_stage": "active"},
+            "claim_ids": [],
+            "test_ids": [],
+            "requires": [],
+            "spec_ids": ["spc:2090"],
+        }
+    )
+    assert validate_runtime_lanes(registry) == []
+
+
 def test_void_or_not_applicable_runtime_lane_requires_reason() -> None:
     registry = deepcopy(load_registry())
     registry["features"].append(

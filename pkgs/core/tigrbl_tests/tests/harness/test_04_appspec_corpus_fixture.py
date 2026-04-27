@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from copy import deepcopy
+
 from sqlalchemy import Column, String
 import pytest
 
@@ -42,6 +44,57 @@ def _make_widget_model(*, tablename: str, resource: str, include_jsonrpc: bool) 
 def test_appspec_corpus_fixture_schema_and_ids(filename: str, lane: str) -> None:
     corpus = load_corpus(filename)
     validate_corpus(corpus, lane=lane)
+
+
+@pytest.mark.acceptance
+def test_canonical_corpus_cases_have_unique_routes_tables_and_modes() -> None:
+    corpus = load_corpus("appspec_corpus.canonical.json")
+    validate_corpus(corpus, lane="canonical")
+
+    case_ids = [case["id"] for case in corpus["cases"]]
+    table_names = [case["table"]["tablename"] for case in corpus["cases"]]
+    modes = [case["mode"] for case in corpus["cases"]]
+
+    assert len(case_ids) == len(set(case_ids))
+    assert len(table_names) == len(set(table_names))
+    assert set(modes) == {"rest_rpc_parity", "rest_rpc_roundtrip"}
+
+
+@pytest.mark.acceptance
+def test_canonical_corpus_compilation_is_deterministic() -> None:
+    corpus = load_corpus("appspec_corpus.canonical.json")
+    validate_corpus(corpus, lane="canonical")
+    case = corpus["cases"][0]
+
+    def compile_signature() -> tuple[str, str, tuple[str | None, ...]]:
+        widget = _make_widget_model(
+            tablename=case["table"]["tablename"],
+            resource=case["table"]["resource"],
+            include_jsonrpc=True,
+        )
+        spec = AppSpec(
+            title=case["app"]["title"],
+            version=case["app"]["version"],
+            engine=mem(async_=False),
+            tables=(widget,),
+            jsonrpc_prefix=case["app"]["jsonrpc_prefix"],
+            system_prefix=case["app"]["system_prefix"],
+        )
+        app = TigrblApp.from_spec(spec)
+        paths = tuple(sorted(getattr(route, "path", None) for route in app.routes))
+        return app.title, app.version, paths
+
+    assert compile_signature() == compile_signature()
+
+
+@pytest.mark.acceptance
+def test_negative_corpus_rejects_duplicate_case_ids() -> None:
+    corpus = load_corpus("appspec_corpus.negative.json")
+    duplicate = deepcopy(corpus)
+    duplicate["cases"][1]["id"] = duplicate["cases"][0]["id"]
+
+    with pytest.raises(ValueError, match="duplicate case id"):
+        validate_corpus(duplicate, lane="negative")
 
 
 @pytest.mark.acceptance

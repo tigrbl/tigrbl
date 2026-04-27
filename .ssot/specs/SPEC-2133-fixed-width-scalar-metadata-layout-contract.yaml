@@ -1,0 +1,45 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2133"
+number: 2133
+slug: "fixed-width-scalar-metadata-layout-contract"
+title: "Fixed-Width Scalar Metadata Layout Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define fixed-width scalar metadata rules for u8, u16, u32, u64, u128, and u256 fields."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:14Z"
+references: []
+body: |-
+  ## Intent
+  Define fixed-width scalar metadata rules for u8, u16, u32, u64, u128, and u256 fields.
+  
+  ## Width Uses
+  u8 is used for protocol, binding, phase, event family, method/message kind, param location, scalar type where the registry fits, identity role where the registry fits, small flags, and tags.
+  
+  u16 is used for AA-fast resource codes, op codes, compact registry spaces, small counts, restart counts, field counts, bit masks, and local bounded indexes.
+  
+  u32 is used for aaa/aaaa resource codes, route or method IDs, param shape IDs, identity shape IDs, chain IDs, atom program IDs, slab offsets, payload offsets, payload lengths, table indexes, and validator chain IDs.
+  
+  u64 is used for sequence IDs, versions, local monotonic IDs, LSN-like counters, and duration or timestamp fields where declared.
+  
+  u128 and u256 are fixed byte spans unless arithmetic is explicitly required.
+  
+  ## Runtime Sidecars
+  Runtime u8 arrays may use bytes or bytearray. Runtime u16 and u32 arrays may use native typed arrays or memory views. Runtime native-endian sidecars are not durable formats.
+  
+  ## Durable and Wire Rules
+  Durable and wire formats declare explicit field order, field width, endian, bounds, and checksum coverage when applicable. Numeric metadata fields default to little-endian. Identity numeric bytes may use big-endian when order-preserving comparison is required.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1117"
+  - "adr:1111"
+  - "adr:1115"
+  - "adr:1119"
