@@ -1075,7 +1075,8 @@
         "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
         "tst:authn-provider-unauthorized-errors-status",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:anon-access-create-status-projection-contract"
       ],
       "requires": [],
       "spec_ids": [
@@ -1220,9 +1221,9 @@
       }
     },
     {
-      "id": "feat:cert-001",
-      "title": "CERT-001 feature",
-      "description": "Feature row synthesized from claim CERT-001.",
+      "id": "feat:stable-release-current-boundary-tier3-certification",
+      "title": "Stable release current-boundary Tier 3 certification",
+      "description": "Tracks stable release 0.3.18 achieving Tier 3 current-boundary certification status through current state, Gate E promotion, release claims, and evidence index artifacts.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1247,9 +1248,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:cert-002",
-      "title": "CERT-002 feature",
-      "description": "Feature row synthesized from claim CERT-002.",
+      "id": "feat:stable-release-rfc-security-tier3-certification",
+      "title": "Stable release RFC/spec/security Tier 3 certification",
+      "description": "Tracks stable release 0.3.18 achieving Tier 3 RFC, specification, and security certification status through current state, RFC/security evidence, Gate E promotion, release claims, and evidence index artifacts.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1274,9 +1275,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:cli-001",
-      "title": "CLI-001 feature",
-      "description": "Feature row synthesized from claim CLI-001.",
+      "id": "feat:unified-tigrbl-cli-command-and-flag-surface",
+      "title": "Unified tigrbl CLI command and flag surface",
+      "description": "Tracks the unified tigrbl CLI surface with the required command set and flag set, evidenced by CLI implementation, package entry points, developer reference docs, unit tests, and checkpoint audit evidence.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1302,9 +1303,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:cli-002",
-      "title": "CLI-002 feature",
-      "description": "Feature row synthesized from claim CLI-002.",
+      "id": "feat:supported-server-cli-smoke-dispatch",
+      "title": "Supported-server CLI smoke dispatch",
+      "description": "Tracks CLI smoke coverage for supported Uvicorn, Hypercorn, Gunicorn, and Tigrcorn runner dispatch and configuration translation.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1520,9 +1521,9 @@
       }
     },
     {
-      "id": "feat:evid-001",
-      "title": "EVID-001 feature",
-      "description": "Feature row synthesized from claim EVID-001.",
+      "id": "feat:evidence-registry-claim-test-artifact-map",
+      "title": "Evidence registry claim/test/artifact map",
+      "description": "Tracks the machine-readable evidence registry that maps every claim row to tests, CI jobs, and artifact paths.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1546,9 +1547,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:evid-002",
-      "title": "EVID-002 feature",
-      "description": "Feature row synthesized from claim EVID-002.",
+      "id": "feat:dev-bundle-evidence-structure",
+      "title": "Dev-bundle evidence structure",
+      "description": "Tracks the governed dev-bundle evidence structure for the promotion-source dev line, including build notes, evidence index, claims, and gate results.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1572,9 +1573,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:evid-003",
-      "title": "EVID-003 feature",
-      "description": "Feature row synthesized from claim EVID-003.",
+      "id": "feat:stable-release-evidence-structure",
+      "title": "Stable-release evidence structure",
+      "description": "Tracks the governed stable-release evidence structure for the current stable line, including release notes, claims, evidence index, target snapshot, gate results, and release artifacts.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1598,9 +1599,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:evid-004",
-      "title": "EVID-004 feature",
-      "description": "Feature row synthesized from claim EVID-004.",
+      "id": "feat:evidence-lane-ci-workflow",
+      "title": "Evidence-lane CI workflow",
+      "description": "Tracks the evidence-lane CI workflow that covers the required evidence lane classes.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1624,9 +1625,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:evid-005",
-      "title": "EVID-005 feature",
-      "description": "Feature row synthesized from claim EVID-005.",
+      "id": "feat:clean-room-package-smoke-lane",
+      "title": "Clean-room package smoke lane",
+      "description": "Tracks the clean-room package smoke as a distinct conformance evidence lane and its checkpoint log evidence.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1650,9 +1651,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:evid-006",
-      "title": "EVID-006 feature",
-      "description": "Feature row synthesized from claim EVID-006.",
+      "id": "feat:evidence-registry-bundle-validator-checkpoint",
+      "title": "Evidence registry and bundle validator checkpoint",
+      "description": "Tracks the checkpoint-passing evidence-registry and evidence-bundle validators, including validator logs and pytest evidence-registry coverage.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1761,9 +1762,9 @@
       }
     },
     {
-      "id": "feat:gate-001",
-      "title": "Gate A boundary-freeze marker exists for the current cycle",
-      "description": "Tracks conformance surface GATE-001: Gate A boundary-freeze marker exists for the current cycle. Category: Governance. Evidence roots: `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json`",
+      "id": "feat:gate-a-current-cycle-boundary-freeze-marker",
+      "title": "Gate A current-cycle boundary-freeze marker",
+      "description": "Tracks the Gate A boundary-freeze marker for the current cycle, evidenced by docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1788,9 +1789,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-002",
-      "title": "Gate A boundary-freeze manifest exists",
-      "description": "Tracks conformance surface GATE-002: Gate A boundary-freeze manifest exists. Category: Governance. Evidence roots: `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json`",
+      "id": "feat:gate-a-boundary-freeze-manifest",
+      "title": "Gate A boundary-freeze manifest",
+      "description": "Tracks the Gate A boundary-freeze manifest artifact, evidenced by docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1815,9 +1816,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-003",
-      "title": "Boundary-freeze diff enforcement exists",
-      "description": "Tracks conformance surface GATE-003: Boundary-freeze diff enforcement exists. Category: Governance. Evidence roots: `tools/ci/enforce_boundary_freeze_diff.py`",
+      "id": "feat:boundary-freeze-diff-enforcement",
+      "title": "Boundary-freeze diff enforcement",
+      "description": "Tracks enforcement that boundary-freeze diffs are checked by tools/ci/enforce_boundary_freeze_diff.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1842,9 +1843,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-004",
-      "title": "Boundary-freeze manifest validation exists",
-      "description": "Tracks conformance surface GATE-004: Boundary-freeze manifest validation exists. Category: Governance. Evidence roots: `tools/ci/validate_boundary_freeze_manifest.py`",
+      "id": "feat:boundary-freeze-manifest-validation",
+      "title": "Boundary-freeze manifest validation",
+      "description": "Tracks validation of the boundary-freeze manifest by tools/ci/validate_boundary_freeze_manifest.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1869,9 +1870,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-005",
-      "title": "Release-note claim lint exists",
-      "description": "Tracks conformance surface GATE-005: Release-note claim lint exists. Category: Governance. Evidence roots: `tools/ci/lint_release_note_claims.py`",
+      "id": "feat:release-note-claim-lint",
+      "title": "Release-note claim lint",
+      "description": "Tracks release-note claim linting by tools/ci/lint_release_note_claims.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1896,9 +1897,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-006",
-      "title": "Gate A validation suite passes in the checkpoint tree",
-      "description": "Tracks conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
+      "id": "feat:gate-a-checkpoint-validation-suite",
+      "title": "Gate A checkpoint validation suite",
+      "description": "Tracks Gate A validation suite passage in the checkpoint tree, including p6 RFC/security, phase7 operator-surface, and p8 CLI audit evidence.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1934,9 +1935,9 @@
       }
     },
     {
-      "id": "feat:gate-007",
-      "title": "Gate B surface-closure conditions are satisfied and machine-checked in the checkpoint tree",
-      "description": "Tracks conformance surface GATE-007: Gate B surface-closure conditions are satisfied and machine-checked in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md`, `docs/conformance/audit/2026/p10-gate-b/README.md`, `tools/ci/validate_gate_b_surface_closure.py`",
+      "id": "feat:gate-b-surface-closure-validation",
+      "title": "Gate B surface-closure validation",
+      "description": "Tracks Gate B surface-closure conditions being machine-checked through CURRENT_TARGET, CURRENT_STATE, Gate B reports, audit evidence, and tools/ci/validate_gate_b_surface_closure.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -1961,9 +1962,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-008",
-      "title": "Gate B surface-closure validator and workflow exist",
-      "description": "Tracks conformance surface GATE-008: Gate B surface-closure validator and workflow exist. Category: Governance. Evidence roots: `tools/ci/validate_gate_b_surface_closure.py`, `tools/ci/tests/test_gate_b_surface_closure.py`, `.github/workflows/gate-b-surface-closure.yml`",
+      "id": "feat:gate-b-surface-closure-validator-workflow",
+      "title": "Gate B surface-closure validator workflow",
+      "description": "Tracks the dedicated Gate B surface-closure validator, its tests, and the CI workflow for the surface-closure gate.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2052,9 +2053,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-010",
-      "title": "Gate C conformance/security validator and workflow exist",
-      "description": "Tracks conformance surface GATE-010: Gate C conformance/security validator and workflow exist. Category: Governance. Evidence roots: `tools/ci/validate_gate_c_conformance_security.py`, `tools/ci/tests/test_gate_c_conformance_security.py`, `.github/workflows/gate-c-conformance-security.yml`",
+      "id": "feat:gate-c-conformance-security-validator-workflow",
+      "title": "Gate C conformance/security validator workflow",
+      "description": "Tracks the dedicated Gate C conformance/security validator, its tests, and the CI workflow for the conformance/security gate.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2078,9 +2079,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-011",
-      "title": "Gate D reproducibility conditions are satisfied and machine-checked in the checkpoint tree",
-      "description": "Tracks conformance surface GATE-011: Gate D reproducibility conditions are satisfied and machine-checked in the checkpoint tree. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_D_REPRODUCIBILITY.md`, `docs/conformance/audit/2026/p12-gate-d/README.md`, `tools/ci/validate_gate_d_reproducibility.py`",
+      "id": "feat:gate-d-reproducibility-conditions-validation",
+      "title": "Gate D reproducibility conditions validation",
+      "description": "Tracks Gate D reproducibility conditions being satisfied and machine-checked in the checkpoint tree, including current target/state, Gate D documentation, audit evidence, and the reproducibility validator.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2103,9 +2104,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-012",
-      "title": "Gate D reproducibility validator and workflow exist",
-      "description": "Tracks conformance surface GATE-012: Gate D reproducibility validator and workflow exist. Category: Governance. Evidence roots: `tools/ci/validate_gate_d_reproducibility.py`, `tools/ci/tests/test_gate_d_reproducibility.py`, `.github/workflows/gate-d-reproducibility.yml`",
+      "id": "feat:gate-d-reproducibility-validator-workflow",
+      "title": "Gate D reproducibility validator workflow",
+      "description": "Tracks the dedicated Gate D reproducibility validator, its tests, and the CI workflow that runs the reproducibility gate.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2128,9 +2129,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-013",
-      "title": "Gate E promotion conditions are satisfied and synchronized on the exact chosen dev build and promoted stable release",
-      "description": "Tracks conformance surface GATE-013: Gate E promotion conditions are satisfied and synchronized on the exact chosen dev build and promoted stable release. Category: Governance. Evidence roots: `docs/conformance/releases/0.3.18/RELEASE_NOTES.md`, `docs/conformance/releases/0.3.18/CLAIMS.md`, `docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md`, `docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md`, `docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md`, `docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json`, `docs/conformance/audit/2026/p13-gate-e/README.md`, `tools/ci/validate_gate_e_promotion.py`",
+      "id": "feat:gate-e-release-promotion-synchronization",
+      "title": "Gate E release promotion synchronization",
+      "description": "Tracks Gate E promotion conditions synchronized across the selected dev build and promoted stable release, including release notes, claims, evidence index, target snapshot, artifacts, audit notes, and tools/ci/validate_gate_e_promotion.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2155,9 +2156,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gate-014",
-      "title": "Gate E promotion validator and workflow exist",
-      "description": "Tracks conformance surface GATE-014: Gate E promotion validator and workflow exist. Category: Governance. Evidence roots: `tools/ci/validate_gate_e_promotion.py`, `tools/ci/tests/test_gate_e_promotion.py`, `.github/workflows/gate-e-promotion.yml`",
+      "id": "feat:gate-e-promotion-validator-workflow",
+      "title": "Gate E promotion validator workflow",
+      "description": "Tracks the dedicated Gate E promotion validator, its tests, and the CI workflow for the promotion gate.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2181,9 +2182,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-001",
-      "title": "GOV-001 feature",
-      "description": "Feature row synthesized from claim GOV-001.",
+      "id": "feat:apache-2-license-root",
+      "title": "Root Apache 2.0 license",
+      "description": "Tracks presence of the repository-root Apache 2.0 LICENSE file as a governance conformance feature.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2208,9 +2209,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-002",
-      "title": "GOV-002 feature",
-      "description": "Feature row synthesized from claim GOV-002.",
+      "id": "feat:contributor-policy",
+      "title": "Contributor policy",
+      "description": "Tracks presence of CONTRIBUTING.md as the repository contributor policy conformance feature.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2235,9 +2236,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-003",
-      "title": "GOV-003 feature",
-      "description": "Feature row synthesized from claim GOV-003.",
+      "id": "feat:code-of-conduct",
+      "title": "Code of conduct",
+      "description": "Tracks presence of CODE_OF_CONDUCT.md as the repository code-of-conduct conformance feature.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2262,9 +2263,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-004",
-      "title": "GOV-004 feature",
-      "description": "Feature row synthesized from claim GOV-004.",
+      "id": "feat:security-policy",
+      "title": "Security policy",
+      "description": "Tracks presence of SECURITY.md as the repository security policy conformance feature.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2289,9 +2290,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-005",
-      "title": "GOV-005 feature",
-      "description": "Feature row synthesized from claim GOV-005.",
+      "id": "feat:governed-docs-projection-tree",
+      "title": "Governed docs projection tree",
+      "description": "Tracks declaration of the single governed docs projection tree through docs/README.md and docs/governance/DOC_POINTERS.md.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2316,9 +2317,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-006",
-      "title": "GOV-006 feature",
-      "description": "Feature row synthesized from claim GOV-006.",
+      "id": "feat:package-layout-validation",
+      "title": "Package layout validation",
+      "description": "Tracks package layout validation through tools/ci/validate_package_layout.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2343,9 +2344,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-007",
-      "title": "GOV-007 feature",
-      "description": "Feature row synthesized from claim GOV-007.",
+      "id": "feat:doc-pointer-validation",
+      "title": "Doc-pointer validation",
+      "description": "Tracks documentation pointer validation through tools/ci/validate_doc_pointers.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2370,9 +2371,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-008",
-      "title": "GOV-008 feature",
-      "description": "Feature row synthesized from claim GOV-008.",
+      "id": "feat:root-clutter-generated-artifact-validation",
+      "title": "Root-clutter and generated-artifact validation",
+      "description": "Tracks root-clutter and generated-artifact validation through tools/ci/validate_root_clutter.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2397,9 +2398,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-009",
-      "title": "GOV-009 feature",
-      "description": "Feature row synthesized from claim GOV-009.",
+      "id": "feat:claim-language-lint",
+      "title": "Claim-language lint",
+      "description": "Tracks governance claim-language linting through tools/ci/lint_claim_language.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2424,9 +2425,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:gov-010",
-      "title": "GOV-010 feature",
-      "description": "Feature row synthesized from claim GOV-010.",
+      "id": "feat:policy-governance-ci-workflow",
+      "title": "Policy governance CI workflow",
+      "description": "Tracks the policy governance workflow at .github/workflows/policy-governance.yml.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2451,9 +2452,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:handoff-001",
-      "title": "HANDOFF-001 feature",
-      "description": "Feature row synthesized from claim HANDOFF-001.",
+      "id": "feat:post-promotion-release-history-freeze",
+      "title": "Post-promotion release history freeze",
+      "description": "Tracks post-promotion handoff evidence that freezes stable release history and isolates the active next-line bundle.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2477,9 +2478,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:handoff-002",
-      "title": "HANDOFF-002 feature",
-      "description": "Feature row synthesized from claim HANDOFF-002.",
+      "id": "feat:post-promotion-handoff-validator-workflow",
+      "title": "Post-promotion handoff validator workflow",
+      "description": "Tracks the dedicated post-promotion handoff validator, its tests, and the CI workflow for the handoff checkpoint.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2724,9 +2725,9 @@
       }
     },
     {
-      "id": "feat:next-001",
-      "title": "NEXT-001 feature",
-      "description": "Feature row synthesized from claim NEXT-001.",
+      "id": "feat:next-dev-line-governed-opening",
+      "title": "Next dev line governed opening",
+      "description": "Tracks the active next development line being opened in governed docs, evidence scaffolding, and package metadata.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -2750,9 +2751,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:next-002",
-      "title": "NEXT-002 feature",
-      "description": "Feature row synthesized from claim NEXT-002.",
+      "id": "feat:next-target-datatype-table-isolation",
+      "title": "Next-target datatype/table isolation",
+      "description": "Tracks datatype/table work being isolated to governed next-target ADRs and plans while remaining outside the prior stable-release certification.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -5503,9 +5504,9 @@
       }
     },
     {
-      "id": "feat:oidc-001",
-      "title": "OIDC-001 feature",
-      "description": "Feature row synthesized from claim OIDC-001.",
+      "id": "feat:oidc-core-discovery-descope",
+      "title": "OIDC Core/discovery de-scope",
+      "description": "Tracks the exact OIDC Core/discovery row being explicitly de-scoped from the current cycle boundary.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6141,9 +6142,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:path-001",
-      "title": "PATH-001 feature",
-      "description": "Feature row synthesized from claim PATH-001.",
+      "id": "feat:path-length-policy",
+      "title": "Path-length policy",
+      "description": "Tracks declaration of repository path-length policy in docs/governance/PATH_LENGTH_POLICY.md.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6168,9 +6169,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:path-002",
-      "title": "PATH-002 feature",
-      "description": "Feature row synthesized from claim PATH-002.",
+      "id": "feat:path-length-validation",
+      "title": "Path-length validation",
+      "description": "Tracks path-length validation through tools/ci/validate_path_lengths.py.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6195,9 +6196,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:path-003",
-      "title": "PATH-003 feature",
-      "description": "Feature row synthesized from claim PATH-003.",
+      "id": "feat:checkpoint-path-name-conformance",
+      "title": "Checkpoint path/name conformance",
+      "description": "Tracks repository path and name conformance verified in the checkpoint evidence tree, including docs/conformance/audit/2026/p6-rfc-sec/README.md.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6248,9 +6249,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:rfc-6750",
-      "title": "RFC-6750 feature",
-      "description": "Feature row synthesized from claim RFC-6750.",
+      "id": "feat:rfc-6750-http-bearer-auth-semantics",
+      "title": "RFC 6750 HTTP Bearer auth semantics",
+      "description": "Tracks retained HTTP Bearer parsing and challenge behavior against RFC 6750 evidence and runtime security tests.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6277,9 +6278,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:rfc-7235",
-      "title": "RFC-7235 feature",
-      "description": "Feature row synthesized from claim RFC-7235.",
+      "id": "feat:rfc-7235-http-auth-challenge-semantics",
+      "title": "RFC 7235 HTTP authentication challenge semantics",
+      "description": "Tracks retained framework-owned HTTP authentication challenge semantics against RFC 7235 evidence and runtime security tests.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6332,9 +6333,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:rfc-7617",
-      "title": "RFC-7617 feature",
-      "description": "Feature row synthesized from claim RFC-7617.",
+      "id": "feat:rfc-7617-http-basic-auth-semantics",
+      "title": "RFC 7617 HTTP Basic auth semantics",
+      "description": "Tracks retained HTTP Basic parsing and challenge behavior against RFC 7617 evidence and runtime security tests.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6708,9 +6709,9 @@
       }
     },
     {
-      "id": "feat:sec-001",
-      "title": "SEC-001 feature",
-      "description": "Feature row synthesized from claim SEC-001.",
+      "id": "feat:apikey-security-docs-runtime-alignment",
+      "title": "API key security docs/runtime alignment",
+      "description": "Tracks apiKey security scheme documentation and runtime alignment through security scheme tests and OpenAPI security behavior coverage.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6737,9 +6738,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:sec-002",
-      "title": "SEC-002 feature",
-      "description": "Feature row synthesized from claim SEC-002.",
+      "id": "feat:http-basic-security-docs-runtime-alignment",
+      "title": "HTTP Basic security docs/runtime alignment",
+      "description": "Tracks HTTP Basic security scheme documentation and runtime alignment through the concrete HTTP Basic implementation, security scheme tests, and OpenAPI security behavior coverage.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6766,9 +6767,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:sec-003",
-      "title": "SEC-003 feature",
-      "description": "Feature row synthesized from claim SEC-003.",
+      "id": "feat:http-bearer-security-docs-runtime-alignment",
+      "title": "HTTP Bearer security docs/runtime alignment",
+      "description": "Tracks HTTP Bearer security scheme documentation and runtime alignment through the concrete HTTP Bearer implementation, security scheme tests, and OpenAPI security behavior coverage.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6795,9 +6796,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:sec-004",
-      "title": "SEC-004 feature",
-      "description": "Feature row synthesized from claim SEC-004.",
+      "id": "feat:oauth2-security-docs-runtime-alignment",
+      "title": "OAuth2 security docs/runtime alignment",
+      "description": "Tracks oauth2 security scheme documentation and runtime alignment through security scheme tests and OpenAPI security behavior coverage.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6824,9 +6825,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:sec-005",
-      "title": "SEC-005 feature",
-      "description": "Feature row synthesized from claim SEC-005.",
+      "id": "feat:openidconnect-security-docs-runtime-alignment",
+      "title": "OpenID Connect security docs/runtime alignment",
+      "description": "Tracks openIdConnect security scheme documentation and runtime alignment through security scheme tests and OpenAPI security behavior coverage.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -6853,9 +6854,9 @@
       "spec_ids": []
     },
     {
-      "id": "feat:sec-006",
-      "title": "SEC-006 feature",
-      "description": "Feature row synthesized from claim SEC-006.",
+      "id": "feat:mutualtls-security-docs-runtime-alignment",
+      "title": "Mutual TLS security docs/runtime alignment",
+      "description": "Tracks mutualTLS security scheme documentation and runtime alignment through security scheme tests and OpenAPI security behavior coverage.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -7091,8 +7092,8 @@
         "tst:runtime-parity-lane-governance-validator"
       ],
       "requires": [
-        "feat:cli-001",
-        "feat:cli-002"
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:supported-server-cli-smoke-dispatch"
       ],
       "spec_ids": [
         "spc:2017",
@@ -7684,7 +7685,8 @@
         "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
         "tst:authn-provider-unauthorized-errors-status",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:auth-failure-status-projection-contract"
       ],
       "requires": [],
       "spec_ids": [
@@ -13702,7 +13704,8 @@
         "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
         "tst:tcase-0012",
         "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
+        "tst:httpbearer-challenge-status-contract"
       ],
       "requires": []
     },
@@ -16830,7 +16833,8 @@
       ],
       "test_ids": [
         "tst:tigrbl-concrete-tests-test-kernel-independence",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:tigrbl-concrete-runtime-kernel-boundary-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -17024,7 +17028,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:docs-ci-projection-drift"
+        "tst:docs-ci-projection-drift",
+        "tst:ssot-authority-feature-linkage-contract"
       ],
       "requires": [],
       "spec_ids": [
@@ -17239,7 +17244,8 @@
       ],
       "test_ids": [
         "tst:docs-ci-projection-drift",
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:docs-ci-projection-selection-contract"
       ],
       "requires": [],
       "spec_ids": [
@@ -22521,15 +22527,15 @@
       "path": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:rfc-6750",
-        "feat:rfc-7235",
-        "feat:rfc-7617",
-        "feat:sec-001",
-        "feat:sec-002",
-        "feat:sec-003",
-        "feat:sec-004",
-        "feat:sec-005",
-        "feat:sec-006"
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:mutualtls-security-docs-runtime-alignment"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -22565,15 +22571,15 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:rfc-6750",
-        "feat:rfc-7235",
-        "feat:rfc-7617",
-        "feat:sec-001",
-        "feat:sec-002",
-        "feat:sec-003",
-        "feat:sec-004",
-        "feat:sec-005",
-        "feat:sec-006",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:mutualtls-security-docs-runtime-alignment",
         "feat:anon-access-projection-001",
         "feat:anon-access-rest-status-parity-001",
         "feat:apikey-security-dependency-001",
@@ -23066,8 +23072,8 @@
       "kind": "automated",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "feature_ids": [
-        "feat:cli-001",
-        "feat:cli-002",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:supported-server-cli-smoke-dispatch",
         "feat:cli-target-resolution-001",
         "feat:cli-module-target-resolution-001",
         "feat:cli-path-target-resolution-001",
@@ -23095,8 +23101,8 @@
       "kind": "automated",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "feature_ids": [
-        "feat:cli-001",
-        "feat:cli-002",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:supported-server-cli-smoke-dispatch",
         "feat:cli-target-resolution-001",
         "feat:cli-module-target-resolution-001",
         "feat:cli-path-target-resolution-001",
@@ -23386,15 +23392,15 @@
         "feat:openidconnect-security-dependency-001",
         "feat:pre-tx-security-dependency-execution-001",
         "feat:rest-create-success-status-001",
-        "feat:rfc-6750",
-        "feat:rfc-7235",
-        "feat:rfc-7617",
-        "feat:sec-001",
-        "feat:sec-002",
-        "feat:sec-003",
-        "feat:sec-004",
-        "feat:sec-005",
-        "feat:sec-006",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:mutualtls-security-docs-runtime-alignment",
         "feat:security-concrete-dependency-helper-001",
         "feat:validation-failure-projection-parity-001"
       ],
@@ -23590,8 +23596,8 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "feature_ids": [
-        "feat:cli-001",
-        "feat:cli-002",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:supported-server-cli-smoke-dispatch",
         "feat:cli-module-target-resolution-001",
         "feat:cli-path-target-resolution-001",
         "feat:cli-shared-target-loader-001",
@@ -23614,8 +23620,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "feature_ids": [
         "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:cli-001",
-        "feat:cli-002",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:supported-server-cli-smoke-dispatch",
         "feat:cli-module-target-resolution-001",
         "feat:cli-path-target-resolution-001",
         "feat:cli-shared-target-loader-001",
@@ -23796,13 +23802,13 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_evidence_registry.py",
       "feature_ids": [
-        "feat:cert-001",
-        "feat:cert-002",
-        "feat:evid-001",
-        "feat:evid-002",
-        "feat:evid-004",
-        "feat:evid-006",
-        "feat:oidc-001",
+        "feat:stable-release-current-boundary-tier3-certification",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:evidence-registry-claim-test-artifact-map",
+        "feat:dev-bundle-evidence-structure",
+        "feat:evidence-lane-ci-workflow",
+        "feat:evidence-registry-bundle-validator-checkpoint",
+        "feat:oidc-core-discovery-descope",
         "feat:rfc-6749",
         "feat:rfc-7519",
         "feat:rfc-7636",
@@ -23852,32 +23858,32 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_evidence_registry.py",
       "feature_ids": [
-        "feat:evid-001",
-        "feat:evid-002",
-        "feat:evid-003",
-        "feat:evid-004",
-        "feat:evid-005",
-        "feat:evid-006",
-        "feat:gate-001",
-        "feat:gate-002",
-        "feat:gate-003",
-        "feat:gate-004",
-        "feat:gate-005",
-        "feat:gate-006",
-        "feat:gov-001",
-        "feat:gov-002",
-        "feat:gov-003",
-        "feat:gov-004",
-        "feat:gov-005",
-        "feat:gov-006",
-        "feat:gov-007",
-        "feat:gov-008",
-        "feat:gov-009",
-        "feat:gov-010",
-        "feat:oidc-001",
-        "feat:path-001",
-        "feat:path-002",
-        "feat:path-003",
+        "feat:evidence-registry-claim-test-artifact-map",
+        "feat:dev-bundle-evidence-structure",
+        "feat:stable-release-evidence-structure",
+        "feat:evidence-lane-ci-workflow",
+        "feat:clean-room-package-smoke-lane",
+        "feat:evidence-registry-bundle-validator-checkpoint",
+        "feat:gate-a-current-cycle-boundary-freeze-marker",
+        "feat:gate-a-boundary-freeze-manifest",
+        "feat:boundary-freeze-diff-enforcement",
+        "feat:boundary-freeze-manifest-validation",
+        "feat:release-note-claim-lint",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:apache-2-license-root",
+        "feat:contributor-policy",
+        "feat:code-of-conduct",
+        "feat:security-policy",
+        "feat:governed-docs-projection-tree",
+        "feat:package-layout-validation",
+        "feat:doc-pointer-validation",
+        "feat:root-clutter-generated-artifact-validation",
+        "feat:claim-language-lint",
+        "feat:policy-governance-ci-workflow",
+        "feat:oidc-core-discovery-descope",
+        "feat:path-length-policy",
+        "feat:path-length-validation",
+        "feat:checkpoint-path-name-conformance",
         "feat:rfc-6749",
         "feat:rfc-7519",
         "feat:rfc-7636",
@@ -23948,8 +23954,8 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_b_surface_closure.py",
       "feature_ids": [
-        "feat:gate-007",
-        "feat:gate-008"
+        "feat:gate-b-surface-closure-validation",
+        "feat:gate-b-surface-closure-validator-workflow"
       ],
       "claim_ids": [
         "clm:gate-007",
@@ -23976,7 +23982,7 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_b_surface_closure.py",
       "feature_ids": [
-        "feat:gate-007"
+        "feat:gate-b-surface-closure-validation"
       ],
       "claim_ids": [
         "clm:gate-007"
@@ -24000,7 +24006,7 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_b_surface_closure.py",
       "feature_ids": [
-        "feat:gate-007"
+        "feat:gate-b-surface-closure-validation"
       ],
       "claim_ids": [
         "clm:gate-007"
@@ -24025,25 +24031,25 @@
       "path": "tools/ci/tests/test_gate_c_conformance_security.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:gate-010",
+        "feat:gate-c-conformance-security-validator-workflow",
         "feat:openapi-31-document-emission-001",
         "feat:openapi-json-schema-dialect-2020-12-001",
         "feat:openapi-components-schemas-emission-001",
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:rfc-6750",
-        "feat:rfc-7235",
-        "feat:rfc-7617",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7617-http-basic-auth-semantics",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:openrpc-126-json-surface-001",
         "feat:openrpc-lens-ui-surface-001",
-        "feat:sec-001",
-        "feat:sec-002",
-        "feat:sec-003",
-        "feat:sec-004",
-        "feat:sec-005",
-        "feat:sec-006"
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:mutualtls-security-docs-runtime-alignment"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24091,8 +24097,8 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_d_reproducibility.py",
       "feature_ids": [
-        "feat:gate-011",
-        "feat:gate-012"
+        "feat:gate-d-reproducibility-conditions-validation",
+        "feat:gate-d-reproducibility-validator-workflow"
       ],
       "claim_ids": [
         "clm:gate-011",
@@ -24117,9 +24123,9 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_e_promotion.py",
       "feature_ids": [
-        "feat:cert-001",
-        "feat:cert-002",
-        "feat:gate-013"
+        "feat:stable-release-current-boundary-tier3-certification",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:gate-e-release-promotion-synchronization"
       ],
       "claim_ids": [
         "clm:cert-001",
@@ -24152,9 +24158,9 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_e_promotion.py",
       "feature_ids": [
-        "feat:cert-001",
-        "feat:cert-002",
-        "feat:gate-013"
+        "feat:stable-release-current-boundary-tier3-certification",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:gate-e-release-promotion-synchronization"
       ],
       "claim_ids": [
         "clm:cert-001",
@@ -24187,8 +24193,8 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_gate_e_promotion.py",
       "feature_ids": [
-        "feat:gate-013",
-        "feat:gate-014"
+        "feat:gate-e-release-promotion-synchronization",
+        "feat:gate-e-promotion-validator-workflow"
       ],
       "claim_ids": [
         "clm:gate-013",
@@ -24218,28 +24224,28 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_governance_validators.py",
       "feature_ids": [
-        "feat:evid-003",
-        "feat:gate-001",
-        "feat:gate-002",
-        "feat:gate-003",
-        "feat:gate-004",
-        "feat:gate-005",
-        "feat:gate-006",
-        "feat:gate-008",
-        "feat:gate-014",
-        "feat:gov-001",
-        "feat:gov-002",
-        "feat:gov-003",
-        "feat:gov-004",
-        "feat:gov-005",
-        "feat:gov-006",
-        "feat:gov-007",
-        "feat:gov-008",
-        "feat:gov-009",
-        "feat:gov-010",
-        "feat:path-001",
-        "feat:path-002",
-        "feat:path-003"
+        "feat:stable-release-evidence-structure",
+        "feat:gate-a-current-cycle-boundary-freeze-marker",
+        "feat:gate-a-boundary-freeze-manifest",
+        "feat:boundary-freeze-diff-enforcement",
+        "feat:boundary-freeze-manifest-validation",
+        "feat:release-note-claim-lint",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:gate-b-surface-closure-validator-workflow",
+        "feat:gate-e-promotion-validator-workflow",
+        "feat:apache-2-license-root",
+        "feat:contributor-policy",
+        "feat:code-of-conduct",
+        "feat:security-policy",
+        "feat:governed-docs-projection-tree",
+        "feat:package-layout-validation",
+        "feat:doc-pointer-validation",
+        "feat:root-clutter-generated-artifact-validation",
+        "feat:claim-language-lint",
+        "feat:policy-governance-ci-workflow",
+        "feat:path-length-policy",
+        "feat:path-length-validation",
+        "feat:checkpoint-path-name-conformance"
       ],
       "claim_ids": [
         "clm:evid-003",
@@ -24301,15 +24307,15 @@
       "path": "tools/ci/tests/test_http_auth_challenges.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:rfc-6750",
-        "feat:rfc-7235",
-        "feat:rfc-7617",
-        "feat:sec-001",
-        "feat:sec-002",
-        "feat:sec-003",
-        "feat:sec-004",
-        "feat:sec-005",
-        "feat:sec-006"
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:mutualtls-security-docs-runtime-alignment"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24344,25 +24350,25 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_path_length_policy.py",
       "feature_ids": [
-        "feat:gate-001",
-        "feat:gate-002",
-        "feat:gate-003",
-        "feat:gate-004",
-        "feat:gate-005",
-        "feat:gate-006",
-        "feat:gov-001",
-        "feat:gov-002",
-        "feat:gov-003",
-        "feat:gov-004",
-        "feat:gov-005",
-        "feat:gov-006",
-        "feat:gov-007",
-        "feat:gov-008",
-        "feat:gov-009",
-        "feat:gov-010",
-        "feat:path-001",
-        "feat:path-002",
-        "feat:path-003"
+        "feat:gate-a-current-cycle-boundary-freeze-marker",
+        "feat:gate-a-boundary-freeze-manifest",
+        "feat:boundary-freeze-diff-enforcement",
+        "feat:boundary-freeze-manifest-validation",
+        "feat:release-note-claim-lint",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:apache-2-license-root",
+        "feat:contributor-policy",
+        "feat:code-of-conduct",
+        "feat:security-policy",
+        "feat:governed-docs-projection-tree",
+        "feat:package-layout-validation",
+        "feat:doc-pointer-validation",
+        "feat:root-clutter-generated-artifact-validation",
+        "feat:claim-language-lint",
+        "feat:policy-governance-ci-workflow",
+        "feat:path-length-policy",
+        "feat:path-length-validation",
+        "feat:checkpoint-path-name-conformance"
       ],
       "claim_ids": [
         "clm:gate-001",
@@ -24402,9 +24408,9 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "feature_ids": [
-        "feat:handoff-001",
-        "feat:handoff-002",
-        "feat:next-002"
+        "feat:post-promotion-release-history-freeze",
+        "feat:post-promotion-handoff-validator-workflow",
+        "feat:next-target-datatype-table-isolation"
       ],
       "claim_ids": [
         "clm:handoff-001",
@@ -24436,8 +24442,8 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "feature_ids": [
-        "feat:handoff-001",
-        "feat:next-001"
+        "feat:post-promotion-release-history-freeze",
+        "feat:next-dev-line-governed-opening"
       ],
       "claim_ids": [
         "clm:handoff-001",
@@ -24465,8 +24471,8 @@
       "kind": "automated",
       "path": "tools/ci/tests/test_post_promotion_handoff.py",
       "feature_ids": [
-        "feat:next-001",
-        "feat:next-002"
+        "feat:next-dev-line-governed-opening",
+        "feat:next-target-datatype-table-isolation"
       ],
       "claim_ids": [
         "clm:next-001",
@@ -24495,7 +24501,7 @@
       "kind": "automated",
       "path": "tools/ci/validate_gate_c_conformance_security.py",
       "feature_ids": [
-        "feat:gate-010"
+        "feat:gate-c-conformance-security-validator-workflow"
       ],
       "claim_ids": [
         "clm:gate-010"
@@ -24515,7 +24521,7 @@
       "kind": "automated",
       "path": "tools/conformance/clean_room_package_smoke.py",
       "feature_ids": [
-        "feat:evid-005"
+        "feat:clean-room-package-smoke-lane"
       ],
       "claim_ids": [
         "clm:evid-005"
@@ -35807,7 +35813,7 @@
         "feat:error-parity-response-structure-001",
         "feat:executor-dispatch-removal-001",
         "feat:factories-001",
-        "feat:gate-006",
+        "feat:gate-a-checkpoint-validation-suite",
         "feat:http-route-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:kernel-bootstrap-plan-parity-001",
@@ -36688,6 +36694,114 @@
       "evidence_ids": [
         "evd:eventkey-hook-bucket-compilation-contract-001"
       ]
+    },
+    {
+      "id": "tst:ssot-authority-feature-linkage-contract",
+      "title": "SSOT authority features retain projection claim and specs",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_authority_feature_contracts.py",
+      "feature_ids": [
+        "feat:ssot-authority-migration-001"
+      ],
+      "claim_ids": [
+        "clm:ssot-authority-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
+      ]
+    },
+    {
+      "id": "tst:docs-ci-projection-selection-contract",
+      "title": "Docs and CI projection selection includes authority drift tests",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_authority_feature_contracts.py",
+      "feature_ids": [
+        "feat:docs-ci-projection-validation-001"
+      ],
+      "claim_ids": [
+        "clm:ssot-authority-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-ci-projection-drift"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-concrete-runtime-kernel-boundary-contract",
+      "title": "tigrbl_concrete depends on runtime without importing kernel",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_concrete/tests/test_runtime_kernel_boundary_contract.py",
+      "feature_ids": [
+        "feat:tigrbl-concrete-kernel-import-boundary-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-concrete-kernel-import-boundary-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-concrete-kernel-independence-pytest",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:httpbearer-challenge-status-contract",
+      "title": "HTTPBearer challenge status and auto-error contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/security/test_httpbearer_contract.py",
+      "feature_ids": [
+        "feat:httpbearer-security-dependency-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:authn-provider-integration-status-20260424"
+      ]
+    },
+    {
+      "id": "tst:anon-access-create-status-projection-contract",
+      "title": "Anonymous create projects REST 201 created status",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/i9n/test_auth_status_projection_contract.py",
+      "feature_ids": [
+        "feat:anon-access-rest-status-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:authn-provider-integration-status-20260424",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:auth-failure-status-projection-contract",
+      "title": "Auth failure projects missing and wrong credential statuses",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/i9n/test_auth_status_projection_contract.py",
+      "feature_ids": [
+        "feat:auth-failure-projection-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:authn-provider-integration-status-20260424",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
     }
   ],
   "claims": [
@@ -36834,7 +36948,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CERT-001.",
       "feature_ids": [
-        "feat:cert-001"
+        "feat:stable-release-current-boundary-tier3-certification"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py",
@@ -36860,7 +36974,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CERT-002.",
       "feature_ids": [
-        "feat:cert-002"
+        "feat:stable-release-rfc-security-tier3-certification"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py",
@@ -36887,7 +37001,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CLI-001.",
       "feature_ids": [
-        "feat:cli-001"
+        "feat:unified-tigrbl-cli-command-and-flag-surface"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
@@ -36910,7 +37024,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CLI-002.",
       "feature_ids": [
-        "feat:cli-002"
+        "feat:supported-server-cli-smoke-dispatch"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_cmds.py",
@@ -37188,7 +37302,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-001.",
       "feature_ids": [
-        "feat:evid-001"
+        "feat:evidence-registry-claim-test-artifact-map"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py",
@@ -37212,7 +37326,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-002.",
       "feature_ids": [
-        "feat:evid-002"
+        "feat:dev-bundle-evidence-structure"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py",
@@ -37236,7 +37350,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-003.",
       "feature_ids": [
-        "feat:evid-003"
+        "feat:stable-release-evidence-structure"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37264,7 +37378,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-004.",
       "feature_ids": [
-        "feat:evid-004"
+        "feat:evidence-lane-ci-workflow"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py",
@@ -37288,7 +37402,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-005.",
       "feature_ids": [
-        "feat:evid-005"
+        "feat:clean-room-package-smoke-lane"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37310,7 +37424,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-006.",
       "feature_ids": [
-        "feat:evid-006"
+        "feat:evidence-registry-bundle-validator-checkpoint"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py",
@@ -37369,7 +37483,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-001: Gate A boundary-freeze marker exists for the current cycle. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json`",
       "feature_ids": [
-        "feat:gate-001"
+        "feat:gate-a-current-cycle-boundary-freeze-marker"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37394,7 +37508,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-002: Gate A boundary-freeze manifest exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json`",
       "feature_ids": [
-        "feat:gate-002"
+        "feat:gate-a-boundary-freeze-manifest"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37419,7 +37533,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-003: Boundary-freeze diff enforcement exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/enforce_boundary_freeze_diff.py`",
       "feature_ids": [
-        "feat:gate-003"
+        "feat:boundary-freeze-diff-enforcement"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37444,7 +37558,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-004: Boundary-freeze manifest validation exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_boundary_freeze_manifest.py`",
       "feature_ids": [
-        "feat:gate-004"
+        "feat:boundary-freeze-manifest-validation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37469,7 +37583,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-005: Release-note claim lint exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/lint_release_note_claims.py`",
       "feature_ids": [
-        "feat:gate-005"
+        "feat:release-note-claim-lint"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37494,7 +37608,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
       "feature_ids": [
-        "feat:gate-006"
+        "feat:gate-a-checkpoint-validation-suite"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37519,7 +37633,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-007: Gate B surface-closure conditions are satisfied and machine-checked in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md`, `docs/conformance/audit/2026/p10-gate-b/README.md`, `tools/ci/validate_gate_b_surface_closure.py`",
       "feature_ids": [
-        "feat:gate-007"
+        "feat:gate-b-surface-closure-validation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_gate_b_surface_closure.py",
@@ -37546,7 +37660,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-008: Gate B surface-closure validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_b_surface_closure.py`, `tools/ci/tests/test_gate_b_surface_closure.py`, `.github/workflows/gate-b-surface-closure.yml`",
       "feature_ids": [
-        "feat:gate-008"
+        "feat:gate-b-surface-closure-validator-workflow"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_gate_b_surface_closure.py",
@@ -37609,7 +37723,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-010: Gate C conformance/security validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_c_conformance_security.py`, `tools/ci/tests/test_gate_c_conformance_security.py`, `.github/workflows/gate-c-conformance-security.yml`",
       "feature_ids": [
-        "feat:gate-010"
+        "feat:gate-c-conformance-security-validator-workflow"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
@@ -37631,7 +37745,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-011: Gate D reproducibility conditions are satisfied and machine-checked in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_D_REPRODUCIBILITY.md`, `docs/conformance/audit/2026/p12-gate-d/README.md`, `tools/ci/validate_gate_d_reproducibility.py`",
       "feature_ids": [
-        "feat:gate-011"
+        "feat:gate-d-reproducibility-conditions-validation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_gate_d_reproducibility.py"
@@ -37655,7 +37769,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-012: Gate D reproducibility validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_d_reproducibility.py`, `tools/ci/tests/test_gate_d_reproducibility.py`, `.github/workflows/gate-d-reproducibility.yml`",
       "feature_ids": [
-        "feat:gate-012"
+        "feat:gate-d-reproducibility-validator-workflow"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_gate_d_reproducibility.py"
@@ -37674,7 +37788,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-013: Gate E promotion conditions are satisfied and synchronized on the exact chosen dev build and promoted stable release. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/releases/0.3.18/RELEASE_NOTES.md`, `docs/conformance/releases/0.3.18/CLAIMS.md`, `docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md`, `docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md`, `docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md`, `docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json`, `docs/conformance/audit/2026/p13-gate-e/README.md`, `tools/ci/validate_gate_e_promotion.py`",
       "feature_ids": [
-        "feat:gate-013"
+        "feat:gate-e-release-promotion-synchronization"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_gate_e_promotion.py",
@@ -37704,7 +37818,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-014: Gate E promotion validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_e_promotion.py`, `tools/ci/tests/test_gate_e_promotion.py`, `.github/workflows/gate-e-promotion.yml`",
       "feature_ids": [
-        "feat:gate-014"
+        "feat:gate-e-promotion-validator-workflow"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_gate_e_promotion.py-f58e587b",
@@ -37727,7 +37841,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-001.",
       "feature_ids": [
-        "feat:gov-001"
+        "feat:apache-2-license-root"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37752,7 +37866,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-002.",
       "feature_ids": [
-        "feat:gov-002"
+        "feat:contributor-policy"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37777,7 +37891,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-003.",
       "feature_ids": [
-        "feat:gov-003"
+        "feat:code-of-conduct"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37802,7 +37916,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-004.",
       "feature_ids": [
-        "feat:gov-004"
+        "feat:security-policy"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37827,7 +37941,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-005.",
       "feature_ids": [
-        "feat:gov-005"
+        "feat:governed-docs-projection-tree"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37852,7 +37966,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-006.",
       "feature_ids": [
-        "feat:gov-006"
+        "feat:package-layout-validation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37877,7 +37991,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-007.",
       "feature_ids": [
-        "feat:gov-007"
+        "feat:doc-pointer-validation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37902,7 +38016,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-008.",
       "feature_ids": [
-        "feat:gov-008"
+        "feat:root-clutter-generated-artifact-validation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37927,7 +38041,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-009.",
       "feature_ids": [
-        "feat:gov-009"
+        "feat:claim-language-lint"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37952,7 +38066,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-010.",
       "feature_ids": [
-        "feat:gov-010"
+        "feat:policy-governance-ci-workflow"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -37977,7 +38091,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row HANDOFF-001.",
       "feature_ids": [
-        "feat:handoff-001"
+        "feat:post-promotion-release-history-freeze"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_post_promotion_handoff.py",
@@ -38002,7 +38116,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row HANDOFF-002.",
       "feature_ids": [
-        "feat:handoff-002"
+        "feat:post-promotion-handoff-validator-workflow"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_post_promotion_handoff.py"
@@ -38116,7 +38230,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row NEXT-001.",
       "feature_ids": [
-        "feat:next-001"
+        "feat:next-dev-line-governed-opening"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_post_promotion_handoff.py-bcb32ce6",
@@ -38141,7 +38255,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row NEXT-002.",
       "feature_ids": [
-        "feat:next-002"
+        "feat:next-target-datatype-table-isolation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_post_promotion_handoff.py",
@@ -39126,7 +39240,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OIDC-001.",
       "feature_ids": [
-        "feat:oidc-001"
+        "feat:oidc-core-discovery-descope"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py",
@@ -39450,7 +39564,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row PATH-001.",
       "feature_ids": [
-        "feat:path-001"
+        "feat:path-length-policy"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -39475,7 +39589,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row PATH-002.",
       "feature_ids": [
-        "feat:path-002"
+        "feat:path-length-validation"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -39500,7 +39614,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row PATH-003.",
       "feature_ids": [
-        "feat:path-003"
+        "feat:checkpoint-path-name-conformance"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -39549,7 +39663,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-6750.",
       "feature_ids": [
-        "feat:rfc-6750"
+        "feat:rfc-6750-http-bearer-auth-semantics"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -39575,7 +39689,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-7235.",
       "feature_ids": [
-        "feat:rfc-7235"
+        "feat:rfc-7235-http-auth-challenge-semantics"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -39625,7 +39739,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-7617.",
       "feature_ids": [
-        "feat:rfc-7617"
+        "feat:rfc-7617-http-basic-auth-semantics"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -39879,7 +39993,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-001.",
       "feature_ids": [
-        "feat:sec-001"
+        "feat:apikey-security-docs-runtime-alignment"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -39905,7 +40019,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-002.",
       "feature_ids": [
-        "feat:sec-002"
+        "feat:http-basic-security-docs-runtime-alignment"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -39931,7 +40045,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-003.",
       "feature_ids": [
-        "feat:sec-003"
+        "feat:http-bearer-security-docs-runtime-alignment"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -39957,7 +40071,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-004.",
       "feature_ids": [
-        "feat:sec-004"
+        "feat:oauth2-security-docs-runtime-alignment"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -39983,7 +40097,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-005.",
       "feature_ids": [
-        "feat:sec-005"
+        "feat:openidconnect-security-docs-runtime-alignment"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -40009,7 +40123,7 @@
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-006.",
       "feature_ids": [
-        "feat:sec-006"
+        "feat:mutualtls-security-docs-runtime-alignment"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-security-test_schemes.py",
@@ -40745,7 +40859,8 @@
         "feat:tigrbl-concrete-kernel-import-boundary-001"
       ],
       "test_ids": [
-        "tst:tigrbl-concrete-tests-test-kernel-independence"
+        "tst:tigrbl-concrete-tests-test-kernel-independence",
+        "tst:tigrbl-concrete-runtime-kernel-boundary-contract"
       ],
       "evidence_ids": [
         "evd:tigrbl-concrete-kernel-independence-pytest"
@@ -40943,7 +41058,10 @@
         "tst:rust-runtime-demo-favicon-routes",
         "tst:rust-runtime-demo-swagger-uix",
         "tst:rust-runtime-demo-lens-uix",
-        "tst:rust-runtime-demo-console-logs"
+        "tst:rust-runtime-demo-console-logs",
+        "tst:httpbearer-challenge-status-contract",
+        "tst:anon-access-create-status-projection-contract",
+        "tst:auth-failure-status-projection-contract"
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
@@ -41006,7 +41124,9 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:docs-ci-projection-drift"
+        "tst:docs-ci-projection-drift",
+        "tst:ssot-authority-feature-linkage-contract",
+        "tst:docs-ci-projection-selection-contract"
       ],
       "evidence_ids": [
         "evd:ssot-authority-model-validation",
@@ -41116,7 +41236,10 @@
       "test_ids": [
         "tst:authn-provider-unauthorized-errors-status",
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
-        "tst:closure-case-authn-unauthorized-errors"
+        "tst:closure-case-authn-unauthorized-errors",
+        "tst:httpbearer-challenge-status-contract",
+        "tst:anon-access-create-status-projection-contract",
+        "tst:auth-failure-status-projection-contract"
       ],
       "evidence_ids": [
         "evd:authn-provider-integration-status-20260424"
@@ -41660,7 +41783,10 @@
         "feat:external-error-detail-sanitization-001"
       ],
       "test_ids": [
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:tigrbl-concrete-runtime-kernel-boundary-contract",
+        "tst:anon-access-create-status-projection-contract",
+        "tst:auth-failure-status-projection-contract"
       ],
       "evidence_ids": [
         "evd:runtime-parity-lane-governance-validator"
@@ -46358,7 +46484,8 @@
         "clm:tigrbl-concrete-kernel-import-boundary-001"
       ],
       "test_ids": [
-        "tst:tigrbl-concrete-tests-test-kernel-independence"
+        "tst:tigrbl-concrete-tests-test-kernel-independence",
+        "tst:tigrbl-concrete-runtime-kernel-boundary-contract"
       ]
     },
     {
@@ -46482,7 +46609,10 @@
         "tst:closure-case-openrpc-router-mount-server-url",
         "tst:closure-case-openapi-declared-surface-metadata",
         "tst:closure-case-operator-cookie-form-upload-roundtrip",
-        "tst:closure-case-operator-streaming-sse-multi-body"
+        "tst:closure-case-operator-streaming-sse-multi-body",
+        "tst:httpbearer-challenge-status-contract",
+        "tst:anon-access-create-status-projection-contract",
+        "tst:auth-failure-status-projection-contract"
       ]
     },
     {
@@ -46500,7 +46630,8 @@
       "test_ids": [
         "tst:ssot-authority-model-validator",
         "tst:feature-test-coverage-invariant",
-        "tst:tool-test-gate-taxonomy"
+        "tst:tool-test-gate-taxonomy",
+        "tst:ssot-authority-feature-linkage-contract"
       ]
     },
     {
@@ -46556,7 +46687,8 @@
         "clm:ssot-authority-projection-001"
       ],
       "test_ids": [
-        "tst:docs-ci-projection-drift"
+        "tst:docs-ci-projection-drift",
+        "tst:docs-ci-projection-selection-contract"
       ]
     },
     {
@@ -46621,7 +46753,10 @@
       "test_ids": [
         "tst:authn-provider-unauthorized-errors-status",
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
-        "tst:closure-case-authn-unauthorized-errors"
+        "tst:closure-case-authn-unauthorized-errors",
+        "tst:httpbearer-challenge-status-contract",
+        "tst:anon-access-create-status-projection-contract",
+        "tst:auth-failure-status-projection-contract"
       ]
     },
     {
@@ -46943,7 +47078,10 @@
         "clm:runtime-parity-lane-governance-001"
       ],
       "test_ids": [
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:tigrbl-concrete-runtime-kernel-boundary-contract",
+        "tst:anon-access-create-status-projection-contract",
+        "tst:auth-failure-status-projection-contract"
       ]
     },
     {
@@ -47388,51 +47526,51 @@
       "status": "draft",
       "frozen": false,
       "feature_ids": [
-        "feat:cert-001",
-        "feat:cert-002",
-        "feat:cli-001",
-        "feat:cli-002",
-        "feat:evid-001",
-        "feat:evid-002",
-        "feat:evid-003",
-        "feat:evid-004",
-        "feat:evid-005",
-        "feat:evid-006",
-        "feat:gate-001",
-        "feat:gate-002",
-        "feat:gate-003",
-        "feat:gate-004",
-        "feat:gate-005",
-        "feat:gate-006",
-        "feat:gate-007",
-        "feat:gate-008",
+        "feat:stable-release-current-boundary-tier3-certification",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:supported-server-cli-smoke-dispatch",
+        "feat:evidence-registry-claim-test-artifact-map",
+        "feat:dev-bundle-evidence-structure",
+        "feat:stable-release-evidence-structure",
+        "feat:evidence-lane-ci-workflow",
+        "feat:clean-room-package-smoke-lane",
+        "feat:evidence-registry-bundle-validator-checkpoint",
+        "feat:gate-a-current-cycle-boundary-freeze-marker",
+        "feat:gate-a-boundary-freeze-manifest",
+        "feat:boundary-freeze-diff-enforcement",
+        "feat:boundary-freeze-manifest-validation",
+        "feat:release-note-claim-lint",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:gate-b-surface-closure-validation",
+        "feat:gate-b-surface-closure-validator-workflow",
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:gate-010",
-        "feat:gate-011",
-        "feat:gate-012",
-        "feat:gate-013",
-        "feat:gate-014",
-        "feat:gov-001",
-        "feat:gov-002",
-        "feat:gov-003",
-        "feat:gov-004",
-        "feat:gov-005",
-        "feat:gov-006",
-        "feat:gov-007",
-        "feat:gov-008",
-        "feat:gov-009",
-        "feat:gov-010",
-        "feat:handoff-001",
-        "feat:handoff-002",
-        "feat:next-001",
-        "feat:next-002",
+        "feat:gate-c-conformance-security-validator-workflow",
+        "feat:gate-d-reproducibility-conditions-validation",
+        "feat:gate-d-reproducibility-validator-workflow",
+        "feat:gate-e-release-promotion-synchronization",
+        "feat:gate-e-promotion-validator-workflow",
+        "feat:apache-2-license-root",
+        "feat:contributor-policy",
+        "feat:code-of-conduct",
+        "feat:security-policy",
+        "feat:governed-docs-projection-tree",
+        "feat:package-layout-validation",
+        "feat:doc-pointer-validation",
+        "feat:root-clutter-generated-artifact-validation",
+        "feat:claim-language-lint",
+        "feat:policy-governance-ci-workflow",
+        "feat:post-promotion-release-history-freeze",
+        "feat:post-promotion-handoff-validator-workflow",
+        "feat:next-dev-line-governed-opening",
+        "feat:next-target-datatype-table-isolation",
         "feat:openapi-31-document-emission-001",
         "feat:openapi-json-schema-dialect-2020-12-001",
         "feat:openapi-components-schemas-emission-001",
         "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:oidc-001",
+        "feat:oidc-core-discovery-descope",
         "feat:operator-static-files-surface-001",
         "feat:operator-cookie-roundtrip-surface-001",
         "feat:operator-streaming-response-surface-001",
@@ -47445,14 +47583,14 @@
         "feat:operator-asyncapi-ui-descoped-001",
         "feat:operator-json-schema-ui-descoped-001",
         "feat:operator-oidc-discovery-docs-descoped-001",
-        "feat:path-001",
-        "feat:path-002",
-        "feat:path-003",
+        "feat:path-length-policy",
+        "feat:path-length-validation",
+        "feat:checkpoint-path-name-conformance",
         "feat:rfc-6749",
-        "feat:rfc-6750",
-        "feat:rfc-7235",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
         "feat:rfc-7519",
-        "feat:rfc-7617",
+        "feat:rfc-7617-http-basic-auth-semantics",
         "feat:rfc-7636",
         "feat:rfc-8414",
         "feat:rfc-8705",
@@ -47461,12 +47599,12 @@
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:openrpc-126-json-surface-001",
         "feat:openrpc-lens-ui-surface-001",
-        "feat:sec-001",
-        "feat:sec-002",
-        "feat:sec-003",
-        "feat:sec-004",
-        "feat:sec-005",
-        "feat:sec-006"
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:mutualtls-security-docs-runtime-alignment"
       ],
       "profile_ids": []
     },
@@ -48989,7 +49127,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "adr:1034",
@@ -49006,7 +49144,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "adr:1035",
@@ -49046,7 +49184,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "adr:1037",
@@ -49063,7 +49201,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "adr:1038",
@@ -49162,7 +49300,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "adr:1043",
@@ -49179,7 +49317,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "adr:1044",
@@ -49196,7 +49334,7 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "adr:1045",
@@ -50970,7 +51108,7 @@
       "superseded_by": [],
       "status_notes": [],
       "adr_ids": [],
-      "summary": "\ufeff"
+      "summary": "\u00c3\u0192\u00c2\u00af\u00c3\u201a\u00c2\u00bb\u00c3\u201a\u00c2\u00bf"
     },
     {
       "id": "spc:2002",
