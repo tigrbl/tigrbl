@@ -1,0 +1,48 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2124"
+number: 2124
+slug: "public-record-identity-codec-and-resource-code-registry"
+title: "Public Record Identity Codec And Resource Code Registry"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define Tigrbl public record identity codec profiles and the resource-code registry contract for aa/split, aaa/split, and aaaa/split public IDs."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:09Z"
+references: []
+body: |-
+  ## Intent
+  Define Tigrbl public record identity codec profiles and the resource-code registry contract for aa/split, aaa/split, and aaaa/split public IDs.
+  
+  ## Profiles
+  - aa/split text is two base62 prefix characters followed by decimal digits. It lowers to resource_code:u16 plus identity32.
+  - aaa/split text is three base62 prefix characters followed by decimal digits. It lowers to resource_code:u32 plus identity32.
+  - aaaa/split text is four base62 prefix characters followed by decimal digits. It lowers to resource_code:u32 plus identity32.
+  
+  ## Prefix Math
+  base62 uses [0-9A-Za-z] with case-sensitive characters unless a future profile explicitly declares normalization.
+  
+  The aa code is b62(c0) * 62 + b62(c1), range 0..3843.
+  The aaa code is b62(c0) * 62^2 + b62(c1) * 62 + b62(c2), range 0..238327.
+  The aaaa code is b62(c0) * 62^3 + b62(c1) * 62^2 + b62(c2) * 62 + b62(c3), range 0..14776335.
+  
+  ## Decimal Instance
+  The suffix is one or more ASCII decimal digits and must fit the declared identity width. The default public long-term instance width is identity32, encoded as 32 opaque bytes after boundary validation.
+  
+  ## Registry Rows
+  Each resource-code row declares profile, prefix, numeric code, canonical resource name, package, owner, stability, reserved range, and collision domain.
+  
+  ## Invariants
+  Prefix length is part of the profile and is not guessed from text alone. Canonical formatting preserves registered prefix width. Text parsing occurs at boundaries; hot runtime paths consume split binary forms only.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1111"
+  - "adr:1117"
+  - "adr:1119"

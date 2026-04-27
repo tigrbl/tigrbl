@@ -1,0 +1,43 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2129"
+number: 2129
+slug: "runtimeeventkey-physical-format"
+title: "RuntimeEventKey Physical Format"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define fixed-width runtime event-key physical layouts for dispatch, cache, audit, and event uniqueness use cases."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:12Z"
+references: []
+body: |-
+  ## Intent
+  Define fixed-width runtime event-key physical layouts for dispatch, cache, audit, and event uniqueness use cases.
+  
+  ## Base Header
+  The base header fields are key_kind:u8, protocol:u8, binding:u8, phase:u8, resource_code:u16 or u32 according to profile, op_code:u16, route_or_method_id:u32, param_shape_id:u32, identity_shape_id:u32, identity_count:u8, flags:u8, and identity_vector_offset:u32 when a vector sidecar is present.
+  
+  ## Variants
+  Supported variants include EventKeyStatic, EventKeyRoute, EventKeyRouteIdentity64, EventKeyRouteIdentity128, EventKeyRouteIdentity256, and EventKeyHashedIdentity. Variants must declare field order, size, required flags, and optional tail fields.
+  
+  ## Optional Fields
+  Optional fields include identity_hash_128, identity_hash_256, event_family code, chain_id:u32, atom_program_id:u32, and context/slab offsets.
+  
+  ## Dispatch Rule
+  Ordinary phase-chain dispatch uses route, operation, phase, protocol, binding, chain, and shape metadata. Concrete identity values are attached by vector offset or hash only when required by the use case.
+  
+  ## Failure Rule
+  Unknown key kinds, unsupported versions, invalid flags, out-of-bounds offsets, mismatched identity counts, or truncated headers fail before atom execution.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1114"
+  - "adr:1112"
+  - "adr:1113"
+  - "adr:1117"

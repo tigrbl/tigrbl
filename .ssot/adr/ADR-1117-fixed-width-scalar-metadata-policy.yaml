@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1117"
+number: 1117
+slug: "fixed-width-scalar-metadata-policy"
+title: "Fixed-Width Scalar Metadata Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl assigns fixed-width scalar metadata by entropy domain and operation. u8 is used for compact tags, flags, protocol codes, phase codes, roles, locations, scalar kinds, and method/message kinds. u16 is used for bounded compact registries, AA-fast resource codes, op codes, small counts, masks, and local table fields. u32 is used for route IDs, method IDs, shape IDs, chain IDs, atom program IDs, offsets, payload lengths, and larger registry code spaces. u64, u128, and u256 are reserved for sequence/version/local ID, compact distributed identity, and long-term public/content/digest domains respectively."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:08Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl assigns fixed-width scalar metadata by entropy domain and operation. u8 is used for compact tags, flags, protocol codes, phase codes, roles, locations, scalar kinds, and method/message kinds. u16 is used for bounded compact registries, AA-fast resource codes, op codes, small counts, masks, and local table fields. u32 is used for route IDs, method IDs, shape IDs, chain IDs, atom program IDs, offsets, payload lengths, and larger registry code spaces. u64, u128, and u256 are reserved for sequence/version/local ID, compact distributed identity, and long-term public/content/digest domains respectively.
+  
+  Runtime sidecars may use native typed arrays. Durable and wire formats must specify explicit endian and layout.
+  
+  ## Rationale
+  Using one oversized scalar for every field wastes space and cache. Using implicit native layouts for durable data creates portability risk. Width policy keeps metadata compact while preserving deterministic bytes at boundaries.
+  
+  ## Consequences
+  Every scalar field in event metadata, identity codecs, ParamShape, IdentityShape, sidecars, wire formats, and atom operands must declare its semantic kind, physical width, bounds, and endian/order rule where relevant.
+  
+  ## Traceability
+  Maps to SPEC-2133 and SPEC-2135. Related decisions include ADR-1111, ADR-1113, ADR-1114, and ADR-1115.

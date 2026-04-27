@@ -1,0 +1,40 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2135"
+number: 2135
+slug: "supported-scalar-type-registry"
+title: "Supported Scalar Type Registry"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the supported scalar type registry for params, identities, event metadata, atom operands, wire codecs, and payload-only values."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:15Z"
+references: []
+body: |-
+  ## Intent
+  Define the supported scalar type registry for params, identities, event metadata, atom operands, wire codecs, and payload-only values.
+  
+  ## Registry Columns
+  Each scalar row declares scalar_code, name, physical_width, variable_width, max_length, endian, canonical_text, identity_allowed, param_allowed, event_key_allowed, atom_operand_allowed, payload_only, and codec profile where applicable.
+  
+  ## Initial Scalars
+  The initial scalar set includes bool, u8, u16, u32, u64, i32, i64, f32, f64, decimal, bytes, text, enum, bitset8, bitset16, bitset32, uuid, ulid, opaque16, opaque32, opaque64, u128, u256, json, timestamp_ms, duration_ns, date, and time.
+  
+  ## Hot-Path Exclusions
+  dict, list, tuple, set, arbitrary Python object, UUID object, ULID object, Decimal object, datetime object, regex match object, unbounded str, and unbounded bytes are not hot-path scalars.
+  
+  ## Surface Rules
+  Event-key scalars are limited to bounded numeric codes, flags, enums, bitsets, and fixed opaque values by reference or hash. Identity scalars include u64, u128, u256, uuid, ulid, opaque16, opaque32, aa/split, aaa/split, and aaaa/split. JSON, decimal, large text, and arbitrary bytes are payload-only unless explicitly interned, hashed, or lowered to a bounded scalar.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1119"
+  - "adr:1117"
+  - "adr:1118"
+  - "adr:1113"

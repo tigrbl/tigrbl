@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1118"
+number: 1118
+slug: "uuid-and-ulid-identity-codec-policy"
+title: "UUID And ULID Identity Codec Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "UUID and ULID are supported public identity codec profiles. UUID and ULID text, parser objects, and generator objects are boundary concerns. Runtime, event, and kernel hot paths lower both profiles to opaque16 bytes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:08Z"
+references: []
+body: |-
+  ## Decision
+  UUID and ULID are supported public identity codec profiles. UUID and ULID text, parser objects, and generator objects are boundary concerns. Runtime, event, and kernel hot paths lower both profiles to opaque16 bytes.
+  
+  UUID canonical output is lowercase RFC-style text with hyphens. ULID canonical output is uppercase Crockford Base32 text with timestamp-first binary ordering preserved.
+  
+  ## Rationale
+  UUID and ULID are common external identity forms, but dispatch should not depend on strings or language-specific objects. Lowering to opaque16 provides compatibility without hot-path object amplification.
+  
+  ## Consequences
+  Generic codecs preserve bytes exactly and should not require version-specific UUID semantics unless a generation policy opts in. UUID generation modes such as uuid4 or uuid7 and ULID monotonic generation are separate generator policy from codec policy.
+  
+  ## Traceability
+  Maps to SPEC-2134, SPEC-2125, and SPEC-2135. Related decisions include ADR-1113 and ADR-1119.

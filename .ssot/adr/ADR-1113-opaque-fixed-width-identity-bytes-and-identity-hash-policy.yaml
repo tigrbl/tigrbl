@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1113"
+number: 1113
+slug: "opaque-fixed-width-identity-bytes-and-identity-hash-policy"
+title: "Opaque Fixed-Width Identity Bytes And Identity Hash Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Fixed-width identity, digest, Merkle, content, UUID, ULID, and public long-term identity values are opaque bytes in runtime, event, and kernel hot paths. Tigrbl does not decode them to Python integers, UUID objects, ULID objects, strings, or other semantic objects during dispatch."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:06Z"
+references: []
+body: |-
+  ## Decision
+  Fixed-width identity, digest, Merkle, content, UUID, ULID, and public long-term identity values are opaque bytes in runtime, event, and kernel hot paths. Tigrbl does not decode them to Python integers, UUID objects, ULID objects, strings, or other semantic objects during dispatch.
+  
+  Identity hashes are used only for cache keys, dedupe keys, audit/event-log uniqueness, idempotency, cross-process correlation, or stable event instance IDs.
+  
+  ## Rationale
+  Opaque fixed-width bytes minimize object amplification, pointer chasing, and scalar decode cost. Hashing concrete identity vectors only where uniqueness is required keeps dispatch tables compact and prevents concrete values from exploding phase-chain selection.
+  
+  ## Consequences
+  Codecs validate and parse textual forms at the boundary, then lower to fixed-width bytes. Hot dispatch uses shape IDs, resource codes, offsets, optional hashes, and chain IDs. Full values remain available to policy and handler atoms through the runtime context.
+  
+  ## Traceability
+  Maps to SPEC-2125, SPEC-2127, SPEC-2134, and SPEC-2135. Related decisions include ADR-1111, ADR-1112, ADR-1114, and ADR-1118.
