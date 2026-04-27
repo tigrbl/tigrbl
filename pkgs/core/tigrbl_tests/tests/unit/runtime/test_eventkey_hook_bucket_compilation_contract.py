@@ -40,6 +40,39 @@ def test_wildcard_hook_selectors_expand_to_concrete_eventkey_buckets() -> None:
     assert all(isinstance(bucket["event_key"], int) for bucket in buckets.values())
 
 
+def test_exact_hook_selector_takes_precedence_over_family_wildcard() -> None:
+    compile_buckets = _require("tigrbl_kernel.eventkey_hooks", "compile_hook_buckets")
+
+    buckets = compile_buckets(
+        hooks=[
+            {"hook_id": "socket-any", "phase": "HANDLER", "family": "socket", "subevent": "*"},
+            {"hook_id": "message-only", "phase": "HANDLER", "family": "socket", "subevent": "message.received"},
+        ],
+        event_catalog=[
+            {"family": "socket", "subevent": "message.received"},
+            {"family": "socket", "subevent": "session.close"},
+        ],
+    )
+
+    assert buckets["message.received"]["hook_ids"] == ("message-only",)
+    assert buckets["session.close"]["hook_ids"] == ("socket-any",)
+
+
+def test_ordered_multi_hook_bucket_compiles_when_order_is_declared() -> None:
+    compile_buckets = _require("tigrbl_kernel.eventkey_hooks", "compile_hook_buckets")
+
+    buckets = compile_buckets(
+        hooks=[
+            {"hook_id": "audit", "phase": "HANDLER", "family": "socket", "subevent": "message.received", "order": 20},
+            {"hook_id": "auth", "phase": "HANDLER", "family": "socket", "subevent": "message.received", "order": 10},
+        ],
+        event_catalog=[{"family": "socket", "subevent": "message.received"}],
+        allow_ordered_multi=True,
+    )
+
+    assert buckets["message.received"]["hook_ids"] == ("auth", "audit")
+
+
 def test_hook_bucket_compilation_detects_bucket_collisions() -> None:
     compile_buckets = _require("tigrbl_kernel.eventkey_hooks", "compile_hook_buckets")
 
@@ -53,6 +86,18 @@ def test_hook_bucket_compilation_detects_bucket_collisions() -> None:
         )
 
 
+def test_hook_bucket_compilation_rejects_unknown_event_selector() -> None:
+    compile_buckets = _require("tigrbl_kernel.eventkey_hooks", "compile_hook_buckets")
+
+    with pytest.raises(ValueError, match="event|catalog|unknown|selector"):
+        compile_buckets(
+            hooks=[
+                {"hook_id": "missing", "phase": "HANDLER", "family": "socket", "subevent": "message.missing"},
+            ],
+            event_catalog=[{"family": "socket", "subevent": "message.received"}],
+        )
+
+
 def test_hook_bucket_runtime_lookup_is_direct_by_eventkey() -> None:
     lookup = _require("tigrbl_kernel.eventkey_hooks", "lookup_hook_bucket")
 
@@ -60,3 +105,9 @@ def test_hook_bucket_runtime_lookup_is_direct_by_eventkey() -> None:
 
     assert bucket == ("hook-a", "hook-b")
 
+
+def test_hook_bucket_runtime_lookup_does_not_accept_string_selectors() -> None:
+    lookup = _require("tigrbl_kernel.eventkey_hooks", "lookup_hook_bucket")
+
+    with pytest.raises(TypeError, match="EventKey|integer|string|selector"):
+        lookup("socket.message.received", {0x01020304: ("hook-a",)})

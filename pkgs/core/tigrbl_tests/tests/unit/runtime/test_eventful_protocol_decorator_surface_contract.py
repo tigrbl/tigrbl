@@ -26,6 +26,30 @@ def test_eventful_protocol_decorators_lower_to_op_ctx_plus_binding_specs() -> No
         assert lowered["binding_specs"]
 
 
+@pytest.mark.parametrize(
+    ("decorator", "expected"),
+    (
+        ("websocket_ctx", {"proto": "ws", "exchange": "bidirectional_stream", "framing": "text"}),
+        ("sse_ctx", {"proto": "http.sse", "exchange": "server_stream", "framing": "sse"}),
+        ("stream_ctx", {"proto": "http.stream", "exchange": "server_stream", "framing": "stream"}),
+        ("webtransport_ctx", {"proto": "webtransport", "exchange": "bidirectional_stream", "framing": "webtransport"}),
+    ),
+)
+def test_each_eventful_decorator_lowers_to_expected_binding_shape(
+    decorator: str,
+    expected: dict[str, str],
+) -> None:
+    lower = _require("tigrbl_concrete._decorators.eventful", "lower_eventful_protocol_decorator")
+
+    lowered = lower(decorator, path="/events", alias="events")
+    binding = lowered["binding_specs"][0]
+
+    assert lowered["semantic_root"] == "op_ctx"
+    assert binding["path"] == "/events"
+    for key, value in expected.items():
+        assert binding[key] == value
+
+
 def test_subevent_ctx_binds_optional_dispatch_handler() -> None:
     lower = _require("tigrbl_concrete._decorators.eventful", "lower_subevent_ctx")
 
@@ -39,6 +63,7 @@ def test_subevent_ctx_binds_optional_dispatch_handler() -> None:
     assert lowered["family"] == "socket"
     assert lowered["subevent"] == "message.received"
     assert lowered["phase"] == "HANDLER"
+    assert lowered["handler_name"] == "on_message"
 
 
 @pytest.mark.parametrize(
@@ -71,3 +96,43 @@ def test_realtime_verbs_remain_builtin_custom_handlers() -> None:
 
     assert lowered["kind"] == "builtin_custom_handler"
     assert lowered["semantic_root"] == "op_ctx"
+
+
+@pytest.mark.parametrize("verb", ("append_stream", "send_event", "close_channel"))
+def test_realtime_verb_lowering_preserves_builtin_handler_identity(verb: str) -> None:
+    lower = _require("tigrbl_concrete._decorators.eventful", "lower_realtime_verb")
+
+    lowered = lower(verb)
+
+    assert lowered["kind"] == "builtin_custom_handler"
+    assert lowered["semantic_root"] == "op_ctx"
+    assert lowered["handler_name"] == verb
+
+
+def test_eventful_on_mapping_sugar_lowers_to_subevent_handlers() -> None:
+    lower = _require("tigrbl_concrete._decorators.eventful", "lower_on_mapping")
+
+    lowered = lower(
+        family="socket",
+        on={
+            "message.received": "handle_message",
+            "session.close": "handle_close",
+        },
+    )
+
+    assert lowered == (
+        {
+            "kind": "subevent_handler",
+            "family": "socket",
+            "subevent": "message.received",
+            "handler_name": "handle_message",
+            "phase": "HANDLER",
+        },
+        {
+            "kind": "subevent_handler",
+            "family": "socket",
+            "subevent": "session.close",
+            "handler_name": "handle_close",
+            "phase": "HANDLER",
+        },
+    )

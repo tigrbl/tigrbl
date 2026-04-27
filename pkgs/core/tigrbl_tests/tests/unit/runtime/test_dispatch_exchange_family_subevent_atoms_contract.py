@@ -16,22 +16,29 @@ def _require(module_name: str, attr_name: str):
     return value
 
 
-def test_dispatch_atoms_derive_rest_jsonrpc_stream_sse_and_ws_metadata() -> None:
+def test_dispatch_atom_derives_rest_request_metadata() -> None:
     derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
 
-    cases = (
-        (
-            {"binding": "http.rest", "method": "GET", "path": "/items"},
-            {
-                "exchange": "request_response",
-                "family": "request_response",
-                "subevent": "request.received",
-            },
-        ),
-        (
-            {"binding": "http.jsonrpc", "method": "items.list"},
-            {"exchange": "request_response", "family": "rpc", "subevent": "rpc.request"},
-        ),
+    metadata = derive({"binding": "http.rest", "method": "GET", "path": "/items"})
+
+    assert metadata["exchange"] == "request_response"
+    assert metadata["family"] == "request_response"
+    assert metadata["subevent"] == "request.received"
+
+
+def test_dispatch_atom_derives_jsonrpc_request_metadata() -> None:
+    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
+
+    metadata = derive({"binding": "http.jsonrpc", "method": "items.list"})
+
+    assert metadata["exchange"] == "request_response"
+    assert metadata["family"] == "rpc"
+    assert metadata["subevent"] == "rpc.request"
+
+
+@pytest.mark.parametrize(
+    ("event", "expected"),
+    (
         (
             {"binding": "http.stream", "path": "/items/stream"},
             {"exchange": "server_stream", "family": "stream", "subevent": "stream.start"},
@@ -48,12 +55,14 @@ def test_dispatch_atoms_derive_rest_jsonrpc_stream_sse_and_ws_metadata() -> None
                 "subevent": "message.received",
             },
         ),
-    )
+    ),
+)
+def test_dispatch_atom_derives_eventful_transport_metadata(event, expected) -> None:
+    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
 
-    for event, expected in cases:
-        metadata = derive(event)
-        for key, value in expected.items():
-            assert metadata[key] == value
+    metadata = derive(event)
+
+    assert {key: metadata[key] for key in expected} == expected
 
 
 def test_dispatch_atoms_fail_closed_before_handler_on_unknown_binding() -> None:
@@ -63,7 +72,7 @@ def test_dispatch_atoms_fail_closed_before_handler_on_unknown_binding() -> None:
         derive({"binding": "unknown.transport", "path": "/items"})
 
 
-def test_dispatch_atoms_run_before_operation_resolution() -> None:
+def test_dispatch_metadata_feeds_operation_resolution() -> None:
     derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
     resolve = _require("tigrbl_runtime.protocol.dispatch_atoms", "resolve_operation")
 
@@ -75,3 +84,9 @@ def test_dispatch_atoms_run_before_operation_resolution() -> None:
     assert operation["subevent"] == "request.received"
     assert operation["op_code"]
 
+
+def test_dispatch_atom_rejects_unqualified_subevent_aliases() -> None:
+    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
+
+    with pytest.raises(ValueError, match="qualified|subevent|request.received"):
+        derive({"binding": "http.rest", "method": "GET", "subevent": "receive"})

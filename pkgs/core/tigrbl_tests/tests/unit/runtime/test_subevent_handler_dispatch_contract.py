@@ -31,6 +31,23 @@ def test_subevent_handler_dispatch_selects_exact_eventkey_handler() -> None:
     assert dispatch({"family": "socket", "subevent": "session.close"}, table) == "on-close"
 
 
+def test_subevent_handler_dispatch_uses_eventkey_not_selector_scan() -> None:
+    compile_handlers = _require("tigrbl_kernel.subevent_handlers", "compile_subevent_handlers")
+    dispatch = _require("tigrbl_runtime.protocol.subevent_handlers", "dispatch_subevent")
+
+    table = compile_handlers(
+        [
+            {"handler_id": "on-message", "family": "socket", "subevent": "message.received"},
+        ],
+        key_mode="eventkey",
+    )
+    event_key = next(iter(table))
+
+    assert isinstance(event_key, int)
+    assert dispatch({"event_key": event_key}, table) == "on-message"
+    assert all(not isinstance(key, tuple) for key in table)
+
+
 def test_ordered_multi_handler_dispatch_preserves_declared_order() -> None:
     compile_handlers = _require("tigrbl_kernel.subevent_handlers", "compile_subevent_handlers")
 
@@ -43,6 +60,17 @@ def test_ordered_multi_handler_dispatch_preserves_declared_order() -> None:
     )
 
     assert table[("event_stream", "message.emit")]["handler_ids"] == ("audit", "notify")
+
+
+def test_missing_subevent_handler_returns_no_match_sentinel() -> None:
+    compile_handlers = _require("tigrbl_kernel.subevent_handlers", "compile_subevent_handlers")
+    dispatch = _require("tigrbl_runtime.protocol.subevent_handlers", "dispatch_subevent")
+
+    table = compile_handlers(
+        [{"handler_id": "on-message", "family": "socket", "subevent": "message.received"}]
+    )
+
+    assert dispatch({"family": "socket", "subevent": "session.close"}, table) is None
 
 
 def test_ambiguous_subevent_handlers_fail_compilation() -> None:
@@ -73,3 +101,14 @@ def test_phase_bound_hook_cannot_be_used_as_subevent_handler() -> None:
             ]
         )
 
+
+def test_owner_mode_rejects_subevent_dispatch_handlers() -> None:
+    compile_handlers = _require("tigrbl_kernel.subevent_handlers", "compile_subevent_handlers")
+
+    with pytest.raises(ValueError, match="owner|dispatch|loop|subevent"):
+        compile_handlers(
+            [
+                {"handler_id": "on-message", "family": "socket", "subevent": "message.received"},
+            ],
+            loop_mode="owner",
+        )
