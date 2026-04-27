@@ -16873,7 +16873,8 @@
       "test_ids": [
         "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
         "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:appspec-corpus-canonical-fixture-determinism"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -16912,7 +16913,8 @@
       "test_ids": [
         "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
         "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:appspec-corpus-negative-fail-closed-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -17059,7 +17061,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:tool-test-gate-taxonomy"
+        "tst:tool-test-gate-taxonomy",
+        "tst:tool-test-gate-taxonomy-distinct-roles"
       ],
       "requires": [],
       "spec_ids": [
@@ -17088,7 +17091,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:feature-test-coverage-invariant"
+        "tst:feature-test-coverage-invariant",
+        "tst:feature-coverage-completeness-invariant"
       ],
       "requires": [],
       "spec_ids": [
@@ -17117,7 +17121,8 @@
       ],
       "test_ids": [
         "tst:boundary-scoped-test-selection",
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:boundary-selection-excludes-unscoped-tests"
       ],
       "requires": [],
       "spec_ids": [
@@ -17146,7 +17151,8 @@
       ],
       "test_ids": [
         "tst:status-sync-outcome-mapping",
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:test-result-ingestion-status-cascade"
       ],
       "requires": [],
       "spec_ids": [
@@ -17177,7 +17183,8 @@
       "test_ids": [
         "tst:status-sync-outcome-mapping",
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:status-sync-failed-test-cascades-proof-status"
       ],
       "requires": [],
       "spec_ids": [
@@ -17215,7 +17222,8 @@
       ],
       "test_ids": [
         "tst:gate-evaluator-claim-evidence-aggregation",
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:gate-evaluator-failing-evidence-blocks-promotion"
       ],
       "requires": [],
       "spec_ids": [
@@ -17281,7 +17289,8 @@
         "tst:rust-runtime-demo-favicon-routes",
         "tst:rust-runtime-demo-swagger-uix",
         "tst:rust-runtime-demo-lens-uix",
-        "tst:rust-runtime-demo-console-logs"
+        "tst:rust-runtime-demo-console-logs",
+        "tst:runtime-doc-endpoint-browser-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -17322,7 +17331,8 @@
       ],
       "test_ids": [
         "tst:jsonrpc-create-missing-required-fields-invalid-params",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:jsonrpc-validation-before-persistence-no-row"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -17361,7 +17371,8 @@
       ],
       "test_ids": [
         "tst:jsonrpc-persistence-exception-sanitized",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:jsonrpc-persistence-sanitization-request-id-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -17403,7 +17414,8 @@
         "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
         "tst:closure-case-authn-unauthorized-errors",
         "tst:authn-provider-unauthorized-errors-status",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:authn-provider-openapi-status-projection-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -21659,7 +21671,8 @@
         "tst:response-error-to-transport-persistence-sanitized",
         "tst:jsonrpc-persistence-exception-sanitized",
         "tst:packed-executor-http-persistence-classification",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:external-persistence-error-sanitization-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -36802,6 +36815,236 @@
         "evd:authn-provider-integration-status-20260424",
         "evd:runtime-parity-lane-governance-validator"
       ]
+    },
+    {
+      "id": "tst:appspec-corpus-canonical-fixture-determinism",
+      "title": "AppSpec corpus canonical fixture determinism",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/harness/test_04_appspec_corpus_fixture.py",
+      "feature_ids": [
+        "feat:appspec-corpus-canonical-fixture-001"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:appspec-corpus-negative-fail-closed-contract",
+      "title": "AppSpec corpus negative fail-closed contract",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/harness_e2e/test_01_appspec_corpus_uvicorn.py",
+      "feature_ids": [
+        "feat:appspec-corpus-negative-fail-closed-001"
+      ],
+      "claim_ids": [
+        "clm:appspec-corpus-negative-fail-closed-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-corpus-pytest",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:authn-provider-openapi-status-projection-contract",
+      "title": "AuthN provider status and OpenAPI security projection contract",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/core/tigrbl_tests/tests/i9n/test_auth_status_projection_contract.py",
+      "feature_ids": [
+        "feat:authn-provider-missing-credentials-status-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:authn-provider-integration-status-20260424",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:authn-provider-integration-status-20260424",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:external-persistence-error-sanitization-contract",
+      "title": "External persistence error sanitization contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:external-error-detail-sanitization-001"
+      ],
+      "claim_ids": [
+        "clm:external-error-detail-sanitization-001",
+        "clm:transport-parity-contract-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:jsonrpc-persistence-exception-sanitized",
+        "evd:packed-executor-http-persistence-classification",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:jsonrpc-validation-before-persistence-no-row",
+      "title": "JSON-RPC validation rejects missing required fields before persistence",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:jsonrpc-input-validation-before-persistence-001"
+      ],
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:jsonrpc-create-missing-required-fields-invalid-params",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:jsonrpc-persistence-sanitization-request-id-contract",
+      "title": "JSON-RPC persistence sanitization preserves public request id only",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:jsonrpc-persistence-error-sanitization-001"
+      ],
+      "claim_ids": [
+        "clm:rpc-001",
+        "clm:transport-parity-contract-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:jsonrpc-persistence-exception-sanitized",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "tst:runtime-doc-endpoint-browser-contract",
+      "title": "Runtime documentation endpoint browser contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "feature_ids": [
+        "feat:runtime-executor-doc-endpoint-parity-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+      ]
+    },
+    {
+      "id": "tst:boundary-selection-excludes-unscoped-tests",
+      "title": "Boundary selection excludes unscoped tests",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_governance_feature_contracts.py",
+      "feature_ids": [
+        "feat:boundary-scoped-test-selection-001"
+      ],
+      "claim_ids": [
+        "clm:boundary-test-selection-deterministic-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-boundary-test-selection"
+      ]
+    },
+    {
+      "id": "tst:feature-coverage-completeness-invariant",
+      "title": "Feature coverage completeness invariant",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_governance_feature_contracts.py",
+      "feature_ids": [
+        "feat:feature-test-coverage-completeness-001"
+      ],
+      "claim_ids": [
+        "clm:feature-test-coverage-completeness-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
+      ]
+    },
+    {
+      "id": "tst:gate-evaluator-failing-evidence-blocks-promotion",
+      "title": "Gate evaluator blocks promotion on failed evidence",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_governance_feature_contracts.py",
+      "feature_ids": [
+        "feat:gate-evaluator-model-001"
+      ],
+      "claim_ids": [
+        "clm:gate-status-derived-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-gate-evaluation"
+      ]
+    },
+    {
+      "id": "tst:test-result-ingestion-status-cascade",
+      "title": "Test result ingestion cascades failed status to evidence and claims",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_governance_feature_contracts.py",
+      "feature_ids": [
+        "feat:test-result-evidence-ingestion-001"
+      ],
+      "claim_ids": [
+        "clm:status-sync-auditable-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-status-sync-dry-run"
+      ]
+    },
+    {
+      "id": "tst:tool-test-gate-taxonomy-distinct-roles",
+      "title": "Tool test evidence claim and gate taxonomy keeps distinct roles",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_governance_feature_contracts.py",
+      "feature_ids": [
+        "feat:tool-test-gate-taxonomy-001"
+      ],
+      "claim_ids": [
+        "clm:tool-test-gate-taxonomy-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-authority-model-validation"
+      ]
+    },
+    {
+      "id": "tst:status-sync-failed-test-cascades-proof-status",
+      "title": "Status sync maps failed tests into failed evidence and blocked claims",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_ssot_governance_feature_contracts.py",
+      "feature_ids": [
+        "feat:status-sync-engine-001"
+      ],
+      "claim_ids": [
+        "clm:status-sync-auditable-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "evidence_ids": [
+        "evd:ssot-status-sync-dry-run",
+        "evd:runtime-parity-lane-governance-validator"
+      ]
     }
   ],
   "claims": [
@@ -39901,7 +40144,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:jsonrpc-create-missing-required-fields-invalid-params",
-        "tst:jsonrpc-persistence-exception-sanitized"
+        "tst:jsonrpc-persistence-exception-sanitized",
+        "tst:jsonrpc-validation-before-persistence-no-row",
+        "tst:jsonrpc-persistence-sanitization-request-id-contract"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_state.md",
@@ -40194,7 +40439,10 @@
         "tst:jsonrpc-create-missing-required-fields-invalid-params",
         "tst:jsonrpc-persistence-exception-sanitized",
         "tst:response-error-to-transport-persistence-sanitized",
-        "tst:packed-executor-http-persistence-classification"
+        "tst:packed-executor-http-persistence-classification",
+        "tst:external-persistence-error-sanitization-contract",
+        "tst:jsonrpc-validation-before-persistence-no-row",
+        "tst:jsonrpc-persistence-sanitization-request-id-contract"
       ],
       "evidence_ids": [
         "evd:transport-dispatch-parity-test",
@@ -40878,7 +41126,8 @@
       ],
       "test_ids": [
         "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
-        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn",
+        "tst:appspec-corpus-canonical-fixture-determinism"
       ],
       "evidence_ids": [
         "evd:appspec-corpus-pytest"
@@ -40896,7 +41145,8 @@
       ],
       "test_ids": [
         "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
-        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn",
+        "tst:appspec-corpus-negative-fail-closed-contract"
       ],
       "evidence_ids": [
         "evd:appspec-corpus-pytest"
@@ -41061,7 +41311,9 @@
         "tst:rust-runtime-demo-console-logs",
         "tst:httpbearer-challenge-status-contract",
         "tst:anon-access-create-status-projection-contract",
-        "tst:auth-failure-status-projection-contract"
+        "tst:auth-failure-status-projection-contract",
+        "tst:authn-provider-openapi-status-projection-contract",
+        "tst:runtime-doc-endpoint-browser-contract"
       ],
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
@@ -41145,7 +41397,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:feature-test-coverage-invariant"
+        "tst:feature-test-coverage-invariant",
+        "tst:feature-coverage-completeness-invariant"
       ],
       "evidence_ids": [
         "evd:ssot-authority-model-validation"
@@ -41162,7 +41415,8 @@
         "feat:gate-evaluator-model-001"
       ],
       "test_ids": [
-        "tst:gate-evaluator-claim-evidence-aggregation"
+        "tst:gate-evaluator-claim-evidence-aggregation",
+        "tst:gate-evaluator-failing-evidence-blocks-promotion"
       ],
       "evidence_ids": [
         "evd:ssot-gate-evaluation"
@@ -41179,7 +41433,8 @@
         "feat:boundary-scoped-test-selection-001"
       ],
       "test_ids": [
-        "tst:boundary-scoped-test-selection"
+        "tst:boundary-scoped-test-selection",
+        "tst:boundary-selection-excludes-unscoped-tests"
       ],
       "evidence_ids": [
         "evd:ssot-boundary-test-selection"
@@ -41197,7 +41452,9 @@
         "feat:status-sync-engine-001"
       ],
       "test_ids": [
-        "tst:status-sync-outcome-mapping"
+        "tst:status-sync-outcome-mapping",
+        "tst:test-result-ingestion-status-cascade",
+        "tst:status-sync-failed-test-cascades-proof-status"
       ],
       "evidence_ids": [
         "evd:ssot-status-sync-dry-run"
@@ -41214,7 +41471,8 @@
         "feat:tool-test-gate-taxonomy-001"
       ],
       "test_ids": [
-        "tst:tool-test-gate-taxonomy"
+        "tst:tool-test-gate-taxonomy",
+        "tst:tool-test-gate-taxonomy-distinct-roles"
       ],
       "evidence_ids": [
         "evd:ssot-authority-model-validation"
@@ -41239,7 +41497,8 @@
         "tst:closure-case-authn-unauthorized-errors",
         "tst:httpbearer-challenge-status-contract",
         "tst:anon-access-create-status-projection-contract",
-        "tst:auth-failure-status-projection-contract"
+        "tst:auth-failure-status-projection-contract",
+        "tst:authn-provider-openapi-status-projection-contract"
       ],
       "evidence_ids": [
         "evd:authn-provider-integration-status-20260424"
@@ -41786,7 +42045,14 @@
         "tst:runtime-parity-lane-governance-validator",
         "tst:tigrbl-concrete-runtime-kernel-boundary-contract",
         "tst:anon-access-create-status-projection-contract",
-        "tst:auth-failure-status-projection-contract"
+        "tst:auth-failure-status-projection-contract",
+        "tst:appspec-corpus-canonical-fixture-determinism",
+        "tst:appspec-corpus-negative-fail-closed-contract",
+        "tst:authn-provider-openapi-status-projection-contract",
+        "tst:external-persistence-error-sanitization-contract",
+        "tst:jsonrpc-validation-before-persistence-no-row",
+        "tst:jsonrpc-persistence-sanitization-request-id-contract",
+        "tst:status-sync-failed-test-cascades-proof-status"
       ],
       "evidence_ids": [
         "evd:runtime-parity-lane-governance-validator"
@@ -42307,7 +42573,8 @@
       "test_ids": [
         "tst:response-error-to-transport-persistence-sanitized",
         "tst:jsonrpc-persistence-exception-sanitized",
-        "tst:packed-executor-http-persistence-classification"
+        "tst:packed-executor-http-persistence-classification",
+        "tst:external-persistence-error-sanitization-contract"
       ],
       "evidence_ids": [
         "evd:response-error-to-transport-persistence-sanitized",
@@ -46501,7 +46768,9 @@
       ],
       "test_ids": [
         "tst:tigrbl-tests-tests-harness-test-04-appspec-corpus-fixture",
-        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn"
+        "tst:tigrbl-tests-tests-harness-e2e-test-01-appspec-corpus-uvicorn",
+        "tst:appspec-corpus-canonical-fixture-determinism",
+        "tst:appspec-corpus-negative-fail-closed-contract"
       ]
     },
     {
@@ -46612,7 +46881,11 @@
         "tst:closure-case-operator-streaming-sse-multi-body",
         "tst:httpbearer-challenge-status-contract",
         "tst:anon-access-create-status-projection-contract",
-        "tst:auth-failure-status-projection-contract"
+        "tst:auth-failure-status-projection-contract",
+        "tst:authn-provider-openapi-status-projection-contract",
+        "tst:jsonrpc-validation-before-persistence-no-row",
+        "tst:jsonrpc-persistence-sanitization-request-id-contract",
+        "tst:runtime-doc-endpoint-browser-contract"
       ]
     },
     {
@@ -46631,7 +46904,9 @@
         "tst:ssot-authority-model-validator",
         "tst:feature-test-coverage-invariant",
         "tst:tool-test-gate-taxonomy",
-        "tst:ssot-authority-feature-linkage-contract"
+        "tst:ssot-authority-feature-linkage-contract",
+        "tst:feature-coverage-completeness-invariant",
+        "tst:tool-test-gate-taxonomy-distinct-roles"
       ]
     },
     {
@@ -46645,7 +46920,8 @@
         "clm:boundary-test-selection-deterministic-001"
       ],
       "test_ids": [
-        "tst:boundary-scoped-test-selection"
+        "tst:boundary-scoped-test-selection",
+        "tst:boundary-selection-excludes-unscoped-tests"
       ]
     },
     {
@@ -46659,7 +46935,8 @@
         "clm:gate-status-derived-001"
       ],
       "test_ids": [
-        "tst:gate-evaluator-claim-evidence-aggregation"
+        "tst:gate-evaluator-claim-evidence-aggregation",
+        "tst:gate-evaluator-failing-evidence-blocks-promotion"
       ]
     },
     {
@@ -46673,7 +46950,9 @@
         "clm:status-sync-auditable-001"
       ],
       "test_ids": [
-        "tst:status-sync-outcome-mapping"
+        "tst:status-sync-outcome-mapping",
+        "tst:test-result-ingestion-status-cascade",
+        "tst:status-sync-failed-test-cascades-proof-status"
       ]
     },
     {
@@ -46720,7 +46999,8 @@
         "clm:transport-parity-contract-001"
       ],
       "test_ids": [
-        "tst:jsonrpc-create-missing-required-fields-invalid-params"
+        "tst:jsonrpc-create-missing-required-fields-invalid-params",
+        "tst:jsonrpc-validation-before-persistence-no-row"
       ]
     },
     {
@@ -46736,7 +47016,9 @@
         "clm:external-error-detail-sanitization-001"
       ],
       "test_ids": [
-        "tst:jsonrpc-persistence-exception-sanitized"
+        "tst:jsonrpc-persistence-exception-sanitized",
+        "tst:external-persistence-error-sanitization-contract",
+        "tst:jsonrpc-persistence-sanitization-request-id-contract"
       ]
     },
     {
@@ -46756,7 +47038,8 @@
         "tst:closure-case-authn-unauthorized-errors",
         "tst:httpbearer-challenge-status-contract",
         "tst:anon-access-create-status-projection-contract",
-        "tst:auth-failure-status-projection-contract"
+        "tst:auth-failure-status-projection-contract",
+        "tst:authn-provider-openapi-status-projection-contract"
       ]
     },
     {
@@ -47081,7 +47364,14 @@
         "tst:runtime-parity-lane-governance-validator",
         "tst:tigrbl-concrete-runtime-kernel-boundary-contract",
         "tst:anon-access-create-status-projection-contract",
-        "tst:auth-failure-status-projection-contract"
+        "tst:auth-failure-status-projection-contract",
+        "tst:appspec-corpus-canonical-fixture-determinism",
+        "tst:appspec-corpus-negative-fail-closed-contract",
+        "tst:authn-provider-openapi-status-projection-contract",
+        "tst:external-persistence-error-sanitization-contract",
+        "tst:jsonrpc-validation-before-persistence-no-row",
+        "tst:jsonrpc-persistence-sanitization-request-id-contract",
+        "tst:status-sync-failed-test-cascades-proof-status"
       ]
     },
     {
@@ -47235,7 +47525,8 @@
         "clm:transport-parity-contract-001"
       ],
       "test_ids": [
-        "tst:packed-executor-http-persistence-classification"
+        "tst:packed-executor-http-persistence-classification",
+        "tst:external-persistence-error-sanitization-contract"
       ]
     },
     {
