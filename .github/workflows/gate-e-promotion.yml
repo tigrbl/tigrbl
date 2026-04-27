@@ -2,8 +2,16 @@ name: Gate E Promotion
 
 on:
   push:
+    branches:
+      - master
+      - main
+      - release/**
   pull_request:
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   gate-e-promotion:
