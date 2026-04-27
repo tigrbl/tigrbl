@@ -104,3 +104,60 @@ def test_loop_local_error_compiles_errorctx_metadata() -> None:
     assert region["error_ctx"]["binding"] == "http.stream"
     assert region["error_ctx"]["subevent"] == "stream.chunk"
     assert region["error_ctx"]["rollback_required"] is False
+
+
+def test_datagram_loop_region_compiles_single_packet_exit_policy() -> None:
+    compile_loop = _require("tigrbl_kernel.loop_regions", "compile_loop_region")
+
+    region = compile_loop(
+        {
+            "loop_id": "udp.datagram.receive",
+            "binding": "udp.datagram",
+            "role": "datagram",
+            "producer_type": "receive_once",
+            "break_conditions": ("packet.received", "transport.close"),
+            "subevent": "datagram.received",
+        }
+    )
+
+    assert region["loop_id"] == "udp.datagram.receive"
+    assert region["role"] == "datagram"
+    assert region["exit_target"] in {"transport.close", "POST_EMIT"}
+    assert region["error_ctx"]["subevent"] == "datagram.received"
+
+
+def test_message_loop_region_keeps_continue_and_close_targets_distinct() -> None:
+    compile_loop = _require("tigrbl_kernel.loop_regions", "compile_loop_region")
+
+    region = compile_loop(
+        {
+            "loop_id": "message.consume",
+            "binding": "internal.message",
+            "role": "message",
+            "producer_type": "subscription",
+            "break_conditions": ("message.ack", "consumer.cancelled"),
+            "subevent": "message.received",
+        }
+    )
+
+    assert region["continue_target"] != region["exit_target"]
+    assert region["ok_child"]["target"] == region["continue_target"]
+    assert region["err_child"]["target"] == region["err_target"]
+
+
+def test_loop_region_declares_transaction_boundary_eligibility() -> None:
+    compile_loop = _require("tigrbl_kernel.loop_regions", "compile_loop_region")
+
+    region = compile_loop(
+        {
+            "loop_id": "stream.tx",
+            "binding": "http.stream",
+            "role": "stream",
+            "producer_type": "iterator",
+            "break_conditions": ("producer.exhausted", "disconnect"),
+            "transaction_unit": "per_stream",
+        }
+    )
+
+    assert region["transaction_unit"] == "per_stream"
+    assert region["transaction_boundary_eligible"] is True
