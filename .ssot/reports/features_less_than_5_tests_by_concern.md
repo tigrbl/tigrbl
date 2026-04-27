@@ -1,36 +1,32 @@
-# Features With Fewer Than 8 Linked Test Cases
+# Features With Fewer Than 5 Linked Test Cases
 
 Source: `.ssot/registry.json`
-Threshold: `len(feature.test_ids) < 8`
-Total matching features: `418`
+Threshold: `len(feature.test_ids) < 5`
+Total matching features: `313`
 
 ## Category Summary
 
 | Concern | Features |
 | --- | ---: |
 | `appspec-corpus` | 2 |
-| `authn-provider-integration-status` | 1 |
-| `auth-security` | 8 |
+| `auth-security` | 2 |
 | `buildability-baseline-001` | 1 |
-| `conformance` | 77 |
+| `conformance` | 66 |
 | `diagnostics` | 1 |
-| `external-error-sanitization` | 1 |
-| `integration-coverage` | 2 |
+| `integration-coverage` | 1 |
 | `jsonrpc` | 3 |
 | `jsonrpc-validation-hardening` | 2 |
 | `legacy-feature-id-alias` | 21 |
-| `op-dependency-execution` | 1 |
 | `operator-surface` | 14 |
 | `op-owner-scope` | 3 |
 | `protocol-runtime-governance` | 10 |
-| `python-rust-fully-paritable-suite` | 73 |
-| `runtime-kernel` | 47 |
+| `runtime-kernel` | 45 |
 | `runtime-root-surface` | 1 |
 | `server-support` | 7 |
 | `spec-composition` | 1 |
 | `spec-linked-unslotted` | 2 |
-| `ssot-governance` | 34 |
-| `surface-inventory` | 105 |
+| `ssot-governance` | 32 |
+| `surface-inventory` | 98 |
 | `transport-dispatch` | 1 |
 
 ## appspec-corpus (2)
@@ -40,24 +36,12 @@ Total matching features: `418`
 | `feat:appspec-corpus-canonical-fixture-001` | 4 | `implemented` | AppSpec canonical corpus fixture |
 | `feat:appspec-corpus-negative-fail-closed-001` | 4 | `implemented` | AppSpec negative corpus fail-closed lane |
 
-## authn-provider-integration-status (1)
-
-| Feature | Tests | Impl | Title |
-| --- | ---: | --- | --- |
-| `feat:authn-provider-missing-credentials-status-001` | 5 | `implemented` | AuthN provider missing-credential status projection |
-
-## auth-security (8)
+## auth-security (2)
 
 | Feature | Tests | Impl | Title |
 | --- | ---: | --- | --- |
 | `feat:operator-auth-dependency-hook-surface-001` | 3 | `partial` | Dependency and hook based auth operator surface |
 | `feat:operator-oidc-discovery-docs-descoped-001` | 3 | `partial` | OIDC discovery and docs surface de-scoped from current cycle |
-| `feat:anon-access-projection-001` | 6 | `partial` | Anonymous access projection |
-| `feat:error-envelope-structure-parity-001` | 6 | `partial` | Error envelope structure parity |
-| `feat:httpbearer-security-dependency-001` | 6 | `implemented` | HTTPBearer security dependency |
-| `feat:rest-create-success-status-001` | 6 | `partial` | REST create success status projection |
-| `feat:validation-failure-projection-parity-001` | 6 | `partial` | Validation failure projection parity |
-| `feat:error-parity-response-structure-001` | 7 | `partial` | Error parity, validation parity, and response structure |
 
 ## buildability-baseline-001 (1)
 
@@ -65,7 +49,7 @@ Total matching features: `418`
 | --- | ---: | --- | --- |
 | `feat:package-buildability-importability-001` | 1 | `partial` | Package buildability and importability baseline |
 
-## conformance (77)
+## conformance (66)
 
 | Feature | Tests | Impl | Title |
 | --- | ---: | --- | --- |
@@ -135,17 +119,6 @@ Total matching features: `418`
 | `feat:cli-target-surface-loading-001` | 4 | `partial` | CLI target surface loading |
 | `feat:supported-server-cli-smoke-dispatch` | 4 | `implemented` | Supported-server CLI smoke dispatch |
 | `feat:unified-tigrbl-cli-command-and-flag-surface` | 4 | `implemented` | Unified tigrbl CLI command and flag surface |
-| `feat:apikey-security-docs-runtime-alignment` | 5 | `implemented` | API key security docs/runtime alignment |
-| `feat:cli-target-error-classification-001` | 5 | `partial` | CLI target error classification |
-| `feat:cli-target-resolution-001` | 5 | `partial` | CLI target resolution and app loading |
-| `feat:http-basic-security-docs-runtime-alignment` | 5 | `implemented` | HTTP Basic security docs/runtime alignment |
-| `feat:http-bearer-security-docs-runtime-alignment` | 5 | `implemented` | HTTP Bearer security docs/runtime alignment |
-| `feat:mutualtls-security-docs-runtime-alignment` | 5 | `implemented` | Mutual TLS security docs/runtime alignment |
-| `feat:oauth2-security-docs-runtime-alignment` | 5 | `implemented` | OAuth2 security docs/runtime alignment |
-| `feat:openidconnect-security-docs-runtime-alignment` | 5 | `implemented` | OpenID Connect security docs/runtime alignment |
-| `feat:rfc-6750-http-bearer-auth-semantics` | 5 | `implemented` | RFC 6750 HTTP Bearer auth semantics |
-| `feat:rfc-7235-http-auth-challenge-semantics` | 5 | `implemented` | RFC 7235 HTTP authentication challenge semantics |
-| `feat:rfc-7617-http-basic-auth-semantics` | 5 | `implemented` | RFC 7617 HTTP Basic auth semantics |
 
 ## diagnostics (1)
 
@@ -153,18 +126,11 @@ Total matching features: `418`
 | --- | ---: | --- | --- |
 | `feat:operation-diagnostics-projection-001` | 2 | `partial` | Operation diagnostics projection |
 
-## external-error-sanitization (1)
-
-| Feature | Tests | Impl | Title |
-| --- | ---: | --- | --- |
-| `feat:external-error-detail-sanitization-001` | 5 | `implemented` | External persistence error detail sanitization |
-
-## integration-coverage (2)
+## integration-coverage (1)
 
 | Feature | Tests | Impl | Title |
 | --- | ---: | --- | --- |
 | `feat:deprecated-export-compat-window-001` | 1 | `partial` | Deprecated export compatibility window |
-| `feat:integration-test-registry-coverage-001` | 5 | `partial` | Integration test registry coverage |
 
 ## jsonrpc (3)
 
@@ -206,12 +172,6 @@ Total matching features: `418`
 | `feat:rpc-001` | 0 | `partial` | Obsolete alias for JSON-RPC 2.0 runtime surface |
 | `feat:rpc-002` | 0 | `partial` | Obsolete alias for OpenRPC 1.2.6 JSON document surface |
 | `feat:rpc-003` | 0 | `partial` | Obsolete alias for Lens OpenRPC UI surface |
-
-## op-dependency-execution (1)
-
-| Feature | Tests | Impl | Title |
-| --- | ---: | --- | --- |
-| `feat:pre-tx-dependency-execution-001` | 5 | `partial` | Pre-TX dependency execution |
 
 ## operator-surface (14)
 
@@ -255,85 +215,7 @@ Total matching features: `418`
 | `feat:subevent-handler-dispatch-001` | 2 | `absent` | Subevent handler dispatch |
 | `feat:two-axis-lifecycle-matrix-001` | 2 | `absent` | Two-axis lifecycle matrix |
 
-## python-rust-fully-paritable-suite (73)
-
-| Feature | Tests | Impl | Title |
-| --- | ---: | --- | --- |
-| `feat:atom-parity-dep-extra-001` | 5 | `implemented` | Atom parity dep extra |
-| `feat:atom-parity-dep-param-resolver-001` | 5 | `implemented` | Atom parity dep param_resolver |
-| `feat:atom-parity-dep-security-001` | 5 | `implemented` | Atom parity dep security |
-| `feat:atom-parity-dispatch-binding-match-001` | 5 | `implemented` | Atom parity dispatch binding_match |
-| `feat:atom-parity-dispatch-binding-parse-001` | 5 | `implemented` | Atom parity dispatch binding_parse |
-| `feat:atom-parity-dispatch-input-normalize-001` | 5 | `implemented` | Atom parity dispatch input_normalize |
-| `feat:atom-parity-dispatch-op-resolve-001` | 5 | `implemented` | Atom parity dispatch op_resolve |
-| `feat:atom-parity-egress-asgi-send-001` | 5 | `implemented` | Atom parity egress asgi_send |
-| `feat:atom-parity-egress-envelope-apply-001` | 5 | `implemented` | Atom parity egress envelope_apply |
-| `feat:atom-parity-egress-headers-apply-001` | 5 | `implemented` | Atom parity egress headers_apply |
-| `feat:atom-parity-egress-http-finalize-001` | 5 | `implemented` | Atom parity egress http_finalize |
-| `feat:atom-parity-egress-out-dump-001` | 5 | `implemented` | Atom parity egress out_dump |
-| `feat:atom-parity-egress-result-normalize-001` | 5 | `implemented` | Atom parity egress result_normalize |
-| `feat:atom-parity-egress-to-transport-response-001` | 5 | `implemented` | Atom parity egress to_transport_response |
-| `feat:atom-parity-emit-paired-post-001` | 5 | `implemented` | Atom parity emit paired_post |
-| `feat:atom-parity-emit-paired-pre-001` | 5 | `implemented` | Atom parity emit paired_pre |
-| `feat:atom-parity-emit-readtime-alias-001` | 5 | `implemented` | Atom parity emit readtime_alias |
-| `feat:atom-parity-err-rollback-001` | 5 | `implemented` | Atom parity err rollback |
-| `feat:atom-parity-ingress-ctx-init-001` | 5 | `implemented` | Atom parity ingress ctx_init |
-| `feat:atom-parity-ingress-input-prepare-001` | 5 | `implemented` | Atom parity ingress input_prepare |
-| `feat:atom-parity-ingress-transport-extract-001` | 5 | `implemented` | Atom parity ingress transport_extract |
-| `feat:atom-parity-out-masking-001` | 5 | `implemented` | Atom parity out masking |
-| `feat:atom-parity-refresh-demand-001` | 5 | `implemented` | Atom parity refresh demand |
-| `feat:atom-parity-resolve-assemble-001` | 5 | `implemented` | Atom parity resolve assemble |
-| `feat:atom-parity-resolve-paired-gen-001` | 5 | `implemented` | Atom parity resolve paired_gen |
-| `feat:atom-parity-response-error-to-transport-001` | 5 | `implemented` | Atom parity response error_to_transport |
-| `feat:atom-parity-response-headers-from-payload-001` | 5 | `implemented` | Atom parity response headers_from_payload |
-| `feat:atom-parity-response-negotiate-001` | 5 | `implemented` | Atom parity response negotiate |
-| `feat:atom-parity-response-negotiation-001` | 5 | `implemented` | Atom parity response negotiation |
-| `feat:atom-parity-response-render-001` | 5 | `implemented` | Atom parity response render |
-| `feat:atom-parity-response-renderer-001` | 5 | `implemented` | Atom parity response renderer |
-| `feat:atom-parity-response-template-001` | 5 | `implemented` | Atom parity response template |
-| `feat:atom-parity-response-templates-001` | 5 | `implemented` | Atom parity response templates |
-| `feat:atom-parity-schema-collect-in-001` | 5 | `implemented` | Atom parity schema collect_in |
-| `feat:atom-parity-schema-collect-out-001` | 5 | `implemented` | Atom parity schema collect_out |
-| `feat:atom-parity-storage-to-stored-001` | 5 | `implemented` | Atom parity storage to_stored |
-| `feat:atom-parity-sys-commit-tx-001` | 5 | `implemented` | Atom parity sys commit_tx |
-| `feat:atom-parity-sys-db-001` | 5 | `implemented` | Atom parity sys db |
-| `feat:atom-parity-sys-handler-aggregate-001` | 5 | `implemented` | Atom parity sys handler_aggregate |
-| `feat:atom-parity-sys-handler-append-chunk-001` | 5 | `implemented` | Atom parity sys handler_append_chunk |
-| `feat:atom-parity-sys-handler-bulk-create-001` | 5 | `implemented` | Atom parity sys handler_bulk_create |
-| `feat:atom-parity-sys-handler-bulk-delete-001` | 5 | `implemented` | Atom parity sys handler_bulk_delete |
-| `feat:atom-parity-sys-handler-bulk-merge-001` | 5 | `implemented` | Atom parity sys handler_bulk_merge |
-| `feat:atom-parity-sys-handler-bulk-replace-001` | 5 | `implemented` | Atom parity sys handler_bulk_replace |
-| `feat:atom-parity-sys-handler-bulk-update-001` | 5 | `implemented` | Atom parity sys handler_bulk_update |
-| `feat:atom-parity-sys-handler-checkpoint-001` | 5 | `implemented` | Atom parity sys handler_checkpoint |
-| `feat:atom-parity-sys-handler-clear-001` | 5 | `implemented` | Atom parity sys handler_clear |
-| `feat:atom-parity-sys-handler-count-001` | 5 | `implemented` | Atom parity sys handler_count |
-| `feat:atom-parity-sys-handler-create-001` | 5 | `implemented` | Atom parity sys handler_create |
-| `feat:atom-parity-sys-handler-custom-001` | 5 | `implemented` | Atom parity sys handler_custom |
-| `feat:atom-parity-sys-handler-delete-001` | 5 | `implemented` | Atom parity sys handler_delete |
-| `feat:atom-parity-sys-handler-download-001` | 5 | `implemented` | Atom parity sys handler_download |
-| `feat:atom-parity-sys-handler-exists-001` | 5 | `implemented` | Atom parity sys handler_exists |
-| `feat:atom-parity-sys-handler-group-by-001` | 5 | `implemented` | Atom parity sys handler_group_by |
-| `feat:atom-parity-sys-handler-list-001` | 5 | `implemented` | Atom parity sys handler_list |
-| `feat:atom-parity-sys-handler-merge-001` | 5 | `implemented` | Atom parity sys handler_merge |
-| `feat:atom-parity-sys-handler-noop-001` | 5 | `implemented` | Atom parity sys handler_noop |
-| `feat:atom-parity-sys-handler-persistence-001` | 5 | `implemented` | Atom parity sys handler_persistence |
-| `feat:atom-parity-sys-handler-publish-001` | 5 | `implemented` | Atom parity sys handler_publish |
-| `feat:atom-parity-sys-handler-read-001` | 5 | `implemented` | Atom parity sys handler_read |
-| `feat:atom-parity-sys-handler-replace-001` | 5 | `implemented` | Atom parity sys handler_replace |
-| `feat:atom-parity-sys-handler-send-datagram-001` | 5 | `implemented` | Atom parity sys handler_send_datagram |
-| `feat:atom-parity-sys-handler-subscribe-001` | 5 | `implemented` | Atom parity sys handler_subscribe |
-| `feat:atom-parity-sys-handler-tail-001` | 5 | `implemented` | Atom parity sys handler_tail |
-| `feat:atom-parity-sys-handler-update-001` | 5 | `implemented` | Atom parity sys handler_update |
-| `feat:atom-parity-sys-handler-upload-001` | 5 | `implemented` | Atom parity sys handler_upload |
-| `feat:atom-parity-sys-oltp-context-001` | 5 | `implemented` | Atom parity sys oltp_context |
-| `feat:atom-parity-sys-phase-db-001` | 5 | `implemented` | Atom parity sys phase_db |
-| `feat:atom-parity-sys-start-tx-001` | 5 | `implemented` | Atom parity sys start_tx |
-| `feat:atom-parity-wire-build-in-001` | 5 | `implemented` | Atom parity wire build_in |
-| `feat:atom-parity-wire-build-out-001` | 5 | `implemented` | Atom parity wire build_out |
-| `feat:atom-parity-wire-dump-001` | 5 | `implemented` | Atom parity wire dump |
-| `feat:atom-parity-wire-validate-in-001` | 5 | `implemented` | Atom parity wire validate_in |
-
-## runtime-kernel (47)
+## runtime-kernel (45)
 
 | Feature | Tests | Impl | Title |
 | --- | ---: | --- | --- |
@@ -382,8 +264,6 @@ Total matching features: `418`
 | `feat:sse-event-framing-001` | 3 | `partial` | SSE event framing |
 | `feat:stream-chunk-order-preservation-001` | 3 | `partial` | Stream chunk order preservation |
 | `feat:uploaded-file-runtime-contract-001` | 3 | `partial` | Uploaded file runtime contract |
-| `feat:http-route-001` | 7 | `partial` | Canonical HTTP route registration |
-| `feat:runtime-executor-doc-endpoint-parity-001` | 7 | `partial` | Runtime executor documentation endpoint parity |
 
 ## runtime-root-surface (1)
 
@@ -416,7 +296,7 @@ Total matching features: `418`
 | `feat:tx-phase-legacy-alias-deprecation-001` | 0 | `absent` | Deprecate legacy transaction phase aliases |
 | `feat:tx-phase-legacy-alias-removal-001` | 1 | `absent` | Remove legacy transaction phase aliases |
 
-## ssot-governance (34)
+## ssot-governance (32)
 
 | Feature | Tests | Impl | Title |
 | --- | ---: | --- | --- |
@@ -452,10 +332,8 @@ Total matching features: `418`
 | `feat:gate-evaluator-model-001` | 4 | `implemented` | SSOT gate evaluator model |
 | `feat:test-result-evidence-ingestion-001` | 4 | `implemented` | Test result evidence ingestion |
 | `feat:tool-test-gate-taxonomy-001` | 4 | `implemented` | Tool, test, evidence, and gate taxonomy |
-| `feat:boundary-scoped-test-selection-001` | 6 | `implemented` | Boundary-scoped test selection |
-| `feat:status-sync-engine-001` | 6 | `implemented` | SSOT status synchronization engine |
 
-## surface-inventory (105)
+## surface-inventory (98)
 
 | Feature | Tests | Impl | Title |
 | --- | ---: | --- | --- |
@@ -557,13 +435,6 @@ Total matching features: `418`
 | `feat:well-known-imperative-surface-001` | 3 | `partial` | Well-known imperative surface |
 | `feat:responsespec-contract-001` | 4 | `partial` | ResponseSpec contract |
 | `feat:tablespec-contract-001` | 4 | `partial` | TableSpec contract |
-| `feat:httpbasic-security-dependency-001` | 5 | `partial` | HTTPBasic security dependency |
-| `feat:mutualtls-security-dependency-001` | 5 | `partial` | MutualTLS security dependency |
-| `feat:oauth2-security-dependency-001` | 5 | `partial` | OAuth2 security dependency |
-| `feat:openidconnect-security-dependency-001` | 5 | `partial` | OpenIdConnect security dependency |
-| `feat:well-known-decorator-surface-001` | 5 | `partial` | Well-known decorator surface |
-| `feat:apikey-security-dependency-001` | 6 | `partial` | APIKey security dependency |
-| `feat:security-concrete-dependency-helper-001` | 6 | `partial` | Security concrete dependency helper |
 
 ## transport-dispatch (1)
 
