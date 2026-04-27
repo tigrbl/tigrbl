@@ -6,7 +6,7 @@ from tigrbl import TigrblApp
 from tigrbl.runtime import events as _ev
 from tigrbl_kernel import Kernel
 from tigrbl_kernel.payload import build_kernelz_payload
-from tigrbl.runtime.system import END_TX, START_TX
+from tigrbl.runtime.system import TX_COMMIT, START_TX
 
 
 def _mk_step(label: str):
@@ -76,7 +76,7 @@ def test_kernel_plan_labels_cover_dep_hook_and_atom_ordering() -> None:
         "PRE_HANDLER:atom:schema:collect_in@schema:collect_in",
         "POST_HANDLER:hook:table:post@out:build",
         "POST_HANDLER:atom:wire:build_out@out:build",
-        "END_TX:hook:sys:txn:commit@END_TX",
+        "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT",
     ]
 
 
@@ -99,13 +99,13 @@ def test_kernel_build_injects_sys_steps_only_for_persistent_ops() -> None:
     read_chains = kernel._build_op(Model, "read")
 
     assert create_chains[START_TX] != []
-    assert create_chains[END_TX] != []
+    assert create_chains[TX_COMMIT] != []
     assert len(read_chains[START_TX]) == 1
-    assert len(read_chains[END_TX]) == 1
+    assert len(read_chains[TX_COMMIT]) == 1
     assert getattr(read_chains[START_TX][0], "__tigrbl_label", "").startswith(
         "atom:sys:phase_db"
     )
-    assert getattr(read_chains[END_TX][0], "__tigrbl_label", "").startswith(
+    assert getattr(read_chains[TX_COMMIT][0], "__tigrbl_label", "").startswith(
         "atom:sys:phase_db"
     )
 
@@ -179,7 +179,7 @@ async def test_kernelz_payload_full_plan_ordering_for_app_router_and_table(monke
         "HANDLER:hook:table:handler@resolve:values",
         "POST_HANDLER:hook:table:post@out:build",
         "POST_HANDLER:atom:wire:build_out@out:build",
-        "END_TX:hook:sys:txn:commit@END_TX",
+        "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT",
         "POST_RESPONSE:atom:out:dump@out:dump",
     ]
     assert payload["Widget"]["read"] == [

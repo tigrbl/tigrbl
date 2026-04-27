@@ -88,13 +88,13 @@ def _get_phase_chains(
         "HANDLER",
         "POST_HANDLER",
         "PRE_COMMIT",
-        "END_TX",
+        "TX_COMMIT",
         "POST_COMMIT",
         "POST_RESPONSE",
         "EGRESS_SHAPE",
         "EGRESS_FINALIZE",
         "ON_ERROR",
-        "ON_ROLLBACK",
+        "TX_ROLLBACK",
     ):
         steps = getattr(alias_ns, phase, None)
         if steps:

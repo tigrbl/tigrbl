@@ -10,7 +10,8 @@ from .status import SystemStepError
 
 START_TX = "START_TX"
 HANDLER = "HANDLER"
-END_TX = "END_TX"
+TX_COMMIT = "TX_COMMIT"
+END_TX = TX_COMMIT
 
 INSTALLED = SimpleNamespace(begin=None, handler=None, commit=None, rollback=None)
 
@@ -125,7 +126,7 @@ def run_rollback(ctx: Any, err: BaseException | None) -> None:
 _REGISTRY = {
     ("txn", "begin"): (START_TX, _sys_tx_begin),
     ("handler", "crud"): (HANDLER, _sys_handler_crud),
-    ("txn", "commit"): (END_TX, _sys_tx_commit),
+    ("txn", "commit"): (TX_COMMIT, _sys_tx_commit),
     ("dep", "security"): ("PRE_TX_BEGIN", DEP_SECURITY),
     ("dep", "extra"): ("PRE_TX_BEGIN", DEP_EXTRA),
 }
@@ -145,6 +146,7 @@ def subjects():
 __all__ = [
     "START_TX",
     "HANDLER",
+    "TX_COMMIT",
     "END_TX",
     "INSTALLED",
     "_sys_tx_begin",

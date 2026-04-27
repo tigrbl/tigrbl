@@ -20,7 +20,7 @@ from . import events as _ev
 #   - step_kind ∈ {secdep, dep, sys, atom, hook}
 #   - domains are restricted to: {emit, out, refresh, resolve, response, schema, storage, wire}
 #   - anchors for atom/hook MUST be canonical events from runtime/events.py
-#   - sys anchors MUST be one of PHASES (typically START_TX, HANDLER, END_TX)
+#   - sys anchors MUST be one of PHASES (typically START_TX, HANDLER, TX_COMMIT)
 # ──────────────────────────────────────────────────────────────────────────────
 
 STEP_KINDS: Tuple[str, ...] = ("secdep", "dep", "sys", "atom", "hook")

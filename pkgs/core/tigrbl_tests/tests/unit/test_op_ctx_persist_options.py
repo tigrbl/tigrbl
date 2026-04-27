@@ -58,6 +58,6 @@ async def test_op_ctx_persist_options(
     if core_pref is not None:
         expected_seq.append(core_pref)
     if expect_tx:
-        expected_seq.append("END_TX:hook:sys:txn:commit@END_TX")
+        expected_seq.append("TX_COMMIT:hook:sys:txn:commit@TX_COMMIT")
 
     assert seq == [s for s in expected_seq if s]

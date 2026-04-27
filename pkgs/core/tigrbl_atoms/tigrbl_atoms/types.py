@@ -20,6 +20,7 @@ from tigrbl_typing.protocols import (
     is_dependency_like,
     is_response_like,
 )
+from tigrbl_typing.phases import normalize_phase
 
 
 S = TypeVar("S")
@@ -44,10 +45,10 @@ _ERROR_PHASES: Final[frozenset[str]] = frozenset(
         "ON_HANDLER_ERROR",
         "ON_POST_HANDLER_ERROR",
         "ON_PRE_COMMIT_ERROR",
-        "ON_END_TX_ERROR",
+        "ON_TX_COMMIT_ERROR",
         "ON_POST_COMMIT_ERROR",
         "ON_POST_RESPONSE_ERROR",
-        "ON_ROLLBACK",
+        "TX_ROLLBACK",
     )
 )
 
@@ -58,7 +59,7 @@ _TX_PHASES: Final[frozenset[str]] = frozenset(
         "HANDLER",
         "POST_HANDLER",
         "PRE_COMMIT",
-        "END_TX",
+        "TX_COMMIT",
     )
 )
 
@@ -70,6 +71,10 @@ class EdgeTarget:
     fallback: str | None = None
 
     def __post_init__(self) -> None:
+        if self.ref is not None:
+            object.__setattr__(self, "ref", normalize_phase(self.ref))
+        if self.fallback is not None:
+            object.__setattr__(self, "fallback", normalize_phase(self.fallback))
         if self.kind not in _EDGE_TARGET_KINDS:
             raise ValueError(f"unknown edge target kind: {self.kind!r}")
         if self.kind in {"node", "terminal", "loop", "rollback"} and not self.ref:
@@ -88,7 +93,7 @@ class EdgeTarget:
         return cls(kind="loop", ref=node_id)
 
     @classmethod
-    def rollback(cls, phase: str = "ON_ROLLBACK", *, fallback: str = "ON_ERROR") -> "EdgeTarget":
+    def rollback(cls, phase: str = "TX_ROLLBACK", *, fallback: str = "ON_ERROR") -> "EdgeTarget":
         return cls(kind="rollback", ref=phase, fallback=fallback)
 
     @classmethod
@@ -203,7 +208,7 @@ def normalize_typed_err(error: object, *, ctx: object | None = None) -> TypedErr
 def error_phase_for(phase: str | None) -> str:
     if not phase:
         return "ON_ERROR"
-    phase_name = str(phase)
+    phase_name = str(normalize_phase(phase))
     if phase_name in _ERROR_PHASES:
         return phase_name
     candidate = f"ON_{phase_name}_ERROR"
@@ -216,7 +221,7 @@ def phase_requires_rollback(
     tx_open: bool = True,
     owns_tx: bool = True,
 ) -> bool:
-    return bool(tx_open and owns_tx and phase in _TX_PHASES)
+    return bool(tx_open and owns_tx and normalize_phase(phase) in _TX_PHASES)
 
 
 def select_error_edge(
@@ -226,7 +231,7 @@ def select_error_edge(
 ) -> PhaseTreeEdge:
     err_phase = error_phase_for(phase)
     target = (
-        EdgeTarget.rollback("ON_ROLLBACK", fallback=err_phase)
+        EdgeTarget.rollback("TX_ROLLBACK", fallback=err_phase)
         if rollback_required
         else EdgeTarget.node(err_phase)
     )
@@ -243,7 +248,7 @@ PHASE_SEQUENCE: Final[tuple[str, ...]] = (
     "HANDLER",
     "POST_HANDLER",
     "PRE_COMMIT",
-    "END_TX",
+    "TX_COMMIT",
     "POST_COMMIT",
     "POST_RESPONSE",
     "EGRESS_SHAPE",
@@ -372,7 +377,8 @@ class HookPhase(str, Enum):
     HANDLER = "HANDLER"
     POST_HANDLER = "POST_HANDLER"
     PRE_COMMIT = "PRE_COMMIT"
-    END_TX = "END_TX"
+    TX_COMMIT = "TX_COMMIT"
+    END_TX = "TX_COMMIT"
     POST_COMMIT = "POST_COMMIT"
     POST_RESPONSE = "POST_RESPONSE"
     ON_ERROR = "ON_ERROR"
@@ -382,10 +388,19 @@ class HookPhase(str, Enum):
     ON_HANDLER_ERROR = "ON_HANDLER_ERROR"
     ON_POST_HANDLER_ERROR = "ON_POST_HANDLER_ERROR"
     ON_PRE_COMMIT_ERROR = "ON_PRE_COMMIT_ERROR"
-    ON_END_TX_ERROR = "ON_END_TX_ERROR"
+    ON_TX_COMMIT_ERROR = "ON_TX_COMMIT_ERROR"
+    ON_END_TX_ERROR = "ON_TX_COMMIT_ERROR"
     ON_POST_COMMIT_ERROR = "ON_POST_COMMIT_ERROR"
     ON_POST_RESPONSE_ERROR = "ON_POST_RESPONSE_ERROR"
-    ON_ROLLBACK = "ON_ROLLBACK"
+    TX_ROLLBACK = "TX_ROLLBACK"
+    ON_ROLLBACK = "TX_ROLLBACK"
+
+    @classmethod
+    def _missing_(cls, value: object):
+        normalized = normalize_phase(str(value)) if value is not None else None
+        if normalized != value:
+            return cls(normalized)
+        return None
 
 
 HookPhases: Tuple[HookPhase, ...] = tuple(HookPhase)

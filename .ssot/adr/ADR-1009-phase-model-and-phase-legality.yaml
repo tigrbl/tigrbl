@@ -23,7 +23,7 @@ body: |-
   1. Tigrbl execution is phase-based and legality is phase-constrained.
   2. The implementation-compatible phase set is frozen around the current named phases, grouped conceptually as:
      - ingress: `INGRESS_BEGIN`, `INGRESS_PARSE`, `INGRESS_ROUTE`;
-     - guarded execution: `PRE_TX_BEGIN`, `START_TX`, `PRE_HANDLER`, `HANDLER`, `POST_HANDLER`, `PRE_COMMIT`, `END_TX`, `POST_COMMIT`;
+     - guarded execution: `PRE_TX_BEGIN`, `START_TX`, `PRE_HANDLER`, `HANDLER`, `POST_HANDLER`, `PRE_COMMIT`, `TX_COMMIT`, `POST_COMMIT`;
      - egress: `POST_RESPONSE`, `EGRESS_SHAPE`, `EGRESS_FINALIZE`;
      - runtime completion fence: `POST_EMIT`; and
      - error and rollback phases.

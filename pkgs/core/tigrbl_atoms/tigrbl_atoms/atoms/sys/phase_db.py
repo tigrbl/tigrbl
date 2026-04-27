@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from ...phases import PhaseName
+from ...phases import PhaseName, _normalize_phase_name
 
 
 async def _maybe_await(value: Any) -> Any:
@@ -30,7 +30,7 @@ _PHASE_DB_CAPABILITIES: dict[PhaseName, DbCapabilities] = {
     "HANDLER": DbCapabilities(True, True, True, False),
     "POST_HANDLER": DbCapabilities(True, False, True, False),
     "PRE_COMMIT": DbCapabilities(False, False, True, False),
-    "END_TX": DbCapabilities(True, True, True, False),
+    "TX_COMMIT": DbCapabilities(True, True, True, False),
     "POST_COMMIT": DbCapabilities(True, False, True, True),
     "POST_RESPONSE": DbCapabilities(False, False, True, False),
     "EGRESS_SHAPE": DbCapabilities(False, False, True, False),
@@ -42,14 +42,15 @@ _PHASE_DB_CAPABILITIES: dict[PhaseName, DbCapabilities] = {
     "ON_HANDLER_ERROR": DbCapabilities(False, False, True, False),
     "ON_POST_HANDLER_ERROR": DbCapabilities(False, False, True, False),
     "ON_PRE_COMMIT_ERROR": DbCapabilities(False, False, True, False),
-    "ON_END_TX_ERROR": DbCapabilities(False, False, True, False),
+    "ON_TX_COMMIT_ERROR": DbCapabilities(False, False, True, False),
     "ON_POST_COMMIT_ERROR": DbCapabilities(False, False, True, False),
     "ON_POST_RESPONSE_ERROR": DbCapabilities(False, False, True, False),
-    "ON_ROLLBACK": DbCapabilities(False, False, True, False),
+    "TX_ROLLBACK": DbCapabilities(False, False, True, False),
 }
 
 
 def phase_db_capabilities(phase: str) -> DbCapabilities:
+    phase = _normalize_phase_name(phase)
     try:
         return _PHASE_DB_CAPABILITIES[phase]  # type: ignore[index]
     except KeyError as exc:  # pragma: no cover

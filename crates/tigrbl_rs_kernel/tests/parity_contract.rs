@@ -58,7 +58,7 @@ fn kernel_parity_snapshot_covers_routes_opviews_phases_packed_and_docs() {
             "PRE_HANDLER",
             "HANDLER",
             "POST_HANDLER",
-            "END_TX",
+            "TX_COMMIT",
             "POST_RESPONSE",
         ]
     );

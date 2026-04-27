@@ -52,7 +52,7 @@ fn phase_plan(binding: &BindingSpec) -> Vec<String> {
     ];
     if binding.op.tx_scope != TxScope::None {
         phases.insert(2, "START_TX".to_string());
-        phases.push("END_TX".to_string());
+        phases.push("TX_COMMIT".to_string());
     }
     if binding.transport == "sse"
         || binding.transport == "ws"

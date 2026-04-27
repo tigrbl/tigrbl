@@ -30,7 +30,7 @@ def test_hook_ctx_invalid_string_anchor_raises_immediately():
     assert "Invalid hook phase 'IN_BUILD'." in message
     assert "Valid phases are:" in message
     assert "PRE_HANDLER" in message
-    assert "ON_ROLLBACK" in message
+    assert "TX_ROLLBACK" in message
 
 
 def test_hook_ctx_valid_enum_anchor_does_not_raise():
@@ -52,4 +52,4 @@ def test_hook_ctx_invalid_enum_anchor_raises_immediately():
     assert "Invalid hook phase 'IN_BUILD'." in message
     assert "Valid phases are:" in message
     assert "PRE_HANDLER" in message
-    assert "ON_ROLLBACK" in message
+    assert "TX_ROLLBACK" in message

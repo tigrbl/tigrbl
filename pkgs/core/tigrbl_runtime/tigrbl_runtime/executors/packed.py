@@ -9,6 +9,7 @@ from types import SimpleNamespace
 
 from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
 from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
+from tigrbl_typing.phases import normalize_phase
 
 from .base import ExecutorBase
 from .types import _Ctx
@@ -28,7 +29,7 @@ class PackedPlanExecutor(ExecutorBase):
         "HANDLER",
         "POST_HANDLER",
         "PRE_COMMIT",
-        "END_TX",
+        "TX_COMMIT",
         "POST_COMMIT",
         "POST_RESPONSE",
         "EGRESS_SHAPE",
@@ -136,8 +137,8 @@ class PackedPlanExecutor(ExecutorBase):
         seen_segment_ids: set[int] = set()
         for i in range(seg_offset, seg_offset + seg_length):
             seg_id = packed.op_to_segment_ids[i]
-            phase = str(packed.segment_phases[seg_id])
-            if phase.startswith("ON_"):
+            phase = str(normalize_phase(packed.segment_phases[seg_id]))
+            if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 continue
             by_phase.setdefault(phase, []).append(seg_id)
 
@@ -153,7 +154,8 @@ class PackedPlanExecutor(ExecutorBase):
             if seg_id in seen_segment_ids:
                 continue
             phase = str(packed.segment_phases[seg_id])
-            if phase.startswith("ON_"):
+            phase = str(normalize_phase(phase))
+            if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 continue
             seen_segment_ids.add(seg_id)
             remaining.append(seg_id)
@@ -529,7 +531,7 @@ class PackedPlanExecutor(ExecutorBase):
                 isinstance(temp, dict) and temp.get("_tigrbl_hot_direct_create")
             )
             for seg_id in all_segment_ids:
-                phase_name = phase_names[seg_id]
+                phase_name = str(normalize_phase(phase_names[seg_id]))
                 if skip_dispatch and phase_name in {
                     "INGRESS_BEGIN",
                     "INGRESS_DISPATCH",
@@ -697,7 +699,7 @@ class PackedPlanExecutor(ExecutorBase):
         return _acquire
 
     async def _run_segment(self, ctx: _Ctx, packed: PackedKernel, seg_id: int) -> None:
-        ctx.phase = packed.segment_phases[seg_id]
+        ctx.phase = normalize_phase(packed.segment_phases[seg_id])
         await self._resolve_segment_runners(packed)[seg_id](ctx)
 
     async def _run_error_segments(
@@ -724,13 +726,13 @@ class PackedPlanExecutor(ExecutorBase):
         packed: PackedKernel,
         error_phase_segments: Mapping[str, tuple[int, ...]],
     ) -> None:
-        rollback_segments = error_phase_segments.get("ON_ROLLBACK", ())
+        rollback_segments = error_phase_segments.get("TX_ROLLBACK", ())
         if rollback_segments:
             await self._run_error_segments(
                 ctx,
                 packed,
                 error_phase_segments,
-                "ON_ROLLBACK",
+                "TX_ROLLBACK",
             )
             return
 
@@ -749,14 +751,14 @@ class PackedPlanExecutor(ExecutorBase):
         error_phase_segments: Mapping[str, tuple[int, ...]],
         exc: BaseException,
     ) -> str:
-        failed_phase = str(getattr(ctx, "phase", "") or "")
+        failed_phase = str(normalize_phase(getattr(ctx, "phase", "") or ""))
         rollback_required = failed_phase in {
             "START_TX",
             "PRE_HANDLER",
             "HANDLER",
             "POST_HANDLER",
             "PRE_COMMIT",
-            "END_TX",
+            "TX_COMMIT",
         } and bool(getattr(ctx, "owns_tx", False))
         edge = select_error_edge(
             failed_phase,
@@ -788,8 +790,8 @@ class PackedPlanExecutor(ExecutorBase):
         seg_length = packed.op_segment_lengths[program_id]
         for i in range(seg_offset, seg_offset + seg_length):
             seg_id = packed.op_to_segment_ids[i]
-            phase_name = str(packed.segment_phases[seg_id])
-            if phase_name.startswith("ON_"):
+            phase_name = str(normalize_phase(packed.segment_phases[seg_id]))
+            if phase_name.startswith("ON_") or phase_name == "TX_ROLLBACK":
                 grouped.setdefault(phase_name, []).append(seg_id)
 
         ordered_segments, remaining_segments = self._resolve_segments_for_program(

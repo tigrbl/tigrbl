@@ -9,6 +9,7 @@ from tigrbl_atoms import StepFn
 from tigrbl_atoms.atoms.sys.phase_db import run as _bind_phase_db
 from tigrbl_atoms.phases import phase_info
 from tigrbl_atoms.types import EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
+from tigrbl_typing.phases import normalize_phase
 
 from . import events as _ev
 from .atoms import (
@@ -47,7 +48,7 @@ _RUNTIME_EXECUTION_ORDER = (
     "HANDLER",
     "POST_HANDLER",
     "PRE_COMMIT",
-    "END_TX",
+    "TX_COMMIT",
     "POST_COMMIT",
     "POST_RESPONSE",
     "EGRESS_SHAPE",
@@ -231,7 +232,7 @@ def _plan_labels(self, model: type, alias: str) -> list[str]:
     persist = getattr(opspec, "persist", "default") != "skip"
 
     tx_begin = "START_TX:hook:sys:txn:begin@START_TX"
-    tx_end = "END_TX:hook:sys:txn:commit@END_TX"
+    tx_end = "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT"
     if persist:
         labels.append(tx_begin)
 
@@ -245,7 +246,7 @@ def _plan_labels(self, model: type, alias: str) -> list[str]:
         return phase
 
     for phase in DEFAULT_PHASE_ORDER:
-        if phase in {"START_TX", "END_TX"}:
+        if phase in {"START_TX", "TX_COMMIT"}:
             continue
         for step in chains.get(phase, ()) or ():
             step_label = _label_step(step, phase)
@@ -295,8 +296,8 @@ def _phase_tree_nodes_for_program(
     phase_to_segments: dict[str, list[int]] = {}
     ordered_phases: list[str] = []
     for seg_id in segment_ids:
-        phase = str(segment_phases[seg_id])
-        if phase.startswith("ON_"):
+        phase = str(normalize_phase(segment_phases[seg_id]))
+        if phase.startswith("ON_") or phase == "TX_ROLLBACK":
             continue
         if phase not in phase_to_segments:
             phase_to_segments[phase] = []
@@ -323,7 +324,7 @@ def _phase_tree_nodes_for_program(
 
         err_phase = error_phase_for(phase)
         err_target = (
-            EdgeTarget.rollback("ON_ROLLBACK", fallback=err_phase)
+            EdgeTarget.rollback("TX_ROLLBACK", fallback=err_phase)
             if rollback_required
             else EdgeTarget.node(err_phase)
         )
@@ -455,8 +456,8 @@ def _pack_kernel_plan(
 
         for idx in range(seg_offset, seg_offset + seg_length):
             seg_id = op_to_segment_ids[idx]
-            phase = str(segment_phases[seg_id])
-            if phase.startswith("ON_"):
+            phase = str(normalize_phase(segment_phases[seg_id]))
+            if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 error_segment_ids.setdefault(phase, []).append(seg_id)
                 continue
             by_phase.setdefault(phase, []).append(seg_id)
@@ -472,8 +473,8 @@ def _pack_kernel_plan(
             seg_id = op_to_segment_ids[idx]
             if seg_id in seen_segment_ids:
                 continue
-            phase = str(segment_phases[seg_id])
-            if phase.startswith("ON_"):
+            phase = str(normalize_phase(segment_phases[seg_id]))
+            if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 continue
             seen_segment_ids.add(seg_id)
             remaining_segments.append(seg_id)

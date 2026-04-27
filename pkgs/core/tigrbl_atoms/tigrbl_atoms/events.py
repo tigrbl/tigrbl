@@ -4,9 +4,10 @@ from dataclasses import dataclass
 from typing import Dict, Iterable, List, Tuple
 
 from .phases import (
+    END_TX_PHASE,
     EGRESS_FINALIZE_PHASE,
     EGRESS_SHAPE_PHASE,
-    END_TX_PHASE,
+    TX_COMMIT_PHASE,
     HANDLER_PHASE,
     INGRESS_BEGIN_PHASE,
     INGRESS_DISPATCH_PHASE,
@@ -49,6 +50,7 @@ START_TX: Phase = START_TX_PHASE
 PRE_HANDLER: Phase = PRE_HANDLER_PHASE
 POST_HANDLER: Phase = POST_HANDLER_PHASE
 PRE_COMMIT: Phase = PRE_COMMIT_PHASE
+TX_COMMIT: Phase = TX_COMMIT_PHASE
 END_TX: Phase = END_TX_PHASE
 POST_COMMIT: Phase = POST_COMMIT_PHASE
 EGRESS_SHAPE: Phase = EGRESS_SHAPE_PHASE
@@ -169,7 +171,7 @@ _ANCHOR_PHASE: Dict[str, Phase] = {
     EMIT_ALIASES_PRE: PRE_HANDLER,
     HANDLER: HANDLER_PHASE,
     SYS_HANDLER_PERSISTENCE: HANDLER_PHASE,
-    SYS_TX_COMMIT: END_TX,
+    SYS_TX_COMMIT: TX_COMMIT,
     POST_FLUSH: POST_COMMIT,
     EMIT_ALIASES_POST: POST_COMMIT,
     SCHEMA_COLLECT_OUT: POST_COMMIT,
@@ -185,9 +187,19 @@ _ANCHOR_PHASE: Dict[str, Phase] = {
     EGRESS_ASGI_SEND: EGRESS_FINALIZE,
     ERR_CTX_BUILD: "ON_ERROR",
     ERR_CLASSIFY: "ON_ERROR",
-    ERR_ROLLBACK: "ON_ROLLBACK",
+    ERR_ROLLBACK: "TX_ROLLBACK",
     ERR_TRANSPORT_SHAPE: "ON_ERROR",
 }
+
+_PHASE_ALIASES = {
+    "END_TX": TX_COMMIT,
+    "ON_END_TX_ERROR": "ON_TX_COMMIT_ERROR",
+    "ON_ROLLBACK": "TX_ROLLBACK",
+}
+
+
+def normalize_phase(phase: str) -> Phase:
+    return _PHASE_ALIASES.get(str(phase), str(phase))  # type: ignore[return-value]
 
 _ANCHOR_STAGE: Dict[str, Tuple[Stage, Stage]] = {
     INGRESS_CTX_INIT: (Boot, Boot),
@@ -325,6 +337,7 @@ def all_events_ordered() -> List[str]:
 
 
 def events_for_phase(phase: Phase) -> List[str]:
+    phase = normalize_phase(phase)
     if phase not in PHASES:
         raise ValueError(f"Unknown phase: {phase!r}")
     return [a for a, info in _ANCHORS.items() if info.phase == phase]
@@ -363,6 +376,7 @@ __all__ = [
     "HANDLER_PHASE",
     "POST_HANDLER",
     "PRE_COMMIT",
+    "TX_COMMIT",
     "END_TX",
     "POST_COMMIT",
     "EGRESS_SHAPE",
@@ -415,4 +429,5 @@ __all__ = [
     "events_for_phase",
     "prune_events_for_persist",
     "order_events",
+    "normalize_phase",
 ]

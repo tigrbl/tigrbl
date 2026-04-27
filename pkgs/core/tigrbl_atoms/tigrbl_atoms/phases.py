@@ -31,7 +31,7 @@ PhaseName = Literal[
     "HANDLER",
     "POST_HANDLER",
     "PRE_COMMIT",
-    "END_TX",
+    "TX_COMMIT",
     "POST_COMMIT",
     "EGRESS_SHAPE",
     "EGRESS_FINALIZE",
@@ -43,10 +43,10 @@ PhaseName = Literal[
     "ON_HANDLER_ERROR",
     "ON_POST_HANDLER_ERROR",
     "ON_PRE_COMMIT_ERROR",
-    "ON_END_TX_ERROR",
+    "ON_TX_COMMIT_ERROR",
     "ON_POST_COMMIT_ERROR",
     "ON_POST_RESPONSE_ERROR",
-    "ON_ROLLBACK",
+    "TX_ROLLBACK",
 ]
 
 
@@ -68,7 +68,8 @@ PRE_HANDLER_PHASE: Final[PhaseName] = "PRE_HANDLER"
 HANDLER_PHASE: Final[PhaseName] = "HANDLER"
 POST_HANDLER_PHASE: Final[PhaseName] = "POST_HANDLER"
 PRE_COMMIT_PHASE: Final[PhaseName] = "PRE_COMMIT"
-END_TX_PHASE: Final[PhaseName] = "END_TX"
+TX_COMMIT_PHASE: Final[PhaseName] = "TX_COMMIT"
+END_TX_PHASE: Final[PhaseName] = TX_COMMIT_PHASE
 POST_COMMIT_PHASE: Final[PhaseName] = "POST_COMMIT"
 EGRESS_SHAPE_PHASE: Final[PhaseName] = "EGRESS_SHAPE"
 EGRESS_FINALIZE_PHASE: Final[PhaseName] = "EGRESS_FINALIZE"
@@ -96,7 +97,8 @@ PRE_HANDLER = PhaseStep("PRE_HANDLER", Executing, Resolved, in_tx=True)
 HANDLER = PhaseStep("HANDLER", Resolved, Operated, in_tx=True)
 POST_HANDLER = PhaseStep("POST_HANDLER", Operated, Operated, in_tx=True)
 PRE_COMMIT = PhaseStep("PRE_COMMIT", Operated, Operated, in_tx=True)
-END_TX = PhaseStep("END_TX", Operated, Operated, in_tx=True)
+TX_COMMIT = PhaseStep("TX_COMMIT", Operated, Operated, in_tx=True)
+END_TX = TX_COMMIT
 
 POST_COMMIT = PhaseStep("POST_COMMIT", Operated, Encoded)
 EGRESS_SHAPE = PhaseStep("EGRESS_SHAPE", Encoded, Encoded)
@@ -123,14 +125,16 @@ ON_POST_HANDLER_ERROR = PhaseStep(
 ON_PRE_COMMIT_ERROR = PhaseStep(
     "ON_PRE_COMMIT_ERROR", Failed, Failed, in_tx=True, is_error=True
 )
-ON_END_TX_ERROR = PhaseStep(
-    "ON_END_TX_ERROR", Failed, Failed, in_tx=True, is_error=True
+ON_TX_COMMIT_ERROR = PhaseStep(
+    "ON_TX_COMMIT_ERROR", Failed, Failed, in_tx=True, is_error=True
 )
+ON_END_TX_ERROR = ON_TX_COMMIT_ERROR
 ON_POST_COMMIT_ERROR = PhaseStep("ON_POST_COMMIT_ERROR", Failed, Failed, is_error=True)
 ON_POST_RESPONSE_ERROR = PhaseStep(
     "ON_POST_RESPONSE_ERROR", Failed, Failed, is_error=True
 )
-ON_ROLLBACK = PhaseStep("ON_ROLLBACK", Failed, Failed, in_tx=True, is_error=True)
+TX_ROLLBACK = PhaseStep("TX_ROLLBACK", Failed, Failed, in_tx=True, is_error=True)
+ON_ROLLBACK = TX_ROLLBACK
 
 
 PHASES: Final[Tuple[PhaseName, ...]] = (
@@ -143,7 +147,7 @@ PHASES: Final[Tuple[PhaseName, ...]] = (
     "HANDLER",
     "POST_HANDLER",
     "PRE_COMMIT",
-    "END_TX",
+    "TX_COMMIT",
     "POST_COMMIT",
     "EGRESS_SHAPE",
     "EGRESS_FINALIZE",
@@ -155,10 +159,10 @@ PHASES: Final[Tuple[PhaseName, ...]] = (
     "ON_HANDLER_ERROR",
     "ON_POST_HANDLER_ERROR",
     "ON_PRE_COMMIT_ERROR",
-    "ON_END_TX_ERROR",
+    "ON_TX_COMMIT_ERROR",
     "ON_POST_COMMIT_ERROR",
     "ON_POST_RESPONSE_ERROR",
-    "ON_ROLLBACK",
+    "TX_ROLLBACK",
 )
 
 
@@ -174,7 +178,7 @@ PHASE_INFO: Final[Dict[PhaseName, PhaseStep]] = {
         HANDLER,
         POST_HANDLER,
         PRE_COMMIT,
-        END_TX,
+        TX_COMMIT,
         POST_COMMIT,
         EGRESS_SHAPE,
         EGRESS_FINALIZE,
@@ -186,19 +190,30 @@ PHASE_INFO: Final[Dict[PhaseName, PhaseStep]] = {
         ON_HANDLER_ERROR,
         ON_POST_HANDLER_ERROR,
         ON_PRE_COMMIT_ERROR,
-        ON_END_TX_ERROR,
+        ON_TX_COMMIT_ERROR,
         ON_POST_COMMIT_ERROR,
         ON_POST_RESPONSE_ERROR,
-        ON_ROLLBACK,
+        TX_ROLLBACK,
     )
 }
 
 
 def phase_info(name: PhaseName) -> PhaseStep:
+    name = _normalize_phase_name(name)
     try:
         return PHASE_INFO[name]
     except KeyError as e:
         raise ValueError(f"Unknown phase: {name!r}") from e
+
+
+def _normalize_phase_name(name: str) -> PhaseName:
+    if name == "END_TX":
+        return "TX_COMMIT"  # type: ignore[return-value]
+    if name == "ON_END_TX_ERROR":
+        return "ON_TX_COMMIT_ERROR"  # type: ignore[return-value]
+    if name == "ON_ROLLBACK":
+        return "TX_ROLLBACK"  # type: ignore[return-value]
+    return name  # type: ignore[return-value]
 
 
 def phase_stage_in(name: PhaseName) -> Stage:
@@ -221,6 +236,7 @@ __all__ = [
     "HANDLER_PHASE",
     "POST_HANDLER_PHASE",
     "PRE_COMMIT_PHASE",
+    "TX_COMMIT_PHASE",
     "END_TX_PHASE",
     "POST_COMMIT_PHASE",
     "EGRESS_SHAPE_PHASE",
@@ -228,6 +244,9 @@ __all__ = [
     "POST_RESPONSE_PHASE",
     "PHASES",
     "PHASE_INFO",
+    "END_TX",
+    "ON_END_TX_ERROR",
+    "ON_ROLLBACK",
     "phase_info",
     "phase_stage_in",
     "phase_stage_out",

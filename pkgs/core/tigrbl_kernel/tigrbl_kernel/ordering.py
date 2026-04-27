@@ -187,7 +187,7 @@ def flatten(
         out,
         by_anchor,
         anchors,
-        target_phase="END_TX",
+        target_phase="TX_COMMIT",
         anchor_policies=anchor_policies,
         persist=persist,
     )

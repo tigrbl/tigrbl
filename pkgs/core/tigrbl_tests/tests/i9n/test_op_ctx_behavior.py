@@ -389,4 +389,4 @@ def test_op_ctx_system_steps(sync_db_session):
     chains = build_phase_chains(Widget, "ping")
 
     assert chains["START_TX"]
-    assert chains["END_TX"]
+    assert chains["TX_COMMIT"]

@@ -61,5 +61,5 @@ async def test_kernelz_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
         f"PRE_HANDLER:{_diag._label_hook(sample_atom, 'PRE_HANDLER')}",
         f"PRE_HANDLER:{_diag._label_hook(sample_hook, 'PRE_HANDLER')}",
         f"HANDLER:{_diag._label_hook(handler, 'HANDLER')}",
-        "END_TX:hook:sys:txn:commit@END_TX",
+        "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT",
     ]

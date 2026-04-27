@@ -20,7 +20,7 @@ body: |-
   
   ## Contract
   
-  Compiled protocol execution represents every phase tree node with exactly two typed child edges: ok and err. The ok edge advances to the next success node, loop continuation, loop exit, or terminal target. The err edge advances to a governed error target: phase-specific ON_* handling, ON_ERROR fallback, ON_ROLLBACK routing when transaction state requires rollback, or a terminal error target.
+  Compiled protocol execution represents every phase tree node with exactly two typed child edges: ok and err. The ok edge advances to the next success node, loop continuation, loop exit, or terminal target. The err edge advances to a governed error target: phase-specific ON_* handling, ON_ERROR fallback, TX_ROLLBACK routing when transaction state requires rollback, or a terminal error target.
   
   EdgeKind is limited to ok and err. EdgeTarget identifies a node id, terminal target, loop target, rollback target, or no-op terminal. PhaseTreeNode declares node id, canonical phase, stage input, stage output, segment ids, ok child, err child, terminal behavior, and linear projection metadata.
   

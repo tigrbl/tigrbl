@@ -8,7 +8,7 @@ from tigrbl.runtime.status import SystemStepError
 
 def test_registry_tx_commit_step() -> None:
     anchor, runner = system.get("txn", "commit")
-    assert anchor == system.END_TX
+    assert anchor == system.TX_COMMIT
     assert runner is system._sys_tx_commit
 
 

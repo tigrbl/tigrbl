@@ -316,7 +316,7 @@ phase: "INGRESS_BEGIN"
      | "PRE_EMIT"
      | "EMIT"
      | "POST_EMIT"
-     | "END_TX"
+     | "TX_COMMIT"
      | "POST_TX"
      | error_phase
 
@@ -325,7 +325,7 @@ error_phase: "ON_ERROR"
            | "ON_HANDLER_ERROR"
            | "ON_COMMIT_ERROR"
            | "ON_EMIT_ERROR"
-           | "ON_ROLLBACK"
+           | "TX_ROLLBACK"
 
 // Current repo phase labels remain legal as diagnostic projections.
 legacy_phase: "INGRESS_DISPATCH"
@@ -338,7 +338,7 @@ legacy_phase: "INGRESS_DISPATCH"
             | "ON_PRE_HANDLER_ERROR"
             | "ON_POST_HANDLER_ERROR"
             | "ON_PRE_COMMIT_ERROR"
-            | "ON_END_TX_ERROR"
+            | "ON_TX_COMMIT_ERROR"
             | "ON_POST_COMMIT_ERROR"
             | "ON_POST_RESPONSE_ERROR"
 

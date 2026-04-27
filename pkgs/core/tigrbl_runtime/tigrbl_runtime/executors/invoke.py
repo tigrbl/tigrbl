@@ -174,13 +174,13 @@ async def _rollback_if_owned(
 ) -> None:
     if not owns_tx or db is None:
         return
-    if not _g(phases, "ON_ROLLBACK"):
+    if not _g(phases, "TX_ROLLBACK"):
         try:
             await _maybe_await(db.rollback())
         except Exception:  # pragma: no cover
             logger.exception("Rollback failed", exc_info=True)
     try:
-        await _run_chain(ctx, _g(phases, "ON_ROLLBACK"), phase="ON_ROLLBACK")
+        await _run_chain(ctx, _g(phases, "TX_ROLLBACK"), phase="TX_ROLLBACK")
     except Exception:  # pragma: no cover
         pass
 
@@ -352,7 +352,7 @@ async def _invoke(
         # commit decision even when the backend uses implicit/autobegin semantics.
         owns_tx_for_commit = not existed_tx_before
         await _run_phase(
-            "END_TX",
+            "TX_COMMIT",
             allow_flush=True,
             allow_commit=True,
             in_tx=True,
