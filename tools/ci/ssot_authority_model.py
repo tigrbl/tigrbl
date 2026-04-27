@@ -96,9 +96,14 @@ def _runtime_lane_sensitive(feature: dict[str, Any]) -> bool:
 
 def _feature_requires_verification(feature: dict[str, Any]) -> bool:
     implementation_status = str(feature.get("implementation_status", "") or "").lower()
+    lifecycle_stage = str(feature.get("lifecycle", {}).get("stage", "") or "").lower()
     horizon = str(feature.get("plan", {}).get("horizon", "") or "").lower()
-    if implementation_status in {"implemented", "partial"}:
+    if lifecycle_stage == "obsolete" or horizon == "out_of_bounds":
+        return False
+    if implementation_status == "implemented":
         return True
+    if implementation_status == "partial":
+        return horizon in {"current", "explicit"}
     return horizon in {"current", "explicit"}
 
 
