@@ -103,6 +103,7 @@ async def test_secdeps_execute_before_txn_begin_and_handler() -> None:
 @pytest.mark.asyncio
 async def test_secdep_failure_aborts_before_handler() -> None:
     ran_handler = False
+    ran_begin = False
 
     def secdep_fail(_ctx):
         raise RuntimeError("blocked")
@@ -129,7 +130,141 @@ async def test_secdep_failure_aborts_before_handler() -> None:
     )
     Model.hooks = SimpleNamespace(create=SimpleNamespace(HANDLER=[handler]))
 
+    def begin(_ctx):
+        nonlocal ran_begin
+        ran_begin = True
+
+    old_begin = _sys.INSTALLED.begin
+    _sys.INSTALLED.begin = begin
+    try:
+        with pytest.raises(Exception):
+            await invoke_op(model=Model, alias="create", db=_FakeDB(), request=None, ctx={})
+    finally:
+        _sys.INSTALLED.begin = old_begin
+
+    assert ran_handler is False
+    assert ran_begin is False
+
+
+@pytest.mark.asyncio
+async def test_extra_dependency_failure_aborts_before_txn_and_handler() -> None:
+    events: list[str] = []
+
+    def dep_ok(_ctx):
+        events.append("dep_ok")
+
+    def dep_fail(_ctx):
+        events.append("dep_fail")
+        raise RuntimeError("dependency blocked")
+
+    def handler(_ctx):
+        events.append("handler")
+
+    def begin(_ctx):
+        events.append("txn_begin")
+
+    class Model:
+        pass
+
+    Model.ops = SimpleNamespace(
+        by_alias={
+            "create": (
+                OpSpec(
+                    alias="create",
+                    target="create",
+                    table=Model,
+                    handler=handler,
+                    deps=(dep_ok, dep_fail),
+                ),
+            )
+        }
+    )
+    Model.hooks = SimpleNamespace(create=SimpleNamespace(HANDLER=[handler]))
+
+    old_begin = _sys.INSTALLED.begin
+    _sys.INSTALLED.begin = begin
+    try:
+        with pytest.raises(Exception):
+            await invoke_op(model=Model, alias="create", db=_FakeDB(), request=None, ctx={})
+    finally:
+        _sys.INSTALLED.begin = old_begin
+
+    assert events == ["dep_ok", "dep_fail"]
+
+
+@pytest.mark.asyncio
+async def test_security_dependency_failure_skips_extra_dependencies() -> None:
+    events: list[str] = []
+
+    def secdep_fail(_ctx):
+        events.append("secdep_fail")
+        raise RuntimeError("security blocked")
+
+    def dep_should_not_run(_ctx):
+        events.append("dep_should_not_run")
+
+    def handler(_ctx):
+        events.append("handler")
+
+    class Model:
+        pass
+
+    Model.ops = SimpleNamespace(
+        by_alias={
+            "create": (
+                OpSpec(
+                    alias="create",
+                    target="create",
+                    table=Model,
+                    handler=handler,
+                    secdeps=(secdep_fail,),
+                    deps=(dep_should_not_run,),
+                ),
+            )
+        }
+    )
+    Model.hooks = SimpleNamespace(create=SimpleNamespace(HANDLER=[handler]))
+
     with pytest.raises(Exception):
         await invoke_op(model=Model, alias="create", db=_FakeDB(), request=None, ctx={})
 
-    assert ran_handler is False
+    assert events == ["secdep_fail"]
+
+
+@pytest.mark.asyncio
+async def test_pre_tx_dependencies_execute_once_per_invocation() -> None:
+    calls = {"secdep": 0, "dep": 0, "handler": 0}
+
+    def secdep(_ctx):
+        calls["secdep"] += 1
+
+    def dep(_ctx):
+        calls["dep"] += 1
+
+    def handler(ctx):
+        calls["handler"] += 1
+        ctx["result"] = {"ok": True}
+
+    class Model:
+        pass
+
+    Model.ops = SimpleNamespace(
+        by_alias={
+            "create": (
+                OpSpec(
+                    alias="create",
+                    target="custom",
+                    table=Model,
+                    handler=handler,
+                    secdeps=(secdep,),
+                    deps=(dep,),
+                ),
+            )
+        }
+    )
+    Model.hooks = SimpleNamespace(create=SimpleNamespace(HANDLER=[handler]))
+
+    assert await invoke_op(model=Model, alias="create", db=_FakeDB(), request=None, ctx={}) == {"ok": True}
+    assert await invoke_op(model=Model, alias="create", db=_FakeDB(), request=None, ctx={}) == {"ok": True}
+
+    assert calls == {"secdep": 2, "dep": 2, "handler": 2}
