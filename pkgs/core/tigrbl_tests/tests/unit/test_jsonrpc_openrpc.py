@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from tigrbl import TableBase, TigrblRouter, TigrblApp
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.factories.engine import mem
+from tigrbl.system import mount_lens, mount_swagger
 from tigrbl_runtime.executors.packed import PackedPlanExecutor
 from tigrbl_runtime.executors.types import _Ctx
 
@@ -371,6 +372,58 @@ def test_default_docs_endpoints_have_browser_stable_get_contract() -> None:
     assert docs_post.status_code == 404
     assert lens_post.status_code == 404
     assert favicon.status_code in {200, 307, 308}
+
+
+def test_docs_endpoint_failures_do_not_break_runtime_routes() -> None:
+    app, model = _build_app()
+
+    async def _exercise():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            bad_docs = await client.post("/docs")
+            create = await client.post(
+                "/rpc",
+                json={
+                    "jsonrpc": "2.0",
+                    "method": f"{model.__name__}.create",
+                    "params": {"name": "Docs isolation"},
+                    "id": "create-after-docs-failure",
+                },
+            )
+            docs = await client.get("/docs")
+        return bad_docs, create, docs
+
+    bad_docs, create, docs = asyncio.run(_exercise())
+
+    assert bad_docs.status_code == 404
+    assert create.status_code in {200, 204}
+    if create.status_code == 200:
+        payload = create.json()
+        assert payload.get("id") == "create-after-docs-failure"
+        assert "error" not in payload
+    assert docs.status_code == 200
+
+
+def test_custom_docs_and_lens_paths_coexist_with_default_ui_paths() -> None:
+    app, _ = _build_app()
+    mount_swagger(app, path="/api-docs", name="custom_docs")
+    mount_lens(app, path="/rpc-ui", name="custom_lens")
+
+    async def _fetch():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            custom_docs = await client.get("/api-docs")
+            custom_lens = await client.get("/rpc-ui")
+            default_docs = await client.get("/docs")
+            default_lens = await client.get("/lens")
+        return custom_docs, custom_lens, default_docs, default_lens
+
+    custom_docs, custom_lens, default_docs, default_lens = asyncio.run(_fetch())
+
+    assert custom_docs.status_code == 200
+    assert custom_lens.status_code == 200
+    assert default_docs.status_code == 200
+    assert default_lens.status_code == 200
 
 
 def test_docs_lens_openapi_openrpc_are_rest_get_only_and_not_rpc_methods() -> None:
