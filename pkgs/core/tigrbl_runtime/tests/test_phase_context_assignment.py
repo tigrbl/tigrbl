@@ -21,10 +21,23 @@ async def test_run_phase_chain_sets_ctx_phase() -> None:
 
     ctx = _Ctx.ensure(request=None, db=None, seed={})
     await _run_phase_chain(
-        DummyKernel(), ctx, {"PRE_HANDLER": [step], "END_TX": [step]}
+        DummyKernel(), ctx, {"PRE_HANDLER": [step], "TX_COMMIT": [step]}
     )
 
-    assert seen == ["PRE_HANDLER", "END_TX"]
+    assert seen == ["PRE_HANDLER", "TX_COMMIT"]
+
+
+@pytest.mark.asyncio
+async def test_run_phase_chain_normalizes_legacy_phase_keys() -> None:
+    seen = []
+
+    async def step(ctx):
+        seen.append(ctx.phase)
+
+    ctx = _Ctx.ensure(request=None, db=None, seed={})
+    await _run_phase_chain(DummyKernel(), ctx, {"END_TX": [step]})
+
+    assert seen == ["TX_COMMIT"]
 
 
 @pytest.mark.asyncio

@@ -27,11 +27,11 @@ impl HookPhase {
             Self::Handler => "handler",
             Self::PostHandler => "post_handler",
             Self::PreCommit => "pre_commit",
-            Self::EndTx => "end_tx",
+            Self::EndTx => "tx_commit",
             Self::PostCommit => "post_commit",
             Self::PostResponse => "post_response",
             Self::OnError => "on_error",
-            Self::Rollback => "rollback",
+            Self::Rollback => "tx_rollback",
             Self::Custom => "custom",
         }
     }

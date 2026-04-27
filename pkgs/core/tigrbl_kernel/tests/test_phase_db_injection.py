@@ -32,7 +32,7 @@ def test_build_op_prepends_phase_db_binding_to_each_phase() -> None:
         "HANDLER",
         "POST_HANDLER",
         "PRE_COMMIT",
-        "END_TX",
+        "TX_COMMIT",
         "POST_COMMIT",
         "POST_RESPONSE",
         "EGRESS_SHAPE",

@@ -5,6 +5,7 @@ import logging
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
 from tigrbl_atoms.types import AtomFailure, FailedCtx, build_error_ctx
+from tigrbl_typing.phases import normalize_phase
 
 try:
     from tigrbl_kernel import trace as _trace  # type: ignore
@@ -184,7 +185,20 @@ async def _run_chain(ctx: Any, chain: Optional[Iterable[Any]], *, phase: str) ->
 
 
 def _g(phases: Optional[Mapping[str, Sequence[Any]]], key: str) -> Sequence[Any]:
-    return () if not phases else phases.get(key, ())
+    if not phases:
+        return ()
+    normalized = normalize_phase(key) or key
+    chain = phases.get(normalized, ())
+    if chain:
+        return chain
+    for legacy_key, canonical_key in {
+        "END_TX": "TX_COMMIT",
+        "ON_END_TX_ERROR": "ON_TX_COMMIT_ERROR",
+        "ON_ROLLBACK": "TX_ROLLBACK",
+    }.items():
+        if canonical_key == normalized:
+            return phases.get(legacy_key, ())
+    return ()
 
 
 __all__ = ["_maybe_await", "_run_chain", "_g"]

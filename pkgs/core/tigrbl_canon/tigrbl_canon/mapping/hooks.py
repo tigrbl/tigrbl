@@ -54,13 +54,13 @@ _POST_LIKE = frozenset(
 )
 _ERROR_LIKE = frozenset(
     {
-        "ON_ROLLBACK",
+        "TX_ROLLBACK",
         "ON_PRE_HANDLER_ERROR",
         "ON_HANDLER_ERROR",
         "ON_POST_HANDLER_ERROR",
         "ON_PRE_COMMIT_ERROR",
-        # v3 uses END_TX; map v2's ON_COMMIT_ERROR → ON_END_TX_ERROR
-        "ON_END_TX_ERROR",
+        # v3 uses TX_COMMIT; map v2's ON_COMMIT_ERROR → ON_TX_COMMIT_ERROR
+        "ON_TX_COMMIT_ERROR",
         "ON_POST_COMMIT_ERROR",
         "ON_POST_RESPONSE_ERROR",
         "ON_ERROR",

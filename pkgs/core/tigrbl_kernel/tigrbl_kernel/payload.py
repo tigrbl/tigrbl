@@ -46,13 +46,13 @@ def build_kernelz_payload(kernel: "Kernel", app: Any):
 
             chains = kernel._build(model, sp.alias)
             for phase in _ev.PHASES:
-                if phase in {"START_TX", "END_TX", "PRE_TX_BEGIN", "POST_RESPONSE"}:
+                if phase in {"START_TX", "TX_COMMIT", "PRE_TX_BEGIN", "POST_RESPONSE"}:
                     continue
                 for step in chains.get(phase, ()) or ():
                     labels.append(f"{phase}:{label_hook(step, phase)}")
 
             if persist:
-                labels.append("END_TX:hook:sys:txn:commit@END_TX")
+                labels.append("TX_COMMIT:hook:sys:txn:commit@TX_COMMIT")
 
             for step in chains.get("POST_RESPONSE", ()) or ():
                 labels.append(f"POST_RESPONSE:{label_hook(step, 'POST_RESPONSE')}")

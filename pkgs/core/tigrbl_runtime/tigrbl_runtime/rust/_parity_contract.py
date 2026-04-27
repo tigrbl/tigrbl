@@ -43,7 +43,7 @@ def _phase_plan(op: dict[str, Any], transport: str) -> list[str]:
     phases = ["INGRESS_BEGIN", "INGRESS_DISPATCH", "PRE_HANDLER", "HANDLER", "POST_HANDLER"]
     if tx_scope != "none":
         phases.insert(2, "START_TX")
-        phases.append("END_TX")
+        phases.append("TX_COMMIT")
     if transport in {"sse", "ws", "wss", "webtransport"} or exchange != "request_response":
         phases.append("POST_EMIT")
     phases.append("POST_RESPONSE")

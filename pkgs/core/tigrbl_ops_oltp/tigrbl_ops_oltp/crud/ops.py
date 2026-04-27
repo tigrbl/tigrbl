@@ -124,7 +124,7 @@ async def create(
 ) -> Any:
     """
     Insert a single row. Returns the persisted model instance.
-    Flush-only (commit happens later in END_TX).
+    Flush-only (commit happens later in TX_COMMIT).
     """
     logger.debug("create called with model=%s data=%s", model, data)
     _ensure_model_mapped(model)

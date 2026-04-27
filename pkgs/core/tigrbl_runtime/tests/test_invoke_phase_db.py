@@ -54,18 +54,18 @@ async def test_pre_handler_commit_is_denied_via_phase_db() -> None:
 
 
 @pytest.mark.asyncio
-async def test_end_tx_commit_is_allowed_when_runtime_owns_transaction() -> None:
+async def test_tx_commit_commit_is_allowed_when_runtime_owns_transaction() -> None:
     db = FakeDb()
 
     async def start_tx(ctx):
         await db.begin()
 
-    async def end_tx(ctx):
+    async def tx_commit(ctx):
         await ctx.db.commit()
 
     phases = {
         "START_TX": [bind_phase_db, start_tx],
-        "END_TX": [bind_phase_db, end_tx],
+        "TX_COMMIT": [bind_phase_db, tx_commit],
     }
 
     result = await _invoke(request=None, db=db, phases=phases, ctx={})

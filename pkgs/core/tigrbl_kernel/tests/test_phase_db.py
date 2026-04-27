@@ -49,11 +49,11 @@ async def test_phase_db_pre_handler_allows_flush_denies_commit() -> None:
 
 
 @pytest.mark.asyncio
-async def test_phase_db_end_tx_requires_owned_transaction_for_commit() -> None:
+async def test_phase_db_tx_commit_requires_owned_transaction_for_commit() -> None:
     db = FakeDb()
     phase_db = PhaseDb(
         db,
-        phase="END_TX",
+        phase="TX_COMMIT",
         caps=DbCapabilities(
             allow_flush=True,
             allow_commit=True,

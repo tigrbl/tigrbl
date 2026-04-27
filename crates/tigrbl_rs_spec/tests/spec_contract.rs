@@ -28,7 +28,27 @@ fn opkind_exposes_bulk_variants() {
 fn hook_phases_cover_transaction_and_response_lifecycle() {
     assert_eq!(HookPhase::PreTxBegin.as_str(), "pre_tx_begin");
     assert_eq!(HookPhase::PostResponse.as_str(), "post_response");
-    assert_eq!(HookPhase::Rollback.as_str(), "rollback");
+    assert_eq!(HookPhase::Rollback.as_str(), "tx_rollback");
+}
+
+#[test]
+fn hook_phase_parser_accepts_legacy_transaction_aliases() {
+    let raw = r#"{
+        "name": "demo",
+        "bindings": [{
+            "alias": "users.create",
+            "op": {"name": "create", "kind": "create"},
+            "hooks": [
+                {"name": "commit", "phase": "end_tx"},
+                {"name": "rollback", "phase": "rollback"}
+            ]
+        }]
+    }"#;
+
+    let parsed = tigrbl_rs_spec::serde::json::from_json(raw).unwrap();
+
+    assert_eq!(parsed.bindings[0].hooks[0].phase.as_str(), "tx_commit");
+    assert_eq!(parsed.bindings[0].hooks[1].phase.as_str(), "tx_rollback");
 }
 
 #[test]

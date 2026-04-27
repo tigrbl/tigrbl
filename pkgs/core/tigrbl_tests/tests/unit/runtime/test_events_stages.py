@@ -1,5 +1,7 @@
 from tigrbl.hook.types import PHASES as HOOK_PHASES
 from tigrbl.runtime import events as _ev
+from tigrbl_atoms import HookPhase
+from tigrbl_atoms.types import error_phase_for
 
 
 def test_stages_constant_lists_all_lifecycle_anchors_in_order() -> None:
@@ -14,7 +16,7 @@ def test_stages_constant_lists_all_lifecycle_anchors_in_order() -> None:
         "HANDLER",
         "POST_HANDLER",
         "PRE_COMMIT",
-        "END_TX",
+        "TX_COMMIT",
         "POST_COMMIT",
         "EGRESS_SHAPE",
         "EGRESS_FINALIZE",
@@ -26,10 +28,10 @@ def test_stages_constant_lists_all_lifecycle_anchors_in_order() -> None:
         "ON_HANDLER_ERROR",
         "ON_POST_HANDLER_ERROR",
         "ON_PRE_COMMIT_ERROR",
-        "ON_END_TX_ERROR",
+        "ON_TX_COMMIT_ERROR",
         "ON_POST_COMMIT_ERROR",
         "ON_POST_RESPONSE_ERROR",
-        "ON_ROLLBACK",
+        "TX_ROLLBACK",
     )
 
 
@@ -42,10 +44,10 @@ def test_hook_lifecycle_includes_all_error_anchors_in_order() -> None:
         "ON_HANDLER_ERROR",
         "ON_POST_HANDLER_ERROR",
         "ON_PRE_COMMIT_ERROR",
-        "ON_END_TX_ERROR",
+        "ON_TX_COMMIT_ERROR",
         "ON_POST_COMMIT_ERROR",
         "ON_POST_RESPONSE_ERROR",
-        "ON_ROLLBACK",
+        "TX_ROLLBACK",
     )
 
     for anchor in error_anchors:
@@ -59,8 +61,16 @@ def test_hook_lifecycle_includes_all_error_anchors_in_order() -> None:
         "HANDLER",
         "POST_HANDLER",
         "PRE_COMMIT",
-        "END_TX",
+        "TX_COMMIT",
         "POST_COMMIT",
         "POST_RESPONSE",
     )
     assert HOOK_PHASES[9:] == error_anchors
+
+
+def test_legacy_transaction_phase_names_normalize_to_canonical_names() -> None:
+    assert HookPhase("END_TX") is HookPhase.TX_COMMIT
+    assert HookPhase("ON_END_TX_ERROR") is HookPhase.ON_TX_COMMIT_ERROR
+    assert HookPhase("ON_ROLLBACK") is HookPhase.TX_ROLLBACK
+    assert error_phase_for("END_TX") == "ON_TX_COMMIT_ERROR"
+    assert _ev.is_error_phase("ON_ROLLBACK") is True

@@ -182,7 +182,7 @@ def _phase_info_map(
                 "START_TX",
                 "PRE_HANDLER",
                 "HANDLER",
-                "END_TX",
+                "TX_COMMIT",
                 "POST_COMMIT",
             }
             phases[name] = CompiledPhase(

@@ -25,7 +25,7 @@ def test_plan_labels_reflect_kernel_injection():
         "START_TX:hook:sys:txn:begin@START_TX",
         "PRE_HANDLER:atom:resolve:values@resolve:values",
         "PRE_HANDLER:atom:pre:flush@pre:flush",
-        "END_TX:hook:sys:txn:commit@END_TX",
+        "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT",
     ]
 
 
@@ -41,5 +41,5 @@ def test_plan_labels_prune_non_persistent():
     labels = k.plan_labels(Model, "read")
     assert labels == [
         "START_TX:hook:sys:txn:begin@START_TX",
-        "END_TX:hook:sys:txn:commit@END_TX",
+        "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT",
     ]

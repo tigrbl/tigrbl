@@ -4,6 +4,7 @@ from typing import Any
 
 from .invoke import _invoke
 from .types import _Ctx
+from tigrbl_typing.phases import normalize_phase
 
 
 async def _run(
@@ -22,7 +23,7 @@ async def _run(
 
 async def _run_phase_chain(self, ctx: _Ctx, phases: Any) -> None:
     for _phase, steps in (phases or {}).items():
-        ctx.phase = _phase
+        ctx.phase = normalize_phase(_phase)
         for step in steps or ():
             rv = step(ctx)
             if hasattr(rv, "__await__"):

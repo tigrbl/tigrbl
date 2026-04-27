@@ -3,6 +3,8 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Awaitable, Callable, Tuple
 
+from tigrbl_typing.phases import normalize_phase
+
 
 class HookPhase(str, Enum):
     PRE_TX_BEGIN = "PRE_TX_BEGIN"
@@ -11,7 +13,8 @@ class HookPhase(str, Enum):
     HANDLER = "HANDLER"
     POST_HANDLER = "POST_HANDLER"
     PRE_COMMIT = "PRE_COMMIT"
-    END_TX = "END_TX"
+    TX_COMMIT = "TX_COMMIT"
+    END_TX = "TX_COMMIT"
     POST_COMMIT = "POST_COMMIT"
     POST_RESPONSE = "POST_RESPONSE"
     ON_ERROR = "ON_ERROR"
@@ -21,10 +24,19 @@ class HookPhase(str, Enum):
     ON_HANDLER_ERROR = "ON_HANDLER_ERROR"
     ON_POST_HANDLER_ERROR = "ON_POST_HANDLER_ERROR"
     ON_PRE_COMMIT_ERROR = "ON_PRE_COMMIT_ERROR"
-    ON_END_TX_ERROR = "ON_END_TX_ERROR"
+    ON_TX_COMMIT_ERROR = "ON_TX_COMMIT_ERROR"
+    ON_END_TX_ERROR = "ON_TX_COMMIT_ERROR"
     ON_POST_COMMIT_ERROR = "ON_POST_COMMIT_ERROR"
     ON_POST_RESPONSE_ERROR = "ON_POST_RESPONSE_ERROR"
-    ON_ROLLBACK = "ON_ROLLBACK"
+    TX_ROLLBACK = "TX_ROLLBACK"
+    ON_ROLLBACK = "TX_ROLLBACK"
+
+    @classmethod
+    def _missing_(cls, value: object):
+        normalized = normalize_phase(str(value)) if value is not None else None
+        if normalized != value:
+            return cls(normalized)
+        return None
 
 
 HookPhases: Tuple[HookPhase, ...] = tuple(HookPhase)

@@ -76,7 +76,7 @@ def test_hooks_normalize_and_attach(model_cls, specs):
     _bind_model_hooks(model_cls, tuple(specs))
     # default transactional steps are no longer injected
     assert not model_cls.hooks.create.START_TX
-    assert not model_cls.hooks.create.END_TX
+    assert not model_cls.hooks.create.TX_COMMIT
 
 
 @pytest.mark.i9n

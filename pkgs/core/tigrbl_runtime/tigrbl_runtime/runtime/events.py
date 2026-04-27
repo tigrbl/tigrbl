@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from tigrbl_typing.phases import normalize_phase
+
 PHASES = (
     "INGRESS_BEGIN",
     "INGRESS_PARSE",
@@ -12,7 +14,7 @@ PHASES = (
     "HANDLER",
     "POST_HANDLER",
     "PRE_COMMIT",
-    "END_TX",
+    "TX_COMMIT",
     "POST_COMMIT",
     "EGRESS_SHAPE",
     "EGRESS_FINALIZE",
@@ -24,10 +26,10 @@ PHASES = (
     "ON_HANDLER_ERROR",
     "ON_POST_HANDLER_ERROR",
     "ON_PRE_COMMIT_ERROR",
-    "ON_END_TX_ERROR",
+    "ON_TX_COMMIT_ERROR",
     "ON_POST_COMMIT_ERROR",
     "ON_POST_RESPONSE_ERROR",
-    "ON_ROLLBACK",
+    "TX_ROLLBACK",
 )
 
 INGRESS_BEGIN = "INGRESS_BEGIN"
@@ -75,7 +77,8 @@ def prune_events_for_persist(anchors, *, persist: bool):
 
 
 def is_error_phase(name: str) -> bool:
-    return str(name).startswith("ON_")
+    phase = normalize_phase(name)
+    return str(phase).startswith("ON_") or phase == "TX_ROLLBACK"
 
 
 __all__ = [
@@ -90,4 +93,5 @@ __all__ = [
     "order_events",
     "prune_events_for_persist",
     "is_error_phase",
+    "normalize_phase",
 ]

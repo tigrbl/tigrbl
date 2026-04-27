@@ -935,7 +935,7 @@ class TigrblApp(_App):
     def transactional(self, *dargs, **dkw):
         """
         Legacy-friendly decorator: @router.transactional(...)
-        Wraps a function as a v3 custom op with START_TX/END_TX.
+        Wraps a function as a v3 custom op with START_TX/TX_COMMIT.
         """
         if _txn_decorator is None:
             raise RuntimeError("transactional decorator not available")

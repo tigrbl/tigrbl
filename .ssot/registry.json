@@ -21453,6 +21453,54 @@
         "tst:eventkey-hook-bucket-compilation-contract-001"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:tx-phase-legacy-alias-deprecation-001",
+      "title": "Deprecate legacy transaction phase aliases",
+      "description": "Track the compatibility-window work to mark END_TX, ON_ROLLBACK, and ON_END_TX_ERROR as deprecated input aliases while TX_COMMIT, TX_ROLLBACK, and ON_TX_COMMIT_ERROR remain canonical for emitted plans, diagnostics, docs, and tests.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Deprecation feature for the legacy transaction phase alias compatibility window."
+      },
+      "plan": {
+        "horizon": "next",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2056",
+        "spc:2115"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
+    },
+    {
+      "id": "feat:tx-phase-legacy-alias-removal-001",
+      "title": "Remove legacy transaction phase aliases",
+      "description": "Track the follow-up breaking-change work to remove support for END_TX, ON_ROLLBACK, and ON_END_TX_ERROR after the deprecation window completes, leaving only TX_COMMIT, TX_ROLLBACK, and ON_TX_COMMIT_ERROR accepted and emitted.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Sequenced after feat:tx-phase-legacy-alias-deprecation-001; no hard requires edge until the deprecation feature has passing tests and evidence."
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2056",
+        "spc:2115"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "requires": []
     }
   ],
   "tests": [
@@ -48022,7 +48070,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.2",
-      "content_sha256": "31409502ba1a7a8878c4a6d0714aac9aa34fe4a51d129077e87442f10ce9f05e",
+      "content_sha256": "dddad20ec5447422cc43db834703113acda8b9f00d0673340b652c8bb0876a22",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -51225,7 +51273,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "c4bf456a208efcf5bb5aee47139aca83a9f809f68961bf0c0e537be9bbf166fc",
+      "content_sha256": "519a73dfdff2d894929bc4024d12aaf1cc5304a46902e07405e186dc87d1e5ff",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -52688,7 +52736,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.3.19.dev1",
-      "content_sha256": "992c913eb3862469165188bb39260589db3384847824a53e11c49cdc6c7039e2",
+      "content_sha256": "9aa3b09b9811a56755eebc3b5f63cd0eff0f6ca8deb7f6730b67421cc453a558",
       "kind": "normative",
       "status": "draft",
       "supersedes": [],

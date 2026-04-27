@@ -743,11 +743,11 @@ fn string_to_hook_phase(value: Option<&str>) -> HookPhase {
         "handler" => HookPhase::Handler,
         "post_handler" => HookPhase::PostHandler,
         "pre_commit" => HookPhase::PreCommit,
-        "end_tx" => HookPhase::EndTx,
+        "tx_commit" | "end_tx" => HookPhase::EndTx,
         "post_commit" => HookPhase::PostCommit,
         "post_response" => HookPhase::PostResponse,
         "on_error" => HookPhase::OnError,
-        "rollback" => HookPhase::Rollback,
+        "tx_rollback" | "rollback" => HookPhase::Rollback,
         "custom" => HookPhase::Custom,
         _ => HookPhase::PreTxBegin,
     }

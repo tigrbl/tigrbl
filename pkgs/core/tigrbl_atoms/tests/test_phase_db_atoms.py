@@ -10,13 +10,19 @@ from tigrbl_atoms.atoms.sys import phase_db
 
 
 def test_phase_db_capabilities_known_phase_values() -> None:
-    caps = phase_db.phase_db_capabilities("END_TX")
+    caps = phase_db.phase_db_capabilities("TX_COMMIT")
 
     assert isinstance(caps, phase_db.DbCapabilities)
     assert caps.allow_flush is True
     assert caps.allow_commit is True
     assert caps.commit_requires_owned_tx is True
     assert caps.allow_refresh is False
+
+
+def test_phase_db_capabilities_accepts_legacy_phase_alias() -> None:
+    assert phase_db.phase_db_capabilities("END_TX") == phase_db.phase_db_capabilities(
+        "TX_COMMIT"
+    )
 
 
 def test_phase_db_capabilities_unknown_phase_raises_runtime_error() -> None:
@@ -111,8 +117,8 @@ def test_phase_db_denies_commit_when_tx_not_owned_even_if_phase_allows_commit() 
 
     wrapper = phase_db.PhaseDb(
         Db(),
-        phase="END_TX",
-        caps=phase_db.phase_db_capabilities("END_TX"),
+        phase="TX_COMMIT",
+        caps=phase_db.phase_db_capabilities("TX_COMMIT"),
         owns_tx=False,
     )
 
