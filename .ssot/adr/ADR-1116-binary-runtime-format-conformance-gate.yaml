@@ -1,0 +1,31 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1116"
+number: 1116
+slug: "binary-runtime-format-conformance-gate"
+title: "Binary Runtime Format Conformance Gate"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Binary runtime formats require fail-closed decode and conformance gates before they can be treated as release-grade runtime contracts. Required evidence includes round-trip tests, invalid-layout tests, truncation tests, endian/version tests, canonicalization tests, fuzz/property tests, and Python/Rust parity tests where both runtimes consume the format."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:07Z"
+references: []
+body: |-
+  ## Decision
+  Binary runtime formats require fail-closed decode and conformance gates before they can be treated as release-grade runtime contracts. Required evidence includes round-trip tests, invalid-layout tests, truncation tests, endian/version tests, canonicalization tests, fuzz/property tests, and Python/Rust parity tests where both runtimes consume the format.
+  
+  ## Rationale
+  Compact binary metadata makes runtime dispatch faster but raises correctness, security, compatibility, and parity risk. The formats must be testable and bounded from the start.
+  
+  ## Consequences
+  EventKey, IdentityShape, IdentityVector, ParamShape, wire metadata, sidecars, and scalar encodings must define bounds and invalid states. Ambiguous, truncated, unsupported, or version-incompatible inputs fail before atom execution.
+  
+  ## Traceability
+  Maps to SPEC-2132. Related decisions include ADR-0608, ADR-1020, ADR-1088, ADR-1102, ADR-1114, and ADR-1117.

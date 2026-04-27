@@ -1,0 +1,48 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2125"
+number: 2125
+slug: "identity-width-classes-and-opaque-identity-bytes"
+title: "Identity Width Classes And Opaque Identity Bytes"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define identity width classes and the distinction between semantic identity kinds and physical byte representations."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:09Z"
+references: []
+body: |-
+  ## Intent
+  Define identity width classes and the distinction between semantic identity kinds and physical byte representations.
+  
+  ## Width Classes
+  - none: zero bytes.
+  - u64: eight bytes, unsigned integer semantics when arithmetic or ordering is required.
+  - u128: sixteen bytes, numeric 128-bit semantics only when declared.
+  - u256: thirty-two bytes, numeric 256-bit semantics only when declared.
+  - opaque16: sixteen uninterpreted bytes.
+  - opaque32: thirty-two uninterpreted bytes.
+  - opaque64: sixty-four uninterpreted bytes.
+  - uuid: semantic UUID profile lowered to opaque16.
+  - ulid: semantic ULID profile lowered to opaque16.
+  
+  ## Runtime Rule
+  Identity comparison and dispatch use bytes, resource codes, shape IDs, offsets, or hashes. Runtime hot paths do not require Python integer, UUID, ULID, or string objects.
+  
+  ## Ordering Rule
+  If numeric byte-order comparison is required, numeric identities use big-endian bytes. Opaque identities preserve declared codec byte order. ULID byte order preserves timestamp-first ordering.
+  
+  ## Boundaries
+  Text and object codecs may exist at API, CLI, config, debug, and log boundaries. Internal vectors and slabs store fixed-width bytes.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1113"
+  - "adr:1117"
+  - "adr:1118"
+  - "adr:1119"

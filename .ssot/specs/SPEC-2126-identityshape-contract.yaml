@@ -1,0 +1,41 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2126"
+number: 2126
+slug: "identityshape-contract"
+title: "IdentityShape Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the compiled IdentityShape contract used by runtime events, policies, handlers, audit, cache keys, and identity vectors."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:10Z"
+references: []
+body: |-
+  ## Intent
+  Define the compiled IdentityShape contract used by runtime events, policies, handlers, audit, cache keys, and identity vectors.
+  
+  ## Structure
+  IdentityShape contains shape_id:u32, count:u8, flags:u8, and entries in canonical slot order.
+  
+  Each IdentityShapeEntry contains slot:u8, role:u8, source:u8, width:u8, resource_code:u16 or u32 according to profile, and source_param_id:u32 when the value comes from a declared parameter.
+  
+  ## Roles
+  Initial roles include actor, tenant, subject, target, parent, child, owner, resource, content, correlation, and idempotency. Role codes are registry-assigned scalars.
+  
+  ## Semantics
+  IdentityShape answers which identities exist, what roles they have, what resource domains they belong to, where they are read from, and how many bytes each value occupies.
+  
+  ## Invariants
+  Shape IDs are deterministic for equivalent canonical shapes. Shape entry order defines IdentityVector canonical order. ParamShape and IdentityShape are distinct even when both refer to the same source parameter.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1112"
+  - "adr:1117"
+  - "adr:1119"

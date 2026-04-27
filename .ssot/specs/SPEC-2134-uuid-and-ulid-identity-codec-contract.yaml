@@ -1,0 +1,42 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2134"
+number: 2134
+slug: "uuid-and-ulid-identity-codec-contract"
+title: "UUID And ULID Identity Codec Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define UUID and ULID identity codec behavior and lowering to runtime opaque16 values."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:15Z"
+references: []
+body: |-
+  ## Intent
+  Define UUID and ULID identity codec behavior and lowering to runtime opaque16 values.
+  
+  ## UUID Text
+  Canonical UUID output is lowercase RFC-style text with hyphens. Parsers may accept uppercase as compatibility input and emit canonical lowercase output. Generic UUID codecs preserve bytes and should not require version-specific semantics.
+  
+  ## UUID Runtime
+  UUID values lower to opaque16. UUID objects and UUID strings are not stored in EventKey, IdentityVector, KernelPlan, dispatch tables, or runtime sidecars.
+  
+  ## ULID Text
+  Canonical ULID output is a 26-character Crockford Base32 string in uppercase. Ambiguous, non-canonical, or malformed text is rejected unless an explicit compatibility mode allows it.
+  
+  ## ULID Runtime
+  ULID values lower to opaque16 with timestamp-first byte ordering preserved. ULID generator policy, including monotonic generation, is separate from codec policy.
+  
+  ## Registry Integration
+  The scalar registry distinguishes uuid, ulid, u128, and opaque16 even when they share the same physical width.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1118"
+  - "adr:1113"
+  - "adr:1119"

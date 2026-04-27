@@ -1,0 +1,42 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2131"
+number: 2131
+slug: "wire-event-metadata-format"
+title: "Wire Event Metadata Format"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the portable binary wire metadata format for internal event boundaries while keeping it separate from optimized runtime memory layout."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:13Z"
+references: []
+body: |-
+  ## Intent
+  Define the portable binary wire metadata format for internal event boundaries while keeping it separate from optimized runtime memory layout.
+  
+  ## Header
+  WireEventHeader contains magic:u16, version:u8, flags:u8, header_len:u16, body_len:u32, and optional crc32:u32 when the checksum flag is set.
+  
+  ## Payload Sections
+  Payload sections may include RuntimeEventKey, ParamVector, IdentityVector, header/context references, scalar tables, and opaque payload references. Section ordering and lengths are versioned and bounded.
+  
+  ## Endian
+  Numeric wire fields are little-endian unless a field explicitly declares another order. Numeric identity bytes use big-endian when lexical byte order must preserve numeric order. Opaque bytes preserve codec order.
+  
+  ## Checksum Coverage
+  Checksum-covered regions must be declared by version and flag. A checksum mismatch fails before atom execution.
+  
+  ## Compatibility
+  Breaking layout changes require a new version. Reserved flags and fields must be zero unless the version declares them.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1114"
+  - "adr:1116"
+  - "adr:1117"
