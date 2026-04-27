@@ -5593,8 +5593,8 @@
     },
     {
       "id": "feat:oidc-core-discovery-descope",
-      "title": "OIDC Core/discovery de-scope",
-      "description": "Tracks the exact OIDC Core/discovery row being explicitly de-scoped from the current cycle boundary.",
+      "title": "OIDC Core/discovery out of bounds",
+      "description": "Tracks the exact OIDC Core/discovery row as explicitly out of bounds for the current governed boundary.",
       "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
@@ -5602,9 +5602,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "current",
-        "slot": "conformance",
-        "target_claim_tier": "T2",
+        "horizon": "out_of_bounds",
+        "slot": "conformance-out-of-bounds",
+        "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
@@ -6078,8 +6078,8 @@
     },
     {
       "id": "feat:op-010",
-      "title": "Obsolete alias for AsyncAPI UI de-scoped while AsyncAPI spec remains in scope",
-      "description": "Compatibility row for legacy feature id feat:op-010. Replaced by feat:operator-asyncapi-ui-descoped-001.",
+      "title": "Obsolete alias for AsyncAPI UI out of bounds while AsyncAPI spec remains in scope",
+      "description": "Compatibility row for legacy feature id feat:op-010. Replaced by feat:operator-asyncapi-ui-descoped-001, which tracks the UI surface as out of bounds.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "obsolete",
@@ -6111,7 +6111,7 @@
       },
       "plan": {
         "horizon": "out_of_bounds",
-        "slot": "operator-descoped-surface",
+        "slot": "operator-out-of-bounds-surface",
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
@@ -6129,8 +6129,8 @@
     },
     {
       "id": "feat:op-011",
-      "title": "Obsolete alias for JSON Schema UI de-scoped while schema bundle remains in scope",
-      "description": "Compatibility row for legacy feature id feat:op-011. Replaced by feat:operator-json-schema-ui-descoped-001.",
+      "title": "Obsolete alias for JSON Schema UI out of bounds while schema bundle remains in scope",
+      "description": "Compatibility row for legacy feature id feat:op-011. Replaced by feat:operator-json-schema-ui-descoped-001, which tracks the UI surface as out of bounds.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "obsolete",
@@ -6162,7 +6162,7 @@
       },
       "plan": {
         "horizon": "out_of_bounds",
-        "slot": "operator-descoped-surface",
+        "slot": "operator-out-of-bounds-surface",
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
@@ -6180,8 +6180,8 @@
     },
     {
       "id": "feat:op-012",
-      "title": "Obsolete alias for OIDC discovery and docs surface de-scoped from current cycle",
-      "description": "Compatibility row for legacy feature id feat:op-012. Replaced by feat:operator-oidc-discovery-docs-descoped-001.",
+      "title": "Obsolete alias for OIDC discovery and docs surface out of bounds",
+      "description": "Compatibility row for legacy feature id feat:op-012. Replaced by feat:operator-oidc-discovery-docs-descoped-001, which tracks discovery and docs as out of bounds.",
       "implementation_status": "partial",
       "lifecycle": {
         "stage": "obsolete",
@@ -6213,7 +6213,7 @@
       },
       "plan": {
         "horizon": "out_of_bounds",
-        "slot": "operator-descoped-surface",
+        "slot": "operator-out-of-bounds-surface",
         "target_claim_tier": null,
         "target_lifecycle_stage": "active"
       },
@@ -40471,11 +40471,11 @@
     },
     {
       "id": "clm:oidc-001",
-      "title": "OIDC-001 mapped claim",
-      "status": "asserted",
+      "title": "OIDC Core/discovery is out of bounds for the governed boundary.",
+      "status": "declared",
       "tier": "T2",
-      "kind": "conformance",
-      "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OIDC-001.",
+      "kind": "repo-claim",
+      "description": "OIDC Core/discovery is explicitly tracked as out-of-bounds and must not be treated as governed conformance scope unless a future boundary change accepts it.",
       "feature_ids": [
         "feat:oidc-core-discovery-descope"
       ],
@@ -40720,11 +40720,11 @@
     },
     {
       "id": "clm:op-010",
-      "title": "OP-010 mapped claim",
-      "status": "asserted",
+      "title": "AsyncAPI UI is out of bounds while AsyncAPI spec remains in scope.",
+      "status": "declared",
       "tier": "T2",
-      "kind": "conformance",
-      "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-010.",
+      "kind": "repo-claim",
+      "description": "AsyncAPI UI is explicitly tracked as out-of-bounds and must not be treated as governed operator support while AsyncAPI spec emission remains in scope.",
       "feature_ids": [
         "feat:operator-asyncapi-ui-descoped-001"
       ],
@@ -40745,11 +40745,11 @@
     },
     {
       "id": "clm:op-011",
-      "title": "OP-011 mapped claim",
-      "status": "asserted",
+      "title": "JSON Schema UI is out of bounds while schema bundle remains in scope.",
+      "status": "declared",
       "tier": "T2",
-      "kind": "conformance",
-      "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-011.",
+      "kind": "repo-claim",
+      "description": "JSON Schema UI is explicitly tracked as out-of-bounds and must not be treated as governed operator support while JSON Schema bundle emission remains in scope.",
       "feature_ids": [
         "feat:operator-json-schema-ui-descoped-001"
       ],
@@ -40770,11 +40770,11 @@
     },
     {
       "id": "clm:op-012",
-      "title": "OP-012 mapped claim",
-      "status": "asserted",
+      "title": "OIDC discovery and docs surface is out of bounds.",
+      "status": "declared",
       "tier": "T2",
-      "kind": "conformance",
-      "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-012.",
+      "kind": "repo-claim",
+      "description": "OIDC discovery and docs are explicitly tracked as out-of-bounds and must not be treated as governed operator support unless a future boundary change accepts them.",
       "feature_ids": [
         "feat:operator-oidc-discovery-docs-descoped-001"
       ],
