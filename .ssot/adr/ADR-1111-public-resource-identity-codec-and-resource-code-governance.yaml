@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1111"
+number: 1111
+slug: "public-resource-identity-codec-and-resource-code-governance"
+title: "Public Resource Identity Codec And Resource Code Governance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl public resource identities support governed split profiles: aa/split, aaa/split, and aaaa/split. Public text forms are boundary, debug, operator, and log codecs. Runtime and kernel hot paths use split binary forms with a resource code sidecar and opaque identity bytes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:04Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl public resource identities support governed split profiles: aa/split, aaa/split, and aaaa/split. Public text forms are boundary, debug, operator, and log codecs. Runtime and kernel hot paths use split binary forms with a resource code sidecar and opaque identity bytes.
+  
+  The aa/split profile lowers to resource_code:u16 plus identity32. The aaa/split and aaaa/split profiles lower to resource_code:u32 plus identity32.
+  
+  ## Rationale
+  The runtime needs resource-typed identities without dispatching on strings or repeatedly parsing decimal public IDs. Split profiles preserve operator-friendly public IDs while keeping the kernel representation compact, bounded, and governed.
+  
+  ## Consequences
+  Prefix allocation requires registry governance and reserved ranges. Prefix length is part of the identity profile and must be known from schema, registry, route, or codec context. Canonical text preserves the registered prefix width.
+  
+  ## Traceability
+  Maps to SPEC-2124 and SPEC-2133. Related decisions include ADR-1047, ADR-1100, ADR-1102, and ADR-1117.

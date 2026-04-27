@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1115"
+number: 1115
+slug: "soa-runtime-batch-and-sidecar-layout"
+title: "SoA Runtime Batch And Sidecar Layout"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scan-heavy runtime event batches and plan metadata use Structure-of-Arrays sidecars for hot fields such as protocol, binding, phase, route ID, chain ID, resource code, param shape ID, identity shape ID, flags, offsets, lengths, and identity slab offsets."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:07Z"
+references: []
+body: |-
+  ## Decision
+  Scan-heavy runtime event batches and plan metadata use Structure-of-Arrays sidecars for hot fields such as protocol, binding, phase, route ID, chain ID, resource code, param shape ID, identity shape ID, flags, offsets, lengths, and identity slab offsets.
+  
+  Array-of-Structs layouts remain allowed where whole-entry access dominates or where a compact fixed record is the natural unit.
+  
+  ## Rationale
+  Batch dispatch, audit, metrics, policy prechecks, replay, and parity evidence often scan one or two fields across many events. Dense sidecars improve locality, reduce object creation, and avoid repeated heterogeneous record unpacking.
+  
+  ## Consequences
+  Runtime batch formats define sidecar arrays, identity slabs, offset tables, fixed or variable stride rules, and invariants. Durable or wire encodings must not rely on native-endian runtime arrays.
+  
+  ## Traceability
+  Maps to SPEC-2130 and SPEC-2133. Related decisions include ADR-1016, ADR-1100, ADR-1102, ADR-1114, and ADR-1117.

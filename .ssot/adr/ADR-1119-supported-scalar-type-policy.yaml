@@ -1,0 +1,33 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1119"
+number: 1119
+slug: "supported-scalar-type-policy"
+title: "Supported Scalar Type Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl supports a bounded scalar set for parameters, identities, event metadata, atom operands, wire codecs, and payload-only positions. Every scalar has a semantic kind, physical representation, bounds, encoding rule, and surface-allowance policy."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:17:09Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl supports a bounded scalar set for parameters, identities, event metadata, atom operands, wire codecs, and payload-only positions. Every scalar has a semantic kind, physical representation, bounds, encoding rule, and surface-allowance policy.
+  
+  Arbitrary Python objects, unbounded strings, unbounded bytes, dicts, lists, tuples, sets, regex match objects, UUID objects, ULID objects, Decimal objects, and datetime objects are not hot-path scalars. They may exist at API or semantic boundaries only after explicit lowering.
+  
+  ## Rationale
+  The compiled runtime needs predictable control flow, bounded parsing, stable binary layouts, and cross-runtime parity. A scalar registry prevents ad hoc object forms from leaking into dispatch keys, identity vectors, atom operands, or wire metadata.
+  
+  ## Consequences
+  The scalar registry must classify each scalar by code, name, width, max length, endian, canonical text form, and allowed surfaces. Payload-only scalars such as JSON, decimal, large text, or arbitrary bytes remain outside hot dispatch keys unless interned, hashed, or lowered to a bounded scalar.
+  
+  ## Traceability
+  Maps to SPEC-2135 and cross-links to SPEC-2124, SPEC-2125, SPEC-2133, and SPEC-2134. Related decisions include ADR-1111, ADR-1117, and ADR-1118.

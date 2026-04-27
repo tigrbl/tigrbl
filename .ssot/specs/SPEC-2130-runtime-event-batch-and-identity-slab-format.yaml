@@ -1,0 +1,40 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2130"
+number: 2130
+slug: "runtime-event-batch-and-identity-slab-format"
+title: "Runtime Event Batch And Identity Slab Format"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define Structure-of-Arrays runtime event batches and dense identity slabs for high-throughput runtime execution."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:12Z"
+references: []
+body: |-
+  ## Intent
+  Define Structure-of-Arrays runtime event batches and dense identity slabs for high-throughput runtime execution.
+  
+  ## Event Batch
+  EventBatch contains count:u32 and sidecars for protocols:u8[count], bindings:u8[count], phases:u8[count], event_families:u8[count] when present, route_ids:u32[count], chain_ids:u32[count], param_shape_ids:u32[count], identity_shape_ids:u32[count], flags:u16[count], and identity_offsets:u32[count].
+  
+  ## Identity Slab
+  IdentitySlab is a dense byte region containing identity vector bytes. Fixed-width vectors may use computed offsets from base plus index times stride. Variable-width vectors use offset and length sidecars.
+  
+  ## Runtime Form
+  Runtime implementations may use bytearray, bytes, memoryview, array('H'), array('I'), Rust Vec, or equivalent typed contiguous arrays. Durable and wire forms must not rely on native endian sidecars.
+  
+  ## Invariants
+  Sidecar lengths match count. Offsets point inside the slab. IdentityVector bytes match the referenced IdentityShape. Batch decode fails closed on length mismatch, offset overflow, invalid stride, or unsupported scalar width.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1115"
+  - "adr:1114"
+  - "adr:1113"
+  - "adr:1117"

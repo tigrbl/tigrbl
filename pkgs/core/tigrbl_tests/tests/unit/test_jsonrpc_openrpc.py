@@ -9,6 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from tigrbl import TableBase, TigrblRouter, TigrblApp
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.factories.engine import mem
+from tigrbl.system import mount_lens, mount_swagger
 from tigrbl_runtime.executors.packed import PackedPlanExecutor
 from tigrbl_runtime.executors.types import _Ctx
 
@@ -175,6 +176,34 @@ def test_jsonrpc_create_missing_required_field_returns_clean_invalid_params() ->
         assert forbidden not in response_text
 
 
+def test_jsonrpc_create_missing_required_field_does_not_persist_row() -> None:
+    class StrictThing(TableBase, GUIDPk):
+        __tablename__ = "things_jsonrpc_missing_required_no_persist"
+        label = Column(String, nullable=False)
+
+    app = TigrblApp(engine=mem(async_=False))
+    app.include_table(StrictThing)
+    app.initialize()
+    app.mount_jsonrpc()
+    request_payload = {
+        "jsonrpc": "2.0",
+        "method": f"{StrictThing.__name__}.create",
+        "params": {},
+        "id": 11,
+    }
+
+    async def _exercise():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            return await client.post("/rpc", json=request_payload)
+
+    response = asyncio.run(_exercise())
+    payload = response.json()
+
+    assert response.status_code == 200
+    assert payload["error"]["code"] == -32602
+
+
 def test_jsonrpc_persistence_exception_payload_is_sanitized() -> None:
     ctx = _Ctx.ensure(
         request=None,
@@ -225,6 +254,49 @@ def test_jsonrpc_persistence_exception_payload_is_sanitized() -> None:
         "secret-bound-value",
     ):
         assert forbidden not in text
+
+
+def test_jsonrpc_persistence_sanitization_preserves_public_request_id_only() -> None:
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "temp": {
+                "route": {
+                    "rpc_envelope": {
+                        "jsonrpc": "2.0",
+                        "method": "Thing.create",
+                        "params": {"label": "ok"},
+                        "id": "client-visible-id",
+                    }
+                },
+            }
+        },
+    )
+    raw = IntegrityError(
+        "UPDATE private_table SET token=?",
+        ("bound-secret-token",),
+        Exception("driver private failure"),
+    )
+
+    payload = PackedPlanExecutor._jsonrpc_error_payload(
+        ctx,
+        422,
+        {"detail": str(raw)},
+        sanitize_detail=PackedPlanExecutor._is_persistence_exception(raw),
+    )
+
+    assert payload is not None
+    assert payload["id"] == "client-visible-id"
+    assert payload["error"]["data"] == {"detail": "Internal error"}
+    assert "private_table" not in str(payload).lower()
+    assert "bound-secret-token" not in str(payload).lower()
+
+
+def test_jsonrpc_error_payload_ignores_non_jsonrpc_context() -> None:
+    ctx = _Ctx.ensure(request=None, db=None, seed={"temp": {"route": {}}})
+
+    assert PackedPlanExecutor._jsonrpc_error_payload(ctx, 400, {"detail": "bad"}) is None
 
 
 def test_packed_executor_http_persistence_exception_payload_is_sanitized() -> None:
@@ -278,6 +350,80 @@ def test_default_system_docs_endpoints_are_present_and_gettable() -> None:
 
     assert openrpc.status_code == 200
     assert openrpc.json()["openrpc"] == "1.2.6"
+
+
+def test_default_docs_endpoints_have_browser_stable_get_contract() -> None:
+    app, _ = _build_app()
+
+    async def _fetch():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            docs_head = await client.head("/docs")
+            lens_head = await client.head("/lens")
+            docs_post = await client.post("/docs")
+            lens_post = await client.post("/lens")
+            favicon = await client.get("/favicon.ico", follow_redirects=False)
+        return docs_head, lens_head, docs_post, lens_post, favicon
+
+    docs_head, lens_head, docs_post, lens_post, favicon = asyncio.run(_fetch())
+
+    assert docs_head.status_code == 404
+    assert lens_head.status_code == 404
+    assert docs_post.status_code == 404
+    assert lens_post.status_code == 404
+    assert favicon.status_code in {200, 307, 308}
+
+
+def test_docs_endpoint_failures_do_not_break_runtime_routes() -> None:
+    app, model = _build_app()
+
+    async def _exercise():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            bad_docs = await client.post("/docs")
+            create = await client.post(
+                "/rpc",
+                json={
+                    "jsonrpc": "2.0",
+                    "method": f"{model.__name__}.create",
+                    "params": {"name": "Docs isolation"},
+                    "id": "create-after-docs-failure",
+                },
+            )
+            docs = await client.get("/docs")
+        return bad_docs, create, docs
+
+    bad_docs, create, docs = asyncio.run(_exercise())
+
+    assert bad_docs.status_code == 404
+    assert create.status_code in {200, 204}
+    if create.status_code == 200:
+        payload = create.json()
+        assert payload.get("id") == "create-after-docs-failure"
+        assert "error" not in payload
+    assert docs.status_code == 200
+
+
+def test_custom_docs_and_lens_paths_coexist_with_default_ui_paths() -> None:
+    app, _ = _build_app()
+    mount_swagger(app, path="/api-docs", name="custom_docs")
+    mount_lens(app, path="/rpc-ui", name="custom_lens")
+
+    async def _fetch():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            custom_docs = await client.get("/api-docs")
+            custom_lens = await client.get("/rpc-ui")
+            default_docs = await client.get("/docs")
+            default_lens = await client.get("/lens")
+        return custom_docs, custom_lens, default_docs, default_lens
+
+    custom_docs, custom_lens, default_docs, default_lens = asyncio.run(_fetch())
+
+    assert custom_docs.status_code == 200
+    assert custom_lens.status_code == 200
+    assert default_docs.status_code == 200
+    assert default_lens.status_code == 200
 
 
 def test_docs_lens_openapi_openrpc_are_rest_get_only_and_not_rpc_methods() -> None:

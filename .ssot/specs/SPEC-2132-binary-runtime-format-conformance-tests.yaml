@@ -1,0 +1,41 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2132"
+number: 2132
+slug: "binary-runtime-format-conformance-tests"
+title: "Binary Runtime Format Conformance Tests"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define required conformance tests for binary runtime metadata, identity codecs, scalar layouts, and Python/Rust parity."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created from runtime identity and scalar architecture planning."
+    at: "2026-04-27T12:19:13Z"
+references: []
+body: |-
+  ## Intent
+  Define required conformance tests for binary runtime metadata, identity codecs, scalar layouts, and Python/Rust parity.
+  
+  ## Required Tests
+  Required tests include aa/aaa/aaaa public ID parse and format round trips, resource-code registry round trips, UUID and ULID parse/format/lower round trips, scalar encode/decode tests, IdentityShape deterministic ID tests, IdentityVector canonical hashing tests, RuntimeEventKey encode/decode tests, wire event metadata round trips, EventBatch sidecar/slab validation, and dispatch lookup correctness.
+  
+  ## Negative Tests
+  Negative tests include invalid prefixes, unsupported scalar codes, value overflow, bad endian assumptions, ambiguous UUID/ULID text when not in compatibility mode, truncated headers, offset overflow, mismatched identity counts, bad checksums, unsupported versions, nonzero reserved bits, and invalid shape references.
+  
+  ## Fuzz Tests
+  Fuzz tests should target RuntimeEventKey, IdentityShape, IdentityVector, ParamShape, WireEventHeader, scalar codecs, and identity codecs.
+  
+  ## Parity Tests
+  When Rust and Python lanes both consume a format, parity tests must prove equivalent canonical bytes, equivalent validation failures, and equivalent dispatch results for representative cases.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1116"
+  - "adr:1114"
+  - "adr:1117"
+  - "adr:1118"
+  - "adr:1119"
