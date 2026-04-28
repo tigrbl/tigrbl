@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+try:
+    from tigrbl import HTTPException
+except ImportError:  # pragma: no cover - test stubs
+    from tigrbl.types import HTTPException
 from tigrbl import engine_ctx, hook_ctx
 from tigrbl.orm.tables import Base
 from tigrbl.specs import acol, S, F, IO
-from tigrbl.types import String, Integer, JSON, Text, HTTPException
+from tigrbl.types import String, Integer, JSON, Text
 
 
 @engine_ctx(kind="sqlite", async_=True, mode="memory")

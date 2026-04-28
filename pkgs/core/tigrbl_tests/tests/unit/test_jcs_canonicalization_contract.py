@@ -8,8 +8,8 @@ import pytest
 
 def _canonicalize(payload):
     candidates = (
-        ("tigrbl.runtime.canonical_json", "canonical_json_bytes"),
-        ("tigrbl.runtime.canonical_json", "canonicalize"),
+        ("tigrbl_core.canonical_json", "canonical_json_bytes"),
+        ("tigrbl_core.canonical_json", "canonicalize"),
         ("tigrbl.canonical_json", "canonical_json_bytes"),
         ("tigrbl.canonical_json", "canonicalize"),
     )
@@ -22,7 +22,7 @@ def _canonicalize(payload):
         if callable(func):
             result = func(payload)
             return result.encode("utf-8") if isinstance(result, str) else result
-    pytest.xfail("feat:rfc-8785-jcs-rejection-semantics-001 is absent; no JCS helper is exported yet.")
+    raise AssertionError("RFC 8785 JCS canonical JSON helper is not exported")
 
 
 def test_jcs_canonicalizer_orders_object_members_deterministically() -> None:

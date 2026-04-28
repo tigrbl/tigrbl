@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Mapping, Optional, Sequence, Tuple
 
 import pandas as pd
 
@@ -112,7 +112,8 @@ except Exception:
         pass
 
 
-from .df_engine import DataFrameCatalog
+if TYPE_CHECKING:
+    from .df_engine import DataFrameCatalog
 
 # ---- Result facades compatible with Tigrbl CRUD ----
 

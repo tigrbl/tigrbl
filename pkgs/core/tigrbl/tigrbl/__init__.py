@@ -246,6 +246,26 @@ def include_tables(*args, **kwargs):
     )
 
 
+def include_model(*args, **kwargs):
+    if len(args) == 1 and isinstance(args[0], type) and not kwargs:
+        return args[0], None
+    return import_module("tigrbl_concrete._mapping.router.include").include_model(
+        *args, **kwargs
+    )
+
+
+def include_table(*args, **kwargs):
+    return import_module("tigrbl_concrete._mapping.router.include").include_table(
+        *args, **kwargs
+    )
+
+
+def include_models(*args, **kwargs):
+    return import_module("tigrbl_concrete._mapping.router.include").include_models(
+        *args, **kwargs
+    )
+
+
 async def rpc_call(*args, **kwargs):
     return await import_module("tigrbl_concrete._mapping.router.rpc").rpc_call(
         *args, **kwargs
@@ -324,6 +344,9 @@ __all__ = [
     "build_handlers",
     "register_rpc",
     "build_rest",
+    "include_model",
+    "include_table",
+    "include_models",
     "include_tables",
     "rpc_call",
     "_invoke",

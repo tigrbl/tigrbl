@@ -5,6 +5,10 @@ from typing import Optional, Tuple
 
 import httpx
 
+try:
+    from tigrbl import HTTPException
+except ImportError:  # pragma: no cover - test stubs
+    from tigrbl.types import HTTPException
 from tigrbl import engine_ctx, op_ctx, hook_ctx
 import tigrbl.core as core
 from tigrbl.orm.tables import Base
@@ -15,7 +19,6 @@ from tigrbl.types import (
     LargeBinary,
     JSON,
     SAEnum,
-    HTTPException,
 )
 
 from ..workload_client import WorkloadClientError, fetch_remote_svid
