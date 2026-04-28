@@ -64,4 +64,26 @@ def op_surface(spec: OpSpec) -> dict[str, Any]:
     }
 
 
-__all__ = ["binding_family", "binding_surface", "op_family", "op_surface"]
+def auth_surface(security: list[dict[str, list[str]]]) -> dict[str, Any]:
+    """Describe the generated operation auth policy in documentation output."""
+
+    if security:
+        return {
+            "policy": "protected",
+            "public": False,
+            "security": security,
+        }
+    return {
+        "policy": "public-by-default",
+        "public": True,
+        "security": [],
+    }
+
+
+__all__ = [
+    "auth_surface",
+    "binding_family",
+    "binding_surface",
+    "op_family",
+    "op_surface",
+]

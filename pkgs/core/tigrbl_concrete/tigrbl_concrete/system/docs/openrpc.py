@@ -10,7 +10,7 @@ from .openapi.helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
-from .surface import op_surface
+from .surface import auth_surface, op_surface
 
 JsonObject = Dict[str, Any]
 
@@ -229,6 +229,7 @@ def build_openrpc_spec(router: Any, request: Any | None = None) -> JsonObject:
             if security:
                 method["security"] = security
                 security_schemes.update(_security_schemes_from_dependencies(secdeps))
+            method["x-tigrbl-auth"] = auth_surface(security)
 
             method["x-tigrbl-surface"] = op_surface(op)
 
