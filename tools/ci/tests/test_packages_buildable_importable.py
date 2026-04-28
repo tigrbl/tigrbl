@@ -65,6 +65,17 @@ def _discover_package_modules() -> list[PackageRecord]:
     return records
 
 
+def _clear_unspecced_stub(module_name: str) -> None:
+    module = sys.modules.get(module_name)
+    if module is None or getattr(module, "__spec__", None) is not None:
+        return
+
+    prefix = f"{module_name}."
+    for loaded_name in list(sys.modules):
+        if loaded_name == module_name or loaded_name.startswith(prefix):
+            sys.modules.pop(loaded_name, None)
+
+
 def test_all_packages_buildable_and_importable() -> None:
     failures: list[tuple[str, str]] = []
     records = _discover_package_modules()
@@ -83,6 +94,7 @@ def test_all_packages_buildable_and_importable() -> None:
             failures.append((record.name, f"compile failure in {record.package_dir}"))
             continue
 
+        _clear_unspecced_stub(record.module_name)
         if importlib.util.find_spec(record.module_name) is None:
             failures.append((record.name, f"module '{record.module_name}' not importable from {source_root}"))
             continue

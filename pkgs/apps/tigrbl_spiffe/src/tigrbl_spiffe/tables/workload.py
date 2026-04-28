@@ -4,10 +4,14 @@ from typing import Tuple
 
 import httpx
 
+try:
+    from tigrbl import HTTPException
+except ImportError:  # pragma: no cover - test stubs
+    from tigrbl.types import HTTPException
 from tigrbl import engine_ctx, op_ctx
 from tigrbl.orm.tables import Base
 from tigrbl.specs import acol, S, F, IO
-from tigrbl.types import String, Integer, LargeBinary, HTTPException
+from tigrbl.types import String, Integer, LargeBinary
 
 from ..workload_client import WorkloadClientError, fetch_remote_svid
 

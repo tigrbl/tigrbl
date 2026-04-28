@@ -1,7 +1,9 @@
 import pytest
 import httpx
+import ssl
 
 from tigrbl_spiffe.adapters import Endpoint, TigrblClientAdapter, Txn
+from tigrbl_spiffe.tls.adapters import httpx_client_with_tls
 
 
 @pytest.mark.asyncio
@@ -45,3 +47,26 @@ async def test_for_endpoint_unknown_scheme_raises():
     adapter = TigrblClientAdapter()
     with pytest.raises(ValueError):
         await adapter.for_endpoint(Endpoint(scheme="smtp", address="smtp://example"))
+
+
+@pytest.mark.asyncio
+async def test_httpx_client_with_tls_uses_helper_context(monkeypatch):
+    context = ssl.create_default_context()
+    captured = {}
+
+    class Helper:
+        async def client_context(self):
+            return context
+
+    class CapturingAsyncClient:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+
+    monkeypatch.setattr(httpx, "AsyncClient", CapturingAsyncClient)
+
+    client = await httpx_client_with_tls("https://secure.test", Helper())
+
+    assert isinstance(client, CapturingAsyncClient)
+    assert captured["base_url"] == "https://secure.test"
+    assert captured["timeout"] == 10.0
+    assert captured["verify"] is context

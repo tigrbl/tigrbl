@@ -1,4 +1,5 @@
 import json
+import base64
 from contextlib import AsyncExitStack, contextmanager
 from types import MethodType
 
@@ -68,6 +69,20 @@ def override_attr(module, name, replacement):
         setattr(module, name, original)
 
 
+def jwt_token(payload, header=None, signature="sig"):
+    def encode(value):
+        raw = json.dumps(value, separators=(",", ":")).encode("utf-8")
+        return base64.urlsafe_b64encode(raw).rstrip(b"=").decode("ascii")
+
+    return ".".join(
+        [
+            encode(header or {"alg": "RS256", "typ": "JWT"}),
+            encode(payload),
+            signature,
+        ]
+    )
+
+
 @pytest.mark.asyncio
 async def test_end_to_end_registration_and_jwt_authentication():
     recorded = []
@@ -88,7 +103,14 @@ async def test_end_to_end_registration_and_jwt_authentication():
         workload_endpoint=Endpoint(scheme="http", address="http://agent.test")
     )
 
-    token = "header.payload.signature"
+    token = jwt_token(
+        {
+            "sub": "spiffe://example/client",
+            "aud": ["echo"],
+            "nbf": 1,
+            "exp": 4102444800,
+        }
+    )
 
     def responder(request: httpx.Request) -> httpx.Response:
         assert request.method == "POST"
@@ -102,7 +124,7 @@ async def test_end_to_end_registration_and_jwt_authentication():
                 "jwt": token,
                 "aud": ["echo"],
                 "nbf": 1,
-                "exp": 2,
+                "exp": 4102444800,
             },
         )
 

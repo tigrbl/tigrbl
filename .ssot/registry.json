@@ -1422,7 +1422,7 @@
       "id": "feat:docs-support-001",
       "title": "Canonical documentation support surfaces",
       "description": "Tracks supported documentation outputs and metadata ownership for OpenAPI, OpenRPC, AsyncAPI, and JSON Schema, including ordinary route mounts for documentation endpoints.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -2367,7 +2367,8 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:gov-004"
+        "clm:gov-004",
+        "clm:generated-crud-public-default-auth-policy-20260427"
       ],
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
@@ -2594,7 +2595,7 @@
       "id": "feat:http-route-001",
       "title": "Canonical HTTP route registration",
       "description": "Tracks the binding-first REST decorator surface and imperative route normalization owned by tigrbl_concrete, including explicit HttpRestBindingSpec defaults, ordinary documentation routes, and the neutral __tigrbl_route_ops__ spec-graph carrier.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -2868,7 +2869,7 @@
       "id": "feat:canonical-datatype-catalog-semantic-center-001",
       "title": "Canonical datatype catalog and semantic center",
       "description": "DataTypeSpec and StorageTypeRef define the canonical datatype catalog and semantic center on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -2907,7 +2908,7 @@
       "id": "feat:columnspec-datatype-attachment-point-001",
       "title": "ColumnSpec datatype attachment point",
       "description": "ColumnSpec datatype is the canonical datatype attachment point on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -2946,7 +2947,7 @@
       "id": "feat:datatype-adapter-registry-contract-001",
       "title": "Datatype adapter and registry contract",
       "description": "TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype adapter and registry contract on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -2974,7 +2975,7 @@
       "id": "feat:engine-datatype-lowering-registry-bridge-001",
       "title": "Engine datatype lowering and registry bridge",
       "description": "EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned datatype lowering and registry bridging on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -3014,7 +3015,7 @@
       "id": "feat:reflected-datatype-mapper-reverse-mapping-001",
       "title": "Reflected datatype mapper and reverse mapping",
       "description": "ReflectedTypeMapper governs reflected datatype reverse mapping and reflection import behavior on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -3042,7 +3043,7 @@
       "id": "feat:default-canonical-engine-family-datatype-alignment-001",
       "title": "Default canonical engine-family datatype alignment",
       "description": "Default relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line. Package owner `pkgs/engines` and crate owner `crates/tigrbl_rs_engine_inmemory` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -3081,7 +3082,7 @@
       "id": "feat:multi-engine-table-portability-interoperability-001",
       "title": "Multi-engine table portability and interoperability",
       "description": "Multi-engine table portability and interoperability rules are specified as governed next-target work on the active line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -3151,7 +3152,7 @@
       "id": "feat:schema-reflection-roundtrip-recovery-001",
       "title": "Schema reflection round-trip recovery",
       "description": "Schema reflection round-trip recovery is defined with best-effort and metadata-preserving modes on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -5489,7 +5490,8 @@
       },
       "claim_ids": [
         "clm:oas-005",
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:generated-crud-public-default-auth-policy-20260427"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -5746,7 +5748,7 @@
       "id": "feat:operator-streaming-response-surface-001",
       "title": "Streaming response operator surface",
       "description": "Tracks streaming response operator behavior formerly represented by OP-003. Original legacy feature id: feat:op-003.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -5797,7 +5799,7 @@
       "id": "feat:operator-websocket-route-surface-001",
       "title": "WebSocket route operator surface",
       "description": "Tracks WebSocket route declaration and dispatch behavior formerly represented by OP-004. Original legacy feature id: feat:op-004.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -5848,7 +5850,7 @@
       "id": "feat:operator-sse-event-stream-surface-001",
       "title": "WHATWG SSE event-stream operator surface",
       "description": "Tracks WHATWG server-sent event response framing formerly represented by OP-005. Original legacy feature id: feat:op-005.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -5899,7 +5901,7 @@
       "id": "feat:operator-form-multipart-surface-001",
       "title": "Form and multipart request operator surface",
       "description": "Tracks form and multipart request parsing formerly represented by OP-006. Original legacy feature id: feat:op-006.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -5950,7 +5952,7 @@
       "id": "feat:operator-uploaded-file-surface-001",
       "title": "Uploaded file request operator surface",
       "description": "Tracks uploaded file metadata and body access formerly represented by OP-007. Original legacy feature id: feat:op-007.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -6621,7 +6623,8 @@
       "claim_ids": [
         "clm:rpc-001",
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:generated-crud-public-default-auth-policy-20260427"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -6693,7 +6696,8 @@
       "claim_ids": [
         "clm:rpc-002",
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:generated-crud-public-default-auth-policy-20260427"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -7111,7 +7115,7 @@
       "id": "feat:transport-parity-contract-001",
       "title": "REST and JSON-RPC parity through the shared dispatch path",
       "description": "Track restoration of REST and JSON-RPC semantic parity through the shared transport-dispatch path without test-only relaxation.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -7250,7 +7254,7 @@
       "id": "feat:declared-surface-docs-extension-001",
       "title": "Declared-surface docs extension schema",
       "description": "Track governed x-tigrbl-surface extension fields so OpenAPI and OpenRPC emit the same declared binding metadata.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10158,7 +10162,7 @@
       "id": "feat:appspec-contract-001",
       "title": "AppSpec contract",
       "description": "Tracks AppSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10460,7 +10464,7 @@
       "id": "feat:columnspec-contract-001",
       "title": "ColumnSpec contract",
       "description": "Tracks ColumnSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10490,7 +10494,7 @@
       "id": "feat:fieldspec-contract-001",
       "title": "FieldSpec contract",
       "description": "Tracks FieldSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10520,7 +10524,7 @@
       "id": "feat:iospec-contract-001",
       "title": "IOSpec contract",
       "description": "Tracks IOSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10960,7 +10964,7 @@
       "id": "feat:opspec-contract-001",
       "title": "OpSpec contract",
       "description": "Tracks OpSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11018,7 +11022,7 @@
       "id": "feat:responsespec-contract-001",
       "title": "ResponseSpec contract",
       "description": "Tracks ResponseSpec as a first-class tigrbl_core._spec response contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11173,7 +11177,7 @@
       "id": "feat:storagespec-contract-001",
       "title": "StorageSpec contract",
       "description": "Tracks StorageSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11228,7 +11232,7 @@
       "id": "feat:foreignkeyspec-contract-001",
       "title": "ForeignKeySpec contract",
       "description": "Tracks ForeignKeySpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11258,7 +11262,7 @@
       "id": "feat:tablespec-contract-001",
       "title": "TableSpec contract",
       "description": "Tracks TableSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -15747,7 +15751,7 @@
       "id": "feat:pre-tx-security-dependency-execution-001",
       "title": "Pre-TX security dependency execution",
       "description": "Track operation security dependencies executing before ordinary dependencies and before transaction start, including auth failure behavior.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -15831,7 +15835,7 @@
       "id": "feat:rfc-8785-jcs-conformance-vectors-001",
       "title": "RFC 8785 JCS conformance vectors",
       "description": "Add golden vectors for ordering, string escaping, unicode, and numeric canonicalization to assert byte-stable JCS output.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -15848,11 +15852,13 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:rfc-8785-jcs-python-canonicalization-20260427"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:rfc-8785-jcs-python-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -15868,7 +15874,7 @@
       "id": "feat:rfc-8785-jcs-canonicalizer-001",
       "title": "RFC 8785 JCS canonicalizer",
       "description": "Provide a governed canonicalization path that emits RFC 8785 JCS canonical UTF-8 JSON bytes for proof-bound payloads.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -15885,11 +15891,13 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:rfc-8785-jcs-python-canonicalization-20260427"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:rfc-8785-jcs-python-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -15905,7 +15913,7 @@
       "id": "feat:rfc-8785-jcs-rejection-semantics-001",
       "title": "RFC 8785 JCS rejection semantics",
       "description": "Define deterministic fail-closed behavior for non-JCS inputs such as non-finite numbers and unsupported JSON forms.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -15920,9 +15928,12 @@
       "spec_ids": [
         "spc:2076"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:rfc-8785-jcs-python-canonicalization-20260427"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:rfc-8785-jcs-python-contract"
       ],
       "requires": []
     },
@@ -16460,7 +16471,7 @@
       "id": "feat:routerspec-contract-001",
       "title": "RouterSpec contract",
       "description": "Tracks RouterSpec as a first-class tigrbl_core._spec contract surface, including router-owned table composition.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -16490,7 +16501,7 @@
       "id": "feat:appspec-routerspec-composition-001",
       "title": "AppSpec and RouterSpec composition",
       "description": "Allow AppSpec.routers to carry RouterSpec instances whose tables own nested TableSpec model references and typed column metadata.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -17389,7 +17400,7 @@
       "id": "feat:runtime-executor-doc-endpoint-parity-001",
       "title": "Runtime executor documentation endpoint parity",
       "description": "Python runtime executors and the Rust runtime executor expose the same favicon and documentation UI endpoint contract: favicon routes behave as browser favicon routes, Swagger UIX is hosted at /docs, and Lens UIX is hosted at /lens.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -17406,7 +17417,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "test_ids": [
         "tst:rust-runtime-demo-favicon-routes",
@@ -21743,7 +21755,7 @@
       "id": "feat:package-buildability-importability-001",
       "title": "Package buildability and importability baseline",
       "description": "Ensure every active package under pkgs is importable and syntax-checked in CI.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -22152,6 +22164,983 @@
         "tst:tx-phase-legacy-alias-removal-contract"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-traceability-closure-001",
+      "title": "Package coordinate traceability closure",
+      "description": "Tracks direct SSOT visibility for every active package coordinate under pkgs so package-level implementation, claims, tests, and evidence can be certified without relying only on family-level coverage.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-acme-ca-001",
+      "title": "Package coordinate tigrbl-acme-ca",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-acme-ca, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-atoms-001",
+      "title": "Package coordinate tigrbl-atoms",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-atoms, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-canon-001",
+      "title": "Package coordinate tigrbl-canon",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-canon, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-client-001",
+      "title": "Package coordinate tigrbl-client",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-client, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-bigquery-001",
+      "title": "Package coordinate tigrbl-engine-bigquery",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-bigquery, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-clickhouse-001",
+      "title": "Package coordinate tigrbl-engine-clickhouse",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-clickhouse, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-csv-001",
+      "title": "Package coordinate tigrbl-engine-csv",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-csv, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-dataframe-001",
+      "title": "Package coordinate tigrbl-engine-dataframe",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-dataframe, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-duckdb-001",
+      "title": "Package coordinate tigrbl-engine-duckdb",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-duckdb, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-inmemcache-001",
+      "title": "Package coordinate tigrbl-engine-inmemcache",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-inmemcache, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-inmemory-001",
+      "title": "Package coordinate tigrbl-engine-inmemory",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-inmemory, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-membloom-001",
+      "title": "Package coordinate tigrbl-engine-membloom",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-membloom, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-memdedupe-001",
+      "title": "Package coordinate tigrbl-engine-memdedupe",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-memdedupe, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-memkv-001",
+      "title": "Package coordinate tigrbl-engine-memkv",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-memkv, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-memlru-001",
+      "title": "Package coordinate tigrbl-engine-memlru",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-memlru, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-mempubsub-001",
+      "title": "Package coordinate tigrbl-engine-mempubsub",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-mempubsub, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-memqueue-001",
+      "title": "Package coordinate tigrbl-engine-memqueue",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-memqueue, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-memrate-001",
+      "title": "Package coordinate tigrbl-engine-memrate",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-memrate, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-numpy-001",
+      "title": "Package coordinate tigrbl-engine-numpy",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-numpy, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-pandas-001",
+      "title": "Package coordinate tigrbl-engine-pandas",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-pandas, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-pgsqli-wal-001",
+      "title": "Package coordinate tigrbl-engine-pgsqli-wal",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-pgsqli-wal, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-postgres-001",
+      "title": "Package coordinate tigrbl-engine-postgres",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-postgres, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-pyspark-001",
+      "title": "Package coordinate tigrbl-engine-pyspark",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-pyspark, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-redis-001",
+      "title": "Package coordinate tigrbl-engine-redis",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-redis, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-rediscachethrough-001",
+      "title": "Package coordinate tigrbl-engine-rediscachethrough",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-rediscachethrough, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-snowflake-001",
+      "title": "Package coordinate tigrbl-engine-snowflake",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-snowflake, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-sqlite-001",
+      "title": "Package coordinate tigrbl-engine-sqlite",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-sqlite, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-engine-xlsx-001",
+      "title": "Package coordinate tigrbl-engine-xlsx",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-engine-xlsx, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-ops-olap-001",
+      "title": "Package coordinate tigrbl-ops-olap",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-ops-olap, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-ops-oltp-001",
+      "title": "Package coordinate tigrbl-ops-oltp",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-ops-oltp, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-ops-realtime-001",
+      "title": "Package coordinate tigrbl-ops-realtime",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-ops-realtime, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-orm-001",
+      "title": "Package coordinate tigrbl-orm",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-orm, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-spec-001",
+      "title": "Package coordinate tigrbl-spec",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-spec, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-spiffe-001",
+      "title": "Package coordinate tigrbl-spiffe",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-spiffe, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:package-coordinate-tigrbl-typing-001",
+      "title": "Package coordinate tigrbl-typing",
+      "description": "Tracks direct SSOT feature traceability for the active package coordinate tigrbl-typing, including package-level buildability, importability, claim, test, evidence, and certification membership.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:spiffe-httpx-tls-context-adapter-001",
+      "title": "SPIFFE HTTPX TLS context adapter",
+      "description": "The SPIFFE HTTPX client helper applies the TLS helper SSL context to outbound HTTPS clients.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "runtime-contract",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:spiffe-httpx-tls-context-adapter-001"
+      ],
+      "test_ids": [
+        "tst:spiffe-httpx-tls-context-adapter-contract"
+      ],
+      "requires": [
+        "feat:package-coordinate-tigrbl-spiffe-001"
+      ]
+    },
+    {
+      "id": "feat:acme-worker-bounded-queue-001",
+      "title": "ACME worker bounded queue",
+      "description": "ACME worker task queues provide bounded capacity, timeout-aware enqueue/dequeue behavior, observable depth, and close semantics for operational backpressure.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:acme-worker-bounded-queue-001"
+      ],
+      "test_ids": [
+        "tst:acme-worker-bounded-queue-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:spiffe-svid-structural-validator-001",
+      "title": "SPIFFE SVID structural validator",
+      "description": "SvidValidator fails closed for malformed X.509 and JWT SVID material while leaving full cryptographic trust-bundle validation as a separate production target.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [],
+      "claim_ids": [
+        "clm:spiffe-svid-structural-validator-001"
+      ],
+      "test_ids": [
+        "tst:spiffe-svid-structural-validator-contract"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -22169,7 +23158,8 @@
       ],
       "evidence_ids": [
         "evd:http-route-pytest-log",
-        "evd:http-route-registry-validation"
+        "evd:http-route-registry-validation",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -22193,8 +23183,8 @@
       "evidence_ids": [
         "evd:http-route-pytest-log",
         "evd:http-route-registry-validation",
-        "evd:tigrbl-tests-current-failing-pytest",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -22242,7 +23232,8 @@
       ],
       "evidence_ids": [
         "evd:http-route-pytest-log",
-        "evd:http-route-registry-validation"
+        "evd:http-route-registry-validation",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -22287,7 +23278,8 @@
       ],
       "evidence_ids": [
         "evd:http-route-pytest-log",
-        "evd:http-route-registry-validation"
+        "evd:http-route-registry-validation",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -22311,14 +23303,14 @@
       "evidence_ids": [
         "evd:http-route-pytest-log",
         "evd:http-route-registry-validation",
-        "evd:tigrbl-tests-current-failing-pytest",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "tst:jsonrpc-endpoint-binding-contract",
       "title": "Endpoint-keyed JSON-RPC binding contract",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py",
       "feature_ids": [
@@ -22854,7 +23846,8 @@
         "evd:docs-conformance-rfc_security_evidence_map.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
-        "evd:github-workflows-policy-governance.yml"
+        "evd:github-workflows-policy-governance.yml",
+        "evd:security-contract-docs-proof-20260427"
       ]
     },
     {
@@ -22888,7 +23881,8 @@
         "clm:rpc-002",
         "clm:rpc-003",
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:tigrbl-tests-failing-case-closure-001"
+        "clm:tigrbl-tests-failing-case-closure-001",
+        "clm:generated-crud-public-default-auth-policy-20260427"
       ],
       "evidence_ids": [
         "evd:docs-conformance-audit-2026-p11-gate-c-readme.md",
@@ -22904,8 +23898,8 @@
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
         "evd:github-workflows-policy-governance.yml",
-        "evd:tigrbl-tests-current-failing-pytest",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:generated-crud-auth-policy-proof-20260427"
       ]
     },
     {
@@ -22977,7 +23971,8 @@
         "evd:docs-conformance-rfc_security_evidence_map.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
-        "evd:github-workflows-policy-governance.yml"
+        "evd:github-workflows-policy-governance.yml",
+        "evd:security-contract-docs-proof-20260427"
       ]
     },
     {
@@ -23049,7 +24044,8 @@
         "evd:docs-conformance-rfc_security_evidence_map.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
-        "evd:github-workflows-policy-governance.yml"
+        "evd:github-workflows-policy-governance.yml",
+        "evd:security-contract-docs-proof-20260427"
       ]
     },
     {
@@ -23149,8 +24145,8 @@
         "evd:docs-developer-operator_surfaces.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-operator-surface.yml",
-        "evd:tigrbl-tests-current-failing-pytest",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -23224,7 +24220,8 @@
         "evd:docs-developer-operator-readme.md",
         "evd:docs-developer-operator_surfaces.md",
         "evd:github-workflows-evidence-lanes.yml",
-        "evd:github-workflows-operator-surface.yml"
+        "evd:github-workflows-operator-surface.yml",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -23296,13 +24293,14 @@
         "evd:docs-conformance-dev-0.3.18.dev1-gate-results-server-compat-smoke.md",
         "evd:docs-developer-cli_reference.md",
         "evd:github-workflows-cli-smoke.yml",
-        "evd:github-workflows-evidence-lanes.yml"
+        "evd:github-workflows-evidence-lanes.yml",
+        "evd:server-support-cli-contract-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0001",
       "title": "TCASE-0001",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "feature_ids": [
@@ -23316,7 +24314,8 @@
         "clm:next-006"
       ],
       "evidence_ids": [
-        "evd:eart-0038"
+        "evd:eart-0038",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
@@ -23386,7 +24385,7 @@
     {
       "id": "tst:tcase-0003",
       "title": "TCASE-0003",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
       "feature_ids": [
@@ -23396,13 +24395,14 @@
         "clm:next-004"
       ],
       "evidence_ids": [
-        "evd:eart-0066"
+        "evd:eart-0066",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0004",
       "title": "TCASE-0004",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
       "feature_ids": [
@@ -23412,13 +24412,14 @@
         "clm:next-005"
       ],
       "evidence_ids": [
-        "evd:eart-0069"
+        "evd:eart-0069",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0005",
       "title": "TCASE-0005",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
       "feature_ids": [
@@ -23428,13 +24429,14 @@
         "clm:next-004"
       ],
       "evidence_ids": [
-        "evd:eart-0070"
+        "evd:eart-0070",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0006",
       "title": "TCASE-0006",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
       "feature_ids": [
@@ -23444,13 +24446,14 @@
         "clm:next-006"
       ],
       "evidence_ids": [
-        "evd:eart-0071"
+        "evd:eart-0071",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0007",
       "title": "TCASE-0007",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
       "feature_ids": [
@@ -23461,13 +24464,14 @@
         "clm:next-008"
       ],
       "evidence_ids": [
-        "evd:eart-0072"
+        "evd:eart-0072",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0008",
       "title": "TCASE-0008",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
       "feature_ids": [
@@ -23479,13 +24483,14 @@
         "clm:next-010"
       ],
       "evidence_ids": [
-        "evd:eart-0073"
+        "evd:eart-0073",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0009",
       "title": "TCASE-0009",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
       "feature_ids": [
@@ -23497,13 +24502,14 @@
         "clm:next-010"
       ],
       "evidence_ids": [
-        "evd:eart-0074"
+        "evd:eart-0074",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0010",
       "title": "TCASE-0010",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
       "feature_ids": [
@@ -23513,13 +24519,14 @@
         "clm:next-003"
       ],
       "evidence_ids": [
-        "evd:eart-0075"
+        "evd:eart-0075",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "tst:tcase-0011",
       "title": "TCASE-0011",
-      "status": "planned",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
       "feature_ids": [
@@ -23529,7 +24536,8 @@
         "clm:next-009"
       ],
       "evidence_ids": [
-        "evd:eart-0076"
+        "evd:eart-0076",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
@@ -23626,7 +24634,6 @@
       ],
       "evidence_ids": [
         "evd:eart-0086",
-        "evd:tigrbl-tests-current-failing-pytest",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
       ]
     },
@@ -23747,7 +24754,6 @@
       ],
       "evidence_ids": [
         "evd:eart-0088",
-        "evd:tigrbl-tests-current-failing-pytest",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
       ]
     },
@@ -24698,8 +25704,8 @@
     },
     {
       "id": "tst:transport-dispatch-kernelplan-contract",
-      "title": "Transport-dispatch KernelPlan ownership contract",
-      "status": "planned",
+      "title": "Transport dispatch KernelPlan ownership contract",
+      "status": "passing",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py",
       "feature_ids": [
@@ -24721,7 +25727,7 @@
     {
       "id": "tst:transport-dispatch-parity-contract",
       "title": "Transport dispatch parity contract",
-      "status": "skipped",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_transport_dispatch_parity_contract.py",
       "feature_ids": [
@@ -24784,7 +25790,8 @@
         "clm:pre-tx-dependency-execution-contract-001"
       ],
       "evidence_ids": [
-        "evd:pre-tx-dependency-execution-pytest"
+        "evd:pre-tx-dependency-execution-pytest",
+        "evd:security-contract-docs-proof-20260427"
       ]
     },
     {
@@ -28800,7 +29807,6 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-tests-current-failing-pytest",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
         "evd:authn-provider-integration-status-20260424"
       ]
@@ -29495,7 +30501,6 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-tests-current-failing-pytest",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
       ]
     },
@@ -30244,7 +31249,6 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-tests-current-failing-pytest",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
       ]
     },
@@ -30265,7 +31269,6 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-tests-current-failing-pytest",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
       ]
     },
@@ -31061,7 +32064,6 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-tests-current-failing-pytest",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
       ]
     },
@@ -33260,8 +34262,8 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-tests-current-failing-pytest",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -35492,10 +36494,12 @@
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "evidence_ids": [
-        "evd:rust-runtime-demo-docs-surface-pytest"
+        "evd:rust-runtime-demo-docs-surface-pytest",
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
       ]
     },
     {
@@ -35511,10 +36515,12 @@
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "evidence_ids": [
-        "evd:rust-runtime-demo-docs-surface-pytest"
+        "evd:rust-runtime-demo-docs-surface-pytest",
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
       ]
     },
     {
@@ -35530,10 +36536,12 @@
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "evidence_ids": [
-        "evd:rust-runtime-demo-docs-surface-pytest"
+        "evd:rust-runtime-demo-docs-surface-pytest",
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
       ]
     },
     {
@@ -35548,10 +36556,12 @@
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "evidence_ids": [
-        "evd:rust-runtime-demo-docs-surface-pytest"
+        "evd:rust-runtime-demo-docs-surface-pytest",
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
       ]
     },
     {
@@ -36650,7 +37660,7 @@
     {
       "id": "tst:tools-ci-tests-test_packages_buildable_importable.py",
       "title": "Packages under pkgs are buildable and importable",
-      "status": "planned",
+      "status": "passing",
       "kind": "automated",
       "path": "tools/ci/tests/test_packages_buildable_importable.py",
       "feature_ids": [
@@ -37091,10 +38101,12 @@
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "evidence_ids": [
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
       ]
     },
     {
@@ -37408,10 +38420,12 @@
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "evidence_ids": [
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
       ]
     },
     {
@@ -37424,10 +38438,12 @@
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
       ],
       "evidence_ids": [
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
       ]
     },
     {
@@ -38039,6 +39055,123 @@
       "evidence_ids": [
         "evd:eventful-protocol-decorator-surface-contract-pytest"
       ]
+    },
+    {
+      "id": "tst:rfc-8785-jcs-python-contract",
+      "title": "RFC 8785 JCS Python contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_jcs_canonicalization_contract.py",
+      "feature_ids": [
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001"
+      ],
+      "claim_ids": [
+        "clm:rfc-8785-jcs-python-canonicalization-20260427"
+      ],
+      "evidence_ids": [
+        "evd:rfc-8785-jcs-python-proof-20260427"
+      ]
+    },
+    {
+      "id": "tst:package-coordinate-traceability-gap-current",
+      "title": "Package coordinate traceability gap remains current",
+      "status": "passing",
+      "kind": "unit",
+      "path": "tools/ci/tests/test_package_coordinate_traceability.py",
+      "feature_ids": [
+        "feat:package-coordinate-traceability-closure-001",
+        "feat:package-coordinate-tigrbl-acme-ca-001",
+        "feat:package-coordinate-tigrbl-atoms-001",
+        "feat:package-coordinate-tigrbl-canon-001",
+        "feat:package-coordinate-tigrbl-client-001",
+        "feat:package-coordinate-tigrbl-engine-bigquery-001",
+        "feat:package-coordinate-tigrbl-engine-clickhouse-001",
+        "feat:package-coordinate-tigrbl-engine-csv-001",
+        "feat:package-coordinate-tigrbl-engine-dataframe-001",
+        "feat:package-coordinate-tigrbl-engine-duckdb-001",
+        "feat:package-coordinate-tigrbl-engine-inmemcache-001",
+        "feat:package-coordinate-tigrbl-engine-inmemory-001",
+        "feat:package-coordinate-tigrbl-engine-membloom-001",
+        "feat:package-coordinate-tigrbl-engine-memdedupe-001",
+        "feat:package-coordinate-tigrbl-engine-memkv-001",
+        "feat:package-coordinate-tigrbl-engine-memlru-001",
+        "feat:package-coordinate-tigrbl-engine-mempubsub-001",
+        "feat:package-coordinate-tigrbl-engine-memqueue-001",
+        "feat:package-coordinate-tigrbl-engine-memrate-001",
+        "feat:package-coordinate-tigrbl-engine-numpy-001",
+        "feat:package-coordinate-tigrbl-engine-pandas-001",
+        "feat:package-coordinate-tigrbl-engine-pgsqli-wal-001",
+        "feat:package-coordinate-tigrbl-engine-postgres-001",
+        "feat:package-coordinate-tigrbl-engine-pyspark-001",
+        "feat:package-coordinate-tigrbl-engine-redis-001",
+        "feat:package-coordinate-tigrbl-engine-rediscachethrough-001",
+        "feat:package-coordinate-tigrbl-engine-snowflake-001",
+        "feat:package-coordinate-tigrbl-engine-sqlite-001",
+        "feat:package-coordinate-tigrbl-engine-xlsx-001",
+        "feat:package-coordinate-tigrbl-ops-olap-001",
+        "feat:package-coordinate-tigrbl-ops-oltp-001",
+        "feat:package-coordinate-tigrbl-ops-realtime-001",
+        "feat:package-coordinate-tigrbl-orm-001",
+        "feat:package-coordinate-tigrbl-spec-001",
+        "feat:package-coordinate-tigrbl-spiffe-001",
+        "feat:package-coordinate-tigrbl-typing-001"
+      ],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "evidence_ids": [
+        "evd:package-coordinate-traceability-plan-20260428"
+      ]
+    },
+    {
+      "id": "tst:spiffe-httpx-tls-context-adapter-contract",
+      "title": "SPIFFE HTTPX TLS context adapter contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/apps/tigrbl_spiffe/tests/test_adapters.py",
+      "feature_ids": [
+        "feat:spiffe-httpx-tls-context-adapter-001"
+      ],
+      "claim_ids": [
+        "clm:spiffe-httpx-tls-context-adapter-001"
+      ],
+      "evidence_ids": [
+        "evd:spiffe-httpx-tls-context-adapter-proof-20260428"
+      ]
+    },
+    {
+      "id": "tst:acme-worker-bounded-queue-contract",
+      "title": "ACME worker bounded queue contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/apps/tigrbl_acme_ca/tests/test_worker_queue.py",
+      "feature_ids": [
+        "feat:acme-worker-bounded-queue-001"
+      ],
+      "claim_ids": [
+        "clm:acme-worker-bounded-queue-001"
+      ],
+      "evidence_ids": [
+        "evd:acme-worker-bounded-queue-proof-20260428"
+      ]
+    },
+    {
+      "id": "tst:spiffe-svid-structural-validator-contract",
+      "title": "SPIFFE SVID structural validator contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/apps/tigrbl_spiffe/tests/test_svid_validator.py",
+      "feature_ids": [
+        "feat:spiffe-svid-structural-validator-001"
+      ],
+      "claim_ids": [
+        "clm:spiffe-svid-structural-validator-001"
+      ],
+      "evidence_ids": [
+        "evd:spiffe-svid-structural-validator-proof-20260428"
+      ]
     }
   ],
   "claims": [
@@ -38417,7 +39550,7 @@
     {
       "id": "clm:docs-support-001",
       "title": "OpenAPI, OpenRPC, AsyncAPI, and JSON Schema read from canonical metadata sources.",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "OpenAPI consumes route-facing metadata from Route plus bindings/models/schemas, while OpenRPC, AsyncAPI, and JSON Schema continue to derive from their canonical op, binding, and schema inputs without a docs-owned route registry.",
@@ -38432,13 +39565,14 @@
       "evidence_ids": [
         "evd:http-route-pytest-log",
         "evd:http-route-registry-validation",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:docs-support-002",
       "title": "Documentation endpoints mount as ordinary routes and normalized route-backed ops.",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Documentation and system endpoints are mounted as ordinary imperative routes, set inherit_owner_dependencies=False where required, and normalize into the same __tigrbl_route_ops__ carrier without any surface_kind abstraction.",
@@ -38454,7 +39588,8 @@
       "evidence_ids": [
         "evd:http-route-pytest-log",
         "evd:http-route-registry-validation",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -39369,7 +40504,7 @@
     {
       "id": "clm:http-route-001",
       "title": "HTTP routes are concrete op aliases with HttpRestBindingSpec bindings.",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Binding-first REST decorators materialize concrete custom ops through op_ctx(bindings=(HttpRestBindingSpec(...), ...)), and imperative HTTP routes normalize equivalent route-backed ops into the owner-local __tigrbl_route_ops__ spec carrier.",
@@ -39382,13 +40517,14 @@
       ],
       "evidence_ids": [
         "evd:http-route-pytest-log",
-        "evd:http-route-registry-validation"
+        "evd:http-route-registry-validation",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:http-route-002",
       "title": "System document HTTP routes use the same concrete registration path as user routes.",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "OpenAPI, OpenRPC, AsyncAPI, JSON Schema, Swagger, Lens, favicon, and diagnostics endpoints mount as ordinary routes and normalize into the same route-backed op carrier as user-defined imperative routes.",
@@ -39404,13 +40540,14 @@
       "evidence_ids": [
         "evd:http-route-pytest-log",
         "evd:http-route-registry-validation",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:http-route-003",
       "title": "Deprecated tigrbl_canon HTTP route registration surfaces are removed from the active line.",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The active line exposes no separate HTTP route registration subsystem: module-level route_ctx(...) and route(...) are removed, register_http_route(...) is absent, and route normalization happens through ordinary decorators and imperative route ownership.",
@@ -39422,13 +40559,14 @@
       ],
       "evidence_ids": [
         "evd:http-route-pytest-log",
-        "evd:http-route-registry-validation"
+        "evd:http-route-registry-validation",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:jsonrpc-endpoint-key-001",
       "title": "JSON-RPC multiplexed ingress uses endpoint-keyed bindings and core-owned default endpoint mappings.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The transport-dispatch track records endpoint-keyed JSON-RPC binding identity and core-owned default endpoint constants and mappings.",
@@ -39510,7 +40648,7 @@
     {
       "id": "clm:next-003",
       "title": "DataTypeSpec and StorageTypeRef define the active canonical semantic datatype center for the next target.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39528,13 +40666,14 @@
         "evd:eart-0033",
         "evd:eart-0044",
         "evd:eart-0075",
-        "evd:eart-0078"
+        "evd:eart-0078",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "clm:next-004",
       "title": "ColumnSpec.datatype is the canonical datatype attachment point on the active next-target line.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39552,13 +40691,14 @@
         "evd:eart-0066",
         "evd:eart-0067",
         "evd:eart-0070",
-        "evd:eart-0077"
+        "evd:eart-0077",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "clm:next-005",
       "title": "TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype contract on the active next-target line.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39576,13 +40716,14 @@
         "evd:eart-0037",
         "evd:eart-0044",
         "evd:eart-0069",
-        "evd:eart-0078"
+        "evd:eart-0078",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "clm:next-006",
       "title": "EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned lowering on the active next-target line.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39601,13 +40742,14 @@
         "evd:eart-0035",
         "evd:eart-0044",
         "evd:eart-0071",
-        "evd:eart-0078"
+        "evd:eart-0078",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "clm:next-007",
       "title": "ReflectedTypeMapper governs reverse mapping and reflection import behavior on the active next-target line.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39625,13 +40767,14 @@
         "evd:eart-0036",
         "evd:eart-0044",
         "evd:eart-0073",
-        "evd:eart-0078"
+        "evd:eart-0078",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "clm:next-008",
       "title": "Relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39647,13 +40790,14 @@
         "evd:eart-0007",
         "evd:eart-0044",
         "evd:eart-0072",
-        "evd:eart-0078"
+        "evd:eart-0078",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "clm:next-009",
       "title": "Table portability and interoperability rules are specified as governed next-target work on the active line.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39668,13 +40812,14 @@
         "evd:eart-0007",
         "evd:eart-0044",
         "evd:eart-0076",
-        "evd:eart-0080"
+        "evd:eart-0080",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
       "id": "clm:next-010",
       "title": "Reflection-driven round-trip schema recovery is defined with best-effort and metadata-preserving modes on the active next-target line.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -39692,7 +40837,8 @@
         "evd:eart-0036",
         "evd:eart-0044",
         "evd:eart-0074",
-        "evd:eart-0078"
+        "evd:eart-0078",
+        "evd:datatype-table-program-proof-20260427"
       ]
     },
     {
@@ -40432,7 +41578,8 @@
         "evd:docs-conformance-implementation_map.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:security-contract-docs-proof-20260427"
       ]
     },
     {
@@ -40546,7 +41693,7 @@
     {
       "id": "clm:op-003",
       "title": "OP-003 mapped claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-003.",
@@ -40565,13 +41712,14 @@
         "evd:docs-developer-operator_surfaces.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-operator-surface.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:op-004",
       "title": "OP-004 mapped claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-004.",
@@ -40590,13 +41738,14 @@
         "evd:docs-developer-operator_surfaces.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-operator-surface.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:op-005",
       "title": "OP-005 mapped claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-005.",
@@ -40615,13 +41764,14 @@
         "evd:docs-developer-operator_surfaces.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-operator-surface.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:op-006",
       "title": "OP-006 mapped claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-006.",
@@ -40640,13 +41790,14 @@
         "evd:docs-developer-operator_surfaces.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-operator-surface.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
       "id": "clm:op-007",
       "title": "OP-007 mapped claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-007.",
@@ -40665,7 +41816,8 @@
         "evd:docs-developer-operator_surfaces.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-operator-surface.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -41187,7 +42339,8 @@
         "evd:docs-conformance-implementation_map.md",
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:security-contract-docs-proof-20260427"
       ]
     },
     {
@@ -41418,7 +42571,7 @@
     {
       "id": "clm:transport-parity-contract-001",
       "title": "REST and JSON-RPC parity remains the governed semantic contract for the shared transport-dispatch path.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The transport-dispatch track preserves REST and JSON-RPC parity as a semantic contract and rejects test-only relaxation as the repair strategy.",
@@ -41449,7 +42602,7 @@
     {
       "id": "clm:server-support-tigrcorn-001",
       "title": "Tigrcorn is part of the governed supported server set.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Tigrcorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -41459,12 +42612,14 @@
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
-      "evidence_ids": []
+      "evidence_ids": [
+        "evd:server-support-cli-contract-proof-20260427"
+      ]
     },
     {
       "id": "clm:server-support-uvicorn-001",
       "title": "Uvicorn is part of the governed supported server set.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Uvicorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -41474,12 +42629,14 @@
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
-      "evidence_ids": []
+      "evidence_ids": [
+        "evd:server-support-cli-contract-proof-20260427"
+      ]
     },
     {
       "id": "clm:server-support-hypercorn-001",
       "title": "Hypercorn is part of the governed supported server set.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Hypercorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -41489,12 +42646,14 @@
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
-      "evidence_ids": []
+      "evidence_ids": [
+        "evd:server-support-cli-contract-proof-20260427"
+      ]
     },
     {
       "id": "clm:server-support-gunicorn-001",
       "title": "Gunicorn is part of the governed supported server set.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Gunicorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -41504,12 +42663,14 @@
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
-      "evidence_ids": []
+      "evidence_ids": [
+        "evd:server-support-cli-contract-proof-20260427"
+      ]
     },
     {
       "id": "clm:server-support-daphne-001",
       "title": "Daphne is tracked but out of bounds for first-class server support.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Daphne is explicitly tracked as out-of-bounds and must not be treated as governed first-class server support unless a future boundary change accepts it.",
@@ -41519,12 +42680,14 @@
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
-      "evidence_ids": []
+      "evidence_ids": [
+        "evd:server-support-cli-contract-proof-20260427"
+      ]
     },
     {
       "id": "clm:server-support-twisted-001",
       "title": "Twisted is tracked but out of bounds for first-class server support.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Twisted is explicitly tracked as out-of-bounds and must not be treated as governed first-class server support unless a future boundary change accepts it.",
@@ -41534,12 +42697,14 @@
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
-      "evidence_ids": []
+      "evidence_ids": [
+        "evd:server-support-cli-contract-proof-20260427"
+      ]
     },
     {
       "id": "clm:server-support-granian-001",
       "title": "Granian is tracked but out of bounds for first-class server support.",
-      "status": "declared",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Granian is explicitly tracked as out-of-bounds and must not be treated as governed first-class server support unless a future boundary change accepts it.",
@@ -41549,12 +42714,14 @@
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
       ],
-      "evidence_ids": []
+      "evidence_ids": [
+        "evd:server-support-cli-contract-proof-20260427"
+      ]
     },
     {
       "id": "clm:pre-tx-dependency-execution-contract-001",
       "title": "Pre-TX dependencies execute before transaction and handler",
-      "status": "evidenced",
+      "status": "certified",
       "tier": "T2",
       "kind": "behavioral-contract",
       "description": "Security and extra dependencies declared on OpSpec execute in PRE_TX before transaction begin and abort handler execution on failure.",
@@ -41569,7 +42736,8 @@
         "tst:pre-tx-dependency-single-execution-contract"
       ],
       "evidence_ids": [
-        "evd:pre-tx-dependency-execution-pytest"
+        "evd:pre-tx-dependency-execution-pytest",
+        "evd:security-contract-docs-proof-20260427"
       ]
     },
     {
@@ -41595,7 +42763,7 @@
     {
       "id": "clm:appspec-routerspec-composition-contract-001",
       "title": "AppSpec and RouterSpec nested composition remains typed",
-      "status": "evidenced",
+      "status": "certified",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "AppSpec accepts RouterSpec instances whose router-owned tables carry model_ref, response, operations, storage, field, IO, and foreign-key metadata without unresolved string surfaces.",
@@ -42175,7 +43343,7 @@
     {
       "id": "clm:tigrbl-tests-failure-closure-001",
       "title": "tigrbl_tests failing-case closure passes",
-      "status": "evidenced",
+      "status": "certified",
       "tier": "T2",
       "kind": "test_closure",
       "description": "All test cases that were failing in the tigrbl_tests failure-closure lane are included in the boundary and pass in the final full tigrbl_tests run.",
@@ -42321,7 +43489,8 @@
       "evidence_ids": [
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
         "evd:rust-runtime-demo-docs-surface-pytest",
-        "evd:authn-provider-integration-status-20260424"
+        "evd:authn-provider-integration-status-20260424",
+        "evd:operator-docs-http-surface-20260427"
       ]
     },
     {
@@ -43563,7 +44732,7 @@
     {
       "id": "clm:pkg-buildability-importability-001",
       "title": "Package buildability and importability coverage",
-      "status": "proposed",
+      "status": "certified",
       "tier": "T2",
       "kind": "package-quality",
       "description": "All packages under pkgs are importable and syntax-checked under the package buildability-and-importability spec.",
@@ -44347,6 +45516,171 @@
       ],
       "evidence_ids": [
         "evd:eventful-protocol-decorator-surface-contract-pytest"
+      ]
+    },
+    {
+      "id": "clm:generated-crud-public-default-auth-policy-20260427",
+      "title": "Generated CRUD public default auth policy is explicit",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "security-contract",
+      "description": "Generated CRUD operations are public by default unless security dependencies are configured, and OpenAPI/OpenRPC documentation explicitly projects public-by-default or protected policy state.",
+      "feature_ids": [
+        "feat:security-policy",
+        "feat:oas-005",
+        "feat:openrpc-126-json-surface-001",
+        "feat:jsonrpc-20-runtime-surface-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+      ],
+      "evidence_ids": [
+        "evd:generated-crud-auth-policy-proof-20260427"
+      ]
+    },
+    {
+      "id": "clm:rfc-8785-jcs-python-canonicalization-20260427",
+      "title": "RFC 8785 JCS Python canonicalization passes",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "The core tigrbl_core package owns deterministic canonical JSON bytes and rejects non-finite JSON numbers for proof-bound payloads; the tigrbl facade only re-exports the helper.",
+      "feature_ids": [
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001"
+      ],
+      "test_ids": [
+        "tst:rfc-8785-jcs-python-contract"
+      ],
+      "evidence_ids": [
+        "evd:rfc-8785-jcs-python-proof-20260427"
+      ]
+    },
+    {
+      "id": "clm:package-coordinate-traceability-closure-001",
+      "title": "Package coordinates require direct feature traceability",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "governance",
+      "description": "Every active package coordinate under pkgs must be directly visible in SSOT feature, claim, test, and evidence chains before package-wide certification can close.",
+      "feature_ids": [
+        "feat:package-coordinate-traceability-closure-001",
+        "feat:package-coordinate-tigrbl-acme-ca-001",
+        "feat:package-coordinate-tigrbl-atoms-001",
+        "feat:package-coordinate-tigrbl-canon-001",
+        "feat:package-coordinate-tigrbl-client-001",
+        "feat:package-coordinate-tigrbl-engine-bigquery-001",
+        "feat:package-coordinate-tigrbl-engine-clickhouse-001",
+        "feat:package-coordinate-tigrbl-engine-csv-001",
+        "feat:package-coordinate-tigrbl-engine-dataframe-001",
+        "feat:package-coordinate-tigrbl-engine-duckdb-001",
+        "feat:package-coordinate-tigrbl-engine-inmemcache-001",
+        "feat:package-coordinate-tigrbl-engine-inmemory-001",
+        "feat:package-coordinate-tigrbl-engine-membloom-001",
+        "feat:package-coordinate-tigrbl-engine-memdedupe-001",
+        "feat:package-coordinate-tigrbl-engine-memkv-001",
+        "feat:package-coordinate-tigrbl-engine-memlru-001",
+        "feat:package-coordinate-tigrbl-engine-mempubsub-001",
+        "feat:package-coordinate-tigrbl-engine-memqueue-001",
+        "feat:package-coordinate-tigrbl-engine-memrate-001",
+        "feat:package-coordinate-tigrbl-engine-numpy-001",
+        "feat:package-coordinate-tigrbl-engine-pandas-001",
+        "feat:package-coordinate-tigrbl-engine-pgsqli-wal-001",
+        "feat:package-coordinate-tigrbl-engine-postgres-001",
+        "feat:package-coordinate-tigrbl-engine-pyspark-001",
+        "feat:package-coordinate-tigrbl-engine-redis-001",
+        "feat:package-coordinate-tigrbl-engine-rediscachethrough-001",
+        "feat:package-coordinate-tigrbl-engine-snowflake-001",
+        "feat:package-coordinate-tigrbl-engine-sqlite-001",
+        "feat:package-coordinate-tigrbl-engine-xlsx-001",
+        "feat:package-coordinate-tigrbl-ops-olap-001",
+        "feat:package-coordinate-tigrbl-ops-oltp-001",
+        "feat:package-coordinate-tigrbl-ops-realtime-001",
+        "feat:package-coordinate-tigrbl-orm-001",
+        "feat:package-coordinate-tigrbl-spec-001",
+        "feat:package-coordinate-tigrbl-spiffe-001",
+        "feat:package-coordinate-tigrbl-typing-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "evidence_ids": [
+        "evd:package-coordinate-traceability-plan-20260428"
+      ]
+    },
+    {
+      "id": "clm:spiffe-httpx-tls-context-adapter-001",
+      "title": "SPIFFE HTTPX clients use helper TLS context",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "runtime_contract",
+      "description": "The SPIFFE HTTPX client helper must pass the TLS helper SSL context into httpx.AsyncClient so outbound HTTPS clients honor configured SPIFFE TLS material.",
+      "feature_ids": [
+        "feat:spiffe-httpx-tls-context-adapter-001"
+      ],
+      "test_ids": [
+        "tst:spiffe-httpx-tls-context-adapter-contract"
+      ],
+      "evidence_ids": [
+        "evd:spiffe-httpx-tls-context-adapter-proof-20260428"
+      ]
+    },
+    {
+      "id": "clm:acme-worker-bounded-queue-001",
+      "title": "ACME worker queues enforce bounded backpressure",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "operational-hardening",
+      "description": "The ACME worker fallback queue is bounded, supports timeout-aware producer backpressure and consumer idle behavior, exposes queue depth, and rejects new work after closure while draining existing work.",
+      "feature_ids": [
+        "feat:acme-worker-bounded-queue-001"
+      ],
+      "test_ids": [
+        "tst:acme-worker-bounded-queue-contract"
+      ],
+      "evidence_ids": [
+        "evd:acme-worker-bounded-queue-proof-20260428"
+      ]
+    },
+    {
+      "id": "clm:runtime-doc-endpoint-parity-contract-20260428",
+      "title": "Runtime documentation endpoint parity is certified",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "conformance-claim",
+      "description": "Runtime documentation endpoint behavior is isolated from operation routing and exposes the governed favicon, Swagger UIX, Lens UIX, and custom documentation UI path contracts.",
+      "feature_ids": [
+        "feat:runtime-executor-doc-endpoint-parity-001"
+      ],
+      "test_ids": [
+        "tst:rust-runtime-demo-favicon-routes",
+        "tst:rust-runtime-demo-swagger-uix",
+        "tst:rust-runtime-demo-lens-uix",
+        "tst:rust-runtime-demo-console-logs",
+        "tst:runtime-doc-endpoint-browser-contract",
+        "tst:runtime-doc-endpoint-isolation-contract",
+        "tst:runtime-doc-custom-ui-path-contract"
+      ],
+      "evidence_ids": [
+        "evd:runtime-doc-endpoint-parity-proof-20260428"
+      ]
+    },
+    {
+      "id": "clm:spiffe-svid-structural-validator-001",
+      "title": "SPIFFE SVID structural validation is fail closed",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "extension-hardening",
+      "description": "SvidValidator rejects malformed X.509 and JWT SVID material, JWT alg none, expired tokens, premature tokens, and audience mismatches without claiming full cryptographic chain validation.",
+      "feature_ids": [
+        "feat:spiffe-svid-structural-validator-001"
+      ],
+      "test_ids": [
+        "tst:spiffe-svid-structural-validator-contract"
+      ],
+      "evidence_ids": [
+        "evd:spiffe-svid-structural-validator-proof-20260428"
       ]
     }
   ],
@@ -47748,11 +49082,11 @@
     },
     {
       "id": "evd:transport-dispatch-jsonrpc-test",
-      "title": "Endpoint-keyed JSON-RPC binding contract test placeholder",
-      "status": "planned",
+      "title": "JSON-RPC endpoint binding contract test",
+      "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py",
+      "path": ".ssot/reports/transport-dispatch-parity-proof-2026-04-27.md",
       "claim_ids": [
         "clm:binding-driven-ingress-001",
         "clm:jsonrpc-endpoint-key-001"
@@ -47763,11 +49097,11 @@
     },
     {
       "id": "evd:transport-dispatch-kernelplan-test",
-      "title": "Transport-dispatch KernelPlan contract test placeholder",
-      "status": "planned",
+      "title": "Transport dispatch KernelPlan selector proof",
+      "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py",
+      "path": ".ssot/reports/transport-dispatch-kernelplan-proof-2026-04-28.md",
       "claim_ids": [
         "clm:transport-bypass-removal-001",
         "clm:binding-driven-ingress-001",
@@ -47780,11 +49114,11 @@
     },
     {
       "id": "evd:transport-dispatch-parity-test",
-      "title": "Transport-dispatch parity contract test placeholder",
-      "status": "planned",
+      "title": "Transport-dispatch parity contract test",
+      "status": "passed",
       "kind": "artifact",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/test_transport_dispatch_parity_contract.py",
+      "path": ".ssot/reports/transport-dispatch-parity-proof-2026-04-27.md",
       "claim_ids": [
         "clm:transport-parity-contract-001"
       ],
@@ -47843,7 +49177,7 @@
       "status": "passed",
       "kind": "pytest",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_tests/v4/tests/spec/test_master_app_spec_surface.py",
+      "path": ".ssot/reports/appspec-routerspec-composition-proof-2026-04-27.md",
       "claim_ids": [
         "clm:appspec-routerspec-composition-contract-001"
       ],
@@ -48366,20 +49700,7 @@
       "tier": "T2",
       "path": ".ssot/reports/tigrbl-tests-current-failing-pytest.txt",
       "claim_ids": [],
-      "test_ids": [
-        "tst:http-route-jsonrpc-openrpc-surface",
-        "tst:http-route-websocket-binding-slice",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
-        "tst:tcase-0013",
-        "tst:tcase-0015",
-        "tst:tigrbl-tests-tests-i9n-test-authn-provider-integration",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
-        "tst:tigrbl-tests-tests-perf-test-tigrbl-create-call-graph",
-        "tst:tigrbl-tests-tests-perf-test-tigrbl-vs-fastapi-create-benchmark",
-        "tst:tigrbl-tests-tests-unit-runtime-test-atom-stage-window-static",
-        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs"
-      ]
+      "test_ids": []
     },
     {
       "id": "evd:monotone-spec-merge-targeted-pytest",
@@ -49087,8 +50408,8 @@
     },
     {
       "id": "evd:pkg-buildability-importability-001",
-      "title": "Package buildability and importability evidence (planned)",
-      "status": "planned",
+      "title": "Package buildability and importability evidence",
+      "status": "passed",
       "kind": "report",
       "tier": "T2",
       "path": ".ssot/reports/package-buildability-importability.md",
@@ -49759,13 +51080,227 @@
       "test_ids": [
         "tst:eventful-protocol-decorator-surface-contract"
       ]
+    },
+    {
+      "id": "evd:operator-docs-http-surface-20260427",
+      "title": "Operator, documentation, and HTTP surface pytest evidence 2026-04-27",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/operator-docs-http-surface-evidence-2026-04-27.md",
+      "claim_ids": [
+        "clm:docs-support-001",
+        "clm:docs-support-002",
+        "clm:http-route-001",
+        "clm:http-route-002",
+        "clm:http-route-003",
+        "clm:op-003",
+        "clm:op-004",
+        "clm:op-005",
+        "clm:op-006",
+        "clm:op-007",
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:http-route-registration-unit",
+        "tst:http-route-system-docs-builders",
+        "tst:http-route-decorator-surface",
+        "tst:http-route-jsonrpc-openrpc-surface",
+        "tst:http-route-websocket-binding-slice",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
+        "tst:tigrbl-tests-tests-unit-test-declared-surface-docs"
+      ]
+    },
+    {
+      "id": "evd:security-contract-docs-proof-20260427",
+      "title": "Security contract documentation proof",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/security-contract-docs-proof-2026-04-27.md",
+      "claim_ids": [
+        "clm:oas-005",
+        "clm:rpc-002",
+        "clm:pre-tx-dependency-execution-contract-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
+        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py"
+      ]
+    },
+    {
+      "id": "evd:generated-crud-auth-policy-proof-20260427",
+      "title": "Generated CRUD auth policy proof",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/generated-crud-auth-policy-proof-2026-04-27.md",
+      "claim_ids": [
+        "clm:generated-crud-public-default-auth-policy-20260427"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+      ]
+    },
+    {
+      "id": "evd:datatype-table-program-proof-20260427",
+      "title": "Datatype and table program proof",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/reports/datatype-table-program-proof-2026-04-27.md",
+      "claim_ids": [
+        "clm:next-003",
+        "clm:next-004",
+        "clm:next-005",
+        "clm:next-006",
+        "clm:next-007",
+        "clm:next-008",
+        "clm:next-009",
+        "clm:next-010"
+      ],
+      "test_ids": [
+        "tst:tcase-0001",
+        "tst:tcase-0003",
+        "tst:tcase-0004",
+        "tst:tcase-0005",
+        "tst:tcase-0006",
+        "tst:tcase-0007",
+        "tst:tcase-0008",
+        "tst:tcase-0009",
+        "tst:tcase-0010",
+        "tst:tcase-0011"
+      ]
+    },
+    {
+      "id": "evd:rfc-8785-jcs-python-proof-20260427",
+      "title": "RFC 8785 JCS Python proof",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/reports/rfc-8785-jcs-python-proof-2026-04-27.md",
+      "claim_ids": [
+        "clm:rfc-8785-jcs-python-canonicalization-20260427"
+      ],
+      "test_ids": [
+        "tst:rfc-8785-jcs-python-contract"
+      ]
+    },
+    {
+      "id": "evd:server-support-cli-contract-proof-20260427",
+      "title": "Server support CLI contract proof",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/server-support-cli-contract-proof-2026-04-27.md",
+      "claim_ids": [
+        "clm:server-support-tigrcorn-001",
+        "clm:server-support-uvicorn-001",
+        "clm:server-support-hypercorn-001",
+        "clm:server-support-gunicorn-001",
+        "clm:server-support-daphne-001",
+        "clm:server-support-twisted-001",
+        "clm:server-support-granian-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_cli_srv.py"
+      ]
+    },
+    {
+      "id": "evd:package-coordinate-traceability-plan-20260428",
+      "title": "Package coordinate traceability plan report",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": ".ssot/reports/package-coordinate-traceability-plan-2026-04-28.md",
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ]
+    },
+    {
+      "id": "evd:certifiable-package-delivery-plan-20260428",
+      "title": "Certifiable package delivery plan audit",
+      "status": "collected",
+      "kind": "report",
+      "tier": "T2",
+      "path": ".ssot/reports/certifiable-package-delivery-plan-2026-04-28.md",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:spiffe-httpx-tls-context-adapter-proof-20260428",
+      "title": "SPIFFE HTTPX TLS context adapter proof",
+      "status": "passed",
+      "kind": "test_run",
+      "tier": "T2",
+      "path": ".ssot/reports/spiffe-httpx-tls-context-adapter-proof-2026-04-28.md",
+      "claim_ids": [
+        "clm:spiffe-httpx-tls-context-adapter-001"
+      ],
+      "test_ids": [
+        "tst:spiffe-httpx-tls-context-adapter-contract"
+      ]
+    },
+    {
+      "id": "evd:acme-worker-bounded-queue-proof-20260428",
+      "title": "ACME worker bounded queue proof",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/acme-worker-queue-proof-2026-04-28.md",
+      "claim_ids": [
+        "clm:acme-worker-bounded-queue-001"
+      ],
+      "test_ids": [
+        "tst:acme-worker-bounded-queue-contract"
+      ]
+    },
+    {
+      "id": "evd:runtime-doc-endpoint-parity-proof-20260428",
+      "title": "Runtime documentation endpoint parity proof",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/runtime-doc-endpoint-parity-proof-2026-04-28.md",
+      "claim_ids": [
+        "clm:runtime-doc-endpoint-parity-contract-20260428"
+      ],
+      "test_ids": [
+        "tst:rust-runtime-demo-favicon-routes",
+        "tst:rust-runtime-demo-swagger-uix",
+        "tst:rust-runtime-demo-lens-uix",
+        "tst:rust-runtime-demo-console-logs",
+        "tst:runtime-doc-endpoint-browser-contract",
+        "tst:runtime-doc-endpoint-isolation-contract",
+        "tst:runtime-doc-custom-ui-path-contract"
+      ]
+    },
+    {
+      "id": "evd:spiffe-svid-structural-validator-proof-20260428",
+      "title": "SPIFFE SVID structural validator proof",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": ".ssot/reports/spiffe-svid-structural-validator-proof-2026-04-28.md",
+      "claim_ids": [
+        "clm:spiffe-svid-structural-validator-001"
+      ],
+      "test_ids": [
+        "tst:spiffe-svid-structural-validator-contract"
+      ]
     }
   ],
   "issues": [
     {
       "id": "iss:jsonrpc-create-missing-required-fields-leaks-persistence-errors-001",
       "title": "JSON-RPC create with missing required fields leaks persistence internals",
-      "status": "open",
+      "status": "closed",
       "severity": "high",
       "description": "JSON-RPC table-backed CRUD dispatch allows Thing.create-style requests with missing required create params to reach persistence, causing database NOT NULL failures and leaking SQLAlchemy/DBAPI details, SQL text, table/column names, and bound parameters in the JSON-RPC -32602 response. Framework must validate generated operation input before persistence and sanitize persistence exceptions at the JSON-RPC boundary.",
       "plan": {
@@ -49806,73 +51341,528 @@
     {
       "id": "iss:openapi-generated-operations-missing-auth-security-001",
       "title": "OpenAPI generated operations do not declare authentication",
-      "status": "open",
+      "status": "closed",
       "severity": "high",
       "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, /openapi.json exposes generated CRUD operations with components.securitySchemes absent and zero operations carrying security requirements. Runtime and contract policy must agree: protected operations should emit security schemes and requirements; public operations should be explicitly limited and documented.",
       "plan": {
         "horizon": "current",
         "slot": "security-contract-auth-metadata"
       },
-      "feature_ids": [],
-      "claim_ids": [],
-      "test_ids": [],
-      "evidence_ids": [],
+      "feature_ids": [
+        "feat:oas-005",
+        "feat:openapi-31-document-emission-001"
+      ],
+      "claim_ids": [
+        "clm:oas-005"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py"
+      ],
+      "evidence_ids": [
+        "evd:security-contract-docs-proof-20260427"
+      ],
       "risk_ids": [],
       "release_blocking": true
     },
     {
       "id": "iss:openrpc-generated-methods-missing-auth-security-001",
       "title": "OpenRPC generated methods do not declare authentication",
-      "status": "open",
+      "status": "closed",
       "severity": "high",
       "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, /openrpc.json exposes generated JSON-RPC methods with an empty components.securitySchemes object and zero methods carrying security requirements. Runtime and OpenRPC contract policy must agree: protected methods should declare the security scheme and requirement; public methods should be explicitly identified as unauthenticated.",
       "plan": {
         "horizon": "current",
         "slot": "security-contract-auth-metadata"
       },
-      "feature_ids": [],
-      "claim_ids": [],
-      "test_ids": [],
-      "evidence_ids": [],
+      "feature_ids": [
+        "feat:oas-005",
+        "feat:openrpc-126-json-surface-001"
+      ],
+      "claim_ids": [
+        "clm:oas-005",
+        "clm:rpc-002"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py"
+      ],
+      "evidence_ids": [
+        "evd:security-contract-docs-proof-20260427"
+      ],
       "risk_ids": [],
       "release_blocking": true
     },
     {
       "id": "iss:generated-rest-read-allows-unauthenticated-access-001",
       "title": "Generated REST read allows unauthenticated access",
-      "status": "open",
+      "status": "closed",
       "severity": "critical",
       "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, GET /tenant without an Authorization header returns HTTP 200 OK with tenant records. If generated CRUD routes are protected by default, the request should fail with 401 or 403. If generated CRUD routes are public by default, that public policy must be explicit in the generated contract.",
       "plan": {
         "horizon": "current",
         "slot": "security-contract-auth-enforcement"
       },
-      "feature_ids": [],
-      "claim_ids": [],
-      "test_ids": [],
-      "evidence_ids": [],
-      "risk_ids": [],
+      "feature_ids": [
+        "feat:security-policy",
+        "feat:oas-005"
+      ],
+      "claim_ids": [
+        "clm:generated-crud-public-default-auth-policy-20260427"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+      ],
+      "evidence_ids": [
+        "evd:generated-crud-auth-policy-proof-20260427"
+      ],
+      "risk_ids": [
+        "rsk:security-contract-auth-drift-001"
+      ],
       "release_blocking": true
     },
     {
       "id": "iss:generated-jsonrpc-read-allows-unauthenticated-access-001",
       "title": "Generated JSON-RPC read allows unauthenticated access",
-      "status": "open",
+      "status": "closed",
       "severity": "critical",
       "description": "Against a service built on tigrbl==0.3.30.dev1 and tigrbl_runtime==0.1.12.dev1, POST /rpc calling Tenant.list without an Authorization header returns HTTP 200 with a JSON-RPC result payload. If generated JSON-RPC methods are protected by default, unauthenticated calls should fail with an authentication or authorization error. If generated JSON-RPC methods are public by default, that public policy must be explicit in OpenRPC.",
       "plan": {
         "horizon": "current",
         "slot": "security-contract-auth-enforcement"
       },
-      "feature_ids": [],
+      "feature_ids": [
+        "feat:security-policy",
+        "feat:openrpc-126-json-surface-001",
+        "feat:jsonrpc-20-runtime-surface-001"
+      ],
+      "claim_ids": [
+        "clm:generated-crud-public-default-auth-policy-20260427"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+      ],
+      "evidence_ids": [
+        "evd:generated-crud-auth-policy-proof-20260427"
+      ],
+      "risk_ids": [
+        "rsk:security-contract-auth-drift-001"
+      ],
+      "release_blocking": true
+    },
+    {
+      "id": "iss:active-line-certification-closure-blocked-001",
+      "title": "Active line certification closure is blocked",
+      "status": "open",
+      "severity": "critical",
+      "description": "The active tigrbl line cannot be claimed fully featured, fully conformant, or fully compliant until current, explicit, and next-target partial or absent features are implemented, tested, claimed, evidenced, and certified.",
+      "plan": {
+        "horizon": "current",
+        "slot": "active-line-certification-closure"
+      },
+      "feature_ids": [
+        "feat:appspec-contract-001",
+        "feat:appspec-routerspec-composition-001",
+        "feat:bootstrappable-table-mixin-001",
+        "feat:canonical-datatype-catalog-semantic-center-001",
+        "feat:columnspec-contract-001",
+        "feat:columnspec-datatype-attachment-point-001",
+        "feat:datatype-adapter-registry-contract-001",
+        "feat:default-canonical-engine-family-datatype-alignment-001",
+        "feat:engine-datatype-lowering-registry-bridge-001",
+        "feat:executor-dispatch-removal-001",
+        "feat:fieldspec-contract-001",
+        "feat:foreignkeyspec-contract-001",
+        "feat:governed-module-alias-compatibility-001",
+        "feat:iospec-contract-001",
+        "feat:kernelplan-dispatch-ownership-001",
+        "feat:multi-engine-table-portability-interoperability-001",
+        "feat:opspec-contract-001",
+        "feat:orm-alias-export-compatibility-001",
+        "feat:orm-mixins-alias-compatibility-001",
+        "feat:pre-tx-dependency-execution-001",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:python-asgi-boundary-evidence-001",
+        "feat:python-direct-runtime-microbench-001",
+        "feat:python-engine-session-lifecycle-001",
+        "feat:python-request-envelope-contract-001",
+        "feat:python-request-hot-path-no-ddl-001",
+        "feat:python-runtime-2x-target-comparison-001",
+        "feat:python-runtime-callgraph-export-001",
+        "feat:python-runtime-ddl-initialization-boundary-001",
+        "feat:python-runtime-performance-baseline-001",
+        "feat:python-schema-readiness-fail-closed-001",
+        "feat:python-transaction-hot-path-001",
+        "feat:reflected-datatype-mapper-reverse-mapping-001",
+        "feat:responsespec-contract-001",
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001",
+        "feat:routerspec-contract-001",
+        "feat:runtime-executor-doc-endpoint-parity-001",
+        "feat:rust-asgi-boundary-evidence-001",
+        "feat:rust-direct-runtime-microbench-001",
+        "feat:rust-engine-session-lifecycle-001",
+        "feat:rust-request-envelope-contract-001",
+        "feat:rust-request-hot-path-no-ddl-001",
+        "feat:rust-runtime-2x-python-target-001",
+        "feat:rust-runtime-callgraph-export-001",
+        "feat:rust-runtime-ddl-initialization-boundary-001",
+        "feat:rust-runtime-performance-baseline-001",
+        "feat:rust-schema-readiness-fail-closed-001",
+        "feat:rust-transaction-hot-path-001",
+        "feat:schema-reflection-roundtrip-recovery-001",
+        "feat:storagespec-contract-001",
+        "feat:tablespec-contract-001",
+        "feat:transport-bypass-removal-001",
+        "feat:transport-parity-contract-001",
+        "feat:tx-phase-legacy-alias-deprecation-001"
+      ],
       "claim_ids": [],
       "test_ids": [],
       "evidence_ids": [],
+      "risk_ids": [
+        "rsk:active-line-nonimplemented-feature-claims-001",
+        "rsk:profileless-certification-scope-001"
+      ],
+      "release_blocking": true
+    },
+    {
+      "id": "iss:package-coordinate-feature-traceability-gap-001",
+      "title": "Package coordinate feature traceability gap",
+      "status": "closed",
+      "severity": "medium",
+      "description": "Direct package-coordinate feature rows now exist for every active package coordinate under pkgs; the remaining work is broader package-level claim/test/evidence depth, not missing coordinate traceability.",
+      "plan": {
+        "horizon": "current",
+        "slot": null
+      },
+      "feature_ids": [
+        "feat:package-coordinate-traceability-closure-001",
+        "feat:package-coordinate-tigrbl-acme-ca-001",
+        "feat:package-coordinate-tigrbl-atoms-001",
+        "feat:package-coordinate-tigrbl-canon-001",
+        "feat:package-coordinate-tigrbl-client-001",
+        "feat:package-coordinate-tigrbl-engine-bigquery-001",
+        "feat:package-coordinate-tigrbl-engine-clickhouse-001",
+        "feat:package-coordinate-tigrbl-engine-csv-001",
+        "feat:package-coordinate-tigrbl-engine-dataframe-001",
+        "feat:package-coordinate-tigrbl-engine-duckdb-001",
+        "feat:package-coordinate-tigrbl-engine-inmemcache-001",
+        "feat:package-coordinate-tigrbl-engine-inmemory-001",
+        "feat:package-coordinate-tigrbl-engine-membloom-001",
+        "feat:package-coordinate-tigrbl-engine-memdedupe-001",
+        "feat:package-coordinate-tigrbl-engine-memkv-001",
+        "feat:package-coordinate-tigrbl-engine-memlru-001",
+        "feat:package-coordinate-tigrbl-engine-mempubsub-001",
+        "feat:package-coordinate-tigrbl-engine-memqueue-001",
+        "feat:package-coordinate-tigrbl-engine-memrate-001",
+        "feat:package-coordinate-tigrbl-engine-numpy-001",
+        "feat:package-coordinate-tigrbl-engine-pandas-001",
+        "feat:package-coordinate-tigrbl-engine-pgsqli-wal-001",
+        "feat:package-coordinate-tigrbl-engine-postgres-001",
+        "feat:package-coordinate-tigrbl-engine-pyspark-001",
+        "feat:package-coordinate-tigrbl-engine-redis-001",
+        "feat:package-coordinate-tigrbl-engine-rediscachethrough-001",
+        "feat:package-coordinate-tigrbl-engine-snowflake-001",
+        "feat:package-coordinate-tigrbl-engine-sqlite-001",
+        "feat:package-coordinate-tigrbl-engine-xlsx-001",
+        "feat:package-coordinate-tigrbl-ops-olap-001",
+        "feat:package-coordinate-tigrbl-ops-oltp-001",
+        "feat:package-coordinate-tigrbl-ops-realtime-001",
+        "feat:package-coordinate-tigrbl-orm-001",
+        "feat:package-coordinate-tigrbl-spec-001",
+        "feat:package-coordinate-tigrbl-spiffe-001",
+        "feat:package-coordinate-tigrbl-typing-001"
+      ],
+      "claim_ids": [
+        "clm:package-coordinate-traceability-closure-001"
+      ],
+      "test_ids": [
+        "tst:package-coordinate-traceability-gap-current"
+      ],
+      "evidence_ids": [
+        "evd:package-coordinate-traceability-plan-20260428"
+      ],
       "risk_ids": [],
+      "release_blocking": false
+    },
+    {
+      "id": "iss:certifiable-package-proof-chain-gap-001",
+      "title": "Certifiable package proof chain gap",
+      "status": "open",
+      "severity": "critical",
+      "description": "Current registry state has nonimplemented features, unverified claims, non-passing evidence, profile evaluation warnings, and incomplete proof links preventing package certification.",
+      "plan": {
+        "horizon": "current",
+        "slot": null
+      },
+      "feature_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [
+        "evd:certifiable-package-delivery-plan-20260428"
+      ],
+      "risk_ids": [
+        "rsk:unverified-package-proof-chain-001"
+      ],
       "release_blocking": true
     }
   ],
-  "risks": [],
+  "risks": [
+    {
+      "id": "rsk:active-line-nonimplemented-feature-claims-001",
+      "title": "Active line nonimplemented feature claims",
+      "status": "active",
+      "severity": "critical",
+      "description": "Partial and absent current, explicit, and next-target rows can lead to overclaiming full conformance before implementation and evidence closure.",
+      "feature_ids": [
+        "feat:appspec-contract-001",
+        "feat:appspec-routerspec-composition-001",
+        "feat:bootstrappable-table-mixin-001",
+        "feat:canonical-datatype-catalog-semantic-center-001",
+        "feat:columnspec-contract-001",
+        "feat:columnspec-datatype-attachment-point-001",
+        "feat:datatype-adapter-registry-contract-001",
+        "feat:default-canonical-engine-family-datatype-alignment-001",
+        "feat:engine-datatype-lowering-registry-bridge-001",
+        "feat:executor-dispatch-removal-001",
+        "feat:fieldspec-contract-001",
+        "feat:foreignkeyspec-contract-001",
+        "feat:governed-module-alias-compatibility-001",
+        "feat:iospec-contract-001",
+        "feat:kernelplan-dispatch-ownership-001",
+        "feat:multi-engine-table-portability-interoperability-001",
+        "feat:opspec-contract-001",
+        "feat:orm-alias-export-compatibility-001",
+        "feat:orm-mixins-alias-compatibility-001",
+        "feat:pre-tx-dependency-execution-001",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:python-asgi-boundary-evidence-001",
+        "feat:python-direct-runtime-microbench-001",
+        "feat:python-engine-session-lifecycle-001",
+        "feat:python-request-envelope-contract-001",
+        "feat:python-request-hot-path-no-ddl-001",
+        "feat:python-runtime-2x-target-comparison-001",
+        "feat:python-runtime-callgraph-export-001",
+        "feat:python-runtime-ddl-initialization-boundary-001",
+        "feat:python-runtime-performance-baseline-001",
+        "feat:python-schema-readiness-fail-closed-001",
+        "feat:python-transaction-hot-path-001",
+        "feat:reflected-datatype-mapper-reverse-mapping-001",
+        "feat:responsespec-contract-001",
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001",
+        "feat:routerspec-contract-001",
+        "feat:runtime-executor-doc-endpoint-parity-001",
+        "feat:rust-asgi-boundary-evidence-001",
+        "feat:rust-direct-runtime-microbench-001",
+        "feat:rust-engine-session-lifecycle-001",
+        "feat:rust-request-envelope-contract-001",
+        "feat:rust-request-hot-path-no-ddl-001",
+        "feat:rust-runtime-2x-python-target-001",
+        "feat:rust-runtime-callgraph-export-001",
+        "feat:rust-runtime-ddl-initialization-boundary-001",
+        "feat:rust-runtime-performance-baseline-001",
+        "feat:rust-schema-readiness-fail-closed-001",
+        "feat:rust-transaction-hot-path-001",
+        "feat:schema-reflection-roundtrip-recovery-001",
+        "feat:storagespec-contract-001",
+        "feat:tablespec-contract-001",
+        "feat:transport-bypass-removal-001",
+        "feat:transport-parity-contract-001",
+        "feat:tx-phase-legacy-alias-deprecation-001"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [],
+      "issue_ids": [
+        "iss:active-line-certification-closure-blocked-001"
+      ],
+      "release_blocking": true
+    },
+    {
+      "id": "rsk:security-contract-auth-drift-001",
+      "title": "Security contract auth drift",
+      "status": "mitigated",
+      "severity": "critical",
+      "description": "Open security-contract issues show possible drift between generated runtime access behavior and OpenAPI/OpenRPC authentication metadata.",
+      "feature_ids": [
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:atom-parity-dep-security-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:build-openapi-helper-surface-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:gate-c-conformance-security-validator-workflow",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:http-jsonrpc-bindingspec-contract-001",
+        "feat:httpbearer-security-dependency-001",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:jsonrpc-batch-framing-001",
+        "feat:jsonrpc-endpoint-key-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:mutualtls-security-docs-runtime-alignment",
+        "feat:oas-005",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-mount-surface-001",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:openapi-payload-surface-001",
+        "feat:openapi-request-response-parameter-emission-001",
+        "feat:openapi-uix-surface-001",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:security-policy",
+        "feat:ssot-authority-migration-001",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:swagger-openapi-uix-001",
+        "feat:tigrbl-lens-openrpc-uix-001"
+      ],
+      "claim_ids": [
+        "clm:generated-crud-public-default-auth-policy-20260427"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+      ],
+      "evidence_ids": [
+        "evd:generated-crud-auth-policy-proof-20260427"
+      ],
+      "issue_ids": [
+        "iss:generated-rest-read-allows-unauthenticated-access-001",
+        "iss:generated-jsonrpc-read-allows-unauthenticated-access-001"
+      ],
+      "release_blocking": true
+    },
+    {
+      "id": "rsk:profileless-certification-scope-001",
+      "title": "Profileless certification scope",
+      "status": "active",
+      "severity": "high",
+      "description": "The registry previously had no reusable profiles, which made certification and deployment scopes harder to evaluate repeatably.",
+      "feature_ids": [
+        "feat:anon-access-rest-status-parity-001",
+        "feat:apache-2-license-root",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:appspec-contract-001",
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001",
+        "feat:appspec-routerspec-composition-001",
+        "feat:atom-parity-dep-extra-001",
+        "feat:atom-parity-dep-param-resolver-001",
+        "feat:atom-parity-dep-security-001",
+        "feat:atom-parity-dispatch-binding-match-001",
+        "feat:atom-parity-dispatch-binding-parse-001",
+        "feat:atom-parity-dispatch-input-normalize-001",
+        "feat:atom-parity-dispatch-op-resolve-001",
+        "feat:atom-parity-egress-asgi-send-001",
+        "feat:atom-parity-egress-envelope-apply-001",
+        "feat:atom-parity-egress-headers-apply-001",
+        "feat:atom-parity-egress-http-finalize-001",
+        "feat:atom-parity-egress-out-dump-001",
+        "feat:atom-parity-egress-result-normalize-001",
+        "feat:atom-parity-egress-to-transport-response-001",
+        "feat:atom-parity-emit-paired-post-001",
+        "feat:atom-parity-emit-paired-pre-001",
+        "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-ingress-ctx-init-001",
+        "feat:atom-parity-ingress-input-prepare-001",
+        "feat:atom-parity-ingress-transport-extract-001",
+        "feat:atom-parity-out-masking-001",
+        "feat:atom-parity-refresh-demand-001",
+        "feat:atom-parity-resolve-assemble-001",
+        "feat:atom-parity-resolve-paired-gen-001",
+        "feat:atom-parity-response-error-to-transport-001",
+        "feat:atom-parity-response-headers-from-payload-001",
+        "feat:atom-parity-response-negotiate-001",
+        "feat:atom-parity-response-negotiation-001",
+        "feat:atom-parity-response-render-001",
+        "feat:atom-parity-response-renderer-001",
+        "feat:atom-parity-response-template-001",
+        "feat:atom-parity-response-templates-001",
+        "feat:atom-parity-schema-collect-in-001",
+        "feat:atom-parity-schema-collect-out-001",
+        "feat:atom-parity-storage-to-stored-001",
+        "feat:atom-parity-sys-commit-tx-001",
+        "feat:atom-parity-sys-db-001",
+        "feat:atom-parity-sys-handler-aggregate-001",
+        "feat:atom-parity-sys-handler-append-chunk-001",
+        "feat:atom-parity-sys-handler-bulk-create-001",
+        "feat:atom-parity-sys-handler-bulk-delete-001",
+        "feat:atom-parity-sys-handler-bulk-merge-001",
+        "feat:atom-parity-sys-handler-bulk-replace-001",
+        "feat:atom-parity-sys-handler-bulk-update-001",
+        "feat:atom-parity-sys-handler-checkpoint-001",
+        "feat:atom-parity-sys-handler-clear-001",
+        "feat:atom-parity-sys-handler-count-001",
+        "feat:atom-parity-sys-handler-create-001",
+        "feat:atom-parity-sys-handler-custom-001",
+        "feat:atom-parity-sys-handler-delete-001",
+        "feat:atom-parity-sys-handler-download-001",
+        "feat:atom-parity-sys-handler-exists-001",
+        "feat:atom-parity-sys-handler-group-by-001",
+        "feat:atom-parity-sys-handler-list-001",
+        "feat:atom-parity-sys-handler-merge-001",
+        "feat:atom-parity-sys-handler-noop-001",
+        "feat:atom-parity-sys-handler-persistence-001",
+        "feat:atom-parity-sys-handler-publish-001",
+        "feat:atom-parity-sys-handler-read-001",
+        "feat:atom-parity-sys-handler-replace-001",
+        "feat:atom-parity-sys-handler-send-datagram-001",
+        "feat:atom-parity-sys-handler-subscribe-001",
+        "feat:atom-parity-sys-handler-tail-001",
+        "feat:atom-parity-sys-handler-update-001",
+        "feat:atom-parity-sys-handler-upload-001",
+        "feat:atom-parity-sys-oltp-context-001",
+        "feat:atom-parity-sys-phase-db-001",
+        "feat:atom-parity-sys-start-tx-001",
+        "feat:atom-parity-wire-build-in-001",
+        "feat:atom-parity-wire-build-out-001",
+        "feat:atom-parity-wire-dump-001",
+        "feat:atom-parity-wire-validate-in-001"
+      ],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [],
+      "issue_ids": [
+        "iss:active-line-certification-closure-blocked-001"
+      ],
+      "release_blocking": true
+    },
+    {
+      "id": "rsk:unverified-package-proof-chain-001",
+      "title": "Unverified package proof chain",
+      "status": "active",
+      "severity": "critical",
+      "description": "Certification can overclaim package readiness while current features, claims, tests, evidence, and profiles remain incomplete or unverified.",
+      "feature_ids": [],
+      "claim_ids": [],
+      "test_ids": [],
+      "evidence_ids": [
+        "evd:certifiable-package-delivery-plan-20260428"
+      ],
+      "issue_ids": [
+        "iss:certifiable-package-proof-chain-gap-001"
+      ],
+      "release_blocking": true
+    }
+  ],
   "boundaries": [
     {
       "id": "bnd:default",
@@ -56433,5 +58423,734 @@
       ]
     }
   ],
-  "profiles": []
+  "profiles": [
+    {
+      "id": "prf:tigrbl-active-line-certification-closure",
+      "title": "Tigrbl active line certification closure",
+      "description": "Governed evaluable profile for tigrbl active line certification closure across tracked tigrbl features.",
+      "status": "active",
+      "kind": "certification",
+      "feature_ids": [
+        "feat:anon-access-rest-status-parity-001",
+        "feat:apache-2-license-root",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:appspec-contract-001",
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001",
+        "feat:appspec-routerspec-composition-001",
+        "feat:atom-parity-dep-extra-001",
+        "feat:atom-parity-dep-param-resolver-001",
+        "feat:atom-parity-dep-security-001",
+        "feat:atom-parity-dispatch-binding-match-001",
+        "feat:atom-parity-dispatch-binding-parse-001",
+        "feat:atom-parity-dispatch-input-normalize-001",
+        "feat:atom-parity-dispatch-op-resolve-001",
+        "feat:atom-parity-egress-asgi-send-001",
+        "feat:atom-parity-egress-envelope-apply-001",
+        "feat:atom-parity-egress-headers-apply-001",
+        "feat:atom-parity-egress-http-finalize-001",
+        "feat:atom-parity-egress-out-dump-001",
+        "feat:atom-parity-egress-result-normalize-001",
+        "feat:atom-parity-egress-to-transport-response-001",
+        "feat:atom-parity-emit-paired-post-001",
+        "feat:atom-parity-emit-paired-pre-001",
+        "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-ingress-ctx-init-001",
+        "feat:atom-parity-ingress-input-prepare-001",
+        "feat:atom-parity-ingress-transport-extract-001",
+        "feat:atom-parity-out-masking-001",
+        "feat:atom-parity-refresh-demand-001",
+        "feat:atom-parity-resolve-assemble-001",
+        "feat:atom-parity-resolve-paired-gen-001",
+        "feat:atom-parity-response-error-to-transport-001",
+        "feat:atom-parity-response-headers-from-payload-001",
+        "feat:atom-parity-response-negotiate-001",
+        "feat:atom-parity-response-negotiation-001",
+        "feat:atom-parity-response-render-001",
+        "feat:atom-parity-response-renderer-001",
+        "feat:atom-parity-response-template-001",
+        "feat:atom-parity-response-templates-001",
+        "feat:atom-parity-schema-collect-in-001",
+        "feat:atom-parity-schema-collect-out-001",
+        "feat:atom-parity-storage-to-stored-001",
+        "feat:atom-parity-sys-commit-tx-001",
+        "feat:atom-parity-sys-db-001",
+        "feat:atom-parity-sys-handler-aggregate-001",
+        "feat:atom-parity-sys-handler-append-chunk-001",
+        "feat:atom-parity-sys-handler-bulk-create-001",
+        "feat:atom-parity-sys-handler-bulk-delete-001",
+        "feat:atom-parity-sys-handler-bulk-merge-001",
+        "feat:atom-parity-sys-handler-bulk-replace-001",
+        "feat:atom-parity-sys-handler-bulk-update-001",
+        "feat:atom-parity-sys-handler-checkpoint-001",
+        "feat:atom-parity-sys-handler-clear-001",
+        "feat:atom-parity-sys-handler-count-001",
+        "feat:atom-parity-sys-handler-create-001",
+        "feat:atom-parity-sys-handler-custom-001",
+        "feat:atom-parity-sys-handler-delete-001",
+        "feat:atom-parity-sys-handler-download-001",
+        "feat:atom-parity-sys-handler-exists-001",
+        "feat:atom-parity-sys-handler-group-by-001",
+        "feat:atom-parity-sys-handler-list-001",
+        "feat:atom-parity-sys-handler-merge-001",
+        "feat:atom-parity-sys-handler-noop-001",
+        "feat:atom-parity-sys-handler-persistence-001",
+        "feat:atom-parity-sys-handler-publish-001",
+        "feat:atom-parity-sys-handler-read-001",
+        "feat:atom-parity-sys-handler-replace-001",
+        "feat:atom-parity-sys-handler-send-datagram-001",
+        "feat:atom-parity-sys-handler-subscribe-001",
+        "feat:atom-parity-sys-handler-tail-001",
+        "feat:atom-parity-sys-handler-update-001",
+        "feat:atom-parity-sys-handler-upload-001",
+        "feat:atom-parity-sys-oltp-context-001",
+        "feat:atom-parity-sys-phase-db-001",
+        "feat:atom-parity-sys-start-tx-001",
+        "feat:atom-parity-wire-build-in-001",
+        "feat:atom-parity-wire-build-out-001",
+        "feat:atom-parity-wire-dump-001",
+        "feat:atom-parity-wire-validate-in-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:bootstrappable-table-mixin-001",
+        "feat:boundary-freeze-diff-enforcement",
+        "feat:boundary-freeze-manifest-validation",
+        "feat:boundary-scoped-test-selection-001",
+        "feat:canonical-datatype-catalog-semantic-center-001",
+        "feat:checkpoint-path-name-conformance",
+        "feat:claim-language-lint",
+        "feat:clean-room-package-smoke-lane",
+        "feat:code-of-conduct",
+        "feat:columnspec-contract-001",
+        "feat:columnspec-datatype-attachment-point-001",
+        "feat:contributor-policy",
+        "feat:datatype-adapter-registry-contract-001",
+        "feat:default-canonical-engine-family-datatype-alignment-001",
+        "feat:default-root-path-contract-001",
+        "feat:dev-bundle-evidence-structure",
+        "feat:doc-pointer-validation",
+        "feat:docs-ci-projection-validation-001",
+        "feat:engine-datatype-lowering-registry-bridge-001",
+        "feat:evidence-lane-ci-workflow",
+        "feat:evidence-registry-bundle-validator-checkpoint",
+        "feat:evidence-registry-claim-test-artifact-map",
+        "feat:executor-dispatch-removal-001",
+        "feat:external-error-detail-sanitization-001",
+        "feat:factories-001",
+        "feat:feature-test-coverage-completeness-001",
+        "feat:fieldspec-contract-001",
+        "feat:foreignkeyspec-contract-001",
+        "feat:gate-a-boundary-freeze-manifest",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:gate-a-current-cycle-boundary-freeze-marker",
+        "feat:gate-b-surface-closure-validation",
+        "feat:gate-b-surface-closure-validator-workflow",
+        "feat:gate-c-conformance-security-validator-workflow",
+        "feat:gate-d-reproducibility-conditions-validation",
+        "feat:gate-d-reproducibility-validator-workflow",
+        "feat:gate-e-promotion-validator-workflow",
+        "feat:gate-e-release-promotion-synchronization",
+        "feat:gate-evaluator-model-001",
+        "feat:governed-docs-projection-tree",
+        "feat:governed-module-alias-compatibility-001",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:httpbearer-security-dependency-001",
+        "feat:iospec-contract-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:kernelplan-dispatch-ownership-001",
+        "feat:multi-engine-table-portability-interoperability-001",
+        "feat:mutualtls-security-docs-runtime-alignment",
+        "feat:next-dev-line-governed-opening",
+        "feat:next-target-datatype-table-isolation",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:opspec-contract-001",
+        "feat:orm-alias-export-compatibility-001",
+        "feat:orm-mixins-alias-compatibility-001",
+        "feat:package-buildability-importability-001",
+        "feat:package-layout-validation",
+        "feat:path-length-policy",
+        "feat:path-length-validation",
+        "feat:policy-governance-ci-workflow",
+        "feat:post-promotion-handoff-validator-workflow",
+        "feat:post-promotion-release-history-freeze",
+        "feat:pre-tx-dependency-execution-001",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:python-asgi-boundary-evidence-001",
+        "feat:python-direct-runtime-microbench-001",
+        "feat:python-engine-session-lifecycle-001",
+        "feat:python-request-envelope-contract-001",
+        "feat:python-request-hot-path-no-ddl-001",
+        "feat:python-runtime-2x-target-comparison-001",
+        "feat:python-runtime-callgraph-export-001",
+        "feat:python-runtime-ddl-initialization-boundary-001",
+        "feat:python-runtime-performance-baseline-001",
+        "feat:python-schema-readiness-fail-closed-001",
+        "feat:python-transaction-hot-path-001",
+        "feat:reflected-datatype-mapper-reverse-mapping-001",
+        "feat:release-note-claim-lint",
+        "feat:responsespec-contract-001",
+        "feat:rfc-6749",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7519",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:rfc-7636",
+        "feat:rfc-8414",
+        "feat:rfc-8705",
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001",
+        "feat:rfc-9110",
+        "feat:rfc-9449",
+        "feat:root-clutter-generated-artifact-validation",
+        "feat:routerspec-contract-001",
+        "feat:runtime-executor-doc-endpoint-parity-001",
+        "feat:rust-asgi-boundary-evidence-001",
+        "feat:rust-direct-runtime-microbench-001"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T3",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:tigrbl-public-operator-surface",
+      "title": "Tigrbl public operator surface",
+      "description": "Governed evaluable profile for tigrbl public operator surface across tracked tigrbl features.",
+      "status": "active",
+      "kind": "capability",
+      "feature_ids": [
+        "feat:analytical-runtime-docs-export-parity-001",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:atom-parity-resolve-assemble-001",
+        "feat:atom-parity-sys-handler-upload-001",
+        "feat:build-lens-helper-surface-001",
+        "feat:build-openapi-helper-surface-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:build-swagger-helper-surface-001",
+        "feat:canonical-op-upload-001",
+        "feat:cli-module-target-resolution-001",
+        "feat:cli-path-target-resolution-001",
+        "feat:cli-shared-target-loader-001",
+        "feat:cli-target-error-classification-001",
+        "feat:cli-target-resolution-001",
+        "feat:cli-target-surface-loading-001",
+        "feat:declared-surface-docs-extension-001",
+        "feat:docs-ci-projection-validation-001",
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:docs-support-001",
+        "feat:eventstreamresponse-concrete-sse-class-001",
+        "feat:governed-docs-projection-tree",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:mount-lens-helper-surface-001",
+        "feat:mount-static-helper-surface-001",
+        "feat:mount-swagger-helper-surface-001",
+        "feat:multipart-form-preservation-001",
+        "feat:mutualtls-security-docs-runtime-alignment",
+        "feat:oas-001",
+        "feat:oas-002",
+        "feat:oas-003",
+        "feat:oas-004",
+        "feat:oas-006",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:op-001",
+        "feat:op-003",
+        "feat:op-004",
+        "feat:op-005",
+        "feat:op-006",
+        "feat:op-007",
+        "feat:op-009",
+        "feat:op-012",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-mount-surface-001",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:openapi-payload-surface-001",
+        "feat:openapi-request-response-parameter-emission-001",
+        "feat:openapi-uix-surface-001",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:operator-asyncapi-ui-descoped-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-json-schema-ui-descoped-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-surface-framing-semantics-001",
+        "feat:operator-surface-smoke-runtime-parity-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:realtime-transfer-runtime-docs-export-parity-001",
+        "feat:rpc-002",
+        "feat:rpc-003",
+        "feat:server-support-daphne-001",
+        "feat:server-support-granian-001",
+        "feat:server-support-gunicorn-001",
+        "feat:server-support-hypercorn-001",
+        "feat:server-support-tigrcorn-001",
+        "feat:server-support-twisted-001",
+        "feat:server-support-uvicorn-001",
+        "feat:sse-bindingspec-contract-001",
+        "feat:sse-event-framing-001",
+        "feat:sse-lazy-iterator-runtime-001",
+        "feat:sse-session-message-stream-chains-001",
+        "feat:static-file-runtime-chain-001",
+        "feat:static-files-surface-001",
+        "feat:supported-server-cli-smoke-dispatch",
+        "feat:surface-docs-cross-projection-parity-001",
+        "feat:swagger-openapi-uix-001",
+        "feat:tigrbl-lens-openrpc-uix-001",
+        "feat:transport-bypass-removal-001",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:uploaded-file-runtime-contract-001",
+        "feat:websocket-concrete-runtime-class-001",
+        "feat:websocket-wss-atom-chains-001"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T3",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:tigrbl-extension-and-plugin-surface",
+      "title": "Tigrbl extension and plugin surface",
+      "description": "Governed evaluable profile for tigrbl extension and plugin surface across tracked tigrbl features.",
+      "status": "active",
+      "kind": "capability",
+      "feature_ids": [
+        "feat:asyncapi-mount-surface-001",
+        "feat:asyncapi-payload-surface-001",
+        "feat:asyncapi-uix-surface-001",
+        "feat:bind-helper-surface-001",
+        "feat:bootstrap-dbschema-runtime-surface-001",
+        "feat:build-asyncapi-spec-helper-surface-001",
+        "feat:build-handlers-helper-surface-001",
+        "feat:build-healthz-endpoint-helper-001",
+        "feat:build-hooks-helper-surface-001",
+        "feat:build-hookz-endpoint-helper-001",
+        "feat:build-json-schema-bundle-helper-surface-001",
+        "feat:build-kernelz-endpoint-helper-001",
+        "feat:build-lens-helper-surface-001",
+        "feat:build-methodz-endpoint-helper-001",
+        "feat:build-openapi-helper-surface-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:build-rest-helper-surface-001",
+        "feat:build-schemas-helper-surface-001",
+        "feat:build-swagger-helper-surface-001",
+        "feat:cli-target-surface-loading-001",
+        "feat:ddl-runtime-surface-001",
+        "feat:declared-surface-docs-extension-001",
+        "feat:default-canonical-engine-catalog-001",
+        "feat:default-canonical-engine-family-datatype-alignment-001",
+        "feat:diagnostics-router-mount-surface-001",
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:docs-support-001",
+        "feat:engine-datatype-lowering-registry-bridge-001",
+        "feat:engine-extension-surface-001",
+        "feat:engine-resolver-multi-table-rpc-001",
+        "feat:engine-resolver-precedence-001",
+        "feat:engine-session-runtime-surface-001",
+        "feat:engine-surface-contract-001",
+        "feat:engine-surface-plugin-resolution-001",
+        "feat:engine-surface-public-projection-001",
+        "feat:enginebase-contract-001",
+        "feat:enginedatatypebridge-contract-001",
+        "feat:engineproviderbase-contract-001",
+        "feat:engineproviderspec-contract-001",
+        "feat:engineregistry-contract-001",
+        "feat:enginespec-contract-001",
+        "feat:enginetypelowerer-protocol-001",
+        "feat:ensure-schemas-runtime-surface-001",
+        "feat:eventful-protocol-decorator-surface-001",
+        "feat:eventkey-hook-bucket-compilation-001",
+        "feat:extended-hook-selector-matching-001",
+        "feat:first-class-webhook-delivery-001",
+        "feat:gate-b-surface-closure-validation",
+        "feat:gate-b-surface-closure-validator-workflow",
+        "feat:get-schema-python-helper-surface-001",
+        "feat:healthz-mount-surface-001",
+        "feat:healthz-uix-surface-001",
+        "feat:hook-extension-surface-001",
+        "feat:hook-surface-attachment-ordering-001",
+        "feat:hook-surface-phase-selector-001",
+        "feat:hook-surface-public-projection-001",
+        "feat:hookbase-contract-001",
+        "feat:hookbase-public-projection-001",
+        "feat:hookphase-vocabulary-001",
+        "feat:hookspec-contract-001",
+        "feat:hookz-mount-surface-001",
+        "feat:hookz-payload-surface-001",
+        "feat:include-tables-helper-surface-001",
+        "feat:json-schema-mount-surface-001",
+        "feat:json-schema-payload-surface-001",
+        "feat:json-schema-uix-surface-001",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:kernelz-mount-surface-001",
+        "feat:kernelz-uix-surface-001",
+        "feat:methodz-mount-surface-001",
+        "feat:methodz-payload-surface-001",
+        "feat:middleware-extension-surface-001",
+        "feat:middleware-surface-auth-separation-001",
+        "feat:middleware-surface-builtin-catalog-001",
+        "feat:middleware-surface-protocol-composition-001",
+        "feat:middleware-surface-public-projection-001",
+        "feat:middlewarespec-protocol-001",
+        "feat:mount-lens-helper-surface-001",
+        "feat:mount-static-helper-surface-001",
+        "feat:mount-swagger-helper-surface-001",
+        "feat:multi-engine-interop-runtime-surface-001",
+        "feat:multi-engine-table-portability-interoperability-001",
+        "feat:oas-006",
+        "feat:op-001",
+        "feat:op-002",
+        "feat:op-003",
+        "feat:op-004",
+        "feat:op-005",
+        "feat:op-006",
+        "feat:op-007",
+        "feat:op-008",
+        "feat:op-009",
+        "feat:op-012",
+        "feat:op-extension-surface-001",
+        "feat:op-surface-custom-op-001",
+        "feat:op-surface-default-oltp-001",
+        "feat:op-surface-public-projection-001",
+        "feat:openapi-mount-surface-001",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:openapi-payload-surface-001",
+        "feat:openapi-uix-surface-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:operator-cookie-roundtrip-surface-001",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-surface-framing-semantics-001",
+        "feat:operator-surface-smoke-runtime-parity-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:python-engine-session-lifecycle-001",
+        "feat:rebind-helper-surface-001",
+        "feat:rpc-001",
+        "feat:rpc-002",
+        "feat:rpc-003",
+        "feat:runtime-owned-hook-legality-enforcement-001",
+        "feat:rust-engine-session-lifecycle-001",
+        "feat:schema-migration-runtime-surface-001",
+        "feat:sqlite-attach-runtime-surface-001",
+        "feat:static-files-surface-001",
+        "feat:status-sync-engine-001",
+        "feat:surface-binding-family-emission-001",
+        "feat:surface-binding-proto-emission-001",
+        "feat:surface-docs-cross-projection-parity-001",
+        "feat:surface-metadata-omission-contract-001",
+        "feat:surface-optional-metadata-emission-001",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:well-known-concrete-constants-surface-001",
+        "feat:well-known-decorator-surface-001",
+        "feat:well-known-imperative-surface-001",
+        "feat:wrap-sessionmaker-helper-surface-001",
+        "feat:spiffe-httpx-tls-context-adapter-001",
+        "feat:spiffe-svid-structural-validator-001"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T3",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:tigrbl-runtime-protocol-conformance",
+      "title": "Tigrbl runtime protocol conformance",
+      "description": "Governed evaluable profile for tigrbl runtime protocol conformance across tracked tigrbl features.",
+      "status": "active",
+      "kind": "certification",
+      "feature_ids": [
+        "feat:anon-access-rest-status-parity-001",
+        "feat:atom-parity-egress-asgi-send-001",
+        "feat:atom-parity-egress-to-transport-response-001",
+        "feat:atom-parity-ingress-transport-extract-001",
+        "feat:atom-parity-resolve-assemble-001",
+        "feat:atom-parity-response-error-to-transport-001",
+        "feat:binding-driven-ingress-001",
+        "feat:bindingspec-kernelplan-protocol-compilation-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:build-rest-helper-surface-001",
+        "feat:engine-resolver-multi-table-rpc-001",
+        "feat:enginetypelowerer-protocol-001",
+        "feat:eventful-protocol-decorator-surface-001",
+        "feat:eventstreamresponse-concrete-sse-class-001",
+        "feat:executor-dispatch-removal-001",
+        "feat:first-class-callback-runtime-001",
+        "feat:first-class-webhook-delivery-001",
+        "feat:http-jsonrpc-bindingspec-contract-001",
+        "feat:http-rest-bindingspec-contract-001",
+        "feat:http-rest-jsonrpc-atom-chains-001",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:jsonrpc-batch-framing-001",
+        "feat:jsonrpc-endpoint-key-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-notification-204-projection-001",
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:kernelplan-dispatch-ownership-001",
+        "feat:lifespan-runtime-chain-001",
+        "feat:middleware-surface-protocol-composition-001",
+        "feat:middlewarespec-protocol-001",
+        "feat:mount-static-helper-surface-001",
+        "feat:op-001",
+        "feat:op-004",
+        "feat:op-005",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-static-files-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:protocol-anchor-ordering-parity-001",
+        "feat:protocol-fused-segments-001",
+        "feat:protocol-phase-tree-plans-001",
+        "feat:protocol-runtime-boundary-certification-001",
+        "feat:protocol-runtime-profile-pack-001",
+        "feat:protocol-runtime-ssot-feature-granularity-001",
+        "feat:protocol-runtime-test-evidence-suite-001",
+        "feat:protocol-scope-schemas-001",
+        "feat:python-asgi-boundary-evidence-001",
+        "feat:rest-create-success-status-001",
+        "feat:rpc-001",
+        "feat:rpc-002",
+        "feat:rpc-003",
+        "feat:rust-asgi-boundary-evidence-001",
+        "feat:rust-protocol-plan-parity-001",
+        "feat:sse-bindingspec-contract-001",
+        "feat:sse-event-framing-001",
+        "feat:sse-lazy-iterator-runtime-001",
+        "feat:sse-session-message-stream-chains-001",
+        "feat:static-file-runtime-chain-001",
+        "feat:static-files-surface-001",
+        "feat:tigrbl-lens-openrpc-uix-001",
+        "feat:transport-accept-emit-close-atoms-001",
+        "feat:transport-bypass-removal-001",
+        "feat:transport-dispatch-governance-001",
+        "feat:transport-event-registry-001",
+        "feat:transport-parity-contract-001",
+        "feat:transportresponse-concrete-response-class-001",
+        "feat:typeadapter-protocol-001",
+        "feat:uvicorn-protocol-mode-runtime-parity-001",
+        "feat:uvicorn-rest-rpc-semantic-parity-001",
+        "feat:websocket-concrete-runtime-class-001",
+        "feat:websocket-wss-atom-chains-001",
+        "feat:webtransport-bindingspec-contract-001",
+        "feat:webtransport-transport-events-001"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T3",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:tigrbl-production-hardening",
+      "title": "Tigrbl production hardening",
+      "description": "Governed evaluable profile for tigrbl production hardening across tracked tigrbl features.",
+      "status": "active",
+      "kind": "deployment",
+      "feature_ids": [
+        "feat:apikey-security-dependency-001",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:appspec-corpus-negative-fail-closed-001",
+        "feat:atom-parity-dep-security-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:boundary-freeze-manifest-validation",
+        "feat:ddl-initialization-modes-001",
+        "feat:ddl-runtime-surface-001",
+        "feat:doc-pointer-validation",
+        "feat:docs-ci-projection-validation-001",
+        "feat:error-parity-response-structure-001",
+        "feat:external-error-detail-sanitization-001",
+        "feat:gate-009",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:gate-b-surface-closure-validation",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:gate-c-conformance-security-validator-workflow",
+        "feat:gate-d-reproducibility-conditions-validation",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:httpbasic-security-dependency-001",
+        "feat:httpbearer-security-dependency-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:kernel-cache-invalidation-contract-001",
+        "feat:middleware-extension-surface-001",
+        "feat:middleware-surface-auth-separation-001",
+        "feat:middleware-surface-builtin-catalog-001",
+        "feat:middleware-surface-protocol-composition-001",
+        "feat:middleware-surface-public-projection-001",
+        "feat:middlewarespec-protocol-001",
+        "feat:mutualtls-security-dependency-001",
+        "feat:mutualtls-security-docs-runtime-alignment",
+        "feat:oas-005",
+        "feat:oauth2-security-dependency-001",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:op-008",
+        "feat:op-009",
+        "feat:openidconnect-security-dependency-001",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:operator-auth-dependency-hook-surface-001",
+        "feat:operator-bounded-middleware-catalog-001",
+        "feat:package-layout-validation",
+        "feat:path-length-validation",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:python-direct-runtime-microbench-001",
+        "feat:python-request-hot-path-no-ddl-001",
+        "feat:python-runtime-ddl-initialization-boundary-001",
+        "feat:python-runtime-performance-baseline-001",
+        "feat:python-schema-readiness-fail-closed-001",
+        "feat:python-transaction-hot-path-001",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001",
+        "feat:root-clutter-generated-artifact-validation",
+        "feat:rust-direct-runtime-microbench-001",
+        "feat:rust-request-hot-path-no-ddl-001",
+        "feat:rust-runtime-ddl-initialization-boundary-001",
+        "feat:rust-runtime-performance-baseline-001",
+        "feat:rust-schema-readiness-fail-closed-001",
+        "feat:rust-transaction-hot-path-001",
+        "feat:security-concrete-dependency-helper-001",
+        "feat:security-policy",
+        "feat:ssot-authority-migration-001",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:validation-failure-projection-parity-001",
+        "feat:acme-worker-bounded-queue-001",
+        "feat:spiffe-svid-structural-validator-001"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T3",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:tigrbl-development-governance",
+      "title": "Tigrbl development governance",
+      "description": "Governed evaluable profile for tigrbl development governance across tracked tigrbl features.",
+      "status": "active",
+      "kind": "certification",
+      "feature_ids": [
+        "feat:analytical-runtime-docs-export-parity-001",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:atom-parity-sys-handler-aggregate-001",
+        "feat:bindingregistrybase-contract-001",
+        "feat:bindingregistryspec-contract-001",
+        "feat:boundary-scoped-test-selection-001",
+        "feat:canonical-op-aggregate-001",
+        "feat:clean-room-package-smoke-lane",
+        "feat:datatype-adapter-registry-contract-001",
+        "feat:declared-surface-docs-extension-001",
+        "feat:dev-bundle-evidence-structure",
+        "feat:diagnostics-absence-warning-suppression-001",
+        "feat:diagnostics-contract-001",
+        "feat:diagnostics-router-mount-surface-001",
+        "feat:diagnostics-system-prefix-mount-001",
+        "feat:diagnostics-warning-vocabulary-001",
+        "feat:docs-ci-projection-validation-001",
+        "feat:docs-mount-runtime-surface-parity-001",
+        "feat:docs-support-001",
+        "feat:engine-datatype-lowering-registry-bridge-001",
+        "feat:engineregistry-contract-001",
+        "feat:evidence-lane-ci-workflow",
+        "feat:evidence-registry-bundle-validator-checkpoint",
+        "feat:evidence-registry-claim-test-artifact-map",
+        "feat:feature-test-coverage-completeness-001",
+        "feat:gate-009",
+        "feat:gate-a-boundary-freeze-manifest",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:gate-a-current-cycle-boundary-freeze-marker",
+        "feat:gate-b-surface-closure-validation",
+        "feat:gate-b-surface-closure-validator-workflow",
+        "feat:gate-c-conformance-security-checkpoint-001",
+        "feat:gate-c-conformance-security-validator-workflow",
+        "feat:gate-d-reproducibility-conditions-validation",
+        "feat:gate-d-reproducibility-validator-workflow",
+        "feat:gate-e-promotion-validator-workflow",
+        "feat:gate-e-release-promotion-synchronization",
+        "feat:gate-evaluator-model-001",
+        "feat:governed-docs-projection-tree",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:integration-test-registry-coverage-001",
+        "feat:mutualtls-security-docs-runtime-alignment",
+        "feat:oas-006",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:op-012",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:operation-diagnostics-projection-001",
+        "feat:operator-oidc-discovery-docs-descoped-001",
+        "feat:package-buildability-importability-001",
+        "feat:package-layout-validation",
+        "feat:protocol-runtime-boundary-certification-001",
+        "feat:protocol-runtime-test-evidence-suite-001",
+        "feat:python-asgi-boundary-evidence-001",
+        "feat:python-transaction-hot-path-001",
+        "feat:realtime-transfer-runtime-docs-export-parity-001",
+        "feat:rust-asgi-boundary-evidence-001",
+        "feat:stable-release-current-boundary-tier3-certification",
+        "feat:stable-release-evidence-structure",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:surface-docs-cross-projection-parity-001",
+        "feat:tableregistrybase-contract-001",
+        "feat:tableregistrybase-public-projection-001",
+        "feat:tableregistryspec-contract-001",
+        "feat:test-result-evidence-ingestion-001",
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:tigrbl-tests-failing-case-closure-001",
+        "feat:tool-test-gate-taxonomy-001",
+        "feat:transport-event-registry-001",
+        "feat:typeregistry-contract-001",
+        "feat:uniform-diagnostics-uix-surface-001"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T3",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    }
+  ]
 }

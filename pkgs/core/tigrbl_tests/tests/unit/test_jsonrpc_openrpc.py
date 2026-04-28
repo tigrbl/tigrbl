@@ -82,6 +82,26 @@ def test_openrpc_includes_method_schema():
     assert "Response" in result["title"]
 
 
+def test_openrpc_declares_public_default_without_authn() -> None:
+    app, model = _build_app()
+
+    async def _fetch():
+        transport = ASGITransport(app=app)
+        async with AsyncClient(transport=transport, base_url="http://test") as client:
+            return (await client.get("/openrpc.json")).json()
+
+    payload = asyncio.run(_fetch())
+    methods = {method["name"]: method for method in payload["methods"]}
+    read_method = methods[f"{model.__name__}.read"]
+
+    assert read_method.get("security") in (None, [])
+    assert read_method["x-tigrbl-auth"] == {
+        "policy": "public-by-default",
+        "public": True,
+        "security": [],
+    }
+
+
 def test_mount_jsonrpc_updates_openrpc_server_url() -> None:
     app, _ = _build_app()
     app.mount_jsonrpc(prefix="/jsonrpc")
