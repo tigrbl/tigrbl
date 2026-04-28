@@ -14,7 +14,7 @@ from .helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
-from ..surface import binding_surface, op_surface
+from ..surface import auth_surface, binding_surface, op_surface
 
 
 def openapi(router: Any) -> dict[str, Any]:
@@ -159,6 +159,7 @@ def openapi(router: Any) -> dict[str, Any]:
                 components.setdefault("securitySchemes", {}).update(
                     _security_schemes_from_dependencies(security_deps)
                 )
+            op["x-tigrbl-auth"] = auth_surface(sec)
 
             surface = (
                 op_surface(surface_spec)

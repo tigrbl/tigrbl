@@ -50,7 +50,17 @@ def test_operator_auth_surface_is_dependency_based_and_projects_openapi_security
         path = spec["paths"]["/operatorauthwidget"]
 
         assert path["get"].get("security") in (None, [])
+        assert path["get"]["x-tigrbl-auth"] == {
+            "policy": "public-by-default",
+            "public": True,
+            "security": [],
+        }
         assert path["post"]["security"] == [{"HTTPBearer": []}]
+        assert path["post"]["x-tigrbl-auth"] == {
+            "policy": "protected",
+            "public": False,
+            "security": [{"HTTPBearer": []}],
+        }
         assert spec["components"]["securitySchemes"]["HTTPBearer"] == {
             "type": "http",
             "scheme": "bearer",
@@ -107,3 +117,35 @@ def test_operator_auth_surface_does_not_advertise_generic_auth_middleware() -> N
     assert "dependency/hook-based only" in text
     assert "monolithic generic auth middleware" in text
     assert "generic auth middleware abstraction" in text
+
+
+def test_generated_crud_openapi_declares_public_default_without_authn() -> None:
+    TableBase.metadata.clear()
+
+    class PublicWidget(TableBase, GUIDPk):
+        __tablename__ = "operator_public_default_widget"
+        name = Column(String, nullable=False)
+
+    app = TigrblApp(engine=mem(async_=False))
+    app.include_table(PublicWidget)
+    app.initialize()
+    client = Client(transport=ASGITransport(app=app), base_url="http://test")
+
+    try:
+        spec = client.get("/openapi.json").json()
+        operations = spec["paths"]["/publicwidget"]
+
+        assert operations["get"].get("security") in (None, [])
+        assert operations["get"]["x-tigrbl-auth"] == {
+            "policy": "public-by-default",
+            "public": True,
+            "security": [],
+        }
+        assert operations["post"].get("security") in (None, [])
+        assert operations["post"]["x-tigrbl-auth"] == {
+            "policy": "public-by-default",
+            "public": True,
+            "security": [],
+        }
+    finally:
+        client.close()
