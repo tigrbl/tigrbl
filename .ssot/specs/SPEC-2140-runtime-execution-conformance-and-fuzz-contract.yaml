@@ -1,0 +1,47 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2140"
+number: 2140
+slug: "runtime-execution-conformance-and-fuzz-contract"
+title: "Runtime Execution Conformance And Fuzz Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define required conformance, negative, fuzz, and parity evidence for runtime physical layouts used by atoms, compiled kernel plans, runtime dispatch, identity/scalar references, and Python/Rust runtime codecs."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define runtime physical layout conformance, fuzz, and parity evidence."
+    at: "2026-04-28T16:01:25Z"
+references: []
+body: |-
+  ## Intent
+  Define required conformance, negative, fuzz, and parity evidence for runtime physical layouts used by atoms, compiled kernel plans, runtime dispatch, identity/scalar references, and Python/Rust runtime codecs.
+  
+  ## Required Conformance Tests
+  Every runtime physical layout MUST provide round-trip tests for representative valid values, deterministic encode tests where encoding exists, deterministic decode/materialization tests, boundary value tests for counts and lengths, and compatibility tests for supported versions.
+  
+  ## Required Negative Tests
+  Negative tests MUST include unsupported version, unknown required tag, nonzero reserved bits, truncated header, truncated section, offset overflow, length overflow, count mismatch, invalid fixed-width scalar length, scalar overflow, invalid enum or flag value, invalid atom/phase pairing, invalid branch reference, dangling table index, invalid identity shape reference, and unsupported scalar code.
+  
+  ## Fuzz And Property Tests
+  Fuzz or property tests SHOULD target RuntimeEventKey, dispatch metadata records, packed KernelPlan records, phase-chain and phase-tree records, atom-chain tables, callback-fence tables, identity/scalar reference tables, runtime codec envelopes, and batch sidecars/slabs.
+  
+  ## Parity Tests
+  Where Python and Rust both consume a runtime physical format, parity tests MUST prove equivalent canonical bytes or compact payloads, equivalent validation failures, equivalent dispatch results, equivalent plan traversal, and equivalent cold-metadata deferral for representative cases.
+  
+  ## Evidence Boundaries
+  This SPEC covers runtime execution formats only. Engine recovery, WAL replay, page checksums, storage block corruption, and persistence-specific fuzzing belong to engine-specific evidence contracts.
+  
+  ## Release Gate
+  A runtime physical layout SHOULD NOT be marked release-grade unless the linked tests and evidence cover both success behavior and invalid-layout rejection. Unsupported or ambiguous layouts MUST fail before atom execution.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1120"
+  - "adr:1121"
+  - "adr:1122"
+  - "adr:1116"
+  - "adr:1088"

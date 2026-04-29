@@ -1,0 +1,44 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2136"
+number: 2136
+slug: "runtime-byte-oriented-physical-layout-guidelines"
+title: "Runtime Byte-Oriented Physical Layout Guidelines"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the runtime-only byte-oriented physical layout rules for atoms, compiled kernel plans, runtime event metadata, runtime dispatch, and runtime execution interchange. This SPEC explicitly excludes engine-owned row, page, block, WAL, manifest, cache, persistence, and recovery formats."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define runtime-only byte-oriented layout guidelines and exclude engine storage formats."
+    at: "2026-04-28T16:00:29Z"
+references: []
+body: |-
+  ## Intent
+  Define the runtime-only byte-oriented physical layout rules for atoms, compiled kernel plans, runtime event metadata, runtime dispatch, and runtime execution interchange. This SPEC explicitly excludes engine-owned row, page, block, WAL, manifest, cache, persistence, and recovery formats.
+  
+  ## Scope
+  In scope: atom metadata, RuntimeEventKey, phase and subevent fields, event-family fields, callback fence references, packed and fused runtime plan records, runtime identity/scalar references, runtime execution batches, and Python/Rust runtime interchange payloads.
+  
+  Out of scope: database rows, engine indexes, pages, blocks, WAL records, SSTables, bloom filters, restart points, compression units, manifests, recovery logs, and engine-local cache persistence.
+  
+  ## Required Layout Properties
+  Runtime physical layouts MUST define version, field order, field width, tag values, flag bits, reserved bits, endianness for portable forms, count fields, offset fields, length fields, bounds, invalid states, and fail-closed decode behavior.
+  
+  Runtime hot-path layouts SHOULD prefer bytes, bytearray, memoryview, Rust byte slices, typed arrays, fixed-width numeric fields, sidecars, slabs, dense tables, and offsets over nested dictionaries, strings, UUID objects, arbitrary Python integers, or rich semantic objects.
+  
+  ## Boundary Rules
+  Semantic AppSpec, RouterSpec, BindingSpec, OpSpec, hook, and table declarations are source forms. Runtime execution consumes compiled physical forms where a SPEC marks the path performance-sensitive. Diagnostics and explain surfaces may decode and enrich cold metadata without changing the hot-path physical contract.
+  
+  ## Evidence
+  A runtime physical layout is not release-grade until conformance tests cover round trips, invalid tags, unsupported versions, nonzero reserved bits, truncation, offset overflow, length overflow, scalar overflow, identity-shape mismatch where relevant, and Python/Rust parity where both lanes consume the format.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1120"
+  - "adr:1114"
+  - "adr:1115"
+  - "adr:1116"

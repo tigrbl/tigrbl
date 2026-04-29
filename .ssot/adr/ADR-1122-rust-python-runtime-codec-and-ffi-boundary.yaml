@@ -1,0 +1,40 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1122"
+number: 1122
+slug: "rust-python-runtime-codec-and-ffi-boundary"
+title: "Rust Python Runtime Codec And FFI Boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Python/Rust runtime boundaries use explicit codecs and batched, bounded payloads for runtime execution artifacts. Textual and object-rich semantic forms may be accepted at ingress or authoring boundaries, but runtime interchange across Python, Rust, C, or native boundaries must prefer canonical byte payloads or compact structured payloads with explicit validation, versioning, and failure behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern byte-oriented runtime codec and FFI boundaries separately from engine storage codecs."
+    at: "2026-04-28T15:59:24Z"
+references: []
+body: |-
+  ## Decision
+  Python/Rust runtime boundaries use explicit codecs and batched, bounded payloads for runtime execution artifacts. Textual and object-rich semantic forms may be accepted at ingress or authoring boundaries, but runtime interchange across Python, Rust, C, or native boundaries must prefer canonical byte payloads or compact structured payloads with explicit validation, versioning, and failure behavior.
+  
+  This ADR governs runtime codec and FFI boundaries for compiled kernel plans, runtime event metadata, atom dispatch inputs, identity/scalar references, request/response execution metadata, callback registrations, and parity fixtures. It does not govern engine-owned persistence, WAL, page, block, manifest, or recovery formats.
+  
+  ## Rationale
+  Crossing language boundaries per scalar or per object amplifies interpreter/native overhead and makes parity fragile. Explicit codecs make conversion visible, bounded, and testable. Batched payloads let the runtime pay boundary, validation, checksum, and decoding costs per plan, page-like runtime batch, or execution group rather than per field.
+  
+  Python-side semantics and Rust-side execution must agree on canonical forms, validation failures, unsupported versions, reserved bits, offset bounds, identity bytes, and scalar widths. A codec boundary gives both sides a stable conformance target without forcing public Python APIs to expose low-level bytes.
+  
+  ## Applied Principles
+  Runtime codec and FFI boundaries use boundary batching, codec boundary pattern, semantic/physical separation, ingress validation with internal trust, text-at-boundary and regex-at-boundary rules, fixed-width scalar handling, wide-value byte treatment, avoid-Python-byte-loops discipline, header-level decoding, bounded parsing, versioned physical formats, reserved-bit strategy, and fail-closed negative tests.
+  
+  ## Consequences
+  Runtime bridge code must avoid scalar-by-scalar language crossings in hot paths when a plan-level or batch-level payload is available. Codecs must define canonical bytes or compact structured payloads, accepted compatibility forms, invalid input handling, and parity evidence. Diagnostics may expose decoded rich objects, but execution should consume compact validated forms where the SPEC marks a path performance-sensitive.
+  
+  Any new runtime codec format requires conformance tests for round trips, truncation, unsupported versions, nonzero reserved bits, invalid tags, offset overflow, scalar overflow, identity-shape mismatch, and Python/Rust parity. Engine storage codecs remain separate and must be governed by engine-specific ADRs/SPECs.
+  
+  ## Traceability
+  Extends ADR-1020, ADR-1086, ADR-1088, ADR-1114, ADR-1116, ADR-1117, ADR-1118, and ADR-1120. Candidate SPECs include Rust/Python runtime codec boundary, batched runtime FFI envelope, and runtime execution parity evidence contracts.

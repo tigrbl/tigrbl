@@ -71,7 +71,7 @@ class SessionSpec(SerdeMixin):
 
     def merge(self, higher: "SessionSpec | Mapping[str, Any] | None") -> "SessionSpec":
         """
-        Overlay another spec on top of this one (non-None fields take precedence).
+        Overlay another spec on top of this one (explicit fields take precedence).
         Use to implement op > model > router > app precedence.
         """
         if higher is None:
@@ -79,13 +79,18 @@ class SessionSpec(SerdeMixin):
         h = higher if isinstance(higher, SessionSpec) else SessionSpec.from_any(higher)
         if h is None:
             return self
+        defaults = SessionSpec()
         vals: MutableMapping[str, Any] = {
             f.name: getattr(self, f.name) for f in fields(SessionSpec)
         }
         for f in fields(SessionSpec):
             hv = getattr(h, f.name)
-            if hv is not None:
-                vals[f.name] = hv
+            if hv is None:
+                continue
+            default = getattr(defaults, f.name)
+            if hv == default and vals[f.name] != default:
+                continue
+            vals[f.name] = hv
         return SessionSpec(**vals)  # type: ignore[arg-type]
 
     def to_kwargs(self) -> dict[str, Any]:

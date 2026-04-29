@@ -1,0 +1,43 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2141"
+number: 2141
+slug: "runtime-execution-benchmark-evidence-contract"
+title: "Runtime Execution Benchmark Evidence Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define benchmark and evidence requirements for runtime byte-oriented layouts so decisions are validated against representative atom, kernel-plan, dispatch, and runtime execution workloads rather than scalar microbenchmarks alone."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to require representative runtime execution benchmarks before freezing byte-oriented layouts."
+    at: "2026-04-28T16:01:37Z"
+references: []
+body: |-
+  ## Intent
+  Define benchmark and evidence requirements for runtime byte-oriented layouts so decisions are validated against representative atom, kernel-plan, dispatch, and runtime execution workloads rather than scalar microbenchmarks alone.
+  
+  ## Benchmark Targets
+  Representative benchmarks SHOULD cover compiled KernelPlan traversal, atom-chain dispatch, phase-tree branching, subevent/event-family selection, callback-fence handling, identity/scalar reference lookup, semantic decode deferral, Python/Rust runtime codec boundaries, and batch-level runtime interchange.
+  
+  ## Required Measurements
+  Evidence SHOULD report operation count, plan size, dispatch table size, branch count, atom count, callback fence count, cold metadata size, allocation count where available, runtime boundary crossings, and representative latency or throughput. Benchmarks SHOULD compare semantic-object traversal against the compiled physical form when evaluating layout changes.
+  
+  ## Microbenchmark Rules
+  Microbenchmarks MAY be used to understand primitive costs such as header decoding, fixed-width scalar handling, struct unpacking, or tag dispatch. They MUST NOT be the only evidence for freezing a runtime layout. Representative plan execution and dispatch workloads are required before claiming runtime benefit.
+  
+  ## Layout Freeze Criteria
+  Before a runtime physical layout is frozen, evidence SHOULD show that the chosen form improves or preserves dispatch correctness, allocation behavior, semantic decode deferral, Python/Rust parity, and representative runtime execution behavior. Layout changes that only improve isolated scalar loops but regress plan traversal or boundary batching SHOULD be rejected.
+  
+  ## Evidence Artifacts
+  Benchmark evidence SHOULD be linked as SSOT evidence and should identify the SPEC, ADR, implementation path, command, fixture corpus, input shape, and result summary. Evidence for engine storage workloads is out of scope and belongs to engine-specific benchmark contracts.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1120"
+  - "adr:1121"
+  - "adr:1122"
+  - "adr:1085"

@@ -459,7 +459,7 @@
       "id": "feat:protocol-phase-tree-plans-001",
       "title": "Protocol phase tree plans",
       "description": "Protocol phase tree plans target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -488,7 +488,7 @@
       "id": "feat:compiled-loop-regions-001",
       "title": "Compiled loop regions",
       "description": "Compiled loop regions target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -572,7 +572,7 @@
       "id": "feat:bindingspec-kernelplan-protocol-compilation-001",
       "title": "BindingSpec KernelPlan protocol compilation",
       "description": "BindingSpec KernelPlan protocol compilation target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -584,8 +584,12 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:bindingspec-kernelplan-protocol-compilation-contract-001"
+      ],
+      "test_ids": [
+        "tst:bindingspec-kernelplan-protocol-compilation-contract"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2099",
@@ -628,7 +632,7 @@
       "id": "feat:tree-loop-aware-executors-001",
       "title": "Tree and loop aware executors",
       "description": "Tree and loop aware executors target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -820,7 +824,7 @@
       "id": "feat:http-rest-jsonrpc-atom-chains-001",
       "title": "HTTP REST and JSON-RPC atom chains",
       "description": "HTTP REST and JSON-RPC atom chains target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -832,8 +836,12 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:http-rest-jsonrpc-atom-chains-contract-001"
+      ],
+      "test_ids": [
+        "tst:http-rest-jsonrpc-atom-chains-contract"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2097",
@@ -845,7 +853,7 @@
       "id": "feat:http-stream-atom-chains-001",
       "title": "HTTP stream atom chains",
       "description": "HTTP stream atom chains target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -874,7 +882,7 @@
       "id": "feat:sse-session-message-stream-chains-001",
       "title": "SSE session message stream chains",
       "description": "SSE session message stream chains target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -903,7 +911,7 @@
       "id": "feat:websocket-wss-atom-chains-001",
       "title": "WebSocket and WSS atom chains",
       "description": "WebSocket and WSS atom chains target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -961,7 +969,7 @@
       "id": "feat:static-file-runtime-chain-001",
       "title": "Static file runtime chain",
       "description": "Static file runtime chain target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -973,8 +981,12 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:static-file-runtime-chain-contract-001"
+      ],
+      "test_ids": [
+        "tst:static-file-runtime-chain-contract"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2097",
@@ -986,7 +998,7 @@
       "id": "feat:lifespan-runtime-chain-001",
       "title": "Lifespan runtime chain",
       "description": "Lifespan runtime chain target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -998,8 +1010,12 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:lifespan-runtime-chain-contract-001"
+      ],
+      "test_ids": [
+        "tst:lifespan-runtime-chain-contract"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2097",
@@ -1089,7 +1105,7 @@
       "id": "feat:first-class-callback-runtime-001",
       "title": "First-class callback runtime",
       "description": "First-class callback runtime target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -1101,8 +1117,12 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:first-class-callback-runtime-contract-001"
+      ],
+      "test_ids": [
+        "tst:first-class-callback-runtime-contract"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2098",
@@ -1114,7 +1134,7 @@
       "id": "feat:first-class-webhook-delivery-001",
       "title": "First-class webhook delivery",
       "description": "First-class webhook delivery target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -1126,8 +1146,12 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
-      "test_ids": [],
+      "claim_ids": [
+        "clm:first-class-webhook-delivery-contract-001"
+      ],
+      "test_ids": [
+        "tst:first-class-webhook-delivery-contract"
+      ],
       "requires": [],
       "spec_ids": [
         "spc:2098",
@@ -2876,7 +2900,7 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "backlog",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -2915,7 +2939,7 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "backlog",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -2954,7 +2978,7 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "backlog",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -2982,7 +3006,7 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "backlog",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -3022,7 +3046,7 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "backlog",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -3050,7 +3074,7 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "backlog",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -3159,7 +3183,7 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
+        "horizon": "backlog",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -10353,7 +10377,7 @@
       "id": "feat:sse-bindingspec-contract-001",
       "title": "SseBindingSpec contract",
       "description": "Tracks SseBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10370,11 +10394,13 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:sse-bindingspec-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:spec-contracts-session-bindings"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10390,7 +10416,7 @@
       "id": "feat:ws-bindingspec-contract-001",
       "title": "WsBindingSpec contract",
       "description": "Tracks WsBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10407,11 +10433,13 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:ws-bindingspec-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:spec-contracts-session-bindings"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10427,7 +10455,7 @@
       "id": "feat:webtransport-bindingspec-contract-001",
       "title": "WebTransportBindingSpec contract",
       "description": "Tracks WebTransportBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10444,11 +10472,13 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:webtransport-bindingspec-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:spec-contracts-session-bindings"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10579,7 +10609,7 @@
       "id": "feat:storagetyperef-contract-001",
       "title": "StorageTypeRef contract",
       "description": "Tracks StorageTypeRef as a first-class tigrbl_core._spec datatype contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10594,9 +10624,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:storagetyperef-contract-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:spec-contracts-request-schema-storage"
       ],
       "requires": []
     },
@@ -10997,7 +11030,7 @@
       "id": "feat:templatespec-contract-001",
       "title": "TemplateSpec contract",
       "description": "Tracks TemplateSpec as a first-class tigrbl_core._spec response-template contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11012,9 +11045,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:templatespec-contract-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:spec-contracts-table-registry-template"
       ],
       "requires": []
     },
@@ -11053,7 +11089,7 @@
       "id": "feat:requestspec-contract-001",
       "title": "RequestSpec contract",
       "description": "Tracks RequestSpec as a first-class tigrbl_core._spec request contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11070,11 +11106,13 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:requestspec-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:spec-contracts-request-schema-storage"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -11090,7 +11128,7 @@
       "id": "feat:schemaspec-contract-001",
       "title": "SchemaSpec contract",
       "description": "Tracks SchemaSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11105,9 +11143,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:schemaspec-contract-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:spec-contracts-request-schema-storage"
       ],
       "requires": []
     },
@@ -11115,7 +11156,7 @@
       "id": "feat:schemaref-contract-001",
       "title": "SchemaRef contract",
       "description": "Tracks SchemaRef as a first-class tigrbl_core._spec schema-reference contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11130,9 +11171,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:schemaref-contract-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:spec-contracts-request-schema-storage"
       ],
       "requires": []
     },
@@ -11140,7 +11184,7 @@
       "id": "feat:sessionspec-contract-001",
       "title": "SessionSpec contract",
       "description": "Tracks SessionSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11157,11 +11201,13 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:sessionspec-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:spec-contracts-session-bindings"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -11207,7 +11253,7 @@
       "id": "feat:storagetransformspec-contract-001",
       "title": "StorageTransformSpec contract",
       "description": "Tracks StorageTransformSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11222,9 +11268,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:storagetransformspec-contract-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:spec-contracts-request-schema-storage"
       ],
       "requires": []
     },
@@ -11293,7 +11342,7 @@
       "id": "feat:tableregistryspec-contract-001",
       "title": "TableRegistrySpec contract",
       "description": "Tracks TableRegistrySpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11308,9 +11357,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tableregistryspec-contract-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:spec-contracts-table-registry-template"
       ],
       "requires": []
     },
@@ -21825,7 +21877,7 @@
       "id": "feat:two-axis-lifecycle-matrix-001",
       "title": "Two-axis lifecycle matrix",
       "description": "Tracks the authoritative subevent x phase lifecycle matrix as compiler-governed data.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -38659,7 +38711,7 @@
     {
       "id": "tst:protocol-phase-tree-plans-contract",
       "title": "Protocol phase tree plans target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_protocol_phase_tree_plan_contract.py",
       "feature_ids": [
@@ -38723,7 +38775,7 @@
     {
       "id": "tst:tree-loop-aware-executors-contract",
       "title": "Tree and loop aware executors target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_loop_region_executor_contract.py",
       "feature_ids": [
@@ -38755,7 +38807,7 @@
     {
       "id": "tst:http-stream-atom-chains-contract",
       "title": "HTTP stream atom chains target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_http_stream_atom_chain_contract.py",
       "feature_ids": [
@@ -38787,7 +38839,7 @@
     {
       "id": "tst:sse-session-message-stream-chains-contract",
       "title": "SSE session message stream chains target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_sse_runtime_contract.py",
       "feature_ids": [
@@ -38803,7 +38855,7 @@
     {
       "id": "tst:websocket-wss-atom-chains-contract",
       "title": "WebSocket and WSS atom chains target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_websocket_atom_chain_contract.py",
       "feature_ids": [
@@ -38883,7 +38935,7 @@
     {
       "id": "tst:compiled-loop-regions-contract",
       "title": "Compiled loop regions target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_compiled_loop_regions_contract.py",
       "feature_ids": [
@@ -38899,7 +38951,7 @@
     {
       "id": "tst:two-axis-lifecycle-matrix-contract",
       "title": "Two-axis lifecycle matrix target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_two_axis_lifecycle_matrix_contract.py",
       "feature_ids": [
@@ -39171,6 +39223,166 @@
       ],
       "evidence_ids": [
         "evd:spiffe-svid-structural-validator-proof-20260428"
+      ]
+    },
+    {
+      "id": "tst:bindingspec-kernelplan-protocol-compilation-contract",
+      "title": "BindingSpec KernelPlan protocol compilation contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_bindingspec_kernelplan_protocol_compilation_contract.py",
+      "feature_ids": [
+        "feat:bindingspec-kernelplan-protocol-compilation-001"
+      ],
+      "claim_ids": [
+        "clm:bindingspec-kernelplan-protocol-compilation-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:bindingspec-kernelplan-protocol-compilation-contract-pytest"
+      ]
+    },
+    {
+      "id": "tst:http-rest-jsonrpc-atom-chains-contract",
+      "title": "HTTP REST and JSON-RPC atom chains contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_http_rest_jsonrpc_atom_chain_contract.py",
+      "feature_ids": [
+        "feat:http-rest-jsonrpc-atom-chains-001"
+      ],
+      "claim_ids": [
+        "clm:http-rest-jsonrpc-atom-chains-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:http-rest-jsonrpc-atom-chains-contract-pytest"
+      ]
+    },
+    {
+      "id": "tst:static-file-runtime-chain-contract",
+      "title": "Static file runtime chain contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_static_file_runtime_chain_contract.py",
+      "feature_ids": [
+        "feat:static-file-runtime-chain-001"
+      ],
+      "claim_ids": [
+        "clm:static-file-runtime-chain-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:static-file-runtime-chain-contract-pytest"
+      ]
+    },
+    {
+      "id": "tst:lifespan-runtime-chain-contract",
+      "title": "Lifespan runtime chain contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_lifespan_runtime_chain_contract.py",
+      "feature_ids": [
+        "feat:lifespan-runtime-chain-001"
+      ],
+      "claim_ids": [
+        "clm:lifespan-runtime-chain-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:lifespan-runtime-chain-contract-pytest"
+      ]
+    },
+    {
+      "id": "tst:first-class-callback-runtime-contract",
+      "title": "First-class callback runtime contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_first_class_callback_runtime_contract.py",
+      "feature_ids": [
+        "feat:first-class-callback-runtime-001"
+      ],
+      "claim_ids": [
+        "clm:first-class-callback-runtime-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:first-class-callback-runtime-contract-pytest"
+      ]
+    },
+    {
+      "id": "tst:first-class-webhook-delivery-contract",
+      "title": "First-class webhook delivery contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_first_class_webhook_delivery_contract.py",
+      "feature_ids": [
+        "feat:first-class-webhook-delivery-001"
+      ],
+      "claim_ids": [
+        "clm:first-class-webhook-delivery-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:first-class-webhook-delivery-contract-pytest"
+      ]
+    },
+    {
+      "id": "tst:spec-contracts-request-schema-storage",
+      "title": "Request schema and storage spec contracts",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_contracts_request_schema_storage.py",
+      "feature_ids": [
+        "feat:requestspec-contract-001",
+        "feat:schemaref-contract-001",
+        "feat:schemaspec-contract-001",
+        "feat:storagetransformspec-contract-001",
+        "feat:storagetyperef-contract-001"
+      ],
+      "claim_ids": [
+        "clm:requestspec-contract-001",
+        "clm:schemaref-contract-001",
+        "clm:schemaspec-contract-001",
+        "clm:storagetransformspec-contract-001",
+        "clm:storagetyperef-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-request-schema-storage-pytest"
+      ]
+    },
+    {
+      "id": "tst:spec-contracts-session-bindings",
+      "title": "Session and transport binding spec contracts",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_contracts_session_bindings.py",
+      "feature_ids": [
+        "feat:sessionspec-contract-001",
+        "feat:webtransport-bindingspec-contract-001",
+        "feat:ws-bindingspec-contract-001",
+        "feat:sse-bindingspec-contract-001"
+      ],
+      "claim_ids": [
+        "clm:sessionspec-contract-001",
+        "clm:webtransport-bindingspec-contract-001",
+        "clm:ws-bindingspec-contract-001",
+        "clm:sse-bindingspec-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-session-bindings-pytest"
+      ]
+    },
+    {
+      "id": "tst:spec-contracts-table-registry-template",
+      "title": "Table registry and template spec contracts",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_contracts_table_registry_template.py",
+      "feature_ids": [
+        "feat:tableregistryspec-contract-001",
+        "feat:templatespec-contract-001"
+      ],
+      "claim_ids": [
+        "clm:tableregistryspec-contract-001",
+        "clm:templatespec-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-table-registry-template-pytest"
       ]
     }
   ],
@@ -45096,7 +45308,7 @@
     {
       "id": "clm:protocol-phase-tree-plans-contract-001",
       "title": "Protocol phase tree plans target contract",
-      "status": "blocked",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Protocol plans compile deterministic phase trees with canonical phase names, node identities, typed ok/err child edges, and legal linear projections.",
@@ -45164,7 +45376,7 @@
     {
       "id": "clm:tree-loop-aware-executors-contract-001",
       "title": "Tree and loop aware executors target contract",
-      "status": "blocked",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Loop-aware executors honor continuation, break, close, disconnect, loop-local errors, and ErrorCtx routing without flattening phase-tree semantics.",
@@ -45198,7 +45410,7 @@
     {
       "id": "clm:http-stream-atom-chains-contract-001",
       "title": "HTTP stream atom chains target contract",
-      "status": "blocked",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "target-contract",
       "description": "HTTP stream atom chains compile iterator, chunk emission, disconnect finalization, and POST_EMIT completion-fence behavior.",
@@ -45232,7 +45444,7 @@
     {
       "id": "clm:sse-session-message-stream-chains-contract-001",
       "title": "SSE session message stream chains target contract",
-      "status": "blocked",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "target-contract",
       "description": "SSE chains declare session open/close, stream start/end, message emission, heartbeat emission, disconnect handling, and POST_EMIT completion.",
@@ -45249,7 +45461,7 @@
     {
       "id": "clm:websocket-wss-atom-chains-contract-001",
       "title": "WebSocket and WSS atom chains target contract",
-      "status": "blocked",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "target-contract",
       "description": "WebSocket/WSS chains compile connect, accept, receive loop, decode, handler, send, close, close metadata, and WSS scope metadata behavior.",
@@ -45334,7 +45546,7 @@
     {
       "id": "clm:compiled-loop-regions-contract-001",
       "title": "Compiled loop regions target contract",
-      "status": "blocked",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Loop regions compile into phase-tree structures with continue, exit, close, completion fence, err edge, ErrorCtx metadata, and fail-closed validation.",
@@ -45351,7 +45563,7 @@
     {
       "id": "clm:two-axis-lifecycle-matrix-contract-001",
       "title": "Two-axis lifecycle matrix target contract",
-      "status": "blocked",
+      "status": "evidenced",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Lifecycle compilation uses runtime family and subevent rows against kernel phase columns, with cells carrying participation, hookability, tx, loop, and legality metadata.",
@@ -45681,6 +45893,295 @@
       ],
       "evidence_ids": [
         "evd:spiffe-svid-structural-validator-proof-20260428"
+      ]
+    },
+    {
+      "id": "clm:bindingspec-kernelplan-protocol-compilation-contract-001",
+      "title": "BindingSpec KernelPlan protocol compilation target contract",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "BindingSpec protocol metadata compiles into deterministic KernelPlan inputs with governed family, framing, atom anchors, lifecycle rows, and fail-closed unsupported binding validation.",
+      "feature_ids": [
+        "feat:bindingspec-kernelplan-protocol-compilation-001"
+      ],
+      "test_ids": [
+        "tst:bindingspec-kernelplan-protocol-compilation-contract"
+      ],
+      "evidence_ids": [
+        "evd:bindingspec-kernelplan-protocol-compilation-contract-pytest"
+      ]
+    },
+    {
+      "id": "clm:http-rest-jsonrpc-atom-chains-contract-001",
+      "title": "HTTP REST and JSON-RPC atom chains target contract",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "HTTP REST and JSON-RPC unary chains compile canonical atom order, shared operation semantics, framing decode/encode, completion-fence behavior, and fail-closed unsupported binding validation.",
+      "feature_ids": [
+        "feat:http-rest-jsonrpc-atom-chains-001"
+      ],
+      "test_ids": [
+        "tst:http-rest-jsonrpc-atom-chains-contract"
+      ],
+      "evidence_ids": [
+        "evd:http-rest-jsonrpc-atom-chains-contract-pytest"
+      ]
+    },
+    {
+      "id": "clm:static-file-runtime-chain-contract-001",
+      "title": "Static file runtime chain target contract",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "Static file runtime chains resolve mounted files, reject traversal before lookup, return governed 404s, compile range/cache/pathsend atoms, and emit partial-content metadata.",
+      "feature_ids": [
+        "feat:static-file-runtime-chain-001"
+      ],
+      "test_ids": [
+        "tst:static-file-runtime-chain-contract"
+      ],
+      "evidence_ids": [
+        "evd:static-file-runtime-chain-contract-pytest"
+      ]
+    },
+    {
+      "id": "clm:lifespan-runtime-chain-contract-001",
+      "title": "Lifespan runtime chain target contract",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "Lifespan runtime chains compile KernelPlan-owned startup and shutdown atom order, set readiness only after successful startup, clear readiness on shutdown, and report typed handler failure ErrorCtx metadata.",
+      "feature_ids": [
+        "feat:lifespan-runtime-chain-001"
+      ],
+      "test_ids": [
+        "tst:lifespan-runtime-chain-contract"
+      ],
+      "evidence_ids": [
+        "evd:lifespan-runtime-chain-contract-pytest"
+      ]
+    },
+    {
+      "id": "clm:first-class-callback-runtime-contract-001",
+      "title": "First-class callback runtime target contract",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "Callback runtime surfaces callbacks as descriptor metadata, strips callables from KernelPlan metadata, executes callback fences in order, fails closed for missing callbacks, wraps callback exceptions with phase metadata, and roundtrips descriptors through the runtime codec.",
+      "feature_ids": [
+        "feat:first-class-callback-runtime-001"
+      ],
+      "test_ids": [
+        "tst:first-class-callback-runtime-contract"
+      ],
+      "evidence_ids": [
+        "evd:first-class-callback-runtime-contract-pytest"
+      ]
+    },
+    {
+      "id": "clm:first-class-webhook-delivery-contract-001",
+      "title": "First-class webhook delivery target contract",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "Webhook delivery compiles explicit event endpoint signing retry metadata, signs deterministic idempotent payloads, records emit-complete on success, retries transient failures, dead-letters terminal failures, and preserves timeout ErrorCtx without completion.",
+      "feature_ids": [
+        "feat:first-class-webhook-delivery-001"
+      ],
+      "test_ids": [
+        "tst:first-class-webhook-delivery-contract"
+      ],
+      "evidence_ids": [
+        "evd:first-class-webhook-delivery-contract-pytest"
+      ]
+    },
+    {
+      "id": "clm:requestspec-contract-001",
+      "title": "RequestSpec preserves explicit request contract data",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "RequestSpec preserves method, path, headers, query, path parameters, script name, and byte body data across serde boundaries.",
+      "feature_ids": [
+        "feat:requestspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-request-schema-storage"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-request-schema-storage-pytest"
+      ]
+    },
+    {
+      "id": "clm:schemaref-contract-001",
+      "title": "SchemaRef preserves lazy schema reference metadata",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "SchemaRef preserves schema alias and in/out direction metadata and remains lazy until schema normalization resolves it.",
+      "feature_ids": [
+        "feat:schemaref-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-request-schema-storage"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-request-schema-storage-pytest"
+      ]
+    },
+    {
+      "id": "clm:schemaspec-contract-001",
+      "title": "SchemaSpec roundtrips inline and referenced schema payloads",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "SchemaSpec preserves alias, in/out kind, inline schema dictionaries, and SchemaRef payloads across serde boundaries.",
+      "feature_ids": [
+        "feat:schemaspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-request-schema-storage"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-request-schema-storage-pytest"
+      ]
+    },
+    {
+      "id": "clm:storagetransformspec-contract-001",
+      "title": "StorageTransformSpec roundtrips named storage transforms",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "StorageTransformSpec preserves named to_stored and from_stored callables across serde boundaries for storage-boundary value transforms.",
+      "feature_ids": [
+        "feat:storagetransformspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-request-schema-storage"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-request-schema-storage-pytest"
+      ]
+    },
+    {
+      "id": "clm:storagetyperef-contract-001",
+      "title": "StorageTypeRef preserves engine physical type references",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "StorageTypeRef preserves engine_kind and physical_name, participates in datatype lowering/reflection, and is available through public tigrbl exports.",
+      "feature_ids": [
+        "feat:storagetyperef-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-request-schema-storage"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-request-schema-storage-pytest"
+      ]
+    },
+    {
+      "id": "clm:sessionspec-contract-001",
+      "title": "SessionSpec contract is implemented and tested",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "SessionSpec supports alias normalization, scoped merge precedence, adapter kwargs, helper constructors, factory validation, and serde roundtrip for consistency, tenancy, cache, compliance, pagination, and observability metadata.",
+      "feature_ids": [
+        "feat:sessionspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-session-bindings"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-session-bindings-pytest"
+      ]
+    },
+    {
+      "id": "clm:webtransport-bindingspec-contract-001",
+      "title": "WebTransportBindingSpec contract is implemented and tested",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "WebTransportBindingSpec preserves webtransport protocol, bidirectional exchange, and webtransport framing through serde.",
+      "feature_ids": [
+        "feat:webtransport-bindingspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-session-bindings"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-session-bindings-pytest"
+      ]
+    },
+    {
+      "id": "clm:ws-bindingspec-contract-001",
+      "title": "WsBindingSpec contract is implemented and tested",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "WsBindingSpec preserves ws/wss protocol metadata, subprotocols, bidirectional exchange, and text framing through serde.",
+      "feature_ids": [
+        "feat:ws-bindingspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-session-bindings"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-session-bindings-pytest"
+      ]
+    },
+    {
+      "id": "clm:sse-bindingspec-contract-001",
+      "title": "SseBindingSpec contract is implemented and tested",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "SseBindingSpec preserves server-stream exchange, GET method contract, and SSE framing through serde.",
+      "feature_ids": [
+        "feat:sse-bindingspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-session-bindings"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-session-bindings-pytest"
+      ]
+    },
+    {
+      "id": "clm:tableregistryspec-contract-001",
+      "title": "TableRegistrySpec contract is implemented and tested",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "TableRegistrySpec preserves default empty registries, declared table ordering, public facade export, and serde roundtrip behavior.",
+      "feature_ids": [
+        "feat:tableregistryspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-table-registry-template"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-table-registry-template-pytest"
+      ]
+    },
+    {
+      "id": "clm:templatespec-contract-001",
+      "title": "TemplateSpec contract is implemented and tested",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "TemplateSpec preserves declarative template metadata, ResponseSpec embedding, serde roundtrip behavior, and response-resolution merge semantics.",
+      "feature_ids": [
+        "feat:templatespec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-table-registry-template"
+      ],
+      "evidence_ids": [
+        "evd:spec-contracts-table-registry-template-pytest"
       ]
     }
   ],
@@ -50734,7 +51235,7 @@
     {
       "id": "evd:protocol-phase-tree-plans-contract-pytest",
       "title": "Protocol phase tree plans target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_protocol_phase_tree_plan_contract.py",
@@ -50790,7 +51291,7 @@
     {
       "id": "evd:tree-loop-aware-executors-contract-pytest",
       "title": "Tree and loop aware executors target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_loop_region_executor_contract.py",
@@ -50818,7 +51319,7 @@
     {
       "id": "evd:http-stream-atom-chains-contract-pytest",
       "title": "HTTP stream atom chains target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_http_stream_atom_chain_contract.py",
@@ -50846,7 +51347,7 @@
     {
       "id": "evd:sse-session-message-stream-chains-contract-pytest",
       "title": "SSE session message stream chains target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_sse_runtime_contract.py",
@@ -50860,7 +51361,7 @@
     {
       "id": "evd:websocket-wss-atom-chains-contract-pytest",
       "title": "WebSocket and WSS atom chains target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_websocket_atom_chain_contract.py",
@@ -50930,7 +51431,7 @@
     {
       "id": "evd:compiled-loop-regions-contract-pytest",
       "title": "Compiled loop regions target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_compiled_loop_regions_contract.py",
@@ -50944,7 +51445,7 @@
     {
       "id": "evd:two-axis-lifecycle-matrix-contract-pytest",
       "title": "Two-axis lifecycle matrix target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_two_axis_lifecycle_matrix_contract.py",
@@ -51293,6 +51794,140 @@
       ],
       "test_ids": [
         "tst:spiffe-svid-structural-validator-contract"
+      ]
+    },
+    {
+      "id": "evd:bindingspec-kernelplan-protocol-compilation-contract-pytest",
+      "title": "BindingSpec KernelPlan protocol compilation pytest evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_bindingspec_kernelplan_protocol_compilation_contract.py",
+      "claim_ids": [
+        "clm:bindingspec-kernelplan-protocol-compilation-contract-001"
+      ],
+      "test_ids": [
+        "tst:bindingspec-kernelplan-protocol-compilation-contract"
+      ]
+    },
+    {
+      "id": "evd:http-rest-jsonrpc-atom-chains-contract-pytest",
+      "title": "HTTP REST and JSON-RPC atom chains pytest evidence",
+      "status": "passed",
+      "kind": "pytest-target",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_http_rest_jsonrpc_atom_chain_contract.py",
+      "claim_ids": [
+        "clm:http-rest-jsonrpc-atom-chains-contract-001"
+      ],
+      "test_ids": [
+        "tst:http-rest-jsonrpc-atom-chains-contract"
+      ]
+    },
+    {
+      "id": "evd:static-file-runtime-chain-contract-pytest",
+      "title": "Static file runtime chain pytest evidence",
+      "status": "passed",
+      "kind": "pytest-target",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_static_file_runtime_chain_contract.py",
+      "claim_ids": [
+        "clm:static-file-runtime-chain-contract-001"
+      ],
+      "test_ids": [
+        "tst:static-file-runtime-chain-contract"
+      ]
+    },
+    {
+      "id": "evd:lifespan-runtime-chain-contract-pytest",
+      "title": "Lifespan runtime chain pytest evidence",
+      "status": "passed",
+      "kind": "pytest-target",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_lifespan_runtime_chain_contract.py",
+      "claim_ids": [
+        "clm:lifespan-runtime-chain-contract-001"
+      ],
+      "test_ids": [
+        "tst:lifespan-runtime-chain-contract"
+      ]
+    },
+    {
+      "id": "evd:first-class-callback-runtime-contract-pytest",
+      "title": "First-class callback runtime pytest evidence",
+      "status": "passed",
+      "kind": "pytest-target",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_first_class_callback_runtime_contract.py",
+      "claim_ids": [
+        "clm:first-class-callback-runtime-contract-001"
+      ],
+      "test_ids": [
+        "tst:first-class-callback-runtime-contract"
+      ]
+    },
+    {
+      "id": "evd:first-class-webhook-delivery-contract-pytest",
+      "title": "First-class webhook delivery pytest evidence",
+      "status": "passed",
+      "kind": "pytest-target",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_first_class_webhook_delivery_contract.py",
+      "claim_ids": [
+        "clm:first-class-webhook-delivery-contract-001"
+      ],
+      "test_ids": [
+        "tst:first-class-webhook-delivery-contract"
+      ]
+    },
+    {
+      "id": "evd:spec-contracts-request-schema-storage-pytest",
+      "title": "Request schema and storage spec contracts pytest evidence",
+      "status": "passed",
+      "kind": "pytest-target",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_contracts_request_schema_storage.py",
+      "claim_ids": [
+        "clm:requestspec-contract-001",
+        "clm:schemaref-contract-001",
+        "clm:schemaspec-contract-001",
+        "clm:storagetransformspec-contract-001",
+        "clm:storagetyperef-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-request-schema-storage"
+      ]
+    },
+    {
+      "id": "evd:spec-contracts-session-bindings-pytest",
+      "title": "Session and transport binding spec contracts pytest evidence",
+      "status": "passed",
+      "kind": "test_run",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_contracts_session_bindings.py",
+      "claim_ids": [
+        "clm:sessionspec-contract-001",
+        "clm:webtransport-bindingspec-contract-001",
+        "clm:ws-bindingspec-contract-001",
+        "clm:sse-bindingspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-session-bindings"
+      ]
+    },
+    {
+      "id": "evd:spec-contracts-table-registry-template-pytest",
+      "title": "Table registry and template spec contracts pytest evidence",
+      "status": "passed",
+      "kind": "test_run",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_contracts_table_registry_template.py",
+      "claim_ids": [
+        "clm:tableregistryspec-contract-001",
+        "clm:templatespec-contract-001"
+      ],
+      "test_ids": [
+        "tst:spec-contracts-table-registry-template"
       ]
     }
   ],
@@ -55067,6 +55702,72 @@
           "at": "2026-04-27T12:17:09Z"
         }
       ]
+    },
+    {
+      "id": "adr:1120",
+      "number": 1120,
+      "slug": "byte-oriented-runtime-execution-principles",
+      "title": "Byte-Oriented Runtime Execution Principles",
+      "path": ".ssot/adr/ADR-1120-byte-oriented-runtime-execution-principles.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "7050fb1f88c9d9f514044bb3f9af13ac33fe87ab39fa44b3342761f2713ea14a",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern byte-oriented runtime execution principles for atoms, kernel plans, and runtime dispatch.",
+          "at": "2026-04-28T15:58:52Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1121",
+      "number": 1121,
+      "slug": "compiled-kernel-plan-and-atom-dispatch-layout-boundary",
+      "title": "Compiled Kernel Plan And Atom Dispatch Layout Boundary",
+      "path": ".ssot/adr/ADR-1121-compiled-kernel-plan-and-atom-dispatch-layout-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "76ed1883443923f1b80dc2e1848b7b74c54194906b3bf252824dfa1f3d59186f",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to keep compiled runtime kernel-plan and atom-dispatch layout separate from semantic specs and engine storage formats.",
+          "at": "2026-04-28T15:59:09Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1122",
+      "number": 1122,
+      "slug": "rust-python-runtime-codec-and-ffi-boundary",
+      "title": "Rust Python Runtime Codec And FFI Boundary",
+      "path": ".ssot/adr/ADR-1122-rust-python-runtime-codec-and-ffi-boundary.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "4ad70bf1712653843d05673bac16c8c271f66ac9db61cbb25493d0296136e5d6",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern byte-oriented runtime codec and FFI boundaries separately from engine storage codecs.",
+          "at": "2026-04-28T15:59:24Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -58420,6 +59121,185 @@
         "adr:1117",
         "adr:1118",
         "adr:1113"
+      ]
+    },
+    {
+      "id": "spc:2136",
+      "number": 2136,
+      "slug": "runtime-byte-oriented-physical-layout-guidelines",
+      "title": "Runtime Byte-Oriented Physical Layout Guidelines",
+      "path": ".ssot/specs/SPEC-2136-runtime-byte-oriented-physical-layout-guidelines.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "72fd14cccebc0b626c9e2378bdf0dc1def5b49b1acae033ca6bd7579e0230cb8",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define runtime-only byte-oriented layout guidelines and exclude engine storage formats.",
+          "at": "2026-04-28T16:00:29Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1120",
+        "adr:1114",
+        "adr:1115",
+        "adr:1116"
+      ]
+    },
+    {
+      "id": "spc:2137",
+      "number": 2137,
+      "slug": "runtime-dispatch-metadata-layout-contract",
+      "title": "Runtime Dispatch Metadata Layout Contract",
+      "path": ".ssot/specs/SPEC-2137-runtime-dispatch-metadata-layout-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "8745dae358a9022e1c41cc5c4bdd8ea8b4ad58588aaacb9a803628bded53f463",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define atom and runtime dispatch metadata layout requirements.",
+          "at": "2026-04-28T16:00:42Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1121",
+        "adr:1120",
+        "adr:1102",
+        "adr:1114"
+      ]
+    },
+    {
+      "id": "spc:2138",
+      "number": 2138,
+      "slug": "compiled-kernel-plan-packed-layout-contract",
+      "title": "Compiled Kernel Plan Packed Layout Contract",
+      "path": ".ssot/specs/SPEC-2138-compiled-kernel-plan-packed-layout-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "f68a71aab5b938b1829ffc4741fb70a2be1fe4e7b4a313c8a16ee6d935377e0e",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define packed runtime-executable KernelPlan layout requirements.",
+          "at": "2026-04-28T16:00:57Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1121",
+        "adr:1120",
+        "adr:1100",
+        "adr:1108",
+        "adr:1109"
+      ]
+    },
+    {
+      "id": "spc:2139",
+      "number": 2139,
+      "slug": "runtime-identity-and-scalar-reference-layout",
+      "title": "Runtime Identity And Scalar Reference Layout",
+      "path": ".ssot/specs/SPEC-2139-runtime-identity-and-scalar-reference-layout.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "147fd64aacbdff8de5ca53fbf6d9340c9349b15fed4bb214aa8525b67671884c",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define runtime identity and scalar references without hot-path object amplification.",
+          "at": "2026-04-28T16:01:10Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1120",
+        "adr:1121",
+        "adr:1112",
+        "adr:1113",
+        "adr:1117",
+        "adr:1118",
+        "adr:1119"
+      ]
+    },
+    {
+      "id": "spc:2140",
+      "number": 2140,
+      "slug": "runtime-execution-conformance-and-fuzz-contract",
+      "title": "Runtime Execution Conformance And Fuzz Contract",
+      "path": ".ssot/specs/SPEC-2140-runtime-execution-conformance-and-fuzz-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "829c9f1255fe335885b33aaf5f6259991561340fd655e2fc018bb290a4cf059d",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define runtime physical layout conformance, fuzz, and parity evidence.",
+          "at": "2026-04-28T16:01:25Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1120",
+        "adr:1121",
+        "adr:1122",
+        "adr:1116",
+        "adr:1088"
+      ]
+    },
+    {
+      "id": "spc:2141",
+      "number": 2141,
+      "slug": "runtime-execution-benchmark-evidence-contract",
+      "title": "Runtime Execution Benchmark Evidence Contract",
+      "path": ".ssot/specs/SPEC-2141-runtime-execution-benchmark-evidence-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "bce2e36b160c30ea948f1456fc25f759f224040d652729a45c426092db2388d9",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to require representative runtime execution benchmarks before freezing byte-oriented layouts.",
+          "at": "2026-04-28T16:01:37Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1120",
+        "adr:1121",
+        "adr:1122",
+        "adr:1085"
       ]
     }
   ],

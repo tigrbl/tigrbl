@@ -1,0 +1,49 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2139"
+number: 2139
+slug: "runtime-identity-and-scalar-reference-layout"
+title: "Runtime Identity And Scalar Reference Layout"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how runtime execution layouts reference identity shapes, identity vectors, scalar metadata, opaque identity bytes, and canonical hashes without inflating hot paths into strings, UUID objects, dictionaries, or full semantic records."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define runtime identity and scalar references without hot-path object amplification."
+    at: "2026-04-28T16:01:10Z"
+references: []
+body: |-
+  ## Intent
+  Define how runtime execution layouts reference identity shapes, identity vectors, scalar metadata, opaque identity bytes, and canonical hashes without inflating hot paths into strings, UUID objects, dictionaries, or full semantic records.
+  
+  ## Reference Model
+  Runtime plans SHOULD reference identity and scalar metadata by fixed-width ids, table indexes, offsets, lengths, or shape ids. Concrete identity bytes SHOULD live in dense slabs or bounded byte regions. Scalar metadata SHOULD use fixed-width width-class codes, type codes, flags, and optional offset/length pairs for variable-width payloads.
+  
+  ## Identity Bytes
+  UUIDs, ULIDs, hashes, content ids, and other opaque identifiers used by runtime dispatch MUST be represented internally as raw fixed-width bytes or validated fixed-width byte spans unless arithmetic or public formatting is required. Text formatting and parsing belong at ingress, diagnostics, compatibility, or public API boundaries.
+  
+  ## Scalar Handling
+  Runtime scalar metadata MUST define width class, signedness where relevant, byte order for portable forms, overflow behavior, unsupported type behavior, and canonical encoding. Wide values such as 128-bit and larger ids SHOULD be treated as fixed byte spans unless arithmetic is explicitly required by a governing SPEC.
+  
+  ## Hot Path Rules
+  Hot runtime paths MUST NOT decode identity vectors into rich objects merely to select an atom, branch, callback fence, or phase path. The runtime MAY lazily decode semantic identity objects after dispatch metadata proves the payload is needed.
+  
+  ## Invalid States
+  Decode or reference resolution MUST fail closed on unsupported scalar code, unsupported width class, value overflow, invalid fixed-width byte length, identity shape mismatch, out-of-range identity table index, offset overflow, length overflow, or incompatible canonical hash metadata.
+  
+  ## Evidence
+  Tests MUST cover identity reference resolution, scalar width validation, opaque byte round trips, UUID/ULID compatibility boundaries, wide-value byte handling, overflow rejection, identity-shape mismatch rejection, and Python/Rust parity for canonical bytes and validation failures.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1120"
+  - "adr:1121"
+  - "adr:1112"
+  - "adr:1113"
+  - "adr:1117"
+  - "adr:1118"
+  - "adr:1119"

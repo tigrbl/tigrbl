@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from base64 import b64decode, b64encode
 from dataclasses import fields, is_dataclass
 from importlib import import_module
 from typing import Any, TypeVar
@@ -25,6 +26,8 @@ def _resolve_path(path: str) -> Any:
 def _serialize_value(value: Any) -> Any:
     if value is None or isinstance(value, (bool, int, float, str)):
         return value
+    if isinstance(value, bytes):
+        return {"__bytes__": b64encode(value).decode("ascii")}
     if is_dataclass(value):
         payload = {
             f.name: _serialize_value(getattr(value, f.name)) for f in fields(value)
@@ -53,6 +56,8 @@ def _deserialize_value(value: Any) -> Any:
     if isinstance(value, dict):
         if "__tuple__" in value:
             return tuple(_deserialize_value(item) for item in value["__tuple__"])
+        if "__bytes__" in value:
+            return b64decode(value["__bytes__"].encode("ascii"))
         if "__class__" in value:
             return _resolve_path(value["__class__"])
         if "__callable__" in value:
