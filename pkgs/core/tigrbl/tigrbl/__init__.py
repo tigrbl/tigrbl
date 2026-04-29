@@ -182,12 +182,18 @@ from tigrbl_core._spec import (  # noqa: E402
     SchemaRef,
     SchemaSpec,
     SessionSpec,
+    readonly,
+    session_spec,
     StorageSpec,
     StorageTransformSpec,
+    StorageTypeRef,
     TableRegistrySpec,
     TableSpec,
     TargetOp,
     TemplateSpec,
+    tx_read_committed,
+    tx_repeatable_read,
+    tx_serializable,
     TxScope,
     WebTransportBindingSpec,
     WsBindingSpec,
@@ -270,6 +276,21 @@ async def rpc_call(*args, **kwargs):
     return await import_module("tigrbl_concrete._mapping.router.rpc").rpc_call(
         *args, **kwargs
     )
+
+
+from tigrbl_core._spec.session_spec import (  # noqa: E402
+    readonly as _readonly_fn,
+    session_spec as _session_spec_fn,
+    tx_read_committed as _tx_read_committed_fn,
+    tx_repeatable_read as _tx_repeatable_read_fn,
+    tx_serializable as _tx_serializable_fn,
+)
+
+readonly = _readonly_fn
+session_spec = _session_spec_fn
+tx_read_committed = _tx_read_committed_fn
+tx_repeatable_read = _tx_repeatable_read_fn
+tx_serializable = _tx_serializable_fn
 
 
 __all__ = [
@@ -378,10 +399,16 @@ __all__ = [
     "StorageTransform",
     "Middleware",
     "StorageTransformSpec",
+    "StorageTypeRef",
     "ForeignKeySpec",
     "RequestSpec",
     "SchemaSpec",
     "SessionSpec",
+    "session_spec",
+    "tx_read_committed",
+    "tx_repeatable_read",
+    "tx_serializable",
+    "readonly",
     "EngineSpec",
     "TemplateSpec",
     "ForeignKeyBase",

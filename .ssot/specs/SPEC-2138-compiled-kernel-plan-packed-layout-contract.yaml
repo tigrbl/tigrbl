@@ -1,0 +1,49 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2138"
+number: 2138
+slug: "compiled-kernel-plan-packed-layout-contract"
+title: "Compiled Kernel Plan Packed Layout Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the contract for packed and fused runtime-executable KernelPlan layouts generated from semantic source specifications."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define packed runtime-executable KernelPlan layout requirements."
+    at: "2026-04-28T16:00:57Z"
+references: []
+body: |-
+  ## Intent
+  Define the contract for packed and fused runtime-executable KernelPlan layouts generated from semantic source specifications.
+  
+  ## Source And Target Forms
+  AppSpec, RouterSpec, BindingSpec, OpSpec, hook declarations, callback declarations, and legality inputs are semantic source forms. A compiled KernelPlan is a runtime-executable target form. The target form MAY use packed records, structure-of-arrays sidecars, atom-chain tables, phase-tree tables, callback-fence tables, cold metadata tables, and identity/scalar reference tables.
+  
+  ## Required Plan Sections
+  A packed KernelPlan layout SHOULD define sections for plan header, version, counts, binding records, route records where relevant, phase-chain or phase-tree records, atom-chain table, branch table, callback-fence table, dispatch metadata table, identity/scalar reference table, and cold metadata offsets.
+  
+  Each section MUST define field widths, count and offset rules, alignment expectations if any, and invalid states. Portable encoded forms MUST specify endianness. Runtime-only native forms MUST specify producer/consumer compatibility and cannot be treated as durable wire formats.
+  
+  ## Hot Path Requirements
+  Runtime execution MUST be able to traverse atom chains and branch records without reconstructing full semantic specs. Hot records SHOULD include ids, tags, flags, offsets, lengths, and table indexes. Cold records MAY include names, docs labels, trace labels, schema names, and diagnostics metadata.
+  
+  ## Fusion And Barriers
+  Fused executor segments MUST preserve segment fusion barriers, callback fences, error branches, completion fences, phase legality, and atom ordering. A packed layout MUST make barriers visible to the executor without decoding cold metadata.
+  
+  ## Invalid States
+  Plan decode or materialization MUST fail closed on unsupported version, invalid count, out-of-range table index, dangling offset, illegal atom/phase pairing, illegal branch edge, callback fence mismatch, nonzero reserved bits, or cold metadata offset overflow.
+  
+  ## Evidence
+  Tests MUST prove semantic-source to packed-plan determinism, packed-plan execution equivalence, barrier preservation, callback-fence preservation, invalid-plan rejection, and Python/Rust plan parity when both lanes consume the layout.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1121"
+  - "adr:1120"
+  - "adr:1100"
+  - "adr:1108"
+  - "adr:1109"

@@ -1,0 +1,45 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2137"
+number: 2137
+slug: "runtime-dispatch-metadata-layout-contract"
+title: "Runtime Dispatch Metadata Layout Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the physical layout contract for runtime dispatch metadata that determines which atom chain, phase path, subevent branch, event-family handler, or callback fence is selected during runtime execution."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define atom and runtime dispatch metadata layout requirements."
+    at: "2026-04-28T16:00:42Z"
+references: []
+body: |-
+  ## Intent
+  Define the physical layout contract for runtime dispatch metadata that determines which atom chain, phase path, subevent branch, event-family handler, or callback fence is selected during runtime execution.
+  
+  ## Dispatch Metadata
+  Dispatch metadata MUST use stable numeric tags or registry ids for protocol, binding, phase, subevent, event family, atom kind, branch kind, callback fence kind, and handler selector kind. Flags MUST be bit-coded with named bits and reserved-bit behavior.
+  
+  Portable encoded forms MUST define explicit endianness. Hot in-memory runtime forms MAY use native typed arrays when they are not durable or wire-visible, but the producer and consumer MUST agree on sidecar widths and count invariants.
+  
+  ## Required Fields
+  A dispatch record MUST expose enough metadata to decide skip/keep/branch without decoding a semantic spec object. The minimum hot-path fields are kind, phase, subevent or event-family selector, atom-chain reference, flags, offset or index, length or count where variable data is referenced, and optional identity/scalar reference ids.
+  
+  ## Invalid States
+  Decode or materialization MUST fail closed on unsupported version, unknown required tag, illegal phase/subevent combination, illegal atom kind for the selected phase, nonzero reserved bits, offset overflow, length overflow, dangling atom-chain reference, or selector/handler mismatch.
+  
+  ## Hot/Cold Split
+  Debug labels, schema names, route names, trace annotations, and explain text belong in cold metadata. Hot dispatch records SHOULD carry ids and offsets that can be resolved into cold metadata only after execution or diagnostics request it.
+  
+  ## Evidence
+  Tests MUST prove deterministic dispatch selection, illegal dispatch rejection, reserved-bit rejection, table-driven dispatch parity, and representative branch behavior across Python and Rust when both runtimes consume the metadata.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1121"
+  - "adr:1120"
+  - "adr:1102"
+  - "adr:1114"
