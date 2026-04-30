@@ -148,6 +148,8 @@ from tigrbl.ddl import bootstrap_dbschema, ensure_schemas, register_sqlite_attac
 
 from tigrbl_base._base import (  # noqa: E402
     AppBase,
+    EngineBase,
+    EngineProviderBase,
     ForeignKeyBase,
     HookBase,
     RouterBase,
@@ -161,6 +163,7 @@ from tigrbl_core._spec import (  # noqa: E402
     BindingSpec,
     ColumnSpec,
     EngineSpec,
+    EngineRegistry,
     Exchange,
     FieldSpec,
     Framing,
@@ -410,6 +413,9 @@ __all__ = [
     "tx_serializable",
     "readonly",
     "EngineSpec",
+    "EngineRegistry",
+    "EngineBase",
+    "EngineProviderBase",
     "TemplateSpec",
     "ForeignKeyBase",
     "HookBase",

@@ -1,0 +1,370 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-30T19:08:34Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "1b4ad56c8090b5c50ff8cb18f524b868e0030bf7c5a34aeabab8b6155e407181",
+  "boundary": {
+    "id": "bnd:tigrbl-eventful-streaming-slice-001",
+    "title": "Tigrbl Eventful Streaming Slice",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:eventstreamresponse-concrete-sse-class-001",
+      "feat:stream-chunk-order-preservation-001",
+      "feat:streamingresponse-concrete-stream-class-001",
+      "feat:yield-iterator-producer-001",
+      "feat:sse-event-framing-001",
+      "feat:sse-lazy-iterator-runtime-001",
+      "feat:websocket-concrete-runtime-class-001",
+      "feat:webtransport-transport-events-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:eventstreamresponse-concrete-sse-class-001",
+      "title": "EventStreamResponse concrete SSE class",
+      "description": "Tracks EventStreamResponse as the concrete SSE response class with event framing and event-stream headers.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041",
+        "spc:2020",
+        "spc:2090"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
+        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
+        "tst:tigrbl-tests-tests-i9n-test-openapi-clear-response-schema",
+        "tst:tigrbl-tests-tests-request-test-request-response-conveniences",
+        "tst:tigrbl-tests-tests-response-test-response-dot-notation",
+        "tst:tigrbl-tests-tests-response-test-response-transport-convenience-dot-notation",
+        "tst:tigrbl-tests-tests-unit-decorators-test-response-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-test-bulk-response-schema",
+        "tst:tigrbl-tests-tests-unit-test-file-response",
+        "tst:tigrbl-tests-tests-unit-test-mapping-bind-response-export",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-unit-test-request-response-examples",
+        "tst:tigrbl-tests-tests-unit-test-response-alias-table-rpc",
+        "tst:tigrbl-tests-tests-unit-test-response-ctx-precedence",
+        "tst:tigrbl-tests-tests-unit-test-response-diagnostics-kernelz",
+        "tst:tigrbl-tests-tests-unit-test-response-html-jinja-behavior",
+        "tst:tigrbl-tests-tests-unit-test-response-parity",
+        "tst:tigrbl-tests-tests-unit-test-response-rest",
+        "tst:tigrbl-tests-tests-unit-test-response-rpc",
+        "tst:tigrbl-tests-tests-unit-test-response-template",
+        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
+    },
+    {
+      "id": "feat:stream-chunk-order-preservation-001",
+      "title": "Stream chunk order preservation",
+      "description": "Preserve stream chunk ordering and multi-chunk body emission rather than collapsing chunks into one accidental body.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:tcase-0015",
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2020",
+        "spc:2090"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      }
+    },
+    {
+      "id": "feat:streamingresponse-concrete-stream-class-001",
+      "title": "StreamingResponse concrete stream class",
+      "description": "Tracks StreamingResponse as the concrete ordered byte-stream response class for sync and async chunk sources.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041",
+        "spc:2020",
+        "spc:2090"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
+        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
+        "tst:tigrbl-tests-tests-i9n-test-openapi-clear-response-schema",
+        "tst:tigrbl-tests-tests-request-test-request-response-conveniences",
+        "tst:tigrbl-tests-tests-response-test-response-dot-notation",
+        "tst:tigrbl-tests-tests-response-test-response-transport-convenience-dot-notation",
+        "tst:tigrbl-tests-tests-unit-decorators-test-response-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-test-bulk-response-schema",
+        "tst:tigrbl-tests-tests-unit-test-file-response",
+        "tst:tigrbl-tests-tests-unit-test-mapping-bind-response-export",
+        "tst:tcase-0015",
+        "tst:tigrbl-tests-tests-unit-test-request-response-examples",
+        "tst:tigrbl-tests-tests-unit-test-response-alias-table-rpc",
+        "tst:tigrbl-tests-tests-unit-test-response-ctx-precedence",
+        "tst:tigrbl-tests-tests-unit-test-response-diagnostics-kernelz",
+        "tst:tigrbl-tests-tests-unit-test-response-html-jinja-behavior",
+        "tst:tigrbl-tests-tests-unit-test-response-parity",
+        "tst:tigrbl-tests-tests-unit-test-response-rest",
+        "tst:tigrbl-tests-tests-unit-test-response-rpc",
+        "tst:tigrbl-tests-tests-unit-test-response-template",
+        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
+    },
+    {
+      "id": "feat:yield-iterator-producer-001",
+      "title": "Yield iterator producer",
+      "description": "Yield iterator producer target for protocol-runtime implementation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:yield-iterator-producer-contract-001",
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:yield-iterator-producer-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2103",
+        "spc:2104",
+        "spc:2142"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "The xfail closure lane currently governs Python-side runtime behavior; Rust parity must be added through explicit paired features, tests, claims, and evidence before any Rust parity certification."
+        }
+      }
+    },
+    {
+      "id": "feat:sse-event-framing-001",
+      "title": "SSE event framing",
+      "description": "Emit WHATWG event-stream bodies with framing compatible with produced event boundaries.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:tcase-0015",
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2020",
+        "spc:2090"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      }
+    },
+    {
+      "id": "feat:sse-lazy-iterator-runtime-001",
+      "title": "SSE lazy iterator runtime",
+      "description": "SSE lazy iterator runtime target for protocol-runtime implementation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:sse-lazy-iterator-runtime-contract-001"
+      ],
+      "test_ids": [
+        "tst:sse-lazy-iterator-runtime-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2104",
+        "spc:2106"
+      ]
+    },
+    {
+      "id": "feat:websocket-concrete-runtime-class-001",
+      "title": "WebSocket concrete runtime class",
+      "description": "Tracks WebSocket as the concrete websocket runtime surface projected by tigrbl_concrete.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2020",
+        "spc:2090"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-tests-failure-closure-001"
+      ],
+      "test_ids": [
+        "tst:tcase-0015"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
+    },
+    {
+      "id": "feat:webtransport-transport-events-001",
+      "title": "WebTransport transport events",
+      "description": "WebTransport transport events target for protocol-runtime implementation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:webtransport-transport-events-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2097",
+        "spc:2100",
+        "spc:2108",
+        "spc:2142"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "The xfail closure lane currently governs Python-side runtime behavior; Rust parity must be added through explicit paired features, tests, claims, and evidence before any Rust parity certification."
+        }
+      }
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-eventful-streaming-slice-001",
+    "feature_count": 8,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}
