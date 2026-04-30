@@ -1,0 +1,364 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-30T19:37:39Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "9efca29b9386d49b807ec37e8abea4111e37a60fdadf2d9c92ea517a1b2f1a97",
+  "boundary": {
+    "id": "bnd:tigrbl-transport-surface-slice-001",
+    "title": "Tigrbl Transport Surface Slice",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:stdapi-asgi-wsgi-transport-compat-001",
+      "feat:transport-accept-emit-close-atoms-001",
+      "feat:transport-bypass-removal-001",
+      "feat:transport-dispatch-governance-001",
+      "feat:transport-event-registry-001",
+      "feat:transportresponse-concrete-response-class-001",
+      "feat:webtransport-transport-events-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:stdapi-asgi-wsgi-transport-compat-001",
+      "title": "StdAPI ASGI/WSGI transport compatibility",
+      "description": "Tracks ASGI/WSGI transport compatibility behavior currently represented by xfailed stdapi transport tests.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:stdapi-asgi-wsgi-transport-compat-contract-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-accept-emit-close-atoms-001",
+      "title": "Transport accept emit close atoms",
+      "description": "Transport accept emit close atoms target for protocol-runtime implementation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:transport-accept-emit-close-atoms-contract-001"
+      ],
+      "test_ids": [
+        "tst:transport-accept-emit-close-atoms-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2097",
+        "spc:2101",
+        "spc:2142"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "The xfail closure lane currently governs Python-side runtime behavior; Rust parity must be added through explicit paired features, tests, claims, and evidence before any Rust parity certification."
+        }
+      }
+    },
+    {
+      "id": "feat:transport-bypass-removal-001",
+      "title": "Remove non-conforming transport bypasses",
+      "description": "Track removal of app-local HTTP dispatch and other transport bypasses that avoid the kernel-owned dispatch path.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:transport-bypass-removal-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-kernelplan-contract",
+        "tst:tigrbl-tests-tests-architecture-test-transport-boundaries",
+        "tst:tigrbl-tests-tests-architecture-test-transport-dispatch-convergence",
+        "tst:tigrbl-tests-tests-harness-v3-test-mapping-plan-compilation",
+        "tst:tigrbl-tests-tests-harness-v3-test-route-rpc-prebinding",
+        "tst:tigrbl-tests-tests-harness-v3-test-route-runtime-fallback-atoms",
+        "tst:tigrbl-tests-tests-i9n-test-transport-dispatch-parity",
+        "tst:transport-dispatch-parity-contract",
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2013",
+        "spc:2024",
+        "spc:2070",
+        "spc:2071",
+        "spc:2090"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      }
+    },
+    {
+      "id": "feat:transport-dispatch-governance-001",
+      "title": "Transport-dispatch governance track setup",
+      "description": "Create the governed transport-dispatch track resources, boundary, validator, and setup evidence before implementation delivery starts.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:transport-dispatch-governance-001"
+      ],
+      "test_ids": [
+        "tst:transport-dispatch-track-governance",
+        "tst:tigrbl-tests-examples-06-intermediate-ops-test-01-op-ctx",
+        "tst:tigrbl-tests-examples-06-intermediate-ops-test-02-op-alias",
+        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-02-op-ctx",
+        "tst:tigrbl-tests-examples-09-intermediate-ops-io-test-09-04-opspec-defaults",
+        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-04-custom-op-hook",
+        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-01-custom-op-schema",
+        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-02-custom-op-rpc",
+        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-03-custom-op-rest",
+        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-04-custom-op-hooks",
+        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
+        "tst:tigrbl-tests-tests-architecture-test-transport-boundaries",
+        "tst:tigrbl-tests-tests-architecture-test-transport-dispatch-convergence",
+        "tst:tigrbl-tests-tests-harness-v3-test-default-opspec-bindings",
+        "tst:tigrbl-tests-tests-harness-v3-test-mapping-plan-compilation",
+        "tst:tigrbl-tests-tests-harness-v3-test-route-rpc-prebinding",
+        "tst:tigrbl-tests-tests-harness-v3-test-route-runtime-fallback-atoms",
+        "tst:tigrbl-tests-tests-i9n-test-op-ctx-alias-examples",
+        "tst:tigrbl-tests-tests-i9n-test-op-ctx-behavior",
+        "tst:tigrbl-tests-tests-i9n-test-op-ctx-core-crud-order",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-effects-i9n-test",
+        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
+        "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
+        "tst:tigrbl-tests-tests-i9n-test-transport-dispatch-parity",
+        "tst:tigrbl-tests-tests-i9n-test-v3-opspec-attributes",
+        "tst:tigrbl-tests-tests-unit-decorators-test-op-alias-bindings",
+        "tst:tigrbl-tests-tests-unit-decorators-test-op-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-test-alias-ctx-op-alias-attributes",
+        "tst:tigrbl-tests-tests-unit-test-core-crud-bulk-ops",
+        "tst:tigrbl-tests-tests-unit-test-core-crud-default-ops",
+        "tst:tigrbl-tests-tests-unit-test-core-crud-methods",
+        "tst:tigrbl-tests-tests-unit-test-op-alias",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-arity-paths",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-attributes",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-core-crud-integration",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-custom-target-persist",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-dynamic-attach",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-parameter-matrix",
+        "tst:tigrbl-tests-tests-unit-test-op-ctx-persist-options",
+        "tst:tigrbl-tests-tests-unit-test-opspec-effects",
+        "tst:tigrbl-tests-tests-unit-test-rest-all-default-op-verbs",
+        "tst:tigrbl-tests-tests-unit-test-rest-rpc-parity-default-ops",
+        "tst:tigrbl-tests-tests-unit-test-rpc-default-ops",
+        "tst:transport-dispatch-parity-contract",
+        "tst:tigrbl-tests-tests-unit-test-v3-op-alias",
+        "tst:tigrbl-tests-tests-unit-test-v3-op-ctx-attributes",
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2013",
+        "spc:2014",
+        "spc:2015",
+        "spc:2016",
+        "spc:2024",
+        "spc:2090"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "required"
+        }
+      }
+    },
+    {
+      "id": "feat:transport-event-registry-001",
+      "title": "Transport event registry",
+      "description": "Transport event registry target for protocol-runtime implementation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:transport-event-registry-contract-001"
+      ],
+      "test_ids": [
+        "tst:transport-event-registry-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2097",
+        "spc:2100",
+        "spc:2142"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "The xfail closure lane currently governs Python-side runtime behavior; Rust parity must be added through explicit paired features, tests, claims, and evidence before any Rust parity certification."
+        }
+      }
+    },
+    {
+      "id": "feat:transportresponse-concrete-response-class-001",
+      "title": "TransportResponse concrete response class",
+      "description": "Tracks the exported TransportResponse surface as a concrete response-class row; current implementation is export-level only and lacks a distinct backing object.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2041",
+        "spc:2090"
+      ],
+      "claim_ids": [
+        "clm:transportresponse-concrete-response-class-contract-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
+        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
+        "tst:tigrbl-tests-tests-i9n-test-openapi-clear-response-schema",
+        "tst:tigrbl-tests-tests-request-test-request-response-conveniences",
+        "tst:tigrbl-tests-tests-response-test-response-dot-notation",
+        "tst:tigrbl-tests-tests-response-test-response-transport-convenience-dot-notation",
+        "tst:tigrbl-tests-tests-unit-decorators-test-response-ctx-bindings",
+        "tst:tigrbl-tests-tests-unit-test-bulk-response-schema",
+        "tst:tigrbl-tests-tests-unit-test-file-response",
+        "tst:tigrbl-tests-tests-unit-test-mapping-bind-response-export",
+        "tst:tigrbl-tests-tests-unit-test-request-response-examples",
+        "tst:tigrbl-tests-tests-unit-test-response-alias-table-rpc",
+        "tst:tigrbl-tests-tests-unit-test-response-ctx-precedence",
+        "tst:tigrbl-tests-tests-unit-test-response-diagnostics-kernelz",
+        "tst:tigrbl-tests-tests-unit-test-response-html-jinja-behavior",
+        "tst:tigrbl-tests-tests-unit-test-response-parity",
+        "tst:tigrbl-tests-tests-unit-test-response-rest",
+        "tst:tigrbl-tests-tests-unit-test-response-rpc",
+        "tst:tigrbl-tests-tests-unit-test-response-template",
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:transportresponse-concrete-response-class-contract"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
+    },
+    {
+      "id": "feat:webtransport-transport-events-001",
+      "title": "WebTransport transport events",
+      "description": "WebTransport transport events target for protocol-runtime implementation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:webtransport-transport-events-contract-001"
+      ],
+      "test_ids": [
+        "tst:webtransport-transport-events-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2097",
+        "spc:2100",
+        "spc:2108",
+        "spc:2142"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "The xfail closure lane currently governs Python-side runtime behavior; Rust parity must be added through explicit paired features, tests, claims, and evidence before any Rust parity certification."
+        }
+      }
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-transport-surface-slice-001",
+    "feature_count": 7,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

@@ -186,7 +186,7 @@
       "id": "feat:transport-event-registry-001",
       "title": "Transport event registry",
       "description": "Transport event registry target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -194,12 +194,11 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001",
         "clm:transport-event-registry-contract-001"
       ],
       "test_ids": [
@@ -538,7 +537,7 @@
       "id": "feat:transport-accept-emit-close-atoms-001",
       "title": "Transport accept emit close atoms",
       "description": "Transport accept emit close atoms target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -546,12 +545,11 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001",
         "clm:transport-accept-emit-close-atoms-contract-001"
       ],
       "test_ids": [
@@ -6333,22 +6331,20 @@
       "id": "feat:transport-bypass-removal-001",
       "title": "Remove non-conforming transport bypasses",
       "description": "Track removal of app-local HTTP dispatch and other transport bypasses that avoid the kernel-owned dispatch path.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "transport-dispatch",
+        "horizon": "current",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:transport-bypass-removal-001",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:transport-bypass-removal-001"
       ],
       "test_ids": [
         "tst:transport-dispatch-kernelplan-contract",
@@ -6382,22 +6378,20 @@
       "id": "feat:transport-dispatch-governance-001",
       "title": "Transport-dispatch governance track setup",
       "description": "Create the governed transport-dispatch track resources, boundary, validator, and setup evidence before implementation delivery starts.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:transport-dispatch-governance-001",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:transport-dispatch-governance-001"
       ],
       "test_ids": [
         "tst:transport-dispatch-track-governance",
@@ -12511,15 +12505,15 @@
       "id": "feat:transportresponse-concrete-response-class-001",
       "title": "TransportResponse concrete response class",
       "description": "Tracks the exported TransportResponse surface as a concrete response-class row; current implementation is export-level only and lacks a distinct backing object.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22866,15 +22860,15 @@
       "id": "feat:stdapi-asgi-wsgi-transport-compat-001",
       "title": "StdAPI ASGI/WSGI transport compatibility",
       "description": "Tracks ASGI/WSGI transport compatibility behavior currently represented by xfailed stdapi transport tests.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "horizon": "current",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22882,7 +22876,6 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-compat-surface-001",
         "clm:stdapi-asgi-wsgi-transport-compat-contract-001"
       ],
       "test_ids": [
@@ -34070,12 +34063,10 @@
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
-        "clm:tigrbl-xfail-compat-surface-001",
         "clm:stdapi-asgi-wsgi-transport-compat-contract-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-xfail-compat-surface-001-preflight",
         "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
@@ -38068,36 +38059,32 @@
     {
       "id": "tst:transport-event-registry-contract",
       "title": "Transport event registry contract",
-      "status": "blocked",
-      "kind": "xfail-contract",
+      "status": "passing",
+      "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_transport_event_registry_contract.py",
       "feature_ids": [
         "feat:transport-event-registry-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001",
         "clm:transport-event-registry-contract-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-transport-message-001-preflight",
         "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
     {
       "id": "tst:transport-accept-emit-close-atoms-contract",
       "title": "Transport accept emit close atoms contract",
-      "status": "blocked",
-      "kind": "xfail-contract",
+      "status": "passing",
+      "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_transport_accept_emit_close_atoms_contract.py",
       "feature_ids": [
         "feat:transport-accept-emit-close-atoms-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001",
         "clm:transport-accept-emit-close-atoms-contract-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-transport-message-001-preflight",
         "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
@@ -42329,7 +42316,7 @@
     {
       "id": "clm:transport-bypass-removal-001",
       "title": "Non-conforming transport bypasses are scheduled for removal in the governed transport-dispatch track.",
-      "status": "declared",
+      "status": "certified",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "App-local HTTP dispatch and similar transport-owned bypasses are explicitly tracked as next-target work to be removed from the transport-dispatch path.",
@@ -42346,7 +42333,7 @@
     {
       "id": "clm:transport-dispatch-governance-001",
       "title": "The transport-dispatch track is governed as a distinct next-target workstream before implementation delivery begins.",
-      "status": "declared",
+      "status": "certified",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The active next-target line includes a dedicated transport-dispatch track with authored ADRs, specs, features, tests, claims, and setup evidence recorded before code delivery starts.",
@@ -43192,12 +43179,10 @@
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:tigrbl-test-suite-coverage-intake-001",
-        "feat:transport-dispatch-governance-001",
         "feat:uniform-diagnostics-uix-surface-001",
         "feat:uploaded-file-runtime-contract-001",
         "feat:executor-dispatch-removal-001",
         "feat:kernelplan-dispatch-ownership-001",
-        "feat:transport-bypass-removal-001",
         "feat:transport-parity-contract-001",
         "feat:runtime-executor-doc-endpoint-parity-001",
         "feat:authn-provider-missing-credentials-status-001",
@@ -43828,8 +43813,6 @@
         "feat:default-canonical-engine-family-datatype-alignment-001",
         "feat:multi-engine-table-portability-interoperability-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:transport-bypass-removal-001",
-        "feat:transport-dispatch-governance-001",
         "feat:transport-parity-contract-001",
         "feat:cli-target-resolution-001",
         "feat:kernel-prime-opview-cache-001",
@@ -45754,9 +45737,7 @@
       "feature_ids": [
         "feat:app-framed-message-codec-runtime-001",
         "feat:framing-decode-encode-atoms-001",
-        "feat:message-datagram-runtime-families-001",
-        "feat:transport-event-registry-001",
-        "feat:transport-accept-emit-close-atoms-001"
+        "feat:message-datagram-runtime-families-001"
       ],
       "test_ids": [
         "tst:app-framed-message-codec-runtime-contract",
@@ -45764,8 +45745,6 @@
         "tst:eventful-protocol-decorator-surface-contract",
         "tst:framing-decode-encode-atoms-contract",
         "tst:message-datagram-runtime-families-contract",
-        "tst:transport-accept-emit-close-atoms-contract",
-        "tst:transport-event-registry-contract",
         "tst:webtransport-transport-events-contract",
         "tst:yield-iterator-producer-contract"
       ],
@@ -45813,7 +45792,6 @@
       "kind": "xfail-closure",
       "description": "Blocked until all selected xfail tests in this frozen boundary pass without xfail markers and linked features are implemented.",
       "feature_ids": [
-        "feat:stdapi-asgi-wsgi-transport-compat-001",
         "feat:rest-rpc-symmetry-header-parity-001",
         "feat:security-per-route-include-router-compat-001",
         "feat:stdapi-routing-parity-001",
@@ -45834,8 +45812,7 @@
         "tst:tigrbl-tests-tests-unit-test-app-spec-normalization",
         "tst:tigrbl-tests-tests-unit-test-rest-operation-id-uniqueness",
         "tst:tigrbl-tests-tests-unit-test-rest-rpc-symmetry",
-        "tst:tigrbl-tests-tests-unit-test-security-per-route",
-        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi"
+        "tst:tigrbl-tests-tests-unit-test-security-per-route"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-compat-surface-001-preflight"
@@ -46827,7 +46804,7 @@
     {
       "id": "clm:stdapi-asgi-wsgi-transport-compat-contract-001",
       "title": "StdAPI public transport entrypoint compatibility contract",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "target-contract",
       "description": "The supported transport entrypoint contract is TigrblApp ASGI invocation, while Router is explicitly not a direct transport entrypoint and private ASGI or WSGI adapter internals remain absent.",
@@ -46844,7 +46821,7 @@
     {
       "id": "clm:transport-accept-emit-close-atoms-contract-001",
       "title": "Transport accept emit close atoms target contract",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Transport accept, emit, close, and emit-complete remain compact hard-barrier atoms with ordered runtime semantics and acknowledged completion behavior.",
@@ -46861,7 +46838,7 @@
     {
       "id": "clm:transport-event-registry-contract-001",
       "title": "Transport event registry target contract",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "target-contract",
       "description": "The transport event registry defines bounded transport families, required event rows, direction and scope mappings, and duplicate or unknown event rejection.",
@@ -46878,7 +46855,7 @@
     {
       "id": "clm:transportresponse-concrete-response-class-contract-001",
       "title": "TransportResponse concrete response class target contract",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T2",
       "kind": "target-contract",
       "description": "TransportResponse is a distinct concrete response class that finalizes transport headers and body semantics through the shared response send path.",
@@ -52706,8 +52683,6 @@
         "tst:eventful-protocol-decorator-surface-contract",
         "tst:framing-decode-encode-atoms-contract",
         "tst:message-datagram-runtime-families-contract",
-        "tst:transport-accept-emit-close-atoms-contract",
-        "tst:transport-event-registry-contract",
         "tst:webtransport-transport-events-contract",
         "tst:yield-iterator-producer-contract"
       ]
@@ -52756,8 +52731,7 @@
         "tst:tigrbl-tests-tests-unit-test-app-spec-normalization",
         "tst:tigrbl-tests-tests-unit-test-rest-operation-id-uniqueness",
         "tst:tigrbl-tests-tests-unit-test-rest-rpc-symmetry",
-        "tst:tigrbl-tests-tests-unit-test-security-per-route",
-        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi"
+        "tst:tigrbl-tests-tests-unit-test-security-per-route"
       ]
     },
     {
@@ -53832,14 +53806,11 @@
         "feat:runtime-owned-hook-legality-enforcement-001",
         "feat:security-per-route-include-router-compat-001",
         "feat:segment-fusion-barrier-policy-001",
-        "feat:stdapi-asgi-wsgi-transport-compat-001",
         "feat:stdapi-openapi-docs-parity-001",
         "feat:stdapi-routing-parity-001",
         "feat:subevent-handler-dispatch-001",
         "feat:subevent-transaction-units-001",
         "feat:surface-optional-metadata-emission-001",
-        "feat:transport-accept-emit-close-atoms-001",
-        "feat:transport-event-registry-001",
         "feat:tx-phase-legacy-alias-removal-001"
       ],
       "claim_ids": [
@@ -53890,9 +53861,6 @@
         "tst:tigrbl-tests-tests-unit-test-rest-operation-id-uniqueness",
         "tst:tigrbl-tests-tests-unit-test-rest-rpc-symmetry",
         "tst:tigrbl-tests-tests-unit-test-security-per-route",
-        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi",
-        "tst:transport-accept-emit-close-atoms-contract",
-        "tst:transport-event-registry-contract",
         "tst:tx-phase-legacy-alias-removal-contract"
       ],
       "evidence_ids": [
@@ -54207,14 +54175,11 @@
         "feat:runtime-owned-hook-legality-enforcement-001",
         "feat:security-per-route-include-router-compat-001",
         "feat:segment-fusion-barrier-policy-001",
-        "feat:stdapi-asgi-wsgi-transport-compat-001",
         "feat:stdapi-openapi-docs-parity-001",
         "feat:stdapi-routing-parity-001",
         "feat:subevent-handler-dispatch-001",
         "feat:subevent-transaction-units-001",
         "feat:surface-optional-metadata-emission-001",
-        "feat:transport-accept-emit-close-atoms-001",
-        "feat:transport-event-registry-001",
         "feat:tx-phase-legacy-alias-removal-001"
       ],
       "claim_ids": [
@@ -54265,9 +54230,6 @@
         "tst:tigrbl-tests-tests-unit-test-rest-operation-id-uniqueness",
         "tst:tigrbl-tests-tests-unit-test-rest-rpc-symmetry",
         "tst:tigrbl-tests-tests-unit-test-security-per-route",
-        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi",
-        "tst:transport-accept-emit-close-atoms-contract",
-        "tst:transport-event-registry-contract",
         "tst:tx-phase-legacy-alias-removal-contract"
       ],
       "evidence_ids": [
@@ -55118,6 +55080,22 @@
         "feat:tigrblsessionbase-contract-001"
       ],
       "profile_ids": []
+    },
+    {
+      "id": "bnd:tigrbl-transport-surface-slice-001",
+      "title": "Tigrbl Transport Surface Slice",
+      "status": "frozen",
+      "frozen": true,
+      "feature_ids": [
+        "feat:stdapi-asgi-wsgi-transport-compat-001",
+        "feat:transport-accept-emit-close-atoms-001",
+        "feat:transport-bypass-removal-001",
+        "feat:transport-dispatch-governance-001",
+        "feat:transport-event-registry-001",
+        "feat:transportresponse-concrete-response-class-001",
+        "feat:webtransport-transport-events-001"
+      ],
+      "profile_ids": []
     }
   ],
   "releases": [
@@ -55731,13 +55709,16 @@
         "clm:opchannel-capability-handshake-contract-001",
         "clm:tigrbl-eventful-subevent-surface-contracts-001",
         "clm:webtransport-transport-events-contract-001",
-        "clm:yield-iterator-producer-contract-001"
+        "clm:yield-iterator-producer-contract-001",
+        "clm:transport-accept-emit-close-atoms-contract-001",
+        "clm:transport-event-registry-contract-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-transport-message-001-preflight",
         "evd:opchannel-capability-handshake-contract-001",
         "evd:opchannel-capability-handshake-contract-pytest",
-        "evd:tigrbl-eventful-subevent-surface-contracts-001"
+        "evd:tigrbl-eventful-subevent-surface-contracts-001",
+        "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
     {
@@ -55766,12 +55747,14 @@
       "claim_ids": [
         "clm:tigrbl-xfail-compat-surface-001",
         "clm:tigrbl-spec-binding-app-engine-contracts-001",
-        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001",
+        "clm:stdapi-asgi-wsgi-transport-compat-contract-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-compat-surface-001-preflight",
         "evd:tigrbl-spec-binding-app-engine-contracts-001",
-        "evd:tigrbl-system-docs-diagnostics-contracts-001"
+        "evd:tigrbl-system-docs-diagnostics-contracts-001",
+        "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
     {
@@ -55866,6 +55849,28 @@
         "evd:tableregistrybase-contract-001-pytest",
         "evd:tableregistrybase-public-projection-001-pytest",
         "evd:tigrblsessionbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "rel:tigrbl-transport-surface-slice-001",
+      "version": "0.3.19.dev1+transport-surface-slice",
+      "status": "certified",
+      "boundary_id": "bnd:tigrbl-transport-surface-slice-001",
+      "claim_ids": [
+        "clm:stdapi-asgi-wsgi-transport-compat-contract-001",
+        "clm:transport-accept-emit-close-atoms-contract-001",
+        "clm:transport-bypass-removal-001",
+        "clm:transport-dispatch-governance-001",
+        "clm:transport-event-registry-contract-001",
+        "clm:transportresponse-concrete-response-class-contract-001",
+        "clm:webtransport-transport-events-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-transport-surface-slice-pytest",
+        "evd:transport-dispatch-kernelplan-test",
+        "evd:transport-dispatch-setup-note",
+        "evd:transport-dispatch-boundary-snapshot",
+        "evd:webtransport-transport-events-contract-pytest"
       ]
     }
   ],
