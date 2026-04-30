@@ -1,0 +1,361 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-30T11:03:13Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "04b42ff893579ba31c8b8a16ce5e8aae8d2bf7a53c9af335c15ac2049735d073",
+  "boundary": {
+    "id": "bnd:tigrbl-xfail-compat-surface-001",
+    "title": "Tigrbl XFail Compatibility Surface Boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:stdapi-asgi-wsgi-transport-compat-001",
+      "feat:rest-rpc-symmetry-header-parity-001",
+      "feat:security-per-route-include-router-compat-001",
+      "feat:stdapi-routing-parity-001",
+      "feat:stdapi-openapi-docs-parity-001",
+      "feat:api-level-auth-include-router-compat-001",
+      "feat:app-spec-normalization-validation-001",
+      "feat:rest-operation-id-uniqueness-001",
+      "feat:asgi-router-compatibility-001",
+      "feat:core-access-compatibility-001",
+      "feat:key-digest-uvicorn-stability-001",
+      "feat:bindings-integration-contract-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:stdapi-asgi-wsgi-transport-compat-001",
+      "title": "StdAPI ASGI/WSGI transport compatibility",
+      "description": "Tracks ASGI/WSGI transport compatibility behavior currently represented by xfailed stdapi transport tests.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:rest-rpc-symmetry-header-parity-001",
+      "title": "REST/RPC symmetry header parity",
+      "description": "Tracks REST/RPC symmetry behavior for default, bulk, replaceable, and mergeable verbs with header-aware JSON-RPC parity.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-rest-rpc-symmetry"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:security-per-route-include-router-compat-001",
+      "title": "Security per-route include-router compatibility",
+      "description": "Tracks per-route security behavior when router inclusion and post-include auth configuration are supported.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-security-per-route"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:stdapi-routing-parity-001",
+      "title": "StdAPI routing parity",
+      "description": "Tracks routing parity between stdapi compatibility routes and governed Tigrbl routing behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-parity-test-stdapi-routing"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:stdapi-openapi-docs-parity-001",
+      "title": "StdAPI OpenAPI docs parity",
+      "description": "Tracks OpenAPI documentation parity for stdapi compatibility surfaces.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-parity-test-stdapi-openapi-docs"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:api-level-auth-include-router-compat-001",
+      "title": "API-level auth include-router compatibility",
+      "description": "Tracks router-level authentication dependency application through include_router compatibility.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-api-level-set-auth"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:app-spec-normalization-validation-001",
+      "title": "AppSpec normalization input validation",
+      "description": "Tracks fail-closed validation for non-spec table and operation entries in AppSpec normalization.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-app-spec-normalization"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:rest-operation-id-uniqueness-001",
+      "title": "REST operation id uniqueness",
+      "description": "Tracks uniqueness of generated REST operation identifiers across included routers and tables.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-rest-operation-id-uniqueness"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:asgi-router-compatibility-001",
+      "title": "ASGI router compatibility",
+      "description": "Tracks direct ASGI compatibility for router instances in beginner app API examples.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-examples-05-beginner-app-api-test-05-asgi-router-compat"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:core-access-compatibility-001",
+      "title": "Core access compatibility",
+      "description": "Tracks compatibility for core access import and runtime behavior under the xfail closure lane.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-i9n-test-core-access"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:key-digest-uvicorn-stability-001",
+      "title": "Key digest uvicorn stability",
+      "description": "Tracks key digest uvicorn stability for xfailed integration behavior.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-i9n-test-key-digest-uvicorn"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:bindings-integration-contract-001",
+      "title": "Bindings integration contract",
+      "description": "Tracks include_table, include_tables, bind, and rebind integration behavior currently represented by xfailed binding tests.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "bnd:tigrbl-xfail-compat-surface-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-xfail-compat-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-i9n-test-bindings-integration"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-xfail-compat-surface-001",
+    "feature_count": 12,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

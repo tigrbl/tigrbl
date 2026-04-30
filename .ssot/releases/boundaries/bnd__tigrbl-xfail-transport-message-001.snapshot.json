@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-30T11:02:59Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "acf842c8749542a650fedbc76292b11af1045172b472aaf82387418d1e98f1a5",
+  "boundary": {
+    "id": "bnd:tigrbl-xfail-transport-message-001",
+    "title": "Tigrbl XFail Transport Message Boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:app-framed-message-codec-runtime-001",
+      "feat:framing-decode-encode-atoms-001",
+      "feat:message-datagram-runtime-families-001",
+      "feat:transport-event-registry-001",
+      "feat:transport-accept-emit-close-atoms-001",
+      "feat:webtransport-transport-events-001",
+      "feat:yield-iterator-producer-001",
+      "feat:opchannel-capability-handshake-001",
+      "feat:eventful-protocol-decorator-surface-001",
+      "feat:eventful-channel-state-metadata-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:app-framed-message-codec-runtime-001",
+      "title": "App-framed message codec runtime",
+      "description": "App-framed message codec runtime target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:app-framed-message-codec-runtime-contract-001",
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:app-framed-message-codec-runtime-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2101",
+        "spc:2107",
+        "spc:2108",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:framing-decode-encode-atoms-001",
+      "title": "Framing decode and encode atoms",
+      "description": "Framing decode and encode atoms target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:framing-decode-encode-atoms-contract-001",
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:framing-decode-encode-atoms-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2101",
+        "spc:2105",
+        "spc:2106",
+        "spc:2107",
+        "spc:2108",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:message-datagram-runtime-families-001",
+      "title": "Message and datagram runtime families",
+      "description": "Message and datagram runtime families target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:message-datagram-runtime-families-contract-001",
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:message-datagram-runtime-families-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2055",
+        "spc:2098",
+        "spc:2099",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:transport-event-registry-001",
+      "title": "Transport event registry",
+      "description": "Transport event registry target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:transport-event-registry-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2097",
+        "spc:2100",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:transport-accept-emit-close-atoms-001",
+      "title": "Transport accept emit close atoms",
+      "description": "Transport accept emit close atoms target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:transport-accept-emit-close-atoms-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2097",
+        "spc:2101",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:webtransport-transport-events-001",
+      "title": "WebTransport transport events",
+      "description": "WebTransport transport events target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:webtransport-transport-events-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2097",
+        "spc:2100",
+        "spc:2108",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:yield-iterator-producer-001",
+      "title": "Yield iterator producer",
+      "description": "Yield iterator producer target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:yield-iterator-producer-contract-001",
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:yield-iterator-producer-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2103",
+        "spc:2104",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:opchannel-capability-handshake-001",
+      "title": "OpChannel capability handshake",
+      "description": "Tracks compiled required capability masks versus runtime adapter capabilities.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2118",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:opchannel-capability-handshake-001",
+        "clm:opchannel-capability-handshake-contract-001",
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:opchannel-capability-handshake-contract-001",
+        "tst:opchannel-capability-handshake-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:eventful-protocol-decorator-surface-001",
+      "title": "Eventful protocol decorator surface",
+      "description": "Tracks websocket_ctx, sse_ctx, stream_ctx, webtransport_ctx, subevent_ctx, and optional on mapping sugar.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2123",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:eventful-protocol-decorator-surface-001",
+        "clm:eventful-protocol-decorator-surface-contract-001",
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:eventful-protocol-decorator-surface-contract-001",
+        "tst:eventful-protocol-decorator-surface-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:eventful-channel-state-metadata-001",
+      "title": "Eventful channel state metadata",
+      "description": "Eventful channel state metadata target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-transport-message-001"
+      ],
+      "test_ids": [
+        "tst:eventful-channel-state-metadata-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2098",
+        "spc:2100",
+        "spc:2103",
+        "spc:2142"
+      ]
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-xfail-transport-message-001",
+    "feature_count": 10,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

@@ -1,0 +1,348 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-30T11:02:52Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "7a5d643f84db822111569e2351c7a3b3a69034684c46cb24873de6890bc1939a",
+  "boundary": {
+    "id": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+    "title": "Tigrbl XFail Runtime Taxonomy Boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:protocol-phase-tree-plans-001",
+      "feat:derived-runtime-subevent-taxonomy-001",
+      "feat:bindingspec-event-subevent-schema-001",
+      "feat:protocol-scope-schemas-001",
+      "feat:eventkey-bit-coded-dispatch-001",
+      "feat:eventkey-hook-bucket-compilation-001",
+      "feat:extended-hook-selector-matching-001",
+      "feat:runtime-owned-hook-legality-enforcement-001",
+      "feat:binding-subevent-phase-atom-legality-matrix-001",
+      "feat:protocol-anchor-ordering-parity-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:protocol-phase-tree-plans-001",
+      "title": "Protocol phase tree plans",
+      "description": "Protocol phase tree plans target for protocol-runtime implementation.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:protocol-phase-tree-plans-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:protocol-phase-tree-plans-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2102",
+        "spc:2113",
+        "spc:2115",
+        "spc:2142"
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
+    },
+    {
+      "id": "feat:derived-runtime-subevent-taxonomy-001",
+      "title": "Derived runtime subevent taxonomy",
+      "description": "Derived runtime subevent taxonomy target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:derived-runtime-subevent-taxonomy-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2098",
+        "spc:2099",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:bindingspec-event-subevent-schema-001",
+      "title": "BindingSpec event and subevent schema",
+      "description": "BindingSpec event and subevent schema target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:bindingspec-event-subevent-schema-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2099",
+        "spc:2100",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:protocol-scope-schemas-001",
+      "title": "Protocol scope schemas",
+      "description": "Protocol scope schemas target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:protocol-scope-schemas-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:protocol-scope-schemas-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2100",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:eventkey-bit-coded-dispatch-001",
+      "title": "EventKey bit-coded dispatch",
+      "description": "Tracks integer and bit-coded EventKey derivation, packed dispatch buckets, and no hot-path dict/string matching.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2117",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:eventkey-bit-coded-dispatch-001",
+        "clm:eventkey-bit-coded-dispatch-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-bit-coded-dispatch-contract-001",
+        "tst:eventkey-bit-coded-dispatch-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:eventkey-hook-bucket-compilation-001",
+      "title": "EventKey hook bucket compilation",
+      "description": "Tracks compile-time wildcard expansion and concrete hook bucket generation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2117",
+        "spc:2119",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:eventkey-hook-bucket-compilation-001",
+        "clm:eventkey-hook-bucket-compilation-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:eventkey-hook-bucket-compilation-contract-001",
+        "tst:eventkey-hook-bucket-compilation-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:extended-hook-selector-matching-001",
+      "title": "Extended hook selector matching",
+      "description": "Extended hook selector matching target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:extended-hook-selector-matching-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:extended-hook-selector-matching-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2057",
+        "spc:2098",
+        "spc:2099",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:runtime-owned-hook-legality-enforcement-001",
+      "title": "Runtime-owned hook legality enforcement",
+      "description": "Runtime-owned hook legality enforcement target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:runtime-owned-hook-legality-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:runtime-owned-hook-legality-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2056",
+        "spc:2057",
+        "spc:2102",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:binding-subevent-phase-atom-legality-matrix-001",
+      "title": "Binding subevent phase atom legality matrix",
+      "description": "Binding subevent phase atom legality matrix target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:binding-subevent-phase-atom-legality-matrix-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:binding-subevent-phase-atom-legality-matrix-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2113",
+        "spc:2115",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:protocol-anchor-ordering-parity-001",
+      "title": "Protocol anchor ordering parity",
+      "description": "Protocol anchor ordering parity target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:protocol-anchor-ordering-parity-contract-001",
+        "clm:tigrbl-xfail-runtime-taxonomy-001"
+      ],
+      "test_ids": [
+        "tst:protocol-anchor-ordering-parity-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2101",
+        "spc:2114",
+        "spc:2115",
+        "spc:2142"
+      ]
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-xfail-runtime-taxonomy-001",
+    "feature_count": 10,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

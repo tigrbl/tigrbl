@@ -1,0 +1,35 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1123"
+number: 1123
+slug: "xfail-closure-split-boundary-program"
+title: "XFail Closure Split Boundary Program"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The xfail closure program is governed through split, frozen SSOT boundaries rather than one oversized release boundary. Published release rel:tigrbl-0.3.19 remains immutable history, while the xfail closure lane tracks current xfailed tests through narrow feature, test, claim, evidence, and boundary links."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern the split-boundary xfail closure lane."
+    at: "2026-04-30T11:00:00Z"
+references: []
+body: |-
+  ## Decision
+  The xfail closure program is governed through split, frozen SSOT boundaries rather than one oversized release boundary. Published release rel:tigrbl-0.3.19 remains immutable history.
+  
+  The closure lane uses five boundaries: runtime taxonomy, transport/message, dispatch/execution, compatibility surface, and partial surface. Each boundary is frozen before implementation work begins, and each boundary must reach implemented features, passing tests, passing evidence, certified claims, and release certification before an aggregate xfail closure release can be created.
+  
+  ## Rationale
+  The current xfail surface spans protocol runtime design, transport events, dispatch execution, legacy compatibility, and partial operator/documentation behavior. A single release boundary would hide failure locality and make certification too coarse. Split boundaries let the repository fail closed at the exact surface that still has absent implementation or stale xfail metadata.
+  
+  ## Consequences
+  Existing broad test-suite intake links must be replaced with narrow feature rows before implementation closure. Xfail markers may be removed only after the underlying behavior is implemented and the focused test passes without xfail. XPASS rows must be treated as stale xfail metadata and closed explicitly.
+  
+  No xfail closure release may supersede or rewrite rel:tigrbl-0.3.19. The aggregate rel:tigrbl-xfail-closure-001 release is blocked until every split boundary has independently passed implementation, proof, and certification gates.
+  
+  ## Traceability
+  Implements the Tigrbl xfail closure delivery plan and pairs with SPEC-2142.
