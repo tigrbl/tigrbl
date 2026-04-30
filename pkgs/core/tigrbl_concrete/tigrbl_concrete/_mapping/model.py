@@ -71,6 +71,8 @@ _DEFAULT_METHODS: dict[str, tuple[str, ...]] = {
     "tail": ("GET",),
     "upload": ("POST",),
     "download": ("GET",),
+    "append_chunk": ("POST",),
+    "send_datagram": ("POST",),
     "checkpoint": ("POST",),
     "custom": ("POST",),
 }
@@ -200,7 +202,16 @@ def _build_raw_handler(model: type, spec: OpSpec):
         _noop_raw.__name__ = f"{model.__name__}_custom_noop"
         return _noop_raw
 
-    if target in {"publish", "subscribe", "tail", "upload", "download", "checkpoint"}:
+    if target in {
+        "publish",
+        "subscribe",
+        "tail",
+        "upload",
+        "download",
+        "append_chunk",
+        "send_datagram",
+        "checkpoint",
+    }:
         import tigrbl_ops_realtime as _core
     elif target in {"aggregate", "group_by"}:
         import tigrbl_ops_olap as _core
@@ -244,7 +255,16 @@ def _build_raw_handler(model: type, spec: OpSpec):
             "bulk_merge",
         }:
             return await core_fn(model, ident, payload, db=db)
-        if target in {"publish", "subscribe", "tail", "upload", "download", "checkpoint"}:
+        if target in {
+            "publish",
+            "subscribe",
+            "tail",
+            "upload",
+            "download",
+            "append_chunk",
+            "send_datagram",
+            "checkpoint",
+        }:
             return await core_fn(payload or {})
         if target in {"aggregate", "group_by"}:
             return await core_fn(payload or {})

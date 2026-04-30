@@ -1,0 +1,36 @@
+{
+  "artifact_id": "evd:tigrbl-spec-binding-app-engine-contracts-001",
+  "claim_id": "clm:tigrbl-spec-binding-app-engine-contracts-001",
+  "test_id": "tst:tigrbl-spec-binding-app-engine-contracts",
+  "status": "passed",
+  "tier": "T2",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_spec_binding_app_engine_contracts.py -q",
+  "summary": {
+    "passed": 7,
+    "failed": 0
+  },
+  "features": [
+    "feat:http-jsonrpc-bindingspec-contract-001",
+    "feat:http-rest-bindingspec-contract-001",
+    "feat:http-stream-bindingspec-contract-001",
+    "feat:bindingregistryspec-contract-001",
+    "feat:bindings-integration-contract-001",
+    "feat:bindingspec-contract-001",
+    "feat:appspec-harness-uvicorn-e2e-parity-001",
+    "feat:appspec-imperative-plan-parity-001",
+    "feat:aliasspec-contract-001",
+    "feat:app-spec-normalization-validation-001",
+    "feat:bindingspec-event-subevent-schema-001",
+    "feat:engineproviderspec-contract-001",
+    "feat:enginespec-contract-001"
+  ],
+  "contracts": [
+    "HTTP REST, JSON-RPC, and HTTP stream BindingSpec defaults and metadata projection",
+    "BindingSpec and BindingRegistrySpec named composition and serde round-trip",
+    "Binding event family and subevent projection fail closed on invalid exchange/family pairings",
+    "AppSpec collection, normalization defaults, generator materialization, and imperative materialization",
+    "AppSpec nested router table and operation entries validate fail closed",
+    "Uvicorn AppSpec harness REST and JSON-RPC parity over shared storage",
+    "AliasSpec abstract/public projection and EngineSpec/EngineProviderSpec normalization"
+  ]
+}

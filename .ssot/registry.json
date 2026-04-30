@@ -379,7 +379,7 @@
       "id": "feat:bindingspec-event-subevent-schema-001",
       "title": "BindingSpec event and subevent schema",
       "description": "BindingSpec event and subevent schema target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -392,10 +392,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-runtime-taxonomy-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:bindingspec-event-subevent-schema-contract"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -1568,7 +1568,7 @@
       "id": "feat:appspec-harness-uvicorn-e2e-parity-001",
       "title": "AppSpec and harness Uvicorn E2E parity",
       "description": "Recover parity between AppSpec materialization, imperative harness assembly, and Uvicorn-backed REST/JSON-RPC execution per adr/ADR-0030 and specs/appspec-harness-uvicorn-parity.md.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -1580,23 +1580,11 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+      ],
       "test_ids": [
-        "tst:tigrbl-tests-tests-harness-test-00-appspec-contract",
-        "tst:tigrbl-tests-tests-harness-test-01-kernel-plan-compilation",
-        "tst:tigrbl-tests-tests-harness-test-02-bootstrap-plan",
-        "tst:tigrbl-tests-tests-harness-test-03-appspec-uvicorn-e2e",
-        "tst:tigrbl-tests-tests-harness-e2e-test-00-appspec-uvicorn-rest-rpc",
-        "tst:tigrbl-tests-tests-harness-e2e-test-01-imperative-uvicorn-rest-rpc",
-        "tst:tigrbl-tests-tests-harness-v3-test-appspec-prefixes",
-        "tst:tigrbl-tests-tests-harness-v3-test-bootstrap-kernel-compilation",
-        "tst:tigrbl-tests-tests-harness-v3-test-default-opspec-bindings",
-        "tst:tigrbl-tests-tests-harness-v3-test-kernel-plan-routing",
-        "tst:tigrbl-tests-tests-harness-v3-test-mapping-plan-compilation",
-        "tst:tigrbl-tests-tests-harness-v3-test-route-rpc-prebinding",
-        "tst:tigrbl-tests-tests-harness-v3-test-route-runtime-fallback-atoms",
-        "tst:tigrbl-tests-tests-harness-v3-test-uvicorn-e2e-appspec",
-        "tst:tcase-0017"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -4261,7 +4249,7 @@
       "id": "feat:canonical-op-tail-001",
       "title": "Canonical op tail",
       "description": "Tracks the canonical `tail` surface as a governed feature with package/crate ownership and executable evidence pointers.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4274,51 +4262,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:next-030",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-canonical-tail-op-contract-001"
       ],
       "test_ids": [
-        "tst:tcase-0002",
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-01-op-ctx",
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-02-op-alias",
-        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-02-op-ctx",
-        "tst:tigrbl-tests-examples-09-intermediate-ops-io-test-09-04-opspec-defaults",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-04-custom-op-hook",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-01-custom-op-schema",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-02-custom-op-rpc",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-03-custom-op-rest",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-04-custom-op-hooks",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
-        "tst:tigrbl-tests-tests-harness-v3-test-default-opspec-bindings",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-alias-examples",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-behavior",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-core-crud-order",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-effects-i9n-test",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
-        "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
-        "tst:tigrbl-tests-tests-i9n-test-v3-opspec-attributes",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-alias-bindings",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-ctx-bindings",
-        "tst:tigrbl-tests-tests-unit-test-alias-ctx-op-alias-attributes",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-bulk-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-methods",
-        "tst:tigrbl-tests-tests-unit-test-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-arity-paths",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-attributes",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-core-crud-integration",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-custom-target-persist",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-dynamic-attach",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-parameter-matrix",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-persist-options",
-        "tst:tigrbl-tests-tests-unit-test-opspec-effects",
-        "tst:tigrbl-tests-tests-unit-test-rest-all-default-op-verbs",
-        "tst:tigrbl-tests-tests-unit-test-rest-rpc-parity-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-rpc-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-ctx-attributes",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-canonical-tail-op-contract"
       ],
       "requires": [],
       "spec_ids": [
@@ -4413,7 +4360,7 @@
       "id": "feat:canonical-op-append-chunk-001",
       "title": "Canonical op append_chunk",
       "description": "Tracks the canonical `append_chunk` surface as a governed feature with package/crate ownership and executable evidence pointers.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4426,51 +4373,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:next-033",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-canonical-stream-transport-op-contracts-001"
       ],
       "test_ids": [
-        "tst:tcase-0002",
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-01-op-ctx",
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-02-op-alias",
-        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-02-op-ctx",
-        "tst:tigrbl-tests-examples-09-intermediate-ops-io-test-09-04-opspec-defaults",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-04-custom-op-hook",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-01-custom-op-schema",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-02-custom-op-rpc",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-03-custom-op-rest",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-04-custom-op-hooks",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
-        "tst:tigrbl-tests-tests-harness-v3-test-default-opspec-bindings",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-alias-examples",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-behavior",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-core-crud-order",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-effects-i9n-test",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
-        "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
-        "tst:tigrbl-tests-tests-i9n-test-v3-opspec-attributes",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-alias-bindings",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-ctx-bindings",
-        "tst:tigrbl-tests-tests-unit-test-alias-ctx-op-alias-attributes",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-bulk-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-methods",
-        "tst:tigrbl-tests-tests-unit-test-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-arity-paths",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-attributes",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-core-crud-integration",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-custom-target-persist",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-dynamic-attach",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-parameter-matrix",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-persist-options",
-        "tst:tigrbl-tests-tests-unit-test-opspec-effects",
-        "tst:tigrbl-tests-tests-unit-test-rest-all-default-op-verbs",
-        "tst:tigrbl-tests-tests-unit-test-rest-rpc-parity-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-rpc-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-ctx-attributes",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-canonical-stream-transport-op-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -4491,7 +4397,7 @@
       "id": "feat:canonical-op-send-datagram-001",
       "title": "Canonical op send_datagram",
       "description": "Tracks the canonical `send_datagram` surface as a governed feature with package/crate ownership and executable evidence pointers.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4504,51 +4410,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:next-034",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-canonical-stream-transport-op-contracts-001"
       ],
       "test_ids": [
-        "tst:tcase-0002",
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-01-op-ctx",
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-02-op-alias",
-        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-02-op-ctx",
-        "tst:tigrbl-tests-examples-09-intermediate-ops-io-test-09-04-opspec-defaults",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-04-custom-op-hook",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-01-custom-op-schema",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-02-custom-op-rpc",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-03-custom-op-rest",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-04-custom-op-hooks",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
-        "tst:tigrbl-tests-tests-harness-v3-test-default-opspec-bindings",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-alias-examples",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-behavior",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-core-crud-order",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-effects-i9n-test",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
-        "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
-        "tst:tigrbl-tests-tests-i9n-test-v3-opspec-attributes",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-alias-bindings",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-ctx-bindings",
-        "tst:tigrbl-tests-tests-unit-test-alias-ctx-op-alias-attributes",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-bulk-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-methods",
-        "tst:tigrbl-tests-tests-unit-test-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-arity-paths",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-attributes",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-core-crud-integration",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-custom-target-persist",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-dynamic-attach",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-parameter-matrix",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-persist-options",
-        "tst:tigrbl-tests-tests-unit-test-opspec-effects",
-        "tst:tigrbl-tests-tests-unit-test-rest-all-default-op-verbs",
-        "tst:tigrbl-tests-tests-unit-test-rest-rpc-parity-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-rpc-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-ctx-attributes",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-canonical-stream-transport-op-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -7463,7 +7328,7 @@
       "id": "feat:appspec-imperative-plan-parity-001",
       "title": "AppSpec and imperative plan parity",
       "description": "Compile equivalent AppSpec and imperative declarations into the same semantic kernel plan.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -7475,22 +7340,11 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+      ],
       "test_ids": [
-        "tst:tigrbl-tests-tests-harness-test-00-appspec-contract",
-        "tst:tigrbl-tests-tests-harness-test-01-kernel-plan-compilation",
-        "tst:tigrbl-tests-tests-harness-test-02-bootstrap-plan",
-        "tst:tigrbl-tests-tests-harness-test-03-appspec-uvicorn-e2e",
-        "tst:tigrbl-tests-tests-harness-e2e-test-00-appspec-uvicorn-rest-rpc",
-        "tst:tigrbl-tests-tests-harness-e2e-test-01-imperative-uvicorn-rest-rpc",
-        "tst:tigrbl-tests-tests-harness-v3-test-appspec-prefixes",
-        "tst:tigrbl-tests-tests-harness-v3-test-bootstrap-kernel-compilation",
-        "tst:tigrbl-tests-tests-harness-v3-test-default-opspec-bindings",
-        "tst:tigrbl-tests-tests-harness-v3-test-kernel-plan-routing",
-        "tst:tigrbl-tests-tests-harness-v3-test-mapping-plan-compilation",
-        "tst:tigrbl-tests-tests-harness-v3-test-route-rpc-prebinding",
-        "tst:tigrbl-tests-tests-harness-v3-test-route-runtime-fallback-atoms",
-        "tst:tigrbl-tests-tests-harness-v3-test-uvicorn-e2e-appspec"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -9747,7 +9601,7 @@
       "id": "feat:aliasspec-contract-001",
       "title": "AliasSpec contract",
       "description": "Tracks AliasSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9762,9 +9616,11 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": []
     },
@@ -9802,7 +9658,7 @@
       "id": "feat:bindingspec-contract-001",
       "title": "BindingSpec contract",
       "description": "Tracks BindingSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9817,9 +9673,11 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": []
     },
@@ -9827,7 +9685,7 @@
       "id": "feat:bindingregistryspec-contract-001",
       "title": "BindingRegistrySpec contract",
       "description": "Tracks BindingRegistrySpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9842,9 +9700,11 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": []
     },
@@ -9852,7 +9712,7 @@
       "id": "feat:http-rest-bindingspec-contract-001",
       "title": "HttpRestBindingSpec contract",
       "description": "Tracks HttpRestBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9869,11 +9729,10 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -9889,7 +9748,7 @@
       "id": "feat:http-jsonrpc-bindingspec-contract-001",
       "title": "HttpJsonRpcBindingSpec contract",
       "description": "Tracks HttpJsonRpcBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9906,11 +9765,10 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -9926,7 +9784,7 @@
       "id": "feat:http-stream-bindingspec-contract-001",
       "title": "HttpStreamBindingSpec contract",
       "description": "Tracks HttpStreamBindingSpec as a first-class tigrbl_core._spec transport binding contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9943,11 +9801,10 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10273,7 +10130,7 @@
       "id": "feat:enginespec-contract-001",
       "title": "EngineSpec contract",
       "description": "Tracks EngineSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10290,11 +10147,10 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10310,7 +10166,7 @@
       "id": "feat:engineproviderspec-contract-001",
       "title": "EngineProviderSpec contract",
       "description": "Tracks EngineProviderSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10327,11 +10183,10 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -23390,7 +23245,7 @@
       "id": "feat:app-spec-normalization-validation-001",
       "title": "AppSpec normalization input validation",
       "description": "Tracks fail-closed validation for non-spec table and operation entries in AppSpec normalization.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23406,10 +23261,10 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-compat-surface-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-tests-tests-unit-test-app-spec-normalization"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": []
     },
@@ -23525,7 +23380,7 @@
       "id": "feat:bindings-integration-contract-001",
       "title": "Bindings integration contract",
       "description": "Tracks include_table, include_tables, bind, and rebind integration behavior currently represented by xfailed binding tests.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23541,10 +23396,10 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-compat-surface-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-tests-tests-i9n-test-bindings-integration"
+        "tst:tigrbl-spec-binding-app-engine-contracts"
       ],
       "requires": []
     }
@@ -24730,11 +24585,7 @@
       "status": "planned",
       "kind": "pytest",
       "path": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-      "feature_ids": [
-        "feat:canonical-op-tail-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:next-011",
         "clm:next-012",
@@ -25171,7 +25022,6 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
         "feat:unified-tigrbl-cli-command-and-flag-surface",
         "feat:supported-server-cli-smoke-dispatch",
         "feat:cli-module-target-resolution-001",
@@ -27012,9 +26862,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -27045,9 +26892,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -27129,9 +26973,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -27475,9 +27316,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -28004,9 +27842,6 @@
         "feat:build-hooks-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
@@ -28041,9 +27876,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -28074,9 +27906,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -28107,9 +27936,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -28141,9 +27967,6 @@
         "feat:build-hooks-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
@@ -28932,9 +28755,6 @@
         "feat:build-hooks-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:ddl-initialization-modes-001",
         "feat:ddl-runtime-surface-001",
@@ -29348,8 +29168,6 @@
       "kind": "acceptance-harness",
       "path": "pkgs/core/tigrbl_tests/tests/harness/test_00_appspec_contract.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29382,8 +29200,6 @@
       "kind": "acceptance-harness",
       "path": "pkgs/core/tigrbl_tests/tests/harness/test_01_kernel_plan_compilation.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29416,8 +29232,6 @@
       "kind": "acceptance-harness",
       "path": "pkgs/core/tigrbl_tests/tests/harness/test_02_bootstrap_plan.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29450,8 +29264,6 @@
       "kind": "acceptance-harness",
       "path": "pkgs/core/tigrbl_tests/tests/harness/test_03_appspec_uvicorn_e2e.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29484,8 +29296,6 @@
       "kind": "acceptance-e2e",
       "path": "pkgs/core/tigrbl_tests/tests/harness_e2e/test_00_appspec_uvicorn_rest_rpc.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29518,8 +29328,6 @@
       "kind": "acceptance-e2e",
       "path": "pkgs/core/tigrbl_tests/tests/harness_e2e/test_01_imperative_uvicorn_rest_rpc.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29553,8 +29361,6 @@
       "kind": "harness-v3",
       "path": "pkgs/core/tigrbl_tests/tests/harness_v3/test_appspec_prefixes.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29587,8 +29393,6 @@
       "kind": "harness-v3",
       "path": "pkgs/core/tigrbl_tests/tests/harness_v3/test_bootstrap_kernel_compilation.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29623,15 +29427,10 @@
       "feature_ids": [
         "feat:analytical-family-membership-freeze-001",
         "feat:analytical-runtime-docs-export-parity-001",
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
@@ -29673,8 +29472,6 @@
       "kind": "harness-v3",
       "path": "pkgs/core/tigrbl_tests/tests/harness_v3/test_kernel_plan_routing.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29707,8 +29504,6 @@
       "kind": "harness-v3",
       "path": "pkgs/core/tigrbl_tests/tests/harness_v3/test_mapping_plan_compilation.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29746,8 +29541,6 @@
       "kind": "harness-v3",
       "path": "pkgs/core/tigrbl_tests/tests/harness_v3/test_route_rpc_prebinding.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29785,8 +29578,6 @@
       "kind": "harness-v3",
       "path": "pkgs/core/tigrbl_tests/tests/harness_v3/test_route_runtime_fallback_atoms.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29824,8 +29615,6 @@
       "kind": "harness-v3",
       "path": "pkgs/core/tigrbl_tests/tests/harness_v3/test_uvicorn_e2e_appspec.py",
       "feature_ids": [
-        "feat:appspec-harness-uvicorn-e2e-parity-001",
-        "feat:appspec-imperative-plan-parity-001",
         "feat:default-kernel-identity-001",
         "feat:engine-resolver-multi-table-rpc-001",
         "feat:engine-resolver-precedence-001",
@@ -29948,9 +29737,7 @@
       "status": "blocked",
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_bindings_integration.py",
-      "feature_ids": [
-        "feat:bindings-integration-contract-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
         "clm:tigrbl-xfail-compat-surface-001"
@@ -30327,9 +30114,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -30360,9 +30144,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -30394,9 +30175,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -30468,9 +30246,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -30501,9 +30276,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -30670,9 +30442,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:governed-module-alias-compatibility-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -31003,9 +30772,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -31640,9 +31406,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -31673,9 +31436,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -32189,9 +31949,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -32282,9 +32039,7 @@
       "status": "blocked",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_app_spec_normalization.py",
-      "feature_ids": [
-        "feat:app-spec-normalization-validation-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
         "clm:tigrbl-xfail-compat-surface-001"
@@ -32538,9 +32293,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -32571,9 +32323,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -32604,9 +32353,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33554,9 +33300,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33614,9 +33357,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33647,9 +33387,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33681,9 +33418,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33714,9 +33448,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33747,9 +33478,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33781,9 +33509,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33814,9 +33539,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -33863,9 +33585,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -34289,9 +34008,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -34404,9 +34120,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -34519,9 +34232,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -35382,9 +35092,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -35415,9 +35122,6 @@
         "feat:build-handlers-helper-surface-001",
         "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
         "feat:op-extension-surface-001",
@@ -35805,15 +35509,12 @@
       "path": "tools/ci/validate_ssot_authority_model.py",
       "feature_ids": [
         "feat:aliasbase-contract-001",
-        "feat:aliasspec-contract-001",
         "feat:appbase-contract-001",
         "feat:appbase-public-projection-001",
         "feat:attrdict-contract-001",
         "feat:bind-helper-surface-001",
         "feat:bindingbase-contract-001",
         "feat:bindingregistrybase-contract-001",
-        "feat:bindingregistryspec-contract-001",
-        "feat:bindingspec-contract-001",
         "feat:boundary-scoped-test-selection-001",
         "feat:build-healthz-endpoint-helper-001",
         "feat:build-hookz-endpoint-helper-001",
@@ -35835,9 +35536,7 @@
         "feat:enginebase-contract-001",
         "feat:enginedatatypebridge-contract-001",
         "feat:engineproviderbase-contract-001",
-        "feat:engineproviderspec-contract-001",
         "feat:engineregistry-contract-001",
-        "feat:enginespec-contract-001",
         "feat:enginetypelowerer-protocol-001",
         "feat:feature-test-coverage-completeness-001",
         "feat:foreignkeybase-contract-001",
@@ -35853,9 +35552,6 @@
         "feat:hookspec-contract-001",
         "feat:hookz-mount-surface-001",
         "feat:hookz-payload-surface-001",
-        "feat:http-jsonrpc-bindingspec-contract-001",
-        "feat:http-rest-bindingspec-contract-001",
-        "feat:http-stream-bindingspec-contract-001",
         "feat:include-tables-helper-surface-001",
         "feat:kernelz-bounded-payload-001",
         "feat:kernelz-mount-surface-001",
@@ -36526,9 +36222,6 @@
         "feat:engine-datatype-lowering-registry-bridge-001",
         "feat:default-canonical-engine-family-datatype-alignment-001",
         "feat:multi-engine-table-portability-interoperability-001",
-        "feat:canonical-op-tail-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
         "feat:openapi-31-document-emission-001",
         "feat:openapi-json-schema-dialect-2020-12-001",
         "feat:openapi-components-schemas-emission-001",
@@ -36585,14 +36278,9 @@
         "feat:op-extension-surface-001",
         "feat:op-surface-default-oltp-001",
         "feat:op-surface-custom-op-001",
-        "feat:http-rest-bindingspec-contract-001",
-        "feat:http-jsonrpc-bindingspec-contract-001",
-        "feat:http-stream-bindingspec-contract-001",
         "feat:sse-bindingspec-contract-001",
         "feat:ws-bindingspec-contract-001",
         "feat:webtransport-bindingspec-contract-001",
-        "feat:enginespec-contract-001",
-        "feat:engineproviderspec-contract-001",
         "feat:enginetypelowerer-protocol-001",
         "feat:engineregistry-contract-001",
         "feat:enginedatatypebridge-contract-001",
@@ -38956,9 +38644,7 @@
       "status": "blocked",
       "kind": "xfail-contract",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_bindingspec_event_subevent_schema_contract.py",
-      "feature_ids": [
-        "feat:bindingspec-event-subevent-schema-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:tigrbl-xfail-runtime-taxonomy-001"
       ],
@@ -39253,6 +38939,67 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-canonical-query-op-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-canonical-tail-op-contract",
+      "title": "Canonical tail operation contract tests",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_canonical_tail_op_contract.py",
+      "feature_ids": [
+        "feat:canonical-op-tail-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-canonical-tail-op-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-canonical-tail-op-contract-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-canonical-stream-transport-op-contracts",
+      "title": "Canonical stream transport operation contract tests",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_canonical_stream_transport_op_contracts.py",
+      "feature_ids": [
+        "feat:canonical-op-append-chunk-001",
+        "feat:canonical-op-send-datagram-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-canonical-stream-transport-op-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-canonical-stream-transport-op-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-spec-binding-app-engine-contracts",
+      "title": "Spec binding app and engine contract tests",
+      "status": "passing",
+      "kind": "unit-integration",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_binding_app_engine_contracts.py",
+      "feature_ids": [
+        "feat:http-jsonrpc-bindingspec-contract-001",
+        "feat:http-rest-bindingspec-contract-001",
+        "feat:http-stream-bindingspec-contract-001",
+        "feat:bindingregistryspec-contract-001",
+        "feat:bindings-integration-contract-001",
+        "feat:bindingspec-contract-001",
+        "feat:appspec-harness-uvicorn-e2e-parity-001",
+        "feat:appspec-imperative-plan-parity-001",
+        "feat:aliasspec-contract-001",
+        "feat:app-spec-normalization-validation-001",
+        "feat:bindingspec-event-subevent-schema-001",
+        "feat:engineproviderspec-contract-001",
+        "feat:enginespec-contract-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-spec-binding-app-engine-contracts-001"
       ]
     }
   ],
@@ -41310,9 +41057,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
-      "feature_ids": [
-        "feat:canonical-op-tail-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:tcase-0002"
       ],
@@ -41372,9 +41117,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
-      "feature_ids": [
-        "feat:canonical-op-append-chunk-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:tcase-0002"
       ],
@@ -41394,9 +41137,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
-      "feature_ids": [
-        "feat:canonical-op-send-datagram-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:tcase-0002"
       ],
@@ -43399,9 +43140,6 @@
         "feat:build-rest-helper-surface-001",
         "feat:build-swagger-helper-surface-001",
         "feat:canonical-analytical-ops-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
-        "feat:canonical-op-tail-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
@@ -44094,9 +43832,6 @@
         "feat:engine-datatype-lowering-registry-bridge-001",
         "feat:default-canonical-engine-family-datatype-alignment-001",
         "feat:multi-engine-table-portability-interoperability-001",
-        "feat:canonical-op-tail-001",
-        "feat:canonical-op-append-chunk-001",
-        "feat:canonical-op-send-datagram-001",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:openrpc-126-json-surface-001",
         "feat:openrpc-lens-ui-surface-001",
@@ -44143,14 +43878,9 @@
         "feat:op-extension-surface-001",
         "feat:op-surface-default-oltp-001",
         "feat:op-surface-custom-op-001",
-        "feat:http-rest-bindingspec-contract-001",
-        "feat:http-jsonrpc-bindingspec-contract-001",
-        "feat:http-stream-bindingspec-contract-001",
         "feat:sse-bindingspec-contract-001",
         "feat:ws-bindingspec-contract-001",
         "feat:webtransport-bindingspec-contract-001",
-        "feat:enginespec-contract-001",
-        "feat:engineproviderspec-contract-001",
         "feat:enginetypelowerer-protocol-001",
         "feat:engineregistry-contract-001",
         "feat:enginedatatypebridge-contract-001",
@@ -46021,7 +45751,6 @@
       "feature_ids": [
         "feat:protocol-phase-tree-plans-001",
         "feat:derived-runtime-subevent-taxonomy-001",
-        "feat:bindingspec-event-subevent-schema-001",
         "feat:protocol-scope-schemas-001",
         "feat:eventkey-bit-coded-dispatch-001",
         "feat:eventkey-hook-bucket-compilation-001",
@@ -46128,12 +45857,10 @@
         "feat:stdapi-routing-parity-001",
         "feat:stdapi-openapi-docs-parity-001",
         "feat:api-level-auth-include-router-compat-001",
-        "feat:app-spec-normalization-validation-001",
         "feat:rest-operation-id-uniqueness-001",
         "feat:asgi-router-compatibility-001",
         "feat:core-access-compatibility-001",
-        "feat:key-digest-uvicorn-stability-001",
-        "feat:bindings-integration-contract-001"
+        "feat:key-digest-uvicorn-stability-001"
       ],
       "test_ids": [
         "tst:tigrbl-tests-examples-05-beginner-app-api-test-05-asgi-router-compat",
@@ -46358,6 +46085,70 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-canonical-query-op-contracts-001"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-canonical-tail-op-contract-001",
+      "title": "Canonical tail operation is implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "runtime-contract",
+      "description": "Canonical tail projects a collection GET route and executes the realtime tail handler through RPC.",
+      "feature_ids": [
+        "feat:canonical-op-tail-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-canonical-tail-op-contract"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-canonical-tail-op-contract-001"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-canonical-stream-transport-op-contracts-001",
+      "title": "Canonical stream transport operations are implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "runtime-contract",
+      "description": "Canonical append_chunk and send_datagram project collection POST routes and execute realtime stream transport handlers through RPC.",
+      "feature_ids": [
+        "feat:canonical-op-append-chunk-001",
+        "feat:canonical-op-send-datagram-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-canonical-stream-transport-op-contracts"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-canonical-stream-transport-op-contracts-001"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-spec-binding-app-engine-contracts-001",
+      "title": "Spec binding app and engine contracts are implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "runtime-contract",
+      "description": "HTTP binding specs, binding registries, AppSpec normalization/materialization, uvicorn REST/RPC parity, AliasSpec, EngineSpec, and EngineProviderSpec expose implemented contract behavior.",
+      "feature_ids": [
+        "feat:http-jsonrpc-bindingspec-contract-001",
+        "feat:http-rest-bindingspec-contract-001",
+        "feat:http-stream-bindingspec-contract-001",
+        "feat:bindingregistryspec-contract-001",
+        "feat:bindings-integration-contract-001",
+        "feat:bindingspec-contract-001",
+        "feat:appspec-harness-uvicorn-e2e-parity-001",
+        "feat:appspec-imperative-plan-parity-001",
+        "feat:aliasspec-contract-001",
+        "feat:app-spec-normalization-validation-001",
+        "feat:bindingspec-event-subevent-schema-001",
+        "feat:engineproviderspec-contract-001",
+        "feat:enginespec-contract-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-spec-binding-app-engine-contracts"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-spec-binding-app-engine-contracts-001"
       ]
     }
   ],
@@ -52369,6 +52160,48 @@
       "test_ids": [
         "tst:tigrbl-canonical-query-op-contracts"
       ]
+    },
+    {
+      "id": "evd:tigrbl-canonical-tail-op-contract-001",
+      "title": "Canonical tail operation contract pytest report",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-canonical-tail-op-contract.json",
+      "claim_ids": [
+        "clm:tigrbl-canonical-tail-op-contract-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-canonical-tail-op-contract"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-canonical-stream-transport-op-contracts-001",
+      "title": "Canonical stream transport operation contract pytest report",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-canonical-stream-transport-op-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-canonical-stream-transport-op-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-canonical-stream-transport-op-contracts"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-spec-binding-app-engine-contracts-001",
+      "title": "Spec binding app and engine contract pytest report",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-spec-binding-app-engine-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-spec-binding-app-engine-contracts"
+      ]
     }
   ],
   "issues": [
@@ -54566,10 +54399,12 @@
       "status": "draft",
       "boundary_id": "bnd:tigrbl-xfail-runtime-taxonomy-001",
       "claim_ids": [
-        "clm:tigrbl-xfail-runtime-taxonomy-001"
+        "clm:tigrbl-xfail-runtime-taxonomy-001",
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-runtime-taxonomy-001-preflight"
+        "evd:tigrbl-xfail-runtime-taxonomy-001-preflight",
+        "evd:tigrbl-spec-binding-app-engine-contracts-001"
       ]
     },
     {
@@ -54610,10 +54445,12 @@
       "status": "draft",
       "boundary_id": "bnd:tigrbl-xfail-compat-surface-001",
       "claim_ids": [
-        "clm:tigrbl-xfail-compat-surface-001"
+        "clm:tigrbl-xfail-compat-surface-001",
+        "clm:tigrbl-spec-binding-app-engine-contracts-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-compat-surface-001-preflight"
+        "evd:tigrbl-xfail-compat-surface-001-preflight",
+        "evd:tigrbl-spec-binding-app-engine-contracts-001"
       ]
     },
     {

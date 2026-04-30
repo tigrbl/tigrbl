@@ -7,9 +7,9 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 - `total_features`: `609`
 - `in_bound_features`: `581`
 - `out_of_scope_features`: `28`
-- `feature_gap_count`: `280`
-- `gap_counts`: `{'feature_not_implemented': 277, 'missing_claims': 91, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 77, 'non_passing_evidence': 67, 'non_passing_tests': 100}`
-- `implementation_counts`: `{'absent': 65, 'implemented': 304, 'partial': 212}`
+- `feature_gap_count`: `264`
+- `gap_counts`: `{'feature_not_implemented': 261, 'missing_claims': 86, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 71, 'non_passing_evidence': 64, 'non_passing_tests': 92}`
+- `implementation_counts`: `{'absent': 64, 'implemented': 320, 'partial': 197}`
 - `horizon_counts`: `{'backlog': 161, 'current': 291, 'future': 102, 'next': 27, 'out_of_bounds': 28}`
 - `release_blocking_issue_count`: `1`
 - `release_blocking_risk_count`: `1`
@@ -26,18 +26,14 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | Feature | Status | Horizon | Gaps |
 |---|---|---|---|
 | `feat:aliasbase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:aliasspec-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:analytical-family-membership-freeze-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:analytical-runtime-docs-export-parity-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:anon-access-projection-001` | `partial` | `future` | `feature_not_implemented` |
 | `feat:api-level-auth-include-router-compat-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:apikey-security-dependency-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:app-framed-message-codec-runtime-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:app-spec-normalization-validation-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:appbase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:appbase-public-projection-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:appspec-harness-uvicorn-e2e-parity-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims`, `non_passing_tests` |
-| `feat:appspec-imperative-plan-parity-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims`, `non_passing_tests` |
 | `feat:asgi-router-compatibility-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:asyncapi-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:asyncapi-payload-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
@@ -49,10 +45,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:binding-subevent-phase-atom-legality-matrix-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:bindingbase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:bindingregistrybase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:bindingregistryspec-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:bindings-integration-contract-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:bindingspec-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:bindingspec-event-subevent-schema-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:bootstrap-dbschema-runtime-surface-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_tests` |
 | `feat:bootstrappable-table-mixin-001` | `partial` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:build-asyncapi-spec-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
@@ -70,9 +62,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:build-schemas-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:build-swagger-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:canonical-analytical-ops-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:canonical-op-append-chunk-001` | `partial` | `backlog` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests` |
-| `feat:canonical-op-send-datagram-001` | `partial` | `backlog` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests` |
-| `feat:canonical-op-tail-001` | `partial` | `backlog` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests` |
 | `feat:canonical-realtime-transfer-ops-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:cli-module-target-resolution-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:cli-path-target-resolution-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
@@ -108,9 +97,7 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:enginebase-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:enginedatatypebridge-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:engineproviderbase-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:engineproviderspec-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:engineregistry-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:enginespec-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:enginetypelowerer-protocol-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:ensure-primed-idempotence-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_tests` |
 | `feat:ensure-schemas-runtime-surface-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_tests` |
@@ -134,9 +121,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:healthz-stable-payload-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:healthz-uix-surface-001` | `absent` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:htmlresponse-concrete-response-class-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:http-jsonrpc-bindingspec-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:http-rest-bindingspec-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:http-stream-bindingspec-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:httpbasic-security-dependency-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:include-tables-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:integration-test-registry-coverage-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
