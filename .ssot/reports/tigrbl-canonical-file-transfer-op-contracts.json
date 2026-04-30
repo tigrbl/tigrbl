@@ -1,0 +1,18 @@
+{
+  "artifact": "tigrbl-canonical-file-transfer-op-contracts",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_canonical_file_transfer_op_contracts.py -q",
+  "features": [
+    "feat:canonical-op-download-001",
+    "feat:canonical-op-upload-001"
+  ],
+  "status": "passed",
+  "tests": [
+    "test_file_transfer_ops_project_canonical_collection_routes",
+    "test_file_transfer_ops_execute_realtime_handlers_through_rpc"
+  ],
+  "result": {
+    "passed": 2,
+    "failed": 0
+  },
+  "notes": "Verifies canonical upload/download route projection and realtime handler execution through RPC."
+}

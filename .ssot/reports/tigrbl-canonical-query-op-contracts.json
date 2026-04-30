@@ -1,0 +1,20 @@
+{
+  "artifact": "tigrbl-canonical-query-op-contracts",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_canonical_query_op_contracts.py -q",
+  "features": [
+    "feat:canonical-op-aggregate-001",
+    "feat:canonical-op-count-001",
+    "feat:canonical-op-exists-001",
+    "feat:canonical-op-group-by-001"
+  ],
+  "status": "passed",
+  "tests": [
+    "test_query_ops_project_canonical_routes",
+    "test_query_ops_execute_through_rpc"
+  ],
+  "result": {
+    "passed": 2,
+    "failed": 0
+  },
+  "notes": "Verifies canonical count/exists OLTP query operations and aggregate/group_by OLAP operations through route projection and RPC execution."
+}

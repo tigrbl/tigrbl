@@ -57,11 +57,20 @@ _DEFAULT_METHODS: dict[str, tuple[str, ...]] = {
     "delete": ("DELETE",),
     "list": ("GET",),
     "clear": ("DELETE",),
+    "count": ("GET",),
+    "exists": ("GET",),
     "bulk_create": ("POST",),
     "bulk_update": ("PATCH",),
     "bulk_replace": ("PUT",),
     "bulk_merge": ("PATCH",),
     "bulk_delete": ("DELETE",),
+    "aggregate": ("POST",),
+    "group_by": ("POST",),
+    "publish": ("POST",),
+    "subscribe": ("GET",),
+    "tail": ("GET",),
+    "upload": ("POST",),
+    "download": ("GET",),
     "checkpoint": ("POST",),
     "custom": ("POST",),
 }
@@ -191,8 +200,10 @@ def _build_raw_handler(model: type, spec: OpSpec):
         _noop_raw.__name__ = f"{model.__name__}_custom_noop"
         return _noop_raw
 
-    if target == "checkpoint":
+    if target in {"publish", "subscribe", "tail", "upload", "download", "checkpoint"}:
         import tigrbl_ops_realtime as _core
+    elif target in {"aggregate", "group_by"}:
+        import tigrbl_ops_olap as _core
     else:
         import tigrbl_ops_oltp as _core
 
@@ -220,7 +231,7 @@ def _build_raw_handler(model: type, spec: OpSpec):
         if isinstance(params, dict):
             ident = params.get("id", params.get("item_id"))
 
-        if target in {"read", "delete"}:
+        if target in {"read", "delete", "exists"}:
             return await core_fn(model, ident, db=db)
         if target in {"create", "list", "clear", "bulk_create", "bulk_delete"}:
             return await core_fn(model, payload, db=db)
@@ -233,7 +244,9 @@ def _build_raw_handler(model: type, spec: OpSpec):
             "bulk_merge",
         }:
             return await core_fn(model, ident, payload, db=db)
-        if target == "checkpoint":
+        if target in {"publish", "subscribe", "tail", "upload", "download", "checkpoint"}:
+            return await core_fn(payload or {})
+        if target in {"aggregate", "group_by"}:
             return await core_fn(payload or {})
         return await core_fn(model, payload, db=db)
 
