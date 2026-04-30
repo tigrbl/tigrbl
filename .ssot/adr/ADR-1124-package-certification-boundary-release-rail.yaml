@@ -1,0 +1,35 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1124"
+number: 1124
+slug: "package-certification-boundary-release-rail"
+title: "Package Certification Boundary Release Rail"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl package certification is governed through one explicit boundary-scoped package release rail. The package metadata, public conformance statement, boundary id, and published release id must agree on the same governed line."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to establish one explicit boundary-scoped package certification rail."
+    at: "2026-04-30T22:07:43Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl package certification is governed through one explicit boundary-scoped package release rail. The package metadata, public conformance statement, boundary id, and published release id must agree on the same governed line.
+  
+  For the active governed line, package certification is expressed through boundary `bnd:tigrbl-package-certification-0-3-19-001` and release `rel:tigrbl-package-0.3.19`. Historical release `rel:tigrbl-0.3.19` remains published release history and evidence provenance, but it is no longer the sole public package-certification handle.
+  
+  ## Rationale
+  The repository already has a published boundary-certified release, but its public package line and public certification wording drifted when `pkgs/core/tigrbl/pyproject.toml` moved to `0.3.30.dev1` while the SSOT registry and conformance docs remained on `0.3.19.*`. A single explicit package-certification rail prevents version drift and keeps the certification story boundary-scoped and auditable.
+  
+  ## Consequences
+  Package metadata, top-level docs, boundary rows, and release rows must agree before certification wording may be used. Out-of-bound package surfaces remain allowed, but only when they are explicit in the governed certification statement.
+  
+  The new package-certification boundary reuses the already-certified feature, claim, and evidence set from the published `0.3.19` certification release instead of widening scope. Future package closures may supersede this boundary only through a new governed ADR, SPEC, boundary, proof chain, and published release.
+  
+  ## Traceability
+  Pairs with SPEC-2143.

@@ -27,7 +27,7 @@ The root `pyproject.toml` is a `uv` workspace with packaging disabled. The root
 
 The active workspace package line is declared in
 `pkgs/core/tigrbl/pyproject.toml`. At this checkpoint the public `tigrbl`
-package is on `0.3.30.dev1`.
+package is on `0.3.19.dev1`.
 
 Stable release evidence and historical conformance records live under
 `docs/conformance/releases/`. Development evidence for active targets lives

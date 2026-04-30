@@ -25,12 +25,15 @@ The current state below is grounded in:
 
 ## Certification status
 
-### 0.3.19 certification boundary
+### 0.3.19 package certification boundary
 
-Release `rel:tigrbl-0.3.19` is now certified, promoted, and published in the
-SSOT registry inside frozen boundary `bnd:tigrbl-0.3.19-certification-001`.
-The boundary contains 251 implemented features, 132 release claims, and 160
-evidence rows. Certification passed with no release-guard failures.
+Release `rel:tigrbl-package-0.3.19` is the active boundary-scoped package
+certification release in the SSOT registry inside frozen boundary
+`bnd:tigrbl-package-certification-0-3-19-001`. It preserves
+`rel:tigrbl-0.3.19` as historical published release evidence while exposing
+one explicit public package-certification rail. The boundary contains 251
+implemented features, 132 release claims, and 160 evidence rows.
+Certification passed with no release-guard failures.
 
 This certification is boundary-scoped. AsyncAPI UI, JSON Schema UI, and
 OIDC/OAuth/JWT/DPoP behavior beyond OAS/OpenRPC security-scheme documentation
@@ -45,7 +48,10 @@ Within the declared current target boundary, the promoted stable release `0.3.18
 
 The active working-tree line `0.3.19.dev1` is a governed next-target planning checkpoint. It is **not** described here as a new certified release and it does not inherit Tier 3 wording merely by following the promoted release.
 
-Boundary note: the certification wording above still applies only within the declared current target boundary. Deferred datatype/table work and out-of-boundary server/runtime transport ownership remain outside the claim set for the frozen release.
+Boundary note: the certification wording above still applies only within the
+declared package-certification boundary. Deferred datatype/table work and
+out-of-boundary server/runtime transport ownership remain outside the claim set
+for the frozen release.
 
 ## Exact gate state
 
