@@ -83,6 +83,7 @@ __all__ = [
     "build_phase_chains",
     "normalize_rust_spec",
     "plan_labels",
+    "webtransport_events",
 ]
 
 _default_kernel = _kernel()

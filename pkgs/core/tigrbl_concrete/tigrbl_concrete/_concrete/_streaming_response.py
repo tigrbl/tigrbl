@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterable, AsyncIterator, Iterable
-from typing import Any
+
+from tigrbl_runtime.protocol._iterators import iter_items
 
 from ._response import Response
 
@@ -28,15 +29,7 @@ class StreamingResponse(Response):
     @property
     def body_iterator(self) -> AsyncIterator[bytes]:
         async def _iter() -> AsyncIterator[bytes]:
-            source: Any = self._content
-            if isinstance(source, (bytes, bytearray, memoryview)):
-                yield bytes(source)
-                return
-            if hasattr(source, "__aiter__"):
-                async for chunk in source:  # type: ignore[union-attr]
-                    yield bytes(chunk)
-                return
-            for chunk in source:  # type: ignore[union-attr]
+            async for chunk in iter_items(self._content):
                 yield bytes(chunk)
 
         return _iter()

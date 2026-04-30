@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Iterable, Mapping
+import json
+from collections.abc import Mapping
 from typing import Any
 
+from ._iterators import aclose_if_supported, iter_items
 
 async def run_sse_chain(config: Mapping[str, Any]) -> dict[str, object]:
     producer = config.get("producer")
@@ -12,7 +14,7 @@ async def run_sse_chain(config: Mapping[str, Any]) -> dict[str, object]:
     emitted = 0
     subevents = ["session.open", "stream.start"]
 
-    async for event in _aiter(producer):
+    async for event in iter_items(producer):
         if not isinstance(event, Mapping) or not _serializable_event(event):
             raise TypeError("SSE event data must be serializable")
         payload = _encode_event(event)
@@ -23,7 +25,7 @@ async def run_sse_chain(config: Mapping[str, Any]) -> dict[str, object]:
         if stop_after is not None and emitted >= int(stop_after):
             return {"lazy": True, "subevents": subevents, "completion_fence": "POST_EMIT"}
         if disconnect_after is not None and emitted >= int(disconnect_after):
-            await _aclose(producer)
+            await aclose_if_supported(producer)
             subevents.extend(("stream.end", "session.close"))
             return {
                 "lazy": True,
@@ -43,7 +45,13 @@ async def run_sse_chain(config: Mapping[str, Any]) -> dict[str, object]:
 
 def _serializable_event(event: Mapping[str, Any]) -> bool:
     data = event.get("data")
-    return data is None or isinstance(data, (str, bytes, int, float, bool))
+    if data is None or isinstance(data, (str, bytes, int, float, bool)):
+        return True
+    try:
+        json.dumps(data, separators=(",", ":"), ensure_ascii=False)
+    except TypeError:
+        return False
+    return True
 
 
 def _encode_event(event: Mapping[str, Any]) -> bytes:
@@ -52,24 +60,14 @@ def _encode_event(event: Mapping[str, Any]) -> bytes:
     lines: list[str] = []
     if name:
         lines.append(f"event: {name}")
-    lines.append(f"data: {data}")
+    if isinstance(data, str):
+        for part in data.splitlines() or [data]:
+            lines.append(f"data: {part}")
+    elif isinstance(data, (bytes, bytearray, memoryview)):
+        lines.append(f"data: {bytes(data).decode('utf-8')}")
+    else:
+        lines.append(f"data: {json.dumps(data, separators=(',', ':'), ensure_ascii=False)}")
     return ("\n".join(lines) + "\n\n").encode("utf-8")
-
-
-async def _aiter(producer: object) -> AsyncIterator[object]:
-    if hasattr(producer, "__aiter__"):
-        async for item in producer:  # type: ignore[union-attr]
-            yield item
-        return
-    if isinstance(producer, Iterable):
-        for item in producer:
-            yield item
-
-
-async def _aclose(producer: object) -> None:
-    close = getattr(producer, "aclose", None)
-    if callable(close):
-        await close()
 
 
 __all__ = ["run_sse_chain"]

@@ -224,7 +224,7 @@
       "id": "feat:webtransport-transport-events-001",
       "title": "WebTransport transport events",
       "description": "WebTransport transport events target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -232,12 +232,12 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:webtransport-transport-events-contract-001"
       ],
       "test_ids": [
         "tst:webtransport-transport-events-contract"
@@ -692,7 +692,7 @@
       "id": "feat:yield-iterator-producer-001",
       "title": "Yield iterator producer",
       "description": "Yield iterator producer target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -700,13 +700,12 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "bnd:tigrbl-xfail-transport-message-001",
+        "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:yield-iterator-producer-contract-001",
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:yield-iterator-producer-contract-001"
       ],
       "test_ids": [
         "tst:yield-iterator-producer-contract"
@@ -731,14 +730,14 @@
       "id": "feat:sse-lazy-iterator-runtime-001",
       "title": "SSE lazy iterator runtime",
       "description": "SSE lazy iterator runtime target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -7908,21 +7907,22 @@
       "id": "feat:stream-chunk-order-preservation-001",
       "title": "Stream chunk order preservation",
       "description": "Preserve stream chunk ordering and multi-chunk body emission rather than collapsing chunks into one accidental body.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:stream-chunk-order-preservation-contract-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -7947,21 +7947,22 @@
       "id": "feat:sse-event-framing-001",
       "title": "SSE event framing",
       "description": "Emit WHATWG event-stream bodies with framing compatible with produced event boundaries.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:sse-event-framing-contract-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -8840,7 +8841,8 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:engine-surface-public-projection-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -10161,7 +10163,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:engineregistry-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -10737,7 +10740,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:appbase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -10762,7 +10767,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:bindingbase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -10787,7 +10794,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:bindingregistrybase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -10812,7 +10821,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:columnbase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -10837,7 +10848,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:aliasbase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -10864,7 +10877,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:enginebase-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -10901,7 +10915,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:engineproviderbase-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -10964,7 +10979,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:routerbase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -10989,7 +11006,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:foreignkeybase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11014,7 +11033,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:storagetransformbase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11069,7 +11090,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:requestbase-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -11104,7 +11126,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:schemabase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11131,7 +11155,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:sessionabc-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -11168,7 +11193,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:tigrblsessionbase-contract-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -11203,7 +11229,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tablebase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11228,7 +11256,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tableregistrybase-contract-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11278,7 +11308,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:appbase-public-projection-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11303,7 +11335,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:foreignkeybase-public-projection-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11356,7 +11390,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:routerbase-public-projection-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11381,7 +11417,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tablebase-public-projection-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -11406,7 +11444,9 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tableregistrybase-public-projection-001"
+      ],
       "test_ids": [
         "tst:ssot-authority-model-validator"
       ],
@@ -12399,14 +12439,14 @@
       "id": "feat:response-concrete-response-class-001",
       "title": "Response concrete response class",
       "description": "Tracks Response as the concrete response class for header, cookie, body, and ASGI send behavior.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": "surface-inventory",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12414,7 +12454,9 @@
       "spec_ids": [
         "spc:2041"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:response-concrete-response-class-t2-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
         "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
@@ -12435,7 +12477,8 @@
         "tst:tigrbl-tests-tests-unit-test-response-rest",
         "tst:tigrbl-tests-tests-unit-test-response-rpc",
         "tst:tigrbl-tests-tests-unit-test-response-template",
-        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:response-concrete-response-class-focused-001"
       ],
       "requires": []
     },
@@ -12497,14 +12540,14 @@
       "id": "feat:jsonresponse-concrete-response-class-001",
       "title": "JSONResponse concrete response class",
       "description": "Tracks JSONResponse as the concrete JSON response class exported by tigrbl_concrete.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": "surface-inventory",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12512,7 +12555,9 @@
       "spec_ids": [
         "spc:2041"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:jsonresponse-concrete-response-class-t2-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
         "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
@@ -12533,7 +12578,8 @@
         "tst:tigrbl-tests-tests-unit-test-response-rest",
         "tst:tigrbl-tests-tests-unit-test-response-rpc",
         "tst:tigrbl-tests-tests-unit-test-response-template",
-        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:jsonresponse-concrete-response-class-focused-001"
       ],
       "requires": []
     },
@@ -12541,14 +12587,14 @@
       "id": "feat:htmlresponse-concrete-response-class-001",
       "title": "HTMLResponse concrete response class",
       "description": "Tracks HTMLResponse as the concrete HTML response class exported by tigrbl_concrete.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": "surface-inventory",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12556,7 +12602,9 @@
       "spec_ids": [
         "spc:2041"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:htmlresponse-concrete-response-class-t2-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
         "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
@@ -12577,7 +12625,8 @@
         "tst:tigrbl-tests-tests-unit-test-response-rest",
         "tst:tigrbl-tests-tests-unit-test-response-rpc",
         "tst:tigrbl-tests-tests-unit-test-response-template",
-        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:htmlresponse-concrete-response-class-focused-001"
       ],
       "requires": []
     },
@@ -12585,14 +12634,14 @@
       "id": "feat:plaintextresponse-concrete-response-class-001",
       "title": "PlainTextResponse concrete response class",
       "description": "Tracks PlainTextResponse as the concrete text response class exported by tigrbl_concrete.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": "surface-inventory",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12600,7 +12649,9 @@
       "spec_ids": [
         "spc:2041"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:plaintextresponse-concrete-response-class-t2-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
         "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
@@ -12621,7 +12672,8 @@
         "tst:tigrbl-tests-tests-unit-test-response-rest",
         "tst:tigrbl-tests-tests-unit-test-response-rpc",
         "tst:tigrbl-tests-tests-unit-test-response-template",
-        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:plaintextresponse-concrete-response-class-focused-001"
       ],
       "requires": []
     },
@@ -12629,14 +12681,14 @@
       "id": "feat:streamingresponse-concrete-stream-class-001",
       "title": "StreamingResponse concrete stream class",
       "description": "Tracks StreamingResponse as the concrete ordered byte-stream response class for sync and async chunk sources.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12647,7 +12699,8 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:streamingresponse-concrete-stream-class-contract-001"
       ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
@@ -12687,14 +12740,14 @@
       "id": "feat:eventstreamresponse-concrete-sse-class-001",
       "title": "EventStreamResponse concrete SSE class",
       "description": "Tracks EventStreamResponse as the concrete SSE response class with event framing and event-stream headers.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12705,7 +12758,7 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:eventstreamresponse-concrete-sse-class-contract-001"
       ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
@@ -12745,14 +12798,14 @@
       "id": "feat:fileresponse-concrete-response-class-001",
       "title": "FileResponse concrete response class",
       "description": "Tracks FileResponse as the concrete response class for file delivery behavior.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": "surface-inventory",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12760,7 +12813,9 @@
       "spec_ids": [
         "spc:2041"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:fileresponse-concrete-response-class-t2-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
         "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
@@ -12781,7 +12836,8 @@
         "tst:tigrbl-tests-tests-unit-test-response-rest",
         "tst:tigrbl-tests-tests-unit-test-response-rpc",
         "tst:tigrbl-tests-tests-unit-test-response-template",
-        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:fileresponse-concrete-response-class-focused-001"
       ],
       "requires": []
     },
@@ -12789,14 +12845,14 @@
       "id": "feat:redirectresponse-concrete-response-class-001",
       "title": "RedirectResponse concrete response class",
       "description": "Tracks RedirectResponse as the concrete redirect response class for location-based redirects.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "future",
+        "horizon": "current",
         "slot": "surface-inventory",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12804,7 +12860,9 @@
       "spec_ids": [
         "spc:2041"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:redirectresponse-concrete-response-class-t2-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
         "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
@@ -12825,7 +12883,8 @@
         "tst:tigrbl-tests-tests-unit-test-response-rest",
         "tst:tigrbl-tests-tests-unit-test-response-rpc",
         "tst:tigrbl-tests-tests-unit-test-response-template",
-        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:redirectresponse-concrete-response-class-focused-001"
       ],
       "requires": []
     },
@@ -12877,14 +12936,14 @@
       "id": "feat:websocket-concrete-runtime-class-001",
       "title": "WebSocket concrete runtime class",
       "description": "Tracks WebSocket as the concrete websocket runtime surface projected by tigrbl_concrete.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
+        "horizon": "current",
         "slot": null,
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
@@ -12894,7 +12953,7 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:websocket-concrete-runtime-class-contract-001"
       ],
       "test_ids": [
         "tst:tcase-0015"
@@ -23905,7 +23964,9 @@
         "clm:op-011",
         "clm:op-012",
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:tigrbl-tests-failing-case-closure-001"
+        "clm:tigrbl-tests-failing-case-closure-001",
+        "clm:stream-chunk-order-preservation-contract-001",
+        "clm:sse-event-framing-contract-001"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_target.md",
@@ -23916,7 +23977,8 @@
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-operator-surface.yml",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
-        "evd:operator-docs-http-surface-20260427"
+        "evd:operator-docs-http-surface-20260427",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -24425,11 +24487,17 @@
       "claim_ids": [
         "clm:cur-005",
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:tigrbl-tests-failing-case-closure-001"
+        "clm:tigrbl-tests-failing-case-closure-001",
+        "clm:eventstreamresponse-concrete-sse-class-contract-001",
+        "clm:stream-chunk-order-preservation-contract-001",
+        "clm:streamingresponse-concrete-stream-class-contract-001",
+        "clm:sse-event-framing-contract-001",
+        "clm:websocket-concrete-runtime-class-contract-001"
       ],
       "evidence_ids": [
         "evd:eart-0088",
-        "evd:tigrbl-tests-failure-closure-final-pytest-20260421"
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -35701,7 +35769,8 @@
         "clm:runtime-parity-lane-governance-001"
       ],
       "evidence_ids": [
-        "evd:runtime-parity-lane-governance-validator"
+        "evd:runtime-parity-lane-governance-validator",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -37293,9 +37362,9 @@
     {
       "id": "tst:yield-iterator-producer-contract",
       "title": "Yield iterator producer target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_iterator_producer_contract.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_yield_iterator_producer_contract.py",
       "feature_ids": [
         "feat:yield-iterator-producer-001"
       ],
@@ -37305,7 +37374,8 @@
       ],
       "evidence_ids": [
         "evd:yield-iterator-producer-contract-pytest",
-        "evd:tigrbl-xfail-transport-message-001-preflight"
+        "evd:tigrbl-xfail-transport-message-001-preflight",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -37327,7 +37397,7 @@
     {
       "id": "tst:sse-lazy-iterator-runtime-contract",
       "title": "SSE lazy iterator runtime target contract",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_sse_runtime_contract.py",
       "feature_ids": [
@@ -37337,7 +37407,8 @@
         "clm:sse-lazy-iterator-runtime-contract-001"
       ],
       "evidence_ids": [
-        "evd:sse-lazy-iterator-runtime-contract-pytest"
+        "evd:sse-lazy-iterator-runtime-contract-pytest",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -37998,17 +38069,20 @@
     {
       "id": "tst:webtransport-transport-events-contract",
       "title": "WebTransport transport events contract",
-      "status": "blocked",
-      "kind": "xfail-contract",
+      "status": "passing",
+      "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_webtransport_transport_events_contract.py",
       "feature_ids": [
         "feat:webtransport-transport-events-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:tigrbl-xfail-transport-message-001",
+        "clm:webtransport-transport-events-contract-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-transport-message-001-preflight"
+        "evd:tigrbl-xfail-transport-message-001-preflight",
+        "evd:webtransport-transport-events-contract-pytest",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -38441,6 +38515,102 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-system-docs-diagnostics-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:response-concrete-response-class-focused-001",
+      "title": "Response concrete response class focused pytest",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_concrete_response_classes.py",
+      "feature_ids": [
+        "feat:response-concrete-response-class-001"
+      ],
+      "claim_ids": [
+        "clm:response-concrete-response-class-t2-001"
+      ],
+      "evidence_ids": [
+        "evd:response-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "tst:jsonresponse-concrete-response-class-focused-001",
+      "title": "JSONResponse concrete response class focused pytest",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_concrete_response_classes.py",
+      "feature_ids": [
+        "feat:jsonresponse-concrete-response-class-001"
+      ],
+      "claim_ids": [
+        "clm:jsonresponse-concrete-response-class-t2-001"
+      ],
+      "evidence_ids": [
+        "evd:jsonresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "tst:htmlresponse-concrete-response-class-focused-001",
+      "title": "HTMLResponse concrete response class focused pytest",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_concrete_response_classes.py",
+      "feature_ids": [
+        "feat:htmlresponse-concrete-response-class-001"
+      ],
+      "claim_ids": [
+        "clm:htmlresponse-concrete-response-class-t2-001"
+      ],
+      "evidence_ids": [
+        "evd:htmlresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "tst:plaintextresponse-concrete-response-class-focused-001",
+      "title": "PlainTextResponse concrete response class focused pytest",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_concrete_response_classes.py",
+      "feature_ids": [
+        "feat:plaintextresponse-concrete-response-class-001"
+      ],
+      "claim_ids": [
+        "clm:plaintextresponse-concrete-response-class-t2-001"
+      ],
+      "evidence_ids": [
+        "evd:plaintextresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "tst:fileresponse-concrete-response-class-focused-001",
+      "title": "FileResponse concrete response class focused pytest",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_concrete_response_classes.py",
+      "feature_ids": [
+        "feat:fileresponse-concrete-response-class-001"
+      ],
+      "claim_ids": [
+        "clm:fileresponse-concrete-response-class-t2-001"
+      ],
+      "evidence_ids": [
+        "evd:fileresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "tst:redirectresponse-concrete-response-class-focused-001",
+      "title": "RedirectResponse concrete response class focused pytest",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_concrete_response_classes.py",
+      "feature_ids": [
+        "feat:redirectresponse-concrete-response-class-001"
+      ],
+      "claim_ids": [
+        "clm:redirectresponse-concrete-response-class-t2-001"
+      ],
+      "evidence_ids": [
+        "evd:redirectresponse-concrete-response-class-pytest-001"
       ]
     }
   ],
@@ -42565,7 +42735,6 @@
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:error-parity-response-structure-001",
-        "feat:eventstreamresponse-concrete-sse-class-001",
         "feat:gate-c-conformance-security-checkpoint-001",
         "feat:http-route-001",
         "feat:jsonrpc-batch-framing-001",
@@ -42607,7 +42776,6 @@
         "feat:transport-dispatch-governance-001",
         "feat:uniform-diagnostics-uix-surface-001",
         "feat:uploaded-file-runtime-contract-001",
-        "feat:websocket-concrete-runtime-class-001",
         "feat:executor-dispatch-removal-001",
         "feat:kernelplan-dispatch-ownership-001",
         "feat:transport-bypass-removal-001",
@@ -42648,7 +42816,8 @@
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
         "evd:rust-runtime-demo-docs-surface-pytest",
         "evd:authn-provider-integration-status-20260424",
-        "evd:operator-docs-http-surface-20260427"
+        "evd:operator-docs-http-surface-20260427",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -43361,7 +43530,8 @@
         "tst:status-sync-unknown-outcome-not-run-contract"
       ],
       "evidence_ids": [
-        "evd:runtime-parity-lane-governance-validator"
+        "evd:runtime-parity-lane-governance-validator",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -44306,7 +44476,7 @@
     {
       "id": "clm:yield-iterator-producer-contract-001",
       "title": "Yield iterator producer target contract",
-      "status": "blocked",
+      "status": "certified",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Iterator producers normalize sync and async iteration, chunk typing, finalization, cancellation, and exception mapping before transport emission.",
@@ -44317,7 +44487,8 @@
         "tst:yield-iterator-producer-contract"
       ],
       "evidence_ids": [
-        "evd:yield-iterator-producer-contract-pytest"
+        "evd:yield-iterator-producer-contract-pytest",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -44340,7 +44511,7 @@
     {
       "id": "clm:sse-lazy-iterator-runtime-contract-001",
       "title": "SSE lazy iterator runtime target contract",
-      "status": "blocked",
+      "status": "certified",
       "tier": "T2",
       "kind": "target-contract",
       "description": "SSE runtime consumes producers lazily without eager buffering, supports cancellation, and finalizes on disconnect.",
@@ -44351,7 +44522,8 @@
         "tst:sse-lazy-iterator-runtime-contract"
       ],
       "evidence_ids": [
-        "evd:sse-lazy-iterator-runtime-contract-pytest"
+        "evd:sse-lazy-iterator-runtime-contract-pytest",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     },
     {
@@ -45165,9 +45337,7 @@
         "feat:framing-decode-encode-atoms-001",
         "feat:message-datagram-runtime-families-001",
         "feat:transport-event-registry-001",
-        "feat:transport-accept-emit-close-atoms-001",
-        "feat:webtransport-transport-events-001",
-        "feat:yield-iterator-producer-001"
+        "feat:transport-accept-emit-close-atoms-001"
       ],
       "test_ids": [
         "tst:app-framed-message-codec-runtime-contract",
@@ -45636,6 +45806,512 @@
       "evidence_ids": [
         "evd:tigrbl-security-dependency-surface-contracts-001"
       ]
+    },
+    {
+      "id": "clm:webtransport-transport-events-contract-001",
+      "title": "WebTransport transport events target contract",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "WebTransport event compilation and scope validation cover session, stream, datagram, app-frame, and close ordering semantics.",
+      "feature_ids": [
+        "feat:webtransport-transport-events-001"
+      ],
+      "test_ids": [
+        "tst:webtransport-transport-events-contract"
+      ],
+      "evidence_ids": [
+        "evd:webtransport-transport-events-contract-pytest",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:eventstreamresponse-concrete-sse-class-contract-001",
+      "title": "EventStreamResponse concrete SSE class target contract",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "EventStreamResponse remains the concrete SSE class and emits event-stream compatible framed responses through the supported operator surface.",
+      "feature_ids": [
+        "feat:eventstreamresponse-concrete-sse-class-001"
+      ],
+      "test_ids": [
+        "tst:tcase-0015"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-eventful-streaming-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:stream-chunk-order-preservation-contract-001",
+      "title": "Stream chunk order preservation target contract",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "Streaming responses preserve producer chunk order and do not collapse multi-chunk output into one accidental body.",
+      "feature_ids": [
+        "feat:stream-chunk-order-preservation-001"
+      ],
+      "test_ids": [
+        "tst:tcase-0015",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-eventful-streaming-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:streamingresponse-concrete-stream-class-contract-001",
+      "title": "StreamingResponse concrete stream class target contract",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "StreamingResponse remains the concrete ordered stream response class for sync and async chunk producers.",
+      "feature_ids": [
+        "feat:streamingresponse-concrete-stream-class-001"
+      ],
+      "test_ids": [
+        "tst:tcase-0015"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-eventful-streaming-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:sse-event-framing-contract-001",
+      "title": "SSE event framing target contract",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "SSE responses emit framed event-stream bodies with preserved event, id, retry, multiline data, and heartbeat semantics.",
+      "feature_ids": [
+        "feat:sse-event-framing-001"
+      ],
+      "test_ids": [
+        "tst:tcase-0015",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-eventful-streaming-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:websocket-concrete-runtime-class-contract-001",
+      "title": "WebSocket concrete runtime class target contract",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "WebSocket remains the concrete runtime websocket surface and preserves accept, send, route metadata, and close behavior through the supported operator API.",
+      "feature_ids": [
+        "feat:websocket-concrete-runtime-class-001"
+      ],
+      "test_ids": [
+        "tst:tcase-0015"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-eventful-streaming-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:aliasbase-contract-001",
+      "title": "aliasbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:aliasbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:aliasbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:appbase-contract-001",
+      "title": "appbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:appbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:appbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:appbase-public-projection-001",
+      "title": "appbase public projection contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:appbase-public-projection-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:appbase-public-projection-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:bindingbase-contract-001",
+      "title": "bindingbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:bindingbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:bindingbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:bindingregistrybase-contract-001",
+      "title": "bindingregistrybase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:bindingregistrybase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:bindingregistrybase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:columnbase-contract-001",
+      "title": "columnbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:columnbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:columnbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:enginebase-contract-001",
+      "title": "enginebase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:enginebase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:enginebase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:engineproviderbase-contract-001",
+      "title": "engineproviderbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:engineproviderbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:engineproviderbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:engineregistry-contract-001",
+      "title": "engineregistry contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:engineregistry-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:engineregistry-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:engine-surface-public-projection-001",
+      "title": "engine surface public projection contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:engine-surface-public-projection-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:engine-surface-public-projection-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:response-concrete-response-class-t2-001",
+      "title": "Response concrete response class T2 closure",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "behavior",
+      "description": "Focused pytest evidence proves the governed Response concrete response class surface is implemented and passes through the current concrete response contract.",
+      "feature_ids": [
+        "feat:response-concrete-response-class-001"
+      ],
+      "test_ids": [
+        "tst:response-concrete-response-class-focused-001"
+      ],
+      "evidence_ids": [
+        "evd:response-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "clm:jsonresponse-concrete-response-class-t2-001",
+      "title": "JSONResponse concrete response class T2 closure",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "behavior",
+      "description": "Focused pytest evidence proves the governed JSONResponse concrete response class surface is implemented and passes through the current concrete response contract.",
+      "feature_ids": [
+        "feat:jsonresponse-concrete-response-class-001"
+      ],
+      "test_ids": [
+        "tst:jsonresponse-concrete-response-class-focused-001"
+      ],
+      "evidence_ids": [
+        "evd:jsonresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "clm:htmlresponse-concrete-response-class-t2-001",
+      "title": "HTMLResponse concrete response class T2 closure",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "behavior",
+      "description": "Focused pytest evidence proves the governed HTMLResponse concrete response class surface is implemented and passes through the current concrete response contract.",
+      "feature_ids": [
+        "feat:htmlresponse-concrete-response-class-001"
+      ],
+      "test_ids": [
+        "tst:htmlresponse-concrete-response-class-focused-001"
+      ],
+      "evidence_ids": [
+        "evd:htmlresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "clm:plaintextresponse-concrete-response-class-t2-001",
+      "title": "PlainTextResponse concrete response class T2 closure",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "behavior",
+      "description": "Focused pytest evidence proves the governed PlainTextResponse concrete response class surface is implemented and passes through the current concrete response contract.",
+      "feature_ids": [
+        "feat:plaintextresponse-concrete-response-class-001"
+      ],
+      "test_ids": [
+        "tst:plaintextresponse-concrete-response-class-focused-001"
+      ],
+      "evidence_ids": [
+        "evd:plaintextresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "clm:fileresponse-concrete-response-class-t2-001",
+      "title": "FileResponse concrete response class T2 closure",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "behavior",
+      "description": "Focused pytest evidence proves the governed FileResponse concrete response class surface is implemented and passes through the current concrete response contract.",
+      "feature_ids": [
+        "feat:fileresponse-concrete-response-class-001"
+      ],
+      "test_ids": [
+        "tst:fileresponse-concrete-response-class-focused-001"
+      ],
+      "evidence_ids": [
+        "evd:fileresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "clm:redirectresponse-concrete-response-class-t2-001",
+      "title": "RedirectResponse concrete response class T2 closure",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "behavior",
+      "description": "Focused pytest evidence proves the governed RedirectResponse concrete response class surface is implemented and passes through the current concrete response contract.",
+      "feature_ids": [
+        "feat:redirectresponse-concrete-response-class-001"
+      ],
+      "test_ids": [
+        "tst:redirectresponse-concrete-response-class-focused-001"
+      ],
+      "evidence_ids": [
+        "evd:redirectresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "clm:foreignkeybase-contract-001",
+      "title": "foreignkeybase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:foreignkeybase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:foreignkeybase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:foreignkeybase-public-projection-001",
+      "title": "foreignkeybase public projection contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:foreignkeybase-public-projection-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:foreignkeybase-public-projection-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:requestbase-contract-001",
+      "title": "requestbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:requestbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:requestbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:routerbase-contract-001",
+      "title": "routerbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:routerbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:routerbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:routerbase-public-projection-001",
+      "title": "routerbase public projection contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:routerbase-public-projection-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:routerbase-public-projection-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:schemabase-contract-001",
+      "title": "schemabase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:schemabase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:schemabase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:sessionabc-contract-001",
+      "title": "sessionabc contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:sessionabc-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:sessionabc-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:storagetransformbase-contract-001",
+      "title": "storagetransformbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:storagetransformbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:storagetransformbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:tablebase-contract-001",
+      "title": "tablebase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:tablebase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:tablebase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:tablebase-public-projection-001",
+      "title": "tablebase public projection contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:tablebase-public-projection-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:tablebase-public-projection-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:tableregistrybase-contract-001",
+      "title": "tableregistrybase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:tableregistrybase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:tableregistrybase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:tableregistrybase-public-projection-001",
+      "title": "tableregistrybase public projection contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:tableregistrybase-public-projection-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:tableregistrybase-public-projection-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
+    },
+    {
+      "id": "clm:tigrblsessionbase-contract-001",
+      "title": "tigrblsessionbase contract contract claim",
+      "status": "asserted",
+      "tier": "T1",
+      "kind": "behavior",
+      "description": "Certifies the governed feat:tigrblsessionbase-contract-001 surface for the dedicated base-surface slice.",
+      "feature_ids": [
+        "feat:tigrblsessionbase-contract-001"
+      ],
+      "test_ids": [],
+      "evidence_ids": []
     }
   ],
   "evidence": [
@@ -50758,10 +51434,10 @@
     {
       "id": "evd:yield-iterator-producer-contract-pytest",
       "title": "Yield iterator producer target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
-      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_iterator_producer_contract.py",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_yield_iterator_producer_contract.py",
       "claim_ids": [
         "clm:yield-iterator-producer-contract-001"
       ],
@@ -50786,7 +51462,7 @@
     {
       "id": "evd:sse-lazy-iterator-runtime-contract-pytest",
       "title": "SSE lazy iterator runtime target contract pytest target",
-      "status": "planned",
+      "status": "passed",
       "kind": "pytest-target",
       "tier": "T2",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_sse_runtime_contract.py",
@@ -51745,6 +52421,362 @@
       "test_ids": [
         "tst:tigrbl-security-dependency-surface-contracts"
       ]
+    },
+    {
+      "id": "evd:webtransport-transport-events-contract-pytest",
+      "title": "WebTransport transport events contract pytest target",
+      "status": "passed",
+      "kind": "pytest-target",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_webtransport_transport_events_contract.py",
+      "claim_ids": [
+        "clm:webtransport-transport-events-contract-001"
+      ],
+      "test_ids": [
+        "tst:webtransport-transport-events-contract"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-eventful-streaming-slice-pytest",
+      "title": "Tigrbl eventful streaming slice focused pytest run",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-eventful-streaming-slice-pytest.json",
+      "claim_ids": [
+        "clm:yield-iterator-producer-contract-001",
+        "clm:sse-lazy-iterator-runtime-contract-001",
+        "clm:webtransport-transport-events-contract-001",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:runtime-parity-lane-governance-001",
+        "clm:eventstreamresponse-concrete-sse-class-contract-001",
+        "clm:stream-chunk-order-preservation-contract-001",
+        "clm:streamingresponse-concrete-stream-class-contract-001",
+        "clm:sse-event-framing-contract-001",
+        "clm:websocket-concrete-runtime-class-contract-001"
+      ],
+      "test_ids": [
+        "tst:yield-iterator-producer-contract",
+        "tst:sse-lazy-iterator-runtime-contract",
+        "tst:webtransport-transport-events-contract",
+        "tst:tcase-0015",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
+        "tst:runtime-parity-lane-governance-validator"
+      ]
+    },
+    {
+      "id": "evd:response-concrete-response-class-pytest-001",
+      "title": "Response concrete response class pytest evidence",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-response-classes-pytest.json",
+      "claim_ids": [
+        "clm:response-concrete-response-class-t2-001"
+      ],
+      "test_ids": [
+        "tst:response-concrete-response-class-focused-001"
+      ]
+    },
+    {
+      "id": "evd:jsonresponse-concrete-response-class-pytest-001",
+      "title": "JSONResponse concrete response class pytest evidence",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-response-classes-pytest.json",
+      "claim_ids": [
+        "clm:jsonresponse-concrete-response-class-t2-001"
+      ],
+      "test_ids": [
+        "tst:jsonresponse-concrete-response-class-focused-001"
+      ]
+    },
+    {
+      "id": "evd:htmlresponse-concrete-response-class-pytest-001",
+      "title": "HTMLResponse concrete response class pytest evidence",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-response-classes-pytest.json",
+      "claim_ids": [
+        "clm:htmlresponse-concrete-response-class-t2-001"
+      ],
+      "test_ids": [
+        "tst:htmlresponse-concrete-response-class-focused-001"
+      ]
+    },
+    {
+      "id": "evd:plaintextresponse-concrete-response-class-pytest-001",
+      "title": "PlainTextResponse concrete response class pytest evidence",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-response-classes-pytest.json",
+      "claim_ids": [
+        "clm:plaintextresponse-concrete-response-class-t2-001"
+      ],
+      "test_ids": [
+        "tst:plaintextresponse-concrete-response-class-focused-001"
+      ]
+    },
+    {
+      "id": "evd:fileresponse-concrete-response-class-pytest-001",
+      "title": "FileResponse concrete response class pytest evidence",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-response-classes-pytest.json",
+      "claim_ids": [
+        "clm:fileresponse-concrete-response-class-t2-001"
+      ],
+      "test_ids": [
+        "tst:fileresponse-concrete-response-class-focused-001"
+      ]
+    },
+    {
+      "id": "evd:redirectresponse-concrete-response-class-pytest-001",
+      "title": "RedirectResponse concrete response class pytest evidence",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-concrete-response-classes-pytest.json",
+      "claim_ids": [
+        "clm:redirectresponse-concrete-response-class-t2-001"
+      ],
+      "test_ids": [
+        "tst:redirectresponse-concrete-response-class-focused-001"
+      ]
+    },
+    {
+      "id": "evd:aliasbase-contract-001-pytest",
+      "title": "aliasbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:appbase-contract-001-pytest",
+      "title": "appbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:appbase-public-projection-001-pytest",
+      "title": "appbase public projection pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:bindingbase-contract-001-pytest",
+      "title": "bindingbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:bindingregistrybase-contract-001-pytest",
+      "title": "bindingregistrybase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:columnbase-contract-001-pytest",
+      "title": "columnbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:enginebase-contract-001-pytest",
+      "title": "enginebase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:engineproviderbase-contract-001-pytest",
+      "title": "engineproviderbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:engineregistry-contract-001-pytest",
+      "title": "engineregistry contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-engine-registry-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:engine-surface-public-projection-001-pytest",
+      "title": "engine surface public projection pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:foreignkeybase-contract-001-pytest",
+      "title": "foreignkeybase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:foreignkeybase-public-projection-001-pytest",
+      "title": "foreignkeybase public projection pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:requestbase-contract-001-pytest",
+      "title": "requestbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:routerbase-contract-001-pytest",
+      "title": "routerbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:routerbase-public-projection-001-pytest",
+      "title": "routerbase public projection pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:schemabase-contract-001-pytest",
+      "title": "schemabase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:sessionabc-contract-001-pytest",
+      "title": "sessionabc contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:storagetransformbase-contract-001-pytest",
+      "title": "storagetransformbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:tablebase-contract-001-pytest",
+      "title": "tablebase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:tablebase-public-projection-001-pytest",
+      "title": "tablebase public projection pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:tableregistrybase-contract-001-pytest",
+      "title": "tableregistrybase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:tableregistrybase-public-projection-001-pytest",
+      "title": "tableregistrybase public projection pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
+    },
+    {
+      "id": "evd:tigrblsessionbase-contract-001-pytest",
+      "title": "tigrblsessionbase contract pytest evidence",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T1",
+      "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
+      "claim_ids": [],
+      "test_ids": []
     }
   ],
   "issues": [
@@ -52117,9 +53149,7 @@
         "feat:surface-optional-metadata-emission-001",
         "feat:transport-accept-emit-close-atoms-001",
         "feat:transport-event-registry-001",
-        "feat:tx-phase-legacy-alias-removal-001",
-        "feat:webtransport-transport-events-001",
-        "feat:yield-iterator-producer-001"
+        "feat:tx-phase-legacy-alias-removal-001"
       ],
       "claim_ids": [
         "clm:tigrbl-xfail-compat-surface-001",
@@ -52172,9 +53202,7 @@
         "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi",
         "tst:transport-accept-emit-close-atoms-contract",
         "tst:transport-event-registry-contract",
-        "tst:tx-phase-legacy-alias-removal-contract",
-        "tst:webtransport-transport-events-contract",
-        "tst:yield-iterator-producer-contract"
+        "tst:tx-phase-legacy-alias-removal-contract"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-compat-surface-001-preflight",
@@ -52496,9 +53524,7 @@
         "feat:surface-optional-metadata-emission-001",
         "feat:transport-accept-emit-close-atoms-001",
         "feat:transport-event-registry-001",
-        "feat:tx-phase-legacy-alias-removal-001",
-        "feat:webtransport-transport-events-001",
-        "feat:yield-iterator-producer-001"
+        "feat:tx-phase-legacy-alias-removal-001"
       ],
       "claim_ids": [
         "clm:tigrbl-xfail-compat-surface-001",
@@ -52551,9 +53577,7 @@
         "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi",
         "tst:transport-accept-emit-close-atoms-contract",
         "tst:transport-event-registry-contract",
-        "tst:tx-phase-legacy-alias-removal-contract",
-        "tst:webtransport-transport-events-contract",
-        "tst:yield-iterator-producer-contract"
+        "tst:tx-phase-legacy-alias-removal-contract"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-compat-surface-001-preflight",
@@ -53354,6 +54378,55 @@
         "feat:operator-auth-dependency-hook-surface-001"
       ],
       "profile_ids": []
+    },
+    {
+      "id": "bnd:tigrbl-eventful-streaming-slice-001",
+      "title": "Tigrbl Eventful Streaming Slice",
+      "status": "frozen",
+      "frozen": true,
+      "feature_ids": [
+        "feat:eventstreamresponse-concrete-sse-class-001",
+        "feat:stream-chunk-order-preservation-001",
+        "feat:streamingresponse-concrete-stream-class-001",
+        "feat:yield-iterator-producer-001",
+        "feat:sse-event-framing-001",
+        "feat:sse-lazy-iterator-runtime-001",
+        "feat:websocket-concrete-runtime-class-001",
+        "feat:webtransport-transport-events-001"
+      ],
+      "profile_ids": []
+    },
+    {
+      "id": "bnd:tigrbl-base-surface-certification-001",
+      "title": "Tigrbl Base Surface Certification Boundary",
+      "status": "frozen",
+      "frozen": true,
+      "feature_ids": [
+        "feat:aliasbase-contract-001",
+        "feat:appbase-contract-001",
+        "feat:appbase-public-projection-001",
+        "feat:bindingbase-contract-001",
+        "feat:bindingregistrybase-contract-001",
+        "feat:columnbase-contract-001",
+        "feat:enginebase-contract-001",
+        "feat:engineproviderbase-contract-001",
+        "feat:engineregistry-contract-001",
+        "feat:engine-surface-public-projection-001",
+        "feat:foreignkeybase-contract-001",
+        "feat:foreignkeybase-public-projection-001",
+        "feat:requestbase-contract-001",
+        "feat:routerbase-contract-001",
+        "feat:routerbase-public-projection-001",
+        "feat:schemabase-contract-001",
+        "feat:sessionabc-contract-001",
+        "feat:storagetransformbase-contract-001",
+        "feat:tablebase-contract-001",
+        "feat:tablebase-public-projection-001",
+        "feat:tableregistrybase-contract-001",
+        "feat:tableregistrybase-public-projection-001",
+        "feat:tigrblsessionbase-contract-001"
+      ],
+      "profile_ids": []
     }
   ],
   "releases": [
@@ -53965,7 +55038,9 @@
         "clm:tigrbl-xfail-transport-message-001",
         "clm:opchannel-capability-handshake-001",
         "clm:opchannel-capability-handshake-contract-001",
-        "clm:tigrbl-eventful-subevent-surface-contracts-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001",
+        "clm:webtransport-transport-events-contract-001",
+        "clm:yield-iterator-producer-contract-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-transport-message-001-preflight",
@@ -54022,6 +55097,28 @@
         "evd:tigrbl-xfail-partial-surface-001-preflight",
         "evd:orm-alias-export-compatibility-pytest",
         "evd:tigrbl-xfail-partial-surface-contracts-001"
+      ]
+    },
+    {
+      "id": "rel:tigrbl-eventful-streaming-slice-001",
+      "version": "0.3.19.dev1+eventful-streaming-slice",
+      "status": "draft",
+      "boundary_id": "bnd:tigrbl-eventful-streaming-slice-001",
+      "claim_ids": [
+        "clm:yield-iterator-producer-contract-001",
+        "clm:sse-lazy-iterator-runtime-contract-001",
+        "clm:webtransport-transport-events-contract-001",
+        "clm:eventstreamresponse-concrete-sse-class-contract-001",
+        "clm:stream-chunk-order-preservation-contract-001",
+        "clm:streamingresponse-concrete-stream-class-contract-001",
+        "clm:sse-event-framing-contract-001",
+        "clm:websocket-concrete-runtime-class-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:yield-iterator-producer-contract-pytest",
+        "evd:sse-lazy-iterator-runtime-contract-pytest",
+        "evd:webtransport-transport-events-contract-pytest",
+        "evd:tigrbl-eventful-streaming-slice-pytest"
       ]
     }
   ],
@@ -60893,6 +61990,44 @@
       ],
       "profile_ids": [],
       "claim_tier": "T3",
+      "evaluation": {
+        "mode": "all_features_must_pass",
+        "allow_feature_override_tier": true
+      }
+    },
+    {
+      "id": "prf:tigrbl-base-surface-certification-001",
+      "title": "Tigrbl Base Surface Certification Slice",
+      "description": "Dedicated certification slice for base contract and exact public projection rows.",
+      "status": "active",
+      "kind": "certification",
+      "feature_ids": [
+        "feat:aliasbase-contract-001",
+        "feat:appbase-contract-001",
+        "feat:appbase-public-projection-001",
+        "feat:bindingbase-contract-001",
+        "feat:bindingregistrybase-contract-001",
+        "feat:columnbase-contract-001",
+        "feat:enginebase-contract-001",
+        "feat:engineproviderbase-contract-001",
+        "feat:engineregistry-contract-001",
+        "feat:engine-surface-public-projection-001",
+        "feat:foreignkeybase-contract-001",
+        "feat:foreignkeybase-public-projection-001",
+        "feat:requestbase-contract-001",
+        "feat:routerbase-contract-001",
+        "feat:routerbase-public-projection-001",
+        "feat:schemabase-contract-001",
+        "feat:sessionabc-contract-001",
+        "feat:storagetransformbase-contract-001",
+        "feat:tablebase-contract-001",
+        "feat:tablebase-public-projection-001",
+        "feat:tableregistrybase-contract-001",
+        "feat:tableregistrybase-public-projection-001",
+        "feat:tigrblsessionbase-contract-001"
+      ],
+      "profile_ids": [],
+      "claim_tier": "T1",
       "evaluation": {
         "mode": "all_features_must_pass",
         "allow_feature_override_tier": true
