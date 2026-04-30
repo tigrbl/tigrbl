@@ -7,9 +7,9 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 - `total_features`: `609`
 - `in_bound_features`: `581`
 - `out_of_scope_features`: `28`
-- `feature_gap_count`: `324`
-- `gap_counts`: `{'feature_not_implemented': 321, 'missing_claims': 102, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 103, 'non_passing_evidence': 70, 'non_passing_tests': 126}`
-- `implementation_counts`: `{'absent': 68, 'implemented': 260, 'partial': 253}`
+- `feature_gap_count`: `314`
+- `gap_counts`: `{'feature_not_implemented': 311, 'missing_claims': 92, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 103, 'non_passing_evidence': 70, 'non_passing_tests': 126}`
+- `implementation_counts`: `{'absent': 68, 'implemented': 270, 'partial': 243}`
 - `horizon_counts`: `{'backlog': 161, 'current': 291, 'future': 102, 'next': 27, 'out_of_bounds': 28}`
 - `release_blocking_issue_count`: `1`
 - `release_blocking_risk_count`: `1`
@@ -158,16 +158,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:healthz-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:healthz-stable-payload-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:healthz-uix-surface-001` | `absent` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:hook-extension-surface-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:hook-surface-attachment-ordering-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:hook-surface-phase-selector-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:hook-surface-public-projection-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:hookbase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:hookbase-public-projection-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:hookphase-vocabulary-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:hookspec-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:hookz-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:hookz-payload-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:htmlresponse-concrete-response-class-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:http-jsonrpc-bindingspec-contract-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:http-rest-bindingspec-contract-001` | `partial` | `backlog` | `feature_not_implemented` |

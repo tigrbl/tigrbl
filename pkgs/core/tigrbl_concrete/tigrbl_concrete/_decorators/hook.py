@@ -16,6 +16,7 @@ def hook_ctx(
     *,
     phase: str | HookPhase | Enum,
     bindings: str | Sequence[str] | None = None,
+    framing: str | Sequence[str] | None = None,
     exchange: str | None = None,
     family: str | Sequence[str] | None = None,
     subevents: str | Sequence[str] | None = None,
@@ -44,6 +45,8 @@ def hook_ctx(
             merged_selector["bindings"] = bindings
         if exchange is not None:
             merged_selector["exchange"] = exchange
+        if framing is not None:
+            merged_selector["framing"] = framing
         if family is not None:
             merged_selector["family"] = family
         if subevents is not None:
@@ -54,6 +57,7 @@ def hook_ctx(
                 fn=f,
                 ops=ops,
                 bindings=_seqify_strings(merged_selector.get("bindings")),
+                framing=_seqify_strings(merged_selector.get("framing")),
                 exchange=merged_selector.get("exchange"),
                 family=_seqify_strings(merged_selector.get("family")),
                 subevents=_seqify_strings(merged_selector.get("subevents")),
