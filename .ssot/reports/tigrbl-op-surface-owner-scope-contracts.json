@@ -1,0 +1,35 @@
+{
+  "id": "evd:tigrbl-op-surface-owner-scope-contracts-001",
+  "generated_at": "2026-04-30T00:00:00-05:00",
+  "scope": "op_ctx owner-scope materialization, public op surface, OpBase contract, and OpChannel capability handshake",
+  "commands": [
+    {
+      "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/runtime/test_opchannel_capability_handshake_contract.py pkgs/core/tigrbl_tests/tests/unit/test_op_surface_owner_scope_contracts.py -q",
+      "status": "passed",
+      "summary": "17 passed in 0.46s"
+    }
+  ],
+  "features": [
+    "feat:op-ctx-app-owner-scope-materialization-001",
+    "feat:op-ctx-router-owner-scope-materialization-001",
+    "feat:op-ctx-table-owner-scope-materialization-001",
+    "feat:op-extension-surface-001",
+    "feat:op-surface-custom-op-001",
+    "feat:op-surface-default-oltp-001",
+    "feat:op-surface-public-projection-001",
+    "feat:opbase-contract-001",
+    "feat:opchannel-capability-handshake-001"
+  ],
+  "tests": [
+    "tst:tigrbl-op-surface-owner-scope-contracts",
+    "tst:opchannel-capability-handshake-contract"
+  ],
+  "claims": [
+    "clm:tigrbl-op-surface-owner-scope-contracts-001",
+    "clm:opchannel-capability-handshake-contract-001"
+  ],
+  "evidence": [
+    "evd:tigrbl-op-surface-owner-scope-contracts-001",
+    "evd:opchannel-capability-handshake-contract-pytest"
+  ]
+}

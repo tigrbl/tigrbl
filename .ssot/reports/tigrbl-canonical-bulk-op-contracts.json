@@ -1,0 +1,28 @@
+{
+  "id": "evd:tigrbl-canonical-bulk-op-contracts-001",
+  "generated_at": "2026-04-30T00:00:00-05:00",
+  "scope": "canonical bulk operation REST and RPC contracts",
+  "commands": [
+    {
+      "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_rest_all_default_op_verbs.py pkgs/core/tigrbl_tests/tests/unit/test_rpc_all_default_op_verbs.py pkgs/core/tigrbl_tests/tests/unit/test_rest_bulk_delete_suppresses_clear.py -q",
+      "status": "passed",
+      "summary": "28 passed in 0.88s"
+    }
+  ],
+  "features": [
+    "feat:canonical-op-bulk-create-001",
+    "feat:canonical-op-bulk-delete-001",
+    "feat:canonical-op-bulk-merge-001",
+    "feat:canonical-op-bulk-replace-001",
+    "feat:canonical-op-bulk-update-001"
+  ],
+  "tests": [
+    "tst:tigrbl-canonical-bulk-op-contracts"
+  ],
+  "claims": [
+    "clm:tigrbl-canonical-bulk-op-contracts-001"
+  ],
+  "evidence": [
+    "evd:tigrbl-canonical-bulk-op-contracts-001"
+  ]
+}

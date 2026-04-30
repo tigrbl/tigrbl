@@ -62,6 +62,7 @@ _DEFAULT_METHODS: dict[str, tuple[str, ...]] = {
     "bulk_replace": ("PUT",),
     "bulk_merge": ("PATCH",),
     "bulk_delete": ("DELETE",),
+    "checkpoint": ("POST",),
     "custom": ("POST",),
 }
 
@@ -190,7 +191,10 @@ def _build_raw_handler(model: type, spec: OpSpec):
         _noop_raw.__name__ = f"{model.__name__}_custom_noop"
         return _noop_raw
 
-    import tigrbl_ops_oltp as _core
+    if target == "checkpoint":
+        import tigrbl_ops_realtime as _core
+    else:
+        import tigrbl_ops_oltp as _core
 
     try:
         core_fn = getattr(_core, target)
@@ -229,6 +233,8 @@ def _build_raw_handler(model: type, spec: OpSpec):
             "bulk_merge",
         }:
             return await core_fn(model, ident, payload, db=db)
+        if target == "checkpoint":
+            return await core_fn(payload or {})
         return await core_fn(model, payload, db=db)
 
     return _raw
