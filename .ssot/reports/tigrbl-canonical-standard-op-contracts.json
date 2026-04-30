@@ -1,0 +1,26 @@
+{
+  "artifact": "tigrbl-canonical-standard-op-contracts",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_canonical_standard_op_contracts.py -q",
+  "features": [
+    "feat:canonical-op-clear-001",
+    "feat:canonical-op-create-001",
+    "feat:canonical-op-delete-001",
+    "feat:canonical-op-list-001",
+    "feat:canonical-op-merge-001",
+    "feat:canonical-op-read-001",
+    "feat:canonical-op-replace-001",
+    "feat:canonical-op-update-001",
+    "feat:canonical-op-checkpoint-001"
+  ],
+  "status": "passed",
+  "tests": [
+    "test_standard_canonical_ops_project_rest_routes",
+    "test_standard_canonical_ops_execute_through_rpc",
+    "test_checkpoint_is_canonical_collection_op"
+  ],
+  "result": {
+    "passed": 3,
+    "failed": 0
+  },
+  "notes": "Verifies REST route projection, RPC execution, and checkpoint collection semantics for the standard canonical operation surface."
+}

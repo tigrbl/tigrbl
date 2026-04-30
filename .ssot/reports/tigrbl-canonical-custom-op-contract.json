@@ -1,0 +1,17 @@
+{
+  "artifact": "tigrbl-canonical-custom-op-contract",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_canonical_custom_op_contract.py -q",
+  "features": [
+    "feat:canonical-op-custom-001"
+  ],
+  "status": "passed",
+  "tests": [
+    "test_custom_op_projects_as_canonical_collection_route",
+    "test_custom_op_executes_via_rpc_and_rest"
+  ],
+  "result": {
+    "passed": 2,
+    "failed": 0
+  },
+  "notes": "Verifies that canonical custom operations project as collection POST routes, retain custom target metadata, and execute declared handlers through RPC and REST."
+}

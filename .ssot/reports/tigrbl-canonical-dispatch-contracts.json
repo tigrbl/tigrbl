@@ -1,0 +1,28 @@
+{
+  "id": "evd:tigrbl-canonical-dispatch-contracts-001",
+  "generated_at": "2026-04-30T00:00:00-05:00",
+  "scope": "canonical dispatch exchange and ingress phase contracts",
+  "commands": [
+    {
+      "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/runtime/test_binding_exchange_normalization_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_protocol_phase_tree_contract.py -q",
+      "status": "passed",
+      "summary": "26 passed in 0.18s"
+    }
+  ],
+  "features": [
+    "feat:canonical-exchange-normalization-001",
+    "feat:canonical-ingress-route-phase-cleanup-001"
+  ],
+  "tests": [
+    "tst:canonical-exchange-normalization-contract",
+    "tst:canonical-ingress-route-phase-cleanup-contract"
+  ],
+  "claims": [
+    "clm:canonical-exchange-normalization-contract-001",
+    "clm:canonical-ingress-route-phase-cleanup-contract-001"
+  ],
+  "evidence": [
+    "evd:canonical-exchange-normalization-contract-pytest",
+    "evd:canonical-ingress-route-phase-cleanup-contract-pytest"
+  ]
+}

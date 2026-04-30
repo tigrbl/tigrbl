@@ -3,11 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Literal, Tuple
 
-PHASE_ALIASES = {
-    "END_TX": "TX_COMMIT",
-    "ON_END_TX_ERROR": "ON_TX_COMMIT_ERROR",
-    "ON_ROLLBACK": "TX_ROLLBACK",
-}
+PHASE_ALIASES: dict[str, str] = {}
 
 
 def normalize_phase(name: str | None) -> str | None:
@@ -41,7 +37,7 @@ HookPhase = Literal[
 Phase = Literal[
     "INGRESS_BEGIN",
     "INGRESS_PARSE",
-    "INGRESS_ROUTE",
+    "INGRESS_DISPATCH",
     "PRE_TX_BEGIN",
     "START_TX",
     "PRE_HANDLER",
@@ -52,6 +48,8 @@ Phase = Literal[
     "POST_COMMIT",
     "EGRESS_SHAPE",
     "EGRESS_FINALIZE",
+    "EMIT",
+    "POST_EMIT",
     "POST_RESPONSE",
     "ON_ERROR",
     "ON_PRE_TX_BEGIN_ERROR",
@@ -75,7 +73,6 @@ class PHASE(str, Enum):
     POST_HANDLER = "POST_HANDLER"
     PRE_COMMIT = "PRE_COMMIT"
     TX_COMMIT = "TX_COMMIT"
-    END_TX = "TX_COMMIT"
     POST_COMMIT = "POST_COMMIT"
     POST_RESPONSE = "POST_RESPONSE"
     ON_ERROR = "ON_ERROR"
@@ -86,11 +83,9 @@ class PHASE(str, Enum):
     ON_POST_HANDLER_ERROR = "ON_POST_HANDLER_ERROR"
     ON_PRE_COMMIT_ERROR = "ON_PRE_COMMIT_ERROR"
     ON_TX_COMMIT_ERROR = "ON_TX_COMMIT_ERROR"
-    ON_END_TX_ERROR = "ON_TX_COMMIT_ERROR"
     ON_POST_COMMIT_ERROR = "ON_POST_COMMIT_ERROR"
     ON_POST_RESPONSE_ERROR = "ON_POST_RESPONSE_ERROR"
     TX_ROLLBACK = "TX_ROLLBACK"
-    ON_ROLLBACK = "TX_ROLLBACK"
 
     @classmethod
     def _missing_(cls, value: object):
@@ -104,7 +99,7 @@ HOOK_PHASES: Tuple[HookPhase, ...] = tuple(p.value for p in PHASE)
 PHASES: Tuple[Phase, ...] = (
     "INGRESS_BEGIN",
     "INGRESS_PARSE",
-    "INGRESS_ROUTE",
+    "INGRESS_DISPATCH",
     "PRE_TX_BEGIN",
     "START_TX",
     "PRE_HANDLER",
@@ -115,6 +110,8 @@ PHASES: Tuple[Phase, ...] = (
     "POST_COMMIT",
     "EGRESS_SHAPE",
     "EGRESS_FINALIZE",
+    "EMIT",
+    "POST_EMIT",
     "POST_RESPONSE",
     "ON_ERROR",
     "ON_PRE_TX_BEGIN_ERROR",
@@ -129,6 +126,26 @@ PHASES: Tuple[Phase, ...] = (
     "TX_ROLLBACK",
 )
 
+
+def compile_protocol_phase_projection(proto: str) -> dict[str, object]:
+    stream_like = proto in {"http.stream", "https.stream", "http.sse", "https.sse"}
+    phase_order = (
+        "INGRESS_PARSE",
+        "INGRESS_DISPATCH",
+        "PRE_HANDLER",
+        "HANDLER",
+        "POST_HANDLER",
+        "EMIT",
+        "POST_EMIT",
+    )
+    if not stream_like:
+        phase_order = phase_order[:5] + ("EGRESS_SHAPE", "EGRESS_FINALIZE") + phase_order[5:]
+    return {
+        "proto": proto,
+        "phase_order": phase_order,
+        "phases": tuple({"phase": phase} for phase in phase_order),
+    }
+
 __all__ = [
     "PHASE",
     "PHASES",
@@ -136,5 +153,6 @@ __all__ = [
     "Phase",
     "HookPhase",
     "PHASE_ALIASES",
+    "compile_protocol_phase_projection",
     "normalize_phase",
 ]
