@@ -15,6 +15,7 @@ class HookBase(HookSpec):
 
     phase: HookPhase
     fn: StepFn
+    framing: tuple[str, ...] = ()
     order: int = 0
     when: Optional[object] = None
     name: Optional[str] = None

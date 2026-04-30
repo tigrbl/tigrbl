@@ -10050,7 +10050,7 @@
       "id": "feat:hook-extension-surface-001",
       "title": "Hook extension surface",
       "description": "Tracks the governed hook extension surface as a separate SSOT family spanning phase legality, selector semantics, attachment/order behavior, and public/base projections.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10062,7 +10062,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-03-hook-ctx",
         "tst:tigrbl-tests-examples-07-intermediate-hooks-test-01-hook-ctx",
@@ -10091,7 +10093,8 @@
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
         "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
-        "tst:tigrbl-tests-tests-unit-test-spec-hook"
+        "tst:tigrbl-tests-tests-unit-test-spec-hook",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -10102,7 +10105,7 @@
       "id": "feat:hook-surface-phase-selector-001",
       "title": "Hook phase and selector contract",
       "description": "Tracks the hook phase vocabulary and selector semantics as part of the governed hook surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10114,7 +10117,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-03-hook-ctx",
         "tst:tigrbl-tests-examples-07-intermediate-hooks-test-01-hook-ctx",
@@ -10143,7 +10148,8 @@
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
         "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
-        "tst:tigrbl-tests-tests-unit-test-spec-hook"
+        "tst:tigrbl-tests-tests-unit-test-spec-hook",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -10154,7 +10160,7 @@
       "id": "feat:hook-surface-attachment-ordering-001",
       "title": "Hook attachment and ordering behavior",
       "description": "Tracks hook attachment through app/router/table/op declarations together with deterministic hook execution ordering.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10166,7 +10172,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-03-hook-ctx",
         "tst:tigrbl-tests-examples-07-intermediate-hooks-test-01-hook-ctx",
@@ -10195,7 +10203,8 @@
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
         "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
-        "tst:tigrbl-tests-tests-unit-test-spec-hook"
+        "tst:tigrbl-tests-tests-unit-test-spec-hook",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -10206,7 +10215,7 @@
       "id": "feat:hook-surface-public-projection-001",
       "title": "Hook public and base projection",
       "description": "Tracks public and base projection of hook-facing contracts and helpers.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -10218,7 +10227,9 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-03-hook-ctx",
         "tst:tigrbl-tests-examples-07-intermediate-hooks-test-01-hook-ctx",
@@ -10247,7 +10258,8 @@
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
         "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
         "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
-        "tst:tigrbl-tests-tests-unit-test-spec-hook"
+        "tst:tigrbl-tests-tests-unit-test-spec-hook",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -11433,7 +11445,7 @@
       "id": "feat:hookspec-contract-001",
       "title": "HookSpec contract",
       "description": "Tracks HookSpec as a first-class tigrbl_core._spec contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11448,9 +11460,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": []
     },
@@ -11458,7 +11473,7 @@
       "id": "feat:hookphase-vocabulary-001",
       "title": "HookPhase vocabulary",
       "description": "Tracks HookPhase as a first-class tigrbl_core._spec hook-phase vocabulary surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11473,9 +11488,12 @@
       "spec_ids": [
         "spc:2025"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": []
     },
@@ -12080,7 +12098,7 @@
       "id": "feat:hookbase-contract-001",
       "title": "HookBase contract",
       "description": "Tracks HookBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -12095,9 +12113,12 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": []
     },
@@ -12466,7 +12487,7 @@
       "id": "feat:hookbase-public-projection-001",
       "title": "HookBase public projection",
       "description": "Tracks the public operator projection of HookBase through the top-level tigrbl facade.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -12481,9 +12502,12 @@
       "spec_ids": [
         "spc:2026"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": []
     },
@@ -14912,7 +14936,7 @@
       "id": "feat:hookz-mount-surface-001",
       "title": "Hookz mount surface",
       "description": "Tracks the concrete hookz endpoint mount emitted by diagnostics routing.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -14927,9 +14951,12 @@
       "spec_ids": [
         "spc:2021"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": []
     },
@@ -15157,7 +15184,7 @@
       "id": "feat:hookz-payload-surface-001",
       "title": "Hookz payload surface",
       "description": "Tracks the concrete hookz diagnostics payload as a hook-order and phase-reporting surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -15172,9 +15199,12 @@
       "spec_ids": [
         "spc:2021"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tigrbl-hook-surface-contracts"
       ],
       "requires": []
     },
@@ -40923,6 +40953,31 @@
       "evidence_ids": [
         "evd:tigrbl-xfail-partial-surface-contracts-001"
       ]
+    },
+    {
+      "id": "tst:tigrbl-hook-surface-contracts",
+      "title": "Tigrbl hook surface contracts",
+      "status": "passing",
+      "kind": "contract",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_hook_surface_contracts.py",
+      "feature_ids": [
+        "feat:hook-extension-surface-001",
+        "feat:hook-surface-attachment-ordering-001",
+        "feat:hook-surface-phase-selector-001",
+        "feat:hook-surface-public-projection-001",
+        "feat:hookbase-contract-001",
+        "feat:hookbase-public-projection-001",
+        "feat:hookphase-vocabulary-001",
+        "feat:hookspec-contract-001",
+        "feat:hookz-mount-surface-001",
+        "feat:hookz-payload-surface-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-hook-surface-contracts-001"
+      ]
     }
   ],
   "claims": [
@@ -47959,6 +48014,32 @@
       "evidence_ids": [
         "evd:tigrbl-xfail-partial-surface-contracts-001"
       ]
+    },
+    {
+      "id": "clm:tigrbl-hook-surface-contracts-001",
+      "title": "Tigrbl hook surface contracts implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "hook-surface",
+      "description": "The hook extension, selector, HookSpec, HookBase, HookPhase, and hookz surfaces expose the governed hook behavior and reject runtime-owned hook phases.",
+      "feature_ids": [
+        "feat:hook-extension-surface-001",
+        "feat:hook-surface-attachment-ordering-001",
+        "feat:hook-surface-phase-selector-001",
+        "feat:hook-surface-public-projection-001",
+        "feat:hookbase-contract-001",
+        "feat:hookbase-public-projection-001",
+        "feat:hookphase-vocabulary-001",
+        "feat:hookspec-contract-001",
+        "feat:hookz-mount-surface-001",
+        "feat:hookz-payload-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-hook-surface-contracts"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-hook-surface-contracts-001"
+      ]
     }
   ],
   "evidence": [
@@ -53861,6 +53942,20 @@
         "tst:declared-surface-optional-metadata-contract",
         "tst:diagnostics-absence-warning-suppression-contract",
         "tst:operator-auth-dependency-hook-surface-contract"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-hook-surface-contracts-001",
+      "title": "Tigrbl hook surface contract pytest evidence",
+      "status": "passed",
+      "kind": "pytest-json-report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-hook-surface-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-hook-surface-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-hook-surface-contracts"
       ]
     }
   ],
