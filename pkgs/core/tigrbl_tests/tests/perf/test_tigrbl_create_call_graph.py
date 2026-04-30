@@ -25,6 +25,7 @@ OPS_COUNT = 250
 TOP_FUNCTION_LIMIT = 75
 TOP_EDGE_LIMIT = 150
 RESULTS_PATH = Path(__file__).with_name("tigrbl_create_call_graph_250_ops.json")
+PERF_TEMP_ROOT = Path(__file__).resolve().parents[5] / ".tmp" / "pytest-perf"
 
 
 def _func_label(func_key: tuple[str, int, str]) -> str:
@@ -84,7 +85,8 @@ def _build_call_edges(stats: pstats.Stats, *, limit: int) -> list[dict[str, Any]
 
 
 async def _profile_create_call_graph(*, results_path: Path) -> dict[str, Any]:
-    with TemporaryDirectory(ignore_cleanup_errors=True) as tmp_dir:
+    PERF_TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(dir=PERF_TEMP_ROOT, ignore_cleanup_errors=True) as tmp_dir:
         base_dir = Path(tmp_dir)
         db_path = base_dir / "tigrbl-create-call-graph.sqlite3"
 

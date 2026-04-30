@@ -25,6 +25,17 @@ The current state below is grounded in:
 
 ## Certification status
 
+### 0.3.19 certification boundary
+
+Release `rel:tigrbl-0.3.19` is now certified, promoted, and published in the
+SSOT registry inside frozen boundary `bnd:tigrbl-0.3.19-certification-001`.
+The boundary contains 251 implemented features, 132 release claims, and 160
+evidence rows. Certification passed with no release-guard failures.
+
+This certification is boundary-scoped. AsyncAPI UI, JSON Schema UI, and
+OIDC/OAuth/JWT/DPoP behavior beyond OAS/OpenRPC security-scheme documentation
+and runtime projection remain explicitly out of bounds.
+
 Gate E remains passed for the promoted stable release `0.3.18`.
 
 Within the declared current target boundary, the promoted stable release `0.3.18` remains honestly describable as:

@@ -51,6 +51,75 @@
         "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry"
       ]
     },
+    "CERT-003": {
+      "artifact_paths": [
+        ".ssot/releases/boundaries/bnd__tigrbl-0.3.19-certification-001.snapshot.json",
+        ".ssot/reports/certification.report.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-e-promotion.yml#gate-e-promotion",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_STATE.md",
+        "docs/conformance/releases/0.3.19/CLAIMS.md",
+        "docs/conformance/releases/0.3.19/EVIDENCE_INDEX.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "release promotion"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_validator_passes"
+      ]
+    },
+    "CERT-004": {
+      "artifact_paths": [
+        ".ssot/releases/rel__tigrbl-0.3.19/release.snapshot.json",
+        ".ssot/releases/rel__tigrbl-0.3.19/published.snapshot.json",
+        "docs/conformance/releases/0.3.19/artifacts/artifact-manifest.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-e-promotion.yml#gate-e-promotion",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/releases/0.3.19/RELEASE_NOTES.md",
+        "docs/conformance/releases/0.3.19/CURRENT_TARGET_SNAPSHOT.md",
+        "docs/conformance/releases/0.3.19/gate-results/gate-e-promotion.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "release promotion"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_validator_passes"
+      ]
+    },
+    "CERT-005": {
+      "artifact_paths": [
+        "docs/conformance/releases/0.3.19/artifacts/artifact-manifest.json"
+      ],
+      "ci_jobs": [
+        ".github/workflows/gate-e-promotion.yml#gate-e-promotion",
+        ".github/workflows/evidence-lanes.yml#evidence-lane[unit]"
+      ],
+      "doc_paths": [
+        "docs/conformance/CURRENT_TARGET.md",
+        "docs/conformance/NEXT_TARGETS.md",
+        "docs/conformance/releases/0.3.19/CLAIMS.md"
+      ],
+      "lane_classes": [
+        "policy governance",
+        "release promotion"
+      ],
+      "tests": [
+        "tools/ci/tests/test_evidence_registry.py::test_claim_registry_rows_are_covered_by_evidence_registry",
+        "tools/ci/tests/test_gate_e_promotion.py::test_gate_e_validator_passes"
+      ]
+    },
     "CLI-001": {
       "artifact_paths": [
         "docs/conformance/dev/0.3.18.dev1/gate-results/cli-smoke.md",

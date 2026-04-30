@@ -1,11 +1,11 @@
 {
   "matched_count": 73,
-  "python_atom_count": 73,
-  "python_only_count": 0,
+  "python_atom_count": 76,
+  "python_only_count": 3,
   "rust_atom_count": 73,
   "rust_only_count": 0,
   "schema": "tigrbl.python_rust_atom_parity_inventory.v1",
-  "unit_count": 73,
+  "unit_count": 76,
   "units": [
     {
       "domain": "dep",
@@ -162,12 +162,39 @@
     },
     {
       "domain": "err",
+      "feature_id": "feat:atom-parity-err-classify-001",
+      "id": "err.classify",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/err/classify.py",
+      "rust_path": null,
+      "state": "python_only",
+      "subject": "classify"
+    },
+    {
+      "domain": "err",
+      "feature_id": "feat:atom-parity-err-ctx-build-001",
+      "id": "err.ctx_build",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/err/ctx_build.py",
+      "rust_path": null,
+      "state": "python_only",
+      "subject": "ctx_build"
+    },
+    {
+      "domain": "err",
       "feature_id": "feat:atom-parity-err-rollback-001",
       "id": "err.rollback",
       "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/err/rollback.py",
       "rust_path": "crates/tigrbl_rs_atoms/src/err/rollback.rs",
       "state": "matched",
       "subject": "rollback"
+    },
+    {
+      "domain": "err",
+      "feature_id": "feat:atom-parity-err-transport-shape-001",
+      "id": "err.transport_shape",
+      "python_path": "pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/err/transport_shape.py",
+      "rust_path": null,
+      "state": "python_only",
+      "subject": "transport_shape"
     },
     {
       "domain": "ingress",

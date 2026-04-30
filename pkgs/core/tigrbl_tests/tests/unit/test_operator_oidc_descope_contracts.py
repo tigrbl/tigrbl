@@ -85,4 +85,4 @@ def test_oidc_descoped_feature_is_not_marked_implemented_without_route_evidence(
     )
 
     assert feature["implementation_status"] == "partial"
-    assert "OIDC discovery and docs surface de-scoped" in feature["title"]
+    assert "OIDC discovery and docs surface out of bounds" in feature["title"]

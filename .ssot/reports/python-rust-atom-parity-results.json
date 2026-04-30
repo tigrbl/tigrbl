@@ -188,6 +188,28 @@
       "status": "passed"
     },
     {
+      "atom_id": "err.classify",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": false
+      },
+      "state": "python_only",
+      "status": "passed"
+    },
+    {
+      "atom_id": "err.ctx_build",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": false
+      },
+      "state": "python_only",
+      "status": "passed"
+    },
+    {
       "atom_id": "err.rollback",
       "checks": {
         "feature_mapped": true,
@@ -196,6 +218,17 @@
         "semantic_pair_required": true
       },
       "state": "matched",
+      "status": "passed"
+    },
+    {
+      "atom_id": "err.transport_shape",
+      "checks": {
+        "feature_mapped": true,
+        "inventory_tracked": true,
+        "runtime_lanes_declared": true,
+        "semantic_pair_required": false
+      },
+      "state": "python_only",
       "status": "passed"
     },
     {
@@ -808,8 +841,8 @@
   "status": "passed",
   "summary": {
     "matched_count": 73,
-    "python_only_count": 0,
+    "python_only_count": 3,
     "rust_only_count": 0,
-    "unit_count": 73
+    "unit_count": 76
   }
 }

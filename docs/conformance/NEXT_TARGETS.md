@@ -6,6 +6,11 @@ Stable release `0.3.18` is frozen as current-boundary release history.
 
 The active working-tree line is now `0.3.19.dev1`.
 
+The SSOT release `rel:tigrbl-0.3.19` has been certified, promoted, and
+published from frozen boundary `bnd:tigrbl-0.3.19-certification-001`. Remaining
+partial, absent, future, backlog, and out-of-bound rows stay tracked outside
+that certified boundary until separately governed.
+
 This line is governed as the next-target planning line. It is intentionally separated from the frozen current-target release bundle and does not reopen the already-closed `0.3.18` claim set.
 
 ## Planning rule

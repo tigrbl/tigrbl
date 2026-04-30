@@ -32,6 +32,7 @@ RESULTS_PATH = Path(__file__).with_name("benchmark_results_create_uvicorn.json")
 SEQUENTIAL_RESULTS_PATH = Path(__file__).with_name(
     "benchmark_results_create_uvicorn_sequential_10_rounds.json"
 )
+PERF_TEMP_ROOT = Path(__file__).resolve().parents[5] / ".tmp" / "pytest-perf"
 OPS_COUNT = 25
 SEQUENTIAL_ROUNDS = 10
 THROUGHPUT_RATIO_TARGET = 1.25
@@ -85,7 +86,8 @@ async def _benchmark_app(
     initialize: Callable[[Any], Any] | None = None,
     dispose_app: Callable[[Any], Any] | None = None,
 ) -> dict[str, Any]:
-    with TemporaryDirectory(ignore_cleanup_errors=True) as tmpdir:
+    PERF_TEMP_ROOT.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(dir=PERF_TEMP_ROOT, ignore_cleanup_errors=True) as tmpdir:
         db_path = Path(tmpdir) / f"{scenario}.sqlite3"
         expected_names = [f"{scenario}-{i}" for i in range(OPS_COUNT)]
 
