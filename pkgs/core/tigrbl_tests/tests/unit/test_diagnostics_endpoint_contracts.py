@@ -57,12 +57,6 @@ async def test_diagnostics_mount_uses_configured_system_prefix_only() -> None:
 
 
 @pytest.mark.asyncio
-@pytest.mark.xfail(
-    reason=(
-        "feat:diagnostics-absence-warning-suppression-001 is partial; "
-        "missing optional integrations still emit no-db today."
-    ),
-)
 async def test_absent_optional_db_does_not_emit_ungoverned_warning() -> None:
     app = _mount_app()
 

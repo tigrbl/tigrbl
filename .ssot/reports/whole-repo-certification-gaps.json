@@ -3910,26 +3910,6 @@
       "title": "Derived runtime subevent taxonomy"
     },
     {
-      "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001"
-      ],
-      "gaps": [
-        "feature_not_implemented",
-        "non_passing_claims",
-        "non_passing_tests",
-        "non_passing_evidence"
-      ],
-      "horizon": "current",
-      "id": "feat:diagnostics-absence-warning-suppression-001",
-      "implementation_status": "partial",
-      "slot": "bnd:tigrbl-xfail-partial-surface-001",
-      "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:diagnostics-absence-warning-suppression-contract"
-      ],
-      "title": "Diagnostics absence-warning suppression"
-    },
-    {
       "claim_ids": [],
       "gaps": [
         "feature_not_implemented",
@@ -7023,30 +7003,6 @@
     },
     {
       "claim_ids": [
-        "clm:op-009",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:tigrbl-xfail-partial-surface-001"
-      ],
-      "gaps": [
-        "feature_not_implemented",
-        "non_passing_claims",
-        "non_passing_tests",
-        "non_passing_evidence"
-      ],
-      "horizon": "current",
-      "id": "feat:operator-auth-dependency-hook-surface-001",
-      "implementation_status": "partial",
-      "slot": "bnd:tigrbl-xfail-partial-surface-001",
-      "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:tcase-0015",
-        "tst:operator-auth-dependency-hook-surface-contract"
-      ],
-      "title": "Dependency and hook based auth operator surface"
-    },
-    {
-      "claim_ids": [
         "clm:op-008",
         "clm:tigrbl-tests-failure-closure-001"
       ],
@@ -8699,26 +8655,6 @@
     },
     {
       "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001"
-      ],
-      "gaps": [
-        "feature_not_implemented",
-        "non_passing_claims",
-        "non_passing_tests",
-        "non_passing_evidence"
-      ],
-      "horizon": "current",
-      "id": "feat:surface-optional-metadata-emission-001",
-      "implementation_status": "partial",
-      "slot": "bnd:tigrbl-xfail-partial-surface-001",
-      "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:declared-surface-optional-metadata-contract"
-      ],
-      "title": "Declared-surface optional metadata emission"
-    },
-    {
-      "claim_ids": [
         "clm:tigrbl-tests-failure-closure-001"
       ],
       "gaps": [
@@ -9734,15 +9670,15 @@
     }
   ],
   "summary": {
-    "feature_gap_count": 327,
+    "feature_gap_count": 324,
     "gap_counts": {
-      "feature_not_implemented": 324,
+      "feature_not_implemented": 321,
       "missing_claims": 102,
       "missing_evidence": 6,
       "missing_tests": 6,
-      "non_passing_claims": 106,
-      "non_passing_evidence": 73,
-      "non_passing_tests": 129
+      "non_passing_claims": 103,
+      "non_passing_evidence": 70,
+      "non_passing_tests": 126
     },
     "horizon_counts": {
       "backlog": 161,
@@ -9753,8 +9689,8 @@
     },
     "implementation_counts": {
       "absent": 68,
-      "implemented": 257,
-      "partial": 256
+      "implemented": 260,
+      "partial": 253
     },
     "in_bound_features": 581,
     "out_of_scope_features": 28,

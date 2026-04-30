@@ -164,11 +164,14 @@ def openapi(router: Any) -> dict[str, Any]:
             surface = (
                 op_surface(surface_spec)
                 if surface_spec is not None
-                else {
-                    "exchange": getattr(route, "tigrbl_exchange", None),
-                    "txScope": getattr(route, "tigrbl_tx_scope", None),
-                }
+                else {}
             )
+            exchange = getattr(route, "tigrbl_exchange", None)
+            if exchange not in (None, "request_response"):
+                surface["exchange"] = exchange
+            tx_scope = getattr(route, "tigrbl_tx_scope", None)
+            if tx_scope not in (None, "inherit"):
+                surface["txScope"] = tx_scope
             surface["binding"] = (
                 binding_surface(binding) if binding is not None else None
             )

@@ -309,13 +309,22 @@ def include_model(
     authorize = getattr(router, "_authorize", None)
     if callable(authorize):
 
-        async def _authorize_secdep(ctx: Any) -> None:
+        async def _authorize_secdep(request: Any) -> None:
+            ctx = getattr(getattr(request, "state", None), "ctx", None)
             ctx_map = ctx if isinstance(ctx, dict) else {}
-            request = getattr(ctx, "request", None) or ctx_map.get("request")
             target_model = getattr(ctx, "model", None) or ctx_map.get("model")
             alias = (
                 getattr(ctx, "op", None) or ctx_map.get("op") or ctx_map.get("method")
             )
+            if alias in (None, "", "unknown"):
+                method = str(getattr(request, "method", "") or "").upper()
+                alias = {
+                    "GET": "list",
+                    "POST": "create",
+                    "PUT": "replace",
+                    "PATCH": "update",
+                    "DELETE": "delete",
+                }.get(method)
             payload = getattr(ctx, "payload", None) or ctx_map.get("payload")
             user = (
                 getattr(ctx, "auth_context", None)
@@ -327,9 +336,9 @@ def include_model(
             if hasattr(rv, "__await__"):
                 rv = await rv
             if rv is False:
-                from ...errors import ForbiddenError
+                from tigrbl_runtime.runtime.status.exceptions import HTTPException
 
-                raise ForbiddenError("Forbidden")
+                raise HTTPException(status_code=403, detail="Forbidden")
 
         setattr(_authorize_secdep, "__tigrbl_dep_name__", "security.authorize")
         authorize_dep = _authorize_secdep

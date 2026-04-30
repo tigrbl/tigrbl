@@ -52,16 +52,23 @@ def op_family(spec: OpSpec) -> str:
 
 
 def op_surface(spec: OpSpec) -> dict[str, Any]:
-    return {
+    surface: dict[str, Any] = {
         "bindings": [
             binding_surface(binding)
             for binding in tuple(getattr(spec, "bindings", ()) or ())
         ],
-        "exchange": getattr(spec, "exchange", None),
-        "txScope": getattr(spec, "tx_scope", None),
         "family": op_family(spec),
-        "subevents": list(tuple(getattr(spec, "subevents", ()) or ())),
     }
+    exchange = getattr(spec, "exchange", None)
+    if exchange not in (None, "request_response"):
+        surface["exchange"] = exchange
+    tx_scope = getattr(spec, "tx_scope", None)
+    if tx_scope not in (None, "inherit"):
+        surface["txScope"] = tx_scope
+    subevents = list(tuple(getattr(spec, "subevents", ()) or ()))
+    if subevents:
+        surface["subevents"] = subevents
+    return surface
 
 
 def auth_surface(security: list[dict[str, list[str]]]) -> dict[str, Any]:
