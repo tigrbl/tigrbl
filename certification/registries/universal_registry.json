@@ -34,16 +34,16 @@
       "claim_tier_target": "tier_0_blocked",
       "claim_title": "The active 0.3.19.dev1 line is not certifiably fully featured.",
       "evidence_artifact_ids": [
-        "EART-0003",
-        "EART-0097"
+        "EART-0008",
+        "EART-0010"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0024"
+        "EBND-0003"
       ],
       "evidence_pointers": [
-        "certification/claims/blocked.yaml",
-        "reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md"
+        ".ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md",
+        "certification/claims/blocked.yaml"
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
@@ -63,16 +63,16 @@
       "claim_tier_target": "tier_0_blocked",
       "claim_title": "The active 0.3.19.dev1 line is not certifiably fully RFC compliant.",
       "evidence_artifact_ids": [
-        "EART-0003",
-        "EART-0097"
+        "EART-0008",
+        "EART-0010"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0024"
+        "EBND-0003"
       ],
       "evidence_pointers": [
-        "certification/claims/blocked.yaml",
-        "reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md"
+        ".ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md",
+        "certification/claims/blocked.yaml"
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
@@ -93,13 +93,13 @@
       "claim_title": "Engine-family datatype alignment lacks feature-specific proof slices.",
       "evidence_artifact_ids": [
         "EART-0002",
-        "EART-0003",
-        "EART-0007"
+        "EART-0010",
+        "EART-0014"
       ],
       "evidence_bundle_ids": [
         "EBND-0001",
-        "EBND-0002",
-        "EBND-0002"
+        "EBND-0003",
+        "EBND-0003"
       ],
       "evidence_pointers": [
         ".github/workflows/next-target-datatypes.yml",
@@ -126,15 +126,15 @@
       "claim_title": "Rust backend claims must remain blocked until Python-vs-Rust parity lanes pass as release evidence.",
       "evidence_artifact_ids": [
         "EART-0003",
-        "EART-0092"
+        "EART-0010"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0023"
+        "EBND-0003"
       ],
       "evidence_pointers": [
-        "certification/claims/blocked.yaml",
-        "reports/certification_state/2026-04-09-phase4-native-parity.md"
+        ".ssot/reports/certification_state/2026-04-09-phase4-native-parity.md",
+        "certification/claims/blocked.yaml"
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
@@ -154,16 +154,16 @@
       "claim_tier_target": "tier_0_blocked",
       "claim_title": "Tigrcorn interop and benchmark certification claims must remain blocked until governed release evidence populates the public bundle targets.",
       "evidence_artifact_ids": [
-        "EART-0003",
-        "EART-0093"
+        "EART-0004",
+        "EART-0010"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0023"
+        "EBND-0003"
       ],
       "evidence_pointers": [
-        "certification/claims/blocked.yaml",
-        "reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md"
+        ".ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md",
+        "certification/claims/blocked.yaml"
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
@@ -183,16 +183,16 @@
       "claim_tier_target": "tier_0_blocked",
       "claim_title": "Tigrcorn hardening and negative-certification claims must remain blocked until profile-specific negative corpora run as governed release evidence.",
       "evidence_artifact_ids": [
-        "EART-0003",
-        "EART-0094"
+        "EART-0005",
+        "EART-0010"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0023"
+        "EBND-0003"
       ],
       "evidence_pointers": [
-        "certification/claims/blocked.yaml",
-        "reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md"
+        ".ssot/reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md",
+        "certification/claims/blocked.yaml"
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
@@ -212,22 +212,22 @@
       "claim_tier_target": "tier_0_blocked",
       "claim_title": "The active line cannot be promoted until claim lifecycle prerequisites and preserved release evidence are complete.",
       "evidence_artifact_ids": [
-        "EART-0003",
-        "EART-0055",
-        "EART-0095",
-        "EART-0098"
+        "EART-0006",
+        "EART-0009",
+        "EART-0010",
+        "EART-0062"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0010",
-        "EBND-0023",
-        "EBND-0024"
+        "EBND-0002",
+        "EBND-0003",
+        "EBND-0011"
       ],
       "evidence_pointers": [
+        ".ssot/reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
+        ".ssot/reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md",
         "certification/claims/blocked.yaml",
-        "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json",
-        "reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
-        "reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md"
+        "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json"
       ],
       "mapped_feature_ids": [],
       "required_test_pointers": [
@@ -247,20 +247,20 @@
       "claim_tier_target": "tier_3_certified_release",
       "claim_title": "Stable release 0.3.18 remains the frozen current certification boundary.",
       "evidence_artifact_ids": [
-        "EART-0004",
-        "EART-0039",
-        "EART-0051",
-        "EART-0052",
-        "EART-0054",
-        "EART-0060"
+        "EART-0011",
+        "EART-0046",
+        "EART-0058",
+        "EART-0059",
+        "EART-0061",
+        "EART-0067"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010",
-        "EBND-0010",
-        "EBND-0010"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011",
+        "EBND-0011",
+        "EBND-0011"
       ],
       "evidence_pointers": [
         "certification/claims/current.yaml",
@@ -288,20 +288,20 @@
       "claim_tier_target": "tier_3_certified_release",
       "claim_title": "OpenAPI 3.1.0 and JSON Schema Draft 2020-12 emission remain in boundary for the frozen release.",
       "evidence_artifact_ids": [
-        "EART-0004",
-        "EART-0040",
-        "EART-0053",
-        "EART-0054",
-        "EART-0057",
-        "EART-0065"
+        "EART-0011",
+        "EART-0047",
+        "EART-0060",
+        "EART-0061",
+        "EART-0064",
+        "EART-0072"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010",
-        "EBND-0010",
-        "EBND-0012"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011",
+        "EBND-0011",
+        "EBND-0013"
       ],
       "evidence_pointers": [
         "certification/claims/current.yaml",
@@ -329,20 +329,20 @@
       "claim_tier_target": "tier_3_certified_release",
       "claim_title": "JSON-RPC 2.0 and OpenRPC 1.2.6 framework surfaces remain in the frozen release boundary.",
       "evidence_artifact_ids": [
-        "EART-0004",
-        "EART-0040",
-        "EART-0053",
-        "EART-0054",
-        "EART-0057",
-        "EART-0069"
+        "EART-0011",
+        "EART-0047",
+        "EART-0060",
+        "EART-0061",
+        "EART-0064",
+        "EART-0076"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010",
-        "EBND-0010",
-        "EBND-0016"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011",
+        "EBND-0011",
+        "EBND-0017"
       ],
       "evidence_pointers": [
         "certification/claims/current.yaml",
@@ -370,16 +370,16 @@
       "claim_tier_target": "tier_3_certified_release",
       "claim_title": "Retained RFC 7235, RFC 7617, and RFC 6750 rows remain current-boundary claims.",
       "evidence_artifact_ids": [
-        "EART-0004",
-        "EART-0046",
-        "EART-0054",
-        "EART-0059"
+        "EART-0011",
+        "EART-0053",
+        "EART-0061",
+        "EART-0066"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011"
       ],
       "evidence_pointers": [
         "certification/claims/current.yaml",
@@ -406,18 +406,18 @@
       "claim_tier_target": "tier_3_certified_release",
       "claim_title": "Operator surfaces closed by the operator-surface checkpoint remain current-boundary claims.",
       "evidence_artifact_ids": [
-        "EART-0004",
-        "EART-0048",
-        "EART-0054",
-        "EART-0062",
-        "EART-0063"
+        "EART-0011",
+        "EART-0055",
+        "EART-0061",
+        "EART-0069",
+        "EART-0070"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
+        "EBND-0003",
+        "EBND-0009",
         "EBND-0011",
-        "EBND-0011"
+        "EBND-0012",
+        "EBND-0012"
       ],
       "evidence_pointers": [
         "certification/claims/current.yaml",
@@ -444,18 +444,18 @@
       "claim_tier_target": "tier_3_certified_release",
       "claim_title": "Unified tigrbl CLI command and flag surface remains current-boundary scope.",
       "evidence_artifact_ids": [
-        "EART-0004",
-        "EART-0047",
+        "EART-0011",
         "EART-0054",
         "EART-0061",
-        "EART-0064"
+        "EART-0068",
+        "EART-0071"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
+        "EBND-0003",
+        "EBND-0009",
         "EBND-0011",
-        "EBND-0012"
+        "EBND-0012",
+        "EBND-0013"
       ],
       "evidence_pointers": [
         "certification/claims/current.yaml",
@@ -483,16 +483,16 @@
       "claim_tier_target": "tier_1_governed_nonrelease",
       "claim_title": "Active line 0.3.19.dev1 exists as governed next-target work only and is not a certified release.",
       "evidence_artifact_ids": [
-        "EART-0004",
-        "EART-0045",
-        "EART-0049",
-        "EART-0050"
+        "EART-0011",
+        "EART-0052",
+        "EART-0056",
+        "EART-0057"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
+        "EBND-0003",
         "EBND-0009",
-        "EBND-0009"
+        "EBND-0010",
+        "EBND-0010"
       ],
       "evidence_pointers": [
         "certification/claims/current.yaml",
@@ -518,16 +518,16 @@
       "claim_tier_target": "tier_3_evidenced_release",
       "claim_title": "Gate A through Gate E evidence exists for stable release 0.3.18.",
       "evidence_artifact_ids": [
-        "EART-0005",
-        "EART-0043",
-        "EART-0054",
-        "EART-0058"
+        "EART-0012",
+        "EART-0050",
+        "EART-0061",
+        "EART-0065"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011"
       ],
       "evidence_pointers": [
         "certification/claims/evidenced.yaml",
@@ -553,18 +553,18 @@
       "claim_tier_target": "tier_3_evidenced_release",
       "claim_title": "Release-grade claim rows are mapped to evidence artifacts.",
       "evidence_artifact_ids": [
-        "EART-0005",
-        "EART-0041",
-        "EART-0042",
-        "EART-0054",
-        "EART-0056"
+        "EART-0012",
+        "EART-0048",
+        "EART-0049",
+        "EART-0061",
+        "EART-0063"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011"
       ],
       "evidence_pointers": [
         "certification/claims/evidenced.yaml",
@@ -591,16 +591,16 @@
       "claim_tier_target": "tier_3_evidenced_release",
       "claim_title": "Frozen release 0.3.18 remains honestly describable as certifiably fully featured within the declared boundary.",
       "evidence_artifact_ids": [
-        "EART-0005",
-        "EART-0039",
-        "EART-0052",
-        "EART-0054"
+        "EART-0012",
+        "EART-0046",
+        "EART-0059",
+        "EART-0061"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011"
       ],
       "evidence_pointers": [
         "certification/claims/evidenced.yaml",
@@ -626,18 +626,18 @@
       "claim_tier_target": "tier_3_evidenced_release",
       "claim_title": "Frozen release 0.3.18 remains honestly describable as certifiably fully RFC/spec compliant within the declared boundary.",
       "evidence_artifact_ids": [
-        "EART-0005",
-        "EART-0039",
+        "EART-0012",
         "EART-0046",
-        "EART-0052",
-        "EART-0054"
+        "EART-0053",
+        "EART-0059",
+        "EART-0061"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0008",
-        "EBND-0010",
-        "EBND-0010"
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0009",
+        "EBND-0011",
+        "EBND-0011"
       ],
       "evidence_pointers": [
         "certification/claims/evidenced.yaml",
@@ -665,21 +665,21 @@
       "claim_title": "DataTypeSpec and StorageTypeRef define the active canonical semantic datatype center for the next target.",
       "evidence_artifact_ids": [
         "EART-0002",
-        "EART-0006",
-        "EART-0007",
-        "EART-0033",
-        "EART-0045",
-        "EART-0076",
-        "EART-0079"
+        "EART-0013",
+        "EART-0014",
+        "EART-0040",
+        "EART-0052",
+        "EART-0083",
+        "EART-0086"
       ],
       "evidence_bundle_ids": [
         "EBND-0001",
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0006",
-        "EBND-0008",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0007",
+        "EBND-0009",
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         ".github/workflows/next-target-datatypes.yml",
@@ -711,22 +711,22 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "ColumnSpec.datatype is the canonical datatype attachment point on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0045",
-        "EART-0067",
-        "EART-0068",
-        "EART-0071",
-        "EART-0078"
+        "EART-0013",
+        "EART-0014",
+        "EART-0052",
+        "EART-0074",
+        "EART-0075",
+        "EART-0078",
+        "EART-0085"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0016",
         "EBND-0015",
-        "EBND-0014",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -759,21 +759,21 @@
       "claim_title": "TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype contract on the active next-target line.",
       "evidence_artifact_ids": [
         "EART-0002",
-        "EART-0006",
-        "EART-0007",
-        "EART-0037",
-        "EART-0045",
-        "EART-0070",
-        "EART-0079"
+        "EART-0013",
+        "EART-0014",
+        "EART-0044",
+        "EART-0052",
+        "EART-0077",
+        "EART-0086"
       ],
       "evidence_bundle_ids": [
         "EBND-0001",
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0006",
-        "EBND-0008",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0007",
+        "EBND-0009",
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         ".github/workflows/next-target-datatypes.yml",
@@ -806,23 +806,23 @@
       "claim_title": "EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned lowering on the active next-target line.",
       "evidence_artifact_ids": [
         "EART-0002",
-        "EART-0006",
-        "EART-0007",
-        "EART-0034",
-        "EART-0035",
-        "EART-0045",
-        "EART-0072",
-        "EART-0079"
+        "EART-0013",
+        "EART-0014",
+        "EART-0041",
+        "EART-0042",
+        "EART-0052",
+        "EART-0079",
+        "EART-0086"
       ],
       "evidence_bundle_ids": [
         "EBND-0001",
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0006",
-        "EBND-0006",
-        "EBND-0008",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0007",
+        "EBND-0007",
+        "EBND-0009",
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         ".github/workflows/next-target-datatypes.yml",
@@ -856,21 +856,21 @@
       "claim_title": "ReflectedTypeMapper governs reverse mapping and reflection import behavior on the active next-target line.",
       "evidence_artifact_ids": [
         "EART-0002",
-        "EART-0006",
-        "EART-0007",
-        "EART-0036",
-        "EART-0045",
-        "EART-0074",
-        "EART-0079"
+        "EART-0013",
+        "EART-0014",
+        "EART-0043",
+        "EART-0052",
+        "EART-0081",
+        "EART-0086"
       ],
       "evidence_bundle_ids": [
         "EBND-0001",
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0006",
-        "EBND-0008",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0007",
+        "EBND-0009",
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         ".github/workflows/next-target-datatypes.yml",
@@ -903,19 +903,19 @@
       "claim_title": "Relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line.",
       "evidence_artifact_ids": [
         "EART-0001",
-        "EART-0006",
-        "EART-0007",
-        "EART-0045",
-        "EART-0073",
-        "EART-0079"
+        "EART-0013",
+        "EART-0014",
+        "EART-0052",
+        "EART-0080",
+        "EART-0086"
       ],
       "evidence_bundle_ids": [
         "EBND-0001",
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         ".github/workflows/evidence-lanes.yml",
@@ -945,18 +945,18 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "Table portability and interoperability rules are specified as governed next-target work on the active line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0045",
-        "EART-0077",
-        "EART-0081"
+        "EART-0013",
+        "EART-0014",
+        "EART-0052",
+        "EART-0084",
+        "EART-0088"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -986,21 +986,21 @@
       "claim_title": "Reflection-driven round-trip schema recovery is defined with best-effort and metadata-preserving modes on the active next-target line.",
       "evidence_artifact_ids": [
         "EART-0002",
-        "EART-0006",
-        "EART-0007",
-        "EART-0036",
-        "EART-0045",
-        "EART-0075",
-        "EART-0079"
+        "EART-0013",
+        "EART-0014",
+        "EART-0043",
+        "EART-0052",
+        "EART-0082",
+        "EART-0086"
       ],
       "evidence_bundle_ids": [
         "EBND-0001",
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0006",
-        "EBND-0008",
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0007",
+        "EBND-0009",
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         ".github/workflows/next-target-datatypes.yml",
@@ -1032,28 +1032,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `create` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0017",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0024",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-009"
@@ -1075,28 +1075,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `read` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0022",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0029",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-010"
@@ -1118,28 +1118,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `update` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0024",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0031",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-011"
@@ -1161,28 +1161,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `replace` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0023",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0030",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-012"
@@ -1204,28 +1204,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `merge` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0021",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0028",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-013"
@@ -1247,28 +1247,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `delete` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0018",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0025",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-014"
@@ -1290,28 +1290,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `list` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0020",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0027",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-015"
@@ -1333,28 +1333,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `clear` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0015",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0022",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-016"
@@ -1376,28 +1376,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `count` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0016",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0023",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-017"
@@ -1419,28 +1419,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `exists` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0019",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0026",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-018"
@@ -1462,28 +1462,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `bulk_create` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0010",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0017",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-019"
@@ -1505,28 +1505,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `bulk_update` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
+        "EART-0013",
         "EART-0014",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0021",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-020"
@@ -1548,28 +1548,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `bulk_replace` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
         "EART-0013",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0014",
+        "EART-0020",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-021"
@@ -1591,28 +1591,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `bulk_merge` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0012",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0019",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-022"
@@ -1634,28 +1634,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `bulk_delete` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0011",
-        "EART-0066",
-        "EART-0084",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0018",
+        "EART-0073",
+        "EART-0091"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0004",
-        "EBND-0013",
-        "EBND-0020",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0005",
+        "EBND-0014",
+        "EBND-0021"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_oltp",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_oltp"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-023"
@@ -1677,28 +1677,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `aggregate` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0008",
-        "EART-0066",
-        "EART-0083",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0015",
+        "EART-0073",
+        "EART-0090"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
         "EBND-0003",
-        "EBND-0013",
-        "EBND-0019",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0004",
+        "EBND-0014",
+        "EBND-0020"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_olap",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_olap"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-024"
@@ -1720,28 +1720,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `group_by` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0009",
-        "EART-0066",
-        "EART-0083",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0016",
+        "EART-0073",
+        "EART-0090"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
         "EBND-0003",
-        "EBND-0013",
-        "EBND-0019",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0004",
+        "EBND-0014",
+        "EBND-0020"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_olap",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_olap"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-025"
@@ -1763,28 +1763,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `publish` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0028",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0035",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-026"
@@ -1806,28 +1806,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `subscribe` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0030",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0037",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-027"
@@ -1849,28 +1849,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `tail` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0031",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0038",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-028"
@@ -1892,28 +1892,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `upload` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0032",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0039",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-029"
@@ -1935,28 +1935,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `download` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0027",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0034",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-030"
@@ -1978,28 +1978,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `append_chunk` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0025",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0032",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-031"
@@ -2021,28 +2021,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `send_datagram` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0029",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0036",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-032"
@@ -2064,28 +2064,28 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `checkpoint` op is governed as a distinct executable claim on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
         "EART-0007",
-        "EART-0026",
-        "EART-0066",
-        "EART-0085",
-        "EART-0096"
+        "EART-0013",
+        "EART-0014",
+        "EART-0033",
+        "EART-0073",
+        "EART-0092"
       ],
       "evidence_bundle_ids": [
         "EBND-0002",
-        "EBND-0002",
-        "EBND-0005",
-        "EBND-0013",
-        "EBND-0021",
-        "EBND-0024"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0006",
+        "EBND-0014",
+        "EBND-0022"
       ],
       "evidence_pointers": [
+        ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
         "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "pkgs/core/tigrbl_ops_realtime",
-        "reports/current_state/2026-04-08-phase3-feature-module-closure.md"
+        "pkgs/core/tigrbl_ops_realtime"
       ],
       "mapped_feature_ids": [
         "NEXT-FEAT-033"
@@ -2107,16 +2107,16 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "The canonical `custom` op remains an explicit governed extension point on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0080",
-        "EART-0082"
+        "EART-0013",
+        "EART-0014",
+        "EART-0087",
+        "EART-0089"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0017",
-        "EBND-0017"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0018",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2144,22 +2144,22 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "`tigrcorn` remains an explicitly supported server runner on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0045",
-        "EART-0061",
-        "EART-0064",
-        "EART-0091",
+        "EART-0013",
+        "EART-0014",
+        "EART-0052",
+        "EART-0068",
+        "EART-0071",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0011",
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
         "EBND-0012",
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0013",
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2190,22 +2190,22 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "`uvicorn` remains an explicitly supported server runner on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0045",
-        "EART-0061",
-        "EART-0064",
-        "EART-0091",
+        "EART-0013",
+        "EART-0014",
+        "EART-0052",
+        "EART-0068",
+        "EART-0071",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0011",
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
         "EBND-0012",
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0013",
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2236,22 +2236,22 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "`hypercorn` remains an explicitly supported server runner on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0045",
-        "EART-0061",
-        "EART-0064",
-        "EART-0091",
+        "EART-0013",
+        "EART-0014",
+        "EART-0052",
+        "EART-0068",
+        "EART-0071",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0011",
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
         "EBND-0012",
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0013",
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2282,22 +2282,22 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "`gunicorn` remains an explicitly supported server runner on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0045",
-        "EART-0061",
-        "EART-0064",
-        "EART-0091",
+        "EART-0013",
+        "EART-0014",
+        "EART-0052",
+        "EART-0068",
+        "EART-0071",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0011",
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
         "EBND-0012",
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0013",
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2328,16 +2328,16 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "`daphne` remains tracked only as an out-of-boundary server/runtime row on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0044",
-        "EART-0045"
+        "EART-0013",
+        "EART-0014",
+        "EART-0051",
+        "EART-0052"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0008"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0009"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2365,16 +2365,16 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "`twisted` remains tracked only as an out-of-boundary server/runtime row on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0044",
-        "EART-0045"
+        "EART-0013",
+        "EART-0014",
+        "EART-0051",
+        "EART-0052"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0008"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0009"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2402,16 +2402,16 @@
       "claim_tier_target": "tier_2_checkpoint_target",
       "claim_title": "`granian` remains tracked only as an out-of-boundary server/runtime row on the active next-target line.",
       "evidence_artifact_ids": [
-        "EART-0006",
-        "EART-0007",
-        "EART-0044",
-        "EART-0045"
+        "EART-0013",
+        "EART-0014",
+        "EART-0051",
+        "EART-0052"
       ],
       "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0002",
-        "EBND-0008",
-        "EBND-0008"
+        "EBND-0003",
+        "EBND-0003",
+        "EBND-0009",
+        "EBND-0009"
       ],
       "evidence_pointers": [
         "certification/claims/target.yaml",
@@ -2442,638 +2442,638 @@
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "certification/claims/blocked.yaml",
+      "artifact_pointer": ".ssot/reports/certification_state/2026-04-09-phase4-native-parity.md",
       "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0003"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "certification/claims/current.yaml",
+      "artifact_pointer": ".ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md",
       "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0004"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "certification/claims/evidenced.yaml",
+      "artifact_pointer": ".ssot/reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md",
       "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0005"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "certification/claims/target.yaml",
+      "artifact_pointer": ".ssot/reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
       "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0006"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "certification/targets/next_target.yaml",
+      "artifact_pointer": ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
       "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0007"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs",
-      "bundle_id": "EBND-0003",
+      "artifact_pointer": ".ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md",
+      "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0008"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs",
-      "bundle_id": "EBND-0003",
+      "artifact_pointer": ".ssot/reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md",
+      "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0009"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "certification/claims/blocked.yaml",
+      "bundle_id": "EBND-0003",
       "evidence_artifact_id": "EART-0010"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "certification/claims/current.yaml",
+      "bundle_id": "EBND-0003",
       "evidence_artifact_id": "EART-0011"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "certification/claims/evidenced.yaml",
+      "bundle_id": "EBND-0003",
       "evidence_artifact_id": "EART-0012"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "certification/claims/target.yaml",
+      "bundle_id": "EBND-0003",
       "evidence_artifact_id": "EART-0013"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "certification/targets/next_target.yaml",
+      "bundle_id": "EBND-0003",
       "evidence_artifact_id": "EART-0014"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs",
       "bundle_id": "EBND-0004",
       "evidence_artifact_id": "EART-0015"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs",
       "bundle_id": "EBND-0004",
       "evidence_artifact_id": "EART-0016"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0017"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0018"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0019"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0020"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0021"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0022"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0023"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs",
-      "bundle_id": "EBND-0004",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs",
+      "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0024"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0025"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0026"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0027"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0028"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0029"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0030"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0031"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs",
-      "bundle_id": "EBND-0005",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs",
+      "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0032"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0033"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/bridge.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0034"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/engine_registry.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0035"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0036"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/registry.rs",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0037"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
-      "bundle_id": "EBND-0007",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs",
+      "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0038"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/CURRENT_STATE.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs",
+      "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0039"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/CURRENT_TARGET.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/",
+      "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0040"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/EVIDENCE_MODEL.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/bridge.rs",
+      "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0041"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/EVIDENCE_REGISTRY.json",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/engine_registry.rs",
+      "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0042"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/GATE_MODEL.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
+      "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0043"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/IMPLEMENTATION_MAP.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/registry.rs",
+      "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0044"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/NEXT_TARGETS.md",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "bundle_id": "EBND-0008",
       "evidence_artifact_id": "EART-0045"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "docs/conformance/CURRENT_STATE.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0046"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/audit/2026/p8-cli/README.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "docs/conformance/CURRENT_TARGET.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0047"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/audit/2026/phase7-operator-surface/README.md",
-      "bundle_id": "EBND-0008",
+      "artifact_pointer": "docs/conformance/EVIDENCE_MODEL.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0048"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/dev/0.3.19.dev1/",
+      "artifact_pointer": "docs/conformance/EVIDENCE_REGISTRY.json",
       "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0049"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md",
+      "artifact_pointer": "docs/conformance/GATE_MODEL.md",
       "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0050"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/IMPLEMENTATION_MAP.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0051"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/CLAIMS.md",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/NEXT_TARGETS.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0052"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0053"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/audit/2026/p8-cli/README.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0054"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/audit/2026/phase7-operator-surface/README.md",
+      "bundle_id": "EBND-0009",
       "evidence_artifact_id": "EART-0055"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json",
+      "artifact_pointer": "docs/conformance/dev/0.3.19.dev1/",
       "bundle_id": "EBND-0010",
       "evidence_artifact_id": "EART-0056"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json",
+      "artifact_pointer": "docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md",
       "bundle_id": "EBND-0010",
       "evidence_artifact_id": "EART-0057"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/",
+      "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0058"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/CLAIMS.md",
+      "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0059"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md",
-      "bundle_id": "EBND-0010",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md",
+      "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0060"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/developer/CLI_REFERENCE.md",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md",
       "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0061"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/developer/operator/",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/certification-bundle.json",
       "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0062"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "docs/developer/operator/README.md",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/evidence-manifest.json",
       "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0063"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl/tigrbl/cli.py",
-      "bundle_id": "EBND-0012",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/artifacts/spec-artifacts-manifest.json",
+      "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0064"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py",
-      "bundle_id": "EBND-0012",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/",
+      "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0065"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-      "bundle_id": "EBND-0013",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/gate-c-conformance-security.md",
+      "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0066"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
-      "bundle_id": "EBND-0015",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md",
+      "bundle_id": "EBND-0011",
       "evidence_artifact_id": "EART-0067"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_base/tigrbl_base/_base/_column_base.py",
-      "bundle_id": "EBND-0014",
+      "artifact_pointer": "docs/developer/CLI_REFERENCE.md",
+      "bundle_id": "EBND-0012",
       "evidence_artifact_id": "EART-0068"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py",
-      "bundle_id": "EBND-0016",
+      "artifact_pointer": "docs/developer/operator/",
+      "bundle_id": "EBND-0012",
       "evidence_artifact_id": "EART-0069"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
-      "bundle_id": "EBND-0018",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "docs/developer/operator/README.md",
+      "bundle_id": "EBND-0012",
       "evidence_artifact_id": "EART-0070"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
-      "bundle_id": "EBND-0018",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl/tigrbl/cli.py",
+      "bundle_id": "EBND-0013",
       "evidence_artifact_id": "EART-0071"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
-      "bundle_id": "EBND-0018",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py",
+      "bundle_id": "EBND-0013",
       "evidence_artifact_id": "EART-0072"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
-      "bundle_id": "EBND-0018",
+      "artifact_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
+      "bundle_id": "EBND-0014",
       "evidence_artifact_id": "EART-0073"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
-      "bundle_id": "EBND-0018",
+      "artifact_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
+      "bundle_id": "EBND-0016",
       "evidence_artifact_id": "EART-0074"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
-      "bundle_id": "EBND-0018",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_base/tigrbl_base/_base/_column_base.py",
+      "bundle_id": "EBND-0015",
       "evidence_artifact_id": "EART-0075"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
-      "bundle_id": "EBND-0018",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py",
+      "bundle_id": "EBND-0017",
       "evidence_artifact_id": "EART-0076"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
-      "bundle_id": "EBND-0018",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
+      "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0077"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/column_spec.py",
-      "bundle_id": "EBND-0017",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
+      "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0078"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py",
-      "bundle_id": "EBND-0017",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+      "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0079"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py",
-      "bundle_id": "EBND-0017",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
+      "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0080"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py",
-      "bundle_id": "EBND-0017",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
+      "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0081"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/config/constants.py",
-      "bundle_id": "EBND-0017",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
+      "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0082"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_ops_olap",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
       "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0083"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_ops_oltp",
-      "bundle_id": "EBND-0020",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
+      "bundle_id": "EBND-0019",
       "evidence_artifact_id": "EART-0084"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "pkgs/core/tigrbl_ops_realtime",
-      "bundle_id": "EBND-0021",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/column_spec.py",
+      "bundle_id": "EBND-0018",
       "evidence_artifact_id": "EART-0085"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
-      "bundle_id": "EBND-0022",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py",
+      "bundle_id": "EBND-0018",
       "evidence_artifact_id": "EART-0086"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
-      "bundle_id": "EBND-0022",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py",
+      "bundle_id": "EBND-0018",
       "evidence_artifact_id": "EART-0087"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
-      "bundle_id": "EBND-0022",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py",
+      "bundle_id": "EBND-0018",
       "evidence_artifact_id": "EART-0088"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
-      "bundle_id": "EBND-0022",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_core/tigrbl_core/config/constants.py",
+      "bundle_id": "EBND-0018",
       "evidence_artifact_id": "EART-0089"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
-      "bundle_id": "EBND-0022",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_ops_olap",
+      "bundle_id": "EBND-0020",
       "evidence_artifact_id": "EART-0090"
     },
     {
-      "artifact_kind": "test_case",
-      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
-      "bundle_id": "EBND-0022",
+      "artifact_kind": "artifact",
+      "artifact_pointer": "pkgs/core/tigrbl_ops_oltp",
+      "bundle_id": "EBND-0021",
       "evidence_artifact_id": "EART-0091"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "reports/certification_state/2026-04-09-phase4-native-parity.md",
-      "bundle_id": "EBND-0023",
+      "artifact_pointer": "pkgs/core/tigrbl_ops_realtime",
+      "bundle_id": "EBND-0022",
       "evidence_artifact_id": "EART-0092"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
       "bundle_id": "EBND-0023",
       "evidence_artifact_id": "EART-0093"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "bundle_id": "EBND-0023",
       "evidence_artifact_id": "EART-0094"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "bundle_id": "EBND-0023",
       "evidence_artifact_id": "EART-0095"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "reports/current_state/2026-04-08-phase3-feature-module-closure.md",
-      "bundle_id": "EBND-0024",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "bundle_id": "EBND-0023",
       "evidence_artifact_id": "EART-0096"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md",
-      "bundle_id": "EBND-0024",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+      "bundle_id": "EBND-0023",
       "evidence_artifact_id": "EART-0097"
     },
     {
-      "artifact_kind": "artifact",
-      "artifact_pointer": "reports/current_state/2026-04-09-phase7-claims-evidence-promotion.md",
-      "bundle_id": "EBND-0024",
+      "artifact_kind": "test_case",
+      "artifact_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
+      "bundle_id": "EBND-0023",
       "evidence_artifact_id": "EART-0098"
     },
     {
       "artifact_kind": "test_case",
       "artifact_pointer": "tools/ci/tests/test_certification_tree.py",
-      "bundle_id": "EBND-0025",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0099"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_evidence_registry.py",
-      "bundle_id": "EBND-0025",
+      "artifact_pointer": "tools/ci/tests/test_claim_lifecycle.py",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0100"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_gate_e_promotion.py",
-      "bundle_id": "EBND-0025",
+      "artifact_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0101"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_http_auth_challenges.py",
-      "bundle_id": "EBND-0025",
+      "artifact_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0102"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
-      "bundle_id": "EBND-0025",
+      "artifact_pointer": "tools/ci/tests/test_http_auth_challenges.py",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0103"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_rust_parity.py",
-      "bundle_id": "EBND-0025",
+      "artifact_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0104"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_tigrcorn_operator_surface.py",
-      "bundle_id": "EBND-0025",
+      "artifact_pointer": "tools/ci/tests/test_rust_parity.py",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0105"
     },
     {
       "artifact_kind": "test_case",
       "artifact_pointer": "tools/ci/tests/test_tigrcorn_hardening.py",
-      "bundle_id": "EBND-0025",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0106"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_claim_lifecycle.py",
-      "bundle_id": "EBND-0025",
+      "artifact_pointer": "tools/ci/tests/test_tigrcorn_operator_surface.py",
+      "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0107"
     },
     {
       "artifact_kind": "artifact",
       "artifact_pointer": "tools/conformance/installed_package_smoke.py",
-      "bundle_id": "EBND-0026",
+      "bundle_id": "EBND-0025",
       "evidence_artifact_id": "EART-0108"
     }
   ],
@@ -3083,114 +3083,110 @@
       "evidence_bundle_id": "EBND-0001"
     },
     {
-      "bundle_root": "certification",
+      "bundle_root": ".ssot",
       "evidence_bundle_id": "EBND-0002"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_ops_olap",
+      "bundle_root": "certification",
       "evidence_bundle_id": "EBND-0003"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_ops_oltp",
+      "bundle_root": "crates/tigrbl_rs_ops_olap",
       "evidence_bundle_id": "EBND-0004"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_ops_realtime",
+      "bundle_root": "crates/tigrbl_rs_ops_oltp",
       "evidence_bundle_id": "EBND-0005"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_spec",
+      "bundle_root": "crates/tigrbl_rs_ops_realtime",
       "evidence_bundle_id": "EBND-0006"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_spec/tests",
+      "bundle_root": "crates/tigrbl_rs_spec",
       "evidence_bundle_id": "EBND-0007"
     },
     {
-      "bundle_root": "docs/conformance",
+      "bundle_root": "crates/tigrbl_rs_spec/tests",
       "evidence_bundle_id": "EBND-0008"
     },
     {
-      "bundle_root": "docs/conformance/dev/0.3.19.dev1",
+      "bundle_root": "docs/conformance",
       "evidence_bundle_id": "EBND-0009"
     },
     {
-      "bundle_root": "docs/conformance/releases/0.3.18",
+      "bundle_root": "docs/conformance/dev/0.3.19.dev1",
       "evidence_bundle_id": "EBND-0010"
     },
     {
-      "bundle_root": "docs/developer",
+      "bundle_root": "docs/conformance/releases/0.3.18",
       "evidence_bundle_id": "EBND-0011"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl",
+      "bundle_root": "docs/developer",
       "evidence_bundle_id": "EBND-0012"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_atoms/tests",
+      "bundle_root": "pkgs/core/tigrbl",
       "evidence_bundle_id": "EBND-0013"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_base",
+      "bundle_root": "pkgs/core/tigrbl_atoms/tests",
       "evidence_bundle_id": "EBND-0014"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_base/tests",
+      "bundle_root": "pkgs/core/tigrbl_base",
       "evidence_bundle_id": "EBND-0015"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_concrete",
+      "bundle_root": "pkgs/core/tigrbl_base/tests",
       "evidence_bundle_id": "EBND-0016"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_core",
+      "bundle_root": "pkgs/core/tigrbl_concrete",
       "evidence_bundle_id": "EBND-0017"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_core/tests",
+      "bundle_root": "pkgs/core/tigrbl_core",
       "evidence_bundle_id": "EBND-0018"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_ops_olap",
+      "bundle_root": "pkgs/core/tigrbl_core/tests",
       "evidence_bundle_id": "EBND-0019"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_ops_oltp",
+      "bundle_root": "pkgs/core/tigrbl_ops_olap",
       "evidence_bundle_id": "EBND-0020"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_ops_realtime",
+      "bundle_root": "pkgs/core/tigrbl_ops_oltp",
       "evidence_bundle_id": "EBND-0021"
     },
     {
-      "bundle_root": "pkgs/core/tigrbl_tests/tests",
+      "bundle_root": "pkgs/core/tigrbl_ops_realtime",
       "evidence_bundle_id": "EBND-0022"
     },
     {
-      "bundle_root": "reports/certification_state",
+      "bundle_root": "pkgs/core/tigrbl_tests/tests",
       "evidence_bundle_id": "EBND-0023"
     },
     {
-      "bundle_root": "reports/current_state",
+      "bundle_root": "tools/ci/tests",
       "evidence_bundle_id": "EBND-0024"
     },
     {
-      "bundle_root": "tools/ci/tests",
-      "evidence_bundle_id": "EBND-0025"
-    },
-    {
       "bundle_root": "tools/conformance",
-      "evidence_bundle_id": "EBND-0026"
+      "evidence_bundle_id": "EBND-0025"
     }
   ],
   "features": [
     {
       "evidence_artifact_ids": [
-        "EART-0076",
+        "EART-0083",
         "EART-0002"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
+        "EBND-0019",
         "EBND-0001"
       ],
       "evidence_pointers": [
@@ -3221,12 +3217,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0071",
-        "EART-0067"
+        "EART-0078",
+        "EART-0074"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
-        "EBND-0015"
+        "EBND-0019",
+        "EBND-0016"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
@@ -3258,12 +3254,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0070",
-        "EART-0038"
+        "EART-0077",
+        "EART-0045"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
-        "EBND-0007"
+        "EBND-0019",
+        "EBND-0008"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
@@ -3295,12 +3291,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0072",
-        "EART-0038"
+        "EART-0079",
+        "EART-0045"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
-        "EBND-0007"
+        "EBND-0019",
+        "EBND-0008"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
@@ -3332,12 +3328,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0074",
-        "EART-0075"
+        "EART-0081",
+        "EART-0082"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
-        "EBND-0018"
+        "EBND-0019",
+        "EBND-0019"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
@@ -3369,11 +3365,11 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0073",
+        "EART-0080",
         "EART-0001"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
+        "EBND-0019",
         "EBND-0001"
       ],
       "evidence_pointers": [
@@ -3404,12 +3400,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0077",
-        "EART-0081"
+        "EART-0084",
+        "EART-0088"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
-        "EBND-0017"
+        "EBND-0019",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
@@ -3439,12 +3435,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0075",
-        "EART-0074"
+        "EART-0082",
+        "EART-0081"
       ],
       "evidence_bundle_ids": [
-        "EBND-0018",
-        "EBND-0018"
+        "EBND-0019",
+        "EBND-0019"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
@@ -3476,12 +3472,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0017"
+        "EART-0073",
+        "EART-0024"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3511,12 +3507,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0022"
+        "EART-0073",
+        "EART-0029"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3546,12 +3542,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0024"
+        "EART-0073",
+        "EART-0031"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3581,12 +3577,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0023"
+        "EART-0073",
+        "EART-0030"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3616,12 +3612,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0021"
+        "EART-0073",
+        "EART-0028"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3651,12 +3647,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0018"
+        "EART-0073",
+        "EART-0025"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3686,12 +3682,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0020"
+        "EART-0073",
+        "EART-0027"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3721,12 +3717,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0015"
+        "EART-0073",
+        "EART-0022"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3756,12 +3752,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0016"
+        "EART-0073",
+        "EART-0023"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3791,12 +3787,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0019"
+        "EART-0073",
+        "EART-0026"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3826,12 +3822,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0010"
+        "EART-0073",
+        "EART-0017"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3861,12 +3857,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0014"
+        "EART-0073",
+        "EART-0021"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3896,12 +3892,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0013"
+        "EART-0073",
+        "EART-0020"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3931,12 +3927,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0012"
+        "EART-0073",
+        "EART-0019"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -3966,12 +3962,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0011"
+        "EART-0073",
+        "EART-0018"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0004"
+        "EBND-0014",
+        "EBND-0005"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4001,12 +3997,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0008"
+        "EART-0073",
+        "EART-0015"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0003"
+        "EBND-0014",
+        "EBND-0004"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4036,12 +4032,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0009"
+        "EART-0073",
+        "EART-0016"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0003"
+        "EBND-0014",
+        "EBND-0004"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4071,12 +4067,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0028"
+        "EART-0073",
+        "EART-0035"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4106,12 +4102,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0030"
+        "EART-0073",
+        "EART-0037"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4141,12 +4137,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0031"
+        "EART-0073",
+        "EART-0038"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4176,12 +4172,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0032"
+        "EART-0073",
+        "EART-0039"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4211,12 +4207,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0027"
+        "EART-0073",
+        "EART-0034"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4246,12 +4242,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0025"
+        "EART-0073",
+        "EART-0032"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4281,12 +4277,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0029"
+        "EART-0073",
+        "EART-0036"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4316,12 +4312,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0066",
-        "EART-0026"
+        "EART-0073",
+        "EART-0033"
       ],
       "evidence_bundle_ids": [
-        "EBND-0013",
-        "EBND-0005"
+        "EBND-0014",
+        "EBND-0006"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
@@ -4351,12 +4347,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0080",
-        "EART-0082"
+        "EART-0087",
+        "EART-0089"
       ],
       "evidence_bundle_ids": [
-        "EBND-0017",
-        "EBND-0017"
+        "EBND-0018",
+        "EBND-0018"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py",
@@ -4382,12 +4378,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0091",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
@@ -4409,7 +4405,7 @@
       "mapped_claim_status": "implemented",
       "mapped_claim_tier_target": "tier_2_checkpoint_target",
       "test_case_ids": [
-        "TCASE-0017"
+        "TCASE-0014"
       ],
       "test_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
@@ -4417,12 +4413,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0091",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
@@ -4444,7 +4440,7 @@
       "mapped_claim_status": "implemented",
       "mapped_claim_tier_target": "tier_2_checkpoint_target",
       "test_case_ids": [
-        "TCASE-0017"
+        "TCASE-0014"
       ],
       "test_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
@@ -4452,12 +4448,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0091",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
@@ -4479,7 +4475,7 @@
       "mapped_claim_status": "implemented",
       "mapped_claim_tier_target": "tier_2_checkpoint_target",
       "test_case_ids": [
-        "TCASE-0017"
+        "TCASE-0014"
       ],
       "test_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
@@ -4487,12 +4483,12 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0091",
+        "EART-0095",
         "EART-0108"
       ],
       "evidence_bundle_ids": [
-        "EBND-0022",
-        "EBND-0026"
+        "EBND-0023",
+        "EBND-0025"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
@@ -4514,7 +4510,7 @@
       "mapped_claim_status": "implemented",
       "mapped_claim_tier_target": "tier_2_checkpoint_target",
       "test_case_ids": [
-        "TCASE-0017"
+        "TCASE-0014"
       ],
       "test_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
@@ -4522,14 +4518,14 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0091",
-        "EART-0045",
-        "EART-0044"
+        "EART-0095",
+        "EART-0052",
+        "EART-0051"
       ],
       "evidence_bundle_ids": [
-        "EBND-0022",
-        "EBND-0008",
-        "EBND-0008"
+        "EBND-0023",
+        "EBND-0009",
+        "EBND-0009"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
@@ -4552,7 +4548,7 @@
       "mapped_claim_status": "mapped",
       "mapped_claim_tier_target": "tier_2_checkpoint_target",
       "test_case_ids": [
-        "TCASE-0017"
+        "TCASE-0014"
       ],
       "test_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
@@ -4560,14 +4556,14 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0091",
-        "EART-0045",
-        "EART-0044"
+        "EART-0095",
+        "EART-0052",
+        "EART-0051"
       ],
       "evidence_bundle_ids": [
-        "EBND-0022",
-        "EBND-0008",
-        "EBND-0008"
+        "EBND-0023",
+        "EBND-0009",
+        "EBND-0009"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
@@ -4590,7 +4586,7 @@
       "mapped_claim_status": "mapped",
       "mapped_claim_tier_target": "tier_2_checkpoint_target",
       "test_case_ids": [
-        "TCASE-0017"
+        "TCASE-0014"
       ],
       "test_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
@@ -4598,14 +4594,14 @@
     },
     {
       "evidence_artifact_ids": [
-        "EART-0091",
-        "EART-0045",
-        "EART-0044"
+        "EART-0095",
+        "EART-0052",
+        "EART-0051"
       ],
       "evidence_bundle_ids": [
-        "EBND-0022",
-        "EBND-0008",
-        "EBND-0008"
+        "EBND-0023",
+        "EBND-0009",
+        "EBND-0009"
       ],
       "evidence_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
@@ -4628,7 +4624,7 @@
       "mapped_claim_status": "mapped",
       "mapped_claim_tier_target": "tier_2_checkpoint_target",
       "test_case_ids": [
-        "TCASE-0017"
+        "TCASE-0014"
       ],
       "test_pointers": [
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py"
@@ -4682,192 +4678,192 @@
   "schema_version": 1,
   "test_cases": [
     {
-      "evidence_artifact_id": "EART-0038",
-      "evidence_bundle_id": "EBND-0007",
+      "evidence_artifact_id": "EART-0045",
+      "evidence_bundle_id": "EBND-0008",
       "test_case_id": "TCASE-0001",
       "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "test_set_id": "TSET-0001"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "test_case_id": "TCASE-0002",
       "test_case_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "test_set_id": "TSET-0002"
     },
     {
-      "evidence_artifact_id": "EART-0067",
-      "evidence_bundle_id": "EBND-0015",
+      "evidence_artifact_id": "EART-0074",
+      "evidence_bundle_id": "EBND-0016",
       "test_case_id": "TCASE-0003",
       "test_case_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
       "test_set_id": "TSET-0003"
     },
     {
-      "evidence_artifact_id": "EART-0070",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0077",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0004",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0071",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0078",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0005",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0072",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0079",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0006",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0073",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0080",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0007",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0074",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0081",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0008",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0075",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0082",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0009",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0076",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0083",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0010",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0077",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0084",
+      "evidence_bundle_id": "EBND-0019",
       "test_case_id": "TCASE-0011",
       "test_case_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
       "test_set_id": "TSET-0004"
     },
     {
-      "evidence_artifact_id": "EART-0086",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0093",
+      "evidence_bundle_id": "EBND-0023",
       "test_case_id": "TCASE-0012",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
       "test_set_id": "TSET-0005"
     },
     {
-      "evidence_artifact_id": "EART-0087",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0094",
+      "evidence_bundle_id": "EBND-0023",
       "test_case_id": "TCASE-0013",
-      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
-      "test_set_id": "TSET-0006"
-    },
-    {
-      "evidence_artifact_id": "EART-0088",
-      "evidence_bundle_id": "EBND-0022",
-      "test_case_id": "TCASE-0014",
-      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
-      "test_set_id": "TSET-0006"
-    },
-    {
-      "evidence_artifact_id": "EART-0089",
-      "evidence_bundle_id": "EBND-0022",
-      "test_case_id": "TCASE-0015",
-      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
-      "test_set_id": "TSET-0006"
-    },
-    {
-      "evidence_artifact_id": "EART-0090",
-      "evidence_bundle_id": "EBND-0022",
-      "test_case_id": "TCASE-0016",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "test_set_id": "TSET-0006"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
-      "test_case_id": "TCASE-0017",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_set_id": "TSET-0006"
     },
     {
+      "evidence_artifact_id": "EART-0096",
+      "evidence_bundle_id": "EBND-0023",
+      "test_case_id": "TCASE-0015",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
+      "evidence_artifact_id": "EART-0097",
+      "evidence_bundle_id": "EBND-0023",
+      "test_case_id": "TCASE-0016",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
+      "evidence_artifact_id": "EART-0098",
+      "evidence_bundle_id": "EBND-0023",
+      "test_case_id": "TCASE-0017",
+      "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
+      "test_set_id": "TSET-0006"
+    },
+    {
       "evidence_artifact_id": "EART-0099",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0018",
       "test_case_pointer": "tools/ci/tests/test_certification_tree.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0100",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0019",
-      "test_case_pointer": "tools/ci/tests/test_evidence_registry.py",
+      "test_case_pointer": "tools/ci/tests/test_claim_lifecycle.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0101",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0020",
-      "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
+      "test_case_pointer": "tools/ci/tests/test_evidence_registry.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0102",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0021",
-      "test_case_pointer": "tools/ci/tests/test_http_auth_challenges.py",
+      "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0103",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0022",
-      "test_case_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
+      "test_case_pointer": "tools/ci/tests/test_http_auth_challenges.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0104",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0023",
-      "test_case_pointer": "tools/ci/tests/test_rust_parity.py",
+      "test_case_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0105",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0024",
-      "test_case_pointer": "tools/ci/tests/test_tigrcorn_operator_surface.py",
+      "test_case_pointer": "tools/ci/tests/test_rust_parity.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0106",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0025",
       "test_case_pointer": "tools/ci/tests/test_tigrcorn_hardening.py",
       "test_set_id": "TSET-0007"
     },
     {
       "evidence_artifact_id": "EART-0107",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0026",
-      "test_case_pointer": "tools/ci/tests/test_claim_lifecycle.py",
+      "test_case_pointer": "tools/ci/tests/test_tigrcorn_operator_surface.py",
       "test_set_id": "TSET-0007"
     }
   ],
   "test_registry": [
     {
       "evidence_artifact_id": "EART-0099",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
       "mapped_claim_id": "BLK-001",
       "mapped_claim_lifecycle": "recertify_required",
@@ -4881,7 +4877,7 @@
     },
     {
       "evidence_artifact_id": "EART-0099",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
       "mapped_claim_id": "BLK-002",
       "mapped_claim_lifecycle": "recertify_required",
@@ -4894,8 +4890,8 @@
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0073",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0080",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
       "mapped_claim_id": "BLK-003",
       "mapped_claim_lifecycle": "recertify_required",
@@ -4909,7 +4905,7 @@
     },
     {
       "evidence_artifact_id": "EART-0099",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
       "mapped_claim_id": "BLK-003",
       "mapped_claim_lifecycle": "recertify_required",
@@ -4922,28 +4918,28 @@
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0104",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0105",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_rust_parity.py",
       "mapped_claim_id": "BLK-004",
       "mapped_claim_lifecycle": "recertify_required",
       "mapped_claim_state": "blocked",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0023",
+      "test_case_id": "TCASE-0024",
       "test_case_pointer": "tools/ci/tests/test_rust_parity.py",
       "test_registry_row_id": "TREG-0005",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0105",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0107",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_tigrcorn_operator_surface.py",
       "mapped_claim_id": "BLK-005",
       "mapped_claim_lifecycle": "recertify_required",
       "mapped_claim_state": "blocked",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0024",
+      "test_case_id": "TCASE-0026",
       "test_case_pointer": "tools/ci/tests/test_tigrcorn_operator_surface.py",
       "test_registry_row_id": "TREG-0006",
       "test_set_id": "TSET-0007",
@@ -4951,7 +4947,7 @@
     },
     {
       "evidence_artifact_id": "EART-0106",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_tigrcorn_hardening.py",
       "mapped_claim_id": "BLK-006",
       "mapped_claim_lifecycle": "recertify_required",
@@ -4964,64 +4960,64 @@
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0107",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0100",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_claim_lifecycle.py",
       "mapped_claim_id": "BLK-007",
       "mapped_claim_lifecycle": "recertify_required",
       "mapped_claim_state": "blocked",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0026",
+      "test_case_id": "TCASE-0019",
       "test_case_pointer": "tools/ci/tests/test_claim_lifecycle.py",
       "test_registry_row_id": "TREG-0008",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0101",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0102",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_gate_e_promotion.py",
       "mapped_claim_id": "CUR-001",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0020",
+      "test_case_id": "TCASE-0021",
       "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
       "test_registry_row_id": "TREG-0009",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0088",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0098",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "mapped_claim_id": "CUR-002",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0014",
+      "test_case_id": "TCASE-0017",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "test_registry_row_id": "TREG-0010",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0087",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0096",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
       "mapped_claim_id": "CUR-003",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0013",
+      "test_case_id": "TCASE-0015",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
       "test_registry_row_id": "TREG-0011",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0086",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0093",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/security/test_schemes.py",
       "mapped_claim_id": "CUR-004",
       "mapped_claim_lifecycle": "certified",
@@ -5034,134 +5030,134 @@
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/security"
     },
     {
-      "evidence_artifact_id": "EART-0102",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0103",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_http_auth_challenges.py",
       "mapped_claim_id": "CUR-004",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0021",
+      "test_case_id": "TCASE-0022",
       "test_case_pointer": "tools/ci/tests/test_http_auth_challenges.py",
       "test_registry_row_id": "TREG-0013",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0089",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0097",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "mapped_claim_id": "CUR-005",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0015",
+      "test_case_id": "TCASE-0016",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py",
       "test_registry_row_id": "TREG-0014",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0090",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0094",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "mapped_claim_id": "CUR-006",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0016",
+      "test_case_id": "TCASE-0013",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py",
       "test_registry_row_id": "TREG-0015",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "CUR-006",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0016",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0103",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0104",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
       "mapped_claim_id": "CUR-007",
       "mapped_claim_lifecycle": "evidenced",
       "mapped_claim_state": "current",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0022",
+      "test_case_id": "TCASE-0023",
       "test_case_pointer": "tools/ci/tests/test_post_promotion_handoff.py",
       "test_registry_row_id": "TREG-0017",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0100",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0101",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_evidence_registry.py",
       "mapped_claim_id": "EVD-001",
       "mapped_claim_lifecycle": "evidenced",
       "mapped_claim_state": "evidenced",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0019",
+      "test_case_id": "TCASE-0020",
       "test_case_pointer": "tools/ci/tests/test_evidence_registry.py",
       "test_registry_row_id": "TREG-0018",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0100",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0101",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_evidence_registry.py",
       "mapped_claim_id": "EVD-002",
       "mapped_claim_lifecycle": "evidenced",
       "mapped_claim_state": "evidenced",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0019",
+      "test_case_id": "TCASE-0020",
       "test_case_pointer": "tools/ci/tests/test_evidence_registry.py",
       "test_registry_row_id": "TREG-0019",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0101",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0102",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_gate_e_promotion.py",
       "mapped_claim_id": "EVD-003",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "evidenced",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0020",
+      "test_case_id": "TCASE-0021",
       "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
       "test_registry_row_id": "TREG-0020",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0101",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_artifact_id": "EART-0102",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_gate_e_promotion.py",
       "mapped_claim_id": "EVD-004",
       "mapped_claim_lifecycle": "certified",
       "mapped_claim_state": "evidenced",
       "mapped_feature_id": "",
-      "test_case_id": "TCASE-0020",
+      "test_case_id": "TCASE-0021",
       "test_case_pointer": "tools/ci/tests/test_gate_e_promotion.py",
       "test_registry_row_id": "TREG-0021",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0038",
-      "evidence_bundle_id": "EBND-0007",
+      "evidence_artifact_id": "EART-0045",
+      "evidence_bundle_id": "EBND-0008",
       "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "mapped_claim_id": "NEXT-003",
       "mapped_claim_lifecycle": "implemented",
@@ -5174,8 +5170,8 @@
       "test_set_pointer": "crates/tigrbl_rs_spec/tests"
     },
     {
-      "evidence_artifact_id": "EART-0076",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0083",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
       "mapped_claim_id": "NEXT-003",
       "mapped_claim_lifecycle": "implemented",
@@ -5188,8 +5184,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0067",
-      "evidence_bundle_id": "EBND-0015",
+      "evidence_artifact_id": "EART-0074",
+      "evidence_bundle_id": "EBND-0016",
       "evidence_pointer": "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py",
       "mapped_claim_id": "NEXT-004",
       "mapped_claim_lifecycle": "implemented",
@@ -5202,8 +5198,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_base/tests"
     },
     {
-      "evidence_artifact_id": "EART-0071",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0078",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
       "mapped_claim_id": "NEXT-004",
       "mapped_claim_lifecycle": "implemented",
@@ -5216,8 +5212,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0038",
-      "evidence_bundle_id": "EBND-0007",
+      "evidence_artifact_id": "EART-0045",
+      "evidence_bundle_id": "EBND-0008",
       "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "mapped_claim_id": "NEXT-005",
       "mapped_claim_lifecycle": "implemented",
@@ -5230,8 +5226,8 @@
       "test_set_pointer": "crates/tigrbl_rs_spec/tests"
     },
     {
-      "evidence_artifact_id": "EART-0070",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0077",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
       "mapped_claim_id": "NEXT-005",
       "mapped_claim_lifecycle": "implemented",
@@ -5244,8 +5240,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0038",
-      "evidence_bundle_id": "EBND-0007",
+      "evidence_artifact_id": "EART-0045",
+      "evidence_bundle_id": "EBND-0008",
       "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "mapped_claim_id": "NEXT-006",
       "mapped_claim_lifecycle": "implemented",
@@ -5258,8 +5254,8 @@
       "test_set_pointer": "crates/tigrbl_rs_spec/tests"
     },
     {
-      "evidence_artifact_id": "EART-0072",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0079",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
       "mapped_claim_id": "NEXT-006",
       "mapped_claim_lifecycle": "implemented",
@@ -5272,8 +5268,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0074",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0081",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
       "mapped_claim_id": "NEXT-007",
       "mapped_claim_lifecycle": "implemented",
@@ -5286,8 +5282,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0075",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0082",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
       "mapped_claim_id": "NEXT-007",
       "mapped_claim_lifecycle": "implemented",
@@ -5300,8 +5296,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0073",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0080",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
       "mapped_claim_id": "NEXT-008",
       "mapped_claim_lifecycle": "implemented",
@@ -5314,8 +5310,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0077",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0084",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
       "mapped_claim_id": "NEXT-009",
       "mapped_claim_lifecycle": "implemented",
@@ -5328,8 +5324,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0074",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0081",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
       "mapped_claim_id": "NEXT-010",
       "mapped_claim_lifecycle": "implemented",
@@ -5342,8 +5338,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0075",
-      "evidence_bundle_id": "EBND-0018",
+      "evidence_artifact_id": "EART-0082",
+      "evidence_bundle_id": "EBND-0019",
       "evidence_pointer": "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
       "mapped_claim_id": "NEXT-010",
       "mapped_claim_lifecycle": "implemented",
@@ -5356,8 +5352,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_core/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-011",
       "mapped_claim_lifecycle": "implemented",
@@ -5370,8 +5366,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-012",
       "mapped_claim_lifecycle": "implemented",
@@ -5384,8 +5380,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-013",
       "mapped_claim_lifecycle": "implemented",
@@ -5398,8 +5394,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-014",
       "mapped_claim_lifecycle": "implemented",
@@ -5412,8 +5408,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-015",
       "mapped_claim_lifecycle": "implemented",
@@ -5426,8 +5422,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-016",
       "mapped_claim_lifecycle": "implemented",
@@ -5440,8 +5436,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-017",
       "mapped_claim_lifecycle": "implemented",
@@ -5454,8 +5450,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-018",
       "mapped_claim_lifecycle": "implemented",
@@ -5468,8 +5464,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-019",
       "mapped_claim_lifecycle": "implemented",
@@ -5482,8 +5478,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-020",
       "mapped_claim_lifecycle": "implemented",
@@ -5496,8 +5492,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-021",
       "mapped_claim_lifecycle": "implemented",
@@ -5510,8 +5506,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-022",
       "mapped_claim_lifecycle": "implemented",
@@ -5524,8 +5520,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-023",
       "mapped_claim_lifecycle": "implemented",
@@ -5538,8 +5534,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-024",
       "mapped_claim_lifecycle": "implemented",
@@ -5552,8 +5548,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-025",
       "mapped_claim_lifecycle": "implemented",
@@ -5566,8 +5562,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-026",
       "mapped_claim_lifecycle": "implemented",
@@ -5580,8 +5576,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-027",
       "mapped_claim_lifecycle": "implemented",
@@ -5594,8 +5590,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-028",
       "mapped_claim_lifecycle": "implemented",
@@ -5608,8 +5604,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-029",
       "mapped_claim_lifecycle": "implemented",
@@ -5622,8 +5618,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-030",
       "mapped_claim_lifecycle": "implemented",
@@ -5636,8 +5632,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-031",
       "mapped_claim_lifecycle": "implemented",
@@ -5650,8 +5646,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-032",
       "mapped_claim_lifecycle": "implemented",
@@ -5664,8 +5660,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-033",
       "mapped_claim_lifecycle": "implemented",
@@ -5678,8 +5674,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-034",
       "mapped_claim_lifecycle": "implemented",
@@ -5692,8 +5688,8 @@
       "test_set_pointer": "pkgs/core/tigrbl_atoms/tests"
     },
     {
-      "evidence_artifact_id": "EART-0066",
-      "evidence_bundle_id": "EBND-0013",
+      "evidence_artifact_id": "EART-0073",
+      "evidence_bundle_id": "EBND-0014",
       "evidence_pointer": "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
       "mapped_claim_id": "NEXT-035",
       "mapped_claim_lifecycle": "implemented",
@@ -5707,7 +5703,7 @@
     },
     {
       "evidence_artifact_id": "EART-0099",
-      "evidence_bundle_id": "EBND-0025",
+      "evidence_bundle_id": "EBND-0024",
       "evidence_pointer": "tools/ci/tests/test_certification_tree.py",
       "mapped_claim_id": "NEXT-036",
       "mapped_claim_lifecycle": "mapped",
@@ -5720,98 +5716,98 @@
       "test_set_pointer": "tools/ci/tests"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "NEXT-037",
       "mapped_claim_lifecycle": "implemented",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-035",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0062",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "NEXT-038",
       "mapped_claim_lifecycle": "implemented",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-036",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0063",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "NEXT-039",
       "mapped_claim_lifecycle": "implemented",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-037",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0064",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "NEXT-040",
       "mapped_claim_lifecycle": "implemented",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-038",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0065",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "NEXT-041",
       "mapped_claim_lifecycle": "mapped",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-039",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0066",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "NEXT-042",
       "mapped_claim_lifecycle": "mapped",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-040",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0067",
       "test_set_id": "TSET-0006",
       "test_set_pointer": "pkgs/core/tigrbl_tests/tests/unit"
     },
     {
-      "evidence_artifact_id": "EART-0091",
-      "evidence_bundle_id": "EBND-0022",
+      "evidence_artifact_id": "EART-0095",
+      "evidence_bundle_id": "EBND-0023",
       "evidence_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "mapped_claim_id": "NEXT-043",
       "mapped_claim_lifecycle": "mapped",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-041",
-      "test_case_id": "TCASE-0017",
+      "test_case_id": "TCASE-0014",
       "test_case_pointer": "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
       "test_registry_row_id": "TREG-0068",
       "test_set_id": "TSET-0006",

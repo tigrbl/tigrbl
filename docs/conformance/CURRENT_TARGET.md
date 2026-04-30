@@ -4,6 +4,11 @@
 
 This document now freezes the closed current-target cycle as release history for stable release `0.3.18`. The active next-line work is isolated under `docs/conformance/NEXT_TARGETS.md` and does not reopen the already-closed current-target boundary.
 
+The active `0.3.19` certification candidate is governed separately by frozen
+boundary `bnd:tigrbl-0.3.19-certification-001` and release
+`rel:tigrbl-0.3.19`. That release is certified, promoted, and published inside
+its explicit SSOT boundary without widening the historical `0.3.18` boundary.
+
 ## Gate A freeze status
 
 - Freeze status: current target frozen for the current cycle
@@ -194,6 +199,8 @@ None.
 - active working-tree version: `0.3.19.dev1`
 - active dev bundle: `docs/conformance/dev/0.3.19.dev1/`
 - next-target planning document: `docs/conformance/NEXT_TARGETS.md`
+- certified boundary: `bnd:tigrbl-0.3.19-certification-001`
+- published SSOT release: `rel:tigrbl-0.3.19`
 
 ## Deferred next-target program
 

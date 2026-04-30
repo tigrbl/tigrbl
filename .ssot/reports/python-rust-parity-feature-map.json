@@ -241,6 +241,34 @@
       "state": "matched"
     },
     {
+      "atom_id": "err.classify",
+      "feature_id": "feat:atom-parity-err-classify-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "No Rust atom exists for this current Python runtime atom in crates/tigrbl_rs_atoms/src; the gap is tracked explicitly by the parity inventory."
+        }
+      },
+      "state": "python_only"
+    },
+    {
+      "atom_id": "err.ctx_build",
+      "feature_id": "feat:atom-parity-err-ctx-build-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "No Rust atom exists for this current Python runtime atom in crates/tigrbl_rs_atoms/src; the gap is tracked explicitly by the parity inventory."
+        }
+      },
+      "state": "python_only"
+    },
+    {
       "atom_id": "err.rollback",
       "feature_id": "feat:atom-parity-err-rollback-001",
       "runtime_lanes": {
@@ -252,6 +280,20 @@
         }
       },
       "state": "matched"
+    },
+    {
+      "atom_id": "err.transport_shape",
+      "feature_id": "feat:atom-parity-err-transport-shape-001",
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "No Rust atom exists for this current Python runtime atom in crates/tigrbl_rs_atoms/src; the gap is tracked explicitly by the parity inventory."
+        }
+      },
+      "state": "python_only"
     },
     {
       "atom_id": "ingress.ctx_init",

@@ -1,1588 +1,1588 @@
 {
   "ops": 250,
   "endpoint": "/tigrblbenchmarkitem",
-  "elapsed_seconds": 2.4005740000002334,
+  "elapsed_seconds": 2.7801731000072323,
   "call_graph": {
     "top_functions": [
       {
         "function": "_run_once (base_events.py:1909)",
         "primitive_calls": 2250,
         "total_calls": 2250,
-        "total_time_seconds": 0.0119509,
-        "cumulative_time_seconds": 1.8454363
+        "total_time_seconds": 0.014331700000000001,
+        "cumulative_time_seconds": 2.2900617000000003
       },
       {
         "function": "_run (events.py:86)",
-        "primitive_calls": 4290,
-        "total_calls": 4290,
-        "total_time_seconds": 0.0033863,
-        "cumulative_time_seconds": 1.8073279000000002
+        "primitive_calls": 4300,
+        "total_calls": 4300,
+        "total_time_seconds": 0.0038703,
+        "cumulative_time_seconds": 2.2457402
       },
       {
         "function": "<method 'run' of '_contextvars.Context' objects> (~:0)",
-        "primitive_calls": 4290,
-        "total_calls": 4290,
-        "total_time_seconds": 0.0052597,
-        "cumulative_time_seconds": 1.8039416000000001
+        "primitive_calls": 4300,
+        "total_calls": 4300,
+        "total_time_seconds": 0.0066443000000000006,
+        "cumulative_time_seconds": 2.2418699
       },
       {
         "function": "run_asgi (h11_impl.py:413)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0005518000000000001,
-        "cumulative_time_seconds": 1.2805788
+        "total_time_seconds": 0.0010907,
+        "cumulative_time_seconds": 1.5989276000000001
       },
       {
         "function": "__call__ (proxy_headers.py:27)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0013008000000000002,
-        "cumulative_time_seconds": 1.280027
+        "total_time_seconds": 0.002324,
+        "cumulative_time_seconds": 1.5978369000000001
       },
       {
         "function": "__call__ (_app.py:315)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0023393000000000003,
-        "cumulative_time_seconds": 1.2736913
+        "total_time_seconds": 0.0039291000000000005,
+        "cumulative_time_seconds": 1.5892814000000002
       },
       {
         "function": "invoke (_app.py:296)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0010398,
-        "cumulative_time_seconds": 1.2561456
+        "total_time_seconds": 0.0018272000000000002,
+        "cumulative_time_seconds": 1.5666373
       },
       {
         "function": "invoke (runtime.py:185)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0025424,
-        "cumulative_time_seconds": 1.2535619
+        "total_time_seconds": 0.004066,
+        "cumulative_time_seconds": 1.5623593
       },
       {
-        "function": "invoke (packed.py:1037)",
+        "function": "invoke (packed.py:1039)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0013768,
-        "cumulative_time_seconds": 1.2321689
+        "total_time_seconds": 0.0021339,
+        "cumulative_time_seconds": 1.5348679
       },
       {
-        "function": "_execute_packed (packed.py:805)",
+        "function": "_execute_packed (packed.py:807)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0047415,
-        "cumulative_time_seconds": 1.2073875
+        "total_time_seconds": 0.006837800000000001,
+        "cumulative_time_seconds": 1.5055212
       },
       {
-        "function": "_runner (packed.py:477)",
+        "function": "_runner (packed.py:479)",
         "primitive_calls": 4250,
         "total_calls": 4250,
-        "total_time_seconds": 0.012599500000000001,
-        "cumulative_time_seconds": 1.1157829000000001
+        "total_time_seconds": 0.0187381,
+        "cumulative_time_seconds": 1.3862663000000002
       },
       {
         "function": "_step (atoms.py:96)",
         "primitive_calls": 16000,
         "total_calls": 16000,
-        "total_time_seconds": 0.0223331,
-        "cumulative_time_seconds": 1.1030233
+        "total_time_seconds": 0.030817300000000002,
+        "cumulative_time_seconds": 1.3672718000000001
       },
       {
-        "function": "_runner (packed.py:523)",
+        "function": "_runner (packed.py:525)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0039284,
-        "cumulative_time_seconds": 1.0026641
+        "total_time_seconds": 0.0068266,
+        "cumulative_time_seconds": 1.2577216
       },
       {
-        "function": "_profile_create_call_graph (test_tigrbl_create_call_graph.py:86)",
+        "function": "_profile_create_call_graph (test_tigrbl_create_call_graph.py:87)",
         "primitive_calls": 1750,
         "total_calls": 1750,
-        "total_time_seconds": 0.0017886000000000002,
-        "cumulative_time_seconds": 0.4237715
+        "total_time_seconds": 0.0025737,
+        "cumulative_time_seconds": 0.5256740000000001
       },
       {
         "function": "post (_client.py:1884)",
         "primitive_calls": 2000,
         "total_calls": 2000,
-        "total_time_seconds": 0.0009487,
-        "cumulative_time_seconds": 0.41879970000000005
+        "total_time_seconds": 0.0013224,
+        "cumulative_time_seconds": 0.5182291
       },
       {
         "function": "request (_client.py:1530)",
         "primitive_calls": 2000,
         "total_calls": 2000,
-        "total_time_seconds": 0.0013862000000000002,
-        "cumulative_time_seconds": 0.41785100000000003
-      },
-      {
-        "function": "promote (types.py:241)",
-        "primitive_calls": 11500,
-        "total_calls": 11500,
-        "total_time_seconds": 0.1693598,
-        "cumulative_time_seconds": 0.37151860000000003
+        "total_time_seconds": 0.0017288000000000002,
+        "cumulative_time_seconds": 0.5169067
       },
       {
         "function": "send (_client.py:1639)",
         "primitive_calls": 2000,
         "total_calls": 2000,
-        "total_time_seconds": 0.0019161000000000002,
-        "cumulative_time_seconds": 0.3428581
+        "total_time_seconds": 0.0027263,
+        "cumulative_time_seconds": 0.4254276
+      },
+      {
+        "function": "promote (types.py:241)",
+        "primitive_calls": 11500,
+        "total_calls": 11500,
+        "total_time_seconds": 0.1931851,
+        "cumulative_time_seconds": 0.4152294
       },
       {
         "function": "_send_handling_auth (_client.py:1690)",
         "primitive_calls": 1500,
         "total_calls": 1500,
-        "total_time_seconds": 0.0018445000000000002,
-        "cumulative_time_seconds": 0.24797650000000002
+        "total_time_seconds": 0.0025371,
+        "cumulative_time_seconds": 0.3021529
       },
       {
         "function": "_send_handling_redirects (_client.py:1724)",
         "primitive_calls": 1500,
         "total_calls": 1500,
-        "total_time_seconds": 0.0010804,
-        "cumulative_time_seconds": 0.24462550000000002
+        "total_time_seconds": 0.0014887000000000001,
+        "cumulative_time_seconds": 0.2975108
       },
       {
         "function": "_send_single_request (_client.py:1762)",
         "primitive_calls": 1500,
         "total_calls": 1500,
-        "total_time_seconds": 0.0030208,
-        "cumulative_time_seconds": 0.24324120000000002
-      },
-      {
-        "function": "handle_async_request (default.py:358)",
-        "primitive_calls": 1500,
-        "total_calls": 1500,
-        "total_time_seconds": 0.0032497000000000003,
-        "cumulative_time_seconds": 0.2040887
-      },
-      {
-        "function": "__getattribute__ (types.py:145)",
-        "primitive_calls": 539750,
-        "total_calls": 539750,
-        "total_time_seconds": 0.1943129,
-        "cumulative_time_seconds": 0.1943129
+        "total_time_seconds": 0.0047995,
+        "cumulative_time_seconds": 0.2955589
       },
       {
         "function": "__call__ (handler_create.py:28)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.00048760000000000003,
-        "cumulative_time_seconds": 0.19269150000000002
-      },
-      {
-        "function": "handle_async_request (connection_pool.py:199)",
-        "primitive_calls": 1500,
-        "total_calls": 1500,
-        "total_time_seconds": 0.0031799000000000003,
-        "cumulative_time_seconds": 0.1872976
+        "total_time_seconds": 0.0007096,
+        "cumulative_time_seconds": 0.2840008
       },
       {
         "function": "_run (handler_create.py:15)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0008636000000000001,
-        "cumulative_time_seconds": 0.18231570000000002
+        "total_time_seconds": 0.0012993,
+        "cumulative_time_seconds": 0.2716001
       },
       {
         "function": "create (ops.py:122)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0017556000000000002,
-        "cumulative_time_seconds": 0.17480880000000001
+        "total_time_seconds": 0.0025771,
+        "cumulative_time_seconds": 0.2626794
       },
       {
-        "function": "_probe_ingress_for_program (packed.py:398)",
-        "primitive_calls": 250,
-        "total_calls": 250,
-        "total_time_seconds": 0.0018108000000000002,
-        "cumulative_time_seconds": 0.17050030000000002
-      },
-      {
-        "function": "_run_segment (packed.py:699)",
-        "primitive_calls": 750,
-        "total_calls": 750,
-        "total_time_seconds": 0.001258,
-        "cumulative_time_seconds": 0.16664240000000002
-      },
-      {
-        "function": "handle_async_request (connection.py:69)",
+        "function": "handle_async_request (default.py:358)",
         "primitive_calls": 1500,
         "total_calls": 1500,
-        "total_time_seconds": 0.0014216,
-        "cumulative_time_seconds": 0.1581477
+        "total_time_seconds": 0.0049384,
+        "cumulative_time_seconds": 0.2424385
       },
       {
         "function": "_maybe_flush (db.py:45)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0005137000000000001,
-        "cumulative_time_seconds": 0.1533661
+        "total_time_seconds": 0.0007454,
+        "cumulative_time_seconds": 0.2273078
       },
       {
-        "function": "flush (phase_db.py:82)",
+        "function": "flush (phase_db.py:83)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0003703,
-        "cumulative_time_seconds": 0.15234350000000002
+        "total_time_seconds": 0.0005286000000000001,
+        "cumulative_time_seconds": 0.2259652
       },
       {
         "function": "flush (session.py:4301)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0008099,
-        "cumulative_time_seconds": 0.1517954
-      },
-      {
-        "function": "handle_async_request (http11.py:65)",
-        "primitive_calls": 1250,
-        "total_calls": 1250,
-        "total_time_seconds": 0.0051151,
-        "cumulative_time_seconds": 0.15111360000000001
+        "total_time_seconds": 0.0012380000000000002,
+        "cumulative_time_seconds": 0.22520880000000001
       },
       {
         "function": "_flush (session.py:4350)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0040388,
-        "cumulative_time_seconds": 0.15068030000000002
+        "total_time_seconds": 0.0055808,
+        "cumulative_time_seconds": 0.22344480000000003
+      },
+      {
+        "function": "handle_async_request (connection_pool.py:199)",
+        "primitive_calls": 1500,
+        "total_calls": 1500,
+        "total_time_seconds": 0.0042107,
+        "cumulative_time_seconds": 0.2213389
+      },
+      {
+        "function": "__getattribute__ (types.py:145)",
+        "primitive_calls": 539750,
+        "total_calls": 539750,
+        "total_time_seconds": 0.2124897,
+        "cumulative_time_seconds": 0.2124897
+      },
+      {
+        "function": "_probe_ingress_for_program (packed.py:400)",
+        "primitive_calls": 250,
+        "total_calls": 250,
+        "total_time_seconds": 0.0022382,
+        "cumulative_time_seconds": 0.2005943
+      },
+      {
+        "function": "_run_segment (packed.py:701)",
+        "primitive_calls": 750,
+        "total_calls": 750,
+        "total_time_seconds": 0.0018544000000000002,
+        "cumulative_time_seconds": 0.19604670000000002
+      },
+      {
+        "function": "handle_async_request (connection.py:69)",
+        "primitive_calls": 1500,
+        "total_calls": 1500,
+        "total_time_seconds": 0.0019553,
+        "cumulative_time_seconds": 0.1863332
       },
       {
         "function": "execute (unitofwork.py:441)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0008713000000000001,
-        "cumulative_time_seconds": 0.12349410000000001
+        "total_time_seconds": 0.0013956,
+        "cumulative_time_seconds": 0.18547950000000002
       },
       {
-        "function": "<built-in method builtins.isinstance> (~:0)",
-        "primitive_calls": 224697,
-        "total_calls": 266205,
-        "total_time_seconds": 0.0523317,
-        "cumulative_time_seconds": 0.11861880000000001
+        "function": "handle_async_request (http11.py:65)",
+        "primitive_calls": 1250,
+        "total_calls": 1250,
+        "total_time_seconds": 0.006655800000000001,
+        "cumulative_time_seconds": 0.1781223
       },
       {
         "function": "execute (unitofwork.py:640)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.00038300000000000004,
-        "cumulative_time_seconds": 0.10953550000000001
-      },
-      {
-        "function": "__setattr__ (types.py:235)",
-        "primitive_calls": 20750,
-        "total_calls": 20750,
-        "total_time_seconds": 0.0185916,
-        "cumulative_time_seconds": 0.10948730000000001
+        "total_time_seconds": 0.0006537,
+        "cumulative_time_seconds": 0.1680354
       },
       {
         "function": "save_obj (persistence.py:40)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0025289,
-        "cumulative_time_seconds": 0.10915250000000001
+        "total_time_seconds": 0.0039868,
+        "cumulative_time_seconds": 0.16738170000000002
       },
       {
-        "function": "<built-in method builtins.getattr> (~:0)",
-        "primitive_calls": 94061,
-        "total_calls": 94316,
-        "total_time_seconds": 0.039981300000000004,
-        "cumulative_time_seconds": 0.10190210000000001
-      },
-      {
-        "function": "aread (_models.py:908)",
-        "primitive_calls": 750,
-        "total_calls": 750,
-        "total_time_seconds": 0.0012789000000000001,
-        "cumulative_time_seconds": 0.0912478
+        "function": "<built-in method builtins.isinstance> (~:0)",
+        "primitive_calls": 223910,
+        "total_calls": 265418,
+        "total_time_seconds": 0.057675500000000005,
+        "cumulative_time_seconds": 0.1342237
       },
       {
         "function": "__call__ (asgi_send.py:406)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0006301000000000001,
-        "cumulative_time_seconds": 0.0904765
+        "total_time_seconds": 0.0008748,
+        "cumulative_time_seconds": 0.13032860000000002
       },
       {
-        "function": "aiter_bytes (_models.py:916)",
-        "primitive_calls": 1000,
-        "total_calls": 1000,
-        "total_time_seconds": 0.0027107000000000003,
-        "cumulative_time_seconds": 0.08918590000000001
+        "function": "__setattr__ (types.py:235)",
+        "primitive_calls": 20750,
+        "total_calls": 20750,
+        "total_time_seconds": 0.020763300000000002,
+        "cumulative_time_seconds": 0.1220534
       },
       {
-        "function": "aiter_raw (_models.py:971)",
-        "primitive_calls": 1000,
-        "total_calls": 1000,
-        "total_time_seconds": 0.0021595,
-        "cumulative_time_seconds": 0.08209100000000001
+        "function": "<built-in method builtins.getattr> (~:0)",
+        "primitive_calls": 94061,
+        "total_calls": 94316,
+        "total_time_seconds": 0.049498200000000006,
+        "cumulative_time_seconds": 0.11875400000000001
       },
       {
-        "function": "next_event (_connection.py:438)",
-        "primitive_calls": 2750,
-        "total_calls": 2750,
-        "total_time_seconds": 0.005351300000000001,
-        "cumulative_time_seconds": 0.07977050000000001
+        "function": "aread (_models.py:908)",
+        "primitive_calls": 750,
+        "total_calls": 750,
+        "total_time_seconds": 0.0016597,
+        "cumulative_time_seconds": 0.1182368
       },
       {
         "function": "_run (asgi_send.py:272)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.003418,
-        "cumulative_time_seconds": 0.0788115
+        "total_time_seconds": 0.0042883,
+        "cumulative_time_seconds": 0.11703190000000001
       },
       {
-        "function": "_loop_reading (proactor_events.py:276)",
+        "function": "aiter_bytes (_models.py:916)",
         "primitive_calls": 1000,
         "total_calls": 1000,
-        "total_time_seconds": 0.0041527000000000005,
-        "cumulative_time_seconds": 0.07867930000000001
-      },
-      {
-        "function": "_receive_event (http11.py:209)",
-        "primitive_calls": 1250,
-        "total_calls": 1250,
-        "total_time_seconds": 0.0039218000000000005,
-        "cumulative_time_seconds": 0.0746551
-      },
-      {
-        "function": "build_request (_client.py:320)",
-        "primitive_calls": 250,
-        "total_calls": 250,
-        "total_time_seconds": 0.0017229,
-        "cumulative_time_seconds": 0.07360670000000001
+        "total_time_seconds": 0.0038368000000000005,
+        "cumulative_time_seconds": 0.1154995
       },
       {
         "function": "_emit_insert_statements (persistence.py:962)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0026276000000000003,
-        "cumulative_time_seconds": 0.073534
+        "total_time_seconds": 0.0037653,
+        "cumulative_time_seconds": 0.1140073
       },
       {
-        "function": "__call__ (binding_match.py:236)",
-        "primitive_calls": 500,
-        "total_calls": 500,
-        "total_time_seconds": 0.0008309000000000001,
-        "cumulative_time_seconds": 0.06868640000000001
-      },
-      {
-        "function": "__call__ (transport_extract.py:193)",
-        "primitive_calls": 500,
-        "total_calls": 500,
-        "total_time_seconds": 0.0009180000000000001,
-        "cumulative_time_seconds": 0.0664281
-      },
-      {
-        "function": "run (phase_db.py:153)",
-        "primitive_calls": 4500,
-        "total_calls": 4500,
-        "total_time_seconds": 0.0025392,
-        "cumulative_time_seconds": 0.0635024
-      },
-      {
-        "function": "_set_field_value (types.py:139)",
-        "primitive_calls": 6750,
-        "total_calls": 6750,
-        "total_time_seconds": 0.0074828,
-        "cumulative_time_seconds": 0.062040200000000004
-      },
-      {
-        "function": "_send_event (http11.py:163)",
-        "primitive_calls": 1250,
-        "total_calls": 1250,
-        "total_time_seconds": 0.001164,
-        "cumulative_time_seconds": 0.0620315
-      },
-      {
-        "function": "bind_phase_db (phase_db.py:106)",
-        "primitive_calls": 4500,
-        "total_calls": 4500,
-        "total_time_seconds": 0.017254000000000002,
-        "cumulative_time_seconds": 0.0609632
+        "function": "aiter_raw (_models.py:971)",
+        "primitive_calls": 1000,
+        "total_calls": 1000,
+        "total_time_seconds": 0.0027256000000000003,
+        "cumulative_time_seconds": 0.10617520000000001
       },
       {
         "function": "execute (base.py:1375)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0003391,
-        "cumulative_time_seconds": 0.060506500000000005
-      },
-      {
-        "function": "_data_received (proactor_events.py:251)",
-        "primitive_calls": 1000,
-        "total_calls": 1000,
-        "total_time_seconds": 0.0010666,
-        "cumulative_time_seconds": 0.0604036
+        "total_time_seconds": 0.0007625,
+        "cumulative_time_seconds": 0.0952747
       },
       {
         "function": "_execute_on_connection (elements.py:518)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0002545,
-        "cumulative_time_seconds": 0.0601674
+        "total_time_seconds": 0.0009395,
+        "cumulative_time_seconds": 0.0945122
       },
       {
         "function": "_execute_clauseelement (base.py:1591)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0017016000000000002,
-        "cumulative_time_seconds": 0.059912900000000005
+        "total_time_seconds": 0.0032253000000000004,
+        "cumulative_time_seconds": 0.09357270000000001
       },
       {
-        "function": "handle_events (h11_impl.py:177)",
-        "primitive_calls": 750,
-        "total_calls": 750,
-        "total_time_seconds": 0.006328800000000001,
-        "cumulative_time_seconds": 0.058258500000000005
+        "function": "_receive_event (http11.py:209)",
+        "primitive_calls": 1250,
+        "total_calls": 1250,
+        "total_time_seconds": 0.004967200000000001,
+        "cumulative_time_seconds": 0.0927331
+      },
+      {
+        "function": "next_event (_connection.py:438)",
+        "primitive_calls": 2750,
+        "total_calls": 2750,
+        "total_time_seconds": 0.0063556,
+        "cumulative_time_seconds": 0.09236420000000001
+      },
+      {
+        "function": "_loop_reading (proactor_events.py:276)",
+        "primitive_calls": 1000,
+        "total_calls": 1000,
+        "total_time_seconds": 0.005255200000000001,
+        "cumulative_time_seconds": 0.0921666
+      },
+      {
+        "function": "build_request (_client.py:320)",
+        "primitive_calls": 250,
+        "total_calls": 250,
+        "total_time_seconds": 0.002441,
+        "cumulative_time_seconds": 0.0897503
       },
       {
         "function": "send (h11_impl.py:459)",
         "primitive_calls": 500,
         "total_calls": 500,
-        "total_time_seconds": 0.0037109,
-        "cumulative_time_seconds": 0.05798710000000001
+        "total_time_seconds": 0.0061078,
+        "cumulative_time_seconds": 0.0891015
       },
       {
-        "function": "data_received (h11_impl.py:171)",
+        "function": "__call__ (binding_match.py:236)",
         "primitive_calls": 500,
         "total_calls": 500,
-        "total_time_seconds": 0.0006855,
-        "cumulative_time_seconds": 0.0571178
+        "total_time_seconds": 0.0011144,
+        "cumulative_time_seconds": 0.07736860000000001
       },
       {
-        "function": "_get_field_value (types.py:133)",
-        "primitive_calls": 99500,
-        "total_calls": 99500,
-        "total_time_seconds": 0.0527663,
-        "cumulative_time_seconds": 0.0564496
-      },
-      {
-        "function": "_run (transport_extract.py:102)",
+        "function": "__call__ (transport_extract.py:193)",
         "primitive_calls": 500,
         "total_calls": 500,
-        "total_time_seconds": 0.0088058,
-        "cumulative_time_seconds": 0.054237900000000006
+        "total_time_seconds": 0.0012339,
+        "cumulative_time_seconds": 0.0761619
       },
       {
-        "function": "_send_request_headers (http11.py:140)",
-        "primitive_calls": 500,
-        "total_calls": 500,
-        "total_time_seconds": 0.0013268000000000002,
-        "cumulative_time_seconds": 0.053798200000000004
+        "function": "run (phase_db.py:154)",
+        "primitive_calls": 4500,
+        "total_calls": 4500,
+        "total_time_seconds": 0.0029010000000000004,
+        "cumulative_time_seconds": 0.0735807
       },
       {
-        "function": "_run (binding_match.py:117)",
-        "primitive_calls": 500,
-        "total_calls": 500,
-        "total_time_seconds": 0.0048863000000000005,
-        "cumulative_time_seconds": 0.053576900000000004
+        "function": "_send_event (http11.py:163)",
+        "primitive_calls": 1250,
+        "total_calls": 1250,
+        "total_time_seconds": 0.0014479,
+        "cumulative_time_seconds": 0.0713037
       },
       {
-        "function": "_field_exists (types.py:129)",
+        "function": "bind_phase_db (phase_db.py:107)",
+        "primitive_calls": 4500,
+        "total_calls": 4500,
+        "total_time_seconds": 0.019851200000000003,
+        "cumulative_time_seconds": 0.0706797
+      },
+      {
+        "function": "_data_received (proactor_events.py:251)",
+        "primitive_calls": 1000,
+        "total_calls": 1000,
+        "total_time_seconds": 0.0015780000000000002,
+        "cumulative_time_seconds": 0.0698952
+      },
+      {
+        "function": "_set_field_value (types.py:139)",
         "primitive_calls": 6750,
         "total_calls": 6750,
-        "total_time_seconds": 0.0103938,
-        "cumulative_time_seconds": 0.0522323
+        "total_time_seconds": 0.0082174,
+        "cumulative_time_seconds": 0.0698892
       },
       {
-        "function": "__instancecheck__ (typing.py:1221)",
-        "primitive_calls": 20751,
-        "total_calls": 20751,
-        "total_time_seconds": 0.012358800000000001,
-        "cumulative_time_seconds": 0.0519362
-      },
-      {
-        "function": "_extract_next_receive_event (_connection.py:410)",
-        "primitive_calls": 2750,
-        "total_calls": 2750,
-        "total_time_seconds": 0.0036244000000000003,
-        "cumulative_time_seconds": 0.049798
+        "function": "handle_events (h11_impl.py:177)",
+        "primitive_calls": 750,
+        "total_calls": 750,
+        "total_time_seconds": 0.008283200000000001,
+        "cumulative_time_seconds": 0.0677774
       },
       {
         "function": "_go (state_changes.py:93)",
         "primitive_calls": 1250,
         "total_calls": 3250,
-        "total_time_seconds": 0.005585700000000001,
-        "cumulative_time_seconds": 0.0490087
+        "total_time_seconds": 0.007029100000000001,
+        "cumulative_time_seconds": 0.0658362
+      },
+      {
+        "function": "data_received (h11_impl.py:171)",
+        "primitive_calls": 500,
+        "total_calls": 500,
+        "total_time_seconds": 0.0008932,
+        "cumulative_time_seconds": 0.06568460000000001
+      },
+      {
+        "function": "_send_request_headers (http11.py:140)",
+        "primitive_calls": 500,
+        "total_calls": 500,
+        "total_time_seconds": 0.0018211000000000002,
+        "cumulative_time_seconds": 0.0629112
+      },
+      {
+        "function": "_get_field_value (types.py:133)",
+        "primitive_calls": 99500,
+        "total_calls": 99500,
+        "total_time_seconds": 0.0586766,
+        "cumulative_time_seconds": 0.0626915
+      },
+      {
+        "function": "_run (transport_extract.py:102)",
+        "primitive_calls": 500,
+        "total_calls": 500,
+        "total_time_seconds": 0.0105985,
+        "cumulative_time_seconds": 0.0622083
+      },
+      {
+        "function": "_run (binding_match.py:117)",
+        "primitive_calls": 500,
+        "total_calls": 500,
+        "total_time_seconds": 0.0062221,
+        "cumulative_time_seconds": 0.0600455
+      },
+      {
+        "function": "_field_exists (types.py:129)",
+        "primitive_calls": 6750,
+        "total_calls": 6750,
+        "total_time_seconds": 0.011838000000000001,
+        "cumulative_time_seconds": 0.0591592
+      },
+      {
+        "function": "__instancecheck__ (typing.py:1221)",
+        "primitive_calls": 20751,
+        "total_calls": 20751,
+        "total_time_seconds": 0.0141039,
+        "cumulative_time_seconds": 0.0581865
+      },
+      {
+        "function": "_extract_next_receive_event (_connection.py:410)",
+        "primitive_calls": 2750,
+        "total_calls": 2750,
+        "total_time_seconds": 0.0043853,
+        "cumulative_time_seconds": 0.0580876
       },
       {
         "function": "_receive_response_headers (http11.py:170)",
         "primitive_calls": 500,
         "total_calls": 500,
-        "total_time_seconds": 0.0008902000000000001,
-        "cumulative_time_seconds": 0.0464824
+        "total_time_seconds": 0.0011672,
+        "cumulative_time_seconds": 0.057498400000000005
+      },
+      {
+        "function": "_loop_writing (proactor_events.py:376)",
+        "primitive_calls": 1750,
+        "total_calls": 1750,
+        "total_time_seconds": 0.0038298000000000004,
+        "cumulative_time_seconds": 0.056295200000000004
       },
       {
         "function": "_merge_url (_client.py:371)",
         "primitive_calls": 250,
         "total_calls": 250,
-        "total_time_seconds": 0.0009780000000000001,
-        "cumulative_time_seconds": 0.0463195
-      },
-      {
-        "function": "__init__ (_urls.py:77)",
-        "primitive_calls": 750,
-        "total_calls": 750,
-        "total_time_seconds": 0.0019401000000000002,
-        "cumulative_time_seconds": 0.044514700000000004
+        "total_time_seconds": 0.0015998000000000002,
+        "cumulative_time_seconds": 0.055581000000000005
       }
     ],
     "edges": [
       {
         "caller": "_run_once (base_events.py:1909)",
         "callee": "_run (events.py:86)",
-        "call_count": 4290,
-        "total_time_seconds": 0.0033863,
-        "cumulative_time_seconds": 1.8073279000000002
+        "call_count": 4300,
+        "total_time_seconds": 0.0038703,
+        "cumulative_time_seconds": 2.2457402
       },
       {
         "caller": "_run (events.py:86)",
         "callee": "<method 'run' of '_contextvars.Context' objects> (~:0)",
-        "call_count": 4290,
-        "total_time_seconds": 0.0052597,
-        "cumulative_time_seconds": 1.8039416000000001
+        "call_count": 4300,
+        "total_time_seconds": 0.0066443000000000006,
+        "cumulative_time_seconds": 2.2418699
       },
       {
         "caller": "<method 'run' of '_contextvars.Context' objects> (~:0)",
         "callee": "run_asgi (h11_impl.py:413)",
         "call_count": 250,
-        "total_time_seconds": 0.0005518000000000001,
-        "cumulative_time_seconds": 1.2805788
+        "total_time_seconds": 0.0010907,
+        "cumulative_time_seconds": 1.5989276000000001
       },
       {
         "caller": "run_asgi (h11_impl.py:413)",
         "callee": "__call__ (proxy_headers.py:27)",
         "call_count": 250,
-        "total_time_seconds": 0.0013008000000000002,
-        "cumulative_time_seconds": 1.280027
+        "total_time_seconds": 0.002324,
+        "cumulative_time_seconds": 1.5978369000000001
       },
       {
         "caller": "__call__ (proxy_headers.py:27)",
         "callee": "__call__ (_app.py:315)",
         "call_count": 250,
-        "total_time_seconds": 0.0023393000000000003,
-        "cumulative_time_seconds": 1.2736913
+        "total_time_seconds": 0.0039291000000000005,
+        "cumulative_time_seconds": 1.5892814000000002
       },
       {
         "caller": "__call__ (_app.py:315)",
         "callee": "invoke (_app.py:296)",
         "call_count": 250,
-        "total_time_seconds": 0.0010398,
-        "cumulative_time_seconds": 1.2561456
+        "total_time_seconds": 0.0018272000000000002,
+        "cumulative_time_seconds": 1.5666373
       },
       {
         "caller": "invoke (_app.py:296)",
         "callee": "invoke (runtime.py:185)",
         "call_count": 250,
-        "total_time_seconds": 0.0025424,
-        "cumulative_time_seconds": 1.2535619
+        "total_time_seconds": 0.004066,
+        "cumulative_time_seconds": 1.5623593
       },
       {
         "caller": "invoke (runtime.py:185)",
-        "callee": "invoke (packed.py:1037)",
+        "callee": "invoke (packed.py:1039)",
         "call_count": 250,
-        "total_time_seconds": 0.0013768,
-        "cumulative_time_seconds": 1.2321689
+        "total_time_seconds": 0.0021339,
+        "cumulative_time_seconds": 1.5348679
       },
       {
-        "caller": "invoke (packed.py:1037)",
-        "callee": "_execute_packed (packed.py:805)",
+        "caller": "invoke (packed.py:1039)",
+        "callee": "_execute_packed (packed.py:807)",
         "call_count": 250,
-        "total_time_seconds": 0.0047415,
-        "cumulative_time_seconds": 1.2073875
+        "total_time_seconds": 0.006837800000000001,
+        "cumulative_time_seconds": 1.5055212
       },
       {
-        "caller": "_runner (packed.py:477)",
+        "caller": "_runner (packed.py:479)",
         "callee": "_step (atoms.py:96)",
         "call_count": 16000,
-        "total_time_seconds": 0.0223331,
-        "cumulative_time_seconds": 1.1030233
+        "total_time_seconds": 0.030817300000000002,
+        "cumulative_time_seconds": 1.3672718000000001
       },
       {
-        "caller": "_execute_packed (packed.py:805)",
-        "callee": "_runner (packed.py:523)",
+        "caller": "_execute_packed (packed.py:807)",
+        "callee": "_runner (packed.py:525)",
         "call_count": 250,
-        "total_time_seconds": 0.0039284,
-        "cumulative_time_seconds": 1.0026641
+        "total_time_seconds": 0.0068266,
+        "cumulative_time_seconds": 1.2577216
       },
       {
-        "caller": "_runner (packed.py:523)",
-        "callee": "_runner (packed.py:477)",
+        "caller": "_runner (packed.py:525)",
+        "callee": "_runner (packed.py:479)",
         "call_count": 3500,
-        "total_time_seconds": 0.010649,
-        "cumulative_time_seconds": 0.9594255
+        "total_time_seconds": 0.015606900000000002,
+        "cumulative_time_seconds": 1.2028899000000002
       },
       {
         "caller": "<method 'run' of '_contextvars.Context' objects> (~:0)",
-        "callee": "_profile_create_call_graph (test_tigrbl_create_call_graph.py:86)",
+        "callee": "_profile_create_call_graph (test_tigrbl_create_call_graph.py:87)",
         "call_count": 1750,
-        "total_time_seconds": 0.0017886000000000002,
-        "cumulative_time_seconds": 0.4237715
+        "total_time_seconds": 0.0025737,
+        "cumulative_time_seconds": 0.5256740000000001
       },
       {
-        "caller": "_profile_create_call_graph (test_tigrbl_create_call_graph.py:86)",
+        "caller": "_profile_create_call_graph (test_tigrbl_create_call_graph.py:87)",
         "callee": "post (_client.py:1884)",
         "call_count": 1999,
-        "total_time_seconds": 0.0009464,
-        "cumulative_time_seconds": 0.41806340000000003
+        "total_time_seconds": 0.0013202,
+        "cumulative_time_seconds": 0.5174866
       },
       {
         "caller": "post (_client.py:1884)",
         "callee": "request (_client.py:1530)",
         "call_count": 2000,
-        "total_time_seconds": 0.0013862000000000002,
-        "cumulative_time_seconds": 0.41785100000000003
+        "total_time_seconds": 0.0017288000000000002,
+        "cumulative_time_seconds": 0.5169067
       },
       {
         "caller": "request (_client.py:1530)",
         "callee": "send (_client.py:1639)",
         "call_count": 2000,
-        "total_time_seconds": 0.0019161000000000002,
-        "cumulative_time_seconds": 0.3428581
+        "total_time_seconds": 0.0027263,
+        "cumulative_time_seconds": 0.4254276
       },
       {
         "caller": "send (_client.py:1639)",
         "callee": "_send_handling_auth (_client.py:1690)",
         "call_count": 1500,
-        "total_time_seconds": 0.0018445000000000002,
-        "cumulative_time_seconds": 0.24797650000000002
+        "total_time_seconds": 0.0025371,
+        "cumulative_time_seconds": 0.3021529
       },
       {
         "caller": "_send_handling_auth (_client.py:1690)",
         "callee": "_send_handling_redirects (_client.py:1724)",
         "call_count": 1500,
-        "total_time_seconds": 0.0010804,
-        "cumulative_time_seconds": 0.24462550000000002
+        "total_time_seconds": 0.0014887000000000001,
+        "cumulative_time_seconds": 0.2975108
       },
       {
         "caller": "_send_handling_redirects (_client.py:1724)",
         "callee": "_send_single_request (_client.py:1762)",
         "call_count": 1500,
-        "total_time_seconds": 0.0030208,
-        "cumulative_time_seconds": 0.24324120000000002
-      },
-      {
-        "caller": "_send_single_request (_client.py:1762)",
-        "callee": "handle_async_request (default.py:358)",
-        "call_count": 1500,
-        "total_time_seconds": 0.0032497000000000003,
-        "cumulative_time_seconds": 0.2040887
+        "total_time_seconds": 0.0047995,
+        "cumulative_time_seconds": 0.2955589
       },
       {
         "caller": "_step (atoms.py:96)",
         "callee": "__call__ (handler_create.py:28)",
         "call_count": 250,
-        "total_time_seconds": 0.00048760000000000003,
-        "cumulative_time_seconds": 0.19269150000000002
-      },
-      {
-        "caller": "handle_async_request (default.py:358)",
-        "callee": "handle_async_request (connection_pool.py:199)",
-        "call_count": 1500,
-        "total_time_seconds": 0.0031799000000000003,
-        "cumulative_time_seconds": 0.1872976
+        "total_time_seconds": 0.0007096,
+        "cumulative_time_seconds": 0.2840008
       },
       {
         "caller": "__call__ (handler_create.py:28)",
         "callee": "_run (handler_create.py:15)",
         "call_count": 250,
-        "total_time_seconds": 0.0008636000000000001,
-        "cumulative_time_seconds": 0.18231570000000002
+        "total_time_seconds": 0.0012993,
+        "cumulative_time_seconds": 0.2716001
       },
       {
         "caller": "_run (handler_create.py:15)",
         "callee": "create (ops.py:122)",
         "call_count": 250,
-        "total_time_seconds": 0.0017556000000000002,
-        "cumulative_time_seconds": 0.17480880000000001
+        "total_time_seconds": 0.0025771,
+        "cumulative_time_seconds": 0.2626794
       },
       {
-        "caller": "_execute_packed (packed.py:805)",
-        "callee": "_probe_ingress_for_program (packed.py:398)",
-        "call_count": 250,
-        "total_time_seconds": 0.0018108000000000002,
-        "cumulative_time_seconds": 0.17050030000000002
-      },
-      {
-        "caller": "_probe_ingress_for_program (packed.py:398)",
-        "callee": "_run_segment (packed.py:699)",
-        "call_count": 750,
-        "total_time_seconds": 0.001258,
-        "cumulative_time_seconds": 0.16664240000000002
-      },
-      {
-        "caller": "handle_async_request (connection_pool.py:199)",
-        "callee": "handle_async_request (connection.py:69)",
+        "caller": "_send_single_request (_client.py:1762)",
+        "callee": "handle_async_request (default.py:358)",
         "call_count": 1500,
-        "total_time_seconds": 0.0014216,
-        "cumulative_time_seconds": 0.1581477
-      },
-      {
-        "caller": "_run_segment (packed.py:699)",
-        "callee": "_runner (packed.py:477)",
-        "call_count": 750,
-        "total_time_seconds": 0.0019505000000000002,
-        "cumulative_time_seconds": 0.1563574
+        "total_time_seconds": 0.0049384,
+        "cumulative_time_seconds": 0.2424385
       },
       {
         "caller": "create (ops.py:122)",
         "callee": "_maybe_flush (db.py:45)",
         "call_count": 250,
-        "total_time_seconds": 0.0005137000000000001,
-        "cumulative_time_seconds": 0.1533661
+        "total_time_seconds": 0.0007454,
+        "cumulative_time_seconds": 0.2273078
       },
       {
         "caller": "_maybe_flush (db.py:45)",
-        "callee": "flush (phase_db.py:82)",
+        "callee": "flush (phase_db.py:83)",
         "call_count": 250,
-        "total_time_seconds": 0.0003703,
-        "cumulative_time_seconds": 0.15234350000000002
+        "total_time_seconds": 0.0005286000000000001,
+        "cumulative_time_seconds": 0.2259652
       },
       {
-        "caller": "flush (phase_db.py:82)",
+        "caller": "flush (phase_db.py:83)",
         "callee": "flush (session.py:4301)",
         "call_count": 250,
-        "total_time_seconds": 0.0008099,
-        "cumulative_time_seconds": 0.1517954
-      },
-      {
-        "caller": "handle_async_request (connection.py:69)",
-        "callee": "handle_async_request (http11.py:65)",
-        "call_count": 1250,
-        "total_time_seconds": 0.0051151,
-        "cumulative_time_seconds": 0.15111360000000001
+        "total_time_seconds": 0.0012380000000000002,
+        "cumulative_time_seconds": 0.22520880000000001
       },
       {
         "caller": "flush (session.py:4301)",
         "callee": "_flush (session.py:4350)",
         "call_count": 250,
-        "total_time_seconds": 0.0040388,
-        "cumulative_time_seconds": 0.15068030000000002
+        "total_time_seconds": 0.0055808,
+        "cumulative_time_seconds": 0.22344480000000003
+      },
+      {
+        "caller": "handle_async_request (default.py:358)",
+        "callee": "handle_async_request (connection_pool.py:199)",
+        "call_count": 1500,
+        "total_time_seconds": 0.0042107,
+        "cumulative_time_seconds": 0.2213389
+      },
+      {
+        "caller": "_execute_packed (packed.py:807)",
+        "callee": "_probe_ingress_for_program (packed.py:400)",
+        "call_count": 250,
+        "total_time_seconds": 0.0022382,
+        "cumulative_time_seconds": 0.2005943
+      },
+      {
+        "caller": "_probe_ingress_for_program (packed.py:400)",
+        "callee": "_run_segment (packed.py:701)",
+        "call_count": 750,
+        "total_time_seconds": 0.0018544000000000002,
+        "cumulative_time_seconds": 0.19604670000000002
+      },
+      {
+        "caller": "handle_async_request (connection_pool.py:199)",
+        "callee": "handle_async_request (connection.py:69)",
+        "call_count": 1500,
+        "total_time_seconds": 0.0019553,
+        "cumulative_time_seconds": 0.1863332
       },
       {
         "caller": "_flush (session.py:4350)",
         "callee": "execute (unitofwork.py:441)",
         "call_count": 250,
-        "total_time_seconds": 0.0008713000000000001,
-        "cumulative_time_seconds": 0.12349410000000001
+        "total_time_seconds": 0.0013956,
+        "cumulative_time_seconds": 0.18547950000000002
       },
       {
-        "caller": "promote (types.py:241)",
-        "callee": "__getattribute__ (types.py:145)",
-        "call_count": 393250,
-        "total_time_seconds": 0.1222738,
-        "cumulative_time_seconds": 0.1222738
+        "caller": "_run_segment (packed.py:701)",
+        "callee": "_runner (packed.py:479)",
+        "call_count": 750,
+        "total_time_seconds": 0.0031312,
+        "cumulative_time_seconds": 0.18337640000000002
+      },
+      {
+        "caller": "handle_async_request (connection.py:69)",
+        "callee": "handle_async_request (http11.py:65)",
+        "call_count": 1250,
+        "total_time_seconds": 0.006655800000000001,
+        "cumulative_time_seconds": 0.1781223
       },
       {
         "caller": "execute (unitofwork.py:441)",
         "callee": "execute (unitofwork.py:640)",
         "call_count": 250,
-        "total_time_seconds": 0.00038300000000000004,
-        "cumulative_time_seconds": 0.10953550000000001
+        "total_time_seconds": 0.0006537,
+        "cumulative_time_seconds": 0.1680354
       },
       {
         "caller": "execute (unitofwork.py:640)",
         "callee": "save_obj (persistence.py:40)",
         "call_count": 250,
-        "total_time_seconds": 0.0025289,
-        "cumulative_time_seconds": 0.10915250000000001
+        "total_time_seconds": 0.0039868,
+        "cumulative_time_seconds": 0.16738170000000002
       },
       {
-        "caller": "send (_client.py:1639)",
-        "callee": "aread (_models.py:908)",
-        "call_count": 750,
-        "total_time_seconds": 0.0012789000000000001,
-        "cumulative_time_seconds": 0.0912478
+        "caller": "promote (types.py:241)",
+        "callee": "__getattribute__ (types.py:145)",
+        "call_count": 393250,
+        "total_time_seconds": 0.1332058,
+        "cumulative_time_seconds": 0.1332058
       },
       {
         "caller": "_step (atoms.py:96)",
         "callee": "__call__ (asgi_send.py:406)",
         "call_count": 250,
-        "total_time_seconds": 0.0006301000000000001,
-        "cumulative_time_seconds": 0.0904765
+        "total_time_seconds": 0.0008748,
+        "cumulative_time_seconds": 0.13032860000000002
       },
       {
-        "caller": "aread (_models.py:908)",
-        "callee": "aiter_bytes (_models.py:916)",
-        "call_count": 1000,
-        "total_time_seconds": 0.0027107000000000003,
-        "cumulative_time_seconds": 0.08918590000000001
-      },
-      {
-        "caller": "aiter_bytes (_models.py:916)",
-        "callee": "aiter_raw (_models.py:971)",
-        "call_count": 1000,
-        "total_time_seconds": 0.0021595,
-        "cumulative_time_seconds": 0.08209100000000001
+        "caller": "send (_client.py:1639)",
+        "callee": "aread (_models.py:908)",
+        "call_count": 750,
+        "total_time_seconds": 0.0016597,
+        "cumulative_time_seconds": 0.1182368
       },
       {
         "caller": "__call__ (asgi_send.py:406)",
         "callee": "_run (asgi_send.py:272)",
         "call_count": 250,
-        "total_time_seconds": 0.003418,
-        "cumulative_time_seconds": 0.0788115
+        "total_time_seconds": 0.0042883,
+        "cumulative_time_seconds": 0.11703190000000001
       },
       {
-        "caller": "<method 'run' of '_contextvars.Context' objects> (~:0)",
-        "callee": "_loop_reading (proactor_events.py:276)",
+        "caller": "aread (_models.py:908)",
+        "callee": "aiter_bytes (_models.py:916)",
         "call_count": 1000,
-        "total_time_seconds": 0.0041527000000000005,
-        "cumulative_time_seconds": 0.07867930000000001
-      },
-      {
-        "caller": "request (_client.py:1530)",
-        "callee": "build_request (_client.py:320)",
-        "call_count": 250,
-        "total_time_seconds": 0.0017229,
-        "cumulative_time_seconds": 0.07360670000000001
+        "total_time_seconds": 0.0038368000000000005,
+        "cumulative_time_seconds": 0.1154995
       },
       {
         "caller": "save_obj (persistence.py:40)",
         "callee": "_emit_insert_statements (persistence.py:962)",
         "call_count": 250,
-        "total_time_seconds": 0.0026276000000000003,
-        "cumulative_time_seconds": 0.073534
+        "total_time_seconds": 0.0037653,
+        "cumulative_time_seconds": 0.1140073
       },
       {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (binding_match.py:236)",
-        "call_count": 500,
-        "total_time_seconds": 0.0008309000000000001,
-        "cumulative_time_seconds": 0.06868640000000001
-      },
-      {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (transport_extract.py:193)",
-        "call_count": 500,
-        "total_time_seconds": 0.0009180000000000001,
-        "cumulative_time_seconds": 0.0664281
-      },
-      {
-        "caller": "_step (atoms.py:96)",
-        "callee": "run (phase_db.py:153)",
-        "call_count": 4500,
-        "total_time_seconds": 0.0025392,
-        "cumulative_time_seconds": 0.0635024
-      },
-      {
-        "caller": "run (phase_db.py:153)",
-        "callee": "bind_phase_db (phase_db.py:106)",
-        "call_count": 4500,
-        "total_time_seconds": 0.017254000000000002,
-        "cumulative_time_seconds": 0.0609632
+        "caller": "aiter_bytes (_models.py:916)",
+        "callee": "aiter_raw (_models.py:971)",
+        "call_count": 1000,
+        "total_time_seconds": 0.0027256000000000003,
+        "cumulative_time_seconds": 0.10617520000000001
       },
       {
         "caller": "_emit_insert_statements (persistence.py:962)",
         "callee": "execute (base.py:1375)",
         "call_count": 250,
-        "total_time_seconds": 0.0003391,
-        "cumulative_time_seconds": 0.060506500000000005
-      },
-      {
-        "caller": "_loop_reading (proactor_events.py:276)",
-        "callee": "_data_received (proactor_events.py:251)",
-        "call_count": 1000,
-        "total_time_seconds": 0.0010666,
-        "cumulative_time_seconds": 0.0604036
+        "total_time_seconds": 0.0007625,
+        "cumulative_time_seconds": 0.0952747
       },
       {
         "caller": "execute (base.py:1375)",
         "callee": "_execute_on_connection (elements.py:518)",
         "call_count": 250,
-        "total_time_seconds": 0.0002545,
-        "cumulative_time_seconds": 0.0601674
+        "total_time_seconds": 0.0009395,
+        "cumulative_time_seconds": 0.0945122
       },
       {
         "caller": "_execute_on_connection (elements.py:518)",
         "callee": "_execute_clauseelement (base.py:1591)",
         "call_count": 250,
-        "total_time_seconds": 0.0017016000000000002,
-        "cumulative_time_seconds": 0.059912900000000005
+        "total_time_seconds": 0.0032253000000000004,
+        "cumulative_time_seconds": 0.09357270000000001
       },
       {
-        "caller": "__setattr__ (types.py:235)",
-        "callee": "_set_field_value (types.py:139)",
-        "call_count": 6500,
-        "total_time_seconds": 0.007175000000000001,
-        "cumulative_time_seconds": 0.059901300000000005
+        "caller": "<method 'run' of '_contextvars.Context' objects> (~:0)",
+        "callee": "_loop_reading (proactor_events.py:276)",
+        "call_count": 1000,
+        "total_time_seconds": 0.005255200000000001,
+        "cumulative_time_seconds": 0.0921666
+      },
+      {
+        "caller": "request (_client.py:1530)",
+        "callee": "build_request (_client.py:320)",
+        "call_count": 250,
+        "total_time_seconds": 0.002441,
+        "cumulative_time_seconds": 0.0897503
       },
       {
         "caller": "_run (asgi_send.py:272)",
         "callee": "send (h11_impl.py:459)",
         "call_count": 500,
-        "total_time_seconds": 0.0037109,
-        "cumulative_time_seconds": 0.05798710000000001
+        "total_time_seconds": 0.0061078,
+        "cumulative_time_seconds": 0.0891015
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (binding_match.py:236)",
+        "call_count": 500,
+        "total_time_seconds": 0.0011144,
+        "cumulative_time_seconds": 0.07736860000000001
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (transport_extract.py:193)",
+        "call_count": 500,
+        "total_time_seconds": 0.0012339,
+        "cumulative_time_seconds": 0.0761619
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "run (phase_db.py:154)",
+        "call_count": 4500,
+        "total_time_seconds": 0.0029010000000000004,
+        "cumulative_time_seconds": 0.0735807
+      },
+      {
+        "caller": "run (phase_db.py:154)",
+        "callee": "bind_phase_db (phase_db.py:107)",
+        "call_count": 4500,
+        "total_time_seconds": 0.019851200000000003,
+        "cumulative_time_seconds": 0.0706797
+      },
+      {
+        "caller": "_loop_reading (proactor_events.py:276)",
+        "callee": "_data_received (proactor_events.py:251)",
+        "call_count": 1000,
+        "total_time_seconds": 0.0015780000000000002,
+        "cumulative_time_seconds": 0.0698952
+      },
+      {
+        "caller": "__setattr__ (types.py:235)",
+        "callee": "_set_field_value (types.py:139)",
+        "call_count": 6500,
+        "total_time_seconds": 0.007892900000000001,
+        "cumulative_time_seconds": 0.0674935
       },
       {
         "caller": "_data_received (proactor_events.py:251)",
         "callee": "data_received (h11_impl.py:171)",
         "call_count": 500,
-        "total_time_seconds": 0.0006855,
-        "cumulative_time_seconds": 0.0571178
-      },
-      {
-        "caller": "promote (types.py:241)",
-        "callee": "_get_field_value (types.py:133)",
-        "call_count": 99000,
-        "total_time_seconds": 0.0525887,
-        "cumulative_time_seconds": 0.056272
+        "total_time_seconds": 0.0008932,
+        "cumulative_time_seconds": 0.06568460000000001
       },
       {
         "caller": "data_received (h11_impl.py:171)",
         "callee": "handle_events (h11_impl.py:177)",
         "call_count": 500,
-        "total_time_seconds": 0.0061165,
-        "cumulative_time_seconds": 0.055113600000000006
-      },
-      {
-        "caller": "__call__ (transport_extract.py:193)",
-        "callee": "_run (transport_extract.py:102)",
-        "call_count": 500,
-        "total_time_seconds": 0.0088058,
-        "cumulative_time_seconds": 0.054237900000000006
+        "total_time_seconds": 0.0079615,
+        "cumulative_time_seconds": 0.06331880000000001
       },
       {
         "caller": "handle_async_request (http11.py:65)",
         "callee": "_send_request_headers (http11.py:140)",
         "call_count": 500,
-        "total_time_seconds": 0.0013268000000000002,
-        "cumulative_time_seconds": 0.053798200000000004
+        "total_time_seconds": 0.0018211000000000002,
+        "cumulative_time_seconds": 0.0629112
+      },
+      {
+        "caller": "promote (types.py:241)",
+        "callee": "_get_field_value (types.py:133)",
+        "call_count": 99000,
+        "total_time_seconds": 0.058484400000000006,
+        "cumulative_time_seconds": 0.0624993
+      },
+      {
+        "caller": "__call__ (transport_extract.py:193)",
+        "callee": "_run (transport_extract.py:102)",
+        "call_count": 500,
+        "total_time_seconds": 0.0105985,
+        "cumulative_time_seconds": 0.0622083
       },
       {
         "caller": "__call__ (binding_match.py:236)",
         "callee": "_run (binding_match.py:117)",
         "call_count": 500,
-        "total_time_seconds": 0.0048863000000000005,
-        "cumulative_time_seconds": 0.053576900000000004
+        "total_time_seconds": 0.0062221,
+        "cumulative_time_seconds": 0.0600455
       },
       {
         "caller": "_set_field_value (types.py:139)",
         "callee": "_field_exists (types.py:129)",
         "call_count": 6750,
-        "total_time_seconds": 0.0103938,
-        "cumulative_time_seconds": 0.0522323
+        "total_time_seconds": 0.011838000000000001,
+        "cumulative_time_seconds": 0.0591592
       },
       {
         "caller": "<built-in method builtins.isinstance> (~:0)",
         "callee": "__instancecheck__ (typing.py:1221)",
         "call_count": 20751,
-        "total_time_seconds": 0.012358800000000001,
-        "cumulative_time_seconds": 0.0519362
+        "total_time_seconds": 0.0141039,
+        "cumulative_time_seconds": 0.0581865
       },
       {
         "caller": "next_event (_connection.py:438)",
         "callee": "_extract_next_receive_event (_connection.py:410)",
         "call_count": 2750,
-        "total_time_seconds": 0.0036244000000000003,
-        "cumulative_time_seconds": 0.049798
+        "total_time_seconds": 0.0043853,
+        "cumulative_time_seconds": 0.0580876
       },
       {
         "caller": "handle_async_request (http11.py:65)",
         "callee": "_receive_response_headers (http11.py:170)",
         "call_count": 500,
-        "total_time_seconds": 0.0008902000000000001,
-        "cumulative_time_seconds": 0.0464824
+        "total_time_seconds": 0.0011672,
+        "cumulative_time_seconds": 0.057498400000000005
       },
       {
         "caller": "build_request (_client.py:320)",
         "callee": "_merge_url (_client.py:371)",
         "call_count": 250,
-        "total_time_seconds": 0.0009780000000000001,
-        "cumulative_time_seconds": 0.0463195
+        "total_time_seconds": 0.0015998000000000002,
+        "cumulative_time_seconds": 0.055581000000000005
       },
       {
         "caller": "_receive_response_headers (http11.py:170)",
         "callee": "_receive_event (http11.py:209)",
         "call_count": 500,
-        "total_time_seconds": 0.0017903,
-        "cumulative_time_seconds": 0.0448773
-      },
-      {
-        "caller": "handle_events (h11_impl.py:177)",
-        "callee": "next_event (_connection.py:438)",
-        "call_count": 1500,
-        "total_time_seconds": 0.0027522000000000002,
-        "cumulative_time_seconds": 0.044080100000000004
-      },
-      {
-        "caller": "_send_event (http11.py:163)",
-        "callee": "write (anyio.py:39)",
-        "call_count": 1250,
-        "total_time_seconds": 0.0024465000000000003,
-        "cumulative_time_seconds": 0.0436573
-      },
-      {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (op_resolve.py:95)",
-        "call_count": 500,
-        "total_time_seconds": 0.0007401,
-        "cumulative_time_seconds": 0.042457600000000005
-      },
-      {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (commit_tx.py:42)",
-        "call_count": 250,
-        "total_time_seconds": 0.0005054,
-        "cumulative_time_seconds": 0.0400594
-      },
-      {
-        "caller": "aiter_raw (_models.py:971)",
-        "callee": "__aiter__ (_client.py:149)",
-        "call_count": 750,
-        "total_time_seconds": 0.00072,
-        "cumulative_time_seconds": 0.039837700000000004
-      },
-      {
-        "caller": "__instancecheck__ (typing.py:1221)",
-        "callee": "__subclasscheck__ (typing.py:1492)",
-        "call_count": 20751,
-        "total_time_seconds": 0.013576900000000001,
-        "cumulative_time_seconds": 0.039577400000000006
-      },
-      {
-        "caller": "_runner (packed.py:523)",
-        "callee": "__setattr__ (types.py:235)",
-        "call_count": 3500,
-        "total_time_seconds": 0.0030444,
-        "cumulative_time_seconds": 0.0389322
-      },
-      {
-        "caller": "__aiter__ (_client.py:149)",
-        "callee": "__aiter__ (default.py:255)",
-        "call_count": 750,
-        "total_time_seconds": 0.0010806000000000001,
-        "cumulative_time_seconds": 0.0386352
-      },
-      {
-        "caller": "aiter_raw (_models.py:971)",
-        "callee": "aclose (_models.py:999)",
-        "call_count": 500,
-        "total_time_seconds": 0.0007672,
-        "cumulative_time_seconds": 0.0378639
-      },
-      {
-        "caller": "<built-in method builtins.getattr> (~:0)",
-        "callee": "__getattribute__ (types.py:145)",
-        "call_count": 55500,
-        "total_time_seconds": 0.036886600000000005,
-        "cumulative_time_seconds": 0.036886600000000005
-      },
-      {
-        "caller": "__aiter__ (default.py:255)",
-        "callee": "__aiter__ (connection_pool.py:401)",
-        "call_count": 750,
-        "total_time_seconds": 0.0007912,
-        "cumulative_time_seconds": 0.0360774
-      },
-      {
-        "caller": "aclose (_models.py:999)",
-        "callee": "aclose (_client.py:153)",
-        "call_count": 500,
-        "total_time_seconds": 0.0011903,
-        "cumulative_time_seconds": 0.0358074
-      },
-      {
-        "caller": "_receive_event (http11.py:209)",
-        "callee": "next_event (_connection.py:438)",
-        "call_count": 1250,
-        "total_time_seconds": 0.0025991,
-        "cumulative_time_seconds": 0.035690400000000004
-      },
-      {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (build_in.py:421)",
-        "call_count": 250,
-        "total_time_seconds": 0.0004693,
-        "cumulative_time_seconds": 0.0353916
+        "total_time_seconds": 0.0025683000000000004,
+        "cumulative_time_seconds": 0.055427000000000004
       },
       {
         "caller": "_execute_clauseelement (base.py:1591)",
         "callee": "_compile_w_cache (elements.py:680)",
         "call_count": 250,
-        "total_time_seconds": 0.0012759000000000002,
-        "cumulative_time_seconds": 0.034982
+        "total_time_seconds": 0.0019615,
+        "cumulative_time_seconds": 0.0541777
       },
       {
-        "caller": "__aiter__ (connection_pool.py:401)",
-        "callee": "__aiter__ (http11.py:330)",
+        "caller": "aiter_raw (_models.py:971)",
+        "callee": "aclose (_models.py:999)",
+        "call_count": 500,
+        "total_time_seconds": 0.0009593000000000001,
+        "cumulative_time_seconds": 0.050773500000000006
+      },
+      {
+        "caller": "_send_event (http11.py:163)",
+        "callee": "write (anyio.py:39)",
+        "call_count": 1250,
+        "total_time_seconds": 0.0028299,
+        "cumulative_time_seconds": 0.0503293
+      },
+      {
+        "caller": "aiter_raw (_models.py:971)",
+        "callee": "__aiter__ (_client.py:149)",
         "call_count": 750,
-        "total_time_seconds": 0.0018083,
-        "cumulative_time_seconds": 0.0348081
+        "total_time_seconds": 0.0009825,
+        "cumulative_time_seconds": 0.050090800000000005
       },
       {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (binding_parse.py:286)",
-        "call_count": 500,
-        "total_time_seconds": 0.0015065,
-        "cumulative_time_seconds": 0.0342084
-      },
-      {
-        "caller": "send (_connection.py:517)",
-        "callee": "send_with_data_passthrough (_connection.py:544)",
+        "caller": "handle_events (h11_impl.py:177)",
+        "callee": "next_event (_connection.py:438)",
         "call_count": 1500,
-        "total_time_seconds": 0.0034543000000000004,
-        "cumulative_time_seconds": 0.0338868
-      },
-      {
-        "caller": "_send_request_headers (http11.py:140)",
-        "callee": "_send_event (http11.py:163)",
-        "call_count": 500,
-        "total_time_seconds": 0.00047270000000000005,
-        "cumulative_time_seconds": 0.0338334
-      },
-      {
-        "caller": "handle_async_request (http11.py:65)",
-        "callee": "_send_request_body (http11.py:152)",
-        "call_count": 500,
-        "total_time_seconds": 0.0022107000000000003,
-        "cumulative_time_seconds": 0.033330000000000005
-      },
-      {
-        "caller": "aclose (_client.py:153)",
-        "callee": "aclose (default.py:260)",
-        "call_count": 500,
-        "total_time_seconds": 0.00036980000000000004,
-        "cumulative_time_seconds": 0.0332621
-      },
-      {
-        "caller": "aclose (default.py:260)",
-        "callee": "aclose (connection_pool.py:409)",
-        "call_count": 500,
-        "total_time_seconds": 0.0016581,
-        "cumulative_time_seconds": 0.0327999
-      },
-      {
-        "caller": "<built-in method builtins.next> (~:0)",
-        "callee": "fail_after (_tasks.py:102)",
-        "call_count": 2000,
-        "total_time_seconds": 0.0036896000000000003,
-        "cumulative_time_seconds": 0.032561
-      },
-      {
-        "caller": "_send_single_request (_client.py:1762)",
-        "callee": "extract_cookies (_models.py:1035)",
-        "call_count": 250,
-        "total_time_seconds": 0.0008062000000000001,
-        "cumulative_time_seconds": 0.032452600000000005
-      },
-      {
-        "caller": "commit (<string>:1)",
-        "callee": "_go (state_changes.py:93)",
-        "call_count": 500,
-        "total_time_seconds": 0.0010426,
-        "cumulative_time_seconds": 0.032055900000000005
+        "total_time_seconds": 0.0031984,
+        "cumulative_time_seconds": 0.0499601
       },
       {
         "caller": "_compile_w_cache (elements.py:680)",
         "callee": "_compiler (elements.py:318)",
         "call_count": 250,
-        "total_time_seconds": 0.0005253,
-        "cumulative_time_seconds": 0.031873200000000004
+        "total_time_seconds": 0.0008734000000000001,
+        "cumulative_time_seconds": 0.0495267
       },
       {
-        "caller": "__aiter__ (http11.py:330)",
-        "callee": "_receive_response_body (http11.py:196)",
-        "call_count": 750,
-        "total_time_seconds": 0.0011503000000000002,
-        "cumulative_time_seconds": 0.031570600000000004
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (op_resolve.py:95)",
+        "call_count": 500,
+        "total_time_seconds": 0.001036,
+        "cumulative_time_seconds": 0.0487753
       },
       {
         "caller": "_compiler (elements.py:318)",
         "callee": "__init__ (compiler.py:1372)",
         "call_count": 250,
-        "total_time_seconds": 0.0017402000000000001,
-        "cumulative_time_seconds": 0.031347900000000005
+        "total_time_seconds": 0.0031042,
+        "cumulative_time_seconds": 0.048653300000000003
       },
       {
-        "caller": "_go (state_changes.py:93)",
-        "callee": "commit (session.py:1304)",
-        "call_count": 500,
-        "total_time_seconds": 0.0034609000000000003,
-        "cumulative_time_seconds": 0.0310133
-      },
-      {
-        "caller": "__call__ (commit_tx.py:42)",
-        "callee": "_run (commit_tx.py:15)",
-        "call_count": 250,
-        "total_time_seconds": 0.0009593000000000001,
-        "cumulative_time_seconds": 0.029805300000000003
-      },
-      {
-        "caller": "_receive_response_body (http11.py:196)",
-        "callee": "_receive_event (http11.py:209)",
+        "caller": "__aiter__ (_client.py:149)",
+        "callee": "__aiter__ (default.py:255)",
         "call_count": 750,
-        "total_time_seconds": 0.0021315,
-        "cumulative_time_seconds": 0.029777800000000004
+        "total_time_seconds": 0.0014558000000000001,
+        "cumulative_time_seconds": 0.048588200000000005
+      },
+      {
+        "caller": "aclose (_models.py:999)",
+        "callee": "aclose (_client.py:153)",
+        "call_count": 500,
+        "total_time_seconds": 0.0021224,
+        "cumulative_time_seconds": 0.048428500000000006
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (commit_tx.py:42)",
+        "call_count": 250,
+        "total_time_seconds": 0.0007138,
+        "cumulative_time_seconds": 0.0480229
       },
       {
         "caller": "_loop_writing (proactor_events.py:376)",
         "callee": "send (windows_events.py:538)",
         "call_count": 1000,
-        "total_time_seconds": 0.0028259,
-        "cumulative_time_seconds": 0.0288669
+        "total_time_seconds": 0.0039030000000000002,
+        "cumulative_time_seconds": 0.0459514
       },
       {
-        "caller": "_receive_event (http11.py:209)",
-        "callee": "read (anyio.py:25)",
-        "call_count": 1000,
-        "total_time_seconds": 0.0024981,
-        "cumulative_time_seconds": 0.028562100000000003
-      },
-      {
-        "caller": "_merge_url (_client.py:371)",
-        "callee": "copy_with (_urls.py:343)",
-        "call_count": 250,
-        "total_time_seconds": 0.0003824,
-        "cumulative_time_seconds": 0.028561700000000002
-      },
-      {
-        "caller": "<built-in method builtins.setattr> (~:0)",
-        "callee": "__setattr__ (types.py:235)",
-        "call_count": 8750,
-        "total_time_seconds": 0.0077678,
-        "cumulative_time_seconds": 0.028348
-      },
-      {
-        "caller": "_send_request_body (http11.py:152)",
-        "callee": "_send_event (http11.py:163)",
+        "caller": "__aiter__ (default.py:255)",
+        "callee": "__aiter__ (connection_pool.py:401)",
         "call_count": 750,
-        "total_time_seconds": 0.0006913,
-        "cumulative_time_seconds": 0.0281981
-      },
-      {
-        "caller": "copy_with (_urls.py:343)",
-        "callee": "__init__ (_urls.py:77)",
-        "call_count": 250,
-        "total_time_seconds": 0.0011065,
-        "cumulative_time_seconds": 0.0281793
-      },
-      {
-        "caller": "_field_exists (types.py:129)",
-        "callee": "fields (dataclasses.py:1278)",
-        "call_count": 6750,
-        "total_time_seconds": 0.016875900000000003,
-        "cumulative_time_seconds": 0.028114700000000003
+        "total_time_seconds": 0.0010498,
+        "cumulative_time_seconds": 0.045441
       },
       {
         "caller": "write (proactor_events.py:338)",
         "callee": "_loop_writing (proactor_events.py:376)",
         "call_count": 750,
-        "total_time_seconds": 0.0015496000000000002,
-        "cumulative_time_seconds": 0.027845500000000002
+        "total_time_seconds": 0.0019607,
+        "cumulative_time_seconds": 0.045087300000000004
       },
       {
-        "caller": "__enter__ (contextlib.py:132)",
-        "callee": "<built-in method builtins.next> (~:0)",
-        "call_count": 6000,
-        "total_time_seconds": 0.0024625000000000003,
-        "cumulative_time_seconds": 0.0277581
-      },
-      {
-        "caller": "_run (commit_tx.py:15)",
-        "callee": "commit (phase_db.py:87)",
-        "call_count": 250,
-        "total_time_seconds": 0.0010127,
-        "cumulative_time_seconds": 0.027224400000000003
-      },
-      {
-        "caller": "__init__ (_urls.py:77)",
-        "callee": "copy_with (_urlparse.py:125)",
+        "caller": "aclose (_client.py:153)",
+        "callee": "aclose (default.py:260)",
         "call_count": 500,
-        "total_time_seconds": 0.0009084000000000001,
-        "cumulative_time_seconds": 0.0267557
+        "total_time_seconds": 0.0004848,
+        "cumulative_time_seconds": 0.044566600000000005
+      },
+      {
+        "caller": "__instancecheck__ (typing.py:1221)",
+        "callee": "__subclasscheck__ (typing.py:1492)",
+        "call_count": 20751,
+        "total_time_seconds": 0.0150907,
+        "cumulative_time_seconds": 0.0440826
+      },
+      {
+        "caller": "aclose (default.py:260)",
+        "callee": "aclose (connection_pool.py:409)",
+        "call_count": 500,
+        "total_time_seconds": 0.0027533,
+        "cumulative_time_seconds": 0.043960900000000004
+      },
+      {
+        "caller": "__aiter__ (connection_pool.py:401)",
+        "callee": "__aiter__ (http11.py:330)",
+        "call_count": 750,
+        "total_time_seconds": 0.0025099000000000002,
+        "cumulative_time_seconds": 0.0438491
+      },
+      {
+        "caller": "_send_single_request (_client.py:1762)",
+        "callee": "extract_cookies (_models.py:1035)",
+        "call_count": 250,
+        "total_time_seconds": 0.0014417000000000002,
+        "cumulative_time_seconds": 0.043821900000000004
+      },
+      {
+        "caller": "_runner (packed.py:525)",
+        "callee": "__setattr__ (types.py:235)",
+        "call_count": 3500,
+        "total_time_seconds": 0.0034423,
+        "cumulative_time_seconds": 0.0437801
+      },
+      {
+        "caller": "_receive_event (http11.py:209)",
+        "callee": "next_event (_connection.py:438)",
+        "call_count": 1250,
+        "total_time_seconds": 0.0031572,
+        "cumulative_time_seconds": 0.0424041
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (build_in.py:421)",
+        "call_count": 250,
+        "total_time_seconds": 0.0006969000000000001,
+        "cumulative_time_seconds": 0.0415885
+      },
+      {
+        "caller": "send (_connection.py:517)",
+        "callee": "send_with_data_passthrough (_connection.py:544)",
+        "call_count": 1500,
+        "total_time_seconds": 0.0042291,
+        "cumulative_time_seconds": 0.0413158
       },
       {
         "caller": "__init__ (compiler.py:1372)",
         "callee": "__init__ (compiler.py:858)",
         "call_count": 250,
-        "total_time_seconds": 0.0007289000000000001,
-        "cumulative_time_seconds": 0.0265909
+        "total_time_seconds": 0.0021412000000000002,
+        "cumulative_time_seconds": 0.0411061
       },
       {
-        "caller": "__call__ (build_in.py:421)",
-        "callee": "_run (build_in.py:43)",
-        "call_count": 250,
-        "total_time_seconds": 0.0032797000000000004,
-        "cumulative_time_seconds": 0.0263858
+        "caller": "<built-in method builtins.getattr> (~:0)",
+        "callee": "__getattribute__ (types.py:145)",
+        "call_count": 55500,
+        "total_time_seconds": 0.0409211,
+        "cumulative_time_seconds": 0.0409211
       },
       {
-        "caller": "commit (phase_db.py:87)",
-        "callee": "commit (session.py:1994)",
-        "call_count": 250,
-        "total_time_seconds": 0.00019950000000000002,
-        "cumulative_time_seconds": 0.0260417
+        "caller": "_send_request_headers (http11.py:140)",
+        "callee": "_send_event (http11.py:163)",
+        "call_count": 500,
+        "total_time_seconds": 0.0006554,
+        "cumulative_time_seconds": 0.0401245
       },
       {
-        "caller": "commit (session.py:1994)",
-        "callee": "commit (<string>:1)",
-        "call_count": 250,
-        "total_time_seconds": 0.00020590000000000002,
-        "cumulative_time_seconds": 0.025842200000000003
+        "caller": "commit (<string>:1)",
+        "callee": "_go (state_changes.py:93)",
+        "call_count": 500,
+        "total_time_seconds": 0.0012542,
+        "cumulative_time_seconds": 0.0396385
+      },
+      {
+        "caller": "__aiter__ (http11.py:330)",
+        "callee": "_receive_response_body (http11.py:196)",
+        "call_count": 750,
+        "total_time_seconds": 0.0013816000000000002,
+        "cumulative_time_seconds": 0.0394704
+      },
+      {
+        "caller": "<built-in method builtins.next> (~:0)",
+        "callee": "fail_after (_tasks.py:102)",
+        "call_count": 2000,
+        "total_time_seconds": 0.0044339,
+        "cumulative_time_seconds": 0.039023300000000004
       },
       {
         "caller": "__init__ (compiler.py:858)",
         "callee": "process (compiler.py:946)",
         "call_count": 250,
-        "total_time_seconds": 0.00026660000000000003,
-        "cumulative_time_seconds": 0.0257799
+        "total_time_seconds": 0.00045260000000000005,
+        "cumulative_time_seconds": 0.0388669
       },
       {
         "caller": "process (compiler.py:946)",
         "callee": "_compiler_dispatch (visitors.py:126)",
         "call_count": 250,
-        "total_time_seconds": 0.0006900000000000001,
-        "cumulative_time_seconds": 0.025513300000000003
+        "total_time_seconds": 0.0008537000000000001,
+        "cumulative_time_seconds": 0.038414300000000005
       },
       {
-        "caller": "copy_with (_urlparse.py:125)",
-        "callee": "urlparse (_urlparse.py:152)",
-        "call_count": 250,
-        "total_time_seconds": 0.0041009,
-        "cumulative_time_seconds": 0.0252519
-      },
-      {
-        "caller": "bind_phase_db (phase_db.py:106)",
-        "callee": "<built-in method builtins.getattr> (~:0)",
-        "call_count": 15750,
-        "total_time_seconds": 0.0080636,
-        "cumulative_time_seconds": 0.0250684
-      },
-      {
-        "caller": "__call__ (op_resolve.py:95)",
-        "callee": "_run (op_resolve.py:49)",
+        "caller": "_go (state_changes.py:93)",
+        "callee": "commit (session.py:1304)",
         "call_count": 500,
-        "total_time_seconds": 0.0040502,
-        "cumulative_time_seconds": 0.0250058
+        "total_time_seconds": 0.004322100000000001,
+        "cumulative_time_seconds": 0.0383843
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (binding_parse.py:286)",
+        "call_count": 500,
+        "total_time_seconds": 0.0018185,
+        "cumulative_time_seconds": 0.0382421
+      },
+      {
+        "caller": "_receive_event (http11.py:209)",
+        "callee": "read (anyio.py:25)",
+        "call_count": 1000,
+        "total_time_seconds": 0.0034976,
+        "cumulative_time_seconds": 0.037789
       },
       {
         "caller": "_compiler_dispatch (visitors.py:126)",
         "callee": "visit_insert (compiler.py:5899)",
         "call_count": 250,
-        "total_time_seconds": 0.0030991,
-        "cumulative_time_seconds": 0.024823300000000003
+        "total_time_seconds": 0.0045484,
+        "cumulative_time_seconds": 0.0375606
       },
       {
-        "caller": "_step (atoms.py:96)",
-        "callee": "isawaitable (inspect.py:468)",
-        "call_count": 16000,
-        "total_time_seconds": 0.008048600000000001,
-        "cumulative_time_seconds": 0.024462
+        "caller": "_receive_response_body (http11.py:196)",
+        "callee": "_receive_event (http11.py:209)",
+        "call_count": 750,
+        "total_time_seconds": 0.0023989000000000003,
+        "cumulative_time_seconds": 0.0373061
       },
       {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (input_prepare.py:43)",
+        "caller": "handle_async_request (http11.py:65)",
+        "callee": "_send_request_body (http11.py:152)",
         "call_count": 500,
-        "total_time_seconds": 0.0007561,
-        "cumulative_time_seconds": 0.0233847
+        "total_time_seconds": 0.0025639,
+        "cumulative_time_seconds": 0.036918900000000004
+      },
+      {
+        "caller": "__call__ (commit_tx.py:42)",
+        "callee": "_run (commit_tx.py:15)",
+        "call_count": 250,
+        "total_time_seconds": 0.0012853,
+        "cumulative_time_seconds": 0.036248
       },
       {
         "caller": "_execute_clauseelement (base.py:1591)",
         "callee": "_execute_context (base.py:1791)",
         "call_count": 250,
-        "total_time_seconds": 0.0010270000000000001,
-        "cumulative_time_seconds": 0.022894900000000003
-      },
-      {
-        "caller": "build_request (_client.py:320)",
-        "callee": "__init__ (_models.py:311)",
-        "call_count": 250,
-        "total_time_seconds": 0.0014171000000000001,
-        "cumulative_time_seconds": 0.0225144
-      },
-      {
-        "caller": "<built-in method builtins.getattr> (~:0)",
-        "callee": "__getattr__ (types.py:152)",
-        "call_count": 28750,
-        "total_time_seconds": 0.0167388,
-        "cumulative_time_seconds": 0.0224706
-      },
-      {
-        "caller": "_extract_next_receive_event (_connection.py:410)",
-        "callee": "maybe_read_from_IDLE_client (_readers.py:75)",
-        "call_count": 500,
-        "total_time_seconds": 0.00185,
-        "cumulative_time_seconds": 0.0224115
-      },
-      {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (to_stored.py:174)",
-        "call_count": 250,
-        "total_time_seconds": 0.00044980000000000004,
-        "cumulative_time_seconds": 0.022386800000000002
+        "total_time_seconds": 0.0017996000000000002,
+        "cumulative_time_seconds": 0.0358119
       },
       {
         "caller": "save_obj (persistence.py:40)",
         "callee": "_organize_states_for_save (persistence.py:211)",
         "call_count": 500,
-        "total_time_seconds": 0.0010589,
-        "cumulative_time_seconds": 0.0223092
+        "total_time_seconds": 0.0016985000000000001,
+        "cumulative_time_seconds": 0.035309900000000005
       },
       {
-        "caller": "next_event (_connection.py:438)",
-        "callee": "_process_event (_connection.py:272)",
-        "call_count": 1500,
-        "total_time_seconds": 0.0061627,
-        "cumulative_time_seconds": 0.0222639
-      },
-      {
-        "caller": "send_with_data_passthrough (_connection.py:544)",
-        "callee": "_process_event (_connection.py:272)",
-        "call_count": 1500,
-        "total_time_seconds": 0.0056056000000000005,
-        "cumulative_time_seconds": 0.021376600000000003
-      },
-      {
-        "caller": "invoke (packed.py:1037)",
-        "callee": "ensure (types.py:272)",
+        "caller": "_run (commit_tx.py:15)",
+        "callee": "commit (phase_db.py:88)",
         "call_count": 250,
-        "total_time_seconds": 0.0018349000000000002,
-        "cumulative_time_seconds": 0.021247000000000002
+        "total_time_seconds": 0.0014732,
+        "cumulative_time_seconds": 0.0331266
       },
       {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (input_normalize.py:56)",
+        "caller": "__enter__ (contextlib.py:132)",
+        "callee": "<built-in method builtins.next> (~:0)",
+        "call_count": 6000,
+        "total_time_seconds": 0.0028134,
+        "cumulative_time_seconds": 0.033053200000000005
+      },
+      {
+        "caller": "_merge_url (_client.py:371)",
+        "callee": "copy_with (_urls.py:343)",
+        "call_count": 250,
+        "total_time_seconds": 0.00047240000000000004,
+        "cumulative_time_seconds": 0.0329015
+      },
+      {
+        "caller": "copy_with (_urls.py:343)",
+        "callee": "__init__ (_urls.py:77)",
+        "call_count": 250,
+        "total_time_seconds": 0.0013382000000000001,
+        "cumulative_time_seconds": 0.0324291
+      },
+      {
+        "caller": "_field_exists (types.py:129)",
+        "callee": "fields (dataclasses.py:1278)",
+        "call_count": 6750,
+        "total_time_seconds": 0.0191867,
+        "cumulative_time_seconds": 0.031910400000000005
+      },
+      {
+        "caller": "commit (phase_db.py:88)",
+        "callee": "commit (session.py:1994)",
+        "call_count": 250,
+        "total_time_seconds": 0.0002902,
+        "cumulative_time_seconds": 0.0314653
+      },
+      {
+        "caller": "__call__ (build_in.py:421)",
+        "callee": "_run (build_in.py:43)",
+        "call_count": 250,
+        "total_time_seconds": 0.0043767,
+        "cumulative_time_seconds": 0.031323300000000005
+      },
+      {
+        "caller": "_send_request_body (http11.py:152)",
+        "callee": "_send_event (http11.py:163)",
+        "call_count": 750,
+        "total_time_seconds": 0.0007925,
+        "cumulative_time_seconds": 0.0311792
+      },
+      {
+        "caller": "commit (session.py:1994)",
+        "callee": "commit (<string>:1)",
+        "call_count": 250,
+        "total_time_seconds": 0.0002266,
+        "cumulative_time_seconds": 0.0311751
+      },
+      {
+        "caller": "<built-in method builtins.setattr> (~:0)",
+        "callee": "__setattr__ (types.py:235)",
+        "call_count": 8750,
+        "total_time_seconds": 0.008527400000000001,
+        "cumulative_time_seconds": 0.0311166
+      },
+      {
+        "caller": "__init__ (_urls.py:77)",
+        "callee": "copy_with (_urlparse.py:125)",
         "call_count": 500,
-        "total_time_seconds": 0.0006515000000000001,
-        "cumulative_time_seconds": 0.020951
-      },
-      {
-        "caller": "_run_once (base_events.py:1909)",
-        "callee": "select (windows_events.py:443)",
-        "call_count": 2250,
-        "total_time_seconds": 0.001807,
-        "cumulative_time_seconds": 0.0209348
-      },
-      {
-        "caller": "write (anyio.py:39)",
-        "callee": "send (_asyncio.py:1311)",
-        "call_count": 1000,
-        "total_time_seconds": 0.0017769,
-        "cumulative_time_seconds": 0.0208966
-      },
-      {
-        "caller": "__subclasscheck__ (typing.py:1492)",
-        "callee": "<built-in method builtins.issubclass> (~:0)",
-        "call_count": 20751,
-        "total_time_seconds": 0.0084352,
-        "cumulative_time_seconds": 0.0199807
-      },
-      {
-        "caller": "extract_cookies (_models.py:1035)",
-        "callee": "__init__ (_models.py:1183)",
-        "call_count": 250,
-        "total_time_seconds": 0.0016868,
-        "cumulative_time_seconds": 0.019927900000000002
+        "total_time_seconds": 0.0010685,
+        "cumulative_time_seconds": 0.030739000000000002
       },
       {
         "caller": "_organize_states_for_save (persistence.py:211)",
         "callee": "_connections_for_states (persistence.py:1745)",
         "call_count": 500,
-        "total_time_seconds": 0.000563,
-        "cumulative_time_seconds": 0.0191377
+        "total_time_seconds": 0.0008233,
+        "cumulative_time_seconds": 0.030714300000000003
       },
       {
-        "caller": "select (windows_events.py:443)",
-        "callee": "_poll (windows_events.py:761)",
-        "call_count": 2250,
-        "total_time_seconds": 0.008072900000000001,
-        "cumulative_time_seconds": 0.0191278
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (to_stored.py:174)",
+        "call_count": 250,
+        "total_time_seconds": 0.0006435000000000001,
+        "cumulative_time_seconds": 0.030165900000000002
+      },
+      {
+        "caller": "send (windows_events.py:538)",
+        "callee": "<method 'WSASend' of '_overlapped.Overlapped' objects> (~:0)",
+        "call_count": 1000,
+        "total_time_seconds": 0.030163400000000003,
+        "cumulative_time_seconds": 0.030163400000000003
       },
       {
         "caller": "visit_insert (compiler.py:5899)",
         "callee": "_get_crud_params (crud.py:114)",
         "call_count": 250,
-        "total_time_seconds": 0.0021229,
-        "cumulative_time_seconds": 0.0191206
+        "total_time_seconds": 0.003735,
+        "cumulative_time_seconds": 0.0296434
+      },
+      {
+        "caller": "copy_with (_urlparse.py:125)",
+        "callee": "urlparse (_urlparse.py:152)",
+        "call_count": 250,
+        "total_time_seconds": 0.0045723000000000005,
+        "cumulative_time_seconds": 0.028979400000000002
+      },
+      {
+        "caller": "__call__ (op_resolve.py:95)",
+        "callee": "_run (op_resolve.py:49)",
+        "call_count": 500,
+        "total_time_seconds": 0.004815300000000001,
+        "cumulative_time_seconds": 0.028778300000000003
+      },
+      {
+        "caller": "bind_phase_db (phase_db.py:107)",
+        "callee": "<built-in method builtins.getattr> (~:0)",
+        "call_count": 15750,
+        "total_time_seconds": 0.009005500000000001,
+        "cumulative_time_seconds": 0.027904500000000002
+      },
+      {
+        "caller": "extract_cookies (_models.py:1035)",
+        "callee": "__init__ (_models.py:1183)",
+        "call_count": 250,
+        "total_time_seconds": 0.0026222000000000003,
+        "cumulative_time_seconds": 0.027608200000000003
+      },
+      {
+        "caller": "build_request (_client.py:320)",
+        "callee": "__init__ (_models.py:311)",
+        "call_count": 250,
+        "total_time_seconds": 0.0020259,
+        "cumulative_time_seconds": 0.0273446
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "isawaitable (inspect.py:468)",
+        "call_count": 16000,
+        "total_time_seconds": 0.0089213,
+        "cumulative_time_seconds": 0.027188200000000003
+      },
+      {
+        "caller": "send (h11_impl.py:459)",
+        "callee": "write (proactor_events.py:338)",
+        "call_count": 750,
+        "total_time_seconds": 0.0016023,
+        "cumulative_time_seconds": 0.026549200000000002
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (input_prepare.py:43)",
+        "call_count": 500,
+        "total_time_seconds": 0.0010220000000000001,
+        "cumulative_time_seconds": 0.026536900000000002
       },
       {
         "caller": "_step (atoms.py:96)",
         "callee": "__call__ (start_tx.py:42)",
         "call_count": 250,
-        "total_time_seconds": 0.00043230000000000005,
-        "cumulative_time_seconds": 0.0190187
+        "total_time_seconds": 0.0006932,
+        "cumulative_time_seconds": 0.0262747
+      },
+      {
+        "caller": "_extract_next_receive_event (_connection.py:410)",
+        "callee": "maybe_read_from_IDLE_client (_readers.py:75)",
+        "call_count": 500,
+        "total_time_seconds": 0.0022026000000000003,
+        "cumulative_time_seconds": 0.025550000000000003
+      },
+      {
+        "caller": "send_with_data_passthrough (_connection.py:544)",
+        "callee": "_process_event (_connection.py:272)",
+        "call_count": 1500,
+        "total_time_seconds": 0.0065867,
+        "cumulative_time_seconds": 0.025485900000000002
+      },
+      {
+        "caller": "write (anyio.py:39)",
+        "callee": "send (_asyncio.py:1311)",
+        "call_count": 1000,
+        "total_time_seconds": 0.0019921,
+        "cumulative_time_seconds": 0.025414100000000002
+      },
+      {
+        "caller": "_execute_context (base.py:1791)",
+        "callee": "_exec_single_context (base.py:1850)",
+        "call_count": 250,
+        "total_time_seconds": 0.0016312000000000002,
+        "cumulative_time_seconds": 0.0252316
+      },
+      {
+        "caller": "next_event (_connection.py:438)",
+        "callee": "_process_event (_connection.py:272)",
+        "call_count": 1500,
+        "total_time_seconds": 0.0068129,
+        "cumulative_time_seconds": 0.024942500000000003
+      },
+      {
+        "caller": "invoke (packed.py:1039)",
+        "callee": "ensure (types.py:272)",
+        "call_count": 250,
+        "total_time_seconds": 0.0025873000000000003,
+        "cumulative_time_seconds": 0.0248203
+      },
+      {
+        "caller": "_run_once (base_events.py:1909)",
+        "callee": "select (windows_events.py:443)",
+        "call_count": 2250,
+        "total_time_seconds": 0.0021069,
+        "cumulative_time_seconds": 0.024558200000000002
+      },
+      {
+        "caller": "_connections_for_states (persistence.py:1745)",
+        "callee": "connection (<string>:1)",
+        "call_count": 500,
+        "total_time_seconds": 0.0008428000000000001,
+        "cumulative_time_seconds": 0.0245379
+      },
+      {
+        "caller": "<built-in method builtins.getattr> (~:0)",
+        "callee": "__getattr__ (types.py:152)",
+        "call_count": 28750,
+        "total_time_seconds": 0.01821,
+        "cumulative_time_seconds": 0.0243827
       },
       {
         "caller": "send (h11_impl.py:459)",
         "callee": "send (_connection.py:517)",
         "call_count": 750,
-        "total_time_seconds": 0.0007790000000000001,
-        "cumulative_time_seconds": 0.0186819
+        "total_time_seconds": 0.0008773,
+        "cumulative_time_seconds": 0.0240133
       },
       {
-        "caller": "__call__ (binding_parse.py:286)",
-        "callee": "_run (binding_parse.py:26)",
+        "caller": "connection (<string>:1)",
+        "callee": "_go (state_changes.py:93)",
         "call_count": 500,
-        "total_time_seconds": 0.0046241,
-        "cumulative_time_seconds": 0.018172
+        "total_time_seconds": 0.0012313,
+        "cumulative_time_seconds": 0.0236951
+      },
+      {
+        "caller": "_step (atoms.py:96)",
+        "callee": "__call__ (input_normalize.py:56)",
+        "call_count": 500,
+        "total_time_seconds": 0.0008830000000000001,
+        "cumulative_time_seconds": 0.0235543
+      },
+      {
+        "caller": "_assign_requests_to_connections (connection_pool.py:270)",
+        "callee": "has_expired (connection.py:187)",
+        "call_count": 500,
+        "total_time_seconds": 0.00036920000000000003,
+        "cumulative_time_seconds": 0.023097700000000002
+      },
+      {
+        "caller": "has_expired (connection.py:187)",
+        "callee": "has_expired (http11.py:274)",
+        "call_count": 500,
+        "total_time_seconds": 0.0008702,
+        "cumulative_time_seconds": 0.022728500000000002
+      },
+      {
+        "caller": "__subclasscheck__ (typing.py:1492)",
+        "callee": "<built-in method builtins.issubclass> (~:0)",
+        "call_count": 20751,
+        "total_time_seconds": 0.0093037,
+        "cumulative_time_seconds": 0.022582400000000002
+      },
+      {
+        "caller": "_go (state_changes.py:93)",
+        "callee": "connection (session.py:1027)",
+        "call_count": 500,
+        "total_time_seconds": 0.0011530000000000002,
+        "cumulative_time_seconds": 0.022463800000000003
+      },
+      {
+        "caller": "select (windows_events.py:443)",
+        "callee": "_poll (windows_events.py:761)",
+        "call_count": 2250,
+        "total_time_seconds": 0.009236900000000001,
+        "cumulative_time_seconds": 0.0224513
       },
       {
         "caller": "invoke (runtime.py:185)",
         "callee": "prepare_channel_context (asgi.py:176)",
         "call_count": 250,
-        "total_time_seconds": 0.0022121000000000003,
-        "cumulative_time_seconds": 0.0179055
-      },
-      {
-        "caller": "__init__ (<string>:2)",
-        "callee": "__setattr__ (types.py:235)",
-        "call_count": 1750,
-        "total_time_seconds": 0.0016251000000000002,
-        "cumulative_time_seconds": 0.017794300000000002
+        "total_time_seconds": 0.0028769000000000004,
+        "cumulative_time_seconds": 0.021935
       },
       {
         "caller": "send (_asyncio.py:1311)",
         "callee": "write (proactor_events.py:338)",
         "call_count": 500,
-        "total_time_seconds": 0.0008523000000000001,
-        "cumulative_time_seconds": 0.0176782
-      },
-      {
-        "caller": "_step (atoms.py:96)",
-        "callee": "__call__ (to_transport_response.py:237)",
-        "call_count": 250,
-        "total_time_seconds": 0.00037820000000000003,
-        "cumulative_time_seconds": 0.017275600000000002
-      },
-      {
-        "caller": "_send_request_headers (http11.py:140)",
-        "callee": "__init__ (_events.py:82)",
-        "call_count": 250,
-        "total_time_seconds": 0.0019804,
-        "cumulative_time_seconds": 0.017245200000000002
-      },
-      {
-        "caller": "_send_event (http11.py:163)",
-        "callee": "send (_connection.py:517)",
-        "call_count": 750,
-        "total_time_seconds": 0.0007170000000000001,
-        "cumulative_time_seconds": 0.017210200000000002
-      },
-      {
-        "caller": "__init__ (_events.py:82)",
-        "callee": "normalize_and_validate (_headers.py:152)",
-        "call_count": 500,
-        "total_time_seconds": 0.007410000000000001,
-        "cumulative_time_seconds": 0.017105600000000002
-      },
-      {
-        "caller": "isawaitable (inspect.py:468)",
-        "callee": "<built-in method builtins.isinstance> (~:0)",
-        "call_count": 26000,
-        "total_time_seconds": 0.0076458,
-        "cumulative_time_seconds": 0.016963600000000002
-      },
-      {
-        "caller": "_extract_next_receive_event (_connection.py:410)",
-        "callee": "maybe_read_from_SEND_RESPONSE_server (_readers.py:94)",
-        "call_count": 500,
-        "total_time_seconds": 0.0019358,
-        "cumulative_time_seconds": 0.016597300000000002
+        "total_time_seconds": 0.0009484000000000001,
+        "cumulative_time_seconds": 0.0218483
       }
     ],
-    "node_count": 146,
+    "node_count": 147,
     "edge_count": 150
   },
   "artifact_path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\tigrbl_create_call_graph_250_ops.json"

@@ -21,7 +21,7 @@ GATE_CLAIMS: dict[str, tuple[str, ...]] = {
     "E": ("clm:gate-013", "clm:gate-014"),
 }
 
-PASSING_CLAIM_STATUSES = {"asserted", "accepted", "certified", "evidenced", "implemented", "passed", "verified"}
+PASSING_CLAIM_STATUSES = {"asserted", "accepted", "certified", "evidenced", "implemented", "passed", "published", "verified"}
 PASSING_EVIDENCE_STATUSES = {"passed", "accepted", "certified", "evidenced", "verified"}
 RUNTIME_LANE_APPLICABILITY = {"required", "void", "not_applicable"}
 RUNTIME_LANE_PATTERNS = (

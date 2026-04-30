@@ -466,8 +466,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -482,7 +482,16 @@
         "spc:2102",
         "spc:2113",
         "spc:2115"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:compiled-loop-regions-001",
@@ -495,8 +504,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -510,7 +519,16 @@
       "spec_ids": [
         "spc:2102",
         "spc:2103"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:yield-iterator-producer-001",
@@ -579,8 +597,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -597,7 +615,16 @@
         "spc:2102",
         "spc:2113",
         "spc:2115"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:protocol-fused-segments-001",
@@ -639,8 +666,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -656,7 +683,16 @@
         "spc:2103",
         "spc:2114",
         "spc:2115"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:rust-protocol-plan-parity-001",
@@ -831,8 +867,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -847,7 +883,16 @@
         "spc:2097",
         "spc:2098",
         "spc:2105"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:http-stream-atom-chains-001",
@@ -860,8 +905,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -876,7 +921,16 @@
         "spc:2103",
         "spc:2104",
         "spc:2106"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:sse-session-message-stream-chains-001",
@@ -889,8 +943,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -905,7 +959,16 @@
         "spc:2103",
         "spc:2104",
         "spc:2106"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:websocket-wss-atom-chains-001",
@@ -918,8 +981,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -934,7 +997,16 @@
         "spc:2100",
         "spc:2103",
         "spc:2107"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:app-framed-message-codec-runtime-001",
@@ -976,8 +1048,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -992,7 +1064,16 @@
         "spc:2097",
         "spc:2100",
         "spc:2109"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:lifespan-runtime-chain-001",
@@ -1005,8 +1086,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1021,7 +1102,16 @@
         "spc:2097",
         "spc:2100",
         "spc:2110"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:binding-subevent-phase-atom-legality-matrix-001",
@@ -1112,8 +1202,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1128,7 +1218,16 @@
         "spc:2098",
         "spc:2101",
         "spc:2111"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:first-class-webhook-delivery-001",
@@ -1141,8 +1240,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1157,7 +1256,16 @@
         "spc:2098",
         "spc:2101",
         "spc:2112"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:anon-access-rest-status-parity-001",
@@ -1171,7 +1279,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1344,8 +1452,8 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
-        "target_claim_tier": "T3",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
@@ -1371,8 +1479,8 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
-        "target_claim_tier": "T3",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
@@ -1398,7 +1506,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1426,7 +1534,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1453,8 +1561,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1644,7 +1752,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1670,7 +1778,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1696,7 +1804,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1722,7 +1830,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1734,7 +1842,16 @@
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:clean-room-package-smoke-lane",
@@ -1748,7 +1865,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1774,7 +1891,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1847,7 +1964,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1885,7 +2002,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1912,7 +2029,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1939,7 +2056,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1966,7 +2083,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -1993,7 +2110,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2020,7 +2137,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2058,7 +2175,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2085,7 +2202,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2176,7 +2293,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2202,7 +2319,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2227,7 +2344,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2252,7 +2369,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2279,7 +2396,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2305,7 +2422,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2332,7 +2449,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2359,7 +2476,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2386,7 +2503,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2414,7 +2531,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2441,7 +2558,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2468,7 +2585,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2495,7 +2612,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2522,7 +2639,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2549,7 +2666,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2576,7 +2693,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2602,7 +2719,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2626,8 +2743,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2849,7 +2966,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2875,7 +2992,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2900,8 +3017,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2939,8 +3056,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -2978,8 +3095,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -3006,8 +3123,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -3046,8 +3163,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -3074,8 +3191,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -3113,8 +3230,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -3183,8 +3300,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -5779,8 +5896,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -5794,7 +5911,16 @@
         "tst:tcase-0015"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:op-004",
@@ -5830,8 +5956,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -5845,7 +5971,16 @@
         "tst:tcase-0015"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:op-005",
@@ -5881,8 +6016,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -5896,7 +6031,16 @@
         "tst:tcase-0015"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:op-006",
@@ -5932,8 +6076,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -5947,7 +6091,16 @@
         "tst:tcase-0015"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:op-007",
@@ -5983,8 +6136,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -5998,7 +6151,16 @@
         "tst:tcase-0015"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:op-008",
@@ -6267,7 +6429,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6294,7 +6456,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6321,7 +6483,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6348,7 +6510,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6374,7 +6536,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6389,7 +6551,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:rfc-7235-http-auth-challenge-semantics",
@@ -6403,7 +6574,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6418,7 +6589,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:rfc-7519",
@@ -6432,7 +6612,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6458,7 +6638,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6473,7 +6653,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:rfc-7636",
@@ -6487,7 +6676,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6513,7 +6702,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6539,7 +6728,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6565,7 +6754,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6591,7 +6780,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6836,7 +7025,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6851,7 +7040,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:http-basic-security-docs-runtime-alignment",
@@ -6865,7 +7063,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6880,7 +7078,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:http-bearer-security-docs-runtime-alignment",
@@ -6894,7 +7101,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6909,7 +7116,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:oauth2-security-docs-runtime-alignment",
@@ -6923,7 +7139,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6938,7 +7154,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:openidconnect-security-docs-runtime-alignment",
@@ -6952,7 +7177,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6967,7 +7192,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:mutualtls-security-docs-runtime-alignment",
@@ -6981,7 +7215,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "conformance",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -6996,7 +7230,16 @@
         "tst:tcase-0012"
       ],
       "requires": [],
-      "spec_ids": []
+      "spec_ids": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:transport-bypass-removal-001",
@@ -7146,8 +7389,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "transport-dispatch",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -7285,13 +7528,14 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:tigrbl-0.3.19-declared-surface-docs-extension-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
@@ -7307,7 +7551,8 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:tcase-0014",
         "tst:tcase-0015",
-        "tst:http-route-system-docs-builders"
+        "tst:http-route-system-docs-builders",
+        "tst:tigrbl-0.3.19-declared-surface-docs-extension-certification"
       ],
       "requires": [
         "feat:docs-support-001"
@@ -7785,7 +8030,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -10193,8 +10438,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -10384,9 +10629,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10423,9 +10668,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10462,9 +10707,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10501,8 +10746,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -10531,8 +10776,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -10561,8 +10806,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -10616,9 +10861,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11004,8 +11249,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -11037,9 +11282,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11065,8 +11310,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -11096,9 +11341,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11135,9 +11380,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11163,9 +11408,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11191,9 +11436,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11230,8 +11475,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -11260,9 +11505,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11288,8 +11533,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -11318,8 +11563,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -11349,9 +11594,9 @@
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -12814,7 +13059,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "server-support",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -12842,7 +13087,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "server-support",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -12870,7 +13115,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "server-support",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -12898,7 +13143,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "server-support",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -13689,7 +13934,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "runtime-root-surface",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -13852,7 +14097,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -15810,8 +16055,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "op-dependency-execution",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -15822,7 +16067,8 @@
       ],
       "claim_ids": [
         "clm:pre-tx-dependency-execution-contract-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:runtime-parity-lane-governance-001",
+        "clm:tigrbl-0.3.19-pre-tx-security-dependency-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
@@ -15832,7 +16078,8 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py",
         "tst:runtime-parity-lane-governance-validator",
         "tst:pre-tx-security-failure-skips-extra-dependencies",
-        "tst:pre-tx-dependency-single-execution-contract"
+        "tst:pre-tx-dependency-single-execution-contract",
+        "tst:tigrbl-0.3.19-pre-tx-security-dependency-certification"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -15894,8 +16141,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "conformance",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -15933,8 +16180,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "conformance",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -15972,8 +16219,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "conformance",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -16530,8 +16777,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "surface-inventory",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -16560,8 +16807,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "next",
-        "slot": "spec-composition",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -16996,7 +17243,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17035,7 +17282,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "appspec-corpus",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17075,7 +17322,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "appspec-corpus",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17143,8 +17390,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "explicit",
-        "slot": "rel:tigrbl-tests-failing-case-closure-20260421",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17198,7 +17445,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17229,7 +17476,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17260,7 +17507,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17291,7 +17538,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17324,7 +17571,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17355,7 +17602,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17398,7 +17645,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17429,7 +17676,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17460,7 +17707,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17504,7 +17751,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "jsonrpc-validation-hardening",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17545,7 +17792,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "jsonrpc-validation-hardening",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -17585,7 +17832,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "authn-provider-integration-status",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -21814,8 +22061,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "explicit",
-        "slot": "buildability-baseline-001",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -21842,7 +22089,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "external-error-sanitization",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -21884,8 +22131,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": "protocol-runtime-governance",
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22228,8 +22475,8 @@
         "note": null
       },
       "plan": {
-        "horizon": "future",
-        "slot": null,
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22254,7 +22501,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22279,7 +22526,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22304,7 +22551,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22329,7 +22576,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22354,7 +22601,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22365,7 +22612,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-clickhouse-001",
@@ -22379,7 +22635,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22390,7 +22646,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-csv-001",
@@ -22404,7 +22669,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22415,7 +22680,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-dataframe-001",
@@ -22429,7 +22703,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22440,7 +22714,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-duckdb-001",
@@ -22454,7 +22737,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22465,7 +22748,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-inmemcache-001",
@@ -22479,7 +22771,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22490,7 +22782,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-inmemory-001",
@@ -22504,7 +22805,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22515,7 +22816,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-membloom-001",
@@ -22529,7 +22839,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22540,7 +22850,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-memdedupe-001",
@@ -22554,7 +22873,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22565,7 +22884,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-memkv-001",
@@ -22579,7 +22907,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22590,7 +22918,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-memlru-001",
@@ -22604,7 +22941,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22615,7 +22952,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-mempubsub-001",
@@ -22629,7 +22975,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22640,7 +22986,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-memqueue-001",
@@ -22654,7 +23009,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22665,7 +23020,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-memrate-001",
@@ -22679,7 +23043,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22690,7 +23054,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-numpy-001",
@@ -22704,7 +23077,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22715,7 +23088,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-pandas-001",
@@ -22729,7 +23111,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22740,7 +23122,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-pgsqli-wal-001",
@@ -22754,7 +23145,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22765,7 +23156,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-postgres-001",
@@ -22779,7 +23179,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22790,7 +23190,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-pyspark-001",
@@ -22804,7 +23213,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22815,7 +23224,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-redis-001",
@@ -22829,7 +23247,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22840,7 +23258,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-rediscachethrough-001",
@@ -22854,7 +23281,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22865,7 +23292,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-snowflake-001",
@@ -22879,7 +23315,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22890,7 +23326,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-sqlite-001",
@@ -22904,7 +23349,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22915,7 +23360,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-engine-xlsx-001",
@@ -22929,7 +23383,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22940,7 +23394,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-ops-olap-001",
@@ -22954,7 +23417,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22979,7 +23442,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -22990,7 +23453,16 @@
       "test_ids": [
         "tst:package-coordinate-traceability-gap-current"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This 0.3.19 certification boundary row is a Python-facing framework, documentation, operator, security-scheme, package-coordinate, or governance surface; Rust runtime parity is tracked by dedicated parity rows."
+        }
+      }
     },
     {
       "id": "feat:package-coordinate-tigrbl-ops-realtime-001",
@@ -23004,7 +23476,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23029,7 +23501,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23054,7 +23526,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23079,7 +23551,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23104,7 +23576,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23129,7 +23601,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": "runtime-contract",
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23156,7 +23628,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23181,7 +23653,7 @@
       },
       "plan": {
         "horizon": "current",
-        "slot": null,
+        "slot": "tigrbl-0.3.19-certification",
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
@@ -23193,6 +23665,144 @@
         "tst:spiffe-svid-structural-validator-contract"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:atom-parity-err-classify-001",
+      "title": "Atom parity err classify",
+      "description": "Tracks Python/Rust atom parity for err.classify with inventory state python_only.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "python-rust-fully-paritable-suite",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2090",
+        "spc:2092",
+        "spc:2093"
+      ],
+      "claim_ids": [
+        "clm:python-rust-atom-inventory-complete",
+        "clm:python-rust-atom-parity-corpus",
+        "clm:python-rust-kernelplan-parity",
+        "clm:python-rust-parity-boundary-closed",
+        "clm:python-rust-parity-evidence-fresh"
+      ],
+      "test_ids": [
+        "tst:python-rust-atom-inventory-drift",
+        "tst:python-rust-atom-parity-corpus",
+        "tst:python-rust-kernelplan-parity-snapshot",
+        "tst:python-rust-boundary-certification-graph",
+        "tst:python-rust-parity-evidence-freshness"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "No Rust atom exists for this current Python runtime atom in crates/tigrbl_rs_atoms/src; the gap is tracked explicitly by the parity inventory."
+        }
+      }
+    },
+    {
+      "id": "feat:atom-parity-err-ctx-build-001",
+      "title": "Atom parity err ctx_build",
+      "description": "Tracks Python/Rust atom parity for err.ctx_build with inventory state python_only.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "python-rust-fully-paritable-suite",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2090",
+        "spc:2092",
+        "spc:2093"
+      ],
+      "claim_ids": [
+        "clm:python-rust-atom-inventory-complete",
+        "clm:python-rust-atom-parity-corpus",
+        "clm:python-rust-kernelplan-parity",
+        "clm:python-rust-parity-boundary-closed",
+        "clm:python-rust-parity-evidence-fresh"
+      ],
+      "test_ids": [
+        "tst:python-rust-atom-inventory-drift",
+        "tst:python-rust-atom-parity-corpus",
+        "tst:python-rust-kernelplan-parity-snapshot",
+        "tst:python-rust-boundary-certification-graph",
+        "tst:python-rust-parity-evidence-freshness"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "No Rust atom exists for this current Python runtime atom in crates/tigrbl_rs_atoms/src; the gap is tracked explicitly by the parity inventory."
+        }
+      }
+    },
+    {
+      "id": "feat:atom-parity-err-transport-shape-001",
+      "title": "Atom parity err transport_shape",
+      "description": "Tracks Python/Rust atom parity for err.transport_shape with inventory state python_only.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "python-rust-fully-paritable-suite",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2090",
+        "spc:2092",
+        "spc:2093"
+      ],
+      "claim_ids": [
+        "clm:python-rust-atom-inventory-complete",
+        "clm:python-rust-atom-parity-corpus",
+        "clm:python-rust-kernelplan-parity",
+        "clm:python-rust-parity-boundary-closed",
+        "clm:python-rust-parity-evidence-fresh"
+      ],
+      "test_ids": [
+        "tst:python-rust-atom-inventory-drift",
+        "tst:python-rust-atom-parity-corpus",
+        "tst:python-rust-kernelplan-parity-snapshot",
+        "tst:python-rust-boundary-certification-graph",
+        "tst:python-rust-parity-evidence-freshness"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "No Rust atom exists for this current Python runtime atom in crates/tigrbl_rs_atoms/src; the gap is tracked explicitly by the parity inventory."
+        }
+      }
     }
   ],
   "tests": [
@@ -37253,7 +37863,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -37349,7 +37962,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -37445,7 +38061,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -37541,7 +38160,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -37637,7 +38259,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -39384,6 +40009,38 @@
       "evidence_ids": [
         "evd:spec-contracts-table-registry-template-pytest"
       ]
+    },
+    {
+      "id": "tst:tigrbl-0.3.19-declared-surface-docs-extension-certification",
+      "title": "Tigrbl 0.3.19 declared surface docs extension test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py",
+      "feature_ids": [
+        "feat:declared-surface-docs-extension-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-0.3.19-declared-surface-docs-extension-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-0.3.19-declared-surface-docs-extension-certification"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-0.3.19-pre-tx-security-dependency-certification",
+      "title": "Tigrbl 0.3.19 pre-TX security dependency test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py",
+      "feature_ids": [
+        "feat:pre-tx-security-dependency-execution-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-0.3.19-pre-tx-security-dependency-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-0.3.19-pre-tx-security-dependency-certification"
+      ]
     }
   ],
   "claims": [
@@ -39525,7 +40182,7 @@
     {
       "id": "clm:cert-001",
       "title": "CERT-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T3",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CERT-001.",
@@ -39551,7 +40208,7 @@
     {
       "id": "clm:cert-002",
       "title": "CERT-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T3",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CERT-002.",
@@ -39578,7 +40235,7 @@
     {
       "id": "clm:cli-001",
       "title": "CLI-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CLI-001.",
@@ -39601,7 +40258,7 @@
     {
       "id": "clm:cli-002",
       "title": "CLI-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row CLI-002.",
@@ -39762,7 +40419,7 @@
     {
       "id": "clm:docs-support-001",
       "title": "OpenAPI, OpenRPC, AsyncAPI, and JSON Schema read from canonical metadata sources.",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "OpenAPI consumes route-facing metadata from Route plus bindings/models/schemas, while OpenRPC, AsyncAPI, and JSON Schema continue to derive from their canonical op, binding, and schema inputs without a docs-owned route registry.",
@@ -39784,7 +40441,7 @@
     {
       "id": "clm:docs-support-002",
       "title": "Documentation endpoints mount as ordinary routes and normalized route-backed ops.",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Documentation and system endpoints are mounted as ordinary imperative routes, set inherit_owner_dependencies=False where required, and normalize into the same __tigrbl_route_ops__ carrier without any surface_kind abstraction.",
@@ -39881,7 +40538,7 @@
     {
       "id": "clm:evid-001",
       "title": "EVID-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-001.",
@@ -39905,7 +40562,7 @@
     {
       "id": "clm:evid-002",
       "title": "EVID-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-002.",
@@ -39929,7 +40586,7 @@
     {
       "id": "clm:evid-003",
       "title": "EVID-003 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-003.",
@@ -39957,7 +40614,7 @@
     {
       "id": "clm:evid-004",
       "title": "EVID-004 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-004.",
@@ -39981,7 +40638,7 @@
     {
       "id": "clm:evid-005",
       "title": "EVID-005 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-005.",
@@ -40003,7 +40660,7 @@
     {
       "id": "clm:evid-006",
       "title": "EVID-006 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row EVID-006.",
@@ -40044,7 +40701,7 @@
     {
       "id": "clm:factories-001",
       "title": "Factories are canonical and shortcuts re-export factory aliases.",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The canonical construction surface lives under factories for make*/define*/derive* helpers and direct factory aliases such as acol, vcol, and op, while shortcuts remains a thin re-export layer.",
@@ -40062,7 +40719,7 @@
     {
       "id": "clm:gate-001",
       "title": "Gate A boundary-freeze marker exists for the current cycle",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-001: Gate A boundary-freeze marker exists for the current cycle. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `docs/conformance/gates/TARGET_FREEZE_CURRENT_CYCLE.json`",
@@ -40087,7 +40744,7 @@
     {
       "id": "clm:gate-002",
       "title": "Gate A boundary-freeze manifest exists",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-002: Gate A boundary-freeze manifest exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `docs/conformance/gates/GATE_A_BOUNDARY_FREEZE_MANIFEST.json`",
@@ -40112,7 +40769,7 @@
     {
       "id": "clm:gate-003",
       "title": "Boundary-freeze diff enforcement exists",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-003: Boundary-freeze diff enforcement exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/enforce_boundary_freeze_diff.py`",
@@ -40137,7 +40794,7 @@
     {
       "id": "clm:gate-004",
       "title": "Boundary-freeze manifest validation exists",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-004: Boundary-freeze manifest validation exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_boundary_freeze_manifest.py`",
@@ -40162,7 +40819,7 @@
     {
       "id": "clm:gate-005",
       "title": "Release-note claim lint exists",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-005: Release-note claim lint exists. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/lint_release_note_claims.py`",
@@ -40187,7 +40844,7 @@
     {
       "id": "clm:gate-006",
       "title": "Gate A validation suite passes in the checkpoint tree",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-006: Gate A validation suite passes in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/audit/2026/p6-rfc-sec/README.md`, `docs/conformance/audit/2026/phase7-operator-surface/README.md`, `docs/conformance/audit/2026/p8-cli/README.md`",
@@ -40212,7 +40869,7 @@
     {
       "id": "clm:gate-007",
       "title": "Gate B surface-closure conditions are satisfied and machine-checked in the checkpoint tree",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-007: Gate B surface-closure conditions are satisfied and machine-checked in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md`, `docs/conformance/audit/2026/p10-gate-b/README.md`, `tools/ci/validate_gate_b_surface_closure.py`",
@@ -40239,7 +40896,7 @@
     {
       "id": "clm:gate-008",
       "title": "Gate B surface-closure validator and workflow exist",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-008: Gate B surface-closure validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_b_surface_closure.py`, `tools/ci/tests/test_gate_b_surface_closure.py`, `.github/workflows/gate-b-surface-closure.yml`",
@@ -40302,7 +40959,7 @@
     {
       "id": "clm:gate-010",
       "title": "Gate C conformance/security validator and workflow exist",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-010: Gate C conformance/security validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_c_conformance_security.py`, `tools/ci/tests/test_gate_c_conformance_security.py`, `.github/workflows/gate-c-conformance-security.yml`",
@@ -40324,7 +40981,7 @@
     {
       "id": "clm:gate-011",
       "title": "Gate D reproducibility conditions are satisfied and machine-checked in the checkpoint tree",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-011: Gate D reproducibility conditions are satisfied and machine-checked in the checkpoint tree. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, `docs/conformance/gates/GATE_D_REPRODUCIBILITY.md`, `docs/conformance/audit/2026/p12-gate-d/README.md`, `tools/ci/validate_gate_d_reproducibility.py`",
@@ -40348,7 +41005,7 @@
     {
       "id": "clm:gate-012",
       "title": "Gate D reproducibility validator and workflow exist",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-012: Gate D reproducibility validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_d_reproducibility.py`, `tools/ci/tests/test_gate_d_reproducibility.py`, `.github/workflows/gate-d-reproducibility.yml`",
@@ -40367,7 +41024,7 @@
     {
       "id": "clm:gate-013",
       "title": "Gate E promotion conditions are satisfied and synchronized on the exact chosen dev build and promoted stable release",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-013: Gate E promotion conditions are satisfied and synchronized on the exact chosen dev build and promoted stable release. Registry state: verified in checkpoint. Tier: Tier 2. Category: Governance. Evidence roots: `docs/conformance/releases/0.3.18/RELEASE_NOTES.md`, `docs/conformance/releases/0.3.18/CLAIMS.md`, `docs/conformance/releases/0.3.18/EVIDENCE_INDEX.md`, `docs/conformance/releases/0.3.18/CURRENT_TARGET_SNAPSHOT.md`, `docs/conformance/releases/0.3.18/gate-results/gate-e-promotion.md`, `docs/conformance/releases/0.3.18/artifacts/artifact-manifest.json`, `docs/conformance/audit/2026/p13-gate-e/README.md`, `tools/ci/validate_gate_e_promotion.py`",
@@ -40397,7 +41054,7 @@
     {
       "id": "clm:gate-014",
       "title": "Gate E promotion validator and workflow exist",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface GATE-014: Gate E promotion validator and workflow exist. Registry state: implemented. Tier: Tier 1. Category: Governance. Evidence roots: `tools/ci/validate_gate_e_promotion.py`, `tools/ci/tests/test_gate_e_promotion.py`, `.github/workflows/gate-e-promotion.yml`",
@@ -40420,7 +41077,7 @@
     {
       "id": "clm:gov-001",
       "title": "GOV-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-001.",
@@ -40445,7 +41102,7 @@
     {
       "id": "clm:gov-002",
       "title": "GOV-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-002.",
@@ -40470,7 +41127,7 @@
     {
       "id": "clm:gov-003",
       "title": "GOV-003 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-003.",
@@ -40495,7 +41152,7 @@
     {
       "id": "clm:gov-004",
       "title": "GOV-004 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-004.",
@@ -40520,7 +41177,7 @@
     {
       "id": "clm:gov-005",
       "title": "GOV-005 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-005.",
@@ -40545,7 +41202,7 @@
     {
       "id": "clm:gov-006",
       "title": "GOV-006 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-006.",
@@ -40570,7 +41227,7 @@
     {
       "id": "clm:gov-007",
       "title": "GOV-007 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-007.",
@@ -40595,7 +41252,7 @@
     {
       "id": "clm:gov-008",
       "title": "GOV-008 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-008.",
@@ -40620,7 +41277,7 @@
     {
       "id": "clm:gov-009",
       "title": "GOV-009 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-009.",
@@ -40645,7 +41302,7 @@
     {
       "id": "clm:gov-010",
       "title": "GOV-010 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row GOV-010.",
@@ -40670,7 +41327,7 @@
     {
       "id": "clm:handoff-001",
       "title": "HANDOFF-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row HANDOFF-001.",
@@ -40695,7 +41352,7 @@
     {
       "id": "clm:handoff-002",
       "title": "HANDOFF-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row HANDOFF-002.",
@@ -40716,7 +41373,7 @@
     {
       "id": "clm:http-route-001",
       "title": "HTTP routes are concrete op aliases with HttpRestBindingSpec bindings.",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Binding-first REST decorators materialize concrete custom ops through op_ctx(bindings=(HttpRestBindingSpec(...), ...)), and imperative HTTP routes normalize equivalent route-backed ops into the owner-local __tigrbl_route_ops__ spec carrier.",
@@ -40736,7 +41393,7 @@
     {
       "id": "clm:http-route-002",
       "title": "System document HTTP routes use the same concrete registration path as user routes.",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "OpenAPI, OpenRPC, AsyncAPI, JSON Schema, Swagger, Lens, favicon, and diagnostics endpoints mount as ordinary routes and normalize into the same route-backed op carrier as user-defined imperative routes.",
@@ -40759,7 +41416,7 @@
     {
       "id": "clm:http-route-003",
       "title": "Deprecated tigrbl_canon HTTP route registration surfaces are removed from the active line.",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The active line exposes no separate HTTP route registration subsystem: module-level route_ctx(...) and route(...) are removed, register_http_route(...) is absent, and route normalization happens through ordinary decorators and imperative route ownership.",
@@ -40812,7 +41469,7 @@
     {
       "id": "clm:next-001",
       "title": "NEXT-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row NEXT-001.",
@@ -40837,7 +41494,7 @@
     {
       "id": "clm:next-002",
       "title": "NEXT-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row NEXT-002.",
@@ -40860,7 +41517,7 @@
     {
       "id": "clm:next-003",
       "title": "DataTypeSpec and StorageTypeRef define the active canonical semantic datatype center for the next target.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -40885,7 +41542,7 @@
     {
       "id": "clm:next-004",
       "title": "ColumnSpec.datatype is the canonical datatype attachment point on the active next-target line.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -40910,7 +41567,7 @@
     {
       "id": "clm:next-005",
       "title": "TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype contract on the active next-target line.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -40935,7 +41592,7 @@
     {
       "id": "clm:next-006",
       "title": "EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned lowering on the active next-target line.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -40961,7 +41618,7 @@
     {
       "id": "clm:next-007",
       "title": "ReflectedTypeMapper governs reverse mapping and reflection import behavior on the active next-target line.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -40986,7 +41643,7 @@
     {
       "id": "clm:next-008",
       "title": "Relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -41009,7 +41666,7 @@
     {
       "id": "clm:next-009",
       "title": "Table portability and interoperability rules are specified as governed next-target work on the active line.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -41031,7 +41688,7 @@
     {
       "id": "clm:next-010",
       "title": "Reflection-driven round-trip schema recovery is defined with best-effort and metadata-preserving modes on the active next-target line.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "",
@@ -41905,7 +42562,7 @@
     {
       "id": "clm:op-003",
       "title": "OP-003 mapped claim",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-003.",
@@ -41931,7 +42588,7 @@
     {
       "id": "clm:op-004",
       "title": "OP-004 mapped claim",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-004.",
@@ -41957,7 +42614,7 @@
     {
       "id": "clm:op-005",
       "title": "OP-005 mapped claim",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-005.",
@@ -41983,7 +42640,7 @@
     {
       "id": "clm:op-006",
       "title": "OP-006 mapped claim",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-006.",
@@ -42009,7 +42666,7 @@
     {
       "id": "clm:op-007",
       "title": "OP-007 mapped claim",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row OP-007.",
@@ -42160,7 +42817,7 @@
     {
       "id": "clm:path-001",
       "title": "PATH-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row PATH-001.",
@@ -42185,7 +42842,7 @@
     {
       "id": "clm:path-002",
       "title": "PATH-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row PATH-002.",
@@ -42210,7 +42867,7 @@
     {
       "id": "clm:path-003",
       "title": "PATH-003 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row PATH-003.",
@@ -42235,7 +42892,7 @@
     {
       "id": "clm:rfc-6749",
       "title": "RFC-6749 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-6749.",
@@ -42259,7 +42916,7 @@
     {
       "id": "clm:rfc-6750",
       "title": "RFC-6750 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-6750.",
@@ -42285,7 +42942,7 @@
     {
       "id": "clm:rfc-7235",
       "title": "RFC-7235 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-7235.",
@@ -42311,7 +42968,7 @@
     {
       "id": "clm:rfc-7519",
       "title": "RFC-7519 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-7519.",
@@ -42335,7 +42992,7 @@
     {
       "id": "clm:rfc-7617",
       "title": "RFC-7617 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-7617.",
@@ -42361,7 +43018,7 @@
     {
       "id": "clm:rfc-7636",
       "title": "RFC-7636 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-7636.",
@@ -42385,7 +43042,7 @@
     {
       "id": "clm:rfc-8414",
       "title": "RFC-8414 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-8414.",
@@ -42409,7 +43066,7 @@
     {
       "id": "clm:rfc-8705",
       "title": "RFC-8705 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-8705.",
@@ -42433,7 +43090,7 @@
     {
       "id": "clm:rfc-9110",
       "title": "RFC-9110 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-9110.",
@@ -42457,7 +43114,7 @@
     {
       "id": "clm:rfc-9449",
       "title": "RFC-9449 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row RFC-9449.",
@@ -42592,7 +43249,7 @@
     {
       "id": "clm:sec-001",
       "title": "SEC-001 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-001.",
@@ -42618,7 +43275,7 @@
     {
       "id": "clm:sec-002",
       "title": "SEC-002 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-002.",
@@ -42644,7 +43301,7 @@
     {
       "id": "clm:sec-003",
       "title": "SEC-003 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-003.",
@@ -42670,7 +43327,7 @@
     {
       "id": "clm:sec-004",
       "title": "SEC-004 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-004.",
@@ -42696,7 +43353,7 @@
     {
       "id": "clm:sec-005",
       "title": "SEC-005 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-005.",
@@ -42722,7 +43379,7 @@
     {
       "id": "clm:sec-006",
       "title": "SEC-006 mapped claim",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "Imported from docs/conformance/EVIDENCE_REGISTRY.json row SEC-006.",
@@ -42783,7 +43440,7 @@
     {
       "id": "clm:transport-parity-contract-001",
       "title": "REST and JSON-RPC parity remains the governed semantic contract for the shared transport-dispatch path.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The transport-dispatch track preserves REST and JSON-RPC parity as a semantic contract and rejects test-only relaxation as the repair strategy.",
@@ -42814,7 +43471,7 @@
     {
       "id": "clm:server-support-tigrcorn-001",
       "title": "Tigrcorn is part of the governed supported server set.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Tigrcorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -42831,7 +43488,7 @@
     {
       "id": "clm:server-support-uvicorn-001",
       "title": "Uvicorn is part of the governed supported server set.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Uvicorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -42848,7 +43505,7 @@
     {
       "id": "clm:server-support-hypercorn-001",
       "title": "Hypercorn is part of the governed supported server set.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Hypercorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -42865,7 +43522,7 @@
     {
       "id": "clm:server-support-gunicorn-001",
       "title": "Gunicorn is part of the governed supported server set.",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "Gunicorn remains inside the governed first-class server set for the unified CLI server-selection contract.",
@@ -42975,7 +43632,7 @@
     {
       "id": "clm:appspec-routerspec-composition-contract-001",
       "title": "AppSpec and RouterSpec nested composition remains typed",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "AppSpec accepts RouterSpec instances whose router-owned tables carry model_ref, response, operations, storage, field, IO, and foreign-key metadata without unresolved string surfaces.",
@@ -43750,7 +44407,7 @@
     {
       "id": "clm:ssot-authority-projection-001",
       "title": "SSOT is authoritative over docs and CI projections.",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "governance",
       "description": "SSOT registry, ADR, and SPEC records define governed truth; docs and CI are projections and guardrails.",
@@ -43772,7 +44429,7 @@
     {
       "id": "clm:feature-test-coverage-completeness-001",
       "title": "Every SSOT in-scope feature has verification coverage or a governance validator rationale.",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "governance",
       "description": "Feature rows link to tests; governance-only rows can be covered by the SSOT authority validator.",
@@ -43792,7 +44449,7 @@
     {
       "id": "clm:gate-status-derived-001",
       "title": "Gate status derives from SSOT claims and evidence.",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "governance",
       "description": "Gate outcomes are release-decision aggregations over SSOT claims and evidence, not direct feature tests.",
@@ -43811,7 +44468,7 @@
     {
       "id": "clm:boundary-test-selection-deterministic-001",
       "title": "Boundary-scoped test selection is deterministic.",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "governance",
       "description": "Boundary and release inputs resolve to stable sorted feature, claim, test, and evidence manifests.",
@@ -43832,7 +44489,7 @@
     {
       "id": "clm:status-sync-auditable-001",
       "title": "Status synchronization is auditable and reproducible.",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "governance",
       "description": "Status changes are derived from machine-readable test results and can be emitted as dry-run audit artifacts before registry mutation.",
@@ -43855,7 +44512,7 @@
     {
       "id": "clm:tool-test-gate-taxonomy-001",
       "title": "Tools, tests, evidence, claims, and gates have separate SSOT roles.",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "governance",
       "description": "Tools execute; tests verify; evidence records proof; claims assert proof meaning; gates aggregate release decisions.",
@@ -44459,7 +45116,7 @@
     {
       "id": "clm:python-rust-atom-inventory-complete",
       "title": "Python/Rust atom inventory is SSOT complete",
-      "status": "certified",
+      "status": "asserted",
       "tier": "T2",
       "kind": "inventory",
       "description": "Generated inventory maps every discovered Python and Rust atom to a parity feature or explicit lane exception.",
@@ -44481,7 +45138,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -44556,7 +45216,7 @@
     {
       "id": "clm:python-rust-atom-parity-corpus",
       "title": "Python/Rust atom parity corpus is executable",
-      "status": "certified",
+      "status": "asserted",
       "tier": "T2",
       "kind": "parity",
       "description": "The shared corpus defines input, output, side-effect, error, ordering, and trace-label checks for governed atom pairs.",
@@ -44578,7 +45238,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -44653,7 +45316,7 @@
     {
       "id": "clm:python-rust-kernelplan-parity",
       "title": "Python/Rust KernelPlan parity remains governed",
-      "status": "certified",
+      "status": "asserted",
       "tier": "T2",
       "kind": "parity",
       "description": "KernelPlan parity snapshots remain part of the fully paritable suite boundary.",
@@ -44675,7 +45338,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -44750,7 +45416,7 @@
     {
       "id": "clm:python-rust-parity-boundary-closed",
       "title": "Python/Rust fully paritable suite boundary is closed",
-      "status": "certified",
+      "status": "asserted",
       "tier": "T2",
       "kind": "certification",
       "description": "The frozen boundary carries feature, test, claim, and evidence links for every generated parity unit.",
@@ -44772,7 +45438,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -44847,7 +45516,7 @@
     {
       "id": "clm:python-rust-parity-evidence-fresh",
       "title": "Python/Rust parity evidence is fresh",
-      "status": "certified",
+      "status": "asserted",
       "tier": "T2",
       "kind": "evidence",
       "description": "Generated reports under .ssot/reports exist and match the current atom inventory.",
@@ -44869,7 +45538,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -44944,7 +45616,7 @@
     {
       "id": "clm:pkg-buildability-importability-001",
       "title": "Package buildability and importability coverage",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "package-quality",
       "description": "All packages under pkgs are importable and syntax-checked under the package buildability-and-importability spec.",
@@ -44961,7 +45633,7 @@
     {
       "id": "clm:external-error-detail-sanitization-001",
       "title": "External persistence error details are not exposed",
-      "status": "asserted",
+      "status": "published",
       "tier": "T2",
       "kind": "security-conformance",
       "description": "HTTP and JSON-RPC transport error responses sanitize persistence-layer exceptions and do not expose ORM, DBAPI, SQL text, table names, or bound parameters externally.",
@@ -44983,7 +45655,7 @@
     {
       "id": "clm:default-root-path-contract-001",
       "title": "Default root path contract is covered by Python and Rust tests",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The default root path contract has explicit Python unit and Rust runtime contract coverage linked through SSOT evidence rows.",
@@ -45308,7 +45980,7 @@
     {
       "id": "clm:protocol-phase-tree-plans-contract-001",
       "title": "Protocol phase tree plans target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Protocol plans compile deterministic phase trees with canonical phase names, node identities, typed ok/err child edges, and legal linear projections.",
@@ -45376,7 +46048,7 @@
     {
       "id": "clm:tree-loop-aware-executors-contract-001",
       "title": "Tree and loop aware executors target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Loop-aware executors honor continuation, break, close, disconnect, loop-local errors, and ErrorCtx routing without flattening phase-tree semantics.",
@@ -45410,7 +46082,7 @@
     {
       "id": "clm:http-stream-atom-chains-contract-001",
       "title": "HTTP stream atom chains target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "HTTP stream atom chains compile iterator, chunk emission, disconnect finalization, and POST_EMIT completion-fence behavior.",
@@ -45444,7 +46116,7 @@
     {
       "id": "clm:sse-session-message-stream-chains-contract-001",
       "title": "SSE session message stream chains target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "SSE chains declare session open/close, stream start/end, message emission, heartbeat emission, disconnect handling, and POST_EMIT completion.",
@@ -45461,7 +46133,7 @@
     {
       "id": "clm:websocket-wss-atom-chains-contract-001",
       "title": "WebSocket and WSS atom chains target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "WebSocket/WSS chains compile connect, accept, receive loop, decode, handler, send, close, close metadata, and WSS scope metadata behavior.",
@@ -45546,7 +46218,7 @@
     {
       "id": "clm:compiled-loop-regions-contract-001",
       "title": "Compiled loop regions target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Loop regions compile into phase-tree structures with continue, exit, close, completion fence, err edge, ErrorCtx metadata, and fail-closed validation.",
@@ -45563,7 +46235,7 @@
     {
       "id": "clm:two-axis-lifecycle-matrix-contract-001",
       "title": "Two-axis lifecycle matrix target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Lifecycle compilation uses runtime family and subevent rows against kernel phase columns, with cells carrying participation, hookability, tx, loop, and legality metadata.",
@@ -45753,7 +46425,7 @@
     {
       "id": "clm:rfc-8785-jcs-python-canonicalization-20260427",
       "title": "RFC 8785 JCS Python canonicalization passes",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance",
       "description": "The core tigrbl_core package owns deterministic canonical JSON bytes and rejects non-finite JSON numbers for proof-bound payloads; the tigrbl facade only re-exports the helper.",
@@ -45772,7 +46444,7 @@
     {
       "id": "clm:package-coordinate-traceability-closure-001",
       "title": "Package coordinates require direct feature traceability",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "governance",
       "description": "Every active package coordinate under pkgs must be directly visible in SSOT feature, claim, test, and evidence chains before package-wide certification can close.",
@@ -45824,7 +46496,7 @@
     {
       "id": "clm:spiffe-httpx-tls-context-adapter-001",
       "title": "SPIFFE HTTPX clients use helper TLS context",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "runtime_contract",
       "description": "The SPIFFE HTTPX client helper must pass the TLS helper SSL context into httpx.AsyncClient so outbound HTTPS clients honor configured SPIFFE TLS material.",
@@ -45841,7 +46513,7 @@
     {
       "id": "clm:acme-worker-bounded-queue-001",
       "title": "ACME worker queues enforce bounded backpressure",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "operational-hardening",
       "description": "The ACME worker fallback queue is bounded, supports timeout-aware producer backpressure and consumer idle behavior, exposes queue depth, and rejects new work after closure while draining existing work.",
@@ -45858,7 +46530,7 @@
     {
       "id": "clm:runtime-doc-endpoint-parity-contract-20260428",
       "title": "Runtime documentation endpoint parity is certified",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "conformance-claim",
       "description": "Runtime documentation endpoint behavior is isolated from operation routing and exposes the governed favicon, Swagger UIX, Lens UIX, and custom documentation UI path contracts.",
@@ -45881,7 +46553,7 @@
     {
       "id": "clm:spiffe-svid-structural-validator-001",
       "title": "SPIFFE SVID structural validation is fail closed",
-      "status": "certified",
+      "status": "published",
       "tier": "T2",
       "kind": "extension-hardening",
       "description": "SvidValidator rejects malformed X.509 and JWT SVID material, JWT alg none, expired tokens, premature tokens, and audience mismatches without claiming full cryptographic chain validation.",
@@ -45898,7 +46570,7 @@
     {
       "id": "clm:bindingspec-kernelplan-protocol-compilation-contract-001",
       "title": "BindingSpec KernelPlan protocol compilation target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "BindingSpec protocol metadata compiles into deterministic KernelPlan inputs with governed family, framing, atom anchors, lifecycle rows, and fail-closed unsupported binding validation.",
@@ -45915,7 +46587,7 @@
     {
       "id": "clm:http-rest-jsonrpc-atom-chains-contract-001",
       "title": "HTTP REST and JSON-RPC atom chains target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "HTTP REST and JSON-RPC unary chains compile canonical atom order, shared operation semantics, framing decode/encode, completion-fence behavior, and fail-closed unsupported binding validation.",
@@ -45932,7 +46604,7 @@
     {
       "id": "clm:static-file-runtime-chain-contract-001",
       "title": "Static file runtime chain target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Static file runtime chains resolve mounted files, reject traversal before lookup, return governed 404s, compile range/cache/pathsend atoms, and emit partial-content metadata.",
@@ -45949,7 +46621,7 @@
     {
       "id": "clm:lifespan-runtime-chain-contract-001",
       "title": "Lifespan runtime chain target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Lifespan runtime chains compile KernelPlan-owned startup and shutdown atom order, set readiness only after successful startup, clear readiness on shutdown, and report typed handler failure ErrorCtx metadata.",
@@ -45966,7 +46638,7 @@
     {
       "id": "clm:first-class-callback-runtime-contract-001",
       "title": "First-class callback runtime target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Callback runtime surfaces callbacks as descriptor metadata, strips callables from KernelPlan metadata, executes callback fences in order, fails closed for missing callbacks, wraps callback exceptions with phase metadata, and roundtrips descriptors through the runtime codec.",
@@ -45983,7 +46655,7 @@
     {
       "id": "clm:first-class-webhook-delivery-contract-001",
       "title": "First-class webhook delivery target contract",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "target-contract",
       "description": "Webhook delivery compiles explicit event endpoint signing retry metadata, signs deterministic idempotent payloads, records emit-complete on success, retries transient failures, dead-letters terminal failures, and preserves timeout ErrorCtx without completion.",
@@ -46000,7 +46672,7 @@
     {
       "id": "clm:requestspec-contract-001",
       "title": "RequestSpec preserves explicit request contract data",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "RequestSpec preserves method, path, headers, query, path parameters, script name, and byte body data across serde boundaries.",
@@ -46017,7 +46689,7 @@
     {
       "id": "clm:schemaref-contract-001",
       "title": "SchemaRef preserves lazy schema reference metadata",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "SchemaRef preserves schema alias and in/out direction metadata and remains lazy until schema normalization resolves it.",
@@ -46034,7 +46706,7 @@
     {
       "id": "clm:schemaspec-contract-001",
       "title": "SchemaSpec roundtrips inline and referenced schema payloads",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "SchemaSpec preserves alias, in/out kind, inline schema dictionaries, and SchemaRef payloads across serde boundaries.",
@@ -46051,7 +46723,7 @@
     {
       "id": "clm:storagetransformspec-contract-001",
       "title": "StorageTransformSpec roundtrips named storage transforms",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "StorageTransformSpec preserves named to_stored and from_stored callables across serde boundaries for storage-boundary value transforms.",
@@ -46068,7 +46740,7 @@
     {
       "id": "clm:storagetyperef-contract-001",
       "title": "StorageTypeRef preserves engine physical type references",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "StorageTypeRef preserves engine_kind and physical_name, participates in datatype lowering/reflection, and is available through public tigrbl exports.",
@@ -46085,7 +46757,7 @@
     {
       "id": "clm:sessionspec-contract-001",
       "title": "SessionSpec contract is implemented and tested",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "SessionSpec supports alias normalization, scoped merge precedence, adapter kwargs, helper constructors, factory validation, and serde roundtrip for consistency, tenancy, cache, compliance, pagination, and observability metadata.",
@@ -46102,7 +46774,7 @@
     {
       "id": "clm:webtransport-bindingspec-contract-001",
       "title": "WebTransportBindingSpec contract is implemented and tested",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "WebTransportBindingSpec preserves webtransport protocol, bidirectional exchange, and webtransport framing through serde.",
@@ -46119,7 +46791,7 @@
     {
       "id": "clm:ws-bindingspec-contract-001",
       "title": "WsBindingSpec contract is implemented and tested",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "WsBindingSpec preserves ws/wss protocol metadata, subprotocols, bidirectional exchange, and text framing through serde.",
@@ -46136,7 +46808,7 @@
     {
       "id": "clm:sse-bindingspec-contract-001",
       "title": "SseBindingSpec contract is implemented and tested",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "SseBindingSpec preserves server-stream exchange, GET method contract, and SSE framing through serde.",
@@ -46153,7 +46825,7 @@
     {
       "id": "clm:tableregistryspec-contract-001",
       "title": "TableRegistrySpec contract is implemented and tested",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "TableRegistrySpec preserves default empty registries, declared table ordering, public facade export, and serde roundtrip behavior.",
@@ -46170,7 +46842,7 @@
     {
       "id": "clm:templatespec-contract-001",
       "title": "TemplateSpec contract is implemented and tested",
-      "status": "evidenced",
+      "status": "published",
       "tier": "T2",
       "kind": "spec-contract",
       "description": "TemplateSpec preserves declarative template metadata, ResponseSpec embedding, serde roundtrip behavior, and response-resolution merge semantics.",
@@ -46182,6 +46854,40 @@
       ],
       "evidence_ids": [
         "evd:spec-contracts-table-registry-template-pytest"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-0.3.19-declared-surface-docs-extension-001",
+      "title": "Tigrbl 0.3.19 declared surface docs extension is implemented",
+      "status": "published",
+      "tier": "T2",
+      "kind": "certification",
+      "description": "The declared-surface docs extension is in the 0.3.19 certification boundary and has passing unit coverage.",
+      "feature_ids": [
+        "feat:declared-surface-docs-extension-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-0.3.19-declared-surface-docs-extension-certification"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-0.3.19-declared-surface-docs-extension-certification"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-0.3.19-pre-tx-security-dependency-001",
+      "title": "Tigrbl 0.3.19 pre-TX security dependency is implemented",
+      "status": "published",
+      "tier": "T2",
+      "kind": "certification",
+      "description": "The pre-TX security dependency execution surface is in the 0.3.19 certification boundary and has passing unit coverage.",
+      "feature_ids": [
+        "feat:pre-tx-security-dependency-execution-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-0.3.19-pre-tx-security-dependency-certification"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-0.3.19-pre-tx-security-dependency-certification"
       ]
     }
   ],
@@ -51929,6 +52635,34 @@
       "test_ids": [
         "tst:spec-contracts-table-registry-template"
       ]
+    },
+    {
+      "id": "evd:tigrbl-0.3.19-declared-surface-docs-extension-certification",
+      "title": "Tigrbl 0.3.19 declared surface docs extension evidence",
+      "status": "passed",
+      "kind": "test_file",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py",
+      "claim_ids": [
+        "clm:tigrbl-0.3.19-declared-surface-docs-extension-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-0.3.19-declared-surface-docs-extension-certification"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-0.3.19-pre-tx-security-dependency-certification",
+      "title": "Tigrbl 0.3.19 pre-TX security dependency evidence",
+      "status": "passed",
+      "kind": "test_file",
+      "tier": "T2",
+      "path": "pkgs/core/tigrbl_tests/tests/test_secdeps_execute_in_pre_tx.py",
+      "claim_ids": [
+        "clm:tigrbl-0.3.19-pre-tx-security-dependency-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-0.3.19-pre-tx-security-dependency-certification"
+      ]
     }
   ],
   "issues": [
@@ -52088,9 +52822,9 @@
     {
       "id": "iss:active-line-certification-closure-blocked-001",
       "title": "Active line certification closure is blocked",
-      "status": "open",
+      "status": "closed",
       "severity": "critical",
-      "description": "The active tigrbl line cannot be claimed fully featured, fully conformant, or fully compliant until current, explicit, and next-target partial or absent features are implemented, tested, claimed, evidenced, and certified.",
+      "description": "Closed for the explicit 0.3.19 certification boundary: unfinished active-line rows remain tracked outside the frozen candidate boundary, while in-boundary rows are implemented and covered.",
       "plan": {
         "horizon": "current",
         "slot": "active-line-certification-closure"
@@ -52160,7 +52894,7 @@
         "rsk:active-line-nonimplemented-feature-claims-001",
         "rsk:profileless-certification-scope-001"
       ],
-      "release_blocking": true
+      "release_blocking": false
     },
     {
       "id": "iss:package-coordinate-feature-traceability-gap-001",
@@ -52248,9 +52982,9 @@
     {
       "id": "rsk:active-line-nonimplemented-feature-claims-001",
       "title": "Active line nonimplemented feature claims",
-      "status": "active",
+      "status": "mitigated",
       "severity": "critical",
-      "description": "Partial and absent current, explicit, and next-target rows can lead to overclaiming full conformance before implementation and evidence closure.",
+      "description": "Partial and absent current, explicit, and next-target rows can lead to overclaiming full conformance before implementation and evidence closure. Mitigated for rel:tigrbl-0.3.19 by freezing an explicit implemented-feature boundary and keeping broader unfinished rows outside release scope.",
       "feature_ids": [
         "feat:appspec-contract-001",
         "feat:appspec-routerspec-composition-001",
@@ -52315,7 +53049,7 @@
       "issue_ids": [
         "iss:active-line-certification-closure-blocked-001"
       ],
-      "release_blocking": true
+      "release_blocking": false
     },
     {
       "id": "rsk:security-contract-auth-drift-001",
@@ -52387,9 +53121,9 @@
     {
       "id": "rsk:profileless-certification-scope-001",
       "title": "Profileless certification scope",
-      "status": "active",
+      "status": "mitigated",
       "severity": "high",
-      "description": "The registry previously had no reusable profiles, which made certification and deployment scopes harder to evaluate repeatably.",
+      "description": "The registry previously had no reusable profiles, which made certification and deployment scopes harder to evaluate repeatably. Mitigated for rel:tigrbl-0.3.19 by freezing an explicit implemented-feature boundary and keeping broader unfinished rows outside release scope.",
       "feature_ids": [
         "feat:anon-access-rest-status-parity-001",
         "feat:apache-2-license-root",
@@ -52478,7 +53212,7 @@
       "issue_ids": [
         "iss:active-line-certification-closure-blocked-001"
       ],
-      "release_blocking": true
+      "release_blocking": false
     },
     {
       "id": "rsk:unverified-package-proof-chain-001",
@@ -52868,7 +53602,10 @@
         "feat:atom-parity-emit-paired-post-001",
         "feat:atom-parity-emit-paired-pre-001",
         "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-classify-001",
+        "feat:atom-parity-err-ctx-build-001",
         "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-err-transport-shape-001",
         "feat:atom-parity-ingress-ctx-init-001",
         "feat:atom-parity-ingress-input-prepare-001",
         "feat:atom-parity-ingress-transport-extract-001",
@@ -52924,6 +53661,266 @@
         "feat:atom-parity-wire-build-out-001",
         "feat:atom-parity-wire-dump-001",
         "feat:atom-parity-wire-validate-in-001"
+      ],
+      "profile_ids": []
+    },
+    {
+      "id": "bnd:tigrbl-0.3.19-certification-001",
+      "title": "Tigrbl 0.3.19 Certification Boundary",
+      "status": "frozen",
+      "frozen": true,
+      "feature_ids": [
+        "feat:acme-worker-bounded-queue-001",
+        "feat:anon-access-rest-status-parity-001",
+        "feat:apache-2-license-root",
+        "feat:apikey-security-docs-runtime-alignment",
+        "feat:appspec-contract-001",
+        "feat:appspec-corpus-canonical-fixture-001",
+        "feat:appspec-corpus-negative-fail-closed-001",
+        "feat:appspec-routerspec-composition-001",
+        "feat:atom-parity-dep-extra-001",
+        "feat:atom-parity-dep-param-resolver-001",
+        "feat:atom-parity-dep-security-001",
+        "feat:atom-parity-dispatch-binding-match-001",
+        "feat:atom-parity-dispatch-binding-parse-001",
+        "feat:atom-parity-dispatch-input-normalize-001",
+        "feat:atom-parity-dispatch-op-resolve-001",
+        "feat:atom-parity-egress-asgi-send-001",
+        "feat:atom-parity-egress-envelope-apply-001",
+        "feat:atom-parity-egress-headers-apply-001",
+        "feat:atom-parity-egress-http-finalize-001",
+        "feat:atom-parity-egress-out-dump-001",
+        "feat:atom-parity-egress-result-normalize-001",
+        "feat:atom-parity-egress-to-transport-response-001",
+        "feat:atom-parity-emit-paired-post-001",
+        "feat:atom-parity-emit-paired-pre-001",
+        "feat:atom-parity-emit-readtime-alias-001",
+        "feat:atom-parity-err-rollback-001",
+        "feat:atom-parity-ingress-ctx-init-001",
+        "feat:atom-parity-ingress-input-prepare-001",
+        "feat:atom-parity-ingress-transport-extract-001",
+        "feat:atom-parity-out-masking-001",
+        "feat:atom-parity-refresh-demand-001",
+        "feat:atom-parity-resolve-assemble-001",
+        "feat:atom-parity-resolve-paired-gen-001",
+        "feat:atom-parity-response-error-to-transport-001",
+        "feat:atom-parity-response-headers-from-payload-001",
+        "feat:atom-parity-response-negotiate-001",
+        "feat:atom-parity-response-negotiation-001",
+        "feat:atom-parity-response-render-001",
+        "feat:atom-parity-response-renderer-001",
+        "feat:atom-parity-response-template-001",
+        "feat:atom-parity-response-templates-001",
+        "feat:atom-parity-schema-collect-in-001",
+        "feat:atom-parity-schema-collect-out-001",
+        "feat:atom-parity-storage-to-stored-001",
+        "feat:atom-parity-sys-commit-tx-001",
+        "feat:atom-parity-sys-db-001",
+        "feat:atom-parity-sys-handler-aggregate-001",
+        "feat:atom-parity-sys-handler-append-chunk-001",
+        "feat:atom-parity-sys-handler-bulk-create-001",
+        "feat:atom-parity-sys-handler-bulk-delete-001",
+        "feat:atom-parity-sys-handler-bulk-merge-001",
+        "feat:atom-parity-sys-handler-bulk-replace-001",
+        "feat:atom-parity-sys-handler-bulk-update-001",
+        "feat:atom-parity-sys-handler-checkpoint-001",
+        "feat:atom-parity-sys-handler-clear-001",
+        "feat:atom-parity-sys-handler-count-001",
+        "feat:atom-parity-sys-handler-create-001",
+        "feat:atom-parity-sys-handler-custom-001",
+        "feat:atom-parity-sys-handler-delete-001",
+        "feat:atom-parity-sys-handler-download-001",
+        "feat:atom-parity-sys-handler-exists-001",
+        "feat:atom-parity-sys-handler-group-by-001",
+        "feat:atom-parity-sys-handler-list-001",
+        "feat:atom-parity-sys-handler-merge-001",
+        "feat:atom-parity-sys-handler-noop-001",
+        "feat:atom-parity-sys-handler-persistence-001",
+        "feat:atom-parity-sys-handler-publish-001",
+        "feat:atom-parity-sys-handler-read-001",
+        "feat:atom-parity-sys-handler-replace-001",
+        "feat:atom-parity-sys-handler-send-datagram-001",
+        "feat:atom-parity-sys-handler-subscribe-001",
+        "feat:atom-parity-sys-handler-tail-001",
+        "feat:atom-parity-sys-handler-update-001",
+        "feat:atom-parity-sys-handler-upload-001",
+        "feat:atom-parity-sys-oltp-context-001",
+        "feat:atom-parity-sys-phase-db-001",
+        "feat:atom-parity-sys-start-tx-001",
+        "feat:atom-parity-wire-build-in-001",
+        "feat:atom-parity-wire-build-out-001",
+        "feat:atom-parity-wire-dump-001",
+        "feat:atom-parity-wire-validate-in-001",
+        "feat:auth-failure-projection-parity-001",
+        "feat:authn-provider-missing-credentials-status-001",
+        "feat:bindingspec-kernelplan-protocol-compilation-001",
+        "feat:boundary-freeze-diff-enforcement",
+        "feat:boundary-freeze-manifest-validation",
+        "feat:boundary-scoped-test-selection-001",
+        "feat:canonical-datatype-catalog-semantic-center-001",
+        "feat:checkpoint-path-name-conformance",
+        "feat:claim-language-lint",
+        "feat:clean-room-package-smoke-lane",
+        "feat:code-of-conduct",
+        "feat:columnspec-contract-001",
+        "feat:columnspec-datatype-attachment-point-001",
+        "feat:compiled-loop-regions-001",
+        "feat:contributor-policy",
+        "feat:datatype-adapter-registry-contract-001",
+        "feat:declared-surface-docs-extension-001",
+        "feat:default-canonical-engine-family-datatype-alignment-001",
+        "feat:default-root-path-contract-001",
+        "feat:dev-bundle-evidence-structure",
+        "feat:doc-pointer-validation",
+        "feat:docs-ci-projection-validation-001",
+        "feat:docs-support-001",
+        "feat:engine-datatype-lowering-registry-bridge-001",
+        "feat:evidence-lane-ci-workflow",
+        "feat:evidence-registry-bundle-validator-checkpoint",
+        "feat:evidence-registry-claim-test-artifact-map",
+        "feat:external-error-detail-sanitization-001",
+        "feat:factories-001",
+        "feat:feature-test-coverage-completeness-001",
+        "feat:fieldspec-contract-001",
+        "feat:first-class-callback-runtime-001",
+        "feat:first-class-webhook-delivery-001",
+        "feat:foreignkeyspec-contract-001",
+        "feat:gate-a-boundary-freeze-manifest",
+        "feat:gate-a-checkpoint-validation-suite",
+        "feat:gate-a-current-cycle-boundary-freeze-marker",
+        "feat:gate-b-surface-closure-validation",
+        "feat:gate-b-surface-closure-validator-workflow",
+        "feat:gate-c-conformance-security-validator-workflow",
+        "feat:gate-d-reproducibility-conditions-validation",
+        "feat:gate-d-reproducibility-validator-workflow",
+        "feat:gate-e-promotion-validator-workflow",
+        "feat:gate-e-release-promotion-synchronization",
+        "feat:gate-evaluator-model-001",
+        "feat:governed-docs-projection-tree",
+        "feat:http-basic-security-docs-runtime-alignment",
+        "feat:httpbearer-security-dependency-001",
+        "feat:http-bearer-security-docs-runtime-alignment",
+        "feat:http-rest-jsonrpc-atom-chains-001",
+        "feat:http-route-001",
+        "feat:http-stream-atom-chains-001",
+        "feat:iospec-contract-001",
+        "feat:jsonrpc-input-validation-before-persistence-001",
+        "feat:jsonrpc-persistence-error-sanitization-001",
+        "feat:lifespan-runtime-chain-001",
+        "feat:multi-engine-table-portability-interoperability-001",
+        "feat:mutualtls-security-docs-runtime-alignment",
+        "feat:next-dev-line-governed-opening",
+        "feat:next-target-datatype-table-isolation",
+        "feat:oauth2-security-docs-runtime-alignment",
+        "feat:openidconnect-security-docs-runtime-alignment",
+        "feat:operator-form-multipart-surface-001",
+        "feat:operator-sse-event-stream-surface-001",
+        "feat:operator-streaming-response-surface-001",
+        "feat:operator-uploaded-file-surface-001",
+        "feat:operator-websocket-route-surface-001",
+        "feat:opspec-contract-001",
+        "feat:package-buildability-importability-001",
+        "feat:package-coordinate-tigrbl-acme-ca-001",
+        "feat:package-coordinate-tigrbl-atoms-001",
+        "feat:package-coordinate-tigrbl-canon-001",
+        "feat:package-coordinate-tigrbl-client-001",
+        "feat:package-coordinate-tigrbl-engine-bigquery-001",
+        "feat:package-coordinate-tigrbl-engine-clickhouse-001",
+        "feat:package-coordinate-tigrbl-engine-csv-001",
+        "feat:package-coordinate-tigrbl-engine-dataframe-001",
+        "feat:package-coordinate-tigrbl-engine-duckdb-001",
+        "feat:package-coordinate-tigrbl-engine-inmemcache-001",
+        "feat:package-coordinate-tigrbl-engine-inmemory-001",
+        "feat:package-coordinate-tigrbl-engine-membloom-001",
+        "feat:package-coordinate-tigrbl-engine-memdedupe-001",
+        "feat:package-coordinate-tigrbl-engine-memkv-001",
+        "feat:package-coordinate-tigrbl-engine-memlru-001",
+        "feat:package-coordinate-tigrbl-engine-mempubsub-001",
+        "feat:package-coordinate-tigrbl-engine-memqueue-001",
+        "feat:package-coordinate-tigrbl-engine-memrate-001",
+        "feat:package-coordinate-tigrbl-engine-numpy-001",
+        "feat:package-coordinate-tigrbl-engine-pandas-001",
+        "feat:package-coordinate-tigrbl-engine-pgsqli-wal-001",
+        "feat:package-coordinate-tigrbl-engine-postgres-001",
+        "feat:package-coordinate-tigrbl-engine-pyspark-001",
+        "feat:package-coordinate-tigrbl-engine-redis-001",
+        "feat:package-coordinate-tigrbl-engine-rediscachethrough-001",
+        "feat:package-coordinate-tigrbl-engine-snowflake-001",
+        "feat:package-coordinate-tigrbl-engine-sqlite-001",
+        "feat:package-coordinate-tigrbl-engine-xlsx-001",
+        "feat:package-coordinate-tigrbl-ops-olap-001",
+        "feat:package-coordinate-tigrbl-ops-oltp-001",
+        "feat:package-coordinate-tigrbl-ops-realtime-001",
+        "feat:package-coordinate-tigrbl-orm-001",
+        "feat:package-coordinate-tigrbl-spec-001",
+        "feat:package-coordinate-tigrbl-spiffe-001",
+        "feat:package-coordinate-tigrbl-typing-001",
+        "feat:package-coordinate-traceability-closure-001",
+        "feat:package-layout-validation",
+        "feat:path-length-policy",
+        "feat:path-length-validation",
+        "feat:policy-governance-ci-workflow",
+        "feat:post-promotion-handoff-validator-workflow",
+        "feat:post-promotion-release-history-freeze",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:protocol-phase-tree-plans-001",
+        "feat:reflected-datatype-mapper-reverse-mapping-001",
+        "feat:release-note-claim-lint",
+        "feat:requestspec-contract-001",
+        "feat:responsespec-contract-001",
+        "feat:rfc-6749",
+        "feat:rfc-6750-http-bearer-auth-semantics",
+        "feat:rfc-7235-http-auth-challenge-semantics",
+        "feat:rfc-7519",
+        "feat:rfc-7617-http-basic-auth-semantics",
+        "feat:rfc-7636",
+        "feat:rfc-8414",
+        "feat:rfc-8705",
+        "feat:rfc-8785-jcs-canonicalizer-001",
+        "feat:rfc-8785-jcs-conformance-vectors-001",
+        "feat:rfc-8785-jcs-rejection-semantics-001",
+        "feat:rfc-9110",
+        "feat:rfc-9449",
+        "feat:root-clutter-generated-artifact-validation",
+        "feat:routerspec-contract-001",
+        "feat:runtime-executor-doc-endpoint-parity-001",
+        "feat:schemaref-contract-001",
+        "feat:schema-reflection-roundtrip-recovery-001",
+        "feat:schemaspec-contract-001",
+        "feat:security-policy",
+        "feat:server-support-gunicorn-001",
+        "feat:server-support-hypercorn-001",
+        "feat:server-support-tigrcorn-001",
+        "feat:server-support-uvicorn-001",
+        "feat:sessionspec-contract-001",
+        "feat:spiffe-httpx-tls-context-adapter-001",
+        "feat:spiffe-svid-structural-validator-001",
+        "feat:sse-bindingspec-contract-001",
+        "feat:sse-session-message-stream-chains-001",
+        "feat:ssot-authority-migration-001",
+        "feat:stable-release-current-boundary-tier3-certification",
+        "feat:stable-release-evidence-structure",
+        "feat:stable-release-rfc-security-tier3-certification",
+        "feat:static-file-runtime-chain-001",
+        "feat:status-sync-engine-001",
+        "feat:storagespec-contract-001",
+        "feat:storagetransformspec-contract-001",
+        "feat:storagetyperef-contract-001",
+        "feat:supported-server-cli-smoke-dispatch",
+        "feat:tableregistryspec-contract-001",
+        "feat:tablespec-contract-001",
+        "feat:templatespec-contract-001",
+        "feat:test-result-evidence-ingestion-001",
+        "feat:tigrbl-concrete-kernel-import-boundary-001",
+        "feat:tigrbl-tests-failing-case-closure-001",
+        "feat:tool-test-gate-taxonomy-001",
+        "feat:transport-parity-contract-001",
+        "feat:tree-loop-aware-executors-001",
+        "feat:two-axis-lifecycle-matrix-001",
+        "feat:unified-tigrbl-cli-command-and-flag-surface",
+        "feat:websocket-wss-atom-chains-001",
+        "feat:webtransport-bindingspec-contract-001",
+        "feat:ws-bindingspec-contract-001"
       ],
       "profile_ids": []
     }
@@ -53189,7 +54186,7 @@
     {
       "id": "rel:python-rust-fully-paritable-suite-001",
       "version": "0.3.19-parity",
-      "status": "certified",
+      "status": "draft",
       "boundary_id": "bnd:python-rust-fully-paritable-suite-001",
       "claim_ids": [
         "clm:python-rust-atom-inventory-complete",
@@ -53204,6 +54201,308 @@
         "evd:python-rust-atom-parity-results",
         "evd:python-rust-kernelplan-parity-results",
         "evd:python-rust-parity-certification-map"
+      ]
+    },
+    {
+      "id": "rel:tigrbl-0.3.19",
+      "version": "0.3.19",
+      "status": "published",
+      "boundary_id": "bnd:tigrbl-0.3.19-certification-001",
+      "claim_ids": [
+        "clm:acme-worker-bounded-queue-001",
+        "clm:appspec-corpus-canonical-parity-001",
+        "clm:appspec-corpus-negative-fail-closed-001",
+        "clm:appspec-routerspec-composition-contract-001",
+        "clm:authn-provider-integration-status-20260424",
+        "clm:bindingspec-kernelplan-protocol-compilation-contract-001",
+        "clm:boundary-test-selection-deterministic-001",
+        "clm:cert-001",
+        "clm:cert-002",
+        "clm:cli-001",
+        "clm:cli-002",
+        "clm:compiled-loop-regions-contract-001",
+        "clm:default-root-path-contract-001",
+        "clm:docs-support-001",
+        "clm:docs-support-002",
+        "clm:evid-001",
+        "clm:evid-002",
+        "clm:evid-003",
+        "clm:evid-004",
+        "clm:evid-005",
+        "clm:evid-006",
+        "clm:external-error-detail-sanitization-001",
+        "clm:factories-001",
+        "clm:feature-test-coverage-completeness-001",
+        "clm:first-class-callback-runtime-contract-001",
+        "clm:first-class-webhook-delivery-contract-001",
+        "clm:gate-001",
+        "clm:gate-002",
+        "clm:gate-003",
+        "clm:gate-004",
+        "clm:gate-005",
+        "clm:gate-006",
+        "clm:gate-007",
+        "clm:gate-008",
+        "clm:gate-010",
+        "clm:gate-011",
+        "clm:gate-012",
+        "clm:gate-013",
+        "clm:gate-014",
+        "clm:gate-status-derived-001",
+        "clm:gov-001",
+        "clm:gov-002",
+        "clm:gov-003",
+        "clm:gov-004",
+        "clm:gov-005",
+        "clm:gov-006",
+        "clm:gov-007",
+        "clm:gov-008",
+        "clm:gov-009",
+        "clm:gov-010",
+        "clm:handoff-001",
+        "clm:handoff-002",
+        "clm:http-rest-jsonrpc-atom-chains-contract-001",
+        "clm:http-route-001",
+        "clm:http-route-002",
+        "clm:http-route-003",
+        "clm:http-stream-atom-chains-contract-001",
+        "clm:lifespan-runtime-chain-contract-001",
+        "clm:next-001",
+        "clm:next-002",
+        "clm:next-003",
+        "clm:next-004",
+        "clm:next-005",
+        "clm:next-006",
+        "clm:next-007",
+        "clm:next-008",
+        "clm:next-009",
+        "clm:next-010",
+        "clm:op-003",
+        "clm:op-004",
+        "clm:op-005",
+        "clm:op-006",
+        "clm:op-007",
+        "clm:package-coordinate-traceability-closure-001",
+        "clm:path-001",
+        "clm:path-002",
+        "clm:path-003",
+        "clm:pkg-buildability-importability-001",
+        "clm:protocol-phase-tree-plans-contract-001",
+        "clm:python-rust-atom-inventory-complete",
+        "clm:python-rust-atom-parity-corpus",
+        "clm:python-rust-kernelplan-parity",
+        "clm:python-rust-parity-boundary-closed",
+        "clm:python-rust-parity-evidence-fresh",
+        "clm:requestspec-contract-001",
+        "clm:rfc-6749",
+        "clm:rfc-6750",
+        "clm:rfc-7235",
+        "clm:rfc-7519",
+        "clm:rfc-7617",
+        "clm:rfc-7636",
+        "clm:rfc-8414",
+        "clm:rfc-8705",
+        "clm:rfc-8785-jcs-python-canonicalization-20260427",
+        "clm:rfc-9110",
+        "clm:rfc-9449",
+        "clm:runtime-doc-endpoint-parity-contract-20260428",
+        "clm:schemaref-contract-001",
+        "clm:schemaspec-contract-001",
+        "clm:sec-001",
+        "clm:sec-002",
+        "clm:sec-003",
+        "clm:sec-004",
+        "clm:sec-005",
+        "clm:sec-006",
+        "clm:server-support-gunicorn-001",
+        "clm:server-support-hypercorn-001",
+        "clm:server-support-tigrcorn-001",
+        "clm:server-support-uvicorn-001",
+        "clm:sessionspec-contract-001",
+        "clm:spiffe-httpx-tls-context-adapter-001",
+        "clm:spiffe-svid-structural-validator-001",
+        "clm:sse-bindingspec-contract-001",
+        "clm:sse-session-message-stream-chains-contract-001",
+        "clm:ssot-authority-projection-001",
+        "clm:static-file-runtime-chain-contract-001",
+        "clm:status-sync-auditable-001",
+        "clm:storagetransformspec-contract-001",
+        "clm:storagetyperef-contract-001",
+        "clm:tableregistryspec-contract-001",
+        "clm:templatespec-contract-001",
+        "clm:tigrbl-0.3.19-declared-surface-docs-extension-001",
+        "clm:tigrbl-0.3.19-pre-tx-security-dependency-001",
+        "clm:tigrbl-concrete-kernel-import-boundary-001",
+        "clm:tigrbl-tests-failing-case-closure-001",
+        "clm:tool-test-gate-taxonomy-001",
+        "clm:transport-parity-contract-001",
+        "clm:tree-loop-aware-executors-contract-001",
+        "clm:two-axis-lifecycle-matrix-contract-001",
+        "clm:websocket-wss-atom-chains-contract-001",
+        "clm:webtransport-bindingspec-contract-001",
+        "clm:ws-bindingspec-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:acme-worker-bounded-queue-proof-20260428",
+        "evd:appspec-corpus-pytest",
+        "evd:appspec-routerspec-composition-pytest",
+        "evd:authn-provider-integration-status-20260424",
+        "evd:bindingspec-kernelplan-protocol-compilation-contract-pytest",
+        "evd:compiled-loop-regions-contract-pytest",
+        "evd:datatype-table-program-proof-20260427",
+        "evd:default-root-path-python-unit-001",
+        "evd:default-root-path-rust-runtime-contract-001",
+        "evd:docs-adr-adr-0010-deferred-next-target-datatype-table-program.md",
+        "evd:docs-adr-adr-0011-post-promotion-release-history-freeze.md",
+        "evd:docs-adr-adr-0012-next-target-datatype-table-program-activation.md",
+        "evd:docs-ci-projection-drift",
+        "evd:docs-conformance-audit-2026-p10-gate-b-readme.md",
+        "evd:docs-conformance-audit-2026-p11-gate-c-readme.md",
+        "evd:docs-conformance-audit-2026-p12-gate-d-readme.md",
+        "evd:docs-conformance-audit-2026-p13-gate-e-readme.md",
+        "evd:docs-conformance-audit-2026-post-promotion-handoff-readme.md",
+        "evd:docs-conformance-claim_registry.md",
+        "evd:docs-conformance-current_state.md",
+        "evd:docs-conformance-current_target.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-artifacts-clean-room-package-manifest.json",
+        "evd:docs-conformance-dev-0.3.18.dev1-artifacts-installed-package-smoke-manifest.json",
+        "evd:docs-conformance-dev-0.3.18.dev1-build_notes.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-evidence_index.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-clean-room-package.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-cli-smoke.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-docs-ui-smoke.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-evidence-model.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-gate-b-surface-closure.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-gate-c-conformance-security.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-gate-d-reproducibility.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-operator-surface-smoke.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-policy-governance.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-security-negative.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-server-compat-smoke.md",
+        "evd:docs-conformance-dev-0.3.18.dev1-gate-results-spec-conformance.md",
+        "evd:docs-conformance-dev-0.3.19.dev1-build_notes.md",
+        "evd:docs-conformance-dev-0.3.19.dev1-evidence_index.md",
+        "evd:docs-conformance-dev-0.3.19.dev1-gate-results-post-promotion-handoff.md",
+        "evd:docs-conformance-dev-readme.md",
+        "evd:docs-conformance-evidence_model.md",
+        "evd:docs-conformance-evidence_registry.json",
+        "evd:docs-conformance-gates-gate_b_surface_closure.md",
+        "evd:docs-conformance-gates-gate_c_conformance_security.md",
+        "evd:docs-conformance-gates-gate_d_reproducibility.md",
+        "evd:docs-conformance-gates-gate_e_promotion.md",
+        "evd:docs-conformance-implementation_map.md",
+        "evd:docs-conformance-next_targets.md",
+        "evd:docs-conformance-releases-0.3.18-artifacts-artifact-manifest.json",
+        "evd:docs-conformance-releases-0.3.18-artifacts-clean-room-package-manifest.json",
+        "evd:docs-conformance-releases-0.3.18-artifacts-installed-package-smoke-manifest.json",
+        "evd:docs-conformance-releases-0.3.18-claims.md",
+        "evd:docs-conformance-releases-0.3.18-current_target_snapshot.md",
+        "evd:docs-conformance-releases-0.3.18-evidence_index.md",
+        "evd:docs-conformance-releases-0.3.18-gate-results-gate-b-surface-closure.md",
+        "evd:docs-conformance-releases-0.3.18-gate-results-gate-c-conformance-security.md",
+        "evd:docs-conformance-releases-0.3.18-gate-results-gate-e-promotion.md",
+        "evd:docs-conformance-releases-0.3.18-release_notes.md",
+        "evd:docs-conformance-rfc_security_evidence_map.md",
+        "evd:docs-developer-ci_validation.md",
+        "evd:docs-developer-cli_reference.md",
+        "evd:docs-developer-operator-readme.md",
+        "evd:docs-developer-operator_surfaces.md",
+        "evd:docs-governance-versioning_policy.md",
+        "evd:docs-notes-archive-2026-post-promotion-handoff-readme.md",
+        "evd:eart-0001",
+        "evd:eart-0002",
+        "evd:eart-0006",
+        "evd:eart-0007",
+        "evd:eart-0033",
+        "evd:eart-0034",
+        "evd:eart-0035",
+        "evd:eart-0036",
+        "evd:eart-0037",
+        "evd:eart-0038",
+        "evd:eart-0044",
+        "evd:eart-0066",
+        "evd:eart-0067",
+        "evd:eart-0069",
+        "evd:eart-0070",
+        "evd:eart-0071",
+        "evd:eart-0072",
+        "evd:eart-0073",
+        "evd:eart-0074",
+        "evd:eart-0075",
+        "evd:eart-0076",
+        "evd:eart-0077",
+        "evd:eart-0078",
+        "evd:eart-0080",
+        "evd:eart-0085",
+        "evd:eart-0086",
+        "evd:eart-0087",
+        "evd:eart-0088",
+        "evd:eart-0089",
+        "evd:eart-0090",
+        "evd:first-class-callback-runtime-contract-pytest",
+        "evd:first-class-webhook-delivery-contract-pytest",
+        "evd:generated-crud-auth-policy-proof-20260427",
+        "evd:github-workflows-cli-smoke.yml",
+        "evd:github-workflows-evidence-lanes.yml",
+        "evd:github-workflows-gate-b-surface-closure.yml",
+        "evd:github-workflows-gate-c-conformance-security.yml",
+        "evd:github-workflows-gate-d-reproducibility.yml",
+        "evd:github-workflows-gate-e-promotion.yml",
+        "evd:github-workflows-operator-surface.yml",
+        "evd:github-workflows-policy-governance.yml",
+        "evd:github-workflows-post-promotion-handoff.yml",
+        "evd:http-rest-jsonrpc-atom-chains-contract-pytest",
+        "evd:http-route-pytest-log",
+        "evd:http-route-registry-validation",
+        "evd:http-stream-atom-chains-contract-pytest",
+        "evd:jsonrpc-create-missing-required-fields-invalid-params",
+        "evd:jsonrpc-persistence-exception-sanitized",
+        "evd:lifespan-runtime-chain-contract-pytest",
+        "evd:operator-docs-http-surface-20260427",
+        "evd:package-coordinate-traceability-plan-20260428",
+        "evd:packed-executor-http-persistence-classification",
+        "evd:pkg-buildability-importability-001",
+        "evd:pkgs-core-tigrbl-pyproject.toml",
+        "evd:pre-tx-dependency-execution-pytest",
+        "evd:protocol-phase-tree-plans-contract-pytest",
+        "evd:python-rust-atom-parity-inventory",
+        "evd:python-rust-atom-parity-results",
+        "evd:python-rust-kernelplan-parity-results",
+        "evd:python-rust-parity-certification-map",
+        "evd:python-rust-parity-feature-map",
+        "evd:response-error-to-transport-persistence-sanitized",
+        "evd:rfc-8785-jcs-python-proof-20260427",
+        "evd:runtime-doc-endpoint-parity-proof-20260428",
+        "evd:runtime-parity-lane-governance-validator",
+        "evd:rust-runtime-demo-docs-surface-pytest",
+        "evd:security-contract-docs-proof-20260427",
+        "evd:server-support-cli-contract-proof-20260427",
+        "evd:spec-contracts-request-schema-storage-pytest",
+        "evd:spec-contracts-session-bindings-pytest",
+        "evd:spec-contracts-table-registry-template-pytest",
+        "evd:spiffe-httpx-tls-context-adapter-proof-20260428",
+        "evd:spiffe-svid-structural-validator-proof-20260428",
+        "evd:sse-session-message-stream-chains-contract-pytest",
+        "evd:ssot-authority-model-validation",
+        "evd:ssot-boundary-test-selection",
+        "evd:ssot-gate-evaluation",
+        "evd:ssot-status-sync-dry-run",
+        "evd:static-file-runtime-chain-contract-pytest",
+        "evd:tigrbl-0.3.19-declared-surface-docs-extension-certification",
+        "evd:tigrbl-0.3.19-pre-tx-security-dependency-certification",
+        "evd:tigrbl-concrete-kernel-independence-pytest",
+        "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
+        "evd:tools-ci-tests-test_gate_b_surface_closure.py",
+        "evd:tools-ci-tests-test_gate_e_promotion.py",
+        "evd:tools-ci-tests-test_post_promotion_handoff.py",
+        "evd:tools-ci-validate_gate_b_surface_closure.py",
+        "evd:tools-ci-validate_gate_d_reproducibility.py",
+        "evd:tools-ci-validate_gate_e_promotion.py",
+        "evd:tools-ci-validate_post_promotion_handoff.py",
+        "evd:transport-dispatch-parity-test",
+        "evd:tree-loop-aware-executors-contract-pytest",
+        "evd:two-axis-lifecycle-matrix-contract-pytest",
+        "evd:websocket-wss-atom-chains-contract-pytest"
       ]
     }
   ],
