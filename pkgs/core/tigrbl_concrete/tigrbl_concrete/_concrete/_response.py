@@ -208,6 +208,10 @@ class Response(ResponseBase):
         await send({"type": "http.response.body", "body": body, "more_body": False})
 
 
+class TransportResponse(Response):
+    """Concrete response surface that is explicitly transport-finalized."""
+
+
 def _json_default(value: Any) -> Any:
     if isinstance(value, (bytes, bytearray, memoryview)):
         return base64.b64encode(bytes(value)).decode("ascii")
@@ -376,6 +380,7 @@ def as_file(
 __all__ = [
     "Template",
     "Response",
+    "TransportResponse",
     "as_json",
     "as_html",
     "as_text",

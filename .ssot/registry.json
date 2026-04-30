@@ -199,7 +199,8 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:tigrbl-xfail-transport-message-001",
+        "clm:transport-event-registry-contract-001"
       ],
       "test_ids": [
         "tst:transport-event-registry-contract"
@@ -550,7 +551,8 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:tigrbl-xfail-transport-message-001",
+        "clm:transport-accept-emit-close-atoms-contract-001"
       ],
       "test_ids": [
         "tst:transport-accept-emit-close-atoms-contract"
@@ -8828,16 +8830,16 @@
       "id": "feat:engine-surface-public-projection-001",
       "title": "Engine public and base projection",
       "description": "Tracks public and base projection of engine-facing contracts through tigrbl and tigrbl_base.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
@@ -8846,7 +8848,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:engine-surface-public-projection-001"
       ],
       "requires": [],
       "spec_ids": [
@@ -10146,16 +10149,16 @@
       "id": "feat:engineregistry-contract-001",
       "title": "EngineRegistry contract",
       "description": "Tracks EngineRegistry as a first-class tigrbl_core._spec datatype lowering registry surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10168,7 +10171,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:engineregistry-contract-001"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10725,16 +10729,16 @@
       "id": "feat:appbase-contract-001",
       "title": "AppBase contract",
       "description": "Tracks AppBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10744,7 +10748,8 @@
         "clm:appbase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:appbase-contract-001"
       ],
       "requires": []
     },
@@ -10752,16 +10757,16 @@
       "id": "feat:bindingbase-contract-001",
       "title": "BindingBase contract",
       "description": "Tracks BindingBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10771,7 +10776,8 @@
         "clm:bindingbase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:bindingbase-contract-001"
       ],
       "requires": []
     },
@@ -10779,16 +10785,16 @@
       "id": "feat:bindingregistrybase-contract-001",
       "title": "BindingRegistryBase contract",
       "description": "Tracks BindingRegistryBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10798,7 +10804,8 @@
         "clm:bindingregistrybase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:bindingregistrybase-contract-001"
       ],
       "requires": []
     },
@@ -10806,16 +10813,16 @@
       "id": "feat:columnbase-contract-001",
       "title": "ColumnBase contract",
       "description": "Tracks ColumnBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10825,7 +10832,8 @@
         "clm:columnbase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:columnbase-contract-001"
       ],
       "requires": []
     },
@@ -10833,16 +10841,16 @@
       "id": "feat:aliasbase-contract-001",
       "title": "AliasBase contract",
       "description": "Tracks AliasBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10852,7 +10860,8 @@
         "clm:aliasbase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:aliasbase-contract-001"
       ],
       "requires": []
     },
@@ -10860,16 +10869,16 @@
       "id": "feat:enginebase-contract-001",
       "title": "EngineBase contract",
       "description": "Tracks EngineBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10882,7 +10891,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:enginebase-contract-001"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10898,16 +10908,16 @@
       "id": "feat:engineproviderbase-contract-001",
       "title": "EngineProviderBase contract",
       "description": "Tracks EngineProviderBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10920,7 +10930,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:engineproviderbase-contract-001"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -10964,16 +10975,16 @@
       "id": "feat:routerbase-contract-001",
       "title": "RouterBase contract",
       "description": "Tracks RouterBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -10983,7 +10994,8 @@
         "clm:routerbase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:routerbase-contract-001"
       ],
       "requires": []
     },
@@ -10991,16 +11003,16 @@
       "id": "feat:foreignkeybase-contract-001",
       "title": "ForeignKeyBase contract",
       "description": "Tracks ForeignKeyBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11010,7 +11022,8 @@
         "clm:foreignkeybase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:foreignkeybase-contract-001"
       ],
       "requires": []
     },
@@ -11018,16 +11031,16 @@
       "id": "feat:storagetransformbase-contract-001",
       "title": "StorageTransformBase contract",
       "description": "Tracks StorageTransformBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11037,7 +11050,8 @@
         "clm:storagetransformbase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:storagetransformbase-contract-001"
       ],
       "requires": []
     },
@@ -11073,16 +11087,16 @@
       "id": "feat:requestbase-contract-001",
       "title": "RequestBase contract",
       "description": "Tracks RequestBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11095,7 +11109,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:requestbase-contract-001"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -11111,16 +11126,16 @@
       "id": "feat:schemabase-contract-001",
       "title": "SchemaBase contract",
       "description": "Tracks SchemaBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11130,7 +11145,8 @@
         "clm:schemabase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:schemabase-contract-001"
       ],
       "requires": []
     },
@@ -11138,16 +11154,16 @@
       "id": "feat:sessionabc-contract-001",
       "title": "SessionABC contract",
       "description": "Tracks SessionABC as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11160,7 +11176,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:sessionabc-contract-001"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -11176,16 +11193,16 @@
       "id": "feat:tigrblsessionbase-contract-001",
       "title": "TigrblSessionBase contract",
       "description": "Tracks TigrblSessionBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11198,7 +11215,8 @@
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:tigrblsessionbase-contract-001"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -11214,16 +11232,16 @@
       "id": "feat:tablebase-contract-001",
       "title": "TableBase contract",
       "description": "Tracks TableBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11233,7 +11251,8 @@
         "clm:tablebase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tablebase-contract-001"
       ],
       "requires": []
     },
@@ -11241,16 +11260,16 @@
       "id": "feat:tableregistrybase-contract-001",
       "title": "TableRegistryBase contract",
       "description": "Tracks TableRegistryBase as a first-class tigrbl_base contract surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11260,7 +11279,8 @@
         "clm:tableregistrybase-contract-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tableregistrybase-contract-001"
       ],
       "requires": []
     },
@@ -11293,16 +11313,16 @@
       "id": "feat:appbase-public-projection-001",
       "title": "AppBase public projection",
       "description": "Tracks the public operator projection of AppBase through the top-level tigrbl facade.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11312,7 +11332,8 @@
         "clm:appbase-public-projection-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:appbase-public-projection-001"
       ],
       "requires": []
     },
@@ -11320,16 +11341,16 @@
       "id": "feat:foreignkeybase-public-projection-001",
       "title": "ForeignKeyBase public projection",
       "description": "Tracks the public operator projection of ForeignKeyBase through the top-level tigrbl facade.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11339,7 +11360,8 @@
         "clm:foreignkeybase-public-projection-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:foreignkeybase-public-projection-001"
       ],
       "requires": []
     },
@@ -11375,16 +11397,16 @@
       "id": "feat:routerbase-public-projection-001",
       "title": "RouterBase public projection",
       "description": "Tracks the public operator projection of RouterBase through the top-level tigrbl facade.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11394,7 +11416,8 @@
         "clm:routerbase-public-projection-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:routerbase-public-projection-001"
       ],
       "requires": []
     },
@@ -11402,16 +11425,16 @@
       "id": "feat:tablebase-public-projection-001",
       "title": "TableBase public projection",
       "description": "Tracks the public operator projection of TableBase through the top-level tigrbl facade.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11421,7 +11444,8 @@
         "clm:tablebase-public-projection-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tablebase-public-projection-001"
       ],
       "requires": []
     },
@@ -11429,16 +11453,16 @@
       "id": "feat:tableregistrybase-public-projection-001",
       "title": "TableRegistryBase public projection",
       "description": "Tracks the public operator projection of TableRegistryBase through the top-level tigrbl facade.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
         "note": null
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": "surface-inventory",
-        "target_claim_tier": null,
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
         "target_lifecycle_stage": "active"
       },
       "spec_ids": [
@@ -11448,7 +11472,8 @@
         "clm:tableregistrybase-public-projection-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:ssot-authority-model-validator",
+        "tst:tableregistrybase-public-projection-001"
       ],
       "requires": []
     },
@@ -12502,7 +12527,9 @@
         "spc:2041",
         "spc:2090"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:transportresponse-concrete-response-class-contract-001"
+      ],
       "test_ids": [
         "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-04-response-ctx",
         "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
@@ -12523,7 +12550,8 @@
         "tst:tigrbl-tests-tests-unit-test-response-rest",
         "tst:tigrbl-tests-tests-unit-test-response-rpc",
         "tst:tigrbl-tests-tests-unit-test-response-template",
-        "tst:tigrbl-tests-tests-unit-test-response-uuid"
+        "tst:tigrbl-tests-tests-unit-test-response-uuid",
+        "tst:transportresponse-concrete-response-class-contract"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -22854,7 +22882,8 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-compat-surface-001"
+        "clm:tigrbl-xfail-compat-surface-001",
+        "clm:stdapi-asgi-wsgi-transport-compat-contract-001"
       ],
       "test_ids": [
         "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi"
@@ -34033,7 +34062,7 @@
     {
       "id": "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi",
       "title": "Stdapi transport asgi wsgi",
-      "status": "blocked",
+      "status": "passing",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_stdapi_transport_asgi_wsgi.py",
       "feature_ids": [
@@ -34041,11 +34070,13 @@
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
-        "clm:tigrbl-xfail-compat-surface-001"
+        "clm:tigrbl-xfail-compat-surface-001",
+        "clm:stdapi-asgi-wsgi-transport-compat-contract-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-test-suite-matrix-coverage-intake",
-        "evd:tigrbl-xfail-compat-surface-001-preflight"
+        "evd:tigrbl-xfail-compat-surface-001-preflight",
+        "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
     {
@@ -38044,10 +38075,12 @@
         "feat:transport-event-registry-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:tigrbl-xfail-transport-message-001",
+        "clm:transport-event-registry-contract-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-transport-message-001-preflight"
+        "evd:tigrbl-xfail-transport-message-001-preflight",
+        "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
     {
@@ -38060,10 +38093,12 @@
         "feat:transport-accept-emit-close-atoms-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:tigrbl-xfail-transport-message-001",
+        "clm:transport-accept-emit-close-atoms-contract-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-transport-message-001-preflight"
+        "evd:tigrbl-xfail-transport-message-001-preflight",
+        "evd:tigrbl-transport-surface-slice-pytest"
       ]
     },
     {
@@ -38611,6 +38646,390 @@
       ],
       "evidence_ids": [
         "evd:redirectresponse-concrete-response-class-pytest-001"
+      ]
+    },
+    {
+      "id": "tst:aliasbase-contract-001",
+      "title": "aliasbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_alias_base.py",
+      "feature_ids": [
+        "feat:aliasbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:aliasbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:aliasbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:appbase-contract-001",
+      "title": "appbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_app_base.py",
+      "feature_ids": [
+        "feat:appbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:appbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:appbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:appbase-public-projection-001",
+      "title": "appbase public projection contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_base_public_projection_contracts.py",
+      "feature_ids": [
+        "feat:appbase-public-projection-001"
+      ],
+      "claim_ids": [
+        "clm:appbase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:appbase-public-projection-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:bindingbase-contract-001",
+      "title": "bindingbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_binding_base.py",
+      "feature_ids": [
+        "feat:bindingbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:bindingbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:bindingbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:bindingregistrybase-contract-001",
+      "title": "bindingregistrybase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_binding_base.py",
+      "feature_ids": [
+        "feat:bindingregistrybase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:bindingregistrybase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:bindingregistrybase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:columnbase-contract-001",
+      "title": "columnbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_column_base.py",
+      "feature_ids": [
+        "feat:columnbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:columnbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:columnbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:enginebase-contract-001",
+      "title": "enginebase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_engine_base.py",
+      "feature_ids": [
+        "feat:enginebase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:enginebase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:enginebase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:engineproviderbase-contract-001",
+      "title": "engineproviderbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_engine_provider_base.py",
+      "feature_ids": [
+        "feat:engineproviderbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:engineproviderbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:engineproviderbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:engineregistry-contract-001",
+      "title": "engineregistry contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
+      "feature_ids": [
+        "feat:engineregistry-contract-001"
+      ],
+      "claim_ids": [
+        "clm:engineregistry-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:engineregistry-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:engine-surface-public-projection-001",
+      "title": "engine surface public projection contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_base_public_projection_contracts.py",
+      "feature_ids": [
+        "feat:engine-surface-public-projection-001"
+      ],
+      "claim_ids": [
+        "clm:engine-surface-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:engine-surface-public-projection-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:foreignkeybase-contract-001",
+      "title": "foreignkeybase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_storage_base.py",
+      "feature_ids": [
+        "feat:foreignkeybase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:foreignkeybase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:foreignkeybase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:foreignkeybase-public-projection-001",
+      "title": "foreignkeybase public projection contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_base_public_projection_contracts.py",
+      "feature_ids": [
+        "feat:foreignkeybase-public-projection-001"
+      ],
+      "claim_ids": [
+        "clm:foreignkeybase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:foreignkeybase-public-projection-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:requestbase-contract-001",
+      "title": "requestbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_request_base.py",
+      "feature_ids": [
+        "feat:requestbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:requestbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:requestbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:routerbase-contract-001",
+      "title": "routerbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_base_export_surface_contracts.py",
+      "feature_ids": [
+        "feat:routerbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:routerbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:routerbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:routerbase-public-projection-001",
+      "title": "routerbase public projection contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_base_public_projection_contracts.py",
+      "feature_ids": [
+        "feat:routerbase-public-projection-001"
+      ],
+      "claim_ids": [
+        "clm:routerbase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:routerbase-public-projection-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:schemabase-contract-001",
+      "title": "schemabase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_schema_base.py",
+      "feature_ids": [
+        "feat:schemabase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:schemabase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:schemabase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:sessionabc-contract-001",
+      "title": "sessionabc contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_base_export_surface_contracts.py",
+      "feature_ids": [
+        "feat:sessionabc-contract-001"
+      ],
+      "claim_ids": [
+        "clm:sessionabc-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:sessionabc-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:storagetransformbase-contract-001",
+      "title": "storagetransformbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_storage_base.py",
+      "feature_ids": [
+        "feat:storagetransformbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:storagetransformbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:storagetransformbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:tablebase-contract-001",
+      "title": "tablebase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_table_base.py",
+      "feature_ids": [
+        "feat:tablebase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:tablebase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tablebase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:tablebase-public-projection-001",
+      "title": "tablebase public projection contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_base_public_projection_contracts.py",
+      "feature_ids": [
+        "feat:tablebase-public-projection-001"
+      ],
+      "claim_ids": [
+        "clm:tablebase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:tablebase-public-projection-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:tableregistrybase-contract-001",
+      "title": "tableregistrybase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_table_registry_base.py",
+      "feature_ids": [
+        "feat:tableregistrybase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:tableregistrybase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tableregistrybase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:tableregistrybase-public-projection-001",
+      "title": "tableregistrybase public projection contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_base_public_projection_contracts.py",
+      "feature_ids": [
+        "feat:tableregistrybase-public-projection-001"
+      ],
+      "claim_ids": [
+        "clm:tableregistrybase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:tableregistrybase-public-projection-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:tigrblsessionbase-contract-001",
+      "title": "tigrblsessionbase contract contract test",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_base/tests/test_session_base.py",
+      "feature_ids": [
+        "feat:tigrblsessionbase-contract-001"
+      ],
+      "claim_ids": [
+        "clm:tigrblsessionbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrblsessionbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "tst:transportresponse-concrete-response-class-contract",
+      "title": "TransportResponse concrete response class contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_transport_response_concrete_class.py",
+      "feature_ids": [
+        "feat:transportresponse-concrete-response-class-001"
+      ],
+      "claim_ids": [
+        "clm:transportresponse-concrete-response-class-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-transport-surface-slice-pytest"
       ]
     }
   ],
@@ -45915,132 +46334,172 @@
     {
       "id": "clm:aliasbase-contract-001",
       "title": "aliasbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:aliasbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:aliasbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:aliasbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:aliasbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:appbase-contract-001",
       "title": "appbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:appbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:appbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:appbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:appbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:appbase-public-projection-001",
       "title": "appbase public projection contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:appbase-public-projection-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:appbase-public-projection-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:appbase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:appbase-public-projection-001-pytest"
+      ]
     },
     {
       "id": "clm:bindingbase-contract-001",
       "title": "bindingbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:bindingbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:bindingbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:bindingbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:bindingbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:bindingregistrybase-contract-001",
       "title": "bindingregistrybase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:bindingregistrybase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:bindingregistrybase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:bindingregistrybase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:bindingregistrybase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:columnbase-contract-001",
       "title": "columnbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:columnbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:columnbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:columnbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:columnbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:enginebase-contract-001",
       "title": "enginebase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:enginebase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:enginebase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:enginebase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:enginebase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:engineproviderbase-contract-001",
       "title": "engineproviderbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:engineproviderbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:engineproviderbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:engineproviderbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:engineproviderbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:engineregistry-contract-001",
       "title": "engineregistry contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:engineregistry-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:engineregistry-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:engineregistry-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:engineregistry-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:engine-surface-public-projection-001",
       "title": "engine surface public projection contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:engine-surface-public-projection-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:engine-surface-public-projection-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:engine-surface-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:engine-surface-public-projection-001-pytest"
+      ]
     },
     {
       "id": "clm:response-concrete-response-class-t2-001",
@@ -46147,171 +46606,291 @@
     {
       "id": "clm:foreignkeybase-contract-001",
       "title": "foreignkeybase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:foreignkeybase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:foreignkeybase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:foreignkeybase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:foreignkeybase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:foreignkeybase-public-projection-001",
       "title": "foreignkeybase public projection contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:foreignkeybase-public-projection-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:foreignkeybase-public-projection-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:foreignkeybase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:foreignkeybase-public-projection-001-pytest"
+      ]
     },
     {
       "id": "clm:requestbase-contract-001",
       "title": "requestbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:requestbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:requestbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:requestbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:requestbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:routerbase-contract-001",
       "title": "routerbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:routerbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:routerbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:routerbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:routerbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:routerbase-public-projection-001",
       "title": "routerbase public projection contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:routerbase-public-projection-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:routerbase-public-projection-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:routerbase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:routerbase-public-projection-001-pytest"
+      ]
     },
     {
       "id": "clm:schemabase-contract-001",
       "title": "schemabase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:schemabase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:schemabase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:schemabase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:schemabase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:sessionabc-contract-001",
       "title": "sessionabc contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:sessionabc-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:sessionabc-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:sessionabc-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:sessionabc-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:storagetransformbase-contract-001",
       "title": "storagetransformbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:storagetransformbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:storagetransformbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:storagetransformbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:storagetransformbase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:tablebase-contract-001",
       "title": "tablebase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:tablebase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:tablebase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:tablebase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tablebase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:tablebase-public-projection-001",
       "title": "tablebase public projection contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:tablebase-public-projection-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:tablebase-public-projection-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:tablebase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:tablebase-public-projection-001-pytest"
+      ]
     },
     {
       "id": "clm:tableregistrybase-contract-001",
       "title": "tableregistrybase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:tableregistrybase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:tableregistrybase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:tableregistrybase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tableregistrybase-contract-001-pytest"
+      ]
     },
     {
       "id": "clm:tableregistrybase-public-projection-001",
       "title": "tableregistrybase public projection contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:tableregistrybase-public-projection-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:tableregistrybase-public-projection-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:tableregistrybase-public-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:tableregistrybase-public-projection-001-pytest"
+      ]
     },
     {
       "id": "clm:tigrblsessionbase-contract-001",
       "title": "tigrblsessionbase contract contract claim",
-      "status": "asserted",
+      "status": "certified",
       "tier": "T1",
       "kind": "behavior",
       "description": "Certifies the governed feat:tigrblsessionbase-contract-001 surface for the dedicated base-surface slice.",
       "feature_ids": [
         "feat:tigrblsessionbase-contract-001"
       ],
-      "test_ids": [],
-      "evidence_ids": []
+      "test_ids": [
+        "tst:tigrblsessionbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrblsessionbase-contract-001-pytest"
+      ]
+    },
+    {
+      "id": "clm:stdapi-asgi-wsgi-transport-compat-contract-001",
+      "title": "StdAPI public transport entrypoint compatibility contract",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "The supported transport entrypoint contract is TigrblApp ASGI invocation, while Router is explicitly not a direct transport entrypoint and private ASGI or WSGI adapter internals remain absent.",
+      "feature_ids": [
+        "feat:stdapi-asgi-wsgi-transport-compat-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-transport-surface-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:transport-accept-emit-close-atoms-contract-001",
+      "title": "Transport accept emit close atoms target contract",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "Transport accept, emit, close, and emit-complete remain compact hard-barrier atoms with ordered runtime semantics and acknowledged completion behavior.",
+      "feature_ids": [
+        "feat:transport-accept-emit-close-atoms-001"
+      ],
+      "test_ids": [
+        "tst:transport-accept-emit-close-atoms-contract"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-transport-surface-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:transport-event-registry-contract-001",
+      "title": "Transport event registry target contract",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "The transport event registry defines bounded transport families, required event rows, direction and scope mappings, and duplicate or unknown event rejection.",
+      "feature_ids": [
+        "feat:transport-event-registry-001"
+      ],
+      "test_ids": [
+        "tst:transport-event-registry-contract"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-transport-surface-slice-pytest"
+      ]
+    },
+    {
+      "id": "clm:transportresponse-concrete-response-class-contract-001",
+      "title": "TransportResponse concrete response class target contract",
+      "status": "asserted",
+      "tier": "T2",
+      "kind": "target-contract",
+      "description": "TransportResponse is a distinct concrete response class that finalizes transport headers and body semantics through the shared response send path.",
+      "feature_ids": [
+        "feat:transportresponse-concrete-response-class-001"
+      ],
+      "test_ids": [
+        "tst:transportresponse-concrete-response-class-contract"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-transport-surface-slice-pytest"
+      ]
     }
   ],
   "evidence": [
@@ -52555,8 +53134,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:aliasbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:aliasbase-contract-001"
+      ]
     },
     {
       "id": "evd:appbase-contract-001-pytest",
@@ -52565,8 +53148,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:appbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:appbase-contract-001"
+      ]
     },
     {
       "id": "evd:appbase-public-projection-001-pytest",
@@ -52575,8 +53162,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:appbase-public-projection-001"
+      ],
+      "test_ids": [
+        "tst:appbase-public-projection-001"
+      ]
     },
     {
       "id": "evd:bindingbase-contract-001-pytest",
@@ -52585,8 +53176,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:bindingbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:bindingbase-contract-001"
+      ]
     },
     {
       "id": "evd:bindingregistrybase-contract-001-pytest",
@@ -52595,8 +53190,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:bindingregistrybase-contract-001"
+      ],
+      "test_ids": [
+        "tst:bindingregistrybase-contract-001"
+      ]
     },
     {
       "id": "evd:columnbase-contract-001-pytest",
@@ -52605,8 +53204,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:columnbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:columnbase-contract-001"
+      ]
     },
     {
       "id": "evd:enginebase-contract-001-pytest",
@@ -52615,8 +53218,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:enginebase-contract-001"
+      ],
+      "test_ids": [
+        "tst:enginebase-contract-001"
+      ]
     },
     {
       "id": "evd:engineproviderbase-contract-001-pytest",
@@ -52625,8 +53232,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:engineproviderbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:engineproviderbase-contract-001"
+      ]
     },
     {
       "id": "evd:engineregistry-contract-001-pytest",
@@ -52635,8 +53246,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-engine-registry-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:engineregistry-contract-001"
+      ],
+      "test_ids": [
+        "tst:engineregistry-contract-001"
+      ]
     },
     {
       "id": "evd:engine-surface-public-projection-001-pytest",
@@ -52645,8 +53260,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:engine-surface-public-projection-001"
+      ],
+      "test_ids": [
+        "tst:engine-surface-public-projection-001"
+      ]
     },
     {
       "id": "evd:foreignkeybase-contract-001-pytest",
@@ -52655,8 +53274,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:foreignkeybase-contract-001"
+      ],
+      "test_ids": [
+        "tst:foreignkeybase-contract-001"
+      ]
     },
     {
       "id": "evd:foreignkeybase-public-projection-001-pytest",
@@ -52665,8 +53288,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:foreignkeybase-public-projection-001"
+      ],
+      "test_ids": [
+        "tst:foreignkeybase-public-projection-001"
+      ]
     },
     {
       "id": "evd:requestbase-contract-001-pytest",
@@ -52675,8 +53302,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:requestbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:requestbase-contract-001"
+      ]
     },
     {
       "id": "evd:routerbase-contract-001-pytest",
@@ -52685,8 +53316,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:routerbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:routerbase-contract-001"
+      ]
     },
     {
       "id": "evd:routerbase-public-projection-001-pytest",
@@ -52695,8 +53330,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:routerbase-public-projection-001"
+      ],
+      "test_ids": [
+        "tst:routerbase-public-projection-001"
+      ]
     },
     {
       "id": "evd:schemabase-contract-001-pytest",
@@ -52705,8 +53344,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:schemabase-contract-001"
+      ],
+      "test_ids": [
+        "tst:schemabase-contract-001"
+      ]
     },
     {
       "id": "evd:sessionabc-contract-001-pytest",
@@ -52715,8 +53358,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:sessionabc-contract-001"
+      ],
+      "test_ids": [
+        "tst:sessionabc-contract-001"
+      ]
     },
     {
       "id": "evd:storagetransformbase-contract-001-pytest",
@@ -52725,8 +53372,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:storagetransformbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:storagetransformbase-contract-001"
+      ]
     },
     {
       "id": "evd:tablebase-contract-001-pytest",
@@ -52735,8 +53386,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:tablebase-contract-001"
+      ],
+      "test_ids": [
+        "tst:tablebase-contract-001"
+      ]
     },
     {
       "id": "evd:tablebase-public-projection-001-pytest",
@@ -52745,8 +53400,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:tablebase-public-projection-001"
+      ],
+      "test_ids": [
+        "tst:tablebase-public-projection-001"
+      ]
     },
     {
       "id": "evd:tableregistrybase-contract-001-pytest",
@@ -52755,8 +53414,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:tableregistrybase-contract-001"
+      ],
+      "test_ids": [
+        "tst:tableregistrybase-contract-001"
+      ]
     },
     {
       "id": "evd:tableregistrybase-public-projection-001-pytest",
@@ -52765,8 +53428,12 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-public-projection-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:tableregistrybase-public-projection-001"
+      ],
+      "test_ids": [
+        "tst:tableregistrybase-public-projection-001"
+      ]
     },
     {
       "id": "evd:tigrblsessionbase-contract-001-pytest",
@@ -52775,8 +53442,32 @@
       "kind": "report",
       "tier": "T1",
       "path": ".ssot/reports/tigrbl-base-surface-core-pytest.json",
-      "claim_ids": [],
-      "test_ids": []
+      "claim_ids": [
+        "clm:tigrblsessionbase-contract-001"
+      ],
+      "test_ids": [
+        "tst:tigrblsessionbase-contract-001"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-transport-surface-slice-pytest",
+      "title": "Tigrbl transport surface slice focused pytest run",
+      "status": "passed",
+      "kind": "test-run",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-transport-surface-slice-pytest.json",
+      "claim_ids": [
+        "clm:stdapi-asgi-wsgi-transport-compat-contract-001",
+        "clm:transport-accept-emit-close-atoms-contract-001",
+        "clm:transport-event-registry-contract-001",
+        "clm:transportresponse-concrete-response-class-contract-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi",
+        "tst:transport-accept-emit-close-atoms-contract",
+        "tst:transport-event-registry-contract",
+        "tst:transportresponse-concrete-response-class-contract"
+      ]
     }
   ],
   "issues": [
@@ -55119,6 +55810,62 @@
         "evd:sse-lazy-iterator-runtime-contract-pytest",
         "evd:webtransport-transport-events-contract-pytest",
         "evd:tigrbl-eventful-streaming-slice-pytest"
+      ]
+    },
+    {
+      "id": "rel:tigrbl-base-surface-certification-001",
+      "version": "0.3.19-dev1-base-surface-001",
+      "status": "certified",
+      "boundary_id": "bnd:tigrbl-base-surface-certification-001",
+      "claim_ids": [
+        "clm:aliasbase-contract-001",
+        "clm:appbase-contract-001",
+        "clm:appbase-public-projection-001",
+        "clm:bindingbase-contract-001",
+        "clm:bindingregistrybase-contract-001",
+        "clm:columnbase-contract-001",
+        "clm:enginebase-contract-001",
+        "clm:engineproviderbase-contract-001",
+        "clm:engineregistry-contract-001",
+        "clm:engine-surface-public-projection-001",
+        "clm:foreignkeybase-contract-001",
+        "clm:foreignkeybase-public-projection-001",
+        "clm:requestbase-contract-001",
+        "clm:routerbase-contract-001",
+        "clm:routerbase-public-projection-001",
+        "clm:schemabase-contract-001",
+        "clm:sessionabc-contract-001",
+        "clm:storagetransformbase-contract-001",
+        "clm:tablebase-contract-001",
+        "clm:tablebase-public-projection-001",
+        "clm:tableregistrybase-contract-001",
+        "clm:tableregistrybase-public-projection-001",
+        "clm:tigrblsessionbase-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:aliasbase-contract-001-pytest",
+        "evd:appbase-contract-001-pytest",
+        "evd:appbase-public-projection-001-pytest",
+        "evd:bindingbase-contract-001-pytest",
+        "evd:bindingregistrybase-contract-001-pytest",
+        "evd:columnbase-contract-001-pytest",
+        "evd:enginebase-contract-001-pytest",
+        "evd:engineproviderbase-contract-001-pytest",
+        "evd:engineregistry-contract-001-pytest",
+        "evd:engine-surface-public-projection-001-pytest",
+        "evd:foreignkeybase-contract-001-pytest",
+        "evd:foreignkeybase-public-projection-001-pytest",
+        "evd:requestbase-contract-001-pytest",
+        "evd:routerbase-contract-001-pytest",
+        "evd:routerbase-public-projection-001-pytest",
+        "evd:schemabase-contract-001-pytest",
+        "evd:sessionabc-contract-001-pytest",
+        "evd:storagetransformbase-contract-001-pytest",
+        "evd:tablebase-contract-001-pytest",
+        "evd:tablebase-public-projection-001-pytest",
+        "evd:tableregistrybase-contract-001-pytest",
+        "evd:tableregistrybase-public-projection-001-pytest",
+        "evd:tigrblsessionbase-contract-001-pytest"
       ]
     }
   ],
