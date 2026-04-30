@@ -86,12 +86,6 @@ def test_operator_auth_surface_allow_anon_does_not_unprotect_other_ops() -> None
         client.close()
 
 
-@pytest.mark.xfail(
-    reason=(
-        "feat:operator-auth-dependency-hook-surface-001 is partial; "
-        "authorize hook rejection currently projects as 400 instead of 403."
-    ),
-)
 def test_operator_auth_surface_authorize_hook_can_reject_requests() -> None:
     def deny_create(_request, _model, alias, _payload, _user):
         return alias != "create"

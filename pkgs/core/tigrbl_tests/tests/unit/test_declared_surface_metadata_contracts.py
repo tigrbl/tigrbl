@@ -35,19 +35,13 @@ def test_openrpc_declared_surface_binding_proto_is_emitted() -> None:
     )
 
 
-@pytest.mark.xfail(
-    reason=(
-        "feat:surface-optional-metadata-emission-001 is partial; projections "
-        "currently include optional keys with null or empty values."
-    ),
-)
 def test_openapi_omits_optional_surface_metadata_when_not_declared() -> None:
     app, _ = _build_app()
 
     with Client(transport=ASGITransport(app=app), base_url="http://test") as client:
         payload = client.get("/openapi.json").json()
 
-    surface = payload["paths"]["/widgets_declared_surface"]["post"]["x-tigrbl-surface"]
+    surface = payload["paths"]["/widget"]["post"]["x-tigrbl-surface"]
     assert "exchange" not in surface
     assert "txScope" not in surface
     assert "subevents" not in surface

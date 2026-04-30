@@ -6494,7 +6494,7 @@
       "id": "feat:operator-auth-dependency-hook-surface-001",
       "title": "Dependency and hook based auth operator surface",
       "description": "Tracks the dependency and hook based auth surface decision formerly represented by OP-009. Original legacy feature id: feat:op-009.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -6509,7 +6509,7 @@
       "claim_ids": [
         "clm:op-009",
         "clm:tigrbl-tests-failure-closure-001",
-        "clm:tigrbl-xfail-partial-surface-001"
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_closure.py",
@@ -9019,7 +9019,7 @@
       "id": "feat:surface-optional-metadata-emission-001",
       "title": "Declared-surface optional metadata emission",
       "description": "Emit exchange, framing, subevents, and txScope only when those declarations exist on the bound surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9032,7 +9032,7 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001"
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
@@ -9809,7 +9809,7 @@
       "id": "feat:diagnostics-absence-warning-suppression-001",
       "title": "Diagnostics absence-warning suppression",
       "description": "Suppress warnings for absent optional integrations unless the warning is explicitly governed.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -9822,7 +9822,7 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001"
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
       ],
       "test_ids": [
         "tst:ssot-authority-model-validator",
@@ -40879,49 +40879,49 @@
     {
       "id": "tst:declared-surface-optional-metadata-contract",
       "title": "Declared-surface optional metadata contract",
-      "status": "blocked",
-      "kind": "xfail-contract",
+      "status": "passing",
+      "kind": "contract",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_metadata_contracts.py",
       "feature_ids": [
         "feat:surface-optional-metadata-emission-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001"
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-partial-surface-001-preflight"
+        "evd:tigrbl-xfail-partial-surface-contracts-001"
       ]
     },
     {
       "id": "tst:diagnostics-absence-warning-suppression-contract",
       "title": "Diagnostics absence-warning suppression contract",
-      "status": "blocked",
-      "kind": "xfail-contract",
+      "status": "passing",
+      "kind": "contract",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_diagnostics_endpoint_contracts.py",
       "feature_ids": [
         "feat:diagnostics-absence-warning-suppression-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001"
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-partial-surface-001-preflight"
+        "evd:tigrbl-xfail-partial-surface-contracts-001"
       ]
     },
     {
       "id": "tst:operator-auth-dependency-hook-surface-contract",
       "title": "Operator auth dependency hook surface contract",
-      "status": "blocked",
-      "kind": "xfail-contract",
+      "status": "passing",
+      "kind": "contract",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_operator_auth_surface_contracts.py",
       "feature_ids": [
         "feat:operator-auth-dependency-hook-surface-001"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001"
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-partial-surface-001-preflight"
+        "evd:tigrbl-xfail-partial-surface-contracts-001"
       ]
     }
   ],
@@ -47930,19 +47930,34 @@
       "kind": "xfail-closure",
       "description": "Blocked until all selected xfail tests in this frozen boundary pass without xfail markers and linked features are implemented.",
       "feature_ids": [
-        "feat:surface-optional-metadata-emission-001",
-        "feat:diagnostics-absence-warning-suppression-001",
-        "feat:operator-auth-dependency-hook-surface-001",
         "feat:bootstrappable-table-mixin-001"
       ],
       "test_ids": [
-        "tst:declared-surface-optional-metadata-contract",
-        "tst:diagnostics-absence-warning-suppression-contract",
-        "tst:operator-auth-dependency-hook-surface-contract",
         "tst:tigrbl-tests-tests-i9n-test-mixins"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-partial-surface-001-preflight"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-xfail-partial-surface-contracts-001",
+      "title": "Tigrbl partial-surface contracts implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "xfail-closure",
+      "description": "The diagnostics absence-warning, operator authorization hook, and optional surface metadata contracts pass without xfail markers and are backed by focused pytest JSON evidence.",
+      "feature_ids": [
+        "feat:surface-optional-metadata-emission-001",
+        "feat:diagnostics-absence-warning-suppression-001",
+        "feat:operator-auth-dependency-hook-surface-001"
+      ],
+      "test_ids": [
+        "tst:declared-surface-optional-metadata-contract",
+        "tst:diagnostics-absence-warning-suppression-contract",
+        "tst:operator-auth-dependency-hook-surface-contract"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-xfail-partial-surface-contracts-001"
       ]
     }
   ],
@@ -53829,10 +53844,23 @@
         "clm:tigrbl-xfail-partial-surface-001"
       ],
       "test_ids": [
+        "tst:tigrbl-tests-tests-i9n-test-mixins"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-xfail-partial-surface-contracts-001",
+      "title": "Tigrbl partial-surface contract pytest evidence",
+      "status": "passed",
+      "kind": "pytest-json-report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-xfail-partial-surface-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
+      ],
+      "test_ids": [
         "tst:declared-surface-optional-metadata-contract",
         "tst:diagnostics-absence-warning-suppression-contract",
-        "tst:operator-auth-dependency-hook-surface-contract",
-        "tst:tigrbl-tests-tests-i9n-test-mixins"
+        "tst:operator-auth-dependency-hook-surface-contract"
       ]
     }
   ],
@@ -56080,11 +56108,13 @@
       "boundary_id": "bnd:tigrbl-xfail-partial-surface-001",
       "claim_ids": [
         "clm:tigrbl-xfail-partial-surface-001",
-        "clm:orm-alias-export-compatibility-001"
+        "clm:orm-alias-export-compatibility-001",
+        "clm:tigrbl-xfail-partial-surface-contracts-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-partial-surface-001-preflight",
-        "evd:orm-alias-export-compatibility-pytest"
+        "evd:orm-alias-export-compatibility-pytest",
+        "evd:tigrbl-xfail-partial-surface-contracts-001"
       ]
     }
   ],

@@ -7,9 +7,9 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 - `total_features`: `609`
 - `in_bound_features`: `581`
 - `out_of_scope_features`: `28`
-- `feature_gap_count`: `327`
-- `gap_counts`: `{'feature_not_implemented': 324, 'missing_claims': 102, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 106, 'non_passing_evidence': 73, 'non_passing_tests': 129}`
-- `implementation_counts`: `{'absent': 68, 'implemented': 257, 'partial': 256}`
+- `feature_gap_count`: `324`
+- `gap_counts`: `{'feature_not_implemented': 321, 'missing_claims': 102, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 103, 'non_passing_evidence': 70, 'non_passing_tests': 126}`
+- `implementation_counts`: `{'absent': 68, 'implemented': 260, 'partial': 253}`
 - `horizon_counts`: `{'backlog': 161, 'current': 291, 'future': 102, 'next': 27, 'out_of_bounds': 28}`
 - `release_blocking_issue_count`: `1`
 - `release_blocking_risk_count`: `1`
@@ -117,7 +117,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:depends-concrete-dependency-helper-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:deprecated-export-compat-window-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:derived-runtime-subevent-taxonomy-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:diagnostics-absence-warning-suppression-001` | `partial` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:diagnostics-contract-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:diagnostics-router-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:diagnostics-system-prefix-mount-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
@@ -239,7 +238,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:openrpc-payload-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:openrpc-uix-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:operation-diagnostics-projection-001` | `partial` | `future` | `feature_not_implemented` |
-| `feat:operator-auth-dependency-hook-surface-001` | `partial` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:operator-bounded-middleware-catalog-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:operator-cookie-roundtrip-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:operator-static-files-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
@@ -319,7 +317,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:surface-binding-proto-emission-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:surface-docs-cross-projection-parity-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:surface-metadata-omission-contract-001` | `partial` | `future` | `feature_not_implemented` |
-| `feat:surface-optional-metadata-emission-001` | `partial` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:swagger-openapi-uix-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:tablebase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:tablebase-public-projection-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |

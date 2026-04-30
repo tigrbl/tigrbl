@@ -40,7 +40,7 @@ def build_healthz_endpoint(dep: Optional[Callable[..., Any]]):
                 db = resolved
             db = _resolve_db(db)
             if db is None:
-                return {"ok": True, "warning": "no-db"}
+                return {"ok": True}
             try:
                 await maybe_execute(db, "SELECT 1")
                 return {"ok": True}
@@ -56,7 +56,7 @@ def build_healthz_endpoint(dep: Optional[Callable[..., Any]]):
     async def _healthz(request: Request):
         db = _resolve_db(request)
         if db is None:
-            return {"ok": True, "warning": "no-db"}
+            return {"ok": True}
         try:
             await maybe_execute(db, "SELECT 1")
             return {"ok": True}
