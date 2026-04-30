@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "kind": "boundary_snapshot",
+  "generated_at": "2026-04-30T11:03:06Z",
+  "registry_path": ".ssot/registry.json",
+  "registry_sha256": "b2665ec6995fb0a90120e1e2a24b3cb874c248a903ee9c25a07a40985ab2182a",
+  "boundary": {
+    "id": "bnd:tigrbl-xfail-dispatch-execution-001",
+    "title": "Tigrbl XFail Dispatch Execution Boundary",
+    "status": "frozen",
+    "frozen": true,
+    "feature_ids": [
+      "feat:canonical-exchange-normalization-001",
+      "feat:dispatch-exchange-family-subevent-atoms-001",
+      "feat:subevent-handler-dispatch-001",
+      "feat:subevent-transaction-units-001",
+      "feat:completion-fence-emit-complete-001",
+      "feat:segment-fusion-barrier-policy-001",
+      "feat:protocol-fused-segments-001",
+      "feat:owner-dispatch-loop-modes-001",
+      "feat:canonical-ingress-route-phase-cleanup-001",
+      "feat:post-emit-completion-fence-compilation-001",
+      "feat:tx-phase-legacy-alias-removal-001"
+    ],
+    "profile_ids": []
+  },
+  "features": [
+    {
+      "id": "feat:canonical-exchange-normalization-001",
+      "title": "Canonical exchange normalization",
+      "description": "Canonical exchange normalization target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:canonical-exchange-normalization-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:canonical-exchange-normalization-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2055",
+        "spc:2099",
+        "spc:2101",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:dispatch-exchange-family-subevent-atoms-001",
+      "title": "Dispatch exchange family subevent atoms",
+      "description": "Dispatch exchange family subevent atoms target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:dispatch-exchange-family-subevent-atoms-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:dispatch-exchange-family-subevent-atoms-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2101",
+        "spc:2105",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:subevent-handler-dispatch-001",
+      "title": "Subevent handler dispatch",
+      "description": "Tracks subevent_ctx, handler buckets, EventKey handler selection, and owner-vs-dispatch interaction.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2119",
+        "spc:2120",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:subevent-handler-dispatch-001",
+        "clm:subevent-handler-dispatch-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:subevent-handler-dispatch-contract-001",
+        "tst:subevent-handler-dispatch-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:subevent-transaction-units-001",
+      "title": "Subevent transaction units",
+      "description": "Subevent transaction units target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:subevent-transaction-units-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2087",
+        "spc:2099",
+        "spc:2103",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:completion-fence-emit-complete-001",
+      "title": "Completion fence emit-complete semantics",
+      "description": "Tracks POST_RESPONSE projected as POST_EMIT, emit_complete subevents, and acknowledged-vs-queued send semantics.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2121",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:completion-fence-emit-complete-001",
+        "clm:completion-fence-emit-complete-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:completion-fence-emit-complete-contract-001",
+        "tst:completion-fence-emit-complete-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:segment-fusion-barrier-policy-001",
+      "title": "Segment fusion barrier policy",
+      "description": "Tracks fusible atom classes and hard barriers across deps, tx, handler, transport, rollback, and completion fences.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2122",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:segment-fusion-barrier-policy-001",
+        "clm:segment-fusion-barrier-policy-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:segment-fusion-barrier-policy-contract-001",
+        "tst:segment-fusion-barrier-policy-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:protocol-fused-segments-001",
+      "title": "Protocol fused segments",
+      "description": "Protocol fused segments target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:protocol-fused-segments-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:protocol-fused-segments-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2101",
+        "spc:2102",
+        "spc:2113",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:owner-dispatch-loop-modes-001",
+      "title": "Owner and dispatch loop modes",
+      "description": "Tracks explicit owner and dispatch loop modes, defaults, invalid combinations, and runtime loop control.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2120",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:owner-dispatch-loop-modes-001",
+        "clm:owner-dispatch-loop-modes-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:owner-dispatch-loop-modes-contract-001",
+        "tst:owner-dispatch-loop-modes-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:canonical-ingress-route-phase-cleanup-001",
+      "title": "Canonical INGRESS_ROUTE phase cleanup",
+      "description": "Canonical INGRESS_ROUTE phase cleanup target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:canonical-ingress-route-phase-cleanup-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:canonical-ingress-route-phase-cleanup-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2056",
+        "spc:2102",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:post-emit-completion-fence-compilation-001",
+      "title": "POST_EMIT completion fence compilation",
+      "description": "POST_EMIT completion fence compilation target for protocol-runtime implementation.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:post-emit-completion-fence-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:post-emit-completion-fence-contract"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2056",
+        "spc:2101",
+        "spc:2102",
+        "spc:2142"
+      ]
+    },
+    {
+      "id": "feat:tx-phase-legacy-alias-removal-001",
+      "title": "Remove legacy transaction phase aliases",
+      "description": "Track the follow-up breaking-change work to remove support for END_TX, ON_ROLLBACK, and ON_END_TX_ERROR after the deprecation window completes, leaving only TX_COMMIT, TX_ROLLBACK, and ON_TX_COMMIT_ERROR accepted and emitted.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": "Sequenced after feat:tx-phase-legacy-alias-deprecation-001; no hard requires edge until the deprecation feature has passing tests and evidence."
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:tigrbl-xfail-dispatch-execution-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2056",
+        "spc:2115",
+        "spc:2142"
+      ],
+      "claim_ids": [
+        "clm:tx-phase-legacy-alias-removal-contract-001",
+        "clm:tigrbl-xfail-dispatch-execution-001"
+      ],
+      "test_ids": [
+        "tst:tx-phase-legacy-alias-removal-contract"
+      ],
+      "requires": []
+    }
+  ],
+  "summary": {
+    "boundary_id": "bnd:tigrbl-xfail-dispatch-execution-001",
+    "feature_count": 11,
+    "profile_count": 0,
+    "frozen": true,
+    "status": "frozen"
+  }
+}

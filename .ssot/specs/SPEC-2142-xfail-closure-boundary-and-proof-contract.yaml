@@ -1,0 +1,45 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2142"
+number: 2142
+slug: "xfail-closure-boundary-and-proof-contract"
+title: "XFail Closure Boundary And Proof Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the SSOT contract for closing current xfailed tests through narrow feature links, split frozen boundaries, focused implementation proof, claim and evidence closure, and final aggregate release gating."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define the xfail closure boundary, proof, and release rules."
+    at: "2026-04-30T11:00:00Z"
+references: []
+body: |-
+  ## Intent
+  Define the SSOT contract for closing current xfailed tests through narrow feature links, split frozen boundaries, focused implementation proof, claim and evidence closure, and final aggregate release gating.
+  
+  ## Boundary Contract
+  The closure lane contains five split boundaries:
+  
+  - bnd:tigrbl-xfail-runtime-taxonomy-001
+  - bnd:tigrbl-xfail-transport-message-001
+  - bnd:tigrbl-xfail-dispatch-execution-001
+  - bnd:tigrbl-xfail-compat-surface-001
+  - bnd:tigrbl-xfail-partial-surface-001
+  
+  Each boundary MUST be frozen before implementation closure begins. Boundary membership MUST contain narrow feature rows rather than only the broad test-suite coverage intake feature.
+  
+  ## Proof Contract
+  Each selected xfail test file MUST have an SSOT test row linked to a narrow feature. A boundary may be certified only when selected tests no longer report xfailed, the corresponding feature rows are implemented, linked evidence has passed, and linked claims are certified.
+  
+  ## Release Contract
+  Per-boundary release candidates MAY exist while implementation is still open, but they MUST remain draft or candidate until proof closure passes. The aggregate rel:tigrbl-xfail-closure-001 release MUST NOT be created or certified until all split boundaries have passed.
+  
+  ## Failure Mode
+  If any focused xfail file still reports xfailed tests, the boundary remains blocked and must not proceed to certification. If a test XPASSes, the stale xfail marker must be removed or updated and the SSOT proof chain must be synchronized.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1123"

@@ -15838,6 +15838,7 @@
         "tst:tigrbl-tests-tests-i9n-test-field-spec-effects",
         "tst:tigrbl-tests-tests-i9n-test-iospec-attributes",
         "tst:tigrbl-tests-tests-i9n-test-iospec-integration",
+        "tst:tigrbl-tests-tests-i9n-test-mixins",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-attributes-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-spec-integration",
@@ -15868,8 +15869,7 @@
         "tst:tigrbl-tests-tests-unit-test-table-model-attribute-contract",
         "tst:tigrbl-tests-tests-unit-test-table-namespace-init",
         "tst:tigrbl-tests-tests-unit-test-table-namespace-isolation",
-        "tst:tigrbl-tests-tests-unit-test-v3-storage-spec-attributes",
-        "tst:tigrbl-tests-tests-i9n-test-mixins"
+        "tst:tigrbl-tests-tests-unit-test-v3-storage-spec-attributes"
       ],
       "requires": []
     },
@@ -16705,7 +16705,7 @@
       "id": "feat:governed-module-alias-compatibility-001",
       "title": "Governed module alias compatibility",
       "description": "Preserve governed compatibility aliases for legacy or shortcut module import surfaces that project canonical Tigrbl APIs.",
-      "implementation_status": "implemented",
+      "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -16725,7 +16725,8 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:orm-alias-export-compatibility-001"
+        "clm:orm-alias-export-compatibility-001",
+        "clm:tigrbl-xfail-partial-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tigrbl_tests-tests-test_orm_alias_exports.py",
@@ -16773,6 +16774,7 @@
         "tst:tigrbl-tests-tests-i9n-test-field-spec-effects",
         "tst:tigrbl-tests-tests-i9n-test-iospec-attributes",
         "tst:tigrbl-tests-tests-i9n-test-iospec-integration",
+        "tst:tigrbl-tests-tests-i9n-test-mixins",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-attributes-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-spec-integration",
@@ -16820,7 +16822,7 @@
       "id": "feat:orm-alias-export-compatibility-001",
       "title": "tigrbl.orm alias export compatibility",
       "description": "Keep the tigrbl.orm compatibility module importable as a governed projection of the canonical ORM surface.",
-      "implementation_status": "implemented",
+      "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -16839,7 +16841,8 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:orm-alias-export-compatibility-001"
+        "clm:orm-alias-export-compatibility-001",
+        "clm:tigrbl-xfail-partial-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tigrbl_tests-tests-test_orm_alias_exports.py",
@@ -16887,6 +16890,7 @@
         "tst:tigrbl-tests-tests-i9n-test-field-spec-effects",
         "tst:tigrbl-tests-tests-i9n-test-iospec-attributes",
         "tst:tigrbl-tests-tests-i9n-test-iospec-integration",
+        "tst:tigrbl-tests-tests-i9n-test-mixins",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-attributes-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-spec-integration",
@@ -16934,7 +16938,7 @@
       "id": "feat:orm-mixins-alias-compatibility-001",
       "title": "tigrbl.orm.mixins alias compatibility",
       "description": "Keep tigrbl.orm.mixins importable and projecting Bootstrappable through the governed compatibility alias surface.",
-      "implementation_status": "implemented",
+      "implementation_status": "partial",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -16952,7 +16956,8 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:orm-alias-export-compatibility-001"
+        "clm:orm-alias-export-compatibility-001",
+        "clm:tigrbl-xfail-partial-surface-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tigrbl_tests-tests-test_orm_alias_exports.py",
@@ -17000,6 +17005,7 @@
         "tst:tigrbl-tests-tests-i9n-test-field-spec-effects",
         "tst:tigrbl-tests-tests-i9n-test-iospec-attributes",
         "tst:tigrbl-tests-tests-i9n-test-iospec-integration",
+        "tst:tigrbl-tests-tests-i9n-test-mixins",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-attributes-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
         "tst:tigrbl-tests-tests-i9n-test-schema-ctx-spec-integration",
@@ -31430,7 +31436,10 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mixins.py",
       "feature_ids": [
-        "feat:bootstrappable-table-mixin-001"
+        "feat:bootstrappable-table-mixin-001",
+        "feat:governed-module-alias-compatibility-001",
+        "feat:orm-alias-export-compatibility-001",
+        "feat:orm-mixins-alias-compatibility-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
@@ -47930,10 +47939,13 @@
       "kind": "xfail-closure",
       "description": "Blocked until all selected xfail tests in this frozen boundary pass without xfail markers and linked features are implemented.",
       "feature_ids": [
+        "feat:bootstrappable-table-mixin-001",
+        "feat:governed-module-alias-compatibility-001",
+        "feat:orm-alias-export-compatibility-001",
+        "feat:orm-mixins-alias-compatibility-001",
         "feat:surface-optional-metadata-emission-001",
         "feat:diagnostics-absence-warning-suppression-001",
-        "feat:operator-auth-dependency-hook-surface-001",
-        "feat:bootstrappable-table-mixin-001"
+        "feat:operator-auth-dependency-hook-surface-001"
       ],
       "test_ids": [
         "tst:declared-surface-optional-metadata-contract",
@@ -54130,9 +54142,9 @@
     {
       "id": "iss:certifiable-package-proof-chain-gap-001",
       "title": "Certifiable package proof chain gap",
-      "status": "closed",
+      "status": "open",
       "severity": "critical",
-      "description": "Package buildability/importability and package-coordinate traceability now have implemented features, published claims, passing tests, and passed evidence. The broader whole-repo certification gap remains tracked by the whole-repo gap report and by the xfail/runtime closure blocker.",
+      "description": "Current registry state has nonimplemented features, unverified claims, non-passing evidence, profile evaluation warnings, and incomplete proof links preventing package certification.",
       "plan": {
         "horizon": "current",
         "slot": null
@@ -54146,7 +54158,7 @@
       "risk_ids": [
         "rsk:unverified-package-proof-chain-001"
       ],
-      "release_blocking": false
+      "release_blocking": true
     },
     {
       "id": "iss:tigrbl-xfail-closure-implementation-blocked-001",
@@ -54517,7 +54529,7 @@
     {
       "id": "rsk:unverified-package-proof-chain-001",
       "title": "Unverified package proof chain",
-      "status": "mitigated",
+      "status": "active",
       "severity": "critical",
       "description": "Certification can overclaim package readiness while current features, claims, tests, evidence, and profiles remain incomplete or unverified.",
       "feature_ids": [],
@@ -56079,12 +56091,10 @@
       "status": "draft",
       "boundary_id": "bnd:tigrbl-xfail-partial-surface-001",
       "claim_ids": [
-        "clm:tigrbl-xfail-partial-surface-001",
-        "clm:orm-alias-export-compatibility-001"
+        "clm:tigrbl-xfail-partial-surface-001"
       ],
       "evidence_ids": [
-        "evd:tigrbl-xfail-partial-surface-001-preflight",
-        "evd:orm-alias-export-compatibility-pytest"
+        "evd:tigrbl-xfail-partial-surface-001-preflight"
       ]
     }
   ],
