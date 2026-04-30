@@ -1,0 +1,18 @@
+{
+  "artifact": "tigrbl-canonical-stream-transport-op-contracts",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_canonical_stream_transport_op_contracts.py -q",
+  "features": [
+    "feat:canonical-op-append-chunk-001",
+    "feat:canonical-op-send-datagram-001"
+  ],
+  "status": "passed",
+  "tests": [
+    "test_stream_transport_ops_project_canonical_routes",
+    "test_stream_transport_ops_execute_realtime_handlers_through_rpc"
+  ],
+  "result": {
+    "passed": 2,
+    "failed": 0
+  },
+  "notes": "Verifies canonical append_chunk and send_datagram route projection and realtime handler execution through RPC."
+}
