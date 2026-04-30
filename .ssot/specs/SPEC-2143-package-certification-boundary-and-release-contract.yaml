@@ -1,0 +1,41 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2143"
+number: 2143
+slug: "package-certification-boundary-and-release-contract"
+title: "Package Certification Boundary And Release Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the SSOT contract for the explicit boundary-scoped package certification rail for Tigrbl 0.3.19, including the package boundary, release identity, inherited proof set, and out-of-bound disclosure rule."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to define the explicit package certification boundary and release contract."
+    at: "2026-04-30T22:08:15Z"
+references: []
+body: |-
+  ## Intent
+  Define the SSOT contract for the explicit boundary-scoped package certification rail for Tigrbl 0.3.19, including the package boundary, release identity, inherited proof set, and out-of-bound disclosure rule.
+  
+  ## Boundary Contract
+  Package certification is expressed through boundary `bnd:tigrbl-package-certification-0-3-19-001`.
+  
+  The boundary MUST contain the explicit implemented feature rows already certified for the 0.3.19 package surface. It MUST NOT silently widen to include deferred datatype/table work, transport helper lanes, or any other unfinished next-target scope.
+  
+  ## Release Contract
+  Package certification is published as release `rel:tigrbl-package-0.3.19`.
+  
+  The release MAY reuse the already-passing 0.3.19 claim and evidence set when the feature set is unchanged and the public package line is reconciled to the same governed version rail. Historical release `rel:tigrbl-0.3.19` remains published evidence provenance and MUST NOT be rewritten.
+  
+  ## Public Statement Contract
+  Any certifiable package statement MUST name the exact boundary id and release id and MUST explicitly preserve out-of-bound package surfaces as out of scope. Boundary-scoped package certification MUST NOT be described as unconditional whole-package closure.
+  
+  ## Failure Mode
+  If package metadata, top-level conformance docs, registry program anchors, boundary id, or release id disagree on the governed line, certification wording is blocked until they are reconciled.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1124"
