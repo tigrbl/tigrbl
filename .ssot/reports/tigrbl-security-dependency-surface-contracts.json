@@ -1,0 +1,32 @@
+{
+  "artifact_id": "evd:tigrbl-security-dependency-surface-contracts-001",
+  "claim_id": "clm:tigrbl-security-dependency-surface-contracts-001",
+  "test_id": "tst:tigrbl-security-dependency-surface-contracts",
+  "kind": "pytest-json-summary",
+  "status": "passed",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_security_dependency_surface_contracts.py -q",
+  "environment": {
+    "UV_CACHE_DIR": ".tmp\\uv-cache",
+    "UV_LINK_MODE": "copy",
+    "TMP": ".tmp\\pytest-tmp",
+    "TEMP": ".tmp\\pytest-tmp"
+  },
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "errors": 0
+  },
+  "covered_contracts": [
+    "HTTPBasic is a first-class OpenAPI security dependency and decodes Basic credentials",
+    "OAuth2 is a first-class OpenAPI security dependency with scoped requirements",
+    "OpenIdConnect is a first-class OpenAPI security dependency with discovery URL metadata",
+    "MutualTLS is a first-class OpenAPI security dependency",
+    "HTTPBasic, OAuth2, OpenIdConnect, and MutualTLS project consistently into OpenAPI and OpenRPC security metadata"
+  ],
+  "feature_ids": [
+    "feat:openidconnect-security-dependency-001",
+    "feat:httpbasic-security-dependency-001",
+    "feat:mutualtls-security-dependency-001",
+    "feat:oauth2-security-dependency-001"
+  ]
+}

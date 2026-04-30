@@ -1,5 +1,9 @@
 from tigrbl_runtime.runtime.kernel import _default_kernel, build_phase_chains
 from .router import mount_diagnostics
+from .healthz import build_healthz_endpoint, build_healthz_html, mount_healthz_uix
+from .methodz import build_methodz_endpoint
+from .hookz import build_hookz_endpoint
+from .kernelz import build_kernelz_endpoint
 from .methodz import build_methodz_endpoint as _build_methodz_endpoint
 from .hookz import build_hookz_endpoint as _build_hookz_endpoint
 from .kernelz import build_kernelz_endpoint as _build_kernelz_endpoint
@@ -13,6 +17,12 @@ from .utils import (
 
 __all__ = [
     "mount_diagnostics",
+    "build_healthz_endpoint",
+    "build_healthz_html",
+    "mount_healthz_uix",
+    "build_methodz_endpoint",
+    "build_hookz_endpoint",
+    "build_kernelz_endpoint",
     "_build_methodz_endpoint",
     "_build_hookz_endpoint",
     "_build_kernelz_endpoint",

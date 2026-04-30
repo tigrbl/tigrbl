@@ -31,6 +31,7 @@ from tigrbl_concrete._mapping.router.common import (
 from tigrbl_concrete._mapping.router.rpc import rpc_call as _rpc_call
 from tigrbl_concrete._mapping.model import rebind as _rebind, bind as _bind
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
+from tigrbl_concrete.system import mount_healthz_uix as _mount_healthz_uix
 from tigrbl_concrete.system import mount_lens as _mount_lens
 from tigrbl_concrete.system import mount_openapi as _mount_openapi
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
@@ -258,6 +259,7 @@ class TigrblApp(_App):
             self.mount_openapi(path="/openapi.json")
             _mount_swagger(self, path="/docs")
             self.attach_diagnostics(prefix=self.system_prefix)
+            self.mount_healthz_uix(path="/healthz")
             self.mount_openrpc(path="/openrpc.json")
             self.mount_lens(path="/lens", spec_path="/openrpc.json")
             self.mount_json_schema(path="/schemas.json")
@@ -886,6 +888,23 @@ class TigrblApp(_App):
     ) -> Any:
         """Mount a tigrbl-lens HTML endpoint onto this instance."""
         return _mount_lens(self, path=path, name=name, spec_path=spec_path)
+
+    def mount_healthz_uix(
+        self,
+        *,
+        path: str = "/healthz",
+        name: str = "__healthz_uix__",
+        healthz_path: str | None = None,
+    ) -> Any:
+        """Mount a human-viewable health page onto this instance."""
+        if healthz_path is None:
+            healthz_path = f"{self.system_prefix}/healthz"
+        return _mount_healthz_uix(
+            self,
+            path=path,
+            name=name,
+            healthz_path=healthz_path,
+        )
 
     def attach_diagnostics(
         self, *, prefix: str | None = None, app: Any | None = None

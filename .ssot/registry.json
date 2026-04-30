@@ -983,7 +983,7 @@
       "id": "feat:subevent-transaction-units-001",
       "title": "Subevent transaction units",
       "description": "Subevent transaction units target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -996,10 +996,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-dispatch-execution-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:subevent-transaction-units-contract"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -1051,7 +1051,7 @@
       "id": "feat:eventful-channel-state-metadata-001",
       "title": "Eventful channel state metadata",
       "description": "Eventful channel state metadata target for protocol-runtime implementation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -1064,10 +1064,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:eventful-channel-state-metadata-contract"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -4530,7 +4530,7 @@
       "id": "feat:openapi-31-document-emission-001",
       "title": "OpenAPI 3.1.0 document emission",
       "description": "Tracks explicit OpenAPI 3.1.0 document emission formerly represented by OAS-001. Original legacy feature id: feat:oas-001.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4543,22 +4543,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:oas-001",
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -4601,7 +4589,7 @@
       "id": "feat:openapi-json-schema-dialect-2020-12-001",
       "title": "OpenAPI JSON Schema Draft 2020-12 dialect declaration",
       "description": "Tracks explicit jsonSchemaDialect declaration for JSON Schema Draft 2020-12 formerly represented by OAS-002. Original legacy feature id: feat:oas-002.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4614,22 +4602,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:oas-002",
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -4672,7 +4648,7 @@
       "id": "feat:openapi-components-schemas-emission-001",
       "title": "OpenAPI components.schemas emission",
       "description": "Tracks OpenAPI components.schemas emission formerly represented by OAS-003. Original legacy feature id: feat:oas-003.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4685,22 +4661,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:oas-003",
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -4743,7 +4707,7 @@
       "id": "feat:openapi-request-response-parameter-emission-001",
       "title": "OpenAPI request body, response, and parameter emission",
       "description": "Tracks OpenAPI request body, response, and parameter emission formerly represented by OAS-004. Original legacy feature id: feat:oas-004.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4756,22 +4720,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:oas-004",
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -4863,7 +4815,7 @@
       "id": "feat:openapi-mounted-json-and-docs-surface-001",
       "title": "Mounted OpenAPI JSON and Swagger docs surface",
       "description": "Tracks mounted /openapi.json and /docs surfaces formerly represented by OAS-006. Original legacy feature id: feat:oas-006.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -4876,23 +4828,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:oas-006",
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014",
-        "tst:rust-runtime-demo-swagger-uix"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -6072,7 +6011,7 @@
       "id": "feat:openrpc-126-json-surface-001",
       "title": "OpenRPC 1.2.6 JSON document surface",
       "description": "Tracks OpenRPC 1.2.6 JSON document emission and the mounted /openrpc.json surface formerly represented by RPC-002. Original legacy feature id: feat:rpc-002.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -6085,25 +6024,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:rpc-002",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001",
-        "clm:generated-crud-public-default-auth-policy-20260427"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -6145,7 +6069,7 @@
       "id": "feat:openrpc-lens-ui-surface-001",
       "title": "Lens OpenRPC UI surface",
       "description": "Tracks the mounted Lens / OpenRPC UI surface formerly represented by RPC-003. Original legacy feature id: feat:rpc-003.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -6158,25 +6082,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:rpc-003",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-system-uix-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014",
-        "tst:rust-runtime-demo-lens-uix",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-system-uix-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -6788,7 +6697,7 @@
       "id": "feat:diagnostics-contract-001",
       "title": "Diagnostics endpoint contracts",
       "description": "Track the stable public contract for framework-owned diagnostics endpoints, including payload shape, warning policy, and system-prefix mounting.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -6800,9 +6709,12 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -7866,7 +7778,7 @@
       "id": "feat:surface-binding-family-emission-001",
       "title": "Declared-surface binding family emission",
       "description": "Emit x-tigrbl-surface.binding.family whenever a surface is bound to a declared transport family.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -7879,11 +7791,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -7903,7 +7814,7 @@
       "id": "feat:surface-binding-proto-emission-001",
       "title": "Declared-surface binding proto emission",
       "description": "Emit x-tigrbl-surface.binding.proto whenever a concrete protocol binding is declared.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -7915,9 +7826,11 @@
         "target_claim_tier": "T2",
         "target_lifecycle_stage": "active"
       },
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -7957,7 +7870,7 @@
       "id": "feat:surface-docs-cross-projection-parity-001",
       "title": "Declared-surface cross-projection parity",
       "description": "Keep OpenAPI and OpenRPC declared-surface metadata aligned for shared transport declarations.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -7970,23 +7883,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -8164,57 +8064,7 @@
       "id": "feat:diagnostics-system-prefix-mount-001",
       "title": "Diagnostics system-prefix mount",
       "description": "Mount framework-owned diagnostics endpoints beneath the configured system prefix.",
-      "implementation_status": "partial",
-      "lifecycle": {
-        "stage": "active",
-        "replacement_feature_ids": [],
-        "note": null
-      },
-      "plan": {
-        "horizon": "future",
-        "slot": "conformance",
-        "target_claim_tier": "T2",
-        "target_lifecycle_stage": "active"
-      },
-      "claim_ids": [],
-      "test_ids": [
-        "tst:ssot-authority-model-validator"
-      ],
-      "requires": [],
-      "spec_ids": [
-        "spc:2021"
-      ]
-    },
-    {
-      "id": "feat:healthz-stable-payload-001",
-      "title": "Healthz stable payload",
-      "description": "Return a stable health payload from /system/healthz rather than an environment-specific debug dump.",
-      "implementation_status": "partial",
-      "lifecycle": {
-        "stage": "active",
-        "replacement_feature_ids": [],
-        "note": null
-      },
-      "plan": {
-        "horizon": "future",
-        "slot": "conformance",
-        "target_claim_tier": "T2",
-        "target_lifecycle_stage": "active"
-      },
-      "claim_ids": [],
-      "test_ids": [
-        "tst:ssot-authority-model-validator"
-      ],
-      "requires": [],
-      "spec_ids": [
-        "spc:2021"
-      ]
-    },
-    {
-      "id": "feat:diagnostics-warning-vocabulary-001",
-      "title": "Diagnostics warning vocabulary",
-      "description": "Restrict diagnostics warnings to a governed vocabulary and suppress undocumented absence warnings.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -8227,11 +8077,67 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2021"
+      ]
+    },
+    {
+      "id": "feat:healthz-stable-payload-001",
+      "title": "Healthz stable payload",
+      "description": "Return a stable health payload from /system/healthz rather than an environment-specific debug dump.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "conformance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
+      ],
+      "requires": [],
+      "spec_ids": [
+        "spc:2021"
+      ]
+    },
+    {
+      "id": "feat:diagnostics-warning-vocabulary-001",
+      "title": "Diagnostics warning vocabulary",
+      "description": "Restrict diagnostics warnings to a governed vocabulary and suppress undocumented absence warnings.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "future",
+        "slot": "conformance",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -8642,7 +8548,7 @@
       "id": "feat:surface-metadata-omission-contract-001",
       "title": "Declared-surface metadata omission contract",
       "description": "Omit undeclared x-tigrbl-surface metadata fields instead of synthesizing transport-specific guesses.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -8655,11 +8561,10 @@
         "target_lifecycle_stage": "active"
       },
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": [],
       "spec_ids": [
@@ -11774,7 +11679,7 @@
       "id": "feat:build-schemas-helper-surface-001",
       "title": "build_schemas helper surface",
       "description": "Tracks the private authoring build_schemas helper surface for model/schema materialization and keeps it distinct from database namespace ensuring.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11789,9 +11694,11 @@
       "spec_ids": [
         "spc:2060"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -11799,7 +11706,7 @@
       "id": "feat:build-hooks-helper-surface-001",
       "title": "build_hooks helper surface",
       "description": "Tracks the private authoring build_hooks helper surface and concrete hook binding/materialization behavior for mapped models.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11815,36 +11722,11 @@
         "spc:2028",
         "spc:2060"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-03-hook-ctx",
-        "tst:tigrbl-tests-examples-07-intermediate-hooks-test-01-hook-ctx",
-        "tst:tigrbl-tests-examples-07-intermediate-hooks-test-02-model-hook-binding",
-        "tst:tigrbl-tests-examples-07-intermediate-hooks-test-03-hook-order",
-        "tst:tigrbl-tests-examples-07-intermediate-hooks-test-04-hook-scopes",
-        "tst:tigrbl-tests-examples-10-intermediate-system-test-10-02-hookz-methodz",
-        "tst:tigrbl-tests-examples-12-advanced-mro-precedence-test-03-hooks-mro-merge",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-01-hook-post-response",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-02-hookz-endpoint",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-03-kernelz-endpoint",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-04-custom-op-hook",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-04-custom-op-hooks",
-        "tst:tigrbl-tests-examples-15-advanced-diagnostics-test-03-diagnostics-hookz",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-01-model-hook-binding",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-02-api-hook-binding",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-04-engine-ctx-binding",
-        "tst:tigrbl-tests-tests-hooks-test-hook-ctx-stage-validation",
-        "tst:tigrbl-tests-tests-i9n-test-healthz-methodz-hookz",
-        "tst:tigrbl-tests-tests-i9n-test-hook-ctx-v3-i9n",
-        "tst:tigrbl-tests-tests-i9n-test-hook-lifecycle",
-        "tst:tigrbl-tests-tests-parity-test-hook-runtime-stage-parity",
-        "tst:tigrbl-tests-tests-perf-test-hookz-performance",
-        "tst:tigrbl-tests-tests-unit-decorators-test-hook-ctx-bindings",
-        "tst:tigrbl-tests-tests-unit-test-hook-ctx-attributes",
-        "tst:tigrbl-tests-tests-unit-test-hook-ctx-binding",
-        "tst:tigrbl-tests-tests-unit-test-hookz-empty-stage",
-        "tst:tigrbl-tests-tests-unit-test-spec-hook"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -11917,7 +11799,7 @@
       "id": "feat:build-rest-helper-surface-001",
       "title": "build_rest helper surface",
       "description": "Tracks the private authoring build_rest helper surface and concrete REST router materialization behavior.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -11936,47 +11818,10 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-01-op-ctx",
-        "tst:tigrbl-tests-examples-06-intermediate-ops-test-02-op-alias",
-        "tst:tigrbl-tests-examples-07-intermediate-decorators-test-07-02-op-ctx",
-        "tst:tigrbl-tests-examples-09-intermediate-ops-io-test-09-04-opspec-defaults",
-        "tst:tigrbl-tests-examples-13-advanced-hooks-test-13-04-custom-op-hook",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-01-custom-op-schema",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-02-custom-op-rpc",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-03-custom-op-rest",
-        "tst:tigrbl-tests-examples-13-advanced-custom-ops-test-04-custom-op-hooks",
-        "tst:tigrbl-tests-examples-20-expert-hook-op-engine-bindings-test-03-custom-op-binding",
-        "tst:tigrbl-tests-tests-harness-v3-test-default-opspec-bindings",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-alias-examples",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-behavior",
-        "tst:tigrbl-tests-tests-i9n-test-op-ctx-core-crud-order",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-effects-i9n-test",
-        "tst:tigrbl-tests-tests-i9n-test-opspec-pre-tx-deps",
-        "tst:tigrbl-tests-tests-i9n-test-schema-ctx-op-ctx-integration",
-        "tst:tigrbl-tests-tests-i9n-test-v3-opspec-attributes",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-alias-bindings",
-        "tst:tigrbl-tests-tests-unit-decorators-test-op-ctx-bindings",
-        "tst:tigrbl-tests-tests-unit-test-alias-ctx-op-alias-attributes",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-bulk-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-core-crud-methods",
-        "tst:tigrbl-tests-tests-unit-test-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-arity-paths",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-attributes",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-core-crud-integration",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-custom-target-persist",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-dynamic-attach",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-parameter-matrix",
-        "tst:tigrbl-tests-tests-unit-test-op-ctx-persist-options",
-        "tst:tigrbl-tests-tests-unit-test-opspec-effects",
-        "tst:tigrbl-tests-tests-unit-test-rest-all-default-op-verbs",
-        "tst:tigrbl-tests-tests-unit-test-rest-rpc-parity-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-rpc-default-ops",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-alias",
-        "tst:tigrbl-tests-tests-unit-test-v3-op-ctx-attributes"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -13271,7 +13116,7 @@
       "id": "feat:httpbasic-security-dependency-001",
       "title": "HTTPBasic security dependency",
       "description": "Tracks HTTPBasic as a concrete first-class security dependency surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13286,13 +13131,11 @@
       "spec_ids": [
         "spc:2012"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-security-dependency-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
-        "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
-        "tst:tcase-0012",
-        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+        "tst:tigrbl-security-dependency-surface-contracts"
       ],
       "requires": []
     },
@@ -13333,7 +13176,7 @@
       "id": "feat:oauth2-security-dependency-001",
       "title": "OAuth2 security dependency",
       "description": "Tracks OAuth2 as a concrete first-class security dependency surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13348,13 +13191,11 @@
       "spec_ids": [
         "spc:2012"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-security-dependency-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
-        "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
-        "tst:tcase-0012",
-        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+        "tst:tigrbl-security-dependency-surface-contracts"
       ],
       "requires": []
     },
@@ -13362,7 +13203,7 @@
       "id": "feat:openidconnect-security-dependency-001",
       "title": "OpenIdConnect security dependency",
       "description": "Tracks OpenIdConnect as a concrete first-class security dependency surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13377,13 +13218,11 @@
       "spec_ids": [
         "spc:2012"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-security-dependency-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
-        "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
-        "tst:tcase-0012",
-        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+        "tst:tigrbl-security-dependency-surface-contracts"
       ],
       "requires": []
     },
@@ -13391,7 +13230,7 @@
       "id": "feat:mutualtls-security-dependency-001",
       "title": "MutualTLS security dependency",
       "description": "Tracks MutualTLS as a concrete first-class security dependency surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13406,13 +13245,11 @@
       "spec_ids": [
         "spc:2012"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-security-dependency-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:tigrbl-tests-examples-21-expert-security-test-01-authn-openapi-security",
-        "tst:tigrbl-tests-examples-21-expert-security-test-02-secdeps-openapi-security",
-        "tst:tcase-0012",
-        "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_authorize_runtime_secdep.py"
+        "tst:tigrbl-security-dependency-surface-contracts"
       ],
       "requires": []
     },
@@ -13420,7 +13257,7 @@
       "id": "feat:build-healthz-endpoint-helper-001",
       "title": "build_healthz_endpoint helper surface",
       "description": "Tracks build_healthz_endpoint as the concrete diagnostics endpoint-builder for healthz payload behavior.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13435,9 +13272,12 @@
       "spec_ids": [
         "spc:2021"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": []
     },
@@ -13445,7 +13285,7 @@
       "id": "feat:build-methodz-endpoint-helper-001",
       "title": "build_methodz_endpoint helper surface",
       "description": "Tracks build_methodz_endpoint as the concrete diagnostics endpoint-builder for ordered method inventory payloads.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13460,9 +13300,12 @@
       "spec_ids": [
         "spc:2021"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": []
     },
@@ -13470,7 +13313,7 @@
       "id": "feat:build-hookz-endpoint-helper-001",
       "title": "build_hookz_endpoint helper surface",
       "description": "Tracks build_hookz_endpoint as the concrete diagnostics endpoint-builder for hook ordering payloads.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13485,9 +13328,12 @@
       "spec_ids": [
         "spc:2021"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": []
     },
@@ -13495,7 +13341,7 @@
       "id": "feat:build-kernelz-endpoint-helper-001",
       "title": "build_kernelz_endpoint helper surface",
       "description": "Tracks build_kernelz_endpoint as the concrete diagnostics endpoint-builder for kernel plan payloads.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13512,11 +13358,11 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -13532,7 +13378,7 @@
       "id": "feat:build-openapi-helper-surface-001",
       "title": "build_openapi helper surface",
       "description": "Tracks build_openapi as the concrete helper that materializes the OpenAPI payload surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13548,23 +13394,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -13572,7 +13405,7 @@
       "id": "feat:build-swagger-helper-surface-001",
       "title": "build_swagger helper surface",
       "description": "Tracks build_swagger as the concrete helper that materializes Swagger UI HTML for the OpenAPI UIX surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13588,23 +13421,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -13612,7 +13432,7 @@
       "id": "feat:build-lens-helper-surface-001",
       "title": "build_lens helper surface",
       "description": "Tracks build_lens as the concrete helper that materializes tigrbl-lens UI HTML for the OpenRPC UIX surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13628,23 +13448,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-uix-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-uix-surface-contracts"
       ],
       "requires": []
     },
@@ -13652,7 +13459,7 @@
       "id": "feat:build-openrpc-spec-helper-surface-001",
       "title": "build_openrpc_spec helper surface",
       "description": "Tracks build_openrpc_spec as the concrete helper that materializes the OpenRPC payload surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13668,23 +13475,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -13692,7 +13486,7 @@
       "id": "feat:build-json-schema-bundle-helper-surface-001",
       "title": "build_json_schema_bundle helper surface",
       "description": "Tracks build_json_schema_bundle as the concrete helper that materializes the JSON Schema bundle payload surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13708,23 +13502,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -13772,7 +13553,7 @@
       "id": "feat:diagnostics-router-mount-surface-001",
       "title": "Diagnostics router mount surface",
       "description": "Tracks mount_diagnostics as the concrete router-level mount surface that projects healthz, methodz, hookz, and kernelz endpoints.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13788,9 +13569,12 @@
         "spc:2021",
         "spc:2090"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -13807,7 +13591,7 @@
       "id": "feat:healthz-mount-surface-001",
       "title": "Healthz mount surface",
       "description": "Tracks the concrete healthz endpoint mount emitted by diagnostics routing.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13822,9 +13606,12 @@
       "spec_ids": [
         "spc:2021"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
       ],
       "requires": []
     },
@@ -13920,7 +13707,7 @@
       "id": "feat:openapi-mount-surface-001",
       "title": "OpenAPI mount surface",
       "description": "Tracks the concrete OpenAPI JSON mount surface projected by app and router owners.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13936,23 +13723,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -13960,7 +13734,7 @@
       "id": "feat:openrpc-mount-surface-001",
       "title": "OpenRPC mount surface",
       "description": "Tracks the concrete OpenRPC JSON mount surface projected by app and router owners.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -13976,23 +13750,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -14133,7 +13894,7 @@
       "id": "feat:openapi-payload-surface-001",
       "title": "OpenAPI payload surface",
       "description": "Tracks the concrete OpenAPI document payload as a first-class documentation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -14149,23 +13910,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -14173,7 +13921,7 @@
       "id": "feat:openrpc-payload-surface-001",
       "title": "OpenRPC payload surface",
       "description": "Tracks the concrete OpenRPC document payload as a first-class documentation surface.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -14189,23 +13937,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -14293,7 +14028,7 @@
       "id": "feat:openapi-uix-surface-001",
       "title": "OpenAPI UIX surface",
       "description": "Tracks the concrete human-viewable OpenAPI UIX surface currently satisfied through Swagger-backed rendering.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -14309,23 +14044,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-uix-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-uix-surface-contracts"
       ],
       "requires": []
     },
@@ -14333,7 +14055,7 @@
       "id": "feat:openrpc-uix-surface-001",
       "title": "OpenRPC UIX surface",
       "description": "Tracks the concrete human-viewable OpenRPC UIX surface currently satisfied through tigrbl-lens rendering.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -14349,23 +14071,10 @@
         "spc:2010"
       ],
       "claim_ids": [
-        "clm:tigrbl-tests-failure-closure-001"
+        "clm:tigrbl-system-uix-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_jsonrpc_batch_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:http-route-registration-unit",
-        "tst:tcase-0013",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:tcase-0014",
-        "tst:tcase-0015",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_operator_surface_docs_parity.py",
-        "tst:http-route-system-docs-builders"
+        "tst:tigrbl-system-uix-surface-contracts"
       ],
       "requires": []
     },
@@ -14473,7 +14182,7 @@
       "id": "feat:healthz-uix-surface-001",
       "title": "Healthz UIX surface",
       "description": "Tracks the requested human-viewable Healthz UIX surface; current concrete package exposes only the payload endpoint.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -14489,9 +14198,11 @@
         "spc:2021",
         "spc:2090"
       ],
-      "claim_ids": [],
+      "claim_ids": [
+        "clm:tigrbl-system-uix-surface-contracts-001"
+      ],
       "test_ids": [
-        "tst:ssot-authority-model-validator"
+        "tst:tigrbl-system-uix-surface-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -15320,7 +15031,7 @@
       "id": "feat:operation-diagnostics-projection-001",
       "title": "Operation diagnostics projection",
       "description": "Track diagnostics projecting materialized operation, hook, atom, dependency, persistence, and kernel-step state without redefining execution semantics.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -15339,11 +15050,10 @@
         "spc:2090"
       ],
       "claim_ids": [
-        "clm:runtime-parity-lane-governance-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:ssot-authority-model-validator",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -21366,7 +21076,7 @@
       "id": "feat:eventkey-bit-coded-dispatch-001",
       "title": "EventKey bit-coded dispatch",
       "description": "Tracks integer and bit-coded EventKey derivation, packed dispatch buckets, and no hot-path dict/string matching.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -21383,13 +21093,10 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:eventkey-bit-coded-dispatch-001",
-        "clm:eventkey-bit-coded-dispatch-contract-001",
-        "clm:tigrbl-xfail-runtime-taxonomy-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:eventkey-bit-coded-dispatch-contract-001",
-        "tst:eventkey-bit-coded-dispatch-contract"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": []
     },
@@ -21436,7 +21143,7 @@
       "id": "feat:subevent-handler-dispatch-001",
       "title": "Subevent handler dispatch",
       "description": "Tracks subevent_ctx, handler buckets, EventKey handler selection, and owner-vs-dispatch interaction.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -21454,13 +21161,10 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:subevent-handler-dispatch-001",
-        "clm:subevent-handler-dispatch-contract-001",
-        "clm:tigrbl-xfail-dispatch-execution-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:subevent-handler-dispatch-contract-001",
-        "tst:subevent-handler-dispatch-contract"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": []
     },
@@ -21579,7 +21283,7 @@
       "id": "feat:eventful-protocol-decorator-surface-001",
       "title": "Eventful protocol decorator surface",
       "description": "Tracks websocket_ctx, sse_ctx, stream_ctx, webtransport_ctx, subevent_ctx, and optional on mapping sugar.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -21596,13 +21300,10 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:eventful-protocol-decorator-surface-001",
-        "clm:eventful-protocol-decorator-surface-contract-001",
-        "clm:tigrbl-xfail-transport-message-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:eventful-protocol-decorator-surface-contract-001",
-        "tst:eventful-protocol-decorator-surface-contract"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -21619,7 +21320,7 @@
       "id": "feat:primary-secondary-subevent-selection-001",
       "title": "Primary and secondary subevent selection",
       "description": "Tracks one-primary-subevent-per-executable-unit and secondary annotation handling.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -21635,12 +21336,10 @@
         "spc:2116"
       ],
       "claim_ids": [
-        "clm:primary-secondary-subevent-selection-001",
-        "clm:primary-secondary-subevent-selection-contract-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:primary-secondary-subevent-selection-contract-001",
-        "tst:primary-secondary-subevent-selection-contract"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": []
     },
@@ -21648,7 +21347,7 @@
       "id": "feat:eventkey-hook-bucket-compilation-001",
       "title": "EventKey hook bucket compilation",
       "description": "Tracks compile-time wildcard expansion and concrete hook bucket generation.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -21666,13 +21365,10 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:eventkey-hook-bucket-compilation-001",
-        "clm:eventkey-hook-bucket-compilation-contract-001",
-        "clm:tigrbl-xfail-runtime-taxonomy-001"
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "test_ids": [
-        "tst:eventkey-hook-bucket-compilation-contract-001",
-        "tst:eventkey-hook-bucket-compilation-contract"
+        "tst:tigrbl-eventful-subevent-surface-contracts"
       ],
       "requires": []
     },
@@ -23218,7 +22914,7 @@
       "id": "feat:api-level-auth-include-router-compat-001",
       "title": "API-level auth include-router compatibility",
       "description": "Tracks router-level authentication dependency application through include_router compatibility.",
-      "implementation_status": "partial",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23234,10 +22930,10 @@
         "spc:2142"
       ],
       "claim_ids": [
-        "clm:tigrbl-xfail-compat-surface-001"
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-tests-tests-unit-test-api-level-set-auth"
+        "tst:tigrbl-system-docs-diagnostics-contracts"
       ],
       "requires": []
     },
@@ -23462,24 +23158,12 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -23510,24 +23194,12 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -23600,11 +23272,6 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:json-schema-mount-surface-001",
@@ -23612,13 +23279,6 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -23646,15 +23306,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -23662,24 +23315,12 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -23720,15 +23361,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -23736,24 +23370,12 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -23794,15 +23416,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -23810,24 +23425,12 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -23868,15 +23471,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
         "feat:integration-test-registry-coverage-001",
@@ -23884,24 +23480,12 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -24001,12 +23585,8 @@
         "feat:auth-failure-projection-parity-001",
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
-        "feat:httpbasic-security-dependency-001",
         "feat:httpbearer-security-dependency-001",
         "feat:jsonrpc-batch-framing-001",
-        "feat:mutualtls-security-dependency-001",
-        "feat:oauth2-security-dependency-001",
-        "feat:openidconnect-security-dependency-001",
         "feat:pre-tx-security-dependency-execution-001",
         "feat:rest-create-success-status-001",
         "feat:security-concrete-dependency-helper-001",
@@ -24046,24 +23626,12 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:json-schema-mount-surface-001",
@@ -24071,13 +23639,6 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -24119,15 +23680,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:tigrbl-tests-failing-case-closure-001"
       ],
       "claim_ids": [
@@ -24171,24 +23725,12 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:json-schema-mount-surface-001",
@@ -24196,13 +23738,6 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -24244,24 +23779,12 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:json-schema-mount-surface-001",
@@ -24269,13 +23792,6 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -24317,15 +23833,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001"
+        "feat:jsonrpc-20-runtime-surface-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24430,32 +23939,17 @@
         "feat:operator-json-schema-ui-descoped-001",
         "feat:operator-oidc-discovery-docs-descoped-001",
         "feat:declared-surface-docs-extension-001",
-        "feat:surface-binding-family-emission-001",
-        "feat:surface-binding-proto-emission-001",
         "feat:surface-optional-metadata-emission-001",
-        "feat:surface-docs-cross-projection-parity-001",
-        "feat:surface-metadata-omission-contract-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:docs-support-001",
         "feat:json-schema-mount-surface-001",
         "feat:json-schema-payload-surface-001",
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -24789,12 +24283,8 @@
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:httpbasic-security-dependency-001",
         "feat:httpbearer-security-dependency-001",
         "feat:jsonrpc-batch-framing-001",
-        "feat:mutualtls-security-dependency-001",
-        "feat:oauth2-security-dependency-001",
-        "feat:openidconnect-security-dependency-001",
         "feat:pre-tx-security-dependency-execution-001",
         "feat:rest-create-success-status-001",
         "feat:rfc-6750-http-bearer-auth-semantics",
@@ -24827,11 +24317,6 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:gate-c-conformance-security-checkpoint-001",
@@ -24841,22 +24326,8 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001",
@@ -24883,11 +24354,6 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:gate-c-conformance-security-checkpoint-001",
@@ -24896,22 +24362,8 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001"
@@ -24934,11 +24386,6 @@
         "feat:asyncapi-payload-surface-001",
         "feat:asyncapi-uix-surface-001",
         "feat:build-asyncapi-spec-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:declared-surface-docs-extension-001",
         "feat:docs-support-001",
         "feat:error-parity-response-structure-001",
@@ -24963,18 +24410,11 @@
         "feat:operator-asyncapi-ui-descoped-001",
         "feat:operator-json-schema-ui-descoped-001",
         "feat:operator-oidc-discovery-docs-descoped-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
         "feat:operator-surface-framing-semantics-001",
         "feat:operator-surface-smoke-runtime-parity-001",
         "feat:sse-event-framing-001",
         "feat:stream-chunk-order-preservation-001",
         "feat:streamingresponse-concrete-stream-class-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001",
@@ -25432,18 +24872,11 @@
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
         "feat:gate-c-conformance-security-validator-workflow",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:rfc-6750-http-bearer-auth-semantics",
         "feat:rfc-7235-http-auth-challenge-semantics",
         "feat:rfc-7617-http-basic-auth-semantics",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:apikey-security-docs-runtime-alignment",
         "feat:http-basic-security-docs-runtime-alignment",
         "feat:http-bearer-security-docs-runtime-alignment",
@@ -26008,12 +25441,8 @@
         "feat:auth-failure-projection-parity-001",
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
-        "feat:httpbasic-security-dependency-001",
         "feat:httpbearer-security-dependency-001",
         "feat:jsonrpc-batch-framing-001",
-        "feat:mutualtls-security-dependency-001",
-        "feat:oauth2-security-dependency-001",
-        "feat:openidconnect-security-dependency-001",
         "feat:rest-create-success-status-001",
         "feat:security-concrete-dependency-helper-001",
         "feat:validation-failure-projection-parity-001"
@@ -26860,7 +26289,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -26890,7 +26318,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -26971,7 +26398,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -26997,7 +26423,6 @@
       "kind": "example-intermediate",
       "path": "pkgs/core/tigrbl_tests/examples/07-intermediate-decorators/test_07_03_hook_ctx.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27042,7 +26467,6 @@
       "kind": "example-intermediate",
       "path": "pkgs/core/tigrbl_tests/examples/07_intermediate_hooks/test_01_hook_ctx.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27062,7 +26486,6 @@
       "kind": "example-intermediate",
       "path": "pkgs/core/tigrbl_tests/examples/07_intermediate_hooks/test_02_model_hook_binding.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27082,7 +26505,6 @@
       "kind": "example-intermediate",
       "path": "pkgs/core/tigrbl_tests/examples/07_intermediate_hooks/test_03_hook_order.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27102,7 +26524,6 @@
       "kind": "example-intermediate",
       "path": "pkgs/core/tigrbl_tests/examples/07_intermediate_hooks/test_04_hook_scopes.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27314,7 +26735,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -27372,7 +26792,6 @@
       "kind": "example-intermediate",
       "path": "pkgs/core/tigrbl_tests/examples/10-intermediate-system/test_10_02_hookz_methodz.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27729,7 +27148,6 @@
       "kind": "example-advanced",
       "path": "pkgs/core/tigrbl_tests/examples/12_advanced_mro_precedence/test_03_hooks_mro_merge.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27766,7 +27184,6 @@
       "path": "pkgs/core/tigrbl_tests/examples/13-advanced-hooks/test_13_01_hook_post_response.py",
       "feature_ids": [
         "feat:backgroundtask-concrete-class-001",
-        "feat:build-hooks-helper-surface-001",
         "feat:eventstreamresponse-concrete-sse-class-001",
         "feat:fileresponse-concrete-response-class-001",
         "feat:hook-extension-surface-001",
@@ -27795,7 +27212,6 @@
       "kind": "example-advanced",
       "path": "pkgs/core/tigrbl_tests/examples/13-advanced-hooks/test_13_02_hookz_endpoint.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27815,7 +27231,6 @@
       "kind": "example-advanced",
       "path": "pkgs/core/tigrbl_tests/examples/13-advanced-hooks/test_13_03_kernelz_endpoint.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -27839,8 +27254,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-hooks-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:hook-extension-surface-001",
@@ -27874,7 +27287,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -27904,7 +27316,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -27934,7 +27345,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -27964,8 +27374,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-hooks-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:hook-extension-surface-001",
@@ -28255,7 +27663,6 @@
       "kind": "example-advanced",
       "path": "pkgs/core/tigrbl_tests/examples/15_advanced_diagnostics/test_03_diagnostics_hookz.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -28684,7 +28091,6 @@
       "path": "pkgs/core/tigrbl_tests/examples/20_expert_hook_op_engine_bindings/test_01_model_hook_binding.py",
       "feature_ids": [
         "feat:bootstrap-dbschema-runtime-surface-001",
-        "feat:build-hooks-helper-surface-001",
         "feat:ddl-initialization-modes-001",
         "feat:ddl-runtime-surface-001",
         "feat:defaultsession-concrete-session-class-001",
@@ -28716,7 +28122,6 @@
       "path": "pkgs/core/tigrbl_tests/examples/20_expert_hook_op_engine_bindings/test_02_api_hook_binding.py",
       "feature_ids": [
         "feat:bootstrap-dbschema-runtime-surface-001",
-        "feat:build-hooks-helper-surface-001",
         "feat:ddl-initialization-modes-001",
         "feat:ddl-runtime-surface-001",
         "feat:defaultsession-concrete-session-class-001",
@@ -28752,8 +28157,6 @@
         "feat:binding-driven-ingress-001",
         "feat:bootstrap-dbschema-runtime-surface-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-hooks-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:ddl-initialization-modes-001",
@@ -28795,7 +28198,6 @@
       "path": "pkgs/core/tigrbl_tests/examples/20_expert_hook_op_engine_bindings/test_04_engine_ctx_binding.py",
       "feature_ids": [
         "feat:bootstrap-dbschema-runtime-surface-001",
-        "feat:build-hooks-helper-surface-001",
         "feat:ddl-initialization-modes-001",
         "feat:ddl-runtime-surface-001",
         "feat:defaultsession-concrete-session-class-001",
@@ -28864,12 +28266,8 @@
         "feat:auth-failure-projection-parity-001",
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
-        "feat:httpbasic-security-dependency-001",
         "feat:httpbearer-security-dependency-001",
         "feat:jsonrpc-batch-framing-001",
-        "feat:mutualtls-security-dependency-001",
-        "feat:oauth2-security-dependency-001",
-        "feat:openidconnect-security-dependency-001",
         "feat:pre-tx-security-dependency-execution-001",
         "feat:rest-create-success-status-001",
         "feat:security-concrete-dependency-helper-001",
@@ -28895,12 +28293,8 @@
         "feat:auth-failure-projection-parity-001",
         "feat:error-envelope-structure-parity-001",
         "feat:error-parity-response-structure-001",
-        "feat:httpbasic-security-dependency-001",
         "feat:httpbearer-security-dependency-001",
         "feat:jsonrpc-batch-framing-001",
-        "feat:mutualtls-security-dependency-001",
-        "feat:oauth2-security-dependency-001",
-        "feat:openidconnect-security-dependency-001",
         "feat:pre-tx-security-dependency-execution-001",
         "feat:rest-create-success-status-001",
         "feat:security-concrete-dependency-helper-001",
@@ -29429,7 +28823,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:default-kernel-identity-001",
@@ -29647,7 +29040,6 @@
       "kind": "hooks",
       "path": "pkgs/core/tigrbl_tests/tests/hooks/test_hook_ctx_stage_validation.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -29909,7 +29301,6 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_healthz_methodz_hookz.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -29929,7 +29320,6 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_hook_ctx_v3_i9n.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -29949,7 +29339,6 @@
       "kind": "integration",
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_hook_lifecycle.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -30112,7 +29501,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -30142,7 +29530,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -30173,7 +29560,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -30244,7 +29630,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -30274,7 +29659,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -30440,7 +29824,6 @@
         "feat:binding-driven-ingress-001",
         "feat:bootstrappable-table-mixin-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:governed-module-alias-compatibility-001",
@@ -30770,7 +30153,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -30860,7 +30242,6 @@
       "kind": "parity",
       "path": "pkgs/core/tigrbl_tests/tests/parity/test_hook_runtime_stage_parity.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -30948,7 +30329,6 @@
       "kind": "performance",
       "path": "pkgs/core/tigrbl_tests/tests/perf/test_hookz_performance.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -31379,7 +30759,6 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/decorators/test_hook_ctx_bindings.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -31404,7 +30783,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -31434,7 +30812,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -31947,7 +31324,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -31988,9 +31364,7 @@
       "status": "blocked",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_api_level_set_auth.py",
-      "feature_ids": [
-        "feat:api-level-auth-include-router-compat-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001",
         "clm:tigrbl-xfail-compat-surface-001"
@@ -32291,7 +31665,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -32321,7 +31694,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -32351,7 +31723,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -32753,7 +32124,6 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_hook_ctx_attributes.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -32773,7 +32143,6 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_hook_ctx_binding.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -32793,7 +32162,6 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_hookz_empty_stage.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -33298,7 +32666,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33355,7 +32722,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33385,7 +32751,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33416,7 +32781,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33446,7 +32810,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33476,7 +32839,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33507,7 +32869,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33537,7 +32898,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -33583,7 +32943,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -34006,7 +33365,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -34118,7 +33476,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -34230,7 +33587,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -34457,7 +33813,6 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_hook.py",
       "feature_ids": [
-        "feat:build-hooks-helper-surface-001",
         "feat:hook-extension-surface-001",
         "feat:hook-surface-attachment-ordering-001",
         "feat:hook-surface-phase-selector-001",
@@ -35090,7 +34445,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -35120,7 +34474,6 @@
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:binding-driven-ingress-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:jsonrpc-endpoint-key-001",
@@ -35516,20 +34869,11 @@
         "feat:bindingbase-contract-001",
         "feat:bindingregistrybase-contract-001",
         "feat:boundary-scoped-test-selection-001",
-        "feat:build-healthz-endpoint-helper-001",
-        "feat:build-hookz-endpoint-helper-001",
-        "feat:build-kernelz-endpoint-helper-001",
-        "feat:build-methodz-endpoint-helper-001",
-        "feat:build-schemas-helper-surface-001",
         "feat:columnbase-contract-001",
         "feat:datatypespec-contract-001",
         "feat:default-canonical-engine-catalog-001",
         "feat:deprecated-export-compat-window-001",
         "feat:diagnostics-absence-warning-suppression-001",
-        "feat:diagnostics-contract-001",
-        "feat:diagnostics-router-mount-surface-001",
-        "feat:diagnostics-system-prefix-mount-001",
-        "feat:diagnostics-warning-vocabulary-001",
         "feat:docs-ci-projection-validation-001",
         "feat:engine-extension-surface-001",
         "feat:engine-surface-public-projection-001",
@@ -35543,9 +34887,6 @@
         "feat:foreignkeybase-public-projection-001",
         "feat:gate-evaluator-model-001",
         "feat:get-schema-python-helper-surface-001",
-        "feat:healthz-mount-surface-001",
-        "feat:healthz-stable-payload-001",
-        "feat:healthz-uix-surface-001",
         "feat:hookbase-contract-001",
         "feat:hookbase-public-projection-001",
         "feat:hookphase-vocabulary-001",
@@ -35564,7 +34905,6 @@
         "feat:op-ctx-router-owner-scope-materialization-001",
         "feat:op-ctx-table-owner-scope-materialization-001",
         "feat:opbase-contract-001",
-        "feat:operation-diagnostics-projection-001",
         "feat:rebind-helper-surface-001",
         "feat:reflecteddatatype-contract-001",
         "feat:reflectedtypemapper-contract-001",
@@ -35738,7 +35078,6 @@
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:swagger-openapi-uix-001",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
@@ -35759,7 +35098,6 @@
       "feature_ids": [
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:runtime-executor-doc-endpoint-parity-001"
       ],
       "claim_ids": [
@@ -36229,8 +35567,6 @@
         "feat:oas-005",
         "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:transport-bypass-removal-001",
         "feat:transport-dispatch-governance-001",
         "feat:transport-parity-contract-001",
@@ -36256,20 +35592,17 @@
         "feat:ensure-primed-idempotence-001",
         "feat:opview-on-demand-cache-reuse-001",
         "feat:kernel-cache-invalidation-contract-001",
-        "feat:surface-binding-family-emission-001",
         "feat:surface-docs-cross-projection-parity-001",
         "feat:stream-chunk-order-preservation-001",
         "feat:sse-event-framing-001",
         "feat:multipart-form-preservation-001",
         "feat:uploaded-file-runtime-contract-001",
-        "feat:diagnostics-warning-vocabulary-001",
         "feat:kernelz-bounded-payload-001",
         "feat:analytical-family-membership-freeze-001",
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
         "feat:kernel-priming-runtime-parity-001",
-        "feat:surface-metadata-omission-contract-001",
         "feat:operator-surface-smoke-runtime-parity-001",
         "feat:engine-extension-surface-001",
         "feat:engine-surface-contract-001",
@@ -36308,7 +35641,6 @@
         "feat:websocket-concrete-runtime-class-001",
         "feat:defaultsession-concrete-session-class-001",
         "feat:depends-concrete-dependency-helper-001",
-        "feat:build-kernelz-endpoint-helper-001",
         "feat:diagnostics-router-mount-surface-001",
         "feat:kernelz-mount-surface-001",
         "feat:asyncapi-uix-surface-001",
@@ -36323,7 +35655,6 @@
         "feat:op-ctx-app-owner-scope-materialization-001",
         "feat:pre-tx-dependency-execution-001",
         "feat:pre-tx-security-dependency-execution-001",
-        "feat:operation-diagnostics-projection-001",
         "feat:rfc-8785-jcs-conformance-vectors-001",
         "feat:rfc-8785-jcs-canonicalizer-001",
         "feat:jsonrpc-batch-framing-001",
@@ -36940,9 +36271,7 @@
       "status": "planned",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
-      "feature_ids": [
-        "feat:eventkey-bit-coded-dispatch-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:eventkey-bit-coded-dispatch-001"
       ],
@@ -36972,9 +36301,7 @@
       "status": "planned",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
-      "feature_ids": [
-        "feat:subevent-handler-dispatch-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:subevent-handler-dispatch-001"
       ],
@@ -37036,9 +36363,7 @@
       "status": "planned",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
-      "feature_ids": [
-        "feat:eventful-protocol-decorator-surface-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:eventful-protocol-decorator-surface-001"
       ],
@@ -37052,9 +36377,7 @@
       "status": "planned",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
-      "feature_ids": [
-        "feat:primary-secondary-subevent-selection-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:primary-secondary-subevent-selection-001"
       ],
@@ -37068,9 +36391,7 @@
       "status": "planned",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/protocol/test_protocol_runtime_governance_contracts.py",
-      "feature_ids": [
-        "feat:eventkey-hook-bucket-compilation-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:eventkey-hook-bucket-compilation-001"
       ],
@@ -38161,9 +37482,7 @@
       "status": "blocked",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_two_axis_lifecycle_matrix_contract.py",
-      "feature_ids": [
-        "feat:primary-secondary-subevent-selection-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:primary-secondary-subevent-selection-contract-001"
       ],
@@ -38177,9 +37496,7 @@
       "status": "blocked",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventkey_bit_coded_dispatch_contract.py",
-      "feature_ids": [
-        "feat:eventkey-bit-coded-dispatch-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:eventkey-bit-coded-dispatch-contract-001",
         "clm:tigrbl-xfail-runtime-taxonomy-001"
@@ -38195,9 +37512,7 @@
       "status": "blocked",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventkey_hook_bucket_compilation_contract.py",
-      "feature_ids": [
-        "feat:eventkey-hook-bucket-compilation-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:eventkey-hook-bucket-compilation-contract-001",
         "clm:tigrbl-xfail-runtime-taxonomy-001"
@@ -38247,9 +37562,7 @@
       "status": "blocked",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_subevent_handler_dispatch_contract.py",
-      "feature_ids": [
-        "feat:subevent-handler-dispatch-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:subevent-handler-dispatch-contract-001",
         "clm:tigrbl-xfail-dispatch-execution-001"
@@ -38301,9 +37614,7 @@
       "status": "blocked",
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventful_protocol_decorator_surface_contract.py",
-      "feature_ids": [
-        "feat:eventful-protocol-decorator-surface-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:eventful-protocol-decorator-surface-contract-001",
         "clm:tigrbl-xfail-transport-message-001"
@@ -38706,9 +38017,7 @@
       "status": "blocked",
       "kind": "xfail-contract",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_subevent_transaction_units_contract.py",
-      "feature_ids": [
-        "feat:subevent-transaction-units-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:tigrbl-xfail-dispatch-execution-001"
       ],
@@ -38722,9 +38031,7 @@
       "status": "blocked",
       "kind": "xfail-contract",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventful_channel_state_metadata_contract.py",
-      "feature_ids": [
-        "feat:eventful-channel-state-metadata-001"
-      ],
+      "feature_ids": [],
       "claim_ids": [
         "clm:tigrbl-xfail-transport-message-001"
       ],
@@ -39000,6 +38307,140 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-spec-binding-app-engine-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-eventful-subevent-surface-contracts",
+      "title": "Eventful subevent surface contract tests",
+      "status": "passing",
+      "kind": "unit-integration",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventful_subevent_surface_contracts.py",
+      "feature_ids": [
+        "feat:subevent-handler-dispatch-001",
+        "feat:subevent-transaction-units-001",
+        "feat:surface-binding-family-emission-001",
+        "feat:surface-binding-proto-emission-001",
+        "feat:surface-docs-cross-projection-parity-001",
+        "feat:surface-metadata-omission-contract-001",
+        "feat:primary-secondary-subevent-selection-001",
+        "feat:eventful-channel-state-metadata-001",
+        "feat:eventful-protocol-decorator-surface-001",
+        "feat:eventkey-bit-coded-dispatch-001",
+        "feat:eventkey-hook-bucket-compilation-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-eventful-subevent-surface-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-system-docs-diagnostics-contracts",
+      "title": "System docs and diagnostics contract tests",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_system_docs_diagnostics_contracts.py",
+      "feature_ids": [
+        "feat:api-level-auth-include-router-compat-001",
+        "feat:build-healthz-endpoint-helper-001",
+        "feat:build-hooks-helper-surface-001",
+        "feat:build-hookz-endpoint-helper-001",
+        "feat:build-json-schema-bundle-helper-surface-001",
+        "feat:build-kernelz-endpoint-helper-001",
+        "feat:build-methodz-endpoint-helper-001",
+        "feat:build-openapi-helper-surface-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:build-rest-helper-surface-001",
+        "feat:build-schemas-helper-surface-001",
+        "feat:build-swagger-helper-surface-001",
+        "feat:diagnostics-contract-001",
+        "feat:diagnostics-router-mount-surface-001",
+        "feat:diagnostics-system-prefix-mount-001",
+        "feat:diagnostics-warning-vocabulary-001",
+        "feat:healthz-mount-surface-001",
+        "feat:healthz-stable-payload-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-mount-surface-001",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:openapi-payload-surface-001",
+        "feat:openapi-request-response-parameter-emission-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:operation-diagnostics-projection-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-system-docs-diagnostics-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-system-uix-surface-contracts",
+      "title": "System UIX surface contract tests",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_system_uix_surface_contracts.py",
+      "feature_ids": [
+        "feat:build-lens-helper-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:openapi-uix-surface-001",
+        "feat:healthz-uix-surface-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-system-uix-surface-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-system-uix-surface-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-security-dependency-surface-contracts",
+      "title": "Security dependency surface contract tests",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_security_dependency_surface_contracts.py",
+      "feature_ids": [
+        "feat:openidconnect-security-dependency-001",
+        "feat:httpbasic-security-dependency-001",
+        "feat:mutualtls-security-dependency-001",
+        "feat:oauth2-security-dependency-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-security-dependency-surface-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-security-dependency-surface-contracts-001"
+      ]
+    },
+    {
+      "id": "tst:tigrbl-system-diagnostics-fixture-contracts",
+      "title": "System diagnostics verification fixture contracts",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_system_diagnostics_fixture_contracts.py",
+      "feature_ids": [
+        "feat:diagnostics-contract-001",
+        "feat:diagnostics-router-mount-surface-001",
+        "feat:diagnostics-system-prefix-mount-001",
+        "feat:diagnostics-warning-vocabulary-001",
+        "feat:healthz-mount-surface-001",
+        "feat:healthz-stable-payload-001",
+        "feat:build-healthz-endpoint-helper-001",
+        "feat:build-hookz-endpoint-helper-001",
+        "feat:build-kernelz-endpoint-helper-001",
+        "feat:build-methodz-endpoint-helper-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-system-docs-diagnostics-contracts-001"
       ]
     }
   ],
@@ -41195,9 +40636,7 @@
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-001: OpenAPI 3.1.0 emission is explicit and verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
-      "feature_ids": [
-        "feat:openapi-31-document-emission-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -41229,9 +40668,7 @@
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-002: JSON Schema Draft 2020-12 is explicit in emitted docs via `jsonSchemaDialect`. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_system_docs_builders.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
-      "feature_ids": [
-        "feat:openapi-json-schema-dialect-2020-12-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -41263,9 +40700,7 @@
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-003: `components.schemas` emission is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/i9n/test_schema.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_openapi_schema_examples_presence.py`",
-      "feature_ids": [
-        "feat:openapi-components-schemas-emission-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -41297,9 +40732,7 @@
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-004: Request body / response / parameter emission is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_get_schema.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
-      "feature_ids": [
-        "feat:openapi-request-response-parameter-emission-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -41366,9 +40799,7 @@
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-006: Mounted `/openapi.json` and `/docs` surfaces are verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`",
-      "feature_ids": [
-        "feat:openapi-mounted-json-and-docs-surface-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -42092,9 +41523,7 @@
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface RPC-002: OpenRPC 1.2.6 emission and mounted `/openrpc.json` surface are verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
-      "feature_ids": [
-        "feat:openrpc-126-json-surface-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -42127,9 +41556,7 @@
       "tier": "T2",
       "kind": "conformance",
       "description": "Asserts conformance surface RPC-003: Mounted Lens / OpenRPC UI is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Protocol / RPC Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`, `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`, `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`",
-      "feature_ids": [
-        "feat:openrpc-lens-ui-surface-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
@@ -43133,12 +42560,6 @@
         "feat:binding-driven-ingress-001",
         "feat:build-asyncapi-spec-helper-surface-001",
         "feat:build-handlers-helper-surface-001",
-        "feat:build-json-schema-bundle-helper-surface-001",
-        "feat:build-lens-helper-surface-001",
-        "feat:build-openapi-helper-surface-001",
-        "feat:build-openrpc-spec-helper-surface-001",
-        "feat:build-rest-helper-surface-001",
-        "feat:build-swagger-helper-surface-001",
         "feat:canonical-analytical-ops-001",
         "feat:canonical-realtime-transfer-ops-001",
         "feat:declared-surface-docs-extension-001",
@@ -43155,12 +42576,7 @@
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
         "feat:multipart-form-preservation-001",
-        "feat:openapi-31-document-emission-001",
-        "feat:openapi-json-schema-dialect-2020-12-001",
-        "feat:openapi-components-schemas-emission-001",
-        "feat:openapi-request-response-parameter-emission-001",
         "feat:oas-005",
-        "feat:openapi-mounted-json-and-docs-surface-001",
         "feat:operator-static-files-surface-001",
         "feat:operator-cookie-roundtrip-surface-001",
         "feat:operator-streaming-response-surface-001",
@@ -43173,12 +42589,6 @@
         "feat:operator-asyncapi-ui-descoped-001",
         "feat:operator-json-schema-ui-descoped-001",
         "feat:operator-oidc-discovery-docs-descoped-001",
-        "feat:openapi-mount-surface-001",
-        "feat:openapi-payload-surface-001",
-        "feat:openapi-uix-surface-001",
-        "feat:openrpc-mount-surface-001",
-        "feat:openrpc-payload-surface-001",
-        "feat:openrpc-uix-surface-001",
         "feat:operator-surface-framing-semantics-001",
         "feat:operator-surface-smoke-runtime-parity-001",
         "feat:op-extension-surface-001",
@@ -43188,12 +42598,9 @@
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:sse-event-framing-001",
         "feat:stream-chunk-order-preservation-001",
         "feat:streamingresponse-concrete-stream-class-001",
-        "feat:surface-docs-cross-projection-parity-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:tigrbl-test-suite-coverage-intake-001",
@@ -43833,8 +43240,6 @@
         "feat:default-canonical-engine-family-datatype-alignment-001",
         "feat:multi-engine-table-portability-interoperability-001",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:openrpc-126-json-surface-001",
-        "feat:openrpc-lens-ui-surface-001",
         "feat:transport-bypass-removal-001",
         "feat:transport-dispatch-governance-001",
         "feat:transport-parity-contract-001",
@@ -43858,19 +43263,16 @@
         "feat:ensure-primed-idempotence-001",
         "feat:opview-on-demand-cache-reuse-001",
         "feat:kernel-cache-invalidation-contract-001",
-        "feat:surface-binding-family-emission-001",
         "feat:stream-chunk-order-preservation-001",
         "feat:sse-event-framing-001",
         "feat:multipart-form-preservation-001",
         "feat:uploaded-file-runtime-contract-001",
-        "feat:diagnostics-warning-vocabulary-001",
         "feat:kernelz-bounded-payload-001",
         "feat:analytical-family-membership-freeze-001",
         "feat:analytical-runtime-docs-export-parity-001",
         "feat:realtime-transfer-family-membership-freeze-001",
         "feat:realtime-transfer-runtime-docs-export-parity-001",
         "feat:kernel-priming-runtime-parity-001",
-        "feat:surface-metadata-omission-contract-001",
         "feat:engine-extension-surface-001",
         "feat:engine-surface-contract-001",
         "feat:engine-surface-plugin-resolution-001",
@@ -43899,14 +43301,12 @@
         "feat:bootstrap-dbschema-runtime-surface-001",
         "feat:ensure-schemas-runtime-surface-001",
         "feat:sqlite-attach-runtime-surface-001",
-        "feat:build-kernelz-endpoint-helper-001",
         "feat:mapping-dispatch-convergence-001",
         "feat:op-ctx-table-owner-scope-materialization-001",
         "feat:op-ctx-router-owner-scope-materialization-001",
         "feat:op-ctx-app-owner-scope-materialization-001",
         "feat:pre-tx-dependency-execution-001",
         "feat:pre-tx-security-dependency-execution-001",
-        "feat:operation-diagnostics-projection-001",
         "feat:rfc-8785-jcs-conformance-vectors-001",
         "feat:rfc-8785-jcs-canonicalizer-001",
         "feat:jsonrpc-batch-framing-001",
@@ -44546,9 +43946,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The EventKey bit-coded dispatch contract is represented as a governed feature with planned protocol runtime tests.",
-      "feature_ids": [
-        "feat:eventkey-bit-coded-dispatch-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:eventkey-bit-coded-dispatch-contract-001"
       ],
@@ -44580,9 +43978,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The Subevent handler dispatch contract is represented as a governed feature with planned protocol runtime tests.",
-      "feature_ids": [
-        "feat:subevent-handler-dispatch-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:subevent-handler-dispatch-contract-001"
       ],
@@ -44648,9 +44044,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The Eventful protocol decorator surface contract is represented as a governed feature with planned protocol runtime tests.",
-      "feature_ids": [
-        "feat:eventful-protocol-decorator-surface-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:eventful-protocol-decorator-surface-contract-001"
       ],
@@ -44665,9 +44059,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The Primary and secondary subevent selection contract is represented as a governed feature with planned protocol runtime tests.",
-      "feature_ids": [
-        "feat:primary-secondary-subevent-selection-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:primary-secondary-subevent-selection-contract-001"
       ],
@@ -44682,9 +44074,7 @@
       "tier": "T2",
       "kind": "repo-claim",
       "description": "The EventKey hook bucket compilation contract is represented as a governed feature with planned protocol runtime tests.",
-      "feature_ids": [
-        "feat:eventkey-hook-bucket-compilation-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:eventkey-hook-bucket-compilation-contract-001"
       ],
@@ -45107,9 +44497,7 @@
       "tier": "T2",
       "kind": "target-contract",
       "description": "Every executable unit selects exactly one primary subevent, preserves secondary subevent annotations, and fails closed for missing or ambiguous primary selection.",
-      "feature_ids": [
-        "feat:primary-secondary-subevent-selection-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:primary-secondary-subevent-selection-contract"
       ],
@@ -45124,9 +44512,7 @@
       "tier": "T2",
       "kind": "target-contract",
       "description": "EventKey dispatch packs op, binding, exchange, family, subevent, and framing into stable integer fields with fail-closed overflow and reserved-bit validation.",
-      "feature_ids": [
-        "feat:eventkey-bit-coded-dispatch-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:eventkey-bit-coded-dispatch-contract"
       ],
@@ -45141,9 +44527,7 @@
       "tier": "T2",
       "kind": "target-contract",
       "description": "Wildcard hook selectors compile into concrete EventKey buckets before runtime, with collision detection and direct integer-key lookup.",
-      "feature_ids": [
-        "feat:eventkey-hook-bucket-compilation-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:eventkey-hook-bucket-compilation-contract"
       ],
@@ -45192,9 +44576,7 @@
       "tier": "T2",
       "kind": "target-contract",
       "description": "Subevent handlers compile to concrete EventKey handler tables, preserve declared multi-handler order, and reject ambiguous handlers or hook-as-handler misuse.",
-      "feature_ids": [
-        "feat:subevent-handler-dispatch-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:subevent-handler-dispatch-contract"
       ],
@@ -45243,9 +44625,7 @@
       "tier": "T2",
       "kind": "target-contract",
       "description": "Eventful protocol decorators lower to canonical op_ctx plus binding specs, subevent_ctx binds HANDLER dispatch handlers, and realtime verbs remain builtin custom handlers.",
-      "feature_ids": [
-        "feat:eventful-protocol-decorator-surface-001"
-      ],
+      "feature_ids": [],
       "test_ids": [
         "tst:eventful-protocol-decorator-surface-contract"
       ],
@@ -45263,7 +44643,6 @@
       "feature_ids": [
         "feat:security-policy",
         "feat:oas-005",
-        "feat:openrpc-126-json-surface-001",
         "feat:jsonrpc-20-runtime-surface-001"
       ],
       "test_ids": [
@@ -45752,8 +45131,6 @@
         "feat:protocol-phase-tree-plans-001",
         "feat:derived-runtime-subevent-taxonomy-001",
         "feat:protocol-scope-schemas-001",
-        "feat:eventkey-bit-coded-dispatch-001",
-        "feat:eventkey-hook-bucket-compilation-001",
         "feat:extended-hook-selector-matching-001",
         "feat:runtime-owned-hook-legality-enforcement-001",
         "feat:binding-subevent-phase-atom-legality-matrix-001",
@@ -45790,9 +45167,7 @@
         "feat:transport-event-registry-001",
         "feat:transport-accept-emit-close-atoms-001",
         "feat:webtransport-transport-events-001",
-        "feat:yield-iterator-producer-001",
-        "feat:eventful-protocol-decorator-surface-001",
-        "feat:eventful-channel-state-metadata-001"
+        "feat:yield-iterator-producer-001"
       ],
       "test_ids": [
         "tst:app-framed-message-codec-runtime-contract",
@@ -45818,8 +45193,6 @@
       "description": "Blocked until all selected xfail tests in this frozen boundary pass without xfail markers and linked features are implemented.",
       "feature_ids": [
         "feat:dispatch-exchange-family-subevent-atoms-001",
-        "feat:subevent-handler-dispatch-001",
-        "feat:subevent-transaction-units-001",
         "feat:completion-fence-emit-complete-001",
         "feat:segment-fusion-barrier-policy-001",
         "feat:protocol-fused-segments-001",
@@ -45856,7 +45229,6 @@
         "feat:security-per-route-include-router-compat-001",
         "feat:stdapi-routing-parity-001",
         "feat:stdapi-openapi-docs-parity-001",
-        "feat:api-level-auth-include-router-compat-001",
         "feat:rest-operation-id-uniqueness-001",
         "feat:asgi-router-compatibility-001",
         "feat:core-access-compatibility-001",
@@ -46149,6 +45521,120 @@
       ],
       "evidence_ids": [
         "evd:tigrbl-spec-binding-app-engine-contracts-001"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-eventful-subevent-surface-contracts-001",
+      "title": "Eventful subevent surface contracts are implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "runtime-contract",
+      "description": "Packed EventKeys, subevent dispatch, transaction units, primary/secondary subevent selection, channel state metadata, eventful decorators, and declared surface metadata projection are implemented and verified.",
+      "feature_ids": [
+        "feat:subevent-handler-dispatch-001",
+        "feat:subevent-transaction-units-001",
+        "feat:surface-binding-family-emission-001",
+        "feat:surface-binding-proto-emission-001",
+        "feat:surface-docs-cross-projection-parity-001",
+        "feat:surface-metadata-omission-contract-001",
+        "feat:primary-secondary-subevent-selection-001",
+        "feat:eventful-channel-state-metadata-001",
+        "feat:eventful-protocol-decorator-surface-001",
+        "feat:eventkey-bit-coded-dispatch-001",
+        "feat:eventkey-hook-bucket-compilation-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-eventful-subevent-surface-contracts"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-eventful-subevent-surface-contracts-001"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-system-docs-diagnostics-contracts-001",
+      "title": "System docs and diagnostics contracts are implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "implementation-contract",
+      "description": "The public helper, diagnostics, OpenAPI, OpenRPC, Swagger, JSON Schema, and include-router auth projection surfaces are implemented and covered by focused pytest proof.",
+      "feature_ids": [
+        "feat:api-level-auth-include-router-compat-001",
+        "feat:build-healthz-endpoint-helper-001",
+        "feat:build-hooks-helper-surface-001",
+        "feat:build-hookz-endpoint-helper-001",
+        "feat:build-json-schema-bundle-helper-surface-001",
+        "feat:build-kernelz-endpoint-helper-001",
+        "feat:build-methodz-endpoint-helper-001",
+        "feat:build-openapi-helper-surface-001",
+        "feat:build-openrpc-spec-helper-surface-001",
+        "feat:build-rest-helper-surface-001",
+        "feat:build-schemas-helper-surface-001",
+        "feat:build-swagger-helper-surface-001",
+        "feat:diagnostics-contract-001",
+        "feat:diagnostics-router-mount-surface-001",
+        "feat:diagnostics-system-prefix-mount-001",
+        "feat:diagnostics-warning-vocabulary-001",
+        "feat:healthz-mount-surface-001",
+        "feat:healthz-stable-payload-001",
+        "feat:openapi-31-document-emission-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-json-schema-dialect-2020-12-001",
+        "feat:openapi-mount-surface-001",
+        "feat:openapi-mounted-json-and-docs-surface-001",
+        "feat:openapi-payload-surface-001",
+        "feat:openapi-request-response-parameter-emission-001",
+        "feat:openrpc-126-json-surface-001",
+        "feat:openrpc-mount-surface-001",
+        "feat:openrpc-payload-surface-001",
+        "feat:operation-diagnostics-projection-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-system-docs-diagnostics-contracts-001"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-system-uix-surface-contracts-001",
+      "title": "System UIX surfaces are implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "implementation-contract",
+      "description": "Lens, OpenRPC UIX, OpenAPI UIX, and Healthz UIX helper and mounted HTML surfaces are implemented and covered by focused pytest proof.",
+      "feature_ids": [
+        "feat:build-lens-helper-surface-001",
+        "feat:openrpc-lens-ui-surface-001",
+        "feat:openrpc-uix-surface-001",
+        "feat:openapi-uix-surface-001",
+        "feat:healthz-uix-surface-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-system-uix-surface-contracts"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-system-uix-surface-contracts-001"
+      ]
+    },
+    {
+      "id": "clm:tigrbl-security-dependency-surface-contracts-001",
+      "title": "Security dependency surfaces are implemented",
+      "status": "certified",
+      "tier": "T2",
+      "kind": "implementation-contract",
+      "description": "HTTPBasic, OAuth2, OpenIdConnect, and MutualTLS are first-class security dependencies with direct behavior and OpenAPI/OpenRPC projection proof.",
+      "feature_ids": [
+        "feat:openidconnect-security-dependency-001",
+        "feat:httpbasic-security-dependency-001",
+        "feat:mutualtls-security-dependency-001",
+        "feat:oauth2-security-dependency-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-security-dependency-surface-contracts"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-security-dependency-surface-contracts-001"
       ]
     }
   ],
@@ -52202,6 +51688,63 @@
       "test_ids": [
         "tst:tigrbl-spec-binding-app-engine-contracts"
       ]
+    },
+    {
+      "id": "evd:tigrbl-eventful-subevent-surface-contracts-001",
+      "title": "Eventful subevent surface contract pytest report",
+      "status": "passed",
+      "kind": "report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-eventful-subevent-surface-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-eventful-subevent-surface-contracts"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-system-docs-diagnostics-contracts-001",
+      "title": "System docs and diagnostics pytest evidence",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-system-docs-diagnostics-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:tigrbl-system-diagnostics-fixture-contracts"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-system-uix-surface-contracts-001",
+      "title": "System UIX surface pytest evidence",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-system-uix-surface-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-system-uix-surface-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-system-uix-surface-contracts"
+      ]
+    },
+    {
+      "id": "evd:tigrbl-security-dependency-surface-contracts-001",
+      "title": "Security dependency surface pytest evidence",
+      "status": "passed",
+      "kind": "pytest-report",
+      "tier": "T2",
+      "path": ".ssot/reports/tigrbl-security-dependency-surface-contracts.json",
+      "claim_ids": [
+        "clm:tigrbl-security-dependency-surface-contracts-001"
+      ],
+      "test_ids": [
+        "tst:tigrbl-security-dependency-surface-contracts"
+      ]
     }
   ],
   "issues": [
@@ -53905,7 +53448,9 @@
         "clm:kernelplan-dispatch-ownership-001",
         "clm:executor-dispatch-removal-001",
         "clm:jsonrpc-endpoint-key-001",
-        "clm:transport-parity-contract-001"
+        "clm:transport-parity-contract-001",
+        "clm:tigrbl-system-docs-diagnostics-contracts-001",
+        "clm:tigrbl-system-uix-surface-contracts-001"
       ],
       "evidence_ids": [
         "evd:docs-adr-adr-0010-deferred-next-target-datatype-table-program.md",
@@ -53986,7 +53531,9 @@
         "evd:transport-dispatch-kernelplan-test",
         "evd:transport-dispatch-jsonrpc-test",
         "evd:transport-dispatch-parity-test",
-        "evd:transport-dispatch-boundary-snapshot"
+        "evd:transport-dispatch-boundary-snapshot",
+        "evd:tigrbl-system-docs-diagnostics-contracts-001",
+        "evd:tigrbl-system-uix-surface-contracts-001"
       ]
     },
     {
@@ -54400,11 +53947,13 @@
       "boundary_id": "bnd:tigrbl-xfail-runtime-taxonomy-001",
       "claim_ids": [
         "clm:tigrbl-xfail-runtime-taxonomy-001",
-        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001",
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-runtime-taxonomy-001-preflight",
-        "evd:tigrbl-spec-binding-app-engine-contracts-001"
+        "evd:tigrbl-spec-binding-app-engine-contracts-001",
+        "evd:tigrbl-eventful-subevent-surface-contracts-001"
       ]
     },
     {
@@ -54415,12 +53964,14 @@
       "claim_ids": [
         "clm:tigrbl-xfail-transport-message-001",
         "clm:opchannel-capability-handshake-001",
-        "clm:opchannel-capability-handshake-contract-001"
+        "clm:opchannel-capability-handshake-contract-001",
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-transport-message-001-preflight",
         "evd:opchannel-capability-handshake-contract-001",
-        "evd:opchannel-capability-handshake-contract-pytest"
+        "evd:opchannel-capability-handshake-contract-pytest",
+        "evd:tigrbl-eventful-subevent-surface-contracts-001"
       ]
     },
     {
@@ -54431,12 +53982,14 @@
       "claim_ids": [
         "clm:tigrbl-xfail-dispatch-execution-001",
         "clm:canonical-exchange-normalization-contract-001",
-        "clm:canonical-ingress-route-phase-cleanup-contract-001"
+        "clm:canonical-ingress-route-phase-cleanup-contract-001",
+        "clm:tigrbl-eventful-subevent-surface-contracts-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-dispatch-execution-001-preflight",
         "evd:canonical-exchange-normalization-contract-pytest",
-        "evd:canonical-ingress-route-phase-cleanup-contract-pytest"
+        "evd:canonical-ingress-route-phase-cleanup-contract-pytest",
+        "evd:tigrbl-eventful-subevent-surface-contracts-001"
       ]
     },
     {
@@ -54446,11 +53999,13 @@
       "boundary_id": "bnd:tigrbl-xfail-compat-surface-001",
       "claim_ids": [
         "clm:tigrbl-xfail-compat-surface-001",
-        "clm:tigrbl-spec-binding-app-engine-contracts-001"
+        "clm:tigrbl-spec-binding-app-engine-contracts-001",
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "evidence_ids": [
         "evd:tigrbl-xfail-compat-surface-001-preflight",
-        "evd:tigrbl-spec-binding-app-engine-contracts-001"
+        "evd:tigrbl-spec-binding-app-engine-contracts-001",
+        "evd:tigrbl-system-docs-diagnostics-contracts-001"
       ]
     },
     {

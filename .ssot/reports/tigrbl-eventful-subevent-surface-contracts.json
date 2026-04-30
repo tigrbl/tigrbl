@@ -1,0 +1,40 @@
+{
+  "artifact_id": "evd:tigrbl-eventful-subevent-surface-contracts-001",
+  "claim_id": "clm:tigrbl-eventful-subevent-surface-contracts-001",
+  "test_id": "tst:tigrbl-eventful-subevent-surface-contracts",
+  "status": "passed",
+  "tier": "T2",
+  "commands": [
+    "uv run pytest pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventful_subevent_surface_contracts.py -q",
+    "uv run pytest pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventkey_bit_coded_dispatch_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventkey_hook_bucket_compilation_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_subevent_handler_dispatch_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_subevent_transaction_units_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventful_channel_state_metadata_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_eventful_protocol_decorator_surface_contract.py -q",
+    "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_metadata_contracts.py pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_two_axis_lifecycle_matrix_contract.py -q"
+  ],
+  "summary": {
+    "focused_aggregate_passed": 4,
+    "runtime_contract_passed": 53,
+    "surface_and_lifecycle_passed": 21,
+    "failed": 0
+  },
+  "features": [
+    "feat:subevent-handler-dispatch-001",
+    "feat:subevent-transaction-units-001",
+    "feat:surface-binding-family-emission-001",
+    "feat:surface-binding-proto-emission-001",
+    "feat:surface-docs-cross-projection-parity-001",
+    "feat:surface-metadata-omission-contract-001",
+    "feat:primary-secondary-subevent-selection-001",
+    "feat:eventful-channel-state-metadata-001",
+    "feat:eventful-protocol-decorator-surface-001",
+    "feat:eventkey-bit-coded-dispatch-001",
+    "feat:eventkey-hook-bucket-compilation-001"
+  ],
+  "contracts": [
+    "Packed integer EventKey dispatch and fail-closed EventKey validation",
+    "Compiled hook buckets and subevent handlers dispatch by integer EventKey",
+    "Per-subevent transaction units open, commit, rollback, or omit transaction boundaries according to tx_unit",
+    "Primary subevent selection yields one primary and ordered secondary annotations",
+    "Eventful channel state tracks identity, receive, emit, completion, close, and error metadata",
+    "Eventful protocol decorators lower to op_ctx plus binding specs and reject bypass/ambiguity",
+    "Declared surface documentation emits binding family/proto metadata, preserves OpenAPI/OpenRPC parity, and omits undeclared optional metadata"
+  ]
+}

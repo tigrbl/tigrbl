@@ -27,7 +27,7 @@ def mount_diagnostics(
 
     dep = get_db
 
-    healthz_endpoint = build_healthz_endpoint(dep)
+    healthz_endpoint = build_healthz_endpoint(dep, router=source_router)
 
     async def _runtime_healthz(ctx: Any) -> Any:
         db = getattr(ctx, "db", None)

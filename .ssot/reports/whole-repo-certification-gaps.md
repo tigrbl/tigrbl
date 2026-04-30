@@ -7,9 +7,9 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 - `total_features`: `609`
 - `in_bound_features`: `581`
 - `out_of_scope_features`: `28`
-- `feature_gap_count`: `264`
-- `gap_counts`: `{'feature_not_implemented': 261, 'missing_claims': 86, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 71, 'non_passing_evidence': 64, 'non_passing_tests': 92}`
-- `implementation_counts`: `{'absent': 64, 'implemented': 320, 'partial': 197}`
+- `feature_gap_count`: `215`
+- `gap_counts`: `{'feature_not_implemented': 212, 'missing_claims': 70, 'missing_evidence': 6, 'missing_tests': 6, 'non_passing_claims': 63, 'non_passing_evidence': 56, 'non_passing_tests': 84}`
+- `implementation_counts`: `{'absent': 56, 'implemented': 369, 'partial': 156}`
 - `horizon_counts`: `{'backlog': 161, 'current': 291, 'future': 102, 'next': 27, 'out_of_bounds': 28}`
 - `release_blocking_issue_count`: `1`
 - `release_blocking_risk_count`: `1`
@@ -29,7 +29,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:analytical-family-membership-freeze-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:analytical-runtime-docs-export-parity-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:anon-access-projection-001` | `partial` | `future` | `feature_not_implemented` |
-| `feat:api-level-auth-include-router-compat-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:apikey-security-dependency-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:app-framed-message-codec-runtime-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:appbase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
@@ -49,18 +48,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:bootstrappable-table-mixin-001` | `partial` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:build-asyncapi-spec-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:build-handlers-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:build-healthz-endpoint-helper-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:build-hooks-helper-surface-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:build-hookz-endpoint-helper-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:build-json-schema-bundle-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:build-kernelz-endpoint-helper-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:build-lens-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:build-methodz-endpoint-helper-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:build-openapi-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:build-openrpc-spec-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:build-rest-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:build-schemas-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:build-swagger-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:canonical-analytical-ops-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:canonical-realtime-transfer-ops-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:cli-module-target-resolution-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
@@ -81,10 +68,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:depends-concrete-dependency-helper-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:deprecated-export-compat-window-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:derived-runtime-subevent-taxonomy-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:diagnostics-contract-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:diagnostics-router-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:diagnostics-system-prefix-mount-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:diagnostics-warning-vocabulary-001` | `partial` | `future` | `feature_not_implemented` |
 | `feat:dispatch-exchange-family-subevent-atoms-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:docs-mount-runtime-surface-parity-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:engine-extension-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
@@ -103,10 +86,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:ensure-schemas-runtime-surface-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_tests` |
 | `feat:error-envelope-structure-parity-001` | `partial` | `future` | `feature_not_implemented` |
 | `feat:error-parity-response-structure-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:eventful-channel-state-metadata-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:eventful-protocol-decorator-surface-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:eventkey-bit-coded-dispatch-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:eventkey-hook-bucket-compilation-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:eventstreamresponse-concrete-sse-class-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:executor-dispatch-removal-001` | `partial` | `next` | `feature_not_implemented`, `non_passing_claims` |
 | `feat:extended-hook-selector-matching-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
@@ -117,11 +96,7 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:gate-c-conformance-security-checkpoint-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:get-schema-python-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:harness-runtime-routing-parity-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_tests` |
-| `feat:healthz-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
-| `feat:healthz-stable-payload-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:healthz-uix-surface-001` | `absent` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:htmlresponse-concrete-response-class-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:httpbasic-security-dependency-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:include-tables-helper-surface-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:integration-test-registry-coverage-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:json-schema-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
@@ -160,24 +135,7 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:multi-engine-table-portability-interoperability-001` | `implemented` | `current` | `non_passing_tests` |
 | `feat:multi-table-routing-parity-001` | `partial` | `future` | `feature_not_implemented`, `non_passing_tests` |
 | `feat:multipart-form-preservation-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:mutualtls-security-dependency-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:oas-005` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:oauth2-security-dependency-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:openapi-31-document-emission-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openapi-components-schemas-emission-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openapi-json-schema-dialect-2020-12-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openapi-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openapi-mounted-json-and-docs-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openapi-payload-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openapi-request-response-parameter-emission-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openapi-uix-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openidconnect-security-dependency-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:openrpc-126-json-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openrpc-lens-ui-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openrpc-mount-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openrpc-payload-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:openrpc-uix-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:operation-diagnostics-projection-001` | `partial` | `future` | `feature_not_implemented` |
 | `feat:operator-bounded-middleware-catalog-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:operator-cookie-roundtrip-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:operator-static-files-surface-001` | `partial` | `backlog` | `feature_not_implemented` |
@@ -189,7 +147,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:plaintextresponse-concrete-response-class-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
 | `feat:post-emit-completion-fence-compilation-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:pre-tx-dependency-execution-001` | `partial` | `next` | `feature_not_implemented` |
-| `feat:primary-secondary-subevent-selection-001` | `absent` | `future` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:protocol-anchor-ordering-parity-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:protocol-fused-segments-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
 | `feat:protocol-phase-tree-plans-001` | `implemented` | `current` | `non_passing_claims`, `non_passing_evidence` |
@@ -251,12 +208,6 @@ This report is generated from `.ssot/registry.json` and defines the fail-closed 
 | `feat:storagetransformbase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:stream-chunk-order-preservation-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:streamingresponse-concrete-stream-class-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:subevent-handler-dispatch-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:subevent-transaction-units-001` | `absent` | `current` | `feature_not_implemented`, `non_passing_claims`, `non_passing_tests`, `non_passing_evidence` |
-| `feat:surface-binding-family-emission-001` | `partial` | `future` | `feature_not_implemented` |
-| `feat:surface-binding-proto-emission-001` | `partial` | `future` | `feature_not_implemented`, `missing_claims` |
-| `feat:surface-docs-cross-projection-parity-001` | `partial` | `backlog` | `feature_not_implemented` |
-| `feat:surface-metadata-omission-contract-001` | `partial` | `future` | `feature_not_implemented` |
 | `feat:swagger-openapi-uix-001` | `partial` | `backlog` | `feature_not_implemented` |
 | `feat:tablebase-contract-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |
 | `feat:tablebase-public-projection-001` | `partial` | `backlog` | `feature_not_implemented`, `missing_claims` |

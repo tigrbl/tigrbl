@@ -1,0 +1,33 @@
+{
+  "artifact_id": "evd:tigrbl-system-uix-surface-contracts-001",
+  "claim_id": "clm:tigrbl-system-uix-surface-contracts-001",
+  "test_id": "tst:tigrbl-system-uix-surface-contracts",
+  "kind": "pytest-json-summary",
+  "status": "passed",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_system_uix_surface_contracts.py -q",
+  "environment": {
+    "UV_CACHE_DIR": ".tmp\\uv-cache",
+    "UV_LINK_MODE": "copy",
+    "TMP": ".tmp\\pytest-tmp",
+    "TEMP": ".tmp\\pytest-tmp"
+  },
+  "summary": {
+    "passed": 5,
+    "failed": 0,
+    "errors": 0
+  },
+  "covered_contracts": [
+    "build_lens emits tigrbl-lens HTML for OpenRPC UIX",
+    "Swagger-backed docs emit the OpenAPI UIX surface",
+    "default Lens and Swagger routes are human-viewable GET HTML surfaces",
+    "Healthz UIX is mounted as HTML and targets the stable JSON health endpoint",
+    "UIX routes are excluded from OpenAPI operation and OpenRPC method projection"
+  ],
+  "feature_ids": [
+    "feat:build-lens-helper-surface-001",
+    "feat:openrpc-lens-ui-surface-001",
+    "feat:openrpc-uix-surface-001",
+    "feat:openapi-uix-surface-001",
+    "feat:healthz-uix-surface-001"
+  ]
+}
