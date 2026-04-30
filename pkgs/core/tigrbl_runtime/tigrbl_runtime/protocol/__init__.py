@@ -6,6 +6,7 @@ __all__ = [
     "lifespan_chain",
     "sse",
     "static_files",
+    "transport_atoms",
     "webtransport",
     "websocket",
 ]

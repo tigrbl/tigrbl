@@ -83,6 +83,9 @@ __all__ = [
     "build_phase_chains",
     "normalize_rust_spec",
     "plan_labels",
+    "segment_fusion",
+    "transport_atoms",
+    "transport_events",
     "webtransport_events",
 ]
 

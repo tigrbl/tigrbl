@@ -2,13 +2,13 @@
   "passed": true,
   "registry_path": ".ssot/registry.json",
   "release": {
-    "release_id": "rel:tigrbl-eventful-streaming-slice-001",
+    "release_id": "rel:tigrbl-base-surface-certification-001",
     "passed": true,
     "failures": [],
     "warnings": [],
     "claims": [
       {
-        "claim_id": "clm:yield-iterator-producer-contract-001",
+        "claim_id": "clm:aliasbase-contract-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -23,7 +23,7 @@
         "recommended_status": "certified"
       },
       {
-        "claim_id": "clm:sse-lazy-iterator-runtime-contract-001",
+        "claim_id": "clm:appbase-contract-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -38,7 +38,7 @@
         "recommended_status": "certified"
       },
       {
-        "claim_id": "clm:webtransport-transport-events-contract-001",
+        "claim_id": "clm:appbase-public-projection-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -53,7 +53,7 @@
         "recommended_status": "certified"
       },
       {
-        "claim_id": "clm:eventstreamresponse-concrete-sse-class-contract-001",
+        "claim_id": "clm:bindingbase-contract-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -68,7 +68,7 @@
         "recommended_status": "certified"
       },
       {
-        "claim_id": "clm:stream-chunk-order-preservation-contract-001",
+        "claim_id": "clm:bindingregistrybase-contract-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -83,7 +83,7 @@
         "recommended_status": "certified"
       },
       {
-        "claim_id": "clm:streamingresponse-concrete-stream-class-contract-001",
+        "claim_id": "clm:columnbase-contract-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -98,7 +98,7 @@
         "recommended_status": "certified"
       },
       {
-        "claim_id": "clm:sse-event-framing-contract-001",
+        "claim_id": "clm:enginebase-contract-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -113,7 +113,232 @@
         "recommended_status": "certified"
       },
       {
-        "claim_id": "clm:websocket-concrete-runtime-class-contract-001",
+        "claim_id": "clm:engineproviderbase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:engineregistry-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:engine-surface-public-projection-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:foreignkeybase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:foreignkeybase-public-projection-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:requestbase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:routerbase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:routerbase-public-projection-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:schemabase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:sessionabc-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:storagetransformbase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:tablebase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:tablebase-public-projection-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:tableregistrybase-contract-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:tableregistrybase-public-projection-001",
+        "passed": true,
+        "failures": [],
+        "checks": {
+          "implemented_features": true,
+          "tests_passing": true,
+          "evidence_passing": true,
+          "no_failed_or_stale_evidence": true,
+          "evidence_tier_alignment": true,
+          "feature_target_alignment": true,
+          "required_features_passing": true
+        },
+        "recommended_status": "certified"
+      },
+      {
+        "claim_id": "clm:tigrblsessionbase-contract-001",
         "passed": true,
         "failures": [],
         "checks": {
@@ -130,51 +355,161 @@
     ],
     "evidence": [
       {
-        "evidence_id": "evd:sse-lazy-iterator-runtime-contract-pytest",
+        "evidence_id": "evd:aliasbase-contract-001-pytest",
         "passed": true,
         "failures": []
       },
       {
-        "evidence_id": "evd:tigrbl-eventful-streaming-slice-pytest",
+        "evidence_id": "evd:appbase-contract-001-pytest",
         "passed": true,
         "failures": []
       },
       {
-        "evidence_id": "evd:webtransport-transport-events-contract-pytest",
+        "evidence_id": "evd:appbase-public-projection-001-pytest",
         "passed": true,
         "failures": []
       },
       {
-        "evidence_id": "evd:yield-iterator-producer-contract-pytest",
+        "evidence_id": "evd:bindingbase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:bindingregistrybase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:columnbase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:engine-surface-public-projection-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:enginebase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:engineproviderbase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:engineregistry-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:foreignkeybase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:foreignkeybase-public-projection-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:requestbase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:routerbase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:routerbase-public-projection-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:schemabase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:sessionabc-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:storagetransformbase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:tablebase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:tablebase-public-projection-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:tableregistrybase-contract-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:tableregistrybase-public-projection-001-pytest",
+        "passed": true,
+        "failures": []
+      },
+      {
+        "evidence_id": "evd:tigrblsessionbase-contract-001-pytest",
         "passed": true,
         "failures": []
       }
     ],
     "profiles": [],
     "boundary": {
-      "id": "bnd:tigrbl-eventful-streaming-slice-001",
+      "id": "bnd:tigrbl-base-surface-certification-001",
       "profile_ids": [],
       "resolved_feature_ids": [
-        "feat:eventstreamresponse-concrete-sse-class-001",
-        "feat:stream-chunk-order-preservation-001",
-        "feat:streamingresponse-concrete-stream-class-001",
-        "feat:yield-iterator-producer-001",
-        "feat:sse-event-framing-001",
-        "feat:sse-lazy-iterator-runtime-001",
-        "feat:websocket-concrete-runtime-class-001",
-        "feat:webtransport-transport-events-001"
+        "feat:aliasbase-contract-001",
+        "feat:appbase-contract-001",
+        "feat:appbase-public-projection-001",
+        "feat:bindingbase-contract-001",
+        "feat:bindingregistrybase-contract-001",
+        "feat:columnbase-contract-001",
+        "feat:enginebase-contract-001",
+        "feat:engineproviderbase-contract-001",
+        "feat:engineregistry-contract-001",
+        "feat:engine-surface-public-projection-001",
+        "feat:foreignkeybase-contract-001",
+        "feat:foreignkeybase-public-projection-001",
+        "feat:requestbase-contract-001",
+        "feat:routerbase-contract-001",
+        "feat:routerbase-public-projection-001",
+        "feat:schemabase-contract-001",
+        "feat:sessionabc-contract-001",
+        "feat:storagetransformbase-contract-001",
+        "feat:tablebase-contract-001",
+        "feat:tablebase-public-projection-001",
+        "feat:tableregistrybase-contract-001",
+        "feat:tableregistrybase-public-projection-001",
+        "feat:tigrblsessionbase-contract-001"
       ]
     },
     "summary": {
-      "boundary_id": "bnd:tigrbl-eventful-streaming-slice-001",
-      "boundary_feature_count": 8,
+      "boundary_id": "bnd:tigrbl-base-surface-certification-001",
+      "boundary_feature_count": 23,
       "boundary_profile_count": 0,
-      "release_claim_count": 8,
-      "release_evidence_count": 4
+      "release_claim_count": 23,
+      "release_evidence_count": 23
     }
   },
   "boundary_scope": {
-    "boundary_id": "bnd:tigrbl-eventful-streaming-slice-001",
+    "boundary_id": "bnd:tigrbl-base-surface-certification-001",
     "profile_ids": [],
     "feature_ids": []
   },
@@ -182,13 +517,13 @@
     "counts": {
       "features": 609,
       "profiles": 7,
-      "tests": 723,
-      "claims": 322,
-      "evidence": 333,
+      "tests": 746,
+      "claims": 324,
+      "evidence": 356,
       "issues": 9,
       "risks": 5,
       "boundaries": 20,
-      "releases": 15,
+      "releases": 16,
       "adrs": 135,
       "specs": 147
     },
