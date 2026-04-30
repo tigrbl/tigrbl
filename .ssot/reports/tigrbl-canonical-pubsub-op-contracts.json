@@ -1,0 +1,18 @@
+{
+  "artifact": "tigrbl-canonical-pubsub-op-contracts",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_canonical_pubsub_op_contracts.py -q",
+  "features": [
+    "feat:canonical-op-publish-001",
+    "feat:canonical-op-subscribe-001"
+  ],
+  "status": "passed",
+  "tests": [
+    "test_pubsub_ops_project_canonical_collection_routes",
+    "test_pubsub_ops_execute_realtime_handlers_through_rpc"
+  ],
+  "result": {
+    "passed": 2,
+    "failed": 0
+  },
+  "notes": "Verifies canonical publish/subscribe route projection and realtime handler execution through RPC."
+}

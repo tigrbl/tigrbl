@@ -1,0 +1,17 @@
+{
+  "artifact": "tigrbl-canonical-tail-op-contract",
+  "command": "uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_canonical_tail_op_contract.py -q",
+  "features": [
+    "feat:canonical-op-tail-001"
+  ],
+  "status": "passed",
+  "tests": [
+    "test_tail_op_projects_canonical_collection_route",
+    "test_tail_op_executes_realtime_handler_through_rpc"
+  ],
+  "result": {
+    "passed": 2,
+    "failed": 0
+  },
+  "notes": "Verifies canonical tail route projection and realtime handler execution through RPC."
+}
