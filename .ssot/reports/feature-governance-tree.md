@@ -24,7 +24,7 @@ This report is generated from `.ssot/registry.json`.
     - `feat:post-emit-completion-fence-compilation-001` POST_EMIT completion fence compilation (`absent`)
     - `feat:protocol-anchor-ordering-parity-001` Protocol anchor ordering parity (`absent`)
     - `feat:protocol-fused-segments-001` Protocol fused segments (`absent`)
-    - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`absent`)
+    - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`implemented`)
   - `spc:2113` Binding Subevent Phase Atom Legality Matrix
     - `feat:binding-subevent-phase-atom-legality-matrix-001` Binding subevent phase atom legality matrix (`absent`)
     - `feat:bindingspec-kernelplan-protocol-compilation-001` BindingSpec KernelPlan protocol compilation (`implemented`)
@@ -34,7 +34,10 @@ This report is generated from `.ssot/registry.json`.
     - `feat:protocol-runtime-ssot-feature-granularity-001` Protocol runtime SSOT feature granularity (`absent`)
 - `adr:1016` ADR-0016 - Kernel Plan Compilation, Packing, Fusion, and Compaction
   - `spc:2072` Mapping plan compilation contract
-    - `(no selected features link directly to this spec)`
+    - `feat:binding-driven-ingress-001` Binding-driven REST and JSON-RPC ingress materialization (`partial`)
+    - `feat:bindingspec-kernelplan-protocol-compilation-001` BindingSpec KernelPlan protocol compilation (`implemented`)
+    - `feat:executor-dispatch-removal-001` Executors do not perform transport matching (`partial`)
+    - `feat:kernelplan-dispatch-ownership-001` KernelPlan and atoms own transport lookup and matching (`partial`)
 - `adr:1024` ADR-0024 - Runtime Family Model
   - `(no included specs declare this ADR)`
 - `adr:1052` tigrbl_core._spec Layer Nature and Authority
@@ -71,7 +74,9 @@ This report is generated from `.ssot/registry.json`.
     - `feat:protocol-runtime-test-evidence-suite-001` Protocol runtime test evidence suite (`absent`)
     - `feat:rust-protocol-plan-parity-001` Rust protocol plan parity (`absent`)
   - `spc:2140` Runtime Execution Conformance And Fuzz Contract
-    - `(no selected features link directly to this spec)`
+    - `feat:protocol-runtime-boundary-certification-001` Protocol runtime boundary certification (`absent`)
+    - `feat:protocol-runtime-test-evidence-suite-001` Protocol runtime test evidence suite (`absent`)
+    - `feat:rust-protocol-plan-parity-001` Rust protocol plan parity (`absent`)
 - `adr:1100` Protocol KernelPlan compilation boundary
   - `spc:2099` BindingSpec Event And Subevent Projection Contract
     - `feat:bindingspec-event-subevent-schema-001` BindingSpec event and subevent schema (`implemented`)
@@ -87,7 +92,7 @@ This report is generated from `.ssot/registry.json`.
     - `feat:post-emit-completion-fence-compilation-001` POST_EMIT completion fence compilation (`absent`)
     - `feat:protocol-anchor-ordering-parity-001` Protocol anchor ordering parity (`absent`)
     - `feat:protocol-fused-segments-001` Protocol fused segments (`absent`)
-    - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`absent`)
+    - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`implemented`)
   - `spc:2102` Protocol Phase Tree Contract
     - `feat:bindingspec-kernelplan-protocol-compilation-001` BindingSpec KernelPlan protocol compilation (`implemented`)
     - `feat:canonical-ingress-route-phase-cleanup-001` Canonical INGRESS_ROUTE phase cleanup (`implemented`)
@@ -115,11 +120,13 @@ This report is generated from `.ssot/registry.json`.
   - `spc:2106` HTTP Stream And SSE Atom Chain Contract
     - `feat:framing-decode-encode-atoms-001` Framing decode and encode atoms (`absent`)
     - `feat:http-stream-atom-chains-001` HTTP stream atom chains (`implemented`)
+    - `feat:operator-sse-event-stream-surface-001` WHATWG SSE event-stream operator surface (`implemented`)
     - `feat:sse-lazy-iterator-runtime-001` SSE lazy iterator runtime (`implemented`)
     - `feat:sse-session-message-stream-chains-001` SSE session message stream chains (`implemented`)
   - `spc:2107` WebSocket And WSS Atom Chain Contract
     - `feat:app-framed-message-codec-runtime-001` App-framed message codec runtime (`absent`)
     - `feat:framing-decode-encode-atoms-001` Framing decode and encode atoms (`absent`)
+    - `feat:operator-websocket-route-surface-001` WebSocket route operator surface (`implemented`)
     - `feat:websocket-wss-atom-chains-001` WebSocket and WSS atom chains (`implemented`)
   - `spc:2108` WebTransport Atom Chain Contract
     - `feat:app-framed-message-codec-runtime-001` App-framed message codec runtime (`absent`)
@@ -150,17 +157,27 @@ This report is generated from `.ssot/registry.json`.
     - `feat:protocol-anchor-ordering-parity-001` Protocol anchor ordering parity (`absent`)
     - `feat:protocol-phase-tree-plans-001` Protocol phase tree plans (`implemented`)
   - `spc:2138` Compiled Kernel Plan Packed Layout Contract
-    - `(no selected features link directly to this spec)`
+    - `feat:bindingspec-kernelplan-protocol-compilation-001` BindingSpec KernelPlan protocol compilation (`implemented`)
+    - `feat:protocol-fused-segments-001` Protocol fused segments (`absent`)
+    - `feat:protocol-phase-tree-plans-001` Protocol phase tree plans (`implemented`)
 - `adr:1120` Byte-Oriented Runtime Execution Principles
   - `spc:2138` Compiled Kernel Plan Packed Layout Contract
-    - `(no selected features link directly to this spec)`
+    - `feat:bindingspec-kernelplan-protocol-compilation-001` BindingSpec KernelPlan protocol compilation (`implemented`)
+    - `feat:protocol-fused-segments-001` Protocol fused segments (`absent`)
+    - `feat:protocol-phase-tree-plans-001` Protocol phase tree plans (`implemented`)
   - `spc:2140` Runtime Execution Conformance And Fuzz Contract
-    - `(no selected features link directly to this spec)`
+    - `feat:protocol-runtime-boundary-certification-001` Protocol runtime boundary certification (`absent`)
+    - `feat:protocol-runtime-test-evidence-suite-001` Protocol runtime test evidence suite (`absent`)
+    - `feat:rust-protocol-plan-parity-001` Rust protocol plan parity (`absent`)
 - `adr:1121` Compiled Kernel Plan And Atom Dispatch Layout Boundary
   - `spc:2138` Compiled Kernel Plan Packed Layout Contract
-    - `(no selected features link directly to this spec)`
+    - `feat:bindingspec-kernelplan-protocol-compilation-001` BindingSpec KernelPlan protocol compilation (`implemented`)
+    - `feat:protocol-fused-segments-001` Protocol fused segments (`absent`)
+    - `feat:protocol-phase-tree-plans-001` Protocol phase tree plans (`implemented`)
   - `spc:2140` Runtime Execution Conformance And Fuzz Contract
-    - `(no selected features link directly to this spec)`
+    - `feat:protocol-runtime-boundary-certification-001` Protocol runtime boundary certification (`absent`)
+    - `feat:protocol-runtime-test-evidence-suite-001` Protocol runtime test evidence suite (`absent`)
+    - `feat:rust-protocol-plan-parity-001` Rust protocol plan parity (`absent`)
 
 ## Included Specs Without Included ADR Parents
 
@@ -176,22 +193,23 @@ This report is generated from `.ssot/registry.json`.
   - `feat:jsonrpc-batch-framing-001` JSON-RPC batch framing (`partial`)
   - `feat:jsonrpc-input-validation-before-persistence-001` JSON-RPC input validation before persistence (`implemented`)
   - `feat:jsonrpc-persistence-error-sanitization-001` JSON-RPC persistence exception response sanitization (`implemented`)
+  - `feat:mutualtls-security-docs-runtime-alignment` Mutual TLS security docs/runtime alignment (`implemented`)
   - `feat:rest-create-success-status-001` REST create success status projection (`partial`)
 - `spc:2013` Transport Ingress Single Dispatch Flow
   - `feat:executor-dispatch-removal-001` Executors do not perform transport matching (`partial`)
   - `feat:kernelplan-dispatch-ownership-001` KernelPlan and atoms own transport lookup and matching (`partial`)
-  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`partial`)
-  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`partial`)
+  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`implemented`)
+  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`implemented`)
 - `spc:2014` Binding-Driven REST and JSON-RPC Materialization
   - `feat:binding-driven-ingress-001` Binding-driven REST and JSON-RPC ingress materialization (`partial`)
   - `feat:jsonrpc-input-validation-before-persistence-001` JSON-RPC input validation before persistence (`implemented`)
-  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`partial`)
+  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`implemented`)
 - `spc:2015` Endpoint-Keyed JSON-RPC Bindings
   - `feat:jsonrpc-endpoint-key-001` Endpoint-keyed JSON-RPC multiplexing (`partial`)
-  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`partial`)
+  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`implemented`)
 - `spc:2016` Core Default Endpoint Mappings
   - `feat:jsonrpc-endpoint-key-001` Endpoint-keyed JSON-RPC multiplexing (`partial`)
-  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`partial`)
+  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`implemented`)
 - `spc:2018` Kernel priming and OpView cache lifecycle
   - `feat:kernel-bootstrap-plan-parity-001` Kernel bootstrap and plan idempotence parity (`partial`)
   - `feat:kernel-cache-invalidation-contract-001` Kernel cache invalidation contract (`partial`)
@@ -206,10 +224,12 @@ This report is generated from `.ssot/registry.json`.
 - `spc:2024` Canonical Transport Routing Tuple and KernelPlan Index Contract
   - `feat:executor-dispatch-removal-001` Executors do not perform transport matching (`partial`)
   - `feat:kernelplan-dispatch-ownership-001` KernelPlan and atoms own transport lookup and matching (`partial`)
-  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`partial`)
-  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`partial`)
+  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`implemented`)
+  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`implemented`)
 - `spc:2041` Concrete response type surface
   - `feat:eventstreamresponse-concrete-sse-class-001` EventStreamResponse concrete SSE class (`implemented`)
+  - `feat:operator-sse-event-stream-surface-001` WHATWG SSE event-stream operator surface (`implemented`)
+  - `feat:operator-streaming-response-surface-001` Streaming response operator surface (`implemented`)
 - `spc:2045` Supported server runner surface
   - `feat:uvicorn-protocol-mode-runtime-parity-001` Uvicorn protocol-mode runtime parity (`partial`)
 - `spc:2055` Canonical transport, exchange, family, and subevent mapping
@@ -218,11 +238,21 @@ This report is generated from `.ssot/registry.json`.
   - `feat:canonical-ingress-route-phase-cleanup-001` Canonical INGRESS_ROUTE phase cleanup (`implemented`)
   - `feat:post-emit-completion-fence-compilation-001` POST_EMIT completion fence compilation (`absent`)
 - `spc:2058` Support-level matrix for eventful surfaces
+  - `feat:operator-sse-event-stream-surface-001` WHATWG SSE event-stream operator surface (`implemented`)
+  - `feat:operator-streaming-response-surface-001` Streaming response operator surface (`implemented`)
+  - `feat:operator-websocket-route-surface-001` WebSocket route operator surface (`implemented`)
   - `feat:protocol-runtime-profile-pack-001` Protocol runtime profile pack (`absent`)
 - `spc:2070` Transport bypass removal contract
-  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`partial`)
+  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`implemented`)
 - `spc:2071` Mapping dispatch convergence contract
-  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`partial`)
+  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`implemented`)
+- `spc:2078` Documentation payload projection contract
+  - `feat:mutualtls-security-docs-runtime-alignment` Mutual TLS security docs/runtime alignment (`implemented`)
+- `spc:2080` Documentation runtime parity contract
+  - `feat:mutualtls-security-docs-runtime-alignment` Mutual TLS security docs/runtime alignment (`implemented`)
+  - `feat:operator-sse-event-stream-surface-001` WHATWG SSE event-stream operator surface (`implemented`)
+  - `feat:operator-streaming-response-surface-001` Streaming response operator surface (`implemented`)
+  - `feat:operator-websocket-route-surface-001` WebSocket route operator surface (`implemented`)
 - `spc:2084` Tool, test, evidence, and gate taxonomy
   - `feat:protocol-runtime-ssot-feature-granularity-001` Protocol runtime SSOT feature granularity (`absent`)
   - `feat:protocol-runtime-test-evidence-suite-001` Protocol runtime test evidence suite (`absent`)
@@ -281,8 +311,8 @@ This report is generated from `.ssot/registry.json`.
   - `feat:rust-runtime-ddl-initialization-boundary-001` Rust runtime DDL initialization boundary (`absent`)
   - `feat:rust-runtime-performance-baseline-001` Rust executor benchmark baseline (`absent`)
   - `feat:sse-event-framing-001` SSE event framing (`implemented`)
-  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`partial`)
-  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`partial`)
+  - `feat:transport-bypass-removal-001` Remove non-conforming transport bypasses (`implemented`)
+  - `feat:transport-dispatch-governance-001` Transport-dispatch governance track setup (`implemented`)
   - `feat:uvicorn-protocol-mode-runtime-parity-001` Uvicorn protocol-mode runtime parity (`partial`)
   - `feat:uvicorn-rest-rpc-semantic-parity-001` Uvicorn REST and JSON-RPC semantic parity (`partial`)
   - `feat:websocket-concrete-runtime-class-001` WebSocket concrete runtime class (`implemented`)
@@ -291,8 +321,8 @@ This report is generated from `.ssot/registry.json`.
   - `feat:http-rest-jsonrpc-atom-chains-001` HTTP REST and JSON-RPC atom chains (`implemented`)
   - `feat:lifespan-runtime-chain-001` Lifespan runtime chain (`implemented`)
   - `feat:static-file-runtime-chain-001` Static file runtime chain (`implemented`)
-  - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`absent`)
-  - `feat:transport-event-registry-001` Transport event registry (`absent`)
+  - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`implemented`)
+  - `feat:transport-event-registry-001` Transport event registry (`implemented`)
   - `feat:webtransport-transport-events-001` WebTransport transport events (`implemented`)
 - `spc:2098` Derived Runtime Subevent Taxonomy
   - `feat:derived-runtime-subevent-taxonomy-001` Derived runtime subevent taxonomy (`absent`)
@@ -304,13 +334,15 @@ This report is generated from `.ssot/registry.json`.
   - `feat:eventful-channel-state-metadata-001` Eventful channel state metadata (`implemented`)
   - `feat:lifespan-runtime-chain-001` Lifespan runtime chain (`implemented`)
   - `feat:static-file-runtime-chain-001` Static file runtime chain (`implemented`)
-  - `feat:transport-event-registry-001` Transport event registry (`absent`)
+  - `feat:transport-event-registry-001` Transport event registry (`implemented`)
   - `feat:websocket-wss-atom-chains-001` WebSocket and WSS atom chains (`implemented`)
   - `feat:webtransport-transport-events-001` WebTransport transport events (`implemented`)
 - `spc:2117` EventKey And Bit-Coded Dispatch Contract
   - `feat:eventkey-hook-bucket-compilation-001` EventKey hook bucket compilation (`implemented`)
 - `spc:2119` Subevent Handler Contract
   - `feat:eventkey-hook-bucket-compilation-001` EventKey hook bucket compilation (`implemented`)
+- `spc:2123` Decorator Surface Contract For Eventful Protocols
+  - `feat:operator-websocket-route-surface-001` WebSocket route operator surface (`implemented`)
 - `spc:2142` XFail Closure Boundary And Proof Contract
   - `feat:app-framed-message-codec-runtime-001` App-framed message codec runtime (`absent`)
   - `feat:binding-subevent-phase-atom-legality-matrix-001` Binding subevent phase atom legality matrix (`absent`)
@@ -327,14 +359,11 @@ This report is generated from `.ssot/registry.json`.
   - `feat:protocol-fused-segments-001` Protocol fused segments (`absent`)
   - `feat:protocol-phase-tree-plans-001` Protocol phase tree plans (`implemented`)
   - `feat:subevent-transaction-units-001` Subevent transaction units (`implemented`)
-  - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`absent`)
-  - `feat:transport-event-registry-001` Transport event registry (`absent`)
+  - `feat:transport-accept-emit-close-atoms-001` Transport accept emit close atoms (`implemented`)
+  - `feat:transport-event-registry-001` Transport event registry (`implemented`)
   - `feat:webtransport-transport-events-001` WebTransport transport events (`implemented`)
   - `feat:yield-iterator-producer-001` Yield iterator producer (`implemented`)
 
 ## Selected Features Without Included ADR or SPEC Parents
 
-- `feat:mutualtls-security-docs-runtime-alignment` Mutual TLS security docs/runtime alignment (`implemented`)
-- `feat:operator-sse-event-stream-surface-001` WHATWG SSE event-stream operator surface (`implemented`)
-- `feat:operator-streaming-response-surface-001` Streaming response operator surface (`implemented`)
-- `feat:operator-websocket-route-surface-001` WebSocket route operator surface (`implemented`)
+- `(none)`
