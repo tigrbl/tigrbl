@@ -15,6 +15,18 @@ def mount_diagnostics(*args: Any, **kwargs: Any) -> Any:
     return _mount_diagnostics(*args, **kwargs)
 
 
+def mount_healthz_uix(*args: Any, **kwargs: Any) -> Any:
+    from .diagnostics import mount_healthz_uix as _mount_healthz_uix
+
+    return _mount_healthz_uix(*args, **kwargs)
+
+
+def build_healthz_uix(*args: Any, **kwargs: Any) -> Any:
+    from .diagnostics import build_healthz_html as _build_healthz_html
+
+    return _build_healthz_html(*args, **kwargs)
+
+
 def mount_openapi(*args: Any, **kwargs: Any) -> Any:
     from .docs import mount_openapi as _mount_openapi
 
@@ -114,6 +126,7 @@ def stop_uvicorn_server(*args: Any, **kwargs: Any) -> Any:
 __all__ = [
     'FAVICON_PATH',
     'mount_diagnostics',
+    'mount_healthz_uix',
     'mount_favicon',
     'mount_lens',
     'mount_openapi',
@@ -123,6 +136,7 @@ __all__ = [
     'mount_asyncapi',
     'mount_static',
     'build_favicon',
+    'build_healthz_uix',
     'build_lens',
     'build_openapi',
     'build_openrpc_spec',
