@@ -22,9 +22,9 @@ body: |-
   Define Tigrbl public record identity codec profiles and the resource-code registry contract for aa/split, aaa/split, and aaaa/split public IDs.
   
   ## Profiles
-  - aa/split text is two base62 prefix characters followed by decimal digits. It lowers to resource_code:u16 plus identity32.
-  - aaa/split text is three base62 prefix characters followed by decimal digits. It lowers to resource_code:u32 plus identity32.
-  - aaaa/split text is four base62 prefix characters followed by decimal digits. It lowers to resource_code:u32 plus identity32.
+  - aa/split text is two base62 prefix characters followed by decimal digits. It lowers to a base62 family code stored as resource_code:u16 plus opaque32 identity bytes.
+  - aaa/split text is three base62 prefix characters followed by decimal digits. It lowers to a base62 family code stored as resource_code:u32 plus opaque32 identity bytes.
+  - aaaa/split text is four base62 prefix characters followed by decimal digits. It lowers to a base62 family code stored as resource_code:u32 plus opaque32 identity bytes.
   
   ## Prefix Math
   base62 uses [0-9A-Za-z] with case-sensitive characters unless a future profile explicitly declares normalization.
@@ -40,7 +40,7 @@ body: |-
   Each resource-code row declares profile, prefix, numeric code, canonical resource name, package, owner, stability, reserved range, and collision domain.
   
   ## Invariants
-  Prefix length is part of the profile and is not guessed from text alone. Canonical formatting preserves registered prefix width. Text parsing occurs at boundaries; hot runtime paths consume split binary forms only.
+  Prefix length is part of the profile and is not guessed from text alone. Canonical formatting preserves registered prefix width. Text parsing occurs at boundaries; hot runtime paths consume split binary forms only. After ingress validation, runtime hot paths must not depend on ASCII prefix bytes and should consume only the lowered numeric family code plus opaque identity bytes.
 spec_kind: "normative"
 adr_ids:
   - "adr:1111"

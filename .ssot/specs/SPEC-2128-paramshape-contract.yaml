@@ -22,15 +22,17 @@ body: |-
   Define compiled parameter shapes for protocol bindings and keep ParamShape distinct from IdentityShape.
   
   ## Structure
-  ParamShape contains param_shape_id:u32, path_count:u8, query_count:u8, header_count:u8, body_count:u8, scope_count:u8, flags, and ParamDescriptor entries.
+  ParamShape is a compiled binary/runtime artifact. ParamShape contains param_shape_id:u32, path_count:u8, query_count:u8, header_count:u8, body_count:u8, scope_count:u8, flags, and ParamDescriptor entries.
   
   Each ParamDescriptor contains param_id:u32, location:u8, scalar_type:u8 or u16, required flags, decoder_id:u16, validator_chain_id:u32, and optional canonical name ID.
   
   ## Scope
-  ParamShape includes all bound parameters from path, query, header, body, scope, context, or protocol metadata. IdentityShape includes only identity-bearing values derived from params or context.
+  ParamShape includes all bound parameters from path, query, header, body, scope, context, or protocol metadata. Query, path, and header parameters are first-class members of the compiled shape and must not be treated as optional out-of-band annotations. IdentityShape includes only identity-bearing values derived from params or context.
   
   ## Invariants
   ParamShape IDs are deterministic for equivalent canonical parameter descriptors. Parameter name interning and scalar codes must be stable across Python and Rust runtime lanes.
+
+  Hot ParamShape metadata should prefer u8 counts and flags, u16 decoder ids, and u32 shape, parameter, and validator-chain identifiers unless a narrower width is explicitly valid for the declared registry. When multiple physical encodings satisfy the same semantics, the fastest measured valid encoding is the default.
 spec_kind: "normative"
 adr_ids:
   - "adr:1112"

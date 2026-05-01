@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrbl runtime execution internals adopt byte-oriented, bounded, versioned, evidence-backed physical layout principles where they reduce dispatch overhead, allocation pressure, semantic decoding, or Python/Rust parity risk. Public authoring surfaces such as AppSpec, OpSpec, RouterSpec, hooks, and table declarations remain semantic and ergonomic."
+summary: "Tigrbl runtime execution internals adopt byte-oriented, bounded, versioned, evidence-backed physical layout principles selected by measured hot-path throughput first and then constrained by width discipline, byte size, and semantic integrity. Public authoring surfaces such as AppSpec, OpSpec, RouterSpec, hooks, and table declarations remain semantic and ergonomic."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -19,7 +19,7 @@ status_notes:
 references: []
 body: |-
   ## Decision
-  Tigrbl runtime execution internals adopt byte-oriented, bounded, versioned, evidence-backed physical layout principles where they reduce dispatch overhead, allocation pressure, semantic decoding, or Python/Rust parity risk. Public authoring surfaces such as AppSpec, OpSpec, RouterSpec, hooks, and table declarations remain semantic and ergonomic.
+  Tigrbl runtime execution internals adopt byte-oriented, bounded, versioned, evidence-backed physical layout principles selected by measured hot-path throughput first and then constrained by width discipline, byte size, and semantic integrity. Public authoring surfaces such as AppSpec, OpSpec, RouterSpec, hooks, and table declarations remain semantic and ergonomic.
   
   This decision is limited to atoms, runtime kernel plans, runtime execution metadata, event dispatch, identity/scalar references used by dispatch, callback fences, and Python/Rust runtime interchange. It does not govern engine-owned row, page, block, WAL, manifest, cache, or recovery formats.
   
@@ -27,12 +27,16 @@ body: |-
   Runtime execution repeatedly traverses atoms, phases, subevents, handlers, callback fences, and dispatch metadata. Semantic objects are useful at authoring and validation boundaries, but object-heavy forms create avoidable allocation, pointer chasing, branch complexity, and parity drift in hot execution paths.
   
   Byte-oriented physical forms let the runtime answer the common execution questions with compact metadata: kind, phase, subevent, visibility, skip or keep, offset, length, flags, and identity reference. They also make Python/Rust parity more concrete because both runtimes can validate explicit widths, tags, versions, reserved bits, and invalid states.
+
+  When multiple physical encodings satisfy the same semantic contract, the default runtime choice should be the fastest measured valid encoding for that category and workload. Width discipline, semantic integrity, and compatibility constraints may disqualify a faster encoding, but benchmark-backed throughput is otherwise the primary selection criterion.
   
   ## Runtime Principles
   The runtime principle set includes byte-oriented design, byte-level programming, binary encoding, packed representation, bit-packing, fixed-width fields, explicit endianness for portable formats, schema-first binary layout, offset-table design, dense metadata scanning, hot/cold field splitting, lazy semantic decoding, copy-avoidant design, safe zero-copy views, opaque fixed-width identifiers, data-oriented design, structure-of-arrays layout, locality of reference, allocation minimization, object amplification avoidance, dispatch minimization, predictable control flow, batching, boundary batching, semantic/physical separation, codec boundaries, ingress validation with internal trust, regex and text at boundaries, versioned formats, reserved bits, bounded parsing, fuzz-testable layouts, hot-path minimalism, cold-path richness, state-machine parsing, measurement-driven optimization, workload-shaped layout, physical invariants first, and evidence-oriented design.
+
+  Dominant hot-path metadata should be overwhelmingly u8 and u16, with u32 reserved for larger offsets, registries, and shape IDs, u64 reserved for declared local hash or plan-instance cases, and u128 or u256 reserved for declared identity classes only.
   
   ## Consequences
-  New runtime physical layouts must define field widths, offsets, tags, flags, versions, reserved bits, invalid states, bounds, and conformance evidence before they are treated as release-grade runtime contracts. Rich labels, traces, schema names, diagnostics, and human-readable annotations belong in cold metadata or diagnostics projections unless profiling and SPEC authority justify hot-path inclusion.
+  New runtime physical layouts must define field widths, offsets, tags, flags, versions, reserved bits, invalid states, bounds, selection-policy evidence, and conformance evidence before they are treated as release-grade runtime contracts. Benchmark tables and primitive comparisons remain informative evidence artifacts unless a narrower SPEC explicitly makes a result normative. Rich labels, traces, schema names, diagnostics, and human-readable annotations belong in cold metadata or diagnostics projections unless profiling and SPEC authority justify hot-path inclusion.
   
   Engine storage principles such as page-oriented layout, WAL records, SSTable blocks, bloom filters, restart points, compression units, crash recovery, read/write/space amplification, and manifest/data separation remain out of scope for this ADR and require separate engine ADRs and SPECs.
   

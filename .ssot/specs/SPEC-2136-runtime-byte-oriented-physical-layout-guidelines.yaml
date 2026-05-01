@@ -30,9 +30,13 @@ body: |-
   Runtime physical layouts MUST define version, field order, field width, tag values, flag bits, reserved bits, endianness for portable forms, count fields, offset fields, length fields, bounds, invalid states, and fail-closed decode behavior.
   
   Runtime hot-path layouts SHOULD prefer bytes, bytearray, memoryview, Rust byte slices, typed arrays, fixed-width numeric fields, sidecars, slabs, dense tables, and offsets over nested dictionaries, strings, UUID objects, arbitrary Python integers, or rich semantic objects.
+
+  Dominant hot-path metadata should be overwhelmingly u8 and u16. u32 is reserved for larger offsets, larger registries, larger shape IDs, and payload references. u64 and wider fields are reserved for declared local hash, plan-instance, distributed, content, or cryptographic identity classes and must not be used as the default hot-path width without explicit SPEC authority.
   
   ## Boundary Rules
   Semantic AppSpec, RouterSpec, BindingSpec, OpSpec, hook, and table declarations are source forms. Runtime execution consumes compiled physical forms where a SPEC marks the path performance-sensitive. Diagnostics and explain surfaces may decode and enrich cold metadata without changing the hot-path physical contract.
+
+  When multiple encodings satisfy the same runtime contract, the default compiled choice must be the fastest measured valid encoding for that workload category. Benchmark tables remain informative evidence unless a narrower SPEC makes a specific winner normative.
   
   ## Evidence
   A runtime physical layout is not release-grade until conformance tests cover round trips, invalid tags, unsupported versions, nonzero reserved bits, truncation, offset overflow, length overflow, scalar overflow, identity-shape mismatch where relevant, and Python/Rust parity where both lanes consume the format.
