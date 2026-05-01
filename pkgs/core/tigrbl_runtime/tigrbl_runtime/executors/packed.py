@@ -12,7 +12,7 @@ from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
 from tigrbl_typing.phases import normalize_phase
 
 from .base import ExecutorBase
-from .types import _Ctx
+from .types import HotCtx, _Ctx
 
 
 class PackedPlanExecutor(ExecutorBase):
@@ -169,6 +169,41 @@ class PackedPlanExecutor(ExecutorBase):
         return value if isinstance(value, int) else None
 
     @staticmethod
+    def _ensure_hot_ctx(ctx: _Ctx, env: Any) -> HotCtx:
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            ctx.temp = {}
+            temp = ctx.temp
+        hot = temp.get("hot_ctx")
+        if isinstance(hot, HotCtx):
+            return hot
+
+        scope = getattr(env, "scope", {}) or {}
+        method = str(scope.get("method") or "").upper()
+        path = str(scope.get("path") or "")
+        scheme = str(scope.get("scheme") or "").lower()
+        scope_type = str(scope.get("type") or "")
+        protocol = ""
+        selector = ""
+        if scope_type == "http" and method and path:
+            protocol = "https.rest" if scheme == "https" else "http.rest"
+            selector = f"{method} {path}"
+        elif scope_type in {"websocket", "webtransport"} and path:
+            protocol = scheme or scope_type
+            selector = path
+
+        hot = HotCtx(
+            scope_type=scope_type,
+            method=method,
+            path=path,
+            protocol=protocol,
+            selector=selector,
+            content_type="",
+        )
+        temp["hot_ctx"] = hot
+        return hot
+
+    @staticmethod
     def _coerce_model_column_keys(obj: Any) -> tuple[str, ...] | None:
         table = getattr(obj, "__table__", None)
         columns = getattr(table, "columns", None)
@@ -226,6 +261,15 @@ class PackedPlanExecutor(ExecutorBase):
         if not isinstance(temp, dict):
             return -1
 
+        hot = temp.get("hot_ctx")
+        if isinstance(hot, HotCtx) and hot.program_id >= 0:
+            route = temp.setdefault("route", {})
+            if isinstance(route, dict):
+                route.setdefault("program_id", hot.program_id)
+                route.setdefault("opmeta_index", hot.program_id)
+            temp["program_id"] = hot.program_id
+            return hot.program_id
+
         dispatch = temp.get("dispatch")
         if not isinstance(dispatch, dict):
             return -1
@@ -245,8 +289,12 @@ class PackedPlanExecutor(ExecutorBase):
         ):
             return -1
 
-        selector_id = self._coerce_int(selector_to_id.get(selector))
-        proto_id = self._coerce_int(proto_to_id.get(protocol))
+        if isinstance(hot, HotCtx) and hot.selector == selector and hot.protocol == protocol:
+            selector_id = hot.selector_id if hot.selector_id >= 0 else None
+            proto_id = hot.proto_id if hot.proto_id >= 0 else None
+        else:
+            selector_id = self._coerce_int(selector_to_id.get(selector))
+            proto_id = self._coerce_int(proto_to_id.get(protocol))
         if selector_id is None or proto_id is None:
             return -1
         if not (0 <= proto_id < len(route_to_program)):
@@ -265,6 +313,8 @@ class PackedPlanExecutor(ExecutorBase):
             route.setdefault("program_id", program_id)
             route.setdefault("opmeta_index", program_id)
         temp["program_id"] = program_id
+        if isinstance(hot, HotCtx):
+            hot.program_id = program_id
         return program_id
 
     def _resolve_request_caches(
@@ -396,6 +446,51 @@ class PackedPlanExecutor(ExecutorBase):
             return -1
         maybe = route.get((method.upper(), path))
         return maybe if isinstance(maybe, int) else -1
+
+    def _prime_exact_route_program(
+        self, ctx: _Ctx, env: Any, packed: PackedKernel
+    ) -> int:
+        hot = self._ensure_hot_ctx(ctx, env)
+        if hot.scope_type != "http" or not hot.method or not hot.path:
+            return -1
+        program_id = self._resolve_program_id_from_exact_route(
+            packed, hot.method, hot.path
+        )
+        if program_id < 0:
+            return -1
+
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            return -1
+
+        proto_to_id = getattr(packed, "proto_to_id", None)
+        selector_to_id = getattr(packed, "selector_to_id", None)
+        if isinstance(proto_to_id, Mapping):
+            proto_id = self._coerce_int(proto_to_id.get(hot.protocol))
+            if proto_id is not None:
+                hot.proto_id = proto_id
+        if isinstance(selector_to_id, Mapping):
+            selector_id = self._coerce_int(selector_to_id.get(hot.selector))
+            if selector_id is not None:
+                hot.selector_id = selector_id
+        hot.program_id = program_id
+
+        ctx.method = hot.method
+        ctx.path = hot.path
+        dispatch = temp.setdefault("dispatch", {})
+        if isinstance(dispatch, dict):
+            dispatch.setdefault("binding_protocol", hot.protocol)
+            dispatch.setdefault("binding_selector", hot.selector)
+            dispatch.setdefault("channel_protocol", hot.protocol)
+            dispatch.setdefault("channel_selector", hot.selector)
+        route = temp.setdefault("route", {})
+        if isinstance(route, dict):
+            route.setdefault("selector", hot.selector)
+            route.setdefault("protocol", hot.protocol)
+            route.setdefault("program_id", program_id)
+            route.setdefault("opmeta_index", program_id)
+        temp["program_id"] = program_id
+        return program_id
 
     async def _probe_ingress_for_program(
         self, ctx: _Ctx, plan: KernelPlan, packed: PackedKernel
@@ -815,7 +910,15 @@ class PackedPlanExecutor(ExecutorBase):
             ctx.temp = {}
             temp = ctx.temp
 
+        hot = self._ensure_hot_ctx(ctx, env)
+        if hot.method and getattr(ctx, "method", None) in (None, ""):
+            ctx.method = hot.method
+        if hot.path and getattr(ctx, "path", None) in (None, ""):
+            ctx.path = hot.path
+
         program_id = self._require_program_id_from_ctx(ctx)
+        if program_id < 0:
+            program_id = self._prime_exact_route_program(ctx, env, packed)
         if program_id < 0:
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:

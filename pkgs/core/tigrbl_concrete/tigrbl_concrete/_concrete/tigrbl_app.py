@@ -175,6 +175,7 @@ class TigrblApp(_App):
         | Mapping[str, Mapping[str, Iterable[Callable]]]
         | None = None,
         execution_backend: str | None = None,
+        warmup_on_startup: bool = True,
         **asgi_kwargs: Any,
     ) -> None:
         title = asgi_kwargs.pop("title", None)
@@ -226,6 +227,8 @@ class TigrblApp(_App):
             mount_system = str(profile or "").lower() != "minimal"
         self.mount_system = bool(mount_system)
         self.execution_backend = _normalize_execution_backend(execution_backend)
+        self._warmup_on_startup = bool(warmup_on_startup)
+        self._runtime_boot_warm_revision: int | None = None
 
         # public containers (mirrors used by bindings.router)
         self.schemas = SimpleNamespace()

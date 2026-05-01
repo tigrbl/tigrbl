@@ -105,6 +105,27 @@ class HotOpPlan:
     fusible_sync_segment_ids: tuple[int, ...] = ()
     nonfusible_segment_ids: tuple[int, ...] = ()
     db_acquire_hint: str = "resolver"
+    dispatch_proto_ids: tuple[int, ...] = ()
+    dispatch_selector_count: int = 0
+
+
+@dataclass(frozen=True, slots=True)
+class PackedKernelMeasurement:
+    raw_bytes: int
+    compressed_bytes: int
+    segment_count: int
+    step_count: int
+    phase_tree_node_count: int
+    proto_count: int
+    selector_count: int
+    op_count: int
+    route_row_count: int
+    route_col_count: int
+    route_slot_count: int
+    exact_route_count: int
+    fusible_sync_segment_count: int
+    hot_op_count: int
+    measurement_view: Mapping[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True, slots=True)
@@ -151,6 +172,7 @@ class PackedKernel:
     executor_kind: str = "python"
     executor: Callable[..., Any] | None = None
     numba_executor: Callable[..., Any] | None = None
+    measurement: PackedKernelMeasurement | None = None
 
 
 @dataclass(frozen=True, slots=True)

@@ -1,0 +1,95 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2145"
+number: 2145
+slug: "startup-self-warm-contract"
+title: "Startup self-warm contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the runtime contract for default implicit one-shot startup self-warm."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define the default startup self-warm contract and failure semantics."
+    at: "2026-05-01T01:28:44Z"
+references: []
+body: |-
+  ## Intent
+  Define the runtime contract for default implicit one-shot startup self-warm.
+  
+  This SPEC governs when warmup runs, what it is allowed to warm, what it must not do, how it interacts with plan revisions, and how startup success/failure is determined.
+  
+  ## Startup Ordering
+  Startup self-warm MUST execute on the ASGI lifespan startup path.
+  
+  Startup self-warm MUST run:
+  1. after the lifespan startup event is received
+  2. after configured lifespan context entry succeeds
+  3. after registered startup handlers complete
+  4. before `lifespan.startup.complete` is emitted
+  
+  Startup self-warm MUST observe the app state after startup handlers have performed route inclusion, table inclusion, initialization, or other topology-affecting mutations.
+  
+  ## Default Enablement
+  Applications MUST default startup self-warm to enabled.
+  
+  A framework surface MAY provide an explicit opt-out control such as `warmup_on_startup=False`.
+  
+  The absence of an explicit opt-out MUST mean that startup self-warm is active.
+  
+  ## Allowed Warm Scope
+  Startup self-warm MAY perform only safe non-user-operation warmup work.
+  
+  Allowed work includes:
+  - compiling the current app runtime plan
+  - materializing and caching the packed `KernelPlan`
+  - priming kernel-owned plan/spec caches needed for normal dispatch
+  - ensuring registered providers through their provider warmup boundary
+  
+  Allowed work SHOULD prefer compiler-owned and provider-owned warmup surfaces over ad hoc synthetic request execution.
+  
+  ## Forbidden Warm Scope
+  Startup self-warm MUST NOT:
+  - issue synthetic diagnostics, health, docs, or benchmark traffic as its warmup mechanism
+  - invoke ordinary user-facing REST, JSON-RPC, websocket, SSE, or streaming operations
+  - depend on mounted diagnostics or operator surfaces to become warmed
+  - execute repeatedly on each request
+  
+  ## One-Shot Revision Semantics
+  Startup self-warm MUST be one-shot per runtime plan revision within a process.
+  
+  If the current app revision has already been warmed, a repeated startup warm call in the same process MUST be a no-op for that revision.
+  
+  If the runtime plan revision changes, the next startup warm for that revision MUST compile and mark the new revision as warmed.
+  
+  ## Failure Semantics
+  Warmup failure is a startup failure.
+  
+  If required plan compilation or provider warmup fails, the framework MUST NOT emit `lifespan.startup.complete`.
+  It MUST surface startup failure through the normal lifespan startup failure path.
+  
+  ## Observability
+  The framework SHOULD retain process-local markers sufficient to distinguish:
+  - the current runtime plan revision
+  - the last warmed revision
+  - the cached compiled plan associated with the current revision
+  
+  Tests for this SPEC MUST verify:
+  - warmup runs automatically on startup by default
+  - warmup runs after startup handlers
+  - warmup compiles the current runtime plan
+  - warmup ensures providers through the supported provider warm boundary
+  - warmup is one-shot per revision
+  - startup failure is reported when required warmup fails
+  - no diagnostics route is required for the warmup contract to hold
+spec_kind: "normative"
+adr_ids:
+  - "adr:1126"
+  - "adr:1016"
+  - "adr:1100"
+  - "adr:1121"
+  - "adr:1125"

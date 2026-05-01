@@ -74,8 +74,25 @@ def _parse_query(raw_query: object) -> dict[str, list[str]]:
 
 
 async def _read_http_body(ctx: Any) -> object | None:
+    temp = _ensure_temp(ctx)
+    hot = temp.setdefault("hot", {})
+    if isinstance(hot, dict):
+        cached_body = hot.get("body_bytes")
+        if isinstance(cached_body, bytes):
+            return cached_body
+
     body = getattr(ctx, "body", None)
     if body is not None:
+        if isinstance(hot, dict):
+            if isinstance(body, memoryview):
+                hot["body_bytes"] = body.tobytes()
+                hot["body_view"] = memoryview(hot["body_bytes"])
+            elif isinstance(body, bytearray):
+                hot["body_bytes"] = bytes(body)
+                hot["body_view"] = memoryview(hot["body_bytes"])
+            elif isinstance(body, bytes):
+                hot["body_bytes"] = body
+                hot["body_view"] = memoryview(body)
         return body
 
     raw = getattr(ctx, "raw", None)
@@ -96,7 +113,11 @@ async def _read_http_body(ctx: Any) -> object | None:
             chunks.append(bytes(chunk))
         if not bool(message.get("more_body", False)):
             break
-    return b"".join(chunks)
+    body_bytes = b"".join(chunks)
+    if isinstance(hot, dict):
+        hot["body_bytes"] = body_bytes
+        hot["body_view"] = memoryview(body_bytes)
+    return body_bytes
 
 
 async def _run(obj: object | None, ctx: Any) -> None:
@@ -114,12 +135,28 @@ async def _run(obj: object | None, ctx: Any) -> None:
 
     method = str(scope.get("method", getattr(request, "method", "") or "")).upper()
     path = str(scope.get("path", getattr(request, "path", "/") or "/"))
-    query = _parse_query(scope.get("query_string", b"")) or _normalize_query(
-        getattr(request, "query_params", None)
-    )
-    headers = dict(getattr(request, "headers", {}) or {}) or _decode_headers_multi(
-        scope.get("headers")
-    )
+    temp = _ensure_temp(ctx)
+    hot = temp.setdefault("hot", {})
+
+    cached_query = hot.get("query") if isinstance(hot, dict) else None
+    if isinstance(cached_query, dict):
+        query = cached_query
+    else:
+        query = _parse_query(scope.get("query_string", b"")) or _normalize_query(
+            getattr(request, "query_params", None)
+        )
+        if isinstance(hot, dict):
+            hot["query"] = query
+
+    cached_headers = hot.get("headers") if isinstance(hot, dict) else None
+    if isinstance(cached_headers, dict):
+        headers = cached_headers
+    else:
+        headers = dict(getattr(request, "headers", {}) or {}) or _decode_headers_multi(
+            scope.get("headers")
+        )
+        if isinstance(hot, dict):
+            hot["headers"] = headers
 
     body = await _read_http_body(ctx)
     if body is None:
@@ -133,6 +170,9 @@ async def _run(obj: object | None, ctx: Any) -> None:
     if isinstance(body, str):
         body = body.encode("utf-8")
     if body is not None:
+        if isinstance(hot, dict):
+            hot["body_bytes"] = body
+            hot["body_view"] = memoryview(body)
         setattr(request, "body", body)
         if hasattr(request, "_json_loaded"):
             setattr(request, "_json_loaded", False)
@@ -164,7 +204,6 @@ async def _run(obj: object | None, ctx: Any) -> None:
     )
     setattr(ctx, "gw_raw", gw_raw)
 
-    temp = _ensure_temp(ctx)
     ingress = temp.setdefault("ingress", {})
     ingress.update(
         {

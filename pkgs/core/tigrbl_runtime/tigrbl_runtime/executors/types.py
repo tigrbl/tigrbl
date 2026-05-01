@@ -1,7 +1,7 @@
 # tigrbl/runtime/executor/types.py
 from __future__ import annotations
 
-from dataclasses import MISSING, fields, is_dataclass
+from dataclasses import MISSING, dataclass, field, fields, is_dataclass
 from functools import lru_cache
 from typing import (
     Any,
@@ -28,6 +28,27 @@ from tigrbl_atoms.types import BaseCtx
 @runtime_checkable
 class Request(Protocol):
     state: Any
+
+
+@dataclass(slots=True)
+class HotCtx:
+    scope_type: str = ""
+    method: str = ""
+    path: str = ""
+    protocol: str = ""
+    selector: str = ""
+    proto_id: int = -1
+    selector_id: int = -1
+    program_id: int = -1
+    content_type: str = ""
+    status_code: int = 200
+    body_view: memoryview | None = None
+    body_bytes: bytes | None = None
+    parsed_json: Any = None
+    parsed_json_loaded: bool = False
+    headers: Mapping[str, str] | None = None
+    query: Mapping[str, Any] | None = None
+    flags: dict[str, Any] = field(default_factory=dict)
 
 
 class _ResponseState:

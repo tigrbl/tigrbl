@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import deque
 from dataclasses import dataclass
 from typing import Any
 
@@ -50,7 +51,9 @@ class RuntimeWebSocket:
     async def receive(self) -> dict[str, Any]:
         state = self._state()
         queue = state.get("receive_queue")
-        if isinstance(queue, list) and queue:
+        if isinstance(queue, deque) and queue:
+            message = queue.popleft()
+        elif isinstance(queue, list) and queue:
             message = queue.pop(0)
         elif callable(self._channel.receive):
             message = await self._channel.receive()

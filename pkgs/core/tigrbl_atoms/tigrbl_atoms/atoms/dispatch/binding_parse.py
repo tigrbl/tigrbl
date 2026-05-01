@@ -28,14 +28,22 @@ def _run(obj: object | None, ctx: Any) -> None:
     dispatch = _dispatch_dict(ctx)
     temp = getattr(ctx, "temp", None)
     route = temp.setdefault("route", {}) if isinstance(temp, dict) else {}
+    hot = temp.setdefault("hot", {}) if isinstance(temp, dict) else {}
     protocol = str(dispatch.get("binding_protocol", "") or "")
     body = getattr(ctx, "body", None)
 
     if isinstance(body, (bytes, bytearray)):
-        try:
-            body = json.loads(bytes(body).decode("utf-8"))
-        except Exception:
-            body = None
+        parsed = hot.get("parsed_json") if isinstance(hot, dict) else None
+        loaded = bool(hot.get("parsed_json_loaded")) if isinstance(hot, dict) else False
+        if not loaded:
+            try:
+                parsed = json.loads(bytes(body).decode("utf-8"))
+            except Exception:
+                parsed = None
+            if isinstance(hot, dict):
+                hot["parsed_json"] = parsed
+                hot["parsed_json_loaded"] = True
+        body = parsed
 
     if not protocol and isinstance(body, list):
         endpoint = dispatch.get("endpoint") or route.get("endpoint")
@@ -99,10 +107,17 @@ def _run(obj: object | None, ctx: Any) -> None:
             route["payload"] = body
     elif protocol.endswith(".rest"):
         if isinstance(body, (bytes, bytearray)):
-            try:
-                body = json.loads(bytes(body).decode("utf-8"))
-            except Exception:
-                body = None
+            parsed = hot.get("parsed_json") if isinstance(hot, dict) else None
+            loaded = bool(hot.get("parsed_json_loaded")) if isinstance(hot, dict) else False
+            if not loaded:
+                try:
+                    parsed = json.loads(bytes(body).decode("utf-8"))
+                except Exception:
+                    parsed = None
+                if isinstance(hot, dict):
+                    hot["parsed_json"] = parsed
+                    hot["parsed_json_loaded"] = True
+            body = parsed
         payload: dict[str, object] = {}
         query = getattr(ctx, "query", None)
         if isinstance(query, Mapping):

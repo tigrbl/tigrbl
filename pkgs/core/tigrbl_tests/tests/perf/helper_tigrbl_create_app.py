@@ -24,8 +24,8 @@ def _build_benchmark_item_model() -> type[TableBase]:
 def create_tigrbl_app(db_path: Path) -> TigrblApp:
     """Build a Tigrbl app with a single create command endpoint."""
     app = TigrblApp(engine=sqlitef(str(db_path), async_=False))
-    app.include_table(_build_benchmark_item_model())
-    app.attach_diagnostics(prefix="", app=app)
+    benchmark_model = _build_benchmark_item_model()
+    app.include_table(benchmark_model)
     return app
 
 
@@ -33,6 +33,7 @@ async def initialize_tigrbl_app(app: TigrblApp) -> None:
     init_result = app.initialize()
     if inspect.isawaitable(init_result):
         await init_result
+    app.mount_jsonrpc(prefix="/rpc")
 
 
 async def dispose_tigrbl_app(app: TigrblApp) -> None:
@@ -57,4 +58,8 @@ def fetch_tigrbl_names(db_path: Path) -> list[str]:
 
 def tigrbl_create_path() -> str:
     return "/tigrblbenchmarkitem"
+
+
+def tigrbl_create_rpc_method() -> str:
+    return "TigrblBenchmarkItem.create"
 

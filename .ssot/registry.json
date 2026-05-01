@@ -23244,6 +23244,38 @@
         "tst:kernelplan-executor-ownership-runtime-shim-contract"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:startup-self-warm-runtime-default-001",
+      "title": "Startup self-warm runtime default",
+      "description": "Warm the compiled runtime path and registered providers automatically on startup, once per plan revision, without diagnostic-request dependence.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2145"
+      ],
+      "claim_ids": [
+        "clm:lifespan-runtime-chain-contract-001",
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:lifespan-runtime-chain-contract",
+        "tst:tigrbl-tests-tests-unit-test-tigrbl-app-event-handlers"
+      ],
+      "requires": [
+        "feat:lifespan-runtime-chain-001",
+        "feat:kernelplan-executor-ownership-placement-001"
+      ]
     }
   ],
   "tests": [
@@ -34467,7 +34499,8 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_tigrbl_app_event_handlers.py",
       "feature_ids": [
-        "feat:tigrbl-test-suite-coverage-intake-001"
+        "feat:tigrbl-test-suite-coverage-intake-001",
+        "feat:startup-self-warm-runtime-default-001"
       ],
       "claim_ids": [
         "clm:tigrbl-test-suite-coverage-intake-001"
@@ -37954,7 +37987,8 @@
       "kind": "unit",
       "path": "pkgs/core/tigrbl_tests/tests/unit/runtime/test_lifespan_runtime_chain_contract.py",
       "feature_ids": [
-        "feat:lifespan-runtime-chain-001"
+        "feat:lifespan-runtime-chain-001",
+        "feat:startup-self-warm-runtime-default-001"
       ],
       "claim_ids": [
         "clm:lifespan-runtime-chain-contract-001"
@@ -44024,7 +44058,8 @@
         "feat:rust-asgi-boundary-evidence-001",
         "feat:python-runtime-2x-target-comparison-001",
         "feat:rust-runtime-2x-python-target-001",
-        "feat:external-error-detail-sanitization-001"
+        "feat:external-error-detail-sanitization-001",
+        "feat:startup-self-warm-runtime-default-001"
       ],
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator",
@@ -45543,7 +45578,8 @@
       "kind": "target-contract",
       "description": "Lifespan runtime chains compile KernelPlan-owned startup and shutdown atom order, set readiness only after successful startup, clear readiness on shutdown, and report typed handler failure ErrorCtx metadata.",
       "feature_ids": [
-        "feat:lifespan-runtime-chain-001"
+        "feat:lifespan-runtime-chain-001",
+        "feat:startup-self-warm-runtime-default-001"
       ],
       "test_ids": [
         "tst:lifespan-runtime-chain-contract"
@@ -59205,6 +59241,28 @@
       "supersedes": [],
       "superseded_by": [],
       "status_notes": []
+    },
+    {
+      "id": "adr:1126",
+      "number": 1126,
+      "slug": "safe-implicit-startup-self-warm",
+      "title": "Safe implicit startup self-warm",
+      "path": ".ssot/adr/ADR-1126-safe-implicit-startup-self-warm.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "d25f0386ad55adf8dd8c0f8e5a422eba79cab7468bbaa1331637418aa2462296",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern default safe implicit one-shot startup self-warm without diagnostics dependency.",
+          "at": "2026-05-01T01:27:51Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -62813,6 +62871,36 @@
         "adr:1121",
         "adr:1008",
         "adr:1016"
+      ]
+    },
+    {
+      "id": "spc:2145",
+      "number": 2145,
+      "slug": "startup-self-warm-contract",
+      "title": "Startup self-warm contract",
+      "path": ".ssot/specs/SPEC-2145-startup-self-warm-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "231a885ee9ecb6d9ad02b6f3eadc754881e41fb3c291b202dca60a5d61401970",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define the default startup self-warm contract and failure semantics.",
+          "at": "2026-05-01T01:28:44Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1126",
+        "adr:1016",
+        "adr:1100",
+        "adr:1121",
+        "adr:1125"
       ]
     }
   ],

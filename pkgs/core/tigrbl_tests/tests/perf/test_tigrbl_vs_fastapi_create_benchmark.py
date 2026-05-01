@@ -32,10 +32,15 @@ RESULTS_PATH = Path(__file__).with_name("benchmark_results_create_uvicorn.json")
 SEQUENTIAL_RESULTS_PATH = Path(__file__).with_name(
     "benchmark_results_create_uvicorn_sequential_10_rounds.json"
 )
+SEQUENTIAL_RESULTS_250_OPS_PATH = Path(__file__).with_name(
+    "benchmark_results_create_uvicorn_sequential_10_rounds_250_ops.json"
+)
 PERF_TEMP_ROOT = Path(__file__).resolve().parents[5] / ".tmp" / "pytest-perf"
-OPS_COUNT = 25
+DEFAULT_OPS_COUNT = 25
+HIGH_VOLUME_OPS_COUNT = 250
 SEQUENTIAL_ROUNDS = 10
 THROUGHPUT_RATIO_TARGET = 1.25
+PRE_MEASUREMENT_WAIT_SECONDS = 0.5
 
 
 def _summarize(values: list[float]) -> dict[str, float]:
@@ -80,6 +85,7 @@ def _ops_summary(values: list[float]) -> dict[str, float | int]:
 async def _benchmark_app(
     *,
     scenario: str,
+    ops_count: int,
     create_app: Callable[[Path], Any],
     endpoint_path: str,
     fetch_names: Callable[[Path], list[str]],
@@ -89,7 +95,7 @@ async def _benchmark_app(
     PERF_TEMP_ROOT.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(dir=PERF_TEMP_ROOT, ignore_cleanup_errors=True) as tmpdir:
         db_path = Path(tmpdir) / f"{scenario}.sqlite3"
-        expected_names = [f"{scenario}-{i}" for i in range(OPS_COUNT)]
+        measured_names = [f"{scenario}-{i}" for i in range(ops_count)]
 
         start = perf_counter()
         app = create_app(db_path)
@@ -101,15 +107,11 @@ async def _benchmark_app(
         op_durations: list[float] = []
         try:
             async with httpx.AsyncClient(base_url=base_url, timeout=10.0) as client:
-                for _ in range(5):
-                    ready = await client.get("/healthz")
-                    if ready.status_code == 200:
-                        break
-                    await asyncio.sleep(0.05)
+                await asyncio.sleep(PRE_MEASUREMENT_WAIT_SECONDS)
 
                 execution_start = perf_counter()
 
-                for item_name in expected_names:
+                for item_name in measured_names:
                     op_start = perf_counter()
 
                     response = await client.post(
@@ -132,7 +134,7 @@ async def _benchmark_app(
                 execution_total = perf_counter() - execution_start
 
             persisted_names = fetch_names(db_path)
-            assert persisted_names == expected_names
+            assert persisted_names == measured_names
         finally:
             await stop_uvicorn_server(server, task)
             if dispose_app is not None:
@@ -144,15 +146,15 @@ async def _benchmark_app(
 
     return {
         "scenario": scenario,
-        "ops": OPS_COUNT,
+        "ops": ops_count,
         "first_start_seconds": first_start_time,
         "execution_total_seconds": execution_total,
-        "ops_per_second": OPS_COUNT / execution_total,
+        "ops_per_second": ops_count / execution_total,
         "time_per_op_seconds": per_op_s,
     }
 
 
-async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
+async def _run_sequential_consistency_benchmark(*, ops_count: int) -> dict[str, Any]:
     scenario_runner = {
         "tigrbl": dict(
             create_app=create_tigrbl_app,
@@ -181,6 +183,7 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
         for scenario in order:
             result = await _benchmark_app(
                 scenario=scenario,
+                ops_count=ops_count,
                 create_app=scenario_runner[scenario]["create_app"],
                 endpoint_path=scenario_runner[scenario]["endpoint_path"],
                 fetch_names=scenario_runner[scenario]["fetch_names"],
@@ -230,6 +233,7 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
         "rounds": rounds,
         "steps": steps,
         "summary": {
+            "ops": ops_count,
             "round_count": SEQUENTIAL_ROUNDS,
             "step_count": SEQUENTIAL_ROUNDS,
             "throughput_ratio_target": THROUGHPUT_RATIO_TARGET,
@@ -246,16 +250,22 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
     }
 
 
-@pytest.mark.perf
-def test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison() -> None:
+def _run_and_assert_sequential_benchmark(
+    *,
+    ops_count: int,
+    results_path: Path,
+) -> None:
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("httpcore").setLevel(logging.WARNING)
-    payload = asyncio.run(_run_sequential_consistency_benchmark())
+    payload = asyncio.run(_run_sequential_consistency_benchmark(ops_count=ops_count))
     RESULTS_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    SEQUENTIAL_RESULTS_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    results_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
     summary = payload["summary"]
-    print("\n[perf] per-round randomized sequential order")
+    print(
+        "\n[perf] per-round randomized sequential order "
+        f"(ops={summary['ops']})"
+    )
     for step in payload["steps"]:
         print(
             "[perf] round={round} order={order} tigrbl_ops/s={tigrbl:.3f} "
@@ -320,7 +330,8 @@ def test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison() -> None:
     )
 
     assert RESULTS_PATH.exists()
-    assert SEQUENTIAL_RESULTS_PATH.exists()
+    assert results_path.exists()
+    assert summary["ops"] == ops_count
     assert summary["round_count"] == SEQUENTIAL_ROUNDS
     assert summary["step_count"] == SEQUENTIAL_ROUNDS
     assert len(payload["steps"]) == SEQUENTIAL_ROUNDS
@@ -333,3 +344,19 @@ def test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison() -> None:
             "Tigrbl/FastAPI throughput comparison is below the current target: "
             f"{ratio:.3f} < {THROUGHPUT_RATIO_TARGET:.3f}"
         )
+
+
+@pytest.mark.perf
+def test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison() -> None:
+    _run_and_assert_sequential_benchmark(
+        ops_count=DEFAULT_OPS_COUNT,
+        results_path=SEQUENTIAL_RESULTS_PATH,
+    )
+
+
+@pytest.mark.perf
+def test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison_250_ops() -> None:
+    _run_and_assert_sequential_benchmark(
+        ops_count=HIGH_VOLUME_OPS_COUNT,
+        results_path=SEQUENTIAL_RESULTS_250_OPS_PATH,
+    )
