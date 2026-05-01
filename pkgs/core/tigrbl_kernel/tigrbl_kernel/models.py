@@ -208,6 +208,8 @@ class PackedKernel:
     executor_kind: str = "python"
     executor: Callable[..., Any] | None = None
     numba_executor: Callable[..., Any] | None = None
+    hot_block_bytes: bytes = b""
+    hot_block_view: Mapping[str, Any] = field(default_factory=dict)
     measurement: PackedKernelMeasurement | None = None
 
 

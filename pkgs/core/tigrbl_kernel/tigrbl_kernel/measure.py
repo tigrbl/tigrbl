@@ -20,6 +20,42 @@ _EXECUTOR_KIND_IDS = {
     "async_direct": 3,
 }
 
+_HOT_BLOCK_MAGIC = b"TGPKHOT1"
+_HOT_BLOCK_VERSION = 1
+_HOT_BLOCK_SECTION_IDS = {
+    "atom_opcode_ids": 1,
+    "atom_effect_ids": 2,
+    "atom_payload_offsets": 3,
+    "atom_payload_lengths": 4,
+    "atom_payload_values": 5,
+    "atom_flags": 6,
+    "prelude_atom_ids": 7,
+    "segment_executor_kind_ids": 8,
+    "segment_phase_ids": 9,
+    "segment_step_offsets": 10,
+    "segment_step_lengths": 11,
+    "segment_step_atom_refs": 12,
+    "program_segment_offsets": 13,
+    "program_segment_lengths": 14,
+    "program_segment_refs": 15,
+    "error_profile_offsets": 16,
+    "error_profile_lengths": 17,
+    "error_profile_phase_ids": 18,
+    "error_profile_segment_offsets": 19,
+    "error_profile_segment_lengths": 20,
+    "error_profile_segment_refs": 21,
+    "program_error_profile_ids": 22,
+    "route_proto_ids": 23,
+    "route_selector_ids": 24,
+    "route_program_ids": 25,
+    "exact_method_ids": 26,
+    "exact_path_hashes": 27,
+    "exact_program_ids": 28,
+}
+_HOT_BLOCK_SECTION_NAMES = {
+    section_id: name for name, section_id in _HOT_BLOCK_SECTION_IDS.items()
+}
+
 
 def _freeze_mapping(mapping: Mapping[str, Any]) -> dict[str, Any]:
     return {str(key): _freeze_value(value) for key, value in sorted(mapping.items())}
@@ -81,6 +117,18 @@ def _pack_i32(values: list[int]) -> bytes:
     return struct.pack(f"<{len(values)}i", *values)
 
 
+def _pack_i16(values: list[int]) -> bytes:
+    if not values:
+        return b""
+    return struct.pack(f"<{len(values)}h", *values)
+
+
+def _pack_i8(values: list[int]) -> bytes:
+    if not values:
+        return b""
+    return struct.pack(f"<{len(values)}b", *values)
+
+
 def _pack_u8(values: list[int]) -> bytes:
     if not values:
         return b""
@@ -91,6 +139,55 @@ def _pack_index_array(values: list[int]) -> tuple[int, bytes]:
     if _uses_u16(values):
         return 16, _pack_u16(values)
     return 32, _pack_u32(values)
+
+
+def _pack_unsigned_array(values: list[int]) -> tuple[int, bytes]:
+    if not values:
+        return 8, b""
+    maximum = max(int(value) for value in values)
+    if maximum <= 0xFF:
+        return 8, _pack_u8(values)
+    if maximum <= 0xFFFF:
+        return 16, _pack_u16(values)
+    return 32, _pack_u32(values)
+
+
+def _pack_signed_array(values: list[int]) -> tuple[int, bytes]:
+    if not values:
+        return 8, b""
+    minimum = min(int(value) for value in values)
+    maximum = max(int(value) for value in values)
+    if -128 <= minimum and maximum <= 127:
+        return 8, _pack_i8(values)
+    if -32768 <= minimum and maximum <= 32767:
+        return 16, _pack_i16(values)
+    return 32, _pack_i32(values)
+
+
+def _unpack_unsigned_array(width_bits: int, payload: bytes, count: int) -> tuple[int, ...]:
+    if count <= 0:
+        return ()
+    if width_bits == 8:
+        return tuple(payload[:count])
+    if width_bits == 16:
+        return tuple(struct.unpack(f"<{count}H", payload))
+    if width_bits == 32:
+        return tuple(struct.unpack(f"<{count}I", payload))
+    if width_bits == 64:
+        return tuple(struct.unpack(f"<{count}Q", payload))
+    raise ValueError(f"unsupported unsigned width: {width_bits}")
+
+
+def _unpack_signed_array(width_bits: int, payload: bytes, count: int) -> tuple[int, ...]:
+    if count <= 0:
+        return ()
+    if width_bits == 8:
+        return tuple(struct.unpack(f"<{count}b", payload))
+    if width_bits == 16:
+        return tuple(struct.unpack(f"<{count}h", payload))
+    if width_bits == 32:
+        return tuple(struct.unpack(f"<{count}i", payload))
+    raise ValueError(f"unsupported signed width: {width_bits}")
 
 
 def _pack_section(section_id: int, payload: bytes) -> bytes:
@@ -199,20 +296,18 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
 
     segment_catalog_index: dict[tuple[Any, ...], int] = {}
     compact_segment_executor_kinds: list[int] = []
+    compact_segment_phase_ids: list[int] = []
     compact_segment_step_offsets: list[int] = []
     compact_segment_step_lengths: list[int] = []
     compact_segment_step_refs: list[int] = []
-    compact_segment_phase_offsets: list[int] = []
-    compact_segment_phase_lengths: list[int] = []
-    compact_segment_phase_refs: list[int] = []
 
     def compact_segment_id_for(
-        executor_kind_id: int, step_refs: tuple[int, ...], phase_refs: tuple[int, ...]
+        executor_kind_id: int, step_refs: tuple[int, ...], phase_id: int
     ) -> int:
         signature = (
             int(executor_kind_id),
             step_refs,
-            phase_refs,
+            int(phase_id),
         )
         cached = segment_catalog_index.get(signature)
         if cached is not None:
@@ -220,12 +315,10 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
         cached = len(compact_segment_executor_kinds)
         segment_catalog_index[signature] = cached
         compact_segment_executor_kinds.append(signature[0])
+        compact_segment_phase_ids.append(signature[2])
         compact_segment_step_offsets.append(len(compact_segment_step_refs))
         compact_segment_step_lengths.append(len(step_refs))
         compact_segment_step_refs.extend(step_refs)
-        compact_segment_phase_offsets.append(len(compact_segment_phase_refs))
-        compact_segment_phase_lengths.append(len(phase_refs))
-        compact_segment_phase_refs.extend(phase_refs)
         return cached
 
     segment_phases = tuple(
@@ -350,7 +443,7 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
                 compact_segment_id_for(
                     executor_kind_id=current_kind,
                     step_refs=tuple(current_steps),
-                    phase_refs=tuple(current_phases),
+                    phase_id=current_phases[0] if current_phases else 0,
                 )
             )
             current_kind = -1
@@ -380,7 +473,7 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
             error_segment_id = compact_segment_id_for(
                 executor_kind_id=executor_kind_id,
                 step_refs=step_refs,
-                phase_refs=tuple([phase_id] * len(step_refs)),
+                phase_id=phase_id,
             )
             error_phase_segments.setdefault(phase_id, []).append(error_segment_id)
 
@@ -438,12 +531,10 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
         "compact_step_flags": compact_step_flags,
         "prelude_step_ids": prelude_step_ids,
         "compact_segment_executor_kinds": compact_segment_executor_kinds,
+        "compact_segment_phase_ids": compact_segment_phase_ids,
         "compact_segment_step_offsets": compact_segment_step_offsets,
         "compact_segment_step_lengths": compact_segment_step_lengths,
         "compact_segment_step_refs": compact_segment_step_refs,
-        "compact_segment_phase_offsets": compact_segment_phase_offsets,
-        "compact_segment_phase_lengths": compact_segment_phase_lengths,
-        "compact_segment_phase_refs": compact_segment_phase_refs,
         "compact_program_segment_offsets": compact_program_segment_offsets,
         "compact_program_segment_lengths": compact_program_segment_lengths,
         "compact_program_segment_refs": compact_program_segment_refs,
@@ -580,101 +671,300 @@ def build_packed_kernel_measurement_view(packed: PackedKernel) -> dict[str, Any]
 
 def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     compact = _build_compact_image_parts(packed)
-    opcode_width_bits, opcode_payload = _pack_index_array(
-        compact["compact_step_opcode_ids"]
+    atom_labels = tuple(
+        str(label)
+        for label in (
+            getattr(packed, "atom_catalog_labels", ())
+            or getattr(packed, "step_labels", ())
+            or ()
+        )
     )
-    step_width_bits, step_payload = _pack_index_array(compact["compact_segment_step_refs"])
-    phase_width_bits, phase_payload = _pack_index_array(compact["compact_segment_phase_refs"])
-    program_ref_width_bits, program_ref_payload = _pack_index_array(
-        compact["compact_program_segment_refs"]
-    )
-    error_ref_width_bits, error_ref_payload = _pack_index_array(
-        compact["compact_error_profile_segment_refs"]
-    )
-    error_profile_id_width_bits, error_profile_id_payload = _pack_index_array(
-        compact["compact_program_error_profile_ids"]
-    )
-    prelude_width_bits, prelude_payload = _pack_index_array(compact["prelude_step_ids"])
-
-    route_proto_ids = [entry[0] for entry in compact["route_entries"]]
-    route_selector_ids = [entry[1] for entry in compact["route_entries"]]
-    route_program_ids = [entry[2] for entry in compact["route_entries"]]
-    route_program_width_bits, route_program_payload = _pack_index_array(route_program_ids)
-
-    exact_method_ids = [entry[0] for entry in compact["exact_route_entries"]]
-    exact_path_hashes = [entry[1] for entry in compact["exact_route_entries"]]
-    exact_program_ids = [entry[2] for entry in compact["exact_route_entries"]]
-    exact_program_width_bits, exact_program_payload = _pack_index_array(exact_program_ids)
-
-    max_index_width_bits = max(
-        opcode_width_bits,
-        step_width_bits,
-        phase_width_bits,
-        program_ref_width_bits,
-        error_ref_width_bits,
-        error_profile_id_width_bits,
-        prelude_width_bits,
-        route_program_width_bits,
-        exact_program_width_bits,
-        16,
-    )
-
-    header = struct.pack(
-        "<8sHHHHHHHHHHH",
-        b"TGPKSOA1",
-        1,
-        max_index_width_bits,
-        len(compact["compact_step_opcode_ids"]),
-        len(compact["compact_segment_executor_kinds"]),
-        len(compact["compact_program_segment_offsets"]),
-        len(compact["compact_error_profile_offsets"]),
-        len(compact["route_entries"]),
-        len(compact["exact_route_entries"]),
-        len(compact["prelude_step_ids"]),
-        int(compact["phase_count"]),
-        int(compact["method_count"]),
-    )
-
-    sections = [
-        _pack_section(1, struct.pack("<H", opcode_width_bits) + opcode_payload),
-        _pack_section(2, _pack_u16(compact["compact_step_effect_ids"])),
-        _pack_section(3, _pack_u32(compact["compact_step_payload_offsets"])),
-        _pack_section(4, _pack_u16(compact["compact_step_payload_lengths"])),
-        _pack_section(5, _pack_i32(compact["compact_step_payload_values"])),
-        _pack_section(6, _pack_u8(compact["compact_step_flags"])),
-        _pack_section(7, struct.pack("<H", prelude_width_bits) + prelude_payload),
-        _pack_section(8, _pack_u8(compact["compact_segment_executor_kinds"])),
-        _pack_section(9, _pack_u32(compact["compact_segment_step_offsets"])),
-        _pack_section(10, _pack_u16(compact["compact_segment_step_lengths"])),
-        _pack_section(11, struct.pack("<H", step_width_bits) + step_payload),
-        _pack_section(12, _pack_u32(compact["compact_segment_phase_offsets"])),
-        _pack_section(13, _pack_u16(compact["compact_segment_phase_lengths"])),
-        _pack_section(14, struct.pack("<H", phase_width_bits) + phase_payload),
-        _pack_section(15, _pack_u32(compact["compact_program_segment_offsets"])),
-        _pack_section(16, _pack_u16(compact["compact_program_segment_lengths"])),
-        _pack_section(17, struct.pack("<H", program_ref_width_bits) + program_ref_payload),
-        _pack_section(18, _pack_u32(compact["compact_error_profile_offsets"])),
-        _pack_section(19, _pack_u16(compact["compact_error_profile_lengths"])),
-        _pack_section(20, _pack_u16(compact["compact_error_profile_phase_ids"])),
-        _pack_section(21, _pack_u32(compact["compact_error_profile_segment_offsets"])),
-        _pack_section(22, _pack_u16(compact["compact_error_profile_segment_lengths"])),
-        _pack_section(23, struct.pack("<H", error_ref_width_bits) + error_ref_payload),
-        _pack_section(
-            24,
-            struct.pack("<H", error_profile_id_width_bits) + error_profile_id_payload,
-        ),
-        _pack_section(25, _pack_u16(route_proto_ids)),
-        _pack_section(26, _pack_u16(route_selector_ids)),
-        _pack_section(27, struct.pack("<H", route_program_width_bits) + route_program_payload),
-        _pack_section(28, _pack_u16(exact_method_ids)),
-        _pack_section(29, _pack_u64(exact_path_hashes)),
-        _pack_section(30, struct.pack("<H", exact_program_width_bits) + exact_program_payload),
+    atom_opcode_ids = [
+        int(value)
+        for value in (
+            getattr(packed, "atom_catalog_opcode_ids", ())
+            or tuple(range(len(atom_labels)))
+        )
     ]
-    return header + b"".join(sections)
+    atom_effect_ids = [
+        int(value)
+        for value in (
+            getattr(packed, "atom_catalog_effect_ids", ())
+            or getattr(packed, "numba_effect_ids", ())
+            or ()
+        )
+    ]
+    atom_effect_payloads = [
+        tuple(int(item) for item in payload)
+        for payload in (
+            getattr(packed, "atom_catalog_effect_payloads", ())
+            or getattr(packed, "numba_effect_payloads", ())
+            or ()
+        )
+    ]
+    atom_flags = [
+        1 if bool(flag) else 0
+        for flag in (
+            getattr(packed, "atom_catalog_async_flags", ())
+            or getattr(packed, "step_async_flags", ())
+            or ()
+        )
+    ]
+    atom_payload_offsets: list[int] = []
+    atom_payload_lengths: list[int] = []
+    atom_payload_values: list[int] = []
+    for payload in atom_effect_payloads:
+        atom_payload_offsets.append(len(atom_payload_values))
+        atom_payload_lengths.append(len(payload))
+        atom_payload_values.extend(int(item) for item in payload)
+
+    prelude_atom_ids = [
+        index for index, label in enumerate(atom_labels) if _BINDER_TOKEN in label
+    ]
+    segment_step_offsets = [
+        int(value)
+        for value in (
+            getattr(packed, "segment_catalog_offsets", ())
+            or getattr(packed, "segment_offsets", ())
+            or ()
+        )
+    ]
+    segment_step_lengths = [
+        int(value)
+        for value in (
+            getattr(packed, "segment_catalog_lengths", ())
+            or getattr(packed, "segment_lengths", ())
+            or ()
+        )
+    ]
+    segment_step_atom_refs = [
+        int(value)
+        for value in (
+            getattr(packed, "segment_catalog_atom_ids", ())
+            or getattr(packed, "segment_step_ids", ())
+            or ()
+        )
+    ]
+    segment_executor_kind_ids = [
+        int(
+            _EXECUTOR_KIND_IDS.get(str(kind), int(kind) if isinstance(kind, int) else 0)
+        )
+        for kind in (
+            getattr(packed, "segment_catalog_executor_kinds", ())
+            or getattr(packed, "segment_executor_kinds", ())
+            or ()
+        )
+    ]
+    packed_phase_ids = tuple(getattr(packed, "segment_catalog_phase_ids", ()) or ())
+    if packed_phase_ids:
+        segment_phase_ids = [int(value) for value in packed_phase_ids]
+    else:
+        phase_to_id = {
+            str(key): int(value)
+            for key, value in (getattr(packed, "phase_to_id", {}) or {}).items()
+        }
+        segment_phase_ids = [
+            int(phase_to_id.get(str(normalize_phase(phase)), 0))
+            for phase in (getattr(packed, "segment_phases", ()) or ())
+        ]
+
+    program_segment_offsets = [
+        int(value)
+        for value in (
+            getattr(packed, "program_segment_ref_offsets", ())
+            or getattr(packed, "op_segment_offsets", ())
+            or ()
+        )
+    ]
+    program_segment_lengths = [
+        int(value)
+        for value in (
+            getattr(packed, "program_segment_ref_lengths", ())
+            or getattr(packed, "op_segment_lengths", ())
+            or ()
+        )
+    ]
+    program_segment_refs = [
+        int(value)
+        for value in (
+            getattr(packed, "program_segment_refs", ())
+            or getattr(packed, "op_to_segment_ids", ())
+            or ()
+        )
+    ]
+    error_profile_offsets = [int(value) for value in (getattr(packed, "error_profile_offsets", ()) or ())]
+    error_profile_lengths = [int(value) for value in (getattr(packed, "error_profile_lengths", ()) or ())]
+    error_profile_phase_ids = [int(value) for value in (getattr(packed, "error_profile_phase_ids", ()) or ())]
+    error_profile_segment_offsets = [int(value) for value in (getattr(packed, "error_profile_segment_ref_offsets", ()) or ())]
+    error_profile_segment_lengths = [int(value) for value in (getattr(packed, "error_profile_segment_ref_lengths", ()) or ())]
+    error_profile_segment_refs = [int(value) for value in (getattr(packed, "error_profile_segment_refs", ()) or ())]
+    program_error_profile_ids = [int(value) for value in (getattr(packed, "program_error_profile_ids", ()) or ())]
+
+    route_entries = []
+    for proto_id, row in enumerate((getattr(packed, "route_to_program", ()) or ())):
+        for selector_id, program_id in enumerate(row):
+            if int(program_id) < 0:
+                continue
+            route_entries.append((int(proto_id), int(selector_id), int(program_id)))
+    route_entries.sort()
+    route_proto_ids = [entry[0] for entry in route_entries]
+    route_selector_ids = [entry[1] for entry in route_entries]
+    route_program_ids = [entry[2] for entry in route_entries]
+    method_ids: dict[str, int] = {}
+    def method_id_for(method: str) -> int:
+        cached = method_ids.get(method)
+        if cached is not None:
+            return cached
+        cached = len(method_ids)
+        method_ids[method] = cached
+        return cached
+    exact_route_entries = [
+        (method_id_for(str(method)), _stable_hash64(str(path)), int(program_id))
+        for (method, path), program_id in sorted(
+            (getattr(packed, "rest_exact_route_to_program", {}) or {}).items()
+        )
+    ]
+    exact_method_ids = [entry[0] for entry in exact_route_entries]
+    exact_path_hashes = [entry[1] for entry in exact_route_entries]
+    exact_program_ids = [entry[2] for entry in exact_route_entries]
+
+    section_specs: list[tuple[int, int, int, bytes]] = []
+
+    def _add_unsigned(name: str, values: list[int]) -> None:
+        width_bits, payload = _pack_unsigned_array(values)
+        section_specs.append((_HOT_BLOCK_SECTION_IDS[name], width_bits, len(values), payload))
+
+    def _add_signed(name: str, values: list[int]) -> None:
+        width_bits, payload = _pack_signed_array(values)
+        section_specs.append((_HOT_BLOCK_SECTION_IDS[name], width_bits, len(values), payload))
+
+    _add_unsigned("atom_opcode_ids", atom_opcode_ids)
+    _add_unsigned("atom_effect_ids", atom_effect_ids)
+    _add_unsigned("atom_payload_offsets", atom_payload_offsets)
+    _add_unsigned("atom_payload_lengths", atom_payload_lengths)
+    _add_signed("atom_payload_values", atom_payload_values)
+    _add_unsigned("atom_flags", atom_flags)
+    _add_unsigned("prelude_atom_ids", prelude_atom_ids)
+    _add_unsigned("segment_executor_kind_ids", segment_executor_kind_ids)
+    _add_unsigned("segment_phase_ids", segment_phase_ids)
+    _add_unsigned("segment_step_offsets", segment_step_offsets)
+    _add_unsigned("segment_step_lengths", segment_step_lengths)
+    _add_unsigned("segment_step_atom_refs", segment_step_atom_refs)
+    _add_unsigned("program_segment_offsets", program_segment_offsets)
+    _add_unsigned("program_segment_lengths", program_segment_lengths)
+    _add_unsigned("program_segment_refs", program_segment_refs)
+    _add_unsigned("error_profile_offsets", error_profile_offsets)
+    _add_unsigned("error_profile_lengths", error_profile_lengths)
+    _add_unsigned("error_profile_phase_ids", error_profile_phase_ids)
+    _add_unsigned("error_profile_segment_offsets", error_profile_segment_offsets)
+    _add_unsigned("error_profile_segment_lengths", error_profile_segment_lengths)
+    _add_unsigned("error_profile_segment_refs", error_profile_segment_refs)
+    _add_unsigned("program_error_profile_ids", program_error_profile_ids)
+    _add_unsigned("route_proto_ids", route_proto_ids)
+    _add_unsigned("route_selector_ids", route_selector_ids)
+    _add_unsigned("route_program_ids", route_program_ids)
+    _add_unsigned("exact_method_ids", exact_method_ids)
+    section_specs.append((_HOT_BLOCK_SECTION_IDS["exact_path_hashes"], 64, len(exact_path_hashes), _pack_u64(exact_path_hashes)))
+    _add_unsigned("exact_program_ids", exact_program_ids)
+
+    max_width_bits = max((spec[1] for spec in section_specs), default=16)
+    section_count = len(section_specs)
+    header_size = struct.calcsize("<8sHHIHHHHHHH")
+    directory_entry_size = struct.calcsize("<HBBII")
+    directory_offset = header_size
+    data_offset = directory_offset + (section_count * directory_entry_size)
+    directory_entries: list[bytes] = []
+    payload_chunks: list[bytes] = []
+    cursor = data_offset
+    for section_id, width_bits, count, payload in section_specs:
+        directory_entries.append(
+            struct.pack("<HBBII", int(section_id), int(width_bits), 0, int(count), int(cursor))
+        )
+        payload_chunks.append(payload)
+        cursor += len(payload)
+
+    total_bytes = cursor
+    header = struct.pack(
+        "<8sHHIHHHHHHH",
+        _HOT_BLOCK_MAGIC,
+        _HOT_BLOCK_VERSION,
+        int(max_width_bits),
+        int(total_bytes),
+        int(section_count),
+        int(directory_offset),
+        len(atom_opcode_ids),
+        len(segment_step_offsets),
+        len(program_segment_offsets),
+        len(error_profile_offsets),
+        len(route_entries) + len(exact_route_entries),
+    )
+    return header + b"".join(directory_entries) + b"".join(payload_chunks)
+
+
+def load_packed_kernel_hot_block(payload: bytes) -> dict[str, Any]:
+    header_size = struct.calcsize("<8sHHIHHHHHHH")
+    if len(payload) < header_size:
+        raise ValueError("hot block payload is truncated")
+    (
+        magic,
+        version,
+        max_width_bits,
+        total_bytes,
+        section_count,
+        directory_offset,
+        atom_count,
+        segment_count,
+        program_count,
+        error_profile_count,
+        route_entry_count,
+    ) = struct.unpack("<8sHHIHHHHHHH", payload[:header_size])
+    if magic != _HOT_BLOCK_MAGIC:
+        raise ValueError("invalid hot block magic")
+    if version != _HOT_BLOCK_VERSION:
+        raise ValueError(f"unsupported hot block version: {version}")
+    if total_bytes != len(payload):
+        raise ValueError("hot block length mismatch")
+    entry_size = struct.calcsize("<HBBII")
+    directory_size = section_count * entry_size
+    data_start = directory_offset + directory_size
+    if data_start > len(payload):
+        raise ValueError("hot block directory exceeds payload length")
+
+    out: dict[str, Any] = {
+        "version": int(version),
+        "max_width_bits": int(max_width_bits),
+        "atom_count": int(atom_count),
+        "segment_count": int(segment_count),
+        "program_count": int(program_count),
+        "error_profile_count": int(error_profile_count),
+        "route_entry_count": int(route_entry_count),
+    }
+    for index in range(section_count):
+        start = directory_offset + (index * entry_size)
+        end = start + entry_size
+        section_id, width_bits, _flags, count, offset = struct.unpack(
+            "<HBBII", payload[start:end]
+        )
+        name = _HOT_BLOCK_SECTION_NAMES.get(int(section_id))
+        if not name:
+            continue
+        next_offset = (
+            struct.unpack("<HBBII", payload[end : end + entry_size])[4]
+            if index + 1 < section_count
+            else len(payload)
+        )
+        if offset > next_offset or next_offset > len(payload):
+            raise ValueError("hot block section offset is invalid")
+        section_payload = payload[offset:next_offset]
+        if name == "atom_payload_values":
+            out[name] = _unpack_signed_array(int(width_bits), section_payload, int(count))
+        else:
+            out[name] = _unpack_unsigned_array(int(width_bits), section_payload, int(count))
+    return out
 
 
 def measure_packed_kernel(packed: PackedKernel) -> PackedKernelMeasurement:
-    payload = serialize_packed_kernel_measurement_view(packed)
+    payload = getattr(packed, "hot_block_bytes", b"") or serialize_packed_kernel_measurement_view(packed)
     compressed = gzip.compress(payload, compresslevel=9, mtime=0)
     hot_plans = tuple(getattr(packed, "hot_op_plans", ()) or ())
     route_to_program = getattr(packed, "route_to_program", ()) or ()
@@ -690,14 +980,15 @@ def measure_packed_kernel(packed: PackedKernel) -> PackedKernelMeasurement:
     compact = view.get("compact_image", {})
     compact_parts = _build_compact_image_parts(packed)
     max_index_width_bits = max(
-        _pack_index_array(compact_parts["compact_segment_step_refs"])[0],
-        _pack_index_array(compact_parts["compact_segment_phase_refs"])[0],
-        _pack_index_array(compact_parts["compact_program_segment_refs"])[0],
-        _pack_index_array(compact_parts["compact_error_profile_segment_refs"])[0],
-        _pack_index_array(compact_parts["compact_program_error_profile_ids"])[0],
-        _pack_index_array(compact_parts["prelude_step_ids"])[0],
-        _pack_index_array([entry[2] for entry in compact_parts["route_entries"]])[0],
-        _pack_index_array([entry[2] for entry in compact_parts["exact_route_entries"]])[0],
+        _pack_unsigned_array(compact_parts["compact_step_opcode_ids"])[0],
+        _pack_unsigned_array(compact_parts["compact_segment_phase_ids"])[0],
+        _pack_unsigned_array(compact_parts["compact_segment_step_refs"])[0],
+        _pack_unsigned_array(compact_parts["compact_program_segment_refs"])[0],
+        _pack_unsigned_array(compact_parts["compact_error_profile_segment_refs"])[0],
+        _pack_unsigned_array(compact_parts["compact_program_error_profile_ids"])[0],
+        _pack_unsigned_array(compact_parts["prelude_step_ids"])[0],
+        _pack_unsigned_array([entry[2] for entry in compact_parts["route_entries"]])[0],
+        _pack_unsigned_array([entry[2] for entry in compact_parts["exact_route_entries"]])[0],
         16,
     )
     return PackedKernelMeasurement(
@@ -734,6 +1025,7 @@ def measure_packed_kernel(packed: PackedKernel) -> PackedKernelMeasurement:
 
 __all__ = [
     "build_packed_kernel_measurement_view",
+    "load_packed_kernel_hot_block",
     "measure_packed_kernel",
     "serialize_packed_kernel_measurement_view",
 ]
