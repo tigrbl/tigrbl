@@ -64,6 +64,9 @@ def test_packed_kernel_measurement_is_deterministic() -> None:
     assert first.proto_count == 1
     assert first.exact_route_count == 1
     assert first.fusible_sync_segment_count == 2
+    assert first.compact_step_count <= first.step_count
+    assert first.compact_segment_count <= first.segment_count
+    assert first.max_index_width_bits == 16
 
 
 def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
@@ -75,4 +78,5 @@ def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
 
     assert view["route_shape"]["exact_route_count"] == 1
     assert view["hot_op_plans"][0]["dispatch_selector_count"] == 1
+    assert view["compact_image"]["compact_step_count"] >= 1
     assert serialized_a == serialized_b
