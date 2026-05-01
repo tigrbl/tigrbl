@@ -125,6 +125,13 @@ class PackedKernelMeasurement:
     exact_route_count: int
     fusible_sync_segment_count: int
     hot_op_count: int
+    compact_step_count: int = 0
+    compact_segment_count: int = 0
+    compact_program_segment_ref_count: int = 0
+    compact_route_entry_count: int = 0
+    shared_error_profile_count: int = 0
+    externalized_prelude_step_count: int = 0
+    max_index_width_bits: int = 0
     measurement_view: Mapping[str, Any] = field(default_factory=dict)
 
 

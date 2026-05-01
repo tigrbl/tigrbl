@@ -109,6 +109,17 @@ def _serialize_measurement(app: Any) -> dict[str, Any]:
         "exact_route_count": int(measurement.exact_route_count),
         "fusible_sync_segment_count": int(measurement.fusible_sync_segment_count),
         "hot_op_count": int(measurement.hot_op_count),
+        "compact_step_count": int(measurement.compact_step_count),
+        "compact_segment_count": int(measurement.compact_segment_count),
+        "compact_program_segment_ref_count": int(
+            measurement.compact_program_segment_ref_count
+        ),
+        "compact_route_entry_count": int(measurement.compact_route_entry_count),
+        "shared_error_profile_count": int(measurement.shared_error_profile_count),
+        "externalized_prelude_step_count": int(
+            measurement.externalized_prelude_step_count
+        ),
+        "max_index_width_bits": int(measurement.max_index_width_bits),
     }
 
 
@@ -368,6 +379,13 @@ def _render_report(payload: dict[str, Any]) -> str:
         f"- segments: {measurement.get('segment_count', 'n/a')}",
         f"- steps: {measurement.get('step_count', 'n/a')}",
         f"- phase tree nodes: {measurement.get('phase_tree_node_count', 'n/a')}",
+        f"- compact steps: {measurement.get('compact_step_count', 'n/a')}",
+        f"- compact segments: {measurement.get('compact_segment_count', 'n/a')}",
+        f"- compact program segment refs: {measurement.get('compact_program_segment_ref_count', 'n/a')}",
+        f"- compact route entries: {measurement.get('compact_route_entry_count', 'n/a')}",
+        f"- shared error profiles: {measurement.get('shared_error_profile_count', 'n/a')}",
+        f"- externalized prelude steps: {measurement.get('externalized_prelude_step_count', 'n/a')}",
+        f"- max index width bits: {measurement.get('max_index_width_bits', 'n/a')}",
         f"- compressed bytes per REST op in this run: {comparison.get('compressed_bytes_per_tigrbl_op', 0):.2f}",
     ]
 
