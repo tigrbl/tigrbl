@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from tigrbl_kernel.measure import (
     build_packed_kernel_measurement_view,
+    load_packed_kernel_hot_block,
     measure_packed_kernel,
     serialize_packed_kernel_measurement_view,
 )
@@ -23,6 +24,8 @@ def _sample_packed_kernel() -> PackedKernel:
     )
     return PackedKernel(
         atom_catalog_labels=("step0", "step1", "step2", "step3"),
+        atom_catalog_opcode_ids=(0, 1, 2, 3),
+        atom_opcode_keys=("step0", "step1", "step2", "step3"),
         atom_catalog_effect_ids=(0, 1, 2, 3),
         atom_catalog_effect_payloads=((0,), (1,), (2,), (3,)),
         atom_catalog_async_flags=(False, False, False, True),
@@ -102,8 +105,13 @@ def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
     view = build_packed_kernel_measurement_view(packed)
     serialized_a = serialize_packed_kernel_measurement_view(packed)
     serialized_b = serialize_packed_kernel_measurement_view(packed)
+    loaded = load_packed_kernel_hot_block(serialized_a)
 
     assert view["route_shape"]["exact_route_count"] == 1
     assert view["hot_op_plans"][0]["dispatch_selector_count"] == 1
     assert view["compact_image"]["compact_step_count"] >= 1
     assert serialized_a == serialized_b
+    assert serialized_a.startswith(b"TGPKHOT1")
+    assert b"step0" not in serialized_a
+    assert loaded["atom_opcode_ids"] == (0, 1, 2, 3)
+    assert loaded["segment_count"] == len(loaded["segment_phase_ids"])

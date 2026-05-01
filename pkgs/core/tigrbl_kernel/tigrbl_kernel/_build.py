@@ -20,7 +20,11 @@ from .atoms import (
     _wrap_atom,
 )
 from .models import HotOpPlan, KernelPlan, OpKey, OpView, PackedKernel
-from .measure import measure_packed_kernel
+from .measure import (
+    load_packed_kernel_hot_block,
+    measure_packed_kernel,
+    serialize_packed_kernel_measurement_view,
+)
 from .types import (
     EGRESS_PHASES,
     INGRESS_PHASES,
@@ -676,6 +680,13 @@ def _pack_kernel_plan(
         numba_executor=build_numba_executor(packed)
         if callable(build_numba_executor)
         else None,
+    )
+    hot_block_bytes = serialize_packed_kernel_measurement_view(measured)
+    hot_block_view = load_packed_kernel_hot_block(hot_block_bytes)
+    measured = replace(
+        measured,
+        hot_block_bytes=hot_block_bytes,
+        hot_block_view=hot_block_view,
     )
     return replace(measured, measurement=measure_packed_kernel(measured))
 

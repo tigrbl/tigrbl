@@ -53,6 +53,8 @@ def test_kernel_ensure_primed_compiles_plan_once() -> None:
     assert len(packed.atom_catalog_labels) <= len(packed.step_table)
     assert len(packed.segment_catalog_offsets) <= len(packed.program_segment_refs)
     assert len(packed.program_error_profile_ids) == len(plan1.opmeta)
+    assert packed.hot_block_bytes.startswith(b"TGPKHOT1")
+    assert isinstance(packed.hot_block_view, dict)
 
 
 def test_opview_is_compiled_once_per_model_alias() -> None:

@@ -18,6 +18,7 @@ from .rust_compile import (
 from .rust_plan import RustPlan
 from .measure import (
     build_packed_kernel_measurement_view,
+    load_packed_kernel_hot_block,
     measure_packed_kernel,
     serialize_packed_kernel_measurement_view,
 )
@@ -92,6 +93,7 @@ __all__ = [
     "build_packed_kernel_measurement_view",
     "get_cached_specs",
     "build_phase_chains",
+    "load_packed_kernel_hot_block",
     "measure_packed_kernel",
     "normalize_rust_spec",
     "packed_kernel_measurement",

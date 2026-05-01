@@ -12,6 +12,7 @@ from tigrbl_kernel import (
     build_packed_kernel_measurement_view,
     build_phase_chains,
     get_cached_specs,
+    load_packed_kernel_hot_block,
     measure_packed_kernel,
     packed_kernel_measurement,
     plan_labels,
@@ -24,6 +25,7 @@ __all__ = [
     "build_packed_kernel_measurement_view",
     "build_phase_chains",
     "plan_labels",
+    "load_packed_kernel_hot_block",
     "measure_packed_kernel",
     "packed_kernel_measurement",
 ]

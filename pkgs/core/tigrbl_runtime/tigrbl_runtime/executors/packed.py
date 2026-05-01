@@ -121,6 +121,36 @@ class PackedPlanExecutor(ExecutorBase):
             "id": rpc_id,
         }
 
+    @staticmethod
+    def _hot_block_view(packed: PackedKernel) -> Mapping[str, Any]:
+        view = getattr(packed, "hot_block_view", None)
+        return view if isinstance(view, Mapping) else {}
+
+    @classmethod
+    def _hot_array(cls, packed: PackedKernel, key: str, fallback: tuple[Any, ...] | tuple[int, ...] | tuple[str, ...]) -> tuple[Any, ...]:
+        view = cls._hot_block_view(packed)
+        values = view.get(key)
+        if isinstance(values, tuple):
+            return values
+        if isinstance(values, list):
+            return tuple(values)
+        return fallback
+
+    @classmethod
+    def _segment_phase_names(cls, packed: PackedKernel) -> tuple[str, ...]:
+        phase_names = tuple(getattr(packed, "phase_names", ()) or ())
+        phase_ids = cls._hot_array(
+            packed,
+            "segment_phase_ids",
+            tuple(getattr(packed, "segment_catalog_phase_ids", ()) or ()),
+        )
+        if phase_names and phase_ids:
+            return tuple(
+                str(phase_names[int(phase_id)]) if 0 <= int(phase_id) < len(phase_names) else str(phase_id)
+                for phase_id in phase_ids
+            )
+        return tuple(getattr(packed, "segment_phases", ()) or ())
+
     def _resolve_segments_for_program(
         self, packed: PackedKernel, program_id: int
     ) -> tuple[tuple[int, ...], tuple[int, ...]]:
@@ -129,21 +159,22 @@ class PackedPlanExecutor(ExecutorBase):
         if cached is not None:
             return cached
 
-        segment_offsets = (
-            getattr(packed, "program_segment_ref_offsets", ())
-            or getattr(packed, "op_segment_offsets", ())
-            or ()
+        segment_offsets = self._hot_array(
+            packed,
+            "program_segment_offsets",
+            tuple(getattr(packed, "program_segment_ref_offsets", ()) or getattr(packed, "op_segment_offsets", ()) or ()),
         )
-        segment_lengths = (
-            getattr(packed, "program_segment_ref_lengths", ())
-            or getattr(packed, "op_segment_lengths", ())
-            or ()
+        segment_lengths = self._hot_array(
+            packed,
+            "program_segment_lengths",
+            tuple(getattr(packed, "program_segment_ref_lengths", ()) or getattr(packed, "op_segment_lengths", ()) or ()),
         )
-        segment_refs = (
-            getattr(packed, "program_segment_refs", ())
-            or getattr(packed, "op_to_segment_ids", ())
-            or ()
+        segment_refs = self._hot_array(
+            packed,
+            "program_segment_refs",
+            tuple(getattr(packed, "program_segment_refs", ()) or getattr(packed, "op_to_segment_ids", ()) or ()),
         )
+        segment_phases = self._segment_phase_names(packed)
         seg_offset = segment_offsets[program_id]
         seg_length = segment_lengths[program_id]
         ordered_segments: list[int] = []
@@ -152,7 +183,7 @@ class PackedPlanExecutor(ExecutorBase):
         seen_segment_ids: set[int] = set()
         for i in range(seg_offset, seg_offset + seg_length):
             seg_id = segment_refs[i]
-            phase = str(normalize_phase(packed.segment_phases[seg_id]))
+            phase = str(normalize_phase(segment_phases[seg_id]))
             if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 continue
             by_phase.setdefault(phase, []).append(seg_id)
@@ -168,7 +199,7 @@ class PackedPlanExecutor(ExecutorBase):
             seg_id = segment_refs[i]
             if seg_id in seen_segment_ids:
                 continue
-            phase = str(packed.segment_phases[seg_id])
+            phase = str(segment_phases[seg_id])
             phase = str(normalize_phase(phase))
             if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 continue
@@ -514,11 +545,27 @@ class PackedPlanExecutor(ExecutorBase):
             return -1
 
         seed_program_id = 0
-        seg_offset = packed.op_segment_offsets[seed_program_id]
-        seg_length = packed.op_segment_lengths[seed_program_id]
+        segment_offsets = self._hot_array(
+            packed,
+            "program_segment_offsets",
+            tuple(getattr(packed, "program_segment_ref_offsets", ()) or getattr(packed, "op_segment_offsets", ()) or ()),
+        )
+        segment_lengths = self._hot_array(
+            packed,
+            "program_segment_lengths",
+            tuple(getattr(packed, "program_segment_ref_lengths", ()) or getattr(packed, "op_segment_lengths", ()) or ()),
+        )
+        segment_refs = self._hot_array(
+            packed,
+            "program_segment_refs",
+            tuple(getattr(packed, "program_segment_refs", ()) or getattr(packed, "op_to_segment_ids", ()) or ()),
+        )
+        segment_phases = self._segment_phase_names(packed)
+        seg_offset = segment_offsets[seed_program_id]
+        seg_length = segment_lengths[seed_program_id]
         for i in range(seg_offset, seg_offset + seg_length):
-            seg_id = packed.op_to_segment_ids[i]
-            phase = str(packed.segment_phases[seg_id])
+            seg_id = segment_refs[i]
+            phase = str(segment_phases[seg_id])
             if not phase.startswith("INGRESS_"):
                 break
             await self._run_segment(ctx, packed, seg_id)
@@ -536,20 +583,20 @@ class PackedPlanExecutor(ExecutorBase):
         cached = self._segment_steps_cache.get(packed_id)
         if cached is not None:
             return cached
-        segment_offsets = (
-            getattr(packed, "segment_catalog_offsets", ())
-            or getattr(packed, "segment_offsets", ())
-            or ()
+        segment_offsets = self._hot_array(
+            packed,
+            "segment_step_offsets",
+            tuple(getattr(packed, "segment_catalog_offsets", ()) or getattr(packed, "segment_offsets", ()) or ()),
         )
-        segment_lengths = (
-            getattr(packed, "segment_catalog_lengths", ())
-            or getattr(packed, "segment_lengths", ())
-            or ()
+        segment_lengths = self._hot_array(
+            packed,
+            "segment_step_lengths",
+            tuple(getattr(packed, "segment_catalog_lengths", ()) or getattr(packed, "segment_lengths", ()) or ()),
         )
-        segment_atom_ids = (
-            getattr(packed, "segment_catalog_atom_ids", ())
-            or getattr(packed, "segment_step_ids", ())
-            or ()
+        segment_atom_ids = self._hot_array(
+            packed,
+            "segment_step_atom_refs",
+            tuple(getattr(packed, "segment_catalog_atom_ids", ()) or getattr(packed, "segment_step_ids", ()) or ()),
         )
         compiled = []
         for segment_index in range(len(segment_offsets)):
@@ -570,14 +617,23 @@ class PackedPlanExecutor(ExecutorBase):
 
         step_ids_by_segment = self._resolve_segment_step_ids(packed)
         async_flags = tuple(
-            getattr(packed, "atom_catalog_async_flags", ())
-            or getattr(packed, "step_async_flags", ())
-            or ()
+            1 if bool(flag) else 0
+            for flag in self._hot_array(
+                packed,
+                "atom_flags",
+                tuple(
+                    getattr(packed, "atom_catalog_async_flags", ())
+                    or getattr(packed, "step_async_flags", ())
+                    or ()
+                ),
+            )
         )
         executor_kinds = tuple(
-            getattr(packed, "segment_catalog_executor_kinds", ())
-            or getattr(packed, "segment_executor_kinds", ())
-            or ()
+            self._hot_array(
+                packed,
+                "segment_executor_kind_ids",
+                tuple(getattr(packed, "segment_catalog_executor_kinds", ()) or getattr(packed, "segment_executor_kinds", ()) or ()),
+            )
         )
 
         step_table = packed.step_table
@@ -622,15 +678,10 @@ class PackedPlanExecutor(ExecutorBase):
 
         runners: list[Any] = []
         for seg_id, step_ids in enumerate(step_ids_by_segment):
-            if (
-                seg_id < len(executor_kinds)
-                and executor_kinds[seg_id] == "sync.extractable"
-            ):
+            executor_kind = executor_kinds[seg_id] if seg_id < len(executor_kinds) else ""
+            if executor_kind in {"sync.extractable", 1}:
                 runners.append(_make_fused_sync_runner(step_ids))
-            elif (
-                seg_id < len(executor_kinds)
-                and executor_kinds[seg_id] == "async.direct"
-            ):
+            elif executor_kind in {"async.direct", 3}:
                 runners.append(_make_async_direct_runner(step_ids))
             else:
                 runners.append(_make_mixed_runner(step_ids))
@@ -652,7 +703,7 @@ class PackedPlanExecutor(ExecutorBase):
             remaining = tuple(getattr(hot_op_plan, "remaining_segment_ids", ()) or ())
         else:
             ordered, remaining = self._resolve_segments_for_program(packed, program_id)
-        phase_names = packed.segment_phases
+        phase_names = self._segment_phase_names(packed)
         all_segment_ids = (*ordered, *remaining)
 
         async def _runner(ctx: _Ctx) -> None:
@@ -709,7 +760,7 @@ class PackedPlanExecutor(ExecutorBase):
             remaining = tuple(getattr(hot_op_plan, "remaining_segment_ids", ()) or ())
         else:
             ordered, remaining = self._resolve_segments_for_program(packed, program_id)
-        phase_names = packed.segment_phases
+        phase_names = self._segment_phase_names(packed)
         all_segment_ids = (*ordered, *remaining)
 
         skip_phases = set()
@@ -722,7 +773,7 @@ class PackedPlanExecutor(ExecutorBase):
 
         async def _runner(ctx: _Ctx) -> None:
             for seg_id in all_segment_ids:
-                phase_name = phase_names[seg_id]
+                phase_name = str(normalize_phase(phase_names[seg_id]))
                 if phase_name in skip_phases:
                     continue
                 ctx.phase = phase_name
@@ -832,7 +883,7 @@ class PackedPlanExecutor(ExecutorBase):
         return _acquire
 
     async def _run_segment(self, ctx: _Ctx, packed: PackedKernel, seg_id: int) -> None:
-        ctx.phase = normalize_phase(packed.segment_phases[seg_id])
+        ctx.phase = normalize_phase(self._segment_phase_names(packed)[seg_id])
         await self._resolve_segment_runners(packed)[seg_id](ctx)
 
     async def _run_error_segments(
@@ -918,19 +969,23 @@ class PackedPlanExecutor(ExecutorBase):
         if cached is not None:
             return cached[1]
 
-        profile_ids = getattr(packed, "program_error_profile_ids", ()) or ()
-        profile_offsets = getattr(packed, "error_profile_offsets", ()) or ()
+        profile_ids = self._hot_array(
+            packed,
+            "program_error_profile_ids",
+            tuple(getattr(packed, "program_error_profile_ids", ()) or ()),
+        )
+        profile_offsets = self._hot_array(
+            packed,
+            "error_profile_offsets",
+            tuple(getattr(packed, "error_profile_offsets", ()) or ()),
+        )
         if profile_offsets and program_id < len(profile_ids):
             phase_names = tuple(getattr(packed, "phase_names", ()) or ())
-            profile_lengths = getattr(packed, "error_profile_lengths", ()) or ()
-            phase_ids = getattr(packed, "error_profile_phase_ids", ()) or ()
-            seg_ref_offsets = (
-                getattr(packed, "error_profile_segment_ref_offsets", ()) or ()
-            )
-            seg_ref_lengths = (
-                getattr(packed, "error_profile_segment_ref_lengths", ()) or ()
-            )
-            seg_refs = getattr(packed, "error_profile_segment_refs", ()) or ()
+            profile_lengths = self._hot_array(packed, "error_profile_lengths", tuple(getattr(packed, "error_profile_lengths", ()) or ()))
+            phase_ids = self._hot_array(packed, "error_profile_phase_ids", tuple(getattr(packed, "error_profile_phase_ids", ()) or ()))
+            seg_ref_offsets = self._hot_array(packed, "error_profile_segment_offsets", tuple(getattr(packed, "error_profile_segment_ref_offsets", ()) or ()))
+            seg_ref_lengths = self._hot_array(packed, "error_profile_segment_lengths", tuple(getattr(packed, "error_profile_segment_ref_lengths", ()) or ()))
+            seg_refs = self._hot_array(packed, "error_profile_segment_refs", tuple(getattr(packed, "error_profile_segment_refs", ()) or ()))
             profile_id = profile_ids[program_id]
             if 0 <= profile_id < len(profile_offsets):
                 start = profile_offsets[profile_id]
@@ -958,26 +1013,27 @@ class PackedPlanExecutor(ExecutorBase):
                 return frozen
 
         grouped: dict[str, list[int]] = {}
-        segment_offsets = (
-            getattr(packed, "program_segment_ref_offsets", ())
-            or getattr(packed, "op_segment_offsets", ())
-            or ()
+        segment_offsets = self._hot_array(
+            packed,
+            "program_segment_offsets",
+            tuple(getattr(packed, "program_segment_ref_offsets", ()) or getattr(packed, "op_segment_offsets", ()) or ()),
         )
-        segment_lengths = (
-            getattr(packed, "program_segment_ref_lengths", ())
-            or getattr(packed, "op_segment_lengths", ())
-            or ()
+        segment_lengths = self._hot_array(
+            packed,
+            "program_segment_lengths",
+            tuple(getattr(packed, "program_segment_ref_lengths", ()) or getattr(packed, "op_segment_lengths", ()) or ()),
         )
-        segment_refs = (
-            getattr(packed, "program_segment_refs", ())
-            or getattr(packed, "op_to_segment_ids", ())
-            or ()
+        segment_refs = self._hot_array(
+            packed,
+            "program_segment_refs",
+            tuple(getattr(packed, "program_segment_refs", ()) or getattr(packed, "op_to_segment_ids", ()) or ()),
         )
+        segment_phases = self._segment_phase_names(packed)
         seg_offset = segment_offsets[program_id]
         seg_length = segment_lengths[program_id]
         for i in range(seg_offset, seg_offset + seg_length):
             seg_id = segment_refs[i]
-            phase_name = str(normalize_phase(packed.segment_phases[seg_id]))
+            phase_name = str(normalize_phase(segment_phases[seg_id]))
             if phase_name.startswith("ON_") or phase_name == "TX_ROLLBACK":
                 grouped.setdefault(phase_name, []).append(seg_id)
 
