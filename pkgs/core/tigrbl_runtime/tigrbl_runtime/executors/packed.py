@@ -129,14 +129,29 @@ class PackedPlanExecutor(ExecutorBase):
         if cached is not None:
             return cached
 
-        seg_offset = packed.op_segment_offsets[program_id]
-        seg_length = packed.op_segment_lengths[program_id]
+        segment_offsets = (
+            getattr(packed, "program_segment_ref_offsets", ())
+            or getattr(packed, "op_segment_offsets", ())
+            or ()
+        )
+        segment_lengths = (
+            getattr(packed, "program_segment_ref_lengths", ())
+            or getattr(packed, "op_segment_lengths", ())
+            or ()
+        )
+        segment_refs = (
+            getattr(packed, "program_segment_refs", ())
+            or getattr(packed, "op_to_segment_ids", ())
+            or ()
+        )
+        seg_offset = segment_offsets[program_id]
+        seg_length = segment_lengths[program_id]
         ordered_segments: list[int] = []
         by_phase: dict[str, list[int]] = {}
         remaining: list[int] = []
         seen_segment_ids: set[int] = set()
         for i in range(seg_offset, seg_offset + seg_length):
-            seg_id = packed.op_to_segment_ids[i]
+            seg_id = segment_refs[i]
             phase = str(normalize_phase(packed.segment_phases[seg_id]))
             if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 continue
@@ -150,7 +165,7 @@ class PackedPlanExecutor(ExecutorBase):
                 ordered_segments.append(seg_id)
 
         for i in range(seg_offset, seg_offset + seg_length):
-            seg_id = packed.op_to_segment_ids[i]
+            seg_id = segment_refs[i]
             if seg_id in seen_segment_ids:
                 continue
             phase = str(packed.segment_phases[seg_id])
@@ -521,12 +536,27 @@ class PackedPlanExecutor(ExecutorBase):
         cached = self._segment_steps_cache.get(packed_id)
         if cached is not None:
             return cached
+        segment_offsets = (
+            getattr(packed, "segment_catalog_offsets", ())
+            or getattr(packed, "segment_offsets", ())
+            or ()
+        )
+        segment_lengths = (
+            getattr(packed, "segment_catalog_lengths", ())
+            or getattr(packed, "segment_lengths", ())
+            or ()
+        )
+        segment_atom_ids = (
+            getattr(packed, "segment_catalog_atom_ids", ())
+            or getattr(packed, "segment_step_ids", ())
+            or ()
+        )
         compiled = []
-        for segment_index in range(len(packed.segment_offsets)):
-            start = packed.segment_offsets[segment_index]
-            end = start + packed.segment_lengths[segment_index]
+        for segment_index in range(len(segment_offsets)):
+            start = segment_offsets[segment_index]
+            end = start + segment_lengths[segment_index]
             compiled.append(
-                tuple(packed.segment_step_ids[idx] for idx in range(start, end))
+                tuple(segment_atom_ids[idx] for idx in range(start, end))
             )
         frozen = tuple(compiled)
         self._segment_steps_cache[packed_id] = frozen
@@ -539,8 +569,16 @@ class PackedPlanExecutor(ExecutorBase):
             return cached
 
         step_ids_by_segment = self._resolve_segment_step_ids(packed)
-        async_flags = tuple(getattr(packed, "step_async_flags", ()) or ())
-        executor_kinds = tuple(getattr(packed, "segment_executor_kinds", ()) or ())
+        async_flags = tuple(
+            getattr(packed, "atom_catalog_async_flags", ())
+            or getattr(packed, "step_async_flags", ())
+            or ()
+        )
+        executor_kinds = tuple(
+            getattr(packed, "segment_catalog_executor_kinds", ())
+            or getattr(packed, "segment_executor_kinds", ())
+            or ()
+        )
 
         step_table = packed.step_table
 
@@ -880,11 +918,65 @@ class PackedPlanExecutor(ExecutorBase):
         if cached is not None:
             return cached[1]
 
+        profile_ids = getattr(packed, "program_error_profile_ids", ()) or ()
+        profile_offsets = getattr(packed, "error_profile_offsets", ()) or ()
+        if profile_offsets and program_id < len(profile_ids):
+            phase_names = tuple(getattr(packed, "phase_names", ()) or ())
+            profile_lengths = getattr(packed, "error_profile_lengths", ()) or ()
+            phase_ids = getattr(packed, "error_profile_phase_ids", ()) or ()
+            seg_ref_offsets = (
+                getattr(packed, "error_profile_segment_ref_offsets", ()) or ()
+            )
+            seg_ref_lengths = (
+                getattr(packed, "error_profile_segment_ref_lengths", ()) or ()
+            )
+            seg_refs = getattr(packed, "error_profile_segment_refs", ()) or ()
+            profile_id = profile_ids[program_id]
+            if 0 <= profile_id < len(profile_offsets):
+                start = profile_offsets[profile_id]
+                length = profile_lengths[profile_id] if profile_id < len(profile_lengths) else 0
+                frozen = {}
+                for idx in range(start, start + length):
+                    phase_id = phase_ids[idx]
+                    phase_name = (
+                        phase_names[phase_id]
+                        if 0 <= phase_id < len(phase_names)
+                        else str(phase_id)
+                    )
+                    seg_start = seg_ref_offsets[idx]
+                    seg_length = seg_ref_lengths[idx]
+                    frozen[str(normalize_phase(phase_name))] = tuple(
+                        int(seg_refs[j]) for j in range(seg_start, seg_start + seg_length)
+                    )
+                ordered_segments, remaining_segments = self._resolve_segments_for_program(
+                    packed, program_id
+                )
+                self._program_error_segments_cache[cache_key] = (
+                    (*ordered_segments, *remaining_segments),
+                    frozen,
+                )
+                return frozen
+
         grouped: dict[str, list[int]] = {}
-        seg_offset = packed.op_segment_offsets[program_id]
-        seg_length = packed.op_segment_lengths[program_id]
+        segment_offsets = (
+            getattr(packed, "program_segment_ref_offsets", ())
+            or getattr(packed, "op_segment_offsets", ())
+            or ()
+        )
+        segment_lengths = (
+            getattr(packed, "program_segment_ref_lengths", ())
+            or getattr(packed, "op_segment_lengths", ())
+            or ()
+        )
+        segment_refs = (
+            getattr(packed, "program_segment_refs", ())
+            or getattr(packed, "op_to_segment_ids", ())
+            or ()
+        )
+        seg_offset = segment_offsets[program_id]
+        seg_length = segment_lengths[program_id]
         for i in range(seg_offset, seg_offset + seg_length):
-            seg_id = packed.op_to_segment_ids[i]
+            seg_id = segment_refs[i]
             phase_name = str(normalize_phase(packed.segment_phases[seg_id]))
             if phase_name.startswith("ON_") or phase_name == "TX_ROLLBACK":
                 grouped.setdefault(phase_name, []).append(seg_id)

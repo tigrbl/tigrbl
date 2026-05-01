@@ -107,6 +107,7 @@ class HotOpPlan:
     db_acquire_hint: str = "resolver"
     dispatch_proto_ids: tuple[int, ...] = ()
     dispatch_selector_count: int = 0
+    program_error_profile_id: int = -1
 
 
 @dataclass(frozen=True, slots=True)
@@ -147,15 +148,41 @@ class PackedKernel:
 
     route_to_program: Any = None
 
+    atom_catalog_labels: tuple[str, ...] = ()
+    atom_catalog_effect_ids: tuple[int, ...] = ()
+    atom_catalog_effect_payloads: tuple[tuple[int, ...], ...] = ()
+    atom_catalog_async_flags: tuple[bool, ...] = ()
+
     segment_offsets: tuple[int, ...] = ()
     segment_lengths: tuple[int, ...] = ()
     segment_step_ids: tuple[int, ...] = ()
     segment_phases: tuple[str, ...] = ()
     segment_executor_kinds: tuple[str, ...] = ()
 
+    segment_catalog_offsets: tuple[int, ...] = ()
+    segment_catalog_lengths: tuple[int, ...] = ()
+    segment_catalog_atom_ids: tuple[int, ...] = ()
+    segment_catalog_phase_ids: tuple[int, ...] = ()
+    segment_catalog_executor_kinds: tuple[str, ...] = ()
+
+    phase_names: tuple[str, ...] = ()
+    phase_to_id: Mapping[str, int] = field(default_factory=dict)
+
     op_segment_offsets: tuple[int, ...] = ()
     op_segment_lengths: tuple[int, ...] = ()
     op_to_segment_ids: tuple[int, ...] = ()
+
+    program_segment_ref_offsets: tuple[int, ...] = ()
+    program_segment_ref_lengths: tuple[int, ...] = ()
+    program_segment_refs: tuple[int, ...] = ()
+
+    error_profile_offsets: tuple[int, ...] = ()
+    error_profile_lengths: tuple[int, ...] = ()
+    error_profile_phase_ids: tuple[int, ...] = ()
+    error_profile_segment_ref_offsets: tuple[int, ...] = ()
+    error_profile_segment_ref_lengths: tuple[int, ...] = ()
+    error_profile_segment_refs: tuple[int, ...] = ()
+    program_error_profile_ids: tuple[int, ...] = ()
 
     step_table: tuple[StepFn, ...] = ()
     step_labels: tuple[str, ...] = ()

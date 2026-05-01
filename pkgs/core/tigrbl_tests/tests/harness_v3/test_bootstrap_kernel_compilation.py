@@ -48,6 +48,11 @@ def test_kernel_ensure_primed_compiles_plan_once() -> None:
     plan2 = _default_kernel.kernel_plan(app)
 
     assert plan1 is plan2
+    packed = plan1.packed
+    assert packed is not None
+    assert len(packed.atom_catalog_labels) <= len(packed.step_table)
+    assert len(packed.segment_catalog_offsets) <= len(packed.program_segment_refs)
+    assert len(packed.program_error_profile_ids) == len(plan1.opmeta)
 
 
 def test_opview_is_compiled_once_per_model_alias() -> None:
