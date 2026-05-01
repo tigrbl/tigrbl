@@ -265,6 +265,19 @@ def _segment_label(self, program_id: int, phase: str) -> str:
     return f"program:{program_id}:{phase}"
 
 
+def _structural_atom_signature(
+    step: StepFn,
+    phase: str,
+) -> tuple[str, int, tuple[int, ...], bool]:
+    label = _label_step(step, phase)
+    effect_id, payload = _effect_descriptor_for_step(step)
+    is_async = bool(getattr(step, "_tigrbl_is_async", False))
+    if not is_async:
+        marker = getattr(step, "__code__", None)
+        is_async = bool(getattr(marker, "co_flags", 0) & 0x80)
+    return (label, effect_id, payload, is_async)
+
+
 def _build_route_matrix(
     self,
     *,
@@ -372,13 +385,19 @@ def _pack_kernel_plan(
     selector_to_id = {name: idx for idx, name in enumerate(selector_names)}
     op_to_id = {name: idx for idx, name in enumerate(op_names)}
 
-    step_index: dict[int, int] = {}
+    phase_names: tuple[str, ...] = tuple(
+        str(normalize_phase(phase)) for phase in DEFAULT_PHASE_ORDER
+    )
+    phase_to_id = {name: idx for idx, name in enumerate(phase_names)}
+
+    atom_index: dict[tuple[str, int, tuple[int, ...], bool], int] = {}
     step_table: list[StepFn] = []
-    step_labels: list[str] = []
+    atom_catalog_labels: list[str] = []
     effect_ids: list[int] = []
     effect_payloads: list[tuple[int, ...]] = []
     step_async_flags: list[bool] = []
 
+    segment_index: dict[tuple[tuple[int, ...], int, str], int] = {}
     segment_offsets: list[int] = []
     segment_lengths: list[int] = []
     segment_step_ids: list[int] = []
@@ -398,39 +417,44 @@ def _pack_kernel_plan(
             if not steps:
                 continue
 
-            seg_id = len(segment_offsets)
-            segment_offsets.append(len(segment_step_ids))
-            segment_lengths.append(len(steps))
-            segment_phases.append(phase)
-
             kinds = {_classify_step_lowering(step, phase) for step in steps}
             if len(kinds) == 1 and LOWER_KIND_SYNC_EXTRACTABLE in kinds:
-                segment_executor_kinds.append(LOWER_KIND_SYNC_EXTRACTABLE)
+                segment_executor_kind = LOWER_KIND_SYNC_EXTRACTABLE
             elif LOWER_KIND_ASYNC_DIRECT in kinds:
-                segment_executor_kinds.append(LOWER_KIND_ASYNC_DIRECT)
+                segment_executor_kind = LOWER_KIND_ASYNC_DIRECT
             else:
-                segment_executor_kinds.append(LOWER_KIND_SPLIT_EXTRACTABLE)
+                segment_executor_kind = LOWER_KIND_SPLIT_EXTRACTABLE
 
+            atom_ids: list[int] = []
             for step in steps:
-                key = id(step)
-                step_id = step_index.get(key)
+                signature = _structural_atom_signature(step, phase)
+                step_id = atom_index.get(signature)
                 if step_id is None:
                     step_id = len(step_table)
-                    step_index[key] = step_id
+                    atom_index[signature] = step_id
                     step_table.append(step)
-                    step_labels.append(_label_step(step, phase))
-                    effect_id, payload = _effect_descriptor_for_step(step)
-                    effect_ids.append(effect_id)
-                    effect_payloads.append(payload)
-                    is_async = bool(getattr(step, "_tigrbl_is_async", False))
-                    if not is_async:
-                        marker = getattr(step, "__code__", None)
-                        is_async = bool(getattr(marker, "co_flags", 0) & 0x80)
-                    step_async_flags.append(is_async)
-                segment_step_ids.append(step_id)
+                    atom_catalog_labels.append(signature[0])
+                    effect_ids.append(signature[1])
+                    effect_payloads.append(signature[2])
+                    step_async_flags.append(signature[3])
+                atom_ids.append(step_id)
 
-            op_to_segment_ids.append(seg_id)
+            normalized_phase = str(normalize_phase(phase))
+            phase_id = phase_to_id.get(normalized_phase)
+            if phase_id is None:
+                phase_id = len(phase_names)
+            segment_signature = (tuple(atom_ids), phase_id, segment_executor_kind)
+            seg_id = segment_index.get(segment_signature)
+            if seg_id is None:
+                seg_id = len(segment_offsets)
+                segment_index[segment_signature] = seg_id
+                segment_offsets.append(len(segment_step_ids))
+                segment_lengths.append(len(atom_ids))
+                segment_step_ids.extend(atom_ids)
+                segment_phases.append(normalized_phase)
+                segment_executor_kinds.append(segment_executor_kind)
             seg_count += 1
+            op_to_segment_ids.append(seg_id)
         op_segment_lengths.append(seg_count)
 
     route_to_program = self._build_route_matrix(
@@ -443,6 +467,14 @@ def _pack_kernel_plan(
     phase_tree_nodes: list[PhaseTreeNode] = []
     program_phase_tree_offsets: list[int] = []
     program_phase_tree_lengths: list[int] = []
+    error_profile_index: dict[tuple[tuple[str, tuple[int, ...]], ...], int] = {}
+    error_profile_offsets: list[int] = []
+    error_profile_lengths: list[int] = []
+    error_profile_phase_ids: list[int] = []
+    error_profile_segment_ref_offsets: list[int] = []
+    error_profile_segment_ref_lengths: list[int] = []
+    error_profile_segment_refs: list[int] = []
+    program_error_profile_ids: list[int] = []
     for program_id, _meta in enumerate(plan.opmeta):
         meta = plan.opmeta[program_id]
         seg_offset = op_segment_offsets[program_id]
@@ -505,6 +537,27 @@ def _pack_kernel_plan(
         phase_tree_nodes.extend(program_nodes)
         program_phase_tree_lengths.append(len(program_nodes))
 
+        error_profile_signature = tuple(
+            (phase, tuple(seg_ids))
+            for phase, seg_ids in sorted(error_segment_ids.items())
+        )
+        error_profile_id = error_profile_index.get(error_profile_signature)
+        if error_profile_id is None:
+            error_profile_id = len(error_profile_offsets)
+            error_profile_index[error_profile_signature] = error_profile_id
+            error_profile_offsets.append(len(error_profile_phase_ids))
+            error_profile_lengths.append(len(error_profile_signature))
+            for phase, seg_ids in error_profile_signature:
+                normalized_phase = str(normalize_phase(phase))
+                phase_id = phase_to_id.get(normalized_phase)
+                if phase_id is None:
+                    phase_id = len(phase_names)
+                error_profile_phase_ids.append(phase_id)
+                error_profile_segment_ref_offsets.append(len(error_profile_segment_refs))
+                error_profile_segment_ref_lengths.append(len(seg_ids))
+                error_profile_segment_refs.extend(seg_ids)
+        program_error_profile_ids.append(error_profile_id)
+
         hot_op_plans.append(
             HotOpPlan(
                 program_id=program_id,
@@ -529,6 +582,7 @@ def _pack_kernel_plan(
                 ),
                 dispatch_proto_ids=tuple(sorted(dispatch_proto_ids)),
                 dispatch_selector_count=dispatch_selector_count,
+                program_error_profile_id=error_profile_id,
             )
         )
 
@@ -540,16 +594,39 @@ def _pack_kernel_plan(
         selector_to_id=selector_to_id,
         op_to_id=op_to_id,
         route_to_program=route_to_program,
+        atom_catalog_labels=tuple(atom_catalog_labels),
+        atom_catalog_effect_ids=tuple(effect_ids),
+        atom_catalog_effect_payloads=tuple(effect_payloads),
+        atom_catalog_async_flags=tuple(step_async_flags),
         segment_offsets=tuple(segment_offsets),
         segment_lengths=tuple(segment_lengths),
         segment_step_ids=tuple(segment_step_ids),
         segment_phases=tuple(segment_phases),
         segment_executor_kinds=tuple(segment_executor_kinds),
+        segment_catalog_offsets=tuple(segment_offsets),
+        segment_catalog_lengths=tuple(segment_lengths),
+        segment_catalog_atom_ids=tuple(segment_step_ids),
+        segment_catalog_phase_ids=tuple(
+            phase_to_id.get(str(normalize_phase(phase)), 0) for phase in segment_phases
+        ),
+        segment_catalog_executor_kinds=tuple(segment_executor_kinds),
+        phase_names=tuple(phase_names),
+        phase_to_id=phase_to_id,
         op_segment_offsets=tuple(op_segment_offsets),
         op_segment_lengths=tuple(op_segment_lengths),
         op_to_segment_ids=tuple(op_to_segment_ids),
+        program_segment_ref_offsets=tuple(op_segment_offsets),
+        program_segment_ref_lengths=tuple(op_segment_lengths),
+        program_segment_refs=tuple(op_to_segment_ids),
+        error_profile_offsets=tuple(error_profile_offsets),
+        error_profile_lengths=tuple(error_profile_lengths),
+        error_profile_phase_ids=tuple(error_profile_phase_ids),
+        error_profile_segment_ref_offsets=tuple(error_profile_segment_ref_offsets),
+        error_profile_segment_ref_lengths=tuple(error_profile_segment_ref_lengths),
+        error_profile_segment_refs=tuple(error_profile_segment_refs),
+        program_error_profile_ids=tuple(program_error_profile_ids),
         step_table=tuple(step_table),
-        step_labels=tuple(step_labels),
+        step_labels=tuple(atom_catalog_labels),
         numba_effect_ids=tuple(effect_ids),
         numba_effect_payloads=tuple(effect_payloads),
         step_async_flags=tuple(step_async_flags),

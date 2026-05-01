@@ -22,6 +22,10 @@ def _sample_packed_kernel() -> PackedKernel:
         dispatch_selector_count=1,
     )
     return PackedKernel(
+        atom_catalog_labels=("step0", "step1", "step2", "step3"),
+        atom_catalog_effect_ids=(0, 1, 2, 3),
+        atom_catalog_effect_payloads=((0,), (1,), (2,), (3,)),
+        atom_catalog_async_flags=(False, False, False, True),
         proto_names=("http.rest",),
         selector_names=("POST /widgets",),
         op_names=("Widget.create",),
@@ -29,14 +33,29 @@ def _sample_packed_kernel() -> PackedKernel:
         selector_to_id={"POST /widgets": 0},
         op_to_id={"Widget.create": 0},
         route_to_program=((0,),),
+        phase_names=("INGRESS_BEGIN", "HANDLER", "POST_RESPONSE", "ON_ERROR"),
+        phase_to_id={
+            "INGRESS_BEGIN": 0,
+            "HANDLER": 1,
+            "POST_RESPONSE": 2,
+            "ON_ERROR": 3,
+        },
         segment_offsets=(0, 2, 3),
         segment_lengths=(2, 1, 1),
         segment_step_ids=(0, 1, 2, 3),
         segment_phases=("INGRESS_BEGIN", "HANDLER", "POST_RESPONSE"),
         segment_executor_kinds=("sync.extractable", "sync.extractable", "async.direct"),
+        segment_catalog_offsets=(0, 2, 3),
+        segment_catalog_lengths=(2, 1, 1),
+        segment_catalog_atom_ids=(0, 1, 2, 3),
+        segment_catalog_phase_ids=(0, 1, 2),
+        segment_catalog_executor_kinds=("sync.extractable", "sync.extractable", "async.direct"),
         op_segment_offsets=(0,),
         op_segment_lengths=(3,),
         op_to_segment_ids=(0, 1, 2),
+        program_segment_ref_offsets=(0,),
+        program_segment_ref_lengths=(3,),
+        program_segment_refs=(0, 1, 2),
         step_table=(lambda ctx: ctx, lambda ctx: ctx, lambda ctx: ctx, lambda ctx: ctx),
         step_labels=("step0", "step1", "step2", "step3"),
         numba_effect_ids=(0, 1, 2, 3),
@@ -44,6 +63,13 @@ def _sample_packed_kernel() -> PackedKernel:
         step_async_flags=(False, False, False, True),
         rest_exact_route_to_program={("POST", "/widgets"): 0},
         hot_op_plans=(hot_op_plan,),
+        error_profile_offsets=(0,),
+        error_profile_lengths=(1,),
+        error_profile_phase_ids=(3,),
+        error_profile_segment_ref_offsets=(0,),
+        error_profile_segment_ref_lengths=(1,),
+        error_profile_segment_refs=(3,),
+        program_error_profile_ids=(0,),
         phase_tree_nodes=(),
         program_phase_tree_offsets=(0,),
         program_phase_tree_lengths=(0,),
@@ -67,6 +93,7 @@ def test_packed_kernel_measurement_is_deterministic() -> None:
     assert first.compact_step_count <= first.step_count
     assert first.compact_segment_count <= first.segment_count
     assert first.max_index_width_bits == 16
+    assert first.shared_error_profile_count == 1
 
 
 def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:

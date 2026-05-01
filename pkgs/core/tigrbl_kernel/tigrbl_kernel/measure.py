@@ -98,20 +98,53 @@ def _pack_section(section_id: int, payload: bytes) -> bytes:
 
 
 def _segment_step_ids(packed: PackedKernel, seg_id: int) -> tuple[int, ...]:
-    offset = int((getattr(packed, "segment_offsets", ()) or ())[seg_id])
-    length = int((getattr(packed, "segment_lengths", ()) or ())[seg_id])
-    step_ids = getattr(packed, "segment_step_ids", ()) or ()
+    offsets = (
+        getattr(packed, "segment_catalog_offsets", ()) or getattr(packed, "segment_offsets", ()) or ()
+    )
+    lengths = (
+        getattr(packed, "segment_catalog_lengths", ()) or getattr(packed, "segment_lengths", ()) or ()
+    )
+    step_ids = (
+        getattr(packed, "segment_catalog_atom_ids", ()) or getattr(packed, "segment_step_ids", ()) or ()
+    )
+    offset = int(offsets[seg_id])
+    length = int(lengths[seg_id])
     return tuple(int(step_ids[offset + idx]) for idx in range(length))
 
 
 def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
-    step_labels = tuple(str(label) for label in (getattr(packed, "step_labels", ()) or ()))
-    effect_ids = [int(value) for value in (getattr(packed, "numba_effect_ids", ()) or ())]
+    step_labels = tuple(
+        str(label)
+        for label in (
+            getattr(packed, "atom_catalog_labels", ())
+            or getattr(packed, "step_labels", ())
+            or ()
+        )
+    )
+    effect_ids = [
+        int(value)
+        for value in (
+            getattr(packed, "atom_catalog_effect_ids", ())
+            or getattr(packed, "numba_effect_ids", ())
+            or ()
+        )
+    ]
     effect_payloads = [
         tuple(int(item) for item in payload)
-        for payload in (getattr(packed, "numba_effect_payloads", ()) or ())
+        for payload in (
+            getattr(packed, "atom_catalog_effect_payloads", ())
+            or getattr(packed, "numba_effect_payloads", ())
+            or ()
+        )
     ]
-    step_async_flags = [1 if bool(flag) else 0 for flag in (getattr(packed, "step_async_flags", ()) or ())]
+    step_async_flags = [
+        1 if bool(flag) else 0
+        for flag in (
+            getattr(packed, "atom_catalog_async_flags", ())
+            or getattr(packed, "step_async_flags", ())
+            or ()
+        )
+    ]
 
     semantic_step_index: dict[tuple[Any, ...], int] = {}
     compact_step_label_hashes: list[int] = []
@@ -190,9 +223,25 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
         compact_segment_phase_refs.extend(phase_refs)
         return cached
 
-    segment_phases = tuple(str(phase) for phase in (getattr(packed, "segment_phases", ()) or ()))
+    segment_phases = tuple(
+        str(phase)
+        for phase in (
+            getattr(packed, "segment_phases", ())
+            or tuple(
+                (getattr(packed, "phase_names", ()) or ())[phase_id]
+                for phase_id in (getattr(packed, "segment_catalog_phase_ids", ()) or ())
+                if 0 <= int(phase_id) < len(getattr(packed, "phase_names", ()) or ())
+            )
+            or ()
+        )
+    )
     segment_executor_kinds = tuple(
-        str(kind) for kind in (getattr(packed, "segment_executor_kinds", ()) or ())
+        str(kind)
+        for kind in (
+            getattr(packed, "segment_catalog_executor_kinds", ())
+            or getattr(packed, "segment_executor_kinds", ())
+            or ()
+        )
     )
     segment_compact_steps: list[tuple[int, ...]] = []
     segment_phase_ids: list[int] = []
@@ -211,15 +260,35 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
         segment_phase_kind_ids.append(_phase_kind_id(normalized))
         segment_executor_kind_ids.append(_EXECUTOR_KIND_IDS.get(segment_executor_kinds[seg_id], 0))
 
-    program_segment_offsets = [int(value) for value in (getattr(packed, "op_segment_offsets", ()) or ())]
-    program_segment_lengths = [int(value) for value in (getattr(packed, "op_segment_lengths", ()) or ())]
-    op_to_segment_ids = [int(value) for value in (getattr(packed, "op_to_segment_ids", ()) or ())]
+    program_segment_offsets = [
+        int(value)
+        for value in (
+            getattr(packed, "program_segment_ref_offsets", ())
+            or getattr(packed, "op_segment_offsets", ())
+            or ()
+        )
+    ]
+    program_segment_lengths = [
+        int(value)
+        for value in (
+            getattr(packed, "program_segment_ref_lengths", ())
+            or getattr(packed, "op_segment_lengths", ())
+            or ()
+        )
+    ]
+    op_to_segment_ids = [
+        int(value)
+        for value in (
+            getattr(packed, "program_segment_refs", ())
+            or getattr(packed, "op_to_segment_ids", ())
+            or ()
+        )
+    ]
 
     compact_program_segment_offsets: list[int] = []
     compact_program_segment_lengths: list[int] = []
     compact_program_segment_refs: list[int] = []
 
-    error_profile_index: dict[tuple[Any, ...], int] = {}
     compact_error_profile_offsets: list[int] = []
     compact_error_profile_lengths: list[int] = []
     compact_error_profile_phase_ids: list[int] = []
@@ -228,20 +297,34 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
     compact_error_profile_segment_refs: list[int] = []
     compact_program_error_profile_ids: list[int] = []
 
-    def compact_error_profile_id_for(profile_entries: tuple[tuple[int, tuple[int, ...]], ...]) -> int:
-        cached = error_profile_index.get(profile_entries)
-        if cached is not None:
-            return cached
-        cached = len(compact_error_profile_offsets)
-        error_profile_index[profile_entries] = cached
-        compact_error_profile_offsets.append(len(compact_error_profile_phase_ids))
-        compact_error_profile_lengths.append(len(profile_entries))
-        for phase_id, seg_refs in profile_entries:
-            compact_error_profile_phase_ids.append(phase_id)
-            compact_error_profile_segment_offsets.append(len(compact_error_profile_segment_refs))
-            compact_error_profile_segment_lengths.append(len(seg_refs))
-            compact_error_profile_segment_refs.extend(seg_refs)
-        return cached
+    packed_error_profile_offsets = list(
+        getattr(packed, "error_profile_offsets", ()) or ()
+    )
+    if packed_error_profile_offsets:
+        packed_error_profile_lengths = list(
+            getattr(packed, "error_profile_lengths", ()) or ()
+        )
+        packed_error_profile_phase_ids = list(
+            getattr(packed, "error_profile_phase_ids", ()) or ()
+        )
+        packed_error_profile_segment_offsets = list(
+            getattr(packed, "error_profile_segment_ref_offsets", ()) or ()
+        )
+        packed_error_profile_segment_lengths = list(
+            getattr(packed, "error_profile_segment_ref_lengths", ()) or ()
+        )
+        packed_error_profile_segment_refs = list(
+            getattr(packed, "error_profile_segment_refs", ()) or ()
+        )
+        compact_error_profile_offsets.extend(packed_error_profile_offsets)
+        compact_error_profile_lengths.extend(packed_error_profile_lengths)
+        compact_error_profile_phase_ids.extend(packed_error_profile_phase_ids)
+        compact_error_profile_segment_offsets.extend(packed_error_profile_segment_offsets)
+        compact_error_profile_segment_lengths.extend(packed_error_profile_segment_lengths)
+        compact_error_profile_segment_refs.extend(packed_error_profile_segment_refs)
+        compact_program_error_profile_ids.extend(
+            int(value) for value in (getattr(packed, "program_error_profile_ids", ()) or ())
+        )
 
     for program_id, seg_offset in enumerate(program_segment_offsets):
         seg_length = program_segment_lengths[program_id] if program_id < len(program_segment_lengths) else 0
@@ -300,13 +383,17 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
         compact_program_segment_lengths.append(
             len(compact_program_segment_refs) - compact_program_segment_offsets[-1]
         )
-        error_profile_entries = tuple(
-            (phase_id, tuple(seg_refs))
-            for phase_id, seg_refs in sorted(error_phase_segments.items())
-        )
-        compact_program_error_profile_ids.append(
-            compact_error_profile_id_for(error_profile_entries)
-        )
+        if not packed_error_profile_offsets:
+            compact_program_error_profile_ids.append(len(compact_error_profile_offsets))
+            compact_error_profile_offsets.append(len(compact_error_profile_phase_ids))
+            compact_error_profile_lengths.append(len(error_phase_segments))
+            for phase_id, seg_refs in sorted(error_phase_segments.items()):
+                compact_error_profile_phase_ids.append(phase_id)
+                compact_error_profile_segment_offsets.append(
+                    len(compact_error_profile_segment_refs)
+                )
+                compact_error_profile_segment_lengths.append(len(seg_refs))
+                compact_error_profile_segment_refs.extend(seg_refs)
 
     route_entries: list[tuple[int, int, int]] = []
     for proto_id, row in enumerate((getattr(packed, "route_to_program", ()) or ())):
