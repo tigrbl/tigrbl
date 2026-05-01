@@ -121,6 +121,10 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
             or ()
         )
     )
+    opcode_ids = [
+        int(value)
+        for value in (getattr(packed, "atom_catalog_opcode_ids", ()) or ())
+    ]
     effect_ids = [
         int(value)
         for value in (
@@ -147,7 +151,7 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
     ]
 
     semantic_step_index: dict[tuple[Any, ...], int] = {}
-    compact_step_label_hashes: list[int] = []
+    compact_step_opcode_ids: list[int] = []
     compact_step_effect_ids: list[int] = []
     compact_step_payload_offsets: list[int] = []
     compact_step_payload_lengths: list[int] = []
@@ -157,14 +161,15 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
 
     for step_id, label in enumerate(step_labels):
         payload = effect_payloads[step_id] if step_id < len(effect_payloads) else ()
+        opcode_id = opcode_ids[step_id] if step_id < len(opcode_ids) else step_id
         effect_id = effect_ids[step_id] if step_id < len(effect_ids) else 0
         async_flag = step_async_flags[step_id] if step_id < len(step_async_flags) else 0
-        signature = (label, effect_id, payload, async_flag)
+        signature = (opcode_id, effect_id, payload, async_flag)
         compact_step_id = semantic_step_index.get(signature)
         if compact_step_id is None:
-            compact_step_id = len(compact_step_label_hashes)
+            compact_step_id = len(compact_step_opcode_ids)
             semantic_step_index[signature] = compact_step_id
-            compact_step_label_hashes.append(_stable_hash64(label))
+            compact_step_opcode_ids.append(opcode_id)
             compact_step_effect_ids.append(effect_id)
             compact_step_payload_offsets.append(len(compact_step_payload_values))
             compact_step_payload_lengths.append(len(payload))
@@ -425,7 +430,7 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
     ]
 
     return {
-        "compact_step_label_hashes": compact_step_label_hashes,
+        "compact_step_opcode_ids": compact_step_opcode_ids,
         "compact_step_effect_ids": compact_step_effect_ids,
         "compact_step_payload_offsets": compact_step_payload_offsets,
         "compact_step_payload_lengths": compact_step_payload_lengths,
@@ -553,7 +558,7 @@ def build_packed_kernel_measurement_view(packed: PackedKernel) -> dict[str, Any]
         "hot_op_plans": hot_plan_view,
         "executor_kind": str(getattr(packed, "executor_kind", "python")),
         "compact_image": {
-            "compact_step_count": len(compact["compact_step_label_hashes"]),
+            "compact_step_count": len(compact["compact_step_opcode_ids"]),
             "compact_segment_count": len(compact["compact_segment_executor_kinds"]),
             "compact_program_segment_ref_count": len(
                 compact["compact_program_segment_refs"]
@@ -566,12 +571,18 @@ def build_packed_kernel_measurement_view(packed: PackedKernel) -> dict[str, Any]
             "externalized_prelude_step_count": len(compact["prelude_step_ids"]),
             "phase_count": int(compact["phase_count"]),
             "method_count": int(compact["method_count"]),
+            "compact_opcode_count": len(
+                set(int(value) for value in compact["compact_step_opcode_ids"])
+            ),
         },
     }
 
 
 def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     compact = _build_compact_image_parts(packed)
+    opcode_width_bits, opcode_payload = _pack_index_array(
+        compact["compact_step_opcode_ids"]
+    )
     step_width_bits, step_payload = _pack_index_array(compact["compact_segment_step_refs"])
     phase_width_bits, phase_payload = _pack_index_array(compact["compact_segment_phase_refs"])
     program_ref_width_bits, program_ref_payload = _pack_index_array(
@@ -596,6 +607,7 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     exact_program_width_bits, exact_program_payload = _pack_index_array(exact_program_ids)
 
     max_index_width_bits = max(
+        opcode_width_bits,
         step_width_bits,
         phase_width_bits,
         program_ref_width_bits,
@@ -612,7 +624,7 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
         b"TGPKSOA1",
         1,
         max_index_width_bits,
-        len(compact["compact_step_label_hashes"]),
+        len(compact["compact_step_opcode_ids"]),
         len(compact["compact_segment_executor_kinds"]),
         len(compact["compact_program_segment_offsets"]),
         len(compact["compact_error_profile_offsets"]),
@@ -624,7 +636,7 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     )
 
     sections = [
-        _pack_section(1, _pack_u64(compact["compact_step_label_hashes"])),
+        _pack_section(1, struct.pack("<H", opcode_width_bits) + opcode_payload),
         _pack_section(2, _pack_u16(compact["compact_step_effect_ids"])),
         _pack_section(3, _pack_u32(compact["compact_step_payload_offsets"])),
         _pack_section(4, _pack_u16(compact["compact_step_payload_lengths"])),

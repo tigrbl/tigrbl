@@ -149,6 +149,8 @@ class PackedKernel:
     route_to_program: Any = None
 
     atom_catalog_labels: tuple[str, ...] = ()
+    atom_catalog_opcode_ids: tuple[int, ...] = ()
+    atom_opcode_keys: tuple[str, ...] = ()
     atom_catalog_effect_ids: tuple[int, ...] = ()
     atom_catalog_effect_payloads: tuple[tuple[int, ...], ...] = ()
     atom_catalog_async_flags: tuple[bool, ...] = ()
