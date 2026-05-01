@@ -20,6 +20,11 @@ body: |-
   Executor code MUST NOT author protocol policy, transport-chain structure, callback-fence policy, subevent lookup tables, segment descriptions, segment fusion rules, subevent transaction policy, or similar control-flow artifacts at runtime.
   
   Kernel compilation owns plan authorship. Atoms own concrete executable step behavior. Engines own storage/session/provider behavior. Executors only traverse the compiled plan, instantiate execution context, invoke planned atoms and engine hooks, and carry plan-defined results and errors forward.
+
+  All three implementation layers touched by execution flow, `tigrbl_kernel`, `tigrbl_atoms`, and `tigrbl_runtime`, MUST also follow these structural constraints:
+  - zero dynamic field lookup
+  - cache-friendly layout
+  - protocol-agnostic payload
   
   ## Context
   The current runtime surface contains helper modules that reconstruct or restate protocol-chain structure, callback policy, subevent handler lookup, transaction policy, and related execution metadata outside the compiled `KernelPlan`.
@@ -38,6 +43,8 @@ body: |-
   
   ## Consequences
   - Runtime helper modules that encode transport chains, callback-fence policy, handler lookup policy, fusion policy, or transaction-unit policy outside the compiled plan are architectural debt and should be migrated toward kernel- or atom-owned surfaces.
+  - Execution-path data structures should prefer fixed-shape rows, typed fields, stable tuple/dict layouts, and plan-addressable slots over reflection-heavy, shape-varying, or protocol-specific payload objects.
+  - Runtime-path code should avoid dynamic field discovery such as opportunistic attribute probing or payload-shape guessing when a compiled field, fixed key, or typed slot can be used instead.
   - New execution behavior should be reviewed by asking two questions:
     1. Is this deciding what steps exist or how they are arranged? If yes, it belongs in `tigrbl_kernel`.
     2. Is this implementing a concrete step that a plan can invoke? If yes, it belongs in `tigrbl_atoms` or an engine package.
