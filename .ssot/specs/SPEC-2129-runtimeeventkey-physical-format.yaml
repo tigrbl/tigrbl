@@ -22,16 +22,18 @@ body: |-
   Define fixed-width runtime event-key physical layouts for dispatch, cache, audit, and event uniqueness use cases.
   
   ## Base Header
-  The base header fields are key_kind:u8, protocol:u8, binding:u8, phase:u8, resource_code:u16 or u32 according to profile, op_code:u16, route_or_method_id:u32, param_shape_id:u32, identity_shape_id:u32, identity_count:u8, flags:u8, and identity_vector_offset:u32 when a vector sidecar is present.
+  The base header fields are key_kind:u8, protocol:u8, binding:u8, phase:u8, resource_code:u16 or u32 according to profile, op_code:u16, route_or_method_id:u16 or u32 according to profile, param_shape_id:u16 or u32 according to profile, identity_shape_id:u16 or u32 according to profile, identity_count:u8, flags:u8, and identity_vector_offset:u32 when a vector sidecar is present.
   
   ## Variants
-  Supported variants include EventKeyStatic, EventKeyRoute, EventKeyRouteIdentity64, EventKeyRouteIdentity128, EventKeyRouteIdentity256, and EventKeyHashedIdentity. Variants must declare field order, size, required flags, and optional tail fields.
+  Supported variants include EventKeyStatic, EventKeyRoute, EventKeyRouteIdentity64, EventKeyRouteIdentity128, EventKeyRouteIdentity256, EventKeyHashedIdentity, EventKeyRouteIdentitySplitAA32, EventKeyRouteIdentitySplitAAA32, and EventKeyRouteIdentitySplitAAAA32. Variants must declare field order, size, required flags, and optional tail fields.
   
   ## Optional Fields
-  Optional fields include identity_hash_128, identity_hash_256, event_family code, chain_id:u32, atom_program_id:u32, and context/slab offsets.
+  Optional fields include identity_hash_128, identity_hash_256, event_family code, chain_id:u32, atom_program_id:u16 or u32 according to profile, and context/slab offsets.
   
   ## Dispatch Rule
   Ordinary phase-chain dispatch uses route, operation, phase, protocol, binding, chain, and shape metadata. Concrete identity values are attached by vector offset or hash only when required by the use case.
+
+  Event-key variants must prefer the narrowest valid widths for resource codes, route or method ids, shape ids, and atom-program references. When multiple variants satisfy the same semantic contract, the default compiled choice must be the fastest measured valid variant for that use case.
   
   ## Failure Rule
   Unknown key kinds, unsupported versions, invalid flags, out-of-bounds offsets, mismatched identity counts, or truncated headers fail before atom execution.

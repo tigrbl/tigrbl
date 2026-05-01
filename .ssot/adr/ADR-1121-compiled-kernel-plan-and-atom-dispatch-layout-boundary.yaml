@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Compiled runtime kernel plans and atom dispatch metadata are runtime-executable physical artifacts separate from their semantic source specifications. The kernel compiler may lower AppSpec, RouterSpec, BindingSpec, OpSpec, hook declarations, and atom legality inputs into compact plan records, dense dispatch tables, fixed-width event metadata, callback-fence references, and packed or fused executor segments."
+summary: "Compiled runtime kernel plans and atom dispatch metadata are runtime-executable physical artifacts separate from their semantic source specifications. The kernel compiler may lower AppSpec, RouterSpec, BindingSpec, OpSpec, hook declarations, and atom legality inputs into deduplicated compact plan records, dense dispatch tables, fixed-width event metadata, callback-fence references, and packed or fused executor segments."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -19,20 +19,22 @@ status_notes:
 references: []
 body: |-
   ## Decision
-  Compiled runtime kernel plans and atom dispatch metadata are runtime-executable physical artifacts separate from their semantic source specifications. The kernel compiler may lower AppSpec, RouterSpec, BindingSpec, OpSpec, hook declarations, and atom legality inputs into compact plan records, dense dispatch tables, fixed-width event metadata, callback-fence references, and packed or fused executor segments.
+  Compiled runtime kernel plans and atom dispatch metadata are runtime-executable physical artifacts separate from their semantic source specifications. The kernel compiler may lower AppSpec, RouterSpec, BindingSpec, OpSpec, hook declarations, and atom legality inputs into deduplicated compact plan records, dense dispatch tables, fixed-width event metadata, callback-fence references, and packed or fused executor segments.
   
   This boundary covers atoms, atom tags, phase and subevent dispatch, RuntimeEventKey metadata, phase-chain and phase-tree records, event-family fields, callback fence metadata, identity references, scalar metadata references, plan offsets, plan lengths, and hot/cold metadata splits used by runtime execution.
   
   ## Rationale
   The kernel plan is not documentation, not an engine storage record, and not a semantic object graph. It is the executable dispatch substrate that the runtime traverses repeatedly. Runtime dispatch should scan dense metadata before touching payloads or full semantic objects, and atom selection should prefer stable tags, flags, ids, offsets, lengths, and bounded tables over nested containers and long branch chains.
+
+  Hot execution must not depend on repeated wrapped atom instances, repeated segment definitions, or repeated error-path structure when the same semantics can be represented through catalog dedupe and table references. Structural dedupe is part of the compiled-plan contract, not an optional optimization.
   
   Separating semantic specs from compiled runtime artifacts preserves authoring ergonomics while allowing the execution path to be shaped around locality, predictable control flow, allocation minimization, branch predictability, and Python/Rust parity. It also gives conformance tests precise invariants to verify: valid offsets, legal atom chains, supported versions, zeroed reserved bits, bounded lengths, and deterministic dispatch results.
   
   ## Applied Principles
-  Compiled kernel plans and atom dispatch layouts use schema-first physical layout, fixed-width fields, bit-packed flags, offset tables, structure-of-arrays sidecars where scans dominate, array-like packed segments where whole-record traversal dominates, dense metadata scanning, lazy semantic decoding, payload deferral, state-machine parsing, jump-table or table-driven dispatch where useful, precompiled header decoding, and workload-shaped benchmarking before layouts are frozen.
+  Compiled kernel plans and atom dispatch layouts use schema-first physical layout, fixed-width fields, bit-packed flags, offset tables, structure-of-arrays sidecars where scans dominate, array-like packed segments where whole-record traversal dominates, dense metadata scanning, lazy semantic decoding, payload deferral, state-machine parsing, jump-table or table-driven dispatch where useful, precompiled header decoding, workload-shaped benchmarking before layouts are frozen, and structural dedupe of atoms, segments, error profiles, and cold metadata references where equivalent semantics recur.
   
   ## Consequences
-  Runtime execution code must not require full semantic object reconstruction to determine the next atom, phase, subevent, callback fence, or dispatch branch. Cold diagnostics may retain rich labels, traces, schema names, and explanatory metadata, but hot plan records should carry only the data required to execute or skip work safely.
+  Runtime execution code must not require full semantic object reconstruction to determine the next atom, phase, subevent, callback fence, or dispatch branch. Cold diagnostics may retain rich labels, traces, schema names, and explanatory metadata, but hot plan records should carry only the data required to execute or skip work safely. Compiled plans must expose atom-catalog ids, segment-catalog ids, shared error-profile references, and hot/cold metadata boundaries in ways that let executors traverse the plan without re-materializing semantic wrappers.
   
   Any new compiled-plan physical format requires a SPEC that defines field order, field widths, endianness for portable forms, version handling, reserved bits, offsets, bounds, invalid states, and negative tests. Engine-owned row/page/block/WAL concerns remain out of scope.
   

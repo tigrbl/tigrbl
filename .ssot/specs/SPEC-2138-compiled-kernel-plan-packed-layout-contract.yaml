@@ -23,23 +23,29 @@ body: |-
   
   ## Source And Target Forms
   AppSpec, RouterSpec, BindingSpec, OpSpec, hook declarations, callback declarations, and legality inputs are semantic source forms. A compiled KernelPlan is a runtime-executable target form. The target form MAY use packed records, structure-of-arrays sidecars, atom-chain tables, phase-tree tables, callback-fence tables, cold metadata tables, and identity/scalar reference tables.
+
+  Equivalent atoms and segments must be deduplicated structurally before byte-packing when the dedupe preserves legality, ordering, and barrier semantics. Hot execution must traverse catalog ids and table references rather than repeated wrapped atom objects.
   
   ## Required Plan Sections
-  A packed KernelPlan layout SHOULD define sections for plan header, version, counts, binding records, route records where relevant, phase-chain or phase-tree records, atom-chain table, branch table, callback-fence table, dispatch metadata table, identity/scalar reference table, and cold metadata offsets.
+  A packed KernelPlan layout SHOULD define sections for plan header, version, counts, binding records, route records where relevant, phase-chain or phase-tree records, atom catalog, segment catalog, atom-chain or segment-ref table, branch table, callback-fence table, dispatch metadata table, identity/scalar reference table, error-profile table, program-ref table, and cold metadata offsets.
   
   Each section MUST define field widths, count and offset rules, alignment expectations if any, and invalid states. Portable encoded forms MUST specify endianness. Runtime-only native forms MUST specify producer/consumer compatibility and cannot be treated as durable wire formats.
   
   ## Hot Path Requirements
   Runtime execution MUST be able to traverse atom chains and branch records without reconstructing full semantic specs. Hot records SHOULD include ids, tags, flags, offsets, lengths, and table indexes. Cold records MAY include names, docs labels, trace labels, schema names, and diagnostics metadata.
+
+  Packed plans must use hot/cold splitting, SoA sidecars for scan-heavy metadata, and offsets and lengths instead of nested objects for executable records. Shared error profiles and cold metadata references must be table-addressable rather than inlined repeatedly per program where equivalent semantics recur.
   
   ## Fusion And Barriers
-  Fused executor segments MUST preserve segment fusion barriers, callback fences, error branches, completion fences, phase legality, and atom ordering. A packed layout MUST make barriers visible to the executor without decoding cold metadata.
+  Fused executor segments MUST preserve segment fusion barriers, callback fences, error branches, completion fences, phase legality, and atom ordering. A packed layout MUST make barriers visible to the executor without decoding cold metadata. Segment catalog dedupe must not erase barrier visibility or phase legality boundaries.
   
   ## Invalid States
   Plan decode or materialization MUST fail closed on unsupported version, invalid count, out-of-range table index, dangling offset, illegal atom/phase pairing, illegal branch edge, callback fence mismatch, nonzero reserved bits, or cold metadata offset overflow.
   
   ## Evidence
-  Tests MUST prove semantic-source to packed-plan determinism, packed-plan execution equivalence, barrier preservation, callback-fence preservation, invalid-plan rejection, and Python/Rust plan parity when both lanes consume the layout.
+  Tests MUST prove semantic-source to packed-plan determinism, atom-catalog dedupe determinism for equivalent compiled plans, segment-catalog dedupe determinism for equivalent compiled plans, packed-plan execution equivalence, barrier preservation, callback-fence preservation, invalid-plan rejection, and Python/Rust plan parity when both lanes consume the layout.
+
+  Benchmark evidence should compare the selected default encoding against alternative valid encodings within the same semantic category. Benchmark tables remain informative evidence artifacts; the normative rule is that the fastest measured valid strategy is the default unless width-class or semantic-integrity constraints forbid it.
 spec_kind: "normative"
 adr_ids:
   - "adr:1121"

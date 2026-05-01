@@ -23,23 +23,31 @@ body: |-
   
   ## Width Classes
   - none: zero bytes.
-  - u64: eight bytes, unsigned integer semantics when arithmetic or ordering is required.
-  - u128: sixteen bytes, numeric 128-bit semantics only when declared.
-  - u256: thirty-two bytes, numeric 256-bit semantics only when declared.
+  - u8: one byte, local controlled identity only when the declared category fits 0..255.
+  - u16: two bytes, local controlled identity only when the declared category fits 0..65535.
+  - u32: four bytes, local controlled identity only when the declared category fits 0..4294967295.
+  - u64: eight bytes, unsigned integer semantics when arithmetic, ordering, or larger local controlled identity space is required.
+  - u128: sixteen bytes, numeric 128-bit semantics only when declared for distributed or random identity classes.
+  - u256: thirty-two bytes, numeric 256-bit semantics only when declared for public, long-term, content, or cryptographic identity classes.
   - opaque16: sixteen uninterpreted bytes.
   - opaque32: thirty-two uninterpreted bytes.
   - opaque64: sixty-four uninterpreted bytes.
+  - aa/split: base62 family code lowered to resource_code:u16 plus opaque32 identity bytes.
+  - aaa/split: base62 family code lowered to resource_code:u32 plus opaque32 identity bytes.
+  - aaaa/split: base62 family code lowered to resource_code:u32 plus opaque32 identity bytes.
   - uuid: semantic UUID profile lowered to opaque16.
   - ulid: semantic ULID profile lowered to opaque16.
   
   ## Runtime Rule
   Identity comparison and dispatch use bytes, resource codes, shape IDs, offsets, or hashes. Runtime hot paths do not require Python integer, UUID, ULID, or string objects.
+
+  When multiple identity encodings are semantically valid for the same category, the default compiled/runtime choice must be the fastest measured valid encoding that still satisfies the declared width class and semantic integrity rules.
   
   ## Ordering Rule
   If numeric byte-order comparison is required, numeric identities use big-endian bytes. Opaque identities preserve declared codec byte order. ULID byte order preserves timestamp-first ordering.
   
   ## Boundaries
-  Text and object codecs may exist at API, CLI, config, debug, and log boundaries. Internal vectors and slabs store fixed-width bytes.
+  Text and object codecs may exist at API, CLI, config, debug, and log boundaries. Internal vectors and slabs store fixed-width bytes. Numeric widths and opaque widths are distinct categories; u32 is not interchangeable with opaque32 unless a narrower codec SPEC explicitly declares the conversion.
 spec_kind: "normative"
 adr_ids:
   - "adr:1113"
