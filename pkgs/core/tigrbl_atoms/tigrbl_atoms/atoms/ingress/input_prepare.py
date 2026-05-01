@@ -15,19 +15,33 @@ def _run(obj: object | None, ctx: Any) -> None:
     del obj
     temp = _ensure_temp(ctx)
     ingress = temp.setdefault("ingress", {})
+    hot = temp.setdefault("hot", {})
 
     body = getattr(ctx, "body", ingress.get("body"))
     if isinstance(body, (bytes, bytearray, memoryview)):
-        raw_bytes = bytes(body)
+        raw_bytes = hot.get("body_bytes") if isinstance(hot, dict) else None
+        if not isinstance(raw_bytes, bytes):
+            raw_bytes = bytes(body)
+            if isinstance(hot, dict):
+                hot["body_bytes"] = raw_bytes
+                hot["body_view"] = memoryview(raw_bytes)
         ingress["body_peek"] = raw_bytes[:256]
         content_type = str(
             (getattr(ctx, "headers", {}) or {}).get("content-type", "")
         ).lower()
         if "json" in content_type:
-            try:
-                ingress["body_json"] = json.loads(raw_bytes.decode("utf-8"))
-            except Exception:
-                pass
+            parsed = hot.get("parsed_json") if isinstance(hot, dict) else None
+            loaded = bool(hot.get("parsed_json_loaded")) if isinstance(hot, dict) else False
+            if not loaded:
+                try:
+                    parsed = json.loads(raw_bytes.decode("utf-8"))
+                except Exception:
+                    parsed = None
+                if isinstance(hot, dict):
+                    hot["parsed_json"] = parsed
+                    hot["parsed_json_loaded"] = True
+            if parsed is not None:
+                ingress["body_json"] = parsed
     elif body is not None:
         ingress["body_peek"] = str(body)[:256]
 

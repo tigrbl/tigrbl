@@ -20,6 +20,7 @@ from .atoms import (
     _wrap_atom,
 )
 from .models import HotOpPlan, KernelPlan, OpKey, OpView, PackedKernel
+from .measure import measure_packed_kernel
 from .types import (
     EGRESS_PHASES,
     INGRESS_PHASES,
@@ -453,6 +454,16 @@ def _pack_kernel_plan(
         error_segment_ids: dict[str, list[int]] = {}
         fusible_sync_segment_ids: list[int] = []
         nonfusible_segment_ids: list[int] = []
+        dispatch_proto_ids: set[int] = set()
+        dispatch_selector_count = 0
+
+        for opkey, meta_index in plan.opkey_to_meta.items():
+            if meta_index != program_id:
+                continue
+            proto_id = proto_to_id.get(opkey.proto)
+            if proto_id is not None:
+                dispatch_proto_ids.add(proto_id)
+            dispatch_selector_count += 1
 
         for idx in range(seg_offset, seg_offset + seg_length):
             seg_id = op_to_segment_ids[idx]
@@ -516,6 +527,8 @@ def _pack_kernel_plan(
                     )
                     else "resolver"
                 ),
+                dispatch_proto_ids=tuple(sorted(dispatch_proto_ids)),
+                dispatch_selector_count=dispatch_selector_count,
             )
         )
 
@@ -549,7 +562,7 @@ def _pack_kernel_plan(
     )
     build_python_executor = getattr(self, "_build_python_packed_executor", None)
     build_numba_executor = getattr(self, "_build_numba_packed_executor", None)
-    return replace(
+    measured = replace(
         packed,
         executor=build_python_executor(packed)
         if callable(build_python_executor)
@@ -558,6 +571,7 @@ def _pack_kernel_plan(
         if callable(build_numba_executor)
         else None,
     )
+    return replace(measured, measurement=measure_packed_kernel(measured))
 
 
 def _compile_bootstrap_plan(self, app: Any) -> Dict[str, List[StepFn]]:

@@ -293,6 +293,17 @@ class App(AppBase):
                 app=install_app, router=None, tables=tuple(tables)
             )
 
+    def _run_boot_warmup(self) -> None:
+        if not bool(getattr(self, "_warmup_on_startup", True)):
+            return
+        revision = getattr(self, "_runtime_plan_revision", 0)
+        warm_revision = getattr(self, "_runtime_boot_warm_revision", None)
+        if warm_revision == revision:
+            return
+        self.runtime.compile(self)
+        _resolver.warmup()
+        self._runtime_boot_warm_revision = revision
+
     async def invoke(self, env: GwRawEnvelope) -> None:
         plan, packed_plan = self.runtime.compile(self)
         ctx: dict[str, Any] = {
@@ -414,6 +425,11 @@ class App(AppBase):
             run_handlers = getattr(self, "run_event_handlers", None)
             if callable(run_handlers):
                 await run_handlers("startup")
+            boot_warmup = getattr(self, "_run_boot_warmup", None)
+            if callable(boot_warmup):
+                warmup_result = boot_warmup()
+                if hasattr(warmup_result, "__await__"):
+                    await warmup_result
 
             await send({"type": "lifespan.startup.complete"})
         except Exception as exc:

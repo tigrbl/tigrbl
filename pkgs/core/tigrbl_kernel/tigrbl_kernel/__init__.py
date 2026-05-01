@@ -16,6 +16,11 @@ from .rust_compile import (
     normalize_rust_spec,
 )
 from .rust_plan import RustPlan
+from .measure import (
+    build_packed_kernel_measurement_view,
+    measure_packed_kernel,
+    serialize_packed_kernel_measurement_view,
+)
 
 _LAZY_EXPORTS = {
     "Kernel": "core",
@@ -62,6 +67,11 @@ def build_packed_kernel(app: Any):
     return _kernel().kernel_plan(app).packed
 
 
+def packed_kernel_measurement(app: Any):
+    packed = build_packed_kernel(app)
+    return None if packed is None else measure_packed_kernel(packed)
+
+
 def plan_labels(model: type, alias: str) -> list[str]:
     return _kernel().plan_labels(model, alias)
 
@@ -79,10 +89,14 @@ __all__ = [
     "build_rust_kernel",
     "build_rust_parity_snapshot",
     "build_packed_kernel",
+    "build_packed_kernel_measurement_view",
     "get_cached_specs",
     "build_phase_chains",
+    "measure_packed_kernel",
     "normalize_rust_spec",
+    "packed_kernel_measurement",
     "plan_labels",
+    "serialize_packed_kernel_measurement_view",
     "segment_fusion",
     "transport_atoms",
     "transport_events",

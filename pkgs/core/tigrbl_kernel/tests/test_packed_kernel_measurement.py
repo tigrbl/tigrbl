@@ -1,0 +1,78 @@
+from __future__ import annotations
+
+from tigrbl_kernel.measure import (
+    build_packed_kernel_measurement_view,
+    measure_packed_kernel,
+    serialize_packed_kernel_measurement_view,
+)
+from tigrbl_kernel.models import HotOpPlan, PackedKernel
+
+
+def _sample_packed_kernel() -> PackedKernel:
+    hot_op_plan = HotOpPlan(
+        program_id=0,
+        alias="Widget.create",
+        target="create",
+        ordered_segment_ids=(0, 1),
+        remaining_segment_ids=(2,),
+        fusible_sync_segment_ids=(0, 1),
+        nonfusible_segment_ids=(2,),
+        error_segment_ids={"ON_ERROR": (3,)},
+        dispatch_proto_ids=(0,),
+        dispatch_selector_count=1,
+    )
+    return PackedKernel(
+        proto_names=("http.rest",),
+        selector_names=("POST /widgets",),
+        op_names=("Widget.create",),
+        proto_to_id={"http.rest": 0},
+        selector_to_id={"POST /widgets": 0},
+        op_to_id={"Widget.create": 0},
+        route_to_program=((0,),),
+        segment_offsets=(0, 2, 3),
+        segment_lengths=(2, 1, 1),
+        segment_step_ids=(0, 1, 2, 3),
+        segment_phases=("INGRESS_BEGIN", "HANDLER", "POST_RESPONSE"),
+        segment_executor_kinds=("sync.extractable", "sync.extractable", "async.direct"),
+        op_segment_offsets=(0,),
+        op_segment_lengths=(3,),
+        op_to_segment_ids=(0, 1, 2),
+        step_table=(lambda ctx: ctx, lambda ctx: ctx, lambda ctx: ctx, lambda ctx: ctx),
+        step_labels=("step0", "step1", "step2", "step3"),
+        numba_effect_ids=(0, 1, 2, 3),
+        numba_effect_payloads=((0,), (1,), (2,), (3,)),
+        step_async_flags=(False, False, False, True),
+        rest_exact_route_to_program={("POST", "/widgets"): 0},
+        hot_op_plans=(hot_op_plan,),
+        phase_tree_nodes=(),
+        program_phase_tree_offsets=(0,),
+        program_phase_tree_lengths=(0,),
+    )
+
+
+def test_packed_kernel_measurement_is_deterministic() -> None:
+    packed = _sample_packed_kernel()
+
+    first = measure_packed_kernel(packed)
+    second = measure_packed_kernel(packed)
+
+    assert first.raw_bytes == second.raw_bytes
+    assert first.compressed_bytes == second.compressed_bytes
+    assert first.segment_count == 3
+    assert first.step_count == 4
+    assert first.selector_count == 1
+    assert first.proto_count == 1
+    assert first.exact_route_count == 1
+    assert first.fusible_sync_segment_count == 2
+
+
+def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
+    packed = _sample_packed_kernel()
+
+    view = build_packed_kernel_measurement_view(packed)
+    serialized_a = serialize_packed_kernel_measurement_view(packed)
+    serialized_b = serialize_packed_kernel_measurement_view(packed)
+
+    assert view["route_shape"]["exact_route_count"] == 1
+    assert view["hot_op_plans"][0]["dispatch_selector_count"] == 1
+    assert serialized_a == serialized_b

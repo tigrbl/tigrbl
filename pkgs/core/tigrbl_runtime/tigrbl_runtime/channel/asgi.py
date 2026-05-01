@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import deque
 import json
 from typing import Any, Mapping
 from urllib.parse import parse_qs
@@ -162,7 +163,15 @@ async def _receive_websocket_message(env: Any, channel: OpChannel, ctx: Any) -> 
         message = await receive()
         state["last_event"] = message
     if message.get("type") == "websocket.receive":
-        state.setdefault("receive_queue", []).append(message)
+        queue = state.get("receive_queue")
+        if isinstance(queue, deque):
+            queue.append(message)
+        else:
+            next_queue = deque()
+            if isinstance(queue, list):
+                next_queue.extend(queue)
+            next_queue.append(message)
+            state["receive_queue"] = next_queue
         payload = message.get("bytes")
         if payload is None and message.get("text") is not None:
             payload = str(message.get("text")).encode("utf-8")

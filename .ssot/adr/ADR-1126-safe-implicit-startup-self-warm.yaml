@@ -1,0 +1,59 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1126"
+number: 1126
+slug: "safe-implicit-startup-self-warm"
+title: "Safe implicit startup self-warm"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl SHALL perform safe implicit self-warm during application startup by default."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern default safe implicit one-shot startup self-warm without diagnostics dependency."
+    at: "2026-05-01T01:27:51Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl SHALL perform safe implicit self-warm during application startup by default.
+  
+  The startup warm path MUST run before `lifespan.startup.complete` is emitted and after user-registered startup handlers have completed.
+  
+  The warm path MUST be one-shot per runtime plan revision within a process. It MUST NOT execute per request and MUST NOT depend on a diagnostics endpoint, synthetic `/healthz` request, or other benchmark-only traffic to prime the runtime.
+  
+  Safe startup self-warm includes:
+  - compiling and caching the current runtime `KernelPlan` / packed plan for the app
+  - ensuring registered providers are warmed through their supported provider warmup boundary
+  
+  Safe startup self-warm MUST NOT:
+  - invoke ordinary user-facing operations as a warmup mechanism
+  - require mounted diagnostics, docs, or health surfaces
+  - hide benchmark-specific traffic inside the framework
+  - run repeatedly once the current plan revision is already warmed
+  
+  Startup self-warm is enabled by default and MAY be disabled only through an explicit application configuration control.
+  
+  ## Context
+  The runtime currently benefits from plan compilation and provider initialization before the first measured request, but relying on external traffic such as diagnostics probes creates non-deterministic and benchmark-sensitive warmup behavior.
+  
+  That behavior weakens fairness, obscures startup semantics, and makes steady-state performance depend on whether a particular operator or benchmark happened to hit a system endpoint first.
+  
+  ## Safety Policy
+  1. Warmup occurs only on the startup path.
+  2. Warmup runs only after startup handlers have finished mutating app state and route topology.
+  3. Warmup is bounded to compile/cache/provider-ensure work and does not execute user operations.
+  4. Warmup is keyed to the current runtime plan revision so a given revision warms once per process.
+  5. Warmup failures are startup failures. The framework MUST fail closed rather than declaring startup complete with a partially warmed or broken required execution path.
+  
+  ## Consequences
+  - First-request behavior is more stable because plan and provider warmup happen before the app reports readiness.
+  - Benchmarks can remove synthetic untimed warmup traffic and still measure a fairly warmed default runtime.
+  - Diagnostics routes are no longer a hidden prerequisite for fair startup behavior.
+  - Runtime startup semantics become an explicit governed contract rather than an incidental side effect.
+  
+  ## Related
+  Extends ADR-1016, ADR-1100, ADR-1121, ADR-1124, and ADR-1125 with an explicit startup-warm policy for the compiled runtime path.
