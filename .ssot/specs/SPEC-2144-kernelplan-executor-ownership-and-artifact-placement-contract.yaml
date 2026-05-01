@@ -16,6 +16,48 @@ references: []
 body: |-
   ## Intent
   Define which execution responsibilities belong to KernelPlan compilation, atom implementation, engine implementation, and executors that consume a compiled plan without re-authoring plan semantics at runtime.
+
+  This SPEC also defines execution-path structural constraints shared by `tigrbl_kernel`, `tigrbl_atoms`, and `tigrbl_runtime`:
+  - zero dynamic field lookup
+  - cache-friendly layout
+  - protocol-agnostic payload
+
+  These constraints are normative for execution-path data and code, not advisory style preferences.
+
+  ## Shared Structural Constraints
+  ### Zero dynamic field lookup
+  Execution-path code MUST prefer precompiled field selection, fixed keys, typed slots, or stable row layouts.
+
+  Execution-path code MUST NOT depend on:
+  - opportunistic `getattr` or `hasattr` probing across multiple candidate field names
+  - protocol-specific payload guessing based on ad hoc key presence
+  - runtime reconstruction of semantic meaning by scanning heterogeneous payload shapes
+
+  Bounded cache/index acceleration over already-compiled plan data is allowed. Reflection-oriented fallback logic is not.
+
+  ### Cache-friendly layout
+  Execution-path artifacts MUST favor stable, compact, repeated layouts that are cheap to traverse.
+
+  Preferred layouts include:
+  - fixed-order tuples
+  - stable dict rows with canonical keys
+  - typed records whose fields are known before execution
+  - compiled tables and indices with deterministic key structure
+
+  Execution-path artifacts SHOULD avoid per-request shape drift, nested semantic-object reconstruction, and repeatedly materializing equivalent protocol-specific wrapper objects.
+
+  ### Protocol-agnostic payload
+  Payload passed across execution boundaries SHOULD be protocol-agnostic unless a boundary is explicitly protocol-specific.
+
+  Kernel-owned plan artifacts, atom inputs/outputs, and executor-carried payload SHOULD encode canonical semantics such as:
+  - exchange
+  - family
+  - subevent
+  - framing
+  - completion state
+  - typed error context
+
+  They SHOULD NOT rely on transport-specific object shape as the primary semantic carrier when a canonical payload form can be compiled or normalized once.
   
   ## Authority Split
   ### Kernel authority
@@ -30,6 +72,8 @@ body: |-
   - subevent handler lookup tables
   - subevent transaction-unit tables
   - dispatch metadata sufficient to choose a plan path without semantic-object reconstruction
+
+  Kernel-owned artifacts MUST be emitted in layouts that satisfy the shared structural constraints. Compiler output is the primary mechanism for eliminating dynamic lookup and protocol-specific semantic guessing from execution.
   
   ### Atom authority
   Atoms own concrete executable units referenced by the plan.
@@ -43,6 +87,7 @@ body: |-
   - rollback and completion-fence-local operations
   
   Atoms MUST be invokable by plan reference. They MUST NOT require executor-owned ad hoc policy that recreates chain structure or legality decisions outside the plan.
+  Atoms MUST consume and produce stable execution payloads rather than discovering semantics through protocol-specific object inspection where canonical fields are available.
   
   ### Engine authority
   Engines own provider/session/storage behavior.
@@ -73,6 +118,7 @@ body: |-
   - construct new subevent transaction policy
   - invent new fusion groupings or fusion barriers
   - rebuild compiler-owned legality or dispatch tables on the fly except for bounded cache/index acceleration over already-compiled plan data
+  - recover semantics by dynamic field probing when plan-selected fields or canonical payload rows are available
   
   ## Placement Tests
   A new function or module belongs in `tigrbl_kernel` if it answers any of these:
@@ -98,12 +144,15 @@ body: |-
   - runtime-owned callback policy descriptors that are not compiler-produced artifacts
   - runtime-owned subevent transaction wrappers that decide policy rather than invoking plan-selected policy
   - executor code that acts as a fallback compiler for missing plan sections
+  - execution-path payloads whose meaning depends on dynamic field discovery rather than canonical compiled fields
+  - protocol-specific execution rows where a canonical protocol-agnostic payload form should exist
   
   ## Evidence
   Tests and review evidence for this SPEC MUST prove:
   - compiled plan artifacts contain the authority needed for execution
   - executor traversal works by consuming compiled plan sections rather than reconstructing policy
   - atom implementations are invokable via plan references
+  - execution-path payload and table layouts avoid dynamic semantic lookup in the governed path
   - invalid placements are removed or tracked to migration closure where legacy code remains
 spec_kind: "normative"
 adr_ids:
