@@ -1,0 +1,47 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1125"
+number: 1125
+slug: "kernelplan-only-executor-boundary"
+title: "KernelPlan-only executor boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Executors consume compiled `KernelPlan` artifacts only."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  Executors consume compiled `KernelPlan` artifacts only.
+  
+  Executor code MUST NOT author protocol policy, transport-chain structure, callback-fence policy, subevent lookup tables, segment descriptions, segment fusion rules, subevent transaction policy, or similar control-flow artifacts at runtime.
+  
+  Kernel compilation owns plan authorship. Atoms own concrete executable step behavior. Engines own storage/session/provider behavior. Executors only traverse the compiled plan, instantiate execution context, invoke planned atoms and engine hooks, and carry plan-defined results and errors forward.
+  
+  ## Context
+  The current runtime surface contains helper modules that reconstruct or restate protocol-chain structure, callback policy, subevent handler lookup, transaction policy, and related execution metadata outside the compiled `KernelPlan`.
+  
+  That duplicates compiler authority, makes runtime a shadow compiler, and weakens traceability because plan structure can drift between compiler-owned artifacts and runtime-owned helper logic.
+  
+  ## Ownership Rules
+  1. `tigrbl_kernel` owns plan authorship.
+     This includes transport-chain compilation, segment description construction, fusion planning, callback metadata compilation, subevent lookup table construction, legality enforcement, and subevent transaction-policy compilation.
+  2. `tigrbl_atoms` own executable step implementation.
+     This includes concrete emit/receive/frame/decode/encode units, callback invocation atoms, channel-state mutation atoms, rollback atoms, response-shaping atoms, and similar step-local behavior.
+  3. `engines` own engine behavior.
+     This includes session acquisition, storage/provider semantics, persistence behavior, transaction semantics implemented at the engine boundary, and engine-specific error behavior.
+  4. `tigrbl_runtime` executors consume plans only.
+     Executors may read plan sections, build per-request context, walk phase/segment/branch structures, invoke referenced atoms and engine hooks, and apply plan-defined error routing. They MUST NOT synthesize new protocol control flow or new plan metadata families.
+  
+  ## Consequences
+  - Runtime helper modules that encode transport chains, callback-fence policy, handler lookup policy, fusion policy, or transaction-unit policy outside the compiled plan are architectural debt and should be migrated toward kernel- or atom-owned surfaces.
+  - New execution behavior should be reviewed by asking two questions:
+    1. Is this deciding what steps exist or how they are arranged? If yes, it belongs in `tigrbl_kernel`.
+    2. Is this implementing a concrete step that a plan can invoke? If yes, it belongs in `tigrbl_atoms` or an engine package.
+  - Executor changes should trend toward smaller orchestration code and richer compiled-plan authority.
+  
+  ## Related
+  Extends ADR-1100, ADR-1121, ADR-1008, ADR-1016, and ADR-1120. This ADR sharpens those decisions by making the executor boundary explicit: the executor is not a second compiler.
