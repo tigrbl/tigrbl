@@ -29,6 +29,7 @@ from .types import (
     LOWER_KIND_SYNC_EXTRACTABLE,
 )
 from .utils import (
+    _atom_name,
     _classify_step_lowering,
     _effect_descriptor_for_step,
     _label_step,
@@ -269,13 +270,29 @@ def _structural_atom_signature(
     step: StepFn,
     phase: str,
 ) -> tuple[str, int, tuple[int, ...], bool]:
-    label = _label_step(step, phase)
+    raw_label = getattr(step, "__tigrbl_label", None) or _label_step(step, phase)
+    label = str(raw_label)
+    label_prefix, marker, label_suffix = label.rpartition("@")
+    if marker and str(normalize_phase(label_suffix)) == str(normalize_phase(phase)):
+        label = label_prefix
     effect_id, payload = _effect_descriptor_for_step(step)
     is_async = bool(getattr(step, "_tigrbl_is_async", False))
     if not is_async:
         marker = getattr(step, "__code__", None)
         is_async = bool(getattr(marker, "co_flags", 0) & 0x80)
     return (label, effect_id, payload, is_async)
+
+
+def _structural_atom_opcode_key(step: StepFn, phase: str) -> str:
+    atom_name = _atom_name(step)
+    if isinstance(atom_name, str) and atom_name:
+        return atom_name
+    raw_label = getattr(step, "__tigrbl_label", None) or _label_step(step, phase)
+    label = str(raw_label)
+    label_prefix, marker, _ = label.rpartition("@")
+    if marker:
+        return label_prefix
+    return label
 
 
 def _build_route_matrix(
@@ -391,8 +408,11 @@ def _pack_kernel_plan(
     phase_to_id = {name: idx for idx, name in enumerate(phase_names)}
 
     atom_index: dict[tuple[str, int, tuple[int, ...], bool], int] = {}
+    atom_opcode_index: dict[str, int] = {}
     step_table: list[StepFn] = []
     atom_catalog_labels: list[str] = []
+    atom_catalog_opcode_ids: list[int] = []
+    atom_opcode_keys: list[str] = []
     effect_ids: list[int] = []
     effect_payloads: list[tuple[int, ...]] = []
     step_async_flags: list[bool] = []
@@ -432,8 +452,15 @@ def _pack_kernel_plan(
                 if step_id is None:
                     step_id = len(step_table)
                     atom_index[signature] = step_id
+                    opcode_key = _structural_atom_opcode_key(step, phase)
+                    opcode_id = atom_opcode_index.get(opcode_key)
+                    if opcode_id is None:
+                        opcode_id = len(atom_opcode_keys)
+                        atom_opcode_index[opcode_key] = opcode_id
+                        atom_opcode_keys.append(opcode_key)
                     step_table.append(step)
                     atom_catalog_labels.append(signature[0])
+                    atom_catalog_opcode_ids.append(opcode_id)
                     effect_ids.append(signature[1])
                     effect_payloads.append(signature[2])
                     step_async_flags.append(signature[3])
@@ -595,6 +622,8 @@ def _pack_kernel_plan(
         op_to_id=op_to_id,
         route_to_program=route_to_program,
         atom_catalog_labels=tuple(atom_catalog_labels),
+        atom_catalog_opcode_ids=tuple(atom_catalog_opcode_ids),
+        atom_opcode_keys=tuple(atom_opcode_keys),
         atom_catalog_effect_ids=tuple(effect_ids),
         atom_catalog_effect_payloads=tuple(effect_payloads),
         atom_catalog_async_flags=tuple(step_async_flags),
