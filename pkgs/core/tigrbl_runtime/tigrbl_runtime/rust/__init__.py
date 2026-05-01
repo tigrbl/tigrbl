@@ -14,7 +14,7 @@ from .callbacks import (
     register_python_hook,
     registered_python_callbacks,
 )
-from .codec import (
+from tigrbl_kernel.rust_spec import (
     build_rust_app_spec,
     coerce_rust_spec_dict,
     coerce_rust_spec_json,

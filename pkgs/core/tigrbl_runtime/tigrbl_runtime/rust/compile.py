@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from .codec import coerce_rust_spec_json
+from tigrbl_kernel.rust_spec import coerce_rust_spec_json
 from .errors import RustBindingsUnavailableError
 from ._load_rust import load_rust_module
 

@@ -33,7 +33,7 @@ certification release in the SSOT registry inside frozen boundary
 `rel:tigrbl-0.3.19` as historical published release evidence while exposing
 one explicit public package-certification rail. The boundary contains 251
 implemented features, 132 release claims, and 160 evidence rows.
-Certification passed with no release-guard failures.
+Certification, promotion, and publication passed with no release-guard failures.
 
 This certification is boundary-scoped. AsyncAPI UI, JSON Schema UI, and
 OIDC/OAuth/JWT/DPoP behavior beyond OAS/OpenRPC security-scheme documentation

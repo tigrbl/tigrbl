@@ -5,7 +5,7 @@ from tigrbl_core.config.constants import (
     TIGRBL_DEFAULT_ROOT_ALIAS,
     TIGRBL_DEFAULT_ROOT_METHOD,
 )
-from tigrbl_runtime.rust.codec import build_rust_app_spec
+from tigrbl_kernel.rust_spec import build_rust_app_spec
 
 
 def test_rust_codec_normalizes_runtime_callbacks_and_metadata() -> None:

@@ -1,0 +1,114 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2144"
+number: 2144
+slug: "kernelplan-executor-ownership-and-artifact-placement-contract"
+title: "KernelPlan executor ownership and artifact placement contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define which execution responsibilities belong to KernelPlan compilation, atom implementation, engine implementation, and executors that consume a compiled plan without re-authoring plan semantics at runtime."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  Define which execution responsibilities belong to KernelPlan compilation, atom implementation, engine implementation, and executors that consume a compiled plan without re-authoring plan semantics at runtime.
+  
+  ## Authority Split
+  ### Kernel authority
+  The kernel compiler owns all artifacts that decide what execution steps exist, how they are grouped, what order or barriers they preserve, which callback fences apply, which subevent handlers are selected, and which transaction policy applies to a subevent or phase path.
+  
+  Kernel-owned artifacts include, at minimum:
+  - transport atom chains and protocol-specific chain variants
+  - segment descriptions and segment classes
+  - fused segment layouts and fusion barriers
+  - phase trees, phase chains, and legality-derived branch edges
+  - callback metadata and callback-fence tables
+  - subevent handler lookup tables
+  - subevent transaction-unit tables
+  - dispatch metadata sufficient to choose a plan path without semantic-object reconstruction
+  
+  ### Atom authority
+  Atoms own concrete executable units referenced by the plan.
+  
+  Atom-owned behavior includes, at minimum:
+  - transport accept/receive/emit/close operations
+  - framing decode/encode operations
+  - callback invoke behavior
+  - channel-state mutation behavior
+  - response-shaping and error-shaping behavior
+  - rollback and completion-fence-local operations
+  
+  Atoms MUST be invokable by plan reference. They MUST NOT require executor-owned ad hoc policy that recreates chain structure or legality decisions outside the plan.
+  
+  ### Engine authority
+  Engines own provider/session/storage behavior.
+  
+  Engine-owned behavior includes, at minimum:
+  - session acquisition and release behavior
+  - engine transaction semantics
+  - storage/provider-specific persistence logic
+  - engine-native error shaping where the engine contract requires it
+  
+  Executors may invoke engine-owned hooks through the compiled plan or engine integration boundary, but MUST NOT synthesize engine policy tables in runtime helper modules.
+  
+  ### Executor authority
+  Executors consume a compiled `KernelPlan`.
+  
+  Executor-owned behavior is limited to:
+  - creating and carrying per-request execution context
+  - selecting the already-compiled plan path for the current request/channel
+  - traversing compiled phases, branches, segments, and tables
+  - invoking referenced atoms and engine hooks
+  - applying already-compiled error branches, rollback branches, and completion behavior
+  - surfacing plan-driven outcomes to runtime integration boundaries
+  
+  Executors MUST NOT:
+  - hardcode new transport-chain structure
+  - synthesize callback-fence policy
+  - construct new subevent lookup tables
+  - construct new subevent transaction policy
+  - invent new fusion groupings or fusion barriers
+  - rebuild compiler-owned legality or dispatch tables on the fly except for bounded cache/index acceleration over already-compiled plan data
+  
+  ## Placement Tests
+  A new function or module belongs in `tigrbl_kernel` if it answers any of these:
+  - What steps exist?
+  - In what order do they run?
+  - Where are the barriers?
+  - Which callback fence applies?
+  - Which handler is selected for this subevent?
+  - Which transaction policy applies?
+  
+  A new function or module belongs in `tigrbl_atoms` if it answers:
+  - How does one concrete planned step execute?
+  
+  A new function or module belongs in an engine package if it answers:
+  - How does the provider/session/storage boundary behave?
+  
+  A new function or module belongs in executor code only if it answers:
+  - How do we walk and invoke the already-compiled plan?
+  
+  ## Invalid Placements
+  The following are non-conformant:
+  - runtime helper modules that restate protocol-chain structure outside the plan
+  - runtime-owned callback policy descriptors that are not compiler-produced artifacts
+  - runtime-owned subevent transaction wrappers that decide policy rather than invoking plan-selected policy
+  - executor code that acts as a fallback compiler for missing plan sections
+  
+  ## Evidence
+  Tests and review evidence for this SPEC MUST prove:
+  - compiled plan artifacts contain the authority needed for execution
+  - executor traversal works by consuming compiled plan sections rather than reconstructing policy
+  - atom implementations are invokable via plan references
+  - invalid placements are removed or tracked to migration closure where legacy code remains
+spec_kind: "normative"
+adr_ids:
+  - "adr:1125"
+  - "adr:1100"
+  - "adr:1121"
+  - "adr:1008"
+  - "adr:1016"

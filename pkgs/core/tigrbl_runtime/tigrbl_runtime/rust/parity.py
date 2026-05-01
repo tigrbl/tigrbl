@@ -2,9 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
+from tigrbl_kernel.rust_spec import coerce_rust_spec_dict
+
 from ._parity_contract import build_parity_snapshot as _reference_snapshot
 from ._parity_contract import transport_trace as _reference_trace
-from .codec import coerce_rust_spec_dict
 from .errors import RustBindingsUnavailableError
 from ._load_rust import load_rust_module
 
