@@ -43,6 +43,14 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
             meta: Dict[str, object] = {"in_enabled": True}
             if storage is None:
                 meta["virtual"] = True
+            py_type = getattr(fs, "py_type", None)
+            if py_type is not None and py_type is not Any:
+                meta["py_type"] = py_type
+            constraints = getattr(fs, "constraints", {}) or {}
+            if isinstance(constraints, Mapping):
+                max_length = constraints.get("max_length")
+                if isinstance(max_length, int) and max_length > 0:
+                    meta["max_length"] = max_length
             default_factory = getattr(spec, "default_factory", None)
             if callable(default_factory):
                 meta["default_factory"] = default_factory
@@ -64,6 +72,7 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
                 True if storage is None else getattr(storage, "nullable", True)
             )
             meta["nullable"] = base_nullable
+            meta["coerce"] = True
             by_field_in[name] = meta
 
         if alias in out_verbs:

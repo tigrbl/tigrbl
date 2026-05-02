@@ -102,6 +102,26 @@ def test_build_in_uses_jsonrpc_params_not_request_envelope() -> None:
     assert "jsonrpc" not in ctx.temp
 
 
+def test_build_in_skips_when_compiled_input_is_already_ready() -> None:
+    ctx = SimpleNamespace(
+        payload={"display_name": "ignored"},
+        temp={
+            "compiled_in_values_ready": True,
+            "in_values": {"name": "Ada"},
+            "schema_in": {
+                "fields": ("name",),
+                "by_field": {"name": {"alias_in": "display_name"}},
+                "required": ("name",),
+            },
+        },
+    )
+
+    build_in._run(None, ctx)
+
+    assert ctx.temp["in_values"] == {"name": "Ada"}
+    assert "in_unknown" not in ctx.temp
+
+
 def test_build_in_rejects_disallowed_wrapper_keys() -> None:
     ctx = SimpleNamespace(
         payload={"data": {"name": "Ada"}},

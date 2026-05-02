@@ -30,6 +30,19 @@ def _sample_packed_kernel() -> PackedKernel:
         atom_catalog_effect_ids=(0, 1, 2, 3),
         atom_catalog_effect_payloads=((0,), (1,), (2,), (3,)),
         atom_catalog_async_flags=(False, False, False, True),
+        param_shape_offsets=(0,),
+        param_shape_lengths=(1,),
+        param_shape_source_masks=(1,),
+        param_shape_slot_ids=(0,),
+        param_shape_decoder_ids=(1,),
+        param_shape_required_flags=(1,),
+        param_shape_header_required_flags=(0,),
+        param_shape_nullable_flags=(0,),
+        param_shape_max_lengths=(32,),
+        param_shape_lookup_hashes=(123456789,),
+        param_shape_header_hashes=(0,),
+        program_param_shape_ids=(0,),
+        program_transport_kind_ids=(1,),
         proto_names=("http.rest",),
         selector_names=("POST /widgets",),
         op_names=("Widget.create",),
@@ -93,9 +106,11 @@ def _template_heavy_packed_kernel() -> PackedKernel:
             nonfusible_segment_ids=(),
             error_segment_ids={},
             dispatch_proto_ids=(0,),
-            dispatch_selector_count=1,
-            program_hot_runner_id=1,
-        )
+        dispatch_selector_count=1,
+        program_hot_runner_id=1,
+        param_shape_id=0,
+        transport_kind_id=1,
+    )
         for idx in range(10)
     )
     return PackedKernel(
@@ -189,6 +204,8 @@ def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
     assert b"step0" not in serialized_a
     assert loaded["atom_opcode_ids"] == (0, 1, 2, 3)
     assert loaded["program_hot_runner_ids"] == (1,)
+    assert loaded["program_param_shape_ids"] == (0,)
+    assert loaded["param_shape_slot_ids"] == (0,)
     assert loaded["segment_count"] == len(loaded["segment_phase_ids"])
 
 

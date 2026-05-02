@@ -77,6 +77,10 @@ def _run(obj: Optional[object], ctx: Any) -> None:
 
     logger.debug("Running wire:build_in")
     temp = _ensure_temp(ctx)
+    if temp.get("compiled_in_values_ready") is True and isinstance(
+        temp.get("in_values"), (dict, list)
+    ):
+        return
     by_field: Mapping[str, Mapping[str, Any]] = schema_in.get("by_field", {})  # type: ignore[assignment]
     # Build alias→field and ingress whitelist (field and alias forms)
     alias_to_field: Dict[str, str] = {}
