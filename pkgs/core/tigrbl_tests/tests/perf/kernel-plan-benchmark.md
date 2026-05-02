@@ -10,14 +10,14 @@
 - database: SQLite
 
 ## Throughput
-- FastAPI REST unary: 119.83 ops/s
-- Tigrbl REST unary: 285.31 ops/s
-- Tigrbl JSON-RPC unary: 273.71 ops/s
-- Tigrbl/FastAPI REST ratio: 2.381
+- FastAPI REST unary: 121.08 ops/s
+- Tigrbl REST unary: 390.38 ops/s
+- Tigrbl JSON-RPC unary: 352.42 ops/s
+- Tigrbl/FastAPI REST ratio: 3.224
 
 ## Tigrbl Kernel Packing KC Proxy
-- raw bytes: 1679
-- compressed bytes: 730
+- raw bytes: 1895
+- compressed bytes: 835
 - segments: 38
 - steps: 60
 - phase tree nodes: 504
@@ -28,4 +28,4 @@
 - shared error profiles: 2
 - externalized prelude steps: 1
 - max index width bits: 16
-- compressed bytes per REST op in this run: 4.87
+- compressed bytes per REST op in this run: 5.57
