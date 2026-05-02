@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import datetime as _dt
 import decimal as _dc
-import hashlib
 import logging
 import uuid as _uuid
+import zlib
 from dataclasses import replace
 from types import SimpleNamespace
 from typing import Any, Dict, List, Mapping
@@ -326,8 +326,10 @@ def _structural_atom_opcode_key(step: StepFn, phase: str) -> str:
 
 def _stable_name_hash64(value: str, *, lowercase: bool = False) -> int:
     normalized = value.lower() if lowercase else value
-    digest = hashlib.blake2b(normalized.encode("utf-8"), digest_size=8).digest()
-    return int.from_bytes(digest, "little", signed=False)
+    encoded = normalized.encode("utf-8")
+    lo = zlib.crc32(encoded) & 0xFFFFFFFF
+    hi = zlib.crc32(encoded, 0x9E3779B9) & 0xFFFFFFFF
+    return (hi << 32) | lo
 
 
 def _decoder_id_for_py_type(py_type: object) -> int:
@@ -446,6 +448,7 @@ def _compile_program_param_shape(
 
 def _program_hot_runner_id(
     *,
+    proto_names: tuple[str, ...],
     ordered_segments: tuple[int, ...],
     remaining_segments: tuple[int, ...],
     param_shape_id: int,
@@ -453,7 +456,13 @@ def _program_hot_runner_id(
 ) -> int:
     if (
         param_shape_id >= 0
-        and transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}
+        and (
+            transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}
+            or any(
+                proto.endswith(".rest") or proto.endswith(".jsonrpc")
+                for proto in proto_names
+            )
+        )
         and (ordered_segments or remaining_segments)
     ):
         return _HOT_RUNNER_COMPILED_PARAM
@@ -826,6 +835,7 @@ def _pack_kernel_plan(
             else _TRANSPORT_KIND_GENERIC
         )
         hot_runner_id = _program_hot_runner_id(
+            proto_names=program_proto_names,
             ordered_segments=tuple(ordered_segments),
             remaining_segments=tuple(remaining_segments),
             param_shape_id=param_shape_id,

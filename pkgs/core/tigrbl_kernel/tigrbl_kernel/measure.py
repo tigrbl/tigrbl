@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import gzip
-import hashlib
 import json
 import struct
+import zlib
 from typing import Any, Mapping
 
 from tigrbl_typing.phases import normalize_phase
@@ -73,6 +73,17 @@ _HOT_BLOCK_SECTION_IDS = {
 _HOT_BLOCK_SECTION_NAMES = {
     section_id: name for name, section_id in _HOT_BLOCK_SECTION_IDS.items()
 }
+_HTTP_METHOD_ID_BY_NAME = {
+    "GET": 1,
+    "HEAD": 2,
+    "POST": 3,
+    "PUT": 4,
+    "PATCH": 5,
+    "DELETE": 6,
+    "OPTIONS": 7,
+    "TRACE": 8,
+    "CONNECT": 9,
+}
 
 
 def _freeze_mapping(mapping: Mapping[str, Any]) -> dict[str, Any]:
@@ -101,8 +112,18 @@ def _phase_kind_id(phase: str) -> int:
 
 
 def _stable_hash64(value: str) -> int:
-    digest = hashlib.blake2b(value.encode("utf-8"), digest_size=8).digest()
-    return int.from_bytes(digest, "little", signed=False)
+    encoded = value.encode("utf-8")
+    lo = zlib.crc32(encoded) & 0xFFFFFFFF
+    hi = zlib.crc32(encoded, 0x9E3779B9) & 0xFFFFFFFF
+    return (hi << 32) | lo
+
+
+def _http_method_id(method: str) -> int:
+    normalized = str(method or "").upper()
+    cached = _HTTP_METHOD_ID_BY_NAME.get(normalized)
+    if cached is not None:
+        return cached
+    return 1024 + (_stable_hash64(normalized) & 0xFFFF)
 
 
 def _uses_u16(values: list[int]) -> bool:
@@ -587,19 +608,9 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
             route_entries.append((int(proto_id), int(selector_id), int(program_id)))
     route_entries.sort()
 
-    method_ids: dict[str, int] = {}
-
-    def method_id_for(method: str) -> int:
-        cached = method_ids.get(method)
-        if cached is not None:
-            return cached
-        cached = len(method_ids)
-        method_ids[method] = cached
-        return cached
-
     exact_route_entries = [
         (
-            method_id_for(str(method)),
+            _http_method_id(str(method)),
             _stable_hash64(str(path)),
             int(program_id),
         )
@@ -634,7 +645,12 @@ def _build_compact_image_parts(packed: PackedKernel) -> dict[str, Any]:
         "route_entries": route_entries,
         "exact_route_entries": exact_route_entries,
         "phase_count": len(phase_ids),
-        "method_count": len(method_ids),
+        "method_count": len(
+            {
+                _http_method_id(str(method))
+                for method, _ in (getattr(packed, "rest_exact_route_to_program", {}) or {})
+            }
+        ),
     }
 
 
@@ -969,16 +985,8 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     route_proto_ids = [entry[0] for entry in route_entries]
     route_selector_ids = [entry[1] for entry in route_entries]
     route_program_ids = [entry[2] for entry in route_entries]
-    method_ids: dict[str, int] = {}
-    def method_id_for(method: str) -> int:
-        cached = method_ids.get(method)
-        if cached is not None:
-            return cached
-        cached = len(method_ids)
-        method_ids[method] = cached
-        return cached
     exact_route_entries = [
-        (method_id_for(str(method)), _stable_hash64(str(path)), int(program_id))
+        (_http_method_id(str(method)), _stable_hash64(str(path)), int(program_id))
         for (method, path), program_id in sorted(
             (getattr(packed, "rest_exact_route_to_program", {}) or {}).items()
         )
