@@ -1,0 +1,344 @@
+{
+  "artifact": {
+    "path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\tgpkhot1-benchmark-items.bin",
+    "bytes": 1679
+  },
+  "header": {
+    "magic": "TGPKHOT1",
+    "version": 1,
+    "max_width_bits": 64,
+    "total_bytes": 1679,
+    "section_count": 30,
+    "directory_offset": 30,
+    "atom_count": 60,
+    "segment_count": 38,
+    "program_count": 36,
+    "error_profile_count": 2,
+    "route_entry_count": 49
+  },
+  "sections": [
+    {
+      "index": 0,
+      "section_id": 1,
+      "name": "atom_opcode_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 60,
+      "offset": 390,
+      "byte_length": 60
+    },
+    {
+      "index": 1,
+      "section_id": 2,
+      "name": "atom_effect_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 60,
+      "offset": 450,
+      "byte_length": 60
+    },
+    {
+      "index": 2,
+      "section_id": 3,
+      "name": "atom_payload_offsets",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 60,
+      "offset": 510,
+      "byte_length": 60
+    },
+    {
+      "index": 3,
+      "section_id": 4,
+      "name": "atom_payload_lengths",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 60,
+      "offset": 570,
+      "byte_length": 60
+    },
+    {
+      "index": 4,
+      "section_id": 5,
+      "name": "atom_payload_values",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 0,
+      "offset": 630,
+      "byte_length": 0
+    },
+    {
+      "index": 5,
+      "section_id": 6,
+      "name": "atom_flags",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 60,
+      "offset": 630,
+      "byte_length": 60
+    },
+    {
+      "index": 6,
+      "section_id": 7,
+      "name": "prelude_atom_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 1,
+      "offset": 690,
+      "byte_length": 1
+    },
+    {
+      "index": 7,
+      "section_id": 8,
+      "name": "segment_executor_kind_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 38,
+      "offset": 691,
+      "byte_length": 38
+    },
+    {
+      "index": 8,
+      "section_id": 9,
+      "name": "segment_phase_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 38,
+      "offset": 729,
+      "byte_length": 38
+    },
+    {
+      "index": 9,
+      "section_id": 10,
+      "name": "segment_step_offsets",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 38,
+      "offset": 767,
+      "byte_length": 38
+    },
+    {
+      "index": 10,
+      "section_id": 11,
+      "name": "segment_step_lengths",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 38,
+      "offset": 805,
+      "byte_length": 38
+    },
+    {
+      "index": 11,
+      "section_id": 12,
+      "name": "segment_step_atom_refs",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 120,
+      "offset": 843,
+      "byte_length": 120
+    },
+    {
+      "index": 12,
+      "section_id": 30,
+      "name": "template_segment_offsets",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 9,
+      "offset": 963,
+      "byte_length": 9
+    },
+    {
+      "index": 13,
+      "section_id": 31,
+      "name": "template_segment_lengths",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 9,
+      "offset": 972,
+      "byte_length": 9
+    },
+    {
+      "index": 14,
+      "section_id": 32,
+      "name": "template_segment_refs",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 225,
+      "offset": 981,
+      "byte_length": 225
+    },
+    {
+      "index": 15,
+      "section_id": 33,
+      "name": "program_segment_template_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 36,
+      "offset": 1206,
+      "byte_length": 36
+    },
+    {
+      "index": 16,
+      "section_id": 16,
+      "name": "program_hot_runner_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 36,
+      "offset": 1242,
+      "byte_length": 36
+    },
+    {
+      "index": 17,
+      "section_id": 17,
+      "name": "error_profile_offsets",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 2,
+      "offset": 1278,
+      "byte_length": 2
+    },
+    {
+      "index": 18,
+      "section_id": 18,
+      "name": "error_profile_lengths",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 2,
+      "offset": 1280,
+      "byte_length": 2
+    },
+    {
+      "index": 19,
+      "section_id": 19,
+      "name": "error_profile_phase_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 22,
+      "offset": 1282,
+      "byte_length": 22
+    },
+    {
+      "index": 20,
+      "section_id": 20,
+      "name": "error_profile_segment_offsets",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 22,
+      "offset": 1304,
+      "byte_length": 22
+    },
+    {
+      "index": 21,
+      "section_id": 21,
+      "name": "error_profile_segment_lengths",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 22,
+      "offset": 1326,
+      "byte_length": 22
+    },
+    {
+      "index": 22,
+      "section_id": 22,
+      "name": "error_profile_segment_refs",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 22,
+      "offset": 1348,
+      "byte_length": 22
+    },
+    {
+      "index": 23,
+      "section_id": 23,
+      "name": "program_error_profile_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 36,
+      "offset": 1370,
+      "byte_length": 36
+    },
+    {
+      "index": 24,
+      "section_id": 24,
+      "name": "route_proto_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 31,
+      "offset": 1406,
+      "byte_length": 31
+    },
+    {
+      "index": 25,
+      "section_id": 25,
+      "name": "route_selector_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 31,
+      "offset": 1437,
+      "byte_length": 31
+    },
+    {
+      "index": 26,
+      "section_id": 26,
+      "name": "route_program_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 31,
+      "offset": 1468,
+      "byte_length": 31
+    },
+    {
+      "index": 27,
+      "section_id": 27,
+      "name": "exact_method_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 18,
+      "offset": 1499,
+      "byte_length": 18
+    },
+    {
+      "index": 28,
+      "section_id": 28,
+      "name": "exact_path_hashes",
+      "width_bits": 64,
+      "flags": 0,
+      "count": 18,
+      "offset": 1517,
+      "byte_length": 144
+    },
+    {
+      "index": 29,
+      "section_id": 29,
+      "name": "exact_program_ids",
+      "width_bits": 8,
+      "flags": 0,
+      "count": 18,
+      "offset": 1661,
+      "byte_length": 18
+    }
+  ],
+  "kernel_plan_measurement": {
+    "raw_bytes": 1679,
+    "compressed_bytes": 730,
+    "segment_count": 38,
+    "step_count": 60,
+    "phase_tree_node_count": 504,
+    "proto_count": 6,
+    "selector_count": 31,
+    "op_count": 36,
+    "route_row_count": 6,
+    "route_col_count": 31,
+    "route_slot_count": 186,
+    "exact_route_count": 18,
+    "fusible_sync_segment_count": 0,
+    "hot_op_count": 36,
+    "compact_step_count": 60,
+    "compact_segment_count": 11,
+    "compact_program_segment_ref_count": 36,
+    "compact_route_entry_count": 49,
+    "shared_error_profile_count": 2,
+    "externalized_prelude_step_count": 1,
+    "max_index_width_bits": 16
+  }
+}
