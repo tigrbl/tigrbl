@@ -235,7 +235,7 @@ class AtomImpl(Atom[Ingress, Bound, Exception]):
 
     async def __call__(self, obj: object | None, ctx: Ctx[Ingress]) -> Ctx[Bound]:
         _run(obj, ctx)
-        return ctx.promote(BoundCtx)
+        return ctx
 
 
 INSTANCE = AtomImpl()

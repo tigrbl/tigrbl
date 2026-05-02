@@ -21,6 +21,7 @@ def _sample_packed_kernel() -> PackedKernel:
         error_segment_ids={"ON_ERROR": (3,)},
         dispatch_proto_ids=(0,),
         dispatch_selector_count=1,
+        program_hot_runner_id=1,
     )
     return PackedKernel(
         atom_catalog_labels=("step0", "step1", "step2", "step3"),
@@ -59,6 +60,7 @@ def _sample_packed_kernel() -> PackedKernel:
         program_segment_ref_offsets=(0,),
         program_segment_ref_lengths=(3,),
         program_segment_refs=(0, 1, 2),
+        program_hot_runner_ids=(1,),
         step_table=(lambda ctx: ctx, lambda ctx: ctx, lambda ctx: ctx, lambda ctx: ctx),
         step_labels=("step0", "step1", "step2", "step3"),
         numba_effect_ids=(0, 1, 2, 3),
@@ -114,4 +116,5 @@ def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
     assert serialized_a.startswith(b"TGPKHOT1")
     assert b"step0" not in serialized_a
     assert loaded["atom_opcode_ids"] == (0, 1, 2, 3)
+    assert loaded["program_hot_runner_ids"] == (1,)
     assert loaded["segment_count"] == len(loaded["segment_phase_ids"])

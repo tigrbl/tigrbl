@@ -14,6 +14,13 @@ from tigrbl_typing.phases import normalize_phase
 from .base import ExecutorBase
 from .types import HotCtx, _Ctx
 
+_HOT_RUNNER_GENERIC = 0
+_HOT_RUNNER_LINEAR_DIRECT = 1
+_DIRECT_INVOKE_STEP = 0
+_DIRECT_INVOKE_RUN = 1
+_DIRECT_INVOKE_RUN_WITH_NONE = 2
+_DIRECT_INVOKE_RUN_WITH_DEP = 3
+
 
 class PackedPlanExecutor(ExecutorBase):
     """Executes packed kernel plans via kernel-attached packed execution hooks."""
@@ -49,7 +56,7 @@ class PackedPlanExecutor(ExecutorBase):
         self._program_error_segments_cache: dict[
             tuple[int, int], tuple[tuple[int, ...], Mapping[str, tuple[int, ...]]]
         ] = {}
-        self._program_runner_cache: dict[tuple[int, int], Any] = {}
+        self._program_runner_cache: dict[tuple[int, ...], Any] = {}
         self._program_runner_mode_cache: dict[tuple[int, int, int], Any] = {}
         self._db_acquire_cache: dict[tuple[int, int], Any] = {}
         self._model_row_serializer_cache: dict[type[Any], tuple[str, ...]] = {}
@@ -671,7 +678,7 @@ class PackedPlanExecutor(ExecutorBase):
                         await step(ctx)
                         continue
                     rv = step(ctx)
-                    if hasattr(rv, "__await__"):
+                    if inspect.isawaitable(rv):
                         await rv
 
             return _runner
@@ -690,6 +697,124 @@ class PackedPlanExecutor(ExecutorBase):
         self._segment_runners_cache[packed_id] = frozen
         return frozen
 
+    @classmethod
+    def _resolve_program_hot_runner_id(
+        cls,
+        packed: PackedKernel,
+        program_id: int,
+        hot_op_plan: Any | None,
+    ) -> int:
+        if hot_op_plan is not None:
+            program_hot_runner_id = cls._coerce_int(
+                getattr(hot_op_plan, "program_hot_runner_id", None)
+            )
+            if program_hot_runner_id is not None:
+                return program_hot_runner_id
+        hot_runner_ids = cls._hot_array(
+            packed,
+            "program_hot_runner_ids",
+            tuple(getattr(packed, "program_hot_runner_ids", ()) or ()),
+        )
+        if 0 <= program_id < len(hot_runner_ids):
+            return int(hot_runner_ids[program_id])
+        return _HOT_RUNNER_GENERIC
+
+    def _resolve_program_linear_direct_runner(
+        self,
+        packed: PackedKernel,
+        program_id: int,
+        hot_op_plan: Any | None,
+    ) -> Any:
+        cache_key = (id(packed), program_id, _HOT_RUNNER_LINEAR_DIRECT)
+        cached = self._program_runner_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        if hot_op_plan is not None:
+            ordered = tuple(getattr(hot_op_plan, "ordered_segment_ids", ()) or ())
+            remaining = tuple(getattr(hot_op_plan, "remaining_segment_ids", ()) or ())
+        else:
+            ordered, remaining = self._resolve_segments_for_program(packed, program_id)
+
+        phase_names = self._segment_phase_names(packed)
+        step_ids_by_segment = self._resolve_segment_step_ids(packed)
+        async_flags = tuple(
+            1 if bool(flag) else 0
+            for flag in self._hot_array(
+                packed,
+                "atom_flags",
+                tuple(
+                    getattr(packed, "atom_catalog_async_flags", ())
+                    or getattr(packed, "step_async_flags", ())
+                    or ()
+                ),
+            )
+        )
+        compiled_steps: list[tuple[str, int, Any, Any, bool]] = []
+        step_table = packed.step_table
+        for seg_id in (*ordered, *remaining):
+            phase_name = str(normalize_phase(phase_names[seg_id]))
+            for step_id in step_ids_by_segment[seg_id]:
+                step = step_table[step_id]
+                direct_run = getattr(step, "__tigrbl_direct_run", None)
+                if callable(direct_run):
+                    direct_dep = getattr(step, "__tigrbl_direct_dep", None)
+                    has_direct_dep = bool(
+                        getattr(step, "__tigrbl_has_direct_dep", False)
+                    )
+                    direct_is_async = bool(
+                        getattr(step, "__tigrbl_direct_is_async", False)
+                    )
+                    use_two_args = bool(getattr(step, "__tigrbl_use_two_args", False))
+                    invoke_kind = (
+                        _DIRECT_INVOKE_RUN_WITH_DEP
+                        if has_direct_dep
+                        else (
+                            _DIRECT_INVOKE_RUN_WITH_NONE
+                            if use_two_args
+                            else _DIRECT_INVOKE_RUN
+                        )
+                    )
+                    compiled_steps.append(
+                        (
+                            phase_name,
+                            invoke_kind,
+                            direct_run,
+                            direct_dep,
+                            direct_is_async,
+                        )
+                    )
+                    continue
+                compiled_steps.append(
+                    (
+                        phase_name,
+                        _DIRECT_INVOKE_STEP,
+                        step,
+                        None,
+                        bool(async_flags[step_id]) if step_id < len(async_flags) else False,
+                    )
+                )
+
+        async def _runner(ctx: _Ctx) -> None:
+            current_phase = ""
+            for phase_name, invoke_kind, call, dep, is_async in compiled_steps:
+                if phase_name != current_phase:
+                    ctx.phase = phase_name
+                    current_phase = phase_name
+                if invoke_kind == _DIRECT_INVOKE_RUN_WITH_DEP:
+                    rv = call(dep, ctx)
+                elif invoke_kind == _DIRECT_INVOKE_RUN_WITH_NONE:
+                    rv = call(None, ctx)
+                else:
+                    rv = call(ctx)
+                if is_async:
+                    await rv
+                elif inspect.isawaitable(rv):
+                    await rv
+
+        self._program_runner_cache[cache_key] = _runner
+        return _runner
+
     def _resolve_program_runner(
         self, packed: PackedKernel, program_id: int, hot_op_plan: Any | None
     ) -> Any:
@@ -697,6 +822,15 @@ class PackedPlanExecutor(ExecutorBase):
         cached = self._program_runner_cache.get(cache_key)
         if cached is not None:
             return cached
+        program_hot_runner_id = self._resolve_program_hot_runner_id(
+            packed, program_id, hot_op_plan
+        )
+        if program_hot_runner_id == _HOT_RUNNER_LINEAR_DIRECT:
+            runner = self._resolve_program_linear_direct_runner(
+                packed, program_id, hot_op_plan
+            )
+            self._program_runner_cache[cache_key] = runner
+            return runner
         runners = self._resolve_segment_runners(packed)
         if hot_op_plan is not None:
             ordered = tuple(getattr(hot_op_plan, "ordered_segment_ids", ()) or ())
@@ -1154,12 +1288,10 @@ class PackedPlanExecutor(ExecutorBase):
                 )
 
             try:
-                await self._resolve_program_runner_for_mode(
+                await self._resolve_program_runner(
                     packed,
                     program_id,
                     hot_op_plan,
-                    skip_dispatch=False,
-                    fast_direct_create=False,
                 )(ctx)
             except StatusDetailError as exc:
                 detail = (

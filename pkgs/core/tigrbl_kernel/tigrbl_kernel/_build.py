@@ -60,6 +60,8 @@ _RUNTIME_EXECUTION_ORDER = (
     "EGRESS_SHAPE",
     "EGRESS_FINALIZE",
 )
+_HOT_RUNNER_GENERIC = 0
+_HOT_RUNNER_LINEAR_DIRECT = 1
 
 
 def _phase_stamp(self: Any, model: type, alias: str) -> tuple[Any, ...]:
@@ -299,6 +301,16 @@ def _structural_atom_opcode_key(step: StepFn, phase: str) -> str:
     return label
 
 
+def _program_hot_runner_id(
+    *,
+    ordered_segments: tuple[int, ...],
+    remaining_segments: tuple[int, ...],
+) -> int:
+    if ordered_segments or remaining_segments:
+        return _HOT_RUNNER_LINEAR_DIRECT
+    return _HOT_RUNNER_GENERIC
+
+
 def _build_route_matrix(
     self,
     *,
@@ -506,6 +518,7 @@ def _pack_kernel_plan(
     error_profile_segment_ref_lengths: list[int] = []
     error_profile_segment_refs: list[int] = []
     program_error_profile_ids: list[int] = []
+    program_hot_runner_ids: list[int] = []
     for program_id, _meta in enumerate(plan.opmeta):
         meta = plan.opmeta[program_id]
         seg_offset = op_segment_offsets[program_id]
@@ -588,6 +601,11 @@ def _pack_kernel_plan(
                 error_profile_segment_ref_lengths.append(len(seg_ids))
                 error_profile_segment_refs.extend(seg_ids)
         program_error_profile_ids.append(error_profile_id)
+        hot_runner_id = _program_hot_runner_id(
+            ordered_segments=tuple(ordered_segments),
+            remaining_segments=tuple(remaining_segments),
+        )
+        program_hot_runner_ids.append(hot_runner_id)
 
         hot_op_plans.append(
             HotOpPlan(
@@ -614,6 +632,7 @@ def _pack_kernel_plan(
                 dispatch_proto_ids=tuple(sorted(dispatch_proto_ids)),
                 dispatch_selector_count=dispatch_selector_count,
                 program_error_profile_id=error_profile_id,
+                program_hot_runner_id=hot_runner_id,
             )
         )
 
@@ -651,6 +670,7 @@ def _pack_kernel_plan(
         program_segment_ref_offsets=tuple(op_segment_offsets),
         program_segment_ref_lengths=tuple(op_segment_lengths),
         program_segment_refs=tuple(op_to_segment_ids),
+        program_hot_runner_ids=tuple(program_hot_runner_ids),
         error_profile_offsets=tuple(error_profile_offsets),
         error_profile_lengths=tuple(error_profile_lengths),
         error_profile_phase_ids=tuple(error_profile_phase_ids),

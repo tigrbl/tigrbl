@@ -31,10 +31,12 @@ def _run(obj: object | None, ctx: Any) -> None:
         ).lower()
         if "json" in content_type:
             parsed = hot.get("parsed_json") if isinstance(hot, dict) else None
-            loaded = bool(hot.get("parsed_json_loaded")) if isinstance(hot, dict) else False
+            loaded = (
+                bool(hot.get("parsed_json_loaded")) if isinstance(hot, dict) else False
+            )
             if not loaded:
                 try:
-                    parsed = json.loads(raw_bytes.decode("utf-8"))
+                    parsed = json.loads(raw_bytes)
                 except Exception:
                     parsed = None
                 if isinstance(hot, dict):
@@ -42,6 +44,12 @@ def _run(obj: object | None, ctx: Any) -> None:
                     hot["parsed_json_loaded"] = True
             if parsed is not None:
                 ingress["body_json"] = parsed
+                request = getattr(ctx, "request", None)
+                if request is not None:
+                    if hasattr(request, "_json_cache"):
+                        setattr(request, "_json_cache", parsed)
+                    if hasattr(request, "_json_loaded"):
+                        setattr(request, "_json_loaded", True)
     elif body is not None:
         ingress["body_peek"] = str(body)[:256]
 
@@ -56,7 +64,7 @@ class AtomImpl(Atom[Ingress, Ingress, Exception]):
 
     async def __call__(self, obj: object | None, ctx: Ctx[Ingress]) -> Ctx[Ingress]:
         _run(obj, ctx)
-        return ctx.promote(IngressCtx)
+        return ctx
 
 
 INSTANCE = AtomImpl()

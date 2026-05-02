@@ -28,6 +28,13 @@ _AtomRun = Callable[[Optional[object], Any], Any]
 _DiscoveredAtom = tuple[str, _AtomRun]
 
 
+def _is_async_callable(run: _AtomRun) -> bool:
+    if inspect.iscoroutinefunction(run):
+        return True
+    call = getattr(run, "__call__", None)
+    return inspect.iscoroutinefunction(call)
+
+
 def _discover_atoms() -> list[_DiscoveredAtom]:
     out: list[_DiscoveredAtom] = []
     try:
@@ -104,6 +111,10 @@ def _wrap_atom(run: _AtomRun, *, anchor: str) -> StepFn:
         label = _make_label(anchor, run)
     if label:
         setattr(_step, "__tigrbl_label", label)
+    setattr(_step, "__tigrbl_direct_run", run)
+    setattr(_step, "__tigrbl_use_two_args", use_two_args)
+    setattr(_step, "__tigrbl_has_direct_dep", False)
+    setattr(_step, "__tigrbl_direct_is_async", _is_async_callable(run))
     return _step
 
 
@@ -140,6 +151,11 @@ def _make_dep_atom_step(run_fn: _AtomRun, dep: Any, *, label: str) -> StepFn:
         return rv
 
     setattr(_step, "__tigrbl_label", label)
+    setattr(_step, "__tigrbl_direct_run", run_fn)
+    setattr(_step, "__tigrbl_direct_dep", dep)
+    setattr(_step, "__tigrbl_use_two_args", True)
+    setattr(_step, "__tigrbl_has_direct_dep", True)
+    setattr(_step, "__tigrbl_direct_is_async", _is_async_callable(run_fn))
     return _step
 
 

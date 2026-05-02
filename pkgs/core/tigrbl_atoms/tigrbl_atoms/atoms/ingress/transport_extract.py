@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from collections import defaultdict
-from typing import Any, Mapping, Sequence
-from urllib.parse import parse_qs
+from typing import Any
 
 from tigrbl_typing.gw.raw import GwRouteEnvelope
 
@@ -13,66 +11,6 @@ from ...types import Atom, Ctx, IngressCtx
 from .._temp import _ensure_temp
 
 ANCHOR = _ev.INGRESS_TRANSPORT_EXTRACT
-
-
-def _decode_headers(raw_headers: object) -> dict[str, str]:
-    if not isinstance(raw_headers, list):
-        return {}
-    headers: dict[str, str] = {}
-    for item in raw_headers:
-        if not (isinstance(item, tuple) and len(item) == 2):
-            continue
-        key, value = item
-        if isinstance(key, (bytes, bytearray)) and isinstance(
-            value, (bytes, bytearray)
-        ):
-            headers[bytes(key).decode("latin-1").lower()] = bytes(value).decode(
-                "latin-1"
-            )
-    return headers
-
-
-def _decode_headers_multi(raw_headers: object) -> dict[str, list[str]]:
-    if not isinstance(raw_headers, list):
-        return {}
-    out: dict[str, list[str]] = defaultdict(list)
-    for item in raw_headers:
-        if not (isinstance(item, tuple) and len(item) == 2):
-            continue
-        key, value = item
-        if isinstance(key, (bytes, bytearray)) and isinstance(
-            value, (bytes, bytearray)
-        ):
-            out[bytes(key).decode("latin-1").lower()].append(
-                bytes(value).decode("latin-1")
-            )
-    return dict(out)
-
-
-def _normalize_query(query: object) -> dict[str, list[Any]]:
-    if query is None:
-        return {}
-    if isinstance(query, Mapping):
-        out: dict[str, list[Any]] = {}
-        for key, value in query.items():
-            if isinstance(value, Sequence) and not isinstance(
-                value, (str, bytes, bytearray)
-            ):
-                out[str(key)] = list(value)
-            else:
-                out[str(key)] = [value]
-        return out
-    return {}
-
-
-def _parse_query(raw_query: object) -> dict[str, list[str]]:
-    if isinstance(raw_query, (bytes, bytearray)):
-        return parse_qs(bytes(raw_query).decode("latin-1"), keep_blank_values=True)
-    if isinstance(raw_query, str):
-        return parse_qs(raw_query, keep_blank_values=True)
-    return {}
-
-
 async def _read_http_body(ctx: Any) -> object | None:
     temp = _ensure_temp(ctx)
     hot = temp.setdefault("hot", {})
@@ -103,17 +41,25 @@ async def _read_http_body(ctx: Any) -> object | None:
     ):
         return None
 
-    chunks: list[bytes] = []
-    while True:
-        message = await receive()
-        if not isinstance(message, dict) or message.get("type") != "http.request":
-            break
-        chunk = message.get("body", b"")
-        if isinstance(chunk, (bytes, bytearray)):
-            chunks.append(bytes(chunk))
-        if not bool(message.get("more_body", False)):
-            break
-    body_bytes = b"".join(chunks)
+    message = await receive()
+    if not isinstance(message, dict) or message.get("type") != "http.request":
+        return None
+    first_chunk = message.get("body", b"")
+    body_bytes = (
+        bytes(first_chunk) if isinstance(first_chunk, (bytes, bytearray)) else b""
+    )
+    if bool(message.get("more_body", False)):
+        chunks: list[bytes] = [body_bytes]
+        while True:
+            message = await receive()
+            if not isinstance(message, dict) or message.get("type") != "http.request":
+                break
+            chunk = message.get("body", b"")
+            if isinstance(chunk, (bytes, bytearray)):
+                chunks.append(bytes(chunk))
+            if not bool(message.get("more_body", False)):
+                break
+        body_bytes = b"".join(chunks)
     if isinstance(hot, dict):
         hot["body_bytes"] = body_bytes
         hot["body_view"] = memoryview(body_bytes)
@@ -132,31 +78,14 @@ async def _run(obj: object | None, ctx: Any) -> None:
     if request is None:
         request = Request(scope, app=getattr(ctx, "app", None))
         setattr(ctx, "request", request)
-
-    method = str(scope.get("method", getattr(request, "method", "") or "")).upper()
-    path = str(scope.get("path", getattr(request, "path", "/") or "/"))
+    method = str(getattr(request, "method", scope.get("method", "")) or "").upper()
+    path = str(getattr(request, "path", scope.get("path", "/")) or "/")
     temp = _ensure_temp(ctx)
     hot = temp.setdefault("hot", {})
-
-    cached_query = hot.get("query") if isinstance(hot, dict) else None
-    if isinstance(cached_query, dict):
-        query = cached_query
-    else:
-        query = _parse_query(scope.get("query_string", b"")) or _normalize_query(
-            getattr(request, "query_params", None)
-        )
-        if isinstance(hot, dict):
-            hot["query"] = query
-
-    cached_headers = hot.get("headers") if isinstance(hot, dict) else None
-    if isinstance(cached_headers, dict):
-        headers = cached_headers
-    else:
-        headers = dict(getattr(request, "headers", {}) or {}) or _decode_headers_multi(
-            scope.get("headers")
-        )
-        if isinstance(hot, dict):
-            hot["headers"] = headers
+    headers = getattr(request, "headers", {})
+    query = getattr(request, "query", {})
+    if isinstance(hot, dict):
+        hot["raw_query_string"] = scope.get("query_string", b"")
 
     body = await _read_http_body(ctx)
     if body is None:
@@ -196,8 +125,8 @@ async def _run(obj: object | None, ctx: Any) -> None:
         kind="unknown",
         method=method if transport == "http" else None,
         path=path,
-        headers=_decode_headers(scope.get("headers")),
-        query={str(k): [str(vv) for vv in values] for k, values in query.items()},
+        headers=headers,
+        query=query,
         body=body if transport == "http" else None,
         ws_event=getattr(ctx, "raw_event", None) if transport == "ws" else None,
         rpc=None,
@@ -231,7 +160,7 @@ class AtomImpl(Atom[Ingress, Ingress, Exception]):
 
     async def __call__(self, obj: object | None, ctx: Ctx[Ingress]) -> Ctx[Ingress]:
         await _run(obj, ctx)
-        return ctx.promote(IngressCtx)
+        return ctx
 
 
 INSTANCE = AtomImpl()

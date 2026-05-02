@@ -38,19 +38,20 @@ _HOT_BLOCK_SECTION_IDS = {
     "program_segment_offsets": 13,
     "program_segment_lengths": 14,
     "program_segment_refs": 15,
-    "error_profile_offsets": 16,
-    "error_profile_lengths": 17,
-    "error_profile_phase_ids": 18,
-    "error_profile_segment_offsets": 19,
-    "error_profile_segment_lengths": 20,
-    "error_profile_segment_refs": 21,
-    "program_error_profile_ids": 22,
-    "route_proto_ids": 23,
-    "route_selector_ids": 24,
-    "route_program_ids": 25,
-    "exact_method_ids": 26,
-    "exact_path_hashes": 27,
-    "exact_program_ids": 28,
+    "program_hot_runner_ids": 16,
+    "error_profile_offsets": 17,
+    "error_profile_lengths": 18,
+    "error_profile_phase_ids": 19,
+    "error_profile_segment_offsets": 20,
+    "error_profile_segment_lengths": 21,
+    "error_profile_segment_refs": 22,
+    "program_error_profile_ids": 23,
+    "route_proto_ids": 24,
+    "route_selector_ids": 25,
+    "route_program_ids": 26,
+    "exact_method_ids": 27,
+    "exact_path_hashes": 28,
+    "exact_program_ids": 29,
 }
 _HOT_BLOCK_SECTION_NAMES = {
     section_id: name for name, section_id in _HOT_BLOCK_SECTION_IDS.items()
@@ -571,6 +572,9 @@ def build_packed_kernel_measurement_view(packed: PackedKernel) -> dict[str, Any]
             "nonfusible_segment_ids": list(plan.nonfusible_segment_ids),
             "dispatch_proto_ids": list(plan.dispatch_proto_ids),
             "dispatch_selector_count": int(plan.dispatch_selector_count),
+            "program_hot_runner_id": int(
+                getattr(plan, "program_hot_runner_id", 0) or 0
+            ),
             "error_segment_ids": {
                 str(phase): list(seg_ids)
                 for phase, seg_ids in sorted(plan.error_segment_ids.items())
@@ -648,6 +652,9 @@ def build_packed_kernel_measurement_view(packed: PackedKernel) -> dict[str, Any]
         },
         "hot_op_plans": hot_plan_view,
         "executor_kind": str(getattr(packed, "executor_kind", "python")),
+        "program_hot_runner_ids": list(
+            getattr(packed, "program_hot_runner_ids", ()) or ()
+        ),
         "compact_image": {
             "compact_step_count": len(compact["compact_step_opcode_ids"]),
             "compact_segment_count": len(compact["compact_segment_executor_kinds"]),
@@ -792,6 +799,9 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
             or ()
         )
     ]
+    program_hot_runner_ids = [
+        int(value) for value in (getattr(packed, "program_hot_runner_ids", ()) or ())
+    ]
     error_profile_offsets = [int(value) for value in (getattr(packed, "error_profile_offsets", ()) or ())]
     error_profile_lengths = [int(value) for value in (getattr(packed, "error_profile_lengths", ()) or ())]
     error_profile_phase_ids = [int(value) for value in (getattr(packed, "error_profile_phase_ids", ()) or ())]
@@ -853,6 +863,7 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     _add_unsigned("program_segment_offsets", program_segment_offsets)
     _add_unsigned("program_segment_lengths", program_segment_lengths)
     _add_unsigned("program_segment_refs", program_segment_refs)
+    _add_unsigned("program_hot_runner_ids", program_hot_runner_ids)
     _add_unsigned("error_profile_offsets", error_profile_offsets)
     _add_unsigned("error_profile_lengths", error_profile_lengths)
     _add_unsigned("error_profile_phase_ids", error_profile_phase_ids)

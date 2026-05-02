@@ -26,7 +26,7 @@ class AtomImpl(Atom[Boot, Boot, Exception]):
 
     async def __call__(self, obj: object | None, ctx: Ctx[Boot]) -> Ctx[Boot]:
         _run(obj, ctx)
-        return ctx.promote(BootCtx)
+        return ctx
 
 
 INSTANCE = AtomImpl()
