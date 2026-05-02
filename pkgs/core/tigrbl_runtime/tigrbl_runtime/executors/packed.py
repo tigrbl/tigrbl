@@ -40,6 +40,9 @@ _PARAM_SOURCE_BODY = 1
 _PARAM_SOURCE_QUERY = 2
 _PARAM_SOURCE_PATH = 4
 _PARAM_SOURCE_HEADER = 8
+_DECODE_STRATEGY_GENERIC_HASHED = 0
+_DECODE_STRATEGY_BODY_ONLY_MAPPING = 1
+_DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD = 2
 _DECODER_NONE = 0
 _DECODER_STR = 1
 _DECODER_INT = 2
@@ -104,6 +107,9 @@ class PackedPlanExecutor(ExecutorBase):
         self._db_acquire_cache: dict[tuple[int, int], Any] = {}
         self._hot_exact_route_cache: dict[
             int, Mapping[int, tuple[tuple[int, int], ...]]
+        ] = {}
+        self._param_shape_decode_strategy_cache: dict[
+            tuple[int, int, int], tuple[int, tuple[tuple[int, str, int, int], ...]]
         ] = {}
         self._model_row_serializer_cache: dict[type[Any], tuple[str, ...]] = {}
 
@@ -511,9 +517,104 @@ class PackedPlanExecutor(ExecutorBase):
             return _TRANSPORT_KIND_CHANNEL
         return fallback
 
-    @classmethod
+    @staticmethod
+    def _compiled_lookup_name(field_name: str, field_meta: Any) -> str:
+        if isinstance(field_meta, Mapping):
+            alias_in = field_meta.get("alias_in")
+            if alias_in:
+                return str(alias_in)
+        return field_name
+
+    @staticmethod
+    def _publish_compiled_slots(
+        hot: HotCtx,
+        field_names: tuple[str, ...],
+        slot_values: list[Any],
+        slot_present: bytearray,
+    ) -> None:
+        hot.slot_field_names = field_names
+        hot.slot_values = slot_values
+        hot.slot_present = slot_present
+        hot.in_values_view = _HotSlotMap(field_names, slot_values, slot_present)
+        hot.in_present_names = tuple(
+            field_names[idx] for idx in range(len(field_names)) if slot_present[idx]
+        )
+        hot.compiled_input_ready = True
+        hot.lazy_published = True
+
+    def _resolve_param_shape_decode_strategy(
+        self,
+        packed: PackedKernel,
+        program_id: int,
+        param_shape_id: int,
+        field_names: tuple[str, ...],
+        by_field: Mapping[str, Any],
+    ) -> tuple[int, tuple[tuple[int, str, int, int], ...]]:
+        cache_key = (id(packed), program_id, param_shape_id)
+        cached = self._param_shape_decode_strategy_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        start, length = self._param_shape_descriptor_slice(packed, param_shape_id)
+        strategy: tuple[int, tuple[tuple[int, str, int, int], ...]] = (
+            _DECODE_STRATEGY_GENERIC_HASHED,
+            (),
+        )
+        if length > 0 and field_names:
+            source_masks = self._hot_array(
+                packed,
+                "param_shape_source_masks",
+                tuple(getattr(packed, "param_shape_source_masks", ()) or ()),
+            )
+            slot_ids = self._hot_array(
+                packed,
+                "param_shape_slot_ids",
+                tuple(getattr(packed, "param_shape_slot_ids", ()) or ()),
+            )
+            decoder_ids = self._hot_array(
+                packed,
+                "param_shape_decoder_ids",
+                tuple(getattr(packed, "param_shape_decoder_ids", ()) or ()),
+            )
+            max_lengths = self._hot_array(
+                packed,
+                "param_shape_max_lengths",
+                tuple(getattr(packed, "param_shape_max_lengths", ()) or ()),
+            )
+            rows: list[tuple[int, str, int, int]] = []
+            body_only = True
+            for idx in range(start, start + length):
+                source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
+                if source_mask != _PARAM_SOURCE_BODY:
+                    body_only = False
+                    break
+                slot_id = int(slot_ids[idx]) if idx < len(slot_ids) else -1
+                if not (0 <= slot_id < len(field_names)):
+                    body_only = False
+                    break
+                field_name = field_names[slot_id]
+                field_meta = by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
+                rows.append(
+                    (
+                        slot_id,
+                        self._compiled_lookup_name(field_name, field_meta),
+                        int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE,
+                        int(max_lengths[idx]) if idx < len(max_lengths) else 0,
+                    )
+                )
+            if body_only and rows:
+                strategy_kind = (
+                    _DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD
+                    if len(rows) == 1
+                    else _DECODE_STRATEGY_BODY_ONLY_MAPPING
+                )
+                strategy = (strategy_kind, tuple(rows))
+
+        self._param_shape_decode_strategy_cache[cache_key] = strategy
+        return strategy
+
     async def _prepare_compiled_input(
-        cls,
+        self,
         ctx: _Ctx,
         packed: PackedKernel,
         program_id: int,
@@ -526,21 +627,23 @@ class PackedPlanExecutor(ExecutorBase):
         hot = temp.get("hot_ctx")
         if not isinstance(hot, HotCtx):
             return
-        param_shape_id = cls._resolve_program_param_shape_id(packed, program_id, hot_op_plan)
+        param_shape_id = self._resolve_program_param_shape_id(
+            packed, program_id, hot_op_plan
+        )
         if param_shape_id < 0:
             return
         if hot.slot_values is not None and hot.param_shape_id == param_shape_id:
             return
 
         hot.param_shape_id = param_shape_id
-        hot.transport_kind_id = cls._resolve_program_transport_kind_id(
+        hot.transport_kind_id = self._resolve_program_transport_kind_id(
             packed, program_id, hot_op_plan
         )
         raw_scope = hot.raw_scope if isinstance(hot.raw_scope, Mapping) else {}
         if hot.raw_headers is None:
-            hot.raw_headers = cls._coerce_header_pairs(raw_scope)
+            hot.raw_headers = self._coerce_header_pairs(raw_scope)
         if not hot.content_type:
-            hot.content_type = cls._content_type_from_raw_headers(hot.raw_headers or ())
+            hot.content_type = self._content_type_from_raw_headers(hot.raw_headers or ())
         if not hot.raw_query_string and isinstance(raw_scope, Mapping):
             query_string = raw_scope.get("query_string", b"")
             if isinstance(query_string, (bytes, bytearray)):
@@ -551,12 +654,12 @@ class PackedPlanExecutor(ExecutorBase):
                 hot.path_params = route.get("path_params")
             elif isinstance(raw_scope, Mapping) and isinstance(raw_scope.get("path_params"), Mapping):
                 hot.path_params = raw_scope.get("path_params")
-        request = cls._ensure_hot_request(ctx, hot)
-        body_bytes = await cls._ensure_body_bytes(ctx, hot)
+        request = self._ensure_hot_request(ctx, hot)
+        body_bytes = await self._ensure_body_bytes(ctx, hot)
         if request is not None and body_bytes is not None and hasattr(request, "body"):
             request.body = body_bytes
         dispatch = dict.get(temp, "dispatch")
-        hot.transport_kind_id = cls._active_transport_kind(
+        hot.transport_kind_id = self._active_transport_kind(
             hot,
             dispatch if isinstance(dispatch, Mapping) else None,
             hot.transport_kind_id,
@@ -578,35 +681,35 @@ class PackedPlanExecutor(ExecutorBase):
             )
             temp["jsonrpc_request_id"] = rpc_envelope.get("id")
 
-        start, length = cls._param_shape_descriptor_slice(packed, param_shape_id)
+        start, length = self._param_shape_descriptor_slice(packed, param_shape_id)
         if length <= 0:
             return
-        lookup_hashes = cls._hot_array(
+        lookup_hashes = self._hot_array(
             packed,
             "param_shape_lookup_hashes",
             tuple(getattr(packed, "param_shape_lookup_hashes", ()) or ()),
         )
-        header_hashes = cls._hot_array(
+        header_hashes = self._hot_array(
             packed,
             "param_shape_header_hashes",
             tuple(getattr(packed, "param_shape_header_hashes", ()) or ()),
         )
-        source_masks = cls._hot_array(
+        source_masks = self._hot_array(
             packed,
             "param_shape_source_masks",
             tuple(getattr(packed, "param_shape_source_masks", ()) or ()),
         )
-        slot_ids = cls._hot_array(
+        slot_ids = self._hot_array(
             packed,
             "param_shape_slot_ids",
             tuple(getattr(packed, "param_shape_slot_ids", ()) or ()),
         )
-        decoder_ids = cls._hot_array(
+        decoder_ids = self._hot_array(
             packed,
             "param_shape_decoder_ids",
             tuple(getattr(packed, "param_shape_decoder_ids", ()) or ()),
         )
-        max_lengths = cls._hot_array(
+        max_lengths = self._hot_array(
             packed,
             "param_shape_max_lengths",
             tuple(getattr(packed, "param_shape_max_lengths", ()) or ()),
@@ -614,13 +717,72 @@ class PackedPlanExecutor(ExecutorBase):
 
         opview = getattr(ctx, "opview", None)
         schema_in = getattr(opview, "schema_in", None) if opview is not None else None
-        field_names = tuple(getattr(schema_in, "fields", ()) or ())
-        by_field = getattr(schema_in, "by_field", {}) if schema_in is not None else {}
+        if isinstance(schema_in, Mapping):
+            field_names = tuple(schema_in.get("fields", ()) or ())
+            by_field = schema_in.get("by_field", {}) or {}
+        else:
+            field_names = tuple(getattr(schema_in, "fields", ()) or ())
+            by_field = getattr(schema_in, "by_field", {}) if schema_in is not None else {}
         body_payload = hot.parsed_json
         if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, Mapping):
             body_payload = body_payload.get("params", {})
         body_mapping = body_payload if isinstance(body_payload, Mapping) else None
         path_mapping = hot.path_params if isinstance(hot.path_params, Mapping) else None
+        strategy_kind, strategy_rows = self._resolve_param_shape_decode_strategy(
+            packed,
+            program_id,
+            param_shape_id,
+            field_names,
+            by_field if isinstance(by_field, Mapping) else {},
+        )
+        slot_values: list[Any] = [None] * len(field_names)
+        slot_present = bytearray(len(field_names))
+
+        if (
+            strategy_kind == _DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD
+            and body_mapping is not None
+            and strategy_rows
+        ):
+            hot.body_hashed_items = None
+            hot.query_hashed_spans = None
+            hot.header_hashed_pairs = None
+            slot_id, lookup_name, decoder_id, max_length = strategy_rows[0]
+            value = body_mapping.get(lookup_name)
+            if value is not None:
+                try:
+                    coerced = self._decode_scalar(value, decoder_id)
+                except Exception:
+                    coerced = value
+                if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
+                    coerced = coerced[:max_length]
+                slot_values[slot_id] = coerced
+                slot_present[slot_id] = 1
+            self._publish_compiled_slots(hot, field_names, slot_values, slot_present)
+            return
+
+        if (
+            strategy_kind == _DECODE_STRATEGY_BODY_ONLY_MAPPING
+            and body_mapping is not None
+            and strategy_rows
+        ):
+            hot.body_hashed_items = None
+            hot.query_hashed_spans = None
+            hot.header_hashed_pairs = None
+            for slot_id, lookup_name, decoder_id, max_length in strategy_rows:
+                value = body_mapping.get(lookup_name)
+                if value is None:
+                    continue
+                try:
+                    coerced = self._decode_scalar(value, decoder_id)
+                except Exception:
+                    coerced = value
+                if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
+                    coerced = coerced[:max_length]
+                slot_values[slot_id] = coerced
+                slot_present[slot_id] = 1
+            self._publish_compiled_slots(hot, field_names, slot_values, slot_present)
+            return
+
         needs_query = False
         needs_header = False
         for idx in range(start, start + length):
@@ -629,19 +791,22 @@ class PackedPlanExecutor(ExecutorBase):
             needs_header = needs_header or bool(source_mask & _PARAM_SOURCE_HEADER)
             if needs_query and needs_header:
                 break
+        hot.body_hashed_items = None
         query_spans: tuple[tuple[int, int, int, int], ...] = ()
         if needs_query:
             if hot.query_hashed_spans is None:
-                hot.query_hashed_spans = cls._parse_query_spans(hot.raw_query_string)
+                hot.query_hashed_spans = self._parse_query_spans(hot.raw_query_string)
             query_spans = hot.query_hashed_spans
+        else:
+            hot.query_hashed_spans = None
         header_pairs: tuple[tuple[int, bytes], ...] = ()
         if needs_header:
             raw_headers = hot.raw_headers or ()
             if hot.header_hashed_pairs is None:
-                hot.header_hashed_pairs = cls._header_hash_pairs(raw_headers)
+                hot.header_hashed_pairs = self._header_hash_pairs(raw_headers)
             header_pairs = hot.header_hashed_pairs
-        slot_values: list[Any] = [None] * len(field_names)
-        slot_present = bytearray(len(field_names))
+        else:
+            hot.header_hashed_pairs = None
 
         for idx in range(start, start + length):
             slot_id = int(slot_ids[idx])
@@ -653,11 +818,7 @@ class PackedPlanExecutor(ExecutorBase):
             decoder_id = int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE
             field_name = field_names[slot_id]
             field_meta = by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
-            lookup_name = (
-                str(field_meta.get("alias_in") or field_name)
-                if isinstance(field_meta, Mapping)
-                else field_name
-            )
+            lookup_name = self._compiled_lookup_name(field_name, field_meta)
             value = None
             found = False
             if source_mask & _PARAM_SOURCE_BODY and body_mapping is not None:
@@ -667,15 +828,15 @@ class PackedPlanExecutor(ExecutorBase):
                 if lookup_name in path_mapping:
                     found, value = True, path_mapping[lookup_name]
             if not found and source_mask & _PARAM_SOURCE_QUERY:
-                found, value = cls._lookup_query_value(
+                found, value = self._lookup_query_value(
                     hot.raw_query_string, query_spans, lookup_hash
                 )
             if not found and source_mask & _PARAM_SOURCE_HEADER and header_hash:
-                found, value = cls._lookup_hashed_pairs(header_pairs, header_hash)
+                found, value = self._lookup_hashed_pairs(header_pairs, header_hash)
             if not found:
                 continue
             try:
-                coerced = cls._decode_scalar(value, decoder_id)
+                coerced = self._decode_scalar(value, decoder_id)
             except Exception:
                 coerced = value
             max_length = int(max_lengths[idx]) if idx < len(max_lengths) else 0
@@ -684,15 +845,7 @@ class PackedPlanExecutor(ExecutorBase):
             slot_values[slot_id] = coerced
             slot_present[slot_id] = 1
 
-        hot.slot_field_names = field_names
-        hot.slot_values = slot_values
-        hot.slot_present = slot_present
-        hot.in_values_view = _HotSlotMap(field_names, slot_values, slot_present)
-        hot.in_present_names = tuple(
-            field_names[idx] for idx in range(len(field_names)) if slot_present[idx]
-        )
-        hot.compiled_input_ready = True
-        hot.lazy_published = True
+        self._publish_compiled_slots(hot, field_names, slot_values, slot_present)
 
     @staticmethod
     def _compiled_schema_in(

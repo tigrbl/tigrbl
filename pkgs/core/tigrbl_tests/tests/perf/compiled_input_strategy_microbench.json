@@ -1,0 +1,145 @@
+{
+  "hash_iterations": 250000,
+  "decode_iterations": 200000,
+  "samples": 5,
+  "hash_results": [
+    {
+      "title": "hash.blake2b64",
+      "iterations": 250000,
+      "samples": 5,
+      "mean_seconds": 0.2634533600299619,
+      "ops_per_second": 948934.566526569,
+      "mean_ns_per_op": 1053.8134401198477,
+      "sample_seconds": [
+        0.268036600027699,
+        0.2615786000387743,
+        0.25878820003708825,
+        0.26262650004355237,
+        0.2662369000026956
+      ]
+    },
+    {
+      "title": "hash.zlib_crc32x2_64",
+      "iterations": 250000,
+      "samples": 5,
+      "mean_seconds": 0.1339883199892938,
+      "ops_per_second": 1865834.275853119,
+      "mean_ns_per_op": 535.9532799571753,
+      "sample_seconds": [
+        0.1330288000172004,
+        0.13241869997000322,
+        0.13463380001485348,
+        0.1309888999676332,
+        0.13887139997677878
+      ]
+    }
+  ],
+  "shape_results": [
+    {
+      "title": "shape.body_only_1.generic_hashed_blake2b",
+      "iterations": 200000,
+      "samples": 5,
+      "mean_seconds": 0.35164761998457833,
+      "ops_per_second": 568751.1833828738,
+      "mean_ns_per_op": 1758.2380999228917,
+      "sample_seconds": [
+        0.3449278999469243,
+        0.3457234000088647,
+        0.37935110001126304,
+        0.3507186999777332,
+        0.33751699997810647
+      ]
+    },
+    {
+      "title": "shape.body_only_1.generic_hashed_zlib",
+      "iterations": 200000,
+      "samples": 5,
+      "mean_seconds": 0.22577976000029593,
+      "ops_per_second": 885818.994580107,
+      "mean_ns_per_op": 1128.8988000014795,
+      "sample_seconds": [
+        0.2247184999869205,
+        0.2273915999685414,
+        0.22491670004092157,
+        0.22531800001161173,
+        0.22655399999348447
+      ]
+    },
+    {
+      "title": "shape.body_only_1.specialized_mapping",
+      "iterations": 200000,
+      "samples": 5,
+      "mean_seconds": 0.08529233998851851,
+      "ops_per_second": 2344876.4569822177,
+      "mean_ns_per_op": 426.46169994259253,
+      "sample_seconds": [
+        0.08584859996335581,
+        0.0841886000125669,
+        0.08233319997088984,
+        0.09126720001222566,
+        0.08282409998355433
+      ]
+    },
+    {
+      "title": "shape.body_only_1.specialized_single_field",
+      "iterations": 200000,
+      "samples": 5,
+      "mean_seconds": 0.03421121999854222,
+      "ops_per_second": 5846035.306794737,
+      "mean_ns_per_op": 171.0560999927111,
+      "sample_seconds": [
+        0.03338469995651394,
+        0.03360700001940131,
+        0.033966600021813065,
+        0.036851099983323365,
+        0.033246700011659414
+      ]
+    },
+    {
+      "title": "shape.body_only_4.generic_hashed_blake2b",
+      "iterations": 200000,
+      "samples": 5,
+      "mean_seconds": 1.0346395000000483,
+      "ops_per_second": 193304.04454884108,
+      "mean_ns_per_op": 5173.197500000242,
+      "sample_seconds": [
+        1.0247200000449084,
+        1.036474900029134,
+        1.036307999980636,
+        1.0463847999926656,
+        1.0293097999528982
+      ]
+    },
+    {
+      "title": "shape.body_only_4.generic_hashed_zlib",
+      "iterations": 200000,
+      "samples": 5,
+      "mean_seconds": 0.6090618800022639,
+      "ops_per_second": 328373.8591541086,
+      "mean_ns_per_op": 3045.309400011319,
+      "sample_seconds": [
+        0.60026450001169,
+        0.617311600013636,
+        0.6198824999737553,
+        0.6083694000262767,
+        0.5994813999859616
+      ]
+    },
+    {
+      "title": "shape.body_only_4.specialized_mapping",
+      "iterations": 200000,
+      "samples": 5,
+      "mean_seconds": 0.13227057999465613,
+      "ops_per_second": 1512052.037634372,
+      "mean_ns_per_op": 661.3528999732806,
+      "sample_seconds": [
+        0.1299519999884069,
+        0.140824000001885,
+        0.1289159000152722,
+        0.13158629997633398,
+        0.13007469999138266
+      ]
+    }
+  ],
+  "artifact_path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\compiled_input_strategy_microbench.json"
+}
