@@ -6,6 +6,7 @@ import json
 import uuid as _uuid
 import decimal as _dc
 import datetime as _dt
+import zlib
 from importlib import import_module
 from typing import Any, ClassVar, Mapping
 from operator import attrgetter
@@ -49,6 +50,19 @@ _DECODER_DECIMAL = 6
 _DECODER_DATETIME = 7
 _DECODER_DATE = 8
 _DECODER_TIME = 9
+_QUERY_VALUE_HAS_PLUS = 1
+_QUERY_VALUE_HAS_PERCENT = 2
+_HTTP_METHOD_ID_BY_NAME = {
+    "GET": 1,
+    "HEAD": 2,
+    "POST": 3,
+    "PUT": 4,
+    "PATCH": 5,
+    "DELETE": 6,
+    "OPTIONS": 7,
+    "TRACE": 8,
+    "CONNECT": 9,
+}
 
 
 class PackedPlanExecutor(ExecutorBase):
@@ -88,6 +102,9 @@ class PackedPlanExecutor(ExecutorBase):
         self._program_runner_cache: dict[tuple[int, ...], Any] = {}
         self._program_runner_mode_cache: dict[tuple[int, int, int], Any] = {}
         self._db_acquire_cache: dict[tuple[int, int], Any] = {}
+        self._hot_exact_route_cache: dict[
+            int, Mapping[int, tuple[tuple[int, int], ...]]
+        ] = {}
         self._model_row_serializer_cache: dict[type[Any], tuple[str, ...]] = {}
 
     @classmethod
@@ -174,11 +191,19 @@ class PackedPlanExecutor(ExecutorBase):
 
     @staticmethod
     def _stable_name_hash64(value: str, *, lowercase: bool = False) -> int:
-        import hashlib
-
         normalized = value.lower() if lowercase else value
-        digest = hashlib.blake2b(normalized.encode("utf-8"), digest_size=8).digest()
-        return int.from_bytes(digest, "little", signed=False)
+        encoded = normalized.encode("utf-8")
+        lo = zlib.crc32(encoded) & 0xFFFFFFFF
+        hi = zlib.crc32(encoded, 0x9E3779B9) & 0xFFFFFFFF
+        return (hi << 32) | lo
+
+    @classmethod
+    def _http_method_id(cls, method: str) -> int:
+        normalized = str(method or "").upper()
+        cached = _HTTP_METHOD_ID_BY_NAME.get(normalized)
+        if cached is not None:
+            return cached
+        return 1024 + (cls._stable_name_hash64(normalized) & 0xFFFF)
 
     @staticmethod
     def _coerce_header_pairs(
@@ -238,21 +263,47 @@ class PackedPlanExecutor(ExecutorBase):
         return value
 
     @staticmethod
-    def _parse_query_pairs(raw_query: bytes) -> tuple[tuple[int, str], ...]:
+    def _parse_query_spans(raw_query: bytes) -> tuple[tuple[int, int, int, int], ...]:
         if not raw_query:
             return ()
-        out: list[tuple[int, str]] = []
+        out: list[tuple[int, int, int, int]] = []
+        cursor = 0
         for chunk in raw_query.split(b"&"):
+            chunk_start = cursor
+            cursor += len(chunk) + 1
             if not chunk:
                 continue
             raw_key, _, raw_value = chunk.partition(b"=")
             try:
                 key = unquote_plus(raw_key.decode("latin-1"))
-                value = unquote_plus(raw_value.decode("latin-1"))
             except Exception:
                 continue
-            out.append((PackedPlanExecutor._stable_name_hash64(key), value))
+            flags = 0
+            if b"+" in raw_value:
+                flags |= _QUERY_VALUE_HAS_PLUS
+            if b"%" in raw_value:
+                flags |= _QUERY_VALUE_HAS_PERCENT
+            value_start = chunk_start + len(raw_key) + (1 if b"=" in chunk else 0)
+            value_end = chunk_start + len(chunk)
+            out.append(
+                (
+                    PackedPlanExecutor._stable_name_hash64(key),
+                    value_start,
+                    value_end,
+                    flags,
+                )
+            )
         return tuple(out)
+
+    @staticmethod
+    def _decode_query_span_value(
+        raw_query: bytes, start: int, end: int, flags: int
+    ) -> str:
+        raw_value = raw_query[start:end]
+        text = raw_value.decode("latin-1")
+        if flags & (_QUERY_VALUE_HAS_PLUS | _QUERY_VALUE_HAS_PERCENT):
+            return unquote_plus(text)
+        return text
 
     @classmethod
     def _ensure_hot_request(cls, ctx: _Ctx, hot: HotCtx) -> Request | Any | None:
@@ -305,15 +356,70 @@ class PackedPlanExecutor(ExecutorBase):
         return hot.body_bytes
 
     @classmethod
-    def _body_hash_items(cls, body: Any) -> tuple[tuple[int, Any], ...]:
+    def _body_hash_items(cls, body: Any) -> Mapping[int, Any]:
         if not isinstance(body, Mapping):
-            return ()
-        out: list[tuple[int, Any]] = []
+            return {}
+        out: dict[int, Any] = {}
         for key, value in body.items():
             if not isinstance(key, str):
                 continue
-            out.append((cls._stable_name_hash64(key), value))
-        return tuple(out)
+            out[cls._stable_name_hash64(key)] = value
+        return out
+
+    @classmethod
+    def _header_hash_pairs(
+        cls, raw_headers: tuple[tuple[bytes, bytes], ...]
+    ) -> tuple[tuple[int, bytes], ...]:
+        return tuple(
+            (
+                cls._stable_name_hash64(
+                    key_bytes.decode("latin-1"), lowercase=True
+                ),
+                raw_value,
+            )
+            for key_bytes, raw_value in raw_headers
+        )
+
+    @classmethod
+    def _path_hash_items(cls, path_params: Mapping[str, Any] | None) -> Mapping[int, Any]:
+        if not isinstance(path_params, Mapping):
+            return {}
+        out: dict[int, Any] = {}
+        for key, value in path_params.items():
+            out[cls._stable_name_hash64(str(key))] = value
+        return out
+
+    @classmethod
+    def _lookup_query_value(
+        cls,
+        raw_query: bytes,
+        query_spans: tuple[tuple[int, int, int, int], ...],
+        target_hash: int,
+    ) -> tuple[bool, Any]:
+        for item_hash, value_start, value_end, flags in query_spans:
+            if int(item_hash) != int(target_hash):
+                continue
+            return True, cls._decode_query_span_value(
+                raw_query, int(value_start), int(value_end), int(flags)
+            )
+        return False, None
+
+    @staticmethod
+    def _lookup_hashed_mapping(
+        items: Mapping[int, Any], target_hash: int
+    ) -> tuple[bool, Any]:
+        if int(target_hash) in items:
+            return True, items[int(target_hash)]
+        return False, None
+
+    @staticmethod
+    def _lookup_hashed_pairs(
+        items: tuple[tuple[int, bytes], ...], target_hash: int
+    ) -> tuple[bool, Any]:
+        for item_hash, raw_value in items:
+            if int(item_hash) == int(target_hash):
+                return True, raw_value.decode("latin-1")
+        return False, None
 
     @classmethod
     def _param_shape_descriptor_slice(
@@ -440,7 +546,7 @@ class PackedPlanExecutor(ExecutorBase):
             if isinstance(query_string, (bytes, bytearray)):
                 hot.raw_query_string = bytes(query_string)
         if hot.path_params is None:
-            route = temp.get("route")
+            route = dict.get(temp, "route")
             if isinstance(route, Mapping) and isinstance(route.get("path_params"), Mapping):
                 hot.path_params = route.get("path_params")
             elif isinstance(raw_scope, Mapping) and isinstance(raw_scope.get("path_params"), Mapping):
@@ -449,6 +555,12 @@ class PackedPlanExecutor(ExecutorBase):
         body_bytes = await cls._ensure_body_bytes(ctx, hot)
         if request is not None and body_bytes is not None and hasattr(request, "body"):
             request.body = body_bytes
+        dispatch = dict.get(temp, "dispatch")
+        hot.transport_kind_id = cls._active_transport_kind(
+            hot,
+            dispatch if isinstance(dispatch, Mapping) else None,
+            hot.transport_kind_id,
+        )
         if hot.transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}:
             if not hot.parsed_json_loaded:
                 parsed = None
@@ -460,21 +572,6 @@ class PackedPlanExecutor(ExecutorBase):
                 hot.parsed_json = parsed
                 hot.parsed_json_loaded = True
 
-        dispatch = temp.setdefault("dispatch", {})
-        route = temp.setdefault("route", {})
-        hot.transport_kind_id = cls._active_transport_kind(
-            hot,
-            dispatch if isinstance(dispatch, Mapping) else None,
-            hot.transport_kind_id,
-        )
-        if isinstance(dispatch, dict):
-            dispatch.setdefault("binding_protocol", hot.protocol)
-            dispatch.setdefault("binding_selector", hot.selector)
-        if isinstance(route, dict):
-            route.setdefault("protocol", hot.protocol)
-            route.setdefault("selector", hot.selector)
-            route.setdefault("program_id", program_id)
-            route.setdefault("opmeta_index", program_id)
         if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(hot.parsed_json, Mapping):
             rpc_envelope = (
                 hot.parsed_json if isinstance(hot.parsed_json, dict) else dict(hot.parsed_json)
@@ -515,30 +612,36 @@ class PackedPlanExecutor(ExecutorBase):
             tuple(getattr(packed, "param_shape_max_lengths", ()) or ()),
         )
 
-        body_payload = hot.parsed_json
-        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, Mapping):
-            body_payload = body_payload.get("params", {})
-        body_items = cls._body_hash_items(body_payload)
-        query_pairs = cls._parse_query_pairs(hot.raw_query_string)
-        raw_headers = hot.raw_headers or ()
-        path_pairs = tuple(
-            (
-                cls._stable_name_hash64(str(key)),
-                value,
-            )
-            for key, value in ((hot.path_params or {}) if isinstance(hot.path_params, Mapping) else {}).items()
-        )
         opview = getattr(ctx, "opview", None)
         schema_in = getattr(opview, "schema_in", None) if opview is not None else None
         field_names = tuple(getattr(schema_in, "fields", ()) or ())
+        by_field = getattr(schema_in, "by_field", {}) if schema_in is not None else {}
+        body_payload = hot.parsed_json
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, Mapping):
+            body_payload = body_payload.get("params", {})
+        body_mapping = body_payload if isinstance(body_payload, Mapping) else None
+        path_mapping = hot.path_params if isinstance(hot.path_params, Mapping) else None
+        needs_query = False
+        needs_header = False
+        for idx in range(start, start + length):
+            source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
+            needs_query = needs_query or bool(source_mask & _PARAM_SOURCE_QUERY)
+            needs_header = needs_header or bool(source_mask & _PARAM_SOURCE_HEADER)
+            if needs_query and needs_header:
+                break
+        query_spans: tuple[tuple[int, int, int, int], ...] = ()
+        if needs_query:
+            if hot.query_hashed_spans is None:
+                hot.query_hashed_spans = cls._parse_query_spans(hot.raw_query_string)
+            query_spans = hot.query_hashed_spans
+        header_pairs: tuple[tuple[int, bytes], ...] = ()
+        if needs_header:
+            raw_headers = hot.raw_headers or ()
+            if hot.header_hashed_pairs is None:
+                hot.header_hashed_pairs = cls._header_hash_pairs(raw_headers)
+            header_pairs = hot.header_hashed_pairs
         slot_values: list[Any] = [None] * len(field_names)
         slot_present = bytearray(len(field_names))
-
-        def _lookup(items: tuple[tuple[int, Any], ...], target_hash: int) -> tuple[bool, Any]:
-            for item_hash, item_value in items:
-                if int(item_hash) == int(target_hash):
-                    return True, item_value
-            return False, None
 
         for idx in range(start, start + length):
             slot_id = int(slot_ids[idx])
@@ -548,22 +651,27 @@ class PackedPlanExecutor(ExecutorBase):
             header_hash = int(header_hashes[idx]) if idx < len(header_hashes) else 0
             source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
             decoder_id = int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE
+            field_name = field_names[slot_id]
+            field_meta = by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
+            lookup_name = (
+                str(field_meta.get("alias_in") or field_name)
+                if isinstance(field_meta, Mapping)
+                else field_name
+            )
             value = None
             found = False
-            if source_mask & _PARAM_SOURCE_BODY:
-                found, value = _lookup(body_items, lookup_hash)
-            if not found and source_mask & _PARAM_SOURCE_PATH:
-                found, value = _lookup(path_pairs, lookup_hash)
+            if source_mask & _PARAM_SOURCE_BODY and body_mapping is not None:
+                if lookup_name in body_mapping:
+                    found, value = True, body_mapping[lookup_name]
+            if not found and source_mask & _PARAM_SOURCE_PATH and path_mapping is not None:
+                if lookup_name in path_mapping:
+                    found, value = True, path_mapping[lookup_name]
             if not found and source_mask & _PARAM_SOURCE_QUERY:
-                found, value = _lookup(query_pairs, lookup_hash)
+                found, value = cls._lookup_query_value(
+                    hot.raw_query_string, query_spans, lookup_hash
+                )
             if not found and source_mask & _PARAM_SOURCE_HEADER and header_hash:
-                for key_bytes, raw_value in raw_headers:
-                    if cls._stable_name_hash64(
-                        key_bytes.decode("latin-1"), lowercase=True
-                    ) == header_hash:
-                        found = True
-                        value = raw_value.decode("latin-1")
-                        break
+                found, value = cls._lookup_hashed_pairs(header_pairs, header_hash)
             if not found:
                 continue
             try:
@@ -827,7 +935,7 @@ class PackedPlanExecutor(ExecutorBase):
             ctx.temp = {}
             temp = ctx.temp
 
-        route = temp.get("route") if isinstance(temp, dict) else None
+        route = dict.get(temp, "route") if isinstance(temp, dict) else None
         if isinstance(route, dict):
             for key in ("program_id", "opmeta_index"):
                 value = self._coerce_int(route.get(key))
@@ -835,7 +943,7 @@ class PackedPlanExecutor(ExecutorBase):
                     temp["program_id"] = value
                     return value
 
-        value = self._coerce_int(temp.get("program_id"))
+        value = self._coerce_int(dict.get(temp, "program_id"))
         if value is not None:
             return value
 
@@ -846,16 +954,16 @@ class PackedPlanExecutor(ExecutorBase):
         if not isinstance(temp, dict):
             return -1
 
-        hot = temp.get("hot_ctx")
+        hot = dict.get(temp, "hot_ctx")
         if isinstance(hot, HotCtx) and hot.program_id >= 0:
-            route = temp.setdefault("route", {})
+            route = dict.get(temp, "route")
             if isinstance(route, dict):
                 route.setdefault("program_id", hot.program_id)
                 route.setdefault("opmeta_index", hot.program_id)
             temp["program_id"] = hot.program_id
             return hot.program_id
 
-        dispatch = temp.get("dispatch")
+        dispatch = dict.get(temp, "dispatch")
         if not isinstance(dispatch, dict):
             return -1
 
@@ -893,7 +1001,7 @@ class PackedPlanExecutor(ExecutorBase):
         if program_id is None or program_id < 0:
             return -1
 
-        route = temp.setdefault("route", {})
+        route = dict.get(temp, "route")
         if isinstance(route, dict):
             route.setdefault("program_id", program_id)
             route.setdefault("opmeta_index", program_id)
@@ -1022,10 +1130,57 @@ class PackedPlanExecutor(ExecutorBase):
                             return meta_index
         return -1
 
-    @staticmethod
+    def _resolve_hot_exact_route_buckets(
+        self, packed: PackedKernel
+    ) -> Mapping[int, tuple[tuple[int, int], ...]]:
+        packed_id = id(packed)
+        cached = self._hot_exact_route_cache.get(packed_id)
+        if cached is not None:
+            return cached
+        method_ids = self._hot_array(
+            packed,
+            "exact_method_ids",
+            tuple(),
+        )
+        path_hashes = self._hot_array(
+            packed,
+            "exact_path_hashes",
+            tuple(),
+        )
+        program_ids = self._hot_array(
+            packed,
+            "exact_program_ids",
+            tuple(),
+        )
+        if not (
+            method_ids
+            and len(method_ids) == len(path_hashes)
+            and len(method_ids) == len(program_ids)
+        ):
+            self._hot_exact_route_cache[packed_id] = {}
+            return {}
+        buckets: dict[int, list[tuple[int, int]]] = {}
+        for method_id, path_hash, program_id in zip(
+            method_ids, path_hashes, program_ids
+        ):
+            buckets.setdefault(int(method_id), []).append(
+                (int(path_hash), int(program_id))
+            )
+        frozen = {
+            method_id: tuple(entries) for method_id, entries in buckets.items()
+        }
+        self._hot_exact_route_cache[packed_id] = frozen
+        return frozen
+
     def _resolve_program_id_from_exact_route(
-        packed: PackedKernel, method: str, path: str
+        self, packed: PackedKernel, method: str, path: str
     ) -> int:
+        method_id = self._http_method_id(method)
+        path_hash = self._stable_name_hash64(path)
+        buckets = self._resolve_hot_exact_route_buckets(packed)
+        for candidate_hash, program_id in buckets.get(method_id, ()):
+            if int(candidate_hash) == int(path_hash):
+                return int(program_id)
         route = getattr(packed, "rest_exact_route_to_program", None)
         if not isinstance(route, Mapping):
             return -1
@@ -1059,23 +1214,46 @@ class PackedPlanExecutor(ExecutorBase):
             if selector_id is not None:
                 hot.selector_id = selector_id
         hot.program_id = program_id
+        hot.transport_kind_id = _TRANSPORT_KIND_REST
 
         ctx.method = hot.method
         ctx.path = hot.path
-        dispatch = temp.setdefault("dispatch", {})
-        if isinstance(dispatch, dict):
-            dispatch.setdefault("binding_protocol", hot.protocol)
-            dispatch.setdefault("binding_selector", hot.selector)
-            dispatch.setdefault("channel_protocol", hot.protocol)
-            dispatch.setdefault("channel_selector", hot.selector)
-        route = temp.setdefault("route", {})
-        if isinstance(route, dict):
-            route.setdefault("selector", hot.selector)
-            route.setdefault("protocol", hot.protocol)
-            route.setdefault("program_id", program_id)
-            route.setdefault("opmeta_index", program_id)
         temp["program_id"] = program_id
         return program_id
+
+    @classmethod
+    def _prepare_compiled_dispatch_prelude(
+        cls,
+        ctx: _Ctx,
+        packed: PackedKernel,
+        program_id: int,
+        hot_op_plan: Any | None,
+    ) -> HotCtx | None:
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            return None
+        hot = dict.get(temp, "hot_ctx")
+        if not isinstance(hot, HotCtx):
+            return None
+        hot.program_id = program_id
+        hot.transport_kind_id = cls._resolve_program_transport_kind_id(
+            packed, program_id, hot_op_plan
+        )
+        if hot.method and getattr(ctx, "method", None) in (None, ""):
+            ctx.method = hot.method
+        if hot.path and getattr(ctx, "path", None) in (None, ""):
+            ctx.path = hot.path
+        proto_to_id = getattr(packed, "proto_to_id", None)
+        if hot.proto_id < 0 and isinstance(proto_to_id, Mapping):
+            proto_id = cls._coerce_int(proto_to_id.get(hot.protocol))
+            if proto_id is not None:
+                hot.proto_id = proto_id
+        selector_to_id = getattr(packed, "selector_to_id", None)
+        if hot.selector_id < 0 and isinstance(selector_to_id, Mapping):
+            selector_id = cls._coerce_int(selector_to_id.get(hot.selector))
+            if selector_id is not None:
+                hot.selector_id = selector_id
+        return hot
 
     async def _probe_ingress_for_program(
         self, ctx: _Ctx, plan: KernelPlan, packed: PackedKernel
@@ -1341,8 +1519,13 @@ class PackedPlanExecutor(ExecutorBase):
                     rv = call(ctx)
                 if is_async:
                     await rv
-                elif inspect.isawaitable(rv):
-                    await rv
+                elif rv is not None and callable(getattr(type(rv), "__await__", None)):
+                    close = getattr(rv, "close", None)
+                    if callable(close):
+                        close()
+                    raise RuntimeError(
+                        f"sync compiled step returned awaitable in phase {phase_name!r}"
+                    )
 
         self._program_runner_cache[cache_key] = _runner
         return _runner
@@ -1397,6 +1580,7 @@ class PackedPlanExecutor(ExecutorBase):
             "wire.build_in",
             "wire.validate_in",
             "resolve.assemble",
+            "sys.phase_db",
         }
         for step_id, opcode_id in enumerate(opcode_ids):
             if 0 <= opcode_id < len(opcode_keys):
@@ -1404,13 +1588,18 @@ class PackedPlanExecutor(ExecutorBase):
                     skip_step_ids.add(step_id)
 
         compiled_steps: list[tuple[str, int, Any, Any, bool]] = []
+        phase_requires_db: dict[str, bool] = {}
         step_table = packed.step_table
         for seg_id in (*ordered, *remaining):
             phase_name = str(normalize_phase(phase_names[seg_id]))
             for step_id in step_ids_by_segment[seg_id]:
+                step = step_table[step_id]
+                if bool(getattr(step, "__tigrbl_skip_in_compiled_param", False)):
+                    continue
                 if step_id in skip_step_ids:
                     continue
-                step = step_table[step_id]
+                if bool(getattr(step, "__tigrbl_requires_phase_db", False)):
+                    phase_requires_db[phase_name] = True
                 direct_run = getattr(step, "__tigrbl_direct_run", None)
                 if callable(direct_run):
                     direct_dep = getattr(step, "__tigrbl_direct_dep", None)
@@ -1451,16 +1640,28 @@ class PackedPlanExecutor(ExecutorBase):
                 )
 
         async def _runner(ctx: _Ctx) -> None:
+            self._prepare_compiled_dispatch_prelude(
+                ctx, packed, program_id, hot_op_plan
+            )
             await self._prepare_compiled_input(ctx, packed, program_id, hot_op_plan)
             temp = getattr(ctx, "temp", None)
-            hot = temp.get("hot_ctx") if isinstance(temp, Mapping) else None
+            hot = dict.get(temp, "hot_ctx") if isinstance(temp, dict) else None
             if isinstance(hot, HotCtx) and hot.compiled_input_ready:
                 self._compiled_validate_and_assemble(ctx, hot)
             current_phase = ""
+            phase_db_bound = False
             for phase_name, invoke_kind, call, dep, is_async in compiled_steps:
                 if phase_name != current_phase:
                     ctx.phase = phase_name
                     current_phase = phase_name
+                    needs_phase_db = bool(phase_requires_db.get(phase_name))
+                    if needs_phase_db:
+                        from tigrbl_atoms.atoms.sys.phase_db import bind_phase_db
+
+                        bind_phase_db(ctx)
+                    elif phase_db_bound and getattr(ctx, "db", None) is not None:
+                        ctx.db = None
+                    phase_db_bound = needs_phase_db
                 if invoke_kind == _DIRECT_INVOKE_RUN_WITH_DEP:
                     rv = call(dep, ctx)
                 elif invoke_kind == _DIRECT_INVOKE_RUN_WITH_NONE:
@@ -1469,8 +1670,15 @@ class PackedPlanExecutor(ExecutorBase):
                     rv = call(ctx)
                 if is_async:
                     await rv
-                elif inspect.isawaitable(rv):
-                    await rv
+                elif rv is not None and callable(getattr(type(rv), "__await__", None)):
+                    close = getattr(rv, "close", None)
+                    if callable(close):
+                        close()
+                    raise RuntimeError(
+                        f"sync compiled step returned awaitable in phase {phase_name!r}"
+                    )
+            if phase_db_bound and getattr(ctx, "db", None) is not None:
+                ctx.db = None
 
         self._program_runner_cache[cache_key] = _runner
         return _runner

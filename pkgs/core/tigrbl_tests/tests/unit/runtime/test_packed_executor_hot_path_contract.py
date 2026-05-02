@@ -25,7 +25,11 @@ def test_packed_executor_primes_exact_rest_route_before_ingress_probe() -> None:
     packed = PackedKernel(
         proto_to_id={"http.rest": 0},
         selector_to_id={"POST /widgets": 0},
-        rest_exact_route_to_program={("POST", "/widgets"): 7},
+        hot_block_view={
+            "exact_method_ids": (PackedPlanExecutor._http_method_id("POST"),),
+            "exact_path_hashes": (PackedPlanExecutor._stable_name_hash64("/widgets"),),
+            "exact_program_ids": (7,),
+        },
     )
 
     program_id = executor._prime_exact_route_program(ctx, env, packed)
@@ -205,6 +209,9 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
     def _wrapped_skip(_ctx):
         raise AssertionError("wrapped skip step should not run")
 
+    def _wrapped_phase_db(_ctx):
+        raise AssertionError("compiled param runner should skip SYS_PHASE_DB_BIND")
+
     def _wrapped_validate(_ctx):
         raise AssertionError("compiled param runner should inline validate_in")
 
@@ -216,6 +223,7 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
 
     for step, direct in (
         (_wrapped_skip, _skipped_direct),
+        (_wrapped_phase_db, _skipped_direct),
         (_wrapped_validate, _skipped_direct),
         (_wrapped_assemble, _skipped_direct),
         (_wrapped_handler, _handler_direct),
@@ -224,6 +232,10 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
         setattr(step, "__tigrbl_use_two_args", False)
         setattr(step, "__tigrbl_has_direct_dep", False)
         setattr(step, "__tigrbl_direct_is_async", False)
+    setattr(_wrapped_skip, "__tigrbl_skip_in_compiled_param", True)
+    setattr(_wrapped_phase_db, "__tigrbl_skip_in_compiled_param", True)
+    setattr(_wrapped_validate, "__tigrbl_skip_in_compiled_param", True)
+    setattr(_wrapped_assemble, "__tigrbl_skip_in_compiled_param", True)
 
     body = b'{"name":"Ada"}'
     hot_op_plan = HotOpPlan(
@@ -237,23 +249,24 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
         transport_kind_id=1,
     )
     packed = PackedKernel(
-        atom_catalog_opcode_ids=(0, 1, 2, 3),
+        atom_catalog_opcode_ids=(0, 1, 2, 3, 4),
         atom_opcode_keys=(
-            "ingress.transport_extract",
-            "wire.validate_in",
-            "resolve.assemble",
+            "step.skip",
+            "step.phase_db",
+            "step.validate",
+            "step.assemble",
             "handler.create",
         ),
-        atom_catalog_async_flags=(False, False, False, False),
+        atom_catalog_async_flags=(False, False, False, False, False),
         phase_names=("PRE_HANDLER",),
         segment_catalog_offsets=(0,),
-        segment_catalog_lengths=(4,),
-        segment_catalog_atom_ids=(0, 1, 2, 3),
+        segment_catalog_lengths=(5,),
+        segment_catalog_atom_ids=(0, 1, 2, 3, 4),
         segment_catalog_phase_ids=(0,),
         segment_catalog_executor_kinds=("sync.extractable",),
         segment_offsets=(0,),
-        segment_lengths=(4,),
-        segment_step_ids=(0, 1, 2, 3),
+        segment_lengths=(5,),
+        segment_step_ids=(0, 1, 2, 3, 4),
         segment_phases=("PRE_HANDLER",),
         segment_executor_kinds=("sync.extractable",),
         program_segment_ref_offsets=(0,),
@@ -275,6 +288,7 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
         param_shape_header_hashes=(0,),
         step_table=(
             _wrapped_skip,
+            _wrapped_phase_db,
             _wrapped_validate,
             _wrapped_assemble,
             _wrapped_handler,
@@ -430,3 +444,77 @@ async def test_packed_executor_compiled_param_runner_publishes_validation_errors
             "message": "Field is required but was not provided.",
         }
     ]
+
+
+@pytest.mark.asyncio
+async def test_packed_executor_compiled_param_runner_rejects_sync_step_returning_awaitable() -> None:
+    executor = PackedPlanExecutor()
+
+    async def _late_value():
+        return None
+
+    def _bad_sync_direct(_ctx):
+        return _late_value()
+
+    setattr(_bad_sync_direct, "__tigrbl_direct_is_async", False)
+
+    def _wrapped_handler(_ctx):
+        return _bad_sync_direct(_ctx)
+
+    setattr(_wrapped_handler, "__tigrbl_direct_run", _bad_sync_direct)
+    setattr(_wrapped_handler, "__tigrbl_use_two_args", False)
+    setattr(_wrapped_handler, "__tigrbl_has_direct_dep", False)
+    setattr(_wrapped_handler, "__tigrbl_direct_is_async", False)
+
+    hot_op_plan = HotOpPlan(
+        program_id=0,
+        alias="Widget.create",
+        target="create",
+        ordered_segment_ids=(0,),
+        remaining_segment_ids=(),
+        program_hot_runner_id=2,
+        param_shape_id=-1,
+        transport_kind_id=1,
+    )
+    packed = PackedKernel(
+        atom_catalog_opcode_ids=(0,),
+        atom_opcode_keys=("handler.create",),
+        atom_catalog_async_flags=(False,),
+        phase_names=("HANDLER",),
+        segment_catalog_offsets=(0,),
+        segment_catalog_lengths=(1,),
+        segment_catalog_atom_ids=(0,),
+        segment_catalog_phase_ids=(0,),
+        segment_catalog_executor_kinds=("sync.extractable",),
+        segment_offsets=(0,),
+        segment_lengths=(1,),
+        segment_step_ids=(0,),
+        segment_phases=("HANDLER",),
+        segment_executor_kinds=("sync.extractable",),
+        program_segment_ref_offsets=(0,),
+        program_segment_ref_lengths=(1,),
+        program_segment_refs=(0,),
+        program_hot_runner_ids=(2,),
+        program_param_shape_ids=(-1,),
+        program_transport_kind_ids=(1,),
+        step_table=(_wrapped_handler,),
+        hot_op_plans=(hot_op_plan,),
+    )
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "temp": {
+                "hot_ctx": HotCtx(
+                    scope_type="http",
+                    method="POST",
+                    path="/widgets",
+                    protocol="http.rest",
+                    selector="POST /widgets",
+                )
+            }
+        },
+    )
+
+    with pytest.raises(RuntimeError, match="sync compiled step returned awaitable"):
+        await executor._resolve_program_runner(packed, 0, hot_op_plan)(ctx)

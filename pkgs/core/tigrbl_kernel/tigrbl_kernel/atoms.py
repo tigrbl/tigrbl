@@ -26,6 +26,25 @@ logger = logging.getLogger(__name__)
 
 _AtomRun = Callable[[Optional[object], Any], Any]
 _DiscoveredAtom = tuple[str, _AtomRun]
+_COMPILED_PARAM_SKIP_ATOM_NAMES = frozenset(
+    {
+        "ingress.transport_extract",
+        "ingress.input_prepare",
+        "dispatch.binding_match",
+        "dispatch.binding_parse",
+        "dispatch.input_normalize",
+        "wire.build_in",
+        "wire.validate_in",
+        "resolve.assemble",
+        "sys.phase_db",
+    }
+)
+_COMPILED_PHASE_DB_REQUIRED_ATOM_NAMES = frozenset(
+    {
+        "sys.start_tx",
+        "sys.commit_tx",
+    }
+)
 
 
 def _is_async_callable(run: _AtomRun) -> bool:
@@ -81,6 +100,31 @@ def _infer_domain_subject(run: _AtomRun) -> tuple[Optional[str], Optional[str]]:
 def _make_label(anchor: str, run: _AtomRun) -> Optional[str]:
     domain, subject = _infer_domain_subject(run)
     return f"atom:{domain}:{subject}@{anchor}" if (domain and subject) else None
+
+
+def _policy_atom_name(
+    run: _AtomRun, direct_run: _AtomRun, label: Optional[str]
+) -> Optional[str]:
+    for candidate in (
+        run,
+        getattr(run, "__self__", None),
+        getattr(run, "__call__", None),
+        direct_run,
+        getattr(direct_run, "__self__", None),
+        getattr(direct_run, "__call__", None),
+    ):
+        for attr in ("__tigrbl_atom_name__", "__tigrbl_name__", "name"):
+            value = getattr(candidate, attr, None)
+            if isinstance(value, str) and value:
+                return value
+    if isinstance(label, str) and label:
+        prefix = label.split("@", 1)[0]
+        if prefix.startswith("atom:"):
+            return prefix.split("atom:", 1)[1].replace(":", ".")
+        if ":hook:wire:" in prefix:
+            return prefix.split(":hook:wire:", 1)[1].replace(":", ".")
+        return prefix.replace(":", ".")
+    return None
 
 
 def _use_two_args_for(run: _AtomRun) -> bool:
@@ -142,12 +186,25 @@ def _wrap_atom(run: _AtomRun, *, anchor: str) -> StepFn:
     label = getattr(run, "__tigrbl_label", None)
     if not isinstance(label, str):
         label = _make_label(anchor, run)
+    atom_name = _policy_atom_name(run, direct_run, label)
     if label:
         setattr(_step, "__tigrbl_label", label)
+    if atom_name:
+        setattr(_step, "__tigrbl_atom_name__", atom_name)
     setattr(_step, "__tigrbl_direct_run", direct_run)
     setattr(_step, "__tigrbl_use_two_args", direct_use_two_args)
     setattr(_step, "__tigrbl_has_direct_dep", False)
     setattr(_step, "__tigrbl_direct_is_async", _is_async_callable(direct_run))
+    setattr(
+        _step,
+        "__tigrbl_skip_in_compiled_param",
+        bool(atom_name in _COMPILED_PARAM_SKIP_ATOM_NAMES),
+    )
+    setattr(
+        _step,
+        "__tigrbl_requires_phase_db",
+        bool(atom_name in _COMPILED_PHASE_DB_REQUIRED_ATOM_NAMES),
+    )
     return _step
 
 
@@ -189,6 +246,8 @@ def _make_dep_atom_step(run_fn: _AtomRun, dep: Any, *, label: str) -> StepFn:
     setattr(_step, "__tigrbl_use_two_args", True)
     setattr(_step, "__tigrbl_has_direct_dep", True)
     setattr(_step, "__tigrbl_direct_is_async", _is_async_callable(run_fn))
+    setattr(_step, "__tigrbl_skip_in_compiled_param", False)
+    setattr(_step, "__tigrbl_requires_phase_db", False)
     return _step
 
 

@@ -51,6 +51,9 @@ class HotCtx:
     body_bytes: bytes | None = None
     parsed_json: Any = None
     parsed_json_loaded: bool = False
+    body_hashed_items: Mapping[int, Any] | None = None
+    header_hashed_pairs: tuple[tuple[int, bytes], ...] | None = None
+    query_hashed_spans: tuple[tuple[int, int, int, int], ...] | None = None
     path_params: Mapping[str, Any] | None = None
     slot_values: list[Any] | None = None
     slot_present: bytearray | None = None
@@ -123,6 +126,12 @@ class _HotNamespaceDict(dict[str, Any]):
         if hot is None:
             return _LAZY_MISSING
         if self._kind == "route":
+            if key == "selector" and hot.selector:
+                return hot.selector
+            if key == "protocol" and hot.protocol:
+                return hot.protocol
+            if key in {"program_id", "opmeta_index"} and hot.program_id >= 0:
+                return hot.program_id
             if key == "payload" and hot.in_values_view is not None:
                 return hot.in_values_view
             if key == "path_params" and isinstance(hot.path_params, ABCMapping):
@@ -130,6 +139,14 @@ class _HotNamespaceDict(dict[str, Any]):
             if key == "rpc_envelope" and isinstance(hot.parsed_json, ABCMapping):
                 return hot.parsed_json
             return _LAZY_MISSING
+        if key == "binding_protocol" and hot.protocol:
+            return hot.protocol
+        if key == "binding_selector" and hot.selector:
+            return hot.selector
+        if key == "channel_protocol" and hot.protocol:
+            return hot.protocol
+        if key == "channel_selector" and hot.selector:
+            return hot.selector
         if key in {"normalized_input", "parsed_payload"} and hot.in_values_view is not None:
             return hot.in_values_view
         if key == "rpc" and isinstance(hot.parsed_json, ABCMapping):
@@ -193,6 +210,8 @@ class _HotTemp(dict[str, Any]):
         hot = self._hot_ctx()
         if hot is None:
             return _LAZY_MISSING
+        if key in {"route", "dispatch"}:
+            return _HotNamespaceDict(key, self)
         if key == "compiled_in_values_ready" and hot.compiled_input_ready:
             return True
         if key == "in_values" and hot.in_values_view is not None:
