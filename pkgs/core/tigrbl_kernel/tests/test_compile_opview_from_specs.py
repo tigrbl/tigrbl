@@ -18,7 +18,7 @@ def test_compile_opview_from_specs_builds_in_and_out_schema_metadata() -> None:
         ),
         "display_name": ColumnSpec(
             storage=StorageSpec(type_=str, nullable=True),
-            field=FieldSpec(py_type=str),
+            field=FieldSpec(py_type=str, constraints={"max_length": 32}),
             io=IOSpec(
                 in_verbs=("create",),
                 out_verbs=("create",),
@@ -39,7 +39,9 @@ def test_compile_opview_from_specs_builds_in_and_out_schema_metadata() -> None:
     assert opview.schema_in.fields == ("computed", "display_name", "id")
     assert opview.schema_out.fields == ("computed", "display_name", "id")
     assert opview.schema_in.by_field["id"]["required"] is True
+    assert opview.schema_in.by_field["id"]["py_type"] is int
     assert opview.schema_in.by_field["display_name"]["alias_in"] == "displayName"
+    assert opview.schema_in.by_field["display_name"]["max_length"] == 32
     assert opview.schema_out.by_field["display_name"]["alias_out"] == "displayName"
     assert opview.schema_in.by_field["computed"]["virtual"] is True
     assert opview.schema_out.by_field["computed"]["virtual"] is True

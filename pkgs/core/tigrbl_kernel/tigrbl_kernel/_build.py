@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import datetime as _dt
+import decimal as _dc
+import hashlib
 import logging
+import uuid as _uuid
 from dataclasses import replace
 from types import SimpleNamespace
 from typing import Any, Dict, List, Mapping
@@ -62,6 +66,25 @@ _RUNTIME_EXECUTION_ORDER = (
 )
 _HOT_RUNNER_GENERIC = 0
 _HOT_RUNNER_LINEAR_DIRECT = 1
+_HOT_RUNNER_COMPILED_PARAM = 2
+_TRANSPORT_KIND_GENERIC = 0
+_TRANSPORT_KIND_REST = 1
+_TRANSPORT_KIND_JSONRPC = 2
+_TRANSPORT_KIND_CHANNEL = 3
+_PARAM_SOURCE_BODY = 1
+_PARAM_SOURCE_QUERY = 2
+_PARAM_SOURCE_PATH = 4
+_PARAM_SOURCE_HEADER = 8
+_DECODER_NONE = 0
+_DECODER_STR = 1
+_DECODER_INT = 2
+_DECODER_FLOAT = 3
+_DECODER_BOOL = 4
+_DECODER_UUID = 5
+_DECODER_DECIMAL = 6
+_DECODER_DATETIME = 7
+_DECODER_DATE = 8
+_DECODER_TIME = 9
 
 
 def _phase_stamp(self: Any, model: type, alias: str) -> tuple[Any, ...]:
@@ -301,11 +324,139 @@ def _structural_atom_opcode_key(step: StepFn, phase: str) -> str:
     return label
 
 
+def _stable_name_hash64(value: str, *, lowercase: bool = False) -> int:
+    normalized = value.lower() if lowercase else value
+    digest = hashlib.blake2b(normalized.encode("utf-8"), digest_size=8).digest()
+    return int.from_bytes(digest, "little", signed=False)
+
+
+def _decoder_id_for_py_type(py_type: object) -> int:
+    if py_type is str:
+        return _DECODER_STR
+    if py_type is int:
+        return _DECODER_INT
+    if py_type is float:
+        return _DECODER_FLOAT
+    if py_type is bool:
+        return _DECODER_BOOL
+    if py_type is _uuid.UUID:
+        return _DECODER_UUID
+    if py_type is _dc.Decimal:
+        return _DECODER_DECIMAL
+    if py_type is _dt.datetime:
+        return _DECODER_DATETIME
+    if py_type is _dt.date:
+        return _DECODER_DATE
+    if py_type is _dt.time:
+        return _DECODER_TIME
+    return _DECODER_NONE
+
+
+def _program_binding_protos(plan: KernelPlan, program_id: int) -> tuple[str, ...]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for opkey, meta_index in plan.opkey_to_meta.items():
+        if meta_index != program_id:
+            continue
+        proto = str(opkey.proto)
+        if proto in seen:
+            continue
+        seen.add(proto)
+        out.append(proto)
+    return tuple(out)
+
+
+def _program_transport_kind_id(proto_names: tuple[str, ...]) -> int:
+    has_jsonrpc = any(proto.endswith(".jsonrpc") for proto in proto_names)
+    has_rest = any(proto.endswith(".rest") for proto in proto_names)
+    has_channel = any(proto in {"ws", "wss", "webtransport"} for proto in proto_names)
+    families = sum(1 for flag in (has_jsonrpc, has_rest, has_channel) if flag)
+    if families > 1:
+        return _TRANSPORT_KIND_GENERIC
+    if has_jsonrpc:
+        return _TRANSPORT_KIND_JSONRPC
+    if has_rest:
+        return _TRANSPORT_KIND_REST
+    if has_channel:
+        return _TRANSPORT_KIND_CHANNEL
+    return _TRANSPORT_KIND_GENERIC
+
+
+def _program_path_param_names(plan: KernelPlan, program_id: int) -> frozenset[str]:
+    names: set[str] = set()
+    for bucket in plan.proto_indices.values():
+        if not isinstance(bucket, Mapping):
+            continue
+        templated = bucket.get("templated")
+        if not isinstance(templated, list):
+            continue
+        for entry in templated:
+            if not isinstance(entry, Mapping):
+                continue
+            if entry.get("meta_index") != program_id:
+                continue
+            raw_names = entry.get("names")
+            if not isinstance(raw_names, (list, tuple)):
+                continue
+            for name in raw_names:
+                if isinstance(name, str) and name:
+                    names.add(name)
+    return frozenset(names)
+
+
+def _compile_program_param_shape(
+    opview: OpView | None,
+    *,
+    path_param_names: frozenset[str],
+) -> tuple[tuple[int, int, int, int, int, int, int, int], ...]:
+    if opview is None:
+        return ()
+    fields = tuple(getattr(opview.schema_in, "fields", ()) or ())
+    by_field = getattr(opview.schema_in, "by_field", {}) or {}
+    descriptors: list[tuple[int, int, int, int, int, int, int, int]] = []
+    for slot_id, field_name in enumerate(fields):
+        if not isinstance(field_name, str):
+            continue
+        meta = by_field.get(field_name, {}) or {}
+        lookup_name = str(meta.get("alias_in") or field_name)
+        header_name = meta.get("header_in")
+        source_mask = _PARAM_SOURCE_BODY | _PARAM_SOURCE_QUERY
+        if field_name in path_param_names or lookup_name in path_param_names:
+            source_mask |= _PARAM_SOURCE_PATH
+        if isinstance(header_name, str) and header_name:
+            source_mask |= _PARAM_SOURCE_HEADER
+            header_hash = _stable_name_hash64(header_name, lowercase=True)
+        else:
+            header_hash = 0
+        max_length = meta.get("max_length")
+        descriptors.append(
+            (
+                _stable_name_hash64(lookup_name),
+                int(header_hash),
+                int(source_mask),
+                int(slot_id),
+                int(_decoder_id_for_py_type(meta.get("py_type"))),
+                1 if bool(meta.get("required")) else 0,
+                1 if bool(meta.get("header_required_in")) else 0,
+                int(max_length) if isinstance(max_length, int) and max_length > 0 else 0,
+            )
+        )
+    return tuple(descriptors)
+
+
 def _program_hot_runner_id(
     *,
     ordered_segments: tuple[int, ...],
     remaining_segments: tuple[int, ...],
+    param_shape_id: int,
+    transport_kind_id: int,
 ) -> int:
+    if (
+        param_shape_id >= 0
+        and transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}
+        and (ordered_segments or remaining_segments)
+    ):
+        return _HOT_RUNNER_COMPILED_PARAM
     if ordered_segments or remaining_segments:
         return _HOT_RUNNER_LINEAR_DIRECT
     return _HOT_RUNNER_GENERIC
@@ -422,6 +573,69 @@ def _pack_kernel_plan(
         str(normalize_phase(phase)) for phase in DEFAULT_PHASE_ORDER
     )
     phase_to_id = {name: idx for idx, name in enumerate(phase_names)}
+
+    param_shape_index: dict[
+        tuple[tuple[int, int, int, int, int, int, int, int], ...], int
+    ] = {}
+    param_shape_offsets: list[int] = []
+    param_shape_lengths: list[int] = []
+    param_shape_source_masks: list[int] = []
+    param_shape_slot_ids: list[int] = []
+    param_shape_decoder_ids: list[int] = []
+    param_shape_required_flags: list[int] = []
+    param_shape_header_required_flags: list[int] = []
+    param_shape_nullable_flags: list[int] = []
+    param_shape_max_lengths: list[int] = []
+    param_shape_lookup_hashes: list[int] = []
+    param_shape_header_hashes: list[int] = []
+    program_param_shape_ids: list[int] = []
+    program_transport_kind_ids: list[int] = []
+
+    for program_id, _meta in enumerate(plan.opmeta):
+        program_proto_names = _program_binding_protos(plan, program_id)
+        transport_kind_id = _program_transport_kind_id(program_proto_names)
+        program_transport_kind_ids.append(transport_kind_id)
+        program_path_names = _program_path_param_names(plan, program_id)
+        opview = opviews[program_id] if program_id < len(opviews) else None
+        shape = _compile_program_param_shape(
+            opview,
+            path_param_names=program_path_names,
+        )
+        if not shape:
+            program_param_shape_ids.append(-1)
+            continue
+        param_shape_id = param_shape_index.get(shape)
+        if param_shape_id is None:
+            param_shape_id = len(param_shape_offsets)
+            param_shape_index[shape] = param_shape_id
+            param_shape_offsets.append(len(param_shape_slot_ids))
+            param_shape_lengths.append(len(shape))
+            for (
+                lookup_hash,
+                header_hash,
+                source_mask,
+                slot_id,
+                decoder_id,
+                required_flag,
+                header_required_flag,
+                max_length,
+            ) in shape:
+                param_shape_lookup_hashes.append(lookup_hash)
+                param_shape_header_hashes.append(header_hash)
+                param_shape_source_masks.append(source_mask)
+                param_shape_slot_ids.append(slot_id)
+                param_shape_decoder_ids.append(decoder_id)
+                param_shape_required_flags.append(required_flag)
+                param_shape_header_required_flags.append(header_required_flag)
+                nullable = bool(
+                    getattr(opview, "schema_in", None)
+                    and getattr(opview.schema_in, "by_field", {}).get(
+                        getattr(opview.schema_in, "fields", ())[slot_id], {}
+                    ).get("nullable", True)
+                )
+                param_shape_nullable_flags.append(1 if nullable else 0)
+                param_shape_max_lengths.append(max_length)
+        program_param_shape_ids.append(param_shape_id)
 
     atom_index: dict[tuple[str, int, tuple[int, ...], bool], int] = {}
     atom_opcode_index: dict[str, int] = {}
@@ -601,9 +815,21 @@ def _pack_kernel_plan(
                 error_profile_segment_ref_lengths.append(len(seg_ids))
                 error_profile_segment_refs.extend(seg_ids)
         program_error_profile_ids.append(error_profile_id)
+        param_shape_id = (
+            program_param_shape_ids[program_id]
+            if program_id < len(program_param_shape_ids)
+            else -1
+        )
+        transport_kind_id = (
+            program_transport_kind_ids[program_id]
+            if program_id < len(program_transport_kind_ids)
+            else _TRANSPORT_KIND_GENERIC
+        )
         hot_runner_id = _program_hot_runner_id(
             ordered_segments=tuple(ordered_segments),
             remaining_segments=tuple(remaining_segments),
+            param_shape_id=param_shape_id,
+            transport_kind_id=transport_kind_id,
         )
         program_hot_runner_ids.append(hot_runner_id)
 
@@ -633,6 +859,8 @@ def _pack_kernel_plan(
                 dispatch_selector_count=dispatch_selector_count,
                 program_error_profile_id=error_profile_id,
                 program_hot_runner_id=hot_runner_id,
+                param_shape_id=param_shape_id,
+                transport_kind_id=transport_kind_id,
             )
         )
 
@@ -650,6 +878,19 @@ def _pack_kernel_plan(
         atom_catalog_effect_ids=tuple(effect_ids),
         atom_catalog_effect_payloads=tuple(effect_payloads),
         atom_catalog_async_flags=tuple(step_async_flags),
+        param_shape_offsets=tuple(param_shape_offsets),
+        param_shape_lengths=tuple(param_shape_lengths),
+        param_shape_source_masks=tuple(param_shape_source_masks),
+        param_shape_slot_ids=tuple(param_shape_slot_ids),
+        param_shape_decoder_ids=tuple(param_shape_decoder_ids),
+        param_shape_required_flags=tuple(param_shape_required_flags),
+        param_shape_header_required_flags=tuple(param_shape_header_required_flags),
+        param_shape_nullable_flags=tuple(param_shape_nullable_flags),
+        param_shape_max_lengths=tuple(param_shape_max_lengths),
+        param_shape_lookup_hashes=tuple(param_shape_lookup_hashes),
+        param_shape_header_hashes=tuple(param_shape_header_hashes),
+        program_param_shape_ids=tuple(program_param_shape_ids),
+        program_transport_kind_ids=tuple(program_transport_kind_ids),
         segment_offsets=tuple(segment_offsets),
         segment_lengths=tuple(segment_lengths),
         segment_step_ids=tuple(segment_step_ids),

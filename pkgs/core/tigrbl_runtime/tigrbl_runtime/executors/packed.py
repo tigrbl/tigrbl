@@ -2,24 +2,49 @@ from __future__ import annotations
 
 import asyncio
 import inspect
+import json
+import uuid as _uuid
+import decimal as _dc
+import datetime as _dt
 from importlib import import_module
 from typing import Any, ClassVar, Mapping
 from operator import attrgetter
 from types import SimpleNamespace
+from urllib.parse import unquote_plus
 
 from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
 from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
 from tigrbl_typing.phases import normalize_phase
+from tigrbl_atoms._request import Request
 
 from .base import ExecutorBase
 from .types import HotCtx, _Ctx
 
 _HOT_RUNNER_GENERIC = 0
 _HOT_RUNNER_LINEAR_DIRECT = 1
+_HOT_RUNNER_COMPILED_PARAM = 2
 _DIRECT_INVOKE_STEP = 0
 _DIRECT_INVOKE_RUN = 1
 _DIRECT_INVOKE_RUN_WITH_NONE = 2
 _DIRECT_INVOKE_RUN_WITH_DEP = 3
+_TRANSPORT_KIND_GENERIC = 0
+_TRANSPORT_KIND_REST = 1
+_TRANSPORT_KIND_JSONRPC = 2
+_TRANSPORT_KIND_CHANNEL = 3
+_PARAM_SOURCE_BODY = 1
+_PARAM_SOURCE_QUERY = 2
+_PARAM_SOURCE_PATH = 4
+_PARAM_SOURCE_HEADER = 8
+_DECODER_NONE = 0
+_DECODER_STR = 1
+_DECODER_INT = 2
+_DECODER_FLOAT = 3
+_DECODER_BOOL = 4
+_DECODER_UUID = 5
+_DECODER_DECIMAL = 6
+_DECODER_DATETIME = 7
+_DECODER_DATE = 8
+_DECODER_TIME = 9
 
 
 class PackedPlanExecutor(ExecutorBase):
@@ -143,6 +168,169 @@ class PackedPlanExecutor(ExecutorBase):
             return tuple(values)
         return fallback
 
+    @staticmethod
+    def _stable_name_hash64(value: str, *, lowercase: bool = False) -> int:
+        import hashlib
+
+        normalized = value.lower() if lowercase else value
+        digest = hashlib.blake2b(normalized.encode("utf-8"), digest_size=8).digest()
+        return int.from_bytes(digest, "little", signed=False)
+
+    @staticmethod
+    def _coerce_header_pairs(
+        raw_scope: Mapping[str, Any] | None,
+    ) -> tuple[tuple[bytes, bytes], ...]:
+        if not isinstance(raw_scope, Mapping):
+            return ()
+        raw_headers = raw_scope.get("headers", ())
+        out: list[tuple[bytes, bytes]] = []
+        for key, value in raw_headers or ():
+            if not isinstance(key, (bytes, bytearray)):
+                continue
+            if not isinstance(value, (bytes, bytearray)):
+                continue
+            out.append((bytes(key).lower(), bytes(value)))
+        return tuple(out)
+
+    @staticmethod
+    def _content_type_from_raw_headers(raw_headers: tuple[tuple[bytes, bytes], ...]) -> str:
+        for key, value in reversed(raw_headers):
+            if key == b"content-type":
+                return value.decode("latin-1").lower()
+        return ""
+
+    @staticmethod
+    def _decode_scalar(value: Any, decoder_id: int) -> Any:
+        if value is None or decoder_id == _DECODER_NONE:
+            return value
+        if isinstance(value, bytes):
+            raw_text = value.decode("utf-8")
+        else:
+            raw_text = value if isinstance(value, str) else str(value)
+        text = raw_text.strip()
+        if decoder_id == _DECODER_STR:
+            return raw_text if isinstance(value, str) else text
+        if decoder_id == _DECODER_INT:
+            return int(text)
+        if decoder_id == _DECODER_FLOAT:
+            return float(text)
+        if decoder_id == _DECODER_BOOL:
+            lowered = text.lower()
+            if lowered in {"true", "1", "yes", "y", "on"}:
+                return True
+            if lowered in {"false", "0", "no", "n", "off"}:
+                return False
+            return value
+        if decoder_id == _DECODER_UUID:
+            return _uuid.UUID(text)
+        if decoder_id == _DECODER_DECIMAL:
+            return _dc.Decimal(text)
+        if decoder_id == _DECODER_DATETIME:
+            return _dt.datetime.fromisoformat(text)
+        if decoder_id == _DECODER_DATE:
+            return _dt.date.fromisoformat(text)
+        if decoder_id == _DECODER_TIME:
+            return _dt.time.fromisoformat(text)
+        return value
+
+    @staticmethod
+    def _parse_query_pairs(raw_query: bytes) -> tuple[tuple[int, str], ...]:
+        if not raw_query:
+            return ()
+        out: list[tuple[int, str]] = []
+        for chunk in raw_query.split(b"&"):
+            if not chunk:
+                continue
+            raw_key, _, raw_value = chunk.partition(b"=")
+            try:
+                key = unquote_plus(raw_key.decode("latin-1"))
+                value = unquote_plus(raw_value.decode("latin-1"))
+            except Exception:
+                continue
+            out.append((PackedPlanExecutor._stable_name_hash64(key), value))
+        return tuple(out)
+
+    @classmethod
+    def _ensure_hot_request(cls, ctx: _Ctx, hot: HotCtx) -> Request | Any | None:
+        request = getattr(ctx, "request", None)
+        if request is not None:
+            return request
+        raw_scope = hot.raw_scope
+        if not isinstance(raw_scope, Mapping):
+            return None
+        request = Request(dict(raw_scope), app=getattr(ctx, "app", None))
+        if hot.body_bytes is not None:
+            request.body = hot.body_bytes
+        ctx.request = request
+        return request
+
+    @staticmethod
+    async def _ensure_body_bytes(ctx: _Ctx, hot: HotCtx) -> bytes:
+        if isinstance(hot.body_bytes, bytes):
+            return hot.body_bytes
+        body = getattr(ctx, "body", None)
+        if isinstance(body, bytes):
+            hot.body_bytes = body
+            hot.body_view = memoryview(body)
+            return body
+        if isinstance(body, bytearray):
+            hot.body_bytes = bytes(body)
+            hot.body_view = memoryview(hot.body_bytes)
+            return hot.body_bytes
+        if isinstance(body, memoryview):
+            hot.body_bytes = body.tobytes()
+            hot.body_view = memoryview(hot.body_bytes)
+            return hot.body_bytes
+        if hot.scope_type != "http" or not callable(hot.raw_receive):
+            hot.body_bytes = b""
+            hot.body_view = memoryview(hot.body_bytes)
+            return hot.body_bytes
+        message = await hot.raw_receive()
+        chunks: list[bytes] = []
+        while isinstance(message, dict) and message.get("type") == "http.request":
+            chunk = message.get("body", b"")
+            if isinstance(chunk, (bytes, bytearray)):
+                chunks.append(bytes(chunk))
+            if not bool(message.get("more_body", False)):
+                break
+            message = await hot.raw_receive()
+        hot.body_bytes = b"".join(chunks)
+        hot.body_view = memoryview(hot.body_bytes)
+        if hot.body_bytes:
+            ctx.body = hot.body_bytes
+        return hot.body_bytes
+
+    @classmethod
+    def _body_hash_items(cls, body: Any) -> tuple[tuple[int, Any], ...]:
+        if not isinstance(body, Mapping):
+            return ()
+        out: list[tuple[int, Any]] = []
+        for key, value in body.items():
+            if not isinstance(key, str):
+                continue
+            out.append((cls._stable_name_hash64(key), value))
+        return tuple(out)
+
+    @classmethod
+    def _param_shape_descriptor_slice(
+        cls,
+        packed: PackedKernel,
+        param_shape_id: int,
+    ) -> tuple[int, int]:
+        offsets = cls._hot_array(
+            packed,
+            "param_shape_offsets",
+            tuple(getattr(packed, "param_shape_offsets", ()) or ()),
+        )
+        lengths = cls._hot_array(
+            packed,
+            "param_shape_lengths",
+            tuple(getattr(packed, "param_shape_lengths", ()) or ()),
+        )
+        if not (0 <= param_shape_id < len(offsets)):
+            return (0, 0)
+        return int(offsets[param_shape_id]), int(lengths[param_shape_id])
+
     @classmethod
     def _segment_phase_names(cls, packed: PackedKernel) -> tuple[str, ...]:
         phase_names = tuple(getattr(packed, "phase_names", ()) or ())
@@ -155,8 +343,264 @@ class PackedPlanExecutor(ExecutorBase):
             return tuple(
                 str(phase_names[int(phase_id)]) if 0 <= int(phase_id) < len(phase_names) else str(phase_id)
                 for phase_id in phase_ids
-            )
+        )
         return tuple(getattr(packed, "segment_phases", ()) or ())
+
+    @classmethod
+    def _resolve_program_param_shape_id(
+        cls, packed: PackedKernel, program_id: int, hot_op_plan: Any | None
+    ) -> int:
+        if hot_op_plan is not None:
+            plan_value = cls._coerce_int(getattr(hot_op_plan, "param_shape_id", None))
+            if plan_value is not None:
+                return plan_value
+        values = cls._hot_array(
+            packed,
+            "program_param_shape_ids",
+            tuple(getattr(packed, "program_param_shape_ids", ()) or ()),
+        )
+        if 0 <= program_id < len(values):
+            return int(values[program_id])
+        return -1
+
+    @classmethod
+    def _resolve_program_transport_kind_id(
+        cls, packed: PackedKernel, program_id: int, hot_op_plan: Any | None
+    ) -> int:
+        if hot_op_plan is not None:
+            plan_value = cls._coerce_int(
+                getattr(hot_op_plan, "transport_kind_id", None)
+            )
+            if plan_value is not None:
+                return plan_value
+        values = cls._hot_array(
+            packed,
+            "program_transport_kind_ids",
+            tuple(getattr(packed, "program_transport_kind_ids", ()) or ()),
+        )
+        if 0 <= program_id < len(values):
+            return int(values[program_id])
+        return _TRANSPORT_KIND_GENERIC
+
+    @staticmethod
+    def _active_transport_kind(
+        hot: HotCtx,
+        dispatch: Mapping[str, Any] | None,
+        fallback: int,
+    ) -> int:
+        protocol = ""
+        if isinstance(dispatch, Mapping):
+            protocol = str(dispatch.get("binding_protocol") or "")
+        if not protocol:
+            protocol = str(hot.protocol or "")
+        if protocol.endswith(".jsonrpc"):
+            return _TRANSPORT_KIND_JSONRPC
+        if protocol.endswith(".rest"):
+            return _TRANSPORT_KIND_REST
+        if protocol in {"ws", "wss", "webtransport"}:
+            return _TRANSPORT_KIND_CHANNEL
+        return fallback
+
+    @classmethod
+    async def _prepare_compiled_input(
+        cls,
+        ctx: _Ctx,
+        packed: PackedKernel,
+        program_id: int,
+        hot_op_plan: Any | None,
+    ) -> None:
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            ctx.temp = {}
+            temp = ctx.temp
+        hot = temp.get("hot_ctx")
+        if not isinstance(hot, HotCtx):
+            return
+        param_shape_id = cls._resolve_program_param_shape_id(packed, program_id, hot_op_plan)
+        if param_shape_id < 0:
+            return
+        if hot.slot_values is not None and hot.param_shape_id == param_shape_id:
+            return
+
+        hot.param_shape_id = param_shape_id
+        hot.transport_kind_id = cls._resolve_program_transport_kind_id(
+            packed, program_id, hot_op_plan
+        )
+        raw_scope = hot.raw_scope if isinstance(hot.raw_scope, Mapping) else {}
+        if hot.raw_headers is None:
+            hot.raw_headers = cls._coerce_header_pairs(raw_scope)
+        if not hot.content_type:
+            hot.content_type = cls._content_type_from_raw_headers(hot.raw_headers or ())
+        if not hot.raw_query_string and isinstance(raw_scope, Mapping):
+            query_string = raw_scope.get("query_string", b"")
+            if isinstance(query_string, (bytes, bytearray)):
+                hot.raw_query_string = bytes(query_string)
+        if hot.path_params is None:
+            route = temp.get("route")
+            if isinstance(route, Mapping) and isinstance(route.get("path_params"), Mapping):
+                hot.path_params = route.get("path_params")
+            elif isinstance(raw_scope, Mapping) and isinstance(raw_scope.get("path_params"), Mapping):
+                hot.path_params = raw_scope.get("path_params")
+        request = cls._ensure_hot_request(ctx, hot)
+        body_bytes = await cls._ensure_body_bytes(ctx, hot)
+        if request is not None and body_bytes is not None and hasattr(request, "body"):
+            request.body = body_bytes
+        if hot.transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}:
+            if not hot.parsed_json_loaded:
+                parsed = None
+                if body_bytes and "json" in hot.content_type:
+                    try:
+                        parsed = json.loads(body_bytes)
+                    except Exception:
+                        parsed = None
+                hot.parsed_json = parsed
+                hot.parsed_json_loaded = True
+
+        dispatch = temp.setdefault("dispatch", {})
+        route = temp.setdefault("route", {})
+        hot.transport_kind_id = cls._active_transport_kind(
+            hot,
+            dispatch if isinstance(dispatch, Mapping) else None,
+            hot.transport_kind_id,
+        )
+        if isinstance(dispatch, dict):
+            dispatch.setdefault("binding_protocol", hot.protocol)
+            dispatch.setdefault("binding_selector", hot.selector)
+        if isinstance(route, dict):
+            route.setdefault("protocol", hot.protocol)
+            route.setdefault("selector", hot.selector)
+            route.setdefault("program_id", program_id)
+            route.setdefault("opmeta_index", program_id)
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(hot.parsed_json, Mapping):
+            rpc_envelope = hot.parsed_json if isinstance(hot.parsed_json, dict) else dict(hot.parsed_json)
+            if isinstance(dispatch, dict):
+                dispatch["rpc"] = rpc_envelope
+                dispatch["rpc_method"] = rpc_envelope.get("method")
+                dispatch["parsed_payload"] = rpc_envelope.get("params", {})
+            if isinstance(route, dict):
+                route["rpc_envelope"] = rpc_envelope
+            temp["jsonrpc_request_id"] = rpc_envelope.get("id")
+
+        start, length = cls._param_shape_descriptor_slice(packed, param_shape_id)
+        if length <= 0:
+            return
+        lookup_hashes = cls._hot_array(
+            packed,
+            "param_shape_lookup_hashes",
+            tuple(getattr(packed, "param_shape_lookup_hashes", ()) or ()),
+        )
+        header_hashes = cls._hot_array(
+            packed,
+            "param_shape_header_hashes",
+            tuple(getattr(packed, "param_shape_header_hashes", ()) or ()),
+        )
+        source_masks = cls._hot_array(
+            packed,
+            "param_shape_source_masks",
+            tuple(getattr(packed, "param_shape_source_masks", ()) or ()),
+        )
+        slot_ids = cls._hot_array(
+            packed,
+            "param_shape_slot_ids",
+            tuple(getattr(packed, "param_shape_slot_ids", ()) or ()),
+        )
+        decoder_ids = cls._hot_array(
+            packed,
+            "param_shape_decoder_ids",
+            tuple(getattr(packed, "param_shape_decoder_ids", ()) or ()),
+        )
+        max_lengths = cls._hot_array(
+            packed,
+            "param_shape_max_lengths",
+            tuple(getattr(packed, "param_shape_max_lengths", ()) or ()),
+        )
+
+        body_payload = hot.parsed_json
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, Mapping):
+            body_payload = body_payload.get("params", {})
+        body_items = cls._body_hash_items(body_payload)
+        query_pairs = cls._parse_query_pairs(hot.raw_query_string)
+        raw_headers = hot.raw_headers or ()
+        path_pairs = tuple(
+            (
+                cls._stable_name_hash64(str(key)),
+                value,
+            )
+            for key, value in ((hot.path_params or {}) if isinstance(hot.path_params, Mapping) else {}).items()
+        )
+        opview = getattr(ctx, "opview", None)
+        schema_in = getattr(opview, "schema_in", None) if opview is not None else None
+        field_names = tuple(getattr(schema_in, "fields", ()) or ())
+        slot_values: list[Any] = [None] * len(field_names)
+        slot_present = bytearray(len(field_names))
+
+        def _lookup(items: tuple[tuple[int, Any], ...], target_hash: int) -> tuple[bool, Any]:
+            for item_hash, item_value in items:
+                if int(item_hash) == int(target_hash):
+                    return True, item_value
+            return False, None
+
+        for idx in range(start, start + length):
+            slot_id = int(slot_ids[idx])
+            if not (0 <= slot_id < len(slot_values)):
+                continue
+            lookup_hash = int(lookup_hashes[idx])
+            header_hash = int(header_hashes[idx]) if idx < len(header_hashes) else 0
+            source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
+            decoder_id = int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE
+            value = None
+            found = False
+            if source_mask & _PARAM_SOURCE_BODY:
+                found, value = _lookup(body_items, lookup_hash)
+            if not found and source_mask & _PARAM_SOURCE_PATH:
+                found, value = _lookup(path_pairs, lookup_hash)
+            if not found and source_mask & _PARAM_SOURCE_QUERY:
+                found, value = _lookup(query_pairs, lookup_hash)
+            if not found and source_mask & _PARAM_SOURCE_HEADER and header_hash:
+                for key_bytes, raw_value in raw_headers:
+                    if cls._stable_name_hash64(
+                        key_bytes.decode("latin-1"), lowercase=True
+                    ) == header_hash:
+                        found = True
+                        value = raw_value.decode("latin-1")
+                        break
+            if not found:
+                continue
+            try:
+                coerced = cls._decode_scalar(value, decoder_id)
+            except Exception:
+                coerced = value
+            max_length = int(max_lengths[idx]) if idx < len(max_lengths) else 0
+            if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
+                coerced = coerced[:max_length]
+            slot_values[slot_id] = coerced
+            slot_present[slot_id] = 1
+
+        hot.slot_values = slot_values
+        hot.slot_present = slot_present
+        in_values = {
+            field_names[idx]: slot_values[idx]
+            for idx in range(len(field_names))
+            if slot_present[idx]
+        }
+        temp["compiled_in_values_ready"] = True
+        temp["in_values"] = in_values
+        temp["in_present"] = tuple(
+            field_names[idx] for idx in range(len(field_names)) if slot_present[idx]
+        )
+        if in_values:
+            ctx.payload = in_values
+            if isinstance(route, dict):
+                route["payload"] = in_values
+            if isinstance(dispatch, dict):
+                dispatch["normalized_input"] = in_values
+                if "parsed_payload" not in dispatch:
+                    dispatch["parsed_payload"] = in_values
+        if hot.path_params:
+            ctx.path_params = dict(hot.path_params)
+            if isinstance(route, dict):
+                route["path_params"] = dict(hot.path_params)
+        hot.lazy_published = True
 
     def _resolve_segments_for_program(
         self, packed: PackedKernel, program_id: int
@@ -252,6 +696,16 @@ class PackedPlanExecutor(ExecutorBase):
             protocol=protocol,
             selector=selector,
             content_type="",
+            raw_scope=scope if isinstance(scope, Mapping) else None,
+            raw_receive=getattr(env, "receive", None),
+            raw_headers=PackedPlanExecutor._coerce_header_pairs(scope if isinstance(scope, Mapping) else None),
+            raw_query_string=bytes(scope.get("query_string", b""))
+            if isinstance(scope, Mapping)
+            and isinstance(scope.get("query_string", b""), (bytes, bytearray))
+            else b"",
+            path_params=scope.get("path_params")
+            if isinstance(scope, Mapping) and isinstance(scope.get("path_params"), Mapping)
+            else None,
         )
         temp["hot_ctx"] = hot
         return hot
@@ -815,6 +1269,128 @@ class PackedPlanExecutor(ExecutorBase):
         self._program_runner_cache[cache_key] = _runner
         return _runner
 
+    def _resolve_program_compiled_param_runner(
+        self,
+        packed: PackedKernel,
+        program_id: int,
+        hot_op_plan: Any | None,
+    ) -> Any:
+        cache_key = (id(packed), program_id, _HOT_RUNNER_COMPILED_PARAM)
+        cached = self._program_runner_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        if hot_op_plan is not None:
+            ordered = tuple(getattr(hot_op_plan, "ordered_segment_ids", ()) or ())
+            remaining = tuple(getattr(hot_op_plan, "remaining_segment_ids", ()) or ())
+        else:
+            ordered, remaining = self._resolve_segments_for_program(packed, program_id)
+
+        phase_names = self._segment_phase_names(packed)
+        step_ids_by_segment = self._resolve_segment_step_ids(packed)
+        async_flags = tuple(
+            1 if bool(flag) else 0
+            for flag in self._hot_array(
+                packed,
+                "atom_flags",
+                tuple(
+                    getattr(packed, "atom_catalog_async_flags", ())
+                    or getattr(packed, "step_async_flags", ())
+                    or ()
+                ),
+            )
+        )
+        opcode_ids = tuple(
+            int(value)
+            for value in self._hot_array(
+                packed,
+                "atom_opcode_ids",
+                tuple(getattr(packed, "atom_catalog_opcode_ids", ()) or ()),
+            )
+        )
+        opcode_keys = tuple(getattr(packed, "atom_opcode_keys", ()) or ())
+        skip_step_ids: set[int] = set()
+        skip_names = {
+            "ingress.transport_extract",
+            "ingress.input_prepare",
+            "dispatch.binding_match",
+            "dispatch.binding_parse",
+            "dispatch.input_normalize",
+            "wire.build_in",
+        }
+        for step_id, opcode_id in enumerate(opcode_ids):
+            if 0 <= opcode_id < len(opcode_keys):
+                if str(opcode_keys[opcode_id]) in skip_names:
+                    skip_step_ids.add(step_id)
+
+        compiled_steps: list[tuple[str, int, Any, Any, bool]] = []
+        step_table = packed.step_table
+        for seg_id in (*ordered, *remaining):
+            phase_name = str(normalize_phase(phase_names[seg_id]))
+            for step_id in step_ids_by_segment[seg_id]:
+                if step_id in skip_step_ids:
+                    continue
+                step = step_table[step_id]
+                direct_run = getattr(step, "__tigrbl_direct_run", None)
+                if callable(direct_run):
+                    direct_dep = getattr(step, "__tigrbl_direct_dep", None)
+                    has_direct_dep = bool(
+                        getattr(step, "__tigrbl_has_direct_dep", False)
+                    )
+                    direct_is_async = bool(
+                        getattr(step, "__tigrbl_direct_is_async", False)
+                    )
+                    use_two_args = bool(getattr(step, "__tigrbl_use_two_args", False))
+                    invoke_kind = (
+                        _DIRECT_INVOKE_RUN_WITH_DEP
+                        if has_direct_dep
+                        else (
+                            _DIRECT_INVOKE_RUN_WITH_NONE
+                            if use_two_args
+                            else _DIRECT_INVOKE_RUN
+                        )
+                    )
+                    compiled_steps.append(
+                        (
+                            phase_name,
+                            invoke_kind,
+                            direct_run,
+                            direct_dep,
+                            direct_is_async,
+                        )
+                    )
+                    continue
+                compiled_steps.append(
+                    (
+                        phase_name,
+                        _DIRECT_INVOKE_STEP,
+                        step,
+                        None,
+                        bool(async_flags[step_id]) if step_id < len(async_flags) else False,
+                    )
+                )
+
+        async def _runner(ctx: _Ctx) -> None:
+            await self._prepare_compiled_input(ctx, packed, program_id, hot_op_plan)
+            current_phase = ""
+            for phase_name, invoke_kind, call, dep, is_async in compiled_steps:
+                if phase_name != current_phase:
+                    ctx.phase = phase_name
+                    current_phase = phase_name
+                if invoke_kind == _DIRECT_INVOKE_RUN_WITH_DEP:
+                    rv = call(dep, ctx)
+                elif invoke_kind == _DIRECT_INVOKE_RUN_WITH_NONE:
+                    rv = call(None, ctx)
+                else:
+                    rv = call(ctx)
+                if is_async:
+                    await rv
+                elif inspect.isawaitable(rv):
+                    await rv
+
+        self._program_runner_cache[cache_key] = _runner
+        return _runner
+
     def _resolve_program_runner(
         self, packed: PackedKernel, program_id: int, hot_op_plan: Any | None
     ) -> Any:
@@ -825,6 +1401,12 @@ class PackedPlanExecutor(ExecutorBase):
         program_hot_runner_id = self._resolve_program_hot_runner_id(
             packed, program_id, hot_op_plan
         )
+        if program_hot_runner_id == _HOT_RUNNER_COMPILED_PARAM:
+            runner = self._resolve_program_compiled_param_runner(
+                packed, program_id, hot_op_plan
+            )
+            self._program_runner_cache[cache_key] = runner
+            return runner
         if program_hot_runner_id == _HOT_RUNNER_LINEAR_DIRECT:
             runner = self._resolve_program_linear_direct_runner(
                 packed, program_id, hot_op_plan
@@ -1193,6 +1775,8 @@ class PackedPlanExecutor(ExecutorBase):
             temp = ctx.temp
 
         hot = self._ensure_hot_ctx(ctx, env)
+        ctx.plan = plan
+        ctx.kernel_plan = plan
         if hot.method and getattr(ctx, "method", None) in (None, ""):
             ctx.method = hot.method
         if hot.path and getattr(ctx, "path", None) in (None, ""):

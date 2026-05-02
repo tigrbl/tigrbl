@@ -56,6 +56,19 @@ _HOT_BLOCK_SECTION_IDS = {
     "template_segment_lengths": 31,
     "template_segment_refs": 32,
     "program_segment_template_ids": 33,
+    "param_shape_offsets": 34,
+    "param_shape_lengths": 35,
+    "param_shape_source_masks": 36,
+    "param_shape_slot_ids": 37,
+    "param_shape_decoder_ids": 38,
+    "param_shape_required_flags": 39,
+    "param_shape_header_required_flags": 40,
+    "param_shape_nullable_flags": 41,
+    "param_shape_max_lengths": 42,
+    "param_shape_lookup_hashes": 43,
+    "param_shape_header_hashes": 44,
+    "program_param_shape_ids": 45,
+    "program_transport_kind_ids": 46,
 }
 _HOT_BLOCK_SECTION_NAMES = {
     section_id: name for name, section_id in _HOT_BLOCK_SECTION_IDS.items()
@@ -647,6 +660,10 @@ def build_packed_kernel_measurement_view(packed: PackedKernel) -> dict[str, Any]
             "program_hot_runner_id": int(
                 getattr(plan, "program_hot_runner_id", 0) or 0
             ),
+            "param_shape_id": int(getattr(plan, "param_shape_id", -1) or -1),
+            "transport_kind_id": int(
+                getattr(plan, "transport_kind_id", 0) or 0
+            ),
             "error_segment_ids": {
                 str(phase): list(seg_ids)
                 for phase, seg_ids in sorted(plan.error_segment_ids.items())
@@ -726,6 +743,12 @@ def build_packed_kernel_measurement_view(packed: PackedKernel) -> dict[str, Any]
         "executor_kind": str(getattr(packed, "executor_kind", "python")),
         "program_hot_runner_ids": list(
             getattr(packed, "program_hot_runner_ids", ()) or ()
+        ),
+        "program_param_shape_ids": list(
+            getattr(packed, "program_param_shape_ids", ()) or ()
+        ),
+        "program_transport_kind_ids": list(
+            getattr(packed, "program_transport_kind_ids", ()) or ()
         ),
         "compact_image": {
             "compact_step_count": len(compact["compact_step_opcode_ids"]),
@@ -879,6 +902,55 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     program_hot_runner_ids = [
         int(value) for value in (getattr(packed, "program_hot_runner_ids", ()) or ())
     ]
+    param_shape_offsets = [
+        int(value) for value in (getattr(packed, "param_shape_offsets", ()) or ())
+    ]
+    param_shape_lengths = [
+        int(value) for value in (getattr(packed, "param_shape_lengths", ()) or ())
+    ]
+    param_shape_source_masks = [
+        int(value)
+        for value in (getattr(packed, "param_shape_source_masks", ()) or ())
+    ]
+    param_shape_slot_ids = [
+        int(value) for value in (getattr(packed, "param_shape_slot_ids", ()) or ())
+    ]
+    param_shape_decoder_ids = [
+        int(value)
+        for value in (getattr(packed, "param_shape_decoder_ids", ()) or ())
+    ]
+    param_shape_required_flags = [
+        int(value)
+        for value in (getattr(packed, "param_shape_required_flags", ()) or ())
+    ]
+    param_shape_header_required_flags = [
+        int(value)
+        for value in (getattr(packed, "param_shape_header_required_flags", ()) or ())
+    ]
+    param_shape_nullable_flags = [
+        int(value)
+        for value in (getattr(packed, "param_shape_nullable_flags", ()) or ())
+    ]
+    param_shape_max_lengths = [
+        int(value)
+        for value in (getattr(packed, "param_shape_max_lengths", ()) or ())
+    ]
+    param_shape_lookup_hashes = [
+        int(value)
+        for value in (getattr(packed, "param_shape_lookup_hashes", ()) or ())
+    ]
+    param_shape_header_hashes = [
+        int(value)
+        for value in (getattr(packed, "param_shape_header_hashes", ()) or ())
+    ]
+    program_param_shape_ids = [
+        int(value)
+        for value in (getattr(packed, "program_param_shape_ids", ()) or ())
+    ]
+    program_transport_kind_ids = [
+        int(value)
+        for value in (getattr(packed, "program_transport_kind_ids", ()) or ())
+    ]
     error_profile_offsets = [int(value) for value in (getattr(packed, "error_profile_offsets", ()) or ())]
     error_profile_lengths = [int(value) for value in (getattr(packed, "error_profile_lengths", ()) or ())]
     error_profile_phase_ids = [int(value) for value in (getattr(packed, "error_profile_phase_ids", ()) or ())]
@@ -917,7 +989,11 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
 
     section_specs: list[tuple[int, int, int, bytes]] = []
 
-    def _add_unsigned(name: str, values: list[int]) -> None:
+    def _add_unsigned(
+        name: str, values: list[int], *, omit_if_all_zero: bool = False
+    ) -> None:
+        if omit_if_all_zero and values and all(int(value) == 0 for value in values):
+            return
         width_bits, payload = _pack_unsigned_array(values)
         section_specs.append((_HOT_BLOCK_SECTION_IDS[name], width_bits, len(values), payload))
 
@@ -926,11 +1002,12 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
         section_specs.append((_HOT_BLOCK_SECTION_IDS[name], width_bits, len(values), payload))
 
     _add_unsigned("atom_opcode_ids", atom_opcode_ids)
-    _add_unsigned("atom_effect_ids", atom_effect_ids)
-    _add_unsigned("atom_payload_offsets", atom_payload_offsets)
-    _add_unsigned("atom_payload_lengths", atom_payload_lengths)
-    _add_signed("atom_payload_values", atom_payload_values)
-    _add_unsigned("atom_flags", atom_flags)
+    _add_unsigned("atom_effect_ids", atom_effect_ids, omit_if_all_zero=True)
+    _add_unsigned("atom_payload_offsets", atom_payload_offsets, omit_if_all_zero=True)
+    _add_unsigned("atom_payload_lengths", atom_payload_lengths, omit_if_all_zero=True)
+    if atom_payload_values:
+        _add_signed("atom_payload_values", atom_payload_values)
+    _add_unsigned("atom_flags", atom_flags, omit_if_all_zero=True)
     _add_unsigned("prelude_atom_ids", prelude_atom_ids)
     _add_unsigned("segment_executor_kind_ids", segment_executor_kind_ids)
     _add_unsigned("segment_phase_ids", segment_phase_ids)
@@ -959,6 +1036,36 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
         _add_unsigned("program_segment_lengths", program_segment_lengths)
         _add_unsigned("program_segment_refs", program_segment_refs)
     _add_unsigned("program_hot_runner_ids", program_hot_runner_ids)
+    _add_unsigned("param_shape_offsets", param_shape_offsets)
+    _add_unsigned("param_shape_lengths", param_shape_lengths)
+    _add_unsigned("param_shape_source_masks", param_shape_source_masks)
+    _add_unsigned("param_shape_slot_ids", param_shape_slot_ids)
+    _add_unsigned("param_shape_decoder_ids", param_shape_decoder_ids)
+    _add_unsigned("param_shape_required_flags", param_shape_required_flags)
+    _add_unsigned(
+        "param_shape_header_required_flags",
+        param_shape_header_required_flags,
+    )
+    _add_unsigned("param_shape_nullable_flags", param_shape_nullable_flags)
+    _add_unsigned("param_shape_max_lengths", param_shape_max_lengths)
+    section_specs.append(
+        (
+            _HOT_BLOCK_SECTION_IDS["param_shape_lookup_hashes"],
+            64,
+            len(param_shape_lookup_hashes),
+            _pack_u64(param_shape_lookup_hashes),
+        )
+    )
+    section_specs.append(
+        (
+            _HOT_BLOCK_SECTION_IDS["param_shape_header_hashes"],
+            64,
+            len(param_shape_header_hashes),
+            _pack_u64(param_shape_header_hashes),
+        )
+    )
+    _add_signed("program_param_shape_ids", program_param_shape_ids)
+    _add_unsigned("program_transport_kind_ids", program_transport_kind_ids)
     _add_unsigned("error_profile_offsets", error_profile_offsets)
     _add_unsigned("error_profile_lengths", error_profile_lengths)
     _add_unsigned("error_profile_phase_ids", error_profile_phase_ids)
@@ -1064,8 +1171,21 @@ def load_packed_kernel_hot_block(payload: bytes) -> dict[str, Any]:
         section_payload = payload[offset:next_offset]
         if name == "atom_payload_values":
             out[name] = _unpack_signed_array(int(width_bits), section_payload, int(count))
+        elif name == "program_param_shape_ids":
+            out[name] = _unpack_signed_array(int(width_bits), section_payload, int(count))
         else:
             out[name] = _unpack_unsigned_array(int(width_bits), section_payload, int(count))
+
+    if "atom_effect_ids" not in out:
+        out["atom_effect_ids"] = tuple(0 for _ in range(atom_count))
+    if "atom_payload_offsets" not in out:
+        out["atom_payload_offsets"] = tuple(0 for _ in range(atom_count))
+    if "atom_payload_lengths" not in out:
+        out["atom_payload_lengths"] = tuple(0 for _ in range(atom_count))
+    if "atom_payload_values" not in out:
+        out["atom_payload_values"] = ()
+    if "atom_flags" not in out:
+        out["atom_flags"] = tuple(0 for _ in range(atom_count))
     if (
         "program_segment_template_ids" in out
         and "template_segment_offsets" in out

@@ -8,7 +8,7 @@ import pytest
 
 from tigrbl_runtime.channel.websocket import RuntimeWebSocket
 from tigrbl_runtime.executors.packed import PackedPlanExecutor
-from tigrbl_runtime.executors.types import _Ctx
+from tigrbl_runtime.executors.types import HotCtx, _Ctx
 from tigrbl_kernel.models import HotOpPlan, PackedKernel
 from tigrbl_atoms.atoms.dispatch.binding_parse import _run as run_binding_parse
 from tigrbl_atoms.atoms.dispatch.input_normalize import _run as run_input_normalize
@@ -185,4 +185,122 @@ async def test_packed_executor_uses_compiled_linear_direct_runner() -> None:
 
     assert calls == ["direct"]
     assert ctx.phase == "HANDLER"
+    assert ctx.result == {"ok": True}
+
+
+@pytest.mark.asyncio
+async def test_packed_executor_compiled_param_runner_decodes_body_without_running_dispatch_atoms() -> None:
+    executor = PackedPlanExecutor()
+    calls: list[str] = []
+
+    def _skipped_direct(_ctx):
+        raise AssertionError("compiled param runner should skip ingress/dispatch/build atoms")
+
+    def _validate_direct(ctx):
+        calls.append("validate")
+        assert ctx.temp["in_values"] == {"name": "Ada"}
+        return ctx
+
+    def _handler_direct(ctx):
+        calls.append("handler")
+        ctx.result = {"ok": True}
+        return ctx
+
+    def _wrapped_skip(_ctx):
+        raise AssertionError("wrapped skip step should not run")
+
+    def _wrapped_validate(_ctx):
+        return _validate_direct(_ctx)
+
+    def _wrapped_handler(_ctx):
+        return _handler_direct(_ctx)
+
+    for step, direct in (
+        (_wrapped_skip, _skipped_direct),
+        (_wrapped_validate, _validate_direct),
+        (_wrapped_handler, _handler_direct),
+    ):
+        setattr(step, "__tigrbl_direct_run", direct)
+        setattr(step, "__tigrbl_use_two_args", False)
+        setattr(step, "__tigrbl_has_direct_dep", False)
+        setattr(step, "__tigrbl_direct_is_async", False)
+
+    body = b'{"name":"Ada"}'
+    hot_op_plan = HotOpPlan(
+        program_id=0,
+        alias="Widget.create",
+        target="create",
+        ordered_segment_ids=(0,),
+        remaining_segment_ids=(),
+        program_hot_runner_id=2,
+        param_shape_id=0,
+        transport_kind_id=1,
+    )
+    packed = PackedKernel(
+        atom_catalog_opcode_ids=(0, 1, 2),
+        atom_opcode_keys=("ingress.transport_extract", "wire.validate_in", "handler.create"),
+        atom_catalog_async_flags=(False, False, False),
+        phase_names=("PRE_HANDLER",),
+        segment_catalog_offsets=(0,),
+        segment_catalog_lengths=(3,),
+        segment_catalog_atom_ids=(0, 1, 2),
+        segment_catalog_phase_ids=(0,),
+        segment_catalog_executor_kinds=("sync.extractable",),
+        segment_offsets=(0,),
+        segment_lengths=(3,),
+        segment_step_ids=(0, 1, 2),
+        segment_phases=("PRE_HANDLER",),
+        segment_executor_kinds=("sync.extractable",),
+        program_segment_ref_offsets=(0,),
+        program_segment_ref_lengths=(1,),
+        program_segment_refs=(0,),
+        program_hot_runner_ids=(2,),
+        program_param_shape_ids=(0,),
+        program_transport_kind_ids=(1,),
+        param_shape_offsets=(0,),
+        param_shape_lengths=(1,),
+        param_shape_source_masks=(1,),
+        param_shape_slot_ids=(0,),
+        param_shape_decoder_ids=(1,),
+        param_shape_required_flags=(1,),
+        param_shape_header_required_flags=(0,),
+        param_shape_nullable_flags=(0,),
+        param_shape_max_lengths=(0,),
+        param_shape_lookup_hashes=(PackedPlanExecutor._stable_name_hash64("name"),),
+        param_shape_header_hashes=(0,),
+        step_table=(_wrapped_skip, _wrapped_validate, _wrapped_handler),
+        hot_op_plans=(hot_op_plan,),
+    )
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "body": body,
+            "temp": {
+                "hot_ctx": HotCtx(
+                    scope_type="http",
+                    method="POST",
+                    path="/widgets",
+                    protocol="http.rest",
+                    selector="POST /widgets",
+                    raw_scope={
+                        "type": "http",
+                        "method": "POST",
+                        "path": "/widgets",
+                        "headers": ((b"content-type", b"application/json"),),
+                        "query_string": b"",
+                    },
+                    raw_headers=((b"content-type", b"application/json"),),
+                )
+            },
+        },
+    )
+    ctx.opview = SimpleNamespace(
+        schema_in=SimpleNamespace(fields=("name",), by_field={"name": {"required": True}})
+    )
+
+    await executor._resolve_program_runner(packed, 0, hot_op_plan)(ctx)
+
+    assert calls == ["validate", "handler"]
+    assert ctx.phase == "PRE_HANDLER"
     assert ctx.result == {"ok": True}

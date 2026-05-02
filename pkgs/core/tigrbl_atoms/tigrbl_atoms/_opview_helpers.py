@@ -62,6 +62,14 @@ def _normalize_schema_from_specs(ctx: Any) -> None:
             in_meta: dict[str, Any] = {"in_enabled": True}
             if storage is None:
                 in_meta["virtual"] = True
+            py_type = getattr(fs, "py_type", None)
+            if py_type is not None and py_type is not Any:
+                in_meta["py_type"] = py_type
+            constraints = getattr(fs, "constraints", {}) or {}
+            if isinstance(constraints, Mapping):
+                max_length = constraints.get("max_length")
+                if isinstance(max_length, int) and max_length > 0:
+                    in_meta["max_length"] = max_length
 
             default_factory = getattr(spec, "default_factory", None)
             if callable(default_factory):
@@ -85,6 +93,7 @@ def _normalize_schema_from_specs(ctx: Any) -> None:
             in_meta["nullable"] = (
                 True if storage is None else bool(getattr(storage, "nullable", True))
             )
+            in_meta["coerce"] = True
             by_field_in[field_name] = in_meta
 
         if op in out_verbs:

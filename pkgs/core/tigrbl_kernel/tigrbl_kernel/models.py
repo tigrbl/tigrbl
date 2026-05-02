@@ -109,6 +109,8 @@ class HotOpPlan:
     dispatch_selector_count: int = 0
     program_error_profile_id: int = -1
     program_hot_runner_id: int = 0
+    param_shape_id: int = -1
+    transport_kind_id: int = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -155,6 +157,20 @@ class PackedKernel:
     atom_catalog_effect_ids: tuple[int, ...] = ()
     atom_catalog_effect_payloads: tuple[tuple[int, ...], ...] = ()
     atom_catalog_async_flags: tuple[bool, ...] = ()
+
+    param_shape_offsets: tuple[int, ...] = ()
+    param_shape_lengths: tuple[int, ...] = ()
+    param_shape_source_masks: tuple[int, ...] = ()
+    param_shape_slot_ids: tuple[int, ...] = ()
+    param_shape_decoder_ids: tuple[int, ...] = ()
+    param_shape_required_flags: tuple[int, ...] = ()
+    param_shape_header_required_flags: tuple[int, ...] = ()
+    param_shape_nullable_flags: tuple[int, ...] = ()
+    param_shape_max_lengths: tuple[int, ...] = ()
+    param_shape_lookup_hashes: tuple[int, ...] = ()
+    param_shape_header_hashes: tuple[int, ...] = ()
+    program_param_shape_ids: tuple[int, ...] = ()
+    program_transport_kind_ids: tuple[int, ...] = ()
 
     segment_offsets: tuple[int, ...] = ()
     segment_lengths: tuple[int, ...] = ()

@@ -42,10 +42,20 @@ class HotCtx:
     program_id: int = -1
     content_type: str = ""
     status_code: int = 200
+    raw_scope: Mapping[str, Any] | None = None
+    raw_receive: Any = None
+    raw_headers: tuple[tuple[bytes, bytes], ...] | None = None
+    raw_query_string: bytes = b""
     body_view: memoryview | None = None
     body_bytes: bytes | None = None
     parsed_json: Any = None
     parsed_json_loaded: bool = False
+    path_params: Mapping[str, Any] | None = None
+    slot_values: list[Any] | None = None
+    slot_present: bytearray | None = None
+    param_shape_id: int = -1
+    transport_kind_id: int = 0
+    lazy_published: bool = False
     headers: Mapping[str, str] | None = None
     query: Mapping[str, Any] | None = None
     flags: dict[str, Any] = field(default_factory=dict)
@@ -146,10 +156,11 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         "tx_scope",
         "plan",
     }
+    _BASE_FIELD_NAMES = frozenset(field.name for field in fields(BaseCtx))
 
     @staticmethod
     def _field_exists(name: str) -> bool:
-        return any(field.name == name for field in fields(BaseCtx))
+        return name in _Ctx._BASE_FIELD_NAMES
 
     def _get_field_value(self, name: str) -> Any:
         try:
