@@ -83,8 +83,7 @@ def _make_label(anchor: str, run: _AtomRun) -> Optional[str]:
     return f"atom:{domain}:{subject}@{anchor}" if (domain and subject) else None
 
 
-def _wrap_atom(run: _AtomRun, *, anchor: str) -> StepFn:
-    use_two_args = True
+def _use_two_args_for(run: _AtomRun) -> bool:
     try:
         params = tuple(inspect.signature(run).parameters.values())
         positional = [
@@ -96,9 +95,43 @@ def _wrap_atom(run: _AtomRun, *, anchor: str) -> StepFn:
                 inspect.Parameter.POSITIONAL_OR_KEYWORD,
             )
         ]
-        use_two_args = len(positional) != 1
+        return len(positional) != 1
     except (TypeError, ValueError):
-        use_two_args = True
+        return True
+
+
+def _preferred_direct_run(run: _AtomRun) -> _AtomRun:
+    preferred = getattr(run, "__tigrbl_hot_run__", None)
+    if callable(preferred):
+        return cast(_AtomRun, preferred)
+
+    call = getattr(run, "__call__", None)
+    preferred = getattr(call, "__tigrbl_hot_run__", None)
+    if callable(preferred):
+        return cast(_AtomRun, preferred)
+
+    module = inspect.getmodule(run)
+    if module is None:
+        module_name = getattr(run, "__module__", None) or getattr(type(run), "__module__", None)
+        if isinstance(module_name, str):
+            try:
+                module = importlib.import_module(module_name)
+            except Exception:
+                module = None
+    if module is not None:
+        candidate = getattr(module, "_run", None)
+        if callable(candidate):
+            return cast(_AtomRun, candidate)
+        candidate = getattr(module, "run", None)
+        if callable(candidate):
+            return cast(_AtomRun, candidate)
+    return run
+
+
+def _wrap_atom(run: _AtomRun, *, anchor: str) -> StepFn:
+    use_two_args = _use_two_args_for(run)
+    direct_run = _preferred_direct_run(run)
+    direct_use_two_args = _use_two_args_for(direct_run)
 
     async def _step(ctx: Any) -> Any:
         rv = run(None, ctx) if use_two_args else run(ctx)  # type: ignore[misc]
@@ -111,10 +144,10 @@ def _wrap_atom(run: _AtomRun, *, anchor: str) -> StepFn:
         label = _make_label(anchor, run)
     if label:
         setattr(_step, "__tigrbl_label", label)
-    setattr(_step, "__tigrbl_direct_run", run)
-    setattr(_step, "__tigrbl_use_two_args", use_two_args)
+    setattr(_step, "__tigrbl_direct_run", direct_run)
+    setattr(_step, "__tigrbl_use_two_args", direct_use_two_args)
     setattr(_step, "__tigrbl_has_direct_dep", False)
-    setattr(_step, "__tigrbl_direct_is_async", _is_async_callable(run))
+    setattr(_step, "__tigrbl_direct_is_async", _is_async_callable(direct_run))
     return _step
 
 
