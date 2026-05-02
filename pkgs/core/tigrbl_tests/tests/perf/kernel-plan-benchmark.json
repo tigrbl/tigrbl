@@ -8,7 +8,7 @@
       "name": "string"
     },
     "shared_table_name": "benchmark_item",
-    "shared_server_runner": "uvicorn via run_uvicorn_in_task",
+    "shared_server_runner": "httpx.ASGITransport",
     "shared_database_family": "SQLite",
     "notes": [
       "FastAPI has no kernel-plan packing, so KC metrics apply only to Tigrbl.",
@@ -20,32 +20,32 @@
       "rest_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 1.238896399969235,
-        "ops_per_second": 121.07549913271592,
+        "total_execution_time_seconds": 1.2478873999789357,
+        "ops_per_second": 120.20315294675785,
         "endpoint": "/items"
       },
       "persisted_row_count": 170
     },
     "tigrbl": {
       "kernel_plan_measurement": {
-        "raw_bytes": 1895,
-        "compressed_bytes": 835,
+        "raw_bytes": 1627,
+        "compressed_bytes": 721,
         "segment_count": 38,
         "step_count": 60,
-        "phase_tree_node_count": 504,
+        "phase_tree_node_count": 154,
         "proto_count": 6,
-        "selector_count": 31,
-        "op_count": 36,
+        "selector_count": 20,
+        "op_count": 11,
         "route_row_count": 6,
-        "route_col_count": 31,
-        "route_slot_count": 186,
-        "exact_route_count": 18,
+        "route_col_count": 20,
+        "route_slot_count": 120,
+        "exact_route_count": 7,
         "fusible_sync_segment_count": 0,
-        "hot_op_count": 36,
+        "hot_op_count": 11,
         "compact_step_count": 60,
         "compact_segment_count": 11,
-        "compact_program_segment_ref_count": 36,
-        "compact_route_entry_count": 49,
+        "compact_program_segment_ref_count": 11,
+        "compact_route_entry_count": 27,
         "shared_error_profile_count": 2,
         "externalized_prelude_step_count": 1,
         "max_index_width_bits": 16
@@ -53,15 +53,15 @@
       "rest_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 0.3842411999939941,
-        "ops_per_second": 390.37979269881674,
+        "total_execution_time_seconds": 0.23870290000922978,
+        "ops_per_second": 628.3962197116166,
         "endpoint": "/items"
       },
       "jsonrpc_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 0.42562470003031194,
-        "ops_per_second": 352.4231558678746,
+        "total_execution_time_seconds": 0.26582630001939833,
+        "ops_per_second": 564.278252336409,
         "endpoint": "/rpc",
         "method": "BenchmarkItem.create"
       },
@@ -69,11 +69,11 @@
     },
     "comparisons": {
       "rest_unary": {
-        "fastapi_ops_per_second": 121.07549913271592,
-        "tigrbl_ops_per_second": 390.37979269881674,
-        "delta_ops_per_second": 269.3042935661008,
-        "throughput_ratio_tigrbl_over_fastapi": 3.2242674653020025,
-        "compressed_bytes_per_tigrbl_op": 5.566666666666666
+        "fastapi_ops_per_second": 120.20315294675785,
+        "tigrbl_ops_per_second": 628.3962197116166,
+        "delta_ops_per_second": 508.1930667648587,
+        "throughput_ratio_tigrbl_over_fastapi": 5.227784831816808,
+        "compressed_bytes_per_tigrbl_op": 4.806666666666667
       }
     }
   }

@@ -38,6 +38,7 @@ def create_fastapi_app(db_path: Path) -> FastAPI:
     """Build a FastAPI app using SQLAlchemy and Pydantic with one create command."""
     engine = create_engine(f"sqlite+pysqlite:///{db_path}", future=True)
     session_local = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+    Base.metadata.create_all(engine)
 
     @asynccontextmanager
     async def lifespan(_: FastAPI):

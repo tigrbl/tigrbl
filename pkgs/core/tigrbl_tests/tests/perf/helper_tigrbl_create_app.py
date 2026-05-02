@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from tigrbl import TableBase, TigrblApp
+from tigrbl._spec import HttpJsonRpcBindingSpec, HttpRestBindingSpec, OpSpec
 from tigrbl.factories.engine import sqlitef
 from tigrbl.types import Column, Integer, String
 
@@ -17,6 +18,24 @@ def _build_benchmark_item_model() -> type[TableBase]:
 
         id = Column(Integer, primary_key=True, autoincrement=True)
         name = Column(String, nullable=False)
+
+        __tigrbl_ops__ = (
+            OpSpec(
+                alias="BenchmarkItem.create",
+                target="create",
+                bindings=(
+                    HttpRestBindingSpec(
+                        proto="http.rest",
+                        methods=("POST",),
+                        path="/items",
+                    ),
+                    HttpJsonRpcBindingSpec(
+                        proto="http.jsonrpc",
+                        rpc_method="BenchmarkItem.create",
+                    ),
+                ),
+            ),
+        )
 
     return TigrblBenchmarkItem
 
@@ -57,9 +76,9 @@ def fetch_tigrbl_names(db_path: Path) -> list[str]:
 
 
 def tigrbl_create_path() -> str:
-    return "/tigrblbenchmarkitem"
+    return "/items"
 
 
 def tigrbl_create_rpc_method() -> str:
-    return "TigrblBenchmarkItem.create"
+    return "BenchmarkItem.create"
 
