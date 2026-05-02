@@ -328,10 +328,14 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
     temp = ctx.temp
     route = temp["route"]
     dispatch = temp["dispatch"]
+    hot = temp["hot_ctx"]
 
     assert calls == ["handler"]
     assert ctx.phase == "PRE_HANDLER"
     assert ctx.result == {"ok": True}
+    assert hot.body_hashed_items is None
+    assert hot.query_hashed_spans is None
+    assert hot.header_hashed_pairs is None
     assert dict.__contains__(temp, "in_values") is False
     assert dict.__contains__(temp, "assembled_values") is False
     assert dict.__contains__(dispatch, "normalized_input") is False
@@ -346,6 +350,113 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
     assert dict(route["payload"]) == {"name": "Ada"}
     assert temp["assembled_values"] == {"name": "Ada"}
     assert temp["virtual_in"] == {}
+
+
+@pytest.mark.asyncio
+async def test_packed_executor_compiled_param_runner_specializes_jsonrpc_body_only_params() -> None:
+    executor = PackedPlanExecutor()
+    calls: list[str] = []
+
+    def _handler_direct(ctx):
+        calls.append("handler")
+        ctx.result = {"ok": True}
+        return ctx
+
+    def _wrapped_handler(_ctx):
+        return _handler_direct(_ctx)
+
+    setattr(_wrapped_handler, "__tigrbl_direct_run", _handler_direct)
+    setattr(_wrapped_handler, "__tigrbl_use_two_args", False)
+    setattr(_wrapped_handler, "__tigrbl_has_direct_dep", False)
+    setattr(_wrapped_handler, "__tigrbl_direct_is_async", False)
+
+    body = b'{"jsonrpc":"2.0","method":"Widget.create","params":{"name":"Ada"},"id":7}'
+    hot_op_plan = HotOpPlan(
+        program_id=0,
+        alias="Widget.create",
+        target="create",
+        ordered_segment_ids=(0,),
+        remaining_segment_ids=(),
+        program_hot_runner_id=2,
+        param_shape_id=0,
+        transport_kind_id=2,
+    )
+    packed = PackedKernel(
+        atom_catalog_opcode_ids=(0,),
+        atom_opcode_keys=("handler.create",),
+        atom_catalog_async_flags=(False,),
+        phase_names=("PRE_HANDLER",),
+        segment_catalog_offsets=(0,),
+        segment_catalog_lengths=(1,),
+        segment_catalog_atom_ids=(0,),
+        segment_catalog_phase_ids=(0,),
+        segment_catalog_executor_kinds=("sync.extractable",),
+        segment_offsets=(0,),
+        segment_lengths=(1,),
+        segment_step_ids=(0,),
+        segment_phases=("PRE_HANDLER",),
+        segment_executor_kinds=("sync.extractable",),
+        program_segment_ref_offsets=(0,),
+        program_segment_ref_lengths=(1,),
+        program_segment_refs=(0,),
+        program_hot_runner_ids=(2,),
+        program_param_shape_ids=(0,),
+        program_transport_kind_ids=(2,),
+        param_shape_offsets=(0,),
+        param_shape_lengths=(1,),
+        param_shape_source_masks=(1,),
+        param_shape_slot_ids=(0,),
+        param_shape_decoder_ids=(1,),
+        param_shape_required_flags=(1,),
+        param_shape_header_required_flags=(0,),
+        param_shape_nullable_flags=(0,),
+        param_shape_max_lengths=(0,),
+        param_shape_lookup_hashes=(PackedPlanExecutor._stable_name_hash64("name"),),
+        param_shape_header_hashes=(0,),
+        step_table=(_wrapped_handler,),
+        hot_op_plans=(hot_op_plan,),
+    )
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "body": body,
+            "temp": {
+                "hot_ctx": HotCtx(
+                    scope_type="http",
+                    method="POST",
+                    path="/rpc",
+                    protocol="http.jsonrpc",
+                    selector="Widget.create",
+                    raw_scope={
+                        "type": "http",
+                        "method": "POST",
+                        "path": "/rpc",
+                        "headers": ((b"content-type", b"application/json"),),
+                        "query_string": b"",
+                    },
+                    raw_headers=((b"content-type", b"application/json"),),
+                )
+            },
+        },
+    )
+    ctx.opview = SimpleNamespace(
+        schema_in=SimpleNamespace(fields=("name",), by_field={"name": {"required": True}})
+    )
+
+    await executor._resolve_program_runner(packed, 0, hot_op_plan)(ctx)
+
+    temp = ctx.temp
+    hot = temp["hot_ctx"]
+
+    assert calls == ["handler"]
+    assert temp["jsonrpc_request_id"] == 7
+    assert hot.body_hashed_items is None
+    assert hot.query_hashed_spans is None
+    assert hot.header_hashed_pairs is None
+    assert dict(temp["in_values"]) == {"name": "Ada"}
+    assert temp["assembled_values"] == {"name": "Ada"}
+    assert ctx.result == {"ok": True}
 
 
 @pytest.mark.asyncio
