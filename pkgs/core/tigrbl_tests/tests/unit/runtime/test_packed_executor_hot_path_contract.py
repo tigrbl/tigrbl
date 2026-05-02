@@ -13,6 +13,7 @@ from tigrbl_kernel.models import HotOpPlan, PackedKernel
 from tigrbl_atoms.atoms.dispatch.binding_parse import _run as run_binding_parse
 from tigrbl_atoms.atoms.dispatch.input_normalize import _run as run_input_normalize
 from tigrbl_atoms.atoms.ingress.input_prepare import _run as run_input_prepare
+from tigrbl_typing.status.exceptions import HTTPException
 
 
 def test_packed_executor_primes_exact_rest_route_before_ingress_probe() -> None:
@@ -196,11 +197,6 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
     def _skipped_direct(_ctx):
         raise AssertionError("compiled param runner should skip ingress/dispatch/build atoms")
 
-    def _validate_direct(ctx):
-        calls.append("validate")
-        assert ctx.temp["in_values"] == {"name": "Ada"}
-        return ctx
-
     def _handler_direct(ctx):
         calls.append("handler")
         ctx.result = {"ok": True}
@@ -210,14 +206,18 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
         raise AssertionError("wrapped skip step should not run")
 
     def _wrapped_validate(_ctx):
-        return _validate_direct(_ctx)
+        raise AssertionError("compiled param runner should inline validate_in")
+
+    def _wrapped_assemble(_ctx):
+        raise AssertionError("compiled param runner should inline resolve.assemble")
 
     def _wrapped_handler(_ctx):
         return _handler_direct(_ctx)
 
     for step, direct in (
         (_wrapped_skip, _skipped_direct),
-        (_wrapped_validate, _validate_direct),
+        (_wrapped_validate, _skipped_direct),
+        (_wrapped_assemble, _skipped_direct),
         (_wrapped_handler, _handler_direct),
     ):
         setattr(step, "__tigrbl_direct_run", direct)
@@ -237,18 +237,23 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
         transport_kind_id=1,
     )
     packed = PackedKernel(
-        atom_catalog_opcode_ids=(0, 1, 2),
-        atom_opcode_keys=("ingress.transport_extract", "wire.validate_in", "handler.create"),
-        atom_catalog_async_flags=(False, False, False),
+        atom_catalog_opcode_ids=(0, 1, 2, 3),
+        atom_opcode_keys=(
+            "ingress.transport_extract",
+            "wire.validate_in",
+            "resolve.assemble",
+            "handler.create",
+        ),
+        atom_catalog_async_flags=(False, False, False, False),
         phase_names=("PRE_HANDLER",),
         segment_catalog_offsets=(0,),
-        segment_catalog_lengths=(3,),
-        segment_catalog_atom_ids=(0, 1, 2),
+        segment_catalog_lengths=(4,),
+        segment_catalog_atom_ids=(0, 1, 2, 3),
         segment_catalog_phase_ids=(0,),
         segment_catalog_executor_kinds=("sync.extractable",),
         segment_offsets=(0,),
-        segment_lengths=(3,),
-        segment_step_ids=(0, 1, 2),
+        segment_lengths=(4,),
+        segment_step_ids=(0, 1, 2, 3),
         segment_phases=("PRE_HANDLER",),
         segment_executor_kinds=("sync.extractable",),
         program_segment_ref_offsets=(0,),
@@ -268,7 +273,12 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
         param_shape_max_lengths=(0,),
         param_shape_lookup_hashes=(PackedPlanExecutor._stable_name_hash64("name"),),
         param_shape_header_hashes=(0,),
-        step_table=(_wrapped_skip, _wrapped_validate, _wrapped_handler),
+        step_table=(
+            _wrapped_skip,
+            _wrapped_validate,
+            _wrapped_assemble,
+            _wrapped_handler,
+        ),
         hot_op_plans=(hot_op_plan,),
     )
     ctx = _Ctx.ensure(
@@ -301,6 +311,122 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
 
     await executor._resolve_program_runner(packed, 0, hot_op_plan)(ctx)
 
-    assert calls == ["validate", "handler"]
+    temp = ctx.temp
+    route = temp["route"]
+    dispatch = temp["dispatch"]
+
+    assert calls == ["handler"]
     assert ctx.phase == "PRE_HANDLER"
     assert ctx.result == {"ok": True}
+    assert dict.__contains__(temp, "in_values") is False
+    assert dict.__contains__(temp, "assembled_values") is False
+    assert dict.__contains__(dispatch, "normalized_input") is False
+    assert dict.__contains__(dispatch, "parsed_payload") is False
+    assert dict.__contains__(route, "payload") is False
+
+    assert dict(temp["in_values"]) == {"name": "Ada"}
+    assert temp["in_present"] == ("name",)
+    assert dict(ctx.payload) == {"name": "Ada"}
+    assert dict(dispatch["normalized_input"]) == {"name": "Ada"}
+    assert dict(dispatch["parsed_payload"]) == {"name": "Ada"}
+    assert dict(route["payload"]) == {"name": "Ada"}
+    assert temp["assembled_values"] == {"name": "Ada"}
+    assert temp["virtual_in"] == {}
+
+
+@pytest.mark.asyncio
+async def test_packed_executor_compiled_param_runner_publishes_validation_errors_lazily() -> None:
+    executor = PackedPlanExecutor()
+    calls: list[str] = []
+
+    def _handler_direct(ctx):
+        calls.append("handler")
+        ctx.result = {"ok": True}
+        return ctx
+
+    def _wrapped_handler(_ctx):
+        return _handler_direct(_ctx)
+
+    setattr(_wrapped_handler, "__tigrbl_direct_run", _handler_direct)
+    setattr(_wrapped_handler, "__tigrbl_use_two_args", False)
+    setattr(_wrapped_handler, "__tigrbl_has_direct_dep", False)
+    setattr(_wrapped_handler, "__tigrbl_direct_is_async", False)
+
+    hot_op_plan = HotOpPlan(
+        program_id=0,
+        alias="Widget.create",
+        target="create",
+        ordered_segment_ids=(0,),
+        remaining_segment_ids=(),
+        program_hot_runner_id=2,
+        param_shape_id=0,
+        transport_kind_id=1,
+    )
+    packed = PackedKernel(
+        atom_catalog_opcode_ids=(0,),
+        atom_opcode_keys=("handler.create",),
+        atom_catalog_async_flags=(False,),
+        phase_names=("PRE_HANDLER",),
+        segment_catalog_offsets=(0,),
+        segment_catalog_lengths=(1,),
+        segment_catalog_atom_ids=(0,),
+        segment_catalog_phase_ids=(0,),
+        segment_catalog_executor_kinds=("sync.extractable",),
+        segment_offsets=(0,),
+        segment_lengths=(1,),
+        segment_step_ids=(0,),
+        segment_phases=("PRE_HANDLER",),
+        segment_executor_kinds=("sync.extractable",),
+        program_segment_ref_offsets=(0,),
+        program_segment_ref_lengths=(1,),
+        program_segment_refs=(0,),
+        program_hot_runner_ids=(2,),
+        program_param_shape_ids=(0,),
+        program_transport_kind_ids=(1,),
+        param_shape_offsets=(0,),
+        param_shape_lengths=(1,),
+        param_shape_source_masks=(1,),
+        param_shape_slot_ids=(0,),
+        param_shape_decoder_ids=(1,),
+        param_shape_required_flags=(1,),
+        param_shape_header_required_flags=(0,),
+        param_shape_nullable_flags=(0,),
+        param_shape_max_lengths=(0,),
+        param_shape_lookup_hashes=(PackedPlanExecutor._stable_name_hash64("name"),),
+        param_shape_header_hashes=(0,),
+        step_table=(_wrapped_handler,),
+        hot_op_plans=(hot_op_plan,),
+    )
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "temp": {
+                "hot_ctx": HotCtx(
+                    scope_type="http",
+                    method="POST",
+                    path="/widgets",
+                    protocol="http.rest",
+                    selector="POST /widgets",
+                )
+            },
+        },
+    )
+    ctx.opview = SimpleNamespace(
+        schema_in=SimpleNamespace(fields=("name",), by_field={"name": {"required": True}})
+    )
+
+    with pytest.raises(HTTPException) as excinfo:
+        await executor._resolve_program_runner(packed, 0, hot_op_plan)(ctx)
+
+    assert excinfo.value.status_code == 422
+    assert calls == []
+    assert dict.__contains__(ctx.temp, "in_errors") is False
+    assert ctx.temp["in_invalid"] is True
+    assert ctx.temp["in_errors"] == [
+        {
+            "field": "name",
+            "code": "required",
+            "message": "Field is required but was not provided.",
+        }
+    ]

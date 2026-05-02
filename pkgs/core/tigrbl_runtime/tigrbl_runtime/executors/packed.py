@@ -12,13 +12,17 @@ from operator import attrgetter
 from types import SimpleNamespace
 from urllib.parse import unquote_plus
 
+from tigrbl_atoms._ctx import _ctx_view
 from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
+from tigrbl_atoms.atoms.wire.validate_in import _validate_mapping_item
 from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
+from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.status.mappings import status as _status
 from tigrbl_atoms._request import Request
 
 from .base import ExecutorBase
-from .types import HotCtx, _Ctx
+from .types import HotCtx, _Ctx, _HotSlotMap
 
 _HOT_RUNNER_GENERIC = 0
 _HOT_RUNNER_LINEAR_DIRECT = 1
@@ -472,13 +476,9 @@ class PackedPlanExecutor(ExecutorBase):
             route.setdefault("program_id", program_id)
             route.setdefault("opmeta_index", program_id)
         if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(hot.parsed_json, Mapping):
-            rpc_envelope = hot.parsed_json if isinstance(hot.parsed_json, dict) else dict(hot.parsed_json)
-            if isinstance(dispatch, dict):
-                dispatch["rpc"] = rpc_envelope
-                dispatch["rpc_method"] = rpc_envelope.get("method")
-                dispatch["parsed_payload"] = rpc_envelope.get("params", {})
-            if isinstance(route, dict):
-                route["rpc_envelope"] = rpc_envelope
+            rpc_envelope = (
+                hot.parsed_json if isinstance(hot.parsed_json, dict) else dict(hot.parsed_json)
+            )
             temp["jsonrpc_request_id"] = rpc_envelope.get("id")
 
         start, length = cls._param_shape_descriptor_slice(packed, param_shape_id)
@@ -576,31 +576,109 @@ class PackedPlanExecutor(ExecutorBase):
             slot_values[slot_id] = coerced
             slot_present[slot_id] = 1
 
+        hot.slot_field_names = field_names
         hot.slot_values = slot_values
         hot.slot_present = slot_present
-        in_values = {
-            field_names[idx]: slot_values[idx]
-            for idx in range(len(field_names))
-            if slot_present[idx]
-        }
-        temp["compiled_in_values_ready"] = True
-        temp["in_values"] = in_values
-        temp["in_present"] = tuple(
+        hot.in_values_view = _HotSlotMap(field_names, slot_values, slot_present)
+        hot.in_present_names = tuple(
             field_names[idx] for idx in range(len(field_names)) if slot_present[idx]
         )
-        if in_values:
-            ctx.payload = in_values
-            if isinstance(route, dict):
-                route["payload"] = in_values
-            if isinstance(dispatch, dict):
-                dispatch["normalized_input"] = in_values
-                if "parsed_payload" not in dispatch:
-                    dispatch["parsed_payload"] = in_values
-        if hot.path_params:
-            ctx.path_params = dict(hot.path_params)
-            if isinstance(route, dict):
-                route["path_params"] = dict(hot.path_params)
+        hot.compiled_input_ready = True
         hot.lazy_published = True
+
+    @staticmethod
+    def _compiled_schema_in(
+        ctx: _Ctx,
+    ) -> tuple[tuple[str, ...], Mapping[str, Mapping[str, Any]], tuple[str, ...]]:
+        opview = getattr(ctx, "opview", None)
+        schema_in = getattr(opview, "schema_in", None) if opview is not None else None
+        if isinstance(schema_in, Mapping):
+            fields = tuple(schema_in.get("fields", ()) or ())
+            by_field = schema_in.get("by_field", {}) or {}
+            required = tuple(schema_in.get("required", ()) or ())
+        else:
+            fields = tuple(getattr(schema_in, "fields", ()) or ())
+            by_field = getattr(schema_in, "by_field", {}) or {}
+            required = tuple(getattr(schema_in, "required", ()) or ())
+        if not required:
+            required = tuple(
+                name
+                for name, meta in by_field.items()
+                if isinstance(meta, Mapping) and meta.get("required")
+            )
+        return fields, by_field, required
+
+    @classmethod
+    def _compiled_validate_and_assemble(cls, ctx: _Ctx, hot: HotCtx) -> None:
+        field_names, by_field, required = cls._compiled_schema_in(ctx)
+        slot_values = hot.slot_values or []
+        slot_present = hot.slot_present or bytearray()
+        working = {
+            field_names[idx]: slot_values[idx]
+            for idx in range(min(len(field_names), len(slot_present)))
+            if slot_present[idx]
+        }
+
+        errors, coerced, validated = _validate_mapping_item(
+            dict(working),
+            by_field=by_field,
+            required=required,
+            ctx=ctx,
+        )
+        for idx, field_name in enumerate(field_names):
+            if field_name in validated and idx < len(slot_values):
+                slot_values[idx] = validated[field_name]
+                if idx < len(slot_present):
+                    slot_present[idx] = 1
+
+        hot.compiled_in_invalid = bool(errors)
+        hot.compiled_in_errors = tuple(dict(error) for error in errors) if errors else None
+        hot.compiled_in_coerced = tuple(coerced)
+        if hot.in_values_view is None:
+            hot.in_values_view = _HotSlotMap(field_names, slot_values, slot_present)
+        hot.in_present_names = tuple(
+            field_names[idx]
+            for idx in range(min(len(field_names), len(slot_present)))
+            if slot_present[idx]
+        )
+
+        if errors:
+            raise HTTPException(
+                status_code=_status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail=[dict(error) for error in errors],
+            )
+
+        assembled: dict[str, Any] = {}
+        virtual_in: dict[str, Any] = {}
+        absent: list[str] = []
+        used_default: list[str] = []
+        view = _ctx_view(ctx)
+        for field_name in sorted(field_names):
+            meta = by_field.get(field_name, {}) or {}
+            in_enabled = meta.get("in_enabled", True)
+            is_virtual = meta.get("virtual", False)
+            if field_name in validated:
+                value = validated[field_name]
+                if is_virtual:
+                    virtual_in[field_name] = value
+                elif in_enabled:
+                    assembled[field_name] = value
+                continue
+
+            absent.append(field_name)
+            default_fn = meta.get("default_factory")
+            if callable(default_fn) and in_enabled and not is_virtual:
+                try:
+                    default_value = default_fn(view)
+                except Exception:
+                    continue
+                assembled[field_name] = default_value
+                used_default.append(field_name)
+
+        hot.assembled_values_view = assembled
+        hot.virtual_in_view = virtual_in
+        hot.absent_fields = tuple(absent)
+        hot.used_default_factory = tuple(used_default)
 
     def _resolve_segments_for_program(
         self, packed: PackedKernel, program_id: int
@@ -1317,6 +1395,8 @@ class PackedPlanExecutor(ExecutorBase):
             "dispatch.binding_parse",
             "dispatch.input_normalize",
             "wire.build_in",
+            "wire.validate_in",
+            "resolve.assemble",
         }
         for step_id, opcode_id in enumerate(opcode_ids):
             if 0 <= opcode_id < len(opcode_keys):
@@ -1372,6 +1452,10 @@ class PackedPlanExecutor(ExecutorBase):
 
         async def _runner(ctx: _Ctx) -> None:
             await self._prepare_compiled_input(ctx, packed, program_id, hot_op_plan)
+            temp = getattr(ctx, "temp", None)
+            hot = temp.get("hot_ctx") if isinstance(temp, Mapping) else None
+            if isinstance(hot, HotCtx) and hot.compiled_input_ready:
+                self._compiled_validate_and_assemble(ctx, hot)
             current_phase = ""
             for phase_name, invoke_kind, call, dep, is_async in compiled_steps:
                 if phase_name != current_phase:
