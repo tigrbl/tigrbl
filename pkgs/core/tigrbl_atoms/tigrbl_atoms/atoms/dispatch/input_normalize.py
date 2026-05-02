@@ -39,7 +39,9 @@ def _run(obj: object | None, ctx: Any) -> None:
     temp = getattr(ctx, "temp", None)
     route = temp.setdefault("route", {}) if isinstance(temp, dict) else {}
     parsed = dispatch.get("parsed_payload")
-    if isinstance(parsed, Mapping):
+    if dispatch.get("parsed_payload_is_normalized"):
+        normalized = parsed
+    elif isinstance(parsed, Mapping):
         normalized = {str(k): _normalize(v) for k, v in parsed.items()}
     else:
         normalized = _normalize(parsed)
@@ -55,7 +57,7 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
 
     async def __call__(self, obj: object | None, ctx: Ctx[Bound]) -> Ctx[Bound]:
         _run(obj, ctx)
-        return ctx.promote(BoundCtx)
+        return ctx
 
 
 INSTANCE = AtomImpl()

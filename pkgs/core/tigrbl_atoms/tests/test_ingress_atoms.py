@@ -70,3 +70,29 @@ def test_transport_extract_and_input_prepare_fill_ingress_fields() -> None:
     assert ctx.headers["content-type"] == "application/json"
     assert ctx.body == b'{"a":1}'
     assert ctx.temp["ingress"]["body_json"] == {"a": 1}
+
+
+def test_transport_extract_reuses_request_header_and_query_objects() -> None:
+    async def _receive() -> dict[str, object]:
+        return {"type": "http.request", "body": b"", "more_body": False}
+
+    ctx = SimpleNamespace(
+        raw=SimpleNamespace(
+            scope={
+                "type": "http",
+                "method": "get",
+                "path": "/v1/widgets",
+                "scheme": "http",
+                "headers": [(b"x-a", b"1")],
+                "query_string": b"x=1&y=2",
+            },
+            receive=_receive,
+        ),
+        app=SimpleNamespace(),
+    )
+
+    asyncio.run(transport_extract._run(None, ctx))
+
+    assert ctx.request.headers is ctx.headers
+    assert ctx.request.query is ctx.query
+    assert ctx.temp["hot"]["raw_query_string"] == b"x=1&y=2"

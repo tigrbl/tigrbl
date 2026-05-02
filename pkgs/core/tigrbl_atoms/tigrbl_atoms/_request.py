@@ -15,6 +15,82 @@ from tigrbl_core._spec.request_spec import RequestSpec
 from tigrbl_typing.request import AwaitableValue, URL
 
 
+class _HeadersView(Mapping[str, str]):
+    __slots__ = ("_raw", "_cache")
+
+    def __init__(self, raw_headers: Iterable[tuple[object, object]] | None) -> None:
+        self._raw = tuple(
+            (bytes(key).lower(), bytes(value))
+            for key, value in (raw_headers or ())
+            if isinstance(key, (bytes, bytearray))
+            and isinstance(value, (bytes, bytearray))
+        )
+        self._cache: dict[str, str] | None = None
+
+    def _ensure_cache(self) -> dict[str, str]:
+        cache = self._cache
+        if cache is None:
+            cache = {
+                key.decode("latin-1"): value.decode("latin-1")
+                for key, value in self._raw
+            }
+            self._cache = cache
+        return cache
+
+    def __getitem__(self, key: str) -> str:
+        lowered = str(key).lower().encode("latin-1")
+        for raw_key, raw_value in reversed(self._raw):
+            if raw_key == lowered:
+                return raw_value.decode("latin-1")
+        raise KeyError(key)
+
+    def __iter__(self):
+        return iter(self._ensure_cache())
+
+    def __len__(self) -> int:
+        return len(self._ensure_cache())
+
+    def get(self, key: str, default: Any = None) -> Any:
+        lowered = str(key).lower().encode("latin-1")
+        for raw_key, raw_value in reversed(self._raw):
+            if raw_key == lowered:
+                return raw_value.decode("latin-1")
+        return default
+
+
+class _QueryView(Mapping[str, list[str]]):
+    __slots__ = ("_raw", "_cache")
+
+    def __init__(self, raw_query: bytes | str | None) -> None:
+        self._raw = raw_query or b""
+        self._cache: dict[str, list[str]] | None = None
+
+    def _ensure_cache(self) -> dict[str, list[str]]:
+        cache = self._cache
+        if cache is None:
+            raw = self._raw
+            if isinstance(raw, bytes):
+                cache = parse_qs(raw.decode("latin-1"), keep_blank_values=True)
+            elif isinstance(raw, str):
+                cache = parse_qs(raw, keep_blank_values=True)
+            else:
+                cache = {}
+            self._cache = cache
+        return cache
+
+    def __getitem__(self, key: str) -> list[str]:
+        return self._ensure_cache()[key]
+
+    def __iter__(self):
+        return iter(self._ensure_cache())
+
+    def __len__(self) -> int:
+        return len(self._ensure_cache())
+
+    def get(self, key: str, default: Any = None) -> Any:
+        return self._ensure_cache().get(key, default)
+
+
 @dataclass(frozen=True)
 class UploadedFile:
     filename: str
@@ -168,13 +244,8 @@ class Request(RequestSpec):
     ) -> None:
         self.method = (scope.get("method") or "GET").upper()
         self.path = scope.get("path") or "/"
-        self.headers = {
-            key.decode("latin-1").lower(): value.decode("latin-1")
-            for key, value in scope.get("headers", [])
-        }
-        self.query = parse_qs(
-            scope.get("query_string", b"").decode("latin-1"), keep_blank_values=True
-        )
+        self.headers = _HeadersView(scope.get("headers", []))
+        self.query = _QueryView(scope.get("query_string", b""))
         self.path_params = scope.get("path_params") or {}
         self.body = b""
         self.script_name = scope.get("root_path") or ""
@@ -203,7 +274,7 @@ class Request(RequestSpec):
             self._json_loaded = True
             self._json_cache = None
             return None
-        self._json_cache = json_module.loads(self.body.decode("utf-8"))
+        self._json_cache = json_module.loads(self.body)
         self._json_loaded = True
         return self._json_cache
 

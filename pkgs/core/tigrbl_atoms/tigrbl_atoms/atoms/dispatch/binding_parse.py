@@ -23,6 +23,21 @@ def _dispatch_dict(ctx: Any) -> dict[str, object]:
     return temp["dispatch"]
 
 
+def _coerce_json_body(body: object, hot: dict[str, object]) -> tuple[object, bool]:
+    if not isinstance(body, (bytes, bytearray)):
+        return body, False
+    parsed = hot.get("parsed_json")
+    loaded = bool(hot.get("parsed_json_loaded"))
+    if not loaded:
+        try:
+            parsed = json.loads(bytes(body))
+        except Exception:
+            parsed = None
+        hot["parsed_json"] = parsed
+        hot["parsed_json_loaded"] = True
+    return parsed, True
+
+
 def _run(obj: object | None, ctx: Any) -> None:
     del obj
     dispatch = _dispatch_dict(ctx)
@@ -31,19 +46,11 @@ def _run(obj: object | None, ctx: Any) -> None:
     hot = temp.setdefault("hot", {}) if isinstance(temp, dict) else {}
     protocol = str(dispatch.get("binding_protocol", "") or "")
     body = getattr(ctx, "body", None)
+    body_from_json_bytes = False
+    dispatch["parsed_payload_is_normalized"] = False
 
-    if isinstance(body, (bytes, bytearray)):
-        parsed = hot.get("parsed_json") if isinstance(hot, dict) else None
-        loaded = bool(hot.get("parsed_json_loaded")) if isinstance(hot, dict) else False
-        if not loaded:
-            try:
-                parsed = json.loads(bytes(body).decode("utf-8"))
-            except Exception:
-                parsed = None
-            if isinstance(hot, dict):
-                hot["parsed_json"] = parsed
-                hot["parsed_json_loaded"] = True
-        body = parsed
+    if isinstance(hot, dict):
+        body, body_from_json_bytes = _coerce_json_body(body, hot)
 
     if not protocol and isinstance(body, list):
         endpoint = dispatch.get("endpoint") or route.get("endpoint")
@@ -77,7 +84,7 @@ def _run(obj: object | None, ctx: Any) -> None:
                 "binding_selector",
                 f"{endpoint}:{method}" if isinstance(method, str) and method else method,
             )
-            dispatch["rpc"] = dict(body)
+            dispatch["rpc"] = body if isinstance(body, dict) else dict(body)
             dispatch["rpc_method"] = method
             params = body.get("params", {})
             if isinstance(params, Mapping) and set(params) == {"params"}:
@@ -91,13 +98,13 @@ def _run(obj: object | None, ctx: Any) -> None:
                 if isinstance(route, dict):
                     route.pop("selector", None)
                     route["short_circuit"] = True
-                    route["rpc_envelope"] = dict(body)
+                    route["rpc_envelope"] = dispatch["rpc"]
                 return
             dispatch["parsed_payload"] = params
             if isinstance(route, dict):
                 route["selector"] = dispatch.get("binding_selector")
                 route["endpoint"] = endpoint
-                route["rpc_envelope"] = dict(body)
+                route["rpc_envelope"] = dispatch["rpc"]
         elif isinstance(body, list):
             dispatch["rpc_batch"] = [
                 dict(item) if isinstance(item, Mapping) else item for item in body
@@ -106,35 +113,32 @@ def _run(obj: object | None, ctx: Any) -> None:
         if isinstance(route, dict):
             route["payload"] = body
     elif protocol.endswith(".rest"):
-        if isinstance(body, (bytes, bytearray)):
-            parsed = hot.get("parsed_json") if isinstance(hot, dict) else None
-            loaded = bool(hot.get("parsed_json_loaded")) if isinstance(hot, dict) else False
-            if not loaded:
-                try:
-                    parsed = json.loads(bytes(body).decode("utf-8"))
-                except Exception:
-                    parsed = None
-                if isinstance(hot, dict):
-                    hot["parsed_json"] = parsed
-                    hot["parsed_json_loaded"] = True
-            body = parsed
-        payload: dict[str, object] = {}
-        query = getattr(ctx, "query", None)
-        if isinstance(query, Mapping):
-            for k, v in query.items():
-                # parse_qs returns lists; unwrap single-element lists
-                if isinstance(v, list) and len(v) == 1:
-                    payload[str(k)] = v[0]
-                else:
-                    payload[str(k)] = v
+        query_payload = hot.get("query_payload") if isinstance(hot, dict) else None
+        if not isinstance(query_payload, Mapping):
+            query_payload = {}
+            raw_query_string = hot.get("raw_query_string", b"") if isinstance(hot, dict) else b""
+            if raw_query_string:
+                query = getattr(ctx, "query", None)
+                if isinstance(query, Mapping):
+                    query_payload = {
+                        str(k): v[0] if isinstance(v, list) and len(v) == 1 else v
+                        for k, v in query.items()
+                    }
+            if isinstance(hot, dict) and query_payload:
+                hot["query_payload"] = query_payload
         path_params = dispatch.get("path_params")
-        if isinstance(path_params, Mapping):
-            payload.update({str(k): v for k, v in path_params.items()})
+        path_payload = (
+            {str(k): v for k, v in path_params.items()}
+            if isinstance(path_params, Mapping)
+            else {}
+        )
+        has_query_payload = bool(query_payload)
+        has_path_params = bool(path_payload)
         if isinstance(body, list):
             # Bulk operation: inject path params into each item
-            coerced_params = {}
-            if isinstance(path_params, Mapping):
-                for pk, pv in path_params.items():
+            if has_path_params:
+                coerced_params = {}
+                for pk, pv in path_payload.items():
                     if isinstance(pv, str):
                         try:
                             coerced_params[pk] = uuid.UUID(pv)
@@ -142,28 +146,48 @@ def _run(obj: object | None, ctx: Any) -> None:
                             coerced_params[pk] = pv
                     else:
                         coerced_params[pk] = pv
-            for idx, item in enumerate(body):
-                if isinstance(item, Mapping):
-                    merged = dict(coerced_params)
-                    merged.update(item)
-                    body[idx] = merged
+                for idx, item in enumerate(body):
+                    if isinstance(item, Mapping):
+                        merged = dict(coerced_params)
+                        merged.update(item)
+                        body[idx] = merged
             dispatch["parsed_payload"] = body
+            dispatch["parsed_payload_is_normalized"] = bool(
+                body_from_json_bytes and not has_path_params
+            )
             if isinstance(route, dict):
                 route["payload"] = body
-                route["path_params"] = (
-                    dict(path_params) if isinstance(path_params, Mapping) else {}
-                )
+                route["path_params"] = path_payload
         elif isinstance(body, Mapping):
-            payload.update({str(k): v for k, v in body.items()})
-            dispatch["parsed_payload"] = payload
-            if isinstance(route, dict):
-                route["payload"] = payload
+            if not has_query_payload and not has_path_params:
+                dispatch["parsed_payload"] = body
+                dispatch["parsed_payload_is_normalized"] = bool(body_from_json_bytes)
+                if isinstance(route, dict):
+                    route["payload"] = body
+            else:
+                payload: dict[str, object] = {}
+                if has_query_payload:
+                    payload.update(query_payload)
+                if has_path_params:
+                    payload.update(path_payload)
+                payload.update({str(k): v for k, v in body.items()})
+                dispatch["parsed_payload"] = payload
+                dispatch["parsed_payload_is_normalized"] = False
+                if isinstance(route, dict):
+                    route["payload"] = payload
         else:
+            payload: dict[str, object] = {}
+            if has_query_payload:
+                payload.update(query_payload)
+            if has_path_params:
+                payload.update(path_payload)
             dispatch["parsed_payload"] = payload
+            dispatch["parsed_payload_is_normalized"] = False
             if isinstance(route, dict):
                 route["payload"] = payload
     else:
         dispatch["parsed_payload"] = body
+        dispatch["parsed_payload_is_normalized"] = False
         if isinstance(route, dict):
             route["payload"] = body
 
@@ -310,7 +334,7 @@ class AtomImpl(Atom[Bound, Bound, Exception]):
                     "status_code": 200,
                     "body": await self._execute_rpc_batch(ctx, rpc_batch),
                 }
-        return ctx.promote(BoundCtx)
+        return ctx
 
 
 INSTANCE = AtomImpl()

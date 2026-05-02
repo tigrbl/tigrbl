@@ -108,6 +108,7 @@ class HotOpPlan:
     dispatch_proto_ids: tuple[int, ...] = ()
     dispatch_selector_count: int = 0
     program_error_profile_id: int = -1
+    program_hot_runner_id: int = 0
 
 
 @dataclass(frozen=True, slots=True)
@@ -177,6 +178,7 @@ class PackedKernel:
     program_segment_ref_offsets: tuple[int, ...] = ()
     program_segment_ref_lengths: tuple[int, ...] = ()
     program_segment_refs: tuple[int, ...] = ()
+    program_hot_runner_ids: tuple[int, ...] = ()
 
     error_profile_offsets: tuple[int, ...] = ()
     error_profile_lengths: tuple[int, ...] = ()
