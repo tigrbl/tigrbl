@@ -1,6 +1,7 @@
 # tigrbl/runtime/executor/types.py
 from __future__ import annotations
 
+from collections.abc import Iterator, Mapping as ABCMapping
 from dataclasses import MISSING, dataclass, field, fields, is_dataclass
 from functools import lru_cache
 from typing import (
@@ -53,12 +54,213 @@ class HotCtx:
     path_params: Mapping[str, Any] | None = None
     slot_values: list[Any] | None = None
     slot_present: bytearray | None = None
+    slot_field_names: tuple[str, ...] = ()
     param_shape_id: int = -1
     transport_kind_id: int = 0
+    compiled_input_ready: bool = False
+    compiled_in_invalid: bool | None = None
+    compiled_in_errors: tuple[Mapping[str, Any], ...] | None = None
+    compiled_in_coerced: tuple[str, ...] = ()
+    in_values_view: Mapping[str, Any] | None = None
+    in_present_names: tuple[str, ...] = ()
+    assembled_values_view: Mapping[str, Any] | None = None
+    virtual_in_view: Mapping[str, Any] | None = None
+    absent_fields: tuple[str, ...] = ()
+    used_default_factory: tuple[str, ...] = ()
     lazy_published: bool = False
     headers: Mapping[str, str] | None = None
     query: Mapping[str, Any] | None = None
     flags: dict[str, Any] = field(default_factory=dict)
+
+
+_LAZY_MISSING = object()
+
+
+class _HotSlotMap(ABCMapping[str, Any]):
+    __slots__ = ("_field_names", "_slot_values", "_slot_present")
+
+    def __init__(
+        self,
+        field_names: tuple[str, ...],
+        slot_values: list[Any],
+        slot_present: bytearray,
+    ) -> None:
+        self._field_names = field_names
+        self._slot_values = slot_values
+        self._slot_present = slot_present
+
+    def __getitem__(self, key: str) -> Any:
+        for idx, field_name in enumerate(self._field_names):
+            if field_name == key and idx < len(self._slot_present) and self._slot_present[idx]:
+                return self._slot_values[idx]
+        raise KeyError(key)
+
+    def __iter__(self) -> Iterator[str]:
+        for idx, field_name in enumerate(self._field_names):
+            if idx < len(self._slot_present) and self._slot_present[idx]:
+                yield field_name
+
+    def __len__(self) -> int:
+        return sum(1 for present in self._slot_present if present)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+
+class _HotNamespaceDict(dict[str, Any]):
+    __slots__ = ("_kind", "_temp")
+
+    def __init__(self, kind: str, temp: "_HotTemp", initial: Mapping[str, Any] | None = None) -> None:
+        super().__init__(initial or {})
+        self._kind = kind
+        self._temp = temp
+
+    def _lazy_value(self, key: str) -> Any:
+        hot = self._temp._hot_ctx()
+        if hot is None:
+            return _LAZY_MISSING
+        if self._kind == "route":
+            if key == "payload" and hot.in_values_view is not None:
+                return hot.in_values_view
+            if key == "path_params" and isinstance(hot.path_params, ABCMapping):
+                return hot.path_params
+            if key == "rpc_envelope" and isinstance(hot.parsed_json, ABCMapping):
+                return hot.parsed_json
+            return _LAZY_MISSING
+        if key in {"normalized_input", "parsed_payload"} and hot.in_values_view is not None:
+            return hot.in_values_view
+        if key == "rpc" and isinstance(hot.parsed_json, ABCMapping):
+            return hot.parsed_json
+        if key == "rpc_method" and isinstance(hot.parsed_json, ABCMapping):
+            method = hot.parsed_json.get("method")
+            return method if method is not None else _LAZY_MISSING
+        return _LAZY_MISSING
+
+    def __getitem__(self, key: str) -> Any:
+        try:
+            return dict.__getitem__(self, key)
+        except KeyError:
+            value = self._lazy_value(key)
+            if value is _LAZY_MISSING:
+                raise
+            dict.__setitem__(self, key, value)
+            return value
+
+    def get(self, key: str, default: Any = None) -> Any:
+        if dict.__contains__(self, key):
+            return dict.get(self, key, default)
+        value = self._lazy_value(key)
+        if value is _LAZY_MISSING:
+            return default
+        dict.__setitem__(self, key, value)
+        return value
+
+    def __contains__(self, key: object) -> bool:
+        if dict.__contains__(self, key):
+            return True
+        if not isinstance(key, str):
+            return False
+        return self._lazy_value(key) is not _LAZY_MISSING
+
+
+class _HotTemp(dict[str, Any]):
+    __slots__ = ()
+
+    @classmethod
+    def from_mapping(cls, value: Mapping[str, Any] | None) -> "_HotTemp":
+        if isinstance(value, cls):
+            return value
+        temp = cls()
+        if value:
+            temp.update(value)
+        return temp
+
+    def _hot_ctx(self) -> HotCtx | None:
+        hot = dict.get(self, "hot_ctx")
+        return hot if isinstance(hot, HotCtx) else None
+
+    def _wrap_namespace(self, key: str, value: Any) -> Any:
+        if key in {"route", "dispatch"} and isinstance(value, dict) and not isinstance(
+            value, _HotNamespaceDict
+        ):
+            return _HotNamespaceDict(key, self, value)
+        return value
+
+    def _lazy_value(self, key: str) -> Any:
+        hot = self._hot_ctx()
+        if hot is None:
+            return _LAZY_MISSING
+        if key == "compiled_in_values_ready" and hot.compiled_input_ready:
+            return True
+        if key == "in_values" and hot.in_values_view is not None:
+            return hot.in_values_view
+        if key == "in_present" and hot.in_present_names:
+            return hot.in_present_names
+        if key == "assembled_values" and hot.assembled_values_view is not None:
+            return hot.assembled_values_view
+        if key == "virtual_in" and hot.virtual_in_view is not None:
+            return hot.virtual_in_view
+        if key == "absent_fields" and hot.absent_fields:
+            return hot.absent_fields
+        if key == "used_default_factory" and hot.used_default_factory:
+            return hot.used_default_factory
+        if key == "in_invalid" and hot.compiled_in_invalid is not None:
+            return hot.compiled_in_invalid
+        if key == "in_errors" and hot.compiled_in_errors is not None:
+            return [dict(error) for error in hot.compiled_in_errors]
+        if key == "in_coerced" and hot.compiled_in_coerced:
+            return hot.compiled_in_coerced
+        return _LAZY_MISSING
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        dict.__setitem__(self, key, self._wrap_namespace(key, value))
+
+    def update(self, *args: Any, **kwargs: Any) -> None:
+        for mapping in args:
+            if isinstance(mapping, ABCMapping):
+                for key, value in mapping.items():
+                    self[key] = value
+            else:
+                for key, value in dict(mapping).items():
+                    self[key] = value
+        for key, value in kwargs.items():
+            self[key] = value
+
+    def setdefault(self, key: str, default: Any = None) -> Any:
+        if dict.__contains__(self, key):
+            return dict.__getitem__(self, key)
+        value = self._wrap_namespace(key, default)
+        dict.__setitem__(self, key, value)
+        return value
+
+    def __getitem__(self, key: str) -> Any:
+        try:
+            return dict.__getitem__(self, key)
+        except KeyError:
+            value = self._lazy_value(key)
+            if value is _LAZY_MISSING:
+                raise
+            dict.__setitem__(self, key, value)
+            return value
+
+    def get(self, key: str, default: Any = None) -> Any:
+        if dict.__contains__(self, key):
+            return dict.get(self, key, default)
+        value = self._lazy_value(key)
+        if value is _LAZY_MISSING:
+            return default
+        dict.__setitem__(self, key, value)
+        return value
+
+    def __contains__(self, key: object) -> bool:
+        if dict.__contains__(self, key):
+            return True
+        if not isinstance(key, str):
+            return False
+        return self._lazy_value(key) is not _LAZY_MISSING
 
 
 class _ResponseState:
@@ -169,19 +371,46 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
             return object.__getattribute__(self, "bag").get(name)
 
     def _set_field_value(self, name: str, value: Any) -> None:
+        if name == "temp":
+            value = _HotTemp.from_mapping(value if isinstance(value, ABCMapping) else {})
         if self._field_exists(name):
             object.__setattr__(self, name, value)
             return
         object.__getattribute__(self, "bag")[name] = value
 
+    def _hot_ctx(self) -> HotCtx | None:
+        temp = object.__getattribute__(self, "temp")
+        if isinstance(temp, ABCMapping):
+            hot = temp.get("hot_ctx")
+            return hot if isinstance(hot, HotCtx) else None
+        return None
+
+    def _lazy_bag_value(self, name: str, *, cache: bool) -> Any:
+        hot = self._hot_ctx()
+        if hot is None:
+            return _LAZY_MISSING
+        if name == "payload" and hot.in_values_view is not None:
+            value = hot.in_values_view
+        elif name == "path_params" and isinstance(hot.path_params, ABCMapping):
+            value = hot.path_params
+        else:
+            return _LAZY_MISSING
+        if cache:
+            object.__getattribute__(self, "bag")[name] = value
+        return value
+
     def __getattr__(self, name: str) -> Any:
         bag = object.__getattribute__(self, "bag")
-        return bag.get(name)
+        if name in bag:
+            return bag.get(name)
+        value = self._lazy_bag_value(name, cache=True)
+        return None if value is _LAZY_MISSING else value
 
     def __contains__(self, key: str) -> bool:
         if key in self._FIELD_NAMES:
             return True
-        return key in object.__getattribute__(self, "bag")
+        bag = object.__getattribute__(self, "bag")
+        return key in bag or self._lazy_bag_value(key, cache=False) is not _LAZY_MISSING
 
     def __getitem__(self, key: str) -> Any:
         if key in self._FIELD_NAMES:
@@ -189,7 +418,12 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         bag = object.__getattribute__(self, "bag")
         if key == "response" and key not in bag:
             bag[key] = _ResponseState(self)
-        return bag[key]
+        if key in bag:
+            return bag[key]
+        value = self._lazy_bag_value(key, cache=True)
+        if value is _LAZY_MISSING:
+            raise KeyError(key)
+        return value
 
     def get(self, key: str, default: Any = None) -> Any:
         if key in self._FIELD_NAMES:
@@ -198,7 +432,10 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         bag = object.__getattribute__(self, "bag")
         if key == "response" and key not in bag:
             bag[key] = _ResponseState(self)
-        return bag.get(key, default)
+        if key in bag:
+            return bag.get(key, default)
+        value = self._lazy_bag_value(key, cache=True)
+        return default if value is _LAZY_MISSING else value
 
     def items(self):
         merged = {name: self._get_field_value(name) for name in self._FIELD_NAMES}
@@ -316,7 +553,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
             ctx = cls(
                 env=seed_values.get("env"),
                 bag=bag,
-                temp=dict(seed_values.get("temp") or {}),
+                temp=_HotTemp.from_mapping(seed_values.get("temp") or {}),
                 error=seed_values.get("error"),
                 current_phase=seed_values.get("current_phase"),
                 error_phase=seed_values.get("error_phase"),
@@ -331,7 +568,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
             ctx = cls(
                 env=seed_fields.get("env"),
                 bag=seed_values,
-                temp=dict(seed_fields.get("temp") or {}),
+                temp=_HotTemp.from_mapping(seed_fields.get("temp") or {}),
                 error=seed_fields.get("error"),
                 current_phase=seed_fields.get("current_phase"),
                 error_phase=seed_fields.get("error_phase"),
