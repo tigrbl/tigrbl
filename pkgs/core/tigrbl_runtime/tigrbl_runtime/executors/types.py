@@ -58,12 +58,17 @@ class HotCtx:
     slot_values: list[Any] | None = None
     slot_present: bytearray | None = None
     slot_field_names: tuple[str, ...] = ()
+    slot_field_index: Mapping[str, int] | None = None
     param_shape_id: int = -1
     transport_kind_id: int = 0
     compiled_input_ready: bool = False
     compiled_in_invalid: bool | None = None
     compiled_in_errors: tuple[Mapping[str, Any], ...] | None = None
     compiled_in_coerced: tuple[str, ...] = ()
+    assembled_slot_values: list[Any] | None = None
+    assembled_slot_present: bytearray | None = None
+    virtual_slot_values: list[Any] | None = None
+    virtual_slot_present: bytearray | None = None
     in_values_view: Mapping[str, Any] | None = None
     in_present_names: tuple[str, ...] = ()
     assembled_values_view: Mapping[str, Any] | None = None
@@ -80,19 +85,27 @@ _LAZY_MISSING = object()
 
 
 class _HotSlotMap(ABCMapping[str, Any]):
-    __slots__ = ("_field_names", "_slot_values", "_slot_present")
+    __slots__ = ("_field_names", "_field_index", "_slot_values", "_slot_present")
 
     def __init__(
         self,
         field_names: tuple[str, ...],
+        field_index: Mapping[str, int] | None,
         slot_values: list[Any],
         slot_present: bytearray,
     ) -> None:
         self._field_names = field_names
+        self._field_index = field_index
         self._slot_values = slot_values
         self._slot_present = slot_present
 
     def __getitem__(self, key: str) -> Any:
+        field_index = self._field_index
+        if isinstance(field_index, ABCMapping):
+            idx = field_index.get(key, -1)
+            if 0 <= idx < len(self._slot_present) and self._slot_present[idx]:
+                return self._slot_values[idx]
+            raise KeyError(key)
         for idx, field_name in enumerate(self._field_names):
             if field_name == key and idx < len(self._slot_present) and self._slot_present[idx]:
                 return self._slot_values[idx]
@@ -111,6 +124,68 @@ class _HotSlotMap(ABCMapping[str, Any]):
             return self[key]
         except KeyError:
             return default
+
+
+def _slot_dict(
+    field_names: tuple[str, ...],
+    slot_values: list[Any] | None,
+    slot_present: bytearray | None,
+) -> dict[str, Any]:
+    if not slot_values or slot_present is None:
+        return {}
+    return {
+        field_names[idx]: slot_values[idx]
+        for idx in range(min(len(field_names), len(slot_present), len(slot_values)))
+        if slot_present[idx]
+    }
+
+
+def _ensure_hot_in_values_view(hot: HotCtx) -> Mapping[str, Any] | None:
+    view = hot.in_values_view
+    if view is not None:
+        return view
+    slot_values = hot.slot_values
+    slot_present = hot.slot_present
+    if slot_values is None or slot_present is None or not hot.slot_field_names:
+        return None
+    view = _HotSlotMap(
+        hot.slot_field_names,
+        hot.slot_field_index,
+        slot_values,
+        slot_present,
+    )
+    hot.in_values_view = view
+    return view
+
+
+def _ensure_hot_assembled_values_view(hot: HotCtx) -> Mapping[str, Any] | None:
+    view = hot.assembled_values_view
+    if view is not None:
+        return view
+    if hot.assembled_slot_values is None or hot.assembled_slot_present is None:
+        return None
+    view = _slot_dict(
+        hot.slot_field_names,
+        hot.assembled_slot_values,
+        hot.assembled_slot_present,
+    )
+    hot.assembled_values_view = view
+    return view
+
+
+def _ensure_hot_virtual_in_view(hot: HotCtx) -> Mapping[str, Any] | None:
+    view = hot.virtual_in_view
+    if view is not None:
+        return view
+    if hot.virtual_slot_values is None or hot.virtual_slot_present is None:
+        return None
+    view = _slot_dict(
+        hot.slot_field_names,
+        hot.virtual_slot_values,
+        hot.virtual_slot_present,
+    )
+    hot.virtual_in_view = view
+    return view
 
 
 class _HotNamespaceDict(dict[str, Any]):
@@ -132,8 +207,10 @@ class _HotNamespaceDict(dict[str, Any]):
                 return hot.protocol
             if key in {"program_id", "opmeta_index"} and hot.program_id >= 0:
                 return hot.program_id
-            if key == "payload" and hot.in_values_view is not None:
-                return hot.in_values_view
+            if key == "payload":
+                value = _ensure_hot_in_values_view(hot)
+                if value is not None:
+                    return value
             if key == "path_params" and isinstance(hot.path_params, ABCMapping):
                 return hot.path_params
             if key == "rpc_envelope" and isinstance(hot.parsed_json, ABCMapping):
@@ -147,8 +224,10 @@ class _HotNamespaceDict(dict[str, Any]):
             return hot.protocol
         if key == "channel_selector" and hot.selector:
             return hot.selector
-        if key in {"normalized_input", "parsed_payload"} and hot.in_values_view is not None:
-            return hot.in_values_view
+        if key in {"normalized_input", "parsed_payload"}:
+            value = _ensure_hot_in_values_view(hot)
+            if value is not None:
+                return value
         if key == "rpc" and isinstance(hot.parsed_json, ABCMapping):
             return hot.parsed_json
         if key == "rpc_method" and isinstance(hot.parsed_json, ABCMapping):
@@ -214,14 +293,20 @@ class _HotTemp(dict[str, Any]):
             return _HotNamespaceDict(key, self)
         if key == "compiled_in_values_ready" and hot.compiled_input_ready:
             return True
-        if key == "in_values" and hot.in_values_view is not None:
-            return hot.in_values_view
+        if key == "in_values":
+            value = _ensure_hot_in_values_view(hot)
+            if value is not None:
+                return value
         if key == "in_present" and hot.in_present_names:
             return hot.in_present_names
-        if key == "assembled_values" and hot.assembled_values_view is not None:
-            return hot.assembled_values_view
-        if key == "virtual_in" and hot.virtual_in_view is not None:
-            return hot.virtual_in_view
+        if key == "assembled_values":
+            value = _ensure_hot_assembled_values_view(hot)
+            if value is not None:
+                return value
+        if key == "virtual_in":
+            value = _ensure_hot_virtual_in_view(hot)
+            if value is not None:
+                return value
         if key == "absent_fields" and hot.absent_fields:
             return hot.absent_fields
         if key == "used_default_factory" and hot.used_default_factory:
@@ -408,8 +493,10 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         hot = self._hot_ctx()
         if hot is None:
             return _LAZY_MISSING
-        if name == "payload" and hot.in_values_view is not None:
-            value = hot.in_values_view
+        if name == "payload":
+            value = _ensure_hot_in_values_view(hot)
+            if value is None:
+                return _LAZY_MISSING
         elif name == "path_params" and isinstance(hot.path_params, ABCMapping):
             value = hot.path_params
         else:

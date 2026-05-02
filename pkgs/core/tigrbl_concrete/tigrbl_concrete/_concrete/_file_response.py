@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import mimetypes
+from collections.abc import AsyncIterator
 from collections.abc import Mapping
 from pathlib import Path
 
@@ -21,7 +22,6 @@ class FileResponse(Response):
         download: bool = False,
     ) -> None:
         resolved_path = Path(path)
-        payload = resolved_path.read_bytes()
         content_type = (
             media_type or mimetypes.guess_type(path)[0] or "application/octet-stream"
         )
@@ -36,12 +36,24 @@ class FileResponse(Response):
         super().__init__(
             status_code=status_code,
             headers=response_headers,
-            body=payload,
+            body=None,
             media_type=content_type,
             filename=filename,
             download=download,
         )
-        self.path = str(path)
+        self.path = str(resolved_path)
+
+    @property
+    def body_iterator(self) -> AsyncIterator[bytes]:
+        async def _iter() -> AsyncIterator[bytes]:
+            with Path(self.path).open("rb") as handle:
+                while True:
+                    chunk = handle.read(64 * 1024)
+                    if not chunk:
+                        break
+                    yield chunk
+
+        return _iter()
 
 
 __all__ = ["FileResponse"]

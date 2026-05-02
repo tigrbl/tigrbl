@@ -14,6 +14,16 @@ from tigrbl_base._base._response_base import ResponseBase, TemplateBase
 from ._headers import HeaderCookies, Headers
 
 
+def _body_chunk_bytes(chunk: Any) -> bytes:
+    if isinstance(chunk, bytes):
+        return chunk
+    if isinstance(chunk, bytearray):
+        return bytes(chunk)
+    if isinstance(chunk, memoryview):
+        return chunk.tobytes()
+    return bytes(chunk)
+
+
 class _JSONDualMethod:
     def __get__(self, obj: "Response" | None, owner: type["Response"]):
         if obj is None:
@@ -198,7 +208,7 @@ class Response(ResponseBase):
         if body_iterator is not None:
             await send({"type": "http.response.start", "status": int(self.status_code), "headers": headers})
             async for chunk in body_iterator:
-                await send({"type": "http.response.body", "body": bytes(chunk), "more_body": True})
+                await send({"type": "http.response.body", "body": _body_chunk_bytes(chunk), "more_body": True})
             await send({"type": "http.response.body", "body": b"", "more_body": False})
             return
         from tigrbl_atoms.atoms.egress.asgi_send import finalize_transport_response

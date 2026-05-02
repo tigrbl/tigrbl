@@ -30,7 +30,14 @@ class StreamingResponse(Response):
     def body_iterator(self) -> AsyncIterator[bytes]:
         async def _iter() -> AsyncIterator[bytes]:
             async for chunk in iter_items(self._content):
-                yield bytes(chunk)
+                if isinstance(chunk, bytes):
+                    yield chunk
+                elif isinstance(chunk, bytearray):
+                    yield bytes(chunk)
+                elif isinstance(chunk, memoryview):
+                    yield chunk.tobytes()
+                else:
+                    yield bytes(chunk)
 
         return _iter()
 

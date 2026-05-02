@@ -30,6 +30,18 @@ SUITE_MANIFEST_JSON = PERF_DIR / "hot_path_perf_suite_manifest.json"
 SUITE_REPORT_MD = PERF_DIR / "hot_path_perf_suite_report.md"
 HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-items"
 FASTAPI_CALL_GRAPH_JSON = PERF_DIR / "fastapi_create_call_graph_250_ops.json"
+STREAMING_RESULTS_JSON = PERF_DIR / "benchmark_results_streaming_uvicorn.json"
+STREAMING_KERNEL_JSON = PERF_DIR / "kernel-plan-benchmark-streaming.json"
+STREAMING_KERNEL_MD = PERF_DIR / "kernel-plan-benchmark-streaming.md"
+STREAMING_TIGRBL_CALL_GRAPH_JSON = PERF_DIR / "tigrbl_streaming_call_graph_250_ops.json"
+STREAMING_FASTAPI_CALL_GRAPH_JSON = PERF_DIR / "fastapi_streaming_call_graph_250_ops.json"
+STREAMING_HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-streaming"
+WEBSOCKET_RESULTS_JSON = PERF_DIR / "benchmark_results_websocket_uvicorn.json"
+WEBSOCKET_KERNEL_JSON = PERF_DIR / "kernel-plan-benchmark-websocket.json"
+WEBSOCKET_KERNEL_MD = PERF_DIR / "kernel-plan-benchmark-websocket.md"
+WEBSOCKET_TIGRBL_CALL_GRAPH_JSON = PERF_DIR / "tigrbl_websocket_call_graph_250_ops.json"
+WEBSOCKET_FASTAPI_CALL_GRAPH_JSON = PERF_DIR / "fastapi_websocket_call_graph_250_ops.json"
+WEBSOCKET_HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-websocket"
 
 
 class MissingSurfaceError(RuntimeError):
@@ -71,7 +83,7 @@ class TigrblParityBenchmarkItem(TableBase):
 
 
 def _build_tigrbl_parity_app(db_path: Path) -> TigrblApp:
-    app = TigrblApp(engine=sqlitef(str(db_path), async_=False))
+    app = TigrblApp(engine=sqlitef(str(db_path), async_=False), mount_system=False)
     app.include_table(TigrblParityBenchmarkItem)
     return app
 
@@ -151,6 +163,55 @@ def _default_tasks() -> list[CommandTask]:
             ),
             artifact_paths=(PERF_DIR / "tigrbl_create_call_graph_250_ops.json",),
             description="Generate the Tigrbl unary call graph.",
+        ),
+        CommandTask(
+            name="fastapi_call_graph_250",
+            argv=_python_command(
+                "-m",
+                "pytest",
+                "pkgs/core/tigrbl_tests/tests/perf/test_fastapi_create_call_graph.py",
+                "-q",
+            ),
+            artifact_paths=(FASTAPI_CALL_GRAPH_JSON,),
+            description="Generate the FastAPI unary call graph.",
+        ),
+        CommandTask(
+            name="streaming_perf_suite",
+            argv=_python_command(
+                "pkgs/core/tigrbl_tests/benchmarks/tigrbl_streaming_perf_suite.py",
+            ),
+            artifact_paths=(
+                STREAMING_RESULTS_JSON,
+                STREAMING_KERNEL_JSON,
+                STREAMING_KERNEL_MD,
+                STREAMING_TIGRBL_CALL_GRAPH_JSON,
+                STREAMING_FASTAPI_CALL_GRAPH_JSON,
+                STREAMING_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+                STREAMING_HOT_BLOCK_PREFIX.with_suffix(".summary.json"),
+                STREAMING_HOT_BLOCK_PREFIX.with_suffix(".hexdump.txt"),
+                STREAMING_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+                STREAMING_HOT_BLOCK_PREFIX.with_suffix(".benchmark.md"),
+            ),
+            description="Run the full streaming parity suite and TGPKHOT1 export.",
+        ),
+        CommandTask(
+            name="websocket_perf_suite",
+            argv=_python_command(
+                "pkgs/core/tigrbl_tests/benchmarks/tigrbl_websocket_perf_suite.py",
+            ),
+            artifact_paths=(
+                WEBSOCKET_RESULTS_JSON,
+                WEBSOCKET_KERNEL_JSON,
+                WEBSOCKET_KERNEL_MD,
+                WEBSOCKET_TIGRBL_CALL_GRAPH_JSON,
+                WEBSOCKET_FASTAPI_CALL_GRAPH_JSON,
+                WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+                WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".summary.json"),
+                WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".hexdump.txt"),
+                WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+                WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".benchmark.md"),
+            ),
+            description="Run the full websocket parity suite and TGPKHOT1 export.",
         ),
     ]
 
@@ -389,14 +450,18 @@ def _export_unary_hot_block(prefix: Path) -> list[Path]:
 def _required_missing_surfaces() -> list[dict[str, str]]:
     expected_files = {
         "fastapi_rest_unary_call_graph": FASTAPI_CALL_GRAPH_JSON,
-        "streaming_parity_benchmark": PERF_DIR / "benchmark_results_streaming_uvicorn.json",
-        "streaming_call_graph": PERF_DIR / "tigrbl_streaming_call_graph_250_ops.json",
-        "streaming_tgpkhot1_bin": PERF_DIR / "tgpkhot1-benchmark-streaming.bin",
-        "streaming_tgpkhot1_benchmark": PERF_DIR / "tgpkhot1-benchmark-streaming.benchmark.json",
-        "websocket_parity_benchmark": PERF_DIR / "benchmark_results_websocket_uvicorn.json",
-        "websocket_call_graph": PERF_DIR / "tigrbl_websocket_call_graph_250_ops.json",
-        "websocket_tgpkhot1_bin": PERF_DIR / "tgpkhot1-benchmark-websocket.bin",
-        "websocket_tgpkhot1_benchmark": PERF_DIR / "tgpkhot1-benchmark-websocket.benchmark.json",
+        "streaming_parity_benchmark": STREAMING_RESULTS_JSON,
+        "streaming_kernel_benchmark": STREAMING_KERNEL_JSON,
+        "streaming_tigrbl_call_graph": STREAMING_TIGRBL_CALL_GRAPH_JSON,
+        "streaming_fastapi_call_graph": STREAMING_FASTAPI_CALL_GRAPH_JSON,
+        "streaming_tgpkhot1_bin": STREAMING_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+        "streaming_tgpkhot1_benchmark": STREAMING_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+        "websocket_parity_benchmark": WEBSOCKET_RESULTS_JSON,
+        "websocket_kernel_benchmark": WEBSOCKET_KERNEL_JSON,
+        "websocket_tigrbl_call_graph": WEBSOCKET_TIGRBL_CALL_GRAPH_JSON,
+        "websocket_fastapi_call_graph": WEBSOCKET_FASTAPI_CALL_GRAPH_JSON,
+        "websocket_tgpkhot1_bin": WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+        "websocket_tgpkhot1_benchmark": WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
     }
     missing: list[dict[str, str]] = []
     for surface, artifact_path in expected_files.items():
@@ -411,12 +476,163 @@ def _required_missing_surfaces() -> list[dict[str, str]]:
     return missing
 
 
+def _read_json(path: Path) -> dict[str, Any] | list[Any] | None:
+    if not path.exists():
+        return None
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
+def _unary_gate_status(current_raw_bytes: int | None, baseline_raw_bytes: int | None) -> dict[str, Any]:
+    payload = _read_json(KERNEL_BENCHMARK_JSON)
+    if not isinstance(payload, dict):
+        return {"available": False}
+    tigrbl_payload = (
+        payload.get("candidate", {}).get("tigrbl", {})
+        if isinstance(payload.get("candidate"), dict)
+        else {}
+    )
+    rest = tigrbl_payload.get("rest_unary", {}) if isinstance(tigrbl_payload, dict) else {}
+    jsonrpc = tigrbl_payload.get("jsonrpc_unary", {}) if isinstance(tigrbl_payload, dict) else {}
+    raw_bytes = (
+        tigrbl_payload.get("kernel_plan_measurement", {}).get("raw_bytes")
+        if isinstance(tigrbl_payload.get("kernel_plan_measurement"), dict)
+        else None
+    )
+    rest_ops = float(rest.get("ops_per_second", 0.0) or 0.0)
+    jsonrpc_ops = float(jsonrpc.get("ops_per_second", 0.0) or 0.0)
+    raw_bytes_value = int(raw_bytes) if isinstance(raw_bytes, (int, float)) else current_raw_bytes
+    raw_ceiling = baseline_raw_bytes if baseline_raw_bytes is not None else raw_bytes_value
+    return {
+        "available": True,
+        "rest_ops_per_second": rest_ops,
+        "jsonrpc_ops_per_second": jsonrpc_ops,
+        "raw_bytes": raw_bytes_value,
+        "raw_bytes_ceiling": raw_ceiling,
+        "rest_pass": rest_ops > 425.0,
+        "jsonrpc_pass": jsonrpc_ops > 400.0,
+        "raw_bytes_pass": (
+            raw_bytes_value is not None
+            and raw_ceiling is not None
+            and raw_bytes_value <= raw_ceiling
+        ),
+    }
+
+
+def _surface_summary() -> dict[str, Any]:
+    summary: dict[str, Any] = {}
+    unary = _read_json(KERNEL_BENCHMARK_JSON)
+    if isinstance(unary, dict):
+        candidate = unary.get("candidate", {})
+        if isinstance(candidate, dict):
+            tigrbl = candidate.get("tigrbl", {})
+            fastapi = candidate.get("fastapi", {})
+            summary["unary"] = {
+                "tigrbl_rest_ops_per_second": float(
+                    ((tigrbl or {}).get("rest_unary", {}) or {}).get("ops_per_second", 0.0)
+                ),
+                "tigrbl_jsonrpc_ops_per_second": float(
+                    ((tigrbl or {}).get("jsonrpc_unary", {}) or {}).get("ops_per_second", 0.0)
+                ),
+                "fastapi_rest_ops_per_second": float(
+                    ((fastapi or {}).get("rest_unary", {}) or {}).get("ops_per_second", 0.0)
+                ),
+            }
+    for surface_name, path in {
+        "streaming": STREAMING_RESULTS_JSON,
+        "websocket": WEBSOCKET_RESULTS_JSON,
+    }.items():
+        payload = _read_json(path)
+        if not isinstance(payload, dict):
+            continue
+        summary[surface_name] = {}
+        for scenario in ("transport_only", "db_backed"):
+            scenario_payload = payload.get(scenario, {})
+            if not isinstance(scenario_payload, dict):
+                continue
+            ops_250 = scenario_payload.get("250", {})
+            if not isinstance(ops_250, dict):
+                continue
+            summary[surface_name][scenario] = {
+                "tigrbl_ops_per_second": float(
+                    ((ops_250.get("tigrbl", {}) or {}).get("ops_per_second", 0.0))
+                ),
+                "fastapi_ops_per_second": float(
+                    ((ops_250.get("fastapi", {}) or {}).get("ops_per_second", 0.0))
+                ),
+            }
+    for surface_name, path in {
+        "unary": HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+        "streaming": STREAMING_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+        "websocket": WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+    }.items():
+        payload = _read_json(path)
+        if not isinstance(payload, dict):
+            continue
+        artifact = payload.get("artifact", {})
+        if not isinstance(artifact, dict):
+            continue
+        summary.setdefault(surface_name, {})
+        summary[surface_name]["tgpkhot1"] = {
+            "raw_bytes": int(artifact.get("raw_bytes", 0)),
+            "compressed_bytes": int(artifact.get("compressed_bytes", 0)),
+        }
+    return summary
+
+
 def _render_suite_report(manifest: dict[str, Any]) -> str:
+    gates = manifest.get("gates", {})
+    summary = manifest.get("summary", {})
     lines = [
         "# Hot-Path Perf Suite",
         "",
-        "## Tasks",
+        "## Gates",
     ]
+    unary = gates.get("unary", {}) if isinstance(gates, dict) else {}
+    if unary.get("available"):
+        lines.extend(
+            [
+                f"- `REST unary > 425 ops/s`: {'PASS' if unary.get('rest_pass') else 'FAIL'} ({unary.get('rest_ops_per_second', 0.0):.2f})",
+                f"- `JSON-RPC unary > 400 ops/s`: {'PASS' if unary.get('jsonrpc_pass') else 'FAIL'} ({unary.get('jsonrpc_ops_per_second', 0.0):.2f})",
+                f"- `Unary TGPKHOT1 raw_bytes <= baseline`: {'PASS' if unary.get('raw_bytes_pass') else 'FAIL'} ({unary.get('raw_bytes')} <= {unary.get('raw_bytes_ceiling')})",
+            ]
+        )
+    else:
+        lines.append("- unary gates: unavailable")
+    lines.extend(["", "## Throughput Summary"])
+    unary_summary = summary.get("unary", {}) if isinstance(summary, dict) else {}
+    if unary_summary:
+        lines.append(
+            f"- unary: tigrbl REST={unary_summary.get('tigrbl_rest_ops_per_second', 0.0):.2f}, "
+            f"tigrbl JSON-RPC={unary_summary.get('tigrbl_jsonrpc_ops_per_second', 0.0):.2f}, "
+            f"fastapi REST={unary_summary.get('fastapi_rest_ops_per_second', 0.0):.2f}"
+        )
+    for surface_name in ("streaming", "websocket"):
+        surface = summary.get(surface_name, {}) if isinstance(summary, dict) else {}
+        if not isinstance(surface, dict):
+            continue
+        transport = surface.get("transport_only", {})
+        db_backed = surface.get("db_backed", {})
+        tgpkhot1 = surface.get("tgpkhot1", {})
+        if transport:
+            lines.append(
+                f"- {surface_name} transport-only 250: "
+                f"tigrbl={transport.get('tigrbl_ops_per_second', 0.0):.2f}, "
+                f"fastapi={transport.get('fastapi_ops_per_second', 0.0):.2f}"
+            )
+        if db_backed:
+            lines.append(
+                f"- {surface_name} db-backed 250: "
+                f"tigrbl={db_backed.get('tigrbl_ops_per_second', 0.0):.2f}, "
+                f"fastapi={db_backed.get('fastapi_ops_per_second', 0.0):.2f}"
+            )
+        if tgpkhot1:
+            lines.append(
+                f"- {surface_name} TGPKHOT1: raw={tgpkhot1.get('raw_bytes')}, compressed={tgpkhot1.get('compressed_bytes')}"
+            )
+    lines.extend(["", "## Tasks"])
     for task in manifest["tasks"]:
         lines.append(f"- `{task['name']}`: exit `{task['returncode']}`")
     lines.extend(["", "## Artifacts"])
@@ -435,6 +651,16 @@ def _render_suite_report(manifest: dict[str, Any]) -> str:
 def run_suite(*, allow_missing_surfaces: bool) -> dict[str, Any]:
     TMP_DIR.mkdir(parents=True, exist_ok=True)
     PERF_DIR.mkdir(parents=True, exist_ok=True)
+    baseline_payload = _read_json(KERNEL_BENCHMARK_JSON)
+    baseline_raw_bytes = None
+    if isinstance(baseline_payload, dict):
+        candidate = baseline_payload.get("candidate", {})
+        if isinstance(candidate, dict):
+            tigrbl_payload = candidate.get("tigrbl", {})
+            if isinstance(tigrbl_payload, dict):
+                kc = tigrbl_payload.get("kernel_plan_measurement", {})
+                if isinstance(kc, dict) and isinstance(kc.get("raw_bytes"), (int, float)):
+                    baseline_raw_bytes = int(kc["raw_bytes"])
     task_results = [_run_task(task) for task in _default_tasks()]
     copied_artifacts = _copy_kernel_benchmark_artifacts()
     hot_block_artifacts = _export_unary_hot_block(HOT_BLOCK_PREFIX)
@@ -446,6 +672,16 @@ def run_suite(*, allow_missing_surfaces: bool) -> dict[str, Any]:
     seen: set[str] = set()
     unique_artifacts = [path for path in artifacts if not (path in seen or seen.add(path))]
     missing_surfaces = _required_missing_surfaces()
+    unary_hot_block_payload = _read_json(HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"))
+    unary_current_raw_bytes = None
+    if isinstance(unary_hot_block_payload, dict):
+        artifact = unary_hot_block_payload.get("artifact", {})
+        if isinstance(artifact, dict) and isinstance(artifact.get("raw_bytes"), (int, float)):
+            unary_current_raw_bytes = int(artifact["raw_bytes"])
+    gates = {
+        "unary": _unary_gate_status(unary_current_raw_bytes, baseline_raw_bytes),
+    }
+    summary = _surface_summary()
     manifest = {
         "suite": "hot_path_perf_suite",
         "cwd": str(ROOT),
@@ -453,6 +689,8 @@ def run_suite(*, allow_missing_surfaces: bool) -> dict[str, Any]:
         "tasks": task_results,
         "artifacts": unique_artifacts,
         "missing_surfaces": missing_surfaces,
+        "gates": gates,
+        "summary": summary,
     }
     SUITE_MANIFEST_JSON.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     SUITE_REPORT_MD.write_text(_render_suite_report(manifest), encoding="utf-8")
@@ -460,6 +698,18 @@ def run_suite(*, allow_missing_surfaces: bool) -> dict[str, Any]:
         names = ", ".join(item["surface"] for item in missing_surfaces)
         raise MissingSurfaceError(
             f"required perf surfaces are still missing: {names}"
+        )
+    unary = gates.get("unary", {})
+    if unary.get("available") and not (
+        unary.get("rest_pass")
+        and unary.get("jsonrpc_pass")
+        and unary.get("raw_bytes_pass")
+    ):
+        raise RuntimeError(
+            "unary perf gate failed: "
+            f"rest={unary.get('rest_ops_per_second', 0.0):.2f}, "
+            f"jsonrpc={unary.get('jsonrpc_ops_per_second', 0.0):.2f}, "
+            f"raw_bytes={unary.get('raw_bytes')} ceiling={unary.get('raw_bytes_ceiling')}"
         )
     return manifest
 

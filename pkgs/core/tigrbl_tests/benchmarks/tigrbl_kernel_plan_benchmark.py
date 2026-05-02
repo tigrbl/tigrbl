@@ -56,7 +56,7 @@ class TigrblParityBenchmarkItem(TableBase):
 
 
 def create_tigrbl_parity_app(db_path: Path) -> TigrblApp:
-    app = TigrblApp(engine=sqlitef(str(db_path), async_=False))
+    app = TigrblApp(engine=sqlitef(str(db_path), async_=False), mount_system=False)
     app.include_table(TigrblParityBenchmarkItem)
     return app
 

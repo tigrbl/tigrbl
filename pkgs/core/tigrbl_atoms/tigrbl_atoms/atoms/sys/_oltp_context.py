@@ -26,10 +26,19 @@ def payload(ctx: Mapping[str, Any]) -> Any:
     raw = _ctx_get(ctx, "payload", None)
     if isinstance(temp, Mapping):
         assembled_values = temp.get("assembled_values")
-        if isinstance(assembled_values, Mapping) and isinstance(raw, Mapping):
-            merged = dict(raw)
-            merged.update(assembled_values)
-            return merged
+        if isinstance(assembled_values, Mapping):
+            if not assembled_values and isinstance(raw, Mapping):
+                return raw
+            if isinstance(raw, Mapping):
+                try:
+                    if all(key in assembled_values for key in raw):
+                        return assembled_values
+                except Exception:
+                    pass
+                merged = dict(raw)
+                merged.update(assembled_values)
+                return merged
+            return assembled_values
 
     if isinstance(raw, Mapping):
         return raw
