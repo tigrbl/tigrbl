@@ -23,7 +23,7 @@ def _build_benchmark_item_model() -> type[TableBase]:
 
 def create_tigrbl_app(db_path: Path) -> TigrblApp:
     """Build a Tigrbl app with a single create command endpoint."""
-    app = TigrblApp(engine=sqlitef(str(db_path), async_=False))
+    app = TigrblApp(engine=sqlitef(str(db_path), async_=False), mount_system=False)
     benchmark_model = _build_benchmark_item_model()
     app.include_table(benchmark_model)
     return app

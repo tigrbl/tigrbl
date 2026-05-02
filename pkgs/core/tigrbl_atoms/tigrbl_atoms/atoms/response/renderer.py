@@ -26,6 +26,8 @@ logger = logging.getLogger("uvicorn")
 class _RenderedResponse:
     status_code: int = 200
     body: bytes | None = None
+    body_iterator: Iterable[bytes] | AsyncIterable[bytes] | None = None
+    path: str | None = None
     _headers: dict[str, str] = field(default_factory=dict)
 
     @property
@@ -113,9 +115,13 @@ def _as_stream(
     status: int,
     headers: Mapping[str, str],
 ) -> _RenderedResponse:
-    del data
     hdrs = _merge_headers({"content-type": media_type}, headers)
-    return _RenderedResponse(status_code=status, body=b"", _headers=hdrs)
+    return _RenderedResponse(
+        status_code=status,
+        body=None,
+        body_iterator=data,
+        _headers=hdrs,
+    )
 
 
 def _as_file(
@@ -126,12 +132,16 @@ def _as_file(
     status: int,
     headers: Mapping[str, str],
 ) -> _RenderedResponse:
-    body = path.read_bytes()
     hdrs = _merge_headers({"content-type": "application/octet-stream"}, headers)
     name = filename or path.name
     if download:
         hdrs["content-disposition"] = f'attachment; filename="{name}"'
-    return _RenderedResponse(status_code=status, body=body, _headers=hdrs)
+    return _RenderedResponse(
+        status_code=status,
+        body=None,
+        path=str(path),
+        _headers=hdrs,
+    )
 
 
 def render(
@@ -159,12 +169,23 @@ def render(
             headers=hints.headers,
         )
 
-    if isinstance(payload, (bytes, bytearray, memoryview)):
-        return _as_stream(
-            iter((bytes(payload),)),
-            media_type="application/octet-stream",
-            status=hints.status_code,
-            headers=hints.headers,
+    if isinstance(payload, bytes):
+        return _RenderedResponse(
+            status_code=hints.status_code,
+            body=payload,
+            _headers=_merge_headers(
+                {"content-type": "application/octet-stream"},
+                hints.headers,
+            ),
+        )
+    if isinstance(payload, (bytearray, memoryview)):
+        return _RenderedResponse(
+            status_code=hints.status_code,
+            body=bytes(payload),
+            _headers=_merge_headers(
+                {"content-type": "application/octet-stream"},
+                hints.headers,
+            ),
         )
 
     if hasattr(payload, "__aiter__") or (

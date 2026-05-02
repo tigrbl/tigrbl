@@ -24,10 +24,17 @@ def _is_async_db(db: Any) -> bool:
     return result
 
 
+def _is_awaitable_result(value: Any) -> bool:
+    return value is not None and callable(getattr(type(value), "__await__", None))
+
+
 async def _maybe_get(db: Union[Session, AsyncSession], model: type, pk_value: Any):
     logger.debug("_maybe_get model=%s pk_value=%s", model, pk_value)
     result = db.get(model, pk_value)  # type: ignore[attr-defined]
-    if inspect.isawaitable(result):
+    if _is_async_db(db):
+        if inspect.isawaitable(result):
+            result = await result
+    elif _is_awaitable_result(result):
         result = await result
     logger.debug("_maybe_get returning %s", result)
     return result
@@ -36,7 +43,10 @@ async def _maybe_get(db: Union[Session, AsyncSession], model: type, pk_value: An
 async def _maybe_execute(db: Union[Session, AsyncSession], stmt: Any):
     logger.debug("_maybe_execute stmt=%s", stmt)
     result = db.execute(stmt)  # type: ignore[attr-defined]
-    if inspect.isawaitable(result):
+    if _is_async_db(db):
+        if inspect.isawaitable(result):
+            result = await result
+    elif _is_awaitable_result(result):
         result = await result
     logger.debug("_maybe_execute returning %s", result)
     return result
@@ -45,7 +55,10 @@ async def _maybe_execute(db: Union[Session, AsyncSession], stmt: Any):
 async def _maybe_flush(db: Union[Session, AsyncSession]) -> None:
     logger.debug("_maybe_flush called")
     result = db.flush()  # type: ignore[attr-defined]
-    if inspect.isawaitable(result):
+    if _is_async_db(db):
+        if inspect.isawaitable(result):
+            await result
+    elif _is_awaitable_result(result):
         await result
     logger.debug("_maybe_flush completed")
 
@@ -56,7 +69,10 @@ async def _maybe_rollback(db: Union[Session, AsyncSession]) -> None:
         logger.debug("_maybe_rollback skipping rollback; no attribute")
         return
     result = db.rollback()  # type: ignore[attr-defined]
-    if inspect.isawaitable(result):
+    if _is_async_db(db):
+        if inspect.isawaitable(result):
+            await result
+    elif _is_awaitable_result(result):
         await result
     logger.debug("_maybe_rollback completed")
 
@@ -67,7 +83,10 @@ async def _maybe_delete(db: Union[Session, AsyncSession], obj: Any) -> None:
         logger.debug("_maybe_delete skipping delete; no attribute")
         return
     result = db.delete(obj)  # type: ignore[attr-defined]
-    if inspect.isawaitable(result):
+    if _is_async_db(db):
+        if inspect.isawaitable(result):
+            await result
+    elif _is_awaitable_result(result):
         await result
     logger.debug("_maybe_delete completed for obj=%s", obj)
 

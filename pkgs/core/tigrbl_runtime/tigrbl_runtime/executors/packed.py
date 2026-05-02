@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from dataclasses import dataclass
 import inspect
 import json
 import uuid as _uuid
@@ -15,7 +16,7 @@ from urllib.parse import unquote_plus
 
 from tigrbl_atoms._ctx import _ctx_view
 from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
-from tigrbl_atoms.atoms.wire.validate_in import _validate_mapping_item
+from tigrbl_atoms.atoms.wire.validate_in import _coerce_if_needed
 from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
 from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_typing.phases import normalize_phase
@@ -23,7 +24,7 @@ from tigrbl_typing.status.mappings import status as _status
 from tigrbl_atoms._request import Request
 
 from .base import ExecutorBase
-from .types import HotCtx, _Ctx, _HotSlotMap
+from .types import HotCtx, _Ctx
 
 _HOT_RUNNER_GENERIC = 0
 _HOT_RUNNER_LINEAR_DIRECT = 1
@@ -68,6 +69,46 @@ _HTTP_METHOD_ID_BY_NAME = {
 }
 
 
+@dataclass(frozen=True, slots=True)
+class _CompiledInputDescriptor:
+    slot_id: int
+    lookup_name: str
+    source_mask: int
+    decoder_id: int
+    max_length: int
+    lookup_hash: int
+    header_hash: int
+
+
+@dataclass(frozen=True, slots=True)
+class _CompiledFieldPlan:
+    slot_id: int
+    field_name: str
+    required: bool
+    nullable: bool | None
+    py_type: Any
+    coerce: bool
+    max_length: int
+    validator: Any
+    in_enabled: bool
+    is_virtual: bool
+    default_factory: Any
+
+
+@dataclass(frozen=True, slots=True)
+class _CompiledParamPlan:
+    field_names: tuple[str, ...]
+    field_index: Mapping[str, int]
+    field_plans: tuple[_CompiledFieldPlan, ...]
+    descriptor_plans: tuple[_CompiledInputDescriptor, ...]
+    strategy_kind: int
+    strategy_rows: tuple[tuple[int, str, int, int], ...]
+    assemble_order: tuple[int, ...]
+    needs_query: bool
+    needs_header: bool
+    needs_path: bool
+
+
 class PackedPlanExecutor(ExecutorBase):
     """Executes packed kernel plans via kernel-attached packed execution hooks."""
 
@@ -110,6 +151,9 @@ class PackedPlanExecutor(ExecutorBase):
         ] = {}
         self._param_shape_decode_strategy_cache: dict[
             tuple[int, int, int], tuple[int, tuple[tuple[int, str, int, int], ...]]
+        ] = {}
+        self._compiled_param_plan_cache: dict[
+            tuple[int, int, int], _CompiledParamPlan
         ] = {}
         self._model_row_serializer_cache: dict[type[Any], tuple[str, ...]] = {}
 
@@ -529,16 +573,29 @@ class PackedPlanExecutor(ExecutorBase):
     def _publish_compiled_slots(
         hot: HotCtx,
         field_names: tuple[str, ...],
+        field_index: Mapping[str, int],
         slot_values: list[Any],
         slot_present: bytearray,
     ) -> None:
         hot.slot_field_names = field_names
+        hot.slot_field_index = field_index
         hot.slot_values = slot_values
         hot.slot_present = slot_present
-        hot.in_values_view = _HotSlotMap(field_names, slot_values, slot_present)
+        hot.in_values_view = None
         hot.in_present_names = tuple(
             field_names[idx] for idx in range(len(field_names)) if slot_present[idx]
         )
+        hot.assembled_slot_values = None
+        hot.assembled_slot_present = None
+        hot.virtual_slot_values = None
+        hot.virtual_slot_present = None
+        hot.assembled_values_view = None
+        hot.virtual_in_view = None
+        hot.absent_fields = ()
+        hot.used_default_factory = ()
+        hot.compiled_in_invalid = None
+        hot.compiled_in_errors = None
+        hot.compiled_in_coerced = ()
         hot.compiled_input_ready = True
         hot.lazy_published = True
 
@@ -681,9 +738,180 @@ class PackedPlanExecutor(ExecutorBase):
             )
             temp["jsonrpc_request_id"] = rpc_envelope.get("id")
 
-        start, length = self._param_shape_descriptor_slice(packed, param_shape_id)
-        if length <= 0:
+        plan = self._resolve_compiled_param_plan(ctx, packed, program_id, param_shape_id)
+        if not plan.descriptor_plans:
             return
+
+        body_payload = hot.parsed_json
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, Mapping):
+            body_payload = body_payload.get("params", {})
+        body_mapping = body_payload if isinstance(body_payload, Mapping) else None
+        path_mapping = hot.path_params if isinstance(hot.path_params, Mapping) else None
+        field_names = plan.field_names
+        slot_values: list[Any] = [None] * len(field_names)
+        slot_present = bytearray(len(field_names))
+
+        if (
+            plan.strategy_kind == _DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD
+            and body_mapping is not None
+            and plan.strategy_rows
+        ):
+            hot.body_hashed_items = None
+            hot.query_hashed_spans = None
+            hot.header_hashed_pairs = None
+            slot_id, lookup_name, decoder_id, max_length = plan.strategy_rows[0]
+            value = body_mapping.get(lookup_name)
+            if value is not None:
+                try:
+                    coerced = self._decode_scalar(value, decoder_id)
+                except Exception:
+                    coerced = value
+                if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
+                    coerced = coerced[:max_length]
+                slot_values[slot_id] = coerced
+                slot_present[slot_id] = 1
+            self._publish_compiled_slots(
+                hot, field_names, plan.field_index, slot_values, slot_present
+            )
+            return
+
+        if (
+            plan.strategy_kind == _DECODE_STRATEGY_BODY_ONLY_MAPPING
+            and body_mapping is not None
+            and plan.strategy_rows
+        ):
+            hot.body_hashed_items = None
+            hot.query_hashed_spans = None
+            hot.header_hashed_pairs = None
+            for slot_id, lookup_name, decoder_id, max_length in plan.strategy_rows:
+                value = body_mapping.get(lookup_name)
+                if value is None:
+                    continue
+                try:
+                    coerced = self._decode_scalar(value, decoder_id)
+                except Exception:
+                    coerced = value
+                if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
+                    coerced = coerced[:max_length]
+                slot_values[slot_id] = coerced
+                slot_present[slot_id] = 1
+            self._publish_compiled_slots(
+                hot, field_names, plan.field_index, slot_values, slot_present
+            )
+            return
+
+        hot.body_hashed_items = None
+        query_spans: tuple[tuple[int, int, int, int], ...] = ()
+        if plan.needs_query:
+            if hot.query_hashed_spans is None:
+                hot.query_hashed_spans = self._parse_query_spans(hot.raw_query_string)
+            query_spans = hot.query_hashed_spans
+        else:
+            hot.query_hashed_spans = None
+        header_pairs: tuple[tuple[int, bytes], ...] = ()
+        if plan.needs_header:
+            raw_headers = hot.raw_headers or ()
+            if hot.header_hashed_pairs is None:
+                hot.header_hashed_pairs = self._header_hash_pairs(raw_headers)
+            header_pairs = hot.header_hashed_pairs
+        else:
+            hot.header_hashed_pairs = None
+
+        for row in plan.descriptor_plans:
+            slot_id = row.slot_id
+            value = None
+            found = False
+            if row.source_mask & _PARAM_SOURCE_BODY and body_mapping is not None:
+                if row.lookup_name in body_mapping:
+                    found, value = True, body_mapping[row.lookup_name]
+            if not found and row.source_mask & _PARAM_SOURCE_PATH and path_mapping is not None:
+                if row.lookup_name in path_mapping:
+                    found, value = True, path_mapping[row.lookup_name]
+            if not found and row.source_mask & _PARAM_SOURCE_QUERY:
+                found, value = self._lookup_query_value(
+                    hot.raw_query_string, query_spans, row.lookup_hash
+                )
+            if not found and row.source_mask & _PARAM_SOURCE_HEADER and row.header_hash:
+                found, value = self._lookup_hashed_pairs(header_pairs, row.header_hash)
+            if not found:
+                continue
+            try:
+                coerced = self._decode_scalar(value, row.decoder_id)
+            except Exception:
+                coerced = value
+            if row.max_length > 0 and isinstance(coerced, str) and len(coerced) > row.max_length:
+                coerced = coerced[: row.max_length]
+            slot_values[slot_id] = coerced
+            slot_present[slot_id] = 1
+
+        self._publish_compiled_slots(
+            hot, field_names, plan.field_index, slot_values, slot_present
+        )
+
+    @staticmethod
+    def _compiled_schema_in(
+        ctx: _Ctx,
+    ) -> tuple[tuple[str, ...], Mapping[str, Mapping[str, Any]], tuple[str, ...]]:
+        opview = getattr(ctx, "opview", None)
+        schema_in = getattr(opview, "schema_in", None) if opview is not None else None
+        if isinstance(schema_in, Mapping):
+            fields = tuple(schema_in.get("fields", ()) or ())
+            by_field = schema_in.get("by_field", {}) or {}
+            required = tuple(schema_in.get("required", ()) or ())
+        else:
+            fields = tuple(getattr(schema_in, "fields", ()) or ())
+            by_field = getattr(schema_in, "by_field", {}) or {}
+            required = tuple(getattr(schema_in, "required", ()) or ())
+        if not required:
+            required = tuple(
+                name
+                for name, meta in by_field.items()
+                if isinstance(meta, Mapping) and meta.get("required")
+            )
+        return fields, by_field, required
+
+    def _resolve_compiled_param_plan(
+        self,
+        ctx: _Ctx,
+        packed: PackedKernel,
+        program_id: int,
+        param_shape_id: int,
+    ) -> _CompiledParamPlan:
+        cache_key = (id(packed), program_id, param_shape_id)
+        cached = self._compiled_param_plan_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        field_names, by_field, required = self._compiled_schema_in(ctx)
+        field_index = {field_name: idx for idx, field_name in enumerate(field_names)}
+        required_set = frozenset(required)
+        field_plans = tuple(
+            _CompiledFieldPlan(
+                slot_id=idx,
+                field_name=field_name,
+                required=field_name in required_set,
+                nullable=(
+                    bool(meta.get("nullable"))
+                    if meta.get("nullable") is not None
+                    else None
+                ),
+                py_type=meta.get("py_type"),
+                coerce=bool(meta.get("coerce", True)),
+                max_length=(
+                    int(meta.get("max_length"))
+                    if isinstance(meta.get("max_length"), int)
+                    else 0
+                ),
+                validator=meta.get("validator"),
+                in_enabled=bool(meta.get("in_enabled", True)),
+                is_virtual=bool(meta.get("virtual", False)),
+                default_factory=meta.get("default_factory"),
+            )
+            for idx, field_name in enumerate(field_names)
+            for meta in ((by_field.get(field_name, {}) or {}),)
+        )
+
+        start, length = self._param_shape_descriptor_slice(packed, param_shape_id)
         lookup_hashes = self._hot_array(
             packed,
             "param_shape_lookup_hashes",
@@ -715,19 +943,40 @@ class PackedPlanExecutor(ExecutorBase):
             tuple(getattr(packed, "param_shape_max_lengths", ()) or ()),
         )
 
-        opview = getattr(ctx, "opview", None)
-        schema_in = getattr(opview, "schema_in", None) if opview is not None else None
-        if isinstance(schema_in, Mapping):
-            field_names = tuple(schema_in.get("fields", ()) or ())
-            by_field = schema_in.get("by_field", {}) or {}
-        else:
-            field_names = tuple(getattr(schema_in, "fields", ()) or ())
-            by_field = getattr(schema_in, "by_field", {}) if schema_in is not None else {}
-        body_payload = hot.parsed_json
-        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, Mapping):
-            body_payload = body_payload.get("params", {})
-        body_mapping = body_payload if isinstance(body_payload, Mapping) else None
-        path_mapping = hot.path_params if isinstance(hot.path_params, Mapping) else None
+        descriptor_rows: list[_CompiledInputDescriptor] = []
+        needs_query = False
+        needs_header = False
+        needs_path = False
+        for idx in range(start, start + length):
+            slot_id = int(slot_ids[idx]) if idx < len(slot_ids) else -1
+            if not (0 <= slot_id < len(field_names)):
+                continue
+            field_name = field_names[slot_id]
+            field_meta = by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
+            source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
+            needs_query = needs_query or bool(source_mask & _PARAM_SOURCE_QUERY)
+            needs_header = needs_header or bool(source_mask & _PARAM_SOURCE_HEADER)
+            needs_path = needs_path or bool(source_mask & _PARAM_SOURCE_PATH)
+            descriptor_rows.append(
+                _CompiledInputDescriptor(
+                    slot_id=slot_id,
+                    lookup_name=self._compiled_lookup_name(field_name, field_meta),
+                    source_mask=source_mask,
+                    decoder_id=(
+                        int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE
+                    ),
+                    max_length=(
+                        int(max_lengths[idx]) if idx < len(max_lengths) else 0
+                    ),
+                    lookup_hash=(
+                        int(lookup_hashes[idx]) if idx < len(lookup_hashes) else 0
+                    ),
+                    header_hash=(
+                        int(header_hashes[idx]) if idx < len(header_hashes) else 0
+                    ),
+                )
+            )
+
         strategy_kind, strategy_rows = self._resolve_param_shape_decode_strategy(
             packed,
             program_id,
@@ -735,168 +984,112 @@ class PackedPlanExecutor(ExecutorBase):
             field_names,
             by_field if isinstance(by_field, Mapping) else {},
         )
-        slot_values: list[Any] = [None] * len(field_names)
-        slot_present = bytearray(len(field_names))
+        plan = _CompiledParamPlan(
+            field_names=field_names,
+            field_index=field_index,
+            field_plans=field_plans,
+            descriptor_plans=tuple(descriptor_rows),
+            strategy_kind=strategy_kind,
+            strategy_rows=strategy_rows,
+            assemble_order=tuple(field_index[name] for name in sorted(field_names)),
+            needs_query=needs_query,
+            needs_header=needs_header,
+            needs_path=needs_path,
+        )
+        self._compiled_param_plan_cache[cache_key] = plan
+        return plan
 
-        if (
-            strategy_kind == _DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD
-            and body_mapping is not None
-            and strategy_rows
-        ):
-            hot.body_hashed_items = None
-            hot.query_hashed_spans = None
-            hot.header_hashed_pairs = None
-            slot_id, lookup_name, decoder_id, max_length = strategy_rows[0]
-            value = body_mapping.get(lookup_name)
-            if value is not None:
-                try:
-                    coerced = self._decode_scalar(value, decoder_id)
-                except Exception:
-                    coerced = value
-                if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
-                    coerced = coerced[:max_length]
-                slot_values[slot_id] = coerced
-                slot_present[slot_id] = 1
-            self._publish_compiled_slots(hot, field_names, slot_values, slot_present)
-            return
-
-        if (
-            strategy_kind == _DECODE_STRATEGY_BODY_ONLY_MAPPING
-            and body_mapping is not None
-            and strategy_rows
-        ):
-            hot.body_hashed_items = None
-            hot.query_hashed_spans = None
-            hot.header_hashed_pairs = None
-            for slot_id, lookup_name, decoder_id, max_length in strategy_rows:
-                value = body_mapping.get(lookup_name)
-                if value is None:
-                    continue
-                try:
-                    coerced = self._decode_scalar(value, decoder_id)
-                except Exception:
-                    coerced = value
-                if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
-                    coerced = coerced[:max_length]
-                slot_values[slot_id] = coerced
-                slot_present[slot_id] = 1
-            self._publish_compiled_slots(hot, field_names, slot_values, slot_present)
-            return
-
-        needs_query = False
-        needs_header = False
-        for idx in range(start, start + length):
-            source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
-            needs_query = needs_query or bool(source_mask & _PARAM_SOURCE_QUERY)
-            needs_header = needs_header or bool(source_mask & _PARAM_SOURCE_HEADER)
-            if needs_query and needs_header:
-                break
-        hot.body_hashed_items = None
-        query_spans: tuple[tuple[int, int, int, int], ...] = ()
-        if needs_query:
-            if hot.query_hashed_spans is None:
-                hot.query_hashed_spans = self._parse_query_spans(hot.raw_query_string)
-            query_spans = hot.query_hashed_spans
-        else:
-            hot.query_hashed_spans = None
-        header_pairs: tuple[tuple[int, bytes], ...] = ()
-        if needs_header:
-            raw_headers = hot.raw_headers or ()
-            if hot.header_hashed_pairs is None:
-                hot.header_hashed_pairs = self._header_hash_pairs(raw_headers)
-            header_pairs = hot.header_hashed_pairs
-        else:
-            hot.header_hashed_pairs = None
-
-        for idx in range(start, start + length):
-            slot_id = int(slot_ids[idx])
-            if not (0 <= slot_id < len(slot_values)):
-                continue
-            lookup_hash = int(lookup_hashes[idx])
-            header_hash = int(header_hashes[idx]) if idx < len(header_hashes) else 0
-            source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
-            decoder_id = int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE
-            field_name = field_names[slot_id]
-            field_meta = by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
-            lookup_name = self._compiled_lookup_name(field_name, field_meta)
-            value = None
-            found = False
-            if source_mask & _PARAM_SOURCE_BODY and body_mapping is not None:
-                if lookup_name in body_mapping:
-                    found, value = True, body_mapping[lookup_name]
-            if not found and source_mask & _PARAM_SOURCE_PATH and path_mapping is not None:
-                if lookup_name in path_mapping:
-                    found, value = True, path_mapping[lookup_name]
-            if not found and source_mask & _PARAM_SOURCE_QUERY:
-                found, value = self._lookup_query_value(
-                    hot.raw_query_string, query_spans, lookup_hash
-                )
-            if not found and source_mask & _PARAM_SOURCE_HEADER and header_hash:
-                found, value = self._lookup_hashed_pairs(header_pairs, header_hash)
-            if not found:
-                continue
-            try:
-                coerced = self._decode_scalar(value, decoder_id)
-            except Exception:
-                coerced = value
-            max_length = int(max_lengths[idx]) if idx < len(max_lengths) else 0
-            if max_length > 0 and isinstance(coerced, str) and len(coerced) > max_length:
-                coerced = coerced[:max_length]
-            slot_values[slot_id] = coerced
-            slot_present[slot_id] = 1
-
-        self._publish_compiled_slots(hot, field_names, slot_values, slot_present)
-
-    @staticmethod
-    def _compiled_schema_in(
+    def _compiled_validate_and_assemble(
+        self,
         ctx: _Ctx,
-    ) -> tuple[tuple[str, ...], Mapping[str, Mapping[str, Any]], tuple[str, ...]]:
-        opview = getattr(ctx, "opview", None)
-        schema_in = getattr(opview, "schema_in", None) if opview is not None else None
-        if isinstance(schema_in, Mapping):
-            fields = tuple(schema_in.get("fields", ()) or ())
-            by_field = schema_in.get("by_field", {}) or {}
-            required = tuple(schema_in.get("required", ()) or ())
-        else:
-            fields = tuple(getattr(schema_in, "fields", ()) or ())
-            by_field = getattr(schema_in, "by_field", {}) or {}
-            required = tuple(getattr(schema_in, "required", ()) or ())
-        if not required:
-            required = tuple(
-                name
-                for name, meta in by_field.items()
-                if isinstance(meta, Mapping) and meta.get("required")
-            )
-        return fields, by_field, required
-
-    @classmethod
-    def _compiled_validate_and_assemble(cls, ctx: _Ctx, hot: HotCtx) -> None:
-        field_names, by_field, required = cls._compiled_schema_in(ctx)
+        hot: HotCtx,
+        plan: _CompiledParamPlan,
+    ) -> None:
+        field_names = plan.field_names
         slot_values = hot.slot_values or []
         slot_present = hot.slot_present or bytearray()
-        working = {
-            field_names[idx]: slot_values[idx]
-            for idx in range(min(len(field_names), len(slot_present)))
-            if slot_present[idx]
-        }
+        errors: list[dict[str, Any]] = []
+        coerced: list[str] = []
 
-        errors, coerced, validated = _validate_mapping_item(
-            dict(working),
-            by_field=by_field,
-            required=required,
-            ctx=ctx,
-        )
-        for idx, field_name in enumerate(field_names):
-            if field_name in validated and idx < len(slot_values):
-                slot_values[idx] = validated[field_name]
-                if idx < len(slot_present):
-                    slot_present[idx] = 1
+        for field_plan in plan.field_plans:
+            slot_id = field_plan.slot_id
+            present = 0 <= slot_id < len(slot_present) and bool(slot_present[slot_id])
+            if field_plan.required and not present:
+                errors.append(
+                    {
+                        "field": field_plan.field_name,
+                        "code": "required",
+                        "message": "Field is required but was not provided.",
+                    }
+                )
+                continue
+            if not present or not (0 <= slot_id < len(slot_values)):
+                continue
+
+            value = slot_values[slot_id]
+            if value is None and field_plan.nullable is False:
+                errors.append(
+                    {
+                        "field": field_plan.field_name,
+                        "code": "null_not_allowed",
+                        "message": "Null is not allowed for this field.",
+                    }
+                )
+                continue
+
+            target_type = field_plan.py_type
+            if value is not None and isinstance(target_type, type):
+                ok, new_val, msg = _coerce_if_needed(
+                    value,
+                    target_type,
+                    allow=field_plan.coerce,
+                )
+                if not ok:
+                    errors.append(
+                        {
+                            "field": field_plan.field_name,
+                            "code": "type_mismatch",
+                            "message": msg or f"Expected {target_type.__name__}.",
+                        }
+                    )
+                    continue
+                if new_val is not value:
+                    slot_values[slot_id] = new_val
+                    value = new_val
+                    coerced.append(field_plan.field_name)
+
+            if (
+                field_plan.max_length > 0
+                and isinstance(value, str)
+                and len(value) > field_plan.max_length
+            ):
+                errors.append(
+                    {
+                        "field": field_plan.field_name,
+                        "code": "max_length",
+                        "message": f"String exceeds max_length={field_plan.max_length}.",
+                    }
+                )
+                continue
+
+            validator = field_plan.validator
+            if callable(validator) and value is not None:
+                try:
+                    out = validator(value, ctx)
+                    if out is not None:
+                        slot_values[slot_id] = out
+                except Exception as exc:
+                    errors.append(
+                        {
+                            "field": field_plan.field_name,
+                            "code": "validator_failed",
+                            "message": f"{type(exc).__name__}: {exc}",
+                        }
+                    )
 
         hot.compiled_in_invalid = bool(errors)
         hot.compiled_in_errors = tuple(dict(error) for error in errors) if errors else None
         hot.compiled_in_coerced = tuple(coerced)
-        if hot.in_values_view is None:
-            hot.in_values_view = _HotSlotMap(field_names, slot_values, slot_present)
         hot.in_present_names = tuple(
             field_names[idx]
             for idx in range(min(len(field_names), len(slot_present)))
@@ -909,35 +1102,48 @@ class PackedPlanExecutor(ExecutorBase):
                 detail=[dict(error) for error in errors],
             )
 
-        assembled: dict[str, Any] = {}
-        virtual_in: dict[str, Any] = {}
+        assembled_values = list(slot_values)
+        assembled_present = bytearray(len(field_names))
+        virtual_values = list(slot_values)
+        virtual_present = bytearray(len(field_names))
         absent: list[str] = []
         used_default: list[str] = []
-        view = _ctx_view(ctx)
-        for field_name in sorted(field_names):
-            meta = by_field.get(field_name, {}) or {}
-            in_enabled = meta.get("in_enabled", True)
-            is_virtual = meta.get("virtual", False)
-            if field_name in validated:
-                value = validated[field_name]
-                if is_virtual:
-                    virtual_in[field_name] = value
-                elif in_enabled:
-                    assembled[field_name] = value
+        view = None
+
+        for slot_id in plan.assemble_order:
+            if not (0 <= slot_id < len(plan.field_plans)):
+                continue
+            field_plan = plan.field_plans[slot_id]
+            present = 0 <= slot_id < len(slot_present) and bool(slot_present[slot_id])
+            if present:
+                value = slot_values[slot_id]
+                if field_plan.is_virtual:
+                    virtual_values[slot_id] = value
+                    virtual_present[slot_id] = 1
+                elif field_plan.in_enabled:
+                    assembled_values[slot_id] = value
+                    assembled_present[slot_id] = 1
                 continue
 
-            absent.append(field_name)
-            default_fn = meta.get("default_factory")
-            if callable(default_fn) and in_enabled and not is_virtual:
+            absent.append(field_plan.field_name)
+            default_fn = field_plan.default_factory
+            if callable(default_fn) and field_plan.in_enabled and not field_plan.is_virtual:
+                if view is None:
+                    view = _ctx_view(ctx)
                 try:
                     default_value = default_fn(view)
                 except Exception:
                     continue
-                assembled[field_name] = default_value
-                used_default.append(field_name)
+                assembled_values[slot_id] = default_value
+                assembled_present[slot_id] = 1
+                used_default.append(field_plan.field_name)
 
-        hot.assembled_values_view = assembled
-        hot.virtual_in_view = virtual_in
+        hot.assembled_slot_values = assembled_values
+        hot.assembled_slot_present = assembled_present
+        hot.virtual_slot_values = virtual_values
+        hot.virtual_slot_present = virtual_present
+        hot.assembled_values_view = None
+        hot.virtual_in_view = None
         hot.absent_fields = tuple(absent)
         hot.used_default_factory = tuple(used_default)
 
@@ -1800,7 +2006,13 @@ class PackedPlanExecutor(ExecutorBase):
             temp = getattr(ctx, "temp", None)
             hot = dict.get(temp, "hot_ctx") if isinstance(temp, dict) else None
             if isinstance(hot, HotCtx) and hot.compiled_input_ready:
-                self._compiled_validate_and_assemble(ctx, hot)
+                plan = self._resolve_compiled_param_plan(
+                    ctx,
+                    packed,
+                    program_id,
+                    hot.param_shape_id,
+                )
+                self._compiled_validate_and_assemble(ctx, hot, plan)
             current_phase = ""
             phase_db_bound = False
             for phase_name, invoke_kind, call, dep, is_async in compiled_steps:

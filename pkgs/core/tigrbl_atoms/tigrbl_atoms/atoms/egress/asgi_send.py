@@ -4,6 +4,7 @@ from ...types import Atom, Ctx, EgressedCtx
 from ...stages import Emitting, Egressed
 
 import json
+from pathlib import Path
 from typing import Any, Mapping
 
 from ... import events as _ev
@@ -40,6 +41,70 @@ def _json_default(value: Any) -> Any:
         }
 
     return str(value)
+
+
+def _coerce_body_bytes(body: Any) -> bytes:
+    if isinstance(body, bytes):
+        return body
+    if isinstance(body, bytearray):
+        return bytes(body)
+    if isinstance(body, memoryview):
+        return body.tobytes()
+    return bytes(body)
+
+
+def _pathsend_extension(scope: Mapping[str, Any]) -> str | None:
+    extensions = scope.get("extensions")
+    if not isinstance(extensions, Mapping):
+        return None
+    if "http.response.pathsend" in extensions:
+        return "http.response.pathsend"
+    if "http.response.zerocopysend" in extensions:
+        return "http.response.zerocopysend"
+    return None
+
+
+async def _send_file_path(
+    env: Any,
+    *,
+    scope: Mapping[str, Any],
+    status: int,
+    headers: list[tuple[bytes, bytes]],
+    path: str,
+) -> bool:
+    if not path:
+        return False
+    extension = _pathsend_extension(scope)
+    if extension is None:
+        return False
+    if str(scope.get("method", "GET")).upper() == "HEAD" or status in NO_BODY_STATUS:
+        headers, body = finalize_transport_response(scope, status, headers, b"")
+        await env.send(
+            {"type": "http.response.start", "status": status, "headers": headers}
+        )
+        await env.send({"type": "http.response.body", "body": body, "more_body": False})
+        return True
+    try:
+        file_size = Path(path).stat().st_size
+    except OSError:
+        return False
+    headers = [(k, v) for (k, v) in headers if k.lower() != b"content-length"]
+    headers.append((b"content-length", str(file_size).encode("latin-1")))
+    await env.send(
+        {"type": "http.response.start", "status": status, "headers": headers}
+    )
+    if extension == "http.response.pathsend":
+        await env.send({"type": "http.response.pathsend", "path": path})
+        return True
+    with Path(path).open("rb") as handle:
+        await env.send(
+            {
+                "type": "http.response.zerocopysend",
+                "file": handle,
+                "more_body": False,
+            }
+        )
+    return True
 
 
 def finalize_transport_response(
@@ -188,8 +253,8 @@ async def _send_transport_response(env: Any, ctx: Any) -> None:
         except Exception:
             pass
 
-    if isinstance(body_obj, (bytes, bytearray)):
-        body = bytes(body_obj)
+    if isinstance(body_obj, (bytes, bytearray, memoryview)):
+        body = _coerce_body_bytes(body_obj)
     elif body_obj is None:
         body = b""
     else:
@@ -232,6 +297,16 @@ async def _send_response_like(env: Any, resp: Any) -> None:
     status = int(getattr(resp, "status_code", 200) or 200)
     headers = list(getattr(resp, "raw_headers", ()) or ())
     body_iterator = getattr(resp, "body_iterator", None)
+    file_path = getattr(resp, "path", None)
+    if isinstance(file_path, str) and file_path:
+        if await _send_file_path(
+            env,
+            scope=getattr(env, "scope", {}) or {},
+            status=status,
+            headers=headers,
+            path=file_path,
+        ):
+            return
     if body_iterator is not None:
         await env.send(
             {"type": "http.response.start", "status": status, "headers": headers}
@@ -240,7 +315,7 @@ async def _send_response_like(env: Any, resp: Any) -> None:
             await env.send(
                 {
                     "type": "http.response.body",
-                    "body": bytes(chunk),
+                    "body": _coerce_body_bytes(chunk),
                     "more_body": True,
                 }
             )
@@ -248,9 +323,11 @@ async def _send_response_like(env: Any, resp: Any) -> None:
         return
 
     body = getattr(resp, "body", None) or b""
-    if not isinstance(body, (bytes, bytearray)):
+    if not isinstance(body, (bytes, bytearray, memoryview)):
         body = _json_bytes(body)
-    headers, body = finalize_transport_response(env.scope, status, headers, bytes(body))
+    else:
+        body = _coerce_body_bytes(body)
+    headers, body = finalize_transport_response(env.scope, status, headers, body)
     await env.send(
         {"type": "http.response.start", "status": status, "headers": headers}
     )
@@ -314,8 +391,8 @@ async def _run(obj: object | None, ctx: Any) -> None:
             egress["response_sent"] = True
             return
 
-        if isinstance(body_obj, (bytes, bytearray)):
-            body = bytes(body_obj)
+        if isinstance(body_obj, (bytes, bytearray, memoryview)):
+            body = _coerce_body_bytes(body_obj)
         elif body_obj is None:
             body = b""
         else:
@@ -351,7 +428,18 @@ async def _run(obj: object | None, ctx: Any) -> None:
         "body": resp.body or b"",
     }
     body_iterator = getattr(resp, "body_iterator", None)
+    file_path = getattr(resp, "path", None)
     headers = list(resp.raw_headers)
+    if isinstance(file_path, str) and file_path:
+        if await _send_file_path(
+            raw,
+            scope=scope,
+            status=int(resp.status_code),
+            headers=headers,
+            path=file_path,
+        ):
+            egress["response_sent"] = True
+            return
     if body_iterator is not None:
         await send(
             {
@@ -364,7 +452,7 @@ async def _run(obj: object | None, ctx: Any) -> None:
             await send(
                 {
                     "type": "http.response.body",
-                    "body": bytes(chunk),
+                    "body": _coerce_body_bytes(chunk),
                     "more_body": True,
                 }
             )
@@ -379,6 +467,8 @@ async def _run(obj: object | None, ctx: Any) -> None:
         return
 
     body = resp.body or b""
+    if not isinstance(body, bytes):
+        body = _coerce_body_bytes(body)
     headers, body = finalize_transport_response(
         scope, int(resp.status_code), headers, body
     )
