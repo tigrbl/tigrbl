@@ -52,6 +52,10 @@ _HOT_BLOCK_SECTION_IDS = {
     "exact_method_ids": 27,
     "exact_path_hashes": 28,
     "exact_program_ids": 29,
+    "template_segment_offsets": 30,
+    "template_segment_lengths": 31,
+    "template_segment_refs": 32,
+    "program_segment_template_ids": 33,
 }
 _HOT_BLOCK_SECTION_NAMES = {
     section_id: name for name, section_id in _HOT_BLOCK_SECTION_IDS.items()
@@ -193,6 +197,74 @@ def _unpack_signed_array(width_bits: int, payload: bytes, count: int) -> tuple[i
 
 def _pack_section(section_id: int, payload: bytes) -> bytes:
     return struct.pack("<BI", int(section_id), len(payload)) + payload
+
+
+def _build_program_segment_template_parts(
+    program_segment_offsets: list[int],
+    program_segment_lengths: list[int],
+    program_segment_refs: list[int],
+) -> dict[str, Any]:
+    if not program_segment_offsets:
+        return {
+            "use_templates": False,
+            "template_segment_offsets": [],
+            "template_segment_lengths": [],
+            "template_segment_refs": [],
+            "program_segment_template_ids": [],
+        }
+
+    template_index: dict[tuple[int, ...], int] = {}
+    template_segment_offsets: list[int] = []
+    template_segment_lengths: list[int] = []
+    template_segment_refs: list[int] = []
+    program_segment_template_ids: list[int] = []
+
+    for idx, seg_offset in enumerate(program_segment_offsets):
+        seg_length = (
+            program_segment_lengths[idx] if idx < len(program_segment_lengths) else 0
+        )
+        seq = tuple(program_segment_refs[seg_offset : seg_offset + seg_length])
+        template_id = template_index.get(seq)
+        if template_id is None:
+            template_id = len(template_segment_offsets)
+            template_index[seq] = template_id
+            template_segment_offsets.append(len(template_segment_refs))
+            template_segment_lengths.append(len(seq))
+            template_segment_refs.extend(seq)
+        program_segment_template_ids.append(template_id)
+
+    current_bytes = sum(
+        len(_pack_unsigned_array(values)[1])
+        for values in (
+            program_segment_offsets,
+            program_segment_lengths,
+            program_segment_refs,
+        )
+    )
+    template_bytes = sum(
+        len(_pack_unsigned_array(values)[1])
+        for values in (
+            template_segment_offsets,
+            template_segment_lengths,
+            template_segment_refs,
+            program_segment_template_ids,
+        )
+    )
+    # Replacing 3 sections with 4 adds one extra directory entry.
+    current_directory_bytes = 3 * struct.calcsize("<HBBII")
+    template_directory_bytes = 4 * struct.calcsize("<HBBII")
+    use_templates = (
+        template_bytes + template_directory_bytes
+        < current_bytes + current_directory_bytes
+    )
+
+    return {
+        "use_templates": use_templates,
+        "template_segment_offsets": template_segment_offsets,
+        "template_segment_lengths": template_segment_lengths,
+        "template_segment_refs": template_segment_refs,
+        "program_segment_template_ids": program_segment_template_ids,
+    }
 
 
 def _segment_step_ids(packed: PackedKernel, seg_id: int) -> tuple[int, ...]:
@@ -799,6 +871,11 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
             or ()
         )
     ]
+    program_segment_template_parts = _build_program_segment_template_parts(
+        program_segment_offsets,
+        program_segment_lengths,
+        program_segment_refs,
+    )
     program_hot_runner_ids = [
         int(value) for value in (getattr(packed, "program_hot_runner_ids", ()) or ())
     ]
@@ -860,9 +937,27 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     _add_unsigned("segment_step_offsets", segment_step_offsets)
     _add_unsigned("segment_step_lengths", segment_step_lengths)
     _add_unsigned("segment_step_atom_refs", segment_step_atom_refs)
-    _add_unsigned("program_segment_offsets", program_segment_offsets)
-    _add_unsigned("program_segment_lengths", program_segment_lengths)
-    _add_unsigned("program_segment_refs", program_segment_refs)
+    if program_segment_template_parts["use_templates"]:
+        _add_unsigned(
+            "template_segment_offsets",
+            program_segment_template_parts["template_segment_offsets"],
+        )
+        _add_unsigned(
+            "template_segment_lengths",
+            program_segment_template_parts["template_segment_lengths"],
+        )
+        _add_unsigned(
+            "template_segment_refs",
+            program_segment_template_parts["template_segment_refs"],
+        )
+        _add_unsigned(
+            "program_segment_template_ids",
+            program_segment_template_parts["program_segment_template_ids"],
+        )
+    else:
+        _add_unsigned("program_segment_offsets", program_segment_offsets)
+        _add_unsigned("program_segment_lengths", program_segment_lengths)
+        _add_unsigned("program_segment_refs", program_segment_refs)
     _add_unsigned("program_hot_runner_ids", program_hot_runner_ids)
     _add_unsigned("error_profile_offsets", error_profile_offsets)
     _add_unsigned("error_profile_lengths", error_profile_lengths)
@@ -971,6 +1066,30 @@ def load_packed_kernel_hot_block(payload: bytes) -> dict[str, Any]:
             out[name] = _unpack_signed_array(int(width_bits), section_payload, int(count))
         else:
             out[name] = _unpack_unsigned_array(int(width_bits), section_payload, int(count))
+    if (
+        "program_segment_template_ids" in out
+        and "template_segment_offsets" in out
+        and "template_segment_lengths" in out
+        and "template_segment_refs" in out
+        and "program_segment_offsets" not in out
+    ):
+        program_segment_offsets: list[int] = []
+        program_segment_lengths: list[int] = []
+        program_segment_refs: list[int] = []
+        template_segment_offsets = out["template_segment_offsets"]
+        template_segment_lengths = out["template_segment_lengths"]
+        template_segment_refs = out["template_segment_refs"]
+        for template_id in out["program_segment_template_ids"]:
+            program_segment_offsets.append(len(program_segment_refs))
+            start = int(template_segment_offsets[template_id])
+            length = int(template_segment_lengths[template_id])
+            program_segment_lengths.append(length)
+            program_segment_refs.extend(
+                int(template_segment_refs[idx]) for idx in range(start, start + length)
+            )
+        out["program_segment_offsets"] = tuple(program_segment_offsets)
+        out["program_segment_lengths"] = tuple(program_segment_lengths)
+        out["program_segment_refs"] = tuple(program_segment_refs)
     return out
 
 

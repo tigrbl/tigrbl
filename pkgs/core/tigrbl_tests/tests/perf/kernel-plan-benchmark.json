@@ -1,0 +1,80 @@
+{
+  "fairness": {
+    "apples_to_apples_primary_comparison": "fastapi.rest_unary vs tigrbl.rest_unary",
+    "shared_transport": "HTTP REST unary",
+    "shared_method": "POST",
+    "shared_path": "/items",
+    "shared_payload_shape": {
+      "name": "string"
+    },
+    "shared_table_name": "benchmark_item",
+    "shared_server_runner": "uvicorn via run_uvicorn_in_task",
+    "shared_database_family": "SQLite",
+    "notes": [
+      "FastAPI has no kernel-plan packing, so KC metrics apply only to Tigrbl.",
+      "Tigrbl JSON-RPC is reported as a supplemental non-FastAPI parity scenario."
+    ]
+  },
+  "candidate": {
+    "fastapi": {
+      "rest_unary": {
+        "ops": 150,
+        "warmup_ops": 20,
+        "total_execution_time_seconds": 1.2517674999544397,
+        "ops_per_second": 119.83055959310296,
+        "endpoint": "/items"
+      },
+      "persisted_row_count": 170
+    },
+    "tigrbl": {
+      "kernel_plan_measurement": {
+        "raw_bytes": 1679,
+        "compressed_bytes": 730,
+        "segment_count": 38,
+        "step_count": 60,
+        "phase_tree_node_count": 504,
+        "proto_count": 6,
+        "selector_count": 31,
+        "op_count": 36,
+        "route_row_count": 6,
+        "route_col_count": 31,
+        "route_slot_count": 186,
+        "exact_route_count": 18,
+        "fusible_sync_segment_count": 0,
+        "hot_op_count": 36,
+        "compact_step_count": 60,
+        "compact_segment_count": 11,
+        "compact_program_segment_ref_count": 36,
+        "compact_route_entry_count": 49,
+        "shared_error_profile_count": 2,
+        "externalized_prelude_step_count": 1,
+        "max_index_width_bits": 16
+      },
+      "rest_unary": {
+        "ops": 150,
+        "warmup_ops": 20,
+        "total_execution_time_seconds": 0.525742799974978,
+        "ops_per_second": 285.3106119706043,
+        "endpoint": "/items"
+      },
+      "jsonrpc_unary": {
+        "ops": 150,
+        "warmup_ops": 20,
+        "total_execution_time_seconds": 0.5480309000122361,
+        "ops_per_second": 273.70719424151247,
+        "endpoint": "/rpc",
+        "method": "BenchmarkItem.create"
+      },
+      "persisted_row_count": 340
+    },
+    "comparisons": {
+      "rest_unary": {
+        "fastapi_ops_per_second": 119.83055959310296,
+        "tigrbl_ops_per_second": 285.3106119706043,
+        "delta_ops_per_second": 165.48005237750135,
+        "throughput_ratio_tigrbl_over_fastapi": 2.3809503430460977,
+        "compressed_bytes_per_tigrbl_op": 4.866666666666666
+      }
+    }
+  }
+}
