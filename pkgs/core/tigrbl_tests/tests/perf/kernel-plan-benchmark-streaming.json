@@ -1,0 +1,126 @@
+{
+  "fairness": {
+    "surface": "streaming",
+    "shared_runner": "httpx.ASGITransport",
+    "shared_database_family": "SQLite",
+    "transport_only_endpoint": "/stream/fixed",
+    "db_backed_endpoint": "/stream/items"
+  },
+  "candidate": {
+    "tigrbl": {
+      "kernel_plan_measurement": {
+        "raw_bytes": 858,
+        "compressed_bytes": 374,
+        "segment_count": 25,
+        "step_count": 36,
+        "phase_tree_node_count": 14,
+        "proto_count": 6,
+        "selector_count": 1,
+        "op_count": 1,
+        "exact_route_count": 1,
+        "hot_op_count": 1,
+        "compact_step_count": 36,
+        "compact_segment_count": 2,
+        "compact_program_segment_ref_count": 1,
+        "compact_route_entry_count": 2,
+        "shared_error_profile_count": 1,
+        "externalized_prelude_step_count": 1,
+        "max_index_width_bits": 16
+      }
+    },
+    "benchmarks": {
+      "transport_only": {
+        "25": {
+          "tigrbl": {
+            "scenario": "tigrbl-stream-transport-25",
+            "endpoint": "/stream/fixed",
+            "ops": 25,
+            "warmup_ops": 5,
+            "ops_per_second": 1013.877962411672,
+            "total_execution_time_seconds": 0.024657799978740513,
+            "bytes_per_response": 240,
+            "shared_runner": "httpx.ASGITransport"
+          },
+          "fastapi": {
+            "scenario": "fastapi-stream-transport-25",
+            "endpoint": "/stream/fixed",
+            "ops": 25,
+            "warmup_ops": 5,
+            "ops_per_second": 442.247750750713,
+            "total_execution_time_seconds": 0.05652939999708906,
+            "bytes_per_response": 240,
+            "shared_runner": "httpx.ASGITransport"
+          }
+        },
+        "250": {
+          "tigrbl": {
+            "scenario": "tigrbl-stream-transport-250",
+            "endpoint": "/stream/fixed",
+            "ops": 250,
+            "warmup_ops": 5,
+            "ops_per_second": 1017.0382381688246,
+            "total_execution_time_seconds": 0.24581180000677705,
+            "bytes_per_response": 240,
+            "shared_runner": "httpx.ASGITransport"
+          },
+          "fastapi": {
+            "scenario": "fastapi-stream-transport-250",
+            "endpoint": "/stream/fixed",
+            "ops": 250,
+            "warmup_ops": 5,
+            "ops_per_second": 417.5557123919284,
+            "total_execution_time_seconds": 0.598722499969881,
+            "bytes_per_response": 240,
+            "shared_runner": "httpx.ASGITransport"
+          }
+        }
+      },
+      "db_backed": {
+        "25": {
+          "tigrbl": {
+            "scenario": "tigrbl-stream-db-25",
+            "endpoint": "/stream/items",
+            "ops": 25,
+            "warmup_ops": 5,
+            "ops_per_second": 681.0708614988805,
+            "total_execution_time_seconds": 0.03670689999125898,
+            "bytes_per_response": 797,
+            "shared_runner": "httpx.ASGITransport"
+          },
+          "fastapi": {
+            "scenario": "fastapi-stream-db-25",
+            "endpoint": "/stream/items",
+            "ops": 25,
+            "warmup_ops": 5,
+            "ops_per_second": 163.00269212324534,
+            "total_execution_time_seconds": 0.1533717000274919,
+            "bytes_per_response": 797,
+            "shared_runner": "httpx.ASGITransport"
+          }
+        },
+        "250": {
+          "tigrbl": {
+            "scenario": "tigrbl-stream-db-250",
+            "endpoint": "/stream/items",
+            "ops": 250,
+            "warmup_ops": 5,
+            "ops_per_second": 677.2213876873657,
+            "total_execution_time_seconds": 0.3691555000259541,
+            "bytes_per_response": 797,
+            "shared_runner": "httpx.ASGITransport"
+          },
+          "fastapi": {
+            "scenario": "fastapi-stream-db-250",
+            "endpoint": "/stream/items",
+            "ops": 250,
+            "warmup_ops": 5,
+            "ops_per_second": 168.00896872016529,
+            "total_execution_time_seconds": 1.4880158000160009,
+            "bytes_per_response": 797,
+            "shared_runner": "httpx.ASGITransport"
+          }
+        }
+      }
+    }
+  }
+}

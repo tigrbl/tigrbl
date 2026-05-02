@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import cProfile
 import json
+import logging
 import pstats
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -12,7 +13,6 @@ from typing import Any
 import httpx
 import pytest
 
-from tests.i9n.uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
 from tests.perf.helper_tigrbl_create_app import (
     create_tigrbl_app,
     dispose_tigrbl_app,
@@ -85,6 +85,8 @@ def _build_call_edges(stats: pstats.Stats, *, limit: int) -> list[dict[str, Any]
 
 
 async def _profile_create_call_graph(*, results_path: Path) -> dict[str, Any]:
+    logging.getLogger("httpx").setLevel(logging.WARNING)
+    logging.getLogger("httpcore").setLevel(logging.WARNING)
     PERF_TEMP_ROOT.mkdir(parents=True, exist_ok=True)
     with TemporaryDirectory(dir=PERF_TEMP_ROOT, ignore_cleanup_errors=True) as tmp_dir:
         base_dir = Path(tmp_dir)
@@ -95,15 +97,16 @@ async def _profile_create_call_graph(*, results_path: Path) -> dict[str, Any]:
 
         expected_names = [f"profiled-create-{idx}" for idx in range(OPS_COUNT)]
 
-        base_url, server, task = await run_uvicorn_in_task(app)
         profiler = cProfile.Profile()
         start = perf_counter()
 
         try:
-            async with httpx.AsyncClient(base_url=base_url, timeout=20.0) as client:
-                health = await client.get("/healthz")
-                assert health.status_code == 200
-
+            transport = httpx.ASGITransport(app=app)
+            async with httpx.AsyncClient(
+                transport=transport,
+                base_url="http://testserver",
+                timeout=20.0,
+            ) as client:
                 profiler.enable()
                 for item_name in expected_names:
                     response = await client.post(
@@ -114,7 +117,6 @@ async def _profile_create_call_graph(*, results_path: Path) -> dict[str, Any]:
                     assert response.json()["name"] == item_name
                 profiler.disable()
         finally:
-            await stop_uvicorn_server(server, task)
             await dispose_tigrbl_app(app)
 
         persisted_names = fetch_tigrbl_names(db_path)

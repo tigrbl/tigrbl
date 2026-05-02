@@ -9,20 +9,20 @@ import struct
 from pathlib import Path
 from tempfile import TemporaryDirectory
 from time import perf_counter
-from typing import Any, Callable
+from typing import Any, Awaitable, Callable
 
 from tigrbl_kernel import build_kernel_plan, load_packed_kernel_hot_block, measure_packed_kernel
 from tigrbl_kernel.measure import _HOT_BLOCK_SECTION_NAMES
 
-from tests.i9n.uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
 from tests.perf.helper_websocket_apps import (
-    create_fastapi_websocket_app,
-    create_tigrbl_websocket_app,
+    create_fastapi_websocket_db_app,
+    create_fastapi_websocket_transport_app,
+    create_tigrbl_websocket_db_app,
+    create_tigrbl_websocket_transport_app,
     dispose_tigrbl_websocket_app,
     fetch_websocket_names,
     initialize_tigrbl_websocket_app,
 )
-from tests.perf.wsproto_client import websocket_text_roundtrip
 
 ROOT = Path(__file__).resolve().parents[4]
 PERF_DIR = ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "perf"
@@ -85,55 +85,121 @@ def _build_call_edges(stats: pstats.Stats) -> list[dict[str, Any]]:
     return edges[:TOP_EDGE_LIMIT]
 
 
+async def _run_websocket_session(
+    app: Any,
+    *,
+    path: str,
+    text: str,
+) -> list[dict[str, Any]]:
+    sent: list[dict[str, Any]] = []
+    pending = [
+        {"type": "websocket.connect"},
+        {"type": "websocket.receive", "text": text},
+    ]
+
+    async def receive() -> dict[str, Any]:
+        return pending.pop(0) if pending else {"type": "websocket.disconnect", "code": 1000}
+
+    async def send(message: dict[str, Any]) -> None:
+        sent.append(message)
+
+    await app(
+        {
+            "type": "websocket",
+            "scheme": "ws",
+            "path": path,
+            "query_string": b"",
+            "headers": [],
+            "subprotocols": [],
+        },
+        receive,
+        send,
+    )
+    return sent
+
+
+def _extract_text_payload(sent: list[dict[str, Any]]) -> str:
+    for message in sent:
+        if message.get("type") != "websocket.send":
+            continue
+        text = message.get("text")
+        if isinstance(text, str):
+            return text
+        raw = message.get("bytes")
+        if isinstance(raw, (bytes, bytearray)):
+            return bytes(raw).decode("utf-8")
+    raise AssertionError(f"no websocket.send payload found in {sent!r}")
+
+
+async def _initialize_if_needed(app: Any) -> None:
+    if hasattr(app, "engine"):
+        try:
+            await initialize_tigrbl_websocket_app(app)
+        except ValueError as exc:
+            if "Engine provider is not configured" not in str(exc):
+                raise
+
+
+async def _dispose_if_needed(app: Any) -> None:
+    if hasattr(app, "engine"):
+        try:
+            await dispose_tigrbl_websocket_app(app)
+        except ValueError as exc:
+            if "Engine provider is not configured" not in str(exc):
+                raise
+
+
 async def _benchmark_ws_app(
     *,
     create_app: Callable[[Path], Any],
     scenario: str,
     endpoint: str,
     ops: int,
+    db_backed: bool,
 ) -> dict[str, Any]:
     with TemporaryDirectory(dir=TMP_DIR, ignore_cleanup_errors=True) as tmp_dir:
         db_path = Path(tmp_dir) / f"{scenario}.sqlite3"
         app = create_app(db_path)
-        if create_app is create_tigrbl_websocket_app:
-            await initialize_tigrbl_websocket_app(app)
-        base_url, server, task = await run_uvicorn_in_task(app)
-        ws_base = base_url.replace("http://", "ws://", 1).replace("https://", "wss://", 1)
+        await _initialize_if_needed(app)
         persisted_names: list[str] = []
         try:
-            if endpoint.endswith("/echo"):
-                for idx in range(WARMUP_OPS):
-                    text = f"warmup-ws-echo-{idx}"
-                    echoed = await websocket_text_roundtrip(f"{ws_base}{endpoint}", text)
-                    assert echoed == text
-                start = perf_counter()
-                for idx in range(ops):
-                    text = f"bench-ws-echo-{idx}"
-                    echoed = await websocket_text_roundtrip(f"{ws_base}{endpoint}", text)
-                    assert echoed == text
-                elapsed = perf_counter() - start
-            else:
+            if db_backed:
                 for idx in range(WARMUP_OPS):
                     name = f"warmup-ws-item-{idx}"
-                    payload = json.dumps({"name": name}, separators=(",", ":"))
-                    response = await websocket_text_roundtrip(f"{ws_base}{endpoint}", payload)
-                    parsed = json.loads(response)
+                    sent = await _run_websocket_session(
+                        app,
+                        path=endpoint,
+                        text=json.dumps({"name": name}, separators=(",", ":")),
+                    )
+                    parsed = json.loads(_extract_text_payload(sent))
                     assert parsed["name"] == name
                 start = perf_counter()
                 for idx in range(ops):
                     name = f"bench-ws-item-{idx}"
-                    payload = json.dumps({"name": name}, separators=(",", ":"))
-                    response = await websocket_text_roundtrip(f"{ws_base}{endpoint}", payload)
-                    parsed = json.loads(response)
+                    sent = await _run_websocket_session(
+                        app,
+                        path=endpoint,
+                        text=json.dumps({"name": name}, separators=(",", ":")),
+                    )
+                    parsed = json.loads(_extract_text_payload(sent))
                     assert parsed["name"] == name
                     persisted_names.append(name)
                 elapsed = perf_counter() - start
                 names = fetch_websocket_names(db_path)
                 assert names[-ops:] == persisted_names
+            else:
+                for idx in range(WARMUP_OPS):
+                    text = f"warmup-ws-echo-{idx}"
+                    sent = await _run_websocket_session(app, path=endpoint, text=text)
+                    assert _extract_text_payload(sent) == text
+                start = perf_counter()
+                for idx in range(ops):
+                    text = f"bench-ws-echo-{idx}"
+                    sent = await _run_websocket_session(app, path=endpoint, text=text)
+                    assert _extract_text_payload(sent) == text
+                elapsed = perf_counter() - start
         finally:
-            await stop_uvicorn_server(server, task)
-            if create_app is create_tigrbl_websocket_app:
-                await dispose_tigrbl_websocket_app(app)
+            await _dispose_if_needed(app)
         return {
             "scenario": scenario,
             "endpoint": endpoint,
@@ -142,6 +208,7 @@ async def _benchmark_ws_app(
             "ops_per_second": ops / elapsed,
             "total_execution_time_seconds": elapsed,
             "persisted_row_count": len(persisted_names),
+            "shared_runner": "direct ASGI websocket session",
         }
 
 
@@ -265,20 +332,6 @@ def _render_hot_block_benchmark_md(surface: str, payload: dict[str, Any]) -> str
     )
 
 
-def _hot_block_benchmark_payload(hot_block_bytes: bytes, packed: Any) -> dict[str, Any]:
-    measurement = getattr(packed, "measurement", None) or measure_packed_kernel(packed)
-    summary = _summarize_hot_block(hot_block_bytes)
-    return {
-        "artifact": {
-            "magic": "TGPKHOT1",
-            "raw_bytes": len(hot_block_bytes),
-            "compressed_bytes": len(gzip.compress(hot_block_bytes, compresslevel=9, mtime=0)),
-        },
-        "header": summary["header"],
-        "measurement": _serialize_measurement_from_measurement(measurement),
-    }
-
-
 def _serialize_measurement_from_measurement(measurement: Any) -> dict[str, Any]:
     return {
         "raw_bytes": int(measurement.raw_bytes),
@@ -301,47 +354,63 @@ def _serialize_measurement_from_measurement(measurement: Any) -> dict[str, Any]:
     }
 
 
+def _hot_block_benchmark_payload(hot_block_bytes: bytes, packed: Any) -> dict[str, Any]:
+    measurement = getattr(packed, "measurement", None) or measure_packed_kernel(packed)
+    summary = _summarize_hot_block(hot_block_bytes)
+    return {
+        "artifact": {
+            "magic": "TGPKHOT1",
+            "raw_bytes": len(hot_block_bytes),
+            "compressed_bytes": len(gzip.compress(hot_block_bytes, compresslevel=9, mtime=0)),
+        },
+        "header": summary["header"],
+        "measurement": _serialize_measurement_from_measurement(measurement),
+    }
+
+
 async def _export_hot_block() -> list[str]:
     with TemporaryDirectory(dir=TMP_DIR, ignore_cleanup_errors=True) as tmp_dir:
         db_path = Path(tmp_dir) / "websocket-hot-block.sqlite3"
-        app = create_tigrbl_websocket_app(db_path)
-        await initialize_tigrbl_websocket_app(app)
-        plan = build_kernel_plan(app)
-        packed = getattr(plan, "packed", None)
-        if packed is None:
-            raise RuntimeError("websocket benchmark app did not build a packed kernel")
-        hot_block_bytes = getattr(packed, "hot_block_bytes", b"")
-        if not hot_block_bytes:
-            raise RuntimeError("websocket benchmark app did not carry TGPKHOT1 bytes")
-        hot_block_view = load_packed_kernel_hot_block(hot_block_bytes)
-        summary = _summarize_hot_block(hot_block_bytes)
-        summary_payload = {
-            "artifact": {
-                "path": str(HOT_BLOCK_PREFIX.with_suffix(".bin")),
-                "bytes": len(hot_block_bytes),
-            },
-            "header": summary["header"],
-            "sections": summary["sections"],
-            "loaded_view_counts": {
-                "atom_count": len(tuple(hot_block_view.get("atom_opcode_ids", ()) or ())),
-                "segment_count": len(tuple(hot_block_view.get("segment_step_offsets", ()) or ())),
-                "program_count": len(tuple(hot_block_view.get("program_hot_runner_ids", ()) or ())),
-                "route_entry_count": int(hot_block_view.get("route_entry_count", 0)),
-            },
-        }
-        benchmark_payload = _hot_block_benchmark_payload(hot_block_bytes, packed)
-        outputs = {
-            HOT_BLOCK_PREFIX.with_suffix(".bin"): hot_block_bytes,
-            HOT_BLOCK_PREFIX.with_suffix(".summary.json"): json.dumps(summary_payload, indent=2).encode("utf-8"),
-            HOT_BLOCK_PREFIX.with_suffix(".hexdump.txt"): _hexdump(hot_block_bytes).encode("utf-8"),
-            HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"): json.dumps(benchmark_payload, indent=2).encode("utf-8"),
-            HOT_BLOCK_PREFIX.with_suffix(".benchmark.md"): _render_hot_block_benchmark_md("websocket", benchmark_payload).encode("utf-8"),
-        }
-        for path, payload in outputs.items():
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(payload)
-        await dispose_tigrbl_websocket_app(app)
-        return [str(path) for path in outputs]
+        app = create_tigrbl_websocket_db_app(db_path)
+        await _initialize_if_needed(app)
+        try:
+            plan = build_kernel_plan(app)
+            packed = getattr(plan, "packed", None)
+            if packed is None:
+                raise RuntimeError("websocket benchmark app did not build a packed kernel")
+            hot_block_bytes = getattr(packed, "hot_block_bytes", b"")
+            if not hot_block_bytes:
+                raise RuntimeError("websocket benchmark app did not carry TGPKHOT1 bytes")
+            hot_block_view = load_packed_kernel_hot_block(hot_block_bytes)
+            summary = _summarize_hot_block(hot_block_bytes)
+            summary_payload = {
+                "artifact": {
+                    "path": str(HOT_BLOCK_PREFIX.with_suffix(".bin")),
+                    "bytes": len(hot_block_bytes),
+                },
+                "header": summary["header"],
+                "sections": summary["sections"],
+                "loaded_view_counts": {
+                    "atom_count": len(tuple(hot_block_view.get("atom_opcode_ids", ()) or ())),
+                    "segment_count": len(tuple(hot_block_view.get("segment_step_offsets", ()) or ())),
+                    "program_count": len(tuple(hot_block_view.get("program_hot_runner_ids", ()) or ())),
+                    "route_entry_count": int(hot_block_view.get("route_entry_count", 0)),
+                },
+            }
+            benchmark_payload = _hot_block_benchmark_payload(hot_block_bytes, packed)
+            outputs = {
+                HOT_BLOCK_PREFIX.with_suffix(".bin"): hot_block_bytes,
+                HOT_BLOCK_PREFIX.with_suffix(".summary.json"): json.dumps(summary_payload, indent=2).encode("utf-8"),
+                HOT_BLOCK_PREFIX.with_suffix(".hexdump.txt"): _hexdump(hot_block_bytes).encode("utf-8"),
+                HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"): json.dumps(benchmark_payload, indent=2).encode("utf-8"),
+                HOT_BLOCK_PREFIX.with_suffix(".benchmark.md"): _render_hot_block_benchmark_md("websocket", benchmark_payload).encode("utf-8"),
+            }
+            for path, payload in outputs.items():
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(payload)
+            return [str(path) for path in outputs]
+        finally:
+            await _dispose_if_needed(app)
 
 
 async def _profile_websocket_call_graph(
@@ -354,10 +423,7 @@ async def _profile_websocket_call_graph(
     with TemporaryDirectory(dir=TMP_DIR, ignore_cleanup_errors=True) as tmp_dir:
         db_path = Path(tmp_dir) / f"{results_path.stem}.sqlite3"
         app = create_app(db_path)
-        if create_app is create_tigrbl_websocket_app:
-            await initialize_tigrbl_websocket_app(app)
-        base_url, server, task = await run_uvicorn_in_task(app)
-        ws_base = base_url.replace("http://", "ws://", 1).replace("https://", "wss://", 1)
+        await _initialize_if_needed(app)
         profiler = cProfile.Profile()
         start = perf_counter()
         try:
@@ -365,22 +431,21 @@ async def _profile_websocket_call_graph(
             if db_backed:
                 for idx in range(250):
                     name = f"profiled-ws-item-{idx}"
-                    response = await websocket_text_roundtrip(
-                        f"{ws_base}{endpoint}",
-                        json.dumps({"name": name}, separators=(",", ":")),
+                    sent = await _run_websocket_session(
+                        app,
+                        path=endpoint,
+                        text=json.dumps({"name": name}, separators=(",", ":")),
                     )
-                    parsed = json.loads(response)
+                    parsed = json.loads(_extract_text_payload(sent))
                     assert parsed["name"] == name
             else:
                 for idx in range(250):
                     text = f"profiled-ws-echo-{idx}"
-                    echoed = await websocket_text_roundtrip(f"{ws_base}{endpoint}", text)
-                    assert echoed == text
+                    sent = await _run_websocket_session(app, path=endpoint, text=text)
+                    assert _extract_text_payload(sent) == text
             profiler.disable()
         finally:
-            await stop_uvicorn_server(server, task)
-            if create_app is create_tigrbl_websocket_app:
-                await dispose_tigrbl_websocket_app(app)
+            await _dispose_if_needed(app)
         elapsed = perf_counter() - start
         stats = pstats.Stats(profiler).strip_dirs()
         payload = {
@@ -393,6 +458,7 @@ async def _profile_websocket_call_graph(
             },
             "artifact_path": str(results_path),
             "scenario": "db_backed" if db_backed else "transport_only",
+            "shared_runner": "direct ASGI websocket session",
         }
         payload["call_graph"]["node_count"] = len(
             {edge["caller"] for edge in payload["call_graph"]["edges"]}
@@ -411,43 +477,49 @@ async def main() -> None:
     for ops in OPS_COUNTS:
         results["transport_only"][str(ops)] = {
             "tigrbl": await _benchmark_ws_app(
-                create_app=create_tigrbl_websocket_app,
+                create_app=create_tigrbl_websocket_transport_app,
                 scenario=f"tigrbl-ws-transport-{ops}",
                 endpoint="/ws/echo",
                 ops=ops,
+                db_backed=False,
             ),
             "fastapi": await _benchmark_ws_app(
-                create_app=create_fastapi_websocket_app,
+                create_app=create_fastapi_websocket_transport_app,
                 scenario=f"fastapi-ws-transport-{ops}",
                 endpoint="/ws/echo",
                 ops=ops,
+                db_backed=False,
             ),
         }
         results["db_backed"][str(ops)] = {
             "tigrbl": await _benchmark_ws_app(
-                create_app=create_tigrbl_websocket_app,
+                create_app=create_tigrbl_websocket_db_app,
                 scenario=f"tigrbl-ws-db-{ops}",
                 endpoint="/ws/items",
                 ops=ops,
+                db_backed=True,
             ),
             "fastapi": await _benchmark_ws_app(
-                create_app=create_fastapi_websocket_app,
+                create_app=create_fastapi_websocket_db_app,
                 scenario=f"fastapi-ws-db-{ops}",
                 endpoint="/ws/items",
                 ops=ops,
+                db_backed=True,
             ),
         }
 
     with TemporaryDirectory(dir=TMP_DIR, ignore_cleanup_errors=True) as tmp_dir:
         db_path = Path(tmp_dir) / "websocket-kernel.sqlite3"
-        app = create_tigrbl_websocket_app(db_path)
-        await initialize_tigrbl_websocket_app(app)
-        measurement = _serialize_measurement(app)
-        await dispose_tigrbl_websocket_app(app)
+        app = create_tigrbl_websocket_db_app(db_path)
+        await _initialize_if_needed(app)
+        try:
+            measurement = _serialize_measurement(app)
+        finally:
+            await _dispose_if_needed(app)
     kernel_payload = {
         "fairness": {
             "surface": "websocket",
-            "shared_server_runner": "uvicorn via run_uvicorn_in_task",
+            "shared_server_runner": "direct ASGI websocket session",
             "shared_database_family": "SQLite",
             "transport_only_endpoint": "/ws/echo",
             "db_backed_endpoint": "/ws/items",
@@ -460,6 +532,7 @@ async def main() -> None:
     KERNEL_JSON_PATH.write_text(json.dumps(kernel_payload, indent=2), encoding="utf-8")
     KERNEL_MD_PATH.write_text(
         "# WebSocket Kernel Packing KC and FastAPI Parity Report\n\n"
+        f"- shared runner: direct ASGI websocket session\n"
         f"- raw bytes: {measurement['raw_bytes']}\n"
         f"- compressed bytes: {measurement['compressed_bytes']}\n"
         f"- transport-only 250 ops/s: tigrbl={results['transport_only']['250']['tigrbl']['ops_per_second']:.2f}, fastapi={results['transport_only']['250']['fastapi']['ops_per_second']:.2f}\n"
@@ -468,13 +541,13 @@ async def main() -> None:
     )
     RESULTS_PATH.write_text(json.dumps(results, indent=2), encoding="utf-8")
     await _profile_websocket_call_graph(
-        create_app=create_tigrbl_websocket_app,
+        create_app=create_tigrbl_websocket_db_app,
         endpoint="/ws/items",
         db_backed=True,
         results_path=TIGRBL_CALL_GRAPH_PATH,
     )
     await _profile_websocket_call_graph(
-        create_app=create_fastapi_websocket_app,
+        create_app=create_fastapi_websocket_db_app,
         endpoint="/ws/items",
         db_backed=True,
         results_path=FASTAPI_CALL_GRAPH_PATH,

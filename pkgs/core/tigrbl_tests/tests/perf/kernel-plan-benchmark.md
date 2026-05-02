@@ -6,26 +6,26 @@
 - request: POST /items
 - payload: {"name": "string"}
 - table: benchmark_item
-- server runner: uvicorn via run_uvicorn_in_task
+- server runner: httpx.ASGITransport
 - database: SQLite
 
 ## Throughput
-- FastAPI REST unary: 121.08 ops/s
-- Tigrbl REST unary: 390.38 ops/s
-- Tigrbl JSON-RPC unary: 352.42 ops/s
-- Tigrbl/FastAPI REST ratio: 3.224
+- FastAPI REST unary: 120.20 ops/s
+- Tigrbl REST unary: 628.40 ops/s
+- Tigrbl JSON-RPC unary: 564.28 ops/s
+- Tigrbl/FastAPI REST ratio: 5.228
 
 ## Tigrbl Kernel Packing KC Proxy
-- raw bytes: 1895
-- compressed bytes: 835
+- raw bytes: 1627
+- compressed bytes: 721
 - segments: 38
 - steps: 60
-- phase tree nodes: 504
+- phase tree nodes: 154
 - compact steps: 60
 - compact segments: 11
-- compact program segment refs: 36
-- compact route entries: 49
+- compact program segment refs: 11
+- compact route entries: 27
 - shared error profiles: 2
 - externalized prelude steps: 1
 - max index width bits: 16
-- compressed bytes per REST op in this run: 5.57
+- compressed bytes per REST op in this run: 4.81

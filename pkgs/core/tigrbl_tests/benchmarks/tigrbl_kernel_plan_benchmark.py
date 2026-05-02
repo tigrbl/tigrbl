@@ -18,7 +18,6 @@ from tigrbl.factories.engine import sqlitef
 from tigrbl.types import Column, Integer, String
 from tigrbl_kernel import build_kernel_plan, measure_packed_kernel
 
-from tests.i9n.uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
 from tests.perf.helper_fastapi_create_app import (
     create_fastapi_app,
     dispose_fastapi_app,
@@ -26,7 +25,7 @@ from tests.perf.helper_fastapi_create_app import (
 
 ROOT = Path(__file__).resolve().parents[4]
 LOCAL_TMP = ROOT / ".tmp"
-PRE_MEASUREMENT_WAIT_SECONDS = 0.5
+PRE_MEASUREMENT_WAIT_SECONDS = 0.0
 
 
 class TigrblParityBenchmarkItem(TableBase):
@@ -130,7 +129,8 @@ async def _await_if_needed(value: Any) -> Any:
 
 
 async def _ready_client(_client: httpx.AsyncClient) -> None:
-    await asyncio.sleep(PRE_MEASUREMENT_WAIT_SECONDS)
+    if PRE_MEASUREMENT_WAIT_SECONDS > 0:
+        await asyncio.sleep(PRE_MEASUREMENT_WAIT_SECONDS)
 
 
 async def _run_rest_benchmark(
@@ -202,9 +202,13 @@ async def _benchmark_fastapi_rest(*, ops: int, warmup_ops: int) -> dict[str, Any
     tmpdir = Path(mkdtemp(dir=LOCAL_TMP))
     db_path = tmpdir / "fastapi_parity.sqlite3"
     app = create_fastapi_app(db_path)
-    base_url, server, task = await run_uvicorn_in_task(app)
     try:
-        async with httpx.AsyncClient(base_url=base_url, timeout=20.0) as client:
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(
+            transport=transport,
+            base_url="http://testserver",
+            timeout=20.0,
+        ) as client:
             await _ready_client(client)
             rest = await _run_rest_benchmark(
                 client,
@@ -215,7 +219,6 @@ async def _benchmark_fastapi_rest(*, ops: int, warmup_ops: int) -> dict[str, Any
             )
         persisted = fetch_names(db_path)
     finally:
-        await stop_uvicorn_server(server, task)
         await dispose_fastapi_app(app)
 
     return {
@@ -230,9 +233,13 @@ async def _benchmark_tigrbl(*, ops: int, warmup_ops: int) -> dict[str, Any]:
     app = create_tigrbl_parity_app(db_path)
     await initialize_tigrbl_parity_app(app)
     measurement = _serialize_measurement(app)
-    base_url, server, task = await run_uvicorn_in_task(app)
     try:
-        async with httpx.AsyncClient(base_url=base_url, timeout=20.0) as client:
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(
+            transport=transport,
+            base_url="http://testserver",
+            timeout=20.0,
+        ) as client:
             await _ready_client(client)
             rest = await _run_rest_benchmark(
                 client,
@@ -248,7 +255,6 @@ async def _benchmark_tigrbl(*, ops: int, warmup_ops: int) -> dict[str, Any]:
             )
         persisted = fetch_names(db_path)
     finally:
-        await stop_uvicorn_server(server, task)
         await dispose_tigrbl_parity_app(app)
 
     return {
@@ -271,7 +277,7 @@ async def _run_suite(*, ops: int, warmup_ops: int) -> dict[str, Any]:
             "shared_path": "/items",
             "shared_payload_shape": {"name": "string"},
             "shared_table_name": "benchmark_item",
-            "shared_server_runner": "uvicorn via run_uvicorn_in_task",
+            "shared_server_runner": "httpx.ASGITransport",
             "shared_database_family": "SQLite",
             "notes": [
                 "FastAPI has no kernel-plan packing, so KC metrics apply only to Tigrbl.",

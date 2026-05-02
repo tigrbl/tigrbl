@@ -1,20 +1,20 @@
 {
   "artifact": {
-    "path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\tgpkhot1-benchmark-items.bin",
-    "bytes": 1627
+    "path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\tgpkhot1-benchmark-streaming.bin",
+    "bytes": 858
   },
   "header": {
     "magic": "TGPKHOT1",
     "version": 1,
     "max_width_bits": 64,
-    "total_bytes": 1627,
-    "section_count": 40,
+    "total_bytes": 858,
+    "section_count": 39,
     "directory_offset": 30,
-    "atom_count": 60,
-    "segment_count": 38,
-    "program_count": 11,
-    "error_profile_count": 2,
-    "route_entry_count": 27
+    "atom_count": 36,
+    "segment_count": 25,
+    "program_count": 1,
+    "error_profile_count": 1,
+    "route_entry_count": 2
   },
   "sections": [
     {
@@ -23,9 +23,9 @@
       "name": "atom_opcode_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 60,
-      "offset": 510,
-      "byte_length": 60
+      "count": 36,
+      "offset": 498,
+      "byte_length": 36
     },
     {
       "index": 1,
@@ -33,9 +33,9 @@
       "name": "atom_effect_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 60,
-      "offset": 570,
-      "byte_length": 60
+      "count": 36,
+      "offset": 534,
+      "byte_length": 36
     },
     {
       "index": 2,
@@ -43,9 +43,9 @@
       "name": "atom_flags",
       "width_bits": 8,
       "flags": 0,
-      "count": 60,
-      "offset": 630,
-      "byte_length": 60
+      "count": 36,
+      "offset": 570,
+      "byte_length": 36
     },
     {
       "index": 3,
@@ -54,7 +54,7 @@
       "width_bits": 8,
       "flags": 0,
       "count": 1,
-      "offset": 690,
+      "offset": 606,
       "byte_length": 1
     },
     {
@@ -63,9 +63,9 @@
       "name": "segment_executor_kind_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 38,
-      "offset": 691,
-      "byte_length": 38
+      "count": 25,
+      "offset": 607,
+      "byte_length": 25
     },
     {
       "index": 5,
@@ -73,9 +73,9 @@
       "name": "segment_phase_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 38,
-      "offset": 729,
-      "byte_length": 38
+      "count": 25,
+      "offset": 632,
+      "byte_length": 25
     },
     {
       "index": 6,
@@ -83,9 +83,9 @@
       "name": "segment_step_offsets",
       "width_bits": 8,
       "flags": 0,
-      "count": 38,
-      "offset": 767,
-      "byte_length": 38
+      "count": 25,
+      "offset": 657,
+      "byte_length": 25
     },
     {
       "index": 7,
@@ -93,9 +93,9 @@
       "name": "segment_step_lengths",
       "width_bits": 8,
       "flags": 0,
-      "count": 38,
-      "offset": 805,
-      "byte_length": 38
+      "count": 25,
+      "offset": 682,
+      "byte_length": 25
     },
     {
       "index": 8,
@@ -103,325 +103,315 @@
       "name": "segment_step_atom_refs",
       "width_bits": 8,
       "flags": 0,
-      "count": 120,
-      "offset": 843,
-      "byte_length": 120
+      "count": 61,
+      "offset": 707,
+      "byte_length": 61
     },
     {
       "index": 9,
-      "section_id": 30,
-      "name": "template_segment_offsets",
+      "section_id": 13,
+      "name": "program_segment_offsets",
       "width_bits": 8,
       "flags": 0,
-      "count": 9,
-      "offset": 963,
-      "byte_length": 9
+      "count": 1,
+      "offset": 768,
+      "byte_length": 1
     },
     {
       "index": 10,
-      "section_id": 31,
-      "name": "template_segment_lengths",
+      "section_id": 14,
+      "name": "program_segment_lengths",
       "width_bits": 8,
       "flags": 0,
-      "count": 9,
-      "offset": 972,
-      "byte_length": 9
+      "count": 1,
+      "offset": 769,
+      "byte_length": 1
     },
     {
       "index": 11,
-      "section_id": 32,
-      "name": "template_segment_refs",
+      "section_id": 15,
+      "name": "program_segment_refs",
       "width_bits": 8,
       "flags": 0,
-      "count": 225,
-      "offset": 981,
-      "byte_length": 225
+      "count": 25,
+      "offset": 770,
+      "byte_length": 25
     },
     {
       "index": 12,
-      "section_id": 33,
-      "name": "program_segment_template_ids",
-      "width_bits": 8,
-      "flags": 0,
-      "count": 11,
-      "offset": 1206,
-      "byte_length": 11
-    },
-    {
-      "index": 13,
       "section_id": 16,
       "name": "program_hot_runner_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 11,
-      "offset": 1217,
-      "byte_length": 11
+      "count": 1,
+      "offset": 795,
+      "byte_length": 1
     },
     {
-      "index": 14,
+      "index": 13,
       "section_id": 34,
       "name": "param_shape_offsets",
       "width_bits": 8,
       "flags": 0,
-      "count": 3,
-      "offset": 1228,
-      "byte_length": 3
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 15,
+      "index": 14,
       "section_id": 35,
       "name": "param_shape_lengths",
       "width_bits": 8,
       "flags": 0,
-      "count": 3,
-      "offset": 1231,
-      "byte_length": 3
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 16,
+      "index": 15,
       "section_id": 36,
       "name": "param_shape_source_masks",
       "width_bits": 8,
       "flags": 0,
-      "count": 6,
-      "offset": 1234,
-      "byte_length": 6
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 17,
+      "index": 16,
       "section_id": 37,
       "name": "param_shape_slot_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 6,
-      "offset": 1240,
-      "byte_length": 6
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 18,
+      "index": 17,
       "section_id": 38,
       "name": "param_shape_decoder_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 6,
-      "offset": 1246,
-      "byte_length": 6
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 19,
+      "index": 18,
       "section_id": 39,
       "name": "param_shape_required_flags",
       "width_bits": 8,
       "flags": 0,
-      "count": 6,
-      "offset": 1252,
-      "byte_length": 6
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 20,
+      "index": 19,
       "section_id": 40,
       "name": "param_shape_header_required_flags",
       "width_bits": 8,
       "flags": 0,
-      "count": 6,
-      "offset": 1258,
-      "byte_length": 6
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 21,
+      "index": 20,
       "section_id": 41,
       "name": "param_shape_nullable_flags",
       "width_bits": 8,
       "flags": 0,
-      "count": 6,
-      "offset": 1264,
-      "byte_length": 6
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 22,
+      "index": 21,
       "section_id": 42,
       "name": "param_shape_max_lengths",
       "width_bits": 8,
       "flags": 0,
-      "count": 6,
-      "offset": 1270,
-      "byte_length": 6
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 23,
+      "index": 22,
       "section_id": 43,
       "name": "param_shape_lookup_hashes",
       "width_bits": 64,
       "flags": 0,
-      "count": 6,
-      "offset": 1276,
-      "byte_length": 48
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 24,
+      "index": 23,
       "section_id": 44,
       "name": "param_shape_header_hashes",
       "width_bits": 64,
       "flags": 0,
-      "count": 6,
-      "offset": 1324,
-      "byte_length": 48
+      "count": 0,
+      "offset": 796,
+      "byte_length": 0
     },
     {
-      "index": 25,
+      "index": 24,
       "section_id": 45,
       "name": "program_param_shape_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 11,
-      "offset": 1372,
-      "byte_length": 11
+      "count": 1,
+      "offset": 796,
+      "byte_length": 1
     },
     {
-      "index": 26,
+      "index": 25,
       "section_id": 46,
       "name": "program_transport_kind_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 11,
-      "offset": 1383,
-      "byte_length": 11
+      "count": 1,
+      "offset": 797,
+      "byte_length": 1
     },
     {
-      "index": 27,
+      "index": 26,
       "section_id": 17,
       "name": "error_profile_offsets",
       "width_bits": 8,
       "flags": 0,
-      "count": 2,
-      "offset": 1394,
-      "byte_length": 2
+      "count": 1,
+      "offset": 798,
+      "byte_length": 1
     },
     {
-      "index": 28,
+      "index": 27,
       "section_id": 18,
       "name": "error_profile_lengths",
       "width_bits": 8,
       "flags": 0,
-      "count": 2,
-      "offset": 1396,
-      "byte_length": 2
+      "count": 1,
+      "offset": 799,
+      "byte_length": 1
     },
     {
-      "index": 29,
+      "index": 28,
       "section_id": 19,
       "name": "error_profile_phase_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 22,
-      "offset": 1398,
-      "byte_length": 22
+      "count": 11,
+      "offset": 800,
+      "byte_length": 11
     },
     {
-      "index": 30,
+      "index": 29,
       "section_id": 20,
       "name": "error_profile_segment_offsets",
       "width_bits": 8,
       "flags": 0,
-      "count": 22,
-      "offset": 1420,
-      "byte_length": 22
+      "count": 11,
+      "offset": 811,
+      "byte_length": 11
     },
     {
-      "index": 31,
+      "index": 30,
       "section_id": 21,
       "name": "error_profile_segment_lengths",
       "width_bits": 8,
       "flags": 0,
-      "count": 22,
-      "offset": 1442,
-      "byte_length": 22
+      "count": 11,
+      "offset": 822,
+      "byte_length": 11
     },
     {
-      "index": 32,
+      "index": 31,
       "section_id": 22,
       "name": "error_profile_segment_refs",
       "width_bits": 8,
       "flags": 0,
-      "count": 22,
-      "offset": 1464,
-      "byte_length": 22
+      "count": 11,
+      "offset": 833,
+      "byte_length": 11
     },
     {
-      "index": 33,
+      "index": 32,
       "section_id": 23,
       "name": "program_error_profile_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 11,
-      "offset": 1486,
-      "byte_length": 11
+      "count": 1,
+      "offset": 844,
+      "byte_length": 1
     },
     {
-      "index": 34,
+      "index": 33,
       "section_id": 24,
       "name": "route_proto_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 20,
-      "offset": 1497,
-      "byte_length": 20
+      "count": 1,
+      "offset": 845,
+      "byte_length": 1
     },
     {
-      "index": 35,
+      "index": 34,
       "section_id": 25,
       "name": "route_selector_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 20,
-      "offset": 1517,
-      "byte_length": 20
+      "count": 1,
+      "offset": 846,
+      "byte_length": 1
     },
     {
-      "index": 36,
+      "index": 35,
       "section_id": 26,
       "name": "route_program_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 20,
-      "offset": 1537,
-      "byte_length": 20
+      "count": 1,
+      "offset": 847,
+      "byte_length": 1
     },
     {
-      "index": 37,
+      "index": 36,
       "section_id": 27,
       "name": "exact_method_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 7,
-      "offset": 1557,
-      "byte_length": 7
+      "count": 1,
+      "offset": 848,
+      "byte_length": 1
     },
     {
-      "index": 38,
+      "index": 37,
       "section_id": 28,
       "name": "exact_path_hashes",
       "width_bits": 64,
       "flags": 0,
-      "count": 7,
-      "offset": 1564,
-      "byte_length": 56
+      "count": 1,
+      "offset": 849,
+      "byte_length": 8
     },
     {
-      "index": 39,
+      "index": 38,
       "section_id": 29,
       "name": "exact_program_ids",
       "width_bits": 8,
       "flags": 0,
-      "count": 7,
-      "offset": 1620,
-      "byte_length": 7
+      "count": 1,
+      "offset": 857,
+      "byte_length": 1
     }
   ],
   "loaded_view_counts": {
-    "atom_count": 60,
-    "segment_count": 38,
-    "program_count": 11,
-    "route_entry_count": 27
+    "atom_count": 36,
+    "segment_count": 25,
+    "program_count": 1,
+    "route_entry_count": 2
   }
 }
