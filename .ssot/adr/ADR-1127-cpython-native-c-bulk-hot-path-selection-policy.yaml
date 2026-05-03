@@ -1,0 +1,53 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1127"
+number: 1127
+slug: "cpython-native-c-bulk-hot-path-selection-policy"
+title: "CPython-Native C-Bulk Hot Path Selection Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl hot-path design across `tigrbl_atoms`, `tigrbl_kernel`, `tigrbl_runtime`, and default operation surfaces adopts a Python-authored, Python-executed, CPython-native C-bulk-backed selection policy. This is the repository's Python-orchestrated, CPython-native bulk-scan architecture for governed hot paths."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern C-bulk-backed hot-path selection across atoms, kernel, runtime, and default ops."
+    at: "2026-05-03T04:38:07Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl hot-path design across `tigrbl_atoms`, `tigrbl_kernel`, `tigrbl_runtime`, and default operation surfaces adopts a Python-authored, Python-executed, CPython-native C-bulk-backed selection policy. This is the repository's Python-orchestrated, CPython-native bulk-scan architecture for governed hot paths.
+  
+  When a hot query, dispatch step, metadata selection step, or narrowing step can be expressed through CPython built-ins whose inner loops execute in C, that expression is the default choice. Preferred primitives include `bytes.count`, `bytearray.count`, `bytes.find`, `bytes.rfind`, `bytes.translate`, `translate(...).count(1)`, raw equality, `startswith`, `endswith`, slice copy, and other bounded bulk operations over compact byte-oriented lanes.
+  
+  When a hot-path need cannot be lowered to a bounded C-bulk primitive on existing compiled lanes, the default fallback is a two-phase strategy: bulk narrow first, then Python materialize only the surviving candidates. Pure Python per-record loops, repeated dynamic mapping scans, and repeated compatibility-view reconstruction are not the default hot-path strategy when an equivalent bounded C-bulk or slot-first alternative exists.
+  
+  Runtime selection among valid physical encodings remains throughput-first but fail-closed. A candidate optimization must not be accepted if it reduces governed throughput on the accepted benchmark rails or increases governed `TGPKHOT1` raw bytes.
+  
+  ## Rationale
+  Recent hot-path work and isolated microbenchmarks in this repository show a durable hierarchy:
+  - direct attribute access after normalization is faster than repeated dict lookup
+  - slot-backed attrs are faster than cached compatibility dict views
+  - concrete `dict | None` hot fields are faster than `ABCMapping` checks
+  - `dict` checks are faster than `typing.Mapping` and `collections.abc.Mapping`
+  - CPython bytes and bytearray bulk operations are orders of magnitude faster than equivalent Python loops for dense lane scans and narrow predicates
+  
+  The runtime already uses compiled plans, exact-route tables, packed hot blocks, and lazy compatibility publication. This ADR formalizes the next selection rule: design data and code so hot-path work lowers into CPython-native bulk scans or direct slot/attr access before considering richer Python object paths. In practice that means design byte layouts so hot queries lower to CPython `bytes` and `bytearray` builtins wherever compiled lanes make that possible.
+  
+  ## Consequences
+  Hot-path design for atoms, kernel compilation artifacts, runtime executors, and default ops SHOULD prefer:
+  - compact byte lanes and fixed-width metadata
+  - structure-of-arrays or sidecar layouts when scan-heavy questions dominate
+  - slot-first metadata and direct attrs after boundary normalization
+  - lazy compatibility dict publication only on explicit fallback access
+  - benchmark and call-graph evidence tied to representative unary and transport surfaces
+  
+  Hot-path design SHOULD avoid making Python loops, repeated dict namespace scans, `Mapping` checks, semantic-object reconstruction, or compatibility-view creation the default execution path when equivalent compact compiled data already exists.
+  
+  Benchmark micro-results remain informative until a narrower SPEC makes a threshold normative, but they are sufficient to justify preferring C-bulk-backed and slot-first forms over compatibility-heavy runtime shells.
+  
+  ## Traceability
+  Extends ADR-1120, ADR-1121, ADR-1125, and ADR-1102. Follow-on SPECs should define the concrete lowering rules, `HotCtx` publication contract, benchmark/call-graph gates, `TGPKHOT1` raw-byte non-growth rules, and tiered SoA lane design.

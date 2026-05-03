@@ -1,0 +1,58 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2149"
+number: 2149
+slug: "c-bulk-backed-tiered-soa-byte-layout-contract"
+title: "C-Bulk-Backed Tiered-SoA Byte Layout Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the contract for C-bulk-backed tiered SoA byte layouts used to answer hot-path runtime questions through compact byte lanes before exact Python materialization. The guiding rule is to design byte layouts so hot queries lower to CPython `bytes` and `bytearray` builtins before exact Python materialization."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define tiered SoA byte-lane design for C-bulk-backed hot-path narrowing."
+    at: "2026-05-03T04:38:11Z"
+references: []
+body: |-
+  ## Intent
+  Define the contract for C-bulk-backed tiered SoA byte layouts used to answer hot-path runtime questions through compact byte lanes before exact Python materialization. The guiding rule is to design byte layouts so hot queries lower to CPython `bytes` and `bytearray` builtins before exact Python materialization.
+  
+  ## Tiered SoA Rule
+  When a governed hot-path question can be answered through compact classifications or flags rather than exact semantic records, the compiled layout SHOULD project the necessary information into dense byte-oriented sidecars or lanes.
+  
+  Preferred lane shapes include:
+  - `uint8` class, kind, family, flag, tier, or marker lanes for bulk scans
+  - fixed-width sidecars for exact codes, offsets, lengths, and indexes
+  - structure-of-arrays layout when scan-heavy questions dominate exact record reconstruction
+  
+  ## Narrow Then Materialize
+  Exact or wider fields SHOULD be resolved only after the hot path has narrowed candidates through bulk lane operations. Dense byte lanes are the primary query surface; exact payload or semantic reconstruction is secondary and bounded.
+  
+  ## Lowering Targets
+  Lane design SHOULD make common hot queries lower to CPython-native built-ins such as:
+  - `count`
+  - `find`
+  - `rfind`
+  - `translate`
+  - `translate(...).count(1)`
+  - equality over raw packed bytes
+  - bounded slice copy
+  
+  ## Width Discipline
+  Byte lanes are the default surface for hot-path narrowing. Wider fields such as `uint16`, `uint32`, or `uint64` are permitted where exact subtype, offset, length, shape id, or local hash semantics require them, but they SHOULD remain sidecars rather than the first scanning surface when an equivalent byte-lane query exists.
+  
+  ## Scope
+  This contract applies to packed kernel-plan metadata, dispatch metadata, program-runner selection metadata, param-shape sidecars, transport-family narrowing metadata, and related compiled-runtime artifacts.
+  
+  ## Evidence
+  A tiered SoA hot layout is not release-grade until representative benchmarks and call graphs show that the chosen lane design improves or preserves governed throughput without increasing the accepted `TGPKHOT1` raw-byte baseline.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1127"
+  - "adr:1120"
+  - "adr:1121"
+  - "adr:1115"

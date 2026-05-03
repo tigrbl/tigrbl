@@ -23276,6 +23276,258 @@
         "feat:lifespan-runtime-chain-001",
         "feat:kernelplan-executor-ownership-placement-001"
       ]
+    },
+    {
+      "id": "feat:c-bulk-hot-path-prioritization-atoms-001",
+      "title": "C-bulk hot-path prioritization in atoms",
+      "description": "Prioritize CPython-native bulk-scan and compact-lane operations over Python loops and compatibility-heavy scans within atom-owned hot execution steps.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2146"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:c-bulk-hot-path-prioritization-kernel-001",
+      "title": "C-bulk hot-path prioritization in kernel compilation",
+      "description": "Compile and shape KernelPlan and TGPKHOT1 metadata so hot route, runner, and narrowing questions can lower to CPython-native bulk operations over compact compiled lanes.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2146",
+        "spc:2148",
+        "spc:2149"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:c-bulk-hot-path-prioritization-runtime-001",
+      "title": "C-bulk hot-path prioritization in runtime executors",
+      "description": "Keep runtime hot runners slot-first and compiled-lane-first so governed REST, JSON-RPC, stream, SSE, websocket, and webtransport paths prefer C-bulk narrowing and direct attrs over compatibility shells.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2146",
+        "spc:2147",
+        "spc:2148",
+        "spc:2149"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:c-bulk-hot-path-prioritization-default-ops-001",
+      "title": "C-bulk hot-path prioritization in default ops",
+      "description": "Default operation surfaces preserve canonical semantics while preferring compiled metadata lanes and bounded narrowing over per-request Python scanning in governed hot paths.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2146"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:hotctx-slot-backed-route-dispatch-egress-001",
+      "title": "HotCtx slot-backed route, dispatch, and egress metadata",
+      "description": "HotCtx owns canonical route, dispatch, egress, and compiled-input metadata through direct attrs and concrete optional fields instead of compatibility namespace dicts.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2147"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:no-check-attr-hot-runner-preference-001",
+      "title": "No-check attribute preference in hot runners",
+      "description": "After normalization boundaries, governed hot runners prefer direct no-check attrs over no-check dict lookup and boundary-only dict checks.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2147"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": [
+        "feat:hotctx-slot-backed-route-dispatch-egress-001"
+      ]
+    },
+    {
+      "id": "feat:lazy-compat-dict-publication-fallback-only-001",
+      "title": "Lazy compatibility dict publication on fallback access only",
+      "description": "Route, dispatch, egress, and JSON-RPC compatibility dicts are synthesized from HotCtx only on explicit fallback access and remain absent from the compiled happy path.",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2147"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": [
+        "feat:hotctx-slot-backed-route-dispatch-egress-001"
+      ]
+    },
+    {
+      "id": "feat:tgpkhot1-kernelplan-benchmark-callgraph-governance-001",
+      "title": "TGPKHOT1, KernelPlan, benchmark, and call-graph governance",
+      "description": "Govern representative kernel-plan benchmarks, call graphs, TGPKHOT1 bins, raw-byte non-growth gates, and parity reporting as required evidence for hot-path changes.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2148"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:tiered-soa-byte-layout-hot-metadata-001",
+      "title": "Tiered SoA byte layout for hot metadata",
+      "description": "Design compiled runtime metadata as C-bulk-backed tiered SoA byte lanes so common hot questions lower to CPython bytes and bytearray builtins before exact Python materialization.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "bnd:transport-dispatch-track-001",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2149"
+      ],
+      "claim_ids": [
+        "clm:runtime-parity-lane-governance-001"
+      ],
+      "test_ids": [
+        "tst:runtime-parity-lane-governance-validator"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -35883,7 +36135,16 @@
         "feat:rust-asgi-boundary-evidence-001",
         "feat:python-runtime-2x-target-comparison-001",
         "feat:rust-runtime-2x-python-target-001",
-        "feat:external-error-detail-sanitization-001"
+        "feat:external-error-detail-sanitization-001",
+        "feat:c-bulk-hot-path-prioritization-atoms-001",
+        "feat:c-bulk-hot-path-prioritization-kernel-001",
+        "feat:c-bulk-hot-path-prioritization-runtime-001",
+        "feat:c-bulk-hot-path-prioritization-default-ops-001",
+        "feat:hotctx-slot-backed-route-dispatch-egress-001",
+        "feat:no-check-attr-hot-runner-preference-001",
+        "feat:lazy-compat-dict-publication-fallback-only-001",
+        "feat:tgpkhot1-kernelplan-benchmark-callgraph-governance-001",
+        "feat:tiered-soa-byte-layout-hot-metadata-001"
       ],
       "claim_ids": [
         "clm:runtime-parity-lane-governance-001"
@@ -44059,7 +44320,16 @@
         "feat:python-runtime-2x-target-comparison-001",
         "feat:rust-runtime-2x-python-target-001",
         "feat:external-error-detail-sanitization-001",
-        "feat:startup-self-warm-runtime-default-001"
+        "feat:startup-self-warm-runtime-default-001",
+        "feat:c-bulk-hot-path-prioritization-atoms-001",
+        "feat:c-bulk-hot-path-prioritization-kernel-001",
+        "feat:c-bulk-hot-path-prioritization-runtime-001",
+        "feat:c-bulk-hot-path-prioritization-default-ops-001",
+        "feat:hotctx-slot-backed-route-dispatch-egress-001",
+        "feat:no-check-attr-hot-runner-preference-001",
+        "feat:lazy-compat-dict-publication-fallback-only-001",
+        "feat:tgpkhot1-kernelplan-benchmark-callgraph-governance-001",
+        "feat:tiered-soa-byte-layout-hot-metadata-001"
       ],
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator",
@@ -59263,6 +59533,50 @@
           "at": "2026-05-01T01:27:51Z"
         }
       ]
+    },
+    {
+      "id": "adr:1127",
+      "number": 1127,
+      "slug": "cpython-native-c-bulk-hot-path-selection-policy",
+      "title": "CPython-Native C-Bulk Hot Path Selection Policy",
+      "path": ".ssot/adr/ADR-1127-cpython-native-c-bulk-hot-path-selection-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "b49a9037203a087d5b8c6bdf9cbeb52643261652c758cfe0062c1073e0fd2853",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern C-bulk-backed hot-path selection across atoms, kernel, runtime, and default ops.",
+          "at": "2026-05-03T04:38:07Z"
+        }
+      ]
+    },
+    {
+      "id": "adr:1128",
+      "number": 1128,
+      "slug": "hotctx-slot-first-attribute-and-lazy-compatibility-publication-policy",
+      "title": "HotCtx Slot-First Attribute And Lazy Compatibility Publication Policy",
+      "path": ".ssot/adr/ADR-1128-hotctx-slot-first-attribute-and-lazy-compatibility-publication-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "3a0482abedb866fcb9f08aa274ca5deb9425c49a17a89733a4df9d3ae3f288da",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern slot-first HotCtx metadata, no-check attrs, and lazy compatibility publication.",
+          "at": "2026-05-03T04:38:08Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -62901,6 +63215,123 @@
         "adr:1100",
         "adr:1121",
         "adr:1125"
+      ]
+    },
+    {
+      "id": "spc:2146",
+      "number": 2146,
+      "slug": "cpython-native-bulk-scan-hot-path-contract",
+      "title": "CPython Native Bulk-Scan Hot Path Contract",
+      "path": ".ssot/specs/SPEC-2146-cpython-native-bulk-scan-hot-path-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "1379fcbc48b7af40cdc89dddf45cd6640c099001e6473a6a402b613f9907c915",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define normative C-bulk-backed lowering rules for governed hot paths.",
+          "at": "2026-05-03T04:38:09Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1127",
+        "adr:1120",
+        "adr:1121",
+        "adr:1125"
+      ]
+    },
+    {
+      "id": "spc:2147",
+      "number": 2147,
+      "slug": "hotctx-slot-backed-metadata-and-lazy-compatibility-publication-contract",
+      "title": "HotCtx Slot-Backed Metadata And Lazy Compatibility Publication Contract",
+      "path": ".ssot/specs/SPEC-2147-hotctx-slot-backed-metadata-and-lazy-compatibility-publication-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "f91ce4f0ae5d24921692c012e2156abee504099157bc619b4393651956c9db4f",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define slot-backed HotCtx metadata and fallback-only compatibility publication.",
+          "at": "2026-05-03T04:38:10Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1128",
+        "adr:1125",
+        "adr:1121",
+        "adr:1120"
+      ]
+    },
+    {
+      "id": "spc:2148",
+      "number": 2148,
+      "slug": "tgpkhot1-and-kernelplan-performance-evidence-contract",
+      "title": "TGPKHOT1 And KernelPlan Performance Evidence Contract",
+      "path": ".ssot/specs/SPEC-2148-tgpkhot1-and-kernelplan-performance-evidence-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "5f828d618ad646c7617dd9102eeafe4724f00934afdf2cf38b21a5cc9e9ebb6b",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define benchmark, call-graph, kernel-plan packing, and TGPKHOT1 non-regression evidence gates.",
+          "at": "2026-05-03T04:38:11Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1127",
+        "adr:1128",
+        "adr:1120",
+        "adr:1121",
+        "adr:1125"
+      ]
+    },
+    {
+      "id": "spc:2149",
+      "number": 2149,
+      "slug": "c-bulk-backed-tiered-soa-byte-layout-contract",
+      "title": "C-Bulk-Backed Tiered-SoA Byte Layout Contract",
+      "path": ".ssot/specs/SPEC-2149-c-bulk-backed-tiered-soa-byte-layout-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "dd20b4bc119c970e81ad586e70be6d2fd2f0fc709313691368f819216cfb90c9",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define tiered SoA byte-lane design for C-bulk-backed hot-path narrowing.",
+          "at": "2026-05-03T04:38:11Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1127",
+        "adr:1120",
+        "adr:1121",
+        "adr:1115"
       ]
     }
   ],
