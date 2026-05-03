@@ -39,6 +39,12 @@ def test_packed_executor_primes_exact_rest_route_before_ingress_probe() -> None:
 
     assert program_id == 7
     assert ctx.temp["program_id"] == 7
+    assert dict.__contains__(ctx.temp, "dispatch") is False
+    assert dict.__contains__(ctx.temp, "route") is False
+    hot = ctx.temp["hot_ctx"]
+    assert hot.dispatch_binding_protocol == "http.rest"
+    assert hot.dispatch_binding_selector == "POST /widgets"
+    assert hot.route_program_id == 7
     assert ctx.temp["dispatch"]["binding_protocol"] == "http.rest"
     assert ctx.temp["dispatch"]["binding_selector"] == "POST /widgets"
     assert ctx.temp["route"]["program_id"] == 7
@@ -224,6 +230,9 @@ async def test_packed_executor_websocket_fast_runner_accepts_receives_sends_and_
 
     assert ctx.phase == "HANDLER"
     assert ctx.result == "hello"
+    assert dict.__contains__(ctx.temp, "route") is False
+    assert dict.__contains__(ctx.temp, "dispatch") is False
+    assert dict.__contains__(ctx.temp, "egress") is False
     assert sent == [
         {"type": "websocket.accept"},
         {"type": "websocket.send", "text": "hello"},
@@ -419,8 +428,6 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
     await executor._resolve_program_runner(packed, 0, hot_op_plan)(ctx)
 
     temp = ctx.temp
-    route = temp["route"]
-    dispatch = temp["dispatch"]
     hot = temp["hot_ctx"]
 
     assert calls == ["handler"]
@@ -429,8 +436,12 @@ async def test_packed_executor_compiled_param_runner_decodes_body_without_runnin
     assert hot.body_hashed_items is None
     assert hot.query_hashed_spans is None
     assert hot.header_hashed_pairs is None
+    assert dict.__contains__(temp, "route") is False
+    assert dict.__contains__(temp, "dispatch") is False
     assert dict.__contains__(temp, "in_values") is False
     assert dict.__contains__(temp, "assembled_values") is False
+    route = temp["route"]
+    dispatch = temp["dispatch"]
     assert dict.__contains__(dispatch, "normalized_input") is False
     assert dict.__contains__(dispatch, "parsed_payload") is False
     assert dict.__contains__(route, "payload") is False
@@ -543,13 +554,158 @@ async def test_packed_executor_compiled_param_runner_specializes_jsonrpc_body_on
     hot = temp["hot_ctx"]
 
     assert calls == ["handler"]
+    assert dict.__contains__(temp, "jsonrpc_request_id") is False
     assert temp["jsonrpc_request_id"] == 7
+    assert temp["dispatch"]["rpc_method"] == "Widget.create"
+    assert temp["route"]["rpc_envelope"]["id"] == 7
     assert hot.body_hashed_items is None
     assert hot.query_hashed_spans is None
     assert hot.header_hashed_pairs is None
     assert dict(temp["in_values"]) == {"name": "Ada"}
     assert temp["assembled_values"] == {"name": "Ada"}
     assert ctx.result == {"ok": True}
+
+
+def test_hot_namespace_lazy_publication_and_write_through_syncs_hot_ctx() -> None:
+    hot = HotCtx(
+        scope_type="http",
+        method="POST",
+        path="/widgets",
+        protocol="http.rest",
+        selector="POST /widgets",
+        route_protocol="http.rest",
+        route_selector="POST /widgets",
+        dispatch_binding_protocol="http.rest",
+        dispatch_binding_selector="POST /widgets",
+    )
+    ctx = _Ctx.ensure(request=None, db=None, seed={"temp": {"hot_ctx": hot}})
+    temp = ctx.temp
+
+    assert dict.__contains__(temp, "route") is False
+    assert dict.__contains__(temp, "dispatch") is False
+    assert dict.__contains__(temp, "egress") is False
+
+    route = temp["route"]
+    dispatch = temp["dispatch"]
+    egress = temp["egress"]
+
+    route["short_circuit"] = True
+    route["method_not_allowed"] = True
+    route["path_params"] = {"item_id": "7"}
+    dispatch["binding_protocol"] = "http.jsonrpc"
+    dispatch["binding_selector"] = "Widget.create"
+    dispatch["rpc"] = {"jsonrpc": "2.0", "method": "Widget.create", "id": 7}
+    egress["transport_response"] = {"status_code": 202}
+    temp["jsonrpc_request_id"] = 7
+
+    assert hot.route_short_circuit is True
+    assert hot.route_method_not_allowed is True
+    assert hot.route_path_params == {"item_id": "7"}
+    assert hot.dispatch_binding_protocol == "http.jsonrpc"
+    assert hot.dispatch_binding_selector == "Widget.create"
+    assert hot.dispatch_rpc_method == "Widget.create"
+    assert hot.dispatch_jsonrpc_request_id == 7
+    assert hot.egress_transport_response == {"status_code": 202}
+
+
+@pytest.mark.asyncio
+async def test_execute_packed_uses_hot_method_not_allowed_without_route_dict(monkeypatch) -> None:
+    executor = PackedPlanExecutor()
+    sent: list[tuple[int, dict[str, object]]] = []
+
+    async def _send_json(_env, status, payload, headers=None):
+        del headers
+        sent.append((status, dict(payload)))
+
+    async def _send_transport_response(_env, _ctx):
+        raise AssertionError("transport response should not send for method_not_allowed")
+
+    async def _probe(*_args, **_kwargs):
+        return -1
+
+    monkeypatch.setattr(
+        executor, "_resolve_transport_senders", lambda: (_send_json, _send_transport_response)
+    )
+    monkeypatch.setattr(executor, "_require_program_id_from_ctx", lambda _ctx: -1)
+    monkeypatch.setattr(executor, "_prime_exact_route_program", lambda *_args: -1)
+    monkeypatch.setattr(executor, "_prime_exact_websocket_program", lambda *_args: -1)
+    monkeypatch.setattr(executor, "_probe_ingress_for_program", _probe)
+
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "temp": {
+                "hot_ctx": HotCtx(
+                    scope_type="http",
+                    method="POST",
+                    path="/widgets",
+                    protocol="http.rest",
+                    selector="POST /widgets",
+                    route_method_not_allowed=True,
+                )
+            }
+        },
+    )
+    env = SimpleNamespace(scope={"type": "http", "method": "POST", "path": "/widgets"})
+
+    await executor._execute_packed(env, ctx, SimpleNamespace(opmeta=()), PackedKernel())
+
+    assert dict.__contains__(ctx.temp, "route") is False
+    assert sent == [(405, {"detail": "Method Not Allowed"})]
+
+
+@pytest.mark.asyncio
+async def test_execute_packed_uses_hot_short_circuit_transport_without_namespace_dicts(
+    monkeypatch,
+) -> None:
+    executor = PackedPlanExecutor()
+    sent: list[str] = []
+
+    async def _send_json(_env, _status, _payload, headers=None):
+        del headers
+        raise AssertionError("short circuit should not go through JSON send")
+
+    async def _send_transport_response(_env, _ctx):
+        sent.append("transport")
+
+    async def _runner(_ctx):
+        return None
+
+    monkeypatch.setattr(
+        executor, "_resolve_transport_senders", lambda: (_send_json, _send_transport_response)
+    )
+    monkeypatch.setattr(executor, "_require_program_id_from_ctx", lambda _ctx: 0)
+    monkeypatch.setattr(executor, "_resolve_program_hot_runner_id", lambda *_args: 0)
+    monkeypatch.setattr(executor, "_resolve_program_runner", lambda *_args: _runner)
+    monkeypatch.setattr(executor, "_resolve_db_acquire", lambda *_args: (lambda _ctx: (None, None)))
+    monkeypatch.setattr(executor, "_resolve_error_segments", lambda *_args: {})
+
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "temp": {
+                "hot_ctx": HotCtx(
+                    scope_type="http",
+                    method="POST",
+                    path="/widgets",
+                    protocol="http.rest",
+                    selector="POST /widgets",
+                    route_short_circuit=True,
+                    egress_transport_response={"status_code": 202},
+                )
+            }
+        },
+    )
+    env = SimpleNamespace(scope={"type": "http", "method": "POST", "path": "/widgets"})
+    plan = SimpleNamespace(opmeta=[SimpleNamespace(model=None, alias="widgets.create", target="create")])
+
+    await executor._execute_packed(env, ctx, plan, PackedKernel())
+
+    assert dict.__contains__(ctx.temp, "route") is False
+    assert dict.__contains__(ctx.temp, "egress") is False
+    assert sent == ["transport"]
 
 
 @pytest.mark.asyncio

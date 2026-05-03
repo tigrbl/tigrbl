@@ -15,7 +15,7 @@
         "E:\\swarmauri_github\\tigrbl\\.tmp\\kernel-plan-benchmark.md"
       ],
       "returncode": 0,
-      "stdout": "{\n  \"fairness\": {\n    \"apples_to_apples_primary_comparison\": \"fastapi.rest_unary vs tigrbl.rest_unary\",\n    \"shared_transport\": \"HTTP REST unary\",\n    \"shared_method\": \"POST\",\n    \"shared_path\": \"/items\",\n    \"shared_payload_shape\": {\n      \"name\": \"string\"\n    },\n    \"shared_table_name\": \"benchmark_item\",\n    \"shared_server_runner\": \"httpx.ASGITransport\",\n    \"shared_database_family\": \"SQLite\",\n    \"notes\": [\n      \"FastAPI has no kernel-plan packing, so KC metrics apply only to Tigrbl.\",\n      \"Tigrbl JSON-RPC is reported as a supplemental non-FastAPI parity scenario.\"\n    ]\n  },\n  \"candidate\": {\n    \"fastapi\": {\n      \"rest_unary\": {\n        \"ops\": 150,\n        \"warmup_ops\": 20,\n        \"total_execution_time_seconds\": 1.061391299997922,\n        \"ops_per_second\": 141.3239396255591,\n        \"endpoint\": \"/items\"\n      },\n      \"persisted_row_count\": 170\n    },\n    \"tigrbl\": {\n      \"kernel_plan_measurement\": {\n        \"raw_bytes\": 1627,\n        \"compressed_bytes\": 721,\n        \"segment_count\": 38,\n        \"step_count\": 60,\n        \"phase_tree_node_count\": 154,\n        \"proto_count\": 6,\n        \"selector_count\": 20,\n        \"op_count\": 11,\n        \"route_row_count\": 6,\n        \"route_col_count\": 20,\n        \"route_slot_count\": 120,\n        \"exact_route_count\": 7,\n        \"fusible_sync_segment_count\": 0,\n        \"hot_op_count\": 11,\n        \"compact_step_count\": 60,\n        \"compact_segment_count\": 11,\n        \"compact_program_segment_ref_count\": 11,\n        \"compact_route_entry_count\": 27,\n        \"shared_error_profile_count\": 2,\n        \"externalized_prelude_step_count\": 1,\n        \"max_index_width_bits\": 16\n      },\n      \"rest_unary\": {\n        \"ops\": 150,\n        \"warmup_ops\": 20,\n        \"total_execution_time_seconds\": 0.19897229998605326,\n        \"ops_per_second\": 753.8737804735337,\n        \"endpoint\": \"/items\"\n      },\n      \"jsonrpc_unary\": {\n        \"ops\": 150,\n        \"warmup_ops\": 20,\n        \"total_execution_time_seconds\": 0.24130829999921843,\n        \"ops_per_second\": 621.6114406362559,\n        \"endpoint\": \"/rpc\",\n        \"method\": \"BenchmarkItem.create\"\n      },\n      \"persisted_row_count\": 340\n    },\n    \"comparisons\": {\n      \"rest_unary\": {\n        \"fastapi_ops_per_second\": 141.3239396255591,\n        \"tigrbl_ops_per_second\": 753.8737804735337,\n        \"delta_ops_per_second\": 612.5498408479746,\n        \"throughput_ratio_tigrbl_over_fastapi\": 5.3343671459410125,\n        \"compressed_bytes_per_tigrbl_op\": 4.806666666666667\n      }\n    }\n  }\n}\n",
+      "stdout": "{\n  \"fairness\": {\n    \"apples_to_apples_primary_comparison\": \"fastapi.rest_unary vs tigrbl.rest_unary\",\n    \"shared_transport\": \"HTTP REST unary\",\n    \"shared_method\": \"POST\",\n    \"shared_path\": \"/items\",\n    \"shared_payload_shape\": {\n      \"name\": \"string\"\n    },\n    \"shared_table_name\": \"benchmark_item\",\n    \"shared_server_runner\": \"httpx.ASGITransport\",\n    \"shared_database_family\": \"SQLite\",\n    \"notes\": [\n      \"FastAPI has no kernel-plan packing, so KC metrics apply only to Tigrbl.\",\n      \"Tigrbl JSON-RPC is reported as a supplemental non-FastAPI parity scenario.\"\n    ]\n  },\n  \"candidate\": {\n    \"fastapi\": {\n      \"rest_unary\": {\n        \"ops\": 150,\n        \"warmup_ops\": 20,\n        \"total_execution_time_seconds\": 1.1380587000166997,\n        \"ops_per_second\": 131.80339467357783,\n        \"endpoint\": \"/items\"\n      },\n      \"persisted_row_count\": 170\n    },\n    \"tigrbl\": {\n      \"kernel_plan_measurement\": {\n        \"raw_bytes\": 1627,\n        \"compressed_bytes\": 721,\n        \"segment_count\": 38,\n        \"step_count\": 60,\n        \"phase_tree_node_count\": 154,\n        \"proto_count\": 6,\n        \"selector_count\": 20,\n        \"op_count\": 11,\n        \"route_row_count\": 6,\n        \"route_col_count\": 20,\n        \"route_slot_count\": 120,\n        \"exact_route_count\": 7,\n        \"fusible_sync_segment_count\": 0,\n        \"hot_op_count\": 11,\n        \"compact_step_count\": 60,\n        \"compact_segment_count\": 11,\n        \"compact_program_segment_ref_count\": 11,\n        \"compact_route_entry_count\": 27,\n        \"shared_error_profile_count\": 2,\n        \"externalized_prelude_step_count\": 1,\n        \"max_index_width_bits\": 16\n      },\n      \"rest_unary\": {\n        \"ops\": 150,\n        \"warmup_ops\": 20,\n        \"total_execution_time_seconds\": 0.20887740002945065,\n        \"ops_per_second\": 718.1246031349048,\n        \"endpoint\": \"/items\"\n      },\n      \"jsonrpc_unary\": {\n        \"ops\": 150,\n        \"warmup_ops\": 20,\n        \"total_execution_time_seconds\": 0.24253690004115924,\n        \"ops_per_second\": 618.4625925974339,\n        \"endpoint\": \"/rpc\",\n        \"method\": \"BenchmarkItem.create\"\n      },\n      \"persisted_row_count\": 340\n    },\n    \"comparisons\": {\n      \"rest_unary\": {\n        \"fastapi_ops_per_second\": 131.80339467357783,\n        \"tigrbl_ops_per_second\": 718.1246031349048,\n        \"delta_ops_per_second\": 586.3212084613269,\n        \"throughput_ratio_tigrbl_over_fastapi\": 5.448453015291455,\n        \"compressed_bytes_per_tigrbl_op\": 4.806666666666667\n      }\n    }\n  }\n}\n",
       "stderr": "",
       "artifacts": [
         "E:\\swarmauri_github\\tigrbl\\.tmp\\kernel-plan-benchmark.json",
@@ -33,7 +33,7 @@
         "-q"
       ],
       "returncode": 0,
-      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison PASSED [100%]\n\n============================= 1 passed in 23.20s ==============================\n",
+      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison PASSED [100%]\n\n============================= 1 passed in 23.17s ==============================\n",
       "stderr": "",
       "artifacts": [
         "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\benchmark_results_create_uvicorn.json",
@@ -51,7 +51,7 @@
         "-q"
       ],
       "returncode": 0,
-      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison_250_ops PASSED [100%]\n\n============================= 1 passed in 47.96s ==============================\n",
+      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison_250_ops PASSED [100%]\n\n============================= 1 passed in 47.61s ==============================\n",
       "stderr": "",
       "artifacts": [
         "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\benchmark_results_create_uvicorn.json",
@@ -69,7 +69,7 @@
         "-q"
       ],
       "returncode": 0,
-      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_tigrbl_create_call_graph.py::test_tigrbl_create_call_graph_250_ops PASSED [100%]\n\n============================== 1 passed in 1.23s ==============================\n",
+      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_tigrbl_create_call_graph.py::test_tigrbl_create_call_graph_250_ops PASSED [100%]\n\n============================== 1 passed in 1.29s ==============================\n",
       "stderr": "",
       "artifacts": [
         "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\tigrbl_create_call_graph_250_ops.json"
@@ -86,7 +86,7 @@
         "-q"
       ],
       "returncode": 0,
-      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_fastapi_create_call_graph.py::test_fastapi_create_call_graph_250_ops PASSED [100%]\n\n============================== 1 passed in 2.61s ==============================\n",
+      "stdout": "\npkgs\\core\\tigrbl_tests\\tests\\perf\\test_fastapi_create_call_graph.py::test_fastapi_create_call_graph_250_ops PASSED [100%]\n\n============================== 1 passed in 2.68s ==============================\n",
       "stderr": "",
       "artifacts": [
         "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\fastapi_create_call_graph_250_ops.json"
@@ -183,8 +183,8 @@
   "gates": {
     "unary": {
       "available": true,
-      "rest_ops_per_second": 753.8737804735337,
-      "jsonrpc_ops_per_second": 621.6114406362559,
+      "rest_ops_per_second": 718.1246031349048,
+      "jsonrpc_ops_per_second": 618.4625925974339,
       "raw_bytes": 1627,
       "raw_bytes_ceiling": 1627,
       "rest_pass": true,
@@ -194,9 +194,9 @@
   },
   "summary": {
     "unary": {
-      "tigrbl_rest_ops_per_second": 753.8737804735337,
-      "tigrbl_jsonrpc_ops_per_second": 621.6114406362559,
-      "fastapi_rest_ops_per_second": 141.3239396255591,
+      "tigrbl_rest_ops_per_second": 718.1246031349048,
+      "tigrbl_jsonrpc_ops_per_second": 618.4625925974339,
+      "fastapi_rest_ops_per_second": 131.80339467357783,
       "tgpkhot1": {
         "raw_bytes": 1627,
         "compressed_bytes": 721
@@ -204,12 +204,12 @@
     },
     "streaming": {
       "transport_only": {
-        "tigrbl_ops_per_second": 1073.7553994895156,
-        "fastapi_ops_per_second": 445.7141552934615
+        "tigrbl_ops_per_second": 1020.0009955902989,
+        "fastapi_ops_per_second": 450.7403861498511
       },
       "db_backed": {
-        "tigrbl_ops_per_second": 688.543246368103,
-        "fastapi_ops_per_second": 168.70585937594083
+        "tigrbl_ops_per_second": 666.8838040304262,
+        "fastapi_ops_per_second": 172.85561205222712
       },
       "tgpkhot1": {
         "raw_bytes": 858,
@@ -218,12 +218,12 @@
     },
     "websocket": {
       "transport_only": {
-        "tigrbl_ops_per_second": 12656.882057123765,
-        "fastapi_ops_per_second": 27490.048485070136
+        "tigrbl_ops_per_second": 14237.956114864006,
+        "fastapi_ops_per_second": 27908.63831371747
       },
       "db_backed": {
-        "tigrbl_ops_per_second": 175.98876825572407,
-        "fastapi_ops_per_second": 174.16504060438723
+        "tigrbl_ops_per_second": 156.40999764916242,
+        "fastapi_ops_per_second": 165.2271089532178
       },
       "tgpkhot1": {
         "raw_bytes": 848,

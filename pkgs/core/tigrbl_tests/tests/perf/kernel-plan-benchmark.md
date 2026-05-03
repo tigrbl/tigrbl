@@ -10,10 +10,10 @@
 - database: SQLite
 
 ## Throughput
-- FastAPI REST unary: 141.32 ops/s
-- Tigrbl REST unary: 753.87 ops/s
-- Tigrbl JSON-RPC unary: 621.61 ops/s
-- Tigrbl/FastAPI REST ratio: 5.334
+- FastAPI REST unary: 131.80 ops/s
+- Tigrbl REST unary: 718.12 ops/s
+- Tigrbl JSON-RPC unary: 618.46 ops/s
+- Tigrbl/FastAPI REST ratio: 5.448
 
 ## Tigrbl Kernel Packing KC Proxy
 - raw bytes: 1627

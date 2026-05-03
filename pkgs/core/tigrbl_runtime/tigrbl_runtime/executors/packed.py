@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import Mapping
 from dataclasses import dataclass
 import inspect
 import json
@@ -9,7 +10,7 @@ import decimal as _dc
 import datetime as _dt
 import zlib
 from importlib import import_module
-from typing import Any, ClassVar, Mapping
+from typing import Any, ClassVar
 from operator import attrgetter
 from types import SimpleNamespace
 from urllib.parse import unquote_plus
@@ -327,18 +328,32 @@ class PackedPlanExecutor(ExecutorBase):
         if not isinstance(temp, dict):
             return None
 
+        hot = dict.get(temp, "hot_ctx")
         rpc_id = temp.get("jsonrpc_request_id")
         is_jsonrpc = "jsonrpc_request_id" in temp
-        for section_key in ("route", "dispatch"):
-            section = temp.get(section_key)
-            if not isinstance(section, Mapping):
-                continue
-            for payload_key in ("rpc_envelope", "rpc"):
-                payload = section.get(payload_key)
-                if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
+        if isinstance(hot, HotCtx):
+            if hot.dispatch_jsonrpc_request_id is not None:
+                rpc_id = hot.dispatch_jsonrpc_request_id
+                is_jsonrpc = True
+            protocol = hot.dispatch_binding_protocol or hot.route_protocol or hot.protocol
+            if str(protocol).endswith(".jsonrpc"):
+                is_jsonrpc = True
+            for payload in (hot.route_rpc_envelope, hot.dispatch_rpc_envelope):
+                if isinstance(payload, dict) and payload.get("jsonrpc") == "2.0":
                     is_jsonrpc = True
                     if rpc_id is None:
                         rpc_id = payload.get("id")
+        if not is_jsonrpc:
+            for section_key in ("route", "dispatch"):
+                section = temp.get(section_key)
+                if not isinstance(section, Mapping):
+                    continue
+                for payload_key in ("rpc_envelope", "rpc"):
+                    payload = section.get(payload_key)
+                    if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
+                        is_jsonrpc = True
+                        if rpc_id is None:
+                            rpc_id = payload.get("id")
 
         if not is_jsonrpc:
             return None
@@ -680,21 +695,18 @@ class PackedPlanExecutor(ExecutorBase):
         return _TRANSPORT_KIND_GENERIC
 
     @staticmethod
-    def _active_transport_kind(
-        hot: HotCtx,
-        dispatch: Mapping[str, Any] | None,
-        fallback: int,
-    ) -> int:
-        protocol = ""
-        if isinstance(dispatch, Mapping):
-            protocol = str(dispatch.get("binding_protocol") or "")
-        if not protocol:
-            protocol = str(hot.protocol or "")
+    def _active_transport_kind(hot: HotCtx, fallback: int) -> int:
+        protocol = str(
+            hot.dispatch_binding_protocol or hot.route_protocol or hot.protocol or ""
+        )
         if protocol.endswith(".jsonrpc"):
             return _TRANSPORT_KIND_JSONRPC
         if protocol.endswith(".rest"):
             return _TRANSPORT_KIND_REST
-        if protocol in {"ws", "wss", "webtransport"}:
+        if protocol in {"ws", "wss", "webtransport"} or hot.scope_type in {
+            "websocket",
+            "webtransport",
+        }:
             return _TRANSPORT_KIND_CHANNEL
         return fallback
 
@@ -719,6 +731,7 @@ class PackedPlanExecutor(ExecutorBase):
         hot.slot_values = slot_values
         hot.slot_present = slot_present
         hot.in_values_view = None
+        hot.route_payload = None
         hot.in_present_names = tuple(
             field_names[idx] for idx in range(len(field_names)) if slot_present[idx]
         )
@@ -810,17 +823,11 @@ class PackedPlanExecutor(ExecutorBase):
     async def _prepare_compiled_input(
         self,
         ctx: _Ctx,
+        hot: HotCtx,
         packed: PackedKernel,
         program_id: int,
         hot_op_plan: Any | None,
     ) -> None:
-        temp = getattr(ctx, "temp", None)
-        if not isinstance(temp, dict):
-            ctx.temp = {}
-            temp = ctx.temp
-        hot = temp.get("hot_ctx")
-        if not isinstance(hot, HotCtx):
-            return
         param_shape_id = self._resolve_program_param_shape_id(
             packed, program_id, hot_op_plan
         )
@@ -833,31 +840,22 @@ class PackedPlanExecutor(ExecutorBase):
         hot.transport_kind_id = self._resolve_program_transport_kind_id(
             packed, program_id, hot_op_plan
         )
-        raw_scope = hot.raw_scope if isinstance(hot.raw_scope, Mapping) else {}
+        raw_scope = hot.raw_scope or {}
         if hot.raw_headers is None:
             hot.raw_headers = self._coerce_header_pairs(raw_scope)
         if not hot.content_type:
             hot.content_type = self._content_type_from_raw_headers(hot.raw_headers or ())
-        if not hot.raw_query_string and isinstance(raw_scope, Mapping):
+        if not hot.raw_query_string:
             query_string = raw_scope.get("query_string", b"")
             if isinstance(query_string, (bytes, bytearray)):
                 hot.raw_query_string = bytes(query_string)
-        if hot.path_params is None:
-            route = dict.get(temp, "route")
-            if isinstance(route, Mapping) and isinstance(route.get("path_params"), Mapping):
-                hot.path_params = route.get("path_params")
-            elif isinstance(raw_scope, Mapping) and isinstance(raw_scope.get("path_params"), Mapping):
-                hot.path_params = raw_scope.get("path_params")
+        if hot.path_params is None and hot.route_path_params is not None:
+            hot.path_params = hot.route_path_params
         request = self._ensure_hot_request(ctx, hot)
         body_bytes = await self._ensure_body_bytes(ctx, hot)
         if request is not None and body_bytes is not None and hasattr(request, "body"):
             request.body = body_bytes
-        dispatch = dict.get(temp, "dispatch")
-        hot.transport_kind_id = self._active_transport_kind(
-            hot,
-            dispatch if isinstance(dispatch, Mapping) else None,
-            hot.transport_kind_id,
-        )
+        hot.transport_kind_id = self._active_transport_kind(hot, hot.transport_kind_id)
         if hot.transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}:
             if not hot.parsed_json_loaded:
                 parsed = None
@@ -869,21 +867,23 @@ class PackedPlanExecutor(ExecutorBase):
                 hot.parsed_json = parsed
                 hot.parsed_json_loaded = True
 
-        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(hot.parsed_json, Mapping):
-            rpc_envelope = (
-                hot.parsed_json if isinstance(hot.parsed_json, dict) else dict(hot.parsed_json)
-            )
-            temp["jsonrpc_request_id"] = rpc_envelope.get("id")
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(hot.parsed_json, dict):
+            rpc_envelope = hot.parsed_json
+            hot.route_rpc_envelope = rpc_envelope
+            hot.dispatch_rpc_envelope = rpc_envelope
+            hot.dispatch_jsonrpc_request_id = rpc_envelope.get("id")
+            method = rpc_envelope.get("method")
+            hot.dispatch_rpc_method = method if isinstance(method, str) else None
 
         plan = self._resolve_compiled_param_plan(ctx, packed, program_id, param_shape_id)
         if not plan.descriptor_plans:
             return
 
         body_payload = hot.parsed_json
-        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, Mapping):
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, dict):
             body_payload = body_payload.get("params", {})
-        body_mapping = body_payload if isinstance(body_payload, Mapping) else None
-        path_mapping = hot.path_params if isinstance(hot.path_params, Mapping) else None
+        body_mapping = body_payload if isinstance(body_payload, dict) else None
+        path_mapping = hot.route_path_params or hot.path_params
         field_names = plan.field_names
         slot_values: list[Any] = [None] * len(field_names)
         slot_present = bytearray(len(field_names))
@@ -1348,7 +1348,98 @@ class PackedPlanExecutor(ExecutorBase):
         return value if isinstance(value, int) else None
 
     @staticmethod
-    def _ensure_hot_ctx(ctx: _Ctx, env: Any) -> HotCtx:
+    def _coerce_dict(value: Any) -> dict[str, Any] | None:
+        if isinstance(value, dict):
+            return value
+        if isinstance(value, Mapping):
+            return dict(value)
+        return None
+
+    @classmethod
+    def _sync_hot_from_temp(cls, temp: dict[str, Any], hot: HotCtx) -> None:
+        route = dict.get(temp, "route")
+        if isinstance(route, dict):
+            if "selector" in route and isinstance(route.get("selector"), str):
+                hot.route_selector = str(route.get("selector"))
+            if "protocol" in route and isinstance(route.get("protocol"), str):
+                hot.route_protocol = str(route.get("protocol"))
+            if "program_id" in route:
+                program_id = cls._coerce_int(route.get("program_id"))
+                if program_id is not None:
+                    hot.route_program_id = program_id
+                    hot.program_id = program_id
+            if "opmeta_index" in route:
+                opmeta_index = cls._coerce_int(route.get("opmeta_index"))
+                if opmeta_index is not None:
+                    hot.route_opmeta_index = opmeta_index
+                    if hot.route_program_id < 0:
+                        hot.route_program_id = opmeta_index
+                    if hot.program_id < 0:
+                        hot.program_id = opmeta_index
+            if "method_not_allowed" in route:
+                hot.route_method_not_allowed = bool(route.get("method_not_allowed"))
+            if "short_circuit" in route:
+                hot.route_short_circuit = bool(route.get("short_circuit"))
+            if "payload" in route:
+                hot.route_payload = cls._coerce_dict(route.get("payload"))
+            if "path_params" in route:
+                path_params = cls._coerce_dict(route.get("path_params"))
+                hot.route_path_params = path_params
+                hot.path_params = path_params
+            if "rpc_envelope" in route:
+                route_rpc_envelope = cls._coerce_dict(route.get("rpc_envelope"))
+                hot.route_rpc_envelope = route_rpc_envelope
+                if route_rpc_envelope is not None:
+                    hot.dispatch_jsonrpc_request_id = route_rpc_envelope.get("id")
+                    method = route_rpc_envelope.get("method")
+                    hot.dispatch_rpc_method = method if isinstance(method, str) else None
+
+        dispatch = dict.get(temp, "dispatch")
+        if isinstance(dispatch, dict):
+            if "binding_protocol" in dispatch and isinstance(
+                dispatch.get("binding_protocol"), str
+            ):
+                hot.dispatch_binding_protocol = str(dispatch.get("binding_protocol"))
+            if "binding_selector" in dispatch and isinstance(
+                dispatch.get("binding_selector"), str
+            ):
+                hot.dispatch_binding_selector = str(dispatch.get("binding_selector"))
+            if "channel_protocol" in dispatch and isinstance(
+                dispatch.get("channel_protocol"), str
+            ):
+                hot.dispatch_channel_protocol = str(dispatch.get("channel_protocol"))
+            if "channel_selector" in dispatch and isinstance(
+                dispatch.get("channel_selector"), str
+            ):
+                hot.dispatch_channel_selector = str(dispatch.get("channel_selector"))
+            if "rpc" in dispatch:
+                dispatch_rpc_envelope = cls._coerce_dict(dispatch.get("rpc"))
+                hot.dispatch_rpc_envelope = dispatch_rpc_envelope
+                if dispatch_rpc_envelope is not None:
+                    hot.dispatch_jsonrpc_request_id = dispatch_rpc_envelope.get("id")
+                    method = dispatch_rpc_envelope.get("method")
+                    hot.dispatch_rpc_method = method if isinstance(method, str) else None
+            if "rpc_method" in dispatch and isinstance(dispatch.get("rpc_method"), str):
+                hot.dispatch_rpc_method = str(dispatch.get("rpc_method"))
+            if "normalized_input" in dispatch or "parsed_payload" in dispatch:
+                hot.route_payload = cls._coerce_dict(
+                    dispatch.get("normalized_input", dispatch.get("parsed_payload"))
+                )
+
+        egress = dict.get(temp, "egress")
+        if isinstance(egress, dict):
+            if "transport_response" in egress:
+                hot.egress_transport_response = cls._coerce_dict(
+                    egress.get("transport_response")
+                )
+            if "sent" in egress:
+                hot.egress_sent = bool(egress.get("sent"))
+
+        if "jsonrpc_request_id" in temp:
+            hot.dispatch_jsonrpc_request_id = dict.get(temp, "jsonrpc_request_id")
+
+    @classmethod
+    def _ensure_hot_ctx(cls, ctx: _Ctx, env: Any) -> HotCtx:
         temp = getattr(ctx, "temp", None)
         if not isinstance(temp, dict):
             ctx.temp = {}
@@ -1358,10 +1449,11 @@ class PackedPlanExecutor(ExecutorBase):
             return hot
 
         scope = getattr(env, "scope", {}) or {}
-        method = str(scope.get("method") or "").upper()
-        path = str(scope.get("path") or "")
-        scheme = str(scope.get("scheme") or "").lower()
-        scope_type = str(scope.get("type") or "")
+        scope_dict = cls._coerce_dict(scope) or {}
+        method = str(scope_dict.get("method") or "").upper()
+        path = str(scope_dict.get("path") or "")
+        scheme = str(scope_dict.get("scheme") or "").lower()
+        scope_type = str(scope_dict.get("type") or "")
         protocol = ""
         selector = ""
         if scope_type == "http" and method and path:
@@ -1370,6 +1462,8 @@ class PackedPlanExecutor(ExecutorBase):
         elif scope_type in {"websocket", "webtransport"} and path:
             protocol = scheme or scope_type
             selector = path
+        path_params = cls._coerce_dict(scope_dict.get("path_params"))
+        raw_query_string = scope_dict.get("query_string", b"")
 
         hot = HotCtx(
             scope_type=scope_type,
@@ -1377,19 +1471,24 @@ class PackedPlanExecutor(ExecutorBase):
             path=path,
             protocol=protocol,
             selector=selector,
+            route_protocol=protocol,
+            route_selector=selector,
+            dispatch_binding_protocol=protocol,
+            dispatch_binding_selector=selector,
+            dispatch_channel_protocol=protocol if scope_type in {"websocket", "webtransport"} else "",
+            dispatch_channel_selector=selector if scope_type in {"websocket", "webtransport"} else "",
             content_type="",
-            raw_scope=scope if isinstance(scope, Mapping) else None,
+            raw_scope=scope_dict or None,
             raw_receive=getattr(env, "receive", None),
             raw_send=getattr(env, "send", None),
-            raw_headers=PackedPlanExecutor._coerce_header_pairs(scope if isinstance(scope, Mapping) else None),
-            raw_query_string=bytes(scope.get("query_string", b""))
-            if isinstance(scope, Mapping)
-            and isinstance(scope.get("query_string", b""), (bytes, bytearray))
+            raw_headers=cls._coerce_header_pairs(scope_dict or None),
+            raw_query_string=bytes(raw_query_string)
+            if isinstance(raw_query_string, (bytes, bytearray))
             else b"",
-            path_params=scope.get("path_params")
-            if isinstance(scope, Mapping) and isinstance(scope.get("path_params"), Mapping)
-            else None,
+            path_params=path_params,
+            route_path_params=path_params,
         )
+        cls._sync_hot_from_temp(temp, hot)
         temp["hot_ctx"] = hot
         return hot
 
@@ -1432,7 +1531,14 @@ class PackedPlanExecutor(ExecutorBase):
             ctx.temp = {}
             temp = ctx.temp
 
-        route = dict.get(temp, "route") if isinstance(temp, dict) else None
+        hot = dict.get(temp, "hot_ctx")
+        if isinstance(hot, HotCtx):
+            value = hot.route_program_id if hot.route_program_id >= 0 else hot.program_id
+            if value >= 0:
+                temp["program_id"] = value
+                return value
+
+        route = dict.get(temp, "route")
         if isinstance(route, dict):
             for key in ("program_id", "opmeta_index"):
                 value = self._coerce_int(route.get(key))
@@ -1453,20 +1559,20 @@ class PackedPlanExecutor(ExecutorBase):
 
         hot = dict.get(temp, "hot_ctx")
         if isinstance(hot, HotCtx) and hot.program_id >= 0:
-            route = dict.get(temp, "route")
-            if isinstance(route, dict):
-                route.setdefault("program_id", hot.program_id)
-                route.setdefault("opmeta_index", hot.program_id)
             temp["program_id"] = hot.program_id
             return hot.program_id
 
-        dispatch = dict.get(temp, "dispatch")
-        if not isinstance(dispatch, dict):
-            return -1
-
-        selector = dispatch.get("binding_selector")
-        protocol = dispatch.get("binding_protocol")
-        if not (isinstance(selector, str) and isinstance(protocol, str)):
+        selector = hot.dispatch_binding_selector if isinstance(hot, HotCtx) else ""
+        protocol = hot.dispatch_binding_protocol if isinstance(hot, HotCtx) else ""
+        if not selector or not protocol:
+            dispatch = dict.get(temp, "dispatch")
+            if not isinstance(dispatch, dict):
+                return -1
+            raw_selector = dispatch.get("binding_selector")
+            raw_protocol = dispatch.get("binding_protocol")
+            selector = raw_selector if isinstance(raw_selector, str) else ""
+            protocol = raw_protocol if isinstance(raw_protocol, str) else ""
+        if not selector or not protocol:
             return -1
 
         selector_to_id = getattr(packed, "selector_to_id", None)
@@ -1479,12 +1585,8 @@ class PackedPlanExecutor(ExecutorBase):
         ):
             return -1
 
-        if isinstance(hot, HotCtx) and hot.selector == selector and hot.protocol == protocol:
-            selector_id = hot.selector_id if hot.selector_id >= 0 else None
-            proto_id = hot.proto_id if hot.proto_id >= 0 else None
-        else:
-            selector_id = self._coerce_int(selector_to_id.get(selector))
-            proto_id = self._coerce_int(proto_to_id.get(protocol))
+        selector_id = self._coerce_int(selector_to_id.get(selector))
+        proto_id = self._coerce_int(proto_to_id.get(protocol))
         if selector_id is None or proto_id is None:
             return -1
         if not (0 <= proto_id < len(route_to_program)):
@@ -1498,13 +1600,13 @@ class PackedPlanExecutor(ExecutorBase):
         if program_id is None or program_id < 0:
             return -1
 
-        route = dict.get(temp, "route")
-        if isinstance(route, dict):
-            route.setdefault("program_id", program_id)
-            route.setdefault("opmeta_index", program_id)
         temp["program_id"] = program_id
         if isinstance(hot, HotCtx):
+            hot.proto_id = proto_id
+            hot.selector_id = selector_id
             hot.program_id = program_id
+            hot.route_program_id = program_id
+            hot.route_opmeta_index = program_id
         return program_id
 
     def _resolve_request_caches(
@@ -1701,6 +1803,16 @@ class PackedPlanExecutor(ExecutorBase):
             if selector_id is not None:
                 hot.selector_id = selector_id
         hot.program_id = program_id
+        hot.route_program_id = program_id
+        hot.route_opmeta_index = program_id
+        if not hot.route_protocol:
+            hot.route_protocol = hot.protocol
+        if not hot.route_selector:
+            hot.route_selector = hot.selector
+        if not hot.dispatch_channel_protocol:
+            hot.dispatch_channel_protocol = hot.route_protocol or hot.protocol
+        if not hot.dispatch_channel_selector:
+            hot.dispatch_channel_selector = hot.route_selector or hot.selector
         hot.transport_kind_id = _TRANSPORT_KIND_CHANNEL
         ctx.path = hot.path
         temp["program_id"] = program_id
@@ -1790,6 +1902,16 @@ class PackedPlanExecutor(ExecutorBase):
             if selector_id is not None:
                 hot.selector_id = selector_id
         hot.program_id = program_id
+        hot.route_program_id = program_id
+        hot.route_opmeta_index = program_id
+        if not hot.route_protocol:
+            hot.route_protocol = hot.protocol
+        if not hot.route_selector:
+            hot.route_selector = hot.selector
+        if not hot.dispatch_binding_protocol:
+            hot.dispatch_binding_protocol = hot.route_protocol or hot.protocol
+        if not hot.dispatch_binding_selector:
+            hot.dispatch_binding_selector = hot.route_selector or hot.selector
         hot.transport_kind_id = _TRANSPORT_KIND_REST
 
         ctx.method = hot.method
@@ -1812,6 +1934,21 @@ class PackedPlanExecutor(ExecutorBase):
         if not isinstance(hot, HotCtx):
             return None
         hot.program_id = program_id
+        hot.route_program_id = program_id
+        hot.route_opmeta_index = program_id
+        if not hot.route_protocol:
+            hot.route_protocol = hot.protocol
+        if not hot.route_selector:
+            hot.route_selector = hot.selector
+        if not hot.dispatch_binding_protocol:
+            hot.dispatch_binding_protocol = hot.route_protocol or hot.protocol
+        if not hot.dispatch_binding_selector:
+            hot.dispatch_binding_selector = hot.route_selector or hot.selector
+        if hot.scope_type in {"websocket", "webtransport"}:
+            if not hot.dispatch_channel_protocol:
+                hot.dispatch_channel_protocol = hot.route_protocol or hot.protocol
+            if not hot.dispatch_channel_selector:
+                hot.dispatch_channel_selector = hot.route_selector or hot.selector
         hot.transport_kind_id = cls._resolve_program_transport_kind_id(
             packed, program_id, hot_op_plan
         )
@@ -2216,13 +2353,13 @@ class PackedPlanExecutor(ExecutorBase):
                 )
 
         async def _runner(ctx: _Ctx) -> None:
-            self._prepare_compiled_dispatch_prelude(
+            hot = self._prepare_compiled_dispatch_prelude(
                 ctx, packed, program_id, hot_op_plan
             )
-            await self._prepare_compiled_input(ctx, packed, program_id, hot_op_plan)
-            temp = getattr(ctx, "temp", None)
-            hot = dict.get(temp, "hot_ctx") if isinstance(temp, dict) else None
-            if isinstance(hot, HotCtx) and hot.compiled_input_ready:
+            if hot is None:
+                return
+            await self._prepare_compiled_input(ctx, hot, packed, program_id, hot_op_plan)
+            if hot.compiled_input_ready:
                 plan = self._resolve_compiled_param_plan(
                     ctx,
                     packed,
@@ -2311,7 +2448,7 @@ class PackedPlanExecutor(ExecutorBase):
                 receive=receive,
                 send=send,
                 path=hot.path,
-                path_params=hot.path_params,
+                path_params=hot.route_path_params or hot.path_params,
                 buffered_message=first_message,
             )
             ctx.phase = "HANDLER"
@@ -2333,6 +2470,7 @@ class PackedPlanExecutor(ExecutorBase):
                     await websocket.send_text(
                         json.dumps(result, separators=(",", ":"), default=str)
                     )
+            hot.egress_sent = websocket.sent_payload
             if not websocket.closed:
                 await websocket.close(1000)
 
@@ -2745,16 +2883,12 @@ class PackedPlanExecutor(ExecutorBase):
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
             scope = getattr(env, "scope", {}) or {}
-            egress = temp.get("egress") if isinstance(temp, dict) else None
-            transport = (
-                egress.get("transport_response") if isinstance(egress, dict) else None
-            )
+            transport = hot.egress_transport_response
             if isinstance(transport, dict):
                 await _send_transport_response(env, ctx)
                 return
 
-            route = temp.get("route", {})
-            if isinstance(route, dict) and route.get("method_not_allowed") is True:
+            if hot.route_method_not_allowed:
                 await _send_json(env, 405, {"detail": "Method Not Allowed"})
                 return
             if str(scope.get("type") or "") == "websocket":
@@ -2912,8 +3046,6 @@ class PackedPlanExecutor(ExecutorBase):
                 )
                 return
 
-            route = temp.get("route", {}) if isinstance(temp, dict) else {}
-            egress = temp.get("egress", {}) if isinstance(temp, dict) else {}
             if program_hot_runner_id == _HOT_RUNNER_WS_UNARY_TEXT:
                 return
             if isinstance(temp, dict) and temp.get("_tigrbl_hot_direct_create") is True:
@@ -2921,12 +3053,7 @@ class PackedPlanExecutor(ExecutorBase):
                 payload = self._serialize_model_row(getattr(ctx, "result", None))
                 await _send_json(env, status, payload)
                 return
-            if (
-                isinstance(route, dict)
-                and route.get("short_circuit") is True
-                and isinstance(egress, dict)
-                and egress.get("transport_response")
-            ):
+            if hot.route_short_circuit and hot.egress_transport_response:
                 await _send_transport_response(env, ctx)
                 return
 

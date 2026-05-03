@@ -1,17 +1,17 @@
 # Hot-Path Perf Suite
 
 ## Gates
-- `REST unary > 425 ops/s`: PASS (753.87)
-- `JSON-RPC unary > 400 ops/s`: PASS (621.61)
+- `REST unary > 425 ops/s`: PASS (718.12)
+- `JSON-RPC unary > 400 ops/s`: PASS (618.46)
 - `Unary TGPKHOT1 raw_bytes <= baseline`: PASS (1627 <= 1627)
 
 ## Throughput Summary
-- unary: tigrbl REST=753.87, tigrbl JSON-RPC=621.61, fastapi REST=141.32
-- streaming transport-only 250: tigrbl=1073.76, fastapi=445.71
-- streaming db-backed 250: tigrbl=688.54, fastapi=168.71
+- unary: tigrbl REST=718.12, tigrbl JSON-RPC=618.46, fastapi REST=131.80
+- streaming transport-only 250: tigrbl=1020.00, fastapi=450.74
+- streaming db-backed 250: tigrbl=666.88, fastapi=172.86
 - streaming TGPKHOT1: raw=858, compressed=374
-- websocket transport-only 250: tigrbl=12656.88, fastapi=27490.05
-- websocket db-backed 250: tigrbl=175.99, fastapi=174.17
+- websocket transport-only 250: tigrbl=14237.96, fastapi=27908.64
+- websocket db-backed 250: tigrbl=156.41, fastapi=165.23
 - websocket TGPKHOT1: raw=848, compressed=350
 
 ## Tasks
