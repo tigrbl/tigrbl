@@ -1,0 +1,58 @@
+{
+  "iterations": 2000000,
+  "samples": 7,
+  "results": [
+    {
+      "title": "runtime_hotstate.concrete_hotctx_dict_none_field",
+      "iterations": 2000000,
+      "samples": 7,
+      "mean_seconds": 0.2053185428708925,
+      "ops_per_second": 9740961.396056816,
+      "mean_ns_per_op": 102.65927143544624,
+      "sample_seconds": [
+        0.20720770000480115,
+        0.205372600001283,
+        0.2036015999619849,
+        0.2093361000297591,
+        0.20115180005086586,
+        0.20552180003141984,
+        0.2050382000161335
+      ]
+    },
+    {
+      "title": "runtime_hotstate.prenormalized_hottemp_namespace",
+      "iterations": 2000000,
+      "samples": 7,
+      "mean_seconds": 0.48105391427608474,
+      "ops_per_second": 4157538.1483169207,
+      "mean_ns_per_op": 240.52695713804235,
+      "sample_seconds": [
+        0.4837331000017002,
+        0.47776490001706406,
+        0.4836286999634467,
+        0.4746746000018902,
+        0.48119959997711703,
+        0.4801568000111729,
+        0.486219699960202
+      ]
+    },
+    {
+      "title": "runtime_hotstate.abcmapping_temp_check",
+      "iterations": 2000000,
+      "samples": 7,
+      "mean_seconds": 1.0675877714280173,
+      "ops_per_second": 1873382.2675064718,
+      "mean_ns_per_op": 533.7938857140086,
+      "sample_seconds": [
+        1.0594930999795906,
+        1.0556569999898784,
+        1.06229530001292,
+        1.1200354999746196,
+        1.066540299972985,
+        1.0612954000243917,
+        1.0477978000417352
+      ]
+    }
+  ],
+  "artifact_path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\runtime_hotstate_microbench.json"
+}
