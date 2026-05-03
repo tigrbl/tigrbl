@@ -29,6 +29,7 @@ from .types import HotCtx, _Ctx
 _HOT_RUNNER_GENERIC = 0
 _HOT_RUNNER_LINEAR_DIRECT = 1
 _HOT_RUNNER_COMPILED_PARAM = 2
+_HOT_RUNNER_WS_UNARY_TEXT = 3
 _DIRECT_INVOKE_STEP = 0
 _DIRECT_INVOKE_RUN = 1
 _DIRECT_INVOKE_RUN_WITH_NONE = 2
@@ -109,6 +110,91 @@ class _CompiledParamPlan:
     needs_path: bool
 
 
+class _DirectWebSocketUnary:
+    __slots__ = (
+        "_receive",
+        "_send",
+        "_buffered",
+        "path_params",
+        "scope",
+        "accepted",
+        "closed",
+        "sent_payload",
+    )
+
+    def __init__(
+        self,
+        *,
+        receive: Any,
+        send: Any,
+        path: str,
+        path_params: Mapping[str, Any] | None,
+        buffered_message: Mapping[str, Any] | None,
+    ) -> None:
+        self._receive = receive
+        self._send = send
+        self._buffered = dict(buffered_message) if isinstance(buffered_message, Mapping) else None
+        self.path_params = dict(path_params or {})
+        self.scope = {"type": "websocket", "path": path}
+        self.accepted = False
+        self.closed = False
+        self.sent_payload = False
+
+    async def accept(self, subprotocol: str | None = None) -> None:
+        if self.accepted:
+            return
+        if callable(self._send):
+            message = {"type": "websocket.accept"}
+            if subprotocol is not None:
+                message["subprotocol"] = subprotocol
+            await self._send(message)
+        self.accepted = True
+
+    async def receive(self) -> dict[str, Any]:
+        if self._buffered is not None:
+            message = self._buffered
+            self._buffered = None
+            return message
+        if callable(self._receive):
+            message = await self._receive()
+            return dict(message) if isinstance(message, Mapping) else {"type": "websocket.disconnect", "code": 1006}
+        return {"type": "websocket.disconnect", "code": 1006}
+
+    async def receive_text(self) -> str:
+        message = await self.receive()
+        if message.get("type") == "websocket.disconnect":
+            self.closed = True
+            raise RuntimeError("websocket disconnected")
+        text = message.get("text")
+        if isinstance(text, str):
+            return text
+        raw = message.get("bytes")
+        if isinstance(raw, (bytes, bytearray)):
+            return bytes(raw).decode("utf-8")
+        return ""
+
+    async def send_text(self, data: str) -> None:
+        await self.accept()
+        if callable(self._send):
+            await self._send({"type": "websocket.send", "text": data})
+        self.sent_payload = True
+
+    async def send_bytes(self, data: bytes) -> None:
+        await self.accept()
+        if callable(self._send):
+            payload = data if isinstance(data, bytes) else bytes(data)
+            await self._send({"type": "websocket.send", "bytes": payload})
+        self.sent_payload = True
+
+    async def close(self, code: int = 1000) -> None:
+        if self.closed:
+            return
+        await self.accept()
+        if callable(self._send):
+            await self._send({"type": "websocket.close", "code": code})
+        self.closed = True
+
+
 class PackedPlanExecutor(ExecutorBase):
     """Executes packed kernel plans via kernel-attached packed execution hooks."""
 
@@ -149,6 +235,9 @@ class PackedPlanExecutor(ExecutorBase):
         self._hot_exact_route_cache: dict[
             int, Mapping[int, tuple[tuple[int, int], ...]]
         ] = {}
+        self._hot_exact_websocket_route_cache: dict[
+            int, Mapping[tuple[str, str], int]
+        ] = {}
         self._param_shape_decode_strategy_cache: dict[
             tuple[int, int, int], tuple[int, tuple[tuple[int, str, int, int], ...]]
         ] = {}
@@ -162,6 +251,54 @@ class PackedPlanExecutor(ExecutorBase):
         from tigrbl_runtime.channel import channel_senders
 
         return channel_senders()
+
+    def should_skip_channel_prelude(
+        self,
+        *,
+        runtime: Any,
+        env: Any,
+        ctx: Any,
+        plan: Any,
+        packed_plan: Any | None = None,
+    ) -> bool:
+        del runtime
+        if not isinstance(plan, KernelPlan) or not isinstance(packed_plan, PackedKernel):
+            return False
+        scope = getattr(env, "scope", {}) or {}
+        if str(scope.get("type") or "") != "websocket":
+            return False
+        protocol = str(scope.get("scheme") or "ws").lower()
+        path = str(scope.get("path") or "")
+        if not path:
+            return False
+        program_id = self._resolve_program_id_from_exact_websocket(
+            plan, packed_plan, protocol, path
+        )
+        if program_id < 0:
+            return False
+        hot_op_plan = (
+            packed_plan.hot_op_plans[program_id]
+            if program_id < len(getattr(packed_plan, "hot_op_plans", ()))
+            else None
+        )
+        if (
+            self._resolve_program_hot_runner_id(
+                packed_plan, program_id, hot_op_plan
+            )
+            != _HOT_RUNNER_WS_UNARY_TEXT
+        ):
+            return False
+        if isinstance(ctx, Mapping):
+            temp = ctx.get("temp")
+            if not isinstance(temp, dict):
+                temp = {}
+                try:
+                    ctx["temp"] = temp
+                except Exception:
+                    temp = None
+            if isinstance(temp, dict):
+                temp["program_id"] = program_id
+        return True
 
     @classmethod
     def _resolve_error_helpers(cls):
@@ -1243,6 +1380,7 @@ class PackedPlanExecutor(ExecutorBase):
             content_type="",
             raw_scope=scope if isinstance(scope, Mapping) else None,
             raw_receive=getattr(env, "receive", None),
+            raw_send=getattr(env, "send", None),
             raw_headers=PackedPlanExecutor._coerce_header_pairs(scope if isinstance(scope, Mapping) else None),
             raw_query_string=bytes(scope.get("query_string", b""))
             if isinstance(scope, Mapping)
@@ -1488,6 +1626,85 @@ class PackedPlanExecutor(ExecutorBase):
                                 temp.setdefault("route", {})["path_params"] = matched.groupdict()
                             return meta_index
         return -1
+
+    def _resolve_hot_exact_websocket_routes(
+        self,
+        plan: KernelPlan,
+        packed: PackedKernel,
+    ) -> Mapping[tuple[str, str], int]:
+        packed_id = id(packed)
+        cached = self._hot_exact_websocket_route_cache.get(packed_id)
+        if cached is not None:
+            return cached
+        exact: dict[tuple[str, str], int] = {}
+        for proto in ("ws", "wss"):
+            bucket = plan.proto_indices.get(proto)
+            if not isinstance(bucket, Mapping):
+                continue
+            exact_bucket = bucket.get("exact")
+            if not isinstance(exact_bucket, Mapping):
+                continue
+            for path, meta_index in exact_bucket.items():
+                if isinstance(path, str) and isinstance(meta_index, int):
+                    exact[(proto, path)] = meta_index
+        self._hot_exact_websocket_route_cache[packed_id] = exact
+        return exact
+
+    def _resolve_program_id_from_exact_websocket(
+        self,
+        plan: KernelPlan,
+        packed: PackedKernel,
+        protocol: str,
+        path: str,
+    ) -> int:
+        exact = self._resolve_hot_exact_websocket_routes(plan, packed)
+        maybe = exact.get((protocol, path))
+        return maybe if isinstance(maybe, int) else -1
+
+    def _prime_exact_websocket_program(
+        self,
+        ctx: _Ctx,
+        env: Any,
+        plan: KernelPlan,
+        packed: PackedKernel,
+    ) -> int:
+        hot = self._ensure_hot_ctx(ctx, env)
+        if hot.scope_type != "websocket" or not hot.protocol or not hot.path:
+            return -1
+        program_id = self._resolve_program_id_from_exact_websocket(
+            plan, packed, hot.protocol, hot.path
+        )
+        if program_id < 0:
+            return -1
+        temp = getattr(ctx, "temp", None)
+        if not isinstance(temp, dict):
+            return -1
+        hot_op_plan = (
+            packed.hot_op_plans[program_id]
+            if program_id < len(getattr(packed, "hot_op_plans", ()))
+            else None
+        )
+        hot_runner_id = self._resolve_program_hot_runner_id(
+            packed, program_id, hot_op_plan
+        )
+        if hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT:
+            return -1
+
+        proto_to_id = getattr(packed, "proto_to_id", None)
+        selector_to_id = getattr(packed, "selector_to_id", None)
+        if isinstance(proto_to_id, Mapping):
+            proto_id = self._coerce_int(proto_to_id.get(hot.protocol))
+            if proto_id is not None:
+                hot.proto_id = proto_id
+        if isinstance(selector_to_id, Mapping):
+            selector_id = self._coerce_int(selector_to_id.get(hot.selector))
+            if selector_id is not None:
+                hot.selector_id = selector_id
+        hot.program_id = program_id
+        hot.transport_kind_id = _TRANSPORT_KIND_CHANNEL
+        ctx.path = hot.path
+        temp["program_id"] = program_id
+        return program_id
 
     def _resolve_hot_exact_route_buckets(
         self, packed: PackedKernel
@@ -2048,6 +2265,80 @@ class PackedPlanExecutor(ExecutorBase):
         self._program_runner_cache[cache_key] = _runner
         return _runner
 
+    def _resolve_program_websocket_unary_text_runner(
+        self,
+        packed: PackedKernel,
+        program_id: int,
+        hot_op_plan: Any | None,
+    ) -> Any:
+        cache_key = (id(packed), program_id, _HOT_RUNNER_WS_UNARY_TEXT)
+        cached = self._program_runner_cache.get(cache_key)
+        if cached is not None:
+            return cached
+
+        endpoint = getattr(hot_op_plan, "websocket_direct_endpoint", None)
+        if not callable(endpoint):
+            runner = self._resolve_program_linear_direct_runner(
+                packed, program_id, hot_op_plan
+            )
+            self._program_runner_cache[cache_key] = runner
+            return runner
+        endpoint_is_async = inspect.iscoroutinefunction(endpoint)
+
+        async def _runner(ctx: _Ctx) -> None:
+            temp = getattr(ctx, "temp", None)
+            hot = dict.get(temp, "hot_ctx") if isinstance(temp, dict) else None
+            if not isinstance(hot, HotCtx):
+                raise RuntimeError("websocket fast runner requires hot websocket context")
+            receive = hot.raw_receive
+            send = hot.raw_send
+            if not callable(send):
+                raise RuntimeError("websocket fast runner requires send callable")
+            first_message: Mapping[str, Any] | None = None
+            if callable(receive):
+                initial = await receive()
+                if isinstance(initial, Mapping):
+                    if initial.get("type") == "websocket.connect":
+                        next_message = await receive() if callable(receive) else {"type": "websocket.disconnect", "code": 1000}
+                        first_message = (
+                            dict(next_message)
+                            if isinstance(next_message, Mapping)
+                            else {"type": "websocket.disconnect", "code": 1000}
+                        )
+                    else:
+                        first_message = dict(initial)
+            websocket = _DirectWebSocketUnary(
+                receive=receive,
+                send=send,
+                path=hot.path,
+                path_params=hot.path_params,
+                buffered_message=first_message,
+            )
+            ctx.phase = "HANDLER"
+            await websocket.accept()
+            if endpoint_is_async:
+                result = await endpoint(websocket)
+            else:
+                result = endpoint(websocket)
+            if result is not None:
+                ctx.result = result
+            if result is not None and not websocket.sent_payload and not websocket.closed:
+                if isinstance(result, memoryview):
+                    await websocket.send_bytes(result.tobytes())
+                elif isinstance(result, (bytes, bytearray)):
+                    await websocket.send_bytes(bytes(result))
+                elif isinstance(result, str):
+                    await websocket.send_text(result)
+                else:
+                    await websocket.send_text(
+                        json.dumps(result, separators=(",", ":"), default=str)
+                    )
+            if not websocket.closed:
+                await websocket.close(1000)
+
+        self._program_runner_cache[cache_key] = _runner
+        return _runner
+
     def _resolve_program_runner(
         self, packed: PackedKernel, program_id: int, hot_op_plan: Any | None
     ) -> Any:
@@ -2060,6 +2351,12 @@ class PackedPlanExecutor(ExecutorBase):
         )
         if program_hot_runner_id == _HOT_RUNNER_COMPILED_PARAM:
             runner = self._resolve_program_compiled_param_runner(
+                packed, program_id, hot_op_plan
+            )
+            self._program_runner_cache[cache_key] = runner
+            return runner
+        if program_hot_runner_id == _HOT_RUNNER_WS_UNARY_TEXT:
+            runner = self._resolve_program_websocket_unary_text_runner(
                 packed, program_id, hot_op_plan
             )
             self._program_runner_cache[cache_key] = runner
@@ -2443,6 +2740,8 @@ class PackedPlanExecutor(ExecutorBase):
         if program_id < 0:
             program_id = self._prime_exact_route_program(ctx, env, packed)
         if program_id < 0:
+            program_id = self._prime_exact_websocket_program(ctx, env, plan, packed)
+        if program_id < 0:
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
             scope = getattr(env, "scope", {}) or {}
@@ -2475,6 +2774,9 @@ class PackedPlanExecutor(ExecutorBase):
             if program_id < len(getattr(packed, "hot_op_plans", ()))
             else None
         )
+        program_hot_runner_id = self._resolve_program_hot_runner_id(
+            packed, program_id, hot_op_plan
+        )
 
         if program_id >= len(plan.opmeta):
             await _send_json(
@@ -2499,7 +2801,10 @@ class PackedPlanExecutor(ExecutorBase):
             except Exception:
                 ctx["env"] = SimpleNamespace(method=ctx.op)
         release_db = None
-        if getattr(ctx, "_raw_db", None) is None:
+        if (
+            program_hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT
+            and getattr(ctx, "_raw_db", None) is None
+        ):
             try:
                 acquire_db = self._resolve_db_acquire(plan, program_id, hot_op_plan)
                 db, release_db = acquire_db(ctx)
@@ -2507,9 +2812,13 @@ class PackedPlanExecutor(ExecutorBase):
                 ctx.owns_tx = True
             except Exception:
                 release_db = None
-        if hot_op_plan is not None and hot_op_plan.opview is not None:
+        if (
+            program_hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT
+            and hot_op_plan is not None
+            and hot_op_plan.opview is not None
+        ):
             ctx.opview = hot_op_plan.opview
-        else:
+        elif program_hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT:
             app = getattr(ctx, "app", None)
             if app is not None and ctx.model is not None and isinstance(ctx.op, str):
                 opview_key = (id(plan), program_id)
@@ -2605,6 +2914,8 @@ class PackedPlanExecutor(ExecutorBase):
 
             route = temp.get("route", {}) if isinstance(temp, dict) else {}
             egress = temp.get("egress", {}) if isinstance(temp, dict) else {}
+            if program_hot_runner_id == _HOT_RUNNER_WS_UNARY_TEXT:
+                return
             if isinstance(temp, dict) and temp.get("_tigrbl_hot_direct_create") is True:
                 status = int(getattr(ctx, "status_code", 201) or 201)
                 payload = self._serialize_model_row(getattr(ctx, "result", None))

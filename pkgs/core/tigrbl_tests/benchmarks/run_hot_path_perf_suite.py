@@ -41,6 +41,12 @@ WEBSOCKET_KERNEL_JSON = PERF_DIR / "kernel-plan-benchmark-websocket.json"
 WEBSOCKET_KERNEL_MD = PERF_DIR / "kernel-plan-benchmark-websocket.md"
 WEBSOCKET_TIGRBL_CALL_GRAPH_JSON = PERF_DIR / "tigrbl_websocket_call_graph_250_ops.json"
 WEBSOCKET_FASTAPI_CALL_GRAPH_JSON = PERF_DIR / "fastapi_websocket_call_graph_250_ops.json"
+WEBSOCKET_TIGRBL_TRANSPORT_CALL_GRAPH_JSON = (
+    PERF_DIR / "tigrbl_websocket_transport_call_graph_250_ops.json"
+)
+WEBSOCKET_FASTAPI_TRANSPORT_CALL_GRAPH_JSON = (
+    PERF_DIR / "fastapi_websocket_transport_call_graph_250_ops.json"
+)
 WEBSOCKET_HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-websocket"
 
 
@@ -203,6 +209,8 @@ def _default_tasks() -> list[CommandTask]:
                 WEBSOCKET_RESULTS_JSON,
                 WEBSOCKET_KERNEL_JSON,
                 WEBSOCKET_KERNEL_MD,
+                WEBSOCKET_TIGRBL_TRANSPORT_CALL_GRAPH_JSON,
+                WEBSOCKET_FASTAPI_TRANSPORT_CALL_GRAPH_JSON,
                 WEBSOCKET_TIGRBL_CALL_GRAPH_JSON,
                 WEBSOCKET_FASTAPI_CALL_GRAPH_JSON,
                 WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".bin"),
@@ -458,6 +466,8 @@ def _required_missing_surfaces() -> list[dict[str, str]]:
         "streaming_tgpkhot1_benchmark": STREAMING_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
         "websocket_parity_benchmark": WEBSOCKET_RESULTS_JSON,
         "websocket_kernel_benchmark": WEBSOCKET_KERNEL_JSON,
+        "websocket_transport_tigrbl_call_graph": WEBSOCKET_TIGRBL_TRANSPORT_CALL_GRAPH_JSON,
+        "websocket_transport_fastapi_call_graph": WEBSOCKET_FASTAPI_TRANSPORT_CALL_GRAPH_JSON,
         "websocket_tigrbl_call_graph": WEBSOCKET_TIGRBL_CALL_GRAPH_JSON,
         "websocket_fastapi_call_graph": WEBSOCKET_FASTAPI_CALL_GRAPH_JSON,
         "websocket_tgpkhot1_bin": WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".bin"),

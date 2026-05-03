@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import json
 from collections import deque
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
+from tigrbl_kernel import build_kernel_plan
 from tigrbl_runtime.channel.websocket import RuntimeWebSocket
 from tigrbl_runtime.executors.packed import PackedPlanExecutor
 from tigrbl_runtime.executors.types import HotCtx, _Ctx
@@ -14,6 +16,7 @@ from tigrbl_atoms.atoms.dispatch.binding_parse import _run as run_binding_parse
 from tigrbl_atoms.atoms.dispatch.input_normalize import _run as run_input_normalize
 from tigrbl_atoms.atoms.ingress.input_prepare import _run as run_input_prepare
 from tigrbl_typing.status.exceptions import HTTPException
+from tests.perf.helper_websocket_apps import create_tigrbl_websocket_transport_app
 
 
 def test_packed_executor_primes_exact_rest_route_before_ingress_probe() -> None:
@@ -136,6 +139,96 @@ async def test_runtime_websocket_receive_uses_fifo_queue() -> None:
 
     assert first == "first"
     assert second == "second"
+
+
+def test_websocket_transport_route_compiles_to_fast_runner() -> None:
+    app = create_tigrbl_websocket_transport_app(Path("dummy.sqlite3"))
+    packed = build_kernel_plan(app).packed
+    assert packed is not None
+
+    hot_op_plan = packed.hot_op_plans[0]
+
+    assert hot_op_plan.program_hot_runner_id == 3
+    assert hot_op_plan.websocket_path == "/ws/echo"
+    assert hot_op_plan.websocket_protocol == "ws"
+    assert hot_op_plan.websocket_framing == "text"
+    assert callable(hot_op_plan.websocket_direct_endpoint)
+
+
+def test_packed_executor_skips_channel_prelude_for_exact_websocket_fast_runner() -> None:
+    app = create_tigrbl_websocket_transport_app(Path("dummy.sqlite3"))
+    plan = build_kernel_plan(app)
+    packed = plan.packed
+    assert packed is not None
+
+    executor = PackedPlanExecutor()
+    ctx = _Ctx.ensure(request=None, db=None, seed={"temp": {}})
+    env = SimpleNamespace(
+        scope={"type": "websocket", "scheme": "ws", "path": "/ws/echo"}
+    )
+
+    assert (
+        executor.should_skip_channel_prelude(
+            runtime=SimpleNamespace(),
+            env=env,
+            ctx=ctx,
+            plan=plan,
+            packed_plan=packed,
+        )
+        is True
+    )
+    assert ctx.temp["program_id"] == 0
+
+
+@pytest.mark.asyncio
+async def test_packed_executor_websocket_fast_runner_accepts_receives_sends_and_closes() -> None:
+    app = create_tigrbl_websocket_transport_app(Path("dummy.sqlite3"))
+    packed = build_kernel_plan(app).packed
+    assert packed is not None
+    hot_op_plan = packed.hot_op_plans[0]
+
+    received = deque(
+        [
+            {"type": "websocket.connect"},
+            {"type": "websocket.receive", "text": "hello"},
+        ]
+    )
+    sent: list[dict[str, object]] = []
+
+    async def _receive() -> dict[str, object]:
+        return received.popleft() if received else {"type": "websocket.disconnect", "code": 1000}
+
+    async def _send(message: dict[str, object]) -> None:
+        sent.append(dict(message))
+
+    executor = PackedPlanExecutor()
+    ctx = _Ctx.ensure(
+        request=None,
+        db=None,
+        seed={
+            "temp": {
+                "hot_ctx": HotCtx(
+                    scope_type="websocket",
+                    path="/ws/echo",
+                    protocol="ws",
+                    selector="/ws/echo",
+                    raw_receive=_receive,
+                    raw_send=_send,
+                    path_params={},
+                )
+            }
+        },
+    )
+
+    await executor._resolve_program_runner(packed, 0, hot_op_plan)(ctx)
+
+    assert ctx.phase == "HANDLER"
+    assert ctx.result == "hello"
+    assert sent == [
+        {"type": "websocket.accept"},
+        {"type": "websocket.send", "text": "hello"},
+        {"type": "websocket.close", "code": 1000},
+    ]
 
 
 @pytest.mark.asyncio

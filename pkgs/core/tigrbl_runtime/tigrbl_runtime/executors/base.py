@@ -15,6 +15,18 @@ class ExecutorBase(ABC):
     def attach_runtime(self, runtime: Any) -> None:
         self.runtime = runtime
 
+    def should_skip_channel_prelude(
+        self,
+        *,
+        runtime: Any,
+        env: Any,
+        ctx: Any,
+        plan: Any,
+        packed_plan: Any | None = None,
+    ) -> bool:
+        del runtime, env, ctx, plan, packed_plan
+        return False
+
     @abstractmethod
     async def invoke(
         self,
