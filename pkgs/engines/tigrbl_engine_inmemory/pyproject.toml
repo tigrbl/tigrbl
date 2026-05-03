@@ -22,9 +22,11 @@ dependencies = ["tigrbl>=0.3.0.dev4"]
 
 
 [project.urls]
-Homepage = "https://github.com/swarmauri/tigrbl"
-Repository = "https://github.com/swarmauri/tigrbl/tree/main/pkgs/engines/tigrbl_engine_inmemory"
-Issues = "https://github.com/swarmauri/tigrbl/issues"
+Organization = "https://github.com/tigrbl"
+Discord = "https://discord.gg/K4YTAPapjR"
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemory"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
 
 [project.entry-points."tigrbl.engine"]
 inmemory = "tigrbl_engine_inmemory.plugin:register"

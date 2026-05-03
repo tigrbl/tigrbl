@@ -31,3 +31,9 @@ This file is a package-local distribution entry point. Authoritative workspace g
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/PACKAGE_LAYOUT.md`
 
+## Package identity
+
+- canonical repository: `https://github.com/tigrbl/tigrbl`
+- organization: `https://github.com/tigrbl`
+- social: `https://discord.gg/K4YTAPapjR`
+- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_sqlite`

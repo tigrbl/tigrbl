@@ -17,6 +17,8 @@ It is not the authoritative location for repository governance, current target s
 ## Package identity
 
 - canonical repository: `https://github.com/tigrbl/tigrbl`
+- organization: `https://github.com/tigrbl`
+- social: `https://discord.gg/K4YTAPapjR`
 - crate path: `https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_ops_oltp`
 - workspace path: `crates/tigrbl_rs_ops_oltp`
 - workspace class: Rust crate
