@@ -16,6 +16,8 @@ It is not the authoritative location for repository governance, current target s
 
 ## Package identity
 
+- canonical repository: `https://github.com/tigrbl/tigrbl`
+- crate path: `https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_engine_sqlite`
 - workspace path: `crates/tigrbl_rs_engine_sqlite`
 - workspace class: Rust crate
 - implementation layout: `src/`
