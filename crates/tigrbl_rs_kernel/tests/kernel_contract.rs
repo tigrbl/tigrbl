@@ -34,10 +34,11 @@ fn compiler_preserves_binding_aliases_and_packs_counts() {
 
     let plan = KernelCompiler.compile(&app);
     assert_eq!(plan.app_name, "demo");
-    assert_eq!(plan.bindings.len(), 2);
+    assert_eq!(plan.bindings.len(), 3);
     assert_eq!(plan.bindings[0].alias, "create_user");
+    assert_eq!(plan.bindings[2].alias, "__tigrbl_default_root__");
     let packed = plan.packed.expect("packed plan");
-    assert_eq!(packed.segments, 2);
-    assert_eq!(packed.fused_steps, 2);
+    assert_eq!(packed.segments, 3);
+    assert_eq!(packed.fused_steps, 3);
     assert_eq!(packed.hot_paths, 1);
 }

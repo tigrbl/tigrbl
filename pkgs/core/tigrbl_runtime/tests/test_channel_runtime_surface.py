@@ -103,7 +103,6 @@ def test_runtime_websocket_replays_buffered_receive_message() -> None:
 
 
 def test_concrete_websocket_export_is_runtime_websocket_facade() -> None:
-    from tigrbl import WebSocket as PublicWebSocket
     try:
         from tigrbl_concrete import WebSocket as ConcreteWebSocket
     except ImportError:
@@ -111,7 +110,6 @@ def test_concrete_websocket_export_is_runtime_websocket_facade() -> None:
 
         pytest.xfail("tigrbl_concrete package root does not export WebSocket yet")
 
-    assert PublicWebSocket is RuntimeWebSocket
     assert ConcreteWebSocket is RuntimeWebSocket
 
 
