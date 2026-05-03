@@ -32,6 +32,12 @@ KERNEL_JSON_PATH = PERF_DIR / "kernel-plan-benchmark-websocket.json"
 KERNEL_MD_PATH = PERF_DIR / "kernel-plan-benchmark-websocket.md"
 TIGRBL_CALL_GRAPH_PATH = PERF_DIR / "tigrbl_websocket_call_graph_250_ops.json"
 FASTAPI_CALL_GRAPH_PATH = PERF_DIR / "fastapi_websocket_call_graph_250_ops.json"
+TIGRBL_TRANSPORT_CALL_GRAPH_PATH = (
+    PERF_DIR / "tigrbl_websocket_transport_call_graph_250_ops.json"
+)
+FASTAPI_TRANSPORT_CALL_GRAPH_PATH = (
+    PERF_DIR / "fastapi_websocket_transport_call_graph_250_ops.json"
+)
 HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-websocket"
 OPS_COUNTS = (25, 250)
 WARMUP_OPS = 5
@@ -540,6 +546,18 @@ async def main() -> None:
         encoding="utf-8",
     )
     RESULTS_PATH.write_text(json.dumps(results, indent=2), encoding="utf-8")
+    await _profile_websocket_call_graph(
+        create_app=create_tigrbl_websocket_transport_app,
+        endpoint="/ws/echo",
+        db_backed=False,
+        results_path=TIGRBL_TRANSPORT_CALL_GRAPH_PATH,
+    )
+    await _profile_websocket_call_graph(
+        create_app=create_fastapi_websocket_transport_app,
+        endpoint="/ws/echo",
+        db_backed=False,
+        results_path=FASTAPI_TRANSPORT_CALL_GRAPH_PATH,
+    )
     await _profile_websocket_call_graph(
         create_app=create_tigrbl_websocket_db_app,
         endpoint="/ws/items",

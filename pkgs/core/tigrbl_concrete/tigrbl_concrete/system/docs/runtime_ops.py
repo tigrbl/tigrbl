@@ -59,6 +59,20 @@ def register_runtime_websocket_route(
             temp = getattr(ctx, "temp", None)
             if isinstance(temp, dict):
                 temp.setdefault("egress", {})["result"] = result
+    setattr(_runtime_websocket_step, "__tigrbl_websocket_endpoint__", endpoint)
+    setattr(_runtime_websocket_step, "__tigrbl_websocket_path__", str(path))
+    setattr(_runtime_websocket_step, "__tigrbl_websocket_protocol__", str(protocol))
+    setattr(
+        _runtime_websocket_step,
+        "__tigrbl_websocket_exchange__",
+        str(normalized_exchange),
+    )
+    setattr(_runtime_websocket_step, "__tigrbl_websocket_framing__", str(framing))
+    setattr(
+        _runtime_websocket_step,
+        "__tigrbl_websocket_exact__",
+        "{" not in str(path) and "}" not in str(path),
+    )
 
     upsert_route_opspec(router, op, handler_step=_runtime_websocket_step)
 

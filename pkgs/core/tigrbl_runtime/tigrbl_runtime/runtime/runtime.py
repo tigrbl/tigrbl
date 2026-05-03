@@ -203,7 +203,17 @@ class Runtime(RuntimeBase):
         impl = self.executors.get(selected)
         if impl is None:
             raise KeyError(f"Unknown executor: {selected}")
-        await prepare_channel_context(env, ctx)
+        skip_channel_prelude = bool(
+            impl.should_skip_channel_prelude(
+                runtime=self,
+                env=env,
+                ctx=ctx,
+                plan=plan,
+                packed_plan=packed_plan,
+            )
+        )
+        if not skip_channel_prelude:
+            await prepare_channel_context(env, ctx)
         result = await impl.invoke(
             runtime=self,
             env=env,
@@ -211,7 +221,8 @@ class Runtime(RuntimeBase):
             plan=plan,
             packed_plan=packed_plan,
         )
-        await complete_channel(env, ctx)
+        if not skip_channel_prelude:
+            await complete_channel(env, ctx)
         return result
 
 

@@ -45,6 +45,7 @@ class HotCtx:
     status_code: int = 200
     raw_scope: Mapping[str, Any] | None = None
     raw_receive: Any = None
+    raw_send: Any = None
     raw_headers: tuple[tuple[bytes, bytes], ...] | None = None
     raw_query_string: bytes = b""
     body_view: memoryview | None = None

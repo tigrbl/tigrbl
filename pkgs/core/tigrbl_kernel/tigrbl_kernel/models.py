@@ -111,6 +111,11 @@ class HotOpPlan:
     program_hot_runner_id: int = 0
     param_shape_id: int = -1
     transport_kind_id: int = 0
+    websocket_path: str = ""
+    websocket_protocol: str = ""
+    websocket_exchange: str = ""
+    websocket_framing: str = ""
+    websocket_direct_endpoint: Any = None
 
 
 @dataclass(frozen=True, slots=True)

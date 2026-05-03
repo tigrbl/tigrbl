@@ -3,5 +3,5 @@
 - shared runner: direct ASGI websocket session
 - raw bytes: 848
 - compressed bytes: 350
-- transport-only 250 ops/s: tigrbl=1251.02, fastapi=28504.97
-- db-backed 250 ops/s: tigrbl=149.58, fastapi=174.22
+- transport-only 250 ops/s: tigrbl=12656.88, fastapi=27490.05
+- db-backed 250 ops/s: tigrbl=175.99, fastapi=174.17

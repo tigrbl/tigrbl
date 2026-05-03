@@ -67,6 +67,7 @@ _RUNTIME_EXECUTION_ORDER = (
 _HOT_RUNNER_GENERIC = 0
 _HOT_RUNNER_LINEAR_DIRECT = 1
 _HOT_RUNNER_COMPILED_PARAM = 2
+_HOT_RUNNER_WS_UNARY_TEXT = 3
 _TRANSPORT_KIND_GENERIC = 0
 _TRANSPORT_KIND_REST = 1
 _TRANSPORT_KIND_JSONRPC = 2
@@ -85,6 +86,32 @@ _DECODER_DECIMAL = 6
 _DECODER_DATETIME = 7
 _DECODER_DATE = 8
 _DECODER_TIME = 9
+_WS_FAST_PATH_BYPASS_ATOM_NAMES = frozenset(
+    {
+        "ingress.ctx_init",
+        "dispatch.op_resolve",
+        "schema.collect_in",
+        "handler.custom",
+        "sys.handler_persistence",
+        "schema.collect_out",
+        "wire.build_out",
+        "response.headers_from_payload",
+        "emit.readtime_alias",
+        "wire.dump",
+        "out.masking",
+        "response.negotiate",
+        "response.render",
+        "response.template",
+        "response.error_to_transport",
+        "egress.result_normalize",
+        "egress.out_dump",
+        "egress.envelope_apply",
+        "egress.headers_apply",
+        "egress.http_finalize",
+        "egress.to_transport_response",
+        "egress.asgi_send",
+    }
+)
 
 
 def _phase_stamp(self: Any, model: type, alias: str) -> tuple[Any, ...]:
@@ -453,7 +480,10 @@ def _program_hot_runner_id(
     remaining_segments: tuple[int, ...],
     param_shape_id: int,
     transport_kind_id: int,
+    websocket_fast_path: bool,
 ) -> int:
+    if websocket_fast_path and (ordered_segments or remaining_segments):
+        return _HOT_RUNNER_WS_UNARY_TEXT
     if (
         param_shape_id >= 0
         and (
@@ -469,6 +499,61 @@ def _program_hot_runner_id(
     if ordered_segments or remaining_segments:
         return _HOT_RUNNER_LINEAR_DIRECT
     return _HOT_RUNNER_GENERIC
+
+
+def _runtime_websocket_fast_path_spec(
+    steps: tuple[StepFn, ...],
+) -> tuple[str, str, str, str, Any] | None:
+    websocket_step: tuple[str, str, str, str, Any] | None = None
+    for step in steps:
+        atom_name = getattr(step, "__tigrbl_atom_name__", None)
+        if bool(getattr(step, "__tigrbl_skip_in_compiled_param", False)) or atom_name == "sys.phase_db":
+            continue
+        for candidate_run in (step, getattr(step, "__tigrbl_direct_run", None)):
+            endpoint = getattr(candidate_run, "__tigrbl_websocket_endpoint__", None)
+            if not callable(endpoint):
+                continue
+            path = getattr(candidate_run, "__tigrbl_websocket_path__", None)
+            protocol = getattr(candidate_run, "__tigrbl_websocket_protocol__", None)
+            exchange = getattr(candidate_run, "__tigrbl_websocket_exchange__", None)
+            framing = getattr(candidate_run, "__tigrbl_websocket_framing__", None)
+            exact = bool(getattr(candidate_run, "__tigrbl_websocket_exact__", False))
+            if (
+                exact
+                and isinstance(path, str)
+                and path
+                and isinstance(protocol, str)
+                and protocol in {"ws", "wss"}
+                and isinstance(framing, str)
+                and framing == "text"
+            ):
+                candidate = (
+                    path,
+                    protocol,
+                    str(exchange or "bidirectional_stream"),
+                    framing,
+                    endpoint,
+                )
+                if websocket_step is None:
+                    websocket_step = candidate
+                    break
+                if websocket_step != candidate:
+                    return None
+                break
+            return None
+        if websocket_step is not None and any(
+            callable(getattr(candidate_run, "__tigrbl_websocket_endpoint__", None))
+            for candidate_run in (step, getattr(step, "__tigrbl_direct_run", None))
+        ):
+            continue
+        if atom_name in {"dep.security", "dep.extra"} and not bool(
+            getattr(step, "__tigrbl_has_direct_dep", True)
+        ):
+            continue
+        if atom_name in _WS_FAST_PATH_BYPASS_ATOM_NAMES:
+            continue
+        return None
+    return websocket_step
 
 
 def _build_route_matrix(
@@ -789,6 +874,16 @@ def _pack_kernel_plan(
             seen_segment_ids.add(seg_id)
             remaining_segments.append(seg_id)
 
+        websocket_fast_path = _runtime_websocket_fast_path_spec(
+            tuple(
+                step_table[step_id]
+                for seg_id in (*ordered_segments, *remaining_segments)
+                for step_id in segment_step_ids[
+                    segment_offsets[seg_id] : segment_offsets[seg_id] + segment_lengths[seg_id]
+                ]
+            )
+        )
+
         for seg_id in (*ordered_segments, *remaining_segments):
             if segment_executor_kinds[seg_id] == LOWER_KIND_SYNC_EXTRACTABLE:
                 fusible_sync_segment_ids.append(seg_id)
@@ -840,6 +935,7 @@ def _pack_kernel_plan(
             remaining_segments=tuple(remaining_segments),
             param_shape_id=param_shape_id,
             transport_kind_id=transport_kind_id,
+            websocket_fast_path=websocket_fast_path is not None,
         )
         program_hot_runner_ids.append(hot_runner_id)
 
@@ -871,6 +967,11 @@ def _pack_kernel_plan(
                 program_hot_runner_id=hot_runner_id,
                 param_shape_id=param_shape_id,
                 transport_kind_id=transport_kind_id,
+                websocket_path=websocket_fast_path[0] if websocket_fast_path is not None else "",
+                websocket_protocol=websocket_fast_path[1] if websocket_fast_path is not None else "",
+                websocket_exchange=websocket_fast_path[2] if websocket_fast_path is not None else "",
+                websocket_framing=websocket_fast_path[3] if websocket_fast_path is not None else "",
+                websocket_direct_endpoint=websocket_fast_path[4] if websocket_fast_path is not None else None,
             )
         )
 

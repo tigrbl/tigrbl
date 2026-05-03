@@ -1,17 +1,17 @@
 # Hot-Path Perf Suite
 
 ## Gates
-- `REST unary > 425 ops/s`: PASS (628.40)
-- `JSON-RPC unary > 400 ops/s`: PASS (564.28)
+- `REST unary > 425 ops/s`: PASS (753.87)
+- `JSON-RPC unary > 400 ops/s`: PASS (621.61)
 - `Unary TGPKHOT1 raw_bytes <= baseline`: PASS (1627 <= 1627)
 
 ## Throughput Summary
-- unary: tigrbl REST=628.40, tigrbl JSON-RPC=564.28, fastapi REST=120.20
-- streaming transport-only 250: tigrbl=1017.04, fastapi=417.56
-- streaming db-backed 250: tigrbl=677.22, fastapi=168.01
+- unary: tigrbl REST=753.87, tigrbl JSON-RPC=621.61, fastapi REST=141.32
+- streaming transport-only 250: tigrbl=1073.76, fastapi=445.71
+- streaming db-backed 250: tigrbl=688.54, fastapi=168.71
 - streaming TGPKHOT1: raw=858, compressed=374
-- websocket transport-only 250: tigrbl=1251.02, fastapi=28504.97
-- websocket db-backed 250: tigrbl=149.58, fastapi=174.22
+- websocket transport-only 250: tigrbl=12656.88, fastapi=27490.05
+- websocket db-backed 250: tigrbl=175.99, fastapi=174.17
 - websocket TGPKHOT1: raw=848, compressed=350
 
 ## Tasks
@@ -46,6 +46,8 @@
 - `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\benchmark_results_websocket_uvicorn.json`
 - `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\kernel-plan-benchmark-websocket.json`
 - `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\kernel-plan-benchmark-websocket.md`
+- `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\tigrbl_websocket_transport_call_graph_250_ops.json`
+- `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\fastapi_websocket_transport_call_graph_250_ops.json`
 - `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\tigrbl_websocket_call_graph_250_ops.json`
 - `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\fastapi_websocket_call_graph_250_ops.json`
 - `E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests\tests\perf\tgpkhot1-benchmark-websocket.bin`
