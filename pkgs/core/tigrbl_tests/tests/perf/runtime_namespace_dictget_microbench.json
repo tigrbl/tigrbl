@@ -1,0 +1,75 @@
+{
+  "iterations": 2000000,
+  "samples": 7,
+  "results": [
+    {
+      "title": "runtime_namespace.repeated_temp_get_namespace",
+      "iterations": 2000000,
+      "samples": 7,
+      "mean_seconds": 2.0692458142875694,
+      "ops_per_second": 966535.7233976523,
+      "mean_ns_per_op": 1034.6229071437847,
+      "sample_seconds": [
+        2.0678098000353202,
+        2.074975399998948,
+        2.058934499975294,
+        2.070622499973979,
+        2.080942300031893,
+        2.081008000008296,
+        2.0504281999892555
+      ]
+    },
+    {
+      "title": "runtime_namespace.slot_backed_attrs",
+      "iterations": 2000000,
+      "samples": 7,
+      "mean_seconds": 0.22258635714284278,
+      "ops_per_second": 8985276.661482528,
+      "mean_ns_per_op": 111.29317857142138,
+      "sample_seconds": [
+        0.2227345000137575,
+        0.2179681999841705,
+        0.2232437999919057,
+        0.2216731999651529,
+        0.22621960000833496,
+        0.22369360004086047,
+        0.2225715999957174
+      ]
+    },
+    {
+      "title": "runtime_namespace.slot_backed_cached_compat_views",
+      "iterations": 2000000,
+      "samples": 7,
+      "mean_seconds": 0.6391657857041407,
+      "ops_per_second": 3129078.6283197063,
+      "mean_ns_per_op": 319.58289285207036,
+      "sample_seconds": [
+        0.6343527999706566,
+        0.6380609999760054,
+        0.6460778000182472,
+        0.6515734999557026,
+        0.6282290000235662,
+        0.637104100023862,
+        0.6387622999609448
+      ]
+    },
+    {
+      "title": "runtime_namespace.slot_backed_cold_publish_views",
+      "iterations": 2000000,
+      "samples": 7,
+      "mean_seconds": 1.2517559143099268,
+      "ops_per_second": 1597755.5824871561,
+      "mean_ns_per_op": 625.8779571549634,
+      "sample_seconds": [
+        1.2484300000360236,
+        1.2585207000374794,
+        1.2649212999967858,
+        1.2404357999912463,
+        1.2446766000357457,
+        1.2485984000377357,
+        1.2567086000344716
+      ]
+    }
+  ],
+  "artifact_path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\runtime_namespace_dictget_microbench.json"
+}
