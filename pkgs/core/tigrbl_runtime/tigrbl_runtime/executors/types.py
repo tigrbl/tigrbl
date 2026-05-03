@@ -41,9 +41,22 @@ class HotCtx:
     proto_id: int = -1
     selector_id: int = -1
     program_id: int = -1
+    route_protocol: str = ""
+    route_selector: str = ""
+    route_program_id: int = -1
+    route_opmeta_index: int = -1
+    route_method_not_allowed: bool = False
+    route_short_circuit: bool = False
+    dispatch_binding_protocol: str = ""
+    dispatch_binding_selector: str = ""
+    dispatch_channel_protocol: str = ""
+    dispatch_channel_selector: str = ""
+    dispatch_jsonrpc_request_id: Any = None
+    dispatch_rpc_method: str | None = None
+    egress_sent: bool = False
     content_type: str = ""
     status_code: int = 200
-    raw_scope: Mapping[str, Any] | None = None
+    raw_scope: dict[str, Any] | None = None
     raw_receive: Any = None
     raw_send: Any = None
     raw_headers: tuple[tuple[bytes, bytes], ...] | None = None
@@ -52,19 +65,24 @@ class HotCtx:
     body_bytes: bytes | None = None
     parsed_json: Any = None
     parsed_json_loaded: bool = False
-    body_hashed_items: Mapping[int, Any] | None = None
+    body_hashed_items: dict[int, Any] | None = None
     header_hashed_pairs: tuple[tuple[int, bytes], ...] | None = None
     query_hashed_spans: tuple[tuple[int, int, int, int], ...] | None = None
-    path_params: Mapping[str, Any] | None = None
+    path_params: dict[str, Any] | None = None
+    route_payload: dict[str, Any] | None = None
+    route_path_params: dict[str, Any] | None = None
+    route_rpc_envelope: dict[str, Any] | None = None
+    dispatch_rpc_envelope: dict[str, Any] | None = None
+    egress_transport_response: dict[str, Any] | None = None
     slot_values: list[Any] | None = None
     slot_present: bytearray | None = None
     slot_field_names: tuple[str, ...] = ()
-    slot_field_index: Mapping[str, int] | None = None
+    slot_field_index: dict[str, int] | None = None
     param_shape_id: int = -1
     transport_kind_id: int = 0
     compiled_input_ready: bool = False
     compiled_in_invalid: bool | None = None
-    compiled_in_errors: tuple[Mapping[str, Any], ...] | None = None
+    compiled_in_errors: tuple[dict[str, Any], ...] | None = None
     compiled_in_coerced: tuple[str, ...] = ()
     assembled_slot_values: list[Any] | None = None
     assembled_slot_present: bytearray | None = None
@@ -77,8 +95,8 @@ class HotCtx:
     absent_fields: tuple[str, ...] = ()
     used_default_factory: tuple[str, ...] = ()
     lazy_published: bool = False
-    headers: Mapping[str, str] | None = None
-    query: Mapping[str, Any] | None = None
+    headers: dict[str, str] | None = None
+    query: dict[str, Any] | None = None
     flags: dict[str, Any] = field(default_factory=dict)
 
 
@@ -102,7 +120,7 @@ class _HotSlotMap(ABCMapping[str, Any]):
 
     def __getitem__(self, key: str) -> Any:
         field_index = self._field_index
-        if isinstance(field_index, ABCMapping):
+        if field_index is not None:
             idx = field_index.get(key, -1)
             if 0 <= idx < len(self._slot_present) and self._slot_present[idx]:
                 return self._slot_values[idx]
@@ -189,6 +207,191 @@ def _ensure_hot_virtual_in_view(hot: HotCtx) -> Mapping[str, Any] | None:
     return view
 
 
+def _coerce_optional_dict(value: Any) -> dict[str, Any] | None:
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, ABCMapping):
+        return dict(value)
+    return None
+
+
+def _namespace_lazy_value(kind: str, hot: HotCtx, key: str) -> Any:
+    if kind == "route":
+        if key == "selector":
+            value = hot.route_selector
+            return value if value else _LAZY_MISSING
+        if key == "protocol":
+            value = hot.route_protocol
+            return value if value else _LAZY_MISSING
+        if key == "program_id":
+            value = hot.route_program_id if hot.route_program_id >= 0 else hot.program_id
+            return value if value >= 0 else _LAZY_MISSING
+        if key == "opmeta_index":
+            value = (
+                hot.route_opmeta_index
+                if hot.route_opmeta_index >= 0
+                else hot.route_program_id
+            )
+            return value if value >= 0 else _LAZY_MISSING
+        if key == "method_not_allowed":
+            return True if hot.route_method_not_allowed else _LAZY_MISSING
+        if key == "short_circuit":
+            return True if hot.route_short_circuit else _LAZY_MISSING
+        if key == "payload":
+            if hot.route_payload is not None:
+                return hot.route_payload
+            value = _ensure_hot_in_values_view(hot)
+            return value if value is not None else _LAZY_MISSING
+        if key == "path_params":
+            value = hot.route_path_params or hot.path_params
+            return value if value is not None else _LAZY_MISSING
+        if key == "rpc_envelope":
+            value = hot.route_rpc_envelope or hot.dispatch_rpc_envelope
+            return value if value is not None else _LAZY_MISSING
+        return _LAZY_MISSING
+    if kind == "dispatch":
+        if key == "binding_protocol":
+            value = hot.dispatch_binding_protocol
+            return value if value else _LAZY_MISSING
+        if key == "binding_selector":
+            value = hot.dispatch_binding_selector
+            return value if value else _LAZY_MISSING
+        if key == "channel_protocol":
+            value = hot.dispatch_channel_protocol
+            return value if value else _LAZY_MISSING
+        if key == "channel_selector":
+            value = hot.dispatch_channel_selector
+            return value if value else _LAZY_MISSING
+        if key in {"normalized_input", "parsed_payload"}:
+            value = _ensure_hot_in_values_view(hot)
+            return value if value is not None else _LAZY_MISSING
+        if key == "rpc":
+            value = hot.dispatch_rpc_envelope or hot.route_rpc_envelope
+            return value if value is not None else _LAZY_MISSING
+        if key == "rpc_method":
+            value = hot.dispatch_rpc_method
+            return value if value is not None else _LAZY_MISSING
+        return _LAZY_MISSING
+    if kind == "egress":
+        if key == "transport_response":
+            value = hot.egress_transport_response
+            return value if value is not None else _LAZY_MISSING
+        if key == "sent":
+            return True if hot.egress_sent else _LAZY_MISSING
+        return _LAZY_MISSING
+    return _LAZY_MISSING
+
+
+def _sync_hot_namespace_value(kind: str, hot: HotCtx, key: str, value: Any) -> None:
+    if kind == "route":
+        if key == "selector" and isinstance(value, str):
+            hot.route_selector = value
+        elif key == "protocol" and isinstance(value, str):
+            hot.route_protocol = value
+        elif key == "program_id" and isinstance(value, int):
+            hot.route_program_id = value
+            hot.program_id = value
+        elif key == "opmeta_index" and isinstance(value, int):
+            hot.route_opmeta_index = value
+            if hot.route_program_id < 0:
+                hot.route_program_id = value
+            if hot.program_id < 0:
+                hot.program_id = value
+        elif key == "method_not_allowed":
+            hot.route_method_not_allowed = bool(value)
+        elif key == "short_circuit":
+            hot.route_short_circuit = bool(value)
+        elif key == "payload":
+            hot.route_payload = _coerce_optional_dict(value)
+        elif key == "path_params":
+            path_params = _coerce_optional_dict(value)
+            hot.route_path_params = path_params
+            hot.path_params = path_params
+        elif key == "rpc_envelope":
+            envelope = _coerce_optional_dict(value)
+            hot.route_rpc_envelope = envelope
+            if envelope is not None:
+                hot.dispatch_jsonrpc_request_id = envelope.get("id")
+                method = envelope.get("method")
+                hot.dispatch_rpc_method = method if isinstance(method, str) else None
+    elif kind == "dispatch":
+        if key == "binding_protocol" and isinstance(value, str):
+            hot.dispatch_binding_protocol = value
+        elif key == "binding_selector" and isinstance(value, str):
+            hot.dispatch_binding_selector = value
+        elif key == "channel_protocol" and isinstance(value, str):
+            hot.dispatch_channel_protocol = value
+        elif key == "channel_selector" and isinstance(value, str):
+            hot.dispatch_channel_selector = value
+        elif key == "rpc":
+            envelope = _coerce_optional_dict(value)
+            hot.dispatch_rpc_envelope = envelope
+            if envelope is not None:
+                hot.dispatch_jsonrpc_request_id = envelope.get("id")
+                method = envelope.get("method")
+                hot.dispatch_rpc_method = method if isinstance(method, str) else None
+        elif key == "rpc_method":
+            hot.dispatch_rpc_method = value if isinstance(value, str) else None
+        elif key in {"normalized_input", "parsed_payload"}:
+            route_payload = _coerce_optional_dict(value)
+            if route_payload is not None:
+                hot.route_payload = route_payload
+        elif key == "jsonrpc_request_id":
+            hot.dispatch_jsonrpc_request_id = value
+    elif kind == "egress":
+        if key == "transport_response":
+            hot.egress_transport_response = _coerce_optional_dict(value)
+        elif key == "sent":
+            hot.egress_sent = bool(value)
+
+
+def _clear_hot_namespace_value(kind: str, hot: HotCtx, key: str) -> None:
+    if kind == "route":
+        if key == "selector":
+            hot.route_selector = ""
+        elif key == "protocol":
+            hot.route_protocol = ""
+        elif key == "program_id":
+            hot.route_program_id = -1
+        elif key == "opmeta_index":
+            hot.route_opmeta_index = -1
+        elif key == "method_not_allowed":
+            hot.route_method_not_allowed = False
+        elif key == "short_circuit":
+            hot.route_short_circuit = False
+        elif key == "payload":
+            hot.route_payload = None
+        elif key == "path_params":
+            hot.route_path_params = None
+            hot.path_params = None
+        elif key == "rpc_envelope":
+            hot.route_rpc_envelope = None
+            hot.dispatch_jsonrpc_request_id = None
+            hot.dispatch_rpc_method = None
+    elif kind == "dispatch":
+        if key == "binding_protocol":
+            hot.dispatch_binding_protocol = ""
+        elif key == "binding_selector":
+            hot.dispatch_binding_selector = ""
+        elif key == "channel_protocol":
+            hot.dispatch_channel_protocol = ""
+        elif key == "channel_selector":
+            hot.dispatch_channel_selector = ""
+        elif key == "rpc":
+            hot.dispatch_rpc_envelope = None
+            hot.dispatch_jsonrpc_request_id = None
+            hot.dispatch_rpc_method = None
+        elif key == "rpc_method":
+            hot.dispatch_rpc_method = None
+        elif key == "jsonrpc_request_id":
+            hot.dispatch_jsonrpc_request_id = None
+    elif kind == "egress":
+        if key == "transport_response":
+            hot.egress_transport_response = None
+        elif key == "sent":
+            hot.egress_sent = False
+
+
 class _HotNamespaceDict(dict[str, Any]):
     __slots__ = ("_kind", "_temp")
 
@@ -196,45 +399,28 @@ class _HotNamespaceDict(dict[str, Any]):
         super().__init__(initial or {})
         self._kind = kind
         self._temp = temp
+        hot = temp._hot_ctx()
+        if hot is not None and initial:
+            for key, value in initial.items():
+                _sync_hot_namespace_value(kind, hot, key, value)
 
     def _lazy_value(self, key: str) -> Any:
         hot = self._temp._hot_ctx()
         if hot is None:
             return _LAZY_MISSING
-        if self._kind == "route":
-            if key == "selector" and hot.selector:
-                return hot.selector
-            if key == "protocol" and hot.protocol:
-                return hot.protocol
-            if key in {"program_id", "opmeta_index"} and hot.program_id >= 0:
-                return hot.program_id
-            if key == "payload":
-                value = _ensure_hot_in_values_view(hot)
-                if value is not None:
-                    return value
-            if key == "path_params" and isinstance(hot.path_params, ABCMapping):
-                return hot.path_params
-            if key == "rpc_envelope" and isinstance(hot.parsed_json, ABCMapping):
-                return hot.parsed_json
-            return _LAZY_MISSING
-        if key == "binding_protocol" and hot.protocol:
-            return hot.protocol
-        if key == "binding_selector" and hot.selector:
-            return hot.selector
-        if key == "channel_protocol" and hot.protocol:
-            return hot.protocol
-        if key == "channel_selector" and hot.selector:
-            return hot.selector
-        if key in {"normalized_input", "parsed_payload"}:
-            value = _ensure_hot_in_values_view(hot)
-            if value is not None:
-                return value
-        if key == "rpc" and isinstance(hot.parsed_json, ABCMapping):
-            return hot.parsed_json
-        if key == "rpc_method" and isinstance(hot.parsed_json, ABCMapping):
-            method = hot.parsed_json.get("method")
-            return method if method is not None else _LAZY_MISSING
-        return _LAZY_MISSING
+        return _namespace_lazy_value(self._kind, hot, key)
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        dict.__setitem__(self, key, value)
+        hot = self._temp._hot_ctx()
+        if hot is not None:
+            _sync_hot_namespace_value(self._kind, hot, key, value)
+
+    def __delitem__(self, key: str) -> None:
+        dict.__delitem__(self, key)
+        hot = self._temp._hot_ctx()
+        if hot is not None:
+            _clear_hot_namespace_value(self._kind, hot, key)
 
     def __getitem__(self, key: str) -> Any:
         try:
@@ -254,6 +440,34 @@ class _HotNamespaceDict(dict[str, Any]):
             return default
         dict.__setitem__(self, key, value)
         return value
+
+    def setdefault(self, key: str, default: Any = None) -> Any:
+        if dict.__contains__(self, key):
+            return dict.__getitem__(self, key)
+        self[key] = default
+        return default
+
+    def update(self, *args: Any, **kwargs: Any) -> None:
+        for mapping in args:
+            if isinstance(mapping, ABCMapping):
+                for key, value in mapping.items():
+                    self[key] = value
+            else:
+                for key, value in dict(mapping).items():
+                    self[key] = value
+        for key, value in kwargs.items():
+            self[key] = value
+
+    def pop(self, key: str, default: Any = _LAZY_MISSING) -> Any:
+        if dict.__contains__(self, key):
+            value = dict.pop(self, key)
+            hot = self._temp._hot_ctx()
+            if hot is not None:
+                _clear_hot_namespace_value(self._kind, hot, key)
+            return value
+        if default is _LAZY_MISSING:
+            raise KeyError(key)
+        return default
 
     def __contains__(self, key: object) -> bool:
         if dict.__contains__(self, key):
@@ -280,7 +494,7 @@ class _HotTemp(dict[str, Any]):
         return hot if isinstance(hot, HotCtx) else None
 
     def _wrap_namespace(self, key: str, value: Any) -> Any:
-        if key in {"route", "dispatch"} and isinstance(value, dict) and not isinstance(
+        if key in {"route", "dispatch", "egress"} and isinstance(value, dict) and not isinstance(
             value, _HotNamespaceDict
         ):
             return _HotNamespaceDict(key, self, value)
@@ -290,8 +504,14 @@ class _HotTemp(dict[str, Any]):
         hot = self._hot_ctx()
         if hot is None:
             return _LAZY_MISSING
-        if key in {"route", "dispatch"}:
+        if key in {"route", "dispatch", "egress"}:
             return _HotNamespaceDict(key, self)
+        if key == "jsonrpc_request_id":
+            if hot.dispatch_jsonrpc_request_id is not None:
+                return hot.dispatch_jsonrpc_request_id
+            envelope = hot.dispatch_rpc_envelope or hot.route_rpc_envelope
+            if envelope is not None and "id" in envelope:
+                return envelope["id"]
         if key == "compiled_in_values_ready" and hot.compiled_input_ready:
             return True
         if key == "in_values":
@@ -321,7 +541,12 @@ class _HotTemp(dict[str, Any]):
         return _LAZY_MISSING
 
     def __setitem__(self, key: str, value: Any) -> None:
-        dict.__setitem__(self, key, self._wrap_namespace(key, value))
+        value = self._wrap_namespace(key, value)
+        dict.__setitem__(self, key, value)
+        if key == "jsonrpc_request_id":
+            hot = self._hot_ctx()
+            if hot is not None:
+                hot.dispatch_jsonrpc_request_id = value
 
     def update(self, *args: Any, **kwargs: Any) -> None:
         for mapping in args:
@@ -366,6 +591,13 @@ class _HotTemp(dict[str, Any]):
         if not isinstance(key, str):
             return False
         return self._lazy_value(key) is not _LAZY_MISSING
+
+    def __delitem__(self, key: str) -> None:
+        dict.__delitem__(self, key)
+        if key == "jsonrpc_request_id":
+            hot = self._hot_ctx()
+            if hot is not None:
+                hot.dispatch_jsonrpc_request_id = None
 
 
 class _ResponseState:
@@ -485,7 +717,7 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
 
     def _hot_ctx(self) -> HotCtx | None:
         temp = object.__getattribute__(self, "temp")
-        if isinstance(temp, ABCMapping):
+        if isinstance(temp, dict):
             hot = temp.get("hot_ctx")
             return hot if isinstance(hot, HotCtx) else None
         return None
@@ -498,8 +730,10 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
             value = _ensure_hot_in_values_view(hot)
             if value is None:
                 return _LAZY_MISSING
-        elif name == "path_params" and isinstance(hot.path_params, ABCMapping):
-            value = hot.path_params
+        elif name == "path_params":
+            value = hot.route_path_params or hot.path_params
+            if value is None:
+                return _LAZY_MISSING
         else:
             return _LAZY_MISSING
         if cache:
