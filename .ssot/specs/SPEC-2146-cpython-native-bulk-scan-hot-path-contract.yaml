@@ -1,0 +1,70 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2146"
+number: 2146
+slug: "cpython-native-bulk-scan-hot-path-contract"
+title: "CPython Native Bulk-Scan Hot Path Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the normative lowering rules for CPython-native C-bulk-backed hot-path work across atoms, kernel compilation artifacts, runtime executors, and default operation surfaces. This contract governs the repository's Python-orchestrated, CPython-native bulk-scan architecture."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define normative C-bulk-backed lowering rules for governed hot paths."
+    at: "2026-05-03T04:38:09Z"
+references: []
+body: |-
+  ## Intent
+  Define the normative lowering rules for CPython-native C-bulk-backed hot-path work across atoms, kernel compilation artifacts, runtime executors, and default operation surfaces. This contract governs the repository's Python-orchestrated, CPython-native bulk-scan architecture.
+  
+  ## Lowering Rule
+  A governed hot-path query, dispatch step, selection step, or predicate SHOULD lower to a bounded CPython primitive whose inner loop runs in C whenever an equivalent compiled lane already exists.
+  
+  Preferred bulk primitives include:
+  - `bytes.count` and `bytearray.count`
+  - `bytes.find` and `bytes.rfind`
+  - `bytes.translate`
+  - `translate(...).count(1)`
+  - raw equality over dense packed bytes
+  - `startswith` and `endswith`
+  - slice copy or bounded bulk copy
+  
+  ## Two-Phase Rule
+  If a hot-path need cannot be expressed directly as a bounded bulk primitive on existing lanes, the default implementation MUST use two phases:
+  1. bulk narrow on compact compiled lanes
+  2. Python materialize only the surviving candidates or payload fields
+  
+  Pure Python per-record loops across the full candidate set MUST NOT be the default choice when a compiled lane already supports an equivalent narrow-first strategy.
+  
+  ## Scope
+  This contract applies to:
+  - compiled route and binding dispatch
+  - atom, segment, branch, and runner metadata scans
+  - param-shape and slot metadata guards
+  - transport-family narrowing where compact compiled lanes exist
+  - default operation hot-path metadata questions
+  
+  This contract does not require JSON parsing, ORM work, arbitrary mapping payloads, or provider/session behavior to become C-bulk-backed. Those remain direct Python or engine operations unless a narrower SPEC states otherwise.
+  
+  ## Invalid Hot-Path Shapes
+  The following are non-conformant in a governed hot path when an equivalent compiled lane already exists:
+  - repeated full-width Python loops over compiled metadata rows
+  - repeated heterogeneous dict scans over route or dispatch namespaces
+  - repeated `Mapping` or `ABCMapping` checks after normalization
+  - rebuilding Python bucket dicts or tuple tables from `TGPKHOT1` metadata inside request hot paths
+  
+  ## Evidence
+  A change that introduces or changes a governed hot-path lowering must provide:
+  - representative benchmark results for the affected surface
+  - call-graph evidence that the targeted Python-loop or compatibility-shell cost moved out of the hot path
+  - confirmation that accepted `TGPKHOT1` raw-byte baselines did not increase
+spec_kind: "normative"
+adr_ids:
+  - "adr:1127"
+  - "adr:1120"
+  - "adr:1121"
+  - "adr:1125"

@@ -1,0 +1,55 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1128"
+number: 1128
+slug: "hotctx-slot-first-attribute-and-lazy-compatibility-publication-policy"
+title: "HotCtx Slot-First Attribute And Lazy Compatibility Publication Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`HotCtx` is the authoritative carrier for hot route, dispatch, egress, and compiled-input state after runtime normalization. Compiler-selected hot runners MUST prefer direct attribute access after the normalization boundary and MUST treat compatibility namespaces such as `temp[\"route\"]`, `temp[\"dispatch\"]`, and `temp[\"egress\"]` as fallback-only views."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern slot-first HotCtx metadata, no-check attrs, and lazy compatibility publication."
+    at: "2026-05-03T04:38:08Z"
+references: []
+body: |-
+  ## Decision
+  `HotCtx` is the authoritative carrier for hot route, dispatch, egress, and compiled-input state after runtime normalization. Compiler-selected hot runners MUST prefer direct attribute access after the normalization boundary and MUST treat compatibility namespaces such as `temp["route"]`, `temp["dispatch"]`, and `temp["egress"]` as fallback-only views.
+  
+  Within normalized hot runners, the selection order is:
+  1. direct no-check attribute access over slot-backed metadata and concrete optional fields
+  2. direct `dict.get` over already-normalized concrete dictionaries only where a mapping is semantically required
+  3. boundary-only `dict` checks when normalization or fallback entry requires them
+  
+  `Mapping` and `ABCMapping` checks are boundary concerns and MUST NOT remain in hot-runner inner loops when the runtime already owns normalization.
+  
+  Compatibility dict publication for route, dispatch, egress, and JSON-RPC request metadata MUST be lazy, synthesized from `HotCtx`, cached on first access, and absent from the compiled happy path unless a fallback consumer explicitly asks for it.
+  
+  ## Rationale
+  Repository microbenchmarks already show that:
+  - `no_check_attr` is faster than `no_check_dict_get`
+  - `no_check_dict_get` is faster than `dict_check_get`
+  - slot-backed attrs are much faster than repeated `temp.get("route", {})` / `temp.get("dispatch", {})` / `temp.get("egress", {})`
+  - cached compatibility dict views are still materially slower than direct attrs
+  - `ABCMapping` and `typing.Mapping` checks are among the slowest repeated operations in the governed hot paths
+  
+  Those measurements match the call-graph evidence from REST unary, JSON-RPC unary, and websocket transport-only work: residual framework shell is now dominated by generic attribute/mapping plumbing more than by transport logic.
+  
+  ## Consequences
+  After `_ensure_hot_ctx(...)` or an equivalent compiled normalization boundary, hot execution code SHOULD use slot-based attrs over cached compatibility dict views and concrete `dict | None` fields only where a mapping is semantically required. In that normalized region, `no_check_attr` is preferred over `no_check_dict_get`, which is preferred over boundary-only `dict_check_get`.
+  
+  Hot execution code SHOULD:
+  - bind `hot` once
+  - read route, dispatch, egress, and compiled slot state through direct attrs
+  - keep concrete `dict | None` fields only for semantically required mapping-shaped payloads
+  - publish compatibility dicts only when compatibility access happens
+  
+  The runtime MAY keep compatibility helpers such as `_HotTemp` and `_HotNamespaceDict`, but they exist to preserve external semantics, not to own hot-path state.
+  
+  ## Traceability
+  Extends ADR-1125, ADR-1121, and ADR-1120. Follow-on SPECs should define the concrete `HotCtx` field contract, lazy publication behavior, and benchmark/call-graph evidence required to keep compatibility shells out of the hot path.

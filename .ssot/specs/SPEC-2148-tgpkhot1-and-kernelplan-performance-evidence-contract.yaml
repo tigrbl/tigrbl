@@ -1,0 +1,63 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2148"
+number: 2148
+slug: "tgpkhot1-and-kernelplan-performance-evidence-contract"
+title: "TGPKHOT1 And KernelPlan Performance Evidence Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the benchmark, call-graph, KC or kernel-plan packing, and `TGPKHOT1` evidence gates for performance-sensitive runtime layout and executor changes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define benchmark, call-graph, kernel-plan packing, and TGPKHOT1 non-regression evidence gates."
+    at: "2026-05-03T04:38:11Z"
+references: []
+body: |-
+  ## Intent
+  Define the benchmark, call-graph, KC or kernel-plan packing, and `TGPKHOT1` evidence gates for performance-sensitive runtime layout and executor changes.
+  
+  ## Required Artifact Families
+  A governed hot-path change MUST produce or refresh the applicable artifact families for the affected surfaces:
+  - kernel-plan benchmark JSON and markdown reports
+  - sequential unary benchmark JSON artifacts where applicable
+  - Tigrbl call graph JSON
+  - FastAPI call graph JSON where parity exists
+  - `TGPKHOT1` binary, summary, hexdump, benchmark JSON, and benchmark markdown where a packed hot block exists
+  - perf-suite manifest and report outputs that summarize the accepted rails
+  
+  ## Governed Surfaces
+  The benchmark and call-graph rail set MUST cover the repository's governed transport families as they exist:
+  - REST unary
+  - JSON-RPC unary
+  - streaming
+  - SSE
+  - websocket
+  - webtransport
+  
+  When a parity framework exists, the report SHOULD include an apples-to-apples comparison. When parity does not exist, the Tigrbl-only supplemental rail MUST still be benchmarked and reported.
+  
+  ## Non-Regression Gate
+  A hot-path change is non-conformant if it:
+  - lowers the accepted throughput baseline for an already-governed surface
+  - increases the accepted `TGPKHOT1` raw-byte baseline for an already-governed packed surface
+  - claims a hot-path win using only primitive microbenchmarks without representative surface evidence
+  
+  ## Packing And Raw-Byte Discipline
+  `TGPKHOT1` remains the packed hot-path budget carrier for compiled-runtime execution metadata. New hot-block sections or wider fields are non-conformant unless an equal-or-greater reduction elsewhere keeps total governed raw bytes flat or lower.
+  
+  Kernel-plan packing work, KC or packed-plan artifact changes, and executor metadata changes MUST identify which packed sections changed and how those changes affect raw bytes, representative throughput, and hot call-graph shape.
+  
+  ## Evidence
+  Representative reports MUST cite the command or runner used, the fixture or corpus shape, the measured throughput or latency result, and the packed raw-byte result for the affected surface.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1127"
+  - "adr:1128"
+  - "adr:1120"
+  - "adr:1121"
+  - "adr:1125"

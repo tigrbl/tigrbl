@@ -1,0 +1,55 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2147"
+number: 2147
+slug: "hotctx-slot-backed-metadata-and-lazy-compatibility-publication-contract"
+title: "HotCtx Slot-Backed Metadata And Lazy Compatibility Publication Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the normative `HotCtx` slot-backed metadata contract, no-check attribute execution model, and lazy compatibility publication rules for route, dispatch, egress, and compiled-input state."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define slot-backed HotCtx metadata and fallback-only compatibility publication."
+    at: "2026-05-03T04:38:10Z"
+references: []
+body: |-
+  ## Intent
+  Define the normative `HotCtx` slot-backed metadata contract, no-check attribute execution model, and lazy compatibility publication rules for route, dispatch, egress, and compiled-input state.
+  
+  ## HotCtx Authority
+  After runtime normalization, `HotCtx` is the authoritative owner of hot route, dispatch, egress, and compiled-input metadata.
+  
+  Governed direct fields MUST cover the metadata repeatedly needed by hot runners, including canonical route protocol/selector/program information, dispatch binding or channel selectors, JSON-RPC request identifiers where applicable, and egress sent/transport-response state.
+  
+  Mapping-shaped state that remains semantically required in the hot path MUST live on `HotCtx` as concrete `dict | None` fields rather than as generic namespace dict ownership. Slot-based attrs are the default hot-path representation and are preferred over cached compatibility dict views.
+  
+  ## No-Check Attribute Rule
+  After a function has a verified `hot: HotCtx`, inner logic MUST prefer direct no-check attribute access. `no_check_attr` is preferred over `no_check_dict_get`, and both are preferred over boundary-only `dict_check_get`. Repeated `temp.get(...)`, `Mapping` checks, and compatibility-view discovery are not conformant inside governed hot-runner inner loops.
+  
+  Boundary-only code such as `_ensure_hot_ctx(...)`, initial ingress normalization, exact-route priming, and generic fallback entry may still use concrete `dict` checks and `dict.get(...)`.
+  
+  ## Compatibility Publication
+  Compatibility namespaces such as `route`, `dispatch`, `egress`, and JSON-RPC request-id projections MUST:
+  - be synthesized from canonical `HotCtx` fields
+  - be created only on first explicit compatibility access
+  - be cached after first publication
+  - remain absent from the compiled happy path unless a fallback consumer requests them
+  
+  Compatibility views MUST NOT be the source of truth for governed hot-path state.
+  
+  ## Evidence
+  Representative benchmarks and call graphs MUST prove that:
+  - slot-backed attrs and concrete `HotCtx` fields are the governed hot source of truth
+  - compatibility dicts are not eagerly created on the happy path
+  - the hot path no longer depends on repeated namespace dict scans after normalization
+spec_kind: "normative"
+adr_ids:
+  - "adr:1128"
+  - "adr:1125"
+  - "adr:1121"
+  - "adr:1120"
