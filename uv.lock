@@ -2593,7 +2593,7 @@ wheels = [
 
 [[package]]
 name = "tigrbl"
-version = "0.3.19.dev1"
+version = "0.3.19"
 source = { editable = "pkgs/core/tigrbl" }
 dependencies = [
     { name = "aiosqlite" },
@@ -2691,7 +2691,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-acme-ca"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/apps/tigrbl_acme_ca" }
 dependencies = [
     { name = "tigrbl" },
@@ -2730,7 +2730,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-atoms"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_atoms" }
 dependencies = [
     { name = "jinja2" },
@@ -2773,7 +2773,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-base"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_base" }
 dependencies = [
     { name = "pydantic" },
@@ -2808,7 +2808,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-canon"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_canon" }
 dependencies = [
     { name = "tigrbl" },
@@ -2843,7 +2843,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-client"
-version = "0.2.14.dev1"
+version = "0.2.14"
 source = { editable = "pkgs/core/tigrbl_client" }
 dependencies = [
     { name = "fastapi" },
@@ -2892,7 +2892,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-concrete"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_concrete" }
 dependencies = [
     { name = "orjson" },
@@ -2939,7 +2939,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-core"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_core" }
 dependencies = [
     { name = "pydantic" },
@@ -2972,7 +2972,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-bigquery"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_bigquery" }
 dependencies = [
     { name = "google-cloud-bigquery" },
@@ -3015,7 +3015,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-clickhouse"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_clickhouse" }
 dependencies = [
     { name = "clickhouse-connect" },
@@ -3058,7 +3058,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-csv"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_csv" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3092,7 +3092,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-dataframe"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_dataframe" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3136,7 +3136,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-duckdb"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_duckdb" }
 dependencies = [
     { name = "duckdb" },
@@ -3179,7 +3179,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-inmemcache"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_inmemcache" }
 dependencies = [
     { name = "tigrbl" },
@@ -3198,7 +3198,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-inmemory"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_inmemory" }
 dependencies = [
     { name = "tigrbl" },
@@ -3217,7 +3217,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-membloom"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_membloom" }
 dependencies = [
     { name = "tigrbl" },
@@ -3236,7 +3236,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-memdedupe"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_memdedupe" }
 dependencies = [
     { name = "tigrbl" },
@@ -3247,7 +3247,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memkv"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_memkv" }
 dependencies = [
     { name = "tigrbl" },
@@ -3258,7 +3258,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memlru"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_memlru" }
 dependencies = [
     { name = "tigrbl" },
@@ -3269,7 +3269,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-mempubsub"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_mempubsub" }
 dependencies = [
     { name = "tigrbl" },
@@ -3280,7 +3280,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memqueue"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_memqueue" }
 dependencies = [
     { name = "tigrbl" },
@@ -3291,7 +3291,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memrate"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_memrate" }
 dependencies = [
     { name = "tigrbl" },
@@ -3302,7 +3302,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-numpy"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_numpy" }
 dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3334,7 +3334,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-pandas"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_pandas" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3378,7 +3378,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-pgsqli-wal"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_pgsqli_wal" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
@@ -3421,7 +3421,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-postgres"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_postgres" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
@@ -3446,7 +3446,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-pyspark"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_pyspark" }
 dependencies = [
     { name = "pyspark" },
@@ -3469,7 +3469,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-redis"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_redis" }
 dependencies = [
     { name = "redis" },
@@ -3512,7 +3512,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-rediscachethrough"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_rediscachethrough" }
 dependencies = [
     { name = "redis" },
@@ -3555,7 +3555,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-snowflake"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_snowflake" }
 dependencies = [
     { name = "snowflake-connector-python" },
@@ -3600,7 +3600,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-sqlite"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/engines/tigrbl_engine_sqlite" }
 dependencies = [
     { name = "sqlalchemy" },
@@ -3623,7 +3623,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-xlsx"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/engines/tigrbl_engine_xlsx" }
 dependencies = [
     { name = "openpyxl" },
@@ -3654,7 +3654,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-kernel"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_kernel" }
 dependencies = [
     { name = "tigrbl-atoms" },
@@ -3687,7 +3687,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-ops-olap"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_ops_olap" }
 
 [package.dev-dependencies]
@@ -3706,7 +3706,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-ops-oltp"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_ops_oltp" }
 dependencies = [
     { name = "tigrbl-base" },
@@ -3735,7 +3735,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-ops-realtime"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_ops_realtime" }
 
 [package.dev-dependencies]
@@ -3754,7 +3754,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-orm"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_orm" }
 dependencies = [
     { name = "sqlalchemy" },
@@ -3777,7 +3777,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-runtime"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_runtime" }
 dependencies = [
     { name = "numba" },
@@ -3814,7 +3814,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-spec"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_spec" }
 
 [package.dev-dependencies]
@@ -3833,7 +3833,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-spiffe"
-version = "0.1.13.dev1"
+version = "0.1.13"
 source = { editable = "pkgs/apps/tigrbl_spiffe" }
 dependencies = [
     { name = "httpx" },
@@ -3883,7 +3883,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-tests"
-version = "0.3.24.dev1"
+version = "0.3.24"
 source = { editable = "pkgs/core/tigrbl_tests" }
 dependencies = [
     { name = "asyncpg" },
@@ -3932,7 +3932,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-typing"
-version = "0.1.12.dev1"
+version = "0.1.12"
 source = { editable = "pkgs/core/tigrbl_typing" }
 dependencies = [
     { name = "pydantic" },
