@@ -24,7 +24,15 @@ def _storage_requires_input(storage: Any, alias: str) -> bool:
 
 def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
     """Build a basic OpView from collected specs when no app/model is present."""
-    alias = getattr(sp, "alias", "")
+    alias = str(getattr(sp, "alias", "") or "")
+    target = str(getattr(sp, "target", alias) or alias)
+    semantic_verbs = tuple(
+        dict.fromkeys(
+            name
+            for name in (alias, target)
+            if isinstance(name, str) and name
+        )
+    )
 
     in_fields: list[str] = []
     out_fields: list[str] = []
@@ -38,7 +46,7 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
         in_verbs = set(getattr(io, "in_verbs", ()) or ())
         out_verbs = set(getattr(io, "out_verbs", ()) or ())
 
-        if alias in in_verbs:
+        if any(name in in_verbs for name in semantic_verbs):
             in_fields.append(name)
             meta: Dict[str, object] = {"in_enabled": True}
             if storage is None:
@@ -64,8 +72,8 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
                     getattr(io, "header_required_in", False)
                 )
             required = bool(
-                (fs and alias in getattr(fs, "required_in", ()))
-                or _storage_requires_input(storage, alias)
+                (fs and any(name in getattr(fs, "required_in", ()) for name in semantic_verbs))
+                or _storage_requires_input(storage, target)
             )
             meta["required"] = required
             base_nullable = (
@@ -75,7 +83,7 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
             meta["coerce"] = True
             by_field_in[name] = meta
 
-        if alias in out_verbs:
+        if any(name in out_verbs for name in semantic_verbs):
             out_fields.append(name)
             meta_out: Dict[str, object] = {}
             alias_out = getattr(io, "alias_out", None)
@@ -101,7 +109,7 @@ def compile_opview_from_specs(specs: Mapping[str, Any], sp: Any) -> OpView:
     for field, col in specs.items():
         io = getattr(col, "io", None)
         cfg = getattr(io, "_paired", None)
-        if cfg and alias in getattr(cfg, "verbs", ()):  # type: ignore[attr-defined]
+        if cfg and any(name in getattr(cfg, "verbs", ()) for name in semantic_verbs):  # type: ignore[attr-defined]
             field_spec = getattr(col, "field", None)
             max_length = None
             if field_spec is not None:

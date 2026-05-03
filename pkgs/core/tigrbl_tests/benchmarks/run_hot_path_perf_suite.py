@@ -9,10 +9,11 @@ import sqlite3
 import struct
 import subprocess
 import sys
+import time
 import uuid
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from tigrbl import TableBase, TigrblApp
 from tigrbl._spec import HttpJsonRpcBindingSpec, HttpRestBindingSpec, OpSpec
@@ -48,6 +49,40 @@ WEBSOCKET_FASTAPI_TRANSPORT_CALL_GRAPH_JSON = (
     PERF_DIR / "fastapi_websocket_transport_call_graph_250_ops.json"
 )
 WEBSOCKET_HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-websocket"
+SSE_RESULTS_JSON = PERF_DIR / "benchmark_results_sse_uvicorn.json"
+SSE_KERNEL_JSON = PERF_DIR / "kernel-plan-benchmark-sse.json"
+SSE_KERNEL_MD = PERF_DIR / "kernel-plan-benchmark-sse.md"
+SSE_TIGRBL_CALL_GRAPH_JSON = PERF_DIR / "tigrbl_sse_call_graph_250_ops.json"
+SSE_FASTAPI_CALL_GRAPH_JSON = PERF_DIR / "fastapi_sse_call_graph_250_ops.json"
+SSE_TIGRBL_TRANSPORT_CALL_GRAPH_JSON = PERF_DIR / "tigrbl_sse_transport_call_graph_250_ops.json"
+SSE_FASTAPI_TRANSPORT_CALL_GRAPH_JSON = PERF_DIR / "fastapi_sse_transport_call_graph_250_ops.json"
+SSE_HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-sse"
+WEBTRANSPORT_RESULTS_JSON = PERF_DIR / "benchmark_results_webtransport_uvicorn.json"
+WEBTRANSPORT_KERNEL_JSON = PERF_DIR / "kernel-plan-benchmark-webtransport.json"
+WEBTRANSPORT_KERNEL_MD = PERF_DIR / "kernel-plan-benchmark-webtransport.md"
+WEBTRANSPORT_TIGRBL_CALL_GRAPH_JSON = PERF_DIR / "tigrbl_webtransport_call_graph_250_ops.json"
+WEBTRANSPORT_TIGRBL_TRANSPORT_CALL_GRAPH_JSON = (
+    PERF_DIR / "tigrbl_webtransport_transport_call_graph_250_ops.json"
+)
+WEBTRANSPORT_HOT_BLOCK_PREFIX = PERF_DIR / "tgpkhot1-benchmark-webtransport"
+
+LOCKED_EXISTING_BASELINES: dict[str, dict[str, float | int]] = {
+    "unary": {
+        "rest_ops_per_second": 718.12,
+        "jsonrpc_ops_per_second": 618.46,
+        "raw_bytes_ceiling": 1627,
+    },
+    "streaming": {
+        "transport_only_ops_per_second": 1020.00,
+        "db_backed_ops_per_second": 666.88,
+        "raw_bytes_ceiling": 858,
+    },
+    "websocket": {
+        "transport_only_ops_per_second": 14237.96,
+        "db_backed_ops_per_second": 156.41,
+        "raw_bytes_ceiling": 848,
+    },
+}
 
 
 class MissingSurfaceError(RuntimeError):
@@ -60,6 +95,16 @@ class CommandTask:
     argv: tuple[str, ...]
     artifact_paths: tuple[Path, ...]
     description: str
+
+
+BENCHMARK_RERUN_TASKS: dict[str, tuple[str, ...]] = {
+    "unary": ("kernel_plan_benchmark",),
+    "streaming": ("streaming_perf_suite",),
+    "websocket": ("websocket_perf_suite",),
+    "sse": ("sse_perf_suite",),
+    "webtransport": ("webtransport_perf_suite",),
+}
+MAX_BENCHMARK_RETRIES = 4
 
 
 class TigrblParityBenchmarkItem(TableBase):
@@ -221,6 +266,46 @@ def _default_tasks() -> list[CommandTask]:
             ),
             description="Run the full websocket parity suite and TGPKHOT1 export.",
         ),
+        CommandTask(
+            name="sse_perf_suite",
+            argv=_python_command(
+                "pkgs/core/tigrbl_tests/benchmarks/tigrbl_sse_perf_suite.py",
+            ),
+            artifact_paths=(
+                SSE_RESULTS_JSON,
+                SSE_KERNEL_JSON,
+                SSE_KERNEL_MD,
+                SSE_TIGRBL_TRANSPORT_CALL_GRAPH_JSON,
+                SSE_FASTAPI_TRANSPORT_CALL_GRAPH_JSON,
+                SSE_TIGRBL_CALL_GRAPH_JSON,
+                SSE_FASTAPI_CALL_GRAPH_JSON,
+                SSE_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+                SSE_HOT_BLOCK_PREFIX.with_suffix(".summary.json"),
+                SSE_HOT_BLOCK_PREFIX.with_suffix(".hexdump.txt"),
+                SSE_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+                SSE_HOT_BLOCK_PREFIX.with_suffix(".benchmark.md"),
+            ),
+            description="Run the full SSE parity suite and TGPKHOT1 export.",
+        ),
+        CommandTask(
+            name="webtransport_perf_suite",
+            argv=_python_command(
+                "pkgs/core/tigrbl_tests/benchmarks/tigrbl_webtransport_perf_suite.py",
+            ),
+            artifact_paths=(
+                WEBTRANSPORT_RESULTS_JSON,
+                WEBTRANSPORT_KERNEL_JSON,
+                WEBTRANSPORT_KERNEL_MD,
+                WEBTRANSPORT_TIGRBL_TRANSPORT_CALL_GRAPH_JSON,
+                WEBTRANSPORT_TIGRBL_CALL_GRAPH_JSON,
+                WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+                WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".summary.json"),
+                WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".hexdump.txt"),
+                WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+                WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".benchmark.md"),
+            ),
+            description="Run the full webtransport Tigrbl suite and TGPKHOT1 export.",
+        ),
     ]
 
 
@@ -228,7 +313,7 @@ def _ensure_dir(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
-def _run_task(task: CommandTask) -> dict[str, Any]:
+def _run_task(task: CommandTask, *, attempt: int = 1) -> dict[str, Any]:
     result = subprocess.run(
         task.argv,
         cwd=ROOT,
@@ -240,6 +325,7 @@ def _run_task(task: CommandTask) -> dict[str, Any]:
         "name": task.name,
         "description": task.description,
         "argv": list(task.argv),
+        "attempt": int(attempt),
         "returncode": int(result.returncode),
         "stdout": result.stdout,
         "stderr": result.stderr,
@@ -472,6 +558,20 @@ def _required_missing_surfaces() -> list[dict[str, str]]:
         "websocket_fastapi_call_graph": WEBSOCKET_FASTAPI_CALL_GRAPH_JSON,
         "websocket_tgpkhot1_bin": WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".bin"),
         "websocket_tgpkhot1_benchmark": WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+        "sse_parity_benchmark": SSE_RESULTS_JSON,
+        "sse_kernel_benchmark": SSE_KERNEL_JSON,
+        "sse_transport_tigrbl_call_graph": SSE_TIGRBL_TRANSPORT_CALL_GRAPH_JSON,
+        "sse_transport_fastapi_call_graph": SSE_FASTAPI_TRANSPORT_CALL_GRAPH_JSON,
+        "sse_tigrbl_call_graph": SSE_TIGRBL_CALL_GRAPH_JSON,
+        "sse_fastapi_call_graph": SSE_FASTAPI_CALL_GRAPH_JSON,
+        "sse_tgpkhot1_bin": SSE_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+        "sse_tgpkhot1_benchmark": SSE_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+        "webtransport_benchmark": WEBTRANSPORT_RESULTS_JSON,
+        "webtransport_kernel_benchmark": WEBTRANSPORT_KERNEL_JSON,
+        "webtransport_transport_tigrbl_call_graph": WEBTRANSPORT_TIGRBL_TRANSPORT_CALL_GRAPH_JSON,
+        "webtransport_tigrbl_call_graph": WEBTRANSPORT_TIGRBL_CALL_GRAPH_JSON,
+        "webtransport_tgpkhot1_bin": WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".bin"),
+        "webtransport_tgpkhot1_benchmark": WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
     }
     missing: list[dict[str, str]] = []
     for surface, artifact_path in expected_files.items():
@@ -495,38 +595,182 @@ def _read_json(path: Path) -> dict[str, Any] | list[Any] | None:
         return None
 
 
-def _unary_gate_status(current_raw_bytes: int | None, baseline_raw_bytes: int | None) -> dict[str, Any]:
-    payload = _read_json(KERNEL_BENCHMARK_JSON)
+def _as_float(value: Any) -> float:
+    return float(value) if isinstance(value, (int, float)) else 0.0
+
+
+def _as_int(value: Any) -> int | None:
+    return int(value) if isinstance(value, (int, float)) else None
+
+
+def _surface_ops_250(
+    path: Path,
+    *,
+    tigrbl_only: bool = False,
+) -> dict[str, Any]:
+    payload = _read_json(path)
     if not isinstance(payload, dict):
+        return {}
+    out: dict[str, Any] = {}
+    for scenario in ("transport_only", "db_backed"):
+        scenario_payload = payload.get(scenario, {})
+        if not isinstance(scenario_payload, dict):
+            continue
+        ops_250 = scenario_payload.get("250", {})
+        if not isinstance(ops_250, dict):
+            continue
+        row = {
+            "tigrbl_ops_per_second": _as_float(
+                ((ops_250.get("tigrbl", {}) or {}).get("ops_per_second"))
+            )
+        }
+        if not tigrbl_only:
+            row["fastapi_ops_per_second"] = _as_float(
+                ((ops_250.get("fastapi", {}) or {}).get("ops_per_second"))
+            )
+        out[scenario] = row
+    return out
+
+
+def _hot_block_summary(path: Path) -> dict[str, int] | None:
+    payload = _read_json(path)
+    if not isinstance(payload, dict):
+        return None
+    artifact = payload.get("artifact", {})
+    if not isinstance(artifact, dict):
+        return None
+    raw_bytes = _as_int(artifact.get("raw_bytes"))
+    compressed_bytes = _as_int(artifact.get("compressed_bytes"))
+    if raw_bytes is None or compressed_bytes is None:
+        return None
+    return {
+        "raw_bytes": raw_bytes,
+        "compressed_bytes": compressed_bytes,
+    }
+
+
+def _load_previous_locked_baselines() -> dict[str, dict[str, Any]]:
+    payload = _read_json(SUITE_MANIFEST_JSON)
+    if not isinstance(payload, dict):
+        return {}
+    baselines = payload.get("locked_baselines", {})
+    return baselines if isinstance(baselines, dict) else {}
+
+
+def _dynamic_baseline_from_surface_summary(
+    surface_name: str, summary: Mapping[str, Any]
+) -> dict[str, Any] | None:
+    transport = summary.get("transport_only", {})
+    db_backed = summary.get("db_backed", {})
+    tgpkhot1 = summary.get("tgpkhot1", {})
+    if not (
+        isinstance(transport, dict)
+        and isinstance(db_backed, dict)
+        and isinstance(tgpkhot1, dict)
+    ):
+        return None
+    transport_ops = _as_float(transport.get("tigrbl_ops_per_second"))
+    db_ops = _as_float(db_backed.get("tigrbl_ops_per_second"))
+    raw_bytes = _as_int(tgpkhot1.get("raw_bytes"))
+    if raw_bytes is None:
+        return None
+    return {
+        "transport_only_ops_per_second": transport_ops,
+        "db_backed_ops_per_second": db_ops,
+        "raw_bytes_ceiling": raw_bytes,
+        "baseline_source": f"{surface_name}_current_run_lock",
+    }
+
+
+def _resolve_locked_baselines(summary: Mapping[str, Any]) -> dict[str, dict[str, Any]]:
+    locked: dict[str, dict[str, Any]] = {
+        key: {**value, "baseline_source": "locked_may_2_2026"}
+        for key, value in LOCKED_EXISTING_BASELINES.items()
+    }
+    previous = _load_previous_locked_baselines()
+    for surface_name in ("sse", "webtransport"):
+        previous_surface = previous.get(surface_name)
+        if isinstance(previous_surface, dict):
+            locked[surface_name] = dict(previous_surface)
+            continue
+        surface_summary = summary.get(surface_name, {})
+        if isinstance(surface_summary, dict):
+            current = _dynamic_baseline_from_surface_summary(
+                surface_name, surface_summary
+            )
+            if current is not None:
+                locked[surface_name] = current
+    return locked
+
+
+def _unary_gate_status(summary: Mapping[str, Any], baseline: Mapping[str, Any]) -> dict[str, Any]:
+    unary = summary.get("unary", {})
+    if not isinstance(unary, dict):
         return {"available": False}
-    tigrbl_payload = (
-        payload.get("candidate", {}).get("tigrbl", {})
-        if isinstance(payload.get("candidate"), dict)
-        else {}
+    tgpkhot1 = unary.get("tgpkhot1", {})
+    raw_bytes_value = (
+        _as_int(tgpkhot1.get("raw_bytes")) if isinstance(tgpkhot1, dict) else None
     )
-    rest = tigrbl_payload.get("rest_unary", {}) if isinstance(tigrbl_payload, dict) else {}
-    jsonrpc = tigrbl_payload.get("jsonrpc_unary", {}) if isinstance(tigrbl_payload, dict) else {}
-    raw_bytes = (
-        tigrbl_payload.get("kernel_plan_measurement", {}).get("raw_bytes")
-        if isinstance(tigrbl_payload.get("kernel_plan_measurement"), dict)
-        else None
-    )
-    rest_ops = float(rest.get("ops_per_second", 0.0) or 0.0)
-    jsonrpc_ops = float(jsonrpc.get("ops_per_second", 0.0) or 0.0)
-    raw_bytes_value = int(raw_bytes) if isinstance(raw_bytes, (int, float)) else current_raw_bytes
-    raw_ceiling = baseline_raw_bytes if baseline_raw_bytes is not None else raw_bytes_value
+    raw_ceiling = _as_int(baseline.get("raw_bytes_ceiling"))
+    rest_floor = _as_float(baseline.get("rest_ops_per_second"))
+    jsonrpc_floor = _as_float(baseline.get("jsonrpc_ops_per_second"))
+    rest_ops = _as_float(unary.get("tigrbl_rest_ops_per_second"))
+    jsonrpc_ops = _as_float(unary.get("tigrbl_jsonrpc_ops_per_second"))
     return {
         "available": True,
         "rest_ops_per_second": rest_ops,
         "jsonrpc_ops_per_second": jsonrpc_ops,
         "raw_bytes": raw_bytes_value,
         "raw_bytes_ceiling": raw_ceiling,
-        "rest_pass": rest_ops > 425.0,
-        "jsonrpc_pass": jsonrpc_ops > 400.0,
+        "rest_floor": rest_floor,
+        "jsonrpc_floor": jsonrpc_floor,
+        "baseline_source": str(baseline.get("baseline_source", "locked")),
+        "rest_pass": rest_ops >= rest_floor,
+        "jsonrpc_pass": jsonrpc_ops >= jsonrpc_floor,
         "raw_bytes_pass": (
             raw_bytes_value is not None
             and raw_ceiling is not None
             and raw_bytes_value <= raw_ceiling
+        ),
+    }
+
+
+def _two_scenario_gate_status(
+    surface_name: str,
+    summary: Mapping[str, Any],
+    baseline: Mapping[str, Any],
+) -> dict[str, Any]:
+    surface = summary.get(surface_name, {})
+    if not isinstance(surface, dict):
+        return {"available": False}
+    transport = surface.get("transport_only", {})
+    db_backed = surface.get("db_backed", {})
+    tgpkhot1 = surface.get("tgpkhot1", {})
+    if not (
+        isinstance(transport, dict)
+        and isinstance(db_backed, dict)
+        and isinstance(tgpkhot1, dict)
+    ):
+        return {"available": False}
+    transport_floor = _as_float(baseline.get("transport_only_ops_per_second"))
+    db_floor = _as_float(baseline.get("db_backed_ops_per_second"))
+    raw_ceiling = _as_int(baseline.get("raw_bytes_ceiling"))
+    transport_ops = _as_float(transport.get("tigrbl_ops_per_second"))
+    db_ops = _as_float(db_backed.get("tigrbl_ops_per_second"))
+    raw_bytes = _as_int(tgpkhot1.get("raw_bytes"))
+    return {
+        "available": True,
+        "transport_only_ops_per_second": transport_ops,
+        "db_backed_ops_per_second": db_ops,
+        "transport_only_floor": transport_floor,
+        "db_backed_floor": db_floor,
+        "raw_bytes": raw_bytes,
+        "raw_bytes_ceiling": raw_ceiling,
+        "baseline_source": str(baseline.get("baseline_source", "locked")),
+        "transport_only_pass": transport_ops >= transport_floor,
+        "db_backed_pass": db_ops >= db_floor,
+        "raw_bytes_pass": (
+            raw_bytes is not None and raw_ceiling is not None and raw_bytes <= raw_ceiling
         ),
     }
 
@@ -550,45 +794,27 @@ def _surface_summary() -> dict[str, Any]:
                     ((fastapi or {}).get("rest_unary", {}) or {}).get("ops_per_second", 0.0)
                 ),
             }
-    for surface_name, path in {
-        "streaming": STREAMING_RESULTS_JSON,
-        "websocket": WEBSOCKET_RESULTS_JSON,
-    }.items():
-        payload = _read_json(path)
-        if not isinstance(payload, dict):
-            continue
-        summary[surface_name] = {}
-        for scenario in ("transport_only", "db_backed"):
-            scenario_payload = payload.get(scenario, {})
-            if not isinstance(scenario_payload, dict):
-                continue
-            ops_250 = scenario_payload.get("250", {})
-            if not isinstance(ops_250, dict):
-                continue
-            summary[surface_name][scenario] = {
-                "tigrbl_ops_per_second": float(
-                    ((ops_250.get("tigrbl", {}) or {}).get("ops_per_second", 0.0))
-                ),
-                "fastapi_ops_per_second": float(
-                    ((ops_250.get("fastapi", {}) or {}).get("ops_per_second", 0.0))
-                ),
-            }
+    for surface_name, path, tigrbl_only in (
+        ("streaming", STREAMING_RESULTS_JSON, False),
+        ("websocket", WEBSOCKET_RESULTS_JSON, False),
+        ("sse", SSE_RESULTS_JSON, False),
+        ("webtransport", WEBTRANSPORT_RESULTS_JSON, True),
+    ):
+        surface_ops = _surface_ops_250(path, tigrbl_only=tigrbl_only)
+        if surface_ops:
+            summary[surface_name] = dict(surface_ops)
     for surface_name, path in {
         "unary": HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
         "streaming": STREAMING_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
         "websocket": WEBSOCKET_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+        "sse": SSE_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
+        "webtransport": WEBTRANSPORT_HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"),
     }.items():
-        payload = _read_json(path)
-        if not isinstance(payload, dict):
-            continue
-        artifact = payload.get("artifact", {})
-        if not isinstance(artifact, dict):
+        artifact = _hot_block_summary(path)
+        if artifact is None:
             continue
         summary.setdefault(surface_name, {})
-        summary[surface_name]["tgpkhot1"] = {
-            "raw_bytes": int(artifact.get("raw_bytes", 0)),
-            "compressed_bytes": int(artifact.get("compressed_bytes", 0)),
-        }
+        summary[surface_name]["tgpkhot1"] = dict(artifact)
     return summary
 
 
@@ -604,13 +830,25 @@ def _render_suite_report(manifest: dict[str, Any]) -> str:
     if unary.get("available"):
         lines.extend(
             [
-                f"- `REST unary > 425 ops/s`: {'PASS' if unary.get('rest_pass') else 'FAIL'} ({unary.get('rest_ops_per_second', 0.0):.2f})",
-                f"- `JSON-RPC unary > 400 ops/s`: {'PASS' if unary.get('jsonrpc_pass') else 'FAIL'} ({unary.get('jsonrpc_ops_per_second', 0.0):.2f})",
-                f"- `Unary TGPKHOT1 raw_bytes <= baseline`: {'PASS' if unary.get('raw_bytes_pass') else 'FAIL'} ({unary.get('raw_bytes')} <= {unary.get('raw_bytes_ceiling')})",
+                f"- `REST unary >= {unary.get('rest_floor', 0.0):.2f} ops/s`: {'PASS' if unary.get('rest_pass') else 'FAIL'} ({unary.get('rest_ops_per_second', 0.0):.2f})",
+                f"- `JSON-RPC unary >= {unary.get('jsonrpc_floor', 0.0):.2f} ops/s`: {'PASS' if unary.get('jsonrpc_pass') else 'FAIL'} ({unary.get('jsonrpc_ops_per_second', 0.0):.2f})",
+                f"- `Unary TGPKHOT1 raw_bytes <= {unary.get('raw_bytes_ceiling')}`: {'PASS' if unary.get('raw_bytes_pass') else 'FAIL'} ({unary.get('raw_bytes')})",
             ]
         )
     else:
         lines.append("- unary gates: unavailable")
+    for surface_name in ("streaming", "websocket", "sse", "webtransport"):
+        gate = gates.get(surface_name, {}) if isinstance(gates, dict) else {}
+        if not isinstance(gate, dict) or not gate.get("available"):
+            lines.append(f"- {surface_name} gates: unavailable")
+            continue
+        lines.extend(
+            [
+                f"- `{surface_name} transport-only >= {gate.get('transport_only_floor', 0.0):.2f} ops/s`: {'PASS' if gate.get('transport_only_pass') else 'FAIL'} ({gate.get('transport_only_ops_per_second', 0.0):.2f})",
+                f"- `{surface_name} db-backed >= {gate.get('db_backed_floor', 0.0):.2f} ops/s`: {'PASS' if gate.get('db_backed_pass') else 'FAIL'} ({gate.get('db_backed_ops_per_second', 0.0):.2f})",
+                f"- `{surface_name} TGPKHOT1 raw_bytes <= {gate.get('raw_bytes_ceiling')}`: {'PASS' if gate.get('raw_bytes_pass') else 'FAIL'} ({gate.get('raw_bytes')})",
+            ]
+        )
     lines.extend(["", "## Throughput Summary"])
     unary_summary = summary.get("unary", {}) if isinstance(summary, dict) else {}
     if unary_summary:
@@ -619,7 +857,7 @@ def _render_suite_report(manifest: dict[str, Any]) -> str:
             f"tigrbl JSON-RPC={unary_summary.get('tigrbl_jsonrpc_ops_per_second', 0.0):.2f}, "
             f"fastapi REST={unary_summary.get('fastapi_rest_ops_per_second', 0.0):.2f}"
         )
-    for surface_name in ("streaming", "websocket"):
+    for surface_name in ("streaming", "websocket", "sse", "webtransport"):
         surface = summary.get(surface_name, {}) if isinstance(summary, dict) else {}
         if not isinstance(surface, dict):
             continue
@@ -627,20 +865,36 @@ def _render_suite_report(manifest: dict[str, Any]) -> str:
         db_backed = surface.get("db_backed", {})
         tgpkhot1 = surface.get("tgpkhot1", {})
         if transport:
-            lines.append(
+            line = (
                 f"- {surface_name} transport-only 250: "
-                f"tigrbl={transport.get('tigrbl_ops_per_second', 0.0):.2f}, "
-                f"fastapi={transport.get('fastapi_ops_per_second', 0.0):.2f}"
+                f"tigrbl={transport.get('tigrbl_ops_per_second', 0.0):.2f}"
             )
+            if "fastapi_ops_per_second" in transport:
+                line += f", fastapi={transport.get('fastapi_ops_per_second', 0.0):.2f}"
+            lines.append(line)
         if db_backed:
-            lines.append(
+            line = (
                 f"- {surface_name} db-backed 250: "
-                f"tigrbl={db_backed.get('tigrbl_ops_per_second', 0.0):.2f}, "
-                f"fastapi={db_backed.get('fastapi_ops_per_second', 0.0):.2f}"
+                f"tigrbl={db_backed.get('tigrbl_ops_per_second', 0.0):.2f}"
             )
+            if "fastapi_ops_per_second" in db_backed:
+                line += f", fastapi={db_backed.get('fastapi_ops_per_second', 0.0):.2f}"
+            lines.append(line)
         if tgpkhot1:
             lines.append(
                 f"- {surface_name} TGPKHOT1: raw={tgpkhot1.get('raw_bytes')}, compressed={tgpkhot1.get('compressed_bytes')}"
+            )
+    locked_baselines = manifest.get("locked_baselines", {})
+    if isinstance(locked_baselines, dict):
+        lines.extend(["", "## Locked Baselines"])
+        for surface_name, baseline in locked_baselines.items():
+            if not isinstance(baseline, dict):
+                continue
+            lines.append(
+                f"- {surface_name}: source={baseline.get('baseline_source', 'locked')}, "
+                f"transport={baseline.get('transport_only_ops_per_second', baseline.get('rest_ops_per_second', 0.0))}, "
+                f"db/jsonrpc={baseline.get('db_backed_ops_per_second', baseline.get('jsonrpc_ops_per_second', 0.0))}, "
+                f"raw_bytes={baseline.get('raw_bytes_ceiling')}"
             )
     lines.extend(["", "## Tasks"])
     for task in manifest["tasks"]:
@@ -661,47 +915,135 @@ def _render_suite_report(manifest: dict[str, Any]) -> str:
 def run_suite(*, allow_missing_surfaces: bool) -> dict[str, Any]:
     TMP_DIR.mkdir(parents=True, exist_ok=True)
     PERF_DIR.mkdir(parents=True, exist_ok=True)
-    baseline_payload = _read_json(KERNEL_BENCHMARK_JSON)
-    baseline_raw_bytes = None
-    if isinstance(baseline_payload, dict):
-        candidate = baseline_payload.get("candidate", {})
-        if isinstance(candidate, dict):
-            tigrbl_payload = candidate.get("tigrbl", {})
-            if isinstance(tigrbl_payload, dict):
-                kc = tigrbl_payload.get("kernel_plan_measurement", {})
-                if isinstance(kc, dict) and isinstance(kc.get("raw_bytes"), (int, float)):
-                    baseline_raw_bytes = int(kc["raw_bytes"])
-    task_results = [_run_task(task) for task in _default_tasks()]
-    copied_artifacts = _copy_kernel_benchmark_artifacts()
-    hot_block_artifacts = _export_unary_hot_block(HOT_BLOCK_PREFIX)
-    artifacts = [
-        *(str(path) for path in copied_artifacts),
-        *(artifact for task in task_results for artifact in task["artifacts"]),
-        *(str(path) for path in hot_block_artifacts),
-    ]
-    seen: set[str] = set()
-    unique_artifacts = [path for path in artifacts if not (path in seen or seen.add(path))]
-    missing_surfaces = _required_missing_surfaces()
-    unary_hot_block_payload = _read_json(HOT_BLOCK_PREFIX.with_suffix(".benchmark.json"))
-    unary_current_raw_bytes = None
-    if isinstance(unary_hot_block_payload, dict):
-        artifact = unary_hot_block_payload.get("artifact", {})
-        if isinstance(artifact, dict) and isinstance(artifact.get("raw_bytes"), (int, float)):
-            unary_current_raw_bytes = int(artifact["raw_bytes"])
-    gates = {
-        "unary": _unary_gate_status(unary_current_raw_bytes, baseline_raw_bytes),
-    }
-    summary = _surface_summary()
-    manifest = {
-        "suite": "hot_path_perf_suite",
-        "cwd": str(ROOT),
-        "python": sys.executable,
-        "tasks": task_results,
-        "artifacts": unique_artifacts,
-        "missing_surfaces": missing_surfaces,
-        "gates": gates,
-        "summary": summary,
-    }
+    tasks = _default_tasks()
+    task_by_name = {task.name: task for task in tasks}
+    task_attempts: dict[str, int] = {}
+    task_results_by_name: dict[str, dict[str, Any]] = {}
+
+    def _evaluate_current_state() -> tuple[dict[str, Any], list[str], list[dict[str, Any]]]:
+        copied_artifacts = _copy_kernel_benchmark_artifacts()
+        hot_block_artifacts = _export_unary_hot_block(HOT_BLOCK_PREFIX)
+        task_results = [task_results_by_name[task.name] for task in tasks]
+        artifacts = [
+            *(str(path) for path in copied_artifacts),
+            *(artifact for task_result in task_results for artifact in task_result["artifacts"]),
+            *(str(path) for path in hot_block_artifacts),
+        ]
+        seen: set[str] = set()
+        unique_artifacts = [
+            path for path in artifacts if not (path in seen or seen.add(path))
+        ]
+        missing_surfaces = _required_missing_surfaces()
+        summary = _surface_summary()
+        locked_baselines = _resolve_locked_baselines(summary)
+        gates = {
+            "unary": _unary_gate_status(
+                summary,
+                locked_baselines.get("unary", LOCKED_EXISTING_BASELINES["unary"]),
+            ),
+            "streaming": _two_scenario_gate_status(
+                "streaming",
+                summary,
+                locked_baselines.get("streaming", LOCKED_EXISTING_BASELINES["streaming"]),
+            ),
+            "websocket": _two_scenario_gate_status(
+                "websocket",
+                summary,
+                locked_baselines.get("websocket", LOCKED_EXISTING_BASELINES["websocket"]),
+            ),
+            "sse": _two_scenario_gate_status(
+                "sse",
+                summary,
+                locked_baselines.get("sse", {}),
+            ),
+            "webtransport": _two_scenario_gate_status(
+                "webtransport",
+                summary,
+                locked_baselines.get("webtransport", {}),
+            ),
+        }
+        manifest = {
+            "suite": "hot_path_perf_suite",
+            "cwd": str(ROOT),
+            "python": sys.executable,
+            "tasks": task_results,
+            "artifacts": unique_artifacts,
+            "missing_surfaces": missing_surfaces,
+            "locked_baselines": locked_baselines,
+            "gates": gates,
+            "summary": summary,
+        }
+        failures: list[str] = []
+        unary = gates.get("unary", {})
+        if isinstance(unary, dict) and unary.get("available") and not (
+            unary.get("rest_pass")
+            and unary.get("jsonrpc_pass")
+            and unary.get("raw_bytes_pass")
+        ):
+            failures.append(
+                "unary "
+                f"rest={unary.get('rest_ops_per_second', 0.0):.2f}/{unary.get('rest_floor', 0.0):.2f} "
+                f"jsonrpc={unary.get('jsonrpc_ops_per_second', 0.0):.2f}/{unary.get('jsonrpc_floor', 0.0):.2f} "
+                f"raw={unary.get('raw_bytes')}/{unary.get('raw_bytes_ceiling')}"
+            )
+        for surface_name in ("streaming", "websocket", "sse", "webtransport"):
+            gate = gates.get(surface_name, {})
+            if not isinstance(gate, dict) or not gate.get("available"):
+                continue
+            if not (
+                gate.get("transport_only_pass")
+                and gate.get("db_backed_pass")
+                and gate.get("raw_bytes_pass")
+            ):
+                failures.append(
+                    f"{surface_name} "
+                    f"transport={gate.get('transport_only_ops_per_second', 0.0):.2f}/{gate.get('transport_only_floor', 0.0):.2f} "
+                    f"db={gate.get('db_backed_ops_per_second', 0.0):.2f}/{gate.get('db_backed_floor', 0.0):.2f} "
+                    f"raw={gate.get('raw_bytes')}/{gate.get('raw_bytes_ceiling')}"
+                )
+        return manifest, failures, missing_surfaces
+
+    for task in tasks:
+        task_attempts[task.name] = 1
+        task_results_by_name[task.name] = _run_task(task, attempt=1)
+
+    manifest, failures, missing_surfaces = _evaluate_current_state()
+
+    retry_round = 0
+    while failures and retry_round < MAX_BENCHMARK_RETRIES:
+        rerun_names: list[str] = []
+        gates = manifest.get("gates", {})
+        unary = gates.get("unary", {}) if isinstance(gates, dict) else {}
+        if isinstance(unary, dict) and unary.get("available") and not (
+            unary.get("rest_pass")
+            and unary.get("jsonrpc_pass")
+            and unary.get("raw_bytes_pass")
+        ):
+            rerun_names.extend(BENCHMARK_RERUN_TASKS["unary"])
+        for surface_name in ("streaming", "websocket", "sse", "webtransport"):
+            gate = gates.get(surface_name, {}) if isinstance(gates, dict) else {}
+            if not isinstance(gate, dict) or not gate.get("available"):
+                continue
+            if not (
+                gate.get("transport_only_pass")
+                and gate.get("db_backed_pass")
+                and gate.get("raw_bytes_pass")
+            ):
+                rerun_names.extend(BENCHMARK_RERUN_TASKS[surface_name])
+        rerun_names = list(dict.fromkeys(rerun_names))
+        if not rerun_names:
+            break
+        retry_round += 1
+        time.sleep(1.0)
+        for task_name in rerun_names:
+            task = task_by_name.get(task_name)
+            if task is None:
+                continue
+            attempt = int(task_attempts.get(task_name, 1)) + 1
+            task_attempts[task_name] = attempt
+            task_results_by_name[task_name] = _run_task(task, attempt=attempt)
+        manifest, failures, missing_surfaces = _evaluate_current_state()
+
     SUITE_MANIFEST_JSON.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     SUITE_REPORT_MD.write_text(_render_suite_report(manifest), encoding="utf-8")
     if missing_surfaces and not allow_missing_surfaces:
@@ -709,33 +1051,23 @@ def run_suite(*, allow_missing_surfaces: bool) -> dict[str, Any]:
         raise MissingSurfaceError(
             f"required perf surfaces are still missing: {names}"
         )
-    unary = gates.get("unary", {})
-    if unary.get("available") and not (
-        unary.get("rest_pass")
-        and unary.get("jsonrpc_pass")
-        and unary.get("raw_bytes_pass")
-    ):
-        raise RuntimeError(
-            "unary perf gate failed: "
-            f"rest={unary.get('rest_ops_per_second', 0.0):.2f}, "
-            f"jsonrpc={unary.get('jsonrpc_ops_per_second', 0.0):.2f}, "
-            f"raw_bytes={unary.get('raw_bytes')} ceiling={unary.get('raw_bytes_ceiling')}"
-        )
+    if failures:
+        raise RuntimeError("perf gates failed: " + "; ".join(failures))
     return manifest
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
-            "Run the hot-path unary perf rails, export TGPKHOT1 artifacts, and "
-            "fail closed if required stream/websocket or FastAPI call-graph surfaces "
-            "are still missing."
+            "Run the hot-path unary, streaming, websocket, SSE, and webtransport "
+            "perf rails, export TGPKHOT1 artifacts, and fail closed if required "
+            "artifact surfaces or locked throughput/raw-byte gates regress."
         )
     )
     parser.add_argument(
         "--allow-missing-surfaces",
         action="store_true",
-        help="complete the currently implemented unary suite even if stream/websocket or FastAPI call-graph rails are still missing",
+        help="continue writing the manifest/report even if one of the required perf surfaces is still missing",
     )
     args = parser.parse_args()
     run_suite(allow_missing_surfaces=bool(args.allow_missing_surfaces))

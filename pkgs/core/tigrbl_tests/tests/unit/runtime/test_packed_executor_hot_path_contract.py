@@ -16,7 +16,14 @@ from tigrbl_atoms.atoms.dispatch.binding_parse import _run as run_binding_parse
 from tigrbl_atoms.atoms.dispatch.input_normalize import _run as run_input_normalize
 from tigrbl_atoms.atoms.ingress.input_prepare import _run as run_input_prepare
 from tigrbl_typing.status.exceptions import HTTPException
+from tests.perf.helper_tigrbl_create_app import (
+    create_tigrbl_app,
+    dispose_tigrbl_app,
+    initialize_tigrbl_app,
+)
+from tests.perf.helper_streaming_apps import create_tigrbl_streaming_transport_app
 from tests.perf.helper_websocket_apps import create_tigrbl_websocket_transport_app
+from tests.perf.helper_sse_apps import create_tigrbl_sse_transport_app
 
 
 def test_packed_executor_primes_exact_rest_route_before_ingress_probe() -> None:
@@ -48,6 +55,77 @@ def test_packed_executor_primes_exact_rest_route_before_ingress_probe() -> None:
     assert ctx.temp["dispatch"]["binding_protocol"] == "http.rest"
     assert ctx.temp["dispatch"]["binding_selector"] == "POST /widgets"
     assert ctx.temp["route"]["program_id"] == 7
+
+
+@pytest.mark.asyncio
+async def test_packed_executor_primes_exact_jsonrpc_route_before_ingress_probe(
+) -> None:
+    tmp_dir = Path(".tmp")
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    app = create_tigrbl_app(tmp_dir / "jsonrpc-prime.sqlite3")
+    await initialize_tigrbl_app(app)
+    try:
+        plan = build_kernel_plan(app)
+        packed = plan.packed
+        assert packed is not None
+        expected_program_id = next(
+            idx
+            for idx, meta in enumerate(plan.opmeta)
+            if getattr(meta, "alias", None) == "BenchmarkItem.create"
+        )
+
+        executor = PackedPlanExecutor()
+        body = (
+            b'{"jsonrpc":"2.0","method":"BenchmarkItem.create",'
+            b'"params":{"name":"Ada"},"id":7}'
+        )
+        ctx = _Ctx.ensure(
+            request=None,
+            db=None,
+            seed={
+                "app": app,
+                "router": app,
+                "body": body,
+                "headers": {"content-type": "application/json"},
+                "temp": {},
+            },
+        )
+        env = SimpleNamespace(
+            scope={
+                "type": "http",
+                "method": "POST",
+                "path": "/rpc",
+                "scheme": "http",
+                "headers": ((b"content-type", b"application/json"),),
+            }
+        )
+
+        program_id = await executor._prime_exact_jsonrpc_program(
+            ctx, env, plan, packed
+        )
+
+        assert program_id == expected_program_id
+        assert ctx.temp["program_id"] == expected_program_id
+        assert dict.__contains__(ctx.temp, "dispatch") is False
+        assert dict.__contains__(ctx.temp, "route") is False
+        hot = ctx.temp["hot_ctx"]
+        assert hot.dispatch_binding_protocol == "http.jsonrpc"
+        assert hot.dispatch_binding_selector == "default:BenchmarkItem.create"
+        assert hot.dispatch_rpc_method == "BenchmarkItem.create"
+        assert hot.dispatch_jsonrpc_request_id == 7
+        assert hot.route_program_id == expected_program_id
+        assert hot.route_rpc_envelope == {
+            "jsonrpc": "2.0",
+            "method": "BenchmarkItem.create",
+            "params": {"name": "Ada"},
+            "id": 7,
+        }
+        assert hot.route_payload == {"name": "Ada"}
+        assert ctx.temp["dispatch"]["binding_protocol"] == "http.jsonrpc"
+        assert ctx.temp["dispatch"]["binding_selector"] == "default:BenchmarkItem.create"
+        assert ctx.temp["jsonrpc_request_id"] == 7
+    finally:
+        await dispose_tigrbl_app(app)
 
 
 def test_ingress_and_dispatch_reuse_cached_json_parse(monkeypatch) -> None:
@@ -159,6 +237,29 @@ def test_websocket_transport_route_compiles_to_fast_runner() -> None:
     assert hot_op_plan.websocket_protocol == "ws"
     assert hot_op_plan.websocket_framing == "text"
     assert callable(hot_op_plan.websocket_direct_endpoint)
+
+
+def test_streaming_transport_route_compiles_to_compiled_runner() -> None:
+    app = create_tigrbl_streaming_transport_app(Path("dummy.sqlite3"))
+    packed = build_kernel_plan(app).packed
+    assert packed is not None
+
+    hot_op_plan = packed.hot_op_plans[0]
+
+    assert hot_op_plan.program_hot_runner_id == 2
+    assert hot_op_plan.transport_kind_id == 1
+    assert hot_op_plan.param_shape_id == -1
+
+
+def test_sse_transport_route_compiles_to_compiled_runner() -> None:
+    app = create_tigrbl_sse_transport_app(Path("dummy.sqlite3"))
+    packed = build_kernel_plan(app).packed
+    assert packed is not None
+
+    hot_op_plan = packed.hot_op_plans[0]
+
+    assert hot_op_plan.program_hot_runner_id == 2
+    assert hot_op_plan.param_shape_id == -1
 
 
 def test_packed_executor_skips_channel_prelude_for_exact_websocket_fast_runner() -> None:

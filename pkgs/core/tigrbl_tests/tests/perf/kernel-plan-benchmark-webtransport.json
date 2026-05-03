@@ -1,0 +1,87 @@
+{
+  "fairness": {
+    "surface": "webtransport",
+    "shared_server_runner": "direct ASGI webtransport session",
+    "shared_database_family": "SQLite",
+    "transport_only_endpoint": "/transport/echo",
+    "db_backed_endpoint": "/transport/items",
+    "parity": "tigrbl_only"
+  },
+  "candidate": {
+    "tigrbl": {
+      "kernel_plan_measurement": {
+        "raw_bytes": 848,
+        "compressed_bytes": 350,
+        "segment_count": 25,
+        "step_count": 36,
+        "phase_tree_node_count": 14,
+        "proto_count": 7,
+        "selector_count": 1,
+        "op_count": 1,
+        "exact_route_count": 0,
+        "hot_op_count": 1,
+        "compact_step_count": 36,
+        "compact_segment_count": 2,
+        "compact_program_segment_ref_count": 1,
+        "compact_route_entry_count": 1,
+        "shared_error_profile_count": 1,
+        "externalized_prelude_step_count": 1,
+        "max_index_width_bits": 16
+      }
+    },
+    "benchmarks": {
+      "transport_only": {
+        "25": {
+          "tigrbl": {
+            "scenario": "tigrbl-webtransport-transport-25",
+            "endpoint": "/transport/echo",
+            "ops": 25,
+            "warmup_ops": 5,
+            "ops_per_second": 1059.9463231691177,
+            "total_execution_time_seconds": 0.023586100025568157,
+            "persisted_row_count": 0,
+            "shared_runner": "direct ASGI webtransport session"
+          }
+        },
+        "250": {
+          "tigrbl": {
+            "scenario": "tigrbl-webtransport-transport-250",
+            "endpoint": "/transport/echo",
+            "ops": 250,
+            "warmup_ops": 5,
+            "ops_per_second": 1099.3384181959166,
+            "total_execution_time_seconds": 0.22740949998842552,
+            "persisted_row_count": 0,
+            "shared_runner": "direct ASGI webtransport session"
+          }
+        }
+      },
+      "db_backed": {
+        "25": {
+          "tigrbl": {
+            "scenario": "tigrbl-webtransport-db-25",
+            "endpoint": "/transport/items",
+            "ops": 25,
+            "warmup_ops": 5,
+            "ops_per_second": 146.08196481604085,
+            "total_execution_time_seconds": 0.1711368000251241,
+            "persisted_row_count": 25,
+            "shared_runner": "direct ASGI webtransport session"
+          }
+        },
+        "250": {
+          "tigrbl": {
+            "scenario": "tigrbl-webtransport-db-250",
+            "endpoint": "/transport/items",
+            "ops": 250,
+            "warmup_ops": 5,
+            "ops_per_second": 143.7782934099424,
+            "total_execution_time_seconds": 1.7387882000184618,
+            "persisted_row_count": 250,
+            "shared_runner": "direct ASGI webtransport session"
+          }
+        }
+      }
+    }
+  }
+}

@@ -151,18 +151,26 @@ def _resolve_jsonrpc_endpoint(ctx: Any, channel: OpChannel) -> str | None:
     return None
 
 
-async def _receive_websocket_message(env: Any, channel: OpChannel, ctx: Any) -> None:
+async def _receive_session_message(
+    env: Any,
+    channel: OpChannel,
+    ctx: Any,
+    *,
+    connect_type: str,
+    receive_type: str,
+    disconnect_type: str,
+) -> None:
     receive = getattr(env, "receive", None)
     if not callable(receive):
         return
     message = await receive()
     state = channel.state
     state["last_event"] = message
-    if message.get("type") == "websocket.connect":
+    if message.get("type") == connect_type:
         state["connected"] = True
         message = await receive()
         state["last_event"] = message
-    if message.get("type") == "websocket.receive":
+    if message.get("type") == receive_type:
         queue = state.get("receive_queue")
         if isinstance(queue, deque):
             queue.append(message)
@@ -177,7 +185,7 @@ async def _receive_websocket_message(env: Any, channel: OpChannel, ctx: Any) -> 
             payload = str(message.get("text")).encode("utf-8")
         ctx["body"] = payload
         ctx["channel_message"] = message
-    elif message.get("type") == "websocket.disconnect":
+    elif message.get("type") == disconnect_type:
         state["disconnected"] = True
         ctx["channel_message"] = message
 
@@ -217,10 +225,34 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
             dispatch.setdefault("endpoint", endpoint)
 
     scope = getattr(env, "scope", {}) or {}
-    if str(scope.get("type") or "http") == "websocket":
-        await _receive_websocket_message(env, channel, ctx)
+    scope_type = str(scope.get("type") or "http")
+    if scope_type in {"websocket", "webtransport"}:
+        await _receive_session_message(
+            env,
+            channel,
+            ctx,
+            connect_type=(
+                "websocket.connect"
+                if scope_type == "websocket"
+                else "webtransport.connect"
+            ),
+            receive_type=(
+                "websocket.receive"
+                if scope_type == "websocket"
+                else "webtransport.receive"
+            ),
+            disconnect_type=(
+                "websocket.disconnect"
+                if scope_type == "websocket"
+                else "webtransport.disconnect"
+            ),
+        )
         message = ctx.get("channel_message")
-        if isinstance(message, Mapping) and message.get("text") is not None:
+        if (
+            scope_type == "websocket"
+            and isinstance(message, Mapping)
+            and message.get("text") is not None
+        ):
             try:
                 parsed = json.loads(str(message.get("text")))
             except Exception:
@@ -239,30 +271,37 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
     return channel
 
 
-async def _send_websocket_payload(env: Any, payload: Any) -> None:
+async def _send_session_payload(
+    env: Any,
+    payload: Any,
+    *,
+    accept_type: str,
+    send_type: str,
+    close_type: str,
+) -> None:
     send = getattr(env, "send", None)
     if not callable(send):
         return
-    await send({"type": "websocket.accept"})
+    await send({"type": accept_type})
     if payload is not None:
         if isinstance(payload, (bytes, bytearray)):
-            await send({"type": "websocket.send", "bytes": bytes(payload)})
+            await send({"type": send_type, "bytes": bytes(payload)})
         elif isinstance(payload, str):
-            await send({"type": "websocket.send", "text": payload})
+            await send({"type": send_type, "text": payload})
         else:
             await send(
                 {
-                    "type": "websocket.send",
+                    "type": send_type,
                     "text": json.dumps(payload, separators=(",", ":"), default=str),
                 }
             )
-    await send({"type": "websocket.close", "code": 1000})
+    await send({"type": close_type, "code": 1000})
 
 
 async def send_transport_via_channel(env: Any, ctx: Any) -> None:
     scope = getattr(env, "scope", {}) or {}
     scope_type = str(scope.get("type") or "http")
-    if scope_type == "websocket":
+    if scope_type in {"websocket", "webtransport"}:
         channel = ctx.get("channel")
         state = getattr(channel, "state", None) if channel is not None else None
         if isinstance(state, dict) and state.get("transport_sent") is True:
@@ -278,7 +317,25 @@ async def send_transport_via_channel(env: Any, ctx: Any) -> None:
             payload = transport.get("body")
         if payload is None:
             payload = getattr(ctx, "result", None)
-        await _send_websocket_payload(env, payload)
+        await _send_session_payload(
+            env,
+            payload,
+            accept_type=(
+                "websocket.accept"
+                if scope_type == "websocket"
+                else "webtransport.accept"
+            ),
+            send_type=(
+                "websocket.send"
+                if scope_type == "websocket"
+                else "webtransport.send"
+            ),
+            close_type=(
+                "websocket.close"
+                if scope_type == "websocket"
+                else "webtransport.close"
+            ),
+        )
         if isinstance(state, dict):
             state["transport_sent"] = True
             state["emitted"] = payload is not None

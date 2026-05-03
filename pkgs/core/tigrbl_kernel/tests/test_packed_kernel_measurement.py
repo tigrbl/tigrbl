@@ -3,6 +3,7 @@ from __future__ import annotations
 from tigrbl_kernel.measure import (
     build_packed_kernel_measurement_view,
     load_packed_kernel_hot_block,
+    load_packed_kernel_hot_sections,
     measure_packed_kernel,
     serialize_packed_kernel_measurement_view,
 )
@@ -195,6 +196,7 @@ def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
     serialized_a = serialize_packed_kernel_measurement_view(packed)
     serialized_b = serialize_packed_kernel_measurement_view(packed)
     loaded = load_packed_kernel_hot_block(serialized_a)
+    sections = load_packed_kernel_hot_sections(serialized_a)
 
     assert view["route_shape"]["exact_route_count"] == 1
     assert view["hot_op_plans"][0]["dispatch_selector_count"] == 1
@@ -207,6 +209,10 @@ def test_packed_kernel_measurement_view_and_serialization_are_stable() -> None:
     assert loaded["program_param_shape_ids"] == (0,)
     assert loaded["param_shape_slot_ids"] == (0,)
     assert loaded["segment_count"] == len(loaded["segment_phase_ids"])
+    assert sections["program_hot_runner_ids"].count == 1
+    assert sections["program_hot_runner_ids"].get_int(0) == 1
+    assert sections["program_param_shape_ids"].get_int(0) == 0
+    assert sections["param_shape_slot_ids"].get_int(0) == 0
 
 
 def test_hot_block_uses_program_segment_templates_when_reuse_is_high() -> None:

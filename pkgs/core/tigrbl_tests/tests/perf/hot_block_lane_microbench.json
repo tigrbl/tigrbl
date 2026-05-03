@@ -1,0 +1,101 @@
+{
+  "lane_size": 4096,
+  "count_iterations": 50000,
+  "find_iterations": 30000,
+  "translate_iterations": 20000,
+  "samples": 5,
+  "first_delete_index": 13,
+  "results": [
+    {
+      "title": "u8.count.byte_lane",
+      "iterations": 50000,
+      "samples": 5,
+      "mean_seconds": 0.1270251000067219,
+      "ops_per_second": 393622.9926003137,
+      "mean_ns_per_op": 2540.5020001344383,
+      "sample_seconds": [
+        0.1269783999887295,
+        0.1280043000006117,
+        0.12527900002896786,
+        0.12585030001355335,
+        0.12901350000174716
+      ]
+    },
+    {
+      "title": "u8.count.tuple_scan",
+      "iterations": 50000,
+      "samples": 5,
+      "mean_seconds": 9.985687120002694,
+      "ops_per_second": 5007.1666976069355,
+      "mean_ns_per_op": 199713.7424000539,
+      "sample_seconds": [
+        10.09620490000816,
+        10.118216300033964,
+        9.993817399954423,
+        9.94664969999576,
+        9.773547300021164
+      ]
+    },
+    {
+      "title": "u8.find.byte_lane",
+      "iterations": 30000,
+      "samples": 5,
+      "mean_seconds": 0.008207699994090944,
+      "ops_per_second": 3655104.3558607427,
+      "mean_ns_per_op": 273.58999980303145,
+      "sample_seconds": [
+        0.00830419996054843,
+        0.007859100005589426,
+        0.008271300001069903,
+        0.00830290000885725,
+        0.008300999994389713
+      ]
+    },
+    {
+      "title": "u8.find.tuple_scan",
+      "iterations": 30000,
+      "samples": 5,
+      "mean_seconds": 0.02100749999517575,
+      "ops_per_second": 1428061.4069684315,
+      "mean_ns_per_op": 700.2499998391917,
+      "sample_seconds": [
+        0.020522099977824837,
+        0.021672200004104525,
+        0.02090110001154244,
+        0.02086999994935468,
+        0.021072100033052266
+      ]
+    },
+    {
+      "title": "u8.translate_count.byte_lane",
+      "iterations": 20000,
+      "samples": 5,
+      "mean_seconds": 0.11514351998921483,
+      "ops_per_second": 173696.27054890577,
+      "mean_ns_per_op": 5757.175999460742,
+      "sample_seconds": [
+        0.11486569995759055,
+        0.11469449999276549,
+        0.1150719000142999,
+        0.11663240002235398,
+        0.11445309995906428
+      ]
+    },
+    {
+      "title": "u8.translate_count.tuple_scan",
+      "iterations": 20000,
+      "samples": 5,
+      "mean_seconds": 5.472417539998423,
+      "ops_per_second": 3654.6918896115085,
+      "mean_ns_per_op": 273620.87699992117,
+      "sample_seconds": [
+        5.466152500011958,
+        5.477882499981206,
+        5.455136000004131,
+        5.442814100009855,
+        5.520102599984966
+      ]
+    }
+  ],
+  "artifact_path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\hot_block_lane_microbench.json"
+}

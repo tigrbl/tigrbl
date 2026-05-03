@@ -8,7 +8,13 @@ from typing import Any, Mapping
 
 from tigrbl_typing.phases import normalize_phase
 
-from .models import HotOpPlan, PackedKernel, PackedKernelMeasurement
+from .models import (
+    HotOpPlan,
+    PackedHotSection,
+    PackedHotSectionDirectory,
+    PackedKernel,
+    PackedKernelMeasurement,
+)
 
 _BINDER_TOKEN = "SYS_PHASE_DB_BIND"
 _EXECUTOR_KIND_IDS = {
@@ -73,6 +79,9 @@ _HOT_BLOCK_SECTION_IDS = {
 _HOT_BLOCK_SECTION_NAMES = {
     section_id: name for name, section_id in _HOT_BLOCK_SECTION_IDS.items()
 }
+_HOT_BLOCK_SIGNED_SECTION_NAMES = frozenset(
+    {"atom_payload_values", "program_param_shape_ids"}
+)
 _HTTP_METHOD_ID_BY_NAME = {
     "GET": 1,
     "HEAD": 2,
@@ -985,12 +994,16 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     route_proto_ids = [entry[0] for entry in route_entries]
     route_selector_ids = [entry[1] for entry in route_entries]
     route_program_ids = [entry[2] for entry in route_entries]
-    exact_route_entries = [
-        (_http_method_id(str(method)), _stable_hash64(str(path)), int(program_id))
-        for (method, path), program_id in sorted(
-            (getattr(packed, "rest_exact_route_to_program", {}) or {}).items()
+    exact_route_entries = sorted(
+        (
+            _http_method_id(str(method)),
+            _stable_hash64(str(path)),
+            int(program_id),
         )
-    ]
+        for (method, path), program_id in (
+            getattr(packed, "rest_exact_route_to_program", {}) or {}
+        ).items()
+    )
     exact_method_ids = [entry[0] for entry in exact_route_entries]
     exact_path_hashes = [entry[1] for entry in exact_route_entries]
     exact_program_ids = [entry[2] for entry in exact_route_entries]
@@ -1122,7 +1135,7 @@ def serialize_packed_kernel_measurement_view(packed: PackedKernel) -> bytes:
     return header + b"".join(directory_entries) + b"".join(payload_chunks)
 
 
-def load_packed_kernel_hot_block(payload: bytes) -> dict[str, Any]:
+def load_packed_kernel_hot_sections(payload: bytes) -> PackedHotSectionDirectory:
     header_size = struct.calcsize("<8sHHIHHHHHHH")
     if len(payload) < header_size:
         raise ValueError("hot block payload is truncated")
@@ -1147,19 +1160,9 @@ def load_packed_kernel_hot_block(payload: bytes) -> dict[str, Any]:
         raise ValueError("hot block length mismatch")
     entry_size = struct.calcsize("<HBBII")
     directory_size = section_count * entry_size
-    data_start = directory_offset + directory_size
-    if data_start > len(payload):
+    if directory_offset + directory_size > len(payload):
         raise ValueError("hot block directory exceeds payload length")
-
-    out: dict[str, Any] = {
-        "version": int(version),
-        "max_width_bits": int(max_width_bits),
-        "atom_count": int(atom_count),
-        "segment_count": int(segment_count),
-        "program_count": int(program_count),
-        "error_profile_count": int(error_profile_count),
-        "route_entry_count": int(route_entry_count),
-    }
+    sections: dict[str, PackedHotSection] = {}
     for index in range(section_count):
         start = directory_offset + (index * entry_size)
         end = start + entry_size
@@ -1176,14 +1179,55 @@ def load_packed_kernel_hot_block(payload: bytes) -> dict[str, Any]:
         )
         if offset > next_offset or next_offset > len(payload):
             raise ValueError("hot block section offset is invalid")
-        section_payload = payload[offset:next_offset]
-        if name == "atom_payload_values":
-            out[name] = _unpack_signed_array(int(width_bits), section_payload, int(count))
-        elif name == "program_param_shape_ids":
-            out[name] = _unpack_signed_array(int(width_bits), section_payload, int(count))
-        else:
-            out[name] = _unpack_unsigned_array(int(width_bits), section_payload, int(count))
+        sections[name] = PackedHotSection(
+            name=name,
+            section_id=int(section_id),
+            width_bits=int(width_bits),
+            count=int(count),
+            offset=int(offset),
+            byte_length=int(next_offset - offset),
+            buffer=payload,
+            signed=name in _HOT_BLOCK_SIGNED_SECTION_NAMES,
+        )
 
+    return PackedHotSectionDirectory(
+        version=int(version),
+        max_width_bits=int(max_width_bits),
+        atom_count=int(atom_count),
+        segment_count=int(segment_count),
+        program_count=int(program_count),
+        error_profile_count=int(error_profile_count),
+        route_entry_count=int(route_entry_count),
+        sections=sections,
+    )
+
+def load_packed_kernel_hot_block(payload: bytes) -> dict[str, Any]:
+    directory = load_packed_kernel_hot_sections(payload)
+    out: dict[str, Any] = {
+        "version": int(directory.version),
+        "max_width_bits": int(directory.max_width_bits),
+        "atom_count": int(directory.atom_count),
+        "segment_count": int(directory.segment_count),
+        "program_count": int(directory.program_count),
+        "error_profile_count": int(directory.error_profile_count),
+        "route_entry_count": int(directory.route_entry_count),
+    }
+    for name, section in directory.sections.items():
+        section_payload = section.payload_view
+        if section.signed:
+            out[name] = _unpack_signed_array(
+                int(section.width_bits),
+                bytes(section_payload),
+                int(section.count),
+            )
+        else:
+            out[name] = _unpack_unsigned_array(
+                int(section.width_bits),
+                bytes(section_payload),
+                int(section.count),
+            )
+
+    atom_count = directory.atom_count
     if "atom_effect_ids" not in out:
         out["atom_effect_ids"] = tuple(0 for _ in range(atom_count))
     if "atom_payload_offsets" not in out:
@@ -1284,6 +1328,7 @@ def measure_packed_kernel(packed: PackedKernel) -> PackedKernelMeasurement:
 __all__ = [
     "build_packed_kernel_measurement_view",
     "load_packed_kernel_hot_block",
+    "load_packed_kernel_hot_sections",
     "measure_packed_kernel",
     "serialize_packed_kernel_measurement_view",
 ]

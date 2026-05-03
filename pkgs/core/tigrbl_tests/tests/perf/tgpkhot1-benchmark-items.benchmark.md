@@ -1,7 +1,7 @@
 # TGPKHOT1 Benchmark (rest_unary)
 
 - raw bytes: 1627
-- compressed bytes: 721
+- compressed bytes: 724
 - section count: 40
 - max width bits: 64
 - atom count: 60

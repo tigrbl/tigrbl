@@ -25,7 +25,7 @@ from .atoms import (
 )
 from .models import HotOpPlan, KernelPlan, OpKey, OpView, PackedKernel
 from .measure import (
-    load_packed_kernel_hot_block,
+    load_packed_kernel_hot_sections,
     measure_packed_kernel,
     serialize_packed_kernel_measurement_view,
 )
@@ -433,6 +433,24 @@ def _program_path_param_names(plan: KernelPlan, program_id: int) -> frozenset[st
     return frozenset(names)
 
 
+def _program_has_exact_proto_binding(
+    plan: KernelPlan,
+    program_id: int,
+    *,
+    allowed_protos: frozenset[str],
+) -> bool:
+    for proto, bucket in (getattr(plan, "proto_indices", {}) or {}).items():
+        if proto not in allowed_protos or not isinstance(bucket, Mapping):
+            continue
+        exact = bucket.get("exact")
+        if not isinstance(exact, Mapping):
+            continue
+        for meta_index in exact.values():
+            if meta_index == program_id:
+                return True
+    return False
+
+
 def _compile_program_param_shape(
     opview: OpView | None,
     *,
@@ -480,16 +498,21 @@ def _program_hot_runner_id(
     remaining_segments: tuple[int, ...],
     param_shape_id: int,
     transport_kind_id: int,
+    exact_http_like_no_input: bool,
     websocket_fast_path: bool,
 ) -> int:
     if websocket_fast_path and (ordered_segments or remaining_segments):
         return _HOT_RUNNER_WS_UNARY_TEXT
+    if exact_http_like_no_input and (ordered_segments or remaining_segments):
+        return _HOT_RUNNER_COMPILED_PARAM
     if (
         param_shape_id >= 0
         and (
             transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}
             or any(
-                proto.endswith(".rest") or proto.endswith(".jsonrpc")
+                proto.endswith(".rest")
+                or proto.endswith(".jsonrpc")
+                or proto.endswith(".sse")
                 for proto in proto_names
             )
         )
@@ -929,12 +952,20 @@ def _pack_kernel_plan(
             if program_id < len(program_transport_kind_ids)
             else _TRANSPORT_KIND_GENERIC
         )
+        exact_http_like_no_input = param_shape_id < 0 and _program_has_exact_proto_binding(
+            plan,
+            program_id,
+            allowed_protos=frozenset(
+                {"http.rest", "https.rest", "http.sse", "https.sse"}
+            ),
+        )
         hot_runner_id = _program_hot_runner_id(
             proto_names=program_proto_names,
             ordered_segments=tuple(ordered_segments),
             remaining_segments=tuple(remaining_segments),
             param_shape_id=param_shape_id,
             transport_kind_id=transport_kind_id,
+            exact_http_like_no_input=exact_http_like_no_input,
             websocket_fast_path=websocket_fast_path is not None,
         )
         program_hot_runner_ids.append(hot_runner_id)
@@ -1054,11 +1085,12 @@ def _pack_kernel_plan(
         else None,
     )
     hot_block_bytes = serialize_packed_kernel_measurement_view(measured)
-    hot_block_view = load_packed_kernel_hot_block(hot_block_bytes)
+    hot_block_sections = load_packed_kernel_hot_sections(hot_block_bytes)
     measured = replace(
         measured,
         hot_block_bytes=hot_block_bytes,
-        hot_block_view=hot_block_view,
+        hot_block_view={},
+        hot_block_sections=hot_block_sections,
     )
     return replace(measured, measurement=measure_packed_kernel(measured))
 
