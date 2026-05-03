@@ -74,7 +74,7 @@ fn kernel_parity_snapshot_covers_routes_opviews_phases_packed_and_docs() {
             "POST_RESPONSE",
         ]
     );
-    assert_eq!(snapshot.packed_plan.segments, 2);
+    assert_eq!(snapshot.packed_plan.segments, 3);
     assert_eq!(snapshot.docs.openapi_paths, vec!["/widgets".to_string()]);
     assert_eq!(snapshot.docs.asyncapi_channels, vec!["/events".to_string()]);
 }
