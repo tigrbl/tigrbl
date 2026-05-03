@@ -16,6 +16,10 @@ It is not the authoritative location for repository governance, current target s
 
 ## Package identity
 
+- canonical repository: `https://github.com/tigrbl/tigrbl`
+- organization: `https://github.com/tigrbl`
+- social: `https://discord.gg/K4YTAPapjR`
+- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_orm`
 - workspace path: `pkgs/core/tigrbl_orm`
 - workspace class: core Python package
 - implementation layout: `tigrbl_orm/`

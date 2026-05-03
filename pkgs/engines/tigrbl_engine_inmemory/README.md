@@ -16,6 +16,10 @@ It is not the authoritative location for repository governance, current target s
 
 ## Package identity
 
+- canonical repository: `https://github.com/tigrbl/tigrbl`
+- organization: `https://github.com/tigrbl`
+- social: `https://discord.gg/K4YTAPapjR`
+- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemory`
 - workspace path: `pkgs/engines/tigrbl_engine_inmemory`
 - workspace class: engine package
 - implementation layout: `src/tigrbl_engine_inmemory/`
