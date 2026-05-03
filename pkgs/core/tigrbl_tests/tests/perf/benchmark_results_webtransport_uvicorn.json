@@ -1,0 +1,54 @@
+{
+  "transport_only": {
+    "25": {
+      "tigrbl": {
+        "scenario": "tigrbl-webtransport-transport-25",
+        "endpoint": "/transport/echo",
+        "ops": 25,
+        "warmup_ops": 5,
+        "ops_per_second": 1059.9463231691177,
+        "total_execution_time_seconds": 0.023586100025568157,
+        "persisted_row_count": 0,
+        "shared_runner": "direct ASGI webtransport session"
+      }
+    },
+    "250": {
+      "tigrbl": {
+        "scenario": "tigrbl-webtransport-transport-250",
+        "endpoint": "/transport/echo",
+        "ops": 250,
+        "warmup_ops": 5,
+        "ops_per_second": 1099.3384181959166,
+        "total_execution_time_seconds": 0.22740949998842552,
+        "persisted_row_count": 0,
+        "shared_runner": "direct ASGI webtransport session"
+      }
+    }
+  },
+  "db_backed": {
+    "25": {
+      "tigrbl": {
+        "scenario": "tigrbl-webtransport-db-25",
+        "endpoint": "/transport/items",
+        "ops": 25,
+        "warmup_ops": 5,
+        "ops_per_second": 146.08196481604085,
+        "total_execution_time_seconds": 0.1711368000251241,
+        "persisted_row_count": 25,
+        "shared_runner": "direct ASGI webtransport session"
+      }
+    },
+    "250": {
+      "tigrbl": {
+        "scenario": "tigrbl-webtransport-db-250",
+        "endpoint": "/transport/items",
+        "ops": 250,
+        "warmup_ops": 5,
+        "ops_per_second": 143.7782934099424,
+        "total_execution_time_seconds": 1.7387882000184618,
+        "persisted_row_count": 250,
+        "shared_runner": "direct ASGI webtransport session"
+      }
+    }
+  }
+}

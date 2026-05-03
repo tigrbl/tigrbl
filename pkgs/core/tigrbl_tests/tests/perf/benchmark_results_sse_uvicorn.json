@@ -1,0 +1,94 @@
+{
+  "transport_only": {
+    "25": {
+      "tigrbl": {
+        "scenario": "tigrbl-sse-transport-25",
+        "endpoint": "/events/fixed",
+        "ops": 25,
+        "warmup_ops": 5,
+        "ops_per_second": 1256.552921011306,
+        "total_execution_time_seconds": 0.019895700039342046,
+        "bytes_per_response": 440,
+        "shared_runner": "httpx.ASGITransport"
+      },
+      "fastapi": {
+        "scenario": "fastapi-sse-transport-25",
+        "endpoint": "/events/fixed",
+        "ops": 25,
+        "warmup_ops": 5,
+        "ops_per_second": 447.256795111764,
+        "total_execution_time_seconds": 0.05589630000758916,
+        "bytes_per_response": 440,
+        "shared_runner": "httpx.ASGITransport"
+      }
+    },
+    "250": {
+      "tigrbl": {
+        "scenario": "tigrbl-sse-transport-250",
+        "endpoint": "/events/fixed",
+        "ops": 250,
+        "warmup_ops": 5,
+        "ops_per_second": 1212.508038862471,
+        "total_execution_time_seconds": 0.20618420001119375,
+        "bytes_per_response": 440,
+        "shared_runner": "httpx.ASGITransport"
+      },
+      "fastapi": {
+        "scenario": "fastapi-sse-transport-250",
+        "endpoint": "/events/fixed",
+        "ops": 250,
+        "warmup_ops": 5,
+        "ops_per_second": 466.08565054154775,
+        "total_execution_time_seconds": 0.5363820999627933,
+        "bytes_per_response": 440,
+        "shared_runner": "httpx.ASGITransport"
+      }
+    }
+  },
+  "db_backed": {
+    "25": {
+      "tigrbl": {
+        "scenario": "tigrbl-sse-db-25",
+        "endpoint": "/events/items",
+        "ops": 25,
+        "warmup_ops": 5,
+        "ops_per_second": 780.7132596482611,
+        "total_execution_time_seconds": 0.03202199999941513,
+        "bytes_per_response": 893,
+        "shared_runner": "httpx.ASGITransport"
+      },
+      "fastapi": {
+        "scenario": "fastapi-sse-db-25",
+        "endpoint": "/events/items",
+        "ops": 25,
+        "warmup_ops": 5,
+        "ops_per_second": 173.78211754434773,
+        "total_execution_time_seconds": 0.14385829999810085,
+        "bytes_per_response": 893,
+        "shared_runner": "httpx.ASGITransport"
+      }
+    },
+    "250": {
+      "tigrbl": {
+        "scenario": "tigrbl-sse-db-250",
+        "endpoint": "/events/items",
+        "ops": 250,
+        "warmup_ops": 5,
+        "ops_per_second": 744.9515379430262,
+        "total_execution_time_seconds": 0.33559229999082163,
+        "bytes_per_response": 893,
+        "shared_runner": "httpx.ASGITransport"
+      },
+      "fastapi": {
+        "scenario": "fastapi-sse-db-250",
+        "endpoint": "/events/items",
+        "ops": 250,
+        "warmup_ops": 5,
+        "ops_per_second": 182.8882041746333,
+        "total_execution_time_seconds": 1.3669552999781445,
+        "bytes_per_response": 893,
+        "shared_runner": "httpx.ASGITransport"
+      }
+    }
+  }
+}

@@ -82,3 +82,19 @@ def test_compile_opview_from_specs_requires_non_nullable_create_storage() -> Non
     opview = _compile_opview_from_specs(self=None, specs=columns, sp=op_spec)
 
     assert opview.schema_in.by_field["label"]["required"] is True
+
+
+def test_compile_opview_from_specs_uses_target_verb_for_alias_bound_ops() -> None:
+    columns = {
+        "name": ColumnSpec(
+            storage=StorageSpec(type_=str, nullable=False),
+            field=FieldSpec(py_type=str, required_in=("create",)),
+            io=IOSpec(in_verbs=("create",), out_verbs=("create",)),
+        ),
+    }
+    op_spec = OpSpec(alias="BenchmarkItem.create", target="create")
+
+    opview = _compile_opview_from_specs(self=None, specs=columns, sp=op_spec)
+
+    assert opview.schema_in.fields == ("name",)
+    assert opview.schema_in.by_field["name"]["required"] is True

@@ -1,0 +1,68 @@
+{
+  "payload_size": 64,
+  "iterations": 500000,
+  "samples": 5,
+  "artifact_path": "E:\\swarmauri_github\\tigrbl\\pkgs\\core\\tigrbl_tests\\tests\\perf\\egress_body_coercion_microbench.json",
+  "results": [
+    {
+      "title": "egress_body.direct_bytes_passthrough",
+      "iterations": 500000,
+      "samples": 5,
+      "mean_seconds": 0.026584520016331225,
+      "ops_per_second": 18807937.84100083,
+      "mean_ns_per_op": 53.16904003266245,
+      "sample_seconds": [
+        0.03121300000930205,
+        0.02298130001872778,
+        0.023088700021617115,
+        0.024131799989845604,
+        0.03150780004216358
+      ]
+    },
+    {
+      "title": "egress_body.coerce_bytes",
+      "iterations": 500000,
+      "samples": 5,
+      "mean_seconds": 0.044641320023220035,
+      "ops_per_second": 11200385.645852914,
+      "mean_ns_per_op": 89.28264004644008,
+      "sample_seconds": [
+        0.04489830002421513,
+        0.044666800007689744,
+        0.04445210000267252,
+        0.044739200035110116,
+        0.04445020004641265
+      ]
+    },
+    {
+      "title": "egress_body.coerce_bytearray",
+      "iterations": 500000,
+      "samples": 5,
+      "mean_seconds": 0.13360453998902813,
+      "ops_per_second": 3742387.796410668,
+      "mean_ns_per_op": 267.20907997805625,
+      "sample_seconds": [
+        0.13277099997503683,
+        0.13423909997800365,
+        0.1359952999628149,
+        0.1320988000370562,
+        0.13291849999222904
+      ]
+    },
+    {
+      "title": "egress_body.coerce_memoryview",
+      "iterations": 500000,
+      "samples": 5,
+      "mean_seconds": 0.1193656999967061,
+      "ops_per_second": 4188808.0077760825,
+      "mean_ns_per_op": 238.73139999341223,
+      "sample_seconds": [
+        0.12794969999231398,
+        0.11660519998986274,
+        0.1163498000241816,
+        0.11841209995327517,
+        0.11751170002389699
+      ]
+    }
+  ]
+}

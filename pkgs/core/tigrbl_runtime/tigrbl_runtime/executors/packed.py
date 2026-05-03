@@ -16,9 +16,16 @@ from types import SimpleNamespace
 from urllib.parse import unquote_plus
 
 from tigrbl_atoms._ctx import _ctx_view
+from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__
 from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
 from tigrbl_atoms.atoms.wire.validate_in import _coerce_if_needed
-from tigrbl_kernel.models import KernelPlan, OpKey, PackedKernel
+from tigrbl_kernel.models import (
+    KernelPlan,
+    OpKey,
+    PackedHotSection,
+    PackedHotSectionDirectory,
+    PackedKernel,
+)
 from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_typing.phases import normalize_phase
 from tigrbl_typing.status.mappings import status as _status
@@ -116,8 +123,11 @@ class _DirectWebSocketUnary:
         "_receive",
         "_send",
         "_buffered",
-        "path_params",
-        "scope",
+        "_buffered_text",
+        "_buffered_bytes",
+        "_path",
+        "_path_params",
+        "_scope",
         "accepted",
         "closed",
         "sent_payload",
@@ -134,12 +144,59 @@ class _DirectWebSocketUnary:
     ) -> None:
         self._receive = receive
         self._send = send
-        self._buffered = dict(buffered_message) if isinstance(buffered_message, Mapping) else None
-        self.path_params = dict(path_params or {})
-        self.scope = {"type": "websocket", "path": path}
+        self._buffered = None
+        self._buffered_text = None
+        self._buffered_bytes = None
+        self._path = path
+        self._scope = None
+        if isinstance(buffered_message, Mapping):
+            if buffered_message.get("type") == "websocket.receive":
+                text = buffered_message.get("text")
+                if isinstance(text, str):
+                    self._buffered_text = text
+                else:
+                    raw = buffered_message.get("bytes")
+                    if isinstance(raw, bytes):
+                        self._buffered_bytes = raw
+                    elif isinstance(raw, bytearray):
+                        self._buffered_bytes = bytes(raw)
+                    else:
+                        self._buffered = (
+                            buffered_message
+                            if isinstance(buffered_message, dict)
+                            else dict(buffered_message)
+                        )
+            else:
+                self._buffered = (
+                    buffered_message
+                    if isinstance(buffered_message, dict)
+                    else dict(buffered_message)
+                )
+        if isinstance(path_params, dict):
+            self._path_params = path_params
+        elif path_params:
+            self._path_params = dict(path_params)
+        else:
+            self._path_params = None
         self.accepted = False
         self.closed = False
         self.sent_payload = False
+
+    @property
+    def scope(self) -> dict[str, Any]:
+        scope = self._scope
+        if scope is None:
+            scope = {"type": "websocket", "path": self._path}
+            self._scope = scope
+        return scope
+
+    @property
+    def path_params(self) -> dict[str, Any]:
+        path_params = self._path_params
+        if path_params is None:
+            path_params = {}
+            self._path_params = path_params
+        return path_params
 
     async def accept(self, subprotocol: str | None = None) -> None:
         if self.accepted:
@@ -162,6 +219,14 @@ class _DirectWebSocketUnary:
         return {"type": "websocket.disconnect", "code": 1006}
 
     async def receive_text(self) -> str:
+        if self._buffered_text is not None:
+            text = self._buffered_text
+            self._buffered_text = None
+            return text
+        if self._buffered_bytes is not None:
+            raw = self._buffered_bytes
+            self._buffered_bytes = None
+            return raw.decode("utf-8")
         message = await self.receive()
         if message.get("type") == "websocket.disconnect":
             self.closed = True
@@ -234,7 +299,10 @@ class PackedPlanExecutor(ExecutorBase):
         self._program_runner_mode_cache: dict[tuple[int, int, int], Any] = {}
         self._db_acquire_cache: dict[tuple[int, int], Any] = {}
         self._hot_exact_route_cache: dict[
-            int, Mapping[int, tuple[tuple[int, int], ...]]
+            int, Mapping[int, Mapping[int, int]]
+        ] = {}
+        self._hot_exact_jsonrpc_cache: dict[
+            int, Mapping[str, Mapping[str, tuple[int, str, str]]]
         ] = {}
         self._hot_exact_websocket_route_cache: dict[
             int, Mapping[tuple[str, str], int]
@@ -381,6 +449,22 @@ class PackedPlanExecutor(ExecutorBase):
         view = getattr(packed, "hot_block_view", None)
         return view if isinstance(view, Mapping) else {}
 
+    @staticmethod
+    def _hot_block_sections(packed: PackedKernel) -> PackedHotSectionDirectory | None:
+        sections = getattr(packed, "hot_block_sections", None)
+        return (
+            sections
+            if isinstance(sections, PackedHotSectionDirectory)
+            else None
+        )
+
+    @classmethod
+    def _hot_section(cls, packed: PackedKernel, key: str) -> PackedHotSection | None:
+        directory = cls._hot_block_sections(packed)
+        if directory is None:
+            return None
+        return directory.get(key)
+
     @classmethod
     def _hot_array(cls, packed: PackedKernel, key: str, fallback: tuple[Any, ...] | tuple[int, ...] | tuple[str, ...]) -> tuple[Any, ...]:
         view = cls._hot_block_view(packed)
@@ -390,6 +474,35 @@ class PackedPlanExecutor(ExecutorBase):
         if isinstance(values, list):
             return tuple(values)
         return fallback
+
+    @classmethod
+    def _hot_int_at(
+        cls,
+        packed: PackedKernel,
+        key: str,
+        index: int,
+        fallback: tuple[int, ...] | tuple[Any, ...],
+    ) -> int | None:
+        section = cls._hot_section(packed, key)
+        if section is not None:
+            if 0 <= index < int(section.count):
+                return section.get_int(index)
+            return None
+        if 0 <= index < len(fallback):
+            return int(fallback[index])
+        return None
+
+    @classmethod
+    def _hot_count(
+        cls,
+        packed: PackedKernel,
+        key: str,
+        fallback: tuple[int, ...] | tuple[Any, ...] | tuple[str, ...],
+    ) -> int:
+        section = cls._hot_section(packed, key)
+        if section is not None:
+            return int(section.count)
+        return len(fallback)
 
     @staticmethod
     def _stable_name_hash64(value: str, *, lowercase: bool = False) -> int:
@@ -629,19 +742,23 @@ class PackedPlanExecutor(ExecutorBase):
         packed: PackedKernel,
         param_shape_id: int,
     ) -> tuple[int, int]:
-        offsets = cls._hot_array(
+        offsets_fallback = tuple(getattr(packed, "param_shape_offsets", ()) or ())
+        lengths_fallback = tuple(getattr(packed, "param_shape_lengths", ()) or ())
+        if not (0 <= param_shape_id < cls._hot_count(packed, "param_shape_offsets", offsets_fallback)):
+            return (0, 0)
+        offset = cls._hot_int_at(
             packed,
             "param_shape_offsets",
-            tuple(getattr(packed, "param_shape_offsets", ()) or ()),
+            param_shape_id,
+            offsets_fallback,
         )
-        lengths = cls._hot_array(
+        length = cls._hot_int_at(
             packed,
             "param_shape_lengths",
-            tuple(getattr(packed, "param_shape_lengths", ()) or ()),
+            param_shape_id,
+            lengths_fallback,
         )
-        if not (0 <= param_shape_id < len(offsets)):
-            return (0, 0)
-        return int(offsets[param_shape_id]), int(lengths[param_shape_id])
+        return int(offset or 0), int(length or 0)
 
     @classmethod
     def _segment_phase_names(cls, packed: PackedKernel) -> tuple[str, ...]:
@@ -666,14 +783,14 @@ class PackedPlanExecutor(ExecutorBase):
             plan_value = cls._coerce_int(getattr(hot_op_plan, "param_shape_id", None))
             if plan_value is not None:
                 return plan_value
-        values = cls._hot_array(
+        fallback = tuple(getattr(packed, "program_param_shape_ids", ()) or ())
+        value = cls._hot_int_at(
             packed,
             "program_param_shape_ids",
-            tuple(getattr(packed, "program_param_shape_ids", ()) or ()),
+            program_id,
+            fallback,
         )
-        if 0 <= program_id < len(values):
-            return int(values[program_id])
-        return -1
+        return int(value) if value is not None else -1
 
     @classmethod
     def _resolve_program_transport_kind_id(
@@ -685,14 +802,14 @@ class PackedPlanExecutor(ExecutorBase):
             )
             if plan_value is not None:
                 return plan_value
-        values = cls._hot_array(
+        fallback = tuple(getattr(packed, "program_transport_kind_ids", ()) or ())
+        value = cls._hot_int_at(
             packed,
             "program_transport_kind_ids",
-            tuple(getattr(packed, "program_transport_kind_ids", ()) or ()),
+            program_id,
+            fallback,
         )
-        if 0 <= program_id < len(values):
-            return int(values[program_id])
-        return _TRANSPORT_KIND_GENERIC
+        return int(value) if value is not None else _TRANSPORT_KIND_GENERIC
 
     @staticmethod
     def _active_transport_kind(hot: HotCtx, fallback: int) -> int:
@@ -768,34 +885,34 @@ class PackedPlanExecutor(ExecutorBase):
             (),
         )
         if length > 0 and field_names:
-            source_masks = self._hot_array(
-                packed,
-                "param_shape_source_masks",
-                tuple(getattr(packed, "param_shape_source_masks", ()) or ()),
+            source_masks_fallback = tuple(
+                getattr(packed, "param_shape_source_masks", ()) or ()
             )
-            slot_ids = self._hot_array(
-                packed,
-                "param_shape_slot_ids",
-                tuple(getattr(packed, "param_shape_slot_ids", ()) or ()),
+            slot_ids_fallback = tuple(getattr(packed, "param_shape_slot_ids", ()) or ())
+            decoder_ids_fallback = tuple(
+                getattr(packed, "param_shape_decoder_ids", ()) or ()
             )
-            decoder_ids = self._hot_array(
-                packed,
-                "param_shape_decoder_ids",
-                tuple(getattr(packed, "param_shape_decoder_ids", ()) or ()),
-            )
-            max_lengths = self._hot_array(
-                packed,
-                "param_shape_max_lengths",
-                tuple(getattr(packed, "param_shape_max_lengths", ()) or ()),
+            max_lengths_fallback = tuple(
+                getattr(packed, "param_shape_max_lengths", ()) or ()
             )
             rows: list[tuple[int, str, int, int]] = []
             body_only = True
             for idx in range(start, start + length):
-                source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
+                source_mask = self._hot_int_at(
+                    packed,
+                    "param_shape_source_masks",
+                    idx,
+                    source_masks_fallback,
+                )
                 if source_mask != _PARAM_SOURCE_BODY:
                     body_only = False
                     break
-                slot_id = int(slot_ids[idx]) if idx < len(slot_ids) else -1
+                slot_id = self._hot_int_at(
+                    packed,
+                    "param_shape_slot_ids",
+                    idx,
+                    slot_ids_fallback,
+                )
                 if not (0 <= slot_id < len(field_names)):
                     body_only = False
                     break
@@ -805,8 +922,18 @@ class PackedPlanExecutor(ExecutorBase):
                     (
                         slot_id,
                         self._compiled_lookup_name(field_name, field_meta),
-                        int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE,
-                        int(max_lengths[idx]) if idx < len(max_lengths) else 0,
+                        self._hot_int_at(
+                            packed,
+                            "param_shape_decoder_ids",
+                            idx,
+                            decoder_ids_fallback,
+                        ),
+                        self._hot_int_at(
+                            packed,
+                            "param_shape_max_lengths",
+                            idx,
+                            max_lengths_fallback,
+                        ),
                     )
                 )
             if body_only and rows:
@@ -1049,35 +1176,21 @@ class PackedPlanExecutor(ExecutorBase):
         )
 
         start, length = self._param_shape_descriptor_slice(packed, param_shape_id)
-        lookup_hashes = self._hot_array(
-            packed,
-            "param_shape_lookup_hashes",
-            tuple(getattr(packed, "param_shape_lookup_hashes", ()) or ()),
+        lookup_hashes_fallback = tuple(
+            getattr(packed, "param_shape_lookup_hashes", ()) or ()
         )
-        header_hashes = self._hot_array(
-            packed,
-            "param_shape_header_hashes",
-            tuple(getattr(packed, "param_shape_header_hashes", ()) or ()),
+        header_hashes_fallback = tuple(
+            getattr(packed, "param_shape_header_hashes", ()) or ()
         )
-        source_masks = self._hot_array(
-            packed,
-            "param_shape_source_masks",
-            tuple(getattr(packed, "param_shape_source_masks", ()) or ()),
+        source_masks_fallback = tuple(
+            getattr(packed, "param_shape_source_masks", ()) or ()
         )
-        slot_ids = self._hot_array(
-            packed,
-            "param_shape_slot_ids",
-            tuple(getattr(packed, "param_shape_slot_ids", ()) or ()),
+        slot_ids_fallback = tuple(getattr(packed, "param_shape_slot_ids", ()) or ())
+        decoder_ids_fallback = tuple(
+            getattr(packed, "param_shape_decoder_ids", ()) or ()
         )
-        decoder_ids = self._hot_array(
-            packed,
-            "param_shape_decoder_ids",
-            tuple(getattr(packed, "param_shape_decoder_ids", ()) or ()),
-        )
-        max_lengths = self._hot_array(
-            packed,
-            "param_shape_max_lengths",
-            tuple(getattr(packed, "param_shape_max_lengths", ()) or ()),
+        max_lengths_fallback = tuple(
+            getattr(packed, "param_shape_max_lengths", ()) or ()
         )
 
         descriptor_rows: list[_CompiledInputDescriptor] = []
@@ -1085,12 +1198,22 @@ class PackedPlanExecutor(ExecutorBase):
         needs_header = False
         needs_path = False
         for idx in range(start, start + length):
-            slot_id = int(slot_ids[idx]) if idx < len(slot_ids) else -1
+            slot_id = self._hot_int_at(
+                packed,
+                "param_shape_slot_ids",
+                idx,
+                slot_ids_fallback,
+            )
             if not (0 <= slot_id < len(field_names)):
                 continue
             field_name = field_names[slot_id]
             field_meta = by_field.get(field_name, {}) if isinstance(by_field, Mapping) else {}
-            source_mask = int(source_masks[idx]) if idx < len(source_masks) else 0
+            source_mask = self._hot_int_at(
+                packed,
+                "param_shape_source_masks",
+                idx,
+                source_masks_fallback,
+            )
             needs_query = needs_query or bool(source_mask & _PARAM_SOURCE_QUERY)
             needs_header = needs_header or bool(source_mask & _PARAM_SOURCE_HEADER)
             needs_path = needs_path or bool(source_mask & _PARAM_SOURCE_PATH)
@@ -1099,17 +1222,29 @@ class PackedPlanExecutor(ExecutorBase):
                     slot_id=slot_id,
                     lookup_name=self._compiled_lookup_name(field_name, field_meta),
                     source_mask=source_mask,
-                    decoder_id=(
-                        int(decoder_ids[idx]) if idx < len(decoder_ids) else _DECODER_NONE
+                    decoder_id=self._hot_int_at(
+                        packed,
+                        "param_shape_decoder_ids",
+                        idx,
+                        decoder_ids_fallback,
                     ),
-                    max_length=(
-                        int(max_lengths[idx]) if idx < len(max_lengths) else 0
+                    max_length=self._hot_int_at(
+                        packed,
+                        "param_shape_max_lengths",
+                        idx,
+                        max_lengths_fallback,
                     ),
-                    lookup_hash=(
-                        int(lookup_hashes[idx]) if idx < len(lookup_hashes) else 0
+                    lookup_hash=self._hot_int_at(
+                        packed,
+                        "param_shape_lookup_hashes",
+                        idx,
+                        lookup_hashes_fallback,
                     ),
-                    header_hash=(
-                        int(header_hashes[idx]) if idx < len(header_hashes) else 0
+                    header_hash=self._hot_int_at(
+                        packed,
+                        "param_shape_header_hashes",
+                        idx,
+                        header_hashes_fallback,
                     ),
                 )
             )
@@ -1292,30 +1427,51 @@ class PackedPlanExecutor(ExecutorBase):
         if cached is not None:
             return cached
 
-        segment_offsets = self._hot_array(
-            packed,
-            "program_segment_offsets",
-            tuple(getattr(packed, "program_segment_ref_offsets", ()) or getattr(packed, "op_segment_offsets", ()) or ()),
+        offsets_fallback = tuple(
+            getattr(packed, "program_segment_ref_offsets", ())
+            or getattr(packed, "op_segment_offsets", ())
+            or ()
         )
-        segment_lengths = self._hot_array(
-            packed,
-            "program_segment_lengths",
-            tuple(getattr(packed, "program_segment_ref_lengths", ()) or getattr(packed, "op_segment_lengths", ()) or ()),
+        lengths_fallback = tuple(
+            getattr(packed, "program_segment_ref_lengths", ())
+            or getattr(packed, "op_segment_lengths", ())
+            or ()
         )
-        segment_refs = self._hot_array(
-            packed,
-            "program_segment_refs",
-            tuple(getattr(packed, "program_segment_refs", ()) or getattr(packed, "op_to_segment_ids", ()) or ()),
+        refs_fallback = tuple(
+            getattr(packed, "program_segment_refs", ())
+            or getattr(packed, "op_to_segment_ids", ())
+            or ()
         )
         segment_phases = self._segment_phase_names(packed)
-        seg_offset = segment_offsets[program_id]
-        seg_length = segment_lengths[program_id]
+        seg_offset = self._hot_int_at(
+            packed,
+            "program_segment_offsets",
+            program_id,
+            offsets_fallback,
+        )
+        seg_length = self._hot_int_at(
+            packed,
+            "program_segment_lengths",
+            program_id,
+            lengths_fallback,
+        )
+        if seg_offset is None or seg_length is None:
+            resolved = ((), ())
+            self._program_segments_cache[cache_key] = resolved
+            return resolved
         ordered_segments: list[int] = []
         by_phase: dict[str, list[int]] = {}
         remaining: list[int] = []
         seen_segment_ids: set[int] = set()
-        for i in range(seg_offset, seg_offset + seg_length):
-            seg_id = segment_refs[i]
+        for i in range(int(seg_offset), int(seg_offset) + int(seg_length)):
+            seg_id = self._hot_int_at(
+                packed,
+                "program_segment_refs",
+                i,
+                refs_fallback,
+            )
+            if seg_id is None:
+                continue
             phase = str(normalize_phase(segment_phases[seg_id]))
             if phase.startswith("ON_") or phase == "TX_ROLLBACK":
                 continue
@@ -1328,8 +1484,15 @@ class PackedPlanExecutor(ExecutorBase):
                 seen_segment_ids.add(seg_id)
                 ordered_segments.append(seg_id)
 
-        for i in range(seg_offset, seg_offset + seg_length):
-            seg_id = segment_refs[i]
+        for i in range(int(seg_offset), int(seg_offset) + int(seg_length)):
+            seg_id = self._hot_int_at(
+                packed,
+                "program_segment_refs",
+                i,
+                refs_fallback,
+            )
+            if seg_id is None:
+                continue
             if seg_id in seen_segment_ids:
                 continue
             phase = str(segment_phases[seg_id])
@@ -1820,42 +1983,31 @@ class PackedPlanExecutor(ExecutorBase):
 
     def _resolve_hot_exact_route_buckets(
         self, packed: PackedKernel
-    ) -> Mapping[int, tuple[tuple[int, int], ...]]:
+    ) -> Mapping[int, Mapping[int, int]]:
         packed_id = id(packed)
         cached = self._hot_exact_route_cache.get(packed_id)
         if cached is not None:
             return cached
-        method_ids = self._hot_array(
-            packed,
-            "exact_method_ids",
-            tuple(),
-        )
-        path_hashes = self._hot_array(
-            packed,
-            "exact_path_hashes",
-            tuple(),
-        )
-        program_ids = self._hot_array(
-            packed,
-            "exact_program_ids",
-            tuple(),
-        )
+        method_ids = self._hot_section(packed, "exact_method_ids")
+        path_hashes = self._hot_section(packed, "exact_path_hashes")
+        program_ids = self._hot_section(packed, "exact_program_ids")
+        if method_ids is None or path_hashes is None or program_ids is None:
+            self._hot_exact_route_cache[packed_id] = {}
+            return {}
         if not (
-            method_ids
-            and len(method_ids) == len(path_hashes)
-            and len(method_ids) == len(program_ids)
+            int(method_ids.count) == int(path_hashes.count) == int(program_ids.count)
         ):
             self._hot_exact_route_cache[packed_id] = {}
             return {}
-        buckets: dict[int, list[tuple[int, int]]] = {}
-        for method_id, path_hash, program_id in zip(
-            method_ids, path_hashes, program_ids
-        ):
-            buckets.setdefault(int(method_id), []).append(
-                (int(path_hash), int(program_id))
-            )
+        directory: dict[int, dict[int, int]] = {}
+        total = int(method_ids.count)
+        for index in range(total):
+            method_id = int(method_ids.get_int(index))
+            path_hash = int(path_hashes.get_int(index))
+            program_id = int(program_ids.get_int(index))
+            directory.setdefault(method_id, {})[path_hash] = program_id
         frozen = {
-            method_id: tuple(entries) for method_id, entries in buckets.items()
+            int(method_id): dict(path_map) for method_id, path_map in directory.items()
         }
         self._hot_exact_route_cache[packed_id] = frozen
         return frozen
@@ -1866,14 +2018,167 @@ class PackedPlanExecutor(ExecutorBase):
         method_id = self._http_method_id(method)
         path_hash = self._stable_name_hash64(path)
         buckets = self._resolve_hot_exact_route_buckets(packed)
-        for candidate_hash, program_id in buckets.get(method_id, ()):
-            if int(candidate_hash) == int(path_hash):
+        method_bucket = buckets.get(method_id)
+        if isinstance(method_bucket, Mapping):
+            maybe = method_bucket.get(int(path_hash))
+            if isinstance(maybe, int):
+                return maybe
+        method_ids = self._hot_array(packed, "exact_method_ids", tuple())
+        path_hash_array = self._hot_array(packed, "exact_path_hashes", tuple())
+        program_id_array = self._hot_array(packed, "exact_program_ids", tuple())
+        for candidate_method_id, candidate_hash, program_id in zip(
+            method_ids, path_hash_array, program_id_array
+        ):
+            if int(candidate_method_id) == int(method_id) and int(candidate_hash) == int(path_hash):
                 return int(program_id)
         route = getattr(packed, "rest_exact_route_to_program", None)
         if not isinstance(route, Mapping):
             return -1
         maybe = route.get((method.upper(), path))
         return maybe if isinstance(maybe, int) else -1
+
+    def _resolve_hot_exact_jsonrpc_routes(
+        self, plan: KernelPlan
+    ) -> Mapping[str, Mapping[str, tuple[int, str, str]]]:
+        plan_id = id(plan)
+        cached = self._hot_exact_jsonrpc_cache.get(plan_id)
+        if cached is not None:
+            return cached
+
+        proto_indices = getattr(plan, "proto_indices", {}) or {}
+        exact_routes: dict[str, dict[str, tuple[int, str, str]]] = {}
+        if isinstance(proto_indices, Mapping):
+            for proto, bucket in proto_indices.items():
+                if not isinstance(proto, str) or not proto.endswith(".jsonrpc"):
+                    continue
+                if not isinstance(bucket, Mapping):
+                    continue
+                endpoints = bucket.get("endpoints")
+                if not isinstance(endpoints, Mapping):
+                    continue
+                for endpoint, endpoint_bucket in endpoints.items():
+                    if not isinstance(endpoint, str) or not endpoint:
+                        continue
+                    if not isinstance(endpoint_bucket, Mapping):
+                        continue
+                    method_map = exact_routes.setdefault(endpoint, {})
+                    for rpc_method, entry in endpoint_bucket.items():
+                        if not isinstance(rpc_method, str) or not rpc_method:
+                            continue
+                        if not isinstance(entry, Mapping):
+                            continue
+                        meta_index = entry.get("meta_index")
+                        if not isinstance(meta_index, int):
+                            continue
+                        selector = str(
+                            entry.get("selector") or f"{endpoint}:{rpc_method}"
+                        )
+                        method_map[rpc_method] = (meta_index, str(proto), selector)
+
+        frozen = {
+            endpoint: dict(method_map)
+            for endpoint, method_map in exact_routes.items()
+        }
+        self._hot_exact_jsonrpc_cache[plan_id] = frozen
+        return frozen
+
+    @staticmethod
+    def _normalize_jsonrpc_mount_path(path: str) -> str:
+        normalized = str(path or "").rstrip("/")
+        return normalized or "/"
+
+    def _resolve_jsonrpc_endpoint_for_path(self, ctx: _Ctx, hot: HotCtx) -> str | None:
+        path = self._normalize_jsonrpc_mount_path(hot.path)
+        for owner_key in ("router", "app"):
+            owner = getattr(ctx, owner_key, None)
+            if owner is None and hasattr(ctx, "get"):
+                owner = ctx.get(owner_key)
+            mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
+            if isinstance(mounts, Mapping):
+                endpoint = mounts.get(path) or mounts.get(hot.path) or mounts.get(f"{path}/")
+                if isinstance(endpoint, str) and endpoint:
+                    return endpoint
+        for endpoint, mapped_path in __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__.items():
+            if path == self._normalize_jsonrpc_mount_path(str(mapped_path)):
+                return str(endpoint)
+        return None
+
+    async def _prime_exact_jsonrpc_program(
+        self,
+        ctx: _Ctx,
+        env: Any,
+        plan: KernelPlan,
+        packed: PackedKernel,
+    ) -> int:
+        hot = self._ensure_hot_ctx(ctx, env)
+        if hot.scope_type != "http" or str(hot.method or "").upper() != "POST":
+            return -1
+
+        endpoint = self._resolve_jsonrpc_endpoint_for_path(ctx, hot)
+        if not endpoint:
+            return -1
+
+        request = self._ensure_hot_request(ctx, hot)
+        body_bytes = await self._ensure_body_bytes(ctx, hot)
+        if request is not None and body_bytes is not None and hasattr(request, "body"):
+            request.body = body_bytes
+
+        if not hot.parsed_json_loaded:
+            parsed = None
+            if body_bytes:
+                try:
+                    parsed = json.loads(body_bytes)
+                except Exception:
+                    parsed = None
+            hot.parsed_json = parsed
+            hot.parsed_json_loaded = True
+
+        rpc_envelope = hot.parsed_json
+        if not isinstance(rpc_envelope, dict) or rpc_envelope.get("jsonrpc") != "2.0":
+            return -1
+        rpc_method = rpc_envelope.get("method")
+        if not isinstance(rpc_method, str) or not rpc_method:
+            return -1
+
+        routes = self._resolve_hot_exact_jsonrpc_routes(plan)
+        endpoint_bucket = routes.get(endpoint)
+        if not isinstance(endpoint_bucket, Mapping):
+            return -1
+        entry = endpoint_bucket.get(rpc_method)
+        if not (
+            isinstance(entry, tuple)
+            and len(entry) == 3
+            and isinstance(entry[0], int)
+            and isinstance(entry[1], str)
+            and isinstance(entry[2], str)
+        ):
+            return -1
+
+        program_id, binding_protocol, binding_selector = entry
+        hot.program_id = int(program_id)
+        hot.route_program_id = int(program_id)
+        hot.route_opmeta_index = int(program_id)
+        hot.route_protocol = binding_protocol
+        hot.route_selector = binding_selector
+        hot.dispatch_binding_protocol = binding_protocol
+        hot.dispatch_binding_selector = binding_selector
+        hot.dispatch_jsonrpc_request_id = rpc_envelope.get("id")
+        hot.dispatch_rpc_method = rpc_method
+        hot.route_rpc_envelope = rpc_envelope
+        hot.dispatch_rpc_envelope = rpc_envelope
+        params = rpc_envelope.get("params")
+        hot.route_payload = params if isinstance(params, dict) else None
+        hot.transport_kind_id = _TRANSPORT_KIND_JSONRPC
+
+        temp = getattr(ctx, "temp", None)
+        if isinstance(temp, dict):
+            temp["program_id"] = int(program_id)
+
+        ctx.method = hot.method
+        ctx.path = hot.path
+        ctx.selector = binding_selector
+        ctx.endpoint = endpoint
+        return int(program_id)
 
     def _prime_exact_route_program(
         self, ctx: _Ctx, env: Any, packed: PackedKernel
@@ -2013,27 +2318,54 @@ class PackedPlanExecutor(ExecutorBase):
         cached = self._segment_steps_cache.get(packed_id)
         if cached is not None:
             return cached
-        segment_offsets = self._hot_array(
-            packed,
-            "segment_step_offsets",
-            tuple(getattr(packed, "segment_catalog_offsets", ()) or getattr(packed, "segment_offsets", ()) or ()),
+        offsets_fallback = tuple(
+            getattr(packed, "segment_catalog_offsets", ())
+            or getattr(packed, "segment_offsets", ())
+            or ()
         )
-        segment_lengths = self._hot_array(
-            packed,
-            "segment_step_lengths",
-            tuple(getattr(packed, "segment_catalog_lengths", ()) or getattr(packed, "segment_lengths", ()) or ()),
+        lengths_fallback = tuple(
+            getattr(packed, "segment_catalog_lengths", ())
+            or getattr(packed, "segment_lengths", ())
+            or ()
         )
-        segment_atom_ids = self._hot_array(
-            packed,
-            "segment_step_atom_refs",
-            tuple(getattr(packed, "segment_catalog_atom_ids", ()) or getattr(packed, "segment_step_ids", ()) or ()),
+        atom_refs_fallback = tuple(
+            getattr(packed, "segment_catalog_atom_ids", ())
+            or getattr(packed, "segment_step_ids", ())
+            or ()
         )
         compiled = []
-        for segment_index in range(len(segment_offsets)):
-            start = segment_offsets[segment_index]
-            end = start + segment_lengths[segment_index]
+        for segment_index in range(
+            self._hot_count(packed, "segment_step_offsets", offsets_fallback)
+        ):
+            start = self._hot_int_at(
+                packed,
+                "segment_step_offsets",
+                segment_index,
+                offsets_fallback,
+            )
+            length = self._hot_int_at(
+                packed,
+                "segment_step_lengths",
+                segment_index,
+                lengths_fallback,
+            )
+            if start is None or length is None:
+                compiled.append(())
+                continue
+            end = int(start) + int(length)
             compiled.append(
-                tuple(segment_atom_ids[idx] for idx in range(start, end))
+                tuple(
+                    int(
+                        self._hot_int_at(
+                            packed,
+                            "segment_step_atom_refs",
+                            idx,
+                            atom_refs_fallback,
+                        )
+                        or 0
+                    )
+                    for idx in range(int(start), end)
+                )
             )
         frozen = tuple(compiled)
         self._segment_steps_cache[packed_id] = frozen
@@ -2133,14 +2465,14 @@ class PackedPlanExecutor(ExecutorBase):
             )
             if program_hot_runner_id is not None:
                 return program_hot_runner_id
-        hot_runner_ids = cls._hot_array(
+        fallback = tuple(getattr(packed, "program_hot_runner_ids", ()) or ())
+        value = cls._hot_int_at(
             packed,
             "program_hot_runner_ids",
-            tuple(getattr(packed, "program_hot_runner_ids", ()) or ()),
+            program_id,
+            fallback,
         )
-        if 0 <= program_id < len(hot_runner_ids):
-            return int(hot_runner_ids[program_id])
-        return _HOT_RUNNER_GENERIC
+        return int(value) if value is not None else _HOT_RUNNER_GENERIC
 
     def _resolve_program_linear_direct_runner(
         self,
@@ -2438,12 +2770,12 @@ class PackedPlanExecutor(ExecutorBase):
                     if initial.get("type") == "websocket.connect":
                         next_message = await receive() if callable(receive) else {"type": "websocket.disconnect", "code": 1000}
                         first_message = (
-                            dict(next_message)
+                            next_message
                             if isinstance(next_message, Mapping)
                             else {"type": "websocket.disconnect", "code": 1000}
                         )
                     else:
-                        first_message = dict(initial)
+                        first_message = initial
             websocket = _DirectWebSocketUnary(
                 receive=receive,
                 send=send,
@@ -2467,9 +2799,13 @@ class PackedPlanExecutor(ExecutorBase):
                 elif isinstance(result, str):
                     await websocket.send_text(result)
                 else:
-                    await websocket.send_text(
-                        json.dumps(result, separators=(",", ":"), default=str)
-                    )
+                    try:
+                        payload_text = json.dumps(result, separators=(",", ":"))
+                    except TypeError:
+                        payload_text = json.dumps(
+                            result, separators=(",", ":"), default=str
+                        )
+                    await websocket.send_text(payload_text)
             hot.egress_sent = websocket.sent_payload
             if not websocket.closed:
                 await websocket.close(1000)
@@ -2877,6 +3213,10 @@ class PackedPlanExecutor(ExecutorBase):
         program_id = self._require_program_id_from_ctx(ctx)
         if program_id < 0:
             program_id = self._prime_exact_route_program(ctx, env, packed)
+        if program_id < 0:
+            program_id = await self._prime_exact_jsonrpc_program(
+                ctx, env, plan, packed
+            )
         if program_id < 0:
             program_id = self._prime_exact_websocket_program(ctx, env, plan, packed)
         if program_id < 0:

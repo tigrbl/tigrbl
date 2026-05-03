@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import struct
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, Iterator, Mapping, Tuple
 
@@ -145,6 +146,111 @@ class PackedKernelMeasurement:
 
 
 @dataclass(frozen=True, slots=True)
+class PackedHotSection:
+    name: str
+    section_id: int
+    width_bits: int
+    count: int
+    offset: int
+    byte_length: int
+    buffer: bytes
+    signed: bool = False
+
+    @property
+    def item_size(self) -> int:
+        return max(1, int(self.width_bits) // 8)
+
+    @property
+    def end_offset(self) -> int:
+        return int(self.offset) + int(self.byte_length)
+
+    @property
+    def payload_view(self) -> memoryview:
+        return memoryview(self.buffer)[self.offset : self.end_offset]
+
+    def get_int(self, index: int) -> int:
+        if not (0 <= index < int(self.count)):
+            raise IndexError(index)
+        if self.width_bits == 8:
+            value = self.buffer[self.offset + index]
+            if not self.signed:
+                return int(value)
+            return int(struct.unpack_from("<b", self.buffer, self.offset + index)[0])
+        fmt = {
+            (False, 16): "<H",
+            (False, 32): "<I",
+            (False, 64): "<Q",
+            (True, 16): "<h",
+            (True, 32): "<i",
+        }.get((bool(self.signed), int(self.width_bits)))
+        if fmt is None:
+            raise ValueError(
+                f"unsupported packed hot section width/sign: {self.width_bits}/{self.signed}"
+            )
+        return int(
+            struct.unpack_from(fmt, self.buffer, self.offset + (index * self.item_size))[0]
+        )
+
+    def find_bytes(self, marker: bytes, *, start_byte: int = 0) -> int:
+        start = int(self.offset) + max(0, int(start_byte))
+        found = self.buffer.find(marker, start, self.end_offset)
+        if found < 0:
+            return -1
+        return found - int(self.offset)
+
+    def find_aligned_u64(
+        self,
+        value: int,
+        *,
+        start_index: int = 0,
+        count: int | None = None,
+    ) -> int:
+        if self.width_bits != 64:
+            raise ValueError("find_aligned_u64 requires a 64-bit unsigned section")
+        if start_index < 0:
+            start_index = 0
+        available = max(0, int(self.count) - int(start_index))
+        span = available if count is None else max(0, min(int(count), available))
+        if span <= 0:
+            return -1
+        marker = struct.pack("<Q", int(value) & 0xFFFFFFFFFFFFFFFF)
+        search_start = self.offset + (int(start_index) * self.item_size)
+        search_end = search_start + (span * self.item_size)
+        cursor = search_start
+        while cursor < search_end:
+            found = self.buffer.find(marker, cursor, search_end)
+            if found < 0:
+                return -1
+            relative = found - self.offset
+            if relative % self.item_size == 0:
+                return relative // self.item_size
+            cursor = found + 1
+        return -1
+
+
+@dataclass(frozen=True, slots=True)
+class PackedHotSectionDirectory:
+    version: int
+    max_width_bits: int
+    atom_count: int
+    segment_count: int
+    program_count: int
+    error_profile_count: int
+    route_entry_count: int
+    sections: Mapping[str, PackedHotSection] = field(default_factory=dict)
+
+    def __getitem__(self, name: str) -> PackedHotSection:
+        section = self.get(name)
+        if section is None:
+            raise KeyError(name)
+        return section
+
+    def get(self, name: str) -> PackedHotSection | None:
+        section = self.sections.get(name)
+        return section if isinstance(section, PackedHotSection) else None
+
+
+@dataclass(frozen=True, slots=True)
 class PackedKernel:
     proto_names: tuple[str, ...] = ()
     selector_names: tuple[str, ...] = ()
@@ -233,6 +339,7 @@ class PackedKernel:
     numba_executor: Callable[..., Any] | None = None
     hot_block_bytes: bytes = b""
     hot_block_view: Mapping[str, Any] = field(default_factory=dict)
+    hot_block_sections: PackedHotSectionDirectory | None = None
     measurement: PackedKernelMeasurement | None = None
 
 

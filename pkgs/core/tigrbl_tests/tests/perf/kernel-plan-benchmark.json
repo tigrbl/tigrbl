@@ -20,8 +20,8 @@
       "rest_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 1.1380587000166997,
-        "ops_per_second": 131.80339467357783,
+        "total_execution_time_seconds": 1.0955700000049546,
+        "ops_per_second": 136.91503053143262,
         "endpoint": "/items"
       },
       "persisted_row_count": 170
@@ -29,7 +29,7 @@
     "tigrbl": {
       "kernel_plan_measurement": {
         "raw_bytes": 1627,
-        "compressed_bytes": 721,
+        "compressed_bytes": 724,
         "segment_count": 38,
         "step_count": 60,
         "phase_tree_node_count": 154,
@@ -53,15 +53,15 @@
       "rest_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 0.20887740002945065,
-        "ops_per_second": 718.1246031349048,
+        "total_execution_time_seconds": 0.2013673999463208,
+        "ops_per_second": 744.9070705585215,
         "endpoint": "/items"
       },
       "jsonrpc_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 0.24253690004115924,
-        "ops_per_second": 618.4625925974339,
+        "total_execution_time_seconds": 0.19697739998809993,
+        "ops_per_second": 761.5086807372927,
         "endpoint": "/rpc",
         "method": "BenchmarkItem.create"
       },
@@ -69,11 +69,11 @@
     },
     "comparisons": {
       "rest_unary": {
-        "fastapi_ops_per_second": 131.80339467357783,
-        "tigrbl_ops_per_second": 718.1246031349048,
-        "delta_ops_per_second": 586.3212084613269,
-        "throughput_ratio_tigrbl_over_fastapi": 5.448453015291455,
-        "compressed_bytes_per_tigrbl_op": 4.806666666666667
+        "fastapi_ops_per_second": 136.91503053143262,
+        "tigrbl_ops_per_second": 744.9070705585215,
+        "delta_ops_per_second": 607.9920400270888,
+        "throughput_ratio_tigrbl_over_fastapi": 5.440652261969934,
+        "compressed_bytes_per_tigrbl_op": 4.826666666666667
       }
     }
   }
