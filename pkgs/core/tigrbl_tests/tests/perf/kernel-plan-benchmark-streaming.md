@@ -3,5 +3,5 @@
 - shared runner: httpx.ASGITransport
 - raw bytes: 858
 - compressed bytes: 374
-- transport-only 250 ops/s: tigrbl=1237.54, fastapi=416.17
-- db-backed 250 ops/s: tigrbl=668.33, fastapi=153.43
+- transport-only 250 ops/s: tigrbl=1281.21, fastapi=561.02
+- db-backed 250 ops/s: tigrbl=803.75, fastapi=215.28

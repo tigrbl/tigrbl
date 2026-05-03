@@ -65,6 +65,7 @@ _DECODER_DATE = 8
 _DECODER_TIME = 9
 _QUERY_VALUE_HAS_PLUS = 1
 _QUERY_VALUE_HAS_PERCENT = 2
+_WRAPPER_KEYS = frozenset({"data", "payload", "body", "item"})
 _HTTP_METHOD_ID_BY_NAME = {
     "GET": 1,
     "HEAD": 2,
@@ -113,6 +114,8 @@ class _CompiledParamPlan:
     strategy_kind: int
     strategy_rows: tuple[tuple[int, str, int, int], ...]
     assemble_order: tuple[int, ...]
+    body_lookup_names: frozenset[str]
+    reserved_input_keys: frozenset[str]
     needs_query: bool
     needs_header: bool
     needs_path: bool
@@ -298,8 +301,9 @@ class PackedPlanExecutor(ExecutorBase):
         self._program_runner_cache: dict[tuple[int, ...], Any] = {}
         self._program_runner_mode_cache: dict[tuple[int, int, int], Any] = {}
         self._db_acquire_cache: dict[tuple[int, int], Any] = {}
-        self._hot_exact_route_cache: dict[
-            int, Mapping[int, Mapping[int, int]]
+        self._hot_exact_route_cache: dict[int, Mapping[int, tuple[int, int]]] = {}
+        self._hot_exact_route_verify_cache: dict[
+            int, Mapping[int, Mapping[int, tuple[tuple[str, int], ...]]]
         ] = {}
         self._hot_exact_jsonrpc_cache: dict[
             int, Mapping[str, Mapping[str, tuple[int, str, str]]]
@@ -443,6 +447,161 @@ class PackedPlanExecutor(ExecutorBase):
             },
             "id": rpc_id,
         }
+
+    @staticmethod
+    def _reject_jsonrpc_wrapper_keys(
+        payload: Any, *, field_names: tuple[str, ...]
+    ) -> None:
+        allowed_wrapper_keys = set(field_names) & set(_WRAPPER_KEYS)
+
+        def _check_mapping(item: Mapping[str, Any]) -> None:
+            disallowed = sorted(
+                key
+                for key in item
+                if key in _WRAPPER_KEYS and key not in allowed_wrapper_keys
+            )
+            if disallowed:
+                raise HTTPException(
+                    status_code=422,
+                    detail={
+                        "reason": "Wrapper keys are not allowed; params must match the operation schema.",
+                        "disallowed_keys": disallowed,
+                    },
+                )
+
+        if isinstance(payload, Mapping):
+            _check_mapping(payload)
+            return
+
+        if isinstance(payload, list):
+            for item in payload:
+                if isinstance(item, Mapping):
+                    _check_mapping(item)
+
+    async def _execute_jsonrpc_batch(
+        self,
+        ctx: _Ctx,
+        hot: HotCtx,
+        batch_payload: list[Any],
+    ) -> list[dict[str, Any]]:
+        router_or_app = getattr(ctx, "router", None) or getattr(ctx, "app", None)
+        scope = dict(hot.raw_scope or {}) if isinstance(hot.raw_scope, Mapping) else {}
+        if scope:
+            scope["method"] = "POST"
+            headers = list(scope.get("headers", ()) or ())
+            if not any(
+                bytes(key).lower() == b"content-type"
+                for key, _value in headers
+                if isinstance(key, (bytes, bytearray))
+            ):
+                headers.append((b"content-type", b"application/json"))
+            scope["headers"] = headers
+        responses: list[dict[str, Any]] = []
+
+        for item in batch_payload:
+            if not isinstance(item, Mapping):
+                responses.append(
+                    {
+                        "jsonrpc": "2.0",
+                        "error": {"code": -32600, "message": "Invalid Request"},
+                        "id": None,
+                    }
+                )
+                continue
+
+            rpc_id = item.get("id")
+            method = item.get("method")
+            if not isinstance(method, str):
+                responses.append(
+                    {
+                        "jsonrpc": "2.0",
+                        "error": {"code": -32601, "message": "Method not found"},
+                        "id": rpc_id,
+                    }
+                )
+                continue
+
+            if not callable(router_or_app) or not scope:
+                responses.append(
+                    {
+                        "jsonrpc": "2.0",
+                        "error": {
+                            "code": -32603,
+                            "message": "Internal error",
+                            "data": {"detail": "RPC invoker unavailable."},
+                        },
+                        "id": rpc_id,
+                    }
+                )
+                continue
+
+            body = json.dumps(dict(item), separators=(",", ":")).encode("utf-8")
+            messages = [{"type": "http.request", "body": body, "more_body": False}]
+            sent: list[dict[str, Any]] = []
+
+            try:
+                async def _receive() -> dict[str, Any]:
+                    if messages:
+                        return messages.pop(0)
+                    return {"type": "http.request", "body": b"", "more_body": False}
+
+                async def _send(message: dict[str, Any]) -> None:
+                    sent.append(dict(message))
+
+                await router_or_app(dict(scope), _receive, _send)
+            except Exception as exc:
+                responses.append(
+                    {
+                        "jsonrpc": "2.0",
+                        "error": {
+                            "code": -32603,
+                            "message": "Internal error",
+                            "data": {"detail": str(exc)},
+                        },
+                        "id": rpc_id,
+                    }
+                )
+                continue
+
+            body_parts = [
+                message.get("body", b"")
+                for message in sent
+                if message.get("type") == "http.response.body"
+            ]
+            response_body = b"".join(
+                bytes(part) if isinstance(part, (bytes, bytearray)) else b""
+                for part in body_parts
+            )
+            if not response_body:
+                continue
+            try:
+                decoded = json.loads(response_body.decode("utf-8"))
+            except Exception:
+                decoded = {
+                    "jsonrpc": "2.0",
+                    "error": {
+                        "code": -32603,
+                        "message": "Internal error",
+                        "data": {"detail": response_body.decode("utf-8", errors="replace")},
+                    },
+                    "id": rpc_id,
+                }
+            if isinstance(decoded, Mapping):
+                response = dict(decoded)
+                if response.get("id") is None:
+                    response["id"] = rpc_id
+                error = response.get("error")
+                if isinstance(error, dict):
+                    data = error.get("data")
+                    detail = data.get("detail") if isinstance(data, Mapping) else None
+                    if detail == "No runtime operation matched request.":
+                        error["code"] = -32601
+                        error["message"] = "Method not found"
+                responses.append(response)
+                continue
+            responses.append({"jsonrpc": "2.0", "result": decoded, "id": rpc_id})
+
+        return responses
 
     @staticmethod
     def _hot_block_view(packed: PackedKernel) -> Mapping[str, Any]:
@@ -958,8 +1117,6 @@ class PackedPlanExecutor(ExecutorBase):
         param_shape_id = self._resolve_program_param_shape_id(
             packed, program_id, hot_op_plan
         )
-        if param_shape_id < 0:
-            return
         if hot.slot_values is not None and hot.param_shape_id == param_shape_id:
             return
 
@@ -979,10 +1136,30 @@ class PackedPlanExecutor(ExecutorBase):
         if hot.path_params is None and hot.route_path_params is not None:
             hot.path_params = hot.route_path_params
         request = self._ensure_hot_request(ctx, hot)
+        hot.transport_kind_id = self._active_transport_kind(hot, hot.transport_kind_id)
+        if param_shape_id < 0:
+            method = str(hot.method or "").upper()
+            if method not in {"GET", "HEAD", "OPTIONS"}:
+                body_bytes = await self._ensure_body_bytes(ctx, hot)
+                if request is not None and body_bytes is not None and hasattr(request, "body"):
+                    request.body = body_bytes
+                if body_bytes and "json" in hot.content_type:
+                    try:
+                        parsed = json.loads(body_bytes)
+                    except Exception:
+                        parsed = None
+                    hot.parsed_json = parsed
+                    hot.parsed_json_loaded = True
+                    if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(parsed, dict):
+                        hot.route_rpc_envelope = parsed
+                        params = parsed.get("params", {})
+                        hot.route_payload = params if isinstance(params, dict) else None
+                    elif isinstance(parsed, dict):
+                        hot.route_payload = parsed
+            return
         body_bytes = await self._ensure_body_bytes(ctx, hot)
         if request is not None and body_bytes is not None and hasattr(request, "body"):
             request.body = body_bytes
-        hot.transport_kind_id = self._active_transport_kind(hot, hot.transport_kind_id)
         if hot.transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}:
             if not hot.parsed_json_loaded:
                 parsed = None
@@ -1009,7 +1186,28 @@ class PackedPlanExecutor(ExecutorBase):
         body_payload = hot.parsed_json
         if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(body_payload, dict):
             body_payload = body_payload.get("params", {})
+        if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC:
+            self._reject_jsonrpc_wrapper_keys(
+                body_payload,
+                field_names=plan.field_names,
+            )
         body_mapping = body_payload if isinstance(body_payload, dict) else None
+        if body_mapping is not None and plan.reserved_input_keys:
+            reserved_body_keys = sorted(
+                key for key in body_mapping if key in plan.reserved_input_keys
+            )
+            if reserved_body_keys:
+                raise HTTPException(
+                    status_code=_status.HTTP_422_UNPROCESSABLE_ENTITY,
+                    detail=[
+                        {
+                            "field": key,
+                            "code": "extra_forbidden",
+                            "message": "Field is not permitted in request input.",
+                        }
+                        for key in reserved_body_keys
+                    ],
+                )
         path_mapping = hot.route_path_params or hot.path_params
         field_names = plan.field_names
         slot_values: list[Any] = [None] * len(field_names)
@@ -1147,6 +1345,7 @@ class PackedPlanExecutor(ExecutorBase):
             return cached
 
         field_names, by_field, required = self._compiled_schema_in(ctx)
+        opview = getattr(ctx, "opview", None)
         field_index = {field_name: idx for idx, field_name in enumerate(field_names)}
         required_set = frozenset(required)
         field_plans = tuple(
@@ -1194,6 +1393,8 @@ class PackedPlanExecutor(ExecutorBase):
         )
 
         descriptor_rows: list[_CompiledInputDescriptor] = []
+        body_lookup_names: set[str] = set()
+        reserved_input_keys: set[str] = set()
         needs_query = False
         needs_header = False
         needs_path = False
@@ -1214,13 +1415,16 @@ class PackedPlanExecutor(ExecutorBase):
                 idx,
                 source_masks_fallback,
             )
+            lookup_name = self._compiled_lookup_name(field_name, field_meta)
+            if bool(source_mask & _PARAM_SOURCE_BODY):
+                body_lookup_names.add(lookup_name)
             needs_query = needs_query or bool(source_mask & _PARAM_SOURCE_QUERY)
             needs_header = needs_header or bool(source_mask & _PARAM_SOURCE_HEADER)
             needs_path = needs_path or bool(source_mask & _PARAM_SOURCE_PATH)
             descriptor_rows.append(
                 _CompiledInputDescriptor(
                     slot_id=slot_id,
-                    lookup_name=self._compiled_lookup_name(field_name, field_meta),
+                    lookup_name=lookup_name,
                     source_mask=source_mask,
                     decoder_id=self._hot_int_at(
                         packed,
@@ -1256,6 +1460,13 @@ class PackedPlanExecutor(ExecutorBase):
             field_names,
             by_field if isinstance(by_field, Mapping) else {},
         )
+        paired_index = getattr(opview, "paired_index", {}) or {}
+        for field_name, desc in paired_index.items():
+            if isinstance(field_name, str) and field_name and field_name not in field_index:
+                reserved_input_keys.add(field_name)
+            alias = desc.get("alias") if isinstance(desc, Mapping) else None
+            if isinstance(alias, str) and alias:
+                reserved_input_keys.add(alias)
         plan = _CompiledParamPlan(
             field_names=field_names,
             field_index=field_index,
@@ -1264,6 +1475,8 @@ class PackedPlanExecutor(ExecutorBase):
             strategy_kind=strategy_kind,
             strategy_rows=strategy_rows,
             assemble_order=tuple(field_index[name] for name in sorted(field_names)),
+            body_lookup_names=frozenset(body_lookup_names),
+            reserved_input_keys=frozenset(reserved_input_keys),
             needs_query=needs_query,
             needs_header=needs_header,
             needs_path=needs_path,
@@ -1981,9 +2194,9 @@ class PackedPlanExecutor(ExecutorBase):
         temp["program_id"] = program_id
         return program_id
 
-    def _resolve_hot_exact_route_buckets(
+    def _resolve_hot_exact_route_slices(
         self, packed: PackedKernel
-    ) -> Mapping[int, Mapping[int, int]]:
+    ) -> Mapping[int, tuple[int, int]]:
         packed_id = id(packed)
         cached = self._hot_exact_route_cache.get(packed_id)
         if cached is not None:
@@ -1999,16 +2212,24 @@ class PackedPlanExecutor(ExecutorBase):
         ):
             self._hot_exact_route_cache[packed_id] = {}
             return {}
-        directory: dict[int, dict[int, int]] = {}
+        directory: dict[int, tuple[int, int]] = {}
         total = int(method_ids.count)
+        current_method_id = -1
+        current_start = 0
+        current_count = 0
         for index in range(total):
             method_id = int(method_ids.get_int(index))
-            path_hash = int(path_hashes.get_int(index))
-            program_id = int(program_ids.get_int(index))
-            directory.setdefault(method_id, {})[path_hash] = program_id
-        frozen = {
-            int(method_id): dict(path_map) for method_id, path_map in directory.items()
-        }
+            if method_id == current_method_id:
+                current_count += 1
+                continue
+            if current_count > 0:
+                directory[current_method_id] = (current_start, current_count)
+            current_method_id = method_id
+            current_start = index
+            current_count = 1
+        if current_count > 0:
+            directory[current_method_id] = (current_start, current_count)
+        frozen = {int(method_id): (int(start), int(count)) for method_id, (start, count) in directory.items()}
         self._hot_exact_route_cache[packed_id] = frozen
         return frozen
 
@@ -2017,25 +2238,88 @@ class PackedPlanExecutor(ExecutorBase):
     ) -> int:
         method_id = self._http_method_id(method)
         path_hash = self._stable_name_hash64(path)
-        buckets = self._resolve_hot_exact_route_buckets(packed)
-        method_bucket = buckets.get(method_id)
-        if isinstance(method_bucket, Mapping):
-            maybe = method_bucket.get(int(path_hash))
-            if isinstance(maybe, int):
-                return maybe
+        path_hashes = self._hot_section(packed, "exact_path_hashes")
+        program_ids = self._hot_section(packed, "exact_program_ids")
+        method_slices = self._resolve_hot_exact_route_slices(packed)
+        method_slice = method_slices.get(method_id)
+        if (
+            method_slice is not None
+            and path_hashes is not None
+            and program_ids is not None
+            and int(path_hashes.count) == int(program_ids.count)
+        ):
+            start_index, count = method_slice
+            found_index = path_hashes.find_aligned_u64(
+                path_hash,
+                start_index=start_index,
+                count=count,
+            )
+            if start_index <= found_index < start_index + count:
+                program_id = int(program_ids.get_int(found_index))
+                verify = self._resolve_hot_exact_route_verify(packed)
+                method_verify = verify.get(method_id, {})
+                candidates = method_verify.get(path_hash, ())
+                if candidates:
+                    for candidate_path, candidate_program_id in candidates:
+                        if candidate_path == path:
+                            return int(candidate_program_id)
+                    return -1
+                return program_id
         method_ids = self._hot_array(packed, "exact_method_ids", tuple())
         path_hash_array = self._hot_array(packed, "exact_path_hashes", tuple())
         program_id_array = self._hot_array(packed, "exact_program_ids", tuple())
         for candidate_method_id, candidate_hash, program_id in zip(
             method_ids, path_hash_array, program_id_array
         ):
-            if int(candidate_method_id) == int(method_id) and int(candidate_hash) == int(path_hash):
+            if (
+                int(candidate_method_id) == int(method_id)
+                and int(candidate_hash) == int(path_hash)
+            ):
                 return int(program_id)
         route = getattr(packed, "rest_exact_route_to_program", None)
         if not isinstance(route, Mapping):
             return -1
         maybe = route.get((method.upper(), path))
         return maybe if isinstance(maybe, int) else -1
+
+    def _resolve_hot_exact_route_verify(
+        self, packed: PackedKernel
+    ) -> Mapping[int, Mapping[int, tuple[tuple[str, int], ...]]]:
+        packed_id = id(packed)
+        cached = self._hot_exact_route_verify_cache.get(packed_id)
+        if cached is not None:
+            return cached
+
+        route = getattr(packed, "rest_exact_route_to_program", None)
+        if not isinstance(route, Mapping):
+            self._hot_exact_route_verify_cache[packed_id] = {}
+            return {}
+
+        verify: dict[int, dict[int, list[tuple[str, int]]]] = {}
+        for route_key, program_id in route.items():
+            if (
+                not isinstance(route_key, tuple)
+                or len(route_key) != 2
+                or not isinstance(route_key[0], str)
+                or not isinstance(route_key[1], str)
+                or not isinstance(program_id, int)
+            ):
+                continue
+            method_name, exact_path = route_key
+            method_id = self._http_method_id(method_name)
+            path_hash = self._stable_name_hash64(exact_path)
+            method_bucket = verify.setdefault(method_id, {})
+            method_bucket.setdefault(path_hash, []).append((exact_path, program_id))
+
+        frozen = {
+            int(method_id): {
+                int(path_hash): tuple(entries)
+                for path_hash, entries in method_bucket.items()
+            }
+            for method_id, method_bucket in verify.items()
+        }
+        self._hot_exact_route_verify_cache[packed_id] = frozen
+        return frozen
 
     def _resolve_hot_exact_jsonrpc_routes(
         self, plan: KernelPlan
@@ -2589,8 +2873,12 @@ class PackedPlanExecutor(ExecutorBase):
         if hot_op_plan is not None:
             ordered = tuple(getattr(hot_op_plan, "ordered_segment_ids", ()) or ())
             remaining = tuple(getattr(hot_op_plan, "remaining_segment_ids", ()) or ())
+            compiled_param_phase_steps = tuple(
+                getattr(hot_op_plan, "compiled_param_phase_steps", ()) or ()
+            )
         else:
             ordered, remaining = self._resolve_segments_for_program(packed, program_id)
+            compiled_param_phase_steps = ()
 
         phase_names = self._segment_phase_names(packed)
         step_ids_by_segment = self._resolve_segment_step_ids(packed)
@@ -2635,54 +2923,83 @@ class PackedPlanExecutor(ExecutorBase):
         compiled_steps: list[tuple[str, int, Any, Any, bool]] = []
         phase_requires_db: dict[str, bool] = {}
         step_table = packed.step_table
-        for seg_id in (*ordered, *remaining):
-            phase_name = str(normalize_phase(phase_names[seg_id]))
-            for step_id in step_ids_by_segment[seg_id]:
-                step = step_table[step_id]
-                if bool(getattr(step, "__tigrbl_skip_in_compiled_param", False)):
-                    continue
-                if step_id in skip_step_ids:
-                    continue
-                if bool(getattr(step, "__tigrbl_requires_phase_db", False)):
-                    phase_requires_db[phase_name] = True
-                direct_run = getattr(step, "__tigrbl_direct_run", None)
-                if callable(direct_run):
-                    direct_dep = getattr(step, "__tigrbl_direct_dep", None)
-                    has_direct_dep = bool(
-                        getattr(step, "__tigrbl_has_direct_dep", False)
+        def _append_compiled_step(
+            phase_name: str,
+            step: Any,
+            *,
+            is_async: bool,
+        ) -> None:
+            if bool(getattr(step, "__tigrbl_skip_in_compiled_param", False)):
+                return
+            if bool(getattr(step, "__tigrbl_requires_phase_db", False)):
+                phase_requires_db[phase_name] = True
+            direct_run = getattr(step, "__tigrbl_direct_run", None)
+            if callable(direct_run):
+                direct_dep = getattr(step, "__tigrbl_direct_dep", None)
+                has_direct_dep = bool(
+                    getattr(step, "__tigrbl_has_direct_dep", False)
+                )
+                direct_is_async = bool(
+                    getattr(step, "__tigrbl_direct_is_async", False)
+                )
+                use_two_args = bool(getattr(step, "__tigrbl_use_two_args", False))
+                invoke_kind = (
+                    _DIRECT_INVOKE_RUN_WITH_DEP
+                    if has_direct_dep
+                    else (
+                        _DIRECT_INVOKE_RUN_WITH_NONE
+                        if use_two_args
+                        else _DIRECT_INVOKE_RUN
                     )
-                    direct_is_async = bool(
-                        getattr(step, "__tigrbl_direct_is_async", False)
-                    )
-                    use_two_args = bool(getattr(step, "__tigrbl_use_two_args", False))
-                    invoke_kind = (
-                        _DIRECT_INVOKE_RUN_WITH_DEP
-                        if has_direct_dep
-                        else (
-                            _DIRECT_INVOKE_RUN_WITH_NONE
-                            if use_two_args
-                            else _DIRECT_INVOKE_RUN
-                        )
-                    )
-                    compiled_steps.append(
-                        (
-                            phase_name,
-                            invoke_kind,
-                            direct_run,
-                            direct_dep,
-                            direct_is_async,
-                        )
-                    )
-                    continue
+                )
                 compiled_steps.append(
                     (
                         phase_name,
-                        _DIRECT_INVOKE_STEP,
-                        step,
-                        None,
-                        bool(async_flags[step_id]) if step_id < len(async_flags) else False,
+                        invoke_kind,
+                        direct_run,
+                        direct_dep,
+                        direct_is_async,
                     )
                 )
+                return
+            compiled_steps.append(
+                (
+                    phase_name,
+                    _DIRECT_INVOKE_STEP,
+                    step,
+                    None,
+                    is_async,
+                )
+            )
+
+        if compiled_param_phase_steps:
+            for phase_name, phase_steps in compiled_param_phase_steps:
+                normalized_phase = str(normalize_phase(phase_name))
+                for step in phase_steps:
+                    atom_name = getattr(step, "__tigrbl_atom_name__", None)
+                    if atom_name in skip_names:
+                        continue
+                    step_is_async = bool(getattr(step, "_tigrbl_is_async", False))
+                    if not step_is_async:
+                        marker = getattr(step, "__code__", None)
+                        step_is_async = bool(getattr(marker, "co_flags", 0) & 0x80)
+                    _append_compiled_step(
+                        normalized_phase,
+                        step,
+                        is_async=step_is_async,
+                    )
+        else:
+            for seg_id in (*ordered, *remaining):
+                phase_name = str(normalize_phase(phase_names[seg_id]))
+                for step_id in step_ids_by_segment[seg_id]:
+                    step = step_table[step_id]
+                    if step_id in skip_step_ids:
+                        continue
+                    _append_compiled_step(
+                        phase_name,
+                        step,
+                        is_async=bool(async_flags[step_id]) if step_id < len(async_flags) else False,
+                    )
 
         async def _runner(ctx: _Ctx) -> None:
             hot = self._prepare_compiled_dispatch_prelude(
@@ -2700,19 +3017,14 @@ class PackedPlanExecutor(ExecutorBase):
                 )
                 self._compiled_validate_and_assemble(ctx, hot, plan)
             current_phase = ""
-            phase_db_bound = False
             for phase_name, invoke_kind, call, dep, is_async in compiled_steps:
                 if phase_name != current_phase:
                     ctx.phase = phase_name
                     current_phase = phase_name
-                    needs_phase_db = bool(phase_requires_db.get(phase_name))
-                    if needs_phase_db:
+                    if getattr(ctx, "_raw_db", None) is not None:
                         from tigrbl_atoms.atoms.sys.phase_db import bind_phase_db
 
                         bind_phase_db(ctx)
-                    elif phase_db_bound and getattr(ctx, "db", None) is not None:
-                        ctx.db = None
-                    phase_db_bound = needs_phase_db
                 if invoke_kind == _DIRECT_INVOKE_RUN_WITH_DEP:
                     rv = call(dep, ctx)
                 elif invoke_kind == _DIRECT_INVOKE_RUN_WITH_NONE:
@@ -2728,8 +3040,6 @@ class PackedPlanExecutor(ExecutorBase):
                     raise RuntimeError(
                         f"sync compiled step returned awaitable in phase {phase_name!r}"
                     )
-            if phase_db_bound and getattr(ctx, "db", None) is not None:
-                ctx.db = None
 
         self._program_runner_cache[cache_key] = _runner
         return _runner
@@ -3209,6 +3519,45 @@ class PackedPlanExecutor(ExecutorBase):
             ctx.method = hot.method
         if hot.path and getattr(ctx, "path", None) in (None, ""):
             ctx.path = hot.path
+        if (
+            hot.scope_type == "http"
+            and str(hot.method or "").upper() == "POST"
+            and self._resolve_jsonrpc_endpoint_for_path(ctx, hot)
+        ):
+            request = self._ensure_hot_request(ctx, hot)
+            body_bytes = await self._ensure_body_bytes(ctx, hot)
+            if request is not None and body_bytes is not None and hasattr(request, "body"):
+                request.body = body_bytes
+            if not hot.parsed_json_loaded:
+                parsed = None
+                if body_bytes:
+                    try:
+                        parsed = json.loads(body_bytes)
+                    except Exception:
+                        parsed = None
+                hot.parsed_json = parsed
+                hot.parsed_json_loaded = True
+            if isinstance(hot.parsed_json, Mapping) and hot.parsed_json.get("jsonrpc") == "2.0":
+                params = hot.parsed_json.get("params", {})
+                if isinstance(params, Mapping) and set(params) == {"params"}:
+                    egress = temp.setdefault("egress", {})
+                    if isinstance(egress, dict):
+                        egress["transport_response"] = {
+                            "status_code": 204,
+                            "body": b"",
+                        }
+                    hot.route_short_circuit = True
+                    hot.route_rpc_envelope = dict(hot.parsed_json)
+                    hot.dispatch_rpc_envelope = dict(hot.parsed_json)
+                    await _send_transport_response(env, ctx)
+                    return
+            if isinstance(hot.parsed_json, list):
+                await _send_json(
+                    env,
+                    200,
+                    await self._execute_jsonrpc_batch(ctx, hot, hot.parsed_json),
+                )
+                return
 
         program_id = self._require_program_id_from_ctx(ctx)
         if program_id < 0:
@@ -3283,6 +3632,8 @@ class PackedPlanExecutor(ExecutorBase):
                 acquire_db = self._resolve_db_acquire(plan, program_id, hot_op_plan)
                 db, release_db = acquire_db(ctx)
                 ctx._raw_db = db
+                if getattr(ctx, "db", None) is None:
+                    ctx.db = db
                 ctx.owns_tx = True
             except Exception:
                 release_db = None
@@ -3312,6 +3663,16 @@ class PackedPlanExecutor(ExecutorBase):
                 )
 
             try:
+                if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(
+                    hot.parsed_json, dict
+                ):
+                    opview = getattr(ctx, "opview", None)
+                    schema_in = getattr(opview, "schema_in", None)
+                    field_names = tuple(getattr(schema_in, "fields", ()) or ())
+                    self._reject_jsonrpc_wrapper_keys(
+                        hot.parsed_json.get("params", {}),
+                        field_names=field_names,
+                    )
                 await self._resolve_program_runner(
                     packed,
                     program_id,

@@ -5,6 +5,7 @@ from typing import Any
 
 from .errors import RustBindingsUnavailableError
 from ._load_rust import load_rust_module
+from .trace import record_python_ffi_event
 
 _REGISTRY: dict[str, Callable[..., Any]] = {}
 
@@ -25,24 +26,28 @@ def registered_python_callbacks() -> dict[str, Callable[..., Any]]:
 
 def register_python_callback(name: str, callback: Callable[..., Any]) -> str:
     _REGISTRY[name] = callback
+    record_python_ffi_event("register_python_callback", name=name)
     rust = _require_rust()
     return rust.register_python_callback(name)
 
 
 def register_python_atom(name: str, callback: Callable[..., Any]) -> str:
     _REGISTRY[name] = callback
+    record_python_ffi_event("register_python_atom", name=name)
     rust = _require_rust()
     return rust.register_python_atom(name)
 
 
 def register_python_hook(name: str, callback: Callable[..., Any]) -> str:
     _REGISTRY[name] = callback
+    record_python_ffi_event("register_python_hook", name=name)
     rust = _require_rust()
     return rust.register_python_hook(name)
 
 
 def register_python_handler(name: str, callback: Callable[..., Any]) -> str:
     _REGISTRY[name] = callback
+    record_python_ffi_event("register_python_handler", name=name)
     rust = _require_rust()
     return rust.register_python_handler(name)
 
@@ -50,5 +55,6 @@ def register_python_handler(name: str, callback: Callable[..., Any]) -> str:
 def register_python_engine(name: str, callback: Callable[..., Any] | None = None) -> str:
     if callback is not None:
         _REGISTRY[name] = callback
+    record_python_ffi_event("register_python_engine", name=name)
     rust = _require_rust()
     return rust.register_python_engine(name)

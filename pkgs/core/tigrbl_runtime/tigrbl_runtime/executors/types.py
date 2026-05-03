@@ -144,6 +144,36 @@ class _HotSlotMap(ABCMapping[str, Any]):
         except KeyError:
             return default
 
+    def __setitem__(self, key: str, value: Any) -> None:
+        field_index = self._field_index
+        idx = -1
+        if field_index is not None:
+            idx = field_index.get(key, -1)
+        else:
+            for candidate_idx, field_name in enumerate(self._field_names):
+                if field_name == key:
+                    idx = candidate_idx
+                    break
+        if not (0 <= idx < len(self._slot_present)):
+            raise KeyError(key)
+        self._slot_values[idx] = value
+        self._slot_present[idx] = 1
+
+    def __delitem__(self, key: str) -> None:
+        field_index = self._field_index
+        idx = -1
+        if field_index is not None:
+            idx = field_index.get(key, -1)
+        else:
+            for candidate_idx, field_name in enumerate(self._field_names):
+                if field_name == key:
+                    idx = candidate_idx
+                    break
+        if not (0 <= idx < len(self._slot_present)):
+            raise KeyError(key)
+        self._slot_values[idx] = None
+        self._slot_present[idx] = 0
+
 
 def _slot_dict(
     field_names: tuple[str, ...],
@@ -727,7 +757,17 @@ class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
         if hot is None:
             return _LAZY_MISSING
         if name == "payload":
-            value = _ensure_hot_in_values_view(hot)
+            value = hot.route_payload
+            if value is None:
+                parsed = hot.parsed_json
+                if isinstance(parsed, dict) and parsed.get("jsonrpc") == "2.0":
+                    params = parsed.get("params")
+                    if isinstance(params, (Mapping, list)):
+                        value = params
+                elif isinstance(parsed, (Mapping, list)):
+                    value = parsed
+            if value is None:
+                value = _ensure_hot_in_values_view(hot)
             if value is None:
                 return _LAZY_MISSING
         elif name == "path_params":
