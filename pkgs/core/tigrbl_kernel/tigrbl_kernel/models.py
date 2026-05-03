@@ -112,6 +112,7 @@ class HotOpPlan:
     program_hot_runner_id: int = 0
     param_shape_id: int = -1
     transport_kind_id: int = 0
+    compiled_param_phase_steps: tuple[tuple[str, tuple[Any, ...]], ...] = ()
     websocket_path: str = ""
     websocket_protocol: str = ""
     websocket_exchange: str = ""

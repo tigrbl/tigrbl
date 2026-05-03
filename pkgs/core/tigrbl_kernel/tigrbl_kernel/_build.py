@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import datetime as _dt
 import decimal as _dc
+import inspect
 import logging
 import uuid as _uuid
 import zlib
@@ -339,6 +340,34 @@ def _structural_atom_signature(
     return (label, effect_id, payload, is_async)
 
 
+def _structural_atom_scope(step: StepFn) -> tuple[str, int]:
+    if _step_has_route_binding(step):
+        return ("route", id(step))
+    direct_dep = getattr(step, "__tigrbl_direct_dep", None)
+    if direct_dep is not None:
+        return ("dep", id(direct_dep))
+    try:
+        params = tuple(inspect.signature(step).parameters.values())
+        positional = sum(
+            1
+            for param in params
+            if param.kind
+            in (
+                inspect.Parameter.POSITIONAL_ONLY,
+                inspect.Parameter.POSITIONAL_OR_KEYWORD,
+            )
+        )
+        if positional > 1:
+            return ("call", id(step))
+    except (TypeError, ValueError):
+        pass
+    for candidate in (step, getattr(step, "__tigrbl_direct_run", None)):
+        owner = getattr(candidate, "__self__", None)
+        if owner is not None:
+            return ("owner", id(owner))
+    return ("shared", 0)
+
+
 def _structural_atom_opcode_key(step: StepFn, phase: str) -> str:
     atom_name = _atom_name(step)
     if isinstance(atom_name, str) and atom_name:
@@ -451,6 +480,53 @@ def _program_has_exact_proto_binding(
     return False
 
 
+def _program_has_exact_http_like_no_input_binding(
+    plan: KernelPlan,
+    program_id: int,
+) -> bool:
+    methods: set[str] = set()
+    saw_exact = False
+    for proto, bucket in (getattr(plan, "proto_indices", {}) or {}).items():
+        if proto not in {"http.rest", "https.rest", "http.sse", "https.sse"}:
+            continue
+        if not isinstance(bucket, Mapping):
+            continue
+        exact = bucket.get("exact")
+        if not isinstance(exact, Mapping):
+            continue
+        for selector, meta_index in exact.items():
+            if meta_index != program_id or not isinstance(selector, str):
+                continue
+            method, _, path = selector.partition(" ")
+            if not path:
+                continue
+            saw_exact = True
+            methods.add(method.upper())
+    return bool(saw_exact and methods and methods.issubset({"GET", "HEAD"}))
+
+
+def _step_has_route_binding(step: StepFn) -> bool:
+    closure = getattr(step, "__closure__", None)
+    if not closure:
+        return False
+    for cell in closure:
+        try:
+            value = cell.cell_contents
+        except ValueError:
+            continue
+        path = getattr(value, "path_template", None) or getattr(value, "path", None)
+        methods = getattr(value, "methods", None)
+        handler = getattr(value, "handler", None)
+        if (
+            isinstance(path, str)
+            and path
+            and methods is not None
+            and handler is not None
+        ):
+            return True
+    return False
+
+
 def _compile_program_param_shape(
     opview: OpView | None,
     *,
@@ -498,6 +574,7 @@ def _program_hot_runner_id(
     remaining_segments: tuple[int, ...],
     param_shape_id: int,
     transport_kind_id: int,
+    compiled_param_eligible: bool,
     exact_http_like_no_input: bool,
     websocket_fast_path: bool,
 ) -> int:
@@ -506,6 +583,8 @@ def _program_hot_runner_id(
     if exact_http_like_no_input and (ordered_segments or remaining_segments):
         return _HOT_RUNNER_COMPILED_PARAM
     if (
+        compiled_param_eligible
+        and
         param_shape_id >= 0
         and (
             transport_kind_id in {_TRANSPORT_KIND_REST, _TRANSPORT_KIND_JSONRPC}
@@ -754,7 +833,7 @@ def _pack_kernel_plan(
                 param_shape_max_lengths.append(max_length)
         program_param_shape_ids.append(param_shape_id)
 
-    atom_index: dict[tuple[str, int, tuple[int, ...], bool], int] = {}
+    atom_index: dict[tuple[str, int, tuple[int, ...], bool, tuple[str, int]], int] = {}
     atom_opcode_index: dict[str, int] = {}
     step_table: list[StepFn] = []
     atom_catalog_labels: list[str] = []
@@ -774,16 +853,24 @@ def _pack_kernel_plan(
     op_segment_offsets: list[int] = []
     op_segment_lengths: list[int] = []
     op_to_segment_ids: list[int] = []
+    program_compiled_param_phase_steps: list[tuple[tuple[str, tuple[StepFn, ...]], ...]] = []
+    program_has_route_bound_step: list[bool] = []
 
     for program_id, _meta in enumerate(plan.opmeta):
         chains = dict(plan.phase_chains.get(program_id, {}) or {})
         op_segment_offsets.append(len(op_to_segment_ids))
         seg_count = 0
+        phase_step_entries: list[tuple[str, tuple[StepFn, ...]]] = []
+        has_route_bound_step = False
         for phase in DEFAULT_PHASE_ORDER:
             steps = _dedupe_consecutive_steps(list(chains.get(phase, ()) or ()))
             if not steps:
                 continue
 
+            normalized_phase = str(normalize_phase(phase))
+            phase_step_entries.append((normalized_phase, tuple(steps)))
+            if not has_route_bound_step:
+                has_route_bound_step = any(_step_has_route_binding(step) for step in steps)
             kinds = {_classify_step_lowering(step, phase) for step in steps}
             if len(kinds) == 1 and LOWER_KIND_SYNC_EXTRACTABLE in kinds:
                 segment_executor_kind = LOWER_KIND_SYNC_EXTRACTABLE
@@ -795,10 +882,11 @@ def _pack_kernel_plan(
             atom_ids: list[int] = []
             for step in steps:
                 signature = _structural_atom_signature(step, phase)
-                step_id = atom_index.get(signature)
+                dedupe_key = (*signature, _structural_atom_scope(step))
+                step_id = atom_index.get(dedupe_key)
                 if step_id is None:
                     step_id = len(step_table)
-                    atom_index[signature] = step_id
+                    atom_index[dedupe_key] = step_id
                     opcode_key = _structural_atom_opcode_key(step, phase)
                     opcode_id = atom_opcode_index.get(opcode_key)
                     if opcode_id is None:
@@ -813,7 +901,6 @@ def _pack_kernel_plan(
                     step_async_flags.append(signature[3])
                 atom_ids.append(step_id)
 
-            normalized_phase = str(normalize_phase(phase))
             phase_id = phase_to_id.get(normalized_phase)
             if phase_id is None:
                 phase_id = len(phase_names)
@@ -830,6 +917,8 @@ def _pack_kernel_plan(
             seg_count += 1
             op_to_segment_ids.append(seg_id)
         op_segment_lengths.append(seg_count)
+        program_compiled_param_phase_steps.append(tuple(phase_step_entries))
+        program_has_route_bound_step.append(has_route_bound_step)
 
     route_to_program = self._build_route_matrix(
         proto_names=proto_names,
@@ -959,12 +1048,31 @@ def _pack_kernel_plan(
                 {"http.rest", "https.rest", "http.sse", "https.sse"}
             ),
         )
+        alias_name = str(getattr(meta, "alias", "") or "")
+        target_name = str(getattr(meta, "target", "") or "")
+        compiled_param_eligible = not (
+            alias_name.startswith("bulk_") or target_name.startswith("bulk_")
+        )
+        compiled_param_phase_steps = (
+            program_compiled_param_phase_steps[program_id]
+            if param_shape_id < 0
+            and program_has_route_bound_step[program_id]
+            and _program_has_exact_proto_binding(
+                plan,
+                program_id,
+                allowed_protos=frozenset(
+                    {"http.rest", "https.rest", "http.sse", "https.sse"}
+                ),
+            )
+            else ()
+        )
         hot_runner_id = _program_hot_runner_id(
             proto_names=program_proto_names,
             ordered_segments=tuple(ordered_segments),
             remaining_segments=tuple(remaining_segments),
             param_shape_id=param_shape_id,
             transport_kind_id=transport_kind_id,
+            compiled_param_eligible=compiled_param_eligible,
             exact_http_like_no_input=exact_http_like_no_input,
             websocket_fast_path=websocket_fast_path is not None,
         )
@@ -998,6 +1106,7 @@ def _pack_kernel_plan(
                 program_hot_runner_id=hot_runner_id,
                 param_shape_id=param_shape_id,
                 transport_kind_id=transport_kind_id,
+                compiled_param_phase_steps=compiled_param_phase_steps,
                 websocket_path=websocket_fast_path[0] if websocket_fast_path is not None else "",
                 websocket_protocol=websocket_fast_path[1] if websocket_fast_path is not None else "",
                 websocket_exchange=websocket_fast_path[2] if websocket_fast_path is not None else "",

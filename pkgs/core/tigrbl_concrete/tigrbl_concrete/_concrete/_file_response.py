@@ -36,7 +36,7 @@ class FileResponse(Response):
         super().__init__(
             status_code=status_code,
             headers=response_headers,
-            body=None,
+            body=resolved_path.read_bytes(),
             media_type=content_type,
             filename=filename,
             download=download,

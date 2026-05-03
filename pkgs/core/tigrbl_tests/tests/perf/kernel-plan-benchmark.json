@@ -20,8 +20,8 @@
       "rest_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 1.0955700000049546,
-        "ops_per_second": 136.91503053143262,
+        "total_execution_time_seconds": 1.0342644000193104,
+        "ops_per_second": 145.03061305909728,
         "endpoint": "/items"
       },
       "persisted_row_count": 170
@@ -53,15 +53,15 @@
       "rest_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 0.2013673999463208,
-        "ops_per_second": 744.9070705585215,
+        "total_execution_time_seconds": 0.20717009995132685,
+        "ops_per_second": 724.0427071051346,
         "endpoint": "/items"
       },
       "jsonrpc_unary": {
         "ops": 150,
         "warmup_ops": 20,
-        "total_execution_time_seconds": 0.19697739998809993,
-        "ops_per_second": 761.5086807372927,
+        "total_execution_time_seconds": 0.20635269995545968,
+        "ops_per_second": 726.9107699214832,
         "endpoint": "/rpc",
         "method": "BenchmarkItem.create"
       },
@@ -69,10 +69,10 @@
     },
     "comparisons": {
       "rest_unary": {
-        "fastapi_ops_per_second": 136.91503053143262,
-        "tigrbl_ops_per_second": 744.9070705585215,
-        "delta_ops_per_second": 607.9920400270888,
-        "throughput_ratio_tigrbl_over_fastapi": 5.440652261969934,
+        "fastapi_ops_per_second": 145.03061305909728,
+        "tigrbl_ops_per_second": 724.0427071051346,
+        "delta_ops_per_second": 579.0120940460373,
+        "throughput_ratio_tigrbl_over_fastapi": 4.9923439736829955,
         "compressed_bytes_per_tigrbl_op": 4.826666666666667
       }
     }

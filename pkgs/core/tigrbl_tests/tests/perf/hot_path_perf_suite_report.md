@@ -1,35 +1,35 @@
 # Hot-Path Perf Suite
 
 ## Gates
-- `REST unary >= 718.12 ops/s`: PASS (744.91)
-- `JSON-RPC unary >= 618.46 ops/s`: PASS (761.51)
+- `REST unary >= 718.12 ops/s`: PASS (724.04)
+- `JSON-RPC unary >= 618.46 ops/s`: PASS (726.91)
 - `Unary TGPKHOT1 raw_bytes <= 1627`: PASS (1627)
-- `streaming transport-only >= 1020.00 ops/s`: PASS (1237.54)
-- `streaming db-backed >= 666.88 ops/s`: PASS (668.33)
+- `streaming transport-only >= 1020.00 ops/s`: PASS (1281.21)
+- `streaming db-backed >= 666.88 ops/s`: PASS (803.75)
 - `streaming TGPKHOT1 raw_bytes <= 858`: PASS (858)
-- `websocket transport-only >= 14237.96 ops/s`: PASS (14971.14)
-- `websocket db-backed >= 156.41 ops/s`: PASS (163.10)
+- `websocket transport-only >= 14237.96 ops/s`: PASS (14894.43)
+- `websocket db-backed >= 156.41 ops/s`: PASS (179.67)
 - `websocket TGPKHOT1 raw_bytes <= 848`: PASS (848)
-- `sse transport-only >= 954.88 ops/s`: PASS (1212.51)
-- `sse db-backed >= 446.27 ops/s`: PASS (744.95)
+- `sse transport-only >= 954.88 ops/s`: PASS (1273.31)
+- `sse db-backed >= 446.27 ops/s`: PASS (775.13)
 - `sse TGPKHOT1 raw_bytes <= 858`: PASS (858)
-- `webtransport transport-only >= 1060.43 ops/s`: PASS (1099.34)
-- `webtransport db-backed >= 136.68 ops/s`: PASS (143.78)
+- `webtransport transport-only >= 1060.43 ops/s`: PASS (1244.47)
+- `webtransport db-backed >= 136.68 ops/s`: PASS (149.45)
 - `webtransport TGPKHOT1 raw_bytes <= 848`: PASS (848)
 
 ## Throughput Summary
-- unary: tigrbl REST=744.91, tigrbl JSON-RPC=761.51, fastapi REST=136.92
-- streaming transport-only 250: tigrbl=1237.54, fastapi=416.17
-- streaming db-backed 250: tigrbl=668.33, fastapi=153.43
+- unary: tigrbl REST=724.04, tigrbl JSON-RPC=726.91, fastapi REST=145.03
+- streaming transport-only 250: tigrbl=1281.21, fastapi=561.02
+- streaming db-backed 250: tigrbl=803.75, fastapi=215.28
 - streaming TGPKHOT1: raw=858, compressed=374
-- websocket transport-only 250: tigrbl=14971.14, fastapi=27217.40
-- websocket db-backed 250: tigrbl=163.10, fastapi=159.50
+- websocket transport-only 250: tigrbl=14894.43, fastapi=28190.30
+- websocket db-backed 250: tigrbl=179.67, fastapi=178.83
 - websocket TGPKHOT1: raw=848, compressed=350
-- sse transport-only 250: tigrbl=1212.51, fastapi=466.09
-- sse db-backed 250: tigrbl=744.95, fastapi=182.89
+- sse transport-only 250: tigrbl=1273.31, fastapi=457.12
+- sse db-backed 250: tigrbl=775.13, fastapi=188.14
 - sse TGPKHOT1: raw=858, compressed=374
-- webtransport transport-only 250: tigrbl=1099.34
-- webtransport db-backed 250: tigrbl=143.78
+- webtransport transport-only 250: tigrbl=1244.47
+- webtransport db-backed 250: tigrbl=149.45
 - webtransport TGPKHOT1: raw=848, compressed=350
 
 ## Locked Baselines

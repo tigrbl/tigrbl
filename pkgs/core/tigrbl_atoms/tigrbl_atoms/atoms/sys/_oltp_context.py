@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import uuid
 from typing import Any, Mapping, Optional, Sequence
 
@@ -27,6 +28,22 @@ def payload(ctx: Mapping[str, Any]) -> Any:
     if isinstance(temp, Mapping):
         assembled_values = temp.get("assembled_values")
         if isinstance(assembled_values, Mapping):
+            if isinstance(raw, Sequence) and not isinstance(raw, (str, bytes)):
+                if not assembled_values:
+                    return raw
+                merged_items: list[Any] = []
+                changed = False
+                for item in raw:
+                    if not isinstance(item, Mapping):
+                        merged_items.append(item)
+                        continue
+                    merged = dict(assembled_values)
+                    merged.update(item)
+                    changed = changed or merged != item
+                    merged_items.append(merged)
+                if changed:
+                    return merged_items
+                return raw
             if not assembled_values and isinstance(raw, Mapping):
                 return raw
             if isinstance(raw, Mapping):
@@ -39,6 +56,64 @@ def payload(ctx: Mapping[str, Any]) -> Any:
                 merged.update(assembled_values)
                 return merged
             return assembled_values
+
+        route = temp.get("route")
+        if isinstance(route, Mapping):
+            route_payload = route.get("payload")
+            if isinstance(route_payload, Mapping):
+                return route_payload
+            if isinstance(route_payload, Sequence) and not isinstance(
+                route_payload, (str, bytes)
+            ):
+                return route_payload
+            rpc_envelope = route.get("rpc_envelope")
+            if isinstance(rpc_envelope, Mapping):
+                params = rpc_envelope.get("params")
+                if isinstance(params, Mapping):
+                    return params
+                if isinstance(params, Sequence) and not isinstance(
+                    params, (str, bytes)
+                ):
+                    return params
+
+        dispatch = temp.get("dispatch")
+        if isinstance(dispatch, Mapping):
+            parsed_payload = dispatch.get("parsed_payload")
+            if isinstance(parsed_payload, Mapping):
+                return parsed_payload
+            if isinstance(parsed_payload, Sequence) and not isinstance(
+                parsed_payload, (str, bytes)
+            ):
+                return parsed_payload
+            rpc_envelope = dispatch.get("rpc")
+            if isinstance(rpc_envelope, Mapping):
+                params = rpc_envelope.get("params")
+                if isinstance(params, Mapping):
+                    return params
+                if isinstance(params, Sequence) and not isinstance(
+                    params, (str, bytes)
+                ):
+                    return params
+
+    body = _ctx_get(ctx, "body", None)
+    request_obj = _ctx_get(ctx, "request", None)
+    if body is None and request_obj is not None:
+        body = getattr(request_obj, "body", None)
+    if isinstance(body, (bytes, bytearray)):
+        try:
+            body = json.loads(bytes(body).decode("utf-8"))
+        except Exception:
+            body = None
+    if isinstance(body, Mapping) and body.get("jsonrpc") == "2.0":
+        params = body.get("params")
+        if isinstance(params, Mapping):
+            return params
+        if isinstance(params, Sequence) and not isinstance(params, (str, bytes)):
+            return params
+    if isinstance(body, Mapping):
+        return body
+    if isinstance(body, Sequence) and not isinstance(body, (str, bytes)):
+        return body
 
     if isinstance(raw, Mapping):
         return raw
@@ -216,6 +291,32 @@ def ident(model: type, ctx: Mapping[str, Any]) -> Any:
             return _coerce_ident_to_pk_type(model, value)
         except Exception as exc:
             raise TypeError(f"Invalid identifier for '{pk}': {value!r}") from exc
+
+    temp = _ctx_get(ctx, "temp", None)
+    if isinstance(temp, Mapping):
+        rpc_sources = []
+        route = temp.get("route")
+        if isinstance(route, Mapping):
+            rpc_sources.append(route.get("rpc_envelope"))
+        dispatch = temp.get("dispatch")
+        if isinstance(dispatch, Mapping):
+            rpc_sources.append(dispatch.get("rpc"))
+        for envelope in rpc_sources:
+            if not isinstance(envelope, Mapping):
+                continue
+            params = envelope.get("params")
+            if not isinstance(params, Mapping):
+                continue
+            for key in (pk, "id", "item_id", f"{pk}_id", "ident"):
+                value = params.get(key)
+                if value is None or _is_clause(value):
+                    continue
+                try:
+                    return _coerce_ident_to_pk_type(model, value)
+                except Exception as exc:
+                    raise TypeError(
+                        f"Invalid identifier for '{pk}': {value!r}"
+                    ) from exc
 
     raise TypeError(f"Missing identifier '{pk}' in path or payload")
 

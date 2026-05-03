@@ -82,7 +82,13 @@ def _run(obj: object | None, ctx: Any) -> None:
     setattr(ctx, "target", getattr(meta, "target", None))
     target = getattr(meta, "target", None)
     if isinstance(alias, str):
-        status = _default_status(alias, target if isinstance(target, str) else None)
+        status = None
+        if isinstance(route, dict):
+            route_status = route.get("status_code")
+            if isinstance(route_status, int):
+                status = route_status
+        if status is None:
+            status = _default_status(alias, target if isinstance(target, str) else None)
         if isinstance(route, dict):
             route["status_code"] = status
         setattr(ctx, "status_code", status)

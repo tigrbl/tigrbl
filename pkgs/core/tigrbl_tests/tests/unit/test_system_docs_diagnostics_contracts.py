@@ -183,17 +183,17 @@ def test_root_build_helpers_materialize_schema_hook_and_rest_surfaces() -> None:
 
 @pytest.mark.unit
 def test_api_level_auth_survives_include_router_openapi_projection() -> None:
-    child_app = TigrblApp(mount_system=False)
-    child_app.set_auth(authn=_bearer_auth, allow_anon=False)
-    child_app.include_table(SystemDocsSecureWidget)
+    app = TigrblApp(mount_system=False)
+    app.set_auth(authn=_bearer_auth, allow_anon=False)
+    app.include_table(SystemDocsSecureWidget)
 
     root = Router()
-    root.include_router(child_app.router)
+    root.include_router(app.router)
     schema = build_openapi(root)
 
     paths = {
         route.name: route.path_template
-        for route in child_app.routers["SystemDocsSecureWidget"].routes
+        for route in app.routers["SystemDocsSecureWidget"].routes
     }
     list_sec = schema["paths"][paths["SystemDocsSecureWidget.list"]]["get"].get("security")
     read_sec = schema["paths"][paths["SystemDocsSecureWidget.read"]]["get"].get("security")
