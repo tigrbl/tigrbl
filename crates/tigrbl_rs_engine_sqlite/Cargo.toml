@@ -6,8 +6,8 @@ license.workspace = true
 authors.workspace = true
 rust-version.workspace = true
 description = "Rust SQLite engine for Tigrbl."
-homepage.workspace = true
-repository.workspace = true
+homepage = "https://github.com/tigrbl/tigrbl"
+repository = "https://github.com/tigrbl/tigrbl"
 
 [dependencies]
 rusqlite = { version = "0.32", features = ["bundled"] }
