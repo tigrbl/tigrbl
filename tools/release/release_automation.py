@@ -8,6 +8,8 @@ import subprocess
 import sys
 import tempfile
 import time
+import urllib.error
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -21,6 +23,8 @@ CARGO_WORKSPACE_VERSION_RE = re.compile(
 CARGO_PACKAGE_NAME_RE = re.compile(r'(?m)^name\s*=\s*"([^"]+)"')
 CARGO_DEP_RE = re.compile(r'^(\s*)([A-Za-z0-9_-]+)\s*=\s*\{([^}]*)\}(\s*)$')
 PACKAGE_SPLIT_RE = re.compile(r"[\s,]+")
+PYTHON_VERSION_FLOOR = "0.4.0.dev1"
+CARGO_VERSION_FLOOR = "0.4.0-dev.1"
 
 
 @dataclass(frozen=True)
@@ -78,6 +82,22 @@ class Version:
         if self.cargo:
             return f"{base}-dev.{self.dev}"
         return f"{base}.dev{self.dev}"
+
+    def is_less_than(self, other: "Version") -> bool:
+        if self.cargo != other.cargo:
+            raise ValueError("cannot compare Python and Cargo versions")
+        left = (self.major, self.minor, self.patch)
+        right = (other.major, other.minor, other.patch)
+        if left != right:
+            return left < right
+        if self.dev is None:
+            return False
+        if other.dev is None:
+            return True
+        return self.dev < other.dev
+
+    def is_greater_than(self, other: "Version") -> bool:
+        return other.is_less_than(self)
 
 
 def read(path: Path) -> str:
@@ -202,6 +222,54 @@ def validate_package_selection(
         raise ValueError(f"unknown package(s): {unknown_list}. Known packages: {known_list}")
 
 
+def ensure_allowed_target_version(
+    name: str,
+    old_version: str,
+    new_version: str,
+    *,
+    cargo: bool = False,
+) -> None:
+    old = Version.parse(old_version, cargo=cargo)
+    new = Version.parse(new_version, cargo=cargo)
+    floor = Version.parse(CARGO_VERSION_FLOOR if cargo else PYTHON_VERSION_FLOOR, cargo=cargo)
+    if new.is_less_than(floor):
+        raise ValueError(
+            f"{name} target version {new_version} is below the required floor "
+            f"{CARGO_VERSION_FLOOR if cargo else PYTHON_VERSION_FLOOR}"
+        )
+    if old.is_greater_than(new):
+        raise ValueError(
+            f"{name} target version {new_version} would downversion current "
+            f"version {old_version}"
+        )
+
+
+def ensure_all_versions_meet_floor(
+    all_py_projects: list[dict[str, str]],
+    all_cargo: list[dict[str, str]],
+    py_releases: list[dict[str, str]],
+    cargo_releases: list[dict[str, str]],
+) -> None:
+    planned_python = {release["name"]: release["version"] for release in py_releases}
+    for project in all_py_projects:
+        target_version = planned_python.get(project["name"], project["version"])
+        ensure_allowed_target_version(
+            project["name"],
+            project["version"],
+            target_version,
+        )
+
+    if all_cargo:
+        planned_cargo_version = cargo_releases[0]["version"] if cargo_releases else cargo_workspace_version()
+        for project in all_cargo:
+            ensure_allowed_target_version(
+                project["name"],
+                project["version"],
+                planned_cargo_version,
+                cargo=True,
+            )
+
+
 def replace_python_version(path: Path, new_version: str) -> bool:
     text = read(path)
     updated, count = PYPROJECT_VERSION_RE.subn(rf'\g<1>"{new_version}"', text, count=1)
@@ -262,6 +330,7 @@ def build_plan(
     py_releases: list[dict[str, str]] = []
     for project in py_projects:
         new_version = str(Version.parse(project["version"]).bump(semver))
+        ensure_allowed_target_version(project["name"], project["version"], new_version)
         py_releases.append({**project, "old_version": project["version"], "version": new_version})
         if write_changes and replace_python_version(ROOT / project["path"], new_version):
             changed.append(project["path"])
@@ -270,6 +339,12 @@ def build_plan(
     if cargo:
         cargo_old_version = cargo_workspace_version()
         cargo_new_version = str(Version.parse(cargo_old_version, cargo=True).bump(semver))
+        ensure_allowed_target_version(
+            "Cargo workspace",
+            cargo_old_version,
+            cargo_new_version,
+            cargo=True,
+        )
         cargo_releases = [
             {**project, "old_version": cargo_old_version, "version": cargo_new_version}
             for project in cargo
@@ -297,6 +372,7 @@ def build_plan(
         Version.parse(release["version"], cargo=release["kind"] == "crate").dev is not None
         for release in all_releases
     )
+    ensure_all_versions_meet_floor(all_py_projects, all_cargo, py_releases, cargo_releases)
 
     return {
         "semver": semver,
@@ -390,6 +466,82 @@ def ensure_git_identity() -> None:
         )
 
 
+def normalize_python_project(name: str) -> str:
+    return re.sub(r"[-_.]+", "-", name).lower()
+
+
+def url_exists(url: str) -> bool:
+    request = urllib.request.Request(url, method="GET")
+    try:
+        with urllib.request.urlopen(request, timeout=30):
+            return True
+    except urllib.error.HTTPError as exc:
+        if exc.code == 404:
+            return False
+        raise RuntimeError(f"{url} lookup failed with HTTP {exc.code}") from exc
+
+
+def validate_release_targets(
+    plan_path: Path, *, github: bool, pypi: bool, crates: bool
+) -> None:
+    plan = json.loads(read(plan_path))
+    failures: list[str] = []
+
+    if github:
+        for release in plan["github_releases"]:
+            tag = release["tag"]
+            tag_exists = subprocess.run(
+                ["git", "rev-parse", "-q", "--verify", f"refs/tags/{tag}"],
+                cwd=ROOT,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            if tag_exists.returncode == 0:
+                failures.append(f"Git tag already exists: {tag}")
+                continue
+            release_exists = subprocess.run(
+                ["gh", "release", "view", tag],
+                cwd=ROOT,
+                text=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+            )
+            if release_exists.returncode == 0:
+                failures.append(f"GitHub release already exists: {tag}")
+
+    if pypi:
+        for release in plan["python"]:
+            project = normalize_python_project(release["name"])
+            version = release["version"]
+            url = f"https://pypi.org/pypi/{project}/{version}/json"
+            if url_exists(url):
+                failures.append(f"PyPI version already exists: {project} {version}")
+
+    if crates:
+        for release in plan["crates"]:
+            crate = release["name"]
+            version = release["version"]
+            url = f"https://crates.io/api/v1/crates/{crate}/{version}"
+            if url_exists(url):
+                failures.append(f"crates.io version already exists: {crate} {version}")
+
+    if failures:
+        print("Release target validation failed:")
+        for failure in failures:
+            print(f"- {failure}")
+        raise SystemExit(1)
+
+    selected = []
+    if github:
+        selected.append("GitHub releases")
+    if pypi:
+        selected.append("PyPI")
+    if crates:
+        selected.append("crates.io")
+    print(f"Release target validation passed for: {', '.join(selected) or 'none'}")
+
+
 def create_github_releases(plan_path: Path) -> None:
     plan = json.loads(read(plan_path))
     ensure_git_identity()
@@ -405,11 +557,8 @@ def create_github_releases(plan_path: Path) -> None:
             stderr=subprocess.DEVNULL,
         )
         if existing.returncode == 0:
-            tagged_head = git_output(["rev-list", "-n", "1", tag])
-            if tagged_head != head:
-                raise RuntimeError(f"tag {tag} already exists on {tagged_head}, not {head}")
-        else:
-            run(["git", "tag", "-a", tag, "-m", tag])
+            raise RuntimeError(f"tag {tag} already exists")
+        run(["git", "tag", "-a", tag, "-m", tag])
         tags.append(tag)
     if tags:
         run(["git", "push", "origin", *tags])
@@ -436,26 +585,22 @@ def create_github_releases(plan_path: Path) -> None:
                 stderr=subprocess.DEVNULL,
             )
             if existing.returncode == 0:
-                command = ["gh", "release", "edit", tag, "--title", title, "--notes-file", notes_path]
-                if is_prerelease or plan["prerelease"]:
-                    command.append("--prerelease")
-                run(command)
-            else:
-                command = [
-                    "gh",
-                    "release",
-                    "create",
-                    tag,
-                    "--title",
-                    title,
-                    "--notes-file",
-                    notes_path,
-                    "--target",
-                    head,
-                ]
-                if is_prerelease or plan["prerelease"]:
-                    command.append("--prerelease")
-                run(command)
+                raise RuntimeError(f"GitHub release {tag} already exists")
+            command = [
+                "gh",
+                "release",
+                "create",
+                tag,
+                "--title",
+                title,
+                "--notes-file",
+                notes_path,
+                "--target",
+                head,
+            ]
+            if is_prerelease or plan["prerelease"]:
+                command.append("--prerelease")
+            run(command)
         finally:
             Path(notes_path).unlink(missing_ok=True)
 
@@ -539,6 +684,12 @@ def main(argv: list[str] | None = None) -> int:
     gh = subparsers.add_parser("create-github-releases")
     gh.add_argument("--summary", type=Path, required=True)
 
+    validate_targets = subparsers.add_parser("validate-release-targets")
+    validate_targets.add_argument("--summary", type=Path, required=True)
+    validate_targets.add_argument("--github", action="store_true")
+    validate_targets.add_argument("--pypi", action="store_true")
+    validate_targets.add_argument("--crates", action="store_true")
+
     crates = subparsers.add_parser("publish-crates")
     crates.add_argument("--summary", type=Path, required=True)
     crates.add_argument("--dry-run", action="store_true")
@@ -566,6 +717,16 @@ def main(argv: list[str] | None = None) -> int:
         if not os.environ.get("GH_TOKEN") and not os.environ.get("GITHUB_TOKEN"):
             raise RuntimeError("GH_TOKEN or GITHUB_TOKEN is required")
         create_github_releases(args.summary)
+        return 0
+    if args.command == "validate-release-targets":
+        if args.github and not os.environ.get("GH_TOKEN") and not os.environ.get("GITHUB_TOKEN"):
+            raise RuntimeError("GH_TOKEN or GITHUB_TOKEN is required")
+        validate_release_targets(
+            args.summary,
+            github=args.github,
+            pypi=args.pypi,
+            crates=args.crates,
+        )
         return 0
     if args.command == "publish-crates":
         publish_crates(args.summary, dry_run=args.dry_run, verify=not args.skip_dry_run)
