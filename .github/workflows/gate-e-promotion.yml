@@ -71,4 +71,5 @@ jobs:
           export TMPDIR="${GITHUB_WORKSPACE}/.tmp"
           export TEMP="${GITHUB_WORKSPACE}/.tmp"
           export TMP="${GITHUB_WORKSPACE}/.tmp"
+          uv pip install --no-deps -e pkgs/core/tigrbl -e pkgs/core/tigrbl_runtime
           uv run --no-sync python -m pytest -q pkgs/core/tigrbl_tests/tests -p no:cacheprovider --basetemp .uv-pytest-tigrbl-tests

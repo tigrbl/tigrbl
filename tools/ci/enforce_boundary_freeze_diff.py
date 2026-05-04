@@ -61,7 +61,7 @@ def main() -> None:
     controlled_docs = set(marker.get("controlled_docs", []))
     claim_registry = str(marker.get("claim_registry_path", "")).strip()
     manifest_path = str(marker.get("manifest_path", "")).strip()
-    marker_path = str(MARKER_PATH.relative_to(ROOT))
+    marker_path = MARKER_PATH.relative_to(ROOT).as_posix()
 
     changed_boundary = boundary_docs & changed
     changed_controlled = controlled_docs & changed
