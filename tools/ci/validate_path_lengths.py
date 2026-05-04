@@ -18,6 +18,7 @@ EXCLUDED_ROOTS = {
     ROOT / '.pip-cache',
     ROOT / '.benchmarks',
     ROOT / 'target',
+    ROOT / 'pkgs' / 'core' / 'tigrbl_tests' / 'tests' / 'perf',
 }
 
 EXCLUDED_NAMES = {

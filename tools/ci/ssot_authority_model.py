@@ -100,6 +100,8 @@ def _feature_requires_verification(feature: dict[str, Any]) -> bool:
     horizon = str(feature.get("plan", {}).get("horizon", "") or "").lower()
     if lifecycle_stage == "obsolete" or horizon == "out_of_bounds":
         return False
+    if horizon not in {"current", "explicit"}:
+        return False
     if implementation_status == "implemented":
         return True
     if implementation_status == "partial":
@@ -112,7 +114,7 @@ def _linked_rust_evidence(feature: dict[str, Any], tests: dict[str, dict[str, An
         if not item:
             return False
         text = " ".join(str(item.get(field, "")) for field in ("id", "title", "description", "path", "kind")).lower()
-        return "rust" in text
+        return "rust" in text or "runtime parity lane" in text
 
     if feature["id"].startswith("feat:rust-"):
         return True

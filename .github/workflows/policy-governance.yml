@@ -34,6 +34,25 @@ jobs:
           python -m pip install --upgrade pip uv
           uv sync --all-groups --no-install-workspace --frozen
 
+      - name: Compute workspace PYTHONPATH
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY_PATH="$GITHUB_WORKSPACE"
+          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+            if [[ -d "$base" ]]; then
+              for child in "$base"/*; do
+                [[ -d "$child" ]] || continue
+                PY_PATH="$PY_PATH:$child"
+                if [[ -d "$child/src" ]]; then
+                  PY_PATH="$PY_PATH:$child/src"
+                fi
+              done
+            fi
+          done
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/core/tigrbl_runtime"
+          echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
+
       - name: Resolve Gate A diff range
         shell: bash
         run: |

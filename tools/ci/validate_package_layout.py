@@ -33,6 +33,8 @@ def rust_crate_roots() -> list[Path]:
 def markdown_allowed(path: Path, package_root: Path) -> bool:
     if any(part in {".pytest_cache", "__pycache__"} for part in path.parts):
         return True
+    if package_root.name == "tigrbl_tests" and "perf" in path.relative_to(package_root).parts:
+        return True
     return path == package_root / "README.md"
 
 

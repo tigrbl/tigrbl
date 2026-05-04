@@ -753,7 +753,16 @@
       "spec_ids": [
         "spc:2104",
         "spc:2106"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:bindingspec-kernelplan-protocol-compilation-001",
@@ -22917,7 +22926,16 @@
       "test_ids": [
         "tst:tigrbl-tests-tests-unit-test-stdapi-transport-asgi-wsgi"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:rest-rpc-symmetry-header-parity-001",
@@ -23243,7 +23261,16 @@
         "tst:kernelplan-executor-ownership-atom-contract",
         "tst:kernelplan-executor-ownership-runtime-shim-contract"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:startup-self-warm-runtime-default-001",
@@ -23275,7 +23302,16 @@
       "requires": [
         "feat:lifespan-runtime-chain-001",
         "feat:kernelplan-executor-ownership-placement-001"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:c-bulk-hot-path-prioritization-atoms-001",
@@ -23331,7 +23367,16 @@
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:c-bulk-hot-path-prioritization-runtime-001",
@@ -23361,7 +23406,16 @@
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:c-bulk-hot-path-prioritization-default-ops-001",
@@ -23388,7 +23442,16 @@
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:hotctx-slot-backed-route-dispatch-egress-001",
@@ -23415,7 +23478,16 @@
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:no-check-attr-hot-runner-preference-001",
@@ -23473,7 +23545,16 @@
       ],
       "requires": [
         "feat:hotctx-slot-backed-route-dispatch-egress-001"
-      ]
+      ],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:tgpkhot1-kernelplan-benchmark-callgraph-governance-001",
@@ -23500,7 +23581,16 @@
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     },
     {
       "id": "feat:tiered-soa-byte-layout-hot-metadata-001",
@@ -23527,7 +23617,16 @@
       "test_ids": [
         "tst:runtime-parity-lane-governance-validator"
       ],
-      "requires": []
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
+        }
+      }
     }
   ],
   "tests": [
