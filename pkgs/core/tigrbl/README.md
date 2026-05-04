@@ -1,6 +1,47 @@
-# tigrbl
+![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
-This file is a package-local distribution entry point.
+<p align="center">
+    <a href="https://pypi.org/project/tigrbl/">
+        <img src="https://img.shields.io/pypi/dm/tigrbl" alt="PyPI - Downloads"/></a>
+    <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl/">
+        <img alt="Hits" src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl.svg"/></a>
+    <a href="https://pypi.org/project/tigrbl/">
+        <img src="https://img.shields.io/pypi/pyversions/tigrbl" alt="PyPI - Python Version"/></a>
+    <a href="https://pypi.org/project/tigrbl/">
+        <img src="https://img.shields.io/pypi/l/tigrbl" alt="PyPI - License"/></a>
+    <a href="https://pypi.org/project/tigrbl/">
+        <img src="https://img.shields.io/pypi/v/tigrbl?label=tigrbl&color=green" alt="PyPI - tigrbl"/></a>
+</p>
+
+---
+
+# Tigrbl 🐅🐂
+
+A high-leverage ASGI meta-framework that turns plain SQLAlchemy models into a fully-featured REST+RPC surface with near-zero boilerplate. 🚀
+
+## Features ✨
+
+- ⚡ Zero-boilerplate CRUD for SQLAlchemy models
+- 🔌 Unified REST and RPC endpoints from a single definition
+- 🪝 Hookable phase system for deep customization
+- 🧩 Pluggable engine and provider abstractions
+- 🚀 Built as an ASGI-native framework with Pydantic-powered schema generation
+
+## Split Package Module Locations 🗂️
+
+These surfaces are maintained in the split Tigrbl packages, with `tigrbl.*`
+kept as compatibility imports:
+
+- `tigrbl.ddl` -> `tigrbl_concrete.ddl`
+- `tigrbl.system` -> `tigrbl_concrete.system`
+- `tigrbl.op` -> `tigrbl_core.op`
+- `tigrbl.config` -> `tigrbl_core.config`
+- `tigrbl.schema` -> `tigrbl_core.schema`
+- `tigrbl.security` -> `tigrbl_concrete.security`
+
+## Package-local entry point
+
+This file is the package-local distribution entry point.
 It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
 ## Canonical repository docs
