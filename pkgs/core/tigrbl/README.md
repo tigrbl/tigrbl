@@ -17,7 +17,7 @@
 
 # Tigrbl 🐅🐂
 
-A high-leverage ASGI meta-framework that turns plain SQLAlchemy models into a fully-featured REST+RPC surface with near-zero boilerplate. 🚀
+A high-leverage ASGI meta-framework that turns plain SQLAlchemy models into a REST+RPC surface with near-zero boilerplate. 🚀
 
 ## Features ✨
 
@@ -41,7 +41,7 @@ kept as compatibility imports:
 
 ## Package-local entry point
 
-This file is the package-local distribution entry point.
+This file is a package-local distribution entry point.
 It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
 ## Canonical repository docs
