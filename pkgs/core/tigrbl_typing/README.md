@@ -1,4 +1,71 @@
-# tigrbl_typing
+![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
+
+<p align="center">
+    <a href="https://pypi.org/project/tigrbl-typing/">
+        <img src="https://img.shields.io/pypi/dm/tigrbl-typing" alt="PyPI downloads for tigrbl-typing"/></a>
+    <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_typing/">
+        <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_typing.svg" alt="Repository views for tigrbl-typing"/></a>
+    <a href="https://pypi.org/project/tigrbl-typing/">
+        <img src="https://img.shields.io/pypi/pyversions/tigrbl-typing" alt="Supported Python versions for tigrbl-typing"/></a>
+    <a href="https://pypi.org/project/tigrbl-typing/">
+        <img src="https://img.shields.io/pypi/l/tigrbl-typing" alt="PyPI license metadata for tigrbl-typing"/></a>
+    <a href="https://pypi.org/project/tigrbl-typing/">
+        <img src="https://img.shields.io/pypi/v/tigrbl-typing?label=tigrbl-typing&color=green" alt="PyPI version for tigrbl-typing"/></a>
+</p>
+
+---
+
+# Tigrbl typing
+
+**Install and inspect `tigrbl-typing`: [download `tigrbl-typing` from PyPI](https://pypi.org/project/tigrbl-typing/) or [open the package source](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_typing).**
+
+tigrbl-typing is a typing package for typing protocols, type aliases, and shared type helpers for Tigrbl packages.
+
+`tigrbl-typing` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, and Rust crates that complete the system.
+
+## Package ownership
+
+- `tigrbl-typing` documents the concepts implemented in `pkgs/core/tigrbl_typing` and links to the Tigrbl packages that provide neighboring authoring, canon, runtime, operation, and engine behavior.
+- Use this README as the package-local explanation for the objects that live here; use governed docs for release state, certification, and evidence.
+
+## Package ecosystem cross-links
+
+Core cross-links:
+- [`tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl) - Facade package
+- [`tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_core) - Spec and primitive contracts
+- [`tigrbl_canon`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_canon) - Canonical mapping and operation resolution
+- [`tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) - Phase lifecycle and execution runtime
+- [`tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete) - Native objects, transports, hooks, deps, and secdeps
+- [`tigrbl_ops_oltp`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_oltp) - CRUD and transactional operation handlers
+- [`tigrbl_ops_olap`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_olap) - Analytical operation boundary
+- [`tigrbl_ops_realtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime) - Stream, transfer, datagram, and realtime ops
+- [`tigrbl_tests`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests) - Examples, benchmark, parity, and package test surfaces
+Engine cross-links:
+- [`tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_sqlite) - SQLite local transactional engine
+- [`tigrbl_engine_postgres`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_postgres) - PostgreSQL SQLAlchemy engine
+- [`tigrbl_engine_inmemory`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemory) - Process-local transactional in-memory engine
+- [`tigrbl_engine_redis`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_redis) - Redis cache/database engine
+- [`tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_duckdb) - DuckDB analytical engine
+- [`tigrbl_engine_pandas`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pandas) - pandas DataFrame engine
+- [`tigrbl_engine_pgsqli_wal`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pgsqli_wal) - PostgreSQL and SQLite WAL engine
+Rust cross-links:
+- [`tigrbl_rs_spec`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_spec) - Rust IR and AppSpec model
+- [`tigrbl_rs_atoms`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_atoms) - Rust atom catalog and phase algebra
+- [`tigrbl_rs_kernel`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_kernel) - Rust compiler and plan optimizer
+- [`tigrbl_rs_runtime`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime) - Rust executor and callback fences
+- [`tigrbl_rs_ports`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_ports) - Engine, session, transaction, callback, and handler ports
+
+## Install
+
+```bash
+pip install tigrbl-typing
+```
+
+## Package discovery
+
+Search and AI discovery terms for `tigrbl-typing` include: tigrbl, ASGI, REST, JSON-RPC, SQLAlchemy, Pydantic, asgi, api, json-rpc, rest, sqlalchemy, pydantic, typing, protocols, type-hints.
+
+## Package-local entry point
 
 This file is a package-local distribution entry point.
 It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.

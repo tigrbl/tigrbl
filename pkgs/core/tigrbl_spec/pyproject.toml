@@ -1,24 +1,42 @@
 [project]
 name = "tigrbl_spec"
 version = "0.4.0.dev2"
-description = "Planning-stage Tigrbl specification package for shared interfaces, protocol definitions, and compatibility targets."
-license = "Apache-2.0"
+description = "tigrbl_spec is a specification package for shared interfaces, protocol definitions, compatibility targets, and specification artifacts for Tigrbl."
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "spec",
+    "specification",
+    "protocols",
+    "compatibility",
+]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+requires-python = ">=3.10,<3.14"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = []
-keywords = ["tigrbl", "spec", "sdk", "standards", "planning"]
 
 
 [project.urls]

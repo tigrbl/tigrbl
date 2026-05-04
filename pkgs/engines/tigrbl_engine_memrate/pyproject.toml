@@ -5,6 +5,43 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_memrate"
 version = "0.4.0.dev2"
+description = "tigrbl_engine_memrate is an in-memory rate limit engine plugin for process-local rate limiting counters and windows for Tigrbl APIs."
+readme = "README.md"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "memrate",
+    "rate-limit",
+    "quota",
+    "inmemory",
+    "api-governance",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+]
 requires-python = ">=3.10,<3.14"
 dependencies = ["tigrbl"]
 

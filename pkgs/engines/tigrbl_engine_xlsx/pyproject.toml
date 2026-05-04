@@ -5,19 +5,44 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_xlsx"
 version = "0.4.0.dev2"
-description = "XLSX engine plugin for tigrbl where each workbook is a database and each sheet is a table."
+description = "tigrbl_engine_xlsx is an XLSX engine plugin for Excel workbook-backed table access where each worksheet is exposed as a Tigrbl table."
 readme = "README.md"
 license = "Apache-2.0"
-authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
-keywords = ["tigrbl", "engine", "xlsx", "excel", "dataframe", "experimental"]
-requires-python = ">=3.10,<3.14"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "xlsx",
+    "excel",
+    "workbook",
+    "dataframe",
+]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
 ]
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+requires-python = ">=3.10,<3.14"
 dependencies = [
     "openpyxl>=3.1",
     "tigrbl>=0.3.0.dev4",

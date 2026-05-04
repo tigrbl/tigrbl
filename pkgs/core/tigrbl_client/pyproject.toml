@@ -1,20 +1,38 @@
 [project]
 name = "tigrbl_client"
 version = "0.4.0.dev2"
-description = "A client for Tigrbl servers by Swarmauri."
-license = "Apache-2.0"
+description = "tigrbl_client is a client package for typed Python client helpers for calling Tigrbl servers and generated API surfaces."
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "client",
+    "http-client",
+    "api-client",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+requires-python = ">=3.10,<3.14"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
@@ -23,12 +41,6 @@ dependencies = [
     "swarmauri_standard",
     "fastapi>=0.100.0",
     "pydantic>=2.0.0",
-]
-keywords = [
-    'tigrbl',
-    'sdk',
-    'standards',
-    'client',
 ]
 
 

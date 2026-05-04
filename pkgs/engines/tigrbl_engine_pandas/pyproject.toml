@@ -5,33 +5,43 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_pandas"
 version = "0.4.0.dev2"
-description = "Tigrbl engine plugin providing transactional pandas DataFrame sessions."
+description = "tigrbl_engine_pandas is a pandas engine plugin for transactional pandas DataFrame sessions for Tigrbl engine workflows."
 readme = "README.md"
 license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "pandas",
+    "dataframe",
+    "transactions",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+]
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 requires-python = ">=3.10,<3.14"
-classifiers = [
-  "Development Status :: 1 - Planning",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-  "Environment :: Plugins",
-  "Intended Audience :: Developers",
-  "Topic :: Database",
-  "Topic :: Software Development :: Libraries",
-]
-keywords = [
-  "tigrbl",
-  "engine",
-  "plugin",
-  "dataframe",
-  "pandas",
-  "database",
-]
 dependencies = [
   "pandas>=2.0",
   "tigrbl",

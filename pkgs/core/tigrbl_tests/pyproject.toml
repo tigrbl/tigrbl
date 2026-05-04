@@ -1,21 +1,43 @@
 [project]
 name = "tigrbl_tests"
 version = "0.4.0.dev2"
-description = "Test suite and fixtures for the Tigrbl framework."
-license = "Apache-2.0"
+description = "tigrbl_tests is a testkit package for pytest fixtures, shared assertions, and integration test helpers for Tigrbl packages."
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "pytest",
+    "testing",
+    "fixtures",
+    "tests",
+    "testkit",
+    "integration-testing",
+]
 classifiers = [
-    "Development Status :: 1 - Planning",
-    "Natural Language :: English",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Framework :: Pytest",
+    "Topic :: Software Development :: Testing",
 ]
+requires-python = ">=3.10,<3.14"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
@@ -34,16 +56,6 @@ dependencies = [
     "ruff>=0.9.9",
     "pytest-benchmark>=4.0.0",
     "jinja2>=3.1.0",
-]
-keywords = [
-    "tigrbl",
-    "tests",
-    "sdk",
-    "standards",
-    "pytest",
-    "fixtures",
-    "integration",
-    "performance",
 ]
 
 

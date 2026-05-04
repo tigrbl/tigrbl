@@ -5,33 +5,43 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tigrbl_engine_snowflake"
 version = "0.4.0.dev2"
-description = "Tigrbl engine plugin for Snowflake, auto-registered via entry points."
+description = "tigrbl_engine_snowflake is a Snowflake engine plugin for Snowflake warehouse sessions and analytics-oriented engine registration for Tigrbl."
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
 license = "Apache-2.0"
-authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
-classifiers = [
-  "Development Status :: 1 - Planning",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-  "Environment :: Plugins",
-  "Intended Audience :: Developers",
-  "Topic :: Database",
-  "Topic :: Software Development :: Libraries",
-]
 keywords = [
-  "tigrbl",
-  "engine",
-  "plugin",
-  "snowflake",
-  "database",
-  "analytics",
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "snowflake",
+    "warehouse",
+    "analytics",
 ]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+]
+requires-python = ">=3.10,<3.14"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
   "SQLAlchemy>=2.0,<3.0",
