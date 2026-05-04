@@ -635,7 +635,10 @@ jobs:
               )
 
           failures: list[str] = []
-          for project, version, artifact in sorted(expected):
+          for project, version, artifact in sorted(
+              expected,
+              key=lambda item: (item[0], item[1], item[2]["filename"]),
+          ):
               url = f"https://pypi.org/pypi/{project}/{version}/json"
               print(f"Checking {project} {version}: {url}")
               data = None
