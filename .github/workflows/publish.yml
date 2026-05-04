@@ -463,6 +463,7 @@ jobs:
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
         run: |
+          set -euo pipefail
           shopt -s nullglob
           artifacts=()
           for artifact in dist/*; do
@@ -476,7 +477,125 @@ jobs:
             echo "No publishable artifacts found."
             exit 1
           fi
-          uv publish --check-url https://pypi.org/simple/ "${artifacts[@]}"
+          echo "Selected ${#artifacts[@]} artifact(s) for PyPI publishing:"
+          python - "${artifacts[@]}" <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import sys
+          from pathlib import Path
+
+          for raw in sys.argv[1:]:
+              path = Path(raw)
+              digest = hashlib.sha256(path.read_bytes()).hexdigest()
+              print(f"- {path} size={path.stat().st_size} sha256={digest}")
+          PY
+
+          echo "Running uv publish against https://upload.pypi.org/legacy/"
+          set +e
+          uv publish --verbose --publish-url https://upload.pypi.org/legacy/ --check-url https://pypi.org/simple/ "${artifacts[@]}"
+          publish_status=$?
+          set -e
+          echo "uv publish exit status: ${publish_status}"
+          if [[ "${publish_status}" -ne 0 ]]; then
+            echo "PyPI publishing failed."
+            exit "${publish_status}"
+          fi
+          echo "uv publish completed successfully."
+
+          echo "Verifying published artifacts through the PyPI JSON API."
+          python - "${artifacts[@]}" <<'PY'
+          from __future__ import annotations
+
+          import hashlib
+          import json
+          import re
+          import sys
+          import time
+          import urllib.error
+          import urllib.request
+          from pathlib import Path
+
+          def normalize_project(name: str) -> str:
+              return re.sub(r"[-_.]+", "-", name).lower()
+
+          def artifact_coordinate(path: Path) -> tuple[str, str]:
+              filename = path.name
+              if filename.endswith(".whl"):
+                  parts = filename.split("-")
+                  if len(parts) < 5:
+                      raise ValueError(f"cannot parse wheel filename: {filename}")
+                  return normalize_project(parts[0]), parts[1]
+              if filename.endswith(".tar.gz"):
+                  stem = filename[:-7]
+              elif filename.endswith(".zip"):
+                  stem = filename[:-4]
+              else:
+                  raise ValueError(f"unsupported distribution filename: {filename}")
+              match = re.match(r"(?P<name>.+)-(?P<version>[0-9][A-Za-z0-9.!+_-]*)$", stem)
+              if not match:
+                  raise ValueError(f"cannot parse source distribution filename: {filename}")
+              return normalize_project(match.group("name")), match.group("version")
+
+          expected: list[tuple[str, str, dict[str, str]]] = []
+          for raw in sys.argv[1:]:
+              path = Path(raw)
+              coordinate = artifact_coordinate(path)
+              expected.append(
+                  (
+                      coordinate[0],
+                      coordinate[1],
+                      {
+                          "filename": path.name,
+                          "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                      },
+                  )
+              )
+
+          failures: list[str] = []
+          for project, version, artifact in sorted(expected):
+              url = f"https://pypi.org/pypi/{project}/{version}/json"
+              print(f"Checking {project} {version}: {url}")
+              data = None
+              for attempt in range(1, 7):
+                  try:
+                      with urllib.request.urlopen(url, timeout=30) as response:
+                          data = json.loads(response.read().decode("utf-8"))
+                      break
+                  except urllib.error.HTTPError as exc:
+                      if exc.code == 404 and attempt < 6:
+                          time.sleep(10)
+                          continue
+                      failures.append(f"{project} {version}: PyPI JSON lookup failed with HTTP {exc.code}")
+                      break
+              if data is None:
+                  continue
+              releases = data.get("urls", [])
+              match = next((item for item in releases if item.get("filename") == artifact["filename"]), None)
+              if not match:
+                  failures.append(f"{project} {version}: missing file {artifact['filename']} in PyPI JSON response")
+                  continue
+              observed_sha = match.get("digests", {}).get("sha256")
+              if observed_sha != artifact["sha256"]:
+                  failures.append(
+                      f"{project} {version}: sha256 mismatch for {artifact['filename']} "
+                      f"expected={artifact['sha256']} observed={observed_sha}"
+                  )
+                  continue
+              print(
+                  f"Published {artifact['filename']} "
+                  f"size={match.get('size')} sha256={observed_sha} "
+                  f"upload_time={match.get('upload_time_iso_8601')}"
+              )
+
+          if failures:
+              print("PyPI publish verification failed:")
+              for failure in failures:
+                  print(f"- {failure}")
+              raise SystemExit(1)
+
+          print(f"PyPI publish verification passed for {len(expected)} artifact(s).")
+          PY
 
   publish-crates:
     name: Publish crates.io packages
