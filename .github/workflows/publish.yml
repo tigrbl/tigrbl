@@ -114,15 +114,77 @@ jobs:
 
       - name: Commit version updates
         id: commit
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          planned_changes="$(python - <<'PY'
+          import json
+
+          with open("release-plan.json", encoding="utf-8") as handle:
+              plan = json.load(handle)
+          print(len(plan.get("changed_files", [])))
+          PY
+          )"
+          echo "Release plan changed files: ${planned_changes}"
+          git status --short
+
+          commit_created=false
           if ! git diff --quiet; then
             git add Cargo.toml Cargo.lock pkgs crates
-            git commit -m "release: prepare ${{ inputs.semver }} package versions"
-            git push origin HEAD:${{ github.ref_name }}
+            if ! git diff --cached --quiet; then
+              git commit -m "release: prepare ${{ inputs.semver }} package versions"
+              commit_created=true
+              git push origin HEAD:${{ github.ref_name }}
+            fi
           fi
-          echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+          commit_sha="$(git rev-parse HEAD)"
+          if [[ "${planned_changes}" -gt 0 && "${commit_created}" != "true" ]]; then
+            echo "Release plan expected version changes, but no semver bump commit was created." >&2
+            exit 1
+          fi
+
+          git fetch origin "${{ github.ref_name }}"
+          remote_sha="$(git rev-parse "origin/${{ github.ref_name }}")"
+          if [[ "${remote_sha}" != "${commit_sha}" ]]; then
+            echo "Prepared release commit was not pushed to origin/${{ github.ref_name }}." >&2
+            echo "prepared=${commit_sha}" >&2
+            echo "remote=${remote_sha}" >&2
+            exit 1
+          fi
+
+          echo "Prepared release commit: ${commit_sha}"
+          echo "Remote origin/${{ github.ref_name }} verified at ${remote_sha}"
+          echo "commit_sha=${commit_sha}" >> "$GITHUB_OUTPUT"
+
+          PREPARED_COMMIT="${commit_sha}" \
+          REMOTE_SHA="${remote_sha}" \
+          COMMIT_CREATED="${commit_created}" \
+          RELEASE_REF="${{ github.ref_name }}" \
+          python - <<'PY'
+          import json
+          import os
+
+          with open("release-plan.json", encoding="utf-8") as handle:
+              plan = json.load(handle)
+
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("### Prepared release commit\n")
+              summary.write(f"- Branch: `{os.environ['RELEASE_REF']}`\n")
+              summary.write(f"- Commit: `{os.environ['PREPARED_COMMIT']}`\n")
+              summary.write(f"- Remote verified: `{os.environ['REMOTE_SHA']}`\n")
+              summary.write(f"- Commit created: `{os.environ['COMMIT_CREATED']}`\n\n")
+              summary.write("### Version plan\n")
+              for kind, releases in (("pypi", plan.get("python", [])), ("crate", plan.get("crates", []))):
+                  for release in releases:
+                      summary.write(
+                          f"- {release['name']}: {release['old_version']} -> "
+                          f"{release['version']} ({kind})\n"
+                      )
+          PY
 
       - name: Generate release matrices
         id: matrices
