@@ -6,7 +6,11 @@ from pathlib import Path
 import pytest
 
 from tools.release import release_automation
-from tools.release.release_automation import Version, build_plan
+from tools.release.release_automation import (
+    Version,
+    build_plan,
+    ensure_allowed_target_version,
+)
 
 
 def test_python_patch_bump_always_targets_dev_release() -> None:
@@ -53,8 +57,8 @@ def test_finalize_keeps_already_stable_versions() -> None:
 def test_release_plan_uses_required_github_tag_shape() -> None:
     plan = build_plan("patch", write_changes=False)
     tags = [release["tag"] for release in plan["github_releases"]]
-    assert "tigrbl==0.3.20.dev1" in tags
-    assert "tigrbl_rs_spec==0.1.2-dev.1" in tags
+    assert "tigrbl==0.4.0.dev2" in tags
+    assert "tigrbl_rs_spec==0.4.0-dev.2" in tags
     assert all("==" in tag for tag in tags)
 
 
@@ -65,7 +69,7 @@ def test_release_plan_can_select_one_python_package() -> None:
     assert plan["crates"] == []
     assert plan["crate_publish_order"] == []
     assert [release["tag"] for release in plan["github_releases"]] == [
-        "tigrbl_acme_ca==0.1.3.dev1"
+        "tigrbl_acme_ca==0.4.0.dev2"
     ]
     assert plan["package_selection"] == ["tigrbl_acme_ca"]
 
@@ -93,6 +97,23 @@ def test_release_plan_can_select_package_subset() -> None:
 def test_unknown_package_selection_fails() -> None:
     with pytest.raises(ValueError, match="unknown package"):
         build_plan("patch", write_changes=False, packages="does-not-exist")
+
+
+def test_release_plan_rejects_downversioning() -> None:
+    with pytest.raises(ValueError, match="downversion"):
+        ensure_allowed_target_version("tigrbl", "0.4.0.dev2", "0.4.0.dev1")
+
+
+def test_release_plan_rejects_versions_below_floor() -> None:
+    with pytest.raises(ValueError, match="below the required floor"):
+        ensure_allowed_target_version("tigrbl", "0.3.20.dev1", "0.3.20.dev2")
+    with pytest.raises(ValueError, match="below the required floor"):
+        ensure_allowed_target_version(
+            "tigrbl_rs_spec",
+            "0.1.13-dev.1",
+            "0.1.13-dev.2",
+            cargo=True,
+        )
 
 
 def test_create_github_releases_marks_dev_tags_as_prereleases(
@@ -148,6 +169,77 @@ def test_create_github_releases_marks_dev_tags_as_prereleases(
     ]
     assert gh_release_commands, run_calls
     assert "--prerelease" in gh_release_commands[0]
+
+
+def test_create_github_releases_rejects_existing_release(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    summary = tmp_path / "release-plan.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "semver": "patch",
+                "prerelease": True,
+                "github_releases": [
+                    {
+                        "name": "tigrbl",
+                        "kind": "pypi",
+                        "path": "pkgs/tigrbl/pyproject.toml",
+                        "version": "0.4.0.dev1",
+                        "tag": "tigrbl==0.4.0.dev1",
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    class _Completed:
+        def __init__(self, returncode: int) -> None:
+            self.returncode = returncode
+
+    def fake_subprocess_run(args: list[str], **kwargs) -> _Completed:
+        if args[:3] == ["gh", "release", "view"]:
+            return _Completed(0)
+        if args[:2] == ["git", "rev-parse"]:
+            return _Completed(1)
+        if args[:2] == ["git", "config"]:
+            return _Completed(0)
+        return _Completed(0)
+
+    monkeypatch.setattr(release_automation, "ensure_git_identity", lambda: None)
+    monkeypatch.setattr(release_automation, "git_output", lambda args: "deadbeef")
+    monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: None)
+    monkeypatch.setattr(release_automation.subprocess, "run", fake_subprocess_run)
+
+    with pytest.raises(RuntimeError, match="already exists"):
+        release_automation.create_github_releases(summary)
+
+
+def test_validate_release_targets_rejects_existing_pypi_version(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    summary = tmp_path / "release-plan.json"
+    summary.write_text(
+        json.dumps(
+            {
+                "python": [{"name": "tigrbl", "version": "0.4.0.dev1"}],
+                "crates": [],
+                "github_releases": [],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(release_automation, "url_exists", lambda url: True)
+
+    with pytest.raises(SystemExit):
+        release_automation.validate_release_targets(
+            summary,
+            github=False,
+            pypi=True,
+            crates=False,
+        )
 
 
 def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

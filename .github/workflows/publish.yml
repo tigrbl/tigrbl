@@ -109,6 +109,26 @@ jobs:
           --summary release-plan.json
           --write
 
+      - name: Validate release targets are new
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          targets=()
+          if [[ "${{ inputs.gh }}" == "true" ]]; then
+            targets+=(--github)
+          fi
+          if [[ "${{ inputs.pypi }}" == "true" ]]; then
+            targets+=(--pypi)
+          fi
+          if [[ "${{ inputs.crates }}" == "true" ]]; then
+            targets+=(--crates)
+          fi
+          python tools/release/release_automation.py validate-release-targets \
+            --summary release-plan.json \
+            "${targets[@]}"
+
       - name: Refresh Rust lockfile
         run: cargo generate-lockfile
 
