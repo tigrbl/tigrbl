@@ -19,4 +19,4 @@ from .tables.bundle import Bundle
 from .tables.workload import Workload
 from .adapters import Endpoint, TigrblClientAdapter
 
-__version__ = "0.1.0"
+__version__ = "0.4.0.dev1"
