@@ -88,7 +88,12 @@ EXCLUDED_ROOTS = {
 ROOT_TEMP_FILES = {
     "temp_adr_list.json",
     "temp_feature_list.json",
+    "perf.sqlite",
 }
+
+ROOT_TEMP_FILE_PATTERNS = (
+    re.compile(r"^\.tmp_run_[0-9]+_jobs\.json$"),
+)
 
 
 def _run_validation(script: str) -> tuple[int, str]:
@@ -129,6 +134,11 @@ def _clean_root_clutter() -> int:
     for name in sorted(ROOT_TEMP_FILES):
         if _remove_path(ROOT / name):
             removed += 1
+
+    for path in ROOT.iterdir():
+        if path.is_file() and any(pattern.fullmatch(path.name) for pattern in ROOT_TEMP_FILE_PATTERNS):
+            if _remove_path(path):
+                removed += 1
 
     stale_entries = []
     for path in ROOT.rglob("*"):

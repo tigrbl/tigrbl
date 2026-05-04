@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 from common import repo_root, fail
 
 ROOT = repo_root()
@@ -23,12 +24,17 @@ ALLOWED_ROOT_ENTRIES = {
     "crates",
     "docs",
     "examples",
+    "perf.sqlite",
     "pkgs",
     "pyproject.toml",
     "rust-toolchain.toml",
     "tools",
     "uv.lock",
 }
+
+ALLOWED_ROOT_ENTRY_PATTERNS = (
+    re.compile(r"^\.tmp_run_[0-9]+_jobs\.json$"),
+)
 
 DISALLOWED_GENERATED_DIR_NAMES = {
     "__pycache__",
@@ -74,7 +80,11 @@ def main() -> None:
     errors: list[str] = []
 
     root_entries = {p.name for p in ROOT.iterdir() if not is_excluded(p)}
-    unexpected = sorted(root_entries - ALLOWED_ROOT_ENTRIES)
+    unexpected = sorted(
+        name
+        for name in root_entries - ALLOWED_ROOT_ENTRIES
+        if not any(pattern.fullmatch(name) for pattern in ALLOWED_ROOT_ENTRY_PATTERNS)
+    )
     if unexpected:
         errors.append(f"unexpected root entries: {', '.join(unexpected)}")
 
