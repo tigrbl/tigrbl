@@ -1,20 +1,45 @@
 [project]
 name = "tigrbl_acme_ca"
 version = "0.4.0.dev2"
-description = "ACME v2 CA tables for Tigrbl."
+description = "tigrbl_acme_ca is an ACME CA application package for ACME v2 certificate authority tables and Tigrbl application surfaces for certificate automation."
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
 license = "Apache-2.0"
-authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
-
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "identity",
+    "security",
+    "acme",
+    "ca",
+    "certificate-authority",
+    "tls",
+]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Security",
+    "Topic :: System :: Systems Administration :: Authentication/Directory",
 ]
-keywords = ["tigrbl_acme_ca", "tigrbl", "experimental"]
+requires-python = ">=3.10,<3.14"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
 dependencies = ["tigrbl>=0.3.0.dev4"]
 
 

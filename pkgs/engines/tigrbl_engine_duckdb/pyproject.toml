@@ -5,19 +5,43 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_duckdb"
 version = "0.4.0.dev2"
-description = "DuckDB engine extension for Tigrbl (optional plugin)."
+description = "tigrbl_engine_duckdb is a DuckDB engine plugin for DuckDB analytical database sessions and engine registration for Tigrbl."
 readme = "README.md"
 license = "Apache-2.0"
-authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
-requires-python = ">=3.10,<3.14"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "duckdb",
+    "analytics",
+    "olap",
+]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
 ]
-keywords = ["tigrbl_engine_duckdb", "tigrbl", "experimental"]
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+requires-python = ">=3.10,<3.14"
 dependencies = [
   "duckdb>=1.0.0",
   "tigrbl>=0.3.0.dev4",

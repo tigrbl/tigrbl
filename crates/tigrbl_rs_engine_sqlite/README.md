@@ -1,4 +1,72 @@
+![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
+
+<p align="center">
+    <a href="https://crates.io/crates/tigrbl_rs_engine_sqlite">
+        <img src="https://img.shields.io/crates/d/tigrbl_rs_engine_sqlite" alt="crates.io downloads for tigrbl_rs_engine_sqlite"/></a>
+    <a href="https://crates.io/crates/tigrbl_rs_engine_sqlite">
+        <img src="https://img.shields.io/crates/v/tigrbl_rs_engine_sqlite?label=tigrbl_rs_engine_sqlite&color=green" alt="crates.io version for tigrbl_rs_engine_sqlite"/></a>
+    <a href="https://docs.rs/tigrbl_rs_engine_sqlite">
+        <img src="https://img.shields.io/docsrs/tigrbl_rs_engine_sqlite" alt="docs.rs documentation for tigrbl_rs_engine_sqlite"/></a>
+    <a href="https://crates.io/crates/tigrbl_rs_engine_sqlite">
+        <img src="https://img.shields.io/crates/l/tigrbl_rs_engine_sqlite" alt="crates.io license metadata for tigrbl_rs_engine_sqlite"/></a>
+    <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_engine_sqlite/">
+        <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_engine_sqlite.svg" alt="Repository views for tigrbl_rs_engine_sqlite"/></a>
+</p>
+
+---
+
 # tigrbl_rs_engine_sqlite
+
+**Use `tigrbl_rs_engine_sqlite` in Rust: [open the crate on crates.io](https://crates.io/crates/tigrbl_rs_engine_sqlite) or [inspect the crate source](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_engine_sqlite).**
+
+Rust SQLite engine for Tigrbl.
+
+`tigrbl_rs_engine_sqlite` is part of the Tigrbl Rust package graph. It documents crate-resident runtime, kernel, atom, port, operation, or engine behavior while cross-linking to the Python facade and sibling Rust crates.
+
+## Crate ownership
+
+- Rust SQLite engine behavior, embedded SQL sessions, and transaction boundaries.
+- Rust crates keep native execution contracts separate from Python authoring APIs while preserving compatibility with the Tigrbl specification and runtime model.
+
+## Package ecosystem cross-links
+
+Core cross-links:
+- [`tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl) - Facade package
+- [`tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_core) - Spec and primitive contracts
+- [`tigrbl_canon`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_canon) - Canonical mapping and operation resolution
+- [`tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) - Phase lifecycle and execution runtime
+- [`tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete) - Native objects, transports, hooks, deps, and secdeps
+- [`tigrbl_ops_oltp`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_oltp) - CRUD and transactional operation handlers
+- [`tigrbl_ops_olap`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_olap) - Analytical operation boundary
+- [`tigrbl_ops_realtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime) - Stream, transfer, datagram, and realtime ops
+- [`tigrbl_tests`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests) - Examples, benchmark, parity, and package test surfaces
+Engine cross-links:
+- [`tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_sqlite) - SQLite local transactional engine
+- [`tigrbl_engine_postgres`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_postgres) - PostgreSQL SQLAlchemy engine
+- [`tigrbl_engine_inmemory`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemory) - Process-local transactional in-memory engine
+- [`tigrbl_engine_redis`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_redis) - Redis cache/database engine
+- [`tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_duckdb) - DuckDB analytical engine
+- [`tigrbl_engine_pandas`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pandas) - pandas DataFrame engine
+- [`tigrbl_engine_pgsqli_wal`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pgsqli_wal) - PostgreSQL and SQLite WAL engine
+Rust cross-links:
+- [`tigrbl_rs_spec`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_spec) - Rust IR and AppSpec model
+- [`tigrbl_rs_atoms`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_atoms) - Rust atom catalog and phase algebra
+- [`tigrbl_rs_kernel`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_kernel) - Rust compiler and plan optimizer
+- [`tigrbl_rs_runtime`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime) - Rust executor and callback fences
+- [`tigrbl_rs_ports`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_ports) - Engine, session, transaction, callback, and handler ports
+
+## Install
+
+```toml
+[dependencies]
+tigrbl_rs_engine_sqlite = "0.4.0-dev.2"
+```
+
+## Package discovery
+
+Search and AI discovery terms for `tigrbl_rs_engine_sqlite` include: Tigrbl, Rust, crate, runtime, kernel, atoms, ports, engines, operations, REST, JSON-RPC, schema-first APIs.
+
+## Package-local entry point
 
 This file is a package-local distribution entry point.
 It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.

@@ -1,20 +1,39 @@
 [project]
 name = "tigrbl-atoms"
 version = "0.4.0.dev2"
-description = "Runtime atom utilities and execution helpers for Tigrbl."
-license = "Apache-2.0"
+description = "tigrbl-atoms is a runtime atom package for runtime atom utilities and execution helpers for Tigrbl planning and dispatch pipelines."
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "atoms",
+    "runtime",
+    "execution",
+    "pipeline",
+]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+requires-python = ">=3.10,<3.14"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
@@ -27,7 +46,6 @@ dependencies = [
     "sqlalchemy>=2.0",
     "typing-extensions>=4.0",
 ]
-keywords = ["tigrbl", "sdk", "standards", "framework"]
 
 
 [project.urls]

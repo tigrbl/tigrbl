@@ -5,19 +5,44 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_rediscachethrough"
 version = "0.4.0.dev2"
-description = "Tigrbl engine plugin for Redis/Postgres cache-through workflows."
+description = "tigrbl_engine_rediscachethrough is a Redis cache-through engine plugin for Redis and PostgreSQL cache-through workflows for Tigrbl data access."
 readme = "README.md"
 license = "Apache-2.0"
-authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
-requires-python = ">=3.10,<3.14"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "rediscachethrough",
+    "redis",
+    "cache-through",
+    "postgresql",
+]
 classifiers = [
-    "Development Status :: 1 - Planning",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
 ]
-keywords = ["tigrbl_engine_rediscachethrough", "tigrbl", "experimental"]
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+requires-python = ">=3.10,<3.14"
 dependencies = [
   "tigrbl>=0.3.0.dev4",
   "redis>=5.0",

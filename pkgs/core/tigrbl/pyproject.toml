@@ -1,20 +1,36 @@
 [project]
 name = "tigrbl"
 version = "0.4.0.dev2"
-description = "A modern pure ASGI/WSGI Python framework for building schema-first REST and JSON-RPC APIs with SQLAlchemy models, typed validation, lifecycle hooks, and engine extension support."
-license = "Apache-2.0"
+description = "Schema-first ASGI framework for REST and JSON-RPC APIs built from SQLAlchemy models with typed validation, lifecycle hooks, and engine plugins."
 readme = "README.md"
-requires-python = ">=3.10,<3.14"
+license = "Apache-2.0"
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "api-framework",
+]
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+requires-python = ">=3.10,<3.14"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
