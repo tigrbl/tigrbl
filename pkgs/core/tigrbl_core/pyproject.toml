@@ -1,9 +1,9 @@
 [project]
 name = "tigrbl-core"
 version = "0.4.0"
-description = "tigrbl-core is a core framework package for core specifications, decorators, schemas, hooks, and primitives for the Tigrbl framework."
+description = "Core Tigrbl framework specifications, decorators, schemas, hooks, operations, and primitives for schema-first APIs."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -16,11 +16,16 @@ keywords = [
     "decorators",
     "schema",
     "hooks",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",

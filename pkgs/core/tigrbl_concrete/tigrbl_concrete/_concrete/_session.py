@@ -101,6 +101,24 @@ class DefaultSession(TigrblSessionBase):
         rv = fn(stmt)
         return await rv if inspect.isawaitable(rv) else rv
 
+    async def _executeloop_impl(self, statements: Any) -> Any:
+        fn = getattr(self._u, "executeloop", None)
+        if not callable(fn):
+            raise NotImplementedError(
+                "underlying session does not implement executeloop(statements)"
+            )
+        rv = fn(statements)
+        return await rv if inspect.isawaitable(rv) else rv
+
+    async def _executemany_impl(self, stmt: Any, parameter_sets: Any) -> Any:
+        fn = getattr(self._u, "executemany", None)
+        if not callable(fn):
+            raise NotImplementedError(
+                "underlying session does not implement executemany(stmt, parameter_sets)"
+            )
+        rv = fn(stmt, parameter_sets)
+        return await rv if inspect.isawaitable(rv) else rv
+
     async def _close_impl(self) -> None:
         fn = getattr(self._u, "close", None)
         if callable(fn):

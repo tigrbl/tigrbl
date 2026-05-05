@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_pyspark"
 version = "0.4.0"
-description = "tigrbl_engine_pyspark is a PySpark engine plugin for PySpark DataFrame integration for distributed Tigrbl analytics workflows."
+description = "PySpark engine plugin for distributed DataFrame integration, analytics workloads, and Tigrbl data workflows."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -23,11 +23,16 @@ keywords = [
     "spark",
     "distributed",
     "analytics",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",

@@ -1,9 +1,9 @@
 [project]
 name = "tigrbl"
 version = "0.4.0"
-description = "Schema-first ASGI framework for REST and JSON-RPC APIs built from SQLAlchemy models with typed validation, lifecycle hooks, and engine plugins."
+description = "Schema-first ASGI API framework for REST, JSON-RPC, OpenAPI, OpenRPC, SQLAlchemy models, typed validation, lifecycle hooks, and engine plugins."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -13,11 +13,17 @@ keywords = [
     "sqlalchemy",
     "pydantic",
     "api-framework",
+    "framework",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",

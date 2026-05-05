@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_membloom"
 version = "0.4.0"
-description = "tigrbl_engine_membloom is an in-memory Bloom filter engine plugin for process-local Bloom filter membership checks with optional rotating TTL windows."
+description = "In-memory Bloom filter engine plugin for membership checks, rotating TTL windows, and Tigrbl API workflows."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -24,11 +24,16 @@ keywords = [
     "membership",
     "idempotency",
     "ttl",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",

@@ -89,6 +89,12 @@ class TigrblSessionBase(SessionABC):
     async def execute(self, stmt: Any) -> Any:
         return await self._execute_impl(stmt)
 
+    async def executeloop(self, statements: Any) -> Any:
+        return await self._executeloop_impl(statements)
+
+    async def executemany(self, stmt: Any, parameter_sets: Any) -> Any:
+        return await self._executemany_impl(stmt, parameter_sets)
+
     async def close(self) -> None:
         for t in self._pending:
             try:
@@ -123,6 +129,12 @@ class TigrblSessionBase(SessionABC):
         raise NotImplementedError
 
     async def _execute_impl(self, stmt: Any) -> Any:
+        raise NotImplementedError
+
+    async def _executeloop_impl(self, statements: Any) -> Any:
+        raise NotImplementedError
+
+    async def _executemany_impl(self, stmt: Any, parameter_sets: Any) -> Any:
         raise NotImplementedError
 
     async def _close_impl(self) -> None:

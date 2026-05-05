@@ -5,9 +5,9 @@ build-backend = "poetry.core.masonry.api"
 [project]
 name = "tigrbl_spiffe"
 version = "0.4.0"
-description = "tigrbl_spiffe is a SPIFFE application package for SPIFFE and SPIRE identity surfaces for Tigrbl with table-centric UDS and HTTP transports."
+description = "SPIFFE and SPIRE identity app for Tigrbl with workload identity tables, UDS transport, and HTTP API surfaces."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -20,11 +20,16 @@ keywords = [
     "security",
     "spiffe",
     "spire",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
