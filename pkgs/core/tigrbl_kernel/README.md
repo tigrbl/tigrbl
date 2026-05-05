@@ -15,13 +15,13 @@
 
 ---
 
-# Tigrbl kernel
+<h1 align="center">Tigrbl kernel</h1>
 
 **Install and inspect `tigrbl-kernel`: [download `tigrbl-kernel` from PyPI](https://pypi.org/project/tigrbl-kernel/) or [open the package source](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_kernel).**
 
 tigrbl-kernel is a kernel orchestration package for kernel orchestration for composing Tigrbl runtime plans, bindings, and operation dispatch.
 
-`tigrbl-kernel` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, and Rust crates that complete the system.
+`tigrbl-kernel` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, OpenAPI/OpenRPC documentation surfaces, and PyPI distributions that complete the system.
 
 ## Package ownership
 
@@ -30,30 +30,57 @@ tigrbl-kernel is a kernel orchestration package for kernel orchestration for com
 
 ## Package ecosystem cross-links
 
-Core cross-links:
-- [`tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl) - Facade package
-- [`tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_core) - Spec and primitive contracts
-- [`tigrbl_canon`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_canon) - Canonical mapping and operation resolution
-- [`tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) - Phase lifecycle and execution runtime
-- [`tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete) - Native objects, transports, hooks, deps, and secdeps
-- [`tigrbl_ops_oltp`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_oltp) - CRUD and transactional operation handlers
-- [`tigrbl_ops_olap`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_olap) - Analytical operation boundary
-- [`tigrbl_ops_realtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime) - Stream, transfer, datagram, and realtime ops
-- [`tigrbl_tests`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests) - Examples, benchmark, parity, and package test surfaces
-Engine cross-links:
-- [`tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_sqlite) - SQLite local transactional engine
-- [`tigrbl_engine_postgres`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_postgres) - PostgreSQL SQLAlchemy engine
-- [`tigrbl_engine_inmemory`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemory) - Process-local transactional in-memory engine
-- [`tigrbl_engine_redis`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_redis) - Redis cache/database engine
-- [`tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_duckdb) - DuckDB analytical engine
-- [`tigrbl_engine_pandas`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pandas) - pandas DataFrame engine
-- [`tigrbl_engine_pgsqli_wal`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pgsqli_wal) - PostgreSQL and SQLite WAL engine
-Rust cross-links:
-- [`tigrbl_rs_spec`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_spec) - Rust IR and AppSpec model
-- [`tigrbl_rs_atoms`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_atoms) - Rust atom catalog and phase algebra
-- [`tigrbl_rs_kernel`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_kernel) - Rust compiler and plan optimizer
-- [`tigrbl_rs_runtime`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime) - Rust executor and callback fences
-- [`tigrbl_rs_ports`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_ports) - Engine, session, transaction, callback, and handler ports
+Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
+
+Core packages:
+- [`tigrbl`](https://pypi.org/project/tigrbl/) - Schema-first ASGI API framework for REST, JSON-RPC, OpenAPI, OpenRPC, SQLAlchemy models, typed validation, lifecycle hooks, and engine plugins.
+- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) - Runtime atom utilities for Tigrbl planning, dispatch, transport ingress, egress, and high-throughput ASGI execution pipelines.
+- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) - Abstract base interfaces for Tigrbl APIs, engines, providers, sessions, transports, and reusable runtime components.
+- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) - Canonical mapping, routing, symbol resolution, and naming utilities for Tigrbl framework packages and generated API surfaces.
+- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) - Typed Python client helpers for calling Tigrbl REST, JSON-RPC, OpenAPI, and generated schema-first API surfaces.
+- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) - Concrete Tigrbl implementations for reusable framework behavior, sessions, routes, responses, and base abstraction adapters.
+- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) - Core Tigrbl framework specifications, decorators, schemas, hooks, operations, and primitives for schema-first APIs.
+- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) (this package) - Kernel orchestration for composing Tigrbl runtime plans, bindings, operation dispatch, and optimized ASGI execution.
+- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) - Analytical OLAP operation boundaries for Tigrbl workloads, query-oriented APIs, and engine integrations.
+- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) - Transactional OLTP operation handlers for Tigrbl CRUD, bulk, REST, JSON-RPC, and database-backed workloads.
+- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) - Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.
+- [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) - SQLAlchemy ORM tables, mixins, columns, model helpers, and persistence primitives for Tigrbl applications.
+- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) - Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.
+- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) - Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.
+- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) - Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
+- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) - Typing protocols, aliases, generics, and shared type helpers for Tigrbl framework packages and extensions.
+
+Engine packages:
+- [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) - BigQuery engine plugin for Google BigQuery warehouse sessions, analytics workloads, and Tigrbl engine registration.
+- [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) - ClickHouse engine plugin for analytical database sessions, warehouse workloads, and Tigrbl engine registration.
+- [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) - CSV engine plugin for file-backed tables, pandas DataFrames, and lightweight Tigrbl data workflows.
+- [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) - DataFrame engine plugin for transactional pandas sessions and in-process Tigrbl analytics workloads.
+- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) - DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
+- [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) - In-memory cache engine plugin for process-local TTL, LRU, and fast Tigrbl cache workflows.
+- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) - In-memory database engine plugin for process-local transactional storage, copy-on-write snapshots, and Tigrbl testing.
+- [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) - In-memory Bloom filter engine plugin for membership checks, rotating TTL windows, and Tigrbl API workflows.
+- [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) - In-memory dedupe engine plugin for idempotency tracking, duplicate suppression, and Tigrbl workflow coordination.
+- [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) - In-memory key-value engine plugin for process-local KV storage, cache workflows, and lightweight Tigrbl services.
+- [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) - In-memory LRU engine plugin for least-recently-used cache behavior and process-local Tigrbl data workflows.
+- [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) - In-memory pub/sub engine plugin for process-local publish-subscribe channels, events, and Tigrbl realtime workflows.
+- [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) - In-memory queue engine plugin for process-local tasks, message workflows, and Tigrbl runtime coordination.
+- [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) - In-memory rate-limit engine plugin for API quotas, counters, windows, and Tigrbl governance workflows.
+- [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) - NumPy engine plugin for array-to-table helpers, analytical workflows, and Tigrbl data integration.
+- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) - Pandas engine plugin for transactional DataFrame sessions, tabular workflows, and Tigrbl data integration.
+- [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) - PostgreSQL and SQLite WAL engine plugin for transactional Tigrbl workflows and database-backed engine registration.
+- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) - PostgreSQL engine plugin for SQLAlchemy sessions, async database workflows, and Tigrbl application persistence.
+- [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) - PySpark engine plugin for distributed DataFrame integration, analytics workloads, and Tigrbl data workflows.
+- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) - Redis engine plugin for cache, data structures, and Tigrbl engine workflows backed by Redis.
+- [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) - Redis cache-through engine plugin for Redis, PostgreSQL, and Tigrbl data-access acceleration workflows.
+- [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) - Snowflake engine plugin for warehouse sessions, analytical workloads, and Tigrbl engine registration.
+- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) - SQLite engine plugin for SQLAlchemy sessions, local transactional storage, and Tigrbl application persistence.
+- [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) - XLSX engine plugin for Excel workbook-backed tables, worksheet data access, and Tigrbl tabular workflows.
+
+Application packages:
+- [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/) - ACME v2 certificate authority app for Tigrbl tables, certificate automation, TLS workflows, and API surfaces.
+- [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/) - SPIFFE and SPIRE identity app for Tigrbl with workload identity tables, UDS transport, and HTTP API surfaces.
+
+Source-tree links remain available from each package identity section; this ecosystem section is intentionally PyPI-first for package discovery and installation routing.
 
 ## Install
 
@@ -63,7 +90,11 @@ pip install tigrbl-kernel
 
 ## Package discovery
 
-Search and AI discovery terms for `tigrbl-kernel` include: tigrbl, ASGI, REST, JSON-RPC, SQLAlchemy, Pydantic, asgi, api, json-rpc, rest, sqlalchemy, pydantic, kernel, orchestration, dispatch.
+`tigrbl-kernel` is described for package indexes, search engines, answer engines, and AI coding tools as: Kernel orchestration for composing Tigrbl runtime plans, bindings, operation dispatch, and optimized ASGI execution.
+
+Use `tigrbl-kernel` when you need Tigrbl's schema-first ASGI package graph for REST APIs, JSON-RPC APIs, OpenAPI documentation, OpenRPC documentation, SQLAlchemy-backed models, Pydantic validation, typed operation specs, runtime dispatch, and installable engine or application extensions.
+
+Discovery terms: tigrbl, ASGI, schema-first API framework, REST API, JSON-RPC API, OpenAPI documentation, OpenRPC documentation, SQLAlchemy models, Pydantic validation, typed validation, operation dispatch, engine plugins, api, json-rpc, rest, sqlalchemy, pydantic, kernel, orchestration, dispatch, openapi, openrpc, schema-first.
 
 ## Package-local entry point
 
