@@ -1,0 +1,79 @@
+name: Comparative Benchmark Verification
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - ".github/workflows/comparative-benchmark-verification.yml"
+      - "pkgs/core/tigrbl_tests/benchmarks/comparative_benchmark_verification.py"
+      - "pkgs/core/tigrbl_tests/tests/perf/test_comparative_benchmark_verification.py"
+      - "pkgs/core/tigrbl_tests/tests/perf/helper_fastapi_create_app.py"
+      - "pkgs/core/tigrbl_tests/tests/perf/helper_tigrbl_create_app.py"
+
+jobs:
+  verify-comparative-benchmarks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install workspace dev dependencies
+        run: |
+          python -m pip install --upgrade pip uv
+          uv sync --all-groups --no-install-workspace --frozen
+
+      - name: Compute workspace PYTHONPATH
+        shell: bash
+        run: |
+          set -euo pipefail
+          PY_PATH="$GITHUB_WORKSPACE"
+          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+            if [[ -d "$base" ]]; then
+              for child in "$base"/*; do
+                [[ -d "$child" ]] || continue
+                PY_PATH="$PY_PATH:$child"
+                if [[ -d "$child/src" ]]; then
+                  PY_PATH="$PY_PATH:$child/src"
+                fi
+              done
+            fi
+          done
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/core/tigrbl_runtime"
+          echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
+
+      - name: Run metric extraction unit tests
+        run: >-
+          uv run --no-sync python -m pytest --noconftest -q
+          pkgs/core/tigrbl_tests/tests/perf/test_comparative_benchmark_verification.py
+          -p no:cacheprovider
+
+      - name: Run authoritative comparative benchmark verification
+        run: >-
+          uv run --no-sync python
+          pkgs/core/tigrbl_tests/benchmarks/comparative_benchmark_verification.py
+          --rounds 5
+          --ops 100
+          --warmup-ops 10
+          --json-output pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.json
+          --markdown-output pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.md
+          --oci-output-dir .tmp/comparative-benchmark/oci
+          --oci-base-image python:3.12-slim
+
+      - name: Upload comparative benchmark evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: comparative-benchmark-verification
+          path: |
+            pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.json
+            pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.md
+            .tmp/comparative-benchmark/oci/*.tar.gz
+            .tmp/comparative-benchmark/oci/**/Dockerfile
