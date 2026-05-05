@@ -39,6 +39,12 @@ class StubSession(TigrblSessionBase):
     async def _execute_impl(self, stmt):
         return {"stmt": stmt}
 
+    async def _executeloop_impl(self, statements):
+        return [{"stmt": stmt} for stmt in statements]
+
+    async def _executemany_impl(self, stmt, parameter_sets):
+        return {"stmt": stmt, "parameter_sets": list(parameter_sets)}
+
     async def _close_impl(self) -> None:
         self.events.append("close")
 
@@ -56,6 +62,14 @@ async def test_session_base_core_behaviors() -> None:
     await session.refresh("x")
     assert await session.get(str, 1) == (str, 1)
     assert await session.execute("SELECT 1") == {"stmt": "SELECT 1"}
+    assert await session.executeloop(["SELECT 1", "SELECT 2"]) == [
+        {"stmt": "SELECT 1"},
+        {"stmt": "SELECT 2"},
+    ]
+    assert await session.executemany("INSERT", [{"id": 1}, {"id": 2}]) == {
+        "stmt": "INSERT",
+        "parameter_sets": [{"id": 1}, {"id": 2}],
+    }
 
     await session.commit()
     assert not session.in_transaction()
@@ -86,3 +100,14 @@ async def test_session_base_run_sync_awaitable() -> None:
 
     assert await session.run_sync(lambda _: 1) == 1
     assert await session.run_sync(async_fn) == 42
+
+
+@pytest.mark.asyncio
+async def test_session_base_batch_impls_default_to_not_implemented() -> None:
+    session = TigrblSessionBase()
+
+    with pytest.raises(NotImplementedError):
+        await session.executeloop([])
+
+    with pytest.raises(NotImplementedError):
+        await session.executemany("SELECT 1", [])

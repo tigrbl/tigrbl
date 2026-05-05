@@ -6,6 +6,8 @@ from typing import Any, Mapping
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
+from .session import SqliteSession
+
 SessionFactory = sessionmaker
 
 
@@ -47,7 +49,7 @@ def sqlite_engine(
         finally:
             cur.close()
 
-    return eng, sessionmaker(bind=eng, expire_on_commit=False)
+    return eng, sessionmaker(bind=eng, class_=SqliteSession, expire_on_commit=False)
 
 
 def sqlite_capabilities() -> dict[str, Any]:

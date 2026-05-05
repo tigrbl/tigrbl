@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_memqueue"
 version = "0.4.0"
-description = "tigrbl_engine_memqueue is an in-memory queue engine plugin for process-local queue semantics for Tigrbl task and message workflows."
+description = "In-memory queue engine plugin for process-local tasks, message workflows, and Tigrbl runtime coordination."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -24,11 +24,16 @@ keywords = [
     "tasks",
     "messages",
     "inmemory",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",

@@ -1,9 +1,9 @@
 [project]
 name = "tigrbl_engine_bigquery"
 version = "0.4.0"
-description = "tigrbl_engine_bigquery is a BigQuery engine plugin for Google BigQuery warehouse sessions and analytics-oriented engine registration for Tigrbl."
+description = "BigQuery engine plugin for Google BigQuery warehouse sessions, analytics workloads, and Tigrbl engine registration."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -19,11 +19,16 @@ keywords = [
     "google-cloud",
     "analytics",
     "warehouse",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",

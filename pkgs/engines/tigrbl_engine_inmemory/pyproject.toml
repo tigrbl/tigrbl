@@ -5,9 +5,9 @@ build-backend = "hatchling.build"
 [project]
 name = "tigrbl_engine_inmemory"
 version = "0.4.0"
-description = "tigrbl_engine_inmemory is an in-memory database engine plugin for process-local transactional storage with copy-on-write snapshots for Tigrbl."
+description = "In-memory database engine plugin for process-local transactional storage, copy-on-write snapshots, and Tigrbl testing."
 readme = "README.md"
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
@@ -23,11 +23,16 @@ keywords = [
     "transactions",
     "snapshot",
     "crud",
+    "openapi",
+    "openrpc",
+    "schema-first",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",

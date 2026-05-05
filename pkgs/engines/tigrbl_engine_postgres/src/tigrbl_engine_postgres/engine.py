@@ -6,6 +6,8 @@ from urllib.parse import quote_plus
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 
+from .session import PostgresSession
+
 SessionFactory = sessionmaker
 
 
@@ -46,7 +48,7 @@ def postgres_engine(
             cur.execute("SET statement_timeout = 0")
             cur.execute("SET lock_timeout = 0")
 
-    return eng, sessionmaker(bind=eng, expire_on_commit=False)
+    return eng, sessionmaker(bind=eng, class_=PostgresSession, expire_on_commit=False)
 
 
 def postgres_capabilities() -> dict[str, Any]:
