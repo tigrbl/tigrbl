@@ -400,30 +400,41 @@ def build_oci_size(
     context_dir.mkdir(parents=True, exist_ok=True)
     package = "tigrbl" if scenario == "tigrbl" else "fastapi"
     dockerfile_lines = [
-        f"FROM {base_image}",
+        f"FROM {base_image} AS builder",
         "RUN python -m pip install --no-cache-dir --upgrade pip",
+        "RUN python -m venv /opt/venv",
     ]
     if scenario == "tigrbl":
         dockerfile_lines.extend(
             [
+                "RUN apt-get update && apt-get install -y --no-install-recommends build-essential && rm -rf /var/lib/apt/lists/*",
                 "COPY pkgs/core/tigrbl /opt/tigrbl/pkgs/core/tigrbl",
-                "RUN python -m pip install --no-cache-dir /opt/tigrbl/pkgs/core/tigrbl",
+                "RUN /opt/venv/bin/pip install --no-cache-dir /opt/tigrbl/pkgs/core/tigrbl",
             ]
         )
     else:
-        dockerfile_lines.append("RUN python -m pip install --no-cache-dir fastapi")
-    dockerfile_lines.append(
-        f'CMD ["python", "-c", "import {package}; print({package}.__name__)"]'
+        dockerfile_lines.append("RUN /opt/venv/bin/pip install --no-cache-dir fastapi")
+    dockerfile_lines.extend(
+        [
+            f"FROM {base_image}",
+            "COPY --from=builder /opt/venv /opt/venv",
+            'ENV PATH="/opt/venv/bin:$PATH"',
+            f'CMD ["python", "-c", "import {package}; print({package}.__name__)"]',
+        ]
     )
     dockerfile = context_dir / "Dockerfile"
     dockerfile.write_text("\n".join(dockerfile_lines) + "\n", encoding="utf-8")
     tag = f"tigrbl-comparative-benchmark-{scenario}:local"
     build = subprocess.run(
         [docker, "build", "-q", "-t", tag, "-f", str(dockerfile), str(ROOT)],
-        check=True,
         capture_output=True,
         text=True,
     )
+    if build.returncode != 0:
+        raise RuntimeError(
+            "OCI image build failed for "
+            f"{scenario}:\nSTDOUT:\n{build.stdout}\nSTDERR:\n{build.stderr}"
+        )
     image_id = build.stdout.strip()
     archive = output_dir / f"{scenario}.image.tar.gz"
     with archive.open("wb") as raw_file:
