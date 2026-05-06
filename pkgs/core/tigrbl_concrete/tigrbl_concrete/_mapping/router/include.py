@@ -23,7 +23,7 @@ from tigrbl_core.config.constants import (
     TIGRBL_ALLOW_ANON_ATTR,
 )
 from tigrbl_concrete._concrete import engine_resolver as _resolver
-from ..model_helpers import _OpSpecGroup
+from ..model_helpers import _OpSpecGroup, _key
 
 logger = logging.getLogger("uvicorn")
 logger.debug("Loaded module v3/mapping/router/include")
@@ -369,6 +369,7 @@ def include_model(
     if runtime_secdeps:
         ops_ns = getattr(model, "ops", None)
         by_alias = getattr(ops_ns, "by_alias", None)
+        patched_by_key: Dict[Tuple[str, str], Any] = {}
         if isinstance(by_alias, dict):
             for alias, specs in list(by_alias.items()):
                 patched_specs = []
@@ -385,10 +386,20 @@ def include_model(
                     if not missing:
                         patched_specs.append(spec)
                         continue
-                    patched_specs.append(replace(spec, secdeps=((*missing, *secdeps))))
+                    patched = replace(spec, secdeps=((*missing, *secdeps)))
+                    patched_specs.append(patched)
+                    patched_by_key[_key(patched)] = patched
                     changed = True
                 if changed:
                     by_alias[alias] = _OpSpecGroup(tuple(patched_specs))
+        if patched_by_key:
+            all_specs = tuple(getattr(ops_ns, "all", ()) or ())
+            ops_ns.all = tuple(
+                patched_by_key.get(_key(spec), spec) for spec in all_specs
+            )
+            by_key = getattr(ops_ns, "by_key", None)
+            if isinstance(by_key, dict):
+                by_key.update(patched_by_key)
 
     # 2) Pick a router & mount prefix
     model_router = getattr(getattr(model, "rest", SimpleNamespace()), "router", None)

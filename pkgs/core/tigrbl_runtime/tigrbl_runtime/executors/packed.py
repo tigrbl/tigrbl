@@ -3236,6 +3236,39 @@ class PackedPlanExecutor(ExecutorBase):
         self._program_runner_mode_cache[cache_key] = _runner
         return _runner
 
+    async def _run_hot_jsonrpc_security_dependencies(
+        self,
+        ctx: _Ctx,
+        hot: HotCtx,
+        program_hot_runner_id: int,
+    ) -> None:
+        if hot.transport_kind_id != _TRANSPORT_KIND_JSONRPC:
+            return
+        if program_hot_runner_id == _HOT_RUNNER_GENERIC:
+            return
+
+        model = getattr(ctx, "model", None)
+        alias = getattr(ctx, "op", None)
+        if model is None or not isinstance(alias, str):
+            return
+
+        specs = getattr(getattr(model, "ops", None), "by_alias", {})
+        spec_group = specs.get(alias) if isinstance(specs, Mapping) else None
+        spec = tuple(spec_group or ())[:1]
+        if not spec:
+            return
+
+        secdeps = tuple(getattr(spec[0], "secdeps", ()) or ())
+        if not secdeps:
+            secdeps = tuple(getattr(spec[0], "security_deps", ()) or ())
+        if not secdeps:
+            return
+
+        from tigrbl_atoms.atoms.dep.security import _run as _run_security_dep
+
+        for dep in secdeps:
+            await _run_security_dep(dep, ctx)
+
     def _resolve_db_acquire(
         self,
         plan: KernelPlan,
@@ -3660,9 +3693,14 @@ class PackedPlanExecutor(ExecutorBase):
                 error_phase_segments = self._resolve_error_segments(
                     packed,
                     program_id,
-                )
+            )
 
             try:
+                await self._run_hot_jsonrpc_security_dependencies(
+                    ctx,
+                    hot,
+                    program_hot_runner_id,
+                )
                 if hot.transport_kind_id == _TRANSPORT_KIND_JSONRPC and isinstance(
                     hot.parsed_json, dict
                 ):
