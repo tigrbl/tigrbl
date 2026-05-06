@@ -1,0 +1,33 @@
+from __future__ import annotations
+
+from typing import Any
+
+from ... import events as _ev
+from ...stages import Ingress
+from ...types import Atom, Ctx, IngressCtx
+from .._temp import _ensure_temp
+
+ANCHOR = _ev.INGRESS_TRANSPORT_EXTRACT
+
+
+def _run(obj: object | None, ctx: Any) -> None:
+    del obj
+    transport = _ensure_temp(ctx).setdefault("transport", {})
+    transport["sink"] = getattr(ctx, "transport_sink", None)
+    transport["sink_index"] = getattr(ctx, "transport_sink_index", 0)
+    transport["sink_family"] = getattr(ctx, "transport_sink_family", None)
+    transport["correlation_id"] = getattr(ctx, "correlation_id", None)
+
+
+class AtomImpl(Atom[Ingress, Ingress, Exception]):
+    name = "transport.sink_bind"
+    anchor = ANCHOR
+
+    async def __call__(self, obj: object | None, ctx: Ctx[Ingress]) -> Ctx[Ingress]:
+        _run(obj, ctx)
+        return ctx.promote(IngressCtx)
+
+
+INSTANCE = AtomImpl()
+
+__all__ = ["ANCHOR", "INSTANCE"]
