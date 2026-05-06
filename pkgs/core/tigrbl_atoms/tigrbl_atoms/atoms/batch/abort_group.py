@@ -6,7 +6,7 @@ from ... import events as _ev
 from ...stages import Failed
 from ...types import Atom, Ctx, FailedCtx
 
-ANCHOR = _ev.ERR_ROLLBACK
+ANCHOR = _ev.BATCH_ABORT_GROUP
 
 
 def _run(obj: object | None, ctx: Any) -> None:

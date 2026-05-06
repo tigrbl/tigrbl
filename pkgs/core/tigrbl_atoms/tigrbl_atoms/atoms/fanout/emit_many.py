@@ -6,7 +6,7 @@ from ... import events as _ev
 from ...stages import Egressed
 from ...types import Atom, Ctx, EgressedCtx
 
-ANCHOR = _ev.EGRESS_ASGI_SEND
+ANCHOR = _ev.BATCH_FANOUT_EMIT
 
 
 async def _maybe_await(value: Any) -> Any:

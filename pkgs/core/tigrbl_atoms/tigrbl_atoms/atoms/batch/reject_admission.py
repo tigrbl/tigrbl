@@ -6,7 +6,7 @@ from ... import events as _ev
 from ...stages import Failed
 from ...types import Atom, Ctx, FailedCtx
 
-ANCHOR = _ev.ERR_CTX_BUILD
+ANCHOR = _ev.BATCH_REJECT_ADMISSION
 
 
 def _run(obj: object | None, ctx: Any) -> None:

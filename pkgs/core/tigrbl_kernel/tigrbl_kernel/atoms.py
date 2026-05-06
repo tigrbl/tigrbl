@@ -16,6 +16,7 @@ from typing import (
     Sequence,
     cast,
 )
+from collections.abc import Mapping as AbcMapping
 
 from tigrbl_typing.phases import HOOK_PHASES as HOOK_PHASES
 
@@ -45,6 +46,7 @@ _COMPILED_PHASE_DB_REQUIRED_ATOM_NAMES = frozenset(
         "sys.commit_tx",
     }
 )
+_BATCH_DOMAINS = frozenset({"transport", "intent", "batch", "fanout"})
 
 
 def _is_async_callable(run: _AtomRun) -> bool:
@@ -291,6 +293,7 @@ def _inject_atoms(
     *,
     persistent: bool,
     target: str | None = None,
+    batch_policy: Mapping[str, Any] | None = None,
 ) -> None:
     order = {name: i for i, name in enumerate(_ev.all_events_ordered())}
 
@@ -324,6 +327,12 @@ def _inject_atoms(
             continue
 
         domain, _subject = _infer_domain_subject(run)
+        batch_enabled = bool(
+            isinstance(batch_policy, AbcMapping)
+            and bool(batch_policy.get("enabled", False))
+        )
+        if domain in _BATCH_DOMAINS and not batch_enabled:
+            continue
         if not persistent and persist_tied:
             if not (
                 domain == "sys"

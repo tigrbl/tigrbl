@@ -3,11 +3,11 @@ from __future__ import annotations
 from typing import Any
 
 from ... import events as _ev
-from ...stages import Ingress
-from ...types import Atom, Ctx, IngressCtx
+from ...stages import Bound
+from ...types import Atom, BoundCtx, Ctx
 from .._temp import _ensure_temp
 
-ANCHOR = _ev.INGRESS_INPUT_PREPARE
+ANCHOR = _ev.BATCH_PREKEY
 
 
 def _run(obj: object | None, ctx: Any) -> None:
@@ -21,13 +21,13 @@ def _run(obj: object | None, ctx: Any) -> None:
     )
 
 
-class AtomImpl(Atom[Ingress, Ingress, Exception]):
+class AtomImpl(Atom[Bound, Bound, Exception]):
     name = "intent.prekey"
     anchor = ANCHOR
 
-    async def __call__(self, obj: object | None, ctx: Ctx[Ingress]) -> Ctx[Ingress]:
+    async def __call__(self, obj: object | None, ctx: Ctx[Bound]) -> Ctx[Bound]:
         _run(obj, ctx)
-        return ctx.promote(IngressCtx)
+        return ctx.promote(BoundCtx)
 
 
 INSTANCE = AtomImpl()

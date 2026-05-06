@@ -6,7 +6,7 @@ from ... import events as _ev
 from ...stages import Encoded
 from ...types import Atom, Ctx, EncodedCtx
 
-ANCHOR = _ev.EGRESS_RESULT_NORMALIZE
+ANCHOR = _ev.BATCH_EGRESS_SHAPE
 
 
 def _run(obj: object | None, ctx: Any) -> None:

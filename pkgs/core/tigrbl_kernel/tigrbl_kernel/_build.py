@@ -14,6 +14,7 @@ from tigrbl_atoms import StepFn
 from tigrbl_atoms.atoms.sys.phase_db import run as _bind_phase_db
 from tigrbl_atoms.phases import phase_info
 from tigrbl_atoms.types import EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
+from tigrbl_core.config.resolver import resolve_cfg
 from tigrbl_typing.phases import normalize_phase
 
 from . import events as _ev
@@ -121,6 +122,11 @@ def _phase_stamp(self: Any, model: type, alias: str) -> tuple[Any, ...]:
     specs = getattr(getattr(model, "ops", SimpleNamespace()), "by_alias", {})
     sp_list = specs.get(alias) or ()
     sp = sp_list[0] if sp_list else None
+    if sp is None:
+        sp = next(
+            (item for item in _opspecs(model) if getattr(item, "alias", None) == alias),
+            None,
+        )
     phase_lists = tuple(
         (
             phase,
@@ -185,6 +191,19 @@ def _prepend_phase_db_binding(
         chains[phase] = [_phase_db_step(), *steps]
 
 
+def _batch_policy_for_op(sp: Any | None, *, alias: str, target: str, persistent: bool) -> Mapping[str, Any]:
+    cfg = resolve_cfg(op=alias, opspec=sp).as_dict()
+    batch = cfg.get("batch")
+    if not isinstance(batch, Mapping):
+        return {"enabled": False}
+    policy = dict(batch)
+    if target in {"read", "list"} and not bool(policy.get("allow_reads", False)):
+        policy["enabled"] = False
+    if not persistent:
+        policy["enabled"] = False
+    return policy
+
+
 def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
     from .core import DEFAULT_PHASE_ORDER
 
@@ -201,11 +220,22 @@ def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
     specs = getattr(getattr(model, "ops", SimpleNamespace()), "by_alias", {})
     sp_list = specs.get(alias) or ()
     sp = sp_list[0] if sp_list else None
+    if sp is None:
+        sp = next(
+            (item for item in _opspecs(model) if getattr(item, "alias", None) == alias),
+            None,
+        )
     target = (getattr(sp, "target", alias) or "").lower()
     persist_policy = getattr(sp, "persist", "default")
     persistent = (
         persist_policy != "skip" and target not in {"read", "list"}
     ) or _is_persistent(chains)
+    batch_policy = _batch_policy_for_op(
+        sp,
+        alias=alias,
+        target=target,
+        persistent=persistent,
+    )
 
     try:
         _inject_atoms(
@@ -213,6 +243,7 @@ def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
             self._atoms() or (),
             persistent=persistent,
             target=target,
+            batch_policy=batch_policy,
         )
     except Exception:
         logger.exception(

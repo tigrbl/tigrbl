@@ -29,4 +29,18 @@ DEFAULTS: Mapping[str, Any] = {
     "trace": {
         "enabled": True,
     },
+    # Batch scheduling is opt-in. The conservative defaults avoid changing
+    # scalar execution while giving the kernel and atoms one normalized policy
+    # shape once an op explicitly enables batching.
+    "batch": {
+        "enabled": False,
+        "max_size": 64,
+        "max_bytes": 1_048_576,
+        "max_delay_ms": 1,
+        "admission_timeout_ms": 5,
+        "conflict_policy": "single_fallback",
+        "overflow_policy": "backpressure",
+        "result_fanout": "by_admission",
+        "allow_reads": False,
+    },
 }
