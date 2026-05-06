@@ -1,0 +1,11 @@
+Command:
+$env:UV_CACHE_DIR='.tmp\uv-cache'; $env:UV_LINK_MODE='copy'; uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_field_spec_constraints.py -q
+
+Result:
+pkgs\core\tigrbl_tests\tests\unit\test_field_spec_constraints.py::test_f_constraints_support_string_validation_and_schema_metadata PASSED [ 25%]
+pkgs\core\tigrbl_tests\tests\unit\test_field_spec_constraints.py::test_f_constraints_support_numeric_bounds_and_multiples PASSED [ 50%]
+pkgs\core\tigrbl_tests\tests\unit\test_field_spec_constraints.py::test_f_constraints_reject_removed_regex_keyword PASSED [ 75%]
+pkgs\core\tigrbl_tests\tests\unit\test_field_spec_constraints.py::test_f_constraints_reject_removed_unique_items_keyword PASSED [100%]
+
+Summary:
+4 passed

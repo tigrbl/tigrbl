@@ -9915,6 +9915,37 @@
       "requires": []
     },
     {
+      "id": "feat:storagespec-check-constraints-contract-001",
+      "title": "StorageSpec check constraints contract",
+      "description": "Tracks StorageSpec.check as the supported single SQL check-expression surface across SQLite and PostgreSQL peers, including rejection of structured or multi-check values that are not part of the contract.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2025",
+        "spc:1000"
+      ],
+      "claim_ids": [
+        "clm:storagespec-check-constraints-contract-001"
+      ],
+      "test_ids": [
+        "tst:storagespec-check-constraints-sqlite-peer",
+        "tst:storagespec-check-constraints-postgres-peer"
+      ],
+      "requires": [
+        "feat:storagespec-contract-001"
+      ]
+    },
+    {
       "id": "feat:fieldspec-contract-001",
       "title": "FieldSpec contract",
       "description": "Tracks FieldSpec as a first-class tigrbl_core._spec contract surface.",
@@ -9943,6 +9974,36 @@
         "tst:table-column-spec-contract"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:fieldspec-constraints-contract-001",
+      "title": "FieldSpec constraints contract",
+      "description": "Tracks FieldSpec.constraints as the supported Pydantic Field constraint surface, including supported validation keywords and fail-closed handling for removed or unsupported keywords.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": "tigrbl-0.3.19-certification",
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2025",
+        "spc:1000"
+      ],
+      "claim_ids": [
+        "clm:fieldspec-constraints-contract-001"
+      ],
+      "test_ids": [
+        "tst:fieldspec-constraints-contract"
+      ],
+      "requires": [
+        "feat:fieldspec-contract-001"
+      ]
     },
     {
       "id": "feat:iospec-contract-001",
@@ -37596,6 +37657,54 @@
       ]
     },
     {
+      "id": "tst:storagespec-check-constraints-sqlite-peer",
+      "title": "StorageSpec check constraints SQLite peer",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/engines/tigrbl_engine_sqlite/tests/test_sqlite_storage_spec_check_constraints.py",
+      "feature_ids": [
+        "feat:storagespec-check-constraints-contract-001"
+      ],
+      "claim_ids": [
+        "clm:storagespec-check-constraints-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:storagespec-check-constraints-peer-pytest"
+      ]
+    },
+    {
+      "id": "tst:storagespec-check-constraints-postgres-peer",
+      "title": "StorageSpec check constraints PostgreSQL peer",
+      "status": "passing",
+      "kind": "integration",
+      "path": "pkgs/engines/tigrbl_engine_postgres/tests/test_postgres_storage_spec_check_constraints.py",
+      "feature_ids": [
+        "feat:storagespec-check-constraints-contract-001"
+      ],
+      "claim_ids": [
+        "clm:storagespec-check-constraints-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:storagespec-check-constraints-peer-pytest"
+      ]
+    },
+    {
+      "id": "tst:fieldspec-constraints-contract",
+      "title": "FieldSpec constraints supported and unsupported keyword contract",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_field_spec_constraints.py",
+      "feature_ids": [
+        "feat:fieldspec-constraints-contract-001"
+      ],
+      "claim_ids": [
+        "clm:fieldspec-constraints-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:fieldspec-constraints-contract-pytest"
+      ]
+    },
+    {
       "id": "tst:opspec-response-contract",
       "title": "OpSpec and ResponseSpec preserve operation projection and response metadata",
       "status": "passing",
@@ -43097,6 +43206,41 @@
       ],
       "evidence_ids": [
         "evd:appspec-routerspec-composition-pytest"
+      ]
+    },
+    {
+      "id": "clm:storagespec-check-constraints-contract-001",
+      "title": "StorageSpec check constraints are enforced by supported SQL peers",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "StorageSpec.check supports a single SQL check expression string that materializes as a database check constraint for SQLite execution and PostgreSQL DDL, while structured or multi-check values are rejected during column materialization.",
+      "feature_ids": [
+        "feat:storagespec-check-constraints-contract-001"
+      ],
+      "test_ids": [
+        "tst:storagespec-check-constraints-sqlite-peer",
+        "tst:storagespec-check-constraints-postgres-peer"
+      ],
+      "evidence_ids": [
+        "evd:storagespec-check-constraints-peer-pytest"
+      ]
+    },
+    {
+      "id": "clm:fieldspec-constraints-contract-001",
+      "title": "FieldSpec constraints are validated through the supported Pydantic Field surface",
+      "status": "evidenced",
+      "tier": "T2",
+      "kind": "spec-contract",
+      "description": "FieldSpec.constraints supports currently valid Pydantic Field validation and schema metadata keywords, and removed Pydantic v2 keywords fail closed during schema construction.",
+      "feature_ids": [
+        "feat:fieldspec-constraints-contract-001"
+      ],
+      "test_ids": [
+        "tst:fieldspec-constraints-contract"
+      ],
+      "evidence_ids": [
+        "evd:fieldspec-constraints-contract-pytest"
       ]
     },
     {
@@ -50932,6 +51076,35 @@
         "tst:appspec-routerspec-composition-contract",
         "tst:table-column-spec-contract",
         "tst:opspec-response-contract"
+      ]
+    },
+    {
+      "id": "evd:storagespec-check-constraints-peer-pytest",
+      "title": "StorageSpec check constraints peer pytest evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/reports/storagespec-check-constraints-peer-pytest.txt",
+      "claim_ids": [
+        "clm:storagespec-check-constraints-contract-001"
+      ],
+      "test_ids": [
+        "tst:storagespec-check-constraints-sqlite-peer",
+        "tst:storagespec-check-constraints-postgres-peer"
+      ]
+    },
+    {
+      "id": "evd:fieldspec-constraints-contract-pytest",
+      "title": "FieldSpec constraints contract pytest evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/reports/fieldspec-constraints-contract-pytest.txt",
+      "claim_ids": [
+        "clm:fieldspec-constraints-contract-001"
+      ],
+      "test_ids": [
+        "tst:fieldspec-constraints-contract"
       ]
     },
     {
