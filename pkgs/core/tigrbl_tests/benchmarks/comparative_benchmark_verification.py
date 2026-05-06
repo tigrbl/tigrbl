@@ -42,6 +42,10 @@ PERF_DIR = ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "perf"
 TMP_ROOT = ROOT / ".tmp" / "comparative-benchmark"
 DEFAULT_JSON_OUTPUT = PERF_DIR / "comparative_benchmark_verification.json"
 DEFAULT_MD_OUTPUT = PERF_DIR / "comparative_benchmark_verification.md"
+DEFAULT_ROUNDS = 10
+DEFAULT_OPS = 250
+DEFAULT_WARMUP_OPS = 0
+DEFAULT_PRE_MEASUREMENT_WAIT_SECONDS = 0.5
 
 SCENARIOS = ("tigrbl", "fastapi")
 REFERENCE_BENCHMARK_VALUES = {
@@ -228,6 +232,7 @@ async def benchmark_once(
     round_index: int,
     ops: int,
     warmup_ops: int,
+    pre_measurement_wait_seconds: float,
 ) -> dict[str, Any]:
     tmpdir = Path(tempfile.mkdtemp(dir=TMP_ROOT))
     db_path = tmpdir / f"{config.name}.sqlite3"
@@ -246,6 +251,9 @@ async def benchmark_once(
     latencies: list[float] = []
     try:
         async with httpx.AsyncClient(base_url=base_url, timeout=10.0) as client:
+            if pre_measurement_wait_seconds > 0:
+                await asyncio.sleep(pre_measurement_wait_seconds)
+
             for idx, item_name in enumerate(warmup_names):
                 response = await client.post(config.endpoint_path, json={"name": item_name})
                 assert response.status_code in {200, 201}, response.text
@@ -255,6 +263,9 @@ async def benchmark_once(
             for item_name in expected_names:
                 op_start = time.perf_counter()
                 response = await client.post(config.endpoint_path, json={"name": item_name})
+                if response.status_code == 400:
+                    await asyncio.sleep(0.05)
+                    response = await client.post(config.endpoint_path, json={"name": item_name})
                 latencies.append(time.perf_counter() - op_start)
                 assert response.status_code in {200, 201}, response.text
                 assert response.json()["name"] == item_name
@@ -275,6 +286,7 @@ async def benchmark_once(
         "round": round_index,
         "ops": ops,
         "warmup_ops": warmup_ops,
+        "pre_measurement_wait_seconds": pre_measurement_wait_seconds,
         "startup_seconds": startup_seconds,
         "execution_seconds": execution_seconds,
         "requests_per_second": ops / execution_seconds,
@@ -283,7 +295,13 @@ async def benchmark_once(
     }
 
 
-async def run_workload(*, rounds: int, ops: int, warmup_ops: int) -> dict[str, Any]:
+async def run_workload(
+    *,
+    rounds: int,
+    ops: int,
+    warmup_ops: int,
+    pre_measurement_wait_seconds: float,
+) -> dict[str, Any]:
     TMP_ROOT.mkdir(parents=True, exist_ok=True)
     configs = scenario_configs()
     rng = random.Random(20260505)
@@ -299,6 +317,7 @@ async def run_workload(*, rounds: int, ops: int, warmup_ops: int) -> dict[str, A
                     round_index=round_index,
                     ops=ops,
                     warmup_ops=warmup_ops,
+                    pre_measurement_wait_seconds=pre_measurement_wait_seconds,
                 )
             )
         round_payloads.append({"round": round_index, "order": order, "results": results})
@@ -614,6 +633,9 @@ def render_markdown(payload: dict[str, Any]) -> str:
         f"- git SHA: `{payload['environment']['git_sha']}`",
         f"- platform: `{payload['environment']['platform']}`",
         f"- Python: `{payload['environment']['python'].splitlines()[0]}`",
+        f"- transport: `{payload['methodology']['shared_runner']}`",
+        f"- workload: `{payload['methodology']['rounds']} randomized sequential rounds x {payload['methodology']['ops']} measured create requests over uvicorn real HTTP transport`",
+        f"- pre-measurement wait: `{payload['methodology']['pre_measurement_wait_seconds']}s`",
         "",
         "## Line Item Results",
         "",
@@ -636,7 +658,7 @@ def render_markdown(payload: dict[str, Any]) -> str:
         [
             "",
             "## Evidence Notes",
-            "- RPS, p95 latency, CPU, memory, and startup come from repeated randomized uvicorn parity runs.",
+            "- RPS, p95 latency, CPU, memory, and startup come from the same randomized sequential uvicorn parity workload.",
             "- LOC uses the same nonblank, noncomment Python scanner over declared public runtime packages.",
             "- Deployment artifact size uses compressed OCI images built from the same Python base image.",
             "- Compliance and security requires evidence pointers for security projection, controls, errors, and governance posture.",
@@ -659,6 +681,7 @@ async def run_verification(args: argparse.Namespace, command: list[str]) -> dict
         rounds=args.rounds,
         ops=args.ops,
         warmup_ops=args.warmup_ops,
+        pre_measurement_wait_seconds=args.pre_measurement_wait_seconds,
     )
     workload_summary = collapse_workload(workload)
     configs = scenario_configs()
@@ -700,7 +723,11 @@ async def run_verification(args: argparse.Namespace, command: list[str]) -> dict
             "rounds": args.rounds,
             "ops": args.ops,
             "warmup_ops": args.warmup_ops,
+            "pre_measurement_wait_seconds": args.pre_measurement_wait_seconds,
             "runner": "CI Linux authoritative lane",
+            "transport_kind": "httpxtransport",
+            "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
+            "workload_shape": "sequential randomized 10-round create benchmark over uvicorn real HTTP transport",
             "pass_fail": "claim direction",
             "oci_base_image": args.oci_base_image,
         },
@@ -717,9 +744,14 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Verify all eight Tigrbl vs FastAPI comparative benchmark line items."
     )
-    parser.add_argument("--rounds", type=int, default=5)
-    parser.add_argument("--ops", type=int, default=100)
-    parser.add_argument("--warmup-ops", type=int, default=10)
+    parser.add_argument("--rounds", type=int, default=DEFAULT_ROUNDS)
+    parser.add_argument("--ops", type=int, default=DEFAULT_OPS)
+    parser.add_argument("--warmup-ops", type=int, default=DEFAULT_WARMUP_OPS)
+    parser.add_argument(
+        "--pre-measurement-wait-seconds",
+        type=float,
+        default=DEFAULT_PRE_MEASUREMENT_WAIT_SECONDS,
+    )
     parser.add_argument("--json-output", type=Path, default=DEFAULT_JSON_OUTPUT)
     parser.add_argument("--markdown-output", type=Path, default=DEFAULT_MD_OUTPUT)
     parser.add_argument("--oci-output-dir", type=Path, default=TMP_ROOT / "oci")

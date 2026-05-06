@@ -7,6 +7,7 @@ on:
       - ".github/workflows/comparative-benchmark-verification.yml"
       - "pkgs/core/tigrbl_tests/benchmarks/comparative_benchmark_verification.py"
       - "pkgs/core/tigrbl_tests/tests/perf/test_comparative_benchmark_verification.py"
+      - "pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py"
       - "pkgs/core/tigrbl_tests/tests/perf/helper_fastapi_create_app.py"
       - "pkgs/core/tigrbl_tests/tests/perf/helper_tigrbl_create_app.py"
 
@@ -55,13 +56,24 @@ jobs:
           pkgs/core/tigrbl_tests/tests/perf/test_comparative_benchmark_verification.py
           -p no:cacheprovider
 
+      - name: Run 250-op ASGITransport sequential benchmark
+        run: >-
+          uv run --no-sync python -m pytest -q
+          pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_asgitransport_sequential_10_rounds_randomized_comparison_250_ops
+
+      - name: Run 250-op HTTPX real-transport sequential benchmark
+        run: >-
+          uv run --no-sync python -m pytest -q
+          pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_httpxtransport_sequential_10_rounds_randomized_comparison_250_ops
+
       - name: Run authoritative comparative benchmark verification
         run: >-
           uv run --no-sync python
           pkgs/core/tigrbl_tests/benchmarks/comparative_benchmark_verification.py
-          --rounds 5
-          --ops 100
-          --warmup-ops 10
+          --rounds 10
+          --ops 250
+          --warmup-ops 0
+          --pre-measurement-wait-seconds 0.5
           --json-output pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.json
           --markdown-output pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.md
           --oci-output-dir .tmp/comparative-benchmark/oci
@@ -75,5 +87,7 @@ jobs:
           path: |
             pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.json
             pkgs/core/tigrbl_tests/tests/perf/comparative_benchmark_verification.md
+            pkgs/core/tigrbl_tests/tests/perf/benchmark_results_create_asgitransport_sequential_10_rounds_250_ops.json
+            pkgs/core/tigrbl_tests/tests/perf/benchmark_results_create_httpxtransport_sequential_10_rounds_250_ops.json
             .tmp/comparative-benchmark/oci/*.tar.gz
             .tmp/comparative-benchmark/oci/**/Dockerfile
