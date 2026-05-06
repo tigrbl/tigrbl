@@ -9,26 +9,30 @@
       "results": [
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.1812313999980688,
-          "execution_total_seconds": 0.640517899999395,
-          "ops_per_second": 390.30915451423937,
+          "first_start_seconds": 0.1486950000980869,
+          "execution_total_seconds": 0.7224467999767512,
+          "ops_per_second": 346.0462417551648,
           "time_per_op_seconds": {
-            "min": 0.0021693999879062176,
-            "mean": 0.00255110680218786,
-            "max": 0.008149400004185736
+            "min": 0.002252700040116906,
+            "mean": 0.0028784591988660394,
+            "max": 0.007632500026375055
           }
         },
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.08606429997598752,
-          "execution_total_seconds": 1.8799447999917902,
-          "ops_per_second": 132.98262800114756,
+          "first_start_seconds": 0.0757737000240013,
+          "execution_total_seconds": 2.4631997999968007,
+          "ops_per_second": 101.49399979665665,
           "time_per_op_seconds": {
-            "min": 0.006391800008714199,
-            "mean": 0.007506092000985518,
-            "max": 0.01809359999606386
+            "min": 0.007476300001144409,
+            "mean": 0.009833275202661753,
+            "max": 0.014955399907194078
           }
         }
       ]
@@ -42,26 +46,30 @@
       "results": [
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.18113089998951182,
-          "execution_total_seconds": 0.5905969999730587,
-          "ops_per_second": 423.30049087855895,
+          "first_start_seconds": 0.14242389996070415,
+          "execution_total_seconds": 0.7831420000875369,
+          "ops_per_second": 319.2269090050794,
           "time_per_op_seconds": {
-            "min": 0.002154099987819791,
-            "mean": 0.0023524784001056104,
-            "max": 0.005867100029718131
+            "min": 0.002272999961860478,
+            "mean": 0.0031199384005740284,
+            "max": 0.008347499999217689
           }
         },
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.06967029999941587,
-          "execution_total_seconds": 1.8565895999781787,
-          "ops_per_second": 134.65549952608717,
+          "first_start_seconds": 0.07003430009353906,
+          "execution_total_seconds": 2.2137620000867173,
+          "ops_per_second": 112.9299355532379,
           "time_per_op_seconds": {
-            "min": 0.006515100016258657,
-            "mean": 0.007413567199138924,
-            "max": 0.016870699997525662
+            "min": 0.006979499943554401,
+            "mean": 0.00883853759802878,
+            "max": 0.017406700062565506
           }
         }
       ]
@@ -75,26 +83,30 @@
       "results": [
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.07024770003044978,
-          "execution_total_seconds": 1.9201986999833025,
-          "ops_per_second": 130.19485952270145,
+          "first_start_seconds": 0.06774690002202988,
+          "execution_total_seconds": 3.6863979999907315,
+          "ops_per_second": 67.81687707095885,
           "time_per_op_seconds": {
-            "min": 0.006326900038402528,
-            "mean": 0.0076674128007143735,
-            "max": 0.0161270999815315
+            "min": 0.007523200009018183,
+            "mean": 0.014726452402304859,
+            "max": 0.042771499953232706
           }
         },
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.1301996999536641,
-          "execution_total_seconds": 0.6270624999888241,
-          "ops_per_second": 398.6843416795864,
+          "first_start_seconds": 0.18122949998360127,
+          "execution_total_seconds": 0.7190833000931889,
+          "ops_per_second": 347.66486715461406,
           "time_per_op_seconds": {
-            "min": 0.0021359000238589942,
-            "mean": 0.002497505197301507,
-            "max": 0.005798099969979376
+            "min": 0.002228699973784387,
+            "mean": 0.002865133197978139,
+            "max": 0.007028000080026686
           }
         }
       ]
@@ -108,26 +120,30 @@
       "results": [
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.06896919995779172,
-          "execution_total_seconds": 1.8480883999727666,
-          "ops_per_second": 135.27491434050665,
+          "first_start_seconds": 0.07238180004060268,
+          "execution_total_seconds": 2.7714377000229433,
+          "ops_per_second": 90.20588844480623,
           "time_per_op_seconds": {
-            "min": 0.006469600019045174,
-            "mean": 0.007379473999841139,
-            "max": 0.015042499988339841
+            "min": 0.00849420006852597,
+            "mean": 0.011061962398700416,
+            "max": 0.01533319998998195
           }
         },
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.1361886000377126,
-          "execution_total_seconds": 0.5881119999685325,
-          "ops_per_second": 425.0890986978271,
+          "first_start_seconds": 0.1562176999868825,
+          "execution_total_seconds": 0.8624909000936896,
+          "ops_per_second": 289.85813064560256,
           "time_per_op_seconds": {
-            "min": 0.002151800028514117,
-            "mean": 0.0023424879987724127,
-            "max": 0.005975700041744858
+            "min": 0.002275100094266236,
+            "mean": 0.0034356636037118733,
+            "max": 0.00899640005081892
           }
         }
       ]
@@ -141,26 +157,30 @@
       "results": [
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.06789730000309646,
-          "execution_total_seconds": 1.9170767000177875,
-          "ops_per_second": 130.40688460596303,
+          "first_start_seconds": 0.07109219999983907,
+          "execution_total_seconds": 2.34890500002075,
+          "ops_per_second": 106.43257177186456,
           "time_per_op_seconds": {
-            "min": 0.00642999995034188,
-            "mean": 0.0076542099972721185,
-            "max": 0.015081699995789677
+            "min": 0.007358600036241114,
+            "mean": 0.009377309599891305,
+            "max": 0.016920599970035255
           }
         },
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.12927170004695654,
-          "execution_total_seconds": 0.6798149999813177,
-          "ops_per_second": 367.74710767910443,
+          "first_start_seconds": 0.1576896000187844,
+          "execution_total_seconds": 0.8354881999548525,
+          "ops_per_second": 299.22624881298066,
           "time_per_op_seconds": {
-            "min": 0.002141500008292496,
-            "mean": 0.0027091039994265884,
-            "max": 0.07462009997107089
+            "min": 0.002127000014297664,
+            "mean": 0.0033281003995798528,
+            "max": 0.0072255999548360705
           }
         }
       ]
@@ -174,26 +194,30 @@
       "results": [
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.13144039997132495,
-          "execution_total_seconds": 0.5941412000101991,
-          "ops_per_second": 420.7753981641207,
+          "first_start_seconds": 0.15230939991306514,
+          "execution_total_seconds": 0.7025086000794545,
+          "ops_per_second": 355.867529552983,
           "time_per_op_seconds": {
-            "min": 0.002135799964889884,
-            "mean": 0.0023664348013699055,
-            "max": 0.006113499985076487
+            "min": 0.002045900095254183,
+            "mean": 0.0027981263999827207,
+            "max": 0.006767200073227286
           }
         },
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.06609670002944767,
-          "execution_total_seconds": 1.8864710999769159,
-          "ops_per_second": 132.52257084832053,
+          "first_start_seconds": 0.06886040000244975,
+          "execution_total_seconds": 2.2196037999819964,
+          "ops_per_second": 112.63271400149333,
           "time_per_op_seconds": {
-            "min": 0.006460999953560531,
-            "mean": 0.007532068400410936,
-            "max": 0.016452199954073876
+            "min": 0.0069806999526917934,
+            "mean": 0.008862339594867081,
+            "max": 0.0182253000093624
           }
         }
       ]
@@ -207,26 +231,30 @@
       "results": [
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.1348831999930553,
-          "execution_total_seconds": 0.5824133999994956,
-          "ops_per_second": 429.24836550844554,
+          "first_start_seconds": 0.1434043999761343,
+          "execution_total_seconds": 0.7546900999732316,
+          "ops_per_second": 331.2617987288655,
           "time_per_op_seconds": {
-            "min": 0.0021078999852761626,
-            "mean": 0.0023197443978860972,
-            "max": 0.006568100012373179
+            "min": 0.0022185000125318766,
+            "mean": 0.003007027200423181,
+            "max": 0.008059400017373264
           }
         },
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.07207920000655577,
-          "execution_total_seconds": 1.9232386999647133,
-          "ops_per_second": 129.98906480229775,
+          "first_start_seconds": 0.07174689997918904,
+          "execution_total_seconds": 2.2407337999902666,
+          "ops_per_second": 111.57059352658757,
           "time_per_op_seconds": {
-            "min": 0.006403899984434247,
-            "mean": 0.0076796504012309015,
-            "max": 0.01580720004858449
+            "min": 0.007161400048062205,
+            "mean": 0.008946875999215991,
+            "max": 0.01744279998820275
           }
         }
       ]
@@ -240,26 +268,30 @@
       "results": [
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.13227120001101866,
-          "execution_total_seconds": 0.6130593999987468,
-          "ops_per_second": 407.7908274475704,
+          "first_start_seconds": 0.14187689998652786,
+          "execution_total_seconds": 0.7553568000439554,
+          "ops_per_second": 330.96941734747355,
           "time_per_op_seconds": {
-            "min": 0.002162999997381121,
-            "mean": 0.002441862399922684,
-            "max": 0.00633529998594895
+            "min": 0.002251699916087091,
+            "mean": 0.0030098472032696008,
+            "max": 0.0076142000034451485
           }
         },
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.06997549999505281,
-          "execution_total_seconds": 1.8753479000297375,
-          "ops_per_second": 133.3085983651544,
+          "first_start_seconds": 0.061066700029186904,
+          "execution_total_seconds": 2.275669900001958,
+          "ops_per_second": 109.85776100469796,
           "time_per_op_seconds": {
-            "min": 0.006479500036220998,
-            "mean": 0.007488392798928544,
-            "max": 0.012569400016218424
+            "min": 0.007534599979408085,
+            "mean": 0.009086379200220108,
+            "max": 0.017199299996718764
           }
         }
       ]
@@ -273,26 +305,30 @@
       "results": [
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.06038330000592396,
-          "execution_total_seconds": 1.8971824999898672,
-          "ops_per_second": 131.77435486640596,
+          "first_start_seconds": 0.07081280008424073,
+          "execution_total_seconds": 2.350427499972284,
+          "ops_per_second": 106.363629596296,
           "time_per_op_seconds": {
-            "min": 0.006441399978939444,
-            "mean": 0.007575079598231241,
-            "max": 0.016940100002102554
+            "min": 0.007509400020353496,
+            "mean": 0.009384150000289082,
+            "max": 0.01827110000886023
           }
         },
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.1333847999922,
-          "execution_total_seconds": 0.6938683000043966,
-          "ops_per_second": 360.2989212771587,
+          "first_start_seconds": 0.15159119991585612,
+          "execution_total_seconds": 0.7396872999379411,
+          "ops_per_second": 337.9806575305196,
           "time_per_op_seconds": {
-            "min": 0.0021782999974675477,
-            "mean": 0.0027651307980995623,
-            "max": 0.08939819998340681
+            "min": 0.0022385999327525496,
+            "mean": 0.0029473720034584403,
+            "max": 0.006967799970880151
           }
         }
       ]
@@ -306,26 +342,30 @@
       "results": [
         {
           "scenario": "tigrbl",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.13188299996545538,
-          "execution_total_seconds": 0.6168157000211067,
-          "ops_per_second": 405.30745243910826,
+          "first_start_seconds": 0.14276219997555017,
+          "execution_total_seconds": 0.74880080006551,
+          "ops_per_second": 333.8671646426237,
           "time_per_op_seconds": {
-            "min": 0.0021394999930635095,
-            "mean": 0.002456741600530222,
-            "max": 0.006356099969707429
+            "min": 0.002280800021253526,
+            "mean": 0.0029833552008494734,
+            "max": 0.007145600044168532
           }
         },
         {
           "scenario": "fastapi",
+          "transport_kind": "httpxtransport",
+          "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
           "ops": 250,
-          "first_start_seconds": 0.07014740002341568,
-          "execution_total_seconds": 1.865563800034579,
-          "ops_per_second": 134.00774607406413,
+          "first_start_seconds": 0.06178190000355244,
+          "execution_total_seconds": 2.22746870003175,
+          "ops_per_second": 112.23502264989696,
           "time_per_op_seconds": {
-            "min": 0.006457500043325126,
-            "mean": 0.007449285601265728,
-            "max": 0.015415799978654832
+            "min": 0.007453499943949282,
+            "mean": 0.008894038007594645,
+            "max": 0.018404100090265274
           }
         }
       ]
@@ -339,11 +379,11 @@
         "fastapi"
       ],
       "ops_per_second": {
-        "tigrbl": 390.30915451423937,
-        "fastapi": 132.98262800114756
+        "tigrbl": 346.0462417551648,
+        "fastapi": 101.49399979665665
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 257.32652651309184,
-      "throughput_ratio_tigrbl_over_fastapi": 2.935038661672946
+      "delta_ops_per_second_tigrbl_minus_fastapi": 244.55224195850812,
+      "throughput_ratio_tigrbl_over_fastapi": 3.4095241339238656
     },
     {
       "step": 2,
@@ -352,11 +392,11 @@
         "fastapi"
       ],
       "ops_per_second": {
-        "tigrbl": 423.30049087855895,
-        "fastapi": 134.65549952608717
+        "tigrbl": 319.2269090050794,
+        "fastapi": 112.9299355532379
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 288.6449913524718,
-      "throughput_ratio_tigrbl_over_fastapi": 3.1435811561231617
+      "delta_ops_per_second_tigrbl_minus_fastapi": 206.2969734518415,
+      "throughput_ratio_tigrbl_over_fastapi": 2.82676960224234
     },
     {
       "step": 3,
@@ -365,11 +405,11 @@
         "tigrbl"
       ],
       "ops_per_second": {
-        "tigrbl": 398.6843416795864,
-        "fastapi": 130.19485952270145
+        "tigrbl": 347.66486715461406,
+        "fastapi": 67.81687707095885
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 268.48948215688495,
-      "throughput_ratio_tigrbl_over_fastapi": 3.0622126183873624
+      "delta_ops_per_second_tigrbl_minus_fastapi": 279.8479900836552,
+      "throughput_ratio_tigrbl_over_fastapi": 5.12652428378325
     },
     {
       "step": 4,
@@ -378,11 +418,11 @@
         "tigrbl"
       ],
       "ops_per_second": {
-        "tigrbl": 425.0890986978271,
-        "fastapi": 135.27491434050665
+        "tigrbl": 289.85813064560256,
+        "fastapi": 90.20588844480623
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 289.81418435732047,
-      "throughput_ratio_tigrbl_over_fastapi": 3.1424089290333312
+      "delta_ops_per_second_tigrbl_minus_fastapi": 199.6522422007963,
+      "throughput_ratio_tigrbl_over_fastapi": 3.2132950037175942
     },
     {
       "step": 5,
@@ -391,11 +431,11 @@
         "tigrbl"
       ],
       "ops_per_second": {
-        "tigrbl": 367.74710767910443,
-        "fastapi": 130.40688460596303
+        "tigrbl": 299.22624881298066,
+        "fastapi": 106.43257177186456
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 237.3402230731414,
-      "throughput_ratio_tigrbl_over_fastapi": 2.819997646522174
+      "delta_ops_per_second_tigrbl_minus_fastapi": 192.7936770411161,
+      "throughput_ratio_tigrbl_over_fastapi": 2.8114161278970533
     },
     {
       "step": 6,
@@ -404,11 +444,11 @@
         "fastapi"
       ],
       "ops_per_second": {
-        "tigrbl": 420.7753981641207,
-        "fastapi": 132.52257084832053
+        "tigrbl": 355.867529552983,
+        "fastapi": 112.63271400149333
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 288.2528273158002,
-      "throughput_ratio_tigrbl_over_fastapi": 3.175122512871574
+      "delta_ops_per_second_tigrbl_minus_fastapi": 243.23481555148967,
+      "throughput_ratio_tigrbl_over_fastapi": 3.159539683544026
     },
     {
       "step": 7,
@@ -417,11 +457,11 @@
         "fastapi"
       ],
       "ops_per_second": {
-        "tigrbl": 429.24836550844554,
-        "fastapi": 129.98906480229775
+        "tigrbl": 331.2617987288655,
+        "fastapi": 111.57059352658757
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 299.25930070614777,
-      "throughput_ratio_tigrbl_over_fastapi": 3.302188273769764
+      "delta_ops_per_second_tigrbl_minus_fastapi": 219.6912052022779,
+      "throughput_ratio_tigrbl_over_fastapi": 2.9690780362293663
     },
     {
       "step": 8,
@@ -430,11 +470,11 @@
         "fastapi"
       ],
       "ops_per_second": {
-        "tigrbl": 407.7908274475704,
-        "fastapi": 133.3085983651544
+        "tigrbl": 330.96941734747355,
+        "fastapi": 109.85776100469796
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 274.482229082416,
-      "throughput_ratio_tigrbl_over_fastapi": 3.0589986876207607
+      "delta_ops_per_second_tigrbl_minus_fastapi": 221.11165634277558,
+      "throughput_ratio_tigrbl_over_fastapi": 3.0127085635153255
     },
     {
       "step": 9,
@@ -443,11 +483,11 @@
         "tigrbl"
       ],
       "ops_per_second": {
-        "tigrbl": 360.2989212771587,
-        "fastapi": 131.77435486640596
+        "tigrbl": 337.9806575305196,
+        "fastapi": 106.363629596296
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 228.52456641075273,
-      "throughput_ratio_tigrbl_over_fastapi": 2.734211232849009
+      "delta_ops_per_second_tigrbl_minus_fastapi": 231.6170279342236,
+      "throughput_ratio_tigrbl_over_fastapi": 3.177596127673791
     },
     {
       "step": 10,
@@ -456,48 +496,49 @@
         "fastapi"
       ],
       "ops_per_second": {
-        "tigrbl": 405.30745243910826,
-        "fastapi": 134.00774607406413
+        "tigrbl": 333.8671646426237,
+        "fastapi": 112.23502264989696
       },
-      "delta_ops_per_second_tigrbl_minus_fastapi": 271.29970636504413,
-      "throughput_ratio_tigrbl_over_fastapi": 3.0245076446185486
+      "delta_ops_per_second_tigrbl_minus_fastapi": 221.63214199272676,
+      "throughput_ratio_tigrbl_over_fastapi": 2.974714636839165
     }
   ],
   "summary": {
+    "transport_kind": "httpxtransport",
     "ops": 250,
     "round_count": 10,
     "step_count": 10,
     "throughput_ratio_target": 1.25,
     "ops_per_second": {
       "tigrbl": {
-        "min": 360.2989212771587,
-        "max": 429.24836550844554,
-        "mean": 402.85511582857197,
-        "stddev": 22.757146438153388,
-        "median": 406.54913994333936,
-        "iqr": 30.266266394373247,
+        "min": 289.85813064560256,
+        "max": 355.867529552983,
+        "mean": 329.1968965175907,
+        "stddev": 19.96957543160219,
+        "median": 332.56448168574457,
+        "iqr": 21.867309608325513,
         "outliers": 0
       },
       "fastapi": {
-        "min": 129.98906480229775,
-        "max": 135.27491434050665,
-        "mean": 132.51171209526487,
-        "stddev": 1.7897398118953447,
-        "median": 132.75259942473406,
-        "iqr": 3.0842069757629247,
-        "outliers": 0
+        "min": 67.81687707095885,
+        "max": 112.9299355532379,
+        "mean": 103.1538993416496,
+        "stddev": 13.504930843811774,
+        "median": 108.14516638828127,
+        "iqr": 9.357508122503134,
+        "outliers": 1
       }
     },
-    "delta_ops_per_second_tigrbl_minus_fastapi": 270.3434037333071,
+    "delta_ops_per_second_tigrbl_minus_fastapi": 226.04299717594108,
     "delta_ops_per_second_tigrbl_minus_fastapi_summary": {
-      "min": 228.52456641075273,
-      "max": 299.25930070614777,
-      "mean": 270.3434037333071,
-      "stddev": 22.13567607903786,
-      "median": 272.89096772373006,
-      "iqr": 28.429684919263764,
+      "min": 192.7936770411161,
+      "max": 279.8479900836552,
+      "mean": 226.04299717594108,
+      "stddev": 24.166529663582267,
+      "median": 221.37189916775117,
+      "iqr": 30.684837257722563,
       "outliers": 0
     },
-    "throughput_ratio_tigrbl_over_fastapi": 3.0401472402601875
+    "throughput_ratio_tigrbl_over_fastapi": 3.191318007545969
   }
 }
