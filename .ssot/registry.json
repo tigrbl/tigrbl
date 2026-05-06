@@ -4686,7 +4686,8 @@
         "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-system-docs-diagnostics-contracts"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:pydantic-v2-field-example-compat"
       ],
       "requires": [],
       "spec_ids": [
@@ -4745,7 +4746,8 @@
         "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-system-docs-diagnostics-contracts"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:pydantic-v2-field-example-compat"
       ],
       "requires": [],
       "spec_ids": [
@@ -11802,7 +11804,8 @@
         "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-system-docs-diagnostics-contracts"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:pydantic-v2-field-example-compat"
       ],
       "requires": []
     },
@@ -39525,6 +39528,24 @@
       "evidence_ids": [
         "evd:kernelplan-executor-ownership-placement-pytest-20260430"
       ]
+    },
+    {
+      "id": "tst:pydantic-v2-field-example-compat",
+      "title": "Pydantic v2 Field example compatibility",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_request_response_examples.py",
+      "feature_ids": [
+        "feat:build-schemas-helper-surface-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
+      "evidence_ids": [
+        "evd:tigrbl-system-docs-diagnostics-contracts-001"
+      ]
     }
   ],
   "claims": [
@@ -46674,7 +46695,8 @@
       ],
       "test_ids": [
         "tst:tigrbl-system-docs-diagnostics-contracts",
-        "tst:tigrbl-system-diagnostics-fixture-contracts"
+        "tst:tigrbl-system-diagnostics-fixture-contracts",
+        "tst:pydantic-v2-field-example-compat"
       ],
       "evidence_ids": [
         "evd:tigrbl-system-docs-diagnostics-contracts-001"
@@ -53481,7 +53503,8 @@
       ],
       "test_ids": [
         "tst:tigrbl-system-docs-diagnostics-contracts",
-        "tst:tigrbl-system-diagnostics-fixture-contracts"
+        "tst:tigrbl-system-diagnostics-fixture-contracts",
+        "tst:pydantic-v2-field-example-compat"
       ]
     },
     {
@@ -54426,6 +54449,31 @@
       "risk_ids": [
         "rsk:tigrbl-xfail-closure-overclaim-001"
       ],
+      "release_blocking": true
+    },
+    {
+      "id": "iss:pydantic-v2-field-example-deprecation",
+      "title": "Pydantic v2 Field example deprecation warning",
+      "status": "closed",
+      "severity": "medium",
+      "description": "Downstream tests pass but emit repeated PydanticDeprecatedSince20 warnings because Tigrbl schema generation can pass legacy example metadata directly to pydantic.Field instead of json_schema_extra. This is a Pydantic v2 compatibility issue and a likely Pydantic v3 break if left unresolved.",
+      "plan": {
+        "horizon": "current",
+        "slot": null
+      },
+      "feature_ids": [
+        "feat:build-schemas-helper-surface-001",
+        "feat:openapi-components-schemas-emission-001",
+        "feat:openapi-request-response-parameter-emission-001"
+      ],
+      "claim_ids": [
+        "clm:tigrbl-system-docs-diagnostics-contracts-001"
+      ],
+      "test_ids": [
+        "tst:pydantic-v2-field-example-compat"
+      ],
+      "evidence_ids": [],
+      "risk_ids": [],
       "release_blocking": true
     }
   ],

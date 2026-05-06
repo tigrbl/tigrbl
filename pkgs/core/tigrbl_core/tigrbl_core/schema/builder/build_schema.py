@@ -22,6 +22,36 @@ from .helpers import (
 logger = logging.getLogger(__name__)
 
 
+def _normalize_field_kwargs(field_kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    """Move example metadata into Pydantic v2 schema extras."""
+    normalized = dict(field_kwargs)
+    json_schema_extra = normalized.get("json_schema_extra")
+    examples = normalized.pop("examples", None)
+    example = normalized.pop("example", None)
+    schema_examples = examples if examples is not None else None
+    if schema_examples is None and example is not None:
+        schema_examples = [example]
+
+    if schema_examples is None:
+        return normalized
+
+    if isinstance(json_schema_extra, dict):
+        json_schema_extra = dict(json_schema_extra)
+        json_schema_extra.setdefault("examples", schema_examples)
+        normalized["json_schema_extra"] = json_schema_extra
+    elif json_schema_extra is None:
+        normalized["json_schema_extra"] = {"examples": schema_examples}
+    elif callable(json_schema_extra):
+
+        def merged_json_schema_extra(schema: Dict[str, Any]) -> None:
+            json_schema_extra(schema)
+            schema.setdefault("examples", schema_examples)
+
+        normalized["json_schema_extra"] = merged_json_schema_extra
+
+    return normalized
+
+
 def _build_schema(
     orm_cls: type,
     *,
@@ -138,7 +168,7 @@ def _build_schema(
             if alias_out:
                 field_kwargs["serialization_alias"] = alias_out
 
-            fld = Field(**field_kwargs)
+            fld = Field(**_normalize_field_kwargs(field_kwargs))
 
             if is_nullable and py_t is not Any:
                 py_t = Union[py_t, None]
@@ -211,7 +241,7 @@ def _build_schema(
         if alias_out:
             field_kwargs["serialization_alias"] = alias_out
 
-        fld = Field(**field_kwargs)
+        fld = Field(**_normalize_field_kwargs(field_kwargs))
 
         # Optional typing if nullable
         is_nullable = bool(getattr(col, "nullable", True))
@@ -272,7 +302,7 @@ def _build_schema(
         else:
             field_kwargs["default"] = None if not required else ...
 
-        fld = Field(**field_kwargs)
+        fld = Field(**_normalize_field_kwargs(field_kwargs))
 
         if (allow_null or nullable) and py_t is not Any:
             py_t = Union[py_t, None]
