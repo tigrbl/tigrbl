@@ -2775,7 +2775,9 @@
       "test_ids": [
         "tst:tools-ci-tests-test_evidence_registry.py-a5fff9ed",
         "tst:tools-ci-tests-test_governance_validators.py",
-        "tst:tools-ci-tests-test_path_length_policy.py"
+        "tst:tools-ci-tests-test_path_length_policy.py",
+        "tst:security-contract-rest-generated-read-auth-policy-parity",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ],
       "requires": [],
       "spec_ids": []
@@ -4568,7 +4570,9 @@
         "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-system-docs-diagnostics-contracts"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:security-contract-openapi-public-default-auth-surface",
+        "tst:security-contract-rest-generated-read-auth-policy-parity"
       ],
       "requires": [],
       "spec_ids": [
@@ -4765,52 +4769,26 @@
     },
     {
       "id": "feat:oas-005",
-      "title": "Operation security emission from `secdeps` is verified",
-      "description": "Tracks conformance surface OAS-005: Operation security emission from `secdeps` is verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py`",
+      "title": "Obsolete alias for Operation security emission from secdeps",
+      "description": "Compatibility row for legacy feature id feat:oas-005. Replaced by feat:operation-security-emission-from-secdeps-001, which preserves the original title, description, linked claims, linked tests, governing SPEC, and runtime lane applicability.",
       "implementation_status": "partial",
       "lifecycle": {
-        "stage": "active",
-        "replacement_feature_ids": [],
-        "note": null
+        "stage": "obsolete",
+        "replacement_feature_ids": [
+          "feat:operation-security-emission-from-secdeps-001"
+        ],
+        "note": "Replaced by explicit feature ID feat:operation-security-emission-from-secdeps-001; use current OpenAPI/OpenRPC/security feature anchors for new issue and test links."
       },
       "plan": {
-        "horizon": "backlog",
-        "slot": null,
-        "target_claim_tier": "T2",
-        "target_lifecycle_stage": "active"
+        "horizon": "out_of_bounds",
+        "slot": "legacy-feature-id-alias",
+        "target_claim_tier": null,
+        "target_lifecycle_stage": "obsolete"
       },
-      "claim_ids": [
-        "clm:oas-005",
-        "clm:tigrbl-tests-failure-closure-001",
-        "clm:generated-crud-public-default-auth-policy-20260427"
-      ],
-      "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
-        "tst:tcase-0013",
-        "tst:tcase-0014"
-      ],
+      "claim_ids": [],
+      "test_ids": [],
       "requires": [],
-      "spec_ids": [
-        "spc:2090"
-      ],
-      "runtime_lanes": {
-        "python": {
-          "applicability": "required"
-        },
-        "rust": {
-          "applicability": "not_applicable",
-          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
-        }
-      }
+      "spec_ids": []
     },
     {
       "id": "feat:oas-006",
@@ -6011,7 +5989,8 @@
         "tst:tools-ci-tests-test_gate_c_conformance_security.py",
         "tst:tcase-0013",
         "tst:tcase-0014",
-        "tst:runtime-parity-lane-governance-validator"
+        "tst:runtime-parity-lane-governance-validator",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ],
       "requires": [],
       "spec_ids": [
@@ -6069,7 +6048,9 @@
         "clm:tigrbl-system-docs-diagnostics-contracts-001"
       ],
       "test_ids": [
-        "tst:tigrbl-system-docs-diagnostics-contracts"
+        "tst:tigrbl-system-docs-diagnostics-contracts",
+        "tst:security-contract-openrpc-public-default-auth-surface",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ],
       "requires": [],
       "spec_ids": [
@@ -15205,7 +15186,9 @@
         "tst:runtime-parity-lane-governance-validator",
         "tst:pre-tx-security-failure-skips-extra-dependencies",
         "tst:pre-tx-dependency-single-execution-contract",
-        "tst:tigrbl-0.3.19-pre-tx-security-dependency-certification"
+        "tst:tigrbl-0.3.19-pre-tx-security-dependency-certification",
+        "tst:security-contract-rest-generated-read-auth-policy-parity",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ],
       "requires": [],
       "runtime_lanes": {
@@ -23691,6 +23674,57 @@
           "reason": "This row carries Python/runtime governance evidence only; Rust parity is tracked through explicit rust-* features or later parity proof rows."
         }
       }
+    },
+    {
+      "id": "feat:operation-security-emission-from-secdeps-001",
+      "title": "Operation security emission from secdeps",
+      "description": "Tracks operation security emission from secdeps across generated OpenAPI/OpenRPC documentation and runtime security behavior. Preserves legacy feature body from feat:oas-005. Original description: Tracks conformance surface OAS-005: Operation security emission from `secdeps` is verified. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py`",
+      "implementation_status": "partial",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "backlog",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2090"
+      ],
+      "claim_ids": [
+        "clm:oas-005",
+        "clm:tigrbl-tests-failure-closure-001",
+        "clm:generated-crud-public-default-auth-policy-20260427"
+      ],
+      "test_ids": [
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openapi_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_openrpc_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_swagger_uvicorn.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
+        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
+        "tst:tcase-0013",
+        "tst:tcase-0014",
+        "tst:security-contract-openapi-public-default-auth-surface",
+        "tst:security-contract-openrpc-public-default-auth-surface"
+      ],
+      "requires": [],
+      "runtime_lanes": {
+        "python": {
+          "applicability": "required"
+        },
+        "rust": {
+          "applicability": "not_applicable",
+          "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
+        }
+      }
     }
   ],
   "tests": [
@@ -23899,7 +23933,6 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
@@ -23916,7 +23949,8 @@
         "feat:mount-swagger-helper-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -23954,7 +23988,6 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
@@ -23971,7 +24004,8 @@
         "feat:mount-swagger-helper-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24009,7 +24043,6 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
@@ -24026,7 +24059,8 @@
         "feat:mount-swagger-helper-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24064,7 +24098,6 @@
       "path": "pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:docs-mount-runtime-surface-parity-001",
         "feat:docs-support-001",
@@ -24081,7 +24114,8 @@
         "feat:mount-swagger-helper-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24219,7 +24253,6 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
@@ -24234,7 +24267,8 @@
         "feat:mount-swagger-helper-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24273,9 +24307,9 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
-        "feat:tigrbl-tests-failing-case-closure-001"
+        "feat:tigrbl-tests-failing-case-closure-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24318,7 +24352,6 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
@@ -24333,7 +24366,8 @@
         "feat:mount-swagger-helper-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24372,7 +24406,6 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:asyncapi-mount-surface-001",
         "feat:asyncapi-payload-surface-001",
@@ -24387,7 +24420,8 @@
         "feat:mount-swagger-helper-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24426,8 +24460,8 @@
       "path": "pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py",
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
-        "feat:oas-005",
-        "feat:jsonrpc-20-runtime-surface-001"
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -24922,12 +24956,12 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
         "feat:uniform-diagnostics-uix-surface-001",
-        "feat:tigrbl-tests-failing-case-closure-001"
+        "feat:tigrbl-tests-failing-case-closure-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:cur-003",
@@ -24958,11 +24992,11 @@
         "feat:json-schema-uix-surface-001",
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
-        "feat:oas-005",
         "feat:jsonrpc-20-runtime-surface-001",
         "feat:swagger-openapi-uix-001",
         "feat:tigrbl-lens-openrpc-uix-001",
-        "feat:uniform-diagnostics-uix-surface-001"
+        "feat:uniform-diagnostics-uix-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:cur-002"
@@ -25474,7 +25508,6 @@
       "feature_ids": [
         "feat:gate-c-conformance-security-checkpoint-001",
         "feat:gate-c-conformance-security-validator-workflow",
-        "feat:oas-005",
         "feat:rfc-6750-http-bearer-auth-semantics",
         "feat:rfc-7235-http-auth-challenge-semantics",
         "feat:rfc-7617-http-basic-auth-semantics",
@@ -25484,7 +25517,8 @@
         "feat:http-bearer-security-docs-runtime-alignment",
         "feat:oauth2-security-docs-runtime-alignment",
         "feat:openidconnect-security-docs-runtime-alignment",
-        "feat:mutualtls-security-docs-runtime-alignment"
+        "feat:mutualtls-security-docs-runtime-alignment",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:gate-009",
@@ -39655,6 +39689,81 @@
       "evidence_ids": [
         "evd:tigrbl-system-docs-diagnostics-contracts-001"
       ]
+    },
+    {
+      "id": "tst:security-contract-openapi-public-default-auth-surface",
+      "title": "OpenAPI generated CRUD declares public default auth surface",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_security_contract_auth_policy_parity.py",
+      "feature_ids": [
+        "feat:openapi-31-document-emission-001",
+        "feat:operation-security-emission-from-secdeps-001"
+      ],
+      "claim_ids": [
+        "clm:oas-005",
+        "clm:generated-crud-public-default-auth-policy-20260427"
+      ],
+      "evidence_ids": [
+        "evd:security-contract-auth-policy-parity-pytest-20260506"
+      ]
+    },
+    {
+      "id": "tst:security-contract-openrpc-public-default-auth-surface",
+      "title": "OpenRPC generated methods declare public default auth surface",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_security_contract_auth_policy_parity.py",
+      "feature_ids": [
+        "feat:openrpc-126-json-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
+      ],
+      "claim_ids": [
+        "clm:oas-005",
+        "clm:generated-crud-public-default-auth-policy-20260427"
+      ],
+      "evidence_ids": [
+        "evd:security-contract-auth-policy-parity-pytest-20260506"
+      ]
+    },
+    {
+      "id": "tst:security-contract-rest-generated-read-auth-policy-parity",
+      "title": "REST generated read matches auth policy",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_security_contract_auth_policy_parity.py",
+      "feature_ids": [
+        "feat:security-policy",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:openapi-31-document-emission-001"
+      ],
+      "claim_ids": [
+        "clm:generated-crud-public-default-auth-policy-20260427",
+        "clm:pre-tx-dependency-execution-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:security-contract-auth-policy-parity-pytest-20260506"
+      ]
+    },
+    {
+      "id": "tst:security-contract-jsonrpc-generated-read-auth-policy-parity",
+      "title": "JSON-RPC generated read matches auth policy",
+      "status": "passing",
+      "kind": "unit",
+      "path": "pkgs/core/tigrbl_tests/tests/unit/test_security_contract_auth_policy_parity.py",
+      "feature_ids": [
+        "feat:security-policy",
+        "feat:pre-tx-security-dependency-execution-001",
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:openrpc-126-json-surface-001"
+      ],
+      "claim_ids": [
+        "clm:generated-crud-public-default-auth-policy-20260427",
+        "clm:pre-tx-dependency-execution-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:security-contract-auth-policy-parity-pytest-20260506"
+      ]
     }
   ],
   "claims": [
@@ -41978,7 +42087,7 @@
       "kind": "conformance",
       "description": "Asserts conformance surface OAS-005: Operation security emission from `secdeps` is verified. Registry state: verified in checkpoint. Tier: Tier 2. Category: Docs & Runtime. Evidence roots: `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`, `pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py`",
       "feature_ids": [
-        "feat:oas-005"
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-i9n-test_mountable_lens_uvicorn.py",
@@ -41990,7 +42099,9 @@
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_spec_snapshots.py",
-        "tst:tools-ci-tests-test_gate_c_conformance_security.py"
+        "tst:tools-ci-tests-test_gate_c_conformance_security.py",
+        "tst:security-contract-openapi-public-default-auth-surface",
+        "tst:security-contract-openrpc-public-default-auth-surface"
       ],
       "evidence_ids": [
         "evd:docs-conformance-current_state.md",
@@ -42002,7 +42113,8 @@
         "evd:github-workflows-evidence-lanes.yml",
         "evd:github-workflows-gate-c-conformance-security.yml",
         "evd:tigrbl-tests-failure-closure-final-pytest-20260421",
-        "evd:security-contract-docs-proof-20260427"
+        "evd:security-contract-docs-proof-20260427",
+        "evd:security-contract-auth-policy-parity-pytest-20260506"
       ]
     },
     {
@@ -43150,11 +43262,14 @@
         "tst:pkgs-core-tigrbl_tests-tests-test_secdeps_execute_in_pre_tx.py",
         "tst:pre-tx-extra-dependency-failure-aborts-before-txn",
         "tst:pre-tx-security-failure-skips-extra-dependencies",
-        "tst:pre-tx-dependency-single-execution-contract"
+        "tst:pre-tx-dependency-single-execution-contract",
+        "tst:security-contract-rest-generated-read-auth-policy-parity",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ],
       "evidence_ids": [
         "evd:pre-tx-dependency-execution-pytest",
-        "evd:security-contract-docs-proof-20260427"
+        "evd:security-contract-docs-proof-20260427",
+        "evd:security-contract-auth-policy-parity-pytest-20260506"
       ]
     },
     {
@@ -43823,7 +43938,6 @@
         "feat:mount-lens-helper-surface-001",
         "feat:mount-swagger-helper-surface-001",
         "feat:multipart-form-preservation-001",
-        "feat:oas-005",
         "feat:operator-static-files-surface-001",
         "feat:operator-cookie-roundtrip-surface-001",
         "feat:operator-streaming-response-surface-001",
@@ -43860,7 +43974,8 @@
         "feat:authn-provider-missing-credentials-status-001",
         "feat:anon-access-rest-status-parity-001",
         "feat:auth-failure-projection-parity-001",
-        "feat:httpbearer-security-dependency-001"
+        "feat:httpbearer-security-dependency-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "test_ids": [
         "tst:http-route-jsonrpc-openrpc-surface",
@@ -45898,14 +46013,19 @@
       "description": "Generated CRUD operations are public by default unless security dependencies are configured, and OpenAPI/OpenRPC documentation explicitly projects public-by-default or protected policy state.",
       "feature_ids": [
         "feat:security-policy",
-        "feat:oas-005",
-        "feat:jsonrpc-20-runtime-surface-001"
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:security-contract-openapi-public-default-auth-surface",
+        "tst:security-contract-openrpc-public-default-auth-surface",
+        "tst:security-contract-rest-generated-read-auth-policy-parity",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ],
       "evidence_ids": [
-        "evd:generated-crud-auth-policy-proof-20260427"
+        "evd:generated-crud-auth-policy-proof-20260427",
+        "evd:security-contract-auth-policy-parity-pytest-20260506"
       ]
     },
     {
@@ -54191,6 +54311,25 @@
         "tst:kernelplan-executor-ownership-atom-contract",
         "tst:kernelplan-executor-ownership-runtime-shim-contract"
       ]
+    },
+    {
+      "id": "evd:security-contract-auth-policy-parity-pytest-20260506",
+      "title": "Security contract auth policy parity pytest 2026-05-06",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/reports/security-contract-auth-policy-parity-pytest-2026-05-06.md",
+      "claim_ids": [
+        "clm:generated-crud-public-default-auth-policy-20260427",
+        "clm:oas-005",
+        "clm:pre-tx-dependency-execution-contract-001"
+      ],
+      "test_ids": [
+        "tst:security-contract-openapi-public-default-auth-surface",
+        "tst:security-contract-openrpc-public-default-auth-surface",
+        "tst:security-contract-rest-generated-read-auth-policy-parity",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
+      ]
     }
   ],
   "issues": [
@@ -54246,15 +54385,16 @@
         "slot": "security-contract-auth-metadata"
       },
       "feature_ids": [
-        "feat:oas-005",
-        "feat:openapi-31-document-emission-001"
+        "feat:openapi-31-document-emission-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:oas-005"
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openapi_documentation_security_behavior.py",
+        "tst:security-contract-openapi-public-default-auth-surface"
       ],
       "evidence_ids": [
         "evd:security-contract-docs-proof-20260427"
@@ -54273,8 +54413,8 @@
         "slot": "security-contract-auth-metadata"
       },
       "feature_ids": [
-        "feat:oas-005",
-        "feat:openrpc-126-json-surface-001"
+        "feat:openrpc-126-json-surface-001",
+        "feat:operation-security-emission-from-secdeps-001"
       ],
       "claim_ids": [
         "clm:oas-005",
@@ -54282,7 +54422,8 @@
       ],
       "test_ids": [
         "tst:pkgs-core-tigrbl_tests-tests-unit-test_docs_security_parity.py",
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_openrpc_documentation_security_behavior.py",
+        "tst:security-contract-openrpc-public-default-auth-surface"
       ],
       "evidence_ids": [
         "evd:security-contract-docs-proof-20260427"
@@ -54302,13 +54443,14 @@
       },
       "feature_ids": [
         "feat:security-policy",
-        "feat:oas-005"
+        "feat:pre-tx-security-dependency-execution-001"
       ],
       "claim_ids": [
         "clm:generated-crud-public-default-auth-policy-20260427"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:security-contract-rest-generated-read-auth-policy-parity"
       ],
       "evidence_ids": [
         "evd:generated-crud-auth-policy-proof-20260427"
@@ -54331,13 +54473,15 @@
       "feature_ids": [
         "feat:security-policy",
         "feat:openrpc-126-json-surface-001",
-        "feat:jsonrpc-20-runtime-surface-001"
+        "feat:jsonrpc-20-runtime-surface-001",
+        "feat:pre-tx-security-dependency-execution-001"
       ],
       "claim_ids": [
         "clm:generated-crud-public-default-auth-policy-20260427"
       ],
       "test_ids": [
-        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py"
+        "tst:pkgs-core-tigrbl_tests-tests-unit-test_jsonrpc_openrpc.py",
+        "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ],
       "evidence_ids": [
         "evd:generated-crud-auth-policy-proof-20260427"
