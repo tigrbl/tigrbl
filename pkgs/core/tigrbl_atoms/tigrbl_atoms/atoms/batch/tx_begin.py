@@ -6,7 +6,7 @@ from ... import events as _ev
 from ...stages import Guarded, Executing
 from ...types import Atom, Ctx, ExecutingCtx
 
-ANCHOR = _ev.SYS_TX_BEGIN
+ANCHOR = _ev.BATCH_TX_BEGIN
 
 
 def _run(obj: object | None, ctx: Any) -> None:

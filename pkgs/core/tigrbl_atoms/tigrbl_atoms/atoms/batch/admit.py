@@ -7,7 +7,7 @@ from ...stages import Guarded
 from ...types import Atom, Ctx, GuardedCtx
 from . import _scheduler
 
-ANCHOR = _ev.DEP_EXTRA
+ANCHOR = _ev.BATCH_ADMIT
 
 
 def _run(obj: object | None, ctx: Any) -> None:

@@ -7,7 +7,7 @@ from ...stages import Ingress
 from ...types import Atom, Ctx, IngressCtx
 from .._temp import _ensure_temp
 
-ANCHOR = _ev.INGRESS_TRANSPORT_EXTRACT
+ANCHOR = _ev.BATCH_TRANSPORT_SINK_BIND
 
 
 def _run(obj: object | None, ctx: Any) -> None:

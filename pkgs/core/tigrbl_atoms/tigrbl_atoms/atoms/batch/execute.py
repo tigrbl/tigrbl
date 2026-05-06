@@ -7,7 +7,7 @@ from ...stages import Resolved, Operated
 from ...types import Atom, Ctx, OperatedCtx
 from ..sys import _oltp_context as _ctx
 
-ANCHOR = _ev.SYS_HANDLER_PERSISTENCE
+ANCHOR = _ev.BATCH_EXECUTE
 
 
 async def _maybe_await(value: Any) -> Any:

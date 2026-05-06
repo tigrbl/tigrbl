@@ -6,7 +6,7 @@ from ... import events as _ev
 from ...stages import Operated
 from ...types import Atom, Ctx, OperatedCtx
 
-ANCHOR = _ev.POST_FLUSH
+ANCHOR = _ev.BATCH_RESULT_SLOTS
 
 
 def _run(obj: object | None, ctx: Any) -> None:

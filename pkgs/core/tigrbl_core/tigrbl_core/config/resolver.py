@@ -17,6 +17,7 @@ _DEEP_KEYS = {
     "lens",
     "trace",
     "policies",
+    "batch",
 }
 
 
@@ -268,7 +269,28 @@ def _normalize(cfg: Mapping[str, Any], *, op: Optional[str]) -> Dict[str, Any]:
             }
         d["required_policy"] = fixed
 
-    # 4) Optional op-specific view (pre-resolved convenience)
+    # 4) Batch policy normalization.
+    batch = d.get("batch")
+    if isinstance(batch, bool):
+        batch = {"enabled": batch}
+    if not isinstance(batch, Mapping):
+        batch = {}
+    fixed_batch = dict(DEFAULTS.get("batch", {}))
+    fixed_batch.update(dict(batch))
+    fixed_batch["enabled"] = bool(fixed_batch.get("enabled", False))
+    for key in ("max_size", "max_bytes", "max_delay_ms", "admission_timeout_ms"):
+        try:
+            fixed_batch[key] = max(0, int(fixed_batch.get(key, 0)))
+        except Exception:
+            fixed_batch[key] = int(DEFAULTS["batch"][key])
+    if fixed_batch["max_size"] <= 0:
+        fixed_batch["max_size"] = int(DEFAULTS["batch"]["max_size"])
+    if fixed_batch["max_bytes"] <= 0:
+        fixed_batch["max_bytes"] = int(DEFAULTS["batch"]["max_bytes"])
+    fixed_batch["allow_reads"] = bool(fixed_batch.get("allow_reads", False))
+    d["batch"] = fixed_batch
+
+    # 5) Optional op-specific view (pre-resolved convenience)
     if op:
         per_op = d["required_policy"].get(op, {})
         d.setdefault("_required_for_op", per_op)

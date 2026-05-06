@@ -7,7 +7,7 @@ from ...stages import Egressed
 from ...types import Atom, Ctx, EgressedCtx
 from . import _scheduler
 
-ANCHOR = _ev.POST_RESPONSE
+ANCHOR = _ev.BATCH_CLEANUP
 
 
 def _run(obj: object | None, ctx: Any) -> None:

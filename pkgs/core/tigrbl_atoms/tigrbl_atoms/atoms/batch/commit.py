@@ -6,7 +6,7 @@ from ... import events as _ev
 from ...stages import Operated
 from ...types import Atom, Ctx, OperatedCtx
 
-ANCHOR = _ev.SYS_TX_COMMIT
+ANCHOR = _ev.BATCH_COMMIT
 
 
 def _run(obj: object | None, ctx: Any) -> None:

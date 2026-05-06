@@ -7,7 +7,7 @@ from ...stages import Guarded
 from ...types import Atom, Ctx, GuardedCtx
 from .._temp import _ensure_temp
 
-ANCHOR = _ev.DEP_EXTRA
+ANCHOR = _ev.BATCH_GROUP_KEY
 
 
 def _run(obj: object | None, ctx: Any) -> None:

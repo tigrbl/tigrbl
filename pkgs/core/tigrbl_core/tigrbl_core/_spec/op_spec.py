@@ -106,6 +106,7 @@ class OpSpec(SerdeMixin):
 
     # Persistence
     persist: PersistPolicy = "default"
+    batch: Optional[Mapping[str, Any] | bool] = None
 
     # Schema overrides (resolved later by binder)
     request_model: Optional[SchemaArg] = None
