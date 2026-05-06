@@ -1,3 +1,7 @@
+import warnings
+
+from pydantic.warnings import PydanticDeprecatedSince20
+
 from tests.conftest import _build_router
 from tigrbl_core._spec import F, S
 from tigrbl_core._spec import OpSpec
@@ -19,6 +23,13 @@ class BulkWidget(TableBase, GUIDPk, BulkCapable, Mergeable):
     __tablename__ = "widgets_example_schemas_bulk"
     name: Mapped[str] = acol(
         storage=S(String, nullable=False), field=F(constraints={"examples": ["foo"]})
+    )
+
+
+class LegacyExampleWidget(TableBase, GUIDPk, Mergeable):
+    __tablename__ = "widgets_legacy_example_schemas"
+    name: Mapped[str] = acol(
+        storage=S(String, nullable=False), field=F(constraints={"example": "foo"})
     )
 
 
@@ -51,6 +62,19 @@ def _resolve_schema(spec, schema):
 def test_create_request_model_examples():
     spec = _openapi_for(Widget, [("create", "create")])
     path = f"/{Widget.__name__.lower()}"
+    schema = spec["paths"][path]["post"]["requestBody"]["content"]["application/json"][
+        "schema"
+    ]
+    schema = _resolve_schema(spec, schema)
+    assert schema["properties"]["name"]["examples"][0] == "foo"
+
+
+def test_legacy_example_constraint_avoids_pydantic_deprecation_warning():
+    with warnings.catch_warnings():
+        warnings.filterwarnings("error", category=PydanticDeprecatedSince20)
+        spec = _openapi_for(LegacyExampleWidget, [("create", "create")])
+
+    path = f"/{LegacyExampleWidget.__name__.lower()}"
     schema = spec["paths"][path]["post"]["requestBody"]["content"]["application/json"][
         "schema"
     ]
