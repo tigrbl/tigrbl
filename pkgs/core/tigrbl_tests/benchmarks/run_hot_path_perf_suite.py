@@ -5,13 +5,12 @@ import asyncio
 import gzip
 import json
 import shutil
-import sqlite3
 import struct
 import subprocess
 import sys
 import time
 import uuid
-from dataclasses import asdict, dataclass
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
@@ -201,8 +200,35 @@ def _default_tasks() -> list[CommandTask]:
             artifact_paths=(
                 PERF_DIR / "benchmark_results_create_uvicorn.json",
                 PERF_DIR / "benchmark_results_create_uvicorn_sequential_10_rounds_250_ops.json",
+                PERF_DIR / "benchmark_results_create_httpxtransport_sequential_10_rounds_250_ops.json",
             ),
-            description="Run the 250-op unary parity benchmark.",
+            description="Run the legacy 250-op unary parity benchmark over HTTPX real transport.",
+        ),
+        CommandTask(
+            name="rest_unary_asgitransport_seq_250",
+            argv=_python_command(
+                "-m",
+                "pytest",
+                "pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_asgitransport_sequential_10_rounds_randomized_comparison_250_ops",
+                "-q",
+            ),
+            artifact_paths=(
+                PERF_DIR / "benchmark_results_create_asgitransport_sequential_10_rounds_250_ops.json",
+            ),
+            description="Run the 250-op unary parity benchmark over httpx.ASGITransport.",
+        ),
+        CommandTask(
+            name="rest_unary_httpxtransport_seq_250",
+            argv=_python_command(
+                "-m",
+                "pytest",
+                "pkgs/core/tigrbl_tests/tests/perf/test_tigrbl_vs_fastapi_create_benchmark.py::test_tigrbl_vs_fastapi_httpxtransport_sequential_10_rounds_randomized_comparison_250_ops",
+                "-q",
+            ),
+            artifact_paths=(
+                PERF_DIR / "benchmark_results_create_httpxtransport_sequential_10_rounds_250_ops.json",
+            ),
+            description="Run the 250-op unary parity benchmark over HTTPX real transport.",
         ),
         CommandTask(
             name="tigrbl_call_graph_250",

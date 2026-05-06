@@ -11,12 +11,30 @@ sys.path.insert(0, str(BENCHMARKS_ROOT))
 from comparative_benchmark_verification import (  # noqa: E402
     build_summary,
     count_python_loc_under,
+    parse_args,
     quantile,
     render_markdown,
     resource_summary,
     summarize,
     summarize_latency,
 )
+
+
+def test_comparative_benchmark_defaults_match_real_transport_250_op_suite() -> None:
+    args = parse_args([])
+
+    assert args.rounds == 10
+    assert args.ops == 250
+    assert args.warmup_ops == 0
+    assert args.pre_measurement_wait_seconds == 0.5
+
+
+def test_comparative_benchmark_is_the_250_op_httpxtransport_suite() -> None:
+    args = parse_args([])
+
+    assert args.ops == 250
+    assert args.rounds == 10
+    assert args.pre_measurement_wait_seconds == 0.5
 
 
 def test_comparative_benchmark_metric_summaries_are_stable() -> None:
@@ -117,6 +135,13 @@ def test_comparative_benchmark_markdown_contains_all_line_items() -> None:
             "git_sha": "abc",
             "platform": "linux",
             "python": "3.12",
+        },
+        "methodology": {
+            "rounds": 10,
+            "ops": 250,
+            "pre_measurement_wait_seconds": 0.5,
+            "transport_kind": "httpxtransport",
+            "shared_runner": "httpx.AsyncClient over uvicorn real HTTP transport",
         },
         "summary": {
             "line_items": [

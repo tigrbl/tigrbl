@@ -4,6 +4,7 @@ import asyncio
 import json
 import logging
 import random
+import shutil
 from pathlib import Path
 from statistics import mean, median, pstdev
 from tempfile import TemporaryDirectory
@@ -35,12 +36,20 @@ SEQUENTIAL_RESULTS_PATH = Path(__file__).with_name(
 SEQUENTIAL_RESULTS_250_OPS_PATH = Path(__file__).with_name(
     "benchmark_results_create_uvicorn_sequential_10_rounds_250_ops.json"
 )
+ASGITRANSPORT_RESULTS_250_OPS_PATH = Path(__file__).with_name(
+    "benchmark_results_create_asgitransport_sequential_10_rounds_250_ops.json"
+)
+HTTPXTRANSPORT_RESULTS_250_OPS_PATH = Path(__file__).with_name(
+    "benchmark_results_create_httpxtransport_sequential_10_rounds_250_ops.json"
+)
 PERF_TEMP_ROOT = Path(__file__).resolve().parents[5] / ".tmp" / "pytest-perf"
 DEFAULT_OPS_COUNT = 25
 HIGH_VOLUME_OPS_COUNT = 250
 SEQUENTIAL_ROUNDS = 10
 THROUGHPUT_RATIO_TARGET = 1.25
 PRE_MEASUREMENT_WAIT_SECONDS = 0.5
+ASGITRANSPORT = "asgitransport"
+HTTPXTRANSPORT = "httpxtransport"
 
 
 def _summarize(values: list[float]) -> dict[str, float]:
@@ -86,6 +95,7 @@ async def _benchmark_app(
     *,
     scenario: str,
     ops_count: int,
+    transport_kind: str,
     create_app: Callable[[Path], Any],
     endpoint_path: str,
     fetch_names: Callable[[Path], list[str]],
@@ -101,12 +111,26 @@ async def _benchmark_app(
         app = create_app(db_path)
         if initialize is not None:
             await initialize(app)
-        base_url, server, task = await run_uvicorn_in_task(app)
+        server = None
+        task = None
+        if transport_kind == HTTPXTRANSPORT:
+            base_url, server, task = await run_uvicorn_in_task(app)
+            client_kwargs: dict[str, Any] = {"base_url": base_url, "timeout": 10.0}
+            shared_runner = "httpx.AsyncClient over uvicorn real HTTP transport"
+        elif transport_kind == ASGITRANSPORT:
+            client_kwargs = {
+                "transport": httpx.ASGITransport(app=app),
+                "base_url": "http://testserver",
+                "timeout": 10.0,
+            }
+            shared_runner = "httpx.ASGITransport"
+        else:
+            raise ValueError(f"unknown transport kind: {transport_kind}")
         first_start_time = perf_counter() - start
 
         op_durations: list[float] = []
         try:
-            async with httpx.AsyncClient(base_url=base_url, timeout=10.0) as client:
+            async with httpx.AsyncClient(**client_kwargs) as client:
                 await asyncio.sleep(PRE_MEASUREMENT_WAIT_SECONDS)
 
                 execution_start = perf_counter()
@@ -136,7 +160,8 @@ async def _benchmark_app(
             persisted_names = fetch_names(db_path)
             assert persisted_names == measured_names
         finally:
-            await stop_uvicorn_server(server, task)
+            if server is not None and task is not None:
+                await stop_uvicorn_server(server, task)
             if dispose_app is not None:
                 dispose_result = dispose_app(app)
                 if hasattr(dispose_result, "__await__"):
@@ -146,6 +171,8 @@ async def _benchmark_app(
 
     return {
         "scenario": scenario,
+        "transport_kind": transport_kind,
+        "shared_runner": shared_runner,
         "ops": ops_count,
         "first_start_seconds": first_start_time,
         "execution_total_seconds": execution_total,
@@ -154,7 +181,9 @@ async def _benchmark_app(
     }
 
 
-async def _run_sequential_consistency_benchmark(*, ops_count: int) -> dict[str, Any]:
+async def _run_sequential_consistency_benchmark(
+    *, ops_count: int, transport_kind: str
+) -> dict[str, Any]:
     scenario_runner = {
         "tigrbl": dict(
             create_app=create_tigrbl_app,
@@ -184,6 +213,7 @@ async def _run_sequential_consistency_benchmark(*, ops_count: int) -> dict[str, 
             result = await _benchmark_app(
                 scenario=scenario,
                 ops_count=ops_count,
+                transport_kind=transport_kind,
                 create_app=scenario_runner[scenario]["create_app"],
                 endpoint_path=scenario_runner[scenario]["endpoint_path"],
                 fetch_names=scenario_runner[scenario]["fetch_names"],
@@ -233,6 +263,7 @@ async def _run_sequential_consistency_benchmark(*, ops_count: int) -> dict[str, 
         "rounds": rounds,
         "steps": steps,
         "summary": {
+            "transport_kind": transport_kind,
             "ops": ops_count,
             "round_count": SEQUENTIAL_ROUNDS,
             "step_count": SEQUENTIAL_ROUNDS,
@@ -254,17 +285,23 @@ def _run_and_assert_sequential_benchmark(
     *,
     ops_count: int,
     results_path: Path,
+    transport_kind: str = HTTPXTRANSPORT,
 ) -> None:
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("httpcore").setLevel(logging.WARNING)
-    payload = asyncio.run(_run_sequential_consistency_benchmark(ops_count=ops_count))
+    payload = asyncio.run(
+        _run_sequential_consistency_benchmark(
+            ops_count=ops_count,
+            transport_kind=transport_kind,
+        )
+    )
     RESULTS_PATH.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     results_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
     summary = payload["summary"]
     print(
         "\n[perf] per-round randomized sequential order "
-        f"(ops={summary['ops']})"
+        f"(transport={summary['transport_kind']} ops={summary['ops']})"
     )
     for step in payload["steps"]:
         print(
@@ -331,6 +368,7 @@ def _run_and_assert_sequential_benchmark(
 
     assert RESULTS_PATH.exists()
     assert results_path.exists()
+    assert summary["transport_kind"] == transport_kind
     assert summary["ops"] == ops_count
     assert summary["round_count"] == SEQUENTIAL_ROUNDS
     assert summary["step_count"] == SEQUENTIAL_ROUNDS
@@ -351,6 +389,7 @@ def test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison() -> None:
     _run_and_assert_sequential_benchmark(
         ops_count=DEFAULT_OPS_COUNT,
         results_path=SEQUENTIAL_RESULTS_PATH,
+        transport_kind=HTTPXTRANSPORT,
     )
 
 
@@ -359,4 +398,24 @@ def test_tigrbl_vs_fastapi_sequential_10_rounds_randomized_comparison_250_ops() 
     _run_and_assert_sequential_benchmark(
         ops_count=HIGH_VOLUME_OPS_COUNT,
         results_path=SEQUENTIAL_RESULTS_250_OPS_PATH,
+        transport_kind=HTTPXTRANSPORT,
+    )
+    shutil.copyfile(SEQUENTIAL_RESULTS_250_OPS_PATH, HTTPXTRANSPORT_RESULTS_250_OPS_PATH)
+
+
+@pytest.mark.perf
+def test_tigrbl_vs_fastapi_asgitransport_sequential_10_rounds_randomized_comparison_250_ops() -> None:
+    _run_and_assert_sequential_benchmark(
+        ops_count=HIGH_VOLUME_OPS_COUNT,
+        results_path=ASGITRANSPORT_RESULTS_250_OPS_PATH,
+        transport_kind=ASGITRANSPORT,
+    )
+
+
+@pytest.mark.perf
+def test_tigrbl_vs_fastapi_httpxtransport_sequential_10_rounds_randomized_comparison_250_ops() -> None:
+    _run_and_assert_sequential_benchmark(
+        ops_count=HIGH_VOLUME_OPS_COUNT,
+        results_path=HTTPXTRANSPORT_RESULTS_250_OPS_PATH,
+        transport_kind=HTTPXTRANSPORT,
     )
