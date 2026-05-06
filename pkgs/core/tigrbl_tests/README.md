@@ -28,6 +28,20 @@ tigrbl_tests is a testkit package for pytest fixtures, shared assertions, and in
 - `tigrbl_tests` owns shared fixtures, integration examples, parity checks, benchmark-ready scenarios, and comparison surfaces including places where Tigrbl-vs-FastAPI evidence should live.
 - Document reproducible benchmark commands here rather than in the facade package. The facade should link to evidence; this package should hold the examples, fixtures, and test harnesses.
 
+## Open-loop load evaluation
+
+Use the in-process and HTTPX benchmark suites for repeatable kernel, runtime, and parity acceptance checks. Use the open-loop harness when the question is live-network behavior at a fixed offered request rate.
+
+```bash
+python pkgs/core/tigrbl_tests/benchmarks/open_loop_load_patterns.py --list-patterns
+python pkgs/core/tigrbl_tests/benchmarks/open_loop_load_patterns.py --driver vegeta --pattern steady-rest
+python pkgs/core/tigrbl_tests/benchmarks/open_loop_load_patterns.py --driver wrk2 --pattern spike-jsonrpc
+```
+
+The harness starts the existing Tigrbl benchmark app through Uvicorn, runs REST `/items` or JSON-RPC `/rpc` create workloads, and writes raw driver output plus normalized JSON and Markdown summaries under `.tmp/load-patterns/`. `vegeta` is the default driver for reusable target files and JSON reports. `wrk2` is supported for fixed-rate latency distribution checks when a local `wrk2` executable is available.
+
+Use `--publish-artifacts` only when a run is intended to become governed performance evidence. Published summaries are copied into `pkgs/core/tigrbl_tests/tests/perf/`; ordinary local runs stay under `.tmp/load-patterns/` so benchmark exploration does not rewrite tracked evidence.
+
 ## Package ecosystem cross-links
 
 Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
