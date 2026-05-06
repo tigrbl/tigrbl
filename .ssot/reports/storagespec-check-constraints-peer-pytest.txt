@@ -1,0 +1,8 @@
+Command:
+$env:UV_CACHE_DIR='.tmp\uv-cache'; $env:UV_LINK_MODE='copy'; uv run pytest pkgs/engines/tigrbl_engine_sqlite/tests/test_sqlite_storage_spec_check_constraints.py pkgs/engines/tigrbl_engine_postgres/tests/test_postgres_storage_spec_check_constraints.py -q
+
+Result:
+......
+
+Summary:
+6 passed
