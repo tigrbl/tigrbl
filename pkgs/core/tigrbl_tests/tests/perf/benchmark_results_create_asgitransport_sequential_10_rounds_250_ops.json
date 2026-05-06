@@ -1,0 +1,544 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.024165899958461523,
+          "execution_total_seconds": 0.45042540004942566,
+          "ops_per_second": 555.0308663156368,
+          "time_per_op_seconds": {
+            "min": 0.0012101000174880028,
+            "mean": 0.0017918867915868758,
+            "max": 0.06506589998025447
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.008046200033277273,
+          "execution_total_seconds": 1.8465195999015123,
+          "ops_per_second": 135.38984368935712,
+          "time_per_op_seconds": {
+            "min": 0.005704300012439489,
+            "mean": 0.007370019997470081,
+            "max": 0.014213899965398014
+          }
+        }
+      ]
+    },
+    {
+      "round": 2,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.02497829997446388,
+          "execution_total_seconds": 0.4476097000297159,
+          "ops_per_second": 558.5223018701405,
+          "time_per_op_seconds": {
+            "min": 0.0012238000053912401,
+            "mean": 0.0017807171987369657,
+            "max": 0.05717689997982234
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.008128499961458147,
+          "execution_total_seconds": 1.846237099962309,
+          "ops_per_second": 135.41056021737606,
+          "time_per_op_seconds": {
+            "min": 0.005886900005862117,
+            "mean": 0.00736847200198099,
+            "max": 0.013914200011640787
+          }
+        }
+      ]
+    },
+    {
+      "round": 3,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.009090200066566467,
+          "execution_total_seconds": 1.9122316000284627,
+          "ops_per_second": 130.73730190227946,
+          "time_per_op_seconds": {
+            "min": 0.005934700020588934,
+            "mean": 0.007631748403422535,
+            "max": 0.014644299983046949
+          }
+        },
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.024781999993138015,
+          "execution_total_seconds": 0.4407989999745041,
+          "ops_per_second": 567.1519218838065,
+          "time_per_op_seconds": {
+            "min": 0.001219599973410368,
+            "mean": 0.0017540432065725326,
+            "max": 0.059613300021737814
+          }
+        }
+      ]
+    },
+    {
+      "round": 4,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.009935400099493563,
+          "execution_total_seconds": 1.919347899965942,
+          "ops_per_second": 130.25257172211258,
+          "time_per_op_seconds": {
+            "min": 0.005817999946884811,
+            "mean": 0.007660075607243925,
+            "max": 0.01607519993558526
+          }
+        },
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.02556800004094839,
+          "execution_total_seconds": 0.4686257999856025,
+          "ops_per_second": 533.4746828016739,
+          "time_per_op_seconds": {
+            "min": 0.0012953999685123563,
+            "mean": 0.0018649735990911723,
+            "max": 0.058245800086297095
+          }
+        }
+      ]
+    },
+    {
+      "round": 5,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.00946149998344481,
+          "execution_total_seconds": 2.056306599988602,
+          "ops_per_second": 121.57720059906714,
+          "time_per_op_seconds": {
+            "min": 0.005790100083686411,
+            "mean": 0.008206041204743088,
+            "max": 0.014154800097458065
+          }
+        },
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.02466910006478429,
+          "execution_total_seconds": 0.5950878999428824,
+          "ops_per_second": 420.10600454822804,
+          "time_per_op_seconds": {
+            "min": 0.0013300999999046326,
+            "mean": 0.0023682300015352665,
+            "max": 0.09478779998607934
+          }
+        }
+      ]
+    },
+    {
+      "round": 6,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.02552530006505549,
+          "execution_total_seconds": 0.4659409000305459,
+          "ops_per_second": 536.5487339351636,
+          "time_per_op_seconds": {
+            "min": 0.0013294999953359365,
+            "mean": 0.001854051596019417,
+            "max": 0.05787330004386604
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.009961099945940077,
+          "execution_total_seconds": 1.8217156999744475,
+          "ops_per_second": 137.23326861787854,
+          "time_per_op_seconds": {
+            "min": 0.0059544999385252595,
+            "mean": 0.007270877995528281,
+            "max": 0.013852600008249283
+          }
+        }
+      ]
+    },
+    {
+      "round": 7,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.024430699995718896,
+          "execution_total_seconds": 0.45468769990839064,
+          "ops_per_second": 549.8279369562216,
+          "time_per_op_seconds": {
+            "min": 0.0011744999792426825,
+            "mean": 0.0018090424002148212,
+            "max": 0.05681169999297708
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.008245900040492415,
+          "execution_total_seconds": 1.793330500018783,
+          "ops_per_second": 139.40542470971278,
+          "time_per_op_seconds": {
+            "min": 0.005796500016003847,
+            "mean": 0.0071576683977618814,
+            "max": 0.013838900020346045
+          }
+        }
+      ]
+    },
+    {
+      "round": 8,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.023845999967306852,
+          "execution_total_seconds": 0.43622799997683614,
+          "ops_per_second": 573.094803665228,
+          "time_per_op_seconds": {
+            "min": 0.0013105000834912062,
+            "mean": 0.0017357003982178868,
+            "max": 0.05798279994633049
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.008169200038537383,
+          "execution_total_seconds": 1.7614299000706524,
+          "ops_per_second": 141.93014436167587,
+          "time_per_op_seconds": {
+            "min": 0.005932200001552701,
+            "mean": 0.007030181598849595,
+            "max": 0.013939499971456826
+          }
+        }
+      ]
+    },
+    {
+      "round": 9,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "results": [
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.007946500089019537,
+          "execution_total_seconds": 1.785668299999088,
+          "ops_per_second": 140.00360537291706,
+          "time_per_op_seconds": {
+            "min": 0.0060492999618873,
+            "mean": 0.007127174399327487,
+            "max": 0.013011600007303059
+          }
+        },
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.024435500032268465,
+          "execution_total_seconds": 0.4193877000361681,
+          "ops_per_second": 596.1071342303076,
+          "time_per_op_seconds": {
+            "min": 0.0011660000309348106,
+            "mean": 0.0016687903990969062,
+            "max": 0.060785199981182814
+          }
+        }
+      ]
+    },
+    {
+      "round": 10,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "results": [
+        {
+          "scenario": "tigrbl",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.0231882999651134,
+          "execution_total_seconds": 0.4137602000264451,
+          "ops_per_second": 604.2147117678827,
+          "time_per_op_seconds": {
+            "min": 0.0011859999503940344,
+            "mean": 0.0016466391999274493,
+            "max": 0.05934110004454851
+          }
+        },
+        {
+          "scenario": "fastapi",
+          "transport_kind": "asgitransport",
+          "shared_runner": "httpx.ASGITransport",
+          "ops": 250,
+          "first_start_seconds": 0.007706700009293854,
+          "execution_total_seconds": 1.7757895999820903,
+          "ops_per_second": 140.78244404771903,
+          "time_per_op_seconds": {
+            "min": 0.005957400077022612,
+            "mean": 0.0070871772021055225,
+            "max": 0.014829499996267259
+          }
+        }
+      ]
+    }
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "ops_per_second": {
+        "tigrbl": 555.0308663156368,
+        "fastapi": 135.38984368935712
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 419.64102262627966,
+      "throughput_ratio_tigrbl_over_fastapi": 4.099501492808558
+    },
+    {
+      "step": 2,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "ops_per_second": {
+        "tigrbl": 558.5223018701405,
+        "fastapi": 135.41056021737606
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 423.1117416527644,
+      "throughput_ratio_tigrbl_over_fastapi": 4.124658379476006
+    },
+    {
+      "step": 3,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "ops_per_second": {
+        "tigrbl": 567.1519218838065,
+        "fastapi": 130.73730190227946
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 436.41461998152704,
+      "throughput_ratio_tigrbl_over_fastapi": 4.3381033081723555
+    },
+    {
+      "step": 4,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "ops_per_second": {
+        "tigrbl": 533.4746828016739,
+        "fastapi": 130.25257172211258
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 403.22211107956133,
+      "throughput_ratio_tigrbl_over_fastapi": 4.095694048481559
+    },
+    {
+      "step": 5,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "ops_per_second": {
+        "tigrbl": 420.10600454822804,
+        "fastapi": 121.57720059906714
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 298.5288039491609,
+      "throughput_ratio_tigrbl_over_fastapi": 3.455466999389452
+    },
+    {
+      "step": 6,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "ops_per_second": {
+        "tigrbl": 536.5487339351636,
+        "fastapi": 137.23326861787854
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 399.31546531728503,
+      "throughput_ratio_tigrbl_over_fastapi": 3.9097570096444008
+    },
+    {
+      "step": 7,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "ops_per_second": {
+        "tigrbl": 549.8279369562216,
+        "fastapi": 139.40542470971278
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 410.42251224650886,
+      "throughput_ratio_tigrbl_over_fastapi": 3.944092836423987
+    },
+    {
+      "step": 8,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "ops_per_second": {
+        "tigrbl": 573.094803665228,
+        "fastapi": 141.93014436167587
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 431.1646593035522,
+      "throughput_ratio_tigrbl_over_fastapi": 4.037865291004211
+    },
+    {
+      "step": 9,
+      "order": [
+        "fastapi",
+        "tigrbl"
+      ],
+      "ops_per_second": {
+        "tigrbl": 596.1071342303076,
+        "fastapi": 140.00360537291706
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 456.10352885739053,
+      "throughput_ratio_tigrbl_over_fastapi": 4.2577984519934455
+    },
+    {
+      "step": 10,
+      "order": [
+        "tigrbl",
+        "fastapi"
+      ],
+      "ops_per_second": {
+        "tigrbl": 604.2147117678827,
+        "fastapi": 140.78244404771903
+      },
+      "delta_ops_per_second_tigrbl_minus_fastapi": 463.4322677201637,
+      "throughput_ratio_tigrbl_over_fastapi": 4.29183280525433
+    }
+  ],
+  "summary": {
+    "transport_kind": "asgitransport",
+    "ops": 250,
+    "round_count": 10,
+    "step_count": 10,
+    "throughput_ratio_target": 1.25,
+    "ops_per_second": {
+      "tigrbl": {
+        "min": 420.10600454822804,
+        "max": 604.2147117678827,
+        "mean": 549.4079097974289,
+        "stddev": 48.28415583189783,
+        "median": 556.7765840928887,
+        "iqr": 31.740548529444595,
+        "outliers": 1
+      },
+      "fastapi": {
+        "min": 121.57720059906714,
+        "max": 141.93014436167587,
+        "mean": 135.27223652400957,
+        "stddev": 5.927516402229157,
+        "median": 136.32191441762728,
+        "iqr": 7.953622858067121,
+        "outliers": 0
+      }
+    },
+    "delta_ops_per_second_tigrbl_minus_fastapi": 414.13567327341934,
+    "delta_ops_per_second_tigrbl_minus_fastapi_summary": {
+      "min": 298.5288039491609,
+      "max": 463.4322677201637,
+      "mean": 414.13567327341934,
+      "stddev": 43.366060273489154,
+      "median": 421.37638213952204,
+      "iqr": 30.079918440735128,
+      "outliers": 1
+    },
+    "throughput_ratio_tigrbl_over_fastapi": 4.061497938639568
+  }
+}
