@@ -11,6 +11,9 @@ ANCHOR = _ev.BATCH_COMMIT
 
 def _run(obj: object | None, ctx: Any) -> None:
     del obj
+    if ctx.temp.get("batch_resident_handled"):
+        ctx.temp["batch_commit"] = True
+        return
     if ctx.temp.get("batch_group") is not None:
         ctx.temp["batch_commit"] = True
 

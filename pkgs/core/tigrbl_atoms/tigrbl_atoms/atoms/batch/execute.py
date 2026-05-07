@@ -19,6 +19,8 @@ async def _maybe_await(value: Any) -> Any:
 
 async def _run(obj: object | None, ctx: Any) -> None:
     del obj
+    if ctx.temp.get("batch_resident_handled"):
+        return
     if ctx.temp.get("batch_group") is None:
         return
     db = _ctx.db(ctx)

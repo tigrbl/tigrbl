@@ -11,6 +11,8 @@ ANCHOR = _ev.BATCH_PREPARE_EXECUTE
 
 def _run(obj: object | None, ctx: Any) -> None:
     del obj
+    if ctx.temp.get("batch_resident_handled"):
+        return
     group = ctx.temp.get("batch_group")
     if group is None:
         return

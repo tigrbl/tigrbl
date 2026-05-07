@@ -268,6 +268,7 @@ class PackedPlanExecutor(ExecutorBase):
     """Executes packed kernel plans via kernel-attached packed execution hooks."""
 
     name: ClassVar[str] = "packed"
+    _resident_batch_scheduler: ClassVar[Any | None] = None
     _PHASE_EXECUTION_ORDER: ClassVar[tuple[str, ...]] = (
         "INGRESS_BEGIN",
         "INGRESS_PARSE",
@@ -372,6 +373,7 @@ class PackedPlanExecutor(ExecutorBase):
             if isinstance(temp, dict):
                 temp["program_id"] = program_id
         self._seed_batch_policy_from_hot_plan(ctx, hot_op_plan)
+        self._seed_batch_scheduler(ctx, hot_op_plan, env)
         return True
 
     @classmethod
@@ -407,6 +409,55 @@ class PackedPlanExecutor(ExecutorBase):
                 return
             try:
                 ctx["temp"] = {"batch_policy": batch_policy}
+            except Exception:
+                pass
+
+    @classmethod
+    def _seed_batch_scheduler(
+        cls, ctx: Any, hot_op_plan: Any | None, env: Any | None = None
+    ) -> None:
+        batch_policy = cls._batch_policy_mapping(hot_op_plan)
+        if not bool(batch_policy.get("enabled", False)):
+            return
+        try:
+            from tigrbl_atoms.atoms.batch.scheduler import ResidentBatchScheduler
+        except Exception:
+            return
+
+        owner = getattr(env, "app", None) if env is not None else None
+        scope = getattr(env, "scope", None) if env is not None else None
+        if owner is None and isinstance(scope, Mapping):
+            owner = scope.get("app")
+
+        scheduler = None
+        if owner is not None:
+            scheduler = getattr(owner, "_tigrbl_batch_scheduler", None)
+            if not isinstance(scheduler, ResidentBatchScheduler):
+                scheduler = ResidentBatchScheduler()
+                try:
+                    setattr(owner, "_tigrbl_batch_scheduler", scheduler)
+                except Exception:
+                    pass
+        if scheduler is None:
+            if not isinstance(cls._resident_batch_scheduler, ResidentBatchScheduler):
+                cls._resident_batch_scheduler = ResidentBatchScheduler()
+            scheduler = cls._resident_batch_scheduler
+
+        try:
+            setattr(ctx, "batch_scheduler", scheduler)
+        except Exception:
+            pass
+        temp = getattr(ctx, "temp", None)
+        if isinstance(temp, dict):
+            temp["batch_scheduler"] = scheduler
+            return
+        if isinstance(ctx, Mapping):
+            existing = ctx.get("temp")
+            if isinstance(existing, dict):
+                existing["batch_scheduler"] = scheduler
+                return
+            try:
+                ctx["temp"] = {"batch_scheduler": scheduler}
             except Exception:
                 pass
 
@@ -3668,6 +3719,7 @@ class PackedPlanExecutor(ExecutorBase):
             else None
         )
         self._seed_batch_policy_from_hot_plan(ctx, hot_op_plan)
+        self._seed_batch_scheduler(ctx, hot_op_plan, env)
         program_hot_runner_id = self._resolve_program_hot_runner_id(
             packed, program_id, hot_op_plan
         )

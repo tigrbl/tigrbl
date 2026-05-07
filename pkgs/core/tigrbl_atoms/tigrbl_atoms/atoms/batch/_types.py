@@ -31,6 +31,7 @@ class BatchAdmission:
     status: str = "admitted"
     rejection_reason: str | None = None
     result_index: int | None = None
+    future: Any | None = None
 
 
 @dataclass(slots=True)
@@ -44,3 +45,4 @@ class BatchGroup:
     fallback_reason: str | None = None
     result_slots: list[Any] = field(default_factory=list)
     error_slots: list[Any] = field(default_factory=list)
+    owner_admission_id: int | None = None

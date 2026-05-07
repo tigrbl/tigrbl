@@ -13,6 +13,8 @@ ANCHOR = _ev.SYS_HANDLER_PERSISTENCE
 
 
 async def _run(obj: object | None, ctx: Any) -> None:
+    if getattr(ctx, "result", None) is not None:
+        return
     model = obj if isinstance(obj, type) else getattr(ctx, "model", None)
     if not isinstance(model, type):
         raise TypeError("handler_create requires a model type")

@@ -6,6 +6,7 @@ from ... import events as _ev
 from ...stages import Guarded
 from ...types import Atom, Ctx, GuardedCtx
 from . import _scheduler
+from .scheduler import get_resident_scheduler
 
 ANCHOR = _ev.BATCH_ADMIT
 
@@ -22,6 +23,10 @@ class AtomImpl(Atom[Guarded, Guarded, Exception]):
     anchor = ANCHOR
 
     async def __call__(self, obj: object | None, ctx: Ctx[Guarded]) -> Ctx[Guarded]:
+        resident = get_resident_scheduler(ctx)
+        if resident is not None and _scheduler.enabled(ctx):
+            await resident.admit(ctx)
+            return ctx.promote(GuardedCtx)
         _run(obj, ctx)
         return ctx.promote(GuardedCtx)
 
