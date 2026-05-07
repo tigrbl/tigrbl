@@ -47,6 +47,9 @@ async def _emit_to_sink(sink: Any, payloads: list[Any]) -> None:
             await _maybe_await(emit(payload))
 
 
+hot_run = _run
+
+
 class AtomImpl(Atom[Egressed, Egressed, Exception]):
     name = "fanout.emit_many"
     anchor = ANCHOR
@@ -59,5 +62,6 @@ class AtomImpl(Atom[Egressed, Egressed, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]

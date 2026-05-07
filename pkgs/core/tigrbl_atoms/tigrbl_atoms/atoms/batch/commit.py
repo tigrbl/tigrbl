@@ -18,6 +18,9 @@ def _run(obj: object | None, ctx: Any) -> None:
         ctx.temp["batch_commit"] = True
 
 
+hot_run = _run
+
+
 class AtomImpl(Atom[Operated, Operated, Exception]):
     name = "batch.commit"
     anchor = ANCHOR
@@ -28,5 +31,6 @@ class AtomImpl(Atom[Operated, Operated, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]
