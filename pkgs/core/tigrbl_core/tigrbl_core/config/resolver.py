@@ -278,7 +278,14 @@ def _normalize(cfg: Mapping[str, Any], *, op: Optional[str]) -> Dict[str, Any]:
     fixed_batch = dict(DEFAULTS.get("batch", {}))
     fixed_batch.update(dict(batch))
     fixed_batch["enabled"] = bool(fixed_batch.get("enabled", False))
-    for key in ("max_size", "max_bytes", "max_delay_ms", "admission_timeout_ms"):
+    for key in (
+        "max_size",
+        "max_bytes",
+        "max_delay_ms",
+        "admission_timeout_ms",
+        "max_queue_depth",
+        "max_in_flight",
+    ):
         try:
             fixed_batch[key] = max(0, int(fixed_batch.get(key, 0)))
         except Exception:

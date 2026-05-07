@@ -197,9 +197,10 @@ def _batch_policy_for_op(sp: Any | None, *, alias: str, target: str, persistent:
     if not isinstance(batch, Mapping):
         return {"enabled": False}
     policy = dict(batch)
-    if target in {"read", "list"} and not bool(policy.get("allow_reads", False)):
+    allow_reads = bool(policy.get("allow_reads", False))
+    if target in {"read", "list"} and not allow_reads:
         policy["enabled"] = False
-    if not persistent:
+    if not persistent and not allow_reads:
         policy["enabled"] = False
     return policy
 

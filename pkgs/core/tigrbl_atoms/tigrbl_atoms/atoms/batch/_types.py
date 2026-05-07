@@ -16,6 +16,8 @@ class BatchPolicy:
     overflow_policy: str = "backpressure"
     result_fanout: str = "by_admission"
     allow_reads: bool = False
+    max_queue_depth: int = 1024
+    max_in_flight: int = 16
 
 
 @dataclass(slots=True)
@@ -26,6 +28,8 @@ class BatchAdmission:
     sink: Any
     sink_index: int
     size_bytes: int = 0
+    status: str = "admitted"
+    rejection_reason: str | None = None
     result_index: int | None = None
 
 
@@ -36,5 +40,7 @@ class BatchGroup:
     sealed: bool = False
     created_ns: int = field(default_factory=monotonic_ns)
     size_bytes: int = 0
+    fallback: bool = False
+    fallback_reason: str | None = None
     result_slots: list[Any] = field(default_factory=list)
     error_slots: list[Any] = field(default_factory=list)

@@ -333,7 +333,7 @@ def _inject_atoms(
         )
         if domain in _BATCH_DOMAINS and not batch_enabled:
             continue
-        if not persistent and persist_tied:
+        if not persistent and persist_tied and not (domain in _BATCH_DOMAINS and batch_enabled):
             if not (
                 domain == "sys"
                 and isinstance(_subject, str)

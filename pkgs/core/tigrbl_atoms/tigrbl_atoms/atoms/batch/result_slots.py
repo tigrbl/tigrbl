@@ -14,8 +14,14 @@ def _run(obj: object | None, ctx: Any) -> None:
     group = ctx.temp.get("batch_group")
     if group is None:
         return
+    if ctx.temp.get("batch_execution_kind") == "scalar_fallback":
+        group.result_slots = [None for _ in group.admissions]
+        return
     raw = ctx.temp.get("batch_raw_results")
-    group.result_slots = list(raw if isinstance(raw, (list, tuple)) else [raw])
+    slots = list(raw if isinstance(raw, (list, tuple)) else [raw])
+    if len(slots) < len(group.admissions):
+        slots.extend([None] * (len(group.admissions) - len(slots)))
+    group.result_slots = slots
 
 
 class AtomImpl(Atom[Operated, Operated, Exception]):

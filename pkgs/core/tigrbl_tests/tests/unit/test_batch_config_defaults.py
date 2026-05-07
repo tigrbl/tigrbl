@@ -11,6 +11,8 @@ def test_batch_config_defaults_are_disabled_and_sized() -> None:
     assert batch["max_size"] == 64
     assert batch["max_bytes"] == 1_048_576
     assert batch["max_delay_ms"] == 1
+    assert batch["max_queue_depth"] == 1024
+    assert batch["max_in_flight"] == 16
 
 
 def test_opspec_batch_config_overrides_defaults() -> None:

@@ -42,5 +42,7 @@ DEFAULTS: Mapping[str, Any] = {
         "overflow_policy": "backpressure",
         "result_fanout": "by_admission",
         "allow_reads": False,
+        "max_queue_depth": 1024,
+        "max_in_flight": 16,
     },
 }
