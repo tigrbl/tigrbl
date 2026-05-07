@@ -25,6 +25,7 @@ from .measure import (
 )
 
 _LAZY_EXPORTS = {
+    "BatchOpPlan": "models",
     "Kernel": "core",
     "OpView": "models",
     "PackedKernel": "models",
@@ -83,6 +84,7 @@ __all__ = [
     "Kernel",
     "RustBackendConfig",
     "RustPlan",
+    "BatchOpPlan",
     "OpView",
     "PackedKernel",
     "SchemaIn",
