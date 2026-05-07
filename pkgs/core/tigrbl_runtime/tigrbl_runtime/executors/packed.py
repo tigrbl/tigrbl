@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, fields, is_dataclass
 import inspect
 import json
 import uuid as _uuid
@@ -371,7 +371,44 @@ class PackedPlanExecutor(ExecutorBase):
                     temp = None
             if isinstance(temp, dict):
                 temp["program_id"] = program_id
+        self._seed_batch_policy_from_hot_plan(ctx, hot_op_plan)
         return True
+
+    @classmethod
+    def _batch_policy_mapping(cls, hot_op_plan: Any | None) -> dict[str, Any]:
+        if hot_op_plan is None:
+            return {}
+        batch = getattr(hot_op_plan, "batch", None)
+        if isinstance(batch, Mapping):
+            return dict(batch)
+        if is_dataclass(batch):
+            return {field.name: getattr(batch, field.name) for field in fields(batch)}
+        return {}
+
+    @classmethod
+    def _seed_batch_policy_from_hot_plan(
+        cls, ctx: Any, hot_op_plan: Any | None
+    ) -> None:
+        batch_policy = cls._batch_policy_mapping(hot_op_plan)
+        if not batch_policy:
+            return
+        try:
+            setattr(ctx, "batch_policy", batch_policy)
+        except Exception:
+            pass
+        temp = getattr(ctx, "temp", None)
+        if isinstance(temp, dict):
+            temp["batch_policy"] = batch_policy
+            return
+        if isinstance(ctx, Mapping):
+            existing = ctx.get("temp")
+            if isinstance(existing, dict):
+                existing["batch_policy"] = batch_policy
+                return
+            try:
+                ctx["temp"] = {"batch_policy": batch_policy}
+            except Exception:
+                pass
 
     @classmethod
     def _resolve_error_helpers(cls):
@@ -3630,6 +3667,7 @@ class PackedPlanExecutor(ExecutorBase):
             if program_id < len(getattr(packed, "hot_op_plans", ()))
             else None
         )
+        self._seed_batch_policy_from_hot_plan(ctx, hot_op_plan)
         program_hot_runner_id = self._resolve_program_hot_runner_id(
             packed, program_id, hot_op_plan
         )
