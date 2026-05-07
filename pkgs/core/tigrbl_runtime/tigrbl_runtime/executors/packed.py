@@ -1904,7 +1904,7 @@ class PackedPlanExecutor(ExecutorBase):
 
     @classmethod
     def _ensure_hot_ctx(cls, ctx: _Ctx, env: Any) -> HotCtx:
-        temp = getattr(ctx, "temp", None)
+        temp = object.__getattribute__(ctx, "temp")
         if not isinstance(temp, dict):
             ctx.temp = {}
             temp = ctx.temp
@@ -3148,7 +3148,7 @@ class PackedPlanExecutor(ExecutorBase):
                 if phase_name != current_phase:
                     ctx.phase = phase_name
                     current_phase = phase_name
-                    if getattr(ctx, "_raw_db", None) is not None:
+                    if ctx.get("_raw_db") is not None:
                         from tigrbl_atoms.atoms.sys.phase_db import bind_phase_db
 
                         bind_phase_db(ctx)

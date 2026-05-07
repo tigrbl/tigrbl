@@ -24,7 +24,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         ctx.result = None
         ctx.temp["fanout_payload"] = {
             "admission_id": admission.admission_id,
-            "correlation_id": admission.intent.get("correlation_id"),
+            "correlation_id": _correlation_id(admission),
             "error": error,
         }
         return
@@ -35,9 +35,16 @@ def _run(obj: object | None, ctx: Any) -> None:
     ctx.result = result
     ctx.temp["fanout_payload"] = {
         "admission_id": admission.admission_id,
-        "correlation_id": admission.intent.get("correlation_id"),
+        "correlation_id": _correlation_id(admission),
         "result": result,
     }
+
+
+def _correlation_id(admission: Any) -> Any:
+    correlation_id = getattr(admission, "correlation_id", None)
+    if correlation_id is not None:
+        return correlation_id
+    return admission.intent.get("correlation_id")
 
 
 hot_run = _run

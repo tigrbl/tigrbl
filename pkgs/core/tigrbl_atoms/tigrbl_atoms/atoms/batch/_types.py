@@ -34,6 +34,13 @@ class BatchAdmission:
     future: Any | None = None
     slot_payload: Any | None = None
     parameter_row: tuple[Any, ...] | None = None
+    op: Any | None = None
+    target: Any | None = None
+    model: Any | None = None
+    payload_ref: Any | None = None
+    statement: Any | None = None
+    correlation_id: Any | None = None
+    force_seal: bool = False
 
 
 @dataclass(slots=True)

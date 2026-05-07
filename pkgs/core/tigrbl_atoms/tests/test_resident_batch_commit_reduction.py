@@ -4,6 +4,8 @@ import asyncio
 from types import SimpleNamespace
 
 import pytest
+from sqlalchemy import create_engine, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 from tigrbl_atoms.atoms.batch.scheduler import ResidentBatchScheduler
 from tigrbl_atoms.atoms.sys import commit_tx, handler_create, handler_persistence, start_tx
@@ -54,6 +56,41 @@ class SessionProvider:
         return session, session.close
 
 
+class Base(DeclarativeBase):
+    pass
+
+
+class Widget(Base):
+    __tablename__ = "resident_batch_widgets"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+
+
+class SqlAlchemyProvider:
+    def __init__(self) -> None:
+        self.engine = create_engine("sqlite:///:memory:")
+        Base.metadata.create_all(self.engine)
+        self.commit_count = 0
+        self.close_count = 0
+
+    def acquire(self, _ctx):
+        session = Session(self.engine, expire_on_commit=False)
+
+        def release() -> None:
+            session.close()
+            self.close_count += 1
+
+        original_commit = session.commit
+
+        def commit() -> None:
+            self.commit_count += 1
+            original_commit()
+
+        session.commit = commit  # type: ignore[method-assign]
+        return session, release
+
+
 def _ctx(provider: SessionProvider, item_id: int) -> SimpleNamespace:
     return SimpleNamespace(
         batch_policy={"enabled": True, "max_size": 25, "max_delay_ms": 1000},
@@ -64,6 +101,26 @@ def _ctx(provider: SessionProvider, item_id: int) -> SimpleNamespace:
                 "op": "create",
                 "payload_ref": {"id": item_id},
                 "statement": "insert",
+            },
+            "transport": {
+                "sink_index": item_id,
+                "correlation_id": f"c{item_id}",
+            },
+        },
+    )
+
+
+def _create_ctx(provider: SqlAlchemyProvider, item_id: int) -> SimpleNamespace:
+    return SimpleNamespace(
+        batch_policy={"enabled": True, "max_size": 25, "max_delay_ms": 1000},
+        batch_db_acquire=provider.acquire,
+        temp={
+            "intent": {
+                "final_group_key": ("sqlite", "tenant", "create", Widget),
+                "op": "create",
+                "target": "create",
+                "model": Widget,
+                "payload_ref": {"id": item_id, "name": f"w{item_id}"},
             },
             "transport": {
                 "sink_index": item_id,
@@ -93,6 +150,30 @@ async def test_resident_scheduler_reduces_250_admissions_to_10_commits() -> None
     assert provider.close_count == 10
     assert scheduler.metrics["commits"] == 10
     assert scheduler.metrics["executemany"] == 10
+
+
+@pytest.mark.asyncio
+async def test_resident_create_group_uses_insert_executemany_not_bulk_create() -> None:
+    provider = SqlAlchemyProvider()
+    scheduler = ResidentBatchScheduler()
+    contexts = [_create_ctx(provider, item_id) for item_id in range(50)]
+
+    async def admit_and_wait(ctx):
+        await scheduler.admit(ctx)
+        return await scheduler.await_result(ctx)
+
+    results = await asyncio.gather(*(admit_and_wait(ctx) for ctx in contexts))
+
+    with Session(provider.engine) as session:
+        names = session.scalars(select(Widget.name).order_by(Widget.id)).all()
+
+    assert [result.name for result in results] == [f"w{item_id}" for item_id in range(50)]
+    assert names == [f"w{item_id}" for item_id in range(50)]
+    assert provider.commit_count == 2
+    assert provider.close_count == 2
+    assert scheduler.metrics["commits"] == 2
+    assert scheduler.metrics["executemany"] == 2
+    assert scheduler.metrics["fallback"] == 0
 
 
 @pytest.mark.asyncio

@@ -4,6 +4,7 @@ import importlib
 import inspect
 import logging
 import pkgutil
+from functools import lru_cache
 from types import SimpleNamespace
 from typing import (
     Any,
@@ -130,6 +131,18 @@ def _policy_atom_name(
 
 
 def _use_two_args_for(run: _AtomRun) -> bool:
+    try:
+        return _use_two_args_for_cached(run)
+    except TypeError:
+        return _use_two_args_for_uncached(run)
+
+
+@lru_cache(maxsize=2048)
+def _use_two_args_for_cached(run: _AtomRun) -> bool:
+    return _use_two_args_for_uncached(run)
+
+
+def _use_two_args_for_uncached(run: _AtomRun) -> bool:
     try:
         params = tuple(inspect.signature(run).parameters.values())
         positional = [
