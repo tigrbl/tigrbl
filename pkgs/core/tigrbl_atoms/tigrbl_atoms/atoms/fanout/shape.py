@@ -15,6 +15,19 @@ def _run(obj: object | None, ctx: Any) -> None:
     group = ctx.temp.get("batch_group")
     if admission is None or group is None or admission.result_index is None:
         return
+    error = None
+    try:
+        error = group.error_slots[admission.result_index]
+    except IndexError:
+        error = None
+    if error is not None:
+        ctx.result = None
+        ctx.temp["fanout_payload"] = {
+            "admission_id": admission.admission_id,
+            "correlation_id": admission.intent.get("correlation_id"),
+            "error": error,
+        }
+        return
     try:
         result = group.result_slots[admission.result_index]
     except IndexError:

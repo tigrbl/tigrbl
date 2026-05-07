@@ -54,6 +54,8 @@ def _coerce_policy(policy: Mapping[str, Any]) -> BatchPolicy:
         overflow_policy=str(policy.get("overflow_policy", "backpressure")),
         result_fanout=str(policy.get("result_fanout", "by_admission")),
         allow_reads=bool(policy.get("allow_reads", False)),
+        max_queue_depth=_int("max_queue_depth", 1024),
+        max_in_flight=_int("max_in_flight", 16),
     )
 
 
@@ -77,6 +79,15 @@ def admit(ctx: Any) -> BatchAdmission:
     intent = ctx.temp["intent"]
     transport = ctx.temp.get("transport", {})
     policy = policy_from_ctx(ctx)
+    open_depth = sum(len(group.admissions) for group in state["open"].values())
+    if open_depth >= policy.max_queue_depth:
+        if policy.overflow_policy == "reject":
+            raise RuntimeError("batch admission rejected: max_queue_depth")
+        ctx.temp["batch_backpressure"] = True
+        if policy.overflow_policy == "scalar_fallback":
+            ctx.temp["batch_execution_kind"] = "scalar_fallback"
+            ctx.temp["batch_fallback_reason"] = "max_queue_depth"
+            intent["force_scalar_fallback"] = True
     group_key = intent["final_group_key"]
     group = state["open"].setdefault(group_key, BatchGroup(group_key=group_key))
     size_bytes = int(intent.get("payload_bytes", 0) or 0)

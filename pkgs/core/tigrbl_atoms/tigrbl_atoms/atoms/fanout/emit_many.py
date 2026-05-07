@@ -17,18 +17,34 @@ async def _maybe_await(value: Any) -> Any:
 
 async def _run(obj: object | None, ctx: Any) -> None:
     del obj
+    payloads = ctx.temp.get("fanout_payloads")
+    if payloads:
+        grouped: dict[int, tuple[Any, list[Any]]] = {}
+        for admission, payload in payloads:
+            sink = getattr(admission, "sink", None)
+            key = id(sink)
+            if key not in grouped:
+                grouped[key] = (sink, [])
+            grouped[key][1].append(payload)
+        for sink, items in grouped.values():
+            await _emit_to_sink(sink, items)
+        return
     admission = ctx.temp.get("batch_admission")
     payload = ctx.temp.get("fanout_payload")
     if admission is None or payload is None:
         return
-    sink = admission.sink
+    await _emit_to_sink(admission.sink, [payload])
+
+
+async def _emit_to_sink(sink: Any, payloads: list[Any]) -> None:
     emit_many = getattr(sink, "emit_many", None)
     if callable(emit_many):
-        await _maybe_await(emit_many([payload]))
+        await _maybe_await(emit_many(payloads))
         return
     emit = getattr(sink, "emit", None)
     if callable(emit):
-        await _maybe_await(emit(payload))
+        for payload in payloads:
+            await _maybe_await(emit(payload))
 
 
 class AtomImpl(Atom[Egressed, Egressed, Exception]):

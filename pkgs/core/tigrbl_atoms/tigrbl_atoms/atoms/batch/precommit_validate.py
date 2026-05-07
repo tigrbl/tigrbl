@@ -14,6 +14,8 @@ def _run(obj: object | None, ctx: Any) -> None:
     group = ctx.temp.get("batch_group")
     if group is None:
         return
+    if getattr(group, "fallback", False):
+        return
     if group.result_slots and len(group.result_slots) != len(group.admissions):
         raise RuntimeError("batch result slot count does not match admissions")
 
