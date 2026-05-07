@@ -13,6 +13,11 @@ ANCHOR = _ev.SYS_HANDLER_PERSISTENCE
 
 
 async def _run(obj: object | None, ctx: Any) -> None:
+    temp = getattr(ctx, "temp", None)
+    if isinstance(temp, dict) and (
+        temp.get("batch_resident_admitted") or temp.get("batch_resident_handled")
+    ):
+        return
     if getattr(ctx, "result", None) is not None:
         return
     model = obj if isinstance(obj, type) else getattr(ctx, "model", None)
