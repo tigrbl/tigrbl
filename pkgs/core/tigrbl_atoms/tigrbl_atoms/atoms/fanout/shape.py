@@ -40,6 +40,9 @@ def _run(obj: object | None, ctx: Any) -> None:
     }
 
 
+hot_run = _run
+
+
 class AtomImpl(Atom[Encoded, Encoded, Exception]):
     name = "fanout.shape"
     anchor = ANCHOR
@@ -50,5 +53,6 @@ class AtomImpl(Atom[Encoded, Encoded, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]

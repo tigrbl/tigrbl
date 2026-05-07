@@ -18,6 +18,14 @@ def _run(obj: object | None, ctx: Any) -> None:
     ctx.temp["batch_group"] = _scheduler.await_seal(ctx)
 
 
+async def hot_run(obj: object | None, ctx: Any) -> None:
+    resident = get_resident_scheduler(ctx)
+    if resident is not None and _scheduler.enabled(ctx):
+        await resident.await_result(ctx)
+        return
+    _run(obj, ctx)
+
+
 class AtomImpl(Atom[Guarded, Guarded, Exception]):
     name = "batch.await_seal"
     anchor = ANCHOR
@@ -32,5 +40,6 @@ class AtomImpl(Atom[Guarded, Guarded, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]

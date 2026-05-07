@@ -8,6 +8,7 @@ from typing import Any, Mapping
 
 from .._temp import _ensure_temp
 from ..sys import _oltp_context as _ctx
+from ..hot.slots import HotSlotPayload, project_present_dict
 from ._scheduler import policy_from_ctx
 from ._types import BatchAdmission, BatchGroup
 
@@ -53,6 +54,7 @@ class ResidentBatchScheduler:
                 sink=transport.get("sink"),
                 sink_index=int(transport.get("sink_index", 0) or 0),
                 size_bytes=size_bytes,
+                slot_payload=intent.get("slot_payload"),
                 future=asyncio.get_running_loop().create_future(),
             )
             admission.result_index = len(group.admissions)
@@ -148,7 +150,7 @@ class ResidentBatchScheduler:
         db = _ctx.db(owner_ctx)
         statements = [admission.intent.get("statement") for admission in group.admissions]
         parameter_sets = [
-            admission.intent.get("payload_ref") for admission in group.admissions
+            _payload_for_execution(admission) for admission in group.admissions
         ]
         first = statements[0] if statements else None
 
@@ -256,7 +258,7 @@ def _is_create_group(group: BatchGroup) -> bool:
     for admission in group.admissions:
         op = str(admission.intent.get("op") or "").lower()
         target = str(admission.intent.get("target") or op).lower()
-        payload = admission.intent.get("payload_ref")
+        payload = _payload_for_execution(admission)
         if admission.intent.get("model") is not first_model:
             return False
         if target != "create":
@@ -264,6 +266,16 @@ def _is_create_group(group: BatchGroup) -> bool:
         if not isinstance(payload, Mapping):
             return False
     return True
+
+
+def _payload_for_execution(admission: BatchAdmission) -> Any:
+    payload = admission.intent.get("payload_ref")
+    if isinstance(payload, Mapping):
+        return payload
+    slot_payload = getattr(admission, "slot_payload", None)
+    if isinstance(slot_payload, HotSlotPayload):
+        return project_present_dict(slot_payload)
+    return payload
 
 
 __all__ = ["ResidentBatchScheduler", "get_resident_scheduler"]

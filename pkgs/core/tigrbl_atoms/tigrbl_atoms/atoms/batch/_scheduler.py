@@ -98,6 +98,7 @@ def admit(ctx: Any) -> BatchAdmission:
         sink=transport.get("sink"),
         sink_index=int(transport.get("sink_index", 0) or 0),
         size_bytes=size_bytes,
+        slot_payload=intent.get("slot_payload"),
     )
     admission.result_index = len(group.admissions)
     group.admissions.append(admission)

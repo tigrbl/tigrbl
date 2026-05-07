@@ -26,6 +26,9 @@ def _run(obj: object | None, ctx: Any) -> None:
     )
 
 
+hot_run = _run
+
+
 class AtomImpl(Atom[Guarded, Guarded, Exception]):
     name = "intent.final_group_key"
     anchor = ANCHOR
@@ -36,5 +39,6 @@ class AtomImpl(Atom[Guarded, Guarded, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]

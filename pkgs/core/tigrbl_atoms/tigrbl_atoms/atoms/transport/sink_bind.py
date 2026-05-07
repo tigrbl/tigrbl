@@ -19,6 +19,9 @@ def _run(obj: object | None, ctx: Any) -> None:
     transport["correlation_id"] = getattr(ctx, "correlation_id", None)
 
 
+hot_run = _run
+
+
 class AtomImpl(Atom[Ingress, Ingress, Exception]):
     name = "transport.sink_bind"
     anchor = ANCHOR
@@ -29,5 +32,6 @@ class AtomImpl(Atom[Ingress, Ingress, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]

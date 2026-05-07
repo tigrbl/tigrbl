@@ -32,6 +32,8 @@ class BatchAdmission:
     rejection_reason: str | None = None
     result_index: int | None = None
     future: Any | None = None
+    slot_payload: Any | None = None
+    parameter_row: tuple[Any, ...] | None = None
 
 
 @dataclass(slots=True)
@@ -46,3 +48,5 @@ class BatchGroup:
     result_slots: list[Any] = field(default_factory=list)
     error_slots: list[Any] = field(default_factory=list)
     owner_admission_id: int | None = None
+    parameter_columns: tuple[str, ...] = ()
+    parameter_rows: list[tuple[Any, ...]] = field(default_factory=list)

@@ -57,6 +57,9 @@ def _handle_unsupported(ctx: Any, reason: str) -> None:
     ctx.temp["batch_fallback_reason"] = reason
 
 
+hot_run = _run
+
+
 class AtomImpl(Atom[Resolved, Operated, Exception]):
     name = "batch.execute"
     anchor = ANCHOR
@@ -67,5 +70,6 @@ class AtomImpl(Atom[Resolved, Operated, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]

@@ -2772,39 +2772,78 @@ class PackedPlanExecutor(ExecutorBase):
 
         step_table = packed.step_table
 
+        def _compile_step(step_id: int) -> tuple[int, Any, Any, bool]:
+            step = step_table[step_id]
+            direct_run = getattr(step, "__tigrbl_direct_run", None)
+            if callable(direct_run):
+                direct_dep = getattr(step, "__tigrbl_direct_dep", None)
+                has_direct_dep = bool(
+                    getattr(step, "__tigrbl_has_direct_dep", False)
+                )
+                direct_is_async = bool(
+                    getattr(step, "__tigrbl_direct_is_async", False)
+                )
+                use_two_args = bool(getattr(step, "__tigrbl_use_two_args", False))
+                invoke_kind = (
+                    _DIRECT_INVOKE_RUN_WITH_DEP
+                    if has_direct_dep
+                    else (
+                        _DIRECT_INVOKE_RUN_WITH_NONE
+                        if use_two_args
+                        else _DIRECT_INVOKE_RUN
+                    )
+                )
+                return (invoke_kind, direct_run, direct_dep, direct_is_async)
+            return (
+                _DIRECT_INVOKE_STEP,
+                step,
+                None,
+                bool(async_flags[step_id]) if step_id < len(async_flags) else False,
+            )
+
+        def _invoke(call: Any, invoke_kind: int, dep: Any, ctx: _Ctx) -> Any:
+            if invoke_kind == _DIRECT_INVOKE_RUN_WITH_DEP:
+                return call(dep, ctx)
+            if invoke_kind == _DIRECT_INVOKE_RUN_WITH_NONE:
+                return call(None, ctx)
+            return call(ctx)
+
         def _make_fused_sync_runner(step_ids: tuple[int, ...]):
-            steps = tuple(step_table[step_id] for step_id in step_ids)
+            steps = tuple(_compile_step(step_id) for step_id in step_ids)
 
             async def _runner(ctx: _Ctx) -> None:
-                for step in steps:
-                    step(ctx)
+                for invoke_kind, call, dep, is_async in steps:
+                    rv = _invoke(call, invoke_kind, dep, ctx)
+                    if is_async or inspect.isawaitable(rv):
+                        close = getattr(rv, "close", None)
+                        if callable(close):
+                            close()
+                        raise RuntimeError("sync segment step returned awaitable")
 
             return _runner
 
         def _make_async_direct_runner(step_ids: tuple[int, ...]):
-            steps = tuple(step_table[step_id] for step_id in step_ids)
+            steps = tuple(_compile_step(step_id) for step_id in step_ids)
 
             async def _runner(ctx: _Ctx) -> None:
-                for step in steps:
-                    await step(ctx)
+                for invoke_kind, call, dep, is_async in steps:
+                    rv = _invoke(call, invoke_kind, dep, ctx)
+                    if is_async:
+                        await rv
+                    elif inspect.isawaitable(rv):
+                        await rv
 
             return _runner
 
         def _make_mixed_runner(step_ids: tuple[int, ...]):
-            steps = tuple(
-                (
-                    step_table[step_id],
-                    async_flags[step_id] if step_id < len(async_flags) else False,
-                )
-                for step_id in step_ids
-            )
+            steps = tuple(_compile_step(step_id) for step_id in step_ids)
 
             async def _runner(ctx: _Ctx) -> None:
-                for step, is_async in steps:
+                for invoke_kind, call, dep, is_async in steps:
+                    rv = _invoke(call, invoke_kind, dep, ctx)
                     if is_async:
-                        await step(ctx)
+                        await rv
                         continue
-                    rv = step(ctx)
                     if inspect.isawaitable(rv):
                         await rv
 

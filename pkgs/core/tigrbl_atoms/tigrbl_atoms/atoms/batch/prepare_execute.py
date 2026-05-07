@@ -5,6 +5,7 @@ from typing import Any
 from ... import events as _ev
 from ...stages import Executing
 from ...types import Atom, Ctx, ExecutingCtx
+from ..hot.slots import HotSlotPayload
 
 ANCHOR = _ev.BATCH_PREPARE_EXECUTE
 
@@ -25,13 +26,12 @@ def _run(obj: object | None, ctx: Any) -> None:
     explicit_statements = ctx.temp.get(
         "batch_statements", getattr(ctx, "batch_statements", None)
     )
-    parameter_sets = [
-        admission.intent.get("payload_ref") for admission in group.admissions
-    ]
+    parameter_sets = [_payload_for_execute(admission) for admission in group.admissions]
     if explicit_stmt is not None:
         ctx.temp["batch_execution_kind"] = "executemany"
         ctx.temp["batch_statement"] = explicit_stmt
         ctx.temp["batch_parameter_sets"] = parameter_sets
+        _prepare_slot_rows(group, parameter_sets)
         return
     if explicit_statements is not None:
         ctx.temp["batch_execution_kind"] = "executeloop"
@@ -49,10 +49,39 @@ def _run(obj: object | None, ctx: Any) -> None:
         ctx.temp["batch_execution_kind"] = "executemany"
         ctx.temp["batch_statement"] = first
         ctx.temp["batch_parameter_sets"] = parameter_sets
+        _prepare_slot_rows(group, parameter_sets)
         return
 
     ctx.temp["batch_execution_kind"] = "executeloop"
     ctx.temp["batch_statements"] = list(zip(statements, parameter_sets))
+
+
+def _payload_for_execute(admission: Any) -> Any:
+    slot_payload = getattr(admission, "slot_payload", None)
+    if isinstance(slot_payload, HotSlotPayload):
+        return slot_payload.as_mapping()
+    return admission.intent.get("payload_ref")
+
+
+def _prepare_slot_rows(group: Any, parameter_sets: list[Any]) -> None:
+    slot_payloads = [
+        getattr(admission, "slot_payload", None) for admission in group.admissions
+    ]
+    if not slot_payloads or not all(isinstance(item, HotSlotPayload) for item in slot_payloads):
+        return
+    first = slot_payloads[0]
+    columns = first.field_names
+    group.parameter_columns = columns
+    rows = []
+    for admission, payload in zip(group.admissions, slot_payloads, strict=False):
+        row = payload.row_tuple(columns)
+        admission.parameter_row = row
+        rows.append(row)
+    group.parameter_rows = rows
+    parameter_sets[:] = rows
+
+
+hot_run = _run
 
 
 class AtomImpl(Atom[Executing, Executing, Exception]):
@@ -67,5 +96,6 @@ class AtomImpl(Atom[Executing, Executing, Exception]):
 
 
 INSTANCE = AtomImpl()
+setattr(INSTANCE, "__tigrbl_hot_run__", hot_run)
 
-__all__ = ["ANCHOR", "INSTANCE"]
+__all__ = ["ANCHOR", "INSTANCE", "hot_run"]
