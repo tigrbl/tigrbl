@@ -29,8 +29,9 @@ RESULTS_PATH = Path(__file__).with_name(
 PERF_TEMP_ROOT = Path(__file__).resolve().parents[5] / ".tmp" / "pytest-perf"
 ROUND_COUNT = 15
 OPS_COUNT = 250
-CONCURRENCY = 10
+CONCURRENCY = 25
 BATCH_MAX_SIZE = 25
+BATCH_EXPECTED_COUNT = OPS_COUNT // BATCH_MAX_SIZE
 BATCH_MAX_DELAY_MS = 1
 PRE_MEASUREMENT_WAIT_SECONDS = 0.5
 
@@ -208,6 +209,7 @@ async def _run_modes_benchmark() -> dict[str, Any]:
             "batch_policy": {
                 "enabled": True,
                 "max_size": BATCH_MAX_SIZE,
+                "expected_batch_count": BATCH_EXPECTED_COUNT,
                 "max_delay_ms": BATCH_MAX_DELAY_MS,
             },
             "ops_per_second": {
@@ -310,6 +312,8 @@ def test_tigrbl_create_modes_15_rounds_250_ops() -> None:
     assert RESULTS_PATH.exists()
     assert summary["round_count"] == ROUND_COUNT
     assert summary["ops"] == OPS_COUNT
+    assert summary["batch_policy"]["max_size"] == 25
+    assert summary["batch_policy"]["expected_batch_count"] == 10
     assert len(payload["steps"]) == ROUND_COUNT
     for mode_summary in summary["ops_per_second"].values():
         assert mode_summary["mean"] > 0

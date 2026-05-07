@@ -4,10 +4,16 @@ from typing import Any, Mapping, MutableMapping, Sequence
 
 
 def _ensure_temp(ctx: Any) -> MutableMapping[str, Any]:
-    temp = getattr(ctx, "temp", None)
+    try:
+        temp = object.__getattribute__(ctx, "temp")
+    except AttributeError:
+        temp = getattr(ctx, "temp", None)
     if not isinstance(temp, dict):
         temp = {}
-        setattr(ctx, "temp", temp)
+        try:
+            object.__setattr__(ctx, "temp", temp)
+        except Exception:
+            setattr(ctx, "temp", temp)
     return temp
 
 
@@ -65,10 +71,16 @@ def _add_response_extras(
 
 def _response_payload(ctx: Any) -> Any:
     """Return the canonical response payload stored on context."""
-    payload = getattr(ctx, "response_payload", None)
+    try:
+        payload = object.__getattribute__(ctx, "response_payload")
+    except AttributeError:
+        payload = getattr(ctx, "response_payload", None)
     if payload is not None:
         return payload
-    temp = getattr(ctx, "temp", None)
+    try:
+        temp = object.__getattribute__(ctx, "temp")
+    except AttributeError:
+        temp = getattr(ctx, "temp", None)
     if isinstance(temp, Mapping):
         return temp.get("response_payload")
     return None

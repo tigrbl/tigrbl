@@ -38,7 +38,7 @@ def _run(obj: object | None, ctx: Any) -> None:
         ctx.temp["batch_statements"] = explicit_statements
         return
 
-    statements = [admission.intent.get("statement") for admission in group.admissions]
+    statements = [_statement_for(admission) for admission in group.admissions]
     if any(statement is None for statement in statements):
         ctx.temp["batch_execution_kind"] = "unsupported"
         ctx.temp["batch_unsupported_reason"] = "missing_statement"
@@ -60,7 +60,17 @@ def _payload_for_execute(admission: Any) -> Any:
     slot_payload = getattr(admission, "slot_payload", None)
     if isinstance(slot_payload, HotSlotPayload):
         return slot_payload.as_mapping()
+    payload = getattr(admission, "payload_ref", None)
+    if payload is not None:
+        return payload
     return admission.intent.get("payload_ref")
+
+
+def _statement_for(admission: Any) -> Any:
+    statement = getattr(admission, "statement", None)
+    if statement is not None:
+        return statement
+    return admission.intent.get("statement")
 
 
 def _prepare_slot_rows(group: Any, parameter_sets: list[Any]) -> None:

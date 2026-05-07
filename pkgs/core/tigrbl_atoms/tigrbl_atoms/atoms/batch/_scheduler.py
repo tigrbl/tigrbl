@@ -16,6 +16,9 @@ def enabled(ctx: Any) -> bool:
 
 def policy_from_ctx(ctx: Any) -> BatchPolicy:
     temp = _ensure_temp(ctx)
+    cached = temp.get("__batch_policy_resolved")
+    if isinstance(cached, BatchPolicy):
+        return cached
     cfg = getattr(ctx, "cfg", None)
     cfg_batch = getattr(cfg, "batch", None)
     if not isinstance(cfg_batch, Mapping) and hasattr(cfg, "get"):
@@ -33,7 +36,9 @@ def policy_from_ctx(ctx: Any) -> BatchPolicy:
         policy["enabled"] = attr_policy
     if bool(getattr(ctx, "batch_enabled", False)):
         policy["enabled"] = True
-    return _coerce_policy(policy)
+    resolved = _coerce_policy(policy)
+    temp["__batch_policy_resolved"] = resolved
+    return resolved
 
 
 def _coerce_policy(policy: Mapping[str, Any]) -> BatchPolicy:
@@ -99,6 +104,13 @@ def admit(ctx: Any) -> BatchAdmission:
         sink_index=int(transport.get("sink_index", 0) or 0),
         size_bytes=size_bytes,
         slot_payload=intent.get("slot_payload"),
+        op=intent.get("op"),
+        target=intent.get("target"),
+        model=intent.get("model"),
+        payload_ref=intent.get("payload_ref"),
+        statement=intent.get("statement"),
+        correlation_id=intent.get("correlation_id"),
+        force_seal=bool(intent.get("force_seal")),
     )
     admission.result_index = len(group.admissions)
     group.admissions.append(admission)
@@ -136,7 +148,7 @@ def seal_check(ctx: Any) -> bool:
         len(group.admissions) >= max_count
         or group.size_bytes >= int(policy.max_bytes)
         or age_ns >= max_delay_ns
-        or bool(admission.intent.get("force_seal"))
+        or admission.force_seal
     )
     if should_seal:
         group.sealed = True

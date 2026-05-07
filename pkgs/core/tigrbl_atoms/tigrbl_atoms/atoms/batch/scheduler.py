@@ -56,6 +56,13 @@ class ResidentBatchScheduler:
                 size_bytes=size_bytes,
                 slot_payload=intent.get("slot_payload"),
                 future=asyncio.get_running_loop().create_future(),
+                op=intent.get("op"),
+                target=intent.get("target"),
+                model=intent.get("model"),
+                payload_ref=intent.get("payload_ref"),
+                statement=intent.get("statement"),
+                correlation_id=intent.get("correlation_id"),
+                force_seal=bool(intent.get("force_seal")),
             )
             admission.result_index = len(group.admissions)
             if group.owner_admission_id is None:
@@ -94,7 +101,7 @@ class ResidentBatchScheduler:
             len(group.admissions) >= int(policy.max_size)
             or group.size_bytes >= int(policy.max_bytes)
             or monotonic_ns() - group.created_ns >= max_delay_ns
-            or bool(admission.intent.get("force_seal"))
+            or admission.force_seal
         )
 
     def _ensure_timer_unlocked(self, group_key: tuple[Any, ...], delay_ms: int) -> None:
@@ -166,9 +173,7 @@ class ResidentBatchScheduler:
                 await _maybe_await(release())
 
     async def _execute_with_db(self, group: BatchGroup, db: Any) -> None:
-        statements = [
-            admission.intent.get("statement") for admission in group.admissions
-        ]
+        statements = [admission.statement for admission in group.admissions]
         parameter_sets = [
             _payload_for_execution(admission) for admission in group.admissions
         ]
@@ -199,14 +204,17 @@ class ResidentBatchScheduler:
                 return
 
         if _is_create_group(group):
-            import tigrbl_ops_oltp as _core
-
-            model = group.admissions[0].intent.get("model")
-            group.result_slots = _as_slots(
-                await _core.bulk_create(model, parameter_sets, db=db)
-            )
+            result = await _execute_create_many(group, db, parameter_sets)
+            if result is None:
+                group.fallback = True
+                group.fallback_reason = "unsupported_executemany"
+                group.result_slots = [None for _ in group.admissions]
+                group.error_slots = [None for _ in group.admissions]
+                self.metrics["fallback"] += 1
+                return
+            group.result_slots = result
             group.error_slots = [None for _ in group.admissions]
-            self.metrics["bulk_create"] += 1
+            self.metrics["executemany"] += 1
             return
 
         group.fallback = True
@@ -311,14 +319,14 @@ async def _rollback_if_available(db: Any) -> None:
 def _is_create_group(group: BatchGroup) -> bool:
     if not group.admissions:
         return False
-    first_model = group.admissions[0].intent.get("model")
+    first_model = group.admissions[0].model
     if not isinstance(first_model, type):
         return False
     for admission in group.admissions:
-        op = str(admission.intent.get("op") or "").lower()
-        target = str(admission.intent.get("target") or op).lower()
+        op = str(admission.op or "").lower()
+        target = str(admission.target or op).lower()
         payload = _payload_for_execution(admission)
-        if admission.intent.get("model") is not first_model:
+        if admission.model is not first_model:
             return False
         if target != "create":
             return False
@@ -328,13 +336,53 @@ def _is_create_group(group: BatchGroup) -> bool:
 
 
 def _payload_for_execution(admission: BatchAdmission) -> Any:
-    payload = admission.intent.get("payload_ref")
+    payload = admission.payload_ref
     if isinstance(payload, Mapping):
         return payload
     slot_payload = getattr(admission, "slot_payload", None)
     if isinstance(slot_payload, HotSlotPayload):
         return project_present_dict(slot_payload)
     return payload
+
+
+async def _execute_create_many(
+    group: BatchGroup, db: Any, parameter_sets: list[Any]
+) -> list[Any] | None:
+    execute = getattr(db, "execute", None)
+    if not callable(execute):
+        return None
+    try:
+        from sqlalchemy import insert as sa_insert
+        from tigrbl_ops_oltp.crud.ops import _filter_in_values
+        from tigrbl_ops_oltp.crud.helpers import _validate_enum_values
+    except Exception:
+        return None
+
+    model = group.admissions[0].model
+    if not isinstance(model, type):
+        return None
+    rows = []
+    for payload in parameter_sets:
+        if not isinstance(payload, Mapping):
+            return None
+        row = _filter_in_values(model, payload, "create")
+        _validate_enum_values(model, row)
+        rows.append(row)
+    if not rows:
+        return []
+
+    stmt = sa_insert(model).returning(model)
+    result = await _maybe_await(execute(stmt, rows))
+    scalars = getattr(result, "scalars", None)
+    if callable(scalars):
+        scalar_result = scalars()
+        all_rows = getattr(scalar_result, "all", None)
+        if callable(all_rows):
+            return list(all_rows())
+    all_rows = getattr(result, "all", None)
+    if callable(all_rows):
+        return [row[0] if isinstance(row, tuple) and row else row for row in all_rows()]
+    return None
 
 
 __all__ = ["ResidentBatchScheduler", "get_resident_scheduler"]
