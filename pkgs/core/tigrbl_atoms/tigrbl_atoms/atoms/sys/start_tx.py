@@ -15,6 +15,9 @@ ANCHOR = _ev.SYS_TX_BEGIN
 async def _run(obj: object | None, ctx: Any) -> None:
     del obj
     temp = _ensure_temp(ctx)
+    if temp.get("batch_resident_admitted") or temp.get("batch_resident_handled"):
+        temp["__sys_tx_open__"] = False
+        return
     db = _resolve_db_handle(ctx)
     temp["__sys_tx_open__"] = False
 

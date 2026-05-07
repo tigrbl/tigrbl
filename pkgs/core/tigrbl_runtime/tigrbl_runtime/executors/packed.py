@@ -3786,17 +3786,23 @@ class PackedPlanExecutor(ExecutorBase):
             except Exception:
                 ctx["env"] = SimpleNamespace(method=ctx.op)
         release_db = None
+        acquire_db = None
+        batch_policy = self._batch_policy_mapping(hot_op_plan)
+        batch_enabled = bool(batch_policy.get("enabled", False))
         if (
             program_hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT
             and getattr(ctx, "_raw_db", None) is None
         ):
             try:
                 acquire_db = self._resolve_db_acquire(plan, program_id, hot_op_plan)
-                db, release_db = acquire_db(ctx)
-                ctx._raw_db = db
-                if getattr(ctx, "db", None) is None:
-                    ctx.db = db
-                ctx.owns_tx = True
+                ctx.temp["batch_db_acquire"] = acquire_db
+                ctx.batch_db_acquire = acquire_db
+                if not batch_enabled:
+                    db, release_db = acquire_db(ctx)
+                    ctx._raw_db = db
+                    if getattr(ctx, "db", None) is None:
+                        ctx.db = db
+                    ctx.owns_tx = True
             except Exception:
                 release_db = None
         if (

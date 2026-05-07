@@ -134,6 +134,14 @@ async def _run_modes_benchmark() -> dict[str, Any]:
             "create_app": create_tigrbl_app,
             "concurrent": True,
         },
+        "batch_sequential_create": {
+            "create_app": lambda db_path: create_tigrbl_batch_app(
+                db_path,
+                max_size=BATCH_MAX_SIZE,
+                max_delay_ms=BATCH_MAX_DELAY_MS,
+            ),
+            "concurrent": False,
+        },
         "batch_concurrent_create": {
             "create_app": lambda db_path: create_tigrbl_batch_app(
                 db_path,
@@ -175,9 +183,17 @@ async def _run_modes_benchmark() -> dict[str, Any]:
                     indexed["scalar_concurrent_create"]["ops_per_second"]
                     / indexed["scalar_sequential_create"]["ops_per_second"]
                 ),
+                "ratio_batch_sequential_over_scalar_sequential": (
+                    indexed["batch_sequential_create"]["ops_per_second"]
+                    / indexed["scalar_sequential_create"]["ops_per_second"]
+                ),
                 "ratio_batch_concurrent_over_scalar_concurrent": (
                     indexed["batch_concurrent_create"]["ops_per_second"]
                     / indexed["scalar_concurrent_create"]["ops_per_second"]
+                ),
+                "ratio_batch_concurrent_over_batch_sequential": (
+                    indexed["batch_concurrent_create"]["ops_per_second"]
+                    / indexed["batch_sequential_create"]["ops_per_second"]
                 ),
             }
         )
@@ -202,14 +218,23 @@ async def _run_modes_benchmark() -> dict[str, Any]:
                     mean(per_mode_ops["scalar_concurrent_create"])
                     / mean(per_mode_ops["scalar_sequential_create"])
                 ),
+                "batch_sequential_over_scalar_sequential": (
+                    mean(per_mode_ops["batch_sequential_create"])
+                    / mean(per_mode_ops["scalar_sequential_create"])
+                ),
                 "batch_concurrent_over_scalar_concurrent": (
                     mean(per_mode_ops["batch_concurrent_create"])
                     / mean(per_mode_ops["scalar_concurrent_create"])
                 ),
+                "batch_concurrent_over_batch_sequential": (
+                    mean(per_mode_ops["batch_concurrent_create"])
+                    / mean(per_mode_ops["batch_sequential_create"])
+                ),
             },
             "current_batch_runtime_note": (
-                "batch_concurrent_create enables the packed batch policy on the "
-                "create op and measures current real HTTP runtime behavior."
+                "batch_sequential_create and batch_concurrent_create enable the "
+                "packed batch policy on the create op and measure current real "
+                "HTTP runtime behavior."
             ),
         },
     }
@@ -230,15 +255,27 @@ def test_tigrbl_create_modes_15_rounds_250_ops() -> None:
         ops = step["ops_per_second"]
         print(
             "[perf] round={round} order={order} scalar_seq={seq:.3f} "
-            "scalar_conc={conc:.3f} batch_conc={batch:.3f} "
-            "conc/seq={conc_ratio:.3f} batch/conc={batch_ratio:.3f}".format(
+            "scalar_conc={conc:.3f} batch_seq={batch_seq:.3f} "
+            "batch_conc={batch_conc:.3f} conc/seq={conc_ratio:.3f} "
+            "batch_seq/seq={batch_seq_ratio:.3f} "
+            "batch_conc/conc={batch_conc_ratio:.3f} "
+            "batch_conc/batch_seq={batch_conc_seq_ratio:.3f}".format(
                 round=step["step"],
                 order="->".join(step["order"]),
                 seq=ops["scalar_sequential_create"],
                 conc=ops["scalar_concurrent_create"],
-                batch=ops["batch_concurrent_create"],
+                batch_seq=ops["batch_sequential_create"],
+                batch_conc=ops["batch_concurrent_create"],
                 conc_ratio=step["ratio_scalar_concurrent_over_scalar_sequential"],
-                batch_ratio=step["ratio_batch_concurrent_over_scalar_concurrent"],
+                batch_seq_ratio=step[
+                    "ratio_batch_sequential_over_scalar_sequential"
+                ],
+                batch_conc_ratio=step[
+                    "ratio_batch_concurrent_over_scalar_concurrent"
+                ],
+                batch_conc_seq_ratio=step[
+                    "ratio_batch_concurrent_over_batch_sequential"
+                ],
             )
         )
     for mode, mode_summary in summary["ops_per_second"].items():
@@ -255,8 +292,18 @@ def test_tigrbl_create_modes_15_rounds_250_ops() -> None:
         )
     )
     print(
+        "[perf] mean ratio batch_sequential/scalar_sequential={:.3f}".format(
+            summary["mean_ratios"]["batch_sequential_over_scalar_sequential"]
+        )
+    )
+    print(
         "[perf] mean ratio batch_concurrent/scalar_concurrent={:.3f}".format(
             summary["mean_ratios"]["batch_concurrent_over_scalar_concurrent"]
+        )
+    )
+    print(
+        "[perf] mean ratio batch_concurrent/batch_sequential={:.3f}".format(
+            summary["mean_ratios"]["batch_concurrent_over_batch_sequential"]
         )
     )
 

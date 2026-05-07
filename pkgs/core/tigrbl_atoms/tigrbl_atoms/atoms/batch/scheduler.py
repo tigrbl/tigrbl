@@ -65,6 +65,7 @@ class ResidentBatchScheduler:
             self._ctx_by_admission[admission.admission_id] = ctx
             temp["batch_admission"] = admission
             temp["batch_group"] = group
+            temp["batch_resident_admitted"] = True
 
             self.metrics["admitted"] += 1
             if self._should_seal_unlocked(group, policy, admission):
@@ -147,14 +148,37 @@ class ResidentBatchScheduler:
         if owner_ctx is None:
             group.result_slots = [None for _ in group.admissions]
             return
-        db = _ctx.db(owner_ctx)
-        statements = [admission.intent.get("statement") for admission in group.admissions]
+        db, release, owns_db = await _acquire_batch_db(owner_ctx)
+        try:
+            if owns_db:
+                await _begin_if_available(db)
+            await self._execute_with_db(group, db)
+            if owns_db:
+                await _commit_if_available(db)
+                self.metrics["commits"] += 1
+        except Exception:
+            if owns_db:
+                await _rollback_if_available(db)
+                self.metrics["rollbacks"] += 1
+            raise
+        finally:
+            if release is not None:
+                await _maybe_await(release())
+
+    async def _execute_with_db(self, group: BatchGroup, db: Any) -> None:
+        statements = [
+            admission.intent.get("statement") for admission in group.admissions
+        ]
         parameter_sets = [
             _payload_for_execution(admission) for admission in group.admissions
         ]
         first = statements[0] if statements else None
 
-        if statements and all(statement == first for statement in statements) and first is not None:
+        if (
+            statements
+            and all(statement == first for statement in statements)
+            and first is not None
+        ):
             executemany = getattr(db, "executemany", None)
             if callable(executemany):
                 group.result_slots = _as_slots(
@@ -221,6 +245,7 @@ def _finalize_ctx(ctx: Any, group: BatchGroup, admission: BatchAdmission) -> Non
     temp["batch_group"] = group
     temp["batch_admission"] = admission
     temp["batch_resident_handled"] = True
+    temp["batch_resident_tx_owned"] = True
     temp["batch_execution_kind"] = "resident"
     temp["batch_raw_results"] = group.result_slots
     setattr(ctx, "result", _slot(group.result_slots, admission.result_index))
@@ -247,6 +272,40 @@ async def _maybe_await(value: Any) -> Any:
     if hasattr(value, "__await__"):
         return await value
     return value
+
+
+async def _acquire_batch_db(ctx: Any) -> tuple[Any, Any | None, bool]:
+    temp = _ensure_temp(ctx)
+    acquire = temp.get("batch_db_acquire")
+    if not callable(acquire):
+        acquire = getattr(ctx, "batch_db_acquire", None)
+    if callable(acquire):
+        acquired = await _maybe_await(acquire(ctx))
+        if isinstance(acquired, tuple):
+            if len(acquired) >= 2:
+                return acquired[0], acquired[1], True
+            if len(acquired) == 1:
+                return acquired[0], None, True
+        return acquired, None, True
+    return _ctx.db(ctx), None, False
+
+
+async def _begin_if_available(db: Any) -> None:
+    begin = getattr(db, "begin", None)
+    if callable(begin):
+        await _maybe_await(begin())
+
+
+async def _commit_if_available(db: Any) -> None:
+    commit = getattr(db, "commit", None)
+    if callable(commit):
+        await _maybe_await(commit())
+
+
+async def _rollback_if_available(db: Any) -> None:
+    rollback = getattr(db, "rollback", None)
+    if callable(rollback):
+        await _maybe_await(rollback())
 
 
 def _is_create_group(group: BatchGroup) -> bool:

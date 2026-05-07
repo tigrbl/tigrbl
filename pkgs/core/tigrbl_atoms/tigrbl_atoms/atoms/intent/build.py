@@ -17,6 +17,7 @@ def _run(obj: object | None, ctx: Any) -> None:
     transport = temp.get("transport", {})
     temp["intent"] = {
         "op": getattr(ctx, "op", None),
+        "target": getattr(ctx, "target", None),
         "model": getattr(ctx, "model", None),
         "payload_ref": transport.get("payload_ref"),
         "payload_bytes": int(transport.get("payload_bytes", 0) or 0),
