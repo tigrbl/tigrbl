@@ -13,7 +13,6 @@ from typing import Any, Callable
 import httpx
 import pytest
 
-from tests.i9n.uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
 from tests.perf.helper_tigrbl_create_app import (
     create_tigrbl_app,
     create_tigrbl_batch_app,
@@ -91,11 +90,15 @@ async def _run_create_mode(
         start = perf_counter()
         app = create_app(db_path)
         await initialize_tigrbl_app(app)
-        base_url, server, task = await run_uvicorn_in_task(app)
         first_start_seconds = perf_counter() - start
         op_durations: list[float] = []
         try:
-            async with httpx.AsyncClient(base_url=base_url, timeout=30.0) as client:
+            transport = httpx.ASGITransport(app=app)
+            async with httpx.AsyncClient(
+                transport=transport,
+                base_url="http://testserver",
+                timeout=30.0,
+            ) as client:
                 await asyncio.sleep(PRE_MEASUREMENT_WAIT_SECONDS)
                 execution_start = perf_counter()
                 if concurrent:
@@ -118,7 +121,6 @@ async def _run_create_mode(
             persisted_names = fetch_tigrbl_names(db_path)
             assert sorted(persisted_names) == sorted(measured_names)
         finally:
-            await stop_uvicorn_server(server, task)
             dispose_result = dispose_tigrbl_app(app)
             if hasattr(dispose_result, "__await__"):
                 await dispose_result

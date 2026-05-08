@@ -1,0 +1,3910 @@
+{
+  "summary": {
+    "ops": 250,
+    "round_count": 20,
+    "concurrency": 25,
+    "policy_count": 2,
+    "policies": [
+      {
+        "enabled": true,
+        "name": "batch_size_25_expected_10",
+        "max_size": 25,
+        "expected_batch_count": 10,
+        "calculated_batch_count": 10,
+        "max_delay_ms": 1
+      },
+      {
+        "enabled": true,
+        "name": "batch_size_100_expected_3",
+        "max_size": 100,
+        "expected_batch_count": 3,
+        "calculated_batch_count": 2,
+        "max_delay_ms": 1
+      }
+    ]
+  },
+  "policy_results": [
+    {
+      "policy": {
+        "policy": "batch_size_25_expected_10",
+        "max_size": 25,
+        "expected_batch_count": 10,
+        "max_delay_ms": 1
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.04061380005441606,
+              "execution_total_seconds": 0.3484099000925198,
+              "ops_per_second": 717.5456263832136,
+              "time_per_op_seconds": {
+                "min": 0.006323500070720911,
+                "mean": 0.0181617332007736,
+                "max": 0.07002220000140369
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02506889996584505,
+              "execution_total_seconds": 0.45858490001410246,
+              "ops_per_second": 545.1553245479996,
+              "time_per_op_seconds": {
+                "min": 0.0011924999998882413,
+                "mean": 0.0018125260025262833,
+                "max": 0.05379390006419271
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02564990008249879,
+              "execution_total_seconds": 0.47821219998877496,
+              "ops_per_second": 522.7804727814728,
+              "time_per_op_seconds": {
+                "min": 0.00137189996894449,
+                "mean": 0.0019015323980711401,
+                "max": 0.04120990005321801
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026090800063684583,
+              "execution_total_seconds": 3.8842816000105813,
+              "ops_per_second": 64.36196592938035,
+              "time_per_op_seconds": {
+                "min": 0.013196500018239021,
+                "mean": 0.0155171087984927,
+                "max": 0.04914210003335029
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024153999984264374,
+              "execution_total_seconds": 0.4155270999763161,
+              "ops_per_second": 601.6454763461861,
+              "time_per_op_seconds": {
+                "min": 0.0012922999449074268,
+                "mean": 0.001652587597258389,
+                "max": 0.0350644999416545
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024823499959893525,
+              "execution_total_seconds": 0.42545829992741346,
+              "ops_per_second": 587.6016522480628,
+              "time_per_op_seconds": {
+                "min": 0.0012908000499010086,
+                "mean": 0.0016733044041320681,
+                "max": 0.043696400010958314
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.0248892999952659,
+              "execution_total_seconds": 0.3327542000915855,
+              "ops_per_second": 751.3053176524634,
+              "time_per_op_seconds": {
+                "min": 0.006428799941204488,
+                "mean": 0.018193606396671384,
+                "max": 0.05647110007703304
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02369229996111244,
+              "execution_total_seconds": 3.8854523000773042,
+              "ops_per_second": 64.34257344892023,
+              "time_per_op_seconds": {
+                "min": 0.011146600008942187,
+                "mean": 0.015522277995944023,
+                "max": 0.05089499999303371
+              }
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.025093400035984814,
+              "execution_total_seconds": 0.6059167999774218,
+              "ops_per_second": 412.59790124537847,
+              "time_per_op_seconds": {
+                "min": 0.001389399985782802,
+                "mean": 0.002408667600248009,
+                "max": 0.035750299924984574
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.1424937000265345,
+              "execution_total_seconds": 3.8985270999837667,
+              "ops_per_second": 64.12678265107891,
+              "time_per_op_seconds": {
+                "min": 0.009583999984897673,
+                "mean": 0.015570297199767083,
+                "max": 0.05001289991196245
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025743799982592463,
+              "execution_total_seconds": 0.4406382000306621,
+              "ops_per_second": 567.358889861577,
+              "time_per_op_seconds": {
+                "min": 0.0013469000114127994,
+                "mean": 0.0017377816019579768,
+                "max": 0.041737499996088445
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.03527230001054704,
+              "execution_total_seconds": 0.3664437000406906,
+              "ops_per_second": 682.2330414528603,
+              "time_per_op_seconds": {
+                "min": 0.0040954999858513474,
+                "mean": 0.02005375519581139,
+                "max": 0.06046109995804727
+              }
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "order": [
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02552700007800013,
+              "execution_total_seconds": 3.887837399961427,
+              "ops_per_second": 64.30310074245399,
+              "time_per_op_seconds": {
+                "min": 0.013833999983035028,
+                "mean": 0.015532229205593467,
+                "max": 0.050183000043034554
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025140400044620037,
+              "execution_total_seconds": 0.35249540000222623,
+              "ops_per_second": 709.2291133399785,
+              "time_per_op_seconds": {
+                "min": 0.003422899986617267,
+                "mean": 0.019397307999432088,
+                "max": 0.05413349997252226
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.026238800026476383,
+              "execution_total_seconds": 0.4059497000416741,
+              "ops_per_second": 615.8398441342251,
+              "time_per_op_seconds": {
+                "min": 0.001249199965968728,
+                "mean": 0.001601725201588124,
+                "max": 0.03709970007184893
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02482880000025034,
+              "execution_total_seconds": 0.4094678000546992,
+              "ops_per_second": 610.5486193703229,
+              "time_per_op_seconds": {
+                "min": 0.0012662999797612429,
+                "mean": 0.001629021603614092,
+                "max": 0.034421700052917004
+              }
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02436090004630387,
+              "execution_total_seconds": 0.4809531000209972,
+              "ops_per_second": 519.8012030467952,
+              "time_per_op_seconds": {
+                "min": 0.0011909999884665012,
+                "mean": 0.001915429593063891,
+                "max": 0.08921790006570518
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023879499989561737,
+              "execution_total_seconds": 3.8928402999881655,
+              "ops_per_second": 64.22046134303532,
+              "time_per_op_seconds": {
+                "min": 0.009267000015825033,
+                "mean": 0.015548992404714227,
+                "max": 0.04929340002126992
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.023485700017772615,
+              "execution_total_seconds": 0.40805480000562966,
+              "ops_per_second": 612.6628090064152,
+              "time_per_op_seconds": {
+                "min": 0.0013307000044733286,
+                "mean": 0.0016083948025479914,
+                "max": 0.035282099968753755
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.0264114000601694,
+              "execution_total_seconds": 0.3361215000040829,
+              "ops_per_second": 743.7786633612048,
+              "time_per_op_seconds": {
+                "min": 0.004371299990452826,
+                "mean": 0.018259212797973306,
+                "max": 0.05460609996225685
+              }
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.03045999992173165,
+              "execution_total_seconds": 0.42545380000956357,
+              "ops_per_second": 587.607867162969,
+              "time_per_op_seconds": {
+                "min": 0.0013578999787569046,
+                "mean": 0.0016784159988164902,
+                "max": 0.03563540009781718
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.026523600099608302,
+              "execution_total_seconds": 0.368278699927032,
+              "ops_per_second": 678.8337203577973,
+              "time_per_op_seconds": {
+                "min": 0.003031300031580031,
+                "mean": 0.02010694760363549,
+                "max": 0.061753899906761944
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02463020000141114,
+              "execution_total_seconds": 3.897441199980676,
+              "ops_per_second": 64.14464957193954,
+              "time_per_op_seconds": {
+                "min": 0.012780799996107817,
+                "mean": 0.015567864001728594,
+                "max": 0.050138200051151216
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.030636099982075393,
+              "execution_total_seconds": 0.5756669000256807,
+              "ops_per_second": 434.27892065506535,
+              "time_per_op_seconds": {
+                "min": 0.0013270999770611525,
+                "mean": 0.0022922531962394715,
+                "max": 0.11193310003727674
+              }
+            }
+          ]
+        },
+        {
+          "round": 7,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.028259499929845333,
+              "execution_total_seconds": 0.3456677000503987,
+              "ops_per_second": 723.2379535708709,
+              "time_per_op_seconds": {
+                "min": 0.002850299933925271,
+                "mean": 0.01864709559781477,
+                "max": 0.05704580002930015
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023856100044213235,
+              "execution_total_seconds": 3.8990402000490576,
+              "ops_per_second": 64.11834379057044,
+              "time_per_op_seconds": {
+                "min": 0.012825400102883577,
+                "mean": 0.01557747040130198,
+                "max": 0.04858429997693747
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02410559996496886,
+              "execution_total_seconds": 0.40400879993103445,
+              "ops_per_second": 618.7984025166674,
+              "time_per_op_seconds": {
+                "min": 0.0011742999777197838,
+                "mean": 0.0015916944071650504,
+                "max": 0.035667299991473556
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02395880001131445,
+              "execution_total_seconds": 0.39912099996581674,
+              "ops_per_second": 626.376462329498,
+              "time_per_op_seconds": {
+                "min": 0.0012620000634342432,
+                "mean": 0.0015880376002751291,
+                "max": 0.03492630005348474
+              }
+            }
+          ]
+        },
+        {
+          "round": 8,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02390839997678995,
+              "execution_total_seconds": 3.892712299944833,
+              "ops_per_second": 64.22257303822401,
+              "time_per_op_seconds": {
+                "min": 0.013096899958327413,
+                "mean": 0.015550973599776625,
+                "max": 0.05103339999914169
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.0234610999468714,
+              "execution_total_seconds": 0.49553000007290393,
+              "ops_per_second": 504.51032220696874,
+              "time_per_op_seconds": {
+                "min": 0.0012153000570833683,
+                "mean": 0.001953560792375356,
+                "max": 0.05029729998204857
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024925399920903146,
+              "execution_total_seconds": 0.4571916999993846,
+              "ops_per_second": 546.8165760671869,
+              "time_per_op_seconds": {
+                "min": 0.006977599929086864,
+                "mean": 0.024083787200506777,
+                "max": 0.1580229999963194
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024335699970833957,
+              "execution_total_seconds": 0.5264900999609381,
+              "ops_per_second": 474.84273686921796,
+              "time_per_op_seconds": {
+                "min": 0.0013792000245302916,
+                "mean": 0.002094694800209254,
+                "max": 0.06350829999428242
+              }
+            }
+          ]
+        },
+        {
+          "round": 9,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.027403899934142828,
+              "execution_total_seconds": 0.519492799998261,
+              "ops_per_second": 481.2386235205509,
+              "time_per_op_seconds": {
+                "min": 0.001402399968355894,
+                "mean": 0.002066519600339234,
+                "max": 0.04440489993430674
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026501100044697523,
+              "execution_total_seconds": 3.902108700014651,
+              "ops_per_second": 64.06792306915011,
+              "time_per_op_seconds": {
+                "min": 0.00973109994083643,
+                "mean": 0.015586621202062816,
+                "max": 0.04835309996269643
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.07397480006329715,
+              "execution_total_seconds": 0.36353859992232174,
+              "ops_per_second": 687.6848842280247,
+              "time_per_op_seconds": {
+                "min": 0.0038258000276982784,
+                "mean": 0.019140883198473603,
+                "max": 0.07776270003523678
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.028205999988131225,
+              "execution_total_seconds": 0.5053215998923406,
+              "ops_per_second": 494.73444248823483,
+              "time_per_op_seconds": {
+                "min": 0.0013557999627664685,
+                "mean": 0.001991277204360813,
+                "max": 0.03499789990019053
+              }
+            }
+          ]
+        },
+        {
+          "round": 10,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.028397200047038496,
+              "execution_total_seconds": 0.36884610005654395,
+              "ops_per_second": 677.7894627642128,
+              "time_per_op_seconds": {
+                "min": 0.002684699953533709,
+                "mean": 0.019842412400059403,
+                "max": 0.0758397999452427
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.023939400096423924,
+              "execution_total_seconds": 0.40959910000674427,
+              "ops_per_second": 610.3529035974044,
+              "time_per_op_seconds": {
+                "min": 0.0012845000019297004,
+                "mean": 0.0016154460003599525,
+                "max": 0.03458330000285059
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02384510007686913,
+              "execution_total_seconds": 4.051020099897869,
+              "ops_per_second": 61.71285104369213,
+              "time_per_op_seconds": {
+                "min": 0.012128999922424555,
+                "mean": 0.01618389600329101,
+                "max": 0.16848949994891882
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024910599924623966,
+              "execution_total_seconds": 0.46607279998715967,
+              "ops_per_second": 536.3968890844682,
+              "time_per_op_seconds": {
+                "min": 0.0013702999567613006,
+                "mean": 0.0018536231969483196,
+                "max": 0.0384083999088034
+              }
+            }
+          ]
+        },
+        {
+          "round": 11,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.0342283999780193,
+              "execution_total_seconds": 0.3359197999816388,
+              "ops_per_second": 744.2252585696493,
+              "time_per_op_seconds": {
+                "min": 0.004375699907541275,
+                "mean": 0.018298031199723484,
+                "max": 0.05475969996768981
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023868000018410385,
+              "execution_total_seconds": 0.40095779998227954,
+              "ops_per_second": 623.5070124862239,
+              "time_per_op_seconds": {
+                "min": 0.0012789000757038593,
+                "mean": 0.0015952180032618344,
+                "max": 0.03494609997142106
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02368800004478544,
+              "execution_total_seconds": 0.5379903999855742,
+              "ops_per_second": 464.6923067896817,
+              "time_per_op_seconds": {
+                "min": 0.0014094999060034752,
+                "mean": 0.002119678801856935,
+                "max": 0.03682720009237528
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.027303799986839294,
+              "execution_total_seconds": 3.883194900001399,
+              "ops_per_second": 64.37997742526647,
+              "time_per_op_seconds": {
+                "min": 0.01356570003554225,
+                "mean": 0.015513343198224902,
+                "max": 0.050487799919210374
+              }
+            }
+          ]
+        },
+        {
+          "round": 12,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.023234000080265105,
+              "execution_total_seconds": 0.34230010001920164,
+              "ops_per_second": 730.3532776822912,
+              "time_per_op_seconds": {
+                "min": 0.009235700010322034,
+                "mean": 0.01810548559948802,
+                "max": 0.05354700004681945
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023433899972587824,
+              "execution_total_seconds": 3.8926258999854326,
+              "ops_per_second": 64.22399850983254,
+              "time_per_op_seconds": {
+                "min": 0.012599100009538233,
+                "mean": 0.015550191201735288,
+                "max": 0.05088090000208467
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024898899951949716,
+              "execution_total_seconds": 0.3997514999937266,
+              "ops_per_second": 625.3885226294918,
+              "time_per_op_seconds": {
+                "min": 0.0013247000752016902,
+                "mean": 0.0015902307955548167,
+                "max": 0.03791690000798553
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.026824999949894845,
+              "execution_total_seconds": 0.6567110000178218,
+              "ops_per_second": 380.68495882239756,
+              "time_per_op_seconds": {
+                "min": 0.0013637999072670937,
+                "mean": 0.002595555999316275,
+                "max": 0.1872529999818653
+              }
+            }
+          ]
+        },
+        {
+          "round": 13,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.025030700024217367,
+              "execution_total_seconds": 3.8943942999467254,
+              "ops_per_second": 64.1948351258166,
+              "time_per_op_seconds": {
+                "min": 0.012263000011444092,
+                "mean": 0.015557569997850806,
+                "max": 0.051827199989929795
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025832499959506094,
+              "execution_total_seconds": 0.5509685999713838,
+              "ops_per_second": 453.7463659689218,
+              "time_per_op_seconds": {
+                "min": 0.0013736000983044505,
+                "mean": 0.002168149197474122,
+                "max": 0.05081299995072186
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.027355199912562966,
+              "execution_total_seconds": 0.4150711999973282,
+              "ops_per_second": 602.3063031152468,
+              "time_per_op_seconds": {
+                "min": 0.0012568000238388777,
+                "mean": 0.0016514020040631293,
+                "max": 0.035507400054484606
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024512900039553642,
+              "execution_total_seconds": 0.357715200050734,
+              "ops_per_second": 698.8800027634918,
+              "time_per_op_seconds": {
+                "min": 0.0035807000240311027,
+                "mean": 0.019563168401364236,
+                "max": 0.056199399987235665
+              }
+            }
+          ]
+        },
+        {
+          "round": 14,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025103799998760223,
+              "execution_total_seconds": 0.40824810008052737,
+              "ops_per_second": 612.3727212709312,
+              "time_per_op_seconds": {
+                "min": 0.0013249000767245889,
+                "mean": 0.0016103064022026956,
+                "max": 0.03657879994716495
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024155399994924664,
+              "execution_total_seconds": 0.33445329999085516,
+              "ops_per_second": 747.4885133644538,
+              "time_per_op_seconds": {
+                "min": 0.0032038999488577247,
+                "mean": 0.01796708919806406,
+                "max": 0.05443540005944669
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023900200030766428,
+              "execution_total_seconds": 3.9008763000601903,
+              "ops_per_second": 64.08816398411365,
+              "time_per_op_seconds": {
+                "min": 0.012880299938842654,
+                "mean": 0.015583883593790234,
+                "max": 0.04919689998496324
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026466300012543797,
+              "execution_total_seconds": 0.4413419000338763,
+              "ops_per_second": 566.4542613806,
+              "time_per_op_seconds": {
+                "min": 0.0013621000107377768,
+                "mean": 0.0017557320035994054,
+                "max": 0.03623149998020381
+              }
+            }
+          ]
+        },
+        {
+          "round": 15,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024877400021068752,
+              "execution_total_seconds": 0.3835141999879852,
+              "ops_per_second": 651.8663455168858,
+              "time_per_op_seconds": {
+                "min": 0.0038710999069735408,
+                "mean": 0.021065492396708577,
+                "max": 0.0581793999299407
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026007600012235343,
+              "execution_total_seconds": 4.106712999986485,
+              "ops_per_second": 60.875936546046134,
+              "time_per_op_seconds": {
+                "min": 0.004716899944469333,
+                "mean": 0.016405884404666723,
+                "max": 0.24040280003100634
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025408799992874265,
+              "execution_total_seconds": 0.5860319999046624,
+              "ops_per_second": 426.59786503240576,
+              "time_per_op_seconds": {
+                "min": 0.00131720001809299,
+                "mean": 0.0023069847938604654,
+                "max": 0.050482099992223084
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.025934900040738285,
+              "execution_total_seconds": 0.6149987999815494,
+              "ops_per_second": 406.5048582330571,
+              "time_per_op_seconds": {
+                "min": 0.0013940000208094716,
+                "mean": 0.002445825999137014,
+                "max": 0.056033600005321205
+              }
+            }
+          ]
+        },
+        {
+          "round": 16,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02997290005441755,
+              "execution_total_seconds": 3.8994411999592558,
+              "ops_per_second": 64.11175016630901,
+              "time_per_op_seconds": {
+                "min": 0.012347600073553622,
+                "mean": 0.015578104401007294,
+                "max": 0.06685159995686263
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026457599946297705,
+              "execution_total_seconds": 0.4144625999033451,
+              "ops_per_second": 603.1907343589056,
+              "time_per_op_seconds": {
+                "min": 0.0013458000030368567,
+                "mean": 0.001648733604233712,
+                "max": 0.03610390005633235
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02697709994390607,
+              "execution_total_seconds": 0.4388887999812141,
+              "ops_per_second": 569.6203685550892,
+              "time_per_op_seconds": {
+                "min": 0.006914000026881695,
+                "mean": 0.023953235999681056,
+                "max": 0.06049129995517433
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.03274219995364547,
+              "execution_total_seconds": 0.4780712000792846,
+              "ops_per_second": 522.934659018446,
+              "time_per_op_seconds": {
+                "min": 0.0013689000625163317,
+                "mean": 0.0018841511965729295,
+                "max": 0.04042380000464618
+              }
+            }
+          ]
+        },
+        {
+          "round": 17,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.03185280004981905,
+              "execution_total_seconds": 3.8918479999992996,
+              "ops_per_second": 64.23683555987927,
+              "time_per_op_seconds": {
+                "min": 0.013280100072734058,
+                "mean": 0.01554737800033763,
+                "max": 0.05082350003067404
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.05309200007468462,
+              "execution_total_seconds": 0.46346490003634244,
+              "ops_per_second": 539.4151746559369,
+              "time_per_op_seconds": {
+                "min": 0.0013534000609070063,
+                "mean": 0.0018438128046691419,
+                "max": 0.0395414000377059
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025046200025826693,
+              "execution_total_seconds": 0.33321489999070764,
+              "ops_per_second": 750.2665697331414,
+              "time_per_op_seconds": {
+                "min": 0.005168300005607307,
+                "mean": 0.017860968000255526,
+                "max": 0.054481100058183074
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024626799975521863,
+              "execution_total_seconds": 0.4003482999978587,
+              "ops_per_second": 624.4562547195458,
+              "time_per_op_seconds": {
+                "min": 0.0013419999741017818,
+                "mean": 0.0015793931973166764,
+                "max": 0.037159400060772896
+              }
+            }
+          ]
+        },
+        {
+          "round": 18,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02576089999638498,
+              "execution_total_seconds": 0.36441149993333966,
+              "ops_per_second": 686.0376251730022,
+              "time_per_op_seconds": {
+                "min": 0.003665699972771108,
+                "mean": 0.019904219201300293,
+                "max": 0.05366350000258535
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02835520007647574,
+              "execution_total_seconds": 0.6461268999846652,
+              "ops_per_second": 386.9208974366078,
+              "time_per_op_seconds": {
+                "min": 0.0012311000609770417,
+                "mean": 0.0025630692010745405,
+                "max": 0.282386599923484
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023171600070782006,
+              "execution_total_seconds": 3.9045838000020012,
+              "ops_per_second": 64.02731067005703,
+              "time_per_op_seconds": {
+                "min": 0.01252819993533194,
+                "mean": 0.015600600800942629,
+                "max": 0.05118319997563958
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.027335899998433888,
+              "execution_total_seconds": 0.4898099999409169,
+              "ops_per_second": 510.40199267094613,
+              "time_per_op_seconds": {
+                "min": 0.001301799900829792,
+                "mean": 0.0019480207990854978,
+                "max": 0.03540259995497763
+              }
+            }
+          ]
+        },
+        {
+          "round": 19,
+          "order": [
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.027617600047960877,
+              "execution_total_seconds": 3.8879981000209227,
+              "ops_per_second": 64.30044294482929,
+              "time_per_op_seconds": {
+                "min": 0.01174920005723834,
+                "mean": 0.015531192803289741,
+                "max": 0.050078899948857725
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.023360799998044968,
+              "execution_total_seconds": 0.3227387999650091,
+              "ops_per_second": 774.6202192829144,
+              "time_per_op_seconds": {
+                "min": 0.0032837000908330083,
+                "mean": 0.017398707999382167,
+                "max": 0.053607999929226935
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024129200028255582,
+              "execution_total_seconds": 0.4256870999233797,
+              "ops_per_second": 587.2858257743728,
+              "time_per_op_seconds": {
+                "min": 0.0013334000250324607,
+                "mean": 0.0016935711982659996,
+                "max": 0.03815270005725324
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025024599977768958,
+              "execution_total_seconds": 0.4065781000535935,
+              "ops_per_second": 614.8880128247094,
+              "time_per_op_seconds": {
+                "min": 0.0012029000790789723,
+                "mean": 0.0015989191979169845,
+                "max": 0.037463400047272444
+              }
+            }
+          ]
+        },
+        {
+          "round": 20,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_25_expected_10-scalar_sequential_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02363319997675717,
+              "execution_total_seconds": 0.39328229997772723,
+              "ops_per_second": 635.6756966030717,
+              "time_per_op_seconds": {
+                "min": 0.0012157000601291656,
+                "mean": 0.0015647587981075049,
+                "max": 0.03462689998559654
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_25_expected_10-scalar_concurrent_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02481520001310855,
+              "execution_total_seconds": 0.40481500001624227,
+              "ops_per_second": 617.5660486641289,
+              "time_per_op_seconds": {
+                "min": 0.001303300028666854,
+                "mean": 0.0015955083998851478,
+                "max": 0.03793009999208152
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_25_expected_10-batch_sequential_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023536099935881793,
+              "execution_total_seconds": 3.9025432999478653,
+              "ops_per_second": 64.06078825655561,
+              "time_per_op_seconds": {
+                "min": 0.013528799987398088,
+                "mean": 0.015590341596864165,
+                "max": 0.04970810003578663
+              }
+            },
+            {
+              "policy": "batch_size_25_expected_10",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_25_expected_10-batch_concurrent_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.023528599995188415,
+              "execution_total_seconds": 0.342056900030002,
+              "ops_per_second": 730.8725535958267,
+              "time_per_op_seconds": {
+                "min": 0.0039564999751746655,
+                "mean": 0.018192128794733434,
+                "max": 0.05976510001346469
+              }
+            }
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 522.7804727814728,
+            "scalar_concurrent_create": 545.1553245479996,
+            "batch_sequential_create": 64.36196592938035,
+            "batch_concurrent_create": 717.5456263832136
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.042799708350774,
+          "ratio_batch_sequential_over_scalar_sequential": 0.12311470929076622,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.3162223573220102,
+          "ratio_batch_concurrent_over_batch_sequential": 11.148597094913535
+        },
+        {
+          "step": 2,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 601.6454763461861,
+            "scalar_concurrent_create": 587.6016522480628,
+            "batch_sequential_create": 64.34257344892023,
+            "batch_concurrent_create": 751.3053176524634
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.9766576419997173,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10694433180097176,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2785963326993697,
+          "ratio_batch_concurrent_over_batch_sequential": 11.676643898132294
+        },
+        {
+          "step": 3,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 412.59790124537847,
+            "scalar_concurrent_create": 567.358889861577,
+            "batch_sequential_create": 64.12678265107891,
+            "batch_concurrent_create": 682.2330414528603
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.375089131934677,
+          "ratio_batch_sequential_over_scalar_sequential": 0.15542197974715752,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2024717575489299,
+          "ratio_batch_concurrent_over_batch_sequential": 10.638816002433298
+        },
+        {
+          "step": 4,
+          "order": [
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 610.5486193703229,
+            "scalar_concurrent_create": 615.8398441342251,
+            "batch_sequential_create": 64.30310074245399,
+            "batch_concurrent_create": 709.2291133399785
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.00866634465468,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10532019679083332,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.151645383284747,
+          "ratio_batch_concurrent_over_batch_sequential": 11.0294698879386
+        },
+        {
+          "step": 5,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 519.8012030467952,
+            "scalar_concurrent_create": 612.6628090064152,
+            "batch_sequential_create": 64.22046134303532,
+            "batch_concurrent_create": 743.7786633612048
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.17864830903683,
+          "ratio_batch_sequential_over_scalar_sequential": 0.12354811987084582,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2140098149052438,
+          "ratio_batch_concurrent_over_batch_sequential": 11.581646220015317
+        },
+        {
+          "step": 6,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 434.27892065506535,
+            "scalar_concurrent_create": 587.607867162969,
+            "batch_sequential_create": 64.14464957193954,
+            "batch_concurrent_create": 678.8337203577973
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.3530655972816332,
+          "ratio_batch_sequential_over_scalar_sequential": 0.14770380628924815,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1552495436034171,
+          "ratio_batch_concurrent_over_batch_sequential": 10.582858038634562
+        },
+        {
+          "step": 7,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 626.376462329498,
+            "scalar_concurrent_create": 618.7984025166674,
+            "batch_sequential_create": 64.11834379057044,
+            "batch_concurrent_create": 723.2379535708709
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.987901748758809,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10236390995937796,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.168777990746979,
+          "ratio_batch_concurrent_over_batch_sequential": 11.279735420696158
+        },
+        {
+          "step": 8,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 474.84273686921796,
+            "scalar_concurrent_create": 504.51032220696874,
+            "batch_sequential_create": 64.22257303822401,
+            "batch_concurrent_create": 546.8165760671869
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0624787598802883,
+          "ratio_batch_sequential_over_scalar_sequential": 0.13525019559457285,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.0838560719137529,
+          "ratio_batch_concurrent_over_batch_sequential": 8.514398445881831
+        },
+        {
+          "step": 9,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 481.2386235205509,
+            "scalar_concurrent_create": 494.73444248823483,
+            "batch_sequential_create": 64.06792306915011,
+            "batch_concurrent_create": 687.6848842280247
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.028043923135167,
+          "ratio_batch_sequential_over_scalar_sequential": 0.1331312989810639,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.3900081036795378,
+          "ratio_batch_concurrent_over_batch_sequential": 10.733684678458971
+        },
+        {
+          "step": 10,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 536.3968890844682,
+            "scalar_concurrent_create": 610.3529035974044,
+            "batch_sequential_create": 61.71285104369213,
+            "batch_concurrent_create": 677.7894627642128
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.1378755470397408,
+          "ratio_batch_sequential_over_scalar_sequential": 0.1150507251244964,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1104878157691052,
+          "ratio_batch_concurrent_over_batch_sequential": 10.982954948627215
+        },
+        {
+          "step": 11,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 623.5070124862239,
+            "scalar_concurrent_create": 464.6923067896817,
+            "batch_sequential_create": 64.37997742526647,
+            "batch_concurrent_create": 744.2252585696493
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.7452880199963251,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10325461644537466,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.601544178149012,
+          "ratio_batch_concurrent_over_batch_sequential": 11.55988691411954
+        },
+        {
+          "step": 12,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 625.3885226294918,
+            "scalar_concurrent_create": 380.68495882239756,
+            "batch_sequential_create": 64.22399850983254,
+            "batch_concurrent_create": 730.3532776822912
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.6087175332572139,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10269455895960168,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.918524125412125,
+          "ratio_batch_concurrent_over_batch_sequential": 11.371968339381358
+        },
+        {
+          "step": 13,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 602.3063031152468,
+            "scalar_concurrent_create": 453.7463659689218,
+            "batch_sequential_create": 64.1948351258166,
+            "batch_concurrent_create": 698.8800027634918
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.7533481944685889,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10658170899721332,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.5402437466823917,
+          "ratio_batch_concurrent_over_batch_sequential": 10.886857196435578
+        },
+        {
+          "step": 14,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 566.4542613806,
+            "scalar_concurrent_create": 612.3727212709312,
+            "batch_sequential_create": 64.08816398411365,
+            "batch_concurrent_create": 747.4885133644538
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0810629613385123,
+          "ratio_batch_sequential_over_scalar_sequential": 0.11313916824972543,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2206430616522246,
+          "ratio_batch_concurrent_over_batch_sequential": 11.66344090540249
+        },
+        {
+          "step": 15,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 406.5048582330571,
+            "scalar_concurrent_create": 426.59786503240576,
+            "batch_sequential_create": 60.875936546046134,
+            "batch_concurrent_create": 651.8663455168858
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0494287002784821,
+          "ratio_batch_sequential_over_scalar_sequential": 0.14975451169428527,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.5280581525352168,
+          "ratio_batch_concurrent_over_batch_sequential": 10.708111981551506
+        },
+        {
+          "step": 16,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 603.1907343589056,
+            "scalar_concurrent_create": 522.934659018446,
+            "batch_sequential_create": 64.11175016630901,
+            "batch_concurrent_create": 569.6203685550892
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.8669474334254176,
+          "ratio_batch_sequential_over_scalar_sequential": 0.1062876906331286,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.0892763727389436,
+          "ratio_batch_concurrent_over_batch_sequential": 8.88480453391876
+        },
+        {
+          "step": 17,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 539.4151746559369,
+            "scalar_concurrent_create": 624.4562547195458,
+            "batch_sequential_create": 64.23683555987927,
+            "batch_concurrent_create": 750.2665697331414
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.1576542226826523,
+          "ratio_batch_sequential_over_scalar_sequential": 0.11908607428564165,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2014717829515524,
+          "ratio_batch_concurrent_over_batch_sequential": 11.679693795529046
+        },
+        {
+          "step": 18,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 510.40199267094613,
+            "scalar_concurrent_create": 386.9208974366078,
+            "batch_sequential_create": 64.02731067005703,
+            "batch_concurrent_create": 686.0376251730022
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.7580708990022575,
+          "ratio_batch_sequential_over_scalar_sequential": 0.12544486814207081,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.7730694561034945,
+          "ratio_batch_concurrent_over_batch_sequential": 10.7147655897694
+        },
+        {
+          "step": 19,
+          "order": [
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 587.2858257743728,
+            "scalar_concurrent_create": 614.8880128247094,
+            "batch_sequential_create": 64.30044294482929,
+            "batch_concurrent_create": 774.6202192829144
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0469995798280018,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10948747632389247,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2597744680765812,
+          "ratio_batch_concurrent_over_batch_sequential": 12.046887763239047
+        },
+        {
+          "step": 20,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 635.6756966030717,
+            "scalar_concurrent_create": 617.5660486641289,
+            "batch_sequential_create": 64.06078825655561,
+            "batch_concurrent_create": 730.8725535958267
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.9715111840271425,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10077589657569748,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1834726911830624,
+          "ratio_batch_concurrent_over_batch_sequential": 11.409047148604722
+        }
+      ],
+      "summary": {
+        "ops": 250,
+        "round_count": 20,
+        "concurrency": 25,
+        "batch_policy": {
+          "enabled": true,
+          "name": "batch_size_25_expected_10",
+          "max_size": 25,
+          "expected_batch_count": 10,
+          "calculated_batch_count": 10,
+          "max_delay_ms": 1
+        },
+        "ops_per_second": {
+          "scalar_sequential_create": {
+            "min": 406.5048582330571,
+            "max": 635.6756966030717,
+            "mean": 546.0318843578405,
+            "stddev": 72.20156061186196,
+            "median": 552.9347180182684
+          },
+          "scalar_concurrent_create": {
+            "min": 380.68495882239756,
+            "max": 624.4562547195458,
+            "mean": 542.474127415915,
+            "stddev": 80.54686139483515,
+            "median": 577.4802710548199
+          },
+          "batch_sequential_create": {
+            "min": 60.875936546046134,
+            "max": 64.37997742526647,
+            "mean": 63.90606319085753,
+            "stddev": 0.8863386037350819,
+            "median": 64.16974234887806
+          },
+          "batch_concurrent_create": {
+            "min": 546.8165760671869,
+            "max": 774.6202192829144,
+            "mean": 700.134254670728,
+            "stddev": 56.589555141886756,
+            "median": 713.3873698615961
+          }
+        },
+        "mean_ratios": {
+          "scalar_concurrent_over_scalar_sequential": 0.9934843421348745,
+          "batch_sequential_over_scalar_sequential": 0.11703723724121735,
+          "batch_concurrent_over_scalar_concurrent": 1.2906316067198076,
+          "batch_concurrent_over_batch_sequential": 10.955678064219889
+        }
+      }
+    },
+    {
+      "policy": {
+        "policy": "batch_size_100_expected_3",
+        "max_size": 100,
+        "expected_batch_count": 3,
+        "max_delay_ms": 1
+      },
+      "rounds": [
+        {
+          "round": 1,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.023949100053869188,
+              "execution_total_seconds": 0.34417149994987994,
+              "ops_per_second": 726.3820509147513,
+              "time_per_op_seconds": {
+                "min": 0.0069673999678343534,
+                "mean": 0.018723848402500153,
+                "max": 0.0583228999748826
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02524210000410676,
+              "execution_total_seconds": 3.9021459000650793,
+              "ops_per_second": 64.0673122949684,
+              "time_per_op_seconds": {
+                "min": 0.013730800012126565,
+                "mean": 0.01558821640536189,
+                "max": 0.05000709998421371
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.027124200016260147,
+              "execution_total_seconds": 0.39321989996824414,
+              "ops_per_second": 635.7765718881207,
+              "time_per_op_seconds": {
+                "min": 0.0012357999803498387,
+                "mean": 0.0015503519983030855,
+                "max": 0.03347070002928376
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 1,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.26772879995405674,
+              "execution_total_seconds": 0.45998060004785657,
+              "ops_per_second": 543.5011823846264,
+              "time_per_op_seconds": {
+                "min": 0.0012780999531969428,
+                "mean": 0.0018294052011333405,
+                "max": 0.03955480002332479
+              }
+            }
+          ]
+        },
+        {
+          "round": 2,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.025127200060524046,
+              "execution_total_seconds": 3.8855208999011666,
+              "ops_per_second": 64.34143746501508,
+              "time_per_op_seconds": {
+                "min": 0.013119200011715293,
+                "mean": 0.015521330798976123,
+                "max": 0.04897950007580221
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024426300078630447,
+              "execution_total_seconds": 0.4034454000648111,
+              "ops_per_second": 619.6625366402467,
+              "time_per_op_seconds": {
+                "min": 0.0012280000373721123,
+                "mean": 0.0016049727983772754,
+                "max": 0.03498870006296784
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02811660000588745,
+              "execution_total_seconds": 0.392385600018315,
+              "ops_per_second": 637.1283757312475,
+              "time_per_op_seconds": {
+                "min": 0.0012067999923601747,
+                "mean": 0.0015470816008746624,
+                "max": 0.03493800002615899
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 2,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02409079996868968,
+              "execution_total_seconds": 0.32207949995063245,
+              "ops_per_second": 776.2058747555166,
+              "time_per_op_seconds": {
+                "min": 0.005297500058077276,
+                "mean": 0.017469010406173765,
+                "max": 0.05190309998579323
+              }
+            }
+          ]
+        },
+        {
+          "round": 3,
+          "order": [
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02315729996189475,
+              "execution_total_seconds": 3.8903534000273794,
+              "ops_per_second": 64.2615141334565,
+              "time_per_op_seconds": {
+                "min": 0.01090879994444549,
+                "mean": 0.015540124002844095,
+                "max": 0.049558799946680665
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.026069499901495874,
+              "execution_total_seconds": 0.3733119999524206,
+              "ops_per_second": 669.6811247210458,
+              "time_per_op_seconds": {
+                "min": 0.004099799902178347,
+                "mean": 0.02042329519893974,
+                "max": 0.06036800006404519
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.026220899890176952,
+              "execution_total_seconds": 0.5327110999496654,
+              "ops_per_second": 469.2975235988548,
+              "time_per_op_seconds": {
+                "min": 0.0013442999916151166,
+                "mean": 0.0020982420020736756,
+                "max": 0.04271289997268468
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 3,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.025238499976694584,
+              "execution_total_seconds": 0.41392660001292825,
+              "ops_per_second": 603.9718152739923,
+              "time_per_op_seconds": {
+                "min": 0.0013363000471144915,
+                "mean": 0.0016467051999643446,
+                "max": 0.03514539997559041
+              }
+            }
+          ]
+        },
+        {
+          "round": 4,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024240099941380322,
+              "execution_total_seconds": 0.3244357999647036,
+              "ops_per_second": 770.5684761891206,
+              "time_per_op_seconds": {
+                "min": 0.0037095999578014016,
+                "mean": 0.0173439919995144,
+                "max": 0.053508999990299344
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024134500068612397,
+              "execution_total_seconds": 0.4413500999798998,
+              "ops_per_second": 566.4437370953028,
+              "time_per_op_seconds": {
+                "min": 0.0013492999132722616,
+                "mean": 0.0017398407990112902,
+                "max": 0.03350620006676763
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02434870006982237,
+              "execution_total_seconds": 0.4125204000156373,
+              "ops_per_second": 606.0306350680435,
+              "time_per_op_seconds": {
+                "min": 0.0013008000096306205,
+                "mean": 0.0016410219948738813,
+                "max": 0.03493429999798536
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 4,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024564299965277314,
+              "execution_total_seconds": 3.916343000018969,
+              "ops_per_second": 63.835062454639214,
+              "time_per_op_seconds": {
+                "min": 0.013065500068478286,
+                "mean": 0.01564847720041871,
+                "max": 0.04914320004172623
+              }
+            }
+          ]
+        },
+        {
+          "round": 5,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.022991799982264638,
+              "execution_total_seconds": 0.3841307999100536,
+              "ops_per_second": 650.819981262994,
+              "time_per_op_seconds": {
+                "min": 0.0011822000378742814,
+                "mean": 0.0015160727994516492,
+                "max": 0.034646800020709634
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02338410005904734,
+              "execution_total_seconds": 0.3121712999418378,
+              "ops_per_second": 800.8423581750749,
+              "time_per_op_seconds": {
+                "min": 0.006403599982149899,
+                "mean": 0.016646571196615695,
+                "max": 0.05105360003653914
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02280769997742027,
+              "execution_total_seconds": 4.191008900059387,
+              "ops_per_second": 59.65150777810504,
+              "time_per_op_seconds": {
+                "min": 0.013141399947926402,
+                "mean": 0.016746352000162005,
+                "max": 0.32666680007241666
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 5,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023457300034351647,
+              "execution_total_seconds": 0.39450539997778833,
+              "ops_per_second": 633.7048872184656,
+              "time_per_op_seconds": {
+                "min": 0.0011746000964194536,
+                "mean": 0.0015694324006326496,
+                "max": 0.035539799951948225
+              }
+            }
+          ]
+        },
+        {
+          "round": 6,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.028467099997214973,
+              "execution_total_seconds": 0.42742189997807145,
+              "ops_per_second": 584.9021774804381,
+              "time_per_op_seconds": {
+                "min": 0.0013228999450802803,
+                "mean": 0.0017003496019169688,
+                "max": 0.03536620002705604
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024171299999579787,
+              "execution_total_seconds": 3.909831399912946,
+              "ops_per_second": 63.94137609247456,
+              "time_per_op_seconds": {
+                "min": 0.013129699975252151,
+                "mean": 0.015621984799392521,
+                "max": 0.04942550009582192
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02398539998102933,
+              "execution_total_seconds": 0.32157959998585284,
+              "ops_per_second": 777.4124975931253,
+              "time_per_op_seconds": {
+                "min": 0.0050752999959513545,
+                "mean": 0.01705227439943701,
+                "max": 0.05226039991248399
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 6,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02373989997431636,
+              "execution_total_seconds": 0.3898332000244409,
+              "ops_per_second": 641.2999200281712,
+              "time_per_op_seconds": {
+                "min": 0.0012080000014975667,
+                "mean": 0.0015377832027152181,
+                "max": 0.033857200061902404
+              }
+            }
+          ]
+        },
+        {
+          "round": 7,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026314200018532574,
+              "execution_total_seconds": 3.90631529991515,
+              "ops_per_second": 63.99893014407473,
+              "time_per_op_seconds": {
+                "min": 0.013897700002416968,
+                "mean": 0.015607283998746425,
+                "max": 0.04832460009492934
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02337240008637309,
+              "execution_total_seconds": 0.39691709994804114,
+              "ops_per_second": 629.8544457588915,
+              "time_per_op_seconds": {
+                "min": 0.001196000026538968,
+                "mean": 0.001576450799126178,
+                "max": 0.033930799923837185
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02364810009021312,
+              "execution_total_seconds": 0.38679719995707273,
+              "ops_per_second": 646.3335309245913,
+              "time_per_op_seconds": {
+                "min": 0.0011721999617293477,
+                "mean": 0.0015242671999149025,
+                "max": 0.033510099980048835
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 7,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02557239995803684,
+              "execution_total_seconds": 0.32583840005099773,
+              "ops_per_second": 767.2514963272343,
+              "time_per_op_seconds": {
+                "min": 0.00587009999435395,
+                "mean": 0.017560112797655167,
+                "max": 0.052544199978001416
+              }
+            }
+          ]
+        },
+        {
+          "round": 8,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.027087399968877435,
+              "execution_total_seconds": 3.9040908999741077,
+              "ops_per_second": 64.03539425827867,
+              "time_per_op_seconds": {
+                "min": 0.01278190000448376,
+                "mean": 0.015597953598946333,
+                "max": 0.05008870002347976
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02405560004990548,
+              "execution_total_seconds": 0.4326263000257313,
+              "ops_per_second": 577.8659318333877,
+              "time_per_op_seconds": {
+                "min": 0.0013451999984681606,
+                "mean": 0.001703350796829909,
+                "max": 0.036074900068342686
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02495640004053712,
+              "execution_total_seconds": 0.4249857000540942,
+              "ops_per_second": 588.2550870962924,
+              "time_per_op_seconds": {
+                "min": 0.0011811000294983387,
+                "mean": 0.0016905575962737204,
+                "max": 0.03586189995985478
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 8,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025067599955946207,
+              "execution_total_seconds": 0.3500923999818042,
+              "ops_per_second": 714.0971926639755,
+              "time_per_op_seconds": {
+                "min": 0.004638100042939186,
+                "mean": 0.018755396000575273,
+                "max": 0.06075070006772876
+              }
+            }
+          ]
+        },
+        {
+          "round": 9,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023773099994286895,
+              "execution_total_seconds": 0.4065457000397146,
+              "ops_per_second": 614.9370168607811,
+              "time_per_op_seconds": {
+                "min": 0.0012195000890642405,
+                "mean": 0.0016172780054621398,
+                "max": 0.03595849999692291
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024270800058729947,
+              "execution_total_seconds": 0.414284500060603,
+              "ops_per_second": 603.4500445066834,
+              "time_per_op_seconds": {
+                "min": 0.0012923000613227487,
+                "mean": 0.0016319732060655952,
+                "max": 0.03420780005399138
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024926100042648613,
+              "execution_total_seconds": 0.357176199904643,
+              "ops_per_second": 699.934654287558,
+              "time_per_op_seconds": {
+                "min": 0.010929599986411631,
+                "mean": 0.018853737999685108,
+                "max": 0.05647089995909482
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 9,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02559210010804236,
+              "execution_total_seconds": 3.8889591000042856,
+              "ops_per_second": 64.2845536739444,
+              "time_per_op_seconds": {
+                "min": 0.013566299923695624,
+                "mean": 0.01553493319451809,
+                "max": 0.04965629999060184
+              }
+            }
+          ]
+        },
+        {
+          "round": 10,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.10027059994172305,
+              "execution_total_seconds": 0.8159356999676675,
+              "ops_per_second": 306.3966927907513,
+              "time_per_op_seconds": {
+                "min": 0.00134529999922961,
+                "mean": 0.0032530892034992576,
+                "max": 0.35227469995152205
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.027551300008781254,
+              "execution_total_seconds": 0.4128180999541655,
+              "ops_per_second": 605.5936017043755,
+              "time_per_op_seconds": {
+                "min": 0.0038713000249117613,
+                "mean": 0.022357918004039676,
+                "max": 0.06795370008330792
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.026386199984699488,
+              "execution_total_seconds": 0.49112200003582984,
+              "ops_per_second": 509.03848734481704,
+              "time_per_op_seconds": {
+                "min": 0.0013782000169157982,
+                "mean": 0.0019358420032076537,
+                "max": 0.03478930005803704
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 10,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026714500039815903,
+              "execution_total_seconds": 3.921494900016114,
+              "ops_per_second": 63.751198554146455,
+              "time_per_op_seconds": {
+                "min": 0.014111099997535348,
+                "mean": 0.01566610000282526,
+                "max": 0.049172000028193
+              }
+            }
+          ]
+        },
+        {
+          "round": 11,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02738009998574853,
+              "execution_total_seconds": 0.44181119999848306,
+              "ops_per_second": 565.8525632687862,
+              "time_per_op_seconds": {
+                "min": 0.0013638000236824155,
+                "mean": 0.001757602805737406,
+                "max": 0.04133639996871352
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.023429100052453578,
+              "execution_total_seconds": 0.33997890003956854,
+              "ops_per_second": 735.3397518813775,
+              "time_per_op_seconds": {
+                "min": 0.005065800040028989,
+                "mean": 0.01819680120050907,
+                "max": 0.0556180999847129
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024607299943454564,
+              "execution_total_seconds": 0.49878350005019456,
+              "ops_per_second": 501.2194669126816,
+              "time_per_op_seconds": {
+                "min": 0.00137489999178797,
+                "mean": 0.0019651243994012477,
+                "max": 0.04507750004995614
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 11,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.03835130005609244,
+              "execution_total_seconds": 3.906648900010623,
+              "ops_per_second": 63.993465089560566,
+              "time_per_op_seconds": {
+                "min": 0.013509499956853688,
+                "mean": 0.015606999203097075,
+                "max": 0.050498099997639656
+              }
+            }
+          ]
+        },
+        {
+          "round": 12,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.036674899980425835,
+              "execution_total_seconds": 0.4402348999865353,
+              "ops_per_second": 567.8786484389273,
+              "time_per_op_seconds": {
+                "min": 0.0013609000016003847,
+                "mean": 0.0017512247976846993,
+                "max": 0.03875459998380393
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02668669994454831,
+              "execution_total_seconds": 0.428761100047268,
+              "ops_per_second": 583.0752835843532,
+              "time_per_op_seconds": {
+                "min": 0.005820799968205392,
+                "mean": 0.023126288405153902,
+                "max": 0.06357609992846847
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.028064100071787834,
+              "execution_total_seconds": 3.8882405000040308,
+              "ops_per_second": 64.29643433829281,
+              "time_per_op_seconds": {
+                "min": 0.011482300003990531,
+                "mean": 0.015530959998257458,
+                "max": 0.050288000027649105
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 12,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02538160001859069,
+              "execution_total_seconds": 0.4839621999999508,
+              "ops_per_second": 516.5692692528991,
+              "time_per_op_seconds": {
+                "min": 0.0013838999439030886,
+                "mean": 0.0019047316075302661,
+                "max": 0.040832300088368356
+              }
+            }
+          ]
+        },
+        {
+          "round": 13,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.026628299965523183,
+              "execution_total_seconds": 3.8943900000303984,
+              "ops_per_second": 64.19490600531753,
+              "time_per_op_seconds": {
+                "min": 0.0122306999983266,
+                "mean": 0.015557010401040315,
+                "max": 0.050647699972614646
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.03089910000562668,
+              "execution_total_seconds": 0.5028904000064358,
+              "ops_per_second": 497.1262127827467,
+              "time_per_op_seconds": {
+                "min": 0.0013466998934745789,
+                "mean": 0.0019764327965676783,
+                "max": 0.04568080010358244
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.10349989996757358,
+              "execution_total_seconds": 0.3733885999536142,
+              "ops_per_second": 669.5437408401257,
+              "time_per_op_seconds": {
+                "min": 0.0068159999791532755,
+                "mean": 0.020382804005406797,
+                "max": 0.05515859997831285
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 13,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.18381810002028942,
+              "execution_total_seconds": 0.414333299966529,
+              "ops_per_second": 603.3789705538891,
+              "time_per_op_seconds": {
+                "min": 0.001332300016656518,
+                "mean": 0.0016482879957184196,
+                "max": 0.03828420001082122
+              }
+            }
+          ]
+        },
+        {
+          "round": 14,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.025550600024871528,
+              "execution_total_seconds": 0.4193702000193298,
+              "ops_per_second": 596.1320093523024,
+              "time_per_op_seconds": {
+                "min": 0.0013442999916151166,
+                "mean": 0.0016683960007503628,
+                "max": 0.03490179998334497
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.1679782000137493,
+              "execution_total_seconds": 0.34881979995407164,
+              "ops_per_second": 716.702434990551,
+              "time_per_op_seconds": {
+                "min": 0.0038718999130651355,
+                "mean": 0.01909191199671477,
+                "max": 0.05361579998861998
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.17556410003453493,
+              "execution_total_seconds": 3.9017088999971747,
+              "ops_per_second": 64.07448797632776,
+              "time_per_op_seconds": {
+                "min": 0.010755800059996545,
+                "mean": 0.015582369999028742,
+                "max": 0.050528099993243814
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 14,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025204299949109554,
+              "execution_total_seconds": 0.4047238000202924,
+              "ops_per_second": 617.7052102877698,
+              "time_per_op_seconds": {
+                "min": 0.0012203999795019627,
+                "mean": 0.0015951568018645048,
+                "max": 0.0370691999560222
+              }
+            }
+          ]
+        },
+        {
+          "round": 15,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.09712059993762523,
+              "execution_total_seconds": 3.899249199894257,
+              "ops_per_second": 64.11490704589481,
+              "time_per_op_seconds": {
+                "min": 0.012658299994654953,
+                "mean": 0.015576297998894007,
+                "max": 0.051582799991592765
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.025047700037248433,
+              "execution_total_seconds": 0.9566973999608308,
+              "ops_per_second": 261.31564694357434,
+              "time_per_op_seconds": {
+                "min": 0.0013649000320583582,
+                "mean": 0.0038171215993352235,
+                "max": 0.5626837000017986
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.10326820006594062,
+              "execution_total_seconds": 0.35181569994892925,
+              "ops_per_second": 710.5993281035804,
+              "time_per_op_seconds": {
+                "min": 0.004599799984134734,
+                "mean": 0.019298055200837553,
+                "max": 0.05499009997583926
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 15,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02448040002491325,
+              "execution_total_seconds": 0.42055340006481856,
+              "ops_per_second": 594.4548301392125,
+              "time_per_op_seconds": {
+                "min": 0.0013636999065056443,
+                "mean": 0.0016587168029509485,
+                "max": 0.03587840008549392
+              }
+            }
+          ]
+        },
+        {
+          "round": 16,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02421850000973791,
+              "execution_total_seconds": 0.35505709995049983,
+              "ops_per_second": 704.1120992506661,
+              "time_per_op_seconds": {
+                "min": 0.00410120002925396,
+                "mean": 0.019101788400206716,
+                "max": 0.05796739994548261
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02456189994700253,
+              "execution_total_seconds": 3.8973949999781325,
+              "ops_per_second": 64.14540994726033,
+              "time_per_op_seconds": {
+                "min": 0.011889499961398542,
+                "mean": 0.015568882797379047,
+                "max": 0.05061040003784001
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02434419991914183,
+              "execution_total_seconds": 0.46167839993722737,
+              "ops_per_second": 541.5024831874126,
+              "time_per_op_seconds": {
+                "min": 0.001240899902768433,
+                "mean": 0.0018366855969652533,
+                "max": 0.03885069990064949
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 16,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025851399987004697,
+              "execution_total_seconds": 0.4605961999623105,
+              "ops_per_second": 542.7747776044547,
+              "time_per_op_seconds": {
+                "min": 0.0012738000368699431,
+                "mean": 0.0018140847962349654,
+                "max": 0.050487899919971824
+              }
+            }
+          ]
+        },
+        {
+          "round": 17,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02457550005055964,
+              "execution_total_seconds": 0.39867540006525815,
+              "ops_per_second": 627.07656393918,
+              "time_per_op_seconds": {
+                "min": 0.0012561000185087323,
+                "mean": 0.0015723963985219598,
+                "max": 0.03521980007644743
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023518199915997684,
+              "execution_total_seconds": 3.893158599967137,
+              "ops_per_second": 64.21521075512061,
+              "time_per_op_seconds": {
+                "min": 0.013517400017008185,
+                "mean": 0.015552802397869527,
+                "max": 0.04938480001874268
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024004400009289384,
+              "execution_total_seconds": 0.36725260003004223,
+              "ops_per_second": 680.7303746237585,
+              "time_per_op_seconds": {
+                "min": 0.004610199946910143,
+                "mean": 0.019819988006260246,
+                "max": 0.06950010010041296
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 17,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024854899966157973,
+              "execution_total_seconds": 0.4140035000164062,
+              "ops_per_second": 603.8596291821035,
+              "time_per_op_seconds": {
+                "min": 0.0013293999945744872,
+                "mean": 0.001647173202596605,
+                "max": 0.03461500001139939
+              }
+            }
+          ]
+        },
+        {
+          "round": 18,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.029704999993555248,
+              "execution_total_seconds": 0.4274361999705434,
+              "ops_per_second": 584.8826094215433,
+              "time_per_op_seconds": {
+                "min": 0.0013428999809548259,
+                "mean": 0.0017004300006665289,
+                "max": 0.03691709996201098
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.02659180003684014,
+              "execution_total_seconds": 0.40891910006757826,
+              "ops_per_second": 611.3678719303765,
+              "time_per_op_seconds": {
+                "min": 0.0013290999922901392,
+                "mean": 0.0016110144024714828,
+                "max": 0.03447279997635633
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.024258999968878925,
+              "execution_total_seconds": 3.901698900037445,
+              "ops_per_second": 64.07465219768771,
+              "time_per_op_seconds": {
+                "min": 0.013740100082941353,
+                "mean": 0.015586219600401819,
+                "max": 0.05081549996975809
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 18,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.027308600023388863,
+              "execution_total_seconds": 0.34233469993341714,
+              "ops_per_second": 730.2794605648335,
+              "time_per_op_seconds": {
+                "min": 0.004058400052599609,
+                "mean": 0.018662717995699494,
+                "max": 0.05426489992532879
+              }
+            }
+          ]
+        },
+        {
+          "round": 19,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.027007500058971345,
+              "execution_total_seconds": 0.4321440999628976,
+              "ops_per_second": 578.5107329278917,
+              "time_per_op_seconds": {
+                "min": 0.0013528000563383102,
+                "mean": 0.0017191263986751438,
+                "max": 0.04205950000323355
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.023948199930600822,
+              "execution_total_seconds": 3.8870520000346005,
+              "ops_per_second": 64.31609353252146,
+              "time_per_op_seconds": {
+                "min": 0.012948099989444017,
+                "mean": 0.015527321198955179,
+                "max": 0.05106069997418672
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.025578900007531047,
+              "execution_total_seconds": 0.4274758000392467,
+              "ops_per_second": 584.8284276608113,
+              "time_per_op_seconds": {
+                "min": 0.0012227999977767467,
+                "mean": 0.001684908798430115,
+                "max": 0.04473610001150519
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 19,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.024544899933971465,
+              "execution_total_seconds": 0.38536429998930544,
+              "ops_per_second": 648.7367927100096,
+              "time_per_op_seconds": {
+                "min": 0.006468100007623434,
+                "mean": 0.020858975601382553,
+                "max": 0.06763830001000315
+              }
+            }
+          ]
+        },
+        {
+          "round": 20,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "results": [
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_sequential_create",
+              "scenario": "batch_size_100_expected_3-scalar_sequential_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.02763159992173314,
+              "execution_total_seconds": 0.4578971000155434,
+              "ops_per_second": 545.9741937468347,
+              "time_per_op_seconds": {
+                "min": 0.0013061999343335629,
+                "mean": 0.001821565200574696,
+                "max": 0.044611799996346235
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_concurrent_create",
+              "scenario": "batch_size_100_expected_3-batch_concurrent_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.030013500014320016,
+              "execution_total_seconds": 0.3425434000091627,
+              "ops_per_second": 729.834526058049,
+              "time_per_op_seconds": {
+                "min": 0.0036616999423131347,
+                "mean": 0.0185175644014962,
+                "max": 0.054165500099770725
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "scalar_concurrent_create",
+              "scenario": "batch_size_100_expected_3-scalar_concurrent_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 25,
+              "first_start_seconds": 0.028099499992094934,
+              "execution_total_seconds": 0.425404499983415,
+              "ops_per_second": 587.6759648986944,
+              "time_per_op_seconds": {
+                "min": 0.001306300051510334,
+                "mean": 0.0016765631986781955,
+                "max": 0.04166549991350621
+              }
+            },
+            {
+              "policy": "batch_size_100_expected_3",
+              "mode": "batch_sequential_create",
+              "scenario": "batch_size_100_expected_3-batch_sequential_create",
+              "round": 20,
+              "ops": 250,
+              "concurrency": 1,
+              "first_start_seconds": 0.028019199962727726,
+              "execution_total_seconds": 3.90808730002027,
+              "ops_per_second": 63.969911828403454,
+              "time_per_op_seconds": {
+                "min": 0.013080499949865043,
+                "mean": 0.015613405604381115,
+                "max": 0.05009600007906556
+              }
+            }
+          ]
+        }
+      ],
+      "steps": [
+        {
+          "step": 1,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 543.5011823846264,
+            "scalar_concurrent_create": 635.7765718881207,
+            "batch_sequential_create": 64.0673122949684,
+            "batch_concurrent_create": 726.3820509147513
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.169779556133868,
+          "ratio_batch_sequential_over_scalar_sequential": 0.11787888301157194,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.142511509597706,
+          "ratio_batch_concurrent_over_batch_sequential": 11.337794967431442
+        },
+        {
+          "step": 2,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 619.6625366402467,
+            "scalar_concurrent_create": 637.1283757312475,
+            "batch_sequential_create": 64.34143746501508,
+            "batch_concurrent_create": 776.2058747555166
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0281860497581459,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10383302791527213,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2182880316147378,
+          "ratio_batch_concurrent_over_batch_sequential": 12.063856595954507
+        },
+        {
+          "step": 3,
+          "order": [
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 603.9718152739923,
+            "scalar_concurrent_create": 469.2975235988548,
+            "batch_sequential_create": 64.2615141334565,
+            "batch_concurrent_create": 669.6811247210458
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.7770189133510437,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10639820022777753,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.4269862742627093,
+          "ratio_batch_concurrent_over_batch_sequential": 10.42118496197072
+        },
+        {
+          "step": 4,
+          "order": [
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 606.0306350680435,
+            "scalar_concurrent_create": 566.4437370953028,
+            "batch_sequential_create": 63.835062454639214,
+            "batch_concurrent_create": 770.5684761891206
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.9346783880516273,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10533306199524384,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.3603618960297097,
+          "ratio_batch_concurrent_over_batch_sequential": 12.071241831034184
+        },
+        {
+          "step": 5,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 633.7048872184656,
+            "scalar_concurrent_create": 650.819981262994,
+            "batch_sequential_create": 59.65150777810504,
+            "batch_concurrent_create": 800.8423581750749
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0270079880867766,
+          "ratio_batch_sequential_over_scalar_sequential": 0.09413136774111791,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2305128625905808,
+          "ratio_batch_concurrent_over_batch_sequential": 13.425349802625146
+        },
+        {
+          "step": 6,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 584.9021774804381,
+            "scalar_concurrent_create": 641.2999200281712,
+            "batch_sequential_create": 63.94137609247456,
+            "batch_concurrent_create": 777.4124975931253
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0964225210969047,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10931977782663165,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.212244806702884,
+          "ratio_batch_concurrent_over_batch_sequential": 12.158207175097395
+        },
+        {
+          "step": 7,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 629.8544457588915,
+            "scalar_concurrent_create": 646.3335309245913,
+            "batch_sequential_create": 63.99893014407473,
+            "batch_concurrent_create": 767.2514963272343
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0261633227750653,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10160907901025364,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1870829217689942,
+          "ratio_batch_concurrent_over_batch_sequential": 11.988505035943472
+        },
+        {
+          "step": 8,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 588.2550870962924,
+            "scalar_concurrent_create": 577.8659318333877,
+            "batch_sequential_create": 64.03539425827867,
+            "batch_concurrent_create": 714.0971926639755
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.982339030310495,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10885650742837795,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.2357489052839103,
+          "ratio_batch_concurrent_over_batch_sequential": 11.151601406305936
+        },
+        {
+          "step": 9,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 614.9370168607811,
+            "scalar_concurrent_create": 603.4500445066834,
+            "batch_sequential_create": 64.2845536739444,
+            "batch_concurrent_create": 699.934654287558
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.981320083131866,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10453843550045731,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1598883133064481,
+          "ratio_batch_concurrent_over_batch_sequential": 10.88806897279981
+        },
+        {
+          "step": 10,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 306.3966927907513,
+            "scalar_concurrent_create": 509.03848734481704,
+            "batch_sequential_create": 63.751198554146455,
+            "batch_concurrent_create": 605.5936017043755
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.6613706979287037,
+          "ratio_batch_sequential_over_scalar_sequential": 0.20806751526422093,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1896813635118184,
+          "ratio_batch_concurrent_over_batch_sequential": 9.499328882264393
+        },
+        {
+          "step": 11,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 565.8525632687862,
+            "scalar_concurrent_create": 501.2194669126816,
+            "batch_sequential_create": 63.993465089560566,
+            "batch_concurrent_create": 735.3397518813775
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.8857774965571673,
+          "ratio_batch_sequential_over_scalar_sequential": 0.11309211841311916,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.4671013406777405,
+          "ratio_batch_concurrent_over_batch_sequential": 11.490856931285872
+        },
+        {
+          "step": 12,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 567.8786484389273,
+            "scalar_concurrent_create": 516.5692692528991,
+            "batch_sequential_create": 64.29643433829281,
+            "batch_concurrent_create": 583.0752835843532
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.9096472823426707,
+          "ratio_batch_sequential_over_scalar_sequential": 0.1132221373616367,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1287455880363153,
+          "ratio_batch_concurrent_over_batch_sequential": 9.068547728736071
+        },
+        {
+          "step": 13,
+          "order": [
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 603.3789705538891,
+            "scalar_concurrent_create": 497.1262127827467,
+            "batch_sequential_create": 64.19490600531753,
+            "batch_concurrent_create": 669.5437408401257
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 0.8239037769685532,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10639234898489745,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.3468284786115847,
+          "ratio_batch_concurrent_over_batch_sequential": 10.42985779564292
+        },
+        {
+          "step": 14,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 596.1320093523024,
+            "scalar_concurrent_create": 617.7052102877698,
+            "batch_sequential_create": 64.07448797632776,
+            "batch_concurrent_create": 716.702434990551
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0361886303654566,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10748372335507485,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1602661318926895,
+          "ratio_batch_concurrent_over_batch_sequential": 11.185457077009117
+        },
+        {
+          "step": 15,
+          "order": [
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 261.31564694357434,
+            "scalar_concurrent_create": 594.4548301392125,
+            "batch_sequential_create": 64.11490704589481,
+            "batch_concurrent_create": 710.5993281035804
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 2.2748535615533676,
+          "ratio_batch_sequential_over_scalar_sequential": 0.24535425947815168,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1953798540709453,
+          "ratio_batch_concurrent_over_batch_sequential": 11.08321544621313
+        },
+        {
+          "step": 16,
+          "order": [
+            "batch_concurrent_create",
+            "batch_sequential_create",
+            "scalar_sequential_create",
+            "scalar_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 541.5024831874126,
+            "scalar_concurrent_create": 542.7747776044547,
+            "batch_sequential_create": 64.14540994726033,
+            "batch_concurrent_create": 704.1120992506661
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0023495634028363,
+          "ratio_batch_sequential_over_scalar_sequential": 0.11845820091107462,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.297245429049368,
+          "ratio_batch_concurrent_over_batch_sequential": 10.976811900174612
+        },
+        {
+          "step": 17,
+          "order": [
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "batch_concurrent_create",
+            "scalar_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 603.8596291821035,
+            "scalar_concurrent_create": 627.07656393918,
+            "batch_sequential_create": 64.21521075512061,
+            "batch_concurrent_create": 680.7303746237585
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0384475689963288,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10634128802764439,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.0855618177587998,
+          "ratio_batch_concurrent_over_batch_sequential": 10.600765248901347
+        },
+        {
+          "step": 18,
+          "order": [
+            "scalar_sequential_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 584.8826094215433,
+            "scalar_concurrent_create": 611.3678719303765,
+            "batch_sequential_create": 64.07465219768771,
+            "batch_concurrent_create": 730.2794605648335
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.045283039847992,
+          "ratio_batch_sequential_over_scalar_sequential": 0.10955130339925545,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1945008792480327,
+          "ratio_batch_concurrent_over_batch_sequential": 11.397322272022997
+        },
+        {
+          "step": 19,
+          "order": [
+            "scalar_sequential_create",
+            "batch_sequential_create",
+            "scalar_concurrent_create",
+            "batch_concurrent_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 578.5107329278917,
+            "scalar_concurrent_create": 584.8284276608113,
+            "batch_sequential_create": 64.31609353252146,
+            "batch_concurrent_create": 648.7367927100096
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0109206180167916,
+          "ratio_batch_sequential_over_scalar_sequential": 0.11117528141096411,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.1092771179144252,
+          "ratio_batch_concurrent_over_batch_sequential": 10.086694590397899
+        },
+        {
+          "step": 20,
+          "order": [
+            "scalar_sequential_create",
+            "batch_concurrent_create",
+            "scalar_concurrent_create",
+            "batch_sequential_create"
+          ],
+          "ops_per_second": {
+            "scalar_sequential_create": 545.9741937468347,
+            "scalar_concurrent_create": 587.6759648986944,
+            "batch_sequential_create": 63.969911828403454,
+            "batch_concurrent_create": 729.834526058049
+          },
+          "ratio_scalar_concurrent_over_scalar_sequential": 1.0763804803037935,
+          "ratio_batch_sequential_over_scalar_sequential": 0.1171665484579038,
+          "ratio_batch_concurrent_over_scalar_concurrent": 1.241899566513428,
+          "ratio_batch_concurrent_over_batch_sequential": 11.409028169615098
+        }
+      ],
+      "summary": {
+        "ops": 250,
+        "round_count": 20,
+        "concurrency": 25,
+        "batch_policy": {
+          "enabled": true,
+          "name": "batch_size_100_expected_3",
+          "max_size": 100,
+          "expected_batch_count": 3,
+          "calculated_batch_count": 2,
+          "max_delay_ms": 1
+        },
+        "ops_per_second": {
+          "scalar_sequential_create": {
+            "min": 261.31564694357434,
+            "max": 633.7048872184656,
+            "mean": 559.0251981797896,
+            "stddev": 95.61607226172174,
+            "median": 586.5786322883653
+          },
+          "scalar_concurrent_create": {
+            "min": 469.2975235988548,
+            "max": 650.819981262994,
+            "mean": 580.9126349811498,
+            "stddev": 55.20721390996192,
+            "median": 591.0653975189534
+          },
+          "batch_sequential_create": {
+            "min": 59.65150777810504,
+            "max": 64.34143746501508,
+            "mean": 63.87818827827451,
+            "stddev": 0.9822270710571763,
+            "median": 64.07457008700774
+          },
+          "batch_concurrent_create": {
+            "min": 583.0752835843532,
+            "max": 800.8423581750749,
+            "mean": 710.8461559969542,
+            "stddev": 55.18511121207448,
+            "median": 715.3998138272632
+          }
+        },
+        "mean_ratios": {
+          "scalar_concurrent_over_scalar_sequential": 1.0391528626484579,
+          "batch_sequential_over_scalar_sequential": 0.1142671000990021,
+          "batch_concurrent_over_scalar_concurrent": 1.2236713632851532,
+          "batch_concurrent_over_batch_sequential": 11.128151488897483
+        }
+      }
+    }
+  ]
+}
