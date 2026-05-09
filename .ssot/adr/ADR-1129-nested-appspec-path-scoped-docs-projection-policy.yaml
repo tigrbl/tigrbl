@@ -1,0 +1,57 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1129"
+number: 1129
+slug: "nested-appspec-path-scoped-docs-projection-policy"
+title: "Nested AppSpec Path-Scoped Docs Projection Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl canonical AppSpec authoring should be a nested, address-first spec tree for exposed surfaces, while concrete classes and decorators may remain ergonomic lowerers into that tree."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern the next nested AppSpec and docs projection planning slice."
+    at: "2026-05-09T16:16:12Z"
+references: []
+body: |-
+  ## Decision
+  
+  Tigrbl canonical AppSpec authoring should be a nested, address-first spec tree for exposed surfaces, while concrete classes and decorators may remain ergonomic lowerers into that tree.
+  
+  1. `AppSpec` is the root of the authored canonical spec tree.
+  2. `RouterSpec` groups address namespaces, middleware, nested apps, and path surfaces.
+  3. `PathSpec` owns concrete address paths, including resource paths, JSON-RPC dispatcher paths, WebSocket paths, SSE paths, WebTransport paths, docs UIX paths, docs payload paths, static mounts, and nested app mounts.
+  4. `TableSpec` may group table-scoped ops under a containing path without using concrete runtime model classes as canonical identity.
+  5. `OpSpec` owns semantic operation shape and inherits path/table context from the containing tree node instead of embedding concrete `model=...` or `table=...` runtime objects as canonical identity.
+  6. Protocol bindings select or invoke an op at the containing path; JSON-RPC bindings therefore receive their dispatcher path from the containing `PathSpec` and their method selector from the binding.
+  7. Documentation UIX and documentation payload paths are normal `PathSpec` entries; the inclusion policy for OpenAPI/OpenRPC/AsyncAPI artifacts is governed by a docs projection contract, not by the path alone.
+  
+  ## Context
+  
+  Current discussion exposed two problems in the spec layer. First, concrete runtime classes such as ORM model classes leak into canonical examples through `model=Widget` and `table=Widget`. Second, docs UIX paths and docs payload paths need a way to decide which REST APIs, JSON-RPC methods, websocket surfaces, and other bindings are included in emitted docs artifacts.
+  
+  The repository already has decisions for one semantic op model, protocol bindings, REST/JSON-RPC parity, endpoint-keyed transport routing, documentation support, and spec-layer authority. This ADR narrows the next planning slice: specify nested canonical AppSpec composition with path-scoped protocol bindings and docs projection selection, while keeping concrete classes as lowerers rather than canonical identity.
+  
+  ## Consequences
+  
+  - `PathSpec` and docs projection contracts become the planning focus for the next implementation slice.
+  - Docs UIX and docs payload surfaces do not need to become large independent authorities merely to expose `/docs`, `/openapi.json`, `/openrpc.json`, or equivalent paths.
+  - Documentation inclusion rules must be expressible in a projection spec that can include/exclude protocols, routers, paths, tables, op aliases, tags, and RPC methods.
+  - Existing concrete conveniences may continue to accept runtime classes, decorators, and shortcuts, but their canonical output must lower into a nested spec tree with stable spec-native table/resource identity.
+  
+  ## Rejected Alternatives
+  
+  - Keep embedding REST path, JSON-RPC endpoint, and documentation projection policy directly on `OpSpec`.
+  - Treat docs UIX paths as the source of truth for OpenAPI/OpenRPC inclusion.
+  - Require graph refs for this slice when nested containment and inherited context are the desired authoring model.
+  - Treat concrete runtime classes as canonical table/op identity in the spec graph.
+  
+  ## Verification Plan
+  
+  - Add AppSpec corpus fixtures that represent REST, JSON-RPC dispatcher, websocket, SSE, WebTransport, docs UIX, docs payload, static, nested app, middleware, and multi-table surfaces as a nested tree.
+  - Add fail-closed projection tests proving OpenAPI and OpenRPC include only the surfaces selected by the docs projection spec.
+  - Add parity tests proving default CRUD table ops can lower into both REST paths and a shared JSON-RPC dispatcher path without embedding concrete model classes in canonical specs.
