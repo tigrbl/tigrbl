@@ -23725,6 +23725,168 @@
           "reason": "Rust parity is structurally outside this Python-facing documentation, operator, helper, or concrete facade surface; the feature remains tracked so parity is explicit rather than missing."
         }
       }
+    },
+    {
+      "id": "feat:nested-appspec-pathspec-composition-001",
+      "title": "Nested AppSpec PathSpec composition",
+      "description": "AppSpec and RouterSpec can author canonical nested PathSpec trees for resource paths, dispatcher paths, docs paths, static mounts, nested apps, and middleware without flattening concrete conveniences into canonical identity.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:nested-appspec-pathspec-composition-001"
+      ],
+      "test_ids": [
+        "tst:nested-appspec-pathspec-composition-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:path-scoped-protocol-binding-composition-001",
+      "title": "Path-scoped protocol binding composition",
+      "description": "Protocol bindings inherit the containing PathSpec address and own only protocol-specific selectors such as HTTP methods, JSON-RPC methods, websocket message selectors, SSE streams, or WebTransport semantics.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:path-scoped-protocol-binding-composition-001"
+      ],
+      "test_ids": [
+        "tst:path-scoped-protocol-binding-composition-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:docs-projectionspec-contract-001",
+      "title": "DocsProjectionSpec inclusion contract",
+      "description": "Documentation projection policy can include and exclude canonical tree surfaces by protocol family, router/path scope, table/resource scope, op alias/target, tags, visibility, and RPC method selector.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:docs-projectionspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:docs-projectionspec-contract-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:docs-payload-projection-selection-001",
+      "title": "Docs payload projection selection",
+      "description": "OpenAPI, OpenRPC, AsyncAPI, and JSON Schema payload paths are ordinary PathSpec entries whose payload emission is selected by a DocsProjectionSpec rather than incidental path mounting.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:docs-payload-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-payload-projection-selection-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:docs-uix-projection-selection-001",
+      "title": "Docs UIX projection selection",
+      "description": "Swagger, Lens, and other docs UIX paths are ordinary PathSpec entries that select a docs payload path or projection policy without owning OpenAPI/OpenRPC inclusion rules.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:docs-uix-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-uix-projection-selection-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:shared-jsonrpc-dispatcher-table-crud-parity-001",
+      "title": "Shared JSON-RPC dispatcher table CRUD parity",
+      "description": "Multiple table groups can share one JSON-RPC dispatcher PathSpec while preserving default CRUD semantic parity with REST collection and member PathSpec projections.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:shared-jsonrpc-dispatcher-table-crud-parity-001"
+      ],
+      "test_ids": [
+        "tst:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -39764,6 +39926,102 @@
       "evidence_ids": [
         "evd:security-contract-auth-policy-parity-pytest-20260506"
       ]
+    },
+    {
+      "id": "tst:nested-appspec-pathspec-composition-planned",
+      "title": "Nested AppSpec PathSpec composition planned coverage",
+      "status": "planned",
+      "kind": "planned",
+      "path": "tests/planned/test_nested_appspec_pathspec_composition.py",
+      "feature_ids": [
+        "feat:nested-appspec-pathspec-composition-001"
+      ],
+      "claim_ids": [
+        "clm:nested-appspec-pathspec-composition-001"
+      ],
+      "evidence_ids": [
+        "evd:nested-appspec-pathspec-composition-planned"
+      ]
+    },
+    {
+      "id": "tst:docs-uix-projection-selection-planned",
+      "title": "Docs UIX projection selection planned coverage",
+      "status": "planned",
+      "kind": "planned",
+      "path": "tests/planned/test_docs_uix_projection_selection.py",
+      "feature_ids": [
+        "feat:docs-uix-projection-selection-001"
+      ],
+      "claim_ids": [
+        "clm:docs-uix-projection-selection-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-uix-projection-selection-planned"
+      ]
+    },
+    {
+      "id": "tst:path-scoped-protocol-binding-composition-planned",
+      "title": "Path-scoped protocol binding composition planned coverage",
+      "status": "planned",
+      "kind": "planned",
+      "path": "tests/planned/test_path_scoped_protocol_binding_composition.py",
+      "feature_ids": [
+        "feat:path-scoped-protocol-binding-composition-001"
+      ],
+      "claim_ids": [
+        "clm:path-scoped-protocol-binding-composition-001"
+      ],
+      "evidence_ids": [
+        "evd:path-scoped-protocol-binding-composition-planned"
+      ]
+    },
+    {
+      "id": "tst:docs-projectionspec-contract-planned",
+      "title": "DocsProjectionSpec contract planned coverage",
+      "status": "planned",
+      "kind": "planned",
+      "path": "tests/planned/test_docs_projectionspec_contract.py",
+      "feature_ids": [
+        "feat:docs-projectionspec-contract-001"
+      ],
+      "claim_ids": [
+        "clm:docs-projectionspec-contract-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-projectionspec-contract-planned"
+      ]
+    },
+    {
+      "id": "tst:docs-payload-projection-selection-planned",
+      "title": "Docs payload projection selection planned coverage",
+      "status": "planned",
+      "kind": "planned",
+      "path": "tests/planned/test_docs_payload_projection_selection.py",
+      "feature_ids": [
+        "feat:docs-payload-projection-selection-001"
+      ],
+      "claim_ids": [
+        "clm:docs-payload-projection-selection-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-payload-projection-selection-planned"
+      ]
+    },
+    {
+      "id": "tst:shared-jsonrpc-dispatcher-table-crud-parity-planned",
+      "title": "Shared JSON-RPC dispatcher table CRUD parity planned coverage",
+      "status": "planned",
+      "kind": "planned",
+      "path": "tests/planned/test_shared_jsonrpc_dispatcher_table_crud_parity.py",
+      "feature_ids": [
+        "feat:shared-jsonrpc-dispatcher-table-crud-parity-001"
+      ],
+      "claim_ids": [
+        "clm:shared-jsonrpc-dispatcher-table-crud-parity-001"
+      ],
+      "evidence_ids": [
+        "evd:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ]
     }
   ],
   "claims": [
@@ -47691,6 +47949,108 @@
       "evidence_ids": [
         "evd:kernelplan-executor-ownership-placement-pytest-20260430"
       ]
+    },
+    {
+      "id": "clm:nested-appspec-pathspec-composition-001",
+      "title": "Nested AppSpec PathSpec composition claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Canonical AppSpec composition can represent address-first nested PathSpec trees without using concrete runtime classes as table or op identity.",
+      "feature_ids": [
+        "feat:nested-appspec-pathspec-composition-001"
+      ],
+      "test_ids": [
+        "tst:nested-appspec-pathspec-composition-planned"
+      ],
+      "evidence_ids": [
+        "evd:nested-appspec-pathspec-composition-planned"
+      ]
+    },
+    {
+      "id": "clm:path-scoped-protocol-binding-composition-001",
+      "title": "Path-scoped protocol binding composition claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Protocol bindings can inherit the containing PathSpec address and own protocol-specific selectors without duplicating path identity on OpSpec.",
+      "feature_ids": [
+        "feat:path-scoped-protocol-binding-composition-001"
+      ],
+      "test_ids": [
+        "tst:path-scoped-protocol-binding-composition-planned"
+      ],
+      "evidence_ids": [
+        "evd:path-scoped-protocol-binding-composition-planned"
+      ]
+    },
+    {
+      "id": "clm:docs-projectionspec-contract-001",
+      "title": "DocsProjectionSpec contract claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "DocsProjectionSpec can determine OpenAPI/OpenRPC inclusion by canonical tree filters rather than incidental mounted docs paths.",
+      "feature_ids": [
+        "feat:docs-projectionspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:docs-projectionspec-contract-planned"
+      ],
+      "evidence_ids": [
+        "evd:docs-projectionspec-contract-planned"
+      ]
+    },
+    {
+      "id": "clm:docs-payload-projection-selection-001",
+      "title": "Docs payload projection selection claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Docs payload paths expose OpenAPI/OpenRPC/AsyncAPI/JSON Schema artifacts selected by docs projection policy.",
+      "feature_ids": [
+        "feat:docs-payload-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-payload-projection-selection-planned"
+      ],
+      "evidence_ids": [
+        "evd:docs-payload-projection-selection-planned"
+      ]
+    },
+    {
+      "id": "clm:docs-uix-projection-selection-001",
+      "title": "Docs UIX projection selection claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Docs UIX paths select docs payload paths or projection policies without owning documentation inclusion logic.",
+      "feature_ids": [
+        "feat:docs-uix-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-uix-projection-selection-planned"
+      ],
+      "evidence_ids": [
+        "evd:docs-uix-projection-selection-planned"
+      ]
+    },
+    {
+      "id": "clm:shared-jsonrpc-dispatcher-table-crud-parity-001",
+      "title": "Shared JSON-RPC dispatcher table CRUD parity claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Multiple table groups can share one JSON-RPC dispatcher PathSpec while preserving default CRUD semantic parity with REST path projections.",
+      "feature_ids": [
+        "feat:shared-jsonrpc-dispatcher-table-crud-parity-001"
+      ],
+      "test_ids": [
+        "tst:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ],
+      "evidence_ids": [
+        "evd:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ]
     }
   ],
   "evidence": [
@@ -54330,6 +54690,90 @@
         "tst:security-contract-rest-generated-read-auth-policy-parity",
         "tst:security-contract-jsonrpc-generated-read-auth-policy-parity"
       ]
+    },
+    {
+      "id": "evd:nested-appspec-pathspec-composition-planned",
+      "title": "Nested AppSpec PathSpec composition planned evidence",
+      "status": "planned",
+      "kind": "planned-placeholder",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/nested-appspec-pathspec-composition.json",
+      "claim_ids": [
+        "clm:nested-appspec-pathspec-composition-001"
+      ],
+      "test_ids": [
+        "tst:nested-appspec-pathspec-composition-planned"
+      ]
+    },
+    {
+      "id": "evd:path-scoped-protocol-binding-composition-planned",
+      "title": "Path-scoped protocol binding composition planned evidence",
+      "status": "planned",
+      "kind": "planned-placeholder",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/path-scoped-protocol-binding-composition.json",
+      "claim_ids": [
+        "clm:path-scoped-protocol-binding-composition-001"
+      ],
+      "test_ids": [
+        "tst:path-scoped-protocol-binding-composition-planned"
+      ]
+    },
+    {
+      "id": "evd:docs-projectionspec-contract-planned",
+      "title": "DocsProjectionSpec contract planned evidence",
+      "status": "planned",
+      "kind": "planned-placeholder",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/docs-projectionspec-contract.json",
+      "claim_ids": [
+        "clm:docs-projectionspec-contract-001"
+      ],
+      "test_ids": [
+        "tst:docs-projectionspec-contract-planned"
+      ]
+    },
+    {
+      "id": "evd:docs-payload-projection-selection-planned",
+      "title": "Docs payload projection selection planned evidence",
+      "status": "planned",
+      "kind": "planned-placeholder",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/docs-payload-projection-selection.json",
+      "claim_ids": [
+        "clm:docs-payload-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-payload-projection-selection-planned"
+      ]
+    },
+    {
+      "id": "evd:docs-uix-projection-selection-planned",
+      "title": "Docs UIX projection selection planned evidence",
+      "status": "planned",
+      "kind": "planned-placeholder",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/docs-uix-projection-selection.json",
+      "claim_ids": [
+        "clm:docs-uix-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-uix-projection-selection-planned"
+      ]
+    },
+    {
+      "id": "evd:shared-jsonrpc-dispatcher-table-crud-parity-planned",
+      "title": "Shared JSON-RPC dispatcher table CRUD parity planned evidence",
+      "status": "planned",
+      "kind": "planned-placeholder",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/shared-jsonrpc-dispatcher-table-crud-parity.json",
+      "claim_ids": [
+        "clm:shared-jsonrpc-dispatcher-table-crud-parity-001"
+      ],
+      "test_ids": [
+        "tst:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ]
     }
   ],
   "issues": [
@@ -60041,6 +60485,28 @@
           "at": "2026-05-03T04:38:08Z"
         }
       ]
+    },
+    {
+      "id": "adr:1129",
+      "number": 1129,
+      "slug": "nested-appspec-path-scoped-docs-projection-policy",
+      "title": "Nested AppSpec Path-Scoped Docs Projection Policy",
+      "path": ".ssot/adr/ADR-1129-nested-appspec-path-scoped-docs-projection-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "fdb747deb4b358ca62bf5fe24444ed17d4ea4a3a3ad97218faaf129b2f7f36a6",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern the next nested AppSpec and docs projection planning slice.",
+          "at": "2026-05-09T16:16:12Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -63796,6 +64262,36 @@
         "adr:1120",
         "adr:1121",
         "adr:1115"
+      ]
+    },
+    {
+      "id": "spc:2150",
+      "number": 2150,
+      "slug": "nested-appspec-path-and-docs-projection-contract",
+      "title": "Nested AppSpec Path and Docs Projection Contract",
+      "path": ".ssot/specs/SPEC-2150-nested-appspec-path-and-docs-projection-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "97830a78b2b956eba7ffad1d1ad8adbce0f7d56b5b2759a9784baf32f48a7802",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define the next nested AppSpec, path-scoped binding, and docs projection slice.",
+          "at": "2026-05-09T16:16:45Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1129",
+        "adr:1052",
+        "adr:1080",
+        "adr:1014",
+        "adr:1051"
       ]
     }
   ],

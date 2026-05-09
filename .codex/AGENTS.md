@@ -24,6 +24,13 @@ python -m pip install ssot-registry
 ssot-registry -h
 ```
 
+For this repo, prefer the local workspace bootstrap over a global-only install:
+
+```bash
+python ./.codex/scripts/setup_workspace.py
+uv sync --all-packages --all-groups --all-extras --python-preference only-system
+```
+
 ## Core command surface
 
 Use these top-level commands:
@@ -168,6 +175,7 @@ Always validate registry consistency after updates:
 
 ```bash
 ssot-registry validate . --write-report
+ssot-registry sync-statuses . --dry-run
 ```
 
 ## Practical checklist (every feature delivery)
@@ -189,6 +197,41 @@ For audits, handoffs, and machine-consumable snapshots:
 ssot-registry registry export . --output-format json
 ssot-registry graph export . --output-format json
 ```
+
+## Repo workflow entry points
+
+Current repo workflows that agents should recognize and reuse:
+
+- `.github/workflows/policy-governance.yml`
+- `.github/workflows/operator-surface.yml`
+- `.github/workflows/cli-smoke.yml`
+- `.github/workflows/evidence-lanes.yml`
+- `.github/workflows/gate-b-surface-closure.yml`
+- `.github/workflows/gate-c-conformance-security.yml`
+- `.github/workflows/gate-d-reproducibility.yml`
+- `.github/workflows/gate-e-promotion.yml`
+- `.github/workflows/post-promotion-handoff.yml`
+- `.github/workflows/release-certification-automation.yml`
+- `.github/workflows/next-target-datatypes.yml`
+- `.github/workflows/publish.yml`
+
+## Repo validation commands
+
+The current governance/gate workflows call these repo-local validators:
+
+```bash
+uv run --no-sync python tools/ci/fix_policy_governance.py --mode check
+uv run --no-sync python tools/ci/validate_ssot_authority_model.py
+uv run --no-sync python tools/ci/validate_declared_surface.py
+uv run --no-sync python tools/ci/validate_gate_b_surface_closure.py
+uv run --no-sync python tools/ci/validate_gate_c_conformance_security.py
+uv run --no-sync python tools/ci/validate_gate_d_reproducibility.py
+uv run --no-sync python tools/ci/validate_gate_e_promotion.py
+uv run --no-sync python tools/ci/validate_post_promotion_handoff.py
+uv run --no-sync python tools/ci/validate_transport_dispatch_track.py
+```
+
+When reproducing `cli-smoke`, gate, or evidence-lane jobs locally, preserve the workspace `PYTHONPATH` shape used in CI so package discovery matches the workflows.
 
 ## Non-negotiable policy
 
