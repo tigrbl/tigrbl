@@ -6,6 +6,7 @@ from typing import Any, Callable, Optional, Sequence
 from .._spec.app_spec import merge_seq_attr
 from .._spec.engine_spec import EngineCfg
 from .._spec.op_spec import OpSpec
+from .._spec.path_spec import PathSpec
 from .._spec.response_spec import ResponseSpec
 from .._spec.schema_spec import SchemaSpec
 from .._spec.table_spec import TableSpec
@@ -25,10 +26,13 @@ class RouterSpec(SerdeMixin):
     hooks: Sequence[Callable[..., Any]] = field(default_factory=tuple)
     security_deps: Sequence[Callable[..., Any]] = field(default_factory=tuple)
     deps: Sequence[Callable[..., Any]] = field(default_factory=tuple)
+    middlewares: Sequence[Any] = field(default_factory=tuple)
     response: Optional[ResponseSpec] = None
+    paths: Sequence[PathSpec] = field(default_factory=tuple)
     tables: Sequence[Any] = field(default_factory=tuple)
 
     def __post_init__(self) -> None:
+        self._validate_nested_specs("paths", self.paths, (PathSpec,))
         self._validate_nested_specs("tables", self.tables, (TableSpec,))
         self._validate_nested_specs("ops", self.ops, (OpSpec,))
         self._validate_nested_specs("schemas", self.schemas, (SchemaSpec,))
@@ -91,10 +95,14 @@ class RouterSpec(SerdeMixin):
             engine=engine,
             tags=merge_seq_attr(router, "TAGS", include_inherited=True),
             ops=merge_seq_attr(router, "OPS", include_inherited=True),
+            paths=merge_seq_attr(router, "PATHS", include_inherited=True),
             tables=merge_seq_attr(router, "TABLES", include_inherited=True),
             schemas=merge_seq_attr(router, "SCHEMAS", include_inherited=True),
             hooks=merge_seq_attr(router, "HOOKS", include_inherited=True),
             deps=merge_seq_attr(router, "DEPS", include_inherited=True),
+            middlewares=merge_seq_attr(
+                router, "MIDDLEWARES", include_inherited=True
+            ),
             security_deps=merge_seq_attr(
                 router, "SECURITY_DEPS", include_inherited=True
             ),

@@ -16,6 +16,10 @@ status_notes:
     status: "draft"
     note: "Created to govern the next nested AppSpec and docs projection planning slice."
     at: "2026-05-09T16:16:12Z"
+  -
+    status: "draft"
+    note: "Expanded governed feature scope for the next pre-freeze corpus and projection slice."
+    at: "2026-05-09T16:40:13Z"
 references: []
 body: |-
   ## Decision
@@ -49,6 +53,19 @@ body: |-
   - Treat docs UIX paths as the source of truth for OpenAPI/OpenRPC inclusion.
   - Require graph refs for this slice when nested containment and inherited context are the desired authoring model.
   - Treat concrete runtime classes as canonical table/op identity in the spec graph.
+  
+  ## Governed Feature Scope
+  
+  - `feat:nested-appspec-pathspec-composition-001`
+  - `feat:path-scoped-protocol-binding-composition-001`
+  - `feat:docs-projectionspec-contract-001`
+  - `feat:docs-payload-projection-selection-001`
+  - `feat:docs-uix-projection-selection-001`
+  - `feat:shared-jsonrpc-dispatcher-table-crud-parity-001`
+  - `feat:nested-appspec-multisurface-corpus-fixtures-001`
+  - `feat:docs-projection-openapi-openrpc-selection-tests-001`
+  - `feat:canonical-spec-concrete-class-rejection-001`
+  - `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`
   
   ## Verification Plan
   

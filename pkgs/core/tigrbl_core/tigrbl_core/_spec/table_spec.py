@@ -62,6 +62,8 @@ class TableSpec(SerdeMixin):
     """
 
     model: Any | None = None  # ORM class
+    name: str | None = None
+    resource: str | None = None
     model_ref: str | None = None  # import string (e.g. "mypkg.models:Model")
     engine: Optional[EngineCfg] = None
 
