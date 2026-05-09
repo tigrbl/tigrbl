@@ -23730,7 +23730,7 @@
       "id": "feat:nested-appspec-pathspec-composition-001",
       "title": "Nested AppSpec PathSpec composition",
       "description": "AppSpec and RouterSpec can author canonical nested PathSpec trees for resource paths, dispatcher paths, docs paths, static mounts, nested apps, and middleware without flattening concrete conveniences into canonical identity.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23757,7 +23757,7 @@
       "id": "feat:path-scoped-protocol-binding-composition-001",
       "title": "Path-scoped protocol binding composition",
       "description": "Protocol bindings inherit the containing PathSpec address and own only protocol-specific selectors such as HTTP methods, JSON-RPC methods, websocket message selectors, SSE streams, or WebTransport semantics.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23784,7 +23784,7 @@
       "id": "feat:docs-projectionspec-contract-001",
       "title": "DocsProjectionSpec inclusion contract",
       "description": "Documentation projection policy can include and exclude canonical tree surfaces by protocol family, router/path scope, table/resource scope, op alias/target, tags, visibility, and RPC method selector.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23811,7 +23811,7 @@
       "id": "feat:docs-payload-projection-selection-001",
       "title": "Docs payload projection selection",
       "description": "OpenAPI, OpenRPC, AsyncAPI, and JSON Schema payload paths are ordinary PathSpec entries whose payload emission is selected by a DocsProjectionSpec rather than incidental path mounting.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23838,7 +23838,7 @@
       "id": "feat:docs-uix-projection-selection-001",
       "title": "Docs UIX projection selection",
       "description": "Swagger, Lens, and other docs UIX paths are ordinary PathSpec entries that select a docs payload path or projection policy without owning OpenAPI/OpenRPC inclusion rules.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23865,7 +23865,7 @@
       "id": "feat:shared-jsonrpc-dispatcher-table-crud-parity-001",
       "title": "Shared JSON-RPC dispatcher table CRUD parity",
       "description": "Multiple table groups can share one JSON-RPC dispatcher PathSpec while preserving default CRUD semantic parity with REST collection and member PathSpec projections.",
-      "implementation_status": "absent",
+      "implementation_status": "implemented",
       "lifecycle": {
         "stage": "active",
         "replacement_feature_ids": [],
@@ -23885,6 +23885,114 @@
       ],
       "test_ids": [
         "tst:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:nested-appspec-multisurface-corpus-fixtures-001",
+      "title": "Nested AppSpec multisurface corpus fixtures",
+      "description": "Positive corpus fixtures cover multi-middleware, nested app, multi-table, REST, JSON-RPC, WSS+JSON-RPC, multiple SSE, WebTransport, docs UIX, docs payload, and static path surfaces in the nested canonical AppSpec tree.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:nested-appspec-multisurface-corpus-fixtures-001"
+      ],
+      "test_ids": [
+        "tst:nested-appspec-multisurface-corpus-fixtures-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:docs-projection-openapi-openrpc-selection-tests-001",
+      "title": "Docs projection OpenAPI OpenRPC selection tests",
+      "description": "Fail-closed projection tests prove OpenAPI and OpenRPC payloads include only the canonical tree surfaces selected by DocsProjectionSpec and are not determined by docs UIX or payload path mounting.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:docs-projection-openapi-openrpc-selection-tests-001"
+      ],
+      "test_ids": [
+        "tst:docs-projection-openapi-openrpc-selection-tests-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:canonical-spec-concrete-class-rejection-001",
+      "title": "Canonical spec concrete class rejection",
+      "description": "Negative corpus fixtures reject concrete runtime model classes as canonical TableSpec or OpSpec identity and require spec-native name, resource, and optional model_ref identity.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:canonical-spec-concrete-class-rejection-001"
+      ],
+      "test_ids": [
+        "tst:canonical-spec-concrete-class-rejection-planned"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001",
+      "title": "CRUD REST JSON-RPC shared dispatcher parity corpus",
+      "description": "Parity corpus fixtures prove default CRUD operations lower to REST collection and member PathSpecs and to a shared JSON-RPC dispatcher PathSpec across multiple table groups.",
+      "implementation_status": "implemented",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T2",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001"
+      ],
+      "test_ids": [
+        "tst:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
       ],
       "requires": []
     }
@@ -39930,8 +40038,8 @@
     {
       "id": "tst:nested-appspec-pathspec-composition-planned",
       "title": "Nested AppSpec PathSpec composition planned coverage",
-      "status": "planned",
-      "kind": "planned",
+      "status": "passing",
+      "kind": "pytest",
       "path": "tests/planned/test_nested_appspec_pathspec_composition.py",
       "feature_ids": [
         "feat:nested-appspec-pathspec-composition-001"
@@ -39946,8 +40054,8 @@
     {
       "id": "tst:docs-uix-projection-selection-planned",
       "title": "Docs UIX projection selection planned coverage",
-      "status": "planned",
-      "kind": "planned",
+      "status": "passing",
+      "kind": "pytest",
       "path": "tests/planned/test_docs_uix_projection_selection.py",
       "feature_ids": [
         "feat:docs-uix-projection-selection-001"
@@ -39962,8 +40070,8 @@
     {
       "id": "tst:path-scoped-protocol-binding-composition-planned",
       "title": "Path-scoped protocol binding composition planned coverage",
-      "status": "planned",
-      "kind": "planned",
+      "status": "passing",
+      "kind": "pytest",
       "path": "tests/planned/test_path_scoped_protocol_binding_composition.py",
       "feature_ids": [
         "feat:path-scoped-protocol-binding-composition-001"
@@ -39978,8 +40086,8 @@
     {
       "id": "tst:docs-projectionspec-contract-planned",
       "title": "DocsProjectionSpec contract planned coverage",
-      "status": "planned",
-      "kind": "planned",
+      "status": "passing",
+      "kind": "pytest",
       "path": "tests/planned/test_docs_projectionspec_contract.py",
       "feature_ids": [
         "feat:docs-projectionspec-contract-001"
@@ -39994,8 +40102,8 @@
     {
       "id": "tst:docs-payload-projection-selection-planned",
       "title": "Docs payload projection selection planned coverage",
-      "status": "planned",
-      "kind": "planned",
+      "status": "passing",
+      "kind": "pytest",
       "path": "tests/planned/test_docs_payload_projection_selection.py",
       "feature_ids": [
         "feat:docs-payload-projection-selection-001"
@@ -40010,8 +40118,8 @@
     {
       "id": "tst:shared-jsonrpc-dispatcher-table-crud-parity-planned",
       "title": "Shared JSON-RPC dispatcher table CRUD parity planned coverage",
-      "status": "planned",
-      "kind": "planned",
+      "status": "passing",
+      "kind": "pytest",
       "path": "tests/planned/test_shared_jsonrpc_dispatcher_table_crud_parity.py",
       "feature_ids": [
         "feat:shared-jsonrpc-dispatcher-table-crud-parity-001"
@@ -40021,6 +40129,70 @@
       ],
       "evidence_ids": [
         "evd:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ]
+    },
+    {
+      "id": "tst:nested-appspec-multisurface-corpus-fixtures-planned",
+      "title": "Nested AppSpec multisurface corpus fixtures planned coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/planned/test_nested_appspec_multisurface_corpus_fixtures.py",
+      "feature_ids": [
+        "feat:nested-appspec-multisurface-corpus-fixtures-001"
+      ],
+      "claim_ids": [
+        "clm:nested-appspec-multisurface-corpus-fixtures-001"
+      ],
+      "evidence_ids": [
+        "evd:nested-appspec-multisurface-corpus-fixtures-planned"
+      ]
+    },
+    {
+      "id": "tst:docs-projection-openapi-openrpc-selection-tests-planned",
+      "title": "Docs projection OpenAPI OpenRPC selection planned coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/planned/test_docs_projection_openapi_openrpc_selection.py",
+      "feature_ids": [
+        "feat:docs-projection-openapi-openrpc-selection-tests-001"
+      ],
+      "claim_ids": [
+        "clm:docs-projection-openapi-openrpc-selection-tests-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-projection-openapi-openrpc-selection-tests-planned"
+      ]
+    },
+    {
+      "id": "tst:canonical-spec-concrete-class-rejection-planned",
+      "title": "Canonical spec concrete class rejection planned coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/planned/test_canonical_spec_concrete_class_rejection.py",
+      "feature_ids": [
+        "feat:canonical-spec-concrete-class-rejection-001"
+      ],
+      "claim_ids": [
+        "clm:canonical-spec-concrete-class-rejection-001"
+      ],
+      "evidence_ids": [
+        "evd:canonical-spec-concrete-class-rejection-planned"
+      ]
+    },
+    {
+      "id": "tst:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned",
+      "title": "CRUD REST JSON-RPC shared dispatcher parity corpus planned coverage",
+      "status": "passing",
+      "kind": "pytest",
+      "path": "tests/planned/test_crud_rest_jsonrpc_shared_dispatcher_parity_corpus.py",
+      "feature_ids": [
+        "feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001"
+      ],
+      "claim_ids": [
+        "clm:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001"
+      ],
+      "evidence_ids": [
+        "evd:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
       ]
     }
   ],
@@ -48051,6 +48223,74 @@
       "evidence_ids": [
         "evd:shared-jsonrpc-dispatcher-table-crud-parity-planned"
       ]
+    },
+    {
+      "id": "clm:nested-appspec-multisurface-corpus-fixtures-001",
+      "title": "Nested AppSpec multisurface corpus fixtures claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "The nested AppSpec corpus must cover multi-middleware, nested apps, multiple tables, REST, JSON-RPC, WSS+JSON-RPC, SSE, WebTransport, docs UIX, docs payload, and static file surfaces.",
+      "feature_ids": [
+        "feat:nested-appspec-multisurface-corpus-fixtures-001"
+      ],
+      "test_ids": [
+        "tst:nested-appspec-multisurface-corpus-fixtures-planned"
+      ],
+      "evidence_ids": [
+        "evd:nested-appspec-multisurface-corpus-fixtures-planned"
+      ]
+    },
+    {
+      "id": "clm:docs-projection-openapi-openrpc-selection-tests-001",
+      "title": "Docs projection OpenAPI OpenRPC selection claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "DocsProjectionSpec selection tests must prove OpenAPI and OpenRPC include only explicitly selected REST and JSON-RPC surfaces, independent of incidental mounted paths.",
+      "feature_ids": [
+        "feat:docs-projection-openapi-openrpc-selection-tests-001"
+      ],
+      "test_ids": [
+        "tst:docs-projection-openapi-openrpc-selection-tests-planned"
+      ],
+      "evidence_ids": [
+        "evd:docs-projection-openapi-openrpc-selection-tests-planned"
+      ]
+    },
+    {
+      "id": "clm:canonical-spec-concrete-class-rejection-001",
+      "title": "Canonical spec concrete class rejection claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "Canonical spec normalization must reject concrete runtime model objects as canonical TableSpec or OpSpec identity and require spec-native table/resource identity.",
+      "feature_ids": [
+        "feat:canonical-spec-concrete-class-rejection-001"
+      ],
+      "test_ids": [
+        "tst:canonical-spec-concrete-class-rejection-planned"
+      ],
+      "evidence_ids": [
+        "evd:canonical-spec-concrete-class-rejection-planned"
+      ]
+    },
+    {
+      "id": "clm:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001",
+      "title": "CRUD REST JSON-RPC shared dispatcher parity corpus claim",
+      "status": "proposed",
+      "tier": "T2",
+      "kind": "conformance",
+      "description": "The parity corpus must prove default CRUD ops can lower to REST collection/member paths and a shared JSON-RPC dispatcher path across multiple tables.",
+      "feature_ids": [
+        "feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001"
+      ],
+      "test_ids": [
+        "tst:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
+      ],
+      "evidence_ids": [
+        "evd:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
+      ]
     }
   ],
   "evidence": [
@@ -54694,8 +54934,8 @@
     {
       "id": "evd:nested-appspec-pathspec-composition-planned",
       "title": "Nested AppSpec PathSpec composition planned evidence",
-      "status": "planned",
-      "kind": "planned-placeholder",
+      "status": "passed",
+      "kind": "pytest",
       "tier": "T2",
       "path": ".ssot/evidence/planned/nested-appspec-pathspec-composition.json",
       "claim_ids": [
@@ -54708,8 +54948,8 @@
     {
       "id": "evd:path-scoped-protocol-binding-composition-planned",
       "title": "Path-scoped protocol binding composition planned evidence",
-      "status": "planned",
-      "kind": "planned-placeholder",
+      "status": "passed",
+      "kind": "pytest",
       "tier": "T2",
       "path": ".ssot/evidence/planned/path-scoped-protocol-binding-composition.json",
       "claim_ids": [
@@ -54722,8 +54962,8 @@
     {
       "id": "evd:docs-projectionspec-contract-planned",
       "title": "DocsProjectionSpec contract planned evidence",
-      "status": "planned",
-      "kind": "planned-placeholder",
+      "status": "passed",
+      "kind": "pytest",
       "tier": "T2",
       "path": ".ssot/evidence/planned/docs-projectionspec-contract.json",
       "claim_ids": [
@@ -54736,8 +54976,8 @@
     {
       "id": "evd:docs-payload-projection-selection-planned",
       "title": "Docs payload projection selection planned evidence",
-      "status": "planned",
-      "kind": "planned-placeholder",
+      "status": "passed",
+      "kind": "pytest",
       "tier": "T2",
       "path": ".ssot/evidence/planned/docs-payload-projection-selection.json",
       "claim_ids": [
@@ -54750,8 +54990,8 @@
     {
       "id": "evd:docs-uix-projection-selection-planned",
       "title": "Docs UIX projection selection planned evidence",
-      "status": "planned",
-      "kind": "planned-placeholder",
+      "status": "passed",
+      "kind": "pytest",
       "tier": "T2",
       "path": ".ssot/evidence/planned/docs-uix-projection-selection.json",
       "claim_ids": [
@@ -54764,8 +55004,8 @@
     {
       "id": "evd:shared-jsonrpc-dispatcher-table-crud-parity-planned",
       "title": "Shared JSON-RPC dispatcher table CRUD parity planned evidence",
-      "status": "planned",
-      "kind": "planned-placeholder",
+      "status": "passed",
+      "kind": "pytest",
       "tier": "T2",
       "path": ".ssot/evidence/planned/shared-jsonrpc-dispatcher-table-crud-parity.json",
       "claim_ids": [
@@ -54773,6 +55013,62 @@
       ],
       "test_ids": [
         "tst:shared-jsonrpc-dispatcher-table-crud-parity-planned"
+      ]
+    },
+    {
+      "id": "evd:nested-appspec-multisurface-corpus-fixtures-planned",
+      "title": "Nested AppSpec multisurface corpus fixtures planned evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/nested-appspec-multisurface-corpus-fixtures.json",
+      "claim_ids": [
+        "clm:nested-appspec-multisurface-corpus-fixtures-001"
+      ],
+      "test_ids": [
+        "tst:nested-appspec-multisurface-corpus-fixtures-planned"
+      ]
+    },
+    {
+      "id": "evd:docs-projection-openapi-openrpc-selection-tests-planned",
+      "title": "Docs projection OpenAPI OpenRPC selection planned evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/docs-projection-openapi-openrpc-selection-tests.json",
+      "claim_ids": [
+        "clm:docs-projection-openapi-openrpc-selection-tests-001"
+      ],
+      "test_ids": [
+        "tst:docs-projection-openapi-openrpc-selection-tests-planned"
+      ]
+    },
+    {
+      "id": "evd:canonical-spec-concrete-class-rejection-planned",
+      "title": "Canonical spec concrete class rejection planned evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/canonical-spec-concrete-class-rejection.json",
+      "claim_ids": [
+        "clm:canonical-spec-concrete-class-rejection-001"
+      ],
+      "test_ids": [
+        "tst:canonical-spec-concrete-class-rejection-planned"
+      ]
+    },
+    {
+      "id": "evd:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned",
+      "title": "CRUD REST JSON-RPC shared dispatcher parity corpus planned evidence",
+      "status": "passed",
+      "kind": "pytest",
+      "tier": "T2",
+      "path": ".ssot/evidence/planned/crud-rest-jsonrpc-shared-dispatcher-parity-corpus.json",
+      "claim_ids": [
+        "clm:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001"
+      ],
+      "test_ids": [
+        "tst:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
       ]
     }
   ],
@@ -60496,7 +60792,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "fdb747deb4b358ca62bf5fe24444ed17d4ea4a3a3ad97218faaf129b2f7f36a6",
+      "content_sha256": "a665b4d91d7d7a349c7c2b34c37cdd2aa1cfa53ca7c0ab59ce1a378281edf359",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -64274,7 +64570,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "97830a78b2b956eba7ffad1d1ad8adbce0f7d56b5b2759a9784baf32f48a7802",
+      "content_sha256": "5a718770bb5cd3a455ab8b9359d9fad65ef67e9da0401473b75a76b878cffa59",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
