@@ -1,0 +1,112 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2151"
+number: 2151
+slug: "appspec-engine-inventory-and-precedence-contract"
+title: "AppSpec Engine Inventory and Precedence Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the canonical AppSpec engine inventory, EngineSpec name identity, app/router/table/op name bindings, and nearest-scope engine precedence."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define named engine inventory and scope-level engine precedence for canonical AppSpec graphs."
+    at: "2026-05-09T17:05:00Z"
+references: []
+body: |-
+  ## Intent
+
+  Define the canonical AppSpec engine inventory, EngineSpec name identity, app/router/table/op name bindings, and nearest-scope engine precedence.
+
+  ## Contract
+
+  1. `AppSpec.engines` MUST be a sequence of canonical `EngineSpec` entries available to the app graph.
+  2. `EngineSpec.name` MUST be a non-empty app-local name. Names MUST be unique within one `AppSpec`.
+  3. `AppSpec.engine` MAY name a default engine from `AppSpec.engines`.
+  4. `RouterSpec.engine` MAY name an engine from `AppSpec.engines`.
+  5. `TableSpec.engine` MAY name an engine from `AppSpec.engines`.
+  6. `OpSpec.engine` MAY name an engine from `AppSpec.engines`.
+  7. `PathSpec` MUST NOT accept or publish an engine binding field in the canonical graph.
+  8. Every scope engine reference MUST resolve to an engine name declared in `AppSpec.engines`.
+  9. Effective engine resolution MUST use nearest-scope precedence: `OpSpec.engine > TableSpec.engine > RouterSpec.engine > AppSpec.engine`.
+  10. If no scope binds an engine, the canonical spec remains structurally valid, but runtime persistence readiness MAY fail for operations that require an engine.
+  11. Canonical scope engine fields MUST contain engine names, not DSN strings, mappings, providers, or inline `EngineSpec` configs.
+  12. Concrete authoring surfaces MAY accept DSN strings, mappings, provider objects, concrete engine shortcuts, and inline `EngineSpec` values.
+  13. Concrete lowering MUST normalize accepted engine inputs into `AppSpec.engines` plus scope-level engine names before canonical validation, docs projection, runtime compilation, or conformance checks consume the spec graph.
+  14. The contract intentionally excludes engine policies, read/write splitting, OLTP/OLAP splitting, queue/pubsub splitting, cache sidecars, tenant routing, and capability-based fallback.
+
+  ## Canonical Shape
+
+  ```python
+  AppSpec(
+      engines=(
+          EngineSpec(name="main", kind="sqlite", async_=False, memory=True),
+          EngineSpec(name="audit", kind="postgres", async_=True, dsn="postgresql+asyncpg://..."),
+      ),
+      engine="main",
+      routers=(
+          RouterSpec(
+              name="admin",
+              prefix="/admin",
+              engine="audit",
+              paths=(
+                  PathSpec(
+                      path="/widgets",
+                      kind="resource",
+                      tables=(
+                          TableSpec(
+                              name="Widget",
+                              resource="widget",
+                              model_ref="app.models:Widget",
+                              engine="main",
+                              ops=(
+                                  OpSpec(alias="rotate", target="custom", engine="audit"),
+                              ),
+                          ),
+                      ),
+                  ),
+              ),
+          ),
+      ),
+  )
+  ```
+
+  ## Validation Matrix
+
+  | Scenario | Expected |
+  |---|---|
+  | `AppSpec.engines` contains `main` and `AppSpec.engine="main"` | Valid; unbound ops inherit `main`. |
+  | Router sets `engine="audit"` and `audit` exists | Valid; router subtree uses `audit` unless overridden. |
+  | Table sets `engine="main"` and router has `audit` | Valid; table ops use `main` unless op overrides. |
+  | Op sets `engine="audit"` and table has `main` | Valid; that op uses `audit`. |
+  | App has engines but no `AppSpec.engine` | Valid; only explicitly bound scopes get engines. |
+  | Engine declared but unused | Valid; inventory may include available engines. |
+  | Duplicate `EngineSpec.name` | Invalid. |
+  | Any scope references a missing engine name | Invalid. |
+  | `PathSpec.engine` appears | Invalid. |
+  | Canonical scope field contains inline mapping or DSN | Invalid. |
+  | Concrete authoring passes inline mapping or DSN | Valid only before lowering; canonical output must use names. |
+  | No engine anywhere | Structurally valid; runtime readiness may fail for persistence ops. |
+
+  ## Traceability
+
+  - ADRs: `adr:1130`, `adr:1129`, `adr:1015`, `adr:1084`
+  - Defines features: `feat:appspec-engine-inventory-001`, `feat:enginespec-name-identity-001`, `feat:engine-scope-name-binding-001`, `feat:engine-precedence-validation-001`, `feat:concrete-engine-lowering-to-inventory-001`, `feat:pathspec-engine-rejection-001`
+
+  ## Verification Plan
+
+  - `tst:appspec-engine-inventory-contract`
+  - `tst:engine-scope-name-binding-contract`
+  - `tst:engine-precedence-contract`
+  - `tst:pathspec-engine-rejection-contract`
+  - `tst:concrete-engine-lowering-contract`
+spec_kind: "normative"
+adr_ids:
+  - "adr:1130"
+  - "adr:1129"
+  - "adr:1015"
+  - "adr:1084"

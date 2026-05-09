@@ -20,6 +20,10 @@ status_notes:
     status: "draft"
     note: "Expanded governed feature scope for the next pre-freeze corpus and projection slice."
     at: "2026-05-09T16:40:13Z"
+  -
+    status: "draft"
+    note: "Linked engine inventory and transport matrix follow-on scope."
+    at: "2026-05-09T20:35:00Z"
 references: []
 body: |-
   ## Decision
@@ -33,6 +37,8 @@ body: |-
   5. `OpSpec` owns semantic operation shape and inherits path/table context from the containing tree node instead of embedding concrete `model=...` or `table=...` runtime objects as canonical identity.
   6. Protocol bindings select or invoke an op at the containing path; JSON-RPC bindings therefore receive their dispatcher path from the containing `PathSpec` and their method selector from the binding.
   7. Documentation UIX and documentation payload paths are normal `PathSpec` entries; the inclusion policy for OpenAPI/OpenRPC/AsyncAPI artifacts is governed by a docs projection contract, not by the path alone.
+  8. Engine binding is not path-owned. `AppSpec` owns the named engine inventory, while app, router, table, and op scopes attach to engines by name under the policy in `adr:1130`.
+  9. Transport scenario coverage is governed by the matrix contract in `spc:2152`; path ownership, protocol binding, framing, exchange, docs projection, static serving, and nested mounts remain separate layers.
   
   ## Context
   
@@ -43,6 +49,8 @@ body: |-
   ## Consequences
   
   - `PathSpec` and docs projection contracts become the planning focus for the next implementation slice.
+  - Engine inventory and scope-level engine binding are governed separately from path and transport ownership.
+  - Transport support gaps such as stream path kinds, WS/WSS JSON-RPC symmetry, and WS/WSS JSON-LD framing are tracked in an explicit matrix rather than inferred from existing binding classes.
   - Docs UIX and docs payload surfaces do not need to become large independent authorities merely to expose `/docs`, `/openapi.json`, `/openrpc.json`, or equivalent paths.
   - Documentation inclusion rules must be expressible in a projection spec that can include/exclude protocols, routers, paths, tables, op aliases, tags, and RPC methods.
   - Existing concrete conveniences may continue to accept runtime classes, decorators, and shortcuts, but their canonical output must lower into a nested spec tree with stable spec-native table/resource identity.
@@ -51,6 +59,8 @@ body: |-
   
   - Keep embedding REST path, JSON-RPC endpoint, and documentation projection policy directly on `OpSpec`.
   - Treat docs UIX paths as the source of truth for OpenAPI/OpenRPC inclusion.
+  - Treat `PathSpec` as an engine binding scope.
+  - Conflate engine inventory with transport scenario coverage.
   - Require graph refs for this slice when nested containment and inherited context are the desired authoring model.
   - Treat concrete runtime classes as canonical table/op identity in the spec graph.
   
@@ -66,9 +76,22 @@ body: |-
   - `feat:docs-projection-openapi-openrpc-selection-tests-001`
   - `feat:canonical-spec-concrete-class-rejection-001`
   - `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`
+  - `feat:appspec-engine-inventory-001`
+  - `feat:enginespec-name-identity-001`
+  - `feat:engine-scope-name-binding-001`
+  - `feat:engine-precedence-validation-001`
+  - `feat:concrete-engine-lowering-to-inventory-001`
+  - `feat:pathspec-engine-rejection-001`
+  - `feat:transport-scenario-matrix-001`
+  - `feat:transport-stream-pathkind-001`
+  - `feat:transport-ws-wss-jsonrpc-001`
+  - `feat:transport-ws-wss-jsonld-001`
+  - `feat:docs-transport-projection-selection-001`
   
   ## Verification Plan
   
   - Add AppSpec corpus fixtures that represent REST, JSON-RPC dispatcher, websocket, SSE, WebTransport, docs UIX, docs payload, static, nested app, middleware, and multi-table surfaces as a nested tree.
+  - Add engine inventory fixtures proving app/router/table/op engine bindings resolve by name with nearest-scope precedence and no path-owned engine field.
+  - Add transport matrix fixtures proving supported and planned/fail-closed transport scenarios are explicit.
   - Add fail-closed projection tests proving OpenAPI and OpenRPC include only the surfaces selected by the docs projection spec.
   - Add parity tests proving default CRUD table ops can lower into both REST paths and a shared JSON-RPC dispatcher path without embedding concrete model classes in canonical specs.

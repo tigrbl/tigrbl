@@ -23995,6 +23995,305 @@
         "tst:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:appspec-engine-inventory-001",
+      "title": "AppSpec named engine inventory",
+      "description": "AppSpec declares the app-local inventory of named EngineSpec entries available to app, router, table, and op scopes.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2151"
+      ],
+      "claim_ids": [
+        "clm:appspec-engine-inventory-001"
+      ],
+      "test_ids": [
+        "tst:appspec-engine-inventory-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:concrete-engine-lowering-to-inventory-001",
+      "title": "Concrete engine inputs lower to canonical inventory",
+      "description": "Concrete DSNs, mappings, providers, and engine shortcuts lower into AppSpec.engines plus scope-level engine-name bindings before canonical consumption.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2151"
+      ],
+      "claim_ids": [
+        "clm:concrete-engine-lowering-to-inventory-001"
+      ],
+      "test_ids": [
+        "tst:concrete-engine-lowering-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:docs-transport-projection-selection-001",
+      "title": "Docs projections select transport surfaces explicitly",
+      "description": "Documentation payloads and UIX select included REST, RPC, websocket, stream, SSE, WebTransport, static, and mount surfaces through docs projection policy.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150",
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:docs-transport-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-transport-projection-selection-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:engine-precedence-validation-001",
+      "title": "Engine precedence and missing-name validation",
+      "description": "Effective engine selection follows op over table over router over app precedence and fails closed for missing engine-name references.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2151"
+      ],
+      "claim_ids": [
+        "clm:engine-precedence-validation-001"
+      ],
+      "test_ids": [
+        "tst:engine-precedence-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:engine-scope-name-binding-001",
+      "title": "Engine name binding on app router table and op scopes",
+      "description": "AppSpec, RouterSpec, TableSpec, and OpSpec engine fields bind by declared engine name instead of inline engine configuration.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2151"
+      ],
+      "claim_ids": [
+        "clm:engine-scope-name-binding-001"
+      ],
+      "test_ids": [
+        "tst:engine-scope-name-binding-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:enginespec-name-identity-001",
+      "title": "EngineSpec name identity and uniqueness",
+      "description": "EngineSpec.name is the stable app-local engine key and must be unique within one canonical AppSpec engine inventory.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2151"
+      ],
+      "claim_ids": [
+        "clm:enginespec-name-identity-001"
+      ],
+      "test_ids": [
+        "tst:appspec-engine-inventory-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:pathspec-engine-rejection-001",
+      "title": "PathSpec rejects engine ownership",
+      "description": "PathSpec remains an address node and rejects engine binding in the canonical graph.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2150",
+        "spc:2151"
+      ],
+      "claim_ids": [
+        "clm:pathspec-engine-rejection-001"
+      ],
+      "test_ids": [
+        "tst:pathspec-engine-rejection-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-scenario-matrix-001",
+      "title": "Complete AppSpec transport scenario matrix",
+      "description": "The canonical transport matrix enumerates supported, partial, and planned/fail-closed path, binding, exchange, framing, docs, static, and mount scenarios.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:transport-scenario-matrix-001"
+      ],
+      "test_ids": [
+        "tst:transport-scenario-matrix-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-stream-pathkind-001",
+      "title": "HTTP and HTTPS stream PathKind coverage",
+      "description": "HTTP stream and HTTPS stream bindings have explicit canonical path representation instead of being hidden under generic resource paths.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:transport-stream-pathkind-001"
+      ],
+      "test_ids": [
+        "tst:transport-stream-pathkind-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-ws-wss-jsonld-001",
+      "title": "WS and WSS JSON-LD framing and path coverage",
+      "description": "WS+JSON-LD and WSS+JSON-LD are explicit planned/fail-closed transport scenarios until jsonld framing and path kinds are implemented.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:transport-ws-wss-jsonld-001"
+      ],
+      "test_ids": [
+        "tst:transport-ws-jsonld-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:transport-ws-wss-jsonrpc-001",
+      "title": "WS and WSS JSON-RPC canonical coverage",
+      "description": "WS+JSON-RPC and WSS+JSON-RPC are represented symmetrically by websocket protocol plus JSON-RPC framing or an equivalent normalized binding.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:transport-ws-wss-jsonrpc-001"
+      ],
+      "test_ids": [
+        "tst:transport-ws-jsonrpc-contract"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -40194,6 +40493,168 @@
       "evidence_ids": [
         "evd:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
       ]
+    },
+    {
+      "id": "tst:appspec-engine-inventory-contract",
+      "title": "AppSpec engine inventory contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_appspec_engine_inventory_contract.py",
+      "feature_ids": [
+        "feat:appspec-engine-inventory-001",
+        "feat:enginespec-name-identity-001"
+      ],
+      "claim_ids": [
+        "clm:appspec-engine-inventory-001",
+        "clm:enginespec-name-identity-001"
+      ],
+      "evidence_ids": [
+        "evd:appspec-engine-inventory-contract"
+      ]
+    },
+    {
+      "id": "tst:concrete-engine-lowering-contract",
+      "title": "Concrete engine lowering contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_concrete_engine_lowering_contract.py",
+      "feature_ids": [
+        "feat:concrete-engine-lowering-to-inventory-001"
+      ],
+      "claim_ids": [
+        "clm:concrete-engine-lowering-to-inventory-001"
+      ],
+      "evidence_ids": [
+        "evd:concrete-engine-lowering-contract"
+      ]
+    },
+    {
+      "id": "tst:docs-transport-projection-selection-contract",
+      "title": "Docs transport projection selection contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_docs_transport_projection_selection_contract.py",
+      "feature_ids": [
+        "feat:docs-transport-projection-selection-001"
+      ],
+      "claim_ids": [
+        "clm:docs-transport-projection-selection-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-transport-projection-selection-contract"
+      ]
+    },
+    {
+      "id": "tst:engine-precedence-contract",
+      "title": "Engine precedence contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_engine_precedence_contract.py",
+      "feature_ids": [
+        "feat:engine-precedence-validation-001"
+      ],
+      "claim_ids": [
+        "clm:engine-precedence-validation-001"
+      ],
+      "evidence_ids": [
+        "evd:engine-precedence-contract"
+      ]
+    },
+    {
+      "id": "tst:engine-scope-name-binding-contract",
+      "title": "Engine scope name binding contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_engine_scope_name_binding_contract.py",
+      "feature_ids": [
+        "feat:engine-scope-name-binding-001"
+      ],
+      "claim_ids": [
+        "clm:engine-scope-name-binding-001"
+      ],
+      "evidence_ids": [
+        "evd:engine-scope-name-binding-contract"
+      ]
+    },
+    {
+      "id": "tst:pathspec-engine-rejection-contract",
+      "title": "PathSpec engine rejection contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_pathspec_engine_rejection_contract.py",
+      "feature_ids": [
+        "feat:pathspec-engine-rejection-001"
+      ],
+      "claim_ids": [
+        "clm:pathspec-engine-rejection-001"
+      ],
+      "evidence_ids": [
+        "evd:pathspec-engine-rejection-contract"
+      ]
+    },
+    {
+      "id": "tst:transport-scenario-matrix-contract",
+      "title": "Transport scenario matrix contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_transport_scenario_matrix_contract.py",
+      "feature_ids": [
+        "feat:transport-scenario-matrix-001"
+      ],
+      "claim_ids": [
+        "clm:transport-scenario-matrix-001"
+      ],
+      "evidence_ids": [
+        "evd:transport-scenario-matrix-contract"
+      ]
+    },
+    {
+      "id": "tst:transport-stream-pathkind-contract",
+      "title": "Transport stream PathKind contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_transport_stream_pathkind_contract.py",
+      "feature_ids": [
+        "feat:transport-stream-pathkind-001"
+      ],
+      "claim_ids": [
+        "clm:transport-stream-pathkind-001"
+      ],
+      "evidence_ids": [
+        "evd:transport-stream-pathkind-contract"
+      ]
+    },
+    {
+      "id": "tst:transport-ws-jsonld-contract",
+      "title": "Transport WS JSON-LD contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_transport_ws_jsonld_contract.py",
+      "feature_ids": [
+        "feat:transport-ws-wss-jsonld-001"
+      ],
+      "claim_ids": [
+        "clm:transport-ws-wss-jsonld-001"
+      ],
+      "evidence_ids": [
+        "evd:transport-ws-jsonld-contract"
+      ]
+    },
+    {
+      "id": "tst:transport-ws-jsonrpc-contract",
+      "title": "Transport WS JSON-RPC contract planned coverage",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_transport_ws_jsonrpc_contract.py",
+      "feature_ids": [
+        "feat:transport-ws-wss-jsonrpc-001"
+      ],
+      "claim_ids": [
+        "clm:transport-ws-wss-jsonrpc-001"
+      ],
+      "evidence_ids": [
+        "evd:transport-ws-jsonrpc-contract"
+      ]
     }
   ],
   "claims": [
@@ -48291,6 +48752,193 @@
       "evidence_ids": [
         "evd:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
       ]
+    },
+    {
+      "id": "clm:appspec-engine-inventory-001",
+      "title": "AppSpec named engine inventory claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for AppSpec named engine inventory.",
+      "feature_ids": [
+        "feat:appspec-engine-inventory-001"
+      ],
+      "test_ids": [
+        "tst:appspec-engine-inventory-contract"
+      ],
+      "evidence_ids": [
+        "evd:appspec-engine-inventory-contract"
+      ]
+    },
+    {
+      "id": "clm:concrete-engine-lowering-to-inventory-001",
+      "title": "Concrete engine inputs lower to canonical inventory claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for Concrete engine inputs lower to canonical inventory.",
+      "feature_ids": [
+        "feat:concrete-engine-lowering-to-inventory-001"
+      ],
+      "test_ids": [
+        "tst:concrete-engine-lowering-contract"
+      ],
+      "evidence_ids": [
+        "evd:concrete-engine-lowering-contract"
+      ]
+    },
+    {
+      "id": "clm:docs-transport-projection-selection-001",
+      "title": "Docs projections select transport surfaces explicitly claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for Docs projections select transport surfaces explicitly.",
+      "feature_ids": [
+        "feat:docs-transport-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-transport-projection-selection-contract"
+      ],
+      "evidence_ids": [
+        "evd:docs-transport-projection-selection-contract"
+      ]
+    },
+    {
+      "id": "clm:engine-precedence-validation-001",
+      "title": "Engine precedence and missing-name validation claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for Engine precedence and missing-name validation.",
+      "feature_ids": [
+        "feat:engine-precedence-validation-001"
+      ],
+      "test_ids": [
+        "tst:engine-precedence-contract"
+      ],
+      "evidence_ids": [
+        "evd:engine-precedence-contract"
+      ]
+    },
+    {
+      "id": "clm:engine-scope-name-binding-001",
+      "title": "Engine name binding on app router table and op scopes claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for Engine name binding on app router table and op scopes.",
+      "feature_ids": [
+        "feat:engine-scope-name-binding-001"
+      ],
+      "test_ids": [
+        "tst:engine-scope-name-binding-contract"
+      ],
+      "evidence_ids": [
+        "evd:engine-scope-name-binding-contract"
+      ]
+    },
+    {
+      "id": "clm:enginespec-name-identity-001",
+      "title": "EngineSpec name identity and uniqueness claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for EngineSpec name identity and uniqueness.",
+      "feature_ids": [
+        "feat:enginespec-name-identity-001"
+      ],
+      "test_ids": [
+        "tst:appspec-engine-inventory-contract"
+      ],
+      "evidence_ids": [
+        "evd:appspec-engine-inventory-contract"
+      ]
+    },
+    {
+      "id": "clm:pathspec-engine-rejection-001",
+      "title": "PathSpec rejects engine ownership claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for PathSpec rejects engine ownership.",
+      "feature_ids": [
+        "feat:pathspec-engine-rejection-001"
+      ],
+      "test_ids": [
+        "tst:pathspec-engine-rejection-contract"
+      ],
+      "evidence_ids": [
+        "evd:pathspec-engine-rejection-contract"
+      ]
+    },
+    {
+      "id": "clm:transport-scenario-matrix-001",
+      "title": "Complete AppSpec transport scenario matrix claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for Complete AppSpec transport scenario matrix.",
+      "feature_ids": [
+        "feat:transport-scenario-matrix-001"
+      ],
+      "test_ids": [
+        "tst:transport-scenario-matrix-contract"
+      ],
+      "evidence_ids": [
+        "evd:transport-scenario-matrix-contract"
+      ]
+    },
+    {
+      "id": "clm:transport-stream-pathkind-001",
+      "title": "HTTP and HTTPS stream PathKind coverage claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for HTTP and HTTPS stream PathKind coverage.",
+      "feature_ids": [
+        "feat:transport-stream-pathkind-001"
+      ],
+      "test_ids": [
+        "tst:transport-stream-pathkind-contract"
+      ],
+      "evidence_ids": [
+        "evd:transport-stream-pathkind-contract"
+      ]
+    },
+    {
+      "id": "clm:transport-ws-wss-jsonld-001",
+      "title": "WS and WSS JSON-LD framing and path coverage claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for WS and WSS JSON-LD framing and path coverage.",
+      "feature_ids": [
+        "feat:transport-ws-wss-jsonld-001"
+      ],
+      "test_ids": [
+        "tst:transport-ws-jsonld-contract"
+      ],
+      "evidence_ids": [
+        "evd:transport-ws-jsonld-contract"
+      ]
+    },
+    {
+      "id": "clm:transport-ws-wss-jsonrpc-001",
+      "title": "WS and WSS JSON-RPC canonical coverage claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for WS and WSS JSON-RPC canonical coverage.",
+      "feature_ids": [
+        "feat:transport-ws-wss-jsonrpc-001"
+      ],
+      "test_ids": [
+        "tst:transport-ws-jsonrpc-contract"
+      ],
+      "evidence_ids": [
+        "evd:transport-ws-jsonrpc-contract"
+      ]
     }
   ],
   "evidence": [
@@ -55070,6 +55718,147 @@
       "test_ids": [
         "tst:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-planned"
       ]
+    },
+    {
+      "id": "evd:appspec-engine-inventory-contract",
+      "title": "AppSpec engine inventory contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/appspec-engine-inventory-contract.json",
+      "claim_ids": [
+        "clm:appspec-engine-inventory-001",
+        "clm:enginespec-name-identity-001"
+      ],
+      "test_ids": [
+        "tst:appspec-engine-inventory-contract"
+      ]
+    },
+    {
+      "id": "evd:concrete-engine-lowering-contract",
+      "title": "Concrete engine lowering contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/concrete-engine-lowering-contract.json",
+      "claim_ids": [
+        "clm:concrete-engine-lowering-to-inventory-001"
+      ],
+      "test_ids": [
+        "tst:concrete-engine-lowering-contract"
+      ]
+    },
+    {
+      "id": "evd:docs-transport-projection-selection-contract",
+      "title": "Docs transport projection selection contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/docs-transport-projection-selection-contract.json",
+      "claim_ids": [
+        "clm:docs-transport-projection-selection-001"
+      ],
+      "test_ids": [
+        "tst:docs-transport-projection-selection-contract"
+      ]
+    },
+    {
+      "id": "evd:engine-precedence-contract",
+      "title": "Engine precedence contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/engine-precedence-contract.json",
+      "claim_ids": [
+        "clm:engine-precedence-validation-001"
+      ],
+      "test_ids": [
+        "tst:engine-precedence-contract"
+      ]
+    },
+    {
+      "id": "evd:engine-scope-name-binding-contract",
+      "title": "Engine scope name binding contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/engine-scope-name-binding-contract.json",
+      "claim_ids": [
+        "clm:engine-scope-name-binding-001"
+      ],
+      "test_ids": [
+        "tst:engine-scope-name-binding-contract"
+      ]
+    },
+    {
+      "id": "evd:pathspec-engine-rejection-contract",
+      "title": "PathSpec engine rejection contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/pathspec-engine-rejection-contract.json",
+      "claim_ids": [
+        "clm:pathspec-engine-rejection-001"
+      ],
+      "test_ids": [
+        "tst:pathspec-engine-rejection-contract"
+      ]
+    },
+    {
+      "id": "evd:transport-scenario-matrix-contract",
+      "title": "Transport scenario matrix contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/transport-scenario-matrix-contract.json",
+      "claim_ids": [
+        "clm:transport-scenario-matrix-001"
+      ],
+      "test_ids": [
+        "tst:transport-scenario-matrix-contract"
+      ]
+    },
+    {
+      "id": "evd:transport-stream-pathkind-contract",
+      "title": "Transport stream PathKind contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/transport-stream-pathkind-contract.json",
+      "claim_ids": [
+        "clm:transport-stream-pathkind-001"
+      ],
+      "test_ids": [
+        "tst:transport-stream-pathkind-contract"
+      ]
+    },
+    {
+      "id": "evd:transport-ws-jsonld-contract",
+      "title": "Transport WS JSON-LD contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/transport-ws-jsonld-contract.json",
+      "claim_ids": [
+        "clm:transport-ws-wss-jsonld-001"
+      ],
+      "test_ids": [
+        "tst:transport-ws-jsonld-contract"
+      ]
+    },
+    {
+      "id": "evd:transport-ws-jsonrpc-contract",
+      "title": "Transport WS JSON-RPC contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/transport-ws-jsonrpc-contract.json",
+      "claim_ids": [
+        "clm:transport-ws-wss-jsonrpc-001"
+      ],
+      "test_ids": [
+        "tst:transport-ws-jsonrpc-contract"
+      ]
     }
   ],
   "issues": [
@@ -60792,7 +61581,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "a665b4d91d7d7a349c7c2b34c37cdd2aa1cfa53ca7c0ab59ce1a378281edf359",
+      "content_sha256": "3d786e99da17eb197b70d6ba7667e72f7db0b10da4c37d0c6219a54063cd367d",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -60801,8 +61590,42 @@
           "status": "draft",
           "note": "Created to govern the next nested AppSpec and docs projection planning slice.",
           "at": "2026-05-09T16:16:12Z"
+        },
+        {
+          "status": "draft",
+          "note": "Expanded governed feature scope for the next pre-freeze corpus and projection slice.",
+          "at": "2026-05-09T16:40:13Z"
+        },
+        {
+          "status": "draft",
+          "note": "Linked engine inventory and transport matrix follow-on scope.",
+          "at": "2026-05-09T20:35:00Z"
         }
-      ]
+      ],
+      "summary": "Tigrbl canonical AppSpec authoring should be a nested, address-first spec tree for exposed surfaces, while concrete classes and decorators may remain ergonomic lowerers into that tree."
+    },
+    {
+      "id": "adr:1130",
+      "number": 1130,
+      "slug": "appspec-engine-inventory-and-scope-binding-policy",
+      "title": "AppSpec Engine Inventory and Scope Binding Policy",
+      "path": ".ssot/adr/ADR-1130-appspec-engine-inventory-and-scope-binding-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "17b5e2ccba0f3340124a794372b4c6c25ec678746e190cb14ff6a8ec048b71c0",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern named engine inventory and scope-level engine binding for canonical AppSpec graphs.",
+          "at": "2026-05-09T20:25:49Z"
+        }
+      ],
+      "summary": "`AppSpec` owns the canonical named engine inventory. App, router, table, and op scopes attach to engines by `EngineSpec.name`; generated ids may exist internally, but the canonical authoring and validation surface uses engine names."
     }
   ],
   "specs": [
@@ -64570,7 +65393,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "5a718770bb5cd3a455ab8b9359d9fad65ef67e9da0401473b75a76b878cffa59",
+      "content_sha256": "fe089f27823129e7c7d583d756a9d963a056f646bb4b55bc7fc5d84fd1df228b",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -64579,16 +65402,90 @@
           "status": "draft",
           "note": "Created to define the next nested AppSpec, path-scoped binding, and docs projection slice.",
           "at": "2026-05-09T16:16:45Z"
+        },
+        {
+          "status": "draft",
+          "note": "Expanded traceability to include corpus, projection, rejection, and parity scope targets.",
+          "at": "2026-05-09T16:40:20Z"
+        },
+        {
+          "status": "draft",
+          "note": "Linked engine inventory and transport matrix companion contracts.",
+          "at": "2026-05-09T20:35:00Z"
         }
       ],
       "kind": "normative",
       "adr_ids": [
         "adr:1129",
+        "adr:1130",
         "adr:1052",
         "adr:1080",
         "adr:1014",
         "adr:1051"
-      ]
+      ],
+      "summary": "Define the next-slice contract for nested canonical AppSpec composition, path-scoped protocol bindings, and documentation projection selection."
+    },
+    {
+      "id": "spc:2151",
+      "number": 2151,
+      "slug": "appspec-engine-inventory-and-precedence-contract",
+      "title": "AppSpec Engine Inventory and Precedence Contract",
+      "path": ".ssot/specs/SPEC-2151-appspec-engine-inventory-and-precedence-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "024376e04a1b614992ac2e5f8956e65f9cad90daeb85cf5f852d7fff92abb540",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define named engine inventory and scope-level engine precedence for canonical AppSpec graphs.",
+          "at": "2026-05-09T17:05:00Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1130",
+        "adr:1129",
+        "adr:1015",
+        "adr:1084"
+      ],
+      "summary": "Define the canonical AppSpec engine inventory, EngineSpec name identity, app/router/table/op name bindings, and nearest-scope engine precedence."
+    },
+    {
+      "id": "spc:2152",
+      "number": 2152,
+      "slug": "appspec-transport-scenario-matrix-contract",
+      "title": "AppSpec Transport Scenario Matrix Contract",
+      "path": ".ssot/specs/SPEC-2152-appspec-transport-scenario-matrix-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "96ebfd3c11870c265cc7898e7aa5d42b1257d2a4a1e1aef80dc0fbf22e04cf58",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define the transport scenario matrix for the next nested AppSpec coverage slice.",
+          "at": "2026-05-09T17:05:00Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1129",
+        "adr:1006",
+        "adr:1007",
+        "adr:1023",
+        "adr:1051",
+        "adr:1080"
+      ],
+      "summary": "Define the canonical AppSpec transport scenario matrix across path kinds, protocol bindings, exchange modes, framing modes, documentation projections, static surfaces, and nested mounts."
     }
   ],
   "profiles": [
