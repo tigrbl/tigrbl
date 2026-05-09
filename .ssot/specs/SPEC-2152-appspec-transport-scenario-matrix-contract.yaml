@@ -1,0 +1,102 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2152"
+number: 2152
+slug: "appspec-transport-scenario-matrix-contract"
+title: "AppSpec Transport Scenario Matrix Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the canonical AppSpec transport scenario matrix across path kinds, protocol bindings, exchange modes, framing modes, documentation projections, static surfaces, and nested mounts."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define the transport scenario matrix for the next nested AppSpec coverage slice."
+    at: "2026-05-09T17:05:00Z"
+references: []
+body: |-
+  ## Intent
+
+  Define the canonical AppSpec transport scenario matrix across path kinds, protocol bindings, exchange modes, framing modes, documentation projections, static surfaces, and nested mounts.
+
+  ## Contract
+
+  1. Transport scenario coverage MUST be modeled separately from engine binding.
+  2. `PathSpec` owns concrete address paths.
+  3. Binding specs own protocol, exchange, framing, selector, and transport-specific invocation semantics.
+  4. `DocsProjectionSpec`, `DocsPayloadSpec`, and `DocsUixSpec` own documentation projection and documentation exposure semantics.
+  5. The transport matrix MUST enumerate both implemented and planned/fail-closed scenarios so missing support is explicit.
+  6. HTTP REST and HTTP JSON-RPC MUST remain first-class request/response surfaces.
+  7. HTTP stream and HTTPS stream MUST have canonical path representation instead of being hidden under generic resource paths.
+  8. SSE MUST remain a server-stream surface with `sse` framing.
+  9. WebSocket and WSS MUST support text/binary baseline framing.
+  10. WS+JSON-RPC and WSS+JSON-RPC MUST be symmetric canonical scenarios represented by websocket protocol plus JSON-RPC framing or an equivalent normalized binding.
+  11. WS+JSON-LD and WSS+JSON-LD MUST be explicit planned/fail-closed scenarios until `jsonld` framing and corresponding path kinds are implemented.
+  12. WebTransport MUST remain a bidirectional stream/datagram-capable transport scenario.
+  13. Message and datagram binding scenarios MUST be represented in the matrix even when their canonical address model is not path-owned.
+  14. Docs payload and docs UIX scenarios MUST prove inclusion is selected by docs projection policy, not by incidental path exposure.
+  15. Static file serving and nested app mounts MUST be ordinary canonical path scenarios with their own spec payloads.
+
+  ## Transport Matrix
+
+  | Scenario | Binding | Path kind | Expected support |
+  |---|---|---|---|
+  | HTTP REST | `HttpRestBindingSpec(proto="http.rest")` | `resource` | Supported |
+  | HTTPS REST | `HttpRestBindingSpec(proto="https.rest")` | `resource` | Supported |
+  | HTTP JSON-RPC | `HttpJsonRpcBindingSpec(proto="http.jsonrpc")` | `jsonrpc` | Supported |
+  | HTTPS JSON-RPC | `HttpJsonRpcBindingSpec(proto="https.jsonrpc")` | `jsonrpc` | Supported |
+  | HTTP stream | `HttpStreamBindingSpec(proto="http.stream")` | `stream` | Planned canonical path coverage |
+  | HTTPS stream | `HttpStreamBindingSpec(proto="https.stream")` | `stream` | Planned canonical path coverage |
+  | HTTP SSE | `SseBindingSpec(proto="http.sse")` | `sse` | Supported |
+  | HTTPS SSE | `SseBindingSpec(proto="https.sse")` | `sse` | Supported |
+  | WS text | `WsBindingSpec(proto="ws", framing="text")` | `websocket` | Supported |
+  | WSS text | `WsBindingSpec(proto="wss", framing="text")` | `websocket` | Supported |
+  | WS JSON-RPC | `WsBindingSpec(proto="ws", framing="jsonrpc")` | `ws-jsonrpc` | Planned canonical symmetry |
+  | WSS JSON-RPC | `WsBindingSpec(proto="wss", framing="jsonrpc")` | `wss-jsonrpc` | Partially supported; needs corpus symmetry |
+  | WS JSON-LD | `WsBindingSpec(proto="ws", framing="jsonld")` | `ws-jsonld` | Planned/fail-closed |
+  | WSS JSON-LD | `WsBindingSpec(proto="wss", framing="jsonld")` | `wss-jsonld` | Planned/fail-closed |
+  | WebTransport | `WebTransportBindingSpec()` | `webtransport` | Supported |
+  | Message bus | `MessageBindingSpec(proto=...)` | non-path or message address | Partial; address model pending |
+  | Datagram | `DatagramBindingSpec(proto=...)` | non-path or datagram address | Partial; address model pending |
+  | Docs payload | `DocsPayloadSpec(...)` | `docs-payload` | Supported by docs projection contract |
+  | Docs UIX | `DocsUixSpec(...)` | `docs-uix` | Supported by docs projection contract |
+  | Static files | static spec payload | `static` | Structural; canonical static spec pending |
+  | Nested app mount | mount spec payload | `mount` | Structural; canonical mount spec pending |
+
+  ## Validation Matrix
+
+  | Scenario | Expected |
+  |---|---|
+  | Every supported binding appears in the matrix | Valid. |
+  | A binding path conflicts with containing `PathSpec.path` | Invalid. |
+  | A JSON-RPC binding declares a method but conflicts with dispatcher path | Invalid. |
+  | `http.stream` lacks `stream` path coverage | Fails planned transport matrix test until implemented. |
+  | `ws` JSON-RPC has no symmetric path kind with `wss` JSON-RPC | Fails planned transport matrix test until implemented. |
+  | `jsonld` framing is referenced before supported | Must fail closed with explicit planned status. |
+  | Docs payload includes protocols outside its projection | Invalid. |
+  | Docs UIX selects payload or projection not declared in the canonical tree | Invalid. |
+  | Static and mount paths lack canonical payload shape | Planned/fail-closed until spec payloads are defined. |
+
+  ## Traceability
+
+  - ADRs: `adr:1129`, `adr:1006`, `adr:1007`, `adr:1023`, `adr:1051`, `adr:1080`
+  - Defines features: `feat:transport-scenario-matrix-001`, `feat:transport-stream-pathkind-001`, `feat:transport-ws-wss-jsonrpc-001`, `feat:transport-ws-wss-jsonld-001`, `feat:docs-transport-projection-selection-001`
+
+  ## Verification Plan
+
+  - `tst:transport-scenario-matrix-contract`
+  - `tst:transport-stream-pathkind-contract`
+  - `tst:transport-ws-jsonrpc-contract`
+  - `tst:transport-ws-jsonld-contract`
+  - `tst:docs-transport-projection-selection-contract`
+spec_kind: "normative"
+adr_ids:
+  - "adr:1129"
+  - "adr:1006"
+  - "adr:1007"
+  - "adr:1023"
+  - "adr:1051"
+  - "adr:1080"

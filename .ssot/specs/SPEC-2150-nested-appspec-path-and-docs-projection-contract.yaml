@@ -20,6 +20,10 @@ status_notes:
     status: "draft"
     note: "Expanded traceability to include corpus, projection, rejection, and parity scope targets."
     at: "2026-05-09T16:40:20Z"
+  -
+    status: "draft"
+    note: "Linked engine inventory and transport matrix companion contracts."
+    at: "2026-05-09T20:35:00Z"
 references: []
 body: |-
   ## Intent
@@ -43,6 +47,8 @@ body: |-
   13. OpenAPI emission MUST be selected from the canonical tree through a docs projection that includes appropriate HTTP/REST bindings and excludes non-selected protocol surfaces.
   14. OpenRPC emission MUST be selected from the canonical tree through a docs projection that includes appropriate JSON-RPC bindings and RPC method selectors, including shared dispatcher paths.
   15. Concrete class conveniences, decorators, and imperative assembly helpers MAY remain non-flat and ergonomic, but their canonical output MUST normalize to this nested tree before docs generation, runtime compilation, or conformance checks consume it.
+  16. Engine binding MUST follow `spc:2151`: `AppSpec` owns named engine inventory, app/router/table/op scopes attach by engine name, and `PathSpec` does not own engine binding.
+  17. Transport scenario coverage MUST follow `spc:2152`: path kind, protocol binding, exchange, framing, docs projection, static, and mount coverage are tracked as an explicit matrix.
   
   ## Examples
   
@@ -89,18 +95,22 @@ body: |-
   
   ## Traceability
   
-  - ADRs: `adr:1129`, `adr:1052`, `adr:1080`, `adr:1014`, `adr:1051`
-  - Defines features: `feat:nested-appspec-pathspec-composition-001`, `feat:path-scoped-protocol-binding-composition-001`, `feat:docs-projectionspec-contract-001`, `feat:docs-payload-projection-selection-001`, `feat:docs-uix-projection-selection-001`, `feat:shared-jsonrpc-dispatcher-table-crud-parity-001`, `feat:nested-appspec-multisurface-corpus-fixtures-001`, `feat:docs-projection-openapi-openrpc-selection-tests-001`, `feat:canonical-spec-concrete-class-rejection-001`, `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`
+  - ADRs: `adr:1129`, `adr:1130`, `adr:1052`, `adr:1080`, `adr:1014`, `adr:1051`
+  - Companion specs: `spc:2151`, `spc:2152`
+  - Defines features: `feat:nested-appspec-pathspec-composition-001`, `feat:path-scoped-protocol-binding-composition-001`, `feat:docs-projectionspec-contract-001`, `feat:docs-payload-projection-selection-001`, `feat:docs-uix-projection-selection-001`, `feat:shared-jsonrpc-dispatcher-table-crud-parity-001`, `feat:nested-appspec-multisurface-corpus-fixtures-001`, `feat:docs-projection-openapi-openrpc-selection-tests-001`, `feat:canonical-spec-concrete-class-rejection-001`, `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`, `feat:pathspec-engine-rejection-001`, `feat:docs-transport-projection-selection-001`
   
   ## Verification Plan
   
   - Add positive corpus fixtures for multi-middleware, nested app, multi-table, REST, JSON-RPC, WSS+JSON-RPC, multiple SSE, WebTransport, docs UIX, docs payload, and static path surfaces.
+  - Add engine inventory fixtures through `spc:2151` to prove engine binding does not belong to `PathSpec`.
+  - Add transport matrix fixtures through `spc:2152` to prove every supported and planned/fail-closed transport scenario is explicit.
   - Add negative corpus fixtures that reject concrete runtime model objects as canonical table/op identity in normalized specs.
   - Add OpenAPI/OpenRPC projection tests proving docs inclusion is determined by `DocsProjectionSpec`, not by incidental mounted paths.
   - Add shared JSON-RPC dispatcher tests proving multiple tables can share one dispatcher path while preserving default CRUD parity with REST paths.
 spec_kind: "normative"
 adr_ids:
   - "adr:1129"
+  - "adr:1130"
   - "adr:1052"
   - "adr:1080"
   - "adr:1014"
