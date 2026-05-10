@@ -63,6 +63,13 @@ class DocsProjectionSpec(SerdeMixin):
     def selected_paths(self, paths: Sequence[PathSpec]) -> tuple[str, ...]:
         return tuple(path.path for path in paths if self._path_allowed(path))
 
+    def validate_for_payload_kind(self, kind: DocsPayloadKind) -> None:
+        protocols = set(self.include_protocols)
+        if kind == "openapi" and any(protocol.endswith(".jsonrpc") for protocol in protocols):
+            raise ValueError("OpenAPI docs projection must not include JSON-RPC protocols.")
+        if kind == "openrpc" and protocols and "http.jsonrpc" not in protocols and "https.jsonrpc" not in protocols:
+            raise ValueError("OpenRPC docs projection must include a JSON-RPC protocol.")
+
     def _path_allowed(self, path: PathSpec) -> bool:
         if path.path in set(self.exclude_paths):
             return False
@@ -129,12 +136,23 @@ class DocsPayloadSpec(SerdeMixin):
     projection: DocsProjectionSpec
     media_type: str = "application/json"
 
+    def __post_init__(self) -> None:
+        if not isinstance(self.projection, DocsProjectionSpec):
+            raise TypeError("DocsPayloadSpec.projection must be a DocsProjectionSpec.")
+        self.projection.validate_for_payload_kind(self.kind)
+
 
 @dataclass
 class DocsUixSpec(SerdeMixin):
     kind: DocsUixKind
     payload_path: str | None = None
     projection: DocsProjectionSpec | None = None
+
+    def __post_init__(self) -> None:
+        if self.payload_path is not None and not self.payload_path.startswith("/"):
+            raise ValueError("DocsUixSpec.payload_path must be an absolute path when provided.")
+        if self.projection is not None and not isinstance(self.projection, DocsProjectionSpec):
+            raise TypeError("DocsUixSpec.projection must be a DocsProjectionSpec when provided.")
 
 
 def _table_name(table: object) -> str:
@@ -147,6 +165,34 @@ def _table_name(table: object) -> str:
     return getattr(table, "name", None) or "table"
 
 
+def validate_docs_tree(paths: Sequence[PathSpec]) -> None:
+    by_path = {path.path: path for path in paths}
+    for path in paths:
+        if path.kind == "docs-payload":
+            validate_docs_payload_path(path)
+        if path.kind == "docs-uix":
+            validate_docs_uix_path(path, by_path)
+
+
+def validate_docs_payload_path(path: PathSpec) -> None:
+    if not isinstance(path.docs_payload, DocsPayloadSpec):
+        raise TypeError("docs-payload PathSpec entries must carry DocsPayloadSpec.")
+    selected = path.docs_payload.projection.select(())
+    if selected:
+        raise ValueError("Docs payload projection validation must not depend on incidental docs path exposure.")
+
+
+def validate_docs_uix_path(path: PathSpec, paths_by_path: dict[str, PathSpec]) -> None:
+    if not isinstance(path.docs_uix, DocsUixSpec):
+        raise TypeError("docs-uix PathSpec entries must carry DocsUixSpec.")
+    payload_path = path.docs_uix.payload_path
+    if payload_path is None:
+        return
+    target = paths_by_path.get(payload_path)
+    if target is None or target.kind != "docs-payload":
+        raise ValueError("DocsUixSpec.payload_path must reference a docs-payload PathSpec.")
+
+
 __all__ = [
     "DocsPayloadKind",
     "DocsPayloadSpec",
@@ -154,4 +200,7 @@ __all__ = [
     "DocsProjectionSpec",
     "DocsUixKind",
     "DocsUixSpec",
+    "validate_docs_payload_path",
+    "validate_docs_tree",
+    "validate_docs_uix_path",
 ]
