@@ -3,11 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Literal, Tuple
 
-PHASE_ALIASES: dict[str, str] = {
-    "END_TX": "TX_COMMIT",
-    "ON_END_TX_ERROR": "ON_TX_COMMIT_ERROR",
-    "ON_ROLLBACK": "TX_ROLLBACK",
-}
+PHASE_ALIASES: dict[str, str] = {}
 
 
 def normalize_phase(name: str | None) -> str | None:

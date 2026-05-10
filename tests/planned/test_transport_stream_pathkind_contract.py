@@ -1,10 +1,9 @@
-import pytest
+from tigrbl_core._spec.binding_spec import HttpStreamBindingSpec
+from tigrbl_core._spec.path_spec import PathSpec
 
 
-pytestmark = pytest.mark.skip(
-    reason="Planned SSOT coverage for transport stream PathKind contract."
-)
+def test_transport_stream_pathkind_contract() -> None:
+    binding = HttpStreamBindingSpec(proto="http.stream", path="/items/stream")
+    path = PathSpec(path="/items/stream", kind="stream")
 
-
-def test_transport_stream_pathkind_contract_planned() -> None:
-    pass
+    assert path.binding_path(binding) == "/items/stream"

@@ -1,6 +1,13 @@
-import pytest
+from tigrbl_core._spec.binding_spec import WsBindingSpec
 
 
-@pytest.mark.skip(reason="Planned SSOT coverage for WsBindingSpec subprotocol normalization.")
-def test_wsbindingspec_subprotocols_contract():
-    raise AssertionError("planned")
+def test_wsbindingspec_subprotocols_contract() -> None:
+    spec = WsBindingSpec(
+        proto="wss",
+        path="/rpc",
+        framing="jsonrpc",
+        subprotocols=("JSONRPC", "TIGRBL"),
+    )
+
+    assert spec.subprotocols == ("jsonrpc", "tigrbl")
+    assert spec.exchange == "bidirectional_stream"

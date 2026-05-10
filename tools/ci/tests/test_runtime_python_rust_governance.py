@@ -59,7 +59,7 @@ def test_runtime_python_rust_features_are_spec_aware_pairs() -> None:
         feature = features[feature_id]
         assert set(feature["spec_ids"]) == spec_ids | {"spc:2090"}
         assert feature["implementation_status"] == "absent"
-        assert feature["plan"]["horizon"] == "next"
+        assert feature["plan"]["horizon"] == "current"
         assert feature["plan"]["target_claim_tier"] == "T2"
         assert feature["plan"]["target_lifecycle_stage"] == "active"
 
