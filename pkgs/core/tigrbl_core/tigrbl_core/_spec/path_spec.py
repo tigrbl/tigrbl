@@ -19,8 +19,12 @@ from .table_spec import TableSpec
 PathKind = Literal[
     "resource",
     "jsonrpc",
+    "stream",
     "websocket",
+    "ws-jsonrpc",
+    "ws-jsonld",
     "wss-jsonrpc",
+    "wss-jsonld",
     "sse",
     "webtransport",
     "docs-payload",
@@ -48,6 +52,7 @@ class PathSpec(SerdeMixin):
     def __post_init__(self) -> None:
         if not isinstance(self.path, str) or not self.path.startswith("/"):
             raise ValueError("PathSpec.path must be an absolute path string.")
+        self._validate_kind()
         self._validate_tables()
         self._validate_ops("PathSpec.ops", self.ops)
         for table in self.tables:
@@ -57,6 +62,8 @@ class PathSpec(SerdeMixin):
     def from_dict(cls, payload: dict[str, Any]) -> "PathSpec":
         if "routes" in payload:
             raise ValueError("PathSpec does not accept 'routes'; use path-owned specs.")
+        if "engine" in payload or "engine_name" in payload:
+            raise ValueError("PathSpec does not own engines; bind engines at app, router, table, or op scope.")
         return super().from_dict(payload)
 
     def binding_path(self, binding: TransportBindingSpec) -> str:
@@ -76,9 +83,53 @@ class PathSpec(SerdeMixin):
             f"{binding.__class__.__name__} path conflicts with containing PathSpec.path."
         )
 
+    def validate_binding_convergence(self, binding: TransportBindingSpec) -> None:
+        """Validate that this path kind is compatible with the binding transport."""
+
+        self.binding_path(binding)
+        if isinstance(binding, HttpJsonRpcBindingSpec):
+            _expect_path_kind(self.kind, {"jsonrpc"})
+            return
+        if isinstance(binding, HttpStreamBindingSpec):
+            _expect_path_kind(self.kind, {"stream"})
+            return
+        if isinstance(binding, SseBindingSpec):
+            _expect_path_kind(self.kind, {"sse"})
+            return
+        if isinstance(binding, WebTransportBindingSpec):
+            _expect_path_kind(self.kind, {"webtransport"})
+            return
+        if isinstance(binding, WsBindingSpec):
+            expected = {"websocket"}
+            if binding.framing == "jsonrpc":
+                expected = {"ws-jsonrpc"} if binding.proto == "ws" else {"wss-jsonrpc"}
+            elif binding.framing == "jsonld":
+                expected = {"ws-jsonld"} if binding.proto == "ws" else {"wss-jsonld"}
+            _expect_path_kind(self.kind, expected)
+
     def iter_ops(self) -> tuple[OpSpec, ...]:
         table_ops = tuple(op for table in self.tables for op in table.ops)
         return (*tuple(self.ops), *table_ops)
+
+    def _validate_kind(self) -> None:
+        valid = {
+            "resource",
+            "jsonrpc",
+            "stream",
+            "websocket",
+            "ws-jsonrpc",
+            "ws-jsonld",
+            "wss-jsonrpc",
+            "wss-jsonld",
+            "sse",
+            "webtransport",
+            "docs-payload",
+            "docs-uix",
+            "static",
+            "mount",
+        }
+        if self.kind not in valid:
+            raise ValueError(f"PathSpec.kind must be a canonical path kind; got {self.kind!r}.")
 
     def _validate_tables(self) -> None:
         for table in self.tables:
@@ -112,4 +163,14 @@ def path_for_binding(path: PathSpec, binding: TransportBindingSpec) -> str:
     return path.binding_path(binding)
 
 
-__all__ = ["PathKind", "PathSpec", "path_for_binding"]
+def validate_path_binding(path: PathSpec, binding: TransportBindingSpec) -> None:
+    path.validate_binding_convergence(binding)
+
+
+def _expect_path_kind(actual: str, expected: set[str]) -> None:
+    if actual not in expected:
+        rendered = ", ".join(sorted(expected))
+        raise ValueError(f"binding requires PathSpec.kind to be one of {rendered}; got {actual!r}.")
+
+
+__all__ = ["PathKind", "PathSpec", "path_for_binding", "validate_path_binding"]
