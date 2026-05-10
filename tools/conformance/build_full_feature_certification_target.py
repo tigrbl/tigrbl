@@ -317,8 +317,8 @@ def main() -> None:
         "features": rows,
     }
 
-    REPORT_PATH.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    REGISTRY_PATH.write_text(json.dumps(registry, separators=(",", ":"), sort_keys=True) + "\n", encoding="utf-8")
+    REPORT_PATH.write_text(json.dumps(report, ensure_ascii=False, separators=(",", ":"), sort_keys=True), encoding="utf-8")
+    REGISTRY_PATH.write_text(json.dumps(registry, ensure_ascii=False, separators=(",", ":"), sort_keys=True), encoding="utf-8")
 
     today = date.today().isoformat()
     lines = [
