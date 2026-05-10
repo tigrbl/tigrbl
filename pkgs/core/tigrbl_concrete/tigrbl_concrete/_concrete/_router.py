@@ -306,6 +306,7 @@ class Router(RouterBase):
                 protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
                 exchange=str(kwargs.get("exchange", "bidirectional_stream")),
                 framing=str(kwargs.get("framing", "text")),
+                subprotocols=tuple(kwargs.get("subprotocols", ())),
             )
             self._bump_runtime_plan_revision()
             return handler
