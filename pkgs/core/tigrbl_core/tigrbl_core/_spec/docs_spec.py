@@ -14,9 +14,12 @@ DocsUixKind = Literal["swagger", "redoc", "scalar", "lens", "custom"]
 @dataclass(frozen=True)
 class DocsProjectionSelection(SerdeMixin):
     path: str
-    table: str | None
-    op: str
-    protocols: tuple[str, ...]
+    table: str | None = None
+    op: str = ""
+    protocols: tuple[str, ...] = ()
+    path_kind: str = "resource"
+    framings: tuple[str, ...] = ()
+    subprotocols: tuple[str, ...] = ()
     rpc_methods: tuple[str, ...] = ()
 
 
@@ -29,9 +32,12 @@ class DocsProjectionSpec(SerdeMixin):
     exclude_protocols: Sequence[str] = field(default_factory=tuple)
     include_paths: Sequence[str] = field(default_factory=tuple)
     exclude_paths: Sequence[str] = field(default_factory=tuple)
+    include_path_kinds: Sequence[str] = field(default_factory=tuple)
     include_tables: Sequence[str] = field(default_factory=tuple)
     include_ops: Sequence[str] = field(default_factory=tuple)
     include_tags: Sequence[str] = field(default_factory=tuple)
+    include_framings: Sequence[str] = field(default_factory=tuple)
+    include_subprotocols: Sequence[str] = field(default_factory=tuple)
     visibility: Sequence[str] = field(default_factory=tuple)
     rpc_methods: Sequence[str] = field(default_factory=tuple)
 
@@ -45,11 +51,11 @@ class DocsProjectionSpec(SerdeMixin):
                 if self.include_tables and table_name not in self.include_tables:
                     continue
                 for op in table.ops:
-                    selection = self._select_op(path.path, table_name, op)
+                    selection = self._select_op(path, table_name, op)
                     if selection is not None:
                         selections.append(selection)
             for op in path.ops:
-                selection = self._select_op(path.path, None, op)
+                selection = self._select_op(path, None, op)
                 if selection is not None:
                     selections.append(selection)
         return tuple(selections)
@@ -60,10 +66,12 @@ class DocsProjectionSpec(SerdeMixin):
     def _path_allowed(self, path: PathSpec) -> bool:
         if path.path in set(self.exclude_paths):
             return False
+        if self.include_path_kinds and path.kind not in set(self.include_path_kinds):
+            return False
         return not self.include_paths or path.path in set(self.include_paths)
 
     def _select_op(
-        self, path: str, table_name: str | None, op: object
+        self, path: PathSpec, table_name: str | None, op: object
     ) -> DocsProjectionSelection | None:
         alias = str(getattr(op, "alias", ""))
         if self.include_ops and alias not in set(self.include_ops):
@@ -77,12 +85,22 @@ class DocsProjectionSpec(SerdeMixin):
         protocols = tuple(str(getattr(binding, "proto", "")) for binding in bindings)
         if not protocols:
             return None
+        framings = tuple(str(getattr(binding, "framing", "")) for binding in bindings)
+        subprotocols = tuple(
+            item
+            for binding in bindings
+            for item in tuple(getattr(binding, "subprotocols", ()) or ())
+        )
 
         include_protocols = set(self.include_protocols)
         exclude_protocols = set(self.exclude_protocols)
         if include_protocols and include_protocols.isdisjoint(protocols):
             return None
         if exclude_protocols and not exclude_protocols.isdisjoint(protocols):
+            return None
+        if self.include_framings and set(self.include_framings).isdisjoint(framings):
+            return None
+        if self.include_subprotocols and set(self.include_subprotocols).isdisjoint(subprotocols):
             return None
 
         rpc_methods = tuple(
@@ -94,10 +112,13 @@ class DocsProjectionSpec(SerdeMixin):
             return None
 
         return DocsProjectionSelection(
-            path=path,
+            path=path.path,
+            path_kind=path.kind,
             table=table_name,
             op=alias,
             protocols=protocols,
+            framings=framings,
+            subprotocols=subprotocols,
             rpc_methods=rpc_methods,
         )
 

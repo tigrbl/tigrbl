@@ -11,6 +11,9 @@ from typing import Any
 _EXPORTS = {
     "AliasSpec": "alias_spec",
     "AppSpec": "app_spec",
+    "resolve_engine_name": "app_spec",
+    "validate_engine_inventory": "app_spec",
+    "validate_engine_name_binding": "app_spec",
     "BindingSpec": "binding_spec",
     "BindingRegistrySpec": "binding_spec",
     "Exchange": "binding_spec",
@@ -64,6 +67,7 @@ _EXPORTS = {
     "PathKind": "path_spec",
     "PathSpec": "path_spec",
     "path_for_binding": "path_spec",
+    "validate_path_binding": "path_spec",
     "PHASE": "op_spec",
     "PHASES": "op_spec",
     "HookPhase": "hook_spec",

@@ -95,6 +95,7 @@ class OpSpec(SerdeMixin):
 
     # Optional per-op engine binding (DSN string or mapping spec)
     engine: Optional[EngineCfg] = None
+    engine_name: str | None = None
 
     # HTTP behavior
     arity: Arity = "collection"
