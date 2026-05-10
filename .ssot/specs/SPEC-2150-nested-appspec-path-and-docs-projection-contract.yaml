@@ -24,6 +24,10 @@ status_notes:
     status: "draft"
     note: "Linked engine inventory and transport matrix companion contracts."
     at: "2026-05-09T20:35:00Z"
+  -
+    status: "draft"
+    note: "Linked websocket binding framing and subprotocol companion contract."
+    at: "2026-05-10T11:20:00Z"
 references: []
 body: |-
   ## Intent
@@ -40,6 +44,7 @@ body: |-
   6. `HttpRestBindingSpec` nested under an op selects the op by HTTP method at the containing `PathSpec` path.
   7. `HttpJsonRpcBindingSpec` nested under an op selects the op by JSON-RPC method at the containing dispatcher `PathSpec` path; multiple table groups may share one dispatcher path.
   8. WebSocket, WSS+JSON-RPC, SSE, and WebTransport bindings follow the same rule: the containing `PathSpec` owns the address path, and the binding owns the protocol-specific selector or stream semantics.
+  8a. `WsBindingSpec.subprotocols` owns WebSocket handshake negotiation, while `WsBindingSpec.framing` owns post-handshake message interpretation under `spc:2153`.
   9. `DocsProjectionSpec` MUST define documentation inclusion policy separately from docs UIX and payload path exposure. It MUST be able to include and exclude by protocol family, router/path scope, table/resource scope, op alias/target, tags, visibility, and RPC method selector.
   10. `DocsPayloadSpec` is a thin payload emission surface that names a documentation artifact kind such as OpenAPI, OpenRPC, AsyncAPI, or JSON Schema and points at a docs projection policy.
   11. `DocsUixSpec` is a thin UIX surface that names a UI renderer such as Swagger, Lens, Redoc, Scalar, or equivalent and points at a docs payload path or docs projection policy.
@@ -49,6 +54,7 @@ body: |-
   15. Concrete class conveniences, decorators, and imperative assembly helpers MAY remain non-flat and ergonomic, but their canonical output MUST normalize to this nested tree before docs generation, runtime compilation, or conformance checks consume it.
   16. Engine binding MUST follow `spc:2151`: `AppSpec` owns named engine inventory, app/router/table/op scopes attach by engine name, and `PathSpec` does not own engine binding.
   17. Transport scenario coverage MUST follow `spc:2152`: path kind, protocol binding, exchange, framing, docs projection, static, and mount coverage are tracked as an explicit matrix.
+  18. Websocket path kinds MUST converge with websocket binding declarations: generic websocket path kinds allow baseline websocket framing, JSON-RPC path kinds require JSON-RPC framing, and JSON-LD path kinds remain planned/fail-closed until supported.
   
   ## Examples
   
@@ -96,14 +102,15 @@ body: |-
   ## Traceability
   
   - ADRs: `adr:1129`, `adr:1130`, `adr:1052`, `adr:1080`, `adr:1014`, `adr:1051`
-  - Companion specs: `spc:2151`, `spc:2152`
-  - Defines features: `feat:nested-appspec-pathspec-composition-001`, `feat:path-scoped-protocol-binding-composition-001`, `feat:docs-projectionspec-contract-001`, `feat:docs-payload-projection-selection-001`, `feat:docs-uix-projection-selection-001`, `feat:shared-jsonrpc-dispatcher-table-crud-parity-001`, `feat:nested-appspec-multisurface-corpus-fixtures-001`, `feat:docs-projection-openapi-openrpc-selection-tests-001`, `feat:canonical-spec-concrete-class-rejection-001`, `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`, `feat:pathspec-engine-rejection-001`, `feat:docs-transport-projection-selection-001`
+  - Companion specs: `spc:2151`, `spc:2152`, `spc:2153`
+  - Defines features: `feat:nested-appspec-pathspec-composition-001`, `feat:path-scoped-protocol-binding-composition-001`, `feat:docs-projectionspec-contract-001`, `feat:docs-payload-projection-selection-001`, `feat:docs-uix-projection-selection-001`, `feat:shared-jsonrpc-dispatcher-table-crud-parity-001`, `feat:nested-appspec-multisurface-corpus-fixtures-001`, `feat:docs-projection-openapi-openrpc-selection-tests-001`, `feat:canonical-spec-concrete-class-rejection-001`, `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`, `feat:pathspec-engine-rejection-001`, `feat:docs-transport-projection-selection-001`, `feat:pathkind-websocket-binding-convergence-001`, `feat:docs-websocket-transport-projection-001`
   
   ## Verification Plan
   
   - Add positive corpus fixtures for multi-middleware, nested app, multi-table, REST, JSON-RPC, WSS+JSON-RPC, multiple SSE, WebTransport, docs UIX, docs payload, and static path surfaces.
   - Add engine inventory fixtures through `spc:2151` to prove engine binding does not belong to `PathSpec`.
   - Add transport matrix fixtures through `spc:2152` to prove every supported and planned/fail-closed transport scenario is explicit.
+  - Add websocket path kind convergence fixtures through `spc:2153` to prove websocket bindings and containing paths agree.
   - Add negative corpus fixtures that reject concrete runtime model objects as canonical table/op identity in normalized specs.
   - Add OpenAPI/OpenRPC projection tests proving docs inclusion is determined by `DocsProjectionSpec`, not by incidental mounted paths.
   - Add shared JSON-RPC dispatcher tests proving multiple tables can share one dispatcher path while preserving default CRUD parity with REST paths.
@@ -115,3 +122,4 @@ adr_ids:
   - "adr:1080"
   - "adr:1014"
   - "adr:1051"
+  - "adr:1131"

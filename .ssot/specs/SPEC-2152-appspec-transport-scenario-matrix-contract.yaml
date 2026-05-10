@@ -16,6 +16,10 @@ status_notes:
     status: "draft"
     note: "Created to define the transport scenario matrix for the next nested AppSpec coverage slice."
     at: "2026-05-09T17:05:00Z"
+  -
+    status: "draft"
+    note: "Expanded websocket rows to include framing and subprotocol validation."
+    at: "2026-05-10T11:20:00Z"
 references: []
 body: |-
   ## Intent
@@ -39,6 +43,7 @@ body: |-
   13. Message and datagram binding scenarios MUST be represented in the matrix even when their canonical address model is not path-owned.
   14. Docs payload and docs UIX scenarios MUST prove inclusion is selected by docs projection policy, not by incidental path exposure.
   15. Static file serving and nested app mounts MUST be ordinary canonical path scenarios with their own spec payloads.
+  16. Websocket subprotocol negotiation MUST be modeled separately from websocket message framing under `spc:2153`.
 
   ## Transport Matrix
 
@@ -52,12 +57,14 @@ body: |-
   | HTTPS stream | `HttpStreamBindingSpec(proto="https.stream")` | `stream` | Planned canonical path coverage |
   | HTTP SSE | `SseBindingSpec(proto="http.sse")` | `sse` | Supported |
   | HTTPS SSE | `SseBindingSpec(proto="https.sse")` | `sse` | Supported |
-  | WS text | `WsBindingSpec(proto="ws", framing="text")` | `websocket` | Supported |
-  | WSS text | `WsBindingSpec(proto="wss", framing="text")` | `websocket` | Supported |
-  | WS JSON-RPC | `WsBindingSpec(proto="ws", framing="jsonrpc")` | `ws-jsonrpc` | Planned canonical symmetry |
-  | WSS JSON-RPC | `WsBindingSpec(proto="wss", framing="jsonrpc")` | `wss-jsonrpc` | Partially supported; needs corpus symmetry |
-  | WS JSON-LD | `WsBindingSpec(proto="ws", framing="jsonld")` | `ws-jsonld` | Planned/fail-closed |
-  | WSS JSON-LD | `WsBindingSpec(proto="wss", framing="jsonld")` | `wss-jsonld` | Planned/fail-closed |
+  | WS text | `WsBindingSpec(proto="ws", framing="text", subprotocols=())` | `websocket` | Supported |
+  | WSS text | `WsBindingSpec(proto="wss", framing="text", subprotocols=())` | `websocket` | Supported |
+  | WS binary | `WsBindingSpec(proto="ws", framing="binary", subprotocols=())` | `websocket` | Supported |
+  | WSS binary | `WsBindingSpec(proto="wss", framing="binary", subprotocols=())` | `websocket` | Supported |
+  | WS JSON-RPC | `WsBindingSpec(proto="ws", framing="jsonrpc", subprotocols=("jsonrpc",))` | `ws-jsonrpc` | Planned canonical symmetry |
+  | WSS JSON-RPC | `WsBindingSpec(proto="wss", framing="jsonrpc", subprotocols=("jsonrpc",))` | `wss-jsonrpc` | Partially supported; needs corpus symmetry |
+  | WS JSON-LD | `WsBindingSpec(proto="ws", framing="jsonld", subprotocols=("jsonld",))` | `ws-jsonld` | Planned/fail-closed |
+  | WSS JSON-LD | `WsBindingSpec(proto="wss", framing="jsonld", subprotocols=("jsonld",))` | `wss-jsonld` | Planned/fail-closed |
   | WebTransport | `WebTransportBindingSpec()` | `webtransport` | Supported |
   | Message bus | `MessageBindingSpec(proto=...)` | non-path or message address | Partial; address model pending |
   | Datagram | `DatagramBindingSpec(proto=...)` | non-path or datagram address | Partial; address model pending |
@@ -76,14 +83,17 @@ body: |-
   | `http.stream` lacks `stream` path coverage | Fails planned transport matrix test until implemented. |
   | `ws` JSON-RPC has no symmetric path kind with `wss` JSON-RPC | Fails planned transport matrix test until implemented. |
   | `jsonld` framing is referenced before supported | Must fail closed with explicit planned status. |
+  | `framing="jsonrpc"` is paired with an unrelated subprotocol such as `graphql-ws` | Invalid. |
+  | Websocket docs projection includes framing or subprotocol metadata outside its selected binding scope | Invalid. |
   | Docs payload includes protocols outside its projection | Invalid. |
   | Docs UIX selects payload or projection not declared in the canonical tree | Invalid. |
   | Static and mount paths lack canonical payload shape | Planned/fail-closed until spec payloads are defined. |
 
   ## Traceability
 
-  - ADRs: `adr:1129`, `adr:1006`, `adr:1007`, `adr:1023`, `adr:1051`, `adr:1080`
-  - Defines features: `feat:transport-scenario-matrix-001`, `feat:transport-stream-pathkind-001`, `feat:transport-ws-wss-jsonrpc-001`, `feat:transport-ws-wss-jsonld-001`, `feat:docs-transport-projection-selection-001`
+  - ADRs: `adr:1129`, `adr:1131`, `adr:1006`, `adr:1007`, `adr:1023`, `adr:1051`, `adr:1080`
+  - Companion specs: `spc:2153`
+  - Defines features: `feat:transport-scenario-matrix-001`, `feat:transport-stream-pathkind-001`, `feat:transport-ws-wss-jsonrpc-001`, `feat:transport-ws-wss-jsonld-001`, `feat:docs-transport-projection-selection-001`, `feat:ws-jsonrpc-subprotocol-parity-001`, `feat:ws-jsonld-fail-closed-001`, `feat:wsbindingspec-framing-subprotocol-validation-001`
 
   ## Verification Plan
 
@@ -92,6 +102,9 @@ body: |-
   - `tst:transport-ws-jsonrpc-contract`
   - `tst:transport-ws-jsonld-contract`
   - `tst:docs-transport-projection-selection-contract`
+  - `tst:ws-jsonrpc-subprotocol-parity-contract`
+  - `tst:ws-jsonld-fail-closed-contract`
+  - `tst:wsbindingspec-framing-subprotocol-validation-contract`
 spec_kind: "normative"
 adr_ids:
   - "adr:1129"
@@ -100,3 +113,4 @@ adr_ids:
   - "adr:1023"
   - "adr:1051"
   - "adr:1080"
+  - "adr:1131"

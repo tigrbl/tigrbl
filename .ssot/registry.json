@@ -24294,6 +24294,200 @@
         "tst:transport-ws-jsonrpc-contract"
       ],
       "requires": []
+    },
+    {
+      "id": "feat:wsbindingspec-subprotocols-001",
+      "title": "WebSocket binding subprotocol declaration",
+      "description": "WsBindingSpec declares handshake subprotocol tokens separately from message framing.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2153"
+      ],
+      "claim_ids": [
+        "clm:wsbindingspec-subprotocols-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-subprotocols-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:wsbindingspec-framing-001",
+      "title": "WebSocket binding message framing declaration",
+      "description": "WsBindingSpec declares post-handshake message framing independently of handshake subprotocols.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2153"
+      ],
+      "claim_ids": [
+        "clm:wsbindingspec-framing-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-framing-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:wsbindingspec-framing-subprotocol-validation-001",
+      "title": "WebSocket framing and subprotocol compatibility validation",
+      "description": "Canonical validation rejects incompatible websocket framing and subprotocol combinations.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2153",
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:wsbindingspec-framing-subprotocol-validation-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-framing-subprotocol-validation-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:ws-jsonrpc-subprotocol-parity-001",
+      "title": "WS and WSS JSON-RPC subprotocol parity",
+      "description": "WS and WSS JSON-RPC scenarios use symmetric framing and subprotocol declarations.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2153",
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:ws-jsonrpc-subprotocol-parity-001"
+      ],
+      "test_ids": [
+        "tst:ws-jsonrpc-subprotocol-parity-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:ws-jsonld-fail-closed-001",
+      "title": "WS and WSS JSON-LD fail-closed framing support",
+      "description": "WS and WSS JSON-LD framing scenarios are explicit and fail closed until implementation support exists.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2153",
+        "spc:2152"
+      ],
+      "claim_ids": [
+        "clm:ws-jsonld-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:ws-jsonld-fail-closed-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:pathkind-websocket-binding-convergence-001",
+      "title": "Path kind and websocket binding convergence",
+      "description": "Websocket PathSpec kinds converge with WsBindingSpec protocol, framing, and subprotocol declarations.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2153",
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:pathkind-websocket-binding-convergence-001"
+      ],
+      "test_ids": [
+        "tst:pathkind-websocket-binding-convergence-contract"
+      ],
+      "requires": []
+    },
+    {
+      "id": "feat:docs-websocket-transport-projection-001",
+      "title": "Docs projection for websocket transport metadata",
+      "description": "Docs projection emits websocket protocol, framing, and subprotocol metadata only from selected websocket bindings.",
+      "implementation_status": "absent",
+      "lifecycle": {
+        "stage": "active",
+        "replacement_feature_ids": [],
+        "note": null
+      },
+      "plan": {
+        "horizon": "current",
+        "slot": null,
+        "target_claim_tier": "T1",
+        "target_lifecycle_stage": "active"
+      },
+      "spec_ids": [
+        "spc:2153",
+        "spc:2150"
+      ],
+      "claim_ids": [
+        "clm:docs-websocket-transport-projection-001"
+      ],
+      "test_ids": [
+        "tst:docs-websocket-transport-projection-contract"
+      ],
+      "requires": []
     }
   ],
   "tests": [
@@ -40655,6 +40849,118 @@
       "evidence_ids": [
         "evd:transport-ws-jsonrpc-contract"
       ]
+    },
+    {
+      "id": "tst:wsbindingspec-subprotocols-contract",
+      "title": "WsBindingSpec subprotocols contract",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_wsbindingspec_subprotocols_contract.py",
+      "feature_ids": [
+        "feat:wsbindingspec-subprotocols-001"
+      ],
+      "claim_ids": [
+        "clm:wsbindingspec-subprotocols-001"
+      ],
+      "evidence_ids": [
+        "evd:wsbindingspec-subprotocols-contract"
+      ]
+    },
+    {
+      "id": "tst:wsbindingspec-framing-contract",
+      "title": "WsBindingSpec framing contract",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_wsbindingspec_framing_contract.py",
+      "feature_ids": [
+        "feat:wsbindingspec-framing-001"
+      ],
+      "claim_ids": [
+        "clm:wsbindingspec-framing-001"
+      ],
+      "evidence_ids": [
+        "evd:wsbindingspec-framing-contract"
+      ]
+    },
+    {
+      "id": "tst:wsbindingspec-framing-subprotocol-validation-contract",
+      "title": "WsBindingSpec framing and subprotocol validation contract",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_wsbindingspec_framing_subprotocol_validation_contract.py",
+      "feature_ids": [
+        "feat:wsbindingspec-framing-subprotocol-validation-001"
+      ],
+      "claim_ids": [
+        "clm:wsbindingspec-framing-subprotocol-validation-001"
+      ],
+      "evidence_ids": [
+        "evd:wsbindingspec-framing-subprotocol-validation-contract"
+      ]
+    },
+    {
+      "id": "tst:ws-jsonrpc-subprotocol-parity-contract",
+      "title": "WS JSON-RPC subprotocol parity contract",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_ws_jsonrpc_subprotocol_parity_contract.py",
+      "feature_ids": [
+        "feat:ws-jsonrpc-subprotocol-parity-001"
+      ],
+      "claim_ids": [
+        "clm:ws-jsonrpc-subprotocol-parity-001"
+      ],
+      "evidence_ids": [
+        "evd:ws-jsonrpc-subprotocol-parity-contract"
+      ]
+    },
+    {
+      "id": "tst:ws-jsonld-fail-closed-contract",
+      "title": "WS JSON-LD fail-closed contract",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_ws_jsonld_fail_closed_contract.py",
+      "feature_ids": [
+        "feat:ws-jsonld-fail-closed-001"
+      ],
+      "claim_ids": [
+        "clm:ws-jsonld-fail-closed-001"
+      ],
+      "evidence_ids": [
+        "evd:ws-jsonld-fail-closed-contract"
+      ]
+    },
+    {
+      "id": "tst:pathkind-websocket-binding-convergence-contract",
+      "title": "Path kind websocket binding convergence contract",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_pathkind_websocket_binding_convergence_contract.py",
+      "feature_ids": [
+        "feat:pathkind-websocket-binding-convergence-001"
+      ],
+      "claim_ids": [
+        "clm:pathkind-websocket-binding-convergence-001"
+      ],
+      "evidence_ids": [
+        "evd:pathkind-websocket-binding-convergence-contract"
+      ]
+    },
+    {
+      "id": "tst:docs-websocket-transport-projection-contract",
+      "title": "Docs websocket transport projection contract",
+      "status": "planned",
+      "kind": "pytest",
+      "path": "tests/planned/test_docs_websocket_transport_projection_contract.py",
+      "feature_ids": [
+        "feat:docs-websocket-transport-projection-001"
+      ],
+      "claim_ids": [
+        "clm:docs-websocket-transport-projection-001"
+      ],
+      "evidence_ids": [
+        "evd:docs-websocket-transport-projection-contract"
+      ]
     }
   ],
   "claims": [
@@ -48939,6 +49245,125 @@
       "evidence_ids": [
         "evd:transport-ws-jsonrpc-contract"
       ]
+    },
+    {
+      "id": "clm:wsbindingspec-subprotocols-001",
+      "title": "WebSocket binding subprotocol declaration claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for WebSocket binding subprotocol declaration.",
+      "feature_ids": [
+        "feat:wsbindingspec-subprotocols-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-subprotocols-contract"
+      ],
+      "evidence_ids": [
+        "evd:wsbindingspec-subprotocols-contract"
+      ]
+    },
+    {
+      "id": "clm:wsbindingspec-framing-001",
+      "title": "WebSocket binding message framing declaration claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for WebSocket binding message framing declaration.",
+      "feature_ids": [
+        "feat:wsbindingspec-framing-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-framing-contract"
+      ],
+      "evidence_ids": [
+        "evd:wsbindingspec-framing-contract"
+      ]
+    },
+    {
+      "id": "clm:wsbindingspec-framing-subprotocol-validation-001",
+      "title": "WebSocket framing and subprotocol compatibility validation claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for WebSocket framing and subprotocol compatibility validation.",
+      "feature_ids": [
+        "feat:wsbindingspec-framing-subprotocol-validation-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-framing-subprotocol-validation-contract"
+      ],
+      "evidence_ids": [
+        "evd:wsbindingspec-framing-subprotocol-validation-contract"
+      ]
+    },
+    {
+      "id": "clm:ws-jsonrpc-subprotocol-parity-001",
+      "title": "WS and WSS JSON-RPC subprotocol parity claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for WS and WSS JSON-RPC subprotocol parity.",
+      "feature_ids": [
+        "feat:ws-jsonrpc-subprotocol-parity-001"
+      ],
+      "test_ids": [
+        "tst:ws-jsonrpc-subprotocol-parity-contract"
+      ],
+      "evidence_ids": [
+        "evd:ws-jsonrpc-subprotocol-parity-contract"
+      ]
+    },
+    {
+      "id": "clm:ws-jsonld-fail-closed-001",
+      "title": "WS and WSS JSON-LD fail-closed framing support claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for WS and WSS JSON-LD fail-closed framing support.",
+      "feature_ids": [
+        "feat:ws-jsonld-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:ws-jsonld-fail-closed-contract"
+      ],
+      "evidence_ids": [
+        "evd:ws-jsonld-fail-closed-contract"
+      ]
+    },
+    {
+      "id": "clm:pathkind-websocket-binding-convergence-001",
+      "title": "Path kind and websocket binding convergence claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for Path kind and websocket binding convergence.",
+      "feature_ids": [
+        "feat:pathkind-websocket-binding-convergence-001"
+      ],
+      "test_ids": [
+        "tst:pathkind-websocket-binding-convergence-contract"
+      ],
+      "evidence_ids": [
+        "evd:pathkind-websocket-binding-convergence-contract"
+      ]
+    },
+    {
+      "id": "clm:docs-websocket-transport-projection-001",
+      "title": "Docs projection for websocket transport metadata claim",
+      "status": "proposed",
+      "tier": "T1",
+      "kind": "conformance",
+      "description": "Planned conformance claim for Docs projection for websocket transport metadata.",
+      "feature_ids": [
+        "feat:docs-websocket-transport-projection-001"
+      ],
+      "test_ids": [
+        "tst:docs-websocket-transport-projection-contract"
+      ],
+      "evidence_ids": [
+        "evd:docs-websocket-transport-projection-contract"
+      ]
     }
   ],
   "evidence": [
@@ -55859,6 +56284,104 @@
       "test_ids": [
         "tst:transport-ws-jsonrpc-contract"
       ]
+    },
+    {
+      "id": "evd:wsbindingspec-subprotocols-contract",
+      "title": "WsBindingSpec subprotocols contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/wsbindingspec-subprotocols-contract.json",
+      "claim_ids": [
+        "clm:wsbindingspec-subprotocols-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-subprotocols-contract"
+      ]
+    },
+    {
+      "id": "evd:wsbindingspec-framing-contract",
+      "title": "WsBindingSpec framing contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/wsbindingspec-framing-contract.json",
+      "claim_ids": [
+        "clm:wsbindingspec-framing-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-framing-contract"
+      ]
+    },
+    {
+      "id": "evd:wsbindingspec-framing-subprotocol-validation-contract",
+      "title": "WsBindingSpec framing/subprotocol validation contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/wsbindingspec-framing-subprotocol-validation-contract.json",
+      "claim_ids": [
+        "clm:wsbindingspec-framing-subprotocol-validation-001"
+      ],
+      "test_ids": [
+        "tst:wsbindingspec-framing-subprotocol-validation-contract"
+      ]
+    },
+    {
+      "id": "evd:ws-jsonrpc-subprotocol-parity-contract",
+      "title": "WS JSON-RPC subprotocol parity contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/ws-jsonrpc-subprotocol-parity-contract.json",
+      "claim_ids": [
+        "clm:ws-jsonrpc-subprotocol-parity-001"
+      ],
+      "test_ids": [
+        "tst:ws-jsonrpc-subprotocol-parity-contract"
+      ]
+    },
+    {
+      "id": "evd:ws-jsonld-fail-closed-contract",
+      "title": "WS JSON-LD fail-closed contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/ws-jsonld-fail-closed-contract.json",
+      "claim_ids": [
+        "clm:ws-jsonld-fail-closed-001"
+      ],
+      "test_ids": [
+        "tst:ws-jsonld-fail-closed-contract"
+      ]
+    },
+    {
+      "id": "evd:pathkind-websocket-binding-convergence-contract",
+      "title": "Path kind websocket binding convergence contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/pathkind-websocket-binding-convergence-contract.json",
+      "claim_ids": [
+        "clm:pathkind-websocket-binding-convergence-001"
+      ],
+      "test_ids": [
+        "tst:pathkind-websocket-binding-convergence-contract"
+      ]
+    },
+    {
+      "id": "evd:docs-websocket-transport-projection-contract",
+      "title": "Docs websocket transport projection contract planned evidence",
+      "status": "planned",
+      "kind": "pytest",
+      "tier": "T1",
+      "path": ".ssot/evidence/planned/docs-websocket-transport-projection-contract.json",
+      "claim_ids": [
+        "clm:docs-websocket-transport-projection-001"
+      ],
+      "test_ids": [
+        "tst:docs-websocket-transport-projection-contract"
+      ]
     }
   ],
   "issues": [
@@ -61581,7 +62104,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "3d786e99da17eb197b70d6ba7667e72f7db0b10da4c37d0c6219a54063cd367d",
+      "content_sha256": "f3e4ad37b0124057598e7c19add5014f6ed40bcae637b39eb235771803e92b9f",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -61626,6 +62149,28 @@
         }
       ],
       "summary": "`AppSpec` owns the canonical named engine inventory. App, router, table, and op scopes attach to engines by `EngineSpec.name`; generated ids may exist internally, but the canonical authoring and validation surface uses engine names."
+    },
+    {
+      "id": "adr:1131",
+      "number": 1131,
+      "slug": "websocket-binding-framing-and-subprotocol-policy",
+      "title": "WebSocket Binding Framing and Subprotocol Policy",
+      "path": ".ssot/adr/ADR-1131-websocket-binding-framing-and-subprotocol-policy.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "dfa080523bed81c593227a119c73bf4b581561f8155c8e0a6b37e064b2024838",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to govern websocket framing and subprotocol semantics for the AppSpec transport matrix.",
+          "at": "2026-05-10T11:18:12Z"
+        }
+      ]
     }
   ],
   "specs": [
@@ -65393,7 +65938,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "fe089f27823129e7c7d583d756a9d963a056f646bb4b55bc7fc5d84fd1df228b",
+      "content_sha256": "0dd859e0146ec16eed7e8f77acf0393b891c7dc072afa244aaa988cfc55e57e3",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -65421,7 +65966,8 @@
         "adr:1052",
         "adr:1080",
         "adr:1014",
-        "adr:1051"
+        "adr:1051",
+        "adr:1131"
       ],
       "summary": "Define the next-slice contract for nested canonical AppSpec composition, path-scoped protocol bindings, and documentation projection selection."
     },
@@ -65465,7 +66011,7 @@
       "managed": false,
       "immutable": false,
       "package_version": "0.2.11",
-      "content_sha256": "96ebfd3c11870c265cc7898e7aa5d42b1257d2a4a1e1aef80dc0fbf22e04cf58",
+      "content_sha256": "cdb5780d4d5f64cab0cdf75a41ef6057f10fd8a541392c5adb19764fb7bf1998",
       "status": "draft",
       "supersedes": [],
       "superseded_by": [],
@@ -65483,9 +66029,42 @@
         "adr:1007",
         "adr:1023",
         "adr:1051",
-        "adr:1080"
+        "adr:1080",
+        "adr:1131"
       ],
       "summary": "Define the canonical AppSpec transport scenario matrix across path kinds, protocol bindings, exchange modes, framing modes, documentation projections, static surfaces, and nested mounts."
+    },
+    {
+      "id": "spc:2153",
+      "number": 2153,
+      "slug": "websocket-binding-framing-and-subprotocol-contract",
+      "title": "WebSocket Binding Framing and Subprotocol Contract",
+      "path": ".ssot/specs/SPEC-2153-websocket-binding-framing-and-subprotocol-contract.yaml",
+      "origin": "repo-local",
+      "managed": false,
+      "immutable": false,
+      "package_version": "0.2.11",
+      "content_sha256": "a1cd6142fadd896f7658a2d38172d904fa7a4cad037a0accec7083ee6b7770de",
+      "status": "draft",
+      "supersedes": [],
+      "superseded_by": [],
+      "status_notes": [
+        {
+          "status": "draft",
+          "note": "Created to define websocket framing and subprotocol validation for AppSpec transport bindings.",
+          "at": "2026-05-10T11:18:41Z"
+        }
+      ],
+      "kind": "normative",
+      "adr_ids": [
+        "adr:1131",
+        "adr:1129",
+        "adr:1006",
+        "adr:1007",
+        "adr:1023",
+        "adr:1051",
+        "adr:1080"
+      ]
     }
   ],
   "profiles": [

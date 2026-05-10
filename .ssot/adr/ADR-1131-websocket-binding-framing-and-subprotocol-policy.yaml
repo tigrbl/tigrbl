@@ -1,0 +1,71 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1131"
+number: 1131
+slug: "websocket-binding-framing-and-subprotocol-policy"
+title: "WebSocket Binding Framing and Subprotocol Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl will keep `framing` and `subprotocols` as separate fields on `WsBindingSpec` because they describe different protocol layers."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern websocket framing and subprotocol semantics for the AppSpec transport matrix."
+    at: "2026-05-10T11:18:12Z"
+references: []
+body: |-
+  ## Decision
+  
+  Tigrbl will keep `framing` and `subprotocols` as separate fields on `WsBindingSpec` because they describe different protocol layers.
+  
+  1. `WsBindingSpec.proto` owns websocket transport security and MUST be either `ws` or `wss` for websocket bindings.
+  2. `WsBindingSpec.subprotocols` owns handshake negotiation through `Sec-WebSocket-Protocol` and MUST describe the allowed or required application subprotocol tokens advertised for the socket.
+  3. `WsBindingSpec.framing` owns post-handshake message interpretation after the socket is accepted.
+  4. JSON-RPC over websocket MUST be expressible as websocket transport plus JSON-RPC framing, with optional JSON-RPC subprotocol negotiation.
+  5. Path kinds such as `websocket`, `ws-jsonrpc`, `wss-jsonrpc`, `ws-jsonld`, and `wss-jsonld` remain address-surface categories and MUST converge with the websocket binding fields instead of replacing them.
+  6. Docs projection and runtime compilation MUST validate websocket protocol, framing, and subprotocol declarations from the canonical binding graph.
+  
+  ## Context
+  
+  The nested AppSpec transport discussion raised whether `framing` and `subprotocols` both belong on `WsBindingSpec`. The distinction is valid: websocket subprotocols participate in the opening handshake, while framing tells Tigrbl how to decode and encode messages once a websocket connection exists.
+  
+  Conflating these fields would make canonical specs unable to represent common cases such as raw text websockets with no application subprotocol, JSON-RPC messages over a negotiated `jsonrpc` subprotocol, or planned fail-closed JSON-LD framing that should not silently pass as a generic websocket.
+  
+  ## Consequences
+  
+  - Websocket bindings carry both handshake and message-envelope metadata.
+  - `PathSpec.kind` can be checked against binding declarations without owning message semantics.
+  - WS and WSS JSON-RPC parity can be validated symmetrically.
+  - JSON-LD websocket scenarios remain explicit and fail closed until framing support exists.
+  - Documentation projections can expose websocket metadata from selected bindings without treating docs UIX or payload paths as protocol authorities.
+  
+  ## Rejected Alternatives
+  
+  - Use only `subprotocols` and infer message decoding from the negotiated token.
+  - Use only `framing` and ignore websocket handshake negotiation.
+  - Encode websocket JSON-RPC solely in `PathSpec.kind`.
+  - Treat websocket docs projection as a docs path concern instead of a binding-selection concern.
+  
+  ## Governed Feature Scope
+  
+  - `feat:wsbindingspec-subprotocols-001`
+  - `feat:wsbindingspec-framing-001`
+  - `feat:wsbindingspec-framing-subprotocol-validation-001`
+  - `feat:ws-jsonrpc-subprotocol-parity-001`
+  - `feat:ws-jsonld-fail-closed-001`
+  - `feat:pathkind-websocket-binding-convergence-001`
+  - `feat:docs-websocket-transport-projection-001`
+  
+  ## Verification Plan
+  
+  - Add binding tests proving `subprotocols` are typed, normalized, preserved, and serializable.
+  - Add binding tests proving `framing` accepts supported framing modes and rejects unknown modes.
+  - Add compatibility validation tests for framing/subprotocol mismatches.
+  - Add WS/WSS JSON-RPC parity tests.
+  - Add fail-closed tests for planned JSON-LD websocket framing.
+  - Add path kind convergence tests for websocket bindings.
+  - Add docs projection tests proving websocket transport metadata derives from selected bindings.
