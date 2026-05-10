@@ -146,6 +146,7 @@ class AppSpec(SerdeMixin):
                     self.engines,
                     scope="OpSpec.engine_name",
                 )
+            _validate_router_docs_tree(router)
         for table in tuple(self.tables or ()):
             validate_engine_name_binding(
                 getattr(table, "engine_name", None),
@@ -324,3 +325,12 @@ def resolve_engine_name(
             )
             return str(name)
     return None
+
+
+def _validate_router_docs_tree(router: Any) -> None:
+    paths = tuple(getattr(router, "paths", ()) or ())
+    if not paths:
+        return
+    from .docs_spec import validate_docs_tree
+
+    validate_docs_tree(paths)

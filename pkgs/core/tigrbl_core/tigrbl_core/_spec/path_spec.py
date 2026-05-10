@@ -53,10 +53,14 @@ class PathSpec(SerdeMixin):
         if not isinstance(self.path, str) or not self.path.startswith("/"):
             raise ValueError("PathSpec.path must be an absolute path string.")
         self._validate_kind()
+        self._validate_payload_shape()
         self._validate_tables()
         self._validate_ops("PathSpec.ops", self.ops)
         for table in self.tables:
             self._validate_ops("TableSpec.ops", table.ops)
+        for op in self.iter_ops():
+            for binding in tuple(getattr(op, "bindings", ()) or ()):
+                self.validate_binding_convergence(binding)
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "PathSpec":
@@ -87,6 +91,9 @@ class PathSpec(SerdeMixin):
         """Validate that this path kind is compatible with the binding transport."""
 
         self.binding_path(binding)
+        if isinstance(binding, HttpRestBindingSpec):
+            _expect_path_kind(self.kind, {"resource"})
+            return
         if isinstance(binding, HttpJsonRpcBindingSpec):
             _expect_path_kind(self.kind, {"jsonrpc"})
             return
@@ -130,6 +137,29 @@ class PathSpec(SerdeMixin):
         }
         if self.kind not in valid:
             raise ValueError(f"PathSpec.kind must be a canonical path kind; got {self.kind!r}.")
+
+    def _validate_payload_shape(self) -> None:
+        payload_fields = {
+            "docs-payload": ("docs_payload", self.docs_payload),
+            "docs-uix": ("docs_uix", self.docs_uix),
+            "static": ("static", self.static),
+            "mount": ("mount", self.mount),
+        }
+        if self.kind in payload_fields:
+            field_name, value = payload_fields[self.kind]
+            if value is None:
+                raise ValueError(f"PathSpec.kind={self.kind!r} requires {field_name}.")
+        else:
+            for field_name, value in (
+                ("docs_payload", self.docs_payload),
+                ("docs_uix", self.docs_uix),
+                ("static", self.static),
+                ("mount", self.mount),
+            ):
+                if value is not None:
+                    raise ValueError(
+                        f"PathSpec.{field_name} is only valid on its matching canonical path kind."
+                    )
 
     def _validate_tables(self) -> None:
         for table in self.tables:
