@@ -20,6 +20,10 @@ status_notes:
     status: "draft"
     note: "Expanded websocket rows to include framing and subprotocol validation."
     at: "2026-05-10T11:20:00Z"
+  -
+    status: "draft"
+    note: "Clarified that the transport matrix is a governed coverage contract, not a required production module."
+    at: "2026-05-10T12:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -44,6 +48,11 @@ body: |-
   14. Docs payload and docs UIX scenarios MUST prove inclusion is selected by docs projection policy, not by incidental path exposure.
   15. Static file serving and nested app mounts MUST be ordinary canonical path scenarios with their own spec payloads.
   16. Websocket subprotocol negotiation MUST be modeled separately from websocket message framing under `spc:2153`.
+  17. The transport matrix MUST NOT be treated as a canonical spec graph entity or a required production module. It is a governed coverage contract whose rows are satisfied by canonical spec entities such as `PathSpec`, binding specs, docs projection specs, `AppSpec`, `RouterSpec`, `TableSpec`, and `OpSpec`.
+
+  ## Implementation Boundary
+
+  The authoritative transport matrix is the SSOT/SPEC table and its linked tests. Implementations satisfy the matrix by adding fields, validation, and lowering behavior to the existing canonical spec layers. A standalone production `transport_matrix` module MUST NOT become a second source of truth for path kinds, protocol bindings, docs projection, static serving, nested mounts, or websocket framing/subprotocol semantics.
 
   ## Transport Matrix
 
@@ -88,6 +97,7 @@ body: |-
   | Docs payload includes protocols outside its projection | Invalid. |
   | Docs UIX selects payload or projection not declared in the canonical tree | Invalid. |
   | Static and mount paths lack canonical payload shape | Planned/fail-closed until spec payloads are defined. |
+  | A production `transport_matrix` module becomes the authority for supported transports | Invalid; the SSOT matrix is coverage truth and canonical spec entities own implementation behavior. |
 
   ## Traceability
 
@@ -105,6 +115,8 @@ body: |-
   - `tst:ws-jsonrpc-subprotocol-parity-contract`
   - `tst:ws-jsonld-fail-closed-contract`
   - `tst:wsbindingspec-framing-subprotocol-validation-contract`
+
+  Tests MUST assert transport matrix rows through canonical spec entities and their lowering/validation behavior. They MUST NOT require a standalone production `transport_matrix` module.
 spec_kind: "normative"
 adr_ids:
   - "adr:1129"

@@ -28,6 +28,10 @@ status_notes:
     status: "draft"
     note: "Linked websocket binding framing and subprotocol follow-on scope."
     at: "2026-05-10T11:20:00Z"
+  -
+    status: "draft"
+    note: "Clarified that transport matrix scope is SSOT coverage, not a standalone production module."
+    at: "2026-05-10T12:00:00Z"
 references: []
 body: |-
   ## Decision
@@ -44,6 +48,7 @@ body: |-
   8. Engine binding is not path-owned. `AppSpec` owns the named engine inventory, while app, router, table, and op scopes attach to engines by name under the policy in `adr:1130`.
   9. Transport scenario coverage is governed by the matrix contract in `spc:2152`; path ownership, protocol binding, framing, exchange, docs projection, static serving, and nested mounts remain separate layers.
   10. Websocket binding semantics are governed by `adr:1131` and `spc:2153`: `subprotocols` describe WebSocket handshake negotiation, while `framing` describes post-handshake message interpretation.
+  11. The transport matrix is a governed SSOT coverage contract, not a new canonical spec graph entity or a required production module. Implementation belongs in the existing canonical spec layers.
   
   ## Context
   
@@ -56,6 +61,7 @@ body: |-
   - `PathSpec` and docs projection contracts become the planning focus for the next implementation slice.
   - Engine inventory and scope-level engine binding are governed separately from path and transport ownership.
   - Transport support gaps such as stream path kinds, WS/WSS JSON-RPC symmetry, and WS/WSS JSON-LD framing are tracked in an explicit matrix rather than inferred from existing binding classes.
+  - The matrix constrains implementation and testing, but `PathSpec`, binding specs, docs projection specs, `AppSpec`, `RouterSpec`, `TableSpec`, and `OpSpec` remain the implementation surfaces.
   - Websocket support gaps are tracked through explicit binding fields for transport protocol, handshake subprotocols, and post-handshake framing.
   - Docs UIX and docs payload surfaces do not need to become large independent authorities merely to expose `/docs`, `/openapi.json`, `/openrpc.json`, or equivalent paths.
   - Documentation inclusion rules must be expressible in a projection spec that can include/exclude protocols, routers, paths, tables, op aliases, tags, and RPC methods.
@@ -68,6 +74,7 @@ body: |-
   - Treat `PathSpec` as an engine binding scope.
   - Conflate engine inventory with transport scenario coverage.
   - Conflate websocket subprotocol negotiation with websocket message framing.
+  - Add a standalone production `transport_matrix` module as the authority for supported path kinds, protocol bindings, docs projection, static serving, nested mounts, or websocket framing/subprotocol semantics.
   - Require graph refs for this slice when nested containment and inherited context are the desired authoring model.
   - Treat concrete runtime classes as canonical table/op identity in the spec graph.
   
@@ -107,6 +114,7 @@ body: |-
   - Add AppSpec corpus fixtures that represent REST, JSON-RPC dispatcher, websocket, SSE, WebTransport, docs UIX, docs payload, static, nested app, middleware, and multi-table surfaces as a nested tree.
   - Add engine inventory fixtures proving app/router/table/op engine bindings resolve by name with nearest-scope precedence and no path-owned engine field.
   - Add transport matrix fixtures proving supported and planned/fail-closed transport scenarios are explicit.
+  - Ensure transport matrix fixtures exercise canonical spec entities directly rather than importing or requiring a standalone production matrix module.
   - Add websocket binding fixtures proving `proto`, `subprotocols`, `framing`, and path kind convergence are explicit.
   - Add fail-closed projection tests proving OpenAPI and OpenRPC include only the surfaces selected by the docs projection spec.
   - Add parity tests proving default CRUD table ops can lower into both REST paths and a shared JSON-RPC dispatcher path without embedding concrete model classes in canonical specs.
