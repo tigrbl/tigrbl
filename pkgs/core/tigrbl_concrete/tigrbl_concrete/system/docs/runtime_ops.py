@@ -19,6 +19,7 @@ def register_runtime_websocket_route(
     protocol: str = "ws",
     exchange: str = "bidirectional_stream",
     framing: str = "text",
+    subprotocols: tuple[str, ...] | None = None,
 ) -> None:
     """Register a websocket endpoint as a runtime-owned operation."""
     model = ensure_route_ops_model(router)
@@ -26,6 +27,10 @@ def register_runtime_websocket_route(
         return
 
     normalized_exchange = normalize_exchange(exchange)
+    normalized_framing = str(framing)
+    normalized_subprotocols = tuple(str(value) for value in (subprotocols or ()))
+    if normalized_framing == "jsonrpc" and "jsonrpc" not in normalized_subprotocols:
+        normalized_subprotocols = (*normalized_subprotocols, "jsonrpc")
     op = OpSpec(
         alias=alias,
         target="custom",
@@ -41,7 +46,8 @@ def register_runtime_websocket_route(
                 proto=str(protocol),
                 path=path,
                 exchange=normalized_exchange,
-                framing=str(framing),
+                framing=normalized_framing,
+                subprotocols=normalized_subprotocols,
             ),
         ),
     )
@@ -67,7 +73,12 @@ def register_runtime_websocket_route(
         "__tigrbl_websocket_exchange__",
         str(normalized_exchange),
     )
-    setattr(_runtime_websocket_step, "__tigrbl_websocket_framing__", str(framing))
+    setattr(_runtime_websocket_step, "__tigrbl_websocket_framing__", normalized_framing)
+    setattr(
+        _runtime_websocket_step,
+        "__tigrbl_websocket_subprotocols__",
+        normalized_subprotocols,
+    )
     setattr(
         _runtime_websocket_step,
         "__tigrbl_websocket_exact__",
