@@ -49,6 +49,52 @@ def _should_fallback_to_crud(
     return False
 
 
+def _is_empty_transport_response(value: Any) -> bool:
+    if isinstance(value, Mapping):
+        if "status_code" in value:
+            return value.get("body") is None and value.get("path") is None
+        egress = value.get("egress")
+        if isinstance(egress, Mapping):
+            return _is_empty_transport_response(egress.get("transport_response"))
+        return False
+
+    transport = getattr(value, "transport_response", None)
+    if transport is not None and _is_empty_transport_response(transport):
+        return True
+
+    temp = getattr(value, "temp", None)
+    if isinstance(temp, Mapping):
+        egress = temp.get("egress")
+        if isinstance(egress, Mapping):
+            return _is_empty_transport_response(egress.get("transport_response"))
+
+    return False
+
+
+def _is_unmaterialized_create_result(value: Any) -> bool:
+    if not _is_empty_transport_response(value):
+        return False
+    if getattr(value, "response_payload", None) is not None:
+        return False
+    temp = getattr(value, "temp", None)
+    if isinstance(temp, Mapping):
+        if temp.get("response_payload") is not None:
+            return False
+        storage_log = temp.get("storage_log")
+        if storage_log:
+            return False
+    return True
+
+
+async def _maybe_commit(db: Any) -> None:
+    commit = getattr(db, "commit", None)
+    if not callable(commit):
+        return
+    result = commit()
+    if inspect.isawaitable(result):
+        await result
+
+
 def _unwrap_runtime_result(value: Any) -> Any:
     current = value
     seen: set[int] = set()
@@ -320,9 +366,18 @@ async def rpc_call(
                     fallback = _crud_ops.replace(mdl, ident, dict(payload or {}), db)
                 final = await fallback if inspect.isawaitable(fallback) else fallback
 
+        target = getattr(resolution, "target", method)
+        if (
+            target == "create"
+            and isinstance(payload, Mapping)
+            and _is_unmaterialized_create_result(final)
+        ):
+            created = _crud_ops.create(mdl, dict(payload), db)
+            final = await created if inspect.isawaitable(created) else created
+            await _maybe_commit(db)
+
         final = _unwrap_runtime_result(final)
 
-        target = getattr(resolution, "target", method)
         if pk_name:
             path_params = ctx_dict.get("path_params", {})
             ident = None
