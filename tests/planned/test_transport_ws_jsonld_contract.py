@@ -1,10 +1,8 @@
 import pytest
 
-
-pytestmark = pytest.mark.skip(
-    reason="Planned SSOT coverage for transport WS JSON-LD contract."
-)
+from tigrbl_core._spec.binding_spec import WsBindingSpec
 
 
-def test_transport_ws_jsonld_contract_planned() -> None:
-    pass
+def test_transport_ws_jsonld_contract() -> None:
+    with pytest.raises(ValueError, match="jsonld|fail closed|planned"):
+        WsBindingSpec(proto="ws", path="/jsonld", framing="jsonld")

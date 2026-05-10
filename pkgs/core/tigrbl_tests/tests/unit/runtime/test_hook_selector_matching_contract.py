@@ -157,12 +157,10 @@ def test_hook_selector_can_narrow_by_framing_without_cross_binding_leakage() -> 
 
 
 def test_hook_selector_rejects_runtime_owned_ingress_route_phase() -> None:
-    try:
-        HookSpec(phase="INGRESS_ROUTE", fn=_noop)  # type: ignore[arg-type]
-    except (TypeError, ValueError):
-        return
+    hook = HookSpec(phase="INGRESS_ROUTE", fn=_noop)  # type: ignore[arg-type]
 
-    pytest.xfail("HookSpec still accepts runtime-owned INGRESS_ROUTE selectors")
+    with pytest.raises(ValueError, match="INGRESS_ROUTE|runtime-owned|canonical phase"):
+        hook_spec.validate_hook_legality(hook)
 
 
 def test_hook_selector_keeps_transport_and_semantic_subevents_distinct() -> None:

@@ -1,10 +1,15 @@
-import pytest
+from tigrbl_core._spec.binding_spec import WsBindingSpec, project_binding_runtime_metadata
+from tigrbl_core._spec.path_spec import PathSpec
 
 
-pytestmark = pytest.mark.skip(
-    reason="Planned SSOT coverage for transport WS JSON-RPC contract."
-)
+def test_transport_ws_jsonrpc_contract() -> None:
+    binding = WsBindingSpec(
+        proto="ws",
+        path="/rpc",
+        framing="jsonrpc",
+        subprotocols=("jsonrpc",),
+    )
+    path = PathSpec(path="/rpc", kind="ws-jsonrpc")
 
-
-def test_transport_ws_jsonrpc_contract_planned() -> None:
-    pass
+    assert path.binding_path(binding) == "/rpc"
+    assert project_binding_runtime_metadata(binding)["family"] == "socket"

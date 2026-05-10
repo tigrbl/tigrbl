@@ -1,10 +1,10 @@
-import pytest
+from tigrbl_concrete._concrete._engine import provider_from_spec
+from tigrbl_core._spec.engine_spec import EngineProviderSpec, EngineSpec
 
 
-pytestmark = pytest.mark.skip(
-    reason="Planned SSOT coverage for concrete engine lowering contract."
-)
+def test_concrete_engine_lowering_contract() -> None:
+    spec = EngineSpec.from_any({"kind": "sqlite", "memory": True, "name": "primary"})
+    provider = provider_from_spec(spec)
 
-
-def test_concrete_engine_lowering_contract_planned() -> None:
-    pass
+    assert isinstance(provider.spec, EngineSpec)
+    assert EngineProviderSpec.from_any(provider).spec.kind == "sqlite"

@@ -9,6 +9,7 @@ __all__ = [
     "completion_fence",
     "dispatch_atoms",
     "framing_atoms",
+    "loop_modes",
     "scope_schemas",
     "sse",
     "static_files",
