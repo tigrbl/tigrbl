@@ -22,22 +22,28 @@ body: |-
 
   Define the canonical AppSpec engine inventory, EngineSpec name identity, app/router/table/op name bindings, and nearest-scope engine precedence.
 
+  This contract defines canonical runtime authority after lowering. Concrete
+  authoring may accept richer engine inputs, but canonical graphs and runtime
+  resolution must operate on named inventory plus scope-level `engine_name`
+  bindings.
+
   ## Contract
 
   1. `AppSpec.engines` MUST be a sequence of canonical `EngineSpec` entries available to the app graph.
   2. `EngineSpec.name` MUST be a non-empty app-local name. Names MUST be unique within one `AppSpec`.
-  3. `AppSpec.engine` MAY name a default engine from `AppSpec.engines`.
-  4. `RouterSpec.engine` MAY name an engine from `AppSpec.engines`.
-  5. `TableSpec.engine` MAY name an engine from `AppSpec.engines`.
-  6. `OpSpec.engine` MAY name an engine from `AppSpec.engines`.
+  3. `AppSpec.engine_name` MAY name a default engine from `AppSpec.engines`.
+  4. `RouterSpec.engine_name` MAY name an engine from `AppSpec.engines`.
+  5. `TableSpec.engine_name` MAY name an engine from `AppSpec.engines`.
+  6. `OpSpec.engine_name` MAY name an engine from `AppSpec.engines`.
   7. `PathSpec` MUST NOT accept or publish an engine binding field in the canonical graph.
-  8. Every scope engine reference MUST resolve to an engine name declared in `AppSpec.engines`.
-  9. Effective engine resolution MUST use nearest-scope precedence: `OpSpec.engine > TableSpec.engine > RouterSpec.engine > AppSpec.engine`.
+  8. Every canonical scope engine reference MUST resolve to an engine name declared in `AppSpec.engines`.
+  9. Effective engine resolution MUST use nearest-scope precedence: `OpSpec.engine_name > TableSpec.engine_name > RouterSpec.engine_name > AppSpec.engine_name`.
   10. If no scope binds an engine, the canonical spec remains structurally valid, but runtime persistence readiness MAY fail for operations that require an engine.
   11. Canonical scope engine fields MUST contain engine names, not DSN strings, mappings, providers, or inline `EngineSpec` configs.
-  12. Concrete authoring surfaces MAY accept DSN strings, mappings, provider objects, concrete engine shortcuts, and inline `EngineSpec` values.
-  13. Concrete lowering MUST normalize accepted engine inputs into `AppSpec.engines` plus scope-level engine names before canonical validation, docs projection, runtime compilation, or conformance checks consume the spec graph.
-  14. The contract intentionally excludes engine policies, read/write splitting, OLTP/OLAP splitting, queue/pubsub splitting, cache sidecars, tenant routing, and capability-based fallback.
+  12. Concrete authoring surfaces MAY accept DSN strings, mappings, provider objects, concrete engine shortcuts, and inline `EngineSpec` values before lowering.
+  13. Concrete lowering MUST normalize accepted engine inputs into `AppSpec.engines` plus scope-level `engine_name` bindings before canonical validation, docs projection, runtime compilation, or conformance checks consume the spec graph.
+  14. Runtime engine resolution after lowering MUST use `AppSpec.engines` plus canonical `engine_name` bindings as the authority. Re-reading raw concrete `engine` attachments after canonical lowering is invalid.
+  15. The contract intentionally excludes engine policies, read/write splitting, OLTP/OLAP splitting, queue/pubsub splitting, cache sidecars, tenant routing, and capability-based fallback.
 
   ## Canonical Shape
 
@@ -47,12 +53,12 @@ body: |-
           EngineSpec(name="main", kind="sqlite", async_=False, memory=True),
           EngineSpec(name="audit", kind="postgres", async_=True, dsn="postgresql+asyncpg://..."),
       ),
-      engine="main",
+      engine_name="main",
       routers=(
           RouterSpec(
               name="admin",
               prefix="/admin",
-              engine="audit",
+              engine_name="audit",
               paths=(
                   PathSpec(
                       path="/widgets",
@@ -62,9 +68,9 @@ body: |-
                               name="Widget",
                               resource="widget",
                               model_ref="app.models:Widget",
-                              engine="main",
+                              engine_name="main",
                               ops=(
-                                  OpSpec(alias="rotate", target="custom", engine="audit"),
+                                  OpSpec(alias="rotate", target="custom", engine_name="audit"),
                               ),
                           ),
                       ),
@@ -79,11 +85,11 @@ body: |-
 
   | Scenario | Expected |
   |---|---|
-  | `AppSpec.engines` contains `main` and `AppSpec.engine="main"` | Valid; unbound ops inherit `main`. |
-  | Router sets `engine="audit"` and `audit` exists | Valid; router subtree uses `audit` unless overridden. |
-  | Table sets `engine="main"` and router has `audit` | Valid; table ops use `main` unless op overrides. |
-  | Op sets `engine="audit"` and table has `main` | Valid; that op uses `audit`. |
-  | App has engines but no `AppSpec.engine` | Valid; only explicitly bound scopes get engines. |
+  | `AppSpec.engines` contains `main` and `AppSpec.engine_name="main"` | Valid; unbound ops inherit `main`. |
+  | Router sets `engine_name="audit"` and `audit` exists | Valid; router subtree uses `audit` unless overridden. |
+  | Table sets `engine_name="main"` and router has `audit` | Valid; table ops use `main` unless op overrides. |
+  | Op sets `engine_name="audit"` and table has `main` | Valid; that op uses `audit`. |
+  | App has engines but no `AppSpec.engine_name` | Valid; only explicitly bound scopes get engines. |
   | Engine declared but unused | Valid; inventory may include available engines. |
   | Duplicate `EngineSpec.name` | Invalid. |
   | Any scope references a missing engine name | Invalid. |

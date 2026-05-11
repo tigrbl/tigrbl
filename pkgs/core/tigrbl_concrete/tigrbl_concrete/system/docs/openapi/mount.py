@@ -13,9 +13,10 @@ def mount_openapi(
     name: str = "__openapi__",
 ) -> Any:
     """Mount an OpenAPI JSON endpoint onto ``router``."""
+    setattr(router, "openapi_url", path)
 
     def _openapi_handler(request: Any) -> Response:
-        return Response.json(openapi(router))
+        return Response.json(openapi(router, docs_path=path, request=request))
 
     router.add_route(
         path,

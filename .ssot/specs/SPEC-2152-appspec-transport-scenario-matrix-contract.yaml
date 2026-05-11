@@ -30,6 +30,10 @@ body: |-
 
   Define the canonical AppSpec transport scenario matrix across path kinds, protocol bindings, exchange modes, framing modes, documentation projections, static surfaces, and nested mounts.
 
+  The matrix is a coverage truth for canonical lowering. Supported rows are not
+  merely declarative inventory; they must lower from canonical AppSpec graphs
+  into runtime behavior and docs/runtime parity checks.
+
   ## Contract
 
   1. Transport scenario coverage MUST be modeled separately from engine binding.
@@ -45,10 +49,11 @@ body: |-
   11. WS+JSON-LD and WSS+JSON-LD MUST be explicit planned/fail-closed scenarios until `jsonld` framing and corresponding path kinds are implemented.
   12. WebTransport MUST remain a bidirectional stream/datagram-capable transport scenario.
   13. Message and datagram binding scenarios MUST be represented in the matrix even when their canonical address model is not path-owned.
-  14. Docs payload and docs UIX scenarios MUST prove inclusion is selected by docs projection policy, not by incidental path exposure.
+  14. Docs payload and docs UIX scenarios MUST prove inclusion is selected by docs projection policy, not by incidental path exposure or ad hoc runtime route inspection.
   15. Static file serving and nested app mounts MUST be ordinary canonical path scenarios with their own spec payloads.
   16. Websocket subprotocol negotiation MUST be modeled separately from websocket message framing under `spc:2153`.
   17. The transport matrix MUST NOT be treated as a canonical spec graph entity or a required production module. It is a governed coverage contract whose rows are satisfied by canonical spec entities such as `PathSpec`, binding specs, docs projection specs, `AppSpec`, `RouterSpec`, `TableSpec`, and `OpSpec`.
+  18. Runtime lowerers and docs emitters MUST derive supported rows from canonical AppSpec entities after normalization. Reconstructing transport support exclusively from legacy model/router artifacts is invalid for matrix closure.
 
   ## Implementation Boundary
 
@@ -116,7 +121,7 @@ body: |-
   - `tst:ws-jsonld-fail-closed-contract`
   - `tst:wsbindingspec-framing-subprotocol-validation-contract`
 
-  Tests MUST assert transport matrix rows through canonical spec entities and their lowering/validation behavior. They MUST NOT require a standalone production `transport_matrix` module.
+  Tests MUST assert transport matrix rows through canonical spec entities and their lowering/validation behavior. They MUST NOT require a standalone production `transport_matrix` module, and they MUST fail if runtime parity is achieved only through non-canonical legacy reconstruction.
 spec_kind: "normative"
 adr_ids:
   - "adr:1129"

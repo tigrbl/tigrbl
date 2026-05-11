@@ -32,6 +32,9 @@ from ._table_registry import TableRegistry
 from ._route import add_jsonrpc_mount, compile_path
 from ._websocket import WebSocketRoute
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
+from tigrbl_concrete.system import mount_openapi as _mount_openapi
+from tigrbl_concrete.system import mount_swagger as _mount_swagger
+from tigrbl_concrete.system import mount_lens as _mount_lens
 from tigrbl_concrete.system import mount_diagnostics as _mount_diagnostics
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
 from tigrbl_concrete._concrete import engine_resolver as _resolver
@@ -316,6 +319,22 @@ class TigrblRouter(_Router):
             add_jsonrpc_mount(self, path, endpoint=endpoint)
         return self
 
+    def mount_openapi(
+        self,
+        *,
+        path: str = "/openapi.json",
+        name: str = "__openapi__",
+    ) -> Any:
+        return _mount_openapi(self, path=path, name=name)
+
+    def mount_swagger(
+        self,
+        *,
+        path: str = "/docs",
+        name: str = "__docs__",
+    ) -> Any:
+        return _mount_swagger(self, path=path, name=name)
+
     def mount_openrpc(
         self,
         *,
@@ -325,6 +344,15 @@ class TigrblRouter(_Router):
     ) -> Any:
         """Mount an OpenRPC JSON endpoint onto this router instance."""
         return _mount_openrpc(self, path=path, name=name, tags=tags)
+
+    def mount_lens(
+        self,
+        *,
+        path: str = "/lens",
+        name: str = "__lens__",
+        spec_path: str | None = None,
+    ) -> Any:
+        return _mount_lens(self, path=path, name=name, spec_path=spec_path)
 
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
         from tigrbl_concrete.system import mount_json_schema as _mount_json_schema

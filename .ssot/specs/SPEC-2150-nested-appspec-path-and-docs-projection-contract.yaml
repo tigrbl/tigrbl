@@ -33,6 +33,10 @@ body: |-
   ## Intent
   
   Define the next-slice contract for nested canonical AppSpec composition, path-scoped protocol bindings, and documentation projection selection.
+
+  This contract is not only a validation shape. The nested canonical tree is the
+  authority that concrete lowering, docs emission, runtime compilation, and
+  conformance checks must consume.
   
   ## Contract
   
@@ -49,12 +53,13 @@ body: |-
   10. `DocsPayloadSpec` is a thin payload emission surface that names a documentation artifact kind such as OpenAPI, OpenRPC, AsyncAPI, or JSON Schema and points at a docs projection policy.
   11. `DocsUixSpec` is a thin UIX surface that names a UI renderer such as Swagger, Lens, Redoc, Scalar, or equivalent and points at a docs payload path or docs projection policy.
   12. Docs UIX paths and docs payload paths MUST be ordinary `PathSpec` entries. They are uniquely spec'd only when their renderer, payload kind, or projection policy differs.
-  13. OpenAPI emission MUST be selected from the canonical tree through a docs projection that includes appropriate HTTP/REST bindings and excludes non-selected protocol surfaces.
-  14. OpenRPC emission MUST be selected from the canonical tree through a docs projection that includes appropriate JSON-RPC bindings and RPC method selectors, including shared dispatcher paths.
+  13. OpenAPI emission MUST be selected from the canonical tree through a docs projection that includes appropriate HTTP/REST bindings and excludes non-selected protocol surfaces. Implementations MUST NOT treat incidental mounted runtime routes as the authority for OpenAPI inclusion.
+  14. OpenRPC emission MUST be selected from the canonical tree through a docs projection that includes appropriate JSON-RPC bindings and RPC method selectors, including shared dispatcher paths. Implementations MUST NOT infer OpenRPC inclusion only by walking runtime route attachment.
   15. Concrete class conveniences, decorators, and imperative assembly helpers MAY remain non-flat and ergonomic, but their canonical output MUST normalize to this nested tree before docs generation, runtime compilation, or conformance checks consume it.
-  16. Engine binding MUST follow `spc:2151`: `AppSpec` owns named engine inventory, app/router/table/op scopes attach by engine name, and `PathSpec` does not own engine binding.
-  17. Transport scenario coverage MUST follow `spc:2152`: path kind, protocol binding, exchange, framing, docs projection, static, and mount coverage are tracked as an explicit matrix.
-  18. Websocket path kinds MUST converge with websocket binding declarations: generic websocket path kinds allow baseline websocket framing, JSON-RPC path kinds require JSON-RPC framing, and JSON-LD path kinds remain planned/fail-closed until supported.
+  16. Concrete lowering MUST materialize runtime REST, JSON-RPC, stream, SSE, websocket, WebTransport, docs payload, docs UIX, static, and mount surfaces from this canonical tree. Reconstructing those surfaces from legacy model/router state after canonical lowering is invalid.
+  17. Engine binding MUST follow `spc:2151`: `AppSpec` owns named engine inventory, app/router/table/op scopes attach by engine name, and `PathSpec` does not own engine binding.
+  18. Transport scenario coverage MUST follow `spc:2152`: path kind, protocol binding, exchange, framing, docs projection, static, and mount coverage are tracked as an explicit matrix.
+  19. Websocket path kinds MUST converge with websocket binding declarations: generic websocket path kinds allow baseline websocket framing, JSON-RPC path kinds require JSON-RPC framing, and JSON-LD path kinds remain planned/fail-closed until supported.
   
   ## Examples
   
