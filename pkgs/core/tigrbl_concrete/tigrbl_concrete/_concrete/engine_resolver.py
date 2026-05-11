@@ -27,6 +27,13 @@ _ROUTER: dict[int, Provider] = {}
 _TAB: dict[Any, Provider] = {}
 _OP: dict[tuple[Any, str], Provider] = {}
 _PROV_BY_KEY: dict[tuple, Provider] = {}
+_NAMED: dict[str, Provider] = {}
+_DEFAULT_NAME: str | None = None
+_ROUTER_NAME: dict[int, str] = {}
+_TAB_NAME: dict[Any, str] = {}
+_OP_NAME: dict[tuple[Any, str], str] = {}
+_SCHEMA_REQUIRED: set[int] = set()
+_SCHEMA_READY: set[int] = set()
 _SECRET_KEYS = {
     "pwd",
     "password",
@@ -120,6 +127,36 @@ def _coerce(ctx: Optional[EngineCfg]) -> Optional[Provider]:
     return _intern_provider(spec) if spec else None
 
 
+def _provider_id(provider: Provider) -> int:
+    return id(provider)
+
+
+def _provider_by_name(name: str) -> Provider:
+    try:
+        return _NAMED[name]
+    except KeyError as exc:
+        raise RuntimeError(f"Unknown engine name {name!r}") from exc
+
+
+def _resolve_named(name: str | None) -> Provider | None:
+    if name is None:
+        return None
+    return _provider_by_name(name)
+
+
+def _is_schema_ready(provider: Provider) -> bool:
+    pid = _provider_id(provider)
+    return pid not in _SCHEMA_REQUIRED or pid in _SCHEMA_READY
+
+
+def _require_ready(provider: Provider) -> None:
+    if not _is_schema_ready(provider):
+        spec = getattr(provider, "spec", None)
+        name = getattr(spec, "name", None)
+        suffix = f" engine={name!r}" if name else ""
+        raise RuntimeError(f"Schema is not ready for resolved database provider.{suffix}")
+
+
 # ---- registration -----------------------------------------------------------
 
 
@@ -132,6 +169,42 @@ def set_default(ctx: EngineCfg | None) -> None:
     logger.debug("set_default: setting default provider to %r", prov)
     with _LOCK:
         _DEFAULT = prov
+
+
+def register_engine(name: str, ctx: EngineCfg) -> Provider:
+    """Register an engine inventory entry by canonical engine name."""
+
+    if not isinstance(name, str) or not name.strip():
+        raise ValueError("engine name must be a non-empty string")
+    prov = _coerce(ctx)
+    if prov is None:
+        raise ValueError(f"Engine inventory entry {name!r} has no provider")
+    with _LOCK:
+        existing = _NAMED.get(name)
+        if existing is not None and existing is not prov:
+            raise ValueError(f"Duplicate engine inventory name {name!r}")
+        _NAMED[name] = prov
+    return prov
+
+
+def register_engines(engines: Any) -> dict[str, Provider]:
+    """Register a canonical AppSpec.engines inventory."""
+
+    out: dict[str, Provider] = {}
+    for engine in tuple(engines or ()):
+        name = getattr(engine, "name", None)
+        if not name:
+            raise ValueError("engine inventory entries must declare name")
+        out[str(name)] = register_engine(str(name), engine)
+    return out
+
+
+def set_default_engine_name(name: str | None) -> None:
+    global _DEFAULT_NAME
+    with _LOCK:
+        if name is not None:
+            _provider_by_name(name)
+        _DEFAULT_NAME = name
 
 
 def register_router(router: Any, ctx: EngineCfg | None) -> None:
@@ -150,6 +223,14 @@ def register_router(router: Any, ctx: EngineCfg | None) -> None:
         )
 
 
+def register_router_engine_name(router: Any, name: str | None) -> None:
+    if name is None:
+        return
+    with _LOCK:
+        _provider_by_name(name)
+        _ROUTER_NAME[id(router)] = name
+
+
 def register_table(model: Any, ctx: EngineCfg | None) -> None:
     """
     Register a table/model-level Provider.
@@ -162,6 +243,14 @@ def register_table(model: Any, ctx: EngineCfg | None) -> None:
     with _LOCK:
         _TAB[model] = prov
         logger.debug("register_table: registered provider for model %r", model)
+
+
+def register_table_engine_name(model: Any, name: str | None) -> None:
+    if name is None:
+        return
+    with _LOCK:
+        _provider_by_name(name)
+        _TAB_NAME[model] = name
 
 
 def register_op(model: Any, alias: str, ctx: EngineCfg | None) -> None:
@@ -182,6 +271,29 @@ def register_op(model: Any, alias: str, ctx: EngineCfg | None) -> None:
         )
 
 
+def register_op_engine_name(model: Any, alias: str, name: str | None) -> None:
+    if name is None:
+        return
+    with _LOCK:
+        _provider_by_name(name)
+        _OP_NAME[(model, alias)] = name
+
+
+def require_schema_ready(provider: Provider) -> None:
+    with _LOCK:
+        _SCHEMA_REQUIRED.add(_provider_id(provider))
+
+
+def mark_schema_ready(provider: Provider) -> None:
+    with _LOCK:
+        _SCHEMA_READY.add(_provider_id(provider))
+
+
+def clear_schema_ready(provider: Provider) -> None:
+    with _LOCK:
+        _SCHEMA_READY.discard(_provider_id(provider))
+
+
 # ---- resolution -------------------------------------------------------------
 
 
@@ -190,6 +302,7 @@ def resolve_provider(
     router: Any = None,
     model: Any = None,
     op_alias: str | None = None,
+    engine_name: str | None = None,
 ) -> Optional[Provider]:
     """
     Resolve the effective Provider using precedence:
@@ -202,9 +315,16 @@ def resolve_provider(
         op_alias,
     )
     with _LOCK:
+        p = _resolve_named(engine_name)
+        if p is not None:
+            return p
         if model is not None and op_alias is not None:
             logger.debug("resolve_provider: checking op-level provider")
             for m in _with_class(model):
+                p = _resolve_named(_OP_NAME.get((m, op_alias)))
+                if p:
+                    logger.debug("resolve_provider: found op-level named provider %r", p)
+                    return p
                 logger.debug(
                     "resolve_provider: looking for op provider for %r alias %s",
                     m,
@@ -217,6 +337,10 @@ def resolve_provider(
         if model is not None:
             logger.debug("resolve_provider: checking model-level provider")
             for m in _with_class(model):
+                p = _resolve_named(_TAB_NAME.get(m))
+                if p:
+                    logger.debug("resolve_provider: found model-level named provider %r", p)
+                    return p
                 logger.debug("resolve_provider: looking for model provider %r", m)
                 p = _TAB.get(m)
                 if p:
@@ -225,12 +349,20 @@ def resolve_provider(
         if router is not None:
             logger.debug("resolve_provider: checking router-level provider")
             for a in _with_class(router):
+                p = _resolve_named(_ROUTER_NAME.get(id(a)))
+                if p:
+                    logger.debug("resolve_provider: found router-level named provider %r", p)
+                    return p
                 logger.debug("resolve_provider: looking for router provider %r", a)
                 # APIs are keyed by ``id`` to avoid relying on ``__hash__``
                 p = _ROUTER.get(id(a))
                 if p:
                     logger.debug("resolve_provider: found router-level provider %r", p)
                     return p
+        named_default = _resolve_named(_DEFAULT_NAME)
+        if named_default is not None:
+            logger.debug("resolve_provider: returning named default provider %r", named_default)
+            return named_default
         logger.debug("resolve_provider: returning default provider %r", _DEFAULT)
         return _DEFAULT
 
@@ -243,6 +375,8 @@ def acquire(
     router: Any = None,
     model: Any = None,
     op_alias: str | None = None,
+    engine_name: str | None = None,
+    require_ready: bool = False,
 ) -> tuple[SessionT, Callable[[], None]]:
     """
     Acquire a DB session from the resolved Provider.
@@ -256,7 +390,12 @@ def acquire(
     logger.debug(
         "acquire called with router=%r model=%r op_alias=%r", router, model, op_alias
     )
-    p = resolve_provider(router=router, model=model, op_alias=op_alias)
+    p = resolve_provider(
+        router=router,
+        model=model,
+        op_alias=op_alias,
+        engine_name=engine_name,
+    )
     if p is None and model is not None:
         get_db = getattr(model, "__tigrbl_get_db__", None)
         if callable(get_db):
@@ -298,6 +437,8 @@ def acquire(
             f"model={getattr(model, '__name__', model)} "
             f"router={type(router).__name__ if router else None} and no default"
         )
+    if require_ready:
+        _require_ready(p)
     db: SessionT = p.session()
     logger.debug("acquire: session %r acquired from provider %r", db, p)
 
@@ -336,6 +477,7 @@ def iter_providers() -> list[Provider]:
         out.extend(_ROUTER.values())
         out.extend(_TAB.values())
         out.extend(_OP.values())
+        out.extend(_NAMED.values())
     seen: set[int] = set()
     uniq: list[Provider] = []
     for provider in out:
@@ -355,7 +497,7 @@ def warmup(*, ensure: bool = True) -> None:
 
 def reset(*, dispose: bool = True) -> None:
     """Reset resolver state; optionally dispose any built engines."""
-    global _DEFAULT
+    global _DEFAULT, _DEFAULT_NAME
     with _LOCK:
         providers: list[Provider] = []
         if _DEFAULT is not None:
@@ -394,7 +536,14 @@ def reset(*, dispose: bool = True) -> None:
                     logger.debug("reset: error disposing engine", exc_info=True)
 
         _DEFAULT = None
+        _DEFAULT_NAME = None
         _ROUTER.clear()
         _TAB.clear()
         _OP.clear()
         _PROV_BY_KEY.clear()
+        _NAMED.clear()
+        _ROUTER_NAME.clear()
+        _TAB_NAME.clear()
+        _OP_NAME.clear()
+        _SCHEMA_REQUIRED.clear()
+        _SCHEMA_READY.clear()
