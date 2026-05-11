@@ -27,8 +27,9 @@ body: |-
   1. Runtime behavior and documentation projections MUST remain observationally consistent.
   2. Security behavior (auth challenges, documented schemes, authorization expectations) MUST be parity-checked between runtime and docs.
   3. Operator visibility exposed at runtime MUST match operator visibility in docs payloads.
-  4. Parity failures are conformance failures.
-  5. REST/JSON-RPC parity, schema projection parity, and docs payload parity are one conformance concern when a test exercises all three.
+  4. Docs/runtime parity MUST be evaluated from the same canonical AppSpec graph and docs projection policy. Runtime route inspection alone is not sufficient proof of parity.
+  5. Parity failures are conformance failures.
+  6. REST/JSON-RPC parity, schema projection parity, and docs payload parity are one conformance concern when a test exercises all three.
   
   ## Integration Coverage
   
