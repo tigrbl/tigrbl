@@ -102,7 +102,7 @@ def test_transport_path_kinds_converge_with_bindings() -> None:
         )
 
 
-def test_websocket_jsonrpc_subprotocol_required_and_jsonld_fails_closed() -> None:
+def test_websocket_jsonrpc_subprotocol_required_and_ndjson_fails_closed() -> None:
     binding = WsBindingSpec(
         proto="wss",
         path="/wss/rpc",
@@ -116,14 +116,14 @@ def test_websocket_jsonrpc_subprotocol_required_and_jsonld_fails_closed() -> Non
         WsBindingSpec(proto="ws", path="/ws/rpc", framing="jsonrpc")
 
     with pytest.raises(ValueError, match="fail closed"):
-        WsBindingSpec(proto="ws", path="/ws/jsonld", framing="jsonld", subprotocols=("jsonld",))
+        WsBindingSpec(proto="ws", path="/ws/ndjson", framing="ndjson", subprotocols=("ndjson",))
 
     with pytest.raises(ValueError, match="fail closed"):
         WsBindingSpec(
             proto="wss",
-            path="/wss/jsonld",
-            framing="jsonld",
-            subprotocols=("jsonld",),
+            path="/wss/ndjson",
+            framing="ndjson",
+            subprotocols=("ndjson",),
         )
 
 

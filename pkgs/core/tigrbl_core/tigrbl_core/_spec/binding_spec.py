@@ -21,7 +21,7 @@ Exchange = Literal[
 Framing = Literal[
     "json",
     "jsonrpc",
-    "jsonld",
+    "ndjson",
     "sse",
     "stream",
     "text",
@@ -82,9 +82,9 @@ class WsBindingSpec(SerdeMixin):
             raise ValueError(
                 "WsBindingSpec framing='jsonrpc' requires subprotocols to include 'jsonrpc'."
             )
-        if self.framing == "jsonld":
+        if self.framing == "ndjson":
             raise ValueError(
-                "WsBindingSpec framing='jsonld' is planned but not implemented; fail closed."
+                "WsBindingSpec framing='ndjson' is planned but not implemented; fail closed."
             )
 
 

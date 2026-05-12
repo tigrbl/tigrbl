@@ -31,8 +31,8 @@ body: |-
   5. JSON-RPC websocket framing MUST be represented as `framing=jsonrpc` on `WsBindingSpec` or as an equivalent normalized binding that lowers to that canonical value.
   6. JSON-RPC websocket bindings MAY declare `subprotocols=(jsonrpc,)` or another explicitly supported JSON-RPC subprotocol token, but the subprotocol declaration alone MUST NOT define JSON-RPC message decoding.
   7. `framing=jsonrpc` combined with unrelated subprotocols such as `graphql-ws` MUST fail validation unless an explicit compatibility rule is added.
-  8. JSON-LD websocket framing MUST remain planned/fail-closed until the canonical framing vocabulary and runtime decoder are implemented.
-  9. `PathSpec.kind` MUST converge with websocket binding declarations: generic websocket path kinds allow baseline text or binary framing, JSON-RPC path kinds require JSON-RPC framing, and JSON-LD path kinds require explicit planned/fail-closed JSON-LD handling.
+  8. NDJSON websocket framing MUST remain planned/fail-closed until the canonical framing vocabulary and runtime decoder are implemented.
+  9. `PathSpec.kind` MUST converge with websocket binding declarations: generic websocket path kinds allow baseline text or binary framing, JSON-RPC path kinds require JSON-RPC framing, and NDJSON path kinds require explicit planned/fail-closed NDJSON handling.
   10. Docs projection MUST derive websocket protocol, framing, and subprotocol metadata from selected websocket bindings rather than from docs payload paths or UIX paths.
   11. Runtime compilation MUST consume the normalized binding metadata and MUST NOT infer websocket framing solely from path strings.
   
@@ -46,8 +46,8 @@ body: |-
   | WSS binary | `WsBindingSpec(proto=wss, framing=binary, subprotocols=())` | `websocket` | Supported |
   | WS JSON-RPC | `WsBindingSpec(proto=ws, framing=jsonrpc, subprotocols=(jsonrpc,))` | `ws-jsonrpc` | Planned canonical symmetry |
   | WSS JSON-RPC | `WsBindingSpec(proto=wss, framing=jsonrpc, subprotocols=(jsonrpc,))` | `wss-jsonrpc` | Planned canonical symmetry |
-  | WS JSON-LD | `WsBindingSpec(proto=ws, framing=jsonld, subprotocols=(jsonld,))` | `ws-jsonld` | Planned/fail-closed |
-  | WSS JSON-LD | `WsBindingSpec(proto=wss, framing=jsonld, subprotocols=(jsonld,))` | `wss-jsonld` | Planned/fail-closed |
+  | WS NDJSON | `WsBindingSpec(proto=ws, framing=ndjson, subprotocols=(ndjson,))` | `ws-ndjson` | Planned/fail-closed |
+  | WSS NDJSON | `WsBindingSpec(proto=wss, framing=ndjson, subprotocols=(ndjson,))` | `wss-ndjson` | Planned/fail-closed |
   
   ## Validation Matrix
   
@@ -56,7 +56,7 @@ body: |-
   | `proto=ws` or `proto=wss` with `framing=text` and no subprotocol | Valid. |
   | `framing=jsonrpc` with JSON-RPC-compatible subprotocol token | Valid once JSON-RPC websocket support is implemented. |
   | `framing=jsonrpc` with `subprotocols=(graphql-ws,)` | Invalid. |
-  | `framing=jsonld` before JSON-LD websocket implementation | Planned/fail-closed. |
+  | `framing=ndjson` before NDJSON websocket implementation | Planned/fail-closed. |
   | `PathSpec.kind=ws-jsonrpc` with non-JSON-RPC websocket framing | Invalid. |
   | `PathSpec.kind=websocket` with JSON-RPC framing but no explicit JSON-RPC path kind or convergence rule | Invalid or normalized to the JSON-RPC path kind by concrete lowering. |
   | Docs payload includes websocket metadata outside its selected projection | Invalid. |
@@ -65,7 +65,7 @@ body: |-
   
   - ADRs: `adr:1131`, `adr:1129`, `adr:1006`, `adr:1007`, `adr:1023`, `adr:1051`, `adr:1080`
   - Companion specs: `spc:2150`, `spc:2152`
-  - Defines features: `feat:wsbindingspec-subprotocols-001`, `feat:wsbindingspec-framing-001`, `feat:wsbindingspec-framing-subprotocol-validation-001`, `feat:ws-jsonrpc-subprotocol-parity-001`, `feat:ws-jsonld-fail-closed-001`, `feat:pathkind-websocket-binding-convergence-001`, `feat:docs-websocket-transport-projection-001`
+  - Defines features: `feat:wsbindingspec-subprotocols-001`, `feat:wsbindingspec-framing-001`, `feat:wsbindingspec-framing-subprotocol-validation-001`, `feat:ws-jsonrpc-subprotocol-parity-001`, `feat:ws-ndjson-fail-closed-001`, `feat:pathkind-websocket-binding-convergence-001`, `feat:docs-websocket-transport-projection-001`
   
   ## Verification Plan
   
@@ -73,7 +73,7 @@ body: |-
   - `tst:wsbindingspec-framing-contract`
   - `tst:wsbindingspec-framing-subprotocol-validation-contract`
   - `tst:ws-jsonrpc-subprotocol-parity-contract`
-  - `tst:ws-jsonld-fail-closed-contract`
+  - `tst:ws-ndjson-fail-closed-contract`
   - `tst:pathkind-websocket-binding-convergence-contract`
   - `tst:docs-websocket-transport-projection-contract`
 spec_kind: "normative"

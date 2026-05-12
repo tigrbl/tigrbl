@@ -60,7 +60,7 @@ body: |-
   
   - `PathSpec` and docs projection contracts become the planning focus for the next implementation slice.
   - Engine inventory and scope-level engine binding are governed separately from path and transport ownership.
-  - Transport support gaps such as stream path kinds, WS/WSS JSON-RPC symmetry, and WS/WSS JSON-LD framing are tracked in an explicit matrix rather than inferred from existing binding classes.
+  - Transport support gaps such as stream path kinds, WS/WSS JSON-RPC symmetry, and WS/WSS NDJSON framing are tracked in an explicit matrix rather than inferred from existing binding classes.
   - The matrix constrains implementation and testing, but `PathSpec`, binding specs, docs projection specs, `AppSpec`, `RouterSpec`, `TableSpec`, and `OpSpec` remain the implementation surfaces.
   - Websocket support gaps are tracked through explicit binding fields for transport protocol, handshake subprotocols, and post-handshake framing.
   - Docs UIX and docs payload surfaces do not need to become large independent authorities merely to expose `/docs`, `/openapi.json`, `/openrpc.json`, or equivalent paths.
@@ -99,13 +99,13 @@ body: |-
   - `feat:transport-scenario-matrix-001`
   - `feat:transport-stream-pathkind-001`
   - `feat:transport-ws-wss-jsonrpc-001`
-  - `feat:transport-ws-wss-jsonld-001`
+  - `feat:transport-ws-wss-ndjson-001`
   - `feat:docs-transport-projection-selection-001`
   - `feat:wsbindingspec-subprotocols-001`
   - `feat:wsbindingspec-framing-001`
   - `feat:wsbindingspec-framing-subprotocol-validation-001`
   - `feat:ws-jsonrpc-subprotocol-parity-001`
-  - `feat:ws-jsonld-fail-closed-001`
+  - `feat:ws-ndjson-fail-closed-001`
   - `feat:pathkind-websocket-binding-convergence-001`
   - `feat:docs-websocket-transport-projection-001`
   
