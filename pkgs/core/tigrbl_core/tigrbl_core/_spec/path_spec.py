@@ -22,9 +22,9 @@ PathKind = Literal[
     "stream",
     "websocket",
     "ws-jsonrpc",
-    "ws-jsonld",
+    "ws-ndjson",
     "wss-jsonrpc",
-    "wss-jsonld",
+    "wss-ndjson",
     "sse",
     "webtransport",
     "docs-payload",
@@ -110,8 +110,8 @@ class PathSpec(SerdeMixin):
             expected = {"websocket"}
             if binding.framing == "jsonrpc":
                 expected = {"ws-jsonrpc"} if binding.proto == "ws" else {"wss-jsonrpc"}
-            elif binding.framing == "jsonld":
-                expected = {"ws-jsonld"} if binding.proto == "ws" else {"wss-jsonld"}
+            elif binding.framing == "ndjson":
+                expected = {"ws-ndjson"} if binding.proto == "ws" else {"wss-ndjson"}
             _expect_path_kind(self.kind, expected)
 
     def iter_ops(self) -> tuple[OpSpec, ...]:
@@ -125,9 +125,9 @@ class PathSpec(SerdeMixin):
             "stream",
             "websocket",
             "ws-jsonrpc",
-            "ws-jsonld",
+            "ws-ndjson",
             "wss-jsonrpc",
-            "wss-jsonld",
+            "wss-ndjson",
             "sse",
             "webtransport",
             "docs-payload",

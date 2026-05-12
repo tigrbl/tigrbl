@@ -15,5 +15,5 @@ def test_wsbindingspec_framing_contract() -> None:
         == "jsonrpc"
     )
 
-    with pytest.raises(ValueError, match="jsonld|fail closed|planned"):
-        WsBindingSpec(proto="ws", path="/jsonld", framing="jsonld")
+    with pytest.raises(ValueError, match="ndjson|fail closed|planned"):
+        WsBindingSpec(proto="ws", path="/ndjson", framing="ndjson")

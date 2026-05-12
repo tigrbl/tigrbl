@@ -59,7 +59,7 @@ body: |-
   16. Concrete lowering MUST materialize runtime REST, JSON-RPC, stream, SSE, websocket, WebTransport, docs payload, docs UIX, static, and mount surfaces from this canonical tree. Reconstructing those surfaces from legacy model/router state after canonical lowering is invalid.
   17. Engine binding MUST follow `spc:2151`: `AppSpec` owns named engine inventory, app/router/table/op scopes attach by engine name, and `PathSpec` does not own engine binding.
   18. Transport scenario coverage MUST follow `spc:2152`: path kind, protocol binding, exchange, framing, docs projection, static, and mount coverage are tracked as an explicit matrix.
-  19. Websocket path kinds MUST converge with websocket binding declarations: generic websocket path kinds allow baseline websocket framing, JSON-RPC path kinds require JSON-RPC framing, and JSON-LD path kinds remain planned/fail-closed until supported.
+  19. Websocket path kinds MUST converge with websocket binding declarations: generic websocket path kinds allow baseline websocket framing, JSON-RPC path kinds require JSON-RPC framing, and NDJSON path kinds remain planned/fail-closed until supported.
   
   ## Examples
   
