@@ -112,8 +112,17 @@ def test_websocket_jsonrpc_subprotocol_required_and_ndjson_fails_closed() -> Non
 
     assert binding.subprotocols == ("jsonrpc",)
 
+    implicit = WsBindingSpec(proto="ws", path="/ws/rpc", framing="jsonrpc")
+
+    assert implicit.subprotocols == ("jsonrpc",)
+
     with pytest.raises(ValueError, match="requires subprotocols"):
-        WsBindingSpec(proto="ws", path="/ws/rpc", framing="jsonrpc")
+        WsBindingSpec(
+            proto="ws",
+            path="/ws/rpc",
+            framing="jsonrpc",
+            subprotocols=("v2",),
+        )
 
     with pytest.raises(ValueError, match="fail closed"):
         WsBindingSpec(proto="ws", path="/ws/ndjson", framing="ndjson", subprotocols=("ndjson",))
