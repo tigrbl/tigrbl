@@ -14,7 +14,9 @@ from .helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
-from tigrbl_concrete._mapping.appspec.docs_lowering import selected_projection_entries
+from tigrbl_concrete._mapping.appspec.docs_lowering import (
+    selected_projection_entries_if_configured,
+)
 from ..surface import auth_surface, binding_surface, op_surface
 
 
@@ -31,12 +33,12 @@ def _selected_openapi_keys(
     *,
     docs_path: str | None,
 ) -> set[tuple[str, str, str]] | None:
-    selected = selected_projection_entries(
+    selected = selected_projection_entries_if_configured(
         router,
         docs_path=docs_path,
         payload_kind="openapi",
     )
-    if not docs_path:
+    if selected is None:
         return None
     if not selected:
         return set()
