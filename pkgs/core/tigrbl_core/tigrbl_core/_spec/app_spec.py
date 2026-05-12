@@ -103,6 +103,16 @@ class AppSpec(SerdeMixin):
     lifespan: Optional[Callable[..., Any]] = None
 
     def __post_init__(self) -> None:
+        self.engines = _seqify(self.engines)
+        self.routers = _seqify(self.routers)
+        self.ops = _seqify(self.ops)
+        self.tables = _seqify(self.tables)
+        self.schemas = _seqify(self.schemas)
+        self.hooks = _seqify(self.hooks)
+        self.security_deps = _seqify(self.security_deps)
+        self.deps = _seqify(self.deps)
+        self.middlewares = _seqify(self.middlewares)
+
         validate_engine_inventory(self.engines)
         validate_engine_name_binding(
             self.engine_name,
