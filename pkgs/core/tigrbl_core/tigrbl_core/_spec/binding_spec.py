@@ -77,11 +77,14 @@ class WsBindingSpec(SerdeMixin):
 
     def __post_init__(self) -> None:
         subprotocols = tuple(str(item).lower() for item in self.subprotocols)
+        if self.framing == "jsonrpc":
+            if not subprotocols:
+                subprotocols = ("jsonrpc",)
+            elif "jsonrpc" not in subprotocols:
+                raise ValueError(
+                    "WsBindingSpec framing='jsonrpc' requires subprotocols to include 'jsonrpc'."
+                )
         object.__setattr__(self, "subprotocols", subprotocols)
-        if self.framing == "jsonrpc" and "jsonrpc" not in subprotocols:
-            raise ValueError(
-                "WsBindingSpec framing='jsonrpc' requires subprotocols to include 'jsonrpc'."
-            )
         if self.framing == "ndjson":
             raise ValueError(
                 "WsBindingSpec framing='ndjson' is planned but not implemented; fail closed."
