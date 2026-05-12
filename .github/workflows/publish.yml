@@ -369,6 +369,24 @@ jobs:
             --python "3.13" \
             python -m pytest "${package_dir}/tests"
 
+      - name: Test package in isolated uv environment (Python 3.14)
+        shell: bash
+        run: |
+          set -euo pipefail
+          package_dir="${{ matrix.path }}"
+          package_dir="${package_dir%/pyproject.toml}"
+          if [[ ! -d "${package_dir}/tests" ]]; then
+            echo "No package-local tests found at ${package_dir}/tests"
+            exit 0
+          fi
+          uv run \
+            --isolated \
+            --package "${{ matrix.package }}" \
+            --group dev \
+            --frozen \
+            --python "3.14" \
+            python -m pytest "${package_dir}/tests"
+
   build-python-packages:
     name: Build Python package (${{ matrix.package }})
     if: ${{ inputs.pypi && needs.prepare-release.outputs.has_python == 'true' }}
