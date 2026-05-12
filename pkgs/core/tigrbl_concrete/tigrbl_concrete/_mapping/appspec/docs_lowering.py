@@ -43,3 +43,18 @@ def selected_projection_entries(
         return ()
     return payload.projection.select(canonical_paths(owner))
 
+
+def selected_projection_entries_if_configured(
+    owner: Any,
+    *,
+    docs_path: str | None,
+    payload_kind: str,
+) -> tuple[DocsProjectionSelection, ...] | None:
+    payload = projection_for_docs_path(
+        owner,
+        docs_path=docs_path,
+        payload_kind=payload_kind,
+    )
+    if payload is None:
+        return None
+    return payload.projection.select(canonical_paths(owner))
