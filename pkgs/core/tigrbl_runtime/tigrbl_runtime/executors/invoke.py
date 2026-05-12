@@ -409,8 +409,6 @@ async def _invoke(
     else:
         setattr(response_obj, "result", ctx.get("result"))
 
-    pre_egress_result = ctx.get("result")
-
     await _run_phase("POST_COMMIT", allow_flush=True, allow_commit=False, in_tx=False)
 
     if not skip_egress:
@@ -438,7 +436,10 @@ async def _invoke(
         release()
 
     if skip_egress:
-        result = _unwrap_ctx_result(pre_egress_result)
+        result_source = ctx.get("result")
+        if result_source is None and getattr(ctx, "response", None) is not None:
+            result_source = getattr(ctx.response, "result", None)
+        result = _unwrap_ctx_result(result_source)
         result = _normalize_result_payload(result)
         if result is not None:
             ctx["result"] = result
@@ -453,8 +454,10 @@ async def _invoke(
             result
         ):
             body = result.get("body")
-            if body is None and pre_egress_result is not None:
-                result = pre_egress_result
+            if body is None:
+                fallback = ctx.get("result")
+                if fallback is not None:
+                    result = fallback
         if result is not None:
             ctx["result"] = result
             setattr(ctx.response, "result", result)
@@ -465,8 +468,10 @@ async def _invoke(
         result
     ):
         body = result.get("body")
-        if body is None and pre_egress_result is not None:
-            result = pre_egress_result
+        if body is None:
+            fallback = ctx.get("result")
+            if fallback is not None:
+                result = fallback
     if result is not None:
         ctx["result"] = result
     return result
