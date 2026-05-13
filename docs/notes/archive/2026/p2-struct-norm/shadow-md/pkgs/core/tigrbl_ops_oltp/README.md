@@ -2,13 +2,13 @@
 
 # tigrbl-ops-oltp
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tigrbl-ops-oltp.svg) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/pypi/pyversions/tigrbl-ops-oltp.svg) ![License](https://img.shields.io/pypi/l/tigrbl-ops-oltp.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-ops-oltp.svg)
+[![Pepy downloads](https://static.pepy.tech/badge/tigrbl-ops-oltp)](https://pepy.tech/project/tigrbl-ops-oltp) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/badge/python-3.10--3.14-blue) ![License](https://img.shields.io/pypi/l/tigrbl-ops-oltp.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-ops-oltp.svg)
 
 ## Features
 
 - Transactional OLTP operation implementations for Tigrbl.
 - Includes canonical CRUD and bulk operation executors.
-- Supports Python 3.10 through 3.12.
+- Supports Python 3.10 through 3.14.
 
 ## Installation
 

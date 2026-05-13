@@ -2,12 +2,12 @@
 
 # tigrbl-runtime
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tigrbl-runtime.svg) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/pypi/pyversions/tigrbl-runtime.svg) ![License](https://img.shields.io/pypi/l/tigrbl-runtime.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-runtime.svg)
+[![Pepy downloads](https://static.pepy.tech/badge/tigrbl-runtime)](https://pepy.tech/project/tigrbl-runtime) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/badge/python-3.10--3.14-blue) ![License](https://img.shields.io/pypi/l/tigrbl-runtime.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-runtime.svg)
 
 ## Features
 
 - Modular package in the Tigrbl namespace.
-- Supports Python 3.10 through 3.12.
+- Supports Python 3.10 through 3.14.
 - Distributed as part of the swarmauri-sdk workspace.
 
 ## Installation

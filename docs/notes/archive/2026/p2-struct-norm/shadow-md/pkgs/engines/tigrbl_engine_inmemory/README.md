@@ -2,9 +2,9 @@
 
 ![Tigrbl](https://github.com/swarmauri/swarmauri-sdk/blob/a170683ecda8ca1c4f912c966d4499649ffb8224/assets/tigrbl.brand.theme.svg)
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tigrbl_engine_inmemory)
+[![Pepy downloads](https://static.pepy.tech/badge/tigrbl_engine_inmemory)](https://pepy.tech/project/tigrbl_engine_inmemory)
 ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg)
-![Python Versions](https://img.shields.io/pypi/pyversions/tigrbl_engine_inmemory)
+![Python Versions](https://img.shields.io/badge/python-3.10--3.14-blue)
 ![License](https://img.shields.io/pypi/l/tigrbl_engine_inmemory)
 ![Version](https://img.shields.io/pypi/v/tigrbl_engine_inmemory)
 
