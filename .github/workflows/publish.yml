@@ -308,7 +308,7 @@ jobs:
             exit 0
           fi
 
-          for version in 3.10 3.11 3.12 3.13; do
+          for version in 3.10 3.11 3.12 3.13 3.14; do
             echo "Running ${package_dir}/tests under Python ${version}"
             uv run \
               --isolated \
