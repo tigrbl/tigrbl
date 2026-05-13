@@ -297,7 +297,7 @@ jobs:
           --package "${{ matrix.package }}"
           --out-dir "dist/${{ matrix.package }}"
 
-      - name: Test package in isolated uv environment (Python 3.10)
+      - name: Test package in isolated uv environments
         shell: bash
         run: |
           set -euo pipefail
@@ -307,67 +307,17 @@ jobs:
             echo "No package-local tests found at ${package_dir}/tests"
             exit 0
           fi
-          uv run \
-            --isolated \
-            --package "${{ matrix.package }}" \
-            --group dev \
-            --frozen \
-            --python "3.10" \
-            python -m pytest "${package_dir}/tests"
 
-      - name: Test package in isolated uv environment (Python 3.11)
-        shell: bash
-        run: |
-          set -euo pipefail
-          package_dir="${{ matrix.path }}"
-          package_dir="${package_dir%/pyproject.toml}"
-          if [[ ! -d "${package_dir}/tests" ]]; then
-            echo "No package-local tests found at ${package_dir}/tests"
-            exit 0
-          fi
-          uv run \
-            --isolated \
-            --package "${{ matrix.package }}" \
-            --group dev \
-            --frozen \
-            --python "3.11" \
-            python -m pytest "${package_dir}/tests"
-
-      - name: Test package in isolated uv environment (Python 3.12)
-        shell: bash
-        run: |
-          set -euo pipefail
-          package_dir="${{ matrix.path }}"
-          package_dir="${package_dir%/pyproject.toml}"
-          if [[ ! -d "${package_dir}/tests" ]]; then
-            echo "No package-local tests found at ${package_dir}/tests"
-            exit 0
-          fi
-          uv run \
-            --isolated \
-            --package "${{ matrix.package }}" \
-            --group dev \
-            --frozen \
-            --python "3.12" \
-            python -m pytest "${package_dir}/tests"
-
-      - name: Test package in isolated uv environment (Python 3.13)
-        shell: bash
-        run: |
-          set -euo pipefail
-          package_dir="${{ matrix.path }}"
-          package_dir="${package_dir%/pyproject.toml}"
-          if [[ ! -d "${package_dir}/tests" ]]; then
-            echo "No package-local tests found at ${package_dir}/tests"
-            exit 0
-          fi
-          uv run \
-            --isolated \
-            --package "${{ matrix.package }}" \
-            --group dev \
-            --frozen \
-            --python "3.13" \
-            python -m pytest "${package_dir}/tests"
+          for version in 3.10 3.11 3.12 3.13; do
+            echo "Running ${package_dir}/tests under Python ${version}"
+            uv run \
+              --isolated \
+              --package "${{ matrix.package }}" \
+              --group dev \
+              --frozen \
+              --python "${version}" \
+              python -m pytest "${package_dir}/tests"
+          done
 
       - name: Test package in isolated uv environment (Python 3.14)
         shell: bash
