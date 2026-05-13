@@ -55,6 +55,10 @@ from ._websocket import WebSocketRoute
 from ._table_registry import TableRegistry
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
+from tigrbl_concrete._mapping.appspec import (
+    install_appspec_engine_inventory,
+    lower_appspec_routers,
+)
 from tigrbl_core.config.constants import (
     DEFAULT_ROOT_RESPONSE,
     TIGRBL_DEFAULT_ROOT_ALIAS,
@@ -132,7 +136,6 @@ class TigrblApp(_App):
         spec_tables = tuple(spec.tables or ())
         app = cls(
             engine=spec.engine,
-            routers=tuple(spec.routers or ()),
             jsonrpc_prefix=spec.jsonrpc_prefix,
             system_prefix=spec.system_prefix,
             title=spec.title,
@@ -140,7 +143,15 @@ class TigrblApp(_App):
             lifespan=spec.lifespan,
             execution_backend=getattr(spec, "execution_backend", None),
         )
+        setattr(app, "_tigrbl_app_spec", spec)
+        setattr(app, "_tigrbl_path_specs", tuple())
+        setattr(app, "_tigrbl_docs_payloads", {})
+        setattr(app, "_tigrbl_docs_uix", {})
+        install_appspec_engine_inventory(app, spec)
+        existing_tables = dict(getattr(app, "tables", {}) or {})
         table_registry = TableRegistry(tables=spec_tables)
+        for name, table in existing_tables.items():
+            table_registry.setdefault(name, table)
         app._table_registry = table_registry
         app.tables = AttrDict(table_registry)
 
@@ -159,6 +170,7 @@ class TigrblApp(_App):
         )
         if has_jsonrpc_binding:
             app.mount_jsonrpc(prefix=spec.jsonrpc_prefix)
+        lower_appspec_routers(app, spec)
         return app
 
     def __init__(
@@ -847,6 +859,7 @@ class TigrblApp(_App):
                 protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
                 exchange=str(kwargs.get("exchange", "bidirectional_stream")),
                 framing=str(kwargs.get("framing", "text")),
+                subprotocols=tuple(kwargs.get("subprotocols", ())),
             )
             bump = getattr(self, "_bump_runtime_plan_revision", None)
             if callable(bump):

@@ -1,0 +1,130 @@
+schema_version: "0.2.0"
+kind: "spec"
+id: "spc:2150"
+number: 2150
+slug: "nested-appspec-path-and-docs-projection-contract"
+title: "Nested AppSpec Path and Docs Projection Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the next-slice contract for nested canonical AppSpec composition, path-scoped protocol bindings, and documentation projection selection."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define the next nested AppSpec, path-scoped binding, and docs projection slice."
+    at: "2026-05-09T16:16:45Z"
+  -
+    status: "draft"
+    note: "Expanded traceability to include corpus, projection, rejection, and parity scope targets."
+    at: "2026-05-09T16:40:20Z"
+  -
+    status: "draft"
+    note: "Linked engine inventory and transport matrix companion contracts."
+    at: "2026-05-09T20:35:00Z"
+  -
+    status: "draft"
+    note: "Linked websocket binding framing and subprotocol companion contract."
+    at: "2026-05-10T11:20:00Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the next-slice contract for nested canonical AppSpec composition, path-scoped protocol bindings, and documentation projection selection.
+
+  This contract is not only a validation shape. The nested canonical tree is the
+  authority that concrete lowering, docs emission, runtime compilation, and
+  conformance checks must consume.
+  
+  ## Contract
+  
+  1. `AppSpec` MUST be able to describe a nested canonical tree whose public address surfaces are under `RouterSpec.paths` or equivalent router-owned path composition.
+  2. `PathSpec` MUST represent concrete address paths, including REST resource paths, JSON-RPC dispatcher paths, WebSocket paths, WSS+JSON-RPC paths, SSE paths, WebTransport paths, docs UIX paths, docs payload paths, static file mounts, and nested app mounts.
+  3. `TableSpec` entries nested under a `PathSpec` MUST provide table/resource context for contained `OpSpec` entries without requiring `OpSpec.table` to hold a concrete runtime class.
+  4. Canonical `TableSpec` identity MUST be spec-native, using fields such as `name`, `resource`, and optional `model_ref`; concrete runtime model classes are lowerer inputs, not canonical identity.
+  5. `OpSpec` entries nested under a table or path inherit containing context and define semantic operation fields such as alias, target, arity, schemas, lifecycle defaults, and response policy.
+  6. `HttpRestBindingSpec` nested under an op selects the op by HTTP method at the containing `PathSpec` path.
+  7. `HttpJsonRpcBindingSpec` nested under an op selects the op by JSON-RPC method at the containing dispatcher `PathSpec` path; multiple table groups may share one dispatcher path.
+  8. WebSocket, WSS+JSON-RPC, SSE, and WebTransport bindings follow the same rule: the containing `PathSpec` owns the address path, and the binding owns the protocol-specific selector or stream semantics.
+  8a. `WsBindingSpec.subprotocols` owns WebSocket handshake negotiation, while `WsBindingSpec.framing` owns post-handshake message interpretation under `spc:2153`.
+  9. `DocsProjectionSpec` MUST define documentation inclusion policy separately from docs UIX and payload path exposure. It MUST be able to include and exclude by protocol family, router/path scope, table/resource scope, op alias/target, tags, visibility, and RPC method selector.
+  10. `DocsPayloadSpec` is a thin payload emission surface that names a documentation artifact kind such as OpenAPI, OpenRPC, AsyncAPI, or JSON Schema and points at a docs projection policy.
+  11. `DocsUixSpec` is a thin UIX surface that names a UI renderer such as Swagger, Lens, Redoc, Scalar, or equivalent and points at a docs payload path or docs projection policy.
+  12. Docs UIX paths and docs payload paths MUST be ordinary `PathSpec` entries. They are uniquely spec'd only when their renderer, payload kind, or projection policy differs.
+  13. OpenAPI emission MUST be selected from the canonical tree through a docs projection that includes appropriate HTTP/REST bindings and excludes non-selected protocol surfaces. Implementations MUST NOT treat incidental mounted runtime routes as the authority for OpenAPI inclusion.
+  14. OpenRPC emission MUST be selected from the canonical tree through a docs projection that includes appropriate JSON-RPC bindings and RPC method selectors, including shared dispatcher paths. Implementations MUST NOT infer OpenRPC inclusion only by walking runtime route attachment.
+  15. Concrete class conveniences, decorators, and imperative assembly helpers MAY remain non-flat and ergonomic, but their canonical output MUST normalize to this nested tree before docs generation, runtime compilation, or conformance checks consume it.
+  16. Concrete lowering MUST materialize runtime REST, JSON-RPC, stream, SSE, websocket, WebTransport, docs payload, docs UIX, static, and mount surfaces from this canonical tree. Reconstructing those surfaces from legacy model/router state after canonical lowering is invalid.
+  17. Engine binding MUST follow `spc:2151`: `AppSpec` owns named engine inventory, app/router/table/op scopes attach by engine name, and `PathSpec` does not own engine binding.
+  18. Transport scenario coverage MUST follow `spc:2152`: path kind, protocol binding, exchange, framing, docs projection, static, and mount coverage are tracked as an explicit matrix.
+  19. Websocket path kinds MUST converge with websocket binding declarations: generic websocket path kinds allow baseline websocket framing, JSON-RPC path kinds require JSON-RPC framing, and NDJSON path kinds remain planned/fail-closed until supported.
+  
+  ## Examples
+  
+  A table with default CRUD parity may lower into REST collection/member paths and a shared JSON-RPC dispatcher path:
+  
+  ```python
+  RouterSpec(
+      paths=(
+          PathSpec(
+              path=/widgets,
+              tables=(TableSpec(name=Widget, resource=widget, ops=(...REST collection ops...)),),
+          ),
+          PathSpec(
+              path=/widgets/{item_id},
+              tables=(TableSpec(name=Widget, resource=widget, ops=(...REST member ops...)),),
+          ),
+          PathSpec(
+              path=/rpc,
+              tables=(
+                  TableSpec(name=Widget, resource=widget, ops=(...JSON-RPC Widget ops...)),
+                  TableSpec(name=Account, resource=account, ops=(...JSON-RPC Account ops...)),
+              ),
+          ),
+      )
+  )
+  ```
+  
+  Docs paths are ordinary path entries whose inclusion policy is delegated to docs projections:
+  
+  ```python
+  PathSpec(
+      path=/openapi.json,
+      docs_payload=DocsPayloadSpec(kind=openapi, projection=public-http),
+  )
+  PathSpec(
+      path=/openrpc.json,
+      docs_payload=DocsPayloadSpec(kind=openrpc, projection=public-rpc),
+  )
+  PathSpec(
+      path=/docs,
+      docs_uix=DocsUixSpec(kind=swagger, payload_path=/openapi.json),
+  )
+  ```
+  
+  ## Traceability
+  
+  - ADRs: `adr:1129`, `adr:1130`, `adr:1052`, `adr:1080`, `adr:1014`, `adr:1051`
+  - Companion specs: `spc:2151`, `spc:2152`, `spc:2153`
+  - Defines features: `feat:nested-appspec-pathspec-composition-001`, `feat:path-scoped-protocol-binding-composition-001`, `feat:docs-projectionspec-contract-001`, `feat:docs-payload-projection-selection-001`, `feat:docs-uix-projection-selection-001`, `feat:shared-jsonrpc-dispatcher-table-crud-parity-001`, `feat:nested-appspec-multisurface-corpus-fixtures-001`, `feat:docs-projection-openapi-openrpc-selection-tests-001`, `feat:canonical-spec-concrete-class-rejection-001`, `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`, `feat:pathspec-engine-rejection-001`, `feat:docs-transport-projection-selection-001`, `feat:pathkind-websocket-binding-convergence-001`, `feat:docs-websocket-transport-projection-001`
+  
+  ## Verification Plan
+  
+  - Add positive corpus fixtures for multi-middleware, nested app, multi-table, REST, JSON-RPC, WSS+JSON-RPC, multiple SSE, WebTransport, docs UIX, docs payload, and static path surfaces.
+  - Add engine inventory fixtures through `spc:2151` to prove engine binding does not belong to `PathSpec`.
+  - Add transport matrix fixtures through `spc:2152` to prove every supported and planned/fail-closed transport scenario is explicit.
+  - Add websocket path kind convergence fixtures through `spc:2153` to prove websocket bindings and containing paths agree.
+  - Add negative corpus fixtures that reject concrete runtime model objects as canonical table/op identity in normalized specs.
+  - Add OpenAPI/OpenRPC projection tests proving docs inclusion is determined by `DocsProjectionSpec`, not by incidental mounted paths.
+  - Add shared JSON-RPC dispatcher tests proving multiple tables can share one dispatcher path while preserving default CRUD parity with REST paths.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1129"
+  - "adr:1130"
+  - "adr:1052"
+  - "adr:1080"
+  - "adr:1014"
+  - "adr:1051"
+  - "adr:1131"

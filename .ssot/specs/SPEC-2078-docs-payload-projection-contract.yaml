@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.3.0"
 kind: "spec"
 id: "spc:2078"
 number: 2078
@@ -13,13 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Updated docs payload projection with schema and payload evidence."
     at: "2026-04-21T07:43:02Z"
-  -
-    status: "draft"
     note: "Updated docs payload projection with schema and payload evidence."
+    status: "draft"
+  -
     at: "2026-04-21T08:15:24Z"
+    note: "Updated docs payload projection with schema and payload evidence."
+    status: "draft"
 references: []
 body: |-
   ## Decision
@@ -28,7 +28,9 @@ body: |-
   2. Payload generation MUST be deterministic for equivalent canonical inputs.
   3. Security, operation visibility, request/response schema references, and status/error metadata emitted in payloads are normative.
   4. Payload projections MUST derive from canonical metadata ownership boundaries.
-  5. Bulk operation schemas, clear response schemas, schema examples, and client-facing request/response schema objects are part of the payload projection contract.
+  5. Payload inclusion MUST be selected from canonical docs projection policy rather than inferred only from mounted runtime routes or incidental docs endpoints.
+  6. Docs payload paths such as `/openapi.json` and `/openrpc.json` MAY be ordinary canonical path nodes, but the payload contract is still governed by the selected docs projection rather than by path presence alone.
+  7. Bulk operation schemas, clear response schemas, schema examples, and client-facing request/response schema objects are part of the payload projection contract.
   
   ## Integration Coverage
   
@@ -40,7 +42,7 @@ body: |-
   ## Traceability
   
   - ADRs: `adr:1080`, `adr:1030`, `adr:1014`
-  - Related specs: `spc:2069`, `spc:2080`
+  - Related specs: `spc:2069`, `spc:2080`, `spc:2150`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1080"

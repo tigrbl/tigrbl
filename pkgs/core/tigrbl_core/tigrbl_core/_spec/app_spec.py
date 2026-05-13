@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional, Sequence
 
-from .._spec.engine_spec import EngineCfg
+from .._spec.engine_spec import EngineCfg, EngineSpec
 from .._spec.monotone import as_tuple, merge_mro_sequence_attr
 from .._spec.response_spec import ResponseSpec
 from .serde import SerdeMixin
@@ -47,6 +47,8 @@ def normalize_app_spec(spec: "AppSpec") -> "AppSpec":
         version=str(spec.version or "0.1.0"),
         execution_backend=str(getattr(spec, "execution_backend", None) or "auto"),
         engine=spec.engine,
+        engine_name=spec.engine_name,
+        engines=_seqify(spec.engines),
         routers=routers,
         ops=ops,
         tables=tables,
@@ -73,6 +75,8 @@ class AppSpec(SerdeMixin):
     version: str = "0.1.0"
     execution_backend: str = "auto"
     engine: Optional[EngineCfg] = None
+    engine_name: str | None = None
+    engines: Sequence[EngineSpec] = field(default_factory=tuple)
 
     # NEW: multi-Router composition (store Router classes or instances)
     routers: Sequence[Any] = field(default_factory=tuple)
@@ -98,6 +102,74 @@ class AppSpec(SerdeMixin):
     middlewares: Sequence[Any] = field(default_factory=tuple)
     lifespan: Optional[Callable[..., Any]] = None
 
+    def __post_init__(self) -> None:
+        self.engines = _seqify(self.engines)
+        self.routers = _seqify(self.routers)
+        self.ops = _seqify(self.ops)
+        self.tables = _seqify(self.tables)
+        self.schemas = _seqify(self.schemas)
+        self.hooks = _seqify(self.hooks)
+        self.security_deps = _seqify(self.security_deps)
+        self.deps = _seqify(self.deps)
+        self.middlewares = _seqify(self.middlewares)
+
+        validate_engine_inventory(self.engines)
+        validate_engine_name_binding(
+            self.engine_name,
+            self.engines,
+            scope="AppSpec.engine_name",
+        )
+        for router in tuple(self.routers or ()):
+            validate_engine_name_binding(
+                getattr(router, "engine_name", None),
+                self.engines,
+                scope="RouterSpec.engine_name",
+            )
+            for path in tuple(getattr(router, "paths", ()) or ()):
+                for table in tuple(getattr(path, "tables", ()) or ()):
+                    validate_engine_name_binding(
+                        getattr(table, "engine_name", None),
+                        self.engines,
+                        scope="TableSpec.engine_name",
+                    )
+                    for op in tuple(getattr(table, "ops", ()) or ()):
+                        validate_engine_name_binding(
+                            getattr(op, "engine_name", None),
+                            self.engines,
+                            scope="OpSpec.engine_name",
+                        )
+                for op in tuple(getattr(path, "ops", ()) or ()):
+                    validate_engine_name_binding(
+                        getattr(op, "engine_name", None),
+                        self.engines,
+                        scope="OpSpec.engine_name",
+                    )
+            for table in tuple(getattr(router, "tables", ()) or ()):
+                validate_engine_name_binding(
+                    getattr(table, "engine_name", None),
+                    self.engines,
+                    scope="TableSpec.engine_name",
+                )
+            for op in tuple(getattr(router, "ops", ()) or ()):
+                validate_engine_name_binding(
+                    getattr(op, "engine_name", None),
+                    self.engines,
+                    scope="OpSpec.engine_name",
+                )
+            _validate_router_docs_tree(router)
+        for table in tuple(self.tables or ()):
+            validate_engine_name_binding(
+                getattr(table, "engine_name", None),
+                self.engines,
+                scope="TableSpec.engine_name",
+            )
+        for op in tuple(self.ops or ()):
+            validate_engine_name_binding(
+                getattr(op, "engine_name", None),
+                self.engines,
+                scope="OpSpec.engine_name",
+            )
+
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "AppSpec":
         return super().from_dict(payload)
@@ -109,6 +181,8 @@ class AppSpec(SerdeMixin):
         version: Any = sentinel
         execution_backend: Any = sentinel
         engine: Any | None = sentinel  # type: ignore[assignment]
+        engine_name: Any | None = sentinel
+        engines: Any | None = sentinel
         response: Any = sentinel
         jsonrpc_prefix: Any = sentinel
         system_prefix: Any = sentinel
@@ -126,6 +200,10 @@ class AppSpec(SerdeMixin):
                 execution_backend = base.__dict__["EXECUTION_BACKEND"]
             if "ENGINE" in base.__dict__ and engine is sentinel:
                 engine = base.__dict__["ENGINE"]
+            if "ENGINE_NAME" in base.__dict__ and engine_name is sentinel:
+                engine_name = base.__dict__["ENGINE_NAME"]
+            if "ENGINES" in base.__dict__ and engines is sentinel:
+                engines = base.__dict__["ENGINES"]
             if "RESPONSE" in base.__dict__ and response is sentinel:
                 response = base.__dict__["RESPONSE"]
             if "JSONRPC_PREFIX" in base.__dict__ and jsonrpc_prefix is sentinel:
@@ -143,6 +221,10 @@ class AppSpec(SerdeMixin):
             execution_backend = "auto"
         if engine is sentinel:
             engine = None
+        if engine_name is sentinel:
+            engine_name = None
+        if engines is sentinel:
+            engines = ()
         if response is sentinel:
             response = None
         if jsonrpc_prefix is sentinel:
@@ -160,6 +242,8 @@ class AppSpec(SerdeMixin):
             version=version,
             execution_backend=execution_backend,
             engine=engine,
+            engine_name=engine_name,
+            engines=tuple(engines or ()),
             routers=tuple(
                 merge_seq_attr(
                     app,
@@ -189,6 +273,8 @@ class AppSpec(SerdeMixin):
                 version=spec.version,
                 execution_backend=spec.execution_backend,
                 engine=spec.engine,
+                engine_name=spec.engine_name,
+                engines=tuple(spec.engines or ()),
                 routers=tuple(spec.routers or ()),
                 ops=tuple(spec.ops or ()),
                 tables=tuple(spec.tables or ()),
@@ -203,3 +289,58 @@ class AppSpec(SerdeMixin):
                 lifespan=spec.lifespan,
             )
         )
+
+
+def validate_engine_inventory(engines: Sequence[EngineSpec]) -> None:
+    names: set[str] = set()
+    for engine in tuple(engines or ()):
+        if not isinstance(engine, EngineSpec):
+            raise TypeError(
+                f"AppSpec.engines entries must be EngineSpec; got {type(engine).__name__}."
+            )
+        if not engine.name:
+            raise ValueError("AppSpec.engines entries must declare EngineSpec.name.")
+        if engine.name in names:
+            raise ValueError(f"Duplicate EngineSpec.name in AppSpec.engines: {engine.name!r}.")
+        names.add(engine.name)
+
+
+def validate_engine_name_binding(
+    engine_name: str | None,
+    engines: Sequence[EngineSpec],
+    *,
+    scope: str,
+) -> None:
+    if engine_name is None:
+        return
+    names = {engine.name for engine in tuple(engines or ())}
+    if engine_name not in names:
+        raise ValueError(f"{scope} references unknown engine name {engine_name!r}.")
+
+
+def resolve_engine_name(
+    app: AppSpec,
+    *,
+    router: Any | None = None,
+    table: Any | None = None,
+    op: Any | None = None,
+) -> str | None:
+    for scope in (op, table, router, app):
+        name = getattr(scope, "engine_name", None)
+        if name:
+            validate_engine_name_binding(
+                name,
+                app.engines,
+                scope=f"{scope.__class__.__name__}.engine_name",
+            )
+            return str(name)
+    return None
+
+
+def _validate_router_docs_tree(router: Any) -> None:
+    paths = tuple(getattr(router, "paths", ()) or ())
+    if not paths:
+        return
+    from .docs_spec import validate_docs_tree
+
+    validate_docs_tree(paths)

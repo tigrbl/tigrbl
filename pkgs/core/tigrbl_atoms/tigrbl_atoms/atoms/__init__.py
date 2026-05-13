@@ -21,6 +21,10 @@ from .ingress import REGISTRY as _INGRESS
 from .dispatch import REGISTRY as _DISPATCH
 from .sys import REGISTRY as _SYS
 from .err import REGISTRY as _ERR
+from .transport import REGISTRY as _TRANSPORT
+from .intent import REGISTRY as _INTENT
+from .batch import REGISTRY as _BATCH
+from .fanout import REGISTRY as _FANOUT
 
 # Runner signature: (obj|None, ctx) -> None
 RunFn = Callable[[Optional[object], Any], Any]
@@ -38,7 +42,7 @@ def _add_bulk(source: Dict[Tuple[str, str], Tuple[str, RunFn]]) -> None:
             logger.error("Duplicate atom registration attempted: %s", key)
             raise RuntimeError(f"Duplicate atom registration: {key!r}")
         anchor, fn = val
-        if not _ev.is_valid_event(anchor):
+        if not (_ev.is_valid_event(anchor) or anchor in _ev.PHASES):
             logger.error("Atom %s declares unknown anchor %s", key, anchor)
             raise ValueError(f"Atom {key!r} declares unknown anchor {anchor!r}")
         REGISTRY[key] = (anchor, fn)
@@ -56,9 +60,13 @@ _add_bulk(_WIRE)
 _add_bulk(_RESPONSE)
 _add_bulk(_DEP)
 _add_bulk(_INGRESS)
+_add_bulk(_TRANSPORT)
 _add_bulk(_DISPATCH)
+_add_bulk(_INTENT)
 _add_bulk(_EGRESS)
 _add_bulk(_SYS)
+_add_bulk(_BATCH)
+_add_bulk(_FANOUT)
 _add_bulk(_ERR)
 
 logger.info("Loaded %d runtime atoms", len(REGISTRY))

@@ -18,7 +18,17 @@ Exchange = Literal[
     "bidirectional_stream",
     "fire_and_forget",
 ]
-Framing = Literal["json", "jsonrpc", "sse", "stream", "text", "bytes", "webtransport"]
+Framing = Literal[
+    "json",
+    "jsonrpc",
+    "ndjson",
+    "sse",
+    "stream",
+    "text",
+    "binary",
+    "bytes",
+    "webtransport",
+]
 
 
 @dataclass(frozen=True, slots=True)
@@ -64,6 +74,21 @@ class WsBindingSpec(SerdeMixin):
     subprotocols: tuple[str, ...] = ()
     exchange: Exchange = "bidirectional_stream"
     framing: Framing = "text"
+
+    def __post_init__(self) -> None:
+        subprotocols = tuple(str(item).lower() for item in self.subprotocols)
+        if self.framing == "jsonrpc":
+            if not subprotocols:
+                subprotocols = ("jsonrpc",)
+            elif "jsonrpc" not in subprotocols:
+                raise ValueError(
+                    "WsBindingSpec framing='jsonrpc' requires subprotocols to include 'jsonrpc'."
+                )
+        object.__setattr__(self, "subprotocols", subprotocols)
+        if self.framing == "ndjson":
+            raise ValueError(
+                "WsBindingSpec framing='ndjson' is planned but not implemented; fail closed."
+            )
 
 
 @dataclass(frozen=True, slots=True)

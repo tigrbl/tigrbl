@@ -14,6 +14,7 @@ from tigrbl_atoms import StepFn
 from tigrbl_atoms.atoms.sys.phase_db import run as _bind_phase_db
 from tigrbl_atoms.phases import phase_info
 from tigrbl_atoms.types import EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
+from tigrbl_core.config.resolver import resolve_cfg
 from tigrbl_typing.phases import normalize_phase
 
 from . import events as _ev
@@ -24,7 +25,7 @@ from .atoms import (
     _is_persistent,
     _wrap_atom,
 )
-from .models import HotOpPlan, KernelPlan, OpKey, OpView, PackedKernel
+from .models import BatchOpPlan, HotOpPlan, KernelPlan, OpKey, OpView, PackedKernel
 from .measure import (
     load_packed_kernel_hot_sections,
     measure_packed_kernel,
@@ -121,6 +122,11 @@ def _phase_stamp(self: Any, model: type, alias: str) -> tuple[Any, ...]:
     specs = getattr(getattr(model, "ops", SimpleNamespace()), "by_alias", {})
     sp_list = specs.get(alias) or ()
     sp = sp_list[0] if sp_list else None
+    if sp is None:
+        sp = next(
+            (item for item in _opspecs(model) if getattr(item, "alias", None) == alias),
+            None,
+        )
     phase_lists = tuple(
         (
             phase,
@@ -185,6 +191,75 @@ def _prepend_phase_db_binding(
         chains[phase] = [_phase_db_step(), *steps]
 
 
+def _batch_policy_for_op(sp: Any | None, *, alias: str, target: str, persistent: bool) -> Mapping[str, Any]:
+    cfg = resolve_cfg(op=alias, opspec=sp).as_dict()
+    batch = cfg.get("batch")
+    if not isinstance(batch, Mapping):
+        return {"enabled": False}
+    policy = dict(batch)
+    allow_reads = bool(policy.get("allow_reads", False))
+    if target in {"read", "list"} and not allow_reads:
+        policy["enabled"] = False
+    if not persistent and not allow_reads:
+        policy["enabled"] = False
+    return policy
+
+
+def _is_batch_domain_run(run: Any) -> bool:
+    mod = getattr(run, "__module__", "") or ""
+    parts = mod.split(".")
+    try:
+        index = parts.index("atoms")
+    except ValueError:
+        return False
+    domain = parts[index + 1] if index + 1 < len(parts) else None
+    return domain in {"transport", "intent", "batch", "fanout"}
+
+
+def _batch_op_plan_from_policy(policy: Mapping[str, Any] | None) -> BatchOpPlan:
+    policy = policy if isinstance(policy, Mapping) else {}
+
+    def _int(name: str, default: int) -> int:
+        try:
+            return max(0, int(policy.get(name, default)))
+        except Exception:
+            return default
+
+    return BatchOpPlan(
+        enabled=bool(policy.get("enabled", False)),
+        max_size=_int("max_size", 64),
+        max_bytes=_int("max_bytes", 1_048_576),
+        max_delay_ms=_int("max_delay_ms", 1),
+        admission_timeout_ms=_int("admission_timeout_ms", 5),
+        conflict_policy=str(policy.get("conflict_policy", "single_fallback")),
+        overflow_policy=str(policy.get("overflow_policy", "backpressure")),
+        result_fanout=str(policy.get("result_fanout", "by_admission")),
+        allow_reads=bool(policy.get("allow_reads", False)),
+        max_queue_depth=_int("max_queue_depth", 1024),
+        max_in_flight=_int("max_in_flight", 16),
+    )
+
+
+def _batch_policy_for_meta(meta: Any) -> BatchOpPlan:
+    model = getattr(meta, "model", None)
+    alias = str(getattr(meta, "alias", "") or "")
+    target = str(getattr(meta, "target", alias) or alias).lower()
+    sp = next(
+        (item for item in _opspecs(model) if getattr(item, "alias", None) == alias),
+        None,
+    )
+    persist_policy = getattr(sp, "persist", "default")
+    persistent = persist_policy != "skip" and target not in {"read", "list"}
+    return _batch_op_plan_from_policy(
+        _batch_policy_for_op(
+            sp,
+            alias=alias,
+            target=target,
+            persistent=persistent,
+        )
+    )
+
+
 def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
     from .core import DEFAULT_PHASE_ORDER
 
@@ -201,11 +276,22 @@ def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
     specs = getattr(getattr(model, "ops", SimpleNamespace()), "by_alias", {})
     sp_list = specs.get(alias) or ()
     sp = sp_list[0] if sp_list else None
+    if sp is None:
+        sp = next(
+            (item for item in _opspecs(model) if getattr(item, "alias", None) == alias),
+            None,
+        )
     target = (getattr(sp, "target", alias) or "").lower()
     persist_policy = getattr(sp, "persist", "default")
     persistent = (
         persist_policy != "skip" and target not in {"read", "list"}
     ) or _is_persistent(chains)
+    batch_policy = _batch_policy_for_op(
+        sp,
+        alias=alias,
+        target=target,
+        persistent=persistent,
+    )
 
     try:
         _inject_atoms(
@@ -213,6 +299,7 @@ def _build_op(self, model: type, alias: str) -> Dict[str, List[StepFn]]:
             self._atoms() or (),
             persistent=persistent,
             target=target,
+            batch_policy=batch_policy,
         )
     except Exception:
         logger.exception(
@@ -240,6 +327,8 @@ def _build_ingress(self, app: Any) -> Dict[str, List[StepFn]]:
     order = {name: idx for idx, name in enumerate(_ev.all_events_ordered())}
     ingress_atoms: Dict[str, List[tuple[str, Any]]] = {}
     for anchor, run in self._atoms() or ():
+        if _is_batch_domain_run(run):
+            continue
         if not _ev.is_valid_event(anchor):
             continue
         phase = _ev.phase_for_event(anchor)
@@ -262,6 +351,8 @@ def _build_egress(self, app: Any) -> Dict[str, List[StepFn]]:
     order = {name: idx for idx, name in enumerate(_ev.all_events_ordered())}
     egress_atoms: Dict[str, List[tuple[str, Any]]] = {}
     for anchor, run in self._atoms() or ():
+        if _is_batch_domain_run(run):
+            continue
         if not _ev.is_valid_event(anchor):
             continue
         phase = _ev.phase_for_event(anchor)
@@ -939,8 +1030,18 @@ def _pack_kernel_plan(
     error_profile_segment_refs: list[int] = []
     program_error_profile_ids: list[int] = []
     program_hot_runner_ids: list[int] = []
+    batch_policy_index: dict[BatchOpPlan, int] = {}
+    batch_policy_table: list[BatchOpPlan] = []
+    program_batch_policy_ids: list[int] = []
     for program_id, _meta in enumerate(plan.opmeta):
         meta = plan.opmeta[program_id]
+        batch_plan = _batch_policy_for_meta(meta)
+        batch_policy_id = batch_policy_index.get(batch_plan)
+        if batch_policy_id is None:
+            batch_policy_id = len(batch_policy_table)
+            batch_policy_index[batch_plan] = batch_policy_id
+            batch_policy_table.append(batch_plan)
+        program_batch_policy_ids.append(batch_policy_id)
         seg_offset = op_segment_offsets[program_id]
         seg_length = op_segment_lengths[program_id]
         by_phase: dict[str, list[int]] = {}
@@ -1106,6 +1207,8 @@ def _pack_kernel_plan(
                 program_hot_runner_id=hot_runner_id,
                 param_shape_id=param_shape_id,
                 transport_kind_id=transport_kind_id,
+                batch_policy_id=batch_policy_id,
+                batch=batch_plan,
                 compiled_param_phase_steps=compiled_param_phase_steps,
                 websocket_path=websocket_fast_path[0] if websocket_fast_path is not None else "",
                 websocket_protocol=websocket_fast_path[1] if websocket_fast_path is not None else "",
@@ -1142,6 +1245,8 @@ def _pack_kernel_plan(
         param_shape_header_hashes=tuple(param_shape_header_hashes),
         program_param_shape_ids=tuple(program_param_shape_ids),
         program_transport_kind_ids=tuple(program_transport_kind_ids),
+        batch_policy_table=tuple(batch_policy_table),
+        program_batch_policy_ids=tuple(program_batch_policy_ids),
         segment_offsets=tuple(segment_offsets),
         segment_lengths=tuple(segment_lengths),
         segment_step_ids=tuple(segment_step_ids),

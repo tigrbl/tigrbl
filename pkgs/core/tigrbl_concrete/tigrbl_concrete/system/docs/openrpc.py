@@ -6,9 +6,13 @@ from pydantic import BaseModel
 
 from tigrbl_concrete._concrete._response import Response
 from tigrbl_core._spec import OpSpec
+from tigrbl_core._spec.binding_spec import HttpJsonRpcBindingSpec
 from .openapi.helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
+)
+from tigrbl_concrete._mapping.appspec.docs_lowering import (
+    selected_projection_entries_if_configured,
 )
 from .surface import auth_surface, op_surface
 
@@ -21,7 +25,9 @@ def _with_leading_slash(path: str) -> str:
 
 def _jsonrpc_path(router: Any) -> str:
     configured = getattr(router, "jsonrpc_prefix", None) or "/rpc"
-    return _with_leading_slash(str(configured)).rstrip("/") or "/"
+    base = _with_leading_slash(str(configured)).rstrip("/") or "/"
+    route_prefix = str(getattr(router, "_tigrbl_route_prefix", "") or "").rstrip("/")
+    return f"{route_prefix}{base}" or "/"
 
 
 def _iter_attached_routers(router: Any) -> list[Any]:
@@ -166,7 +172,36 @@ def _describe_method(model: type, spec: OpSpec) -> str | None:
     return None
 
 
-def build_openrpc_spec(router: Any, request: Any | None = None) -> JsonObject:
+def _table_name(model: type) -> str:
+    return getattr(model, "__name__", "table")
+
+
+def _selected_openrpc_methods(
+    router: Any,
+    *,
+    docs_path: str | None,
+) -> set[tuple[str, str, str]] | None:
+    selected = selected_projection_entries_if_configured(
+        router,
+        docs_path=docs_path,
+        payload_kind="openrpc",
+    )
+    if selected is None:
+        return None
+    if not selected:
+        return set()
+    return {
+        (entry.path, str(entry.table or ""), str(entry.op or ""))
+        for entry in selected
+    }
+
+
+def build_openrpc_spec(
+    router: Any,
+    request: Any | None = None,
+    *,
+    docs_path: str | None = None,
+) -> JsonObject:
     metadata_router = _metadata_router(router)
     info_title = (
         getattr(metadata_router, "title", None)
@@ -188,6 +223,7 @@ def build_openrpc_spec(router: Any, request: Any | None = None) -> JsonObject:
     components = spec["components"]["schemas"]
     security_schemes = spec["components"]["securitySchemes"]
     methods: List[JsonObject] = []
+    selected_keys = _selected_openrpc_methods(router, docs_path=docs_path)
 
     for model in _iter_models(router):
         for op in _iter_ops(model):
@@ -195,6 +231,29 @@ def build_openrpc_spec(router: Any, request: Any | None = None) -> JsonObject:
                 continue
             if _is_docs_only_op(op):
                 continue
+            if selected_keys is not None:
+                rpc_bindings = tuple(
+                    binding
+                    for binding in tuple(getattr(op, "bindings", ()) or ())
+                    if isinstance(binding, HttpJsonRpcBindingSpec)
+                )
+                if not rpc_bindings:
+                    continue
+                selected = False
+                for binding in rpc_bindings:
+                    endpoint = str(getattr(binding, "endpoint", "") or "")
+                    if endpoint in {"", "default"}:
+                        endpoint = getattr(router, "jsonrpc_prefix", "/rpc")
+                    key = (
+                        _with_leading_slash(endpoint),
+                        _table_name(model),
+                        str(getattr(op, "alias", "")),
+                    )
+                    if key in selected_keys:
+                        selected = True
+                        break
+                if not selected:
+                    continue
 
             method: JsonObject = {"name": f"{model.__name__}.{op.alias}"}
             description = _describe_method(model, op)
@@ -252,7 +311,7 @@ def mount_openrpc(
     setattr(router, "openrpc_path", normalized_path)
 
     def _openrpc_endpoint(request: Any) -> Response:
-        return Response.json(build_openrpc_spec(router, request=request))
+        return Response.json(build_openrpc_spec(router, request=request, docs_path=normalized_path))
 
     router.add_route(
         normalized_path,

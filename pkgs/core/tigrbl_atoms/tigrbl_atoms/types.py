@@ -284,6 +284,95 @@ class BaseCtx(Generic[S, E]):
             return BaseCtx.promote.__get__(self, type(self))
         return object.__getattribute__(self, name)
 
+    @staticmethod
+    def _payload_source(value: object) -> object:
+        current = value
+        for _ in range(12):
+            if current is None:
+                return current
+            if isinstance(current, Mapping):
+                nested_item = current.get("item")
+                if nested_item is not None and nested_item is not current:
+                    current = nested_item
+                    continue
+                nested_result = current.get("result")
+                if nested_result is not None and nested_result is not current:
+                    current = nested_result
+                    continue
+                return current
+            direct = getattr(current, "result", None)
+            if direct is not None and direct is not current:
+                current = direct
+                continue
+            payload = getattr(current, "response_payload", None)
+            if payload is not None and payload is not current:
+                current = payload
+                continue
+            response = getattr(current, "response", None)
+            if response is not None:
+                response_result = getattr(response, "result", None)
+                if response_result is not None and response_result is not current:
+                    current = response_result
+                    continue
+            bag = getattr(current, "bag", None)
+            if isinstance(bag, Mapping):
+                nested = bag.get("result")
+                if nested is not None and nested is not current:
+                    current = nested
+                    continue
+            return current
+        return current
+
+    def _field_names(self) -> frozenset[str]:
+        return frozenset(field.name for field in fields(type(self)))
+
+    def _payload_target(self) -> object:
+        target = BaseCtx._payload_source(self)
+        return self if target is None else target
+
+    def __getitem__(self, key: str) -> object:
+        if key in self._field_names():
+            return getattr(self, key)
+        if key in self.bag:
+            return self.bag[key]
+        target = self._payload_target()
+        if target is not self:
+            if isinstance(target, Mapping):
+                return target[key]
+            if hasattr(target, key):
+                return getattr(target, key)
+        raise KeyError(key)
+
+    def __setitem__(self, key: str, value: object) -> None:
+        if key in self._field_names():
+            setattr(self, key, value)
+            return
+        target = self._payload_target()
+        if target is not self:
+            if isinstance(target, Mapping):
+                try:
+                    target[key] = value  # type: ignore[index]
+                    return
+                except Exception:
+                    pass
+            if hasattr(target, key):
+                setattr(target, key, value)
+                return
+        self.bag[key] = value
+
+    def get(self, key: str, default: object = None) -> object:
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def setdefault(self, key: str, default: object = None) -> object:
+        try:
+            return self[key]
+        except KeyError:
+            self[key] = default
+            return default
+
     def promote(self, cls: type[U], /, **updates: object) -> U:
         if not is_dataclass(cls):
             raise TypeError(f"promote target must be a dataclass type, got {cls!r}")

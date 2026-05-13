@@ -178,6 +178,32 @@ class Engine(EngineBase):
     def raw(self) -> Tuple[Any, SessionFactory]:
         return self.provider.ensure()
 
+    async def _delegate_batch_session_method(self, name: str, *args: Any) -> Any:
+        if self.is_async:
+            async with self.asession() as db:
+                fn = getattr(db, name, None)
+                if not callable(fn):
+                    raise NotImplementedError(
+                        f"engine session does not implement {name}"
+                    )
+                rv = fn(*args)
+                return await rv if inspect.isawaitable(rv) else rv
+
+        with self.session() as db:
+            fn = getattr(db, name, None)
+            if not callable(fn):
+                raise NotImplementedError(f"engine session does not implement {name}")
+            rv = fn(*args)
+            return await rv if inspect.isawaitable(rv) else rv
+
+    async def _executeloop_impl(self, statements: Any) -> Any:
+        return await self._delegate_batch_session_method("executeloop", statements)
+
+    async def _executemany_impl(self, stmt: Any, parameter_sets: Any) -> Any:
+        return await self._delegate_batch_session_method(
+            "executemany", stmt, parameter_sets
+        )
+
     @staticmethod
     def collect(
         *,

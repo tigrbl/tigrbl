@@ -62,8 +62,11 @@ class TableSpec(SerdeMixin):
     """
 
     model: Any | None = None  # ORM class
+    name: str | None = None
+    resource: str | None = None
     model_ref: str | None = None  # import string (e.g. "mypkg.models:Model")
     engine: Optional[EngineCfg] = None
+    engine_name: str | None = None
 
     # NEW
     ops: Sequence[Any] = field(default_factory=tuple)  # OpSpec or shorthands
@@ -122,6 +125,7 @@ class TableSpec(SerdeMixin):
         return cls(
             model=model,
             engine=resolve_table_engine(model),
+            engine_name=getattr(model, "ENGINE_NAME", None),
             ops=merge_seq_attr(model, "OPS", include_inherited=True),
             columns=merge_seq_attr(model, "COLUMNS", include_inherited=True),
             schemas=merge_seq_attr(model, "SCHEMAS", include_inherited=True),

@@ -333,6 +333,7 @@ def initialize(
                     sqlite_attachments=sqlite_attachments,
                     tables=active_tables,
                 )
+                _resolver.mark_schema_ready(active_provider)
             finally:
                 _close_without_loop(db)
         setattr(obj, "_ddl_executed", True)
@@ -357,6 +358,7 @@ def initialize(
                         sqlite_attachments=sqlite_attachments,
                         tables=active_tables,
                     )
+                    _resolver.mark_schema_ready(active_provider)
                 finally:
                     pending = _close_with_loop(db)
                     if pending is not None:
@@ -378,6 +380,7 @@ def initialize(
                                 tables=active_tables,
                             )
                         )
+                        _resolver.mark_schema_ready(active_provider)
                         break
                 else:
                     gen = active_provider.get_db()
@@ -401,6 +404,7 @@ def initialize(
                                 sqlite_attachments=sqlite_attachments,
                                 tables=active_tables,
                             )
+                        _resolver.mark_schema_ready(active_provider)
                     finally:
                         try:
                             next(gen)

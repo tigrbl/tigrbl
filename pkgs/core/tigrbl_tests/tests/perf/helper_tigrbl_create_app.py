@@ -3,7 +3,7 @@ from __future__ import annotations
 import inspect
 import sqlite3
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from tigrbl import TableBase, TigrblApp
 from tigrbl._spec import HttpJsonRpcBindingSpec, HttpRestBindingSpec, OpSpec
@@ -11,7 +11,11 @@ from tigrbl.factories.engine import sqlitef
 from tigrbl.types import Column, Integer, String
 
 
-def _build_benchmark_item_model() -> type[TableBase]:
+def _build_benchmark_item_model(
+    *, batch: Mapping[str, Any] | None = None
+) -> type[TableBase]:
+    batch_policy = dict(batch) if isinstance(batch, Mapping) else None
+
     class TigrblBenchmarkItem(TableBase):
         __tablename__ = "benchmark_item"
         __allow_unmapped__ = True
@@ -23,6 +27,7 @@ def _build_benchmark_item_model() -> type[TableBase]:
             OpSpec(
                 alias="BenchmarkItem.create",
                 target="create",
+                batch=batch_policy,
                 bindings=(
                     HttpRestBindingSpec(
                         proto="http.rest",
@@ -44,6 +49,28 @@ def create_tigrbl_app(db_path: Path) -> TigrblApp:
     """Build a Tigrbl app with a single create command endpoint."""
     app = TigrblApp(engine=sqlitef(str(db_path), async_=False), mount_system=False)
     benchmark_model = _build_benchmark_item_model()
+    app.include_table(benchmark_model)
+    return app
+
+
+def create_tigrbl_batch_app(
+    db_path: Path,
+    *,
+    max_size: int = 25,
+    max_delay_ms: int = 1,
+) -> TigrblApp:
+    """Build the create benchmark app with batch policy enabled on create."""
+    app = TigrblApp(engine=sqlitef(str(db_path), async_=False), mount_system=False)
+    benchmark_model = _build_benchmark_item_model(
+        batch={
+            "enabled": True,
+            "max_size": max_size,
+            "max_delay_ms": max_delay_ms,
+            "conflict_policy": "single_fallback",
+            "overflow_policy": "backpressure",
+            "result_fanout": "by_admission",
+        }
+    )
     app.include_table(benchmark_model)
     return app
 

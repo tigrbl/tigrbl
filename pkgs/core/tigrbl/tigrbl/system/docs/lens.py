@@ -16,7 +16,8 @@ def _with_leading_slash(path: str) -> str:
 
 def build_lens_html(router: Any, request: Any, *, spec_path: str) -> str:
     base = (getattr(request, "script_name", "") or "").rstrip("/")
-    spec_url = f"{base}{_with_leading_slash(spec_path)}"
+    route_prefix = str(getattr(router, "_tigrbl_route_prefix", "") or "").rstrip("/")
+    spec_url = f"{base}{route_prefix}{_with_leading_slash(spec_path)}"
     quoted_spec_url = quote(spec_url, safe="/:?=&%")
     return f"""<!doctype html>
 <html>

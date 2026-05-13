@@ -34,10 +34,6 @@ def test_router_exposes_event_alias_lists() -> None:
 
 
 @pytest.mark.asyncio
-@pytest.mark.xfail(
-    raises=AttributeError,
-    reason="TigrblApp no longer exposes REST verb decorator helpers such as .get.",
-)
 async def test_dependency_overrides_provider_is_applied_during_resolution() -> None:
     app = TigrblApp()
 

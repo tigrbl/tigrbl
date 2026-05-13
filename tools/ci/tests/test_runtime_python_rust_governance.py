@@ -58,8 +58,8 @@ def test_runtime_python_rust_features_are_spec_aware_pairs() -> None:
     for feature_id, spec_ids in FEATURES.items():
         feature = features[feature_id]
         assert set(feature["spec_ids"]) == spec_ids | {"spc:2090"}
-        assert feature["implementation_status"] == "absent"
-        assert feature["plan"]["horizon"] == "next"
+        assert feature["implementation_status"] == "implemented"
+        assert feature["plan"]["horizon"] == "current"
         assert feature["plan"]["target_claim_tier"] == "T2"
         assert feature["plan"]["target_lifecycle_stage"] == "active"
 
@@ -72,3 +72,22 @@ def test_runtime_python_rust_features_have_verification_edges() -> None:
         feature = features[feature_id]
         assert feature["test_ids"], feature_id
         assert feature["claim_ids"], feature_id
+
+
+def test_runtime_python_rust_evidence_artifacts_exist() -> None:
+    perf = ROOT / "pkgs" / "core" / "tigrbl_tests" / "tests" / "perf"
+    required = {
+        perf / "hot_path_perf_suite_manifest.json",
+        perf / "hot_path_perf_suite_report.md",
+        perf / "kernel-plan-benchmark.json",
+        perf / "kernel-plan-benchmark-websocket.json",
+        perf / "kernel-plan-benchmark-webtransport.json",
+        perf / "tigrbl_websocket_transport_call_graph_250_ops.json",
+        perf / "tigrbl_webtransport_transport_call_graph_250_ops.json",
+        perf / "runtime_hotstate_microbench.json",
+        perf / "runtime_typecheck_microbench.json",
+        perf / "exact_route_marker_microbench.json",
+    }
+
+    missing = [path for path in sorted(required) if not path.exists() or path.stat().st_size == 0]
+    assert missing == []

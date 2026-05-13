@@ -6,7 +6,7 @@ import inspect
 import re
 from dataclasses import dataclass, replace
 from types import SimpleNamespace
-from typing import Annotated, Any, Callable, Iterable, Sequence, get_args, get_origin
+from typing import Annotated, Any, Callable, Iterable, Mapping, MutableMapping, Sequence, get_args, get_origin
 
 from tigrbl_concrete._mapping.model_helpers import _OpSpecGroup
 from tigrbl_concrete.security.dependencies import Dependency
@@ -179,7 +179,9 @@ def normalize_methods(methods: Iterable[str]) -> tuple[str, ...]:
 
 def ensure_route_ops_model(owner: Any) -> type | None:
     tables = getattr(owner, "tables", None)
-    if not isinstance(tables, dict):
+    if not isinstance(tables, (dict, MutableMapping)) and not (
+        isinstance(tables, Mapping) and hasattr(tables, "__setitem__")
+    ):
         return None
 
     model = tables.get(ROUTE_OPS_MODEL_NAME)

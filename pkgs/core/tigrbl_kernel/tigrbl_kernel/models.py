@@ -75,6 +75,21 @@ class OpMeta:
 
 
 @dataclass(frozen=True, slots=True)
+class BatchOpPlan:
+    enabled: bool = False
+    max_size: int = 64
+    max_bytes: int = 1_048_576
+    max_delay_ms: int = 1
+    admission_timeout_ms: int = 5
+    conflict_policy: str = "single_fallback"
+    overflow_policy: str = "backpressure"
+    result_fanout: str = "by_admission"
+    allow_reads: bool = False
+    max_queue_depth: int = 1024
+    max_in_flight: int = 16
+
+
+@dataclass(frozen=True, slots=True)
 class CompiledPhase:
     name: str
     stage_in: object | None
@@ -112,6 +127,8 @@ class HotOpPlan:
     program_hot_runner_id: int = 0
     param_shape_id: int = -1
     transport_kind_id: int = 0
+    batch_policy_id: int = -1
+    batch: BatchOpPlan = field(default_factory=BatchOpPlan)
     compiled_param_phase_steps: tuple[tuple[str, tuple[Any, ...]], ...] = ()
     websocket_path: str = ""
     websocket_protocol: str = ""
@@ -283,6 +300,8 @@ class PackedKernel:
     param_shape_header_hashes: tuple[int, ...] = ()
     program_param_shape_ids: tuple[int, ...] = ()
     program_transport_kind_ids: tuple[int, ...] = ()
+    batch_policy_table: tuple[BatchOpPlan, ...] = ()
+    program_batch_policy_ids: tuple[int, ...] = ()
 
     segment_offsets: tuple[int, ...] = ()
     segment_lengths: tuple[int, ...] = ()

@@ -1,10 +1,11 @@
 from __future__ import annotations
 
+from dataclasses import fields
 import inspect
 import logging
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
-from tigrbl_atoms.types import AtomFailure, FailedCtx, build_error_ctx
+from tigrbl_atoms.types import AtomFailure, BaseCtx, FailedCtx, build_error_ctx
 from tigrbl_typing.phases import normalize_phase
 
 try:
@@ -13,6 +14,26 @@ except Exception:  # pragma: no cover
     _trace = None  # type: ignore
 
 logger = logging.getLogger(__name__)
+
+
+def _merge_promoted_ctx(ctx: Any, promoted: BaseCtx[Any, Any]) -> None:
+    for field_info in fields(type(promoted)):
+        name = field_info.name
+        value = getattr(promoted, name)
+        if name == "bag":
+            if isinstance(value, Mapping):
+                for bag_key, bag_value in value.items():
+                    if bag_key == "result" and hasattr(promoted, "result"):
+                        continue
+                    ctx[bag_key] = bag_value
+            continue
+        if name == "temp":
+            ctx.temp = dict(value or {})
+            continue
+        if name in {"env", "error", "phase", "current_phase", "error_phase"}:
+            setattr(ctx, name, value)
+            continue
+        ctx[name] = value
 
 
 def _normalize_payload(payload: Any) -> Any:
@@ -109,7 +130,9 @@ async def _run_chain(ctx: Any, chain: Optional[Iterable[Any]], *, phase: str) ->
                 if isinstance(err, BaseException):
                     raise err
                 raise AtomFailure(err)
-            if rv is not None and rv is not ctx:
+            if isinstance(rv, BaseCtx):
+                _merge_promoted_ctx(ctx, rv)
+            elif rv is not None and rv is not ctx:
                 ctx.result = rv
             if trace_active:
                 _trace.end(ctx, seq, status=_trace.OK)

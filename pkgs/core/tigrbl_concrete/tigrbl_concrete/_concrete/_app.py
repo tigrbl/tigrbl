@@ -224,6 +224,13 @@ class App(AppBase):
         from tigrbl_concrete.system.static import _mount_static
         return _mount_static(self, directory=directory, path=path)
 
+    def mount_app(self, *, app: Any, path: str) -> Any:
+        mount_path = path if str(path).startswith("/") else f"/{path}"
+        mounts = list(getattr(self, "_mounted_apps", []) or [])
+        mounts.append({"path": mount_path.rstrip("/") or "/", "app": app})
+        self._mounted_apps = mounts
+        return app
+
     def websocket(self, path: str, **kwargs: Any):
         def _decorator(handler: Any) -> Any:
             from ._route import compile_path
@@ -261,6 +268,7 @@ class App(AppBase):
                 protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
                 exchange=str(kwargs.get("exchange", "bidirectional_stream")),
                 framing=str(kwargs.get("framing", "text")),
+                subprotocols=tuple(kwargs.get("subprotocols", ())),
             )
             bump = getattr(self, "_bump_runtime_plan_revision", None)
             if callable(bump):
@@ -342,6 +350,10 @@ class App(AppBase):
                 seen_paths = set()
                 setattr(self, "_seen_paths", seen_paths)
             seen_paths.add(path)
+            mounted = _serve_mounted_app(self, scope, receive, send)
+            if mounted is not None:
+                await mounted
+                return
             static_response = _serve_static(self, Request.from_scope(scope, app=self))
             if static_response is not None:
                 await static_response(scope, receive, send)
@@ -497,6 +509,21 @@ class App(AppBase):
             if normalized_prefix:
                 static_path = f"{normalized_prefix}{static_path}" if static_path != "/" else normalized_prefix
             self._static_mounts.append({"path": static_path, "directory": mount["directory"]})
+        routed_mounted_apps = list(getattr(routed, "_mounted_apps", ()) or ())
+        if routed_mounted_apps:
+            owner_mounted_apps = list(getattr(self, "_mounted_apps", []) or [])
+            for mount in routed_mounted_apps:
+                mount_path = str(mount.get("path") or "/").rstrip("/") or "/"
+                if normalized_prefix:
+                    mount_path = (
+                        f"{normalized_prefix}{mount_path}"
+                        if mount_path != "/"
+                        else normalized_prefix
+                    )
+                owner_mounted_apps.append(
+                    {"path": mount_path, "app": mount.get("app")}
+                )
+            self._mounted_apps = owner_mounted_apps
         routed_jsonrpc_mounts = getattr(routed, "_jsonrpc_endpoint_mounts", None)
         if isinstance(routed_jsonrpc_mounts, dict):
             owner_mounts = getattr(self, "_jsonrpc_endpoint_mounts", None)
@@ -517,3 +544,26 @@ class App(AppBase):
         return router
 
     initialize = _ddl_initialize
+
+
+def _serve_mounted_app(host: Any, scope: dict[str, Any], receive: Any, send: Any):
+    request_path = str(scope.get("path", "") or "")
+    for mount in list(getattr(host, "_mounted_apps", []) or []):
+        mount_path = str(mount.get("path") or "/").rstrip("/") or "/"
+        if request_path != mount_path and not request_path.startswith(mount_path + "/"):
+            continue
+        mounted_app = mount.get("app")
+        if mounted_app is None:
+            continue
+        remainder = request_path[len(mount_path) :] if mount_path != "/" else request_path
+        nested_path = (remainder or "/")
+        if not str(nested_path).startswith("/"):
+            nested_path = f"/{nested_path}"
+        nested_scope = dict(scope)
+        nested_scope["path"] = nested_path
+        nested_scope["root_path"] = f"{str(scope.get('root_path', '') or '').rstrip('/')}{mount_path}"
+        raw_path = scope.get("raw_path")
+        if isinstance(raw_path, (bytes, bytearray)):
+            nested_scope["raw_path"] = nested_path.encode("utf-8")
+        return mounted_app(nested_scope, receive, send)
+    return None

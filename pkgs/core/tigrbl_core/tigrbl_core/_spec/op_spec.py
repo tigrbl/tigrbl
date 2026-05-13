@@ -95,6 +95,7 @@ class OpSpec(SerdeMixin):
 
     # Optional per-op engine binding (DSN string or mapping spec)
     engine: Optional[EngineCfg] = None
+    engine_name: str | None = None
 
     # HTTP behavior
     arity: Arity = "collection"
@@ -106,6 +107,7 @@ class OpSpec(SerdeMixin):
 
     # Persistence
     persist: PersistPolicy = "default"
+    batch: Optional[Mapping[str, Any] | bool] = None
 
     # Schema overrides (resolved later by binder)
     request_model: Optional[SchemaArg] = None

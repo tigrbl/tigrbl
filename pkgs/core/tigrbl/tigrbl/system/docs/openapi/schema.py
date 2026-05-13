@@ -13,13 +13,51 @@ from .helpers import (
     _security_from_dependencies,
     _security_schemes_from_dependencies,
 )
+from tigrbl_concrete._mapping.appspec.docs_lowering import (
+    selected_projection_entries_if_configured,
+)
 from tigrbl_concrete.system.docs.surface import binding_surface, op_surface
 
 
-def openapi(router: Any) -> dict[str, Any]:
+def _prefixed_path(router: Any, path: str) -> str:
+    prefix = str(getattr(router, "_tigrbl_route_prefix", "") or "").rstrip("/")
+    if not prefix:
+        return path
+    canonical = path if path.startswith("/") else f"/{path}"
+    return f"{prefix}{canonical}" or "/"
+
+
+def _selected_openapi_keys(
+    router: Any,
+    *,
+    docs_path: str | None,
+) -> set[tuple[str, str, str]] | None:
+    selected = selected_projection_entries_if_configured(
+        router,
+        docs_path=docs_path,
+        payload_kind="openapi",
+    )
+    if selected is None:
+        return None
+    if not selected:
+        return set()
+    return {
+        (entry.path, str(entry.table or ""), str(entry.op or ""))
+        for entry in selected
+    }
+
+
+def openapi(
+    router: Any,
+    *,
+    docs_path: str | None = None,
+    request: Any | None = None,
+) -> dict[str, Any]:
     paths: dict[str, Any] = {}
     components: dict[str, Any] = {"schemas": {}}
     components_schemas: dict[str, Any] = components["schemas"]
+    selected_keys = _selected_openapi_keys(router, docs_path=docs_path)
+    del request
 
     for route in getattr(router, "_routes", []):
         if not route.include_in_schema:
@@ -28,8 +66,18 @@ def openapi(router: Any) -> dict[str, Any]:
         canonical_path = route.path_template.rstrip("/") or "/"
         if canonical_path == "/openrpc.json" or route.name == "openrpc_json":
             continue
+        model = getattr(route, "tigrbl_model", None)
+        route_alias = (
+            getattr(route, "tigrbl_alias", None)
+            or route.name.rsplit(".", maxsplit=1)[-1]
+        )
+        if selected_keys is not None:
+            table_name = getattr(model, "__name__", "") if model is not None else ""
+            if (canonical_path, table_name, str(route_alias)) not in selected_keys:
+                continue
 
-        path_item = paths.setdefault(canonical_path, {})
+        output_path = _prefixed_path(router, canonical_path)
+        path_item = paths.setdefault(output_path, {})
         for method in sorted(route.methods):
             alias = (
                 getattr(route, "tigrbl_alias", None)
