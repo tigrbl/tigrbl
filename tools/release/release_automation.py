@@ -676,7 +676,7 @@ def main(argv: list[str] | None = None) -> int:
     matrices.add_argument("--summary", type=Path, required=True)
     matrices.add_argument(
         "--python-versions",
-        default="3.10,3.11,3.12,3.13",
+        default="3.10,3.11,3.12,3.13,3.14",
         help="Comma- or whitespace-separated Python versions for validation.",
     )
     matrices.add_argument("--github-output", type=Path)
