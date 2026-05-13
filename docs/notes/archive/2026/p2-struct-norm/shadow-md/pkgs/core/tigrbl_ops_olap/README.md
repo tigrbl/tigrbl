@@ -2,12 +2,12 @@
 
 # tigrbl-ops-olap
 
-![PyPI - Downloads](https://img.shields.io/pypi/dm/tigrbl-ops-olap.svg) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/pypi/pyversions/tigrbl-ops-olap.svg) ![License](https://img.shields.io/pypi/l/tigrbl-ops-olap.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-ops-olap.svg)
+[![Pepy downloads](https://static.pepy.tech/badge/tigrbl-ops-olap)](https://pepy.tech/project/tigrbl-ops-olap) ![Hits](https://hits.sh/github.com/swarmauri/swarmauri-sdk.svg) ![Python Versions](https://img.shields.io/badge/python-3.10--3.14-blue) ![License](https://img.shields.io/pypi/l/tigrbl-ops-olap.svg) ![Version](https://img.shields.io/pypi/v/tigrbl-ops-olap.svg)
 
 ## Features
 
 - Dedicated package boundary for OLAP-style analytical operations.
-- Supports Python 3.10 through 3.12.
+- Supports Python 3.10 through 3.14.
 - Prepared for future analytical query executors and aggregations.
 
 ## Installation

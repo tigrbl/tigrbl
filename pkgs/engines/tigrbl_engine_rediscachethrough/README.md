@@ -1,12 +1,12 @@
 ![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
 <p align="center">
-    <a href="https://pypi.org/project/tigrbl_engine_rediscachethrough/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl_engine_rediscachethrough" alt="PyPI downloads for tigrbl_engine_rediscachethrough"/></a>
+    <a href="https://pepy.tech/project/tigrbl_engine_rediscachethrough">
+        <img src="https://static.pepy.tech/badge/tigrbl_engine_rediscachethrough" alt="Pepy downloads for tigrbl_engine_rediscachethrough"/></a>
     <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_rediscachethrough/">
         <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_rediscachethrough.svg" alt="Repository views for tigrbl_engine_rediscachethrough"/></a>
     <a href="https://pypi.org/project/tigrbl_engine_rediscachethrough/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl_engine_rediscachethrough" alt="Supported Python versions for tigrbl_engine_rediscachethrough"/></a>
+        <img src="https://img.shields.io/badge/python-3.10--3.14-blue" alt="Python 3.10 through 3.14"/></a>
     <a href="https://pypi.org/project/tigrbl_engine_rediscachethrough/">
         <img src="https://img.shields.io/pypi/l/tigrbl_engine_rediscachethrough" alt="PyPI license metadata for tigrbl_engine_rediscachethrough"/></a>
     <a href="https://pypi.org/project/tigrbl_engine_rediscachethrough/">

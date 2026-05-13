@@ -4,11 +4,11 @@
     <a href="https://pypi.org/project/tigrbl_client/">
         <img src="https://img.shields.io/pypi/v/tigrbl_client?label=tigrbl_client&color=green" alt="PyPI - tigrbl_client"/>
     </a>
-    <a href="https://pypi.org/project/tigrbl_client/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl_client" alt="PyPI - Downloads"/>
+    <a href="https://pepy.tech/project/tigrbl_client">
+        <img src="https://static.pepy.tech/badge/tigrbl_client" alt="Pepy downloads for tigrbl_client"/>
     </a>
     <a href="https://pypi.org/project/tigrbl_client/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl_client" alt="PyPI - Python Version"/>
+        <img src="https://img.shields.io/badge/python-3.10--3.14-blue" alt="Python 3.10 through 3.14"/>
     </a>
     <a href="https://pypi.org/project/tigrbl_client/">
         <img src="https://img.shields.io/pypi/l/tigrbl_client" alt="PyPI - License"/>

@@ -1,12 +1,12 @@
 ![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
 <p align="center">
-    <a href="https://pypi.org/project/tigrbl_acme_ca/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl_acme_ca" alt="PyPI downloads for tigrbl_acme_ca"/></a>
+    <a href="https://pepy.tech/project/tigrbl_acme_ca">
+        <img src="https://static.pepy.tech/badge/tigrbl_acme_ca" alt="Pepy downloads for tigrbl_acme_ca"/></a>
     <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/apps/tigrbl_acme_ca/">
         <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/apps/tigrbl_acme_ca.svg" alt="Repository views for tigrbl_acme_ca"/></a>
     <a href="https://pypi.org/project/tigrbl_acme_ca/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl_acme_ca" alt="Supported Python versions for tigrbl_acme_ca"/></a>
+        <img src="https://img.shields.io/badge/python-3.10--3.14-blue" alt="Python 3.10 through 3.14"/></a>
     <a href="https://pypi.org/project/tigrbl_acme_ca/">
         <img src="https://img.shields.io/pypi/l/tigrbl_acme_ca" alt="PyPI license metadata for tigrbl_acme_ca"/></a>
     <a href="https://pypi.org/project/tigrbl_acme_ca/">

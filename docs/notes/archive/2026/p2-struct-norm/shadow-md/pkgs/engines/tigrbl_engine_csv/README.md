@@ -4,11 +4,11 @@
     <a href="https://pypi.org/project/tigrbl_engine_csv/">
         <img src="https://img.shields.io/pypi/v/tigrbl_engine_csv?label=tigrbl_engine_csv&color=green" alt="PyPI - tigrbl_engine_csv"/>
     </a>
-    <a href="https://pypi.org/project/tigrbl_engine_csv/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl_engine_csv" alt="PyPI - Downloads"/>
+    <a href="https://pepy.tech/project/tigrbl_engine_csv">
+        <img src="https://static.pepy.tech/badge/tigrbl_engine_csv" alt="Pepy downloads for tigrbl_engine_csv"/>
     </a>
     <a href="https://pypi.org/project/tigrbl_engine_csv/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl_engine_csv" alt="PyPI - Python Version"/>
+        <img src="https://img.shields.io/badge/python-3.10--3.14-blue" alt="Python 3.10 through 3.14"/>
     </a>
     <a href="https://pypi.org/project/tigrbl_engine_csv/">
         <img src="https://img.shields.io/pypi/l/tigrbl_engine_csv" alt="PyPI - License"/>

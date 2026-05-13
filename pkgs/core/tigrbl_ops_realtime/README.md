@@ -1,12 +1,12 @@
 ![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
 <p align="center">
-    <a href="https://pypi.org/project/tigrbl-ops-realtime/">
-        <img src="https://img.shields.io/pypi/dm/tigrbl-ops-realtime" alt="PyPI downloads for tigrbl-ops-realtime"/></a>
+    <a href="https://pepy.tech/project/tigrbl-ops-realtime">
+        <img src="https://static.pepy.tech/badge/tigrbl-ops-realtime" alt="Pepy downloads for tigrbl-ops-realtime"/></a>
     <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime/">
         <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime.svg" alt="Repository views for tigrbl-ops-realtime"/></a>
     <a href="https://pypi.org/project/tigrbl-ops-realtime/">
-        <img src="https://img.shields.io/pypi/pyversions/tigrbl-ops-realtime" alt="Supported Python versions for tigrbl-ops-realtime"/></a>
+        <img src="https://img.shields.io/badge/python-3.10--3.14-blue" alt="Python 3.10 through 3.14"/></a>
     <a href="https://pypi.org/project/tigrbl-ops-realtime/">
         <img src="https://img.shields.io/pypi/l/tigrbl-ops-realtime" alt="PyPI license metadata for tigrbl-ops-realtime"/></a>
     <a href="https://pypi.org/project/tigrbl-ops-realtime/">
