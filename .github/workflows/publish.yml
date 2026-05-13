@@ -585,43 +585,52 @@ jobs:
               )
 
           failures: list[str] = []
+          max_attempts = 18
+          retry_delay_seconds = 10
           for project, version, artifact in sorted(
               expected,
               key=lambda item: (item[0], item[1], item[2]["filename"]),
           ):
               url = f"https://pypi.org/pypi/{project}/{version}/json"
               print(f"Checking {project} {version}: {url}")
-              data = None
-              for attempt in range(1, 7):
+              last_error = None
+              for attempt in range(1, max_attempts + 1):
                   try:
                       with urllib.request.urlopen(url, timeout=30) as response:
                           data = json.loads(response.read().decode("utf-8"))
-                      break
                   except urllib.error.HTTPError as exc:
-                      if exc.code == 404 and attempt < 6:
-                          time.sleep(10)
+                      last_error = f"PyPI JSON lookup failed with HTTP {exc.code}"
+                      if exc.code == 404 and attempt < max_attempts:
+                          time.sleep(retry_delay_seconds)
                           continue
-                      failures.append(f"{project} {version}: PyPI JSON lookup failed with HTTP {exc.code}")
                       break
-              if data is None:
-                  continue
-              releases = data.get("urls", [])
-              match = next((item for item in releases if item.get("filename") == artifact["filename"]), None)
-              if not match:
-                  failures.append(f"{project} {version}: missing file {artifact['filename']} in PyPI JSON response")
-                  continue
-              observed_sha = match.get("digests", {}).get("sha256")
-              if observed_sha != artifact["sha256"]:
-                  failures.append(
-                      f"{project} {version}: sha256 mismatch for {artifact['filename']} "
-                      f"expected={artifact['sha256']} observed={observed_sha}"
+                  releases = data.get("urls", [])
+                  match = next((item for item in releases if item.get("filename") == artifact["filename"]), None)
+                  if not match:
+                      last_error = f"missing file {artifact['filename']} in PyPI JSON response"
+                      if attempt < max_attempts:
+                          time.sleep(retry_delay_seconds)
+                          continue
+                      break
+                  observed_sha = match.get("digests", {}).get("sha256")
+                  if observed_sha != artifact["sha256"]:
+                      last_error = (
+                          f"sha256 mismatch for {artifact['filename']} "
+                          f"expected={artifact['sha256']} observed={observed_sha}"
+                      )
+                      if attempt < max_attempts:
+                          time.sleep(retry_delay_seconds)
+                          continue
+                      break
+                  print(
+                      f"Published {artifact['filename']} "
+                      f"size={match.get('size')} sha256={observed_sha} "
+                      f"upload_time={match.get('upload_time_iso_8601')}"
                   )
-                  continue
-              print(
-                  f"Published {artifact['filename']} "
-                  f"size={match.get('size')} sha256={observed_sha} "
-                  f"upload_time={match.get('upload_time_iso_8601')}"
-              )
+                  last_error = None
+                  break
+              if last_error:
+                  failures.append(f"{project} {version}: {last_error}")
 
           if failures:
               print("PyPI publish verification failed:")
