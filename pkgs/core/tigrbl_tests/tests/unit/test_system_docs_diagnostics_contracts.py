@@ -113,6 +113,18 @@ async def test_system_docs_mount_openapi_openrpc_and_swagger_get_surfaces() -> N
     assert "swagger-ui" in docs_response.text
 
 
+@pytest.mark.unit
+def test_mounted_docs_without_canonical_projection_keep_default_surface() -> None:
+    app = _build_app()
+
+    openapi_doc = build_openapi(app, docs_path="/openapi.json")
+    openrpc_doc = build_openrpc_spec(app, docs_path="/openrpc.json")
+
+    assert "/systemdocswidget" in openapi_doc["paths"]
+    assert "/systemdocswidget/{item_id}" in openapi_doc["paths"]
+    assert "SystemDocsWidget.list" in {method["name"] for method in openrpc_doc["methods"]}
+
+
 @pytest.mark.asyncio
 async def test_diagnostics_mount_uses_system_prefix_and_stable_healthz_payload() -> None:
     app = TigrblApp(mount_system=False)

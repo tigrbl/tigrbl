@@ -6,6 +6,7 @@ from typing import Any, Callable, Optional, Sequence
 from .._spec.app_spec import merge_seq_attr
 from .._spec.engine_spec import EngineCfg
 from .._spec.op_spec import OpSpec
+from .._spec.path_spec import PathSpec
 from .._spec.response_spec import ResponseSpec
 from .._spec.schema_spec import SchemaSpec
 from .._spec.table_spec import TableSpec
@@ -19,16 +20,20 @@ class RouterSpec(SerdeMixin):
     name: str = "router"
     prefix: str = ""
     engine: Optional[EngineCfg] = None
+    engine_name: str | None = None
     tags: Sequence[str] = field(default_factory=tuple)
     ops: Sequence[Any] = field(default_factory=tuple)
     schemas: Sequence[Any] = field(default_factory=tuple)
     hooks: Sequence[Callable[..., Any]] = field(default_factory=tuple)
     security_deps: Sequence[Callable[..., Any]] = field(default_factory=tuple)
     deps: Sequence[Callable[..., Any]] = field(default_factory=tuple)
+    middlewares: Sequence[Any] = field(default_factory=tuple)
     response: Optional[ResponseSpec] = None
+    paths: Sequence[PathSpec] = field(default_factory=tuple)
     tables: Sequence[Any] = field(default_factory=tuple)
 
     def __post_init__(self) -> None:
+        self._validate_nested_specs("paths", self.paths, (PathSpec,))
         self._validate_nested_specs("tables", self.tables, (TableSpec,))
         self._validate_nested_specs("ops", self.ops, (OpSpec,))
         self._validate_nested_specs("schemas", self.schemas, (SchemaSpec,))
@@ -64,6 +69,7 @@ class RouterSpec(SerdeMixin):
         name: Any = sentinel
         prefix: Any = sentinel
         engine: Any = sentinel
+        engine_name: Any = sentinel
         response: Any = sentinel
 
         for base in router.__mro__:
@@ -73,6 +79,8 @@ class RouterSpec(SerdeMixin):
                 prefix = base.__dict__["PREFIX"]
             if "ENGINE" in base.__dict__ and engine is sentinel:
                 engine = base.__dict__["ENGINE"]
+            if "ENGINE_NAME" in base.__dict__ and engine_name is sentinel:
+                engine_name = base.__dict__["ENGINE_NAME"]
             if "RESPONSE" in base.__dict__ and response is sentinel:
                 response = base.__dict__["RESPONSE"]
 
@@ -82,6 +90,8 @@ class RouterSpec(SerdeMixin):
             prefix = ""
         if engine is sentinel:
             engine = None
+        if engine_name is sentinel:
+            engine_name = None
         if response is sentinel:
             response = None
 
@@ -89,12 +99,17 @@ class RouterSpec(SerdeMixin):
             name=str(name or "router"),
             prefix=str(prefix or ""),
             engine=engine,
+            engine_name=engine_name,
             tags=merge_seq_attr(router, "TAGS", include_inherited=True),
             ops=merge_seq_attr(router, "OPS", include_inherited=True),
+            paths=merge_seq_attr(router, "PATHS", include_inherited=True),
             tables=merge_seq_attr(router, "TABLES", include_inherited=True),
             schemas=merge_seq_attr(router, "SCHEMAS", include_inherited=True),
             hooks=merge_seq_attr(router, "HOOKS", include_inherited=True),
             deps=merge_seq_attr(router, "DEPS", include_inherited=True),
+            middlewares=merge_seq_attr(
+                router, "MIDDLEWARES", include_inherited=True
+            ),
             security_deps=merge_seq_attr(
                 router, "SECURITY_DEPS", include_inherited=True
             ),

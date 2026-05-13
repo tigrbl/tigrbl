@@ -15,9 +15,10 @@ def _resolve_docs_owner(target: Any) -> Any:
 def build_swagger_html(router: Any, request: Any) -> str:
     docs_owner = _resolve_docs_owner(router)
     base = (getattr(request, "script_name", "") or "").rstrip("/")
+    route_prefix = str(getattr(docs_owner, "_tigrbl_route_prefix", "") or "").rstrip("/")
     openapi_path = getattr(docs_owner, "openapi_url", "/openapi.json")
     openapi_url = openapi_path if openapi_path.startswith("/") else f"/{openapi_path}"
-    spec_url = f"{base}{openapi_url}"
+    spec_url = f"{base}{route_prefix}{openapi_url}"
     version = getattr(docs_owner, "swagger_ui_version", "5.31.0")
     title = getattr(docs_owner, "title", getattr(router, "title", "API"))
     return f"""<!doctype html>

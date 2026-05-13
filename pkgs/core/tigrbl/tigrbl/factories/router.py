@@ -12,11 +12,15 @@ def defineRouterSpec(
     prefix: str = "",
     tags: Sequence[str] = (),
     engine: Any = None,
+    engine_name: str | None = None,
     ops: Sequence[Any] = (),
     schemas: Sequence[Any] = (),
     hooks: Sequence[Any] = (),
     security_deps: Sequence[Any] = (),
     deps: Sequence[Any] = (),
+    middlewares: Sequence[Any] = (),
+    response: Any = None,
+    paths: Sequence[Any] = (),
     tables: Sequence[Any] = (),
 ) -> Type[RouterSpec]:
     attrs = dict(
@@ -24,11 +28,15 @@ def defineRouterSpec(
         PREFIX=prefix,
         TAGS=tuple(tags or ()),
         ENGINE=engine,
+        ENGINE_NAME=engine_name,
         OPS=tuple(ops or ()),
         SCHEMAS=tuple(schemas or ()),
         HOOKS=tuple(hooks or ()),
         SECURITY_DEPS=tuple(security_deps or ()),
         DEPS=tuple(deps or ()),
+        MIDDLEWARES=tuple(middlewares or ()),
+        RESPONSE=response,
+        PATHS=tuple(paths or ()),
         TABLES=tuple(tables or ()),
     )
     return type("RouterSpec", (RouterSpec,), attrs)

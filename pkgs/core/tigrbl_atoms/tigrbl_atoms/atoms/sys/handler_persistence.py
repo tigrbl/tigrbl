@@ -20,6 +20,11 @@ async def _run(obj: object | None, ctx: Any) -> None:
     # persistence again.
     if getattr(ctx, "result", None) is not None:
         return
+    temp = getattr(ctx, "temp", None)
+    if isinstance(temp, dict) and (
+        temp.get("batch_resident_admitted") or temp.get("batch_resident_handled")
+    ):
+        return
 
     model = obj if isinstance(obj, type) else getattr(ctx, "model", None)
     if not isinstance(model, type):

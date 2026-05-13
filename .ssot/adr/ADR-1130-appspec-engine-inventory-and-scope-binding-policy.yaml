@@ -1,0 +1,70 @@
+schema_version: "0.2.0"
+kind: "adr"
+id: "adr:1130"
+number: 1130
+slug: "appspec-engine-inventory-and-scope-binding-policy"
+title: "AppSpec Engine Inventory and Scope Binding Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`AppSpec` owns the canonical named engine inventory. App, router, table, and op scopes attach to engines by `EngineSpec.name`; generated ids may exist internally, but the canonical authoring and validation surface uses engine names."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern named engine inventory and scope-level engine binding for canonical AppSpec graphs."
+    at: "2026-05-09T20:25:49Z"
+references: []
+body: |-
+  ## Decision
+  
+  `AppSpec` owns the canonical named engine inventory. App, router, table, and op scopes attach to engines by `EngineSpec.name`; generated ids may exist internally, but the canonical authoring and validation surface uses engine names.
+  
+  1. `AppSpec.engines` declares the app-local inventory of available `EngineSpec` entries.
+  2. `EngineSpec.name` is the stable human-authored key for one engine inside one `AppSpec`.
+  3. `AppSpec.engine`, `RouterSpec.engine`, `TableSpec.engine`, and `OpSpec.engine` are optional engine-name bindings.
+  4. Effective engine selection is nearest-scope wins: `OpSpec.engine > TableSpec.engine > RouterSpec.engine > AppSpec.engine`.
+  5. `PathSpec` does not own engine binding. Paths own address surfaces; engines belong to execution/data scope.
+  6. Concrete classes, decorators, shortcuts, DSNs, mappings, providers, and factory outputs may remain ergonomic inputs, but canonical output must lower to `AppSpec.engines` plus name bindings.
+  7. The next slice does not introduce `EnginePolicySpec`, read/write splitting, OLTP/OLAP splitting, queue/pubsub splitting, or role-based engine selection.
+  
+  ## Context
+  
+  The nested AppSpec discussion established that paths, protocol bindings, docs payloads, docs UIX, static serving, and nested app mounts need clean layered ownership. Engine binding is a separate concern: it selects the execution/data provider for semantic operations and already has runtime precedence at op, table, router, and app scopes.
+  
+  Existing code accepts broad `EngineCfg` values at several scopes, including DSN strings, mappings, `EngineSpec`, provider-like objects, and concrete shortcut outputs. That is useful concrete ergonomics, but it leaks convenience input shape into canonical specs. A named inventory keeps multiple engines available without turning scope fields into inline config dictionaries or policy objects.
+  
+  ## Consequences
+  
+  - Canonical `AppSpec` gains an `engines` inventory.
+  - `EngineSpec` gains or formalizes `name` as the app-local identity field.
+  - App/router/table/op engine fields become name bindings in canonical specs.
+  - Validation must fail closed for duplicate engine names and missing engine-name references.
+  - Validation must reject path-owned engine binding.
+  - Concrete lowerers must normalize accepted engine conveniences into inventory entries and scope name bindings.
+  
+  ## Rejected Alternatives
+  
+  - Keep inline engine configs directly on canonical app/router/table/op fields.
+  - Add `EnginePolicySpec` for this slice.
+  - Model read/write, OLTP/OLAP, queue/pubsub, cache, tenant, or capability-based routing as canonical engine policy.
+  - Let `PathSpec` own engine selection.
+  - Use generated ids as the authored engine binding surface.
+  
+  ## Governed Feature Scope
+  
+  - `feat:appspec-engine-inventory-001`
+  - `feat:enginespec-name-identity-001`
+  - `feat:engine-scope-name-binding-001`
+  - `feat:engine-precedence-validation-001`
+  - `feat:concrete-engine-lowering-to-inventory-001`
+  - `feat:pathspec-engine-rejection-001`
+  
+  ## Verification Plan
+  
+  - Add canonical inventory tests proving named engines are unique and scope references resolve.
+  - Add precedence tests proving op, table, router, and app bindings resolve in nearest-scope order.
+  - Add negative tests for duplicate names, missing names, inline canonical configs, and path-owned engine binding.
+  - Add concrete-lowering tests proving DSNs, mappings, providers, and shortcut outputs lower into inventory entries plus engine-name references.

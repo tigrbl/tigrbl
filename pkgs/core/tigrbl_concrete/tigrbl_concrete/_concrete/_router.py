@@ -263,6 +263,14 @@ class Router(RouterBase):
         from tigrbl_concrete.system.static import _mount_static
         return _mount_static(self, directory=directory, path=path)
 
+    def mount_app(self, *, app: Any, path: str) -> Any:
+        mount_path = path if str(path).startswith("/") else f"/{path}"
+        mounts = list(getattr(self, "_mounted_apps", []) or [])
+        mounts.append({"path": mount_path.rstrip("/") or "/", "app": app})
+        self._mounted_apps = mounts
+        self._bump_runtime_plan_revision()
+        return app
+
     def build_json_schema_bundle(self) -> dict[str, Any]:
         from tigrbl_concrete.system.docs.json_schema import _build_json_schema_bundle
         return _build_json_schema_bundle(self)
@@ -306,6 +314,7 @@ class Router(RouterBase):
                 protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
                 exchange=str(kwargs.get("exchange", "bidirectional_stream")),
                 framing=str(kwargs.get("framing", "text")),
+                subprotocols=tuple(kwargs.get("subprotocols", ())),
             )
             self._bump_runtime_plan_revision()
             return handler

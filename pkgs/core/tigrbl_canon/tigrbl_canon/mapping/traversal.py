@@ -13,7 +13,17 @@ from typing import Any, Callable, Iterable, Mapping
 
 from .app_mro_collect import mro_collect_app_spec
 from .column_mro_collect import mro_collect_columns
-from .engine_resolver import register_op, register_router, register_table, set_default
+from .engine_resolver import (
+    register_engines,
+    register_op,
+    register_op_engine_name,
+    register_router,
+    register_router_engine_name,
+    register_table,
+    register_table_engine_name,
+    set_default,
+    set_default_engine_name,
+)
 from .hook_mro_collect import mro_collect_decorated_hooks
 from .op_mro_collect import mro_collect_decorated_ops
 from .router_mro_collect import mro_collect_router_hooks
@@ -103,9 +113,14 @@ def collect(
     """Collect engine traversal config from first-class objects."""
     app_engine = _read_engine_attr(app) if app is not None else None
     router_engine = _read_engine_attr(router) if router is not None else None
+    engines = tuple(getattr(app, "engines", ()) or ())
+    app_engine_name = getattr(app, "engine_name", None) if app is not None else None
+    router_engine_name = getattr(router, "engine_name", None) if router is not None else None
 
     table_bindings: dict[Any, Any] = {}
+    table_engine_names: dict[Any, str] = {}
     ops: dict[tuple[Any, str], Any] = {}
+    op_engine_names: dict[tuple[Any, str], str] = {}
     tables = tuple(tables)
 
     for model in tables:
@@ -120,11 +135,19 @@ def collect(
             model_engine = _read_engine_attr(model)
         if model_engine is not None:
             table_bindings[model] = model_engine
+        model_engine_name = getattr(model, "ENGINE_NAME", None)
+        if isinstance(model_engine_name, str) and model_engine_name:
+            table_engine_names[model] = model_engine_name
 
         for (decl_model, alias), op_cfg in _iter_op_decorators(model).items():
             ops[(decl_model, alias)] = op_cfg.get("engine")
         for (decl_model, alias), op_cfg in _iter_declared_ops(model).items():
             ops[(decl_model, alias)] = op_cfg.get("engine")
+        for spec in tuple(getattr(model, "__tigrbl_ops__", ()) or ()):
+            alias = getattr(spec, "alias", None)
+            engine_name = getattr(spec, "engine_name", None)
+            if alias and engine_name:
+                op_engine_names[(model, alias)] = engine_name
 
     router_map = (
         {router: router_engine}
@@ -133,27 +156,42 @@ def collect(
     )
     logger.debug("Collected unified engine bindings for %d tables", len(tables))
     return {
+        "engines": engines,
         "default": app_engine,
+        "default_name": app_engine_name,
         "router": router_map,
+        "router_names": {router: router_engine_name} if router is not None and router_engine_name else {},
         "tables": table_bindings,
+        "table_names": table_engine_names,
         "ops": ops,
+        "op_names": op_engine_names,
     }
 
 
 def install(collected: Mapping[str, Any]) -> None:
     """Install collected engine traversal config into the active resolver."""
+    if collected.get("engines"):
+        register_engines(collected.get("engines"))
     default_db = collected.get("default")
     if default_db is not None:
         set_default(default_db)
+    if collected.get("default_name") is not None:
+        set_default_engine_name(collected.get("default_name"))
 
     for router_obj, db in (collected.get("router") or {}).items():
         register_router(router_obj, db)
+    for router_obj, name in (collected.get("router_names") or {}).items():
+        register_router_engine_name(router_obj, name)
 
     for table_obj, db in (collected.get("tables") or {}).items():
         register_table(table_obj, db)
+    for table_obj, name in (collected.get("table_names") or {}).items():
+        register_table_engine_name(table_obj, name)
 
     for (model, alias), db in (collected.get("ops") or {}).items():
         register_op(model, alias, db)
+    for (model, alias), name in (collected.get("op_names") or {}).items():
+        register_op_engine_name(model, alias, name)
 
 
 def install_from_objects(
