@@ -310,7 +310,12 @@ jobs:
 
           for version in 3.10 3.11 3.12 3.13 3.14; do
             echo "Running ${package_dir}/tests under Python ${version}"
-            uv run \
+            pyo3_env=()
+            if [[ "${version}" == "3.14" ]]; then
+              echo "Enabling PyO3 ABI3 forward compatibility for Python ${version}"
+              pyo3_env=(PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1)
+            fi
+            env "${pyo3_env[@]}" uv run \
               --isolated \
               --package "${{ matrix.package }}" \
               --group dev \
