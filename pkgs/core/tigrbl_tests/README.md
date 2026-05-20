@@ -42,6 +42,17 @@ The harness starts the existing Tigrbl benchmark app through Uvicorn, runs REST 
 
 Use `--publish-artifacts` only when a run is intended to become governed performance evidence. Published summaries are copied into `pkgs/core/tigrbl_tests/tests/perf/`; ordinary local runs stay under `.tmp/load-patterns/` so benchmark exploration does not rewrite tracked evidence.
 
+## Surface matrix comparison
+
+Use the reusable surface matrix benchmark when comparing Tigrbl and FastAPI across REST, JSON-RPC, websocket, and stream paths with both transport-only and DB-bound modes. The default run is 25 rounds with 250 measured operations per framework per round.
+
+```bash
+python pkgs/core/tigrbl_tests/benchmarks/tigrbl_fastapi_surface_matrix_benchmark.py
+python pkgs/core/tigrbl_tests/benchmarks/tigrbl_fastapi_surface_matrix_benchmark.py --rounds 1 --ops 10 --json-output .tmp/surface-matrix-smoke.json --md-output .tmp/surface-matrix-smoke.md
+```
+
+Default artifacts are written to `pkgs/core/tigrbl_tests/tests/perf/benchmark_results_surface_matrix_25x250.json` and `pkgs/core/tigrbl_tests/tests/perf/benchmark_results_surface_matrix_25x250.md`.
+
 ## Package ecosystem cross-links
 
 Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
