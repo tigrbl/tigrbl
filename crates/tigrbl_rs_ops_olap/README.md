@@ -1,5 +1,7 @@
 ![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json)
+
 <p align="center">
     <a href="https://crates.io/crates/tigrbl_rs_ops_olap">
         <img src="https://img.shields.io/crates/d/tigrbl_rs_ops_olap" alt="crates.io downloads for tigrbl_rs_ops_olap"/></a>

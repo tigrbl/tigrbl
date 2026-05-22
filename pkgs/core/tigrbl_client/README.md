@@ -1,5 +1,7 @@
 ![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
+[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json)
+
 <p align="center">
     <a href="https://pepy.tech/project/tigrbl_client">
         <img src="https://static.pepy.tech/badge/tigrbl_client" alt="Pepy downloads for tigrbl_client"/></a>
