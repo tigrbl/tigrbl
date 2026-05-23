@@ -2691,85 +2691,101 @@ wheels = [
 
 [[package]]
 name = "ssot-cli"
-version = "0.1.10"
+version = "0.1.14"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-conformance" },
     { name = "ssot-contracts" },
     { name = "ssot-core" },
+    { name = "ssot-pack-contracts" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/63/e1/380d56f63686cc7fbba95b943545b1dbe574dc01d7acb1fc8ac7756e9241/ssot_cli-0.1.10.tar.gz", hash = "sha256:ef1f1d2b93831006d7627a5afdf07dc60223f957cf275f4a48af0e8ec8fd8ff7", size = 31534 }
+sdist = { url = "https://files.pythonhosted.org/packages/a8/d7/04bb4a295cfc62b5a0aa7b8ca9e4fd63634b3d96cd0d46dc0fe8d2e4a8fd/ssot_cli-0.1.14.tar.gz", hash = "sha256:1825e58fcc7f083b67bc137ad5bd272722ebf7059eb357332d51f69c14d390cb", size = 51501 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/0f/08f158efd3129317c99e9c0e794c01bc8e98a058b59b711f18434e8cedb2/ssot_cli-0.1.10-py3-none-any.whl", hash = "sha256:5ce5ac6c6f3a4d7a278348fb541d58747cf548cd661d5404c1d470a179a99cd1", size = 39660 },
+    { url = "https://files.pythonhosted.org/packages/86/56/204591fbbb1e4b854ddce0e933257920b61b195d0323a5fb57526b59b961/ssot_cli-0.1.14-py3-none-any.whl", hash = "sha256:30d9e5d0acd10168a95afc763756ffadf33c07046afef3470de9fd1bd1a04f10", size = 53267 },
 ]
 
 [[package]]
 name = "ssot-conformance"
-version = "0.2.16"
+version = "0.2.20"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-contracts" },
     { name = "ssot-core" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/51/49/6305b3cbfffab7a0aef17b9a77b93e98de78defd0cc00af7418f3ee2c6e4/ssot_conformance-0.2.16.tar.gz", hash = "sha256:605dc56060a3c0e4507026cc72b9da3fcef5dc6d592946252e81ec2e9526dd08", size = 13637 }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/99/21d7cd33030105dcb4f766c7a4244cdedfae58dfedf7c3c2c223ed5bfa07/ssot_conformance-0.2.20.tar.gz", hash = "sha256:a45b08ea6dca622037fda09e9958e2f2546bbc565116ad2c2a178b008a78e842", size = 16992 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/54/a3/80305d6e9900bef9beeac6dd42f11d06ab6286b638b14f398ed4e963b22d/ssot_conformance-0.2.16-py3-none-any.whl", hash = "sha256:04499da79dd44567bbb1bdd2cb83c965c1914520e8871c0f31949678c3819950", size = 16688 },
+    { url = "https://files.pythonhosted.org/packages/40/2e/c9c8ec8649e78b7b4786b8c5eb7b0da68cabf5839b54da580c561c86ca54/ssot_conformance-0.2.20-py3-none-any.whl", hash = "sha256:baad5f158c1e2b227d303eed9451d7f0b88227a0e986d9cf0eaae267cc854502", size = 20790 },
 ]
 
 [[package]]
 name = "ssot-contracts"
-version = "0.2.16"
+version = "0.2.20"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/2b/18/6c11bad8557a74c0c3ba5f1bf290445dff17f067fecb5182c9c3b861d941/ssot_contracts-0.2.16.tar.gz", hash = "sha256:5b14ad88da77c02c33fb09590d52a82fc79fae091db8b9078610d59fa7f453fd", size = 27162 }
+sdist = { url = "https://files.pythonhosted.org/packages/da/bf/157d354482ccf2b7535e68bd7e7f9787dbe23ab64ce0d65969ab7d5f4793/ssot_contracts-0.2.20.tar.gz", hash = "sha256:faa92283c02e01ec52038bed9de81152f7463ae6cf17fe72e317d11d8e48539a", size = 52927 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/32/8b/0ad3d6ccb3dd55b4b725468a2d85c52cf9b0dd28d4c85c229ebb34e0976c/ssot_contracts-0.2.16-py3-none-any.whl", hash = "sha256:250de046ae1479c2ad728f89a4ab18d4ebff15de31f7506ed5b3e349df15d2d5", size = 46304 },
+    { url = "https://files.pythonhosted.org/packages/a1/22/c27f2f005dfa667790375e4f1ae2781a51526b707e51fbd7cfe6a94a8ece/ssot_contracts-0.2.20-py3-none-any.whl", hash = "sha256:71eb6f71f9cae2af078c8d3770a19ee69a11145cc123c524c92da3bd022a8f57", size = 91331 },
 ]
 
 [[package]]
 name = "ssot-core"
-version = "0.2.16"
+version = "0.2.20"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "orjson" },
     { name = "ssot-contracts" },
+    { name = "ssot-pack-contracts" },
     { name = "ssot-views" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/68/46/0f00248673554cc04b14c434a4c2434cb45395716ba76a758b237f4f8d7d/ssot_core-0.2.16.tar.gz", hash = "sha256:254c64998aa44f81a3b179649d94cb991741ddfa3c497d79441b47fa7cab44e1", size = 73701 }
+sdist = { url = "https://files.pythonhosted.org/packages/e2/72/b61635dd4648e08ca8114c2b039804026e974dbc9385eca91ea9f9c64450/ssot_core-0.2.20.tar.gz", hash = "sha256:5da97940f52789760286d5959286a00f49a32557cf2b6d04c37dd19e1d05556e", size = 113780 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/aa/7c/cf7f6c76c2772da6efadd4f43beba9b2e9b3750fac0f428e096b403be99f/ssot_core-0.2.16-py3-none-any.whl", hash = "sha256:e5b4a5b1923f082e42678146d66ab1af2685b83e9aed1cf1575fcfa0ed044744", size = 101017 },
+    { url = "https://files.pythonhosted.org/packages/02/32/750fe415b9e06bec15b24fc1200bba49c704bd4217b18a26385363573473/ssot_core-0.2.20-py3-none-any.whl", hash = "sha256:fd0c33957ed0f8d223d258128c420eb1de1c63dd3dafb482086fb3908744bc02", size = 151011 },
+]
+
+[[package]]
+name = "ssot-pack-contracts"
+version = "0.2.21"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/d8/eb/7aeaffad6736477f0d24af873ca0e32bbea78b1880432ebf71cb781af5e2/ssot_pack_contracts-0.2.21.tar.gz", hash = "sha256:135f471820449ea397d83833063fee00ebfe5b3d787e3717bbd5e7edb6314728", size = 13781 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c8/8a/48438c02326eb2a11da2a451b4f44cf442628a83849e37d224e2a72412a7/ssot_pack_contracts-0.2.21-py3-none-any.whl", hash = "sha256:4baeeba508e9ac466cf000600f2214bb275a02578ed9a7763c467ff7ad0a82fa", size = 9480 },
 ]
 
 [[package]]
 name = "ssot-registry"
-version = "0.2.16"
+version = "0.2.20"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-cli" },
     { name = "ssot-contracts" },
     { name = "ssot-core" },
+    { name = "ssot-pack-contracts" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/74/df/52d42a6ea4b3bfdb19861fffc85ca9bcd5ad1617d1df3ea48d0b6ca72a4f/ssot_registry-0.2.16.tar.gz", hash = "sha256:c5416fd59f38619d540b3e33d956f91b4922d0f8533296662219712cb20b3277", size = 12619 }
+sdist = { url = "https://files.pythonhosted.org/packages/25/9b/f322534e2c0d8077a3c858095f0c70092a7a4d9d730641eb15969fb3fc32/ssot_registry-0.2.20.tar.gz", hash = "sha256:4f84168eafaf334f318d6545626fedff3c950c84a52c07eadf8e57a2050765d9", size = 13353 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/6c/c9/cdfed567dd9058465c03a65504a39bfe94e2ceabaa0651e9abf28c95c78d/ssot_registry-0.2.16-py3-none-any.whl", hash = "sha256:8f56fd40905a6cf9b3ae4b2a8b7adc0a2011875ce7ed04769aee41ec14446efb", size = 6813 },
+    { url = "https://files.pythonhosted.org/packages/f4/83/8e0b67c464c6026cf12eed4e93ae8508ea8f8bf59368e6b7e8b7ca84c4dd/ssot_registry-0.2.20-py3-none-any.whl", hash = "sha256:a9386bee78fe9e5322224496b28dfe342572a6f506ec13bc9bc9f0696e1977d1", size = 7142 },
 ]
 
 [[package]]
 name = "ssot-views"
-version = "0.2.16"
+version = "0.2.20"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ssot-contracts" },
     { name = "tomli", marker = "python_full_version < '3.11'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/34/4a/cf65ad47aa4cc0301a81265fe8d650ee824ffc14c7cfd9366266d113e700/ssot_views-0.2.16.tar.gz", hash = "sha256:8122d805cb5b3c63583b4b2012ecab280c058700f0162da72e7e129061d21077", size = 7075 }
+sdist = { url = "https://files.pythonhosted.org/packages/45/7f/e0b8187421d3b5b5213a62c250d2c881e5ad40e70944b408fe3fbad4f6ae/ssot_views-0.2.20.tar.gz", hash = "sha256:25cb4146556748ce6069f3e1c65079afd0429d3b189ef5213a016f816a7881d4", size = 7304 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/9e/3f/763d3d208a394a14b64073718bef7c25fbfb1861fbfb9c9d5f5cf522987b/ssot_views-0.2.16-py3-none-any.whl", hash = "sha256:e94d6db20f111ccba790d561485e70b49869d10ddd147d4b54aaed9646fe71af", size = 6757 },
+    { url = "https://files.pythonhosted.org/packages/60/5c/529050213f2f8b1f45ec1ac4a1eae46f3c8b181272bc49e9922d715759f0/ssot_views-0.2.20-py3-none-any.whl", hash = "sha256:451c6df9d8b47ad0269026916480386dd9da988d07398908e07bc1b118f62b64", size = 6886 },
 ]
 
 [[package]]
@@ -2800,7 +2816,7 @@ wheels = [
 
 [[package]]
 name = "tigrbl"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl" }
 dependencies = [
     { name = "aiosqlite" },
@@ -2898,7 +2914,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-acme-ca"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/apps/tigrbl_acme_ca" }
 dependencies = [
     { name = "tigrbl" },
@@ -2937,7 +2953,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-atoms"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_atoms" }
 dependencies = [
     { name = "jinja2" },
@@ -2980,7 +2996,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-base"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_base" }
 dependencies = [
     { name = "pydantic" },
@@ -3015,7 +3031,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-canon"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_canon" }
 dependencies = [
     { name = "tigrbl" },
@@ -3050,7 +3066,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-client"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_client" }
 dependencies = [
     { name = "fastapi" },
@@ -3093,7 +3109,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-concrete"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_concrete" }
 dependencies = [
     { name = "orjson" },
@@ -3140,7 +3156,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-core"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_core" }
 dependencies = [
     { name = "pydantic" },
@@ -3173,7 +3189,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-bigquery"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_bigquery" }
 dependencies = [
     { name = "google-cloud-bigquery" },
@@ -3216,7 +3232,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-clickhouse"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_clickhouse" }
 dependencies = [
     { name = "clickhouse-connect" },
@@ -3259,7 +3275,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-csv"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_csv" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3293,7 +3309,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-dataframe"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_dataframe" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3337,7 +3353,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-duckdb"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_duckdb" }
 dependencies = [
     { name = "duckdb" },
@@ -3380,7 +3396,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-inmemcache"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_inmemcache" }
 dependencies = [
     { name = "tigrbl" },
@@ -3399,7 +3415,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-inmemory"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_inmemory" }
 dependencies = [
     { name = "tigrbl" },
@@ -3418,7 +3434,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-membloom"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_membloom" }
 dependencies = [
     { name = "tigrbl" },
@@ -3437,7 +3453,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-memdedupe"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_memdedupe" }
 dependencies = [
     { name = "tigrbl" },
@@ -3448,7 +3464,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memkv"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_memkv" }
 dependencies = [
     { name = "tigrbl" },
@@ -3459,7 +3475,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memlru"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_memlru" }
 dependencies = [
     { name = "tigrbl" },
@@ -3470,7 +3486,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-mempubsub"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_mempubsub" }
 dependencies = [
     { name = "tigrbl" },
@@ -3481,7 +3497,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memqueue"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_memqueue" }
 dependencies = [
     { name = "tigrbl" },
@@ -3492,7 +3508,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memrate"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_memrate" }
 dependencies = [
     { name = "tigrbl" },
@@ -3503,7 +3519,7 @@ requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-numpy"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_numpy" }
 dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3535,7 +3551,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-pandas"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_pandas" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3579,7 +3595,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-pgsqli-wal"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_pgsqli_wal" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
@@ -3622,7 +3638,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-postgres"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_postgres" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
@@ -3647,7 +3663,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-pyspark"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_pyspark" }
 dependencies = [
     { name = "pyspark" },
@@ -3670,7 +3686,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-redis"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_redis" }
 dependencies = [
     { name = "redis" },
@@ -3713,7 +3729,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-rediscachethrough"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_rediscachethrough" }
 dependencies = [
     { name = "redis" },
@@ -3756,7 +3772,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-snowflake"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_snowflake" }
 dependencies = [
     { name = "snowflake-connector-python" },
@@ -3801,7 +3817,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-engine-sqlite"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_sqlite" }
 dependencies = [
     { name = "sqlalchemy" },
@@ -3824,7 +3840,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-engine-xlsx"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/engines/tigrbl_engine_xlsx" }
 dependencies = [
     { name = "openpyxl" },
@@ -3855,7 +3871,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-kernel"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_kernel" }
 dependencies = [
     { name = "tigrbl-atoms" },
@@ -3888,7 +3904,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-ops-olap"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_ops_olap" }
 
 [package.dev-dependencies]
@@ -3907,7 +3923,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-ops-oltp"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_ops_oltp" }
 dependencies = [
     { name = "tigrbl-base" },
@@ -3936,7 +3952,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-ops-realtime"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_ops_realtime" }
 
 [package.dev-dependencies]
@@ -3955,7 +3971,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-orm"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_orm" }
 dependencies = [
     { name = "sqlalchemy" },
@@ -3978,7 +3994,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-runtime"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_runtime" }
 dependencies = [
     { name = "numba" },
@@ -4015,7 +4031,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-spec"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_spec" }
 
 [package.dev-dependencies]
@@ -4034,7 +4050,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-spiffe"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/apps/tigrbl_spiffe" }
 dependencies = [
     { name = "httpx" },
@@ -4084,7 +4100,7 @@ dev = [
 
 [[package]]
 name = "tigrbl-tests"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_tests" }
 dependencies = [
     { name = "asyncpg" },
@@ -4133,7 +4149,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 
 [[package]]
 name = "tigrbl-typing"
-version = "0.4.1.dev3"
+version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_typing" }
 dependencies = [
     { name = "pydantic" },
