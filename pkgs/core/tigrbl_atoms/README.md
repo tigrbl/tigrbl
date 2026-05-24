@@ -15,6 +15,8 @@
         <img src="https://img.shields.io/pypi/v/tigrbl-atoms?label=tigrbl-atoms&color=green" alt="PyPI version for tigrbl-atoms"/></a>
 </p>
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
+
 ---
 
 <h1 align="center">Tigrbl atoms</h1>

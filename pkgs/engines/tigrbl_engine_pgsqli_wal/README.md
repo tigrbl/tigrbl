@@ -15,6 +15,8 @@
         <img src="https://img.shields.io/pypi/v/tigrbl_engine_pgsqli_wal?label=tigrbl_engine_pgsqli_wal&color=green" alt="PyPI version for tigrbl_engine_pgsqli_wal"/></a>
 </p>
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
+
 ---
 
 <h1 align="center">Tigrbl engine-pgsqli-wal</h1>

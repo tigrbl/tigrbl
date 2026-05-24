@@ -15,6 +15,8 @@
         <img src="https://img.shields.io/pypi/v/tigrbl_engine_redis?label=tigrbl_engine_redis&color=green" alt="PyPI version for tigrbl_engine_redis"/></a>
 </p>
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
+
 ---
 
 <h1 align="center">Tigrbl engine-redis</h1>

@@ -15,6 +15,8 @@
         <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_atoms.svg" alt="Repository views for tigrbl_rs_atoms"/></a>
 </p>
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
+
 ---
 
 # tigrbl_rs_atoms

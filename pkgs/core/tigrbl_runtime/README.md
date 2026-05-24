@@ -15,6 +15,8 @@
         <img src="https://img.shields.io/pypi/v/tigrbl-runtime?label=tigrbl-runtime&color=green" alt="PyPI version for tigrbl-runtime"/></a>
 </p>
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
+
 ---
 
 <h1 align="center">Tigrbl runtime</h1>

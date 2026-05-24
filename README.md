@@ -1,5 +1,9 @@
 # Tigrbl Workspace
 
+[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
+
+![Tigrbl package graph](docs/assets/tigrbl-package-graph.png)
+
 Tigrbl is a mixed Python and Rust workspace for building schema-first REST and
 JSON-RPC APIs around SQLAlchemy models, typed validation, lifecycle hooks, and
 engine-backed execution.
