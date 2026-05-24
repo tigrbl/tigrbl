@@ -15,12 +15,12 @@
         <img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch Coverage workflow status for tigrbl_rs_spec"/></a>
     <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml">
         <img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish Packages workflow status for tigrbl_rs_spec"/></a>
+    <br/>
     <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json">
         <img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed status for tigrbl_rs_spec"/></a>
     <a href="https://discord.gg/K4YTAPapjR">
         <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_rs_spec"/></a>
 </p>
----
 
 # tigrbl_rs_spec
 
@@ -100,3 +100,7 @@ It is not the authoritative location for repository governance, current target s
 - implementation layout: `src/`
 
 Long-form repository documentation is governed from `docs/`.
+
+## License
+
+Licensed under the Apache License, Version 2.0. See the repository [LICENSE](https://github.com/tigrbl/tigrbl/blob/master/LICENSE) and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).

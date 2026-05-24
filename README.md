@@ -98,3 +98,7 @@ cargo test --workspace
 
 Some Rust/native-runtime checks require a local Rust toolchain and a compatible
 Python interpreter for the PyO3 bridge.
+
+## License
+
+Licensed under the Apache License, Version 2.0. See the repository [LICENSE](https://github.com/tigrbl/tigrbl/blob/master/LICENSE) and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).

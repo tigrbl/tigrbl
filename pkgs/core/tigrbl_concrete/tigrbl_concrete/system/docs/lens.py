@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Any
 from urllib.parse import quote
 
@@ -14,11 +15,21 @@ def _with_leading_slash(path: str) -> str:
     return path if path.startswith("/") else f"/{path}"
 
 
+def _build_docs_config(router: Any, *, spec_path: str) -> list[dict[str, Any]]:
+    openapi_path = _with_leading_slash(str(getattr(router, "openapi_url", "/openapi.json") or "/openapi.json"))
+    openrpc_path = _with_leading_slash(str(spec_path or getattr(router, "openrpc_path", "/openrpc.json") or "/openrpc.json"))
+    return [
+        {"id": "rest", "label": "REST", "kind": "openapi", "url": openapi_path, "rawSpecHref": openapi_path, "protocols": ["rest"]},
+        {"id": "jsonrpc", "label": "JSON-RPC", "kind": "openrpc", "url": openrpc_path, "rawSpecHref": openrpc_path, "protocols": ["jsonrpc"]},
+    ]
+
+
 def build_lens_html(router: Any, request: Any, *, spec_path: str) -> str:
     base = (getattr(request, "script_name", "") or "").rstrip("/")
     route_prefix = str(getattr(router, "_tigrbl_route_prefix", "") or "").rstrip("/")
     spec_url = f"{base}{route_prefix}{_with_leading_slash(spec_path)}"
     quoted_spec_url = quote(spec_url, safe="/:?=&%")
+    docs_config = json.dumps(_build_docs_config(router, spec_path=spec_path), separators=(",", ":"))
     return f"""<!doctype html>
 <html>
   <head>
@@ -62,7 +73,7 @@ def build_lens_html(router: Any, request: Any, *, spec_path: str) -> str:
           React.createElement(
             React.StrictMode,
             null,
-            React.createElement(EmbeddedLens, {{ url: "{quoted_spec_url}" }}),
+            React.createElement(EmbeddedLens, {{ url: "{quoted_spec_url}", docs: {docs_config} }}),
           ),
         );
       }}

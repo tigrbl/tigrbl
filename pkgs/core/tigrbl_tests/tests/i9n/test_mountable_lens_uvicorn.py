@@ -29,6 +29,8 @@ async def test_lens_mountable_on_tigrbl_app_uvicorn():
             in response.text
         )
         assert 'import { createRoot } from "react-dom/client";' in response.text
+        assert '"id":"rest"' in response.text
+        assert '"id":"jsonrpc"' in response.text
     finally:
         await stop_uvicorn_server(server, task)
 
@@ -47,6 +49,7 @@ async def test_lens_mountable_on_tigrbl_router_uvicorn():
         assert "text/html" in response.headers.get("content-type", "")
         assert 'id="root"' in response.text
         assert 'url: "/openrpc.json"' in response.text
+        assert '"id":"jsonrpc"' in response.text
     finally:
         await stop_uvicorn_server(server, task)
 
@@ -68,6 +71,7 @@ async def test_lens_mountable_with_openrpc_spec_path_uvicorn():
             response = await client.get(f"{base_url}/custom/lens")
         assert response.status_code == 200
         assert 'url: "/custom/openrpc.json"' in response.text
+        assert '"id":"rest"' in response.text
     finally:
         await stop_uvicorn_server(server, task)
 

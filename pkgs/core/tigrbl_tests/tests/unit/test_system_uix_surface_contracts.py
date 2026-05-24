@@ -28,6 +28,9 @@ def test_build_lens_helper_returns_openrpc_uix_html() -> None:
     assert "@tigrbljs/tigrbl-lens" in html
     assert "EmbeddedLens" in html
     assert "/openrpc.json" in html
+    assert '"id":"rest"' in html
+    assert '"id":"jsonrpc"' in html
+    assert 'docs: [{' in html
     assert 'id="root"' in html
 
 
@@ -70,6 +73,8 @@ async def test_default_uix_routes_are_human_viewable_get_surfaces() -> None:
     assert "text/html" in lens.headers.get("content-type", "")
     assert "@tigrbljs/tigrbl-lens" in lens.text
     assert "/openrpc.json" in lens.text
+    assert '"id":"rest"' in lens.text
+    assert '"id":"jsonrpc"' in lens.text
 
     assert healthz_uix.status_code == 200
     assert "text/html" in healthz_uix.headers.get("content-type", "")
