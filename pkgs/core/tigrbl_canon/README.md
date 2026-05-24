@@ -20,96 +20,235 @@
     <a href="https://discord.gg/K4YTAPapjR">
         <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-canon"/></a>
 </p>
+
 ---
 
-<h1 align="center">Tigrbl canon</h1>
+<h1 align="center">tigrbl-canon</h1>
 
-**Normalize an API surface: [inspect canonical mapping passes](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_canon/tigrbl_canon/mapping).**
+**Install [`tigrbl-canon` from PyPI](https://pypi.org/project/tigrbl-canon/) only when you need the legacy Tigrbl canonical mapping compatibility layer for model binding, REST and RPC attachment, schema and handler installation, or column inference helpers.**
 
-tigrbl-canon is a canonicalization package for canonical mapping, routing, and symbol resolution utilities for Tigrbl packages.
+`tigrbl-canon` is not the preferred starting point for new Tigrbl projects. The package emits a deprecation warning at import time and should be treated as a compatibility surface for older mapping-oriented integrations.
 
-`tigrbl-canon` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, OpenAPI/OpenRPC documentation surfaces, and PyPI distributions that complete the system.
+## What is tigrbl-canon?
 
-## Resident concepts
+`tigrbl-canon` is the deprecated compatibility package for canonical mapping utilities in Tigrbl. It still exposes legacy helpers that turn decorated models, routers, schemas, handlers, hooks, and engine bindings into deterministic runtime maps and REST or RPC surfaces.
 
-- `tigrbl_canon` owns canonical mapping: operation MRO collection, hook MRO collection, column collection, schema defaults, REST path planning, RPC method mapping, engine resolution, diagnostics, and canonical context assembly.
-- Canon ops are documented here because this package decides how decorated model, router, app, column, schema, hook, and engine inputs become one deterministic operation map.
-- Use this package when you need to understand why an operation exists, which hook chain applies, which engine binding wins, or how REST and JSON-RPC exposure are derived from the same operation definition.
+Use `tigrbl-canon` when you need:
 
-## Package ecosystem cross-links
+- Legacy `tigrbl_canon.mapping` imports that older package code still references.
+- Canonical collection and installation helpers such as `collect`, `install`, and `install_from_objects`.
+- REST and RPC attachment helpers like `build_rest`, `register_rpc`, and `rpc_call`.
+- Schema, hook, and handler attachment during transitional maintenance work.
+- Column inference helpers under `tigrbl_canon.column.infer`.
 
-Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
+Avoid `tigrbl-canon` for new code when you can import from the newer package surfaces directly.
 
-Core packages:
-- [`tigrbl`](https://pypi.org/project/tigrbl/) - Schema-first ASGI API framework for REST, JSON-RPC, OpenAPI, OpenRPC, SQLAlchemy models, typed validation, lifecycle hooks, and engine plugins.
-- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) - Runtime atom utilities for Tigrbl planning, dispatch, transport ingress, egress, and high-throughput ASGI execution pipelines.
-- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) - Abstract base interfaces for Tigrbl APIs, engines, providers, sessions, transports, and reusable runtime components.
-- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) (this package) - Canonical mapping, routing, symbol resolution, and naming utilities for Tigrbl framework packages and generated API surfaces.
-- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) - Typed Python client helpers for calling Tigrbl REST, JSON-RPC, OpenAPI, and generated schema-first API surfaces.
-- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) - Concrete Tigrbl implementations for reusable framework behavior, sessions, routes, responses, and base abstraction adapters.
-- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) - Core Tigrbl framework specifications, decorators, schemas, hooks, operations, and primitives for schema-first APIs.
-- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) - Kernel orchestration for composing Tigrbl runtime plans, bindings, operation dispatch, and optimized ASGI execution.
-- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) - Analytical OLAP operation boundaries for Tigrbl workloads, query-oriented APIs, and engine integrations.
-- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) - Transactional OLTP operation handlers for Tigrbl CRUD, bulk, REST, JSON-RPC, and database-backed workloads.
-- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) - Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.
-- [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) - SQLAlchemy ORM tables, mixins, columns, model helpers, and persistence primitives for Tigrbl applications.
-- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) - Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.
-- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) - Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.
-- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) - Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
-- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) - Typing protocols, aliases, generics, and shared type helpers for Tigrbl framework packages and extensions.
+## Deprecation Status
 
-Engine packages:
-- [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) - BigQuery engine plugin for Google BigQuery warehouse sessions, analytics workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) - ClickHouse engine plugin for analytical database sessions, warehouse workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) - CSV engine plugin for file-backed tables, pandas DataFrames, and lightweight Tigrbl data workflows.
-- [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) - DataFrame engine plugin for transactional pandas sessions and in-process Tigrbl analytics workloads.
-- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) - DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) - In-memory cache engine plugin for process-local TTL, LRU, and fast Tigrbl cache workflows.
-- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) - In-memory database engine plugin for process-local transactional storage, copy-on-write snapshots, and Tigrbl testing.
-- [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) - In-memory Bloom filter engine plugin for membership checks, rotating TTL windows, and Tigrbl API workflows.
-- [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) - In-memory dedupe engine plugin for idempotency tracking, duplicate suppression, and Tigrbl workflow coordination.
-- [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) - In-memory key-value engine plugin for process-local KV storage, cache workflows, and lightweight Tigrbl services.
-- [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) - In-memory LRU engine plugin for least-recently-used cache behavior and process-local Tigrbl data workflows.
-- [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) - In-memory pub/sub engine plugin for process-local publish-subscribe channels, events, and Tigrbl realtime workflows.
-- [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) - In-memory queue engine plugin for process-local tasks, message workflows, and Tigrbl runtime coordination.
-- [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) - In-memory rate-limit engine plugin for API quotas, counters, windows, and Tigrbl governance workflows.
-- [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) - NumPy engine plugin for array-to-table helpers, analytical workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) - Pandas engine plugin for transactional DataFrame sessions, tabular workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) - PostgreSQL and SQLite WAL engine plugin for transactional Tigrbl workflows and database-backed engine registration.
-- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) - PostgreSQL engine plugin for SQLAlchemy sessions, async database workflows, and Tigrbl application persistence.
-- [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) - PySpark engine plugin for distributed DataFrame integration, analytics workloads, and Tigrbl data workflows.
-- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) - Redis engine plugin for cache, data structures, and Tigrbl engine workflows backed by Redis.
-- [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) - Redis cache-through engine plugin for Redis, PostgreSQL, and Tigrbl data-access acceleration workflows.
-- [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) - Snowflake engine plugin for warehouse sessions, analytical workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) - SQLite engine plugin for SQLAlchemy sessions, local transactional storage, and Tigrbl application persistence.
-- [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) - XLSX engine plugin for Excel workbook-backed tables, worksheet data access, and Tigrbl tabular workflows.
+At import time, `tigrbl_canon` warns that it is deprecated, unsupported, and likely to break. That warning is part of the package's current resident behavior, so this README documents the package as a maintenance and migration surface rather than a first-choice authoring package.
 
-Application packages:
-- [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/) - ACME v2 certificate authority app for Tigrbl tables, certificate automation, TLS workflows, and API surfaces.
-- [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/) - SPIFFE and SPIRE identity app for Tigrbl with workload identity tables, UDS transport, and HTTP API surfaces.
+## Installation
 
-Source-tree links remain available from each package identity section; this ecosystem section is intentionally PyPI-first for package discovery and installation routing.
-
-## Install
+### pip
 
 ```bash
 pip install tigrbl-canon
 ```
 
-## Package discovery
+### uv
 
-`tigrbl-canon` is described for package indexes, search engines, answer engines, and AI coding tools as: Canonical mapping, routing, symbol resolution, and naming utilities for Tigrbl framework packages and generated API surfaces.
+```bash
+uv add tigrbl-canon
+```
 
-Use `tigrbl-canon` when you need Tigrbl's schema-first ASGI package graph for REST APIs, JSON-RPC APIs, OpenAPI documentation, OpenRPC documentation, SQLAlchemy-backed models, Pydantic validation, typed operation specs, runtime dispatch, and installable engine or application extensions.
+## Usage Examples
 
-Discovery terms: tigrbl, ASGI, schema-first API framework, REST API, JSON-RPC API, OpenAPI documentation, OpenRPC documentation, SQLAlchemy models, Pydantic validation, typed validation, operation dispatch, engine plugins, api, json-rpc, rest, sqlalchemy, pydantic, canon, canonicalization, routing, mapping, openapi, openrpc, schema-first.
+### Import legacy mapping helpers
 
-## Package-local entry point
+```python
+from tigrbl_canon.mapping import (
+    bind,
+    build_rest,
+    build_schemas,
+    collect,
+    install,
+    register_rpc,
+)
+```
 
-This file is a package-local distribution entry point.
-It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
+These imports remain available for compatibility with older Tigrbl mapping flows.
 
-## Canonical repository docs
+### Use traversal-driven collection and install helpers
+
+```python
+from tigrbl_canon.mapping import collect, install
+
+
+context = collect(model=WidgetModel, router=router)
+install(context)
+```
+
+`collect` assembles canonical mapping context, including alias maps, router specs, schemas, and operation metadata. `install` applies the collected mapping into the runtime surface.
+
+### Attach REST routes from canonical specs
+
+```python
+from tigrbl_canon.mapping import build_rest
+
+
+build_rest(WidgetModel, WidgetModel.ops.all, router=router)
+```
+
+This compatibility path is useful when maintaining older code that still expects route attachment from the canon package.
+
+### Register legacy RPC surfaces
+
+```python
+from tigrbl_canon.mapping import register_rpc, rpc_call
+
+
+register_rpc(WidgetModel, WidgetModel.ops.all)
+result = await rpc_call(WidgetModel, "list", payload={})
+```
+
+### Infer SQLAlchemy-friendly column plans
+
+```python
+from tigrbl_canon.column.infer import infer
+
+
+plan = infer(str)
+```
+
+The `column.infer` namespace remains useful when older code depends on type-to-column inference utilities and JSON hint generation.
+
+## Key Resident Components
+
+### Mapping compatibility exports
+
+- `bind`
+- `rebind`
+- `collect`
+- `install`
+- `install_from_objects`
+- `collect_engine_bindings`
+- `install_engine_bindings`
+
+### REST, RPC, schema, and handler attachment
+
+- `build_rest`
+- `register_rpc`
+- `rpc_call`
+- `build_schemas`
+- `build_hooks`
+- `build_handlers`
+- `bind_response`
+
+### Routing and traversal helpers
+
+- REST router planning and attachment helpers under `mapping/rest/`
+- router include and RPC compatibility helpers under `mapping/router/`
+- traversal installers, resolver registries, and canonical collection helpers under `mapping/traversal.py`
+
+### Column inference helpers
+
+- `tigrbl_canon.column.infer.infer`
+- `JsonHint`
+- `SATypePlan`
+- `Inferred`
+- `InferenceError`
+- `UnsupportedType`
+
+## When Should You Use tigrbl-canon?
+
+Choose `tigrbl-canon` when:
+
+- You are maintaining legacy code that already imports `tigrbl_canon`.
+- You need a compatibility bridge during migration away from older mapping APIs.
+- You need the existing column inference helpers while refactoring toward newer surfaces.
+
+Choose newer package surfaces when:
+
+- You are starting fresh package or application code.
+- You can import directly from [`tigrbl`](https://pypi.org/project/tigrbl/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/).
+- You do not want to depend on a package that intentionally warns that it is deprecated.
+
+## Migration Guidance
+
+For new or actively maintained code, prefer:
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/) for the main authoring facade.
+- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) for shared base contracts and framework internals.
+- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) for core operation, schema, binding, and contract vocabulary.
+- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) for runtime execution helpers.
+
+`tigrbl-canon` should usually be the temporary dependency, not the destination dependency.
+
+## Related Packages by Component Kind
+
+### Facade and runtime packages
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/)
+- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
+- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
+- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/)
+- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/)
+
+### Typing, spec, and support packages
+
+- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/)
+- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/)
+- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/)
+- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/)
+- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/)
+
+### Operation packages
+
+- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/)
+- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/)
+- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/)
+
+### Engine packages
+
+- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/)
+- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/)
+- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/)
+- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/)
+- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/)
+- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/)
+
+## Frequently Asked Questions
+
+### Is `tigrbl-canon` deprecated?
+
+Yes. The package emits a deprecation warning at import time and states that it is not supported anymore and is likely to break.
+
+### Should new Tigrbl packages depend on `tigrbl-canon`?
+
+Usually no. New code should prefer the newer direct package surfaces unless you are explicitly preserving compatibility with older mapping imports.
+
+### Does `tigrbl-canon` still contain useful runtime helpers?
+
+Yes. It still exposes canonical collection, schema and handler installation, REST and RPC attachment, traversal installers, and column inference utilities that may be needed during migration work.
+
+## AEO and SEO Summary
+
+Search and answer-engine summary for `tigrbl-canon`:
+
+> `tigrbl-canon` is the deprecated Tigrbl compatibility package for canonical mapping, REST and RPC attachment, traversal installers, schema and handler installation, and column inference helpers.
+
+## Package Identity
+
+- PyPI: [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/)
+- Repository: [tigrbl/tigrbl](https://github.com/tigrbl/tigrbl)
+- Package source: [pkgs/core/tigrbl_canon](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_canon)
+- Organization: [github.com/tigrbl](https://github.com/tigrbl)
+- Discord: [discord.gg/K4YTAPapjR](https://discord.gg/K4YTAPapjR)
+- Workspace path: `pkgs/core/tigrbl_canon`
+- Workspace class: core Python package
+
+## Canonical Repository Docs
 
 - `README.md`
 - `docs/README.md`
@@ -120,14 +259,4 @@ It is not the authoritative location for repository governance, current target s
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/PACKAGE_LAYOUT.md`
 
-## Package identity
-
-- canonical repository: `https://github.com/tigrbl/tigrbl`
-- organization: `https://github.com/tigrbl`
-- social: `https://discord.gg/K4YTAPapjR`
-- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_canon`
-- workspace path: `pkgs/core/tigrbl_canon`
-- workspace class: core Python package
-- implementation layout: `tigrbl_canon/`
-
-Long-form repository documentation is governed from `docs/`.
+This package README is a package-local distribution document. Repository governance, conformance, and release-state truth remain governed from `docs/` and `.ssot/`.
