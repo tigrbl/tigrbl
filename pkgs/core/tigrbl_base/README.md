@@ -20,95 +20,256 @@
     <a href="https://discord.gg/K4YTAPapjR">
         <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-base"/></a>
 </p>
+
 ---
 
-<h1 align="center">Tigrbl base</h1>
+<h1 align="center">tigrbl-base</h1>
 
-**Install and inspect `tigrbl-base`: [download `tigrbl-base` from PyPI](https://pypi.org/project/tigrbl-base/) or [open the package source](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_base).**
+**Install [`tigrbl-base` from PyPI](https://pypi.org/project/tigrbl-base/) when you need the shared base classes, abstract interfaces, protocol adapters, and reusable framework contracts that underlie the Tigrbl package graph.**
 
-tigrbl-base is a base interface package for abstract base interfaces for Tigrbl APIs, engines, providers, and runtime components.
+`tigrbl-base` is the resident base-contract package in Tigrbl. It owns reusable application, router, table, session, request, response, middleware, storage, binding, and security base implementations that other Tigrbl packages build on.
 
-`tigrbl-base` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, OpenAPI/OpenRPC documentation surfaces, and PyPI distributions that complete the system.
+## What is tigrbl-base?
 
-## Package ownership
+`tigrbl-base` provides the common contract layer for Tigrbl framework internals. It is where you reach for shared base classes and abstract interfaces instead of the higher-level public facade.
 
-- `tigrbl-base` documents the concepts implemented in `pkgs/core/tigrbl_base` and links to the Tigrbl packages that provide neighboring authoring, canon, runtime, operation, and engine behavior.
-- Use this README as the package-local explanation for the objects that live here; use governed docs for release state, certification, and evidence.
+Use `tigrbl-base` when you need:
 
-## Package ecosystem cross-links
+- Base implementations for apps, routers, tables, columns, requests, responses, middleware, bindings, engines, and sessions.
+- Shared interface and contract surfaces for framework extensions or internal package work.
+- SQLAlchemy-aware base table and column machinery used by higher-level Tigrbl packages.
+- RPC and REST mapping helpers that live below the public `tigrbl` facade.
+- A stable package for reusable framework primitives that concrete/runtime packages can extend.
 
-Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
+Most application developers should start with [`tigrbl`](https://pypi.org/project/tigrbl/) instead. `tigrbl-base` is primarily for package authors, extension authors, and maintainers working on Tigrbl internals.
 
-Core packages:
-- [`tigrbl`](https://pypi.org/project/tigrbl/) - Schema-first ASGI API framework for REST, JSON-RPC, OpenAPI, OpenRPC, SQLAlchemy models, typed validation, lifecycle hooks, and engine plugins.
-- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) - Runtime atom utilities for Tigrbl planning, dispatch, transport ingress, egress, and high-throughput ASGI execution pipelines.
-- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) (this package) - Abstract base interfaces for Tigrbl APIs, engines, providers, sessions, transports, and reusable runtime components.
-- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) - Canonical mapping, routing, symbol resolution, and naming utilities for Tigrbl framework packages and generated API surfaces.
-- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) - Typed Python client helpers for calling Tigrbl REST, JSON-RPC, OpenAPI, and generated schema-first API surfaces.
-- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) - Concrete Tigrbl implementations for reusable framework behavior, sessions, routes, responses, and base abstraction adapters.
-- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) - Core Tigrbl framework specifications, decorators, schemas, hooks, operations, and primitives for schema-first APIs.
-- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) - Kernel orchestration for composing Tigrbl runtime plans, bindings, operation dispatch, and optimized ASGI execution.
-- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) - Analytical OLAP operation boundaries for Tigrbl workloads, query-oriented APIs, and engine integrations.
-- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) - Transactional OLTP operation handlers for Tigrbl CRUD, bulk, REST, JSON-RPC, and database-backed workloads.
-- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) - Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.
-- [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) - SQLAlchemy ORM tables, mixins, columns, model helpers, and persistence primitives for Tigrbl applications.
-- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) - Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.
-- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) - Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.
-- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) - Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
-- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) - Typing protocols, aliases, generics, and shared type helpers for Tigrbl framework packages and extensions.
+## Installation
 
-Engine packages:
-- [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) - BigQuery engine plugin for Google BigQuery warehouse sessions, analytics workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) - ClickHouse engine plugin for analytical database sessions, warehouse workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) - CSV engine plugin for file-backed tables, pandas DataFrames, and lightweight Tigrbl data workflows.
-- [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) - DataFrame engine plugin for transactional pandas sessions and in-process Tigrbl analytics workloads.
-- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) - DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) - In-memory cache engine plugin for process-local TTL, LRU, and fast Tigrbl cache workflows.
-- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) - In-memory database engine plugin for process-local transactional storage, copy-on-write snapshots, and Tigrbl testing.
-- [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) - In-memory Bloom filter engine plugin for membership checks, rotating TTL windows, and Tigrbl API workflows.
-- [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) - In-memory dedupe engine plugin for idempotency tracking, duplicate suppression, and Tigrbl workflow coordination.
-- [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) - In-memory key-value engine plugin for process-local KV storage, cache workflows, and lightweight Tigrbl services.
-- [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) - In-memory LRU engine plugin for least-recently-used cache behavior and process-local Tigrbl data workflows.
-- [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) - In-memory pub/sub engine plugin for process-local publish-subscribe channels, events, and Tigrbl realtime workflows.
-- [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) - In-memory queue engine plugin for process-local tasks, message workflows, and Tigrbl runtime coordination.
-- [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) - In-memory rate-limit engine plugin for API quotas, counters, windows, and Tigrbl governance workflows.
-- [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) - NumPy engine plugin for array-to-table helpers, analytical workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) - Pandas engine plugin for transactional DataFrame sessions, tabular workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) - PostgreSQL and SQLite WAL engine plugin for transactional Tigrbl workflows and database-backed engine registration.
-- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) - PostgreSQL engine plugin for SQLAlchemy sessions, async database workflows, and Tigrbl application persistence.
-- [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) - PySpark engine plugin for distributed DataFrame integration, analytics workloads, and Tigrbl data workflows.
-- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) - Redis engine plugin for cache, data structures, and Tigrbl engine workflows backed by Redis.
-- [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) - Redis cache-through engine plugin for Redis, PostgreSQL, and Tigrbl data-access acceleration workflows.
-- [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) - Snowflake engine plugin for warehouse sessions, analytical workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) - SQLite engine plugin for SQLAlchemy sessions, local transactional storage, and Tigrbl application persistence.
-- [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) - XLSX engine plugin for Excel workbook-backed tables, worksheet data access, and Tigrbl tabular workflows.
-
-Application packages:
-- [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/) - ACME v2 certificate authority app for Tigrbl tables, certificate automation, TLS workflows, and API surfaces.
-- [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/) - SPIFFE and SPIRE identity app for Tigrbl with workload identity tables, UDS transport, and HTTP API surfaces.
-
-Source-tree links remain available from each package identity section; this ecosystem section is intentionally PyPI-first for package discovery and installation routing.
-
-## Install
+### pip
 
 ```bash
 pip install tigrbl-base
 ```
 
-## Package discovery
+### uv
 
-`tigrbl-base` is described for package indexes, search engines, answer engines, and AI coding tools as: Abstract base interfaces for Tigrbl APIs, engines, providers, sessions, transports, and reusable runtime components.
+```bash
+uv add tigrbl-base
+```
 
-Use `tigrbl-base` when you need Tigrbl's schema-first ASGI package graph for REST APIs, JSON-RPC APIs, OpenAPI documentation, OpenRPC documentation, SQLAlchemy-backed models, Pydantic validation, typed operation specs, runtime dispatch, and installable engine or application extensions.
+## Usage Examples
 
-Discovery terms: tigrbl, ASGI, schema-first API framework, REST API, JSON-RPC API, OpenAPI documentation, OpenRPC documentation, SQLAlchemy models, Pydantic validation, typed validation, operation dispatch, engine plugins, api, json-rpc, rest, sqlalchemy, pydantic, base, base-classes, interfaces, abstractions, openapi, openrpc, schema-first.
+### Import the base contract surface
 
-## Package-local entry point
+```python
+from tigrbl_base._base import (
+    AppBase,
+    RouterBase,
+    TableBase,
+    ColumnBase,
+    RequestBase,
+    ResponseBase,
+    MiddlewareBase,
+    SessionABC,
+    TigrblSessionBase,
+)
+```
 
-This file is a package-local distribution entry point.
-It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
+### Build on `TableBase`
 
-## Canonical repository docs
+```python
+from tigrbl_base._base import TableBase
+
+
+class Widget(TableBase):
+    __tablename__ = "widgets"
+```
+
+`TableBase` is one of the core shared contracts in the package. It provides the declarative table foundation that higher-level Tigrbl packages use for model assembly and operation projection.
+
+### Use the session contract layer
+
+```python
+from tigrbl_base._base import SessionABC, TigrblSessionBase
+
+
+class MySession(TigrblSessionBase):
+    async def _tx_begin_impl(self) -> None:
+        ...
+
+    async def _tx_commit_impl(self) -> None:
+        ...
+
+    async def _tx_rollback_impl(self) -> None:
+        ...
+```
+
+`SessionABC` defines the durable async session contract, while `TigrblSessionBase` provides a reusable starting point for engine-backed session implementations.
+
+### Use request and response base objects
+
+```python
+from tigrbl_base._base import RequestBase, ResponseBase
+
+
+request = RequestBase.from_scope(
+    {
+        "type": "http",
+        "method": "GET",
+        "path": "/healthz",
+        "headers": [],
+        "query_string": b"",
+    }
+)
+
+response = ResponseBase(content={"ok": True}, media_type="application/json")
+```
+
+### Extend middleware behavior
+
+```python
+from tigrbl_base._base import MiddlewareBase
+
+
+class AuditMiddleware(MiddlewareBase):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        return response
+```
+
+## Key Resident Components
+
+The package surface is organized around the shared `_base` contracts and a smaller set of helper modules.
+
+### Application and routing bases
+
+- `AppBase`
+- `RouterBase`
+- `BindingBase`
+- `BindingRegistryBase`
+- `OpBase`
+
+### Model and schema bases
+
+- `TableBase`
+- `ColumnBase`
+- `AliasBase`
+- `SchemaBase`
+- `ForeignKeyBase`
+- `StorageTransformBase`
+- `TableRegistryBase`
+
+### Request, response, and middleware bases
+
+- `RequestBase`
+- `ResponseBase`
+- `TemplateBase`
+- `MiddlewareBase`
+- `HeadersBase`
+- `HeaderCookiesBase`
+
+### Engine and session bases
+
+- `EngineBase`
+- `EngineProviderBase`
+- `SessionABC`
+- `TigrblSessionBase`
+
+### Security and mapping helpers
+
+- `OpenAPISecurityDependency`
+- `validate_openapi_security_scheme`
+- `register_and_attach`
+- `rpc_call`
+- REST and RPC mapping helpers under `_rest_map.py` and `_rpc_map.py`
+
+### Column inference helpers
+
+The `column` module and `column.infer` helpers are used to infer SQLAlchemy-compatible column plans and related type metadata from Python-side declarations.
+
+## When Should You Use tigrbl-base?
+
+Choose `tigrbl-base` when:
+
+- You are building or extending a Tigrbl subsystem package.
+- You need reusable framework contracts without the full public facade.
+- You are implementing a new engine, transport, middleware, or session layer.
+- You are working on Tigrbl internals where the shared base contracts are the correct dependency boundary.
+
+Choose [`tigrbl`](https://pypi.org/project/tigrbl/) when:
+
+- You are building an application.
+- You want the public authoring surface.
+- You do not need to extend internal framework contracts directly.
+
+## Related Packages by Component Kind
+
+### Facade and authoring packages
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
+- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/)
+- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/)
+- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
+- [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/)
+- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/)
+- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/)
+
+### Low-level framework and support packages
+
+- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/)
+- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/)
+- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/)
+- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/)
+
+### Operation packages
+
+- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/)
+- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/)
+- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/)
+
+### Engine packages
+
+- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/)
+- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/)
+- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/)
+- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/)
+- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/)
+- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/)
+- [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/)
+- [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/)
+
+## Frequently Asked Questions
+
+### Is `tigrbl-base` the same as `tigrbl-core`?
+
+No. `tigrbl-base` holds reusable base implementations and interfaces. [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) holds the spec and contract vocabulary for operations, bindings, schemas, hooks, and related metadata.
+
+### Should application code import from `tigrbl-base` directly?
+
+Usually not. Most application code should import from [`tigrbl`](https://pypi.org/project/tigrbl/). Import from `tigrbl-base` when you are extending framework internals or intentionally targeting the lower-level base contract layer.
+
+### Does `tigrbl-base` include SQLAlchemy-aware components?
+
+Yes. `TableBase`, `ColumnBase`, datatype lowering helpers, and related session/response/request infrastructure are all part of the package's resident surface.
+
+## AEO and SEO Summary
+
+Search and answer-engine summary for `tigrbl-base`:
+
+> `tigrbl-base` is the Tigrbl base-contract package for reusable app, router, table, column, request, response, middleware, session, binding, and security base implementations.
+
+## Package Identity
+
+- PyPI: [`tigrbl-base`](https://pypi.org/project/tigrbl-base/)
+- Repository: [tigrbl/tigrbl](https://github.com/tigrbl/tigrbl)
+- Package source: [pkgs/core/tigrbl_base](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_base)
+- Organization: [github.com/tigrbl](https://github.com/tigrbl)
+- Discord: [discord.gg/K4YTAPapjR](https://discord.gg/K4YTAPapjR)
+- Workspace path: `pkgs/core/tigrbl_base`
+- Workspace class: core Python package
+
+## Canonical Repository Docs
 
 - `README.md`
 - `docs/README.md`
@@ -119,14 +280,4 @@ It is not the authoritative location for repository governance, current target s
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/PACKAGE_LAYOUT.md`
 
-## Package identity
-
-- canonical repository: `https://github.com/tigrbl/tigrbl`
-- organization: `https://github.com/tigrbl`
-- social: `https://discord.gg/K4YTAPapjR`
-- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_base`
-- workspace path: `pkgs/core/tigrbl_base`
-- workspace class: core Python package
-- implementation layout: `tigrbl_base/`
-
-Long-form repository documentation is governed from `docs/`.
+This package README is a package-local distribution document. Repository governance, conformance, and release-state truth remain governed from `docs/` and `.ssot/`.
