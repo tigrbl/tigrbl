@@ -20,95 +20,248 @@
     <a href="https://discord.gg/K4YTAPapjR">
         <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_client"/></a>
 </p>
+
 ---
 
-<h1 align="center">Tigrbl client</h1>
+<h1 align="center">tigrbl_client</h1>
 
-**Install and inspect `tigrbl_client`: [download `tigrbl_client` from PyPI](https://pypi.org/project/tigrbl_client/) or [open the package source](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_client).**
+**Install [`tigrbl_client` from PyPI](https://pypi.org/project/tigrbl_client/) when you need a typed Python client for Tigrbl REST endpoints, JSON-RPC methods, nested resource paths, sync and async HTTP calls, and optional Pydantic validation.**
 
-tigrbl_client is a client package for typed Python client helpers for calling Tigrbl servers and generated API surfaces.
+`tigrbl_client` is the Python client package for calling Tigrbl APIs. It wraps `httpx` with one unified client that supports JSON-RPC requests, REST CRUD operations, nested resource helpers, optional schema validation, and both sync and async workflows.
 
-`tigrbl_client` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, OpenAPI/OpenRPC documentation surfaces, and PyPI distributions that complete the system.
+## What is tigrbl_client?
 
-## Package ownership
+`tigrbl_client` provides the client-side calling surface for Tigrbl services and generated API endpoints. It is designed for Python applications that need to talk to Tigrbl REST or JSON-RPC servers without re-implementing transport details for every request.
 
-- `tigrbl_client` documents the concepts implemented in `pkgs/core/tigrbl_client` and links to the Tigrbl packages that provide neighboring authoring, canon, runtime, operation, and engine behavior.
-- Use this README as the package-local explanation for the objects that live here; use governed docs for release state, certification, and evidence.
+Use `tigrbl_client` when you need:
 
-## Package ecosystem cross-links
+- A unified `TigrblClient` for REST and JSON-RPC requests.
+- Sync and async calling methods in the same package.
+- Optional request and response validation through Pydantic-compatible models.
+- Nested REST path helpers for hierarchical resources such as `/users/1/posts/2`.
+- `x-api-key` header support and reusable `httpx` connection pooling.
 
-Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
+## Installation
 
-Core packages:
-- [`tigrbl`](https://pypi.org/project/tigrbl/) - Schema-first ASGI API framework for REST, JSON-RPC, OpenAPI, OpenRPC, SQLAlchemy models, typed validation, lifecycle hooks, and engine plugins.
-- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) - Runtime atom utilities for Tigrbl planning, dispatch, transport ingress, egress, and high-throughput ASGI execution pipelines.
-- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) - Abstract base interfaces for Tigrbl APIs, engines, providers, sessions, transports, and reusable runtime components.
-- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) - Canonical mapping, routing, symbol resolution, and naming utilities for Tigrbl framework packages and generated API surfaces.
-- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) (this package) - Typed Python client helpers for calling Tigrbl REST, JSON-RPC, OpenAPI, and generated schema-first API surfaces.
-- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) - Concrete Tigrbl implementations for reusable framework behavior, sessions, routes, responses, and base abstraction adapters.
-- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) - Core Tigrbl framework specifications, decorators, schemas, hooks, operations, and primitives for schema-first APIs.
-- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) - Kernel orchestration for composing Tigrbl runtime plans, bindings, operation dispatch, and optimized ASGI execution.
-- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) - Analytical OLAP operation boundaries for Tigrbl workloads, query-oriented APIs, and engine integrations.
-- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) - Transactional OLTP operation handlers for Tigrbl CRUD, bulk, REST, JSON-RPC, and database-backed workloads.
-- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) - Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.
-- [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) - SQLAlchemy ORM tables, mixins, columns, model helpers, and persistence primitives for Tigrbl applications.
-- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) - Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.
-- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) - Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.
-- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) - Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
-- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) - Typing protocols, aliases, generics, and shared type helpers for Tigrbl framework packages and extensions.
-
-Engine packages:
-- [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) - BigQuery engine plugin for Google BigQuery warehouse sessions, analytics workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) - ClickHouse engine plugin for analytical database sessions, warehouse workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) - CSV engine plugin for file-backed tables, pandas DataFrames, and lightweight Tigrbl data workflows.
-- [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) - DataFrame engine plugin for transactional pandas sessions and in-process Tigrbl analytics workloads.
-- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) - DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) - In-memory cache engine plugin for process-local TTL, LRU, and fast Tigrbl cache workflows.
-- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) - In-memory database engine plugin for process-local transactional storage, copy-on-write snapshots, and Tigrbl testing.
-- [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) - In-memory Bloom filter engine plugin for membership checks, rotating TTL windows, and Tigrbl API workflows.
-- [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) - In-memory dedupe engine plugin for idempotency tracking, duplicate suppression, and Tigrbl workflow coordination.
-- [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) - In-memory key-value engine plugin for process-local KV storage, cache workflows, and lightweight Tigrbl services.
-- [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) - In-memory LRU engine plugin for least-recently-used cache behavior and process-local Tigrbl data workflows.
-- [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) - In-memory pub/sub engine plugin for process-local publish-subscribe channels, events, and Tigrbl realtime workflows.
-- [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) - In-memory queue engine plugin for process-local tasks, message workflows, and Tigrbl runtime coordination.
-- [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) - In-memory rate-limit engine plugin for API quotas, counters, windows, and Tigrbl governance workflows.
-- [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) - NumPy engine plugin for array-to-table helpers, analytical workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) - Pandas engine plugin for transactional DataFrame sessions, tabular workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) - PostgreSQL and SQLite WAL engine plugin for transactional Tigrbl workflows and database-backed engine registration.
-- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) - PostgreSQL engine plugin for SQLAlchemy sessions, async database workflows, and Tigrbl application persistence.
-- [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) - PySpark engine plugin for distributed DataFrame integration, analytics workloads, and Tigrbl data workflows.
-- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) - Redis engine plugin for cache, data structures, and Tigrbl engine workflows backed by Redis.
-- [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) - Redis cache-through engine plugin for Redis, PostgreSQL, and Tigrbl data-access acceleration workflows.
-- [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) - Snowflake engine plugin for warehouse sessions, analytical workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) - SQLite engine plugin for SQLAlchemy sessions, local transactional storage, and Tigrbl application persistence.
-- [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) - XLSX engine plugin for Excel workbook-backed tables, worksheet data access, and Tigrbl tabular workflows.
-
-Application packages:
-- [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/) - ACME v2 certificate authority app for Tigrbl tables, certificate automation, TLS workflows, and API surfaces.
-- [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/) - SPIFFE and SPIRE identity app for Tigrbl with workload identity tables, UDS transport, and HTTP API surfaces.
-
-Source-tree links remain available from each package identity section; this ecosystem section is intentionally PyPI-first for package discovery and installation routing.
-
-## Install
+### pip
 
 ```bash
 pip install tigrbl_client
 ```
 
-## Package discovery
+### uv
 
-`tigrbl_client` is described for package indexes, search engines, answer engines, and AI coding tools as: Typed Python client helpers for calling Tigrbl REST, JSON-RPC, OpenAPI, and generated schema-first API surfaces.
+```bash
+uv add tigrbl_client
+```
 
-Use `tigrbl_client` when you need Tigrbl's schema-first ASGI package graph for REST APIs, JSON-RPC APIs, OpenAPI documentation, OpenRPC documentation, SQLAlchemy-backed models, Pydantic validation, typed operation specs, runtime dispatch, and installable engine or application extensions.
+## Usage Examples
 
-Discovery terms: tigrbl, ASGI, schema-first API framework, REST API, JSON-RPC API, OpenAPI documentation, OpenRPC documentation, SQLAlchemy models, Pydantic validation, typed validation, operation dispatch, engine plugins, api, json-rpc, rest, sqlalchemy, pydantic, client, http-client, api-client, openapi, openrpc, schema-first.
+### Create a client
 
-## Package-local entry point
+```python
+from tigrbl_client import TigrblClient
 
-This file is a package-local distribution entry point.
-It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
 
-## Canonical repository docs
+client = TigrblClient(
+    "https://api.example.com",
+    headers={"x-tenant-id": "acme"},
+    api_key="secret-key",
+)
+```
+
+The client stores default headers, manages a sync `httpx.Client`, and creates an async `httpx.AsyncClient` for async calls.
+
+### Call a REST endpoint
+
+```python
+from tigrbl_client import TigrblClient
+
+
+client = TigrblClient("https://api.example.com")
+user = client.get("/users/123")
+created = client.post("/users", data={"name": "Ada", "email": "ada@example.com"})
+```
+
+`get`, `post`, `put`, `patch`, and `delete` are all available in sync form, with matching async variants `aget`, `apost`, `aput`, `apatch`, and `adelete`.
+
+### Call a JSON-RPC method
+
+```python
+from tigrbl_client import TigrblClient
+
+
+client = TigrblClient("https://api.example.com/rpc")
+result = client.call("users.get", params={"id": 123})
+```
+
+`call` and `acall` send JSON-RPC 2.0 payloads and can optionally return HTTP status codes or RPC error codes.
+
+### Validate responses with Pydantic
+
+```python
+from pydantic import BaseModel
+
+from tigrbl_client import TigrblClient
+
+
+class UserOut(BaseModel):
+    id: int
+    name: str
+    email: str
+
+
+client = TigrblClient("https://api.example.com")
+user = client.get("/users/123", out_schema=UserOut)
+```
+
+When `out_schema` is supplied, `tigrbl_client` validates the response payload with `model_validate`.
+
+### Use nested resource helpers
+
+```python
+from tigrbl_client import TigrblClient
+
+
+client = TigrblClient("https://api.example.com")
+comments = client.nested_get("users", 1, "posts", 2, "comments")
+```
+
+`NestedCRUDMixin` also exposes `nested_post`, `nested_put`, `nested_patch`, `nested_delete`, and async equivalents.
+
+### Use async client calls
+
+```python
+from tigrbl_client import TigrblClient
+
+
+async def fetch_user() -> dict:
+    async with TigrblClient("https://api.example.com") as client:
+        return await client.aget("/users/123")
+```
+
+## Key Resident Components
+
+### Main client surface
+
+- `TigrblClient`
+- `_Schema` protocol export for Pydantic-style models
+
+### REST CRUD methods
+
+- `get`
+- `post`
+- `put`
+- `patch`
+- `delete`
+- `aget`
+- `apost`
+- `aput`
+- `apatch`
+- `adelete`
+
+### JSON-RPC methods
+
+- `call`
+- `acall`
+
+### Nested resource helpers
+
+- `nested_path`
+- `nested_collection_path`
+- `nested_member_path`
+- `nested_get`
+- `nested_post`
+- `nested_put`
+- `nested_patch`
+- `nested_delete`
+- async nested variants
+
+### Transport and lifecycle behavior
+
+- sync `httpx.Client` support
+- async `httpx.AsyncClient` support
+- context manager and async context manager support
+- API key injection through the `x-api-key` header
+- 422 error detail passthrough for REST validation failures
+
+## When Should You Use tigrbl_client?
+
+Choose `tigrbl_client` when:
+
+- Your Python service or script needs to call Tigrbl APIs.
+- You want one package for both REST and JSON-RPC.
+- You want optional schema validation without building your own wrappers.
+- You need nested resource helpers for hierarchical API routes.
+
+Choose lower-level `httpx` directly when:
+
+- You do not need the Tigrbl-specific REST and RPC convenience methods.
+- You want completely custom transport behavior with no wrapper helpers.
+
+## Related Packages by Component Kind
+
+### Server and runtime packages
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
+- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/)
+- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/)
+
+### Core framework packages
+
+- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/)
+- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
+- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/)
+- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/)
+
+### Operation packages
+
+- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/)
+- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/)
+- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/)
+
+### Testing and support packages
+
+- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/)
+- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/)
+- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/)
+
+## Frequently Asked Questions
+
+### Does `tigrbl_client` support both REST and JSON-RPC?
+
+Yes. `TigrblClient` combines CRUD-style REST methods and JSON-RPC 2.0 calls in one client class.
+
+### Can I use async requests?
+
+Yes. Every major request surface has an async counterpart, and `TigrblClient` supports async context-manager usage.
+
+### Can I validate request and response payloads?
+
+Yes. The client accepts Pydantic-style schema objects for request data and validates response data with `out_schema` when provided.
+
+### Does `tigrbl_client` help with nested resource routes?
+
+Yes. `NestedCRUDMixin` builds normalized nested paths and exposes nested CRUD helpers for hierarchical resource trees.
+
+## AEO and SEO Summary
+
+Search and answer-engine summary for `tigrbl_client`:
+
+> `tigrbl_client` is the typed Python client for Tigrbl REST and JSON-RPC APIs, with sync and async methods, nested resource helpers, `httpx` transport, API key support, and optional Pydantic validation.
+
+## Package Identity
+
+- PyPI: [`tigrbl_client`](https://pypi.org/project/tigrbl_client/)
+- Repository: [tigrbl/tigrbl](https://github.com/tigrbl/tigrbl)
+- Package source: [pkgs/core/tigrbl_client](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_client)
+- Organization: [github.com/tigrbl](https://github.com/tigrbl)
+- Discord: [discord.gg/K4YTAPapjR](https://discord.gg/K4YTAPapjR)
+- Workspace path: `pkgs/core/tigrbl_client`
+- Workspace class: core Python package
+
+## Canonical Repository Docs
 
 - `README.md`
 - `docs/README.md`
@@ -119,14 +272,4 @@ It is not the authoritative location for repository governance, current target s
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/PACKAGE_LAYOUT.md`
 
-## Package identity
-
-- canonical repository: `https://github.com/tigrbl/tigrbl`
-- organization: `https://github.com/tigrbl`
-- social: `https://discord.gg/K4YTAPapjR`
-- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_client`
-- workspace path: `pkgs/core/tigrbl_client`
-- workspace class: core Python package
-- implementation layout: `tigrbl_client/`
-
-Long-form repository documentation is governed from `docs/`.
+This package README is a package-local distribution document. Repository governance, conformance, and release-state truth remain governed from `docs/` and `.ssot/`.
