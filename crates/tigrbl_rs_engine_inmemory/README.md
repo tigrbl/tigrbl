@@ -1,22 +1,25 @@
 ![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
-[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json)
-
 <p align="center">
     <a href="https://crates.io/crates/tigrbl_rs_engine_inmemory">
         <img src="https://img.shields.io/crates/d/tigrbl_rs_engine_inmemory" alt="crates.io downloads for tigrbl_rs_engine_inmemory"/></a>
-    <a href="https://crates.io/crates/tigrbl_rs_engine_inmemory">
-        <img src="https://img.shields.io/crates/v/tigrbl_rs_engine_inmemory?label=tigrbl_rs_engine_inmemory&color=green" alt="crates.io version for tigrbl_rs_engine_inmemory"/></a>
-    <a href="https://docs.rs/tigrbl_rs_engine_inmemory">
-        <img src="https://img.shields.io/docsrs/tigrbl_rs_engine_inmemory" alt="docs.rs documentation for tigrbl_rs_engine_inmemory"/></a>
-    <a href="https://crates.io/crates/tigrbl_rs_engine_inmemory">
-        <img src="https://img.shields.io/crates/l/tigrbl_rs_engine_inmemory" alt="crates.io license metadata for tigrbl_rs_engine_inmemory"/></a>
     <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_engine_inmemory/">
         <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_engine_inmemory.svg" alt="Repository views for tigrbl_rs_engine_inmemory"/></a>
+    <a href="https://crates.io/crates/tigrbl_rs_engine_inmemory">
+        <img src="https://img.shields.io/crates/v/tigrbl_rs_engine_inmemory?label=tigrbl_rs_engine_inmemory&color=green" alt="crates.io version for tigrbl_rs_engine_inmemory"/></a>
+    <a href="https://crates.io/crates/tigrbl_rs_engine_inmemory">
+        <img src="https://img.shields.io/crates/l/tigrbl_rs_engine_inmemory" alt="crates.io license metadata for tigrbl_rs_engine_inmemory"/></a>
+    <a href="https://docs.rs/tigrbl_rs_engine_inmemory">
+        <img src="https://img.shields.io/docsrs/tigrbl_rs_engine_inmemory" alt="docs.rs documentation for tigrbl_rs_engine_inmemory"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml">
+        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch Coverage workflow status for tigrbl_rs_engine_inmemory"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml">
+        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish Packages workflow status for tigrbl_rs_engine_inmemory"/></a>
+    <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json">
+        <img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed status for tigrbl_rs_engine_inmemory"/></a>
+    <a href="https://discord.gg/K4YTAPapjR">
+        <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_rs_engine_inmemory"/></a>
 </p>
-
-[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
-
 ---
 
 # tigrbl_rs_engine_inmemory

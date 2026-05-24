@@ -1,22 +1,25 @@
 ![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
 
-[![SSOT governed](https://img.shields.io/badge/SSOT-governed-2f6f4e.svg)](https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json)
-
 <p align="center">
     <a href="https://pepy.tech/project/tigrbl-atoms">
         <img src="https://static.pepy.tech/badge/tigrbl-atoms" alt="Pepy downloads for tigrbl-atoms"/></a>
     <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_atoms/">
         <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_atoms.svg" alt="Repository views for tigrbl-atoms"/></a>
     <a href="https://pypi.org/project/tigrbl-atoms/">
-        <img src="https://img.shields.io/badge/python-3.10--3.14-blue" alt="Python 3.10 through 3.14"/></a>
+        <img src="https://img.shields.io/pypi/v/tigrbl-atoms?label=tigrbl-atoms&color=green" alt="PyPI version for tigrbl-atoms"/></a>
     <a href="https://pypi.org/project/tigrbl-atoms/">
         <img src="https://img.shields.io/pypi/l/tigrbl-atoms" alt="PyPI license metadata for tigrbl-atoms"/></a>
-    <a href="https://pypi.org/project/tigrbl-atoms/">
-        <img src="https://img.shields.io/pypi/v/tigrbl-atoms?label=tigrbl-atoms&color=green" alt="PyPI version for tigrbl-atoms"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md">
+        <img src="https://img.shields.io/badge/docs-repository%20docs-1f6feb" alt="Repository docs for tigrbl-atoms"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml">
+        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch Coverage workflow status for tigrbl-atoms"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml">
+        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish Packages workflow status for tigrbl-atoms"/></a>
+    <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json">
+        <img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed status for tigrbl-atoms"/></a>
+    <a href="https://discord.gg/K4YTAPapjR">
+        <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-atoms"/></a>
 </p>
-
-[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
-
 ---
 
 <h1 align="center">tigrbl-atoms</h1>

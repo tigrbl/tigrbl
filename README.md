@@ -1,6 +1,19 @@
 # Tigrbl Workspace
 
-[![Discord](https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white)](https://discord.gg/K4YTAPapjR)
+<p align="center">
+    <a href="https://hits.sh/github.com/tigrbl/tigrbl/">
+        <img src="https://hits.sh/github.com/tigrbl/tigrbl.svg" alt="Repository views for tigrbl"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md">
+        <img src="https://img.shields.io/badge/docs-repository%20docs-1f6feb" alt="Repository docs for tigrbl"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml">
+        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch Coverage workflow status for tigrbl"/></a>
+    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml">
+        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish Packages workflow status for tigrbl"/></a>
+    <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json">
+        <img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed status for tigrbl"/></a>
+    <a href="https://discord.gg/K4YTAPapjR">
+        <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl"/></a>
+</p>
 
 ![Tigrbl package graph](docs/assets/tigrbl-package-graph.png)
 
