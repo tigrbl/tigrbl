@@ -1,30 +1,36 @@
 [project]
 name = "tigrbl-atoms"
 version = "0.4.1"
-description = "Runtime atom utilities for Tigrbl planning, dispatch, transport ingress, egress, and high-throughput ASGI execution pipelines."
+description = "Runtime atom package for Tigrbl stages, phases, typed contexts, event anchors, protocol execution, and composable pipeline algebra."
 readme = "README.md"
 license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
     "api",
+    "atom algebra",
+    "atom pipeline",
+    "event anchors",
     "json-rpc",
-    "rest",
-    "sqlalchemy",
-    "pydantic",
     "atoms",
-    "runtime",
     "execution",
-    "pipeline",
+    "phases",
     "openapi",
     "openrpc",
+    "protocol runtime",
+    "rest",
+    "runtime",
     "schema-first",
+    "stages",
+    "typed context",
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
     "Intended Audience :: Developers",
     "Intended Audience :: Information Technology",
     "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
@@ -35,8 +41,11 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Code Generators",
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
 ]
 requires-python = ">=3.10,<3.15"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
