@@ -49,6 +49,11 @@ dependencies = [
     "numba>=0.61.2",
 ]
 
+[project.optional-dependencies]
+rust = [
+    "tigrbl-runtime-bindings-rs==0.4.1",
+]
+
 
 [project.urls]
 Organization = "https://github.com/tigrbl"
@@ -63,15 +68,16 @@ Issues = "https://github.com/tigrbl/tigrbl/issues"
 "tigrbl-atoms" = { workspace = true }
 "tigrbl-base" = { workspace = true }
 "tigrbl-core" = { workspace = true }
+"tigrbl-runtime-bindings-rs" = { workspace = true }
 
 [build-system]
-requires = ["maturin>=1.7,<2.0"]
-build-backend = "maturin"
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
-[tool.maturin]
-module-name = "tigrbl_runtime.rust._rust"
-python-source = "."
-features = ["pyo3/extension-module"]
+[tool.poetry]
+packages = [
+    { include = "tigrbl_runtime" },
+]
 
 [dependency-groups]
 dev = [

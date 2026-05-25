@@ -179,7 +179,7 @@ def cargo_publish_order(projects: Iterable[dict[str, str]]) -> list[str]:
         "tigrbl_rs_ops_oltp",
         "tigrbl_rs_kernel",
         "tigrbl_rs_runtime",
-        "tigrbl_runtime_bindings",
+        "tigrbl_runtime_bindings_rs",
     ]
     names = {project["name"] for project in projects}
     missing = names.difference(preferred)

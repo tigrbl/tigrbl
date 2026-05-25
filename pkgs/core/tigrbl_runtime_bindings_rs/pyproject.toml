@@ -1,0 +1,60 @@
+[project]
+name = "tigrbl-runtime-bindings-rs"
+version = "0.4.1"
+description = "Optional Rust extension bindings for tigrbl-runtime."
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = [
+    "tigrbl",
+    "rust",
+    "bindings",
+    "pyo3",
+    "runtime",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Programming Language :: Rust",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+requires-python = ">=3.10,<3.15"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
+dependencies = [
+    "tigrbl-runtime==0.4.1",
+]
+
+[project.urls]
+Organization = "https://github.com/tigrbl"
+Discord = "https://discord.gg/K4YTAPapjR"
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime_bindings_rs"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[tool.uv.sources]
+"tigrbl-runtime" = { workspace = true }
+
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[tool.maturin]
+module-name = "tigrbl_runtime.rust._rust"
+python-source = "."
+features = ["pyo3/extension-module"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.9",
+]
