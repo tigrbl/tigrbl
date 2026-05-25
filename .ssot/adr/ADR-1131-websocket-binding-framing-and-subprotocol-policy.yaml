@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "adr"
 id: "adr:1131"
 number: 1131
@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to govern websocket framing and subprotocol semantics for the AppSpec transport matrix."
     at: "2026-05-10T11:18:12Z"
+    note: "Created to govern websocket framing and subprotocol semantics for the AppSpec transport matrix."
+    status: "draft"
 references: []
 body: |-
   ## Decision
@@ -25,15 +25,21 @@ body: |-
   1. `WsBindingSpec.proto` owns websocket transport security and MUST be either `ws` or `wss` for websocket bindings.
   2. `WsBindingSpec.subprotocols` owns handshake negotiation through `Sec-WebSocket-Protocol` and MUST describe the allowed or required application subprotocol tokens advertised for the socket.
   3. `WsBindingSpec.framing` owns post-handshake message interpretation after the socket is accepted.
-  4. JSON-RPC over websocket MUST be expressible as websocket transport plus JSON-RPC framing, with optional JSON-RPC subprotocol negotiation.
-  5. Path kinds such as `websocket`, `ws-jsonrpc`, `wss-jsonrpc`, `ws-ndjson`, and `wss-ndjson` remain address-surface categories and MUST converge with the websocket binding fields instead of replacing them.
-  6. Docs projection and runtime compilation MUST validate websocket protocol, framing, and subprotocol declarations from the canonical binding graph.
+  4. WebSocket JSON-RPC MUST be expressed as websocket transport plus `framing=jsonrpc`; the subprotocol declaration alone must not define JSON-RPC decoding semantics.
+  5. When websocket JSON-RPC is declared, the binding must normalize or require a JSON-RPC-compatible subprotocol token and must reject incompatible subprotocol combinations.
+  6. WebSocket text is the default mature framing surface today.
+  7. WebSocket binary and websocket bytes may appear in canonical framing vocabulary, but they must not be presented as equivalent to mature framing-atom support unless explicit runtime decode/encode and documentation closure exists.
+  8. Path kinds such as `websocket`, `ws-jsonrpc`, `wss-jsonrpc`, `ws-ndjson`, and `wss-ndjson` remain address-surface categories and MUST converge with the websocket binding fields instead of replacing them.
+  9. NDJSON websocket scenarios remain explicit and fail closed until framing support exists.
+  10. Docs projection and runtime compilation MUST validate websocket protocol, framing, and subprotocol declarations from the canonical binding graph.
   
   ## Context
   
   The nested AppSpec transport discussion raised whether `framing` and `subprotocols` both belong on `WsBindingSpec`. The distinction is valid: websocket subprotocols participate in the opening handshake, while framing tells Tigrbl how to decode and encode messages once a websocket connection exists.
   
   Conflating these fields would make canonical specs unable to represent common cases such as raw text websockets with no application subprotocol, JSON-RPC messages over a negotiated `jsonrpc` subprotocol, or planned fail-closed NDJSON framing that should not silently pass as a generic websocket.
+  
+  Recent live-repo review also showed that canonical framing vocabulary is broader than the current runtime framing-atom implementation. The policy therefore has to keep declared vocabulary separate from actual mature runtime support.
   
   ## Consequences
   
@@ -42,6 +48,7 @@ body: |-
   - WS and WSS JSON-RPC parity can be validated symmetrically.
   - NDJSON websocket scenarios remain explicit and fail closed until framing support exists.
   - Documentation projections can expose websocket metadata from selected bindings without treating docs UIX or payload paths as protocol authorities.
+  - Support matrices can distinguish mature websocket text behavior from partial or provisional framing vocabulary.
   
   ## Rejected Alternatives
   
@@ -49,6 +56,7 @@ body: |-
   - Use only `framing` and ignore websocket handshake negotiation.
   - Encode websocket JSON-RPC solely in `PathSpec.kind`.
   - Treat websocket docs projection as a docs path concern instead of a binding-selection concern.
+  - Treat declared framing tokens as sufficient proof of mature runtime support.
   
   ## Governed Feature Scope
   

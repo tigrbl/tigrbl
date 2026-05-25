@@ -14,4 +14,22 @@ superseded_by: []
 status_notes: []
 references: []
 body: |-
-  ## Decision`nPhases are execution slots; family and subevent labels are runtime unit selectors. Subevents must not become phases.`n`n## Rationale`nThis prevents phase explosion while preserving protocol-specific lifecycle precision.`n`n## Consequences`nCompiler and runtime selection use both axes together.`n`n## Traceability`nLinks: adr:1009, adr:1091, adr:1092, adr:1093, spc:2098, spc:2102, spc:2115.
+  ## Decision
+  
+  Phases are execution slots. Runtime family and subevent labels are row-axis selectors for executable units. Subevents must not become phases.
+  
+  The row axis uses the contract-derived runtime family and subevent vocabulary governed by ADR-1091. Tigrbl owns the phase axis and matrix-cell metadata, but it does not own an alternate canonical family set.
+  
+  ## Rationale
+  
+  This prevents phase explosion while preserving protocol-specific lifecycle precision and preventing local runtime-family drift from the governed contract vocabulary.
+  
+  ## Consequences
+  
+  - Compiler and runtime selection use both axes together.
+  - Matrix rows must be expressed with canonical contract-derived family and subevent selectors.
+  - Legacy labels such as `socket` and `event_stream` may be normalized at compatibility boundaries but must not appear as canonical matrix rows.
+  
+  ## Traceability
+  
+  Links: adr:1009, adr:1091, adr:1092, adr:1093, spc:2098, spc:2102, spc:2115.

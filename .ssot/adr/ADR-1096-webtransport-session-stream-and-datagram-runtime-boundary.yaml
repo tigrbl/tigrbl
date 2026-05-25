@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "adr"
 id: "adr:1096"
 number: 1096
@@ -19,19 +19,25 @@ body: |-
   1. WebTransport is governed as a session transport with distinct session, stream, datagram, and app-framed execution paths.
   2. WebTransport support must preserve ASGI3 server-boundary projection and use explicit extension event schemas.
   3. Session lifecycle, bidirectional stream chunks, datagrams, disconnects, and app-framed messages are separate runtime concerns.
-  4. WebTransport may not be claimed as first-class support until its event, subevent, atom-chain, and executor evidence contracts pass.
-  5. WebTransport implementation must not create a separate programming model outside BindingSpec and KernelPlan compilation.
+  4. `WebTransportBindingSpec.framing=webtransport` governs the outer transport/session layer, not the inner application payload framing inside streams or datagrams.
+  5. Inner application framings carried inside WebTransport lanes must be governed separately from the outer `webtransport` binding framing and may later include tokens such as `text`, `json`, `jsonrpc`, `binary`, or `bytes` only when explicit runtime and test support exists.
+  6. NDJSON must not be implied as a WebTransport transport framing merely because it may one day be used as an application payload shape inside a stream.
+  7. WebTransport may not be claimed as first-class support until its event, subevent, atom-chain, executor, and inner-framing evidence contracts pass.
+  8. WebTransport implementation must not create a separate programming model outside BindingSpec and KernelPlan compilation.
   
   ## Context
   
   WebTransport is currently visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport subevents to be represented explicitly.
   
+  The live repo also now distinguishes more clearly between transport-level framing and application-level payload interpretation. Without that distinction, the repo can accidentally overclaim support by treating a transport token as if it already guaranteed mature inner message framing support.
+  
   ## Consequences
   
   - WebTransport stream and datagram behavior receive separate SPEC coverage.
-  - App-framed WebTransport reuses message-family framing semantics.
+  - App-framed WebTransport reuses message-family framing semantics only when explicitly governed.
   - Certification requires real runtime and ordering evidence.
+  - Docs and support matrices must keep outer transport framing separate from inner payload framing claims.
   
   ## Related
   
-  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094.
+  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131.

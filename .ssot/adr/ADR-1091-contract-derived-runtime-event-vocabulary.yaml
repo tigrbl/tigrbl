@@ -17,10 +17,14 @@ body: |-
   ## Decision
   
   1. Tigrbl distinguishes three runtime event vocabularies: transport events, derived semantic subevents, and kernel anchor events.
-  2. Transport events are server/ASGI boundary facts.
-  3. Derived subevents are Tigrbl runtime semantics derived after binding, exchange, family, framing, and scope normalization.
-  4. Kernel anchor events are atom-ordering and phase-placement facts.
-  5. No implementation may treat these vocabularies as interchangeable.
+  2. Transport events are server or ASGI boundary facts.
+  3. Derived semantic subevents are Tigrbl runtime semantics derived after binding, exchange, family, framing, and scope normalization.
+  4. The canonical family and subevent vocabulary for derived semantic subevents is contract-derived from the governed `tigr-asgi-contract` release targeted by this repository.
+  5. Tigrbl may add compiler metadata, phase legality, transaction-unit metadata, loop-region metadata, and compatibility aliases, but it may not invent a competing canonical runtime family set.
+  6. The canonical runtime family set is `request`, `session`, `message`, `stream`, and `datagram`.
+  7. Legacy labels such as `socket`, `event_stream`, and any repo-local family token outside the governed contract set are compatibility aliases only and must not be emitted as canonical runtime metadata.
+  8. Kernel anchor events remain atom-ordering and phase-placement facts and are not interchangeable with transport events or derived semantic subevents.
+  9. No implementation may treat these vocabularies as interchangeable.
   
   ## Context
   
@@ -30,6 +34,8 @@ body: |-
   
   - Transport adapters preserve ASGI-shaped boundaries.
   - Runtime planning may derive richer subevents without replacing ASGI.
+  - Runtime family and subevent drift is fail-closed against the governed contract vocabulary.
+  - Local names such as `socket` and `event_stream` move to compatibility-only normalization paths.
   - Kernel compilation keeps atom anchors compact and protocol-neutral.
   
   ## Related

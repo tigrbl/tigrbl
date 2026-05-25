@@ -22,6 +22,17 @@ body: |-
   
   BindingSpecs declare or derive transport events, exchange, family, framing, subevents, transaction unit, loop shape, emit behavior, close behavior, and channel requirements used by KernelPlan compilation and hook selection.
   
+  BindingSpec projection must emit canonical runtime family and subevent metadata derived from the governed `tigr-asgi-contract` vocabulary.
+  
+  Projection code may accept legacy or convenience authoring tokens, but it must normalize them before compiled metadata is emitted.
+  
+  In particular:
+  
+  - WebSocket projections must not emit `socket` as a canonical runtime family.
+  - SSE projections must not emit `event_stream` as a canonical runtime family.
+  - Repo-local `response` family projections must normalize to the governed canonical family vocabulary before KernelPlan rows, hook selectors, or event-key metadata are emitted.
+  - Canonical emitted subevents must be governed qualified subevents rather than coarse channel verbs.
+  
   ## Traceability
   
   ADRs: adr:1006, adr:1091, adr:1092, adr:1100.

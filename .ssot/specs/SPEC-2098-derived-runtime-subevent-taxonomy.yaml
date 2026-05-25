@@ -20,7 +20,15 @@ body: |-
   
   ## Contract
   
-  Runtime subevents use qualified family leaves for request, response, session, message, stream, and datagram semantics. Coarse transport channel verbs remain compatibility/default vocabulary and do not replace qualified subevents.
+  Runtime subevents use qualified family leaves derived from the governed `tigr-asgi-contract` vocabulary.
+  
+  The closed canonical runtime family set is `request`, `session`, `message`, `stream`, and `datagram`.
+  
+  Coarse transport channel verbs such as `connect`, `receive`, `emit`, `complete`, and `disconnect` remain compatibility or default authoring vocabulary only and do not replace qualified runtime subevents.
+  
+  Legacy family labels such as `socket`, `event_stream`, and repo-local `response` must normalize to the governed canonical family set before they are used for event-key derivation, lifecycle-matrix row generation, hook selector matching, transport-event projection, or public runtime metadata emission.
+  
+  Tigrbl may extend derived runtime metadata around the governed vocabulary, but it may not create a competing canonical family set or publish unqualified subevents as canonical runtime selectors.
   
   ## Traceability
   

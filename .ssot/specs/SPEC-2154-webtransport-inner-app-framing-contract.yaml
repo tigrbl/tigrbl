@@ -1,0 +1,46 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2154"
+number: 2154
+slug: "webtransport-inner-app-framing-contract"
+title: "WebTransport Inner App Framing Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the governed distinction between outer WebTransport binding framing and inner application payload framing carried inside WebTransport session, stream, and datagram lanes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the governed distinction between outer WebTransport binding framing and inner application payload framing carried inside WebTransport session, stream, and datagram lanes.
+  
+  ## Contract
+  
+  1. `WebTransportBindingSpec.framing=webtransport` governs the outer transport/session boundary.
+  2. Outer WebTransport framing must not be treated as evidence that a specific inner application payload framing is already mature or certified.
+  3. Inner application framing inside WebTransport streams or datagrams must be governed separately from the outer binding and may later include `text`, `json`, `jsonrpc`, `binary`, or `bytes` only when explicit runtime, docs, and test closure exists.
+  4. NDJSON must not be implied as a WebTransport transport framing by analogy with HTTP stream or websocket vocabulary.
+  5. Session lifecycle, stream chunk delivery, datagram delivery, and app-frame decode/encode are distinct verification concerns and must remain traceable as separate runtime behaviors.
+  6. Support matrices and docs projections must classify outer WebTransport support and inner application framing support independently.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1096`, `adr:1007`, `adr:1006`, `adr:1023`, `adr:1131`
+  - Companion specs: `spc:2058`, `spc:2108`
+  
+  ## Verification Plan
+  
+  - Add direct tests proving outer WebTransport binding framing remains `webtransport`.
+  - Add tests proving inner application framing claims are not inferred without explicit runtime support.
+  - Add docs/support-matrix tests proving WebTransport outer support and inner payload support are projected separately.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1096"
+  - "adr:1007"
+  - "adr:1006"
+  - "adr:1023"
+  - "adr:1131"

@@ -21,20 +21,24 @@ body: |-
   
   ## Canonical Mapping
   
-  - `HttpRestBindingSpec` maps to exchange `request_response`, framing `json`, runtime family `response`, and default subevents `receive`, `emit`, `complete`.
-  - `HttpJsonRpcBindingSpec` maps to exchange `request_response`, framing `jsonrpc`, runtime family `response`, and default subevents `receive`, `emit`, `complete`.
-  - `HttpStreamBindingSpec` maps to exchange `server_stream`, framing `stream`, runtime family `stream`, and default subevents `receive`, `emit`, `complete`.
-  - `SseBindingSpec` maps to canonical exchange `server_stream`, framing `sse`, runtime family `stream`, and default subevents `receive`, `emit`, `complete`.
-  - `WsBindingSpec` maps to exchange `bidirectional_stream`, framing `text` or `jsonrpc`, runtime family `socket`, and default subevents `connect`, `receive`, `emit`, `complete`, `disconnect`.
-  - `WebTransportBindingSpec` maps to exchange `bidirectional_stream`, framing `webtransport`, runtime family `session`, and default subevents `connect`, `receive`, `emit`, `complete`, `disconnect`.
+  - `HttpRestBindingSpec` maps to exchange `request_response`, framing `json`, canonical runtime family `request`, and request-family default runtime subevents derived from the governed `tigr-asgi-contract` vocabulary.
+  - `HttpJsonRpcBindingSpec` maps to exchange `request_response`, framing `jsonrpc`, canonical runtime family `request`, and request-family default runtime subevents derived from the governed `tigr-asgi-contract` vocabulary.
+  - `HttpStreamBindingSpec` maps to exchange `server_stream`, framing `stream`, canonical runtime family `stream`, and stream-family default runtime subevents derived from the governed `tigr-asgi-contract` vocabulary.
+  - `SseBindingSpec` maps to canonical exchange `server_stream`, framing `sse`, and canonical runtime semantics drawn from the governed `stream`, `message`, and `session` families as required by the governed `tigr-asgi-contract` vocabulary.
+  - `WsBindingSpec` maps to exchange `bidirectional_stream`, framing `text` or `jsonrpc`, and canonical runtime semantics drawn from the governed `session` and `message` families.
+  - `WebTransportBindingSpec` maps to exchange `bidirectional_stream`, framing `webtransport`, and canonical runtime semantics drawn from the governed `session`, `stream`, `datagram`, and `message` families as applicable to the declared binding shape.
   
   ## Compatibility Rules
   
-  - The closed runtime family set is `response`, `stream`, `socket`, `session`, and `request`.
-  - `event_stream` is accepted only as an SSE compatibility projection; the canonical exchange remains `server_stream`.
+  - The closed canonical runtime family set is `request`, `session`, `message`, `stream`, and `datagram`.
+  - `socket`, `event_stream`, and `response` are not canonical runtime families.
+  - `socket` may appear only as a compatibility alias that normalizes to governed `session` and or `message` semantics.
+  - `event_stream` may appear only as an SSE compatibility alias that normalizes to governed `stream`, `message`, and or `session` semantics.
+  - Repo-local `response` family tokens may appear only as compatibility aliases or transitional projections and must normalize to the governed contract vocabulary before runtime-family selection, lifecycle-matrix row generation, hook selection, event-key compilation, or public metadata emission.
   - `bidirectional` normalizes to `bidirectional_stream`.
   - `client_stream` and `fire_and_forget` remain provisional and out of first-class or current-target claims.
   - Transport-derived default subevents are distinct from declared semantic `OpSpec.subevents` and `HookSpec.subevents`.
+  - Default runtime subevents must use governed qualified names rather than coarse channel verbs.
   - Framing-only variation does not create a new runtime family.
   
   ## Traceability
