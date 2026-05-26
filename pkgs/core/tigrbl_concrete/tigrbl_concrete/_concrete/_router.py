@@ -98,6 +98,7 @@ class Router(RouterBase):
         self.docs_url = docs_url
         self.debug = debug
         self.swagger_ui_version = swagger_ui_version
+        self.openapi_schema = None
         class_prefix = getattr(self, "PREFIX", "")
         self.prefix = normalize_prefix(prefix or class_prefix)
         self.tags = list(_seqify(tags))
@@ -201,6 +202,7 @@ class Router(RouterBase):
             self._runtime_plan_revision = int(current) + 1
         except Exception:
             self._runtime_plan_revision = 1
+        self.openapi_schema = None
         kernels = []
         runtime = getattr(self, "_runtime_instance", None)
         kernel = getattr(runtime, "kernel", None)

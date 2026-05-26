@@ -1,141 +1,59 @@
-![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
-
-<p align="center">
-    <a href="https://pepy.tech/project/tigrbl_tests">
-        <img src="https://static.pepy.tech/badge/tigrbl_tests" alt="Pepy downloads for tigrbl_tests"/></a>
-    <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests/">
-        <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests.svg" alt="Repository views for tigrbl_tests"/></a>
-    <a href="https://pypi.org/project/tigrbl_tests/">
-        <img src="https://img.shields.io/pypi/v/tigrbl_tests?label=tigrbl_tests&color=green" alt="PyPI version for tigrbl_tests"/></a>
-    <a href="https://pypi.org/project/tigrbl_tests/">
-        <img src="https://img.shields.io/pypi/l/tigrbl_tests" alt="PyPI license metadata for tigrbl_tests"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md">
-        <img src="https://img.shields.io/badge/docs-repository%20docs-1f6feb" alt="Repository docs for tigrbl_tests"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml">
-        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch Coverage workflow status for tigrbl_tests"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml">
-        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish Packages workflow status for tigrbl_tests"/></a>
-    <br/>
-    <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json">
-        <img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed status for tigrbl_tests"/></a>
-    <a href="https://discord.gg/K4YTAPapjR">
-        <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_tests"/></a>
-</p>
-
-<h1 align="center">Tigrbl tests</h1>
-
-**Run examples and comparisons: [inspect `tigrbl_tests` examples and benchmark surfaces](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests).**
-
-tigrbl_tests is a testkit package for pytest fixtures, shared assertions, and integration test helpers for Tigrbl packages.
-
-`tigrbl_tests` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, OpenAPI/OpenRPC documentation surfaces, and PyPI distributions that complete the system.
-
-## Resident concepts
-
-- `tigrbl_tests` owns shared fixtures, integration examples, parity checks, benchmark-ready scenarios, and comparison surfaces including places where Tigrbl-vs-FastAPI evidence should live.
-- Document reproducible benchmark commands here rather than in the facade package. The facade should link to evidence; this package should hold the examples, fixtures, and test harnesses.
-
-## Open-loop load evaluation
-
-Use the in-process and HTTPX benchmark suites for repeatable kernel, runtime, and parity acceptance checks. Use the open-loop harness when the question is live-network behavior at a fixed offered request rate.
-
-```bash
-python pkgs/core/tigrbl_tests/benchmarks/open_loop_load_patterns.py --list-patterns
-python pkgs/core/tigrbl_tests/benchmarks/open_loop_load_patterns.py --driver vegeta --pattern steady-rest
-python pkgs/core/tigrbl_tests/benchmarks/open_loop_load_patterns.py --driver wrk2 --pattern spike-jsonrpc
-```
-
-The harness starts the existing Tigrbl benchmark app through Uvicorn, runs REST `/items` or JSON-RPC `/rpc` create workloads, and writes raw driver output plus normalized JSON and Markdown summaries under `.tmp/load-patterns/`. `vegeta` is the default driver for reusable target files and JSON reports. `wrk2` is supported for fixed-rate latency distribution checks when a local `wrk2` executable is available.
-
-Use `--publish-artifacts` only when a run is intended to become governed performance evidence. Published summaries are copied into `pkgs/core/tigrbl_tests/tests/perf/`; ordinary local runs stay under `.tmp/load-patterns/` so benchmark exploration does not rewrite tracked evidence.
-
-## Surface matrix comparison
-
-Use the reusable surface matrix benchmark when comparing Tigrbl and FastAPI across REST, JSON-RPC, websocket, and stream paths with both transport-only and DB-bound modes. The default run is 25 rounds with 250 measured operations per framework per round.
-
-```bash
-python pkgs/core/tigrbl_tests/benchmarks/tigrbl_fastapi_surface_matrix_benchmark.py
-python pkgs/core/tigrbl_tests/benchmarks/tigrbl_fastapi_surface_matrix_benchmark.py --rounds 1 --ops 10 --json-output .tmp/surface-matrix-smoke.json --md-output .tmp/surface-matrix-smoke.md
-```
-
-Default artifacts are written to `pkgs/core/tigrbl_tests/tests/perf/benchmark_results_surface_matrix_25x250.json` and `pkgs/core/tigrbl_tests/tests/perf/benchmark_results_surface_matrix_25x250.md`.
-
-## Package ecosystem cross-links
-
-Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
-
-Core packages:
-- [`tigrbl`](https://pypi.org/project/tigrbl/) - Schema-first ASGI API framework for REST, JSON-RPC, OpenAPI, OpenRPC, SQLAlchemy models, typed validation, lifecycle hooks, and engine plugins.
-- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) - Runtime atom utilities for Tigrbl planning, dispatch, transport ingress, egress, and high-throughput ASGI execution pipelines.
-- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) - Abstract base interfaces for Tigrbl APIs, engines, providers, sessions, transports, and reusable runtime components.
-- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) - Canonical mapping, routing, symbol resolution, and naming utilities for Tigrbl framework packages and generated API surfaces.
-- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) - Typed Python client helpers for calling Tigrbl REST, JSON-RPC, OpenAPI, and generated schema-first API surfaces.
-- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) - Concrete Tigrbl implementations for reusable framework behavior, sessions, routes, responses, and base abstraction adapters.
-- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) - Core Tigrbl framework specifications, decorators, schemas, hooks, operations, and primitives for schema-first APIs.
-- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) - Kernel orchestration for composing Tigrbl runtime plans, bindings, operation dispatch, and optimized ASGI execution.
-- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) - Analytical OLAP operation boundaries for Tigrbl workloads, query-oriented APIs, and engine integrations.
-- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) - Transactional OLTP operation handlers for Tigrbl CRUD, bulk, REST, JSON-RPC, and database-backed workloads.
-- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) - Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.
-- [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) - SQLAlchemy ORM tables, mixins, columns, model helpers, and persistence primitives for Tigrbl applications.
-- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) - Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.
-- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) - Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.
-- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) (this package) - Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
-- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) - Typing protocols, aliases, generics, and shared type helpers for Tigrbl framework packages and extensions.
-
-Engine packages:
-- [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) - BigQuery engine plugin for Google BigQuery warehouse sessions, analytics workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) - ClickHouse engine plugin for analytical database sessions, warehouse workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) - CSV engine plugin for file-backed tables, pandas DataFrames, and lightweight Tigrbl data workflows.
-- [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) - DataFrame engine plugin for transactional pandas sessions and in-process Tigrbl analytics workloads.
-- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) - DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) - In-memory cache engine plugin for process-local TTL, LRU, and fast Tigrbl cache workflows.
-- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) - In-memory database engine plugin for process-local transactional storage, copy-on-write snapshots, and Tigrbl testing.
-- [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) - In-memory Bloom filter engine plugin for membership checks, rotating TTL windows, and Tigrbl API workflows.
-- [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) - In-memory dedupe engine plugin for idempotency tracking, duplicate suppression, and Tigrbl workflow coordination.
-- [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) - In-memory key-value engine plugin for process-local KV storage, cache workflows, and lightweight Tigrbl services.
-- [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) - In-memory LRU engine plugin for least-recently-used cache behavior and process-local Tigrbl data workflows.
-- [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) - In-memory pub/sub engine plugin for process-local publish-subscribe channels, events, and Tigrbl realtime workflows.
-- [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) - In-memory queue engine plugin for process-local tasks, message workflows, and Tigrbl runtime coordination.
-- [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) - In-memory rate-limit engine plugin for API quotas, counters, windows, and Tigrbl governance workflows.
-- [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) - NumPy engine plugin for array-to-table helpers, analytical workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) - Pandas engine plugin for transactional DataFrame sessions, tabular workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) - PostgreSQL and SQLite WAL engine plugin for transactional Tigrbl workflows and database-backed engine registration.
-- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) - PostgreSQL engine plugin for SQLAlchemy sessions, async database workflows, and Tigrbl application persistence.
-- [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) - PySpark engine plugin for distributed DataFrame integration, analytics workloads, and Tigrbl data workflows.
-- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) - Redis engine plugin for cache, data structures, and Tigrbl engine workflows backed by Redis.
-- [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) - Redis cache-through engine plugin for Redis, PostgreSQL, and Tigrbl data-access acceleration workflows.
-- [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) - Snowflake engine plugin for warehouse sessions, analytical workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) - SQLite engine plugin for SQLAlchemy sessions, local transactional storage, and Tigrbl application persistence.
-- [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) - XLSX engine plugin for Excel workbook-backed tables, worksheet data access, and Tigrbl tabular workflows.
-
-Application packages:
-- [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/) - ACME v2 certificate authority app for Tigrbl tables, certificate automation, TLS workflows, and API surfaces.
-- [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/) - SPIFFE and SPIRE identity app for Tigrbl with workload identity tables, UDS transport, and HTTP API surfaces.
-
-Source-tree links remain available from each package identity section; this ecosystem section is intentionally PyPI-first for package discovery and installation routing.
+<div align="center">
+<h1>tigrbl_tests</h1>
+<img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="140"/>
+<p><strong>Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.</strong></p>
+<a href="https://pypi.org/project/tigrbl_tests/"><img src="https://img.shields.io/pypi/v/tigrbl_tests?label=PyPI" alt="PyPI version for tigrbl_tests"/></a>
+<a href="https://pypi.org/project/tigrbl_tests/"><img src="https://static.pepy.tech/badge/tigrbl_tests" alt="Downloads for tigrbl_tests"/></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_tests/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_tests/README.md.svg?label=hits" alt="Repository hits for tigrbl_tests README"/></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
+<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20to%203.15-3776ab" alt="Python requirement for tigrbl_tests"/></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md"><img src="https://img.shields.io/badge/workspace-core-1f6feb" alt="Workspace group for tigrbl_tests"/></a>
+</div>
 
 ## Install
+
+```bash
+uv add tigrbl_tests
+```
 
 ```bash
 pip install tigrbl_tests
 ```
 
-## Package discovery
+## What It Owns
 
-`tigrbl_tests` is described for package indexes, search engines, answer engines, and AI coding tools as: Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
+`tigrbl_tests` owns the tests boundary inside the split Python workspace. Key implementation roots include `benchmarks` with `comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark`; `examples` with `01-beginner-foundations/, 01_beginner_fundamentals/, 02-beginner-columns/, 02_beginner_models/, 03-beginner-mixins/, 03_beginner_specs/`.
 
-Use `tigrbl_tests` when you need Tigrbl's schema-first ASGI package graph for REST APIs, JSON-RPC APIs, OpenAPI documentation, OpenRPC documentation, SQLAlchemy-backed models, Pydantic validation, typed operation specs, runtime dispatch, and installable engine or application extensions.
+## Use It When
 
-Discovery terms: tigrbl, ASGI, schema-first API framework, REST API, JSON-RPC API, OpenAPI documentation, OpenRPC documentation, SQLAlchemy models, Pydantic validation, typed validation, operation dispatch, engine plugins, api, json-rpc, rest, sqlalchemy, pydantic, pytest, testing, fixtures, tests, testkit, integration-testing, openapi, openrpc, schema-first.
+Use `tigrbl_tests` when you need reusable fixtures, conformance helpers, parity assets, and benchmark-oriented test surfaces for Tigrbl packages or downstream integrations.
 
-## Package-local entry point
+## Public Surface
 
-This file is a package-local distribution entry point.
-It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
+- Primary module root: `benchmarks` with module families `comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark, tigrbl_sse_perf_suite, tigrbl_streaming_perf_suite`.
+- Primary module root: `examples` with module families `01-beginner-foundations/, 01_beginner_fundamentals/, 02-beginner-columns/, 02_beginner_models/, 03-beginner-mixins/, 03_beginner_specs/, 04-beginner-app-api/, 04_beginner_tables_columns/`.
 
-## Canonical repository docs
+## Internal Layout
 
-- `README.md`
+- Workspace path: `pkgs/core/tigrbl_tests`.
+- Package class: `core framework package`.
+- Python requirement: `>=3.10,<3.15`.
+- `benchmarks` modules: `comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark, tigrbl_sse_perf_suite, tigrbl_streaming_perf_suite, tigrbl_websocket_perf_suite, tigrbl_webtransport_perf_suite`.
+- `examples` modules: `01-beginner-foundations/, 01_beginner_fundamentals/, 02-beginner-columns/, 02_beginner_models/, 03-beginner-mixins/, 03_beginner_specs/, 04-beginner-app-api/, 04_beginner_tables_columns/, 05-beginner-usage/, 05_beginner_app_api/`.
+
+## Dependency Surface
+
+- Workspace package dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/), [`tigrbl_client`](https://pypi.org/project/tigrbl_client/).
+- External runtime dependencies: `psycopg2-binary>=2.9.9`, `asyncpg>=0.30.0`, `pytest>=8.0`, `pytest-asyncio>=0.24.0`, `pytest-xdist>=3.6.1`, `pytest-json-report>=1.5.0`, `python-dotenv`, `requests>=2.32.3`, `flake8>=7.0`, `pytest-timeout>=2.3.1`.
+- Optional extras: none declared.
+
+## Related Packages
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/)
+
+## Canonical Repository Docs
+
 - `docs/README.md`
 - `docs/conformance/CURRENT_TARGET.md`
 - `docs/conformance/CURRENT_STATE.md`
@@ -144,18 +62,11 @@ It is not the authoritative location for repository governance, current target s
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/PACKAGE_LAYOUT.md`
 
-## Package identity
+## Package-local Boundary
 
-- canonical repository: `https://github.com/tigrbl/tigrbl`
-- organization: `https://github.com/tigrbl`
-- social: `https://discord.gg/K4YTAPapjR`
-- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests`
-- workspace path: `pkgs/core/tigrbl_tests`
-- workspace class: core Python package
-- implementation layout: `tigrbl_tests/`
-
-Long-form repository documentation is governed from `docs/`.
+This file is a package-local distribution entry point.
+Use this page for package installation and boundary orientation. Repository governance, conformance state, target status, and release evidence remain governed from `docs/` and `.ssot/`.
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See the repository [LICENSE](https://github.com/tigrbl/tigrbl/blob/master/LICENSE) and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).
+Licensed under the Apache License, Version 2.0. See `LICENSE` and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).

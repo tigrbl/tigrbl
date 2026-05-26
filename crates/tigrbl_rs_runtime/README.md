@@ -1,86 +1,58 @@
-![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
-
-<p align="center">
-    <a href="https://crates.io/crates/tigrbl_rs_runtime">
-        <img src="https://img.shields.io/crates/d/tigrbl_rs_runtime" alt="crates.io downloads for tigrbl_rs_runtime"/></a>
-    <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime/">
-        <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime.svg" alt="Repository views for tigrbl_rs_runtime"/></a>
-    <a href="https://crates.io/crates/tigrbl_rs_runtime">
-        <img src="https://img.shields.io/crates/v/tigrbl_rs_runtime?label=tigrbl_rs_runtime&color=green" alt="crates.io version for tigrbl_rs_runtime"/></a>
-    <a href="https://crates.io/crates/tigrbl_rs_runtime">
-        <img src="https://img.shields.io/crates/l/tigrbl_rs_runtime" alt="crates.io license metadata for tigrbl_rs_runtime"/></a>
-    <a href="https://docs.rs/tigrbl_rs_runtime">
-        <img src="https://img.shields.io/docsrs/tigrbl_rs_runtime" alt="docs.rs documentation for tigrbl_rs_runtime"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml">
-        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch Coverage workflow status for tigrbl_rs_runtime"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml">
-        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish Packages workflow status for tigrbl_rs_runtime"/></a>
-    <br/>
-    <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json">
-        <img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed status for tigrbl_rs_runtime"/></a>
-    <a href="https://discord.gg/K4YTAPapjR">
-        <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_rs_runtime"/></a>
-</p>
-
-# tigrbl_rs_runtime
-
-**Use `tigrbl_rs_runtime` in Rust: [open the crate on crates.io](https://crates.io/crates/tigrbl_rs_runtime) or [inspect the crate source](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime).**
-
-Rust runtime and executor for compiled Tigrbl kernel plans.
-
-`tigrbl_rs_runtime` is part of the Tigrbl Rust package graph. It documents crate-resident runtime, kernel, atom, port, operation, or engine behavior while cross-linking to the Python facade and sibling Rust crates.
-
-## Crate ownership
-
-- runtime execution, callback fences, engine resolution, transaction lifecycle, and request/response execution.
-- Rust crates keep native execution contracts separate from Python authoring APIs while preserving compatibility with the Tigrbl specification and runtime model.
-
-## Package ecosystem cross-links
-
-Core cross-links:
-- [`tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl) - Facade package
-- [`tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_core) - Spec and primitive contracts
-- [`tigrbl_canon`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_canon) - Canonical mapping and operation resolution
-- [`tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) - Phase lifecycle and execution runtime
-- [`tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete) - Native objects, transports, hooks, deps, and secdeps
-- [`tigrbl_ops_oltp`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_oltp) - CRUD and transactional operation handlers
-- [`tigrbl_ops_olap`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_olap) - Analytical operation boundary
-- [`tigrbl_ops_realtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime) - Stream, transfer, datagram, and realtime ops
-- [`tigrbl_tests`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests) - Examples, benchmark, parity, and package test surfaces
-Engine cross-links:
-- [`tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_sqlite) - SQLite local transactional engine
-- [`tigrbl_engine_postgres`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_postgres) - PostgreSQL SQLAlchemy engine
-- [`tigrbl_engine_inmemory`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemory) - Process-local transactional in-memory engine
-- [`tigrbl_engine_redis`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_redis) - Redis cache/database engine
-- [`tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_duckdb) - DuckDB analytical engine
-- [`tigrbl_engine_pandas`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pandas) - pandas DataFrame engine
-- [`tigrbl_engine_pgsqli_wal`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pgsqli_wal) - PostgreSQL and SQLite WAL engine
-Rust cross-links:
-- [`tigrbl_rs_spec`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_spec) - Rust IR and AppSpec model
-- [`tigrbl_rs_atoms`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_atoms) - Rust atom catalog and phase algebra
-- [`tigrbl_rs_kernel`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_kernel) - Rust compiler and plan optimizer
-- [`tigrbl_rs_runtime`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime) - Rust executor and callback fences
-- [`tigrbl_rs_ports`](https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_ports) - Engine, session, transaction, callback, and handler ports
+<div align="center">
+<h1>tigrbl_rs_runtime</h1>
+<img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="140"/>
+<p><strong>Rust runtime and executor for compiled Tigrbl kernel plans.</strong></p>
+<a href="https://crates.io/crates/tigrbl_rs_runtime"><img src="https://img.shields.io/crates/v/tigrbl_rs_runtime?label=crates.io" alt="crates.io version for tigrbl_rs_runtime"/></a>
+<a href="https://crates.io/crates/tigrbl_rs_runtime"><img src="https://img.shields.io/crates/d/tigrbl_rs_runtime" alt="Downloads for tigrbl_rs_runtime"/></a>
+<a href="https://docs.rs/tigrbl_rs_runtime"><img src="https://img.shields.io/docsrs/tigrbl_rs_runtime" alt="docs.rs status for tigrbl_rs_runtime"/></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/crates/tigrbl_rs_runtime/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/crates/tigrbl_rs_runtime/README.md.svg?label=hits" alt="Repository hits for tigrbl_rs_runtime README"/></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
+<a href="Cargo.toml"><img src="https://img.shields.io/badge/rust-1.81-93450a" alt="Rust requirement for tigrbl_rs_runtime"/></a>
+</div>
 
 ## Install
 
 ```toml
 [dependencies]
-tigrbl_rs_runtime = "0.4.0-dev.2"
+tigrbl_rs_runtime = "0.4.1"
 ```
 
-## Package discovery
+```bash
+cargo add tigrbl_rs_runtime
+```
 
-Search and AI discovery terms for `tigrbl_rs_runtime` include: Tigrbl, Rust, crate, runtime, kernel, atoms, ports, engines, operations, REST, JSON-RPC, schema-first APIs.
+## What It Owns
 
-## Package-local entry point
+`tigrbl_rs_runtime` owns the Rust-native runtime boundary for the Tigrbl workspace. It keeps this native subsystem separately installable from the Python facade while staying aligned to the shared Tigrbl spec, runtime, and package graph.
 
-This file is a package-local distribution entry point.
-It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
+## Use It When
 
-## Canonical repository docs
+Use `tigrbl_rs_runtime` when you are building or embedding Rust-native Tigrbl components and want this subsystem directly instead of consuming it only through Python workspace packages.
 
-- `README.md`
+## Public Surface
+
+- Re-exported surface: `config::RuntimeConfig`, `handle::runtime_handle::RuntimeHandle`, `parity::{build_transport_trace, TransportTraceEvent}`, `runtime::RustRuntime`.
+- Module families: `callback`, `channel`, `config`, `engine`, `executor`, `handle`, `metrics`, `parity`, `request`, `response`, `runtime`, `status`.
+
+## Internal Layout
+
+- Workspace path: `crates/tigrbl_rs_runtime`.
+- Crate version line: `0.4.1` from the workspace package table.
+- Direct crate dependencies: `tigrbl_rs_atoms`, `tigrbl_rs_engine_inmemory`, `tigrbl_rs_engine_postgres`, `tigrbl_rs_engine_sqlite`, `tigrbl_rs_kernel`, `tigrbl_rs_ops_oltp`, `tigrbl_rs_ports`, `tigrbl_rs_spec`.
+
+## Related Packages
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl_rs_atoms`](https://crates.io/crates/tigrbl_rs_atoms)
+- [`tigrbl_rs_engine_inmemory`](https://crates.io/crates/tigrbl_rs_engine_inmemory)
+- [`tigrbl_rs_engine_postgres`](https://crates.io/crates/tigrbl_rs_engine_postgres)
+- [`tigrbl_rs_engine_sqlite`](https://crates.io/crates/tigrbl_rs_engine_sqlite)
+- [`tigrbl_rs_kernel`](https://crates.io/crates/tigrbl_rs_kernel)
+- [`tigrbl_rs_ops_oltp`](https://crates.io/crates/tigrbl_rs_ops_oltp)
+- [`tigrbl_rs_ports`](https://crates.io/crates/tigrbl_rs_ports)
+
+## Canonical Repository Docs
+
 - `docs/README.md`
 - `docs/conformance/CURRENT_TARGET.md`
 - `docs/conformance/CURRENT_STATE.md`
@@ -89,18 +61,11 @@ It is not the authoritative location for repository governance, current target s
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/PACKAGE_LAYOUT.md`
 
-## Package identity
+## Package-local Boundary
 
-- canonical repository: `https://github.com/tigrbl/tigrbl`
-- organization: `https://github.com/tigrbl`
-- social: `https://discord.gg/K4YTAPapjR`
-- crate path: `https://github.com/tigrbl/tigrbl/tree/master/crates/tigrbl_rs_runtime`
-- workspace path: `crates/tigrbl_rs_runtime`
-- workspace class: Rust crate
-- implementation layout: `src/`
-
-Long-form repository documentation is governed from `docs/`.
+This file is a package-local distribution entry point.
+Use this page for crate installation and boundary orientation. Repository governance, conformance state, target status, and release evidence remain governed from `docs/` and `.ssot/`.
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See the repository [LICENSE](https://github.com/tigrbl/tigrbl/blob/master/LICENSE) and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).
+Licensed under the Apache License, Version 2.0. See `LICENSE` and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).

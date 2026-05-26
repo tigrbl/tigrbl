@@ -1,117 +1,56 @@
-![Tigrbl Logo](https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png)
-
-<p align="center">
-    <a href="https://pepy.tech/project/tigrbl-ops-realtime">
-        <img src="https://static.pepy.tech/badge/tigrbl-ops-realtime" alt="Pepy downloads for tigrbl-ops-realtime"/></a>
-    <a href="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime/">
-        <img src="https://hits.sh/github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime.svg" alt="Repository views for tigrbl-ops-realtime"/></a>
-    <a href="https://pypi.org/project/tigrbl-ops-realtime/">
-        <img src="https://img.shields.io/pypi/v/tigrbl-ops-realtime?label=tigrbl-ops-realtime&color=green" alt="PyPI version for tigrbl-ops-realtime"/></a>
-    <a href="https://pypi.org/project/tigrbl-ops-realtime/">
-        <img src="https://img.shields.io/pypi/l/tigrbl-ops-realtime" alt="PyPI license metadata for tigrbl-ops-realtime"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md">
-        <img src="https://img.shields.io/badge/docs-repository%20docs-1f6feb" alt="Repository docs for tigrbl-ops-realtime"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml">
-        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch Coverage workflow status for tigrbl-ops-realtime"/></a>
-    <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml">
-        <img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish Packages workflow status for tigrbl-ops-realtime"/></a>
-    <br/>
-    <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json">
-        <img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed status for tigrbl-ops-realtime"/></a>
-    <a href="https://discord.gg/K4YTAPapjR">
-        <img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-ops-realtime"/></a>
-</p>
-
-<h1 align="center">Tigrbl ops-realtime</h1>
-
-**Add realtime operations: [inspect stream, transfer, and datagram ops](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime/tigrbl_ops_realtime).**
-
-tigrbl-ops-realtime is a realtime operations package for realtime, stream, and datagram operation handlers for Tigrbl runtimes.
-
-`tigrbl-ops-realtime` is part of the Tigrbl package graph. It documents package-resident classes, concepts, extension points, and execution responsibilities while cross-linking to the facade, core specs, canonical mapping, runtime phases, concrete objects, operation packages, engine plugins, OpenAPI/OpenRPC documentation surfaces, and PyPI distributions that complete the system.
-
-## Resident concepts
-
-- `tigrbl_ops_realtime` owns stream, transfer, datagram, subscription, publish, and realtime operation vocabulary for channel-oriented workloads.
-- Document realtime operation semantics here and link runtime protocol execution to `tigrbl_runtime` for SSE, WebSocket, WebTransport, HTTP stream, and channel state behavior.
-- Use this package when you need operations whose lifecycle is not a single CRUD request/response transaction.
-
-## Package ecosystem cross-links
-
-Every Tigrbl Python package links to its sibling distributions on PyPI so package indexes, search engines, answer engines, dependency scanners, and human readers can move through the installable package graph without falling back to source-tree paths.
-
-Core packages:
-- [`tigrbl`](https://pypi.org/project/tigrbl/) - Schema-first ASGI API framework for REST, JSON-RPC, OpenAPI, OpenRPC, SQLAlchemy models, typed validation, lifecycle hooks, and engine plugins.
-- [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) - Runtime atom utilities for Tigrbl planning, dispatch, transport ingress, egress, and high-throughput ASGI execution pipelines.
-- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) - Abstract base interfaces for Tigrbl APIs, engines, providers, sessions, transports, and reusable runtime components.
-- [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) - Canonical mapping, routing, symbol resolution, and naming utilities for Tigrbl framework packages and generated API surfaces.
-- [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) - Typed Python client helpers for calling Tigrbl REST, JSON-RPC, OpenAPI, and generated schema-first API surfaces.
-- [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) - Concrete Tigrbl implementations for reusable framework behavior, sessions, routes, responses, and base abstraction adapters.
-- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) - Core Tigrbl framework specifications, decorators, schemas, hooks, operations, and primitives for schema-first APIs.
-- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) - Kernel orchestration for composing Tigrbl runtime plans, bindings, operation dispatch, and optimized ASGI execution.
-- [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) - Analytical OLAP operation boundaries for Tigrbl workloads, query-oriented APIs, and engine integrations.
-- [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) - Transactional OLTP operation handlers for Tigrbl CRUD, bulk, REST, JSON-RPC, and database-backed workloads.
-- [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) (this package) - Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.
-- [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) - SQLAlchemy ORM tables, mixins, columns, model helpers, and persistence primitives for Tigrbl applications.
-- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) - Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.
-- [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) - Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.
-- [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) - Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
-- [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) - Typing protocols, aliases, generics, and shared type helpers for Tigrbl framework packages and extensions.
-
-Engine packages:
-- [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) - BigQuery engine plugin for Google BigQuery warehouse sessions, analytics workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) - ClickHouse engine plugin for analytical database sessions, warehouse workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) - CSV engine plugin for file-backed tables, pandas DataFrames, and lightweight Tigrbl data workflows.
-- [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) - DataFrame engine plugin for transactional pandas sessions and in-process Tigrbl analytics workloads.
-- [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) - DuckDB engine plugin for embedded analytical database sessions, OLAP workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) - In-memory cache engine plugin for process-local TTL, LRU, and fast Tigrbl cache workflows.
-- [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) - In-memory database engine plugin for process-local transactional storage, copy-on-write snapshots, and Tigrbl testing.
-- [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) - In-memory Bloom filter engine plugin for membership checks, rotating TTL windows, and Tigrbl API workflows.
-- [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) - In-memory dedupe engine plugin for idempotency tracking, duplicate suppression, and Tigrbl workflow coordination.
-- [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) - In-memory key-value engine plugin for process-local KV storage, cache workflows, and lightweight Tigrbl services.
-- [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) - In-memory LRU engine plugin for least-recently-used cache behavior and process-local Tigrbl data workflows.
-- [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) - In-memory pub/sub engine plugin for process-local publish-subscribe channels, events, and Tigrbl realtime workflows.
-- [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) - In-memory queue engine plugin for process-local tasks, message workflows, and Tigrbl runtime coordination.
-- [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) - In-memory rate-limit engine plugin for API quotas, counters, windows, and Tigrbl governance workflows.
-- [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) - NumPy engine plugin for array-to-table helpers, analytical workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) - Pandas engine plugin for transactional DataFrame sessions, tabular workflows, and Tigrbl data integration.
-- [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) - PostgreSQL and SQLite WAL engine plugin for transactional Tigrbl workflows and database-backed engine registration.
-- [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) - PostgreSQL engine plugin for SQLAlchemy sessions, async database workflows, and Tigrbl application persistence.
-- [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) - PySpark engine plugin for distributed DataFrame integration, analytics workloads, and Tigrbl data workflows.
-- [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) - Redis engine plugin for cache, data structures, and Tigrbl engine workflows backed by Redis.
-- [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) - Redis cache-through engine plugin for Redis, PostgreSQL, and Tigrbl data-access acceleration workflows.
-- [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) - Snowflake engine plugin for warehouse sessions, analytical workloads, and Tigrbl engine registration.
-- [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) - SQLite engine plugin for SQLAlchemy sessions, local transactional storage, and Tigrbl application persistence.
-- [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) - XLSX engine plugin for Excel workbook-backed tables, worksheet data access, and Tigrbl tabular workflows.
-
-Application packages:
-- [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/) - ACME v2 certificate authority app for Tigrbl tables, certificate automation, TLS workflows, and API surfaces.
-- [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/) - SPIFFE and SPIRE identity app for Tigrbl with workload identity tables, UDS transport, and HTTP API surfaces.
-
-Source-tree links remain available from each package identity section; this ecosystem section is intentionally PyPI-first for package discovery and installation routing.
+<div align="center">
+<h1>tigrbl-ops-realtime</h1>
+<img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="140"/>
+<p><strong>Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.</strong></p>
+<a href="https://pypi.org/project/tigrbl-ops-realtime/"><img src="https://img.shields.io/pypi/v/tigrbl-ops-realtime?label=PyPI" alt="PyPI version for tigrbl-ops-realtime"/></a>
+<a href="https://pypi.org/project/tigrbl-ops-realtime/"><img src="https://static.pepy.tech/badge/tigrbl-ops-realtime" alt="Downloads for tigrbl-ops-realtime"/></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_ops_realtime/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_ops_realtime/README.md.svg?label=hits" alt="Repository hits for tigrbl-ops-realtime README"/></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
+<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20to%203.15-3776ab" alt="Python requirement for tigrbl-ops-realtime"/></a>
+<a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md"><img src="https://img.shields.io/badge/workspace-core-1f6feb" alt="Workspace group for tigrbl-ops-realtime"/></a>
+</div>
 
 ## Install
+
+```bash
+uv add tigrbl-ops-realtime
+```
 
 ```bash
 pip install tigrbl-ops-realtime
 ```
 
-## Package discovery
+## What It Owns
 
-`tigrbl-ops-realtime` is described for package indexes, search engines, answer engines, and AI coding tools as: Realtime, streaming, datagram, websocket, and event operation handlers for Tigrbl ASGI runtimes.
+`tigrbl-ops-realtime` owns the ops realtime boundary inside the split Python workspace. Key implementation roots include `tigrbl_ops_realtime` with `ops`.
 
-Use `tigrbl-ops-realtime` when you need Tigrbl's schema-first ASGI package graph for REST APIs, JSON-RPC APIs, OpenAPI documentation, OpenRPC documentation, SQLAlchemy-backed models, Pydantic validation, typed operation specs, runtime dispatch, and installable engine or application extensions.
+## Use It When
 
-Discovery terms: tigrbl, ASGI, schema-first API framework, REST API, JSON-RPC API, OpenAPI documentation, OpenRPC documentation, SQLAlchemy models, Pydantic validation, typed validation, operation dispatch, engine plugins, api, json-rpc, rest, sqlalchemy, pydantic, ops, realtime, streaming, datagram, openapi, openrpc, schema-first.
+Use `tigrbl-ops-realtime` when you want this subsystem directly as a package boundary instead of consuming it only through the top-level `tigrbl` facade.
 
-## Package-local entry point
+## Public Surface
 
-This file is a package-local distribution entry point.
-It is not the authoritative location for repository governance, current target status, current state reporting, certification claims, or release evidence.
+- `tigrbl_ops_realtime` exposes `append_chunk, checkpoint, download, publish, send_datagram, subscribe, tail, upload`.
 
-## Canonical repository docs
+## Internal Layout
 
-- `README.md`
+- Workspace path: `pkgs/core/tigrbl_ops_realtime`.
+- Package class: `core framework package`.
+- Python requirement: `>=3.10,<3.15`.
+- `tigrbl_ops_realtime` modules: `ops`.
+
+## Dependency Surface
+
+- Workspace package dependencies: none declared.
+- External runtime dependencies: none declared.
+- Optional extras: none declared.
+
+## Related Packages
+
+- [`tigrbl`](https://pypi.org/project/tigrbl/)
+
+## Canonical Repository Docs
+
 - `docs/README.md`
 - `docs/conformance/CURRENT_TARGET.md`
 - `docs/conformance/CURRENT_STATE.md`
@@ -120,18 +59,11 @@ It is not the authoritative location for repository governance, current target s
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/PACKAGE_LAYOUT.md`
 
-## Package identity
+## Package-local Boundary
 
-- canonical repository: `https://github.com/tigrbl/tigrbl`
-- organization: `https://github.com/tigrbl`
-- social: `https://discord.gg/K4YTAPapjR`
-- package path: `https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime`
-- workspace path: `pkgs/core/tigrbl_ops_realtime`
-- workspace class: core Python package
-- implementation layout: `tigrbl_ops_realtime/`
-
-Long-form repository documentation is governed from `docs/`.
+This file is a package-local distribution entry point.
+Use this page for package installation and boundary orientation. Repository governance, conformance state, target status, and release evidence remain governed from `docs/` and `.ssot/`.
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See the repository [LICENSE](https://github.com/tigrbl/tigrbl/blob/master/LICENSE) and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).
+Licensed under the Apache License, Version 2.0. See `LICENSE` and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).

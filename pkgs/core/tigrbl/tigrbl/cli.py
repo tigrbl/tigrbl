@@ -398,8 +398,19 @@ def _render_route_table(rows: Iterable[dict[str, str]]) -> str:
     return "\n".join(body) + "\n"
 
 
+def _json_default(value: Any) -> Any:
+    if isinstance(value, (set, frozenset)):
+        try:
+            return sorted(value)
+        except TypeError:
+            return [str(item) for item in value]
+    if isinstance(value, Path):
+        return str(value)
+    raise TypeError(f"Object of type {value.__class__.__name__} is not JSON serializable")
+
+
 def _json_text(payload: Any) -> str:
-    return json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    return json.dumps(payload, indent=2, sort_keys=True, default=_json_default) + "\n"
 
 
 def _build_doctor_payload(app: Any, cfg: ServeConfig, target: str) -> dict[str, Any]:

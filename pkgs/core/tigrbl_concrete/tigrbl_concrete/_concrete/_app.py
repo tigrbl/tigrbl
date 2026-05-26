@@ -164,6 +164,7 @@ class App(AppBase):
             self._runtime_plan_revision = int(current) + 1
         except Exception:
             self._runtime_plan_revision = 1
+        self.openapi_schema = None
         kernels = []
         runtime = getattr(self, "_runtime_instance", None)
         kernel = getattr(runtime, "kernel", None)

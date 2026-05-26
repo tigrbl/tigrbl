@@ -893,7 +893,12 @@ class TigrblApp(_App):
 
     def openapi(self) -> Dict[str, Any]:
         """Build and return the OpenAPI document for this app."""
-        return _build_openapi(self)
+        cached = getattr(self, "openapi_schema", None)
+        if isinstance(cached, dict):
+            return cached
+        document = _build_openapi(self)
+        self.openapi_schema = document
+        return document
 
     def mount_lens(
         self,

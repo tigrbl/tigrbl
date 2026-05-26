@@ -218,3 +218,11 @@ def test_capabilities_command_smoke_outputs_commands_flags_servers_and_target() 
     assert set(payload["servers"]) == {"uvicorn", "hypercorn", "gunicorn", "tigrcorn"}
     assert payload["app"]["title"] == "CLI Smoke App"
     assert "operator_controls" in payload["app"]
+
+
+def test_json_text_serializes_set_like_values_for_cli_payloads() -> None:
+    from tigrbl.cli import _json_text
+
+    payload = json.loads(_json_text({"engine_capabilities": {"dialects": {"sqlite", "postgres"}}}))
+
+    assert sorted(payload["engine_capabilities"]["dialects"]) == ["postgres", "sqlite"]
