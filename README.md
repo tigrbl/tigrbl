@@ -78,19 +78,10 @@ Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the publi
 - [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/)
 - [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/)
 
-### Rust crates
+### Rust workspace
 
-- [`tigrbl_rs_atoms`](https://crates.io/crates/tigrbl_rs_atoms)
-- [`tigrbl_rs_engine_inmemory`](https://crates.io/crates/tigrbl_rs_engine_inmemory)
-- [`tigrbl_rs_engine_postgres`](https://crates.io/crates/tigrbl_rs_engine_postgres)
-- [`tigrbl_rs_engine_sqlite`](https://crates.io/crates/tigrbl_rs_engine_sqlite)
-- [`tigrbl_rs_kernel`](https://crates.io/crates/tigrbl_rs_kernel)
-- [`tigrbl_rs_ops_olap`](https://crates.io/crates/tigrbl_rs_ops_olap)
-- [`tigrbl_rs_ops_oltp`](https://crates.io/crates/tigrbl_rs_ops_oltp)
-- [`tigrbl_rs_ops_realtime`](https://crates.io/crates/tigrbl_rs_ops_realtime)
-- [`tigrbl_rs_ports`](https://crates.io/crates/tigrbl_rs_ports)
-- [`tigrbl_rs_runtime`](https://crates.io/crates/tigrbl_rs_runtime)
-- [`tigrbl_rs_spec`](https://crates.io/crates/tigrbl_rs_spec)
+The Rust crates and optional Python extension bindings now live in the private
+[`tigrbl_rs`](https://github.com/tigrbl/tigrbl_rs) repository.
 
 ## How to Choose a Package
 
@@ -98,7 +89,7 @@ Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the publi
 - Install split core packages when you want a narrower subsystem boundary such as runtime, ORM, kernel, typing, client, tests, or operation families.
 - Install engine packages when you want a backend-specific dependency surface for SQLite, Postgres, Redis, warehouse, tabular, or in-memory workflows.
 - Use the packaged apps when you want a ready-made Tigrbl application boundary for ACME CA or SPIFFE/SPIRE identity flows.
-- Use the Rust crates when you are embedding or extending native Tigrbl compilation, runtime, or engine layers.
+- Use the private `tigrbl_rs` repository when you are embedding or extending native Tigrbl compilation, runtime, or engine layers.
 - There are no active npm package manifests in this workspace at the moment.
 
 ## Current Package Line

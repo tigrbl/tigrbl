@@ -2883,7 +2883,7 @@ requires-dist = [
     { name = "sqlalchemy", specifier = ">=2.0" },
     { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
     { name = "tigrbl-base", editable = "pkgs/core/tigrbl_base" },
-    { name = "tigrbl-canon", editable = "pkgs/core/tigrbl_canon" },
+    { name = "tigrbl-canon", editable = "pkgs/deprecated/tigrbl_canon" },
     { name = "tigrbl-concrete", editable = "pkgs/core/tigrbl_concrete" },
     { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
     { name = "tigrbl-kernel", editable = "pkgs/core/tigrbl_kernel" },
@@ -3032,7 +3032,7 @@ dev = [
 [[package]]
 name = "tigrbl-canon"
 version = "0.4.1"
-source = { editable = "pkgs/core/tigrbl_canon" }
+source = { editable = "pkgs/deprecated/tigrbl_canon" }
 dependencies = [
     { name = "tigrbl" },
     { name = "tigrbl-atoms" },

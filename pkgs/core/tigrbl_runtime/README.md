@@ -20,13 +20,10 @@ uv add tigrbl-runtime
 pip install tigrbl-runtime
 ```
 
-```bash
-pip install "tigrbl-runtime[rust]"
-```
-
 ## What It Owns
 
 `tigrbl-runtime` owns the runtime boundary inside the split Python workspace.
+Rust crates and optional Python extension bindings have moved to the private `tigrbl/tigrbl_rs` repository.
 
 ## Use It When
 
@@ -46,7 +43,7 @@ Use `tigrbl-runtime` when you want this subsystem directly as a package boundary
 
 - Workspace package dependencies: [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/), [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/).
 - External runtime dependencies: `numba>=0.61.2`.
-- Optional extras: `rust`.
+- Optional extras: none in this Python workspace.
 
 ## Related Packages
 

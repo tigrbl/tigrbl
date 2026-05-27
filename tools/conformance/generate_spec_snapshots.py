@@ -10,7 +10,7 @@ for rel in [
     'pkgs/core/tigrbl',
     'pkgs/core/tigrbl_atoms',
     'pkgs/core/tigrbl_base',
-    'pkgs/core/tigrbl_canon',
+    'pkgs/deprecated/tigrbl_canon',
     'pkgs/core/tigrbl_client',
     'pkgs/core/tigrbl_concrete',
     'pkgs/core/tigrbl_core',
