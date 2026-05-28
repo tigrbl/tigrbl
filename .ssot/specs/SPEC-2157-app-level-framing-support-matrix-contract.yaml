@@ -1,0 +1,83 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2157"
+number: 2157
+slug: "app-level-framing-support-matrix-contract"
+title: "App-Level Framing Support Matrix Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the normative Tigrbl app-level framing support matrix by protocol profile."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T18:12:30Z"
+    note: "Created normative per-binding and per-lane app-level framing support matrix."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated app-level framing matrix to use canonical BindingSpec profiles."
+    at: "2026-05-28T00:49:20Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the normative Tigrbl app-level framing support matrix by protocol profile.
+  
+  ## Contract
+  
+  App-level framing is payload interpretation metadata and is selected per canonical BindingSpec profile.
+  
+  Secure variants repeat their framing policy locally. TLS, mTLS, ALPN, QUIC, and HTTP version facts remain scope metadata.
+  
+  | Protocol / profile | Canonical BindingSpec | Family | Exchange | App-level framing support |
+  |---|---|---|---|---|
+  | `http.rest` | `HTTPBindingSpec` | `request` | `unary` | `json` required; `text`, `bytes`, `binary` allowed for explicitly declared non-JSON endpoints |
+  | `https.rest` | `HTTPBindingSpec` | `request` | `unary` | `json` required; `text`, `bytes`, `binary` allowed for explicitly declared non-JSON endpoints |
+  | `http.jsonrpc` | `HTTPBindingSpec` | `request` | `unary` | `jsonrpc` required and exclusive |
+  | `https.jsonrpc` | `HTTPBindingSpec` | `request` | `unary` | `jsonrpc` required and exclusive |
+  | `http.stream.request` | `HTTPBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+  | `https.stream.request` | `HTTPBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+  | `http.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+  | `https.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+  | `http.sse` | `HTTPBindingSpec` | `stream` | `server_stream` | `sse` required and exclusive |
+  | `https.sse` | `HTTPBindingSpec` | `stream` | `server_stream` | `sse` required and exclusive |
+  | `ws.message` | `WebSocketBindingSpec` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol or contract gating |
+  | `wss.message` | `WebSocketBindingSpec` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol or contract gating |
+  | `wt.session` | `WebTransportBindingSpec` | `session` | `unary` | no app-level framing; session metadata only |
+  | `wts.session` | `WebTransportBindingSpec` | `session` | `unary` | no app-level framing; session metadata only |
+  | `wt.bidi_stream` | `WebTransportBindingSpec` | `stream` | `duplex` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+  | `wts.bidi_stream` | `WebTransportBindingSpec` | `stream` | `duplex` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+  | `wt.unidi_client_stream` | `WebTransportBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+  | `wts.unidi_client_stream` | `WebTransportBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+  | `wt.unidi_server_stream` | `WebTransportBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+  | `wts.unidi_server_stream` | `WebTransportBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+  | `wt.datagram` | `WebTransportBindingSpec` | `datagram` | `duplex` | `bytes`, `binary`, `text`, `json`; `jsonrpc` and `ndjson` excluded by default |
+  | `wts.datagram` | `WebTransportBindingSpec` | `datagram` | `duplex` | `bytes`, `binary`, `text`, `json`; `jsonrpc` and `ndjson` excluded by default |
+  
+  ## Rules
+  
+  `jsonrpc` means complete JSON-RPC message semantics and must not be inferred from `json`, `ndjson`, or generic stream carriers.
+  
+  `ndjson` means newline-delimited JSON records and must not imply JSON-RPC semantics.
+  
+  `sse` is exclusive to the SSE profile.
+  
+  `webtransport` is outer transport identity/framing only. App-level framing lives inside the selected WebTransport profile.
+  
+  ## Validation
+  
+  Matrix tests must prove every supported BindingSpec profile has a local framing declaration.
+  
+  Runtime-support tests must distinguish intended framing policy from mature runtime implementation.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1133"
+  - "adr:1132"
+  - "adr:1006"
+  - "adr:1007"
+  - "adr:1096"
+  - "adr:1131"
+  - "adr:1134"

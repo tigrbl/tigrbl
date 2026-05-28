@@ -8,35 +8,43 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "This document defines the governed support-level matrix for eventful transport surfaces, framing modes, exchange tokens, and lifecycle markers so frozen current-target claims remain distinct from active-line implementation and provisional vocabulary."
+summary: "This document defines the governed support-level matrix for eventful transport surfaces, framing modes, exchange tokens, and lifecycle markers so frozen current-target claims remain distinct from active-line implementation, intended app-level framing policy, and provisional vocabulary."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated support matrix to distinguish intended framing policy from runtime support."
+    at: "2026-05-27T18:17:59Z"
 references: []
 body: |-
   ## Intent
   
-  This document defines the governed support-level matrix for eventful transport surfaces, framing modes, exchange tokens, and lifecycle markers so frozen current-target claims remain distinct from active-line implementation and provisional vocabulary.
+  This document defines the governed support-level matrix for eventful transport surfaces, framing modes, exchange tokens, and lifecycle markers so frozen current-target claims remain distinct from active-line implementation, intended app-level framing policy, and provisional vocabulary.
   
   ## Support Levels
   
   - `current_target`: inside the frozen certified current boundary
   - `active_line`: governed and implemented on the active development line but not frozen-release certified
+  - `intended_policy`: governed target policy that is not itself proof of implementation
   - `provisional`: visible in code or draft SSOT but not first-class or current-target
   - `internal_only`: compatibility or runtime vocabulary that must not be presented as supported public surface
   
   ## Matrix
   
-  - HTTP REST with `json` framing: `current_target`
+  - HTTP REST with implemented `json` framing: `current_target`
+  - HTTP REST intended `text`, `bytes`, and `binary` framing for explicitly declared non-JSON endpoints: `intended_policy`
   - HTTP JSON-RPC with `jsonrpc` framing: `current_target`
   - HTTP streaming response surface with `stream` framing: `current_target`
+  - HTTP stream app-level `bytes`, `binary`, `text`, `json`, and `ndjson` framing policy: `intended_policy`
   - WHATWG SSE and `EventStreamResponse` with `sse` framing: `current_target`
   - WebSocket text surface: `current_target`
   - WebSocket JSON-RPC framing surface: `active_line`
-  - WebSocket NDJSON framing surface: `provisional` and fail-closed
-  - WebSocket binary and websocket bytes framing vocabulary: `provisional`
+  - WebSocket JSON, bytes, binary, and NDJSON framing policy: `intended_policy`, with NDJSON fail-closed until implemented
   - WebTransport session surface: `provisional`
-  - WebTransport inner app framing vocabulary: `provisional`
+  - WebTransport stream app-level framing policy: `intended_policy`
+  - WebTransport datagram app-level framing policy: `intended_policy`, excluding `jsonrpc` and `ndjson` by default
+  - WebTransport inner app framing runtime support: `provisional`
   - Generic message `bytes` and datagram `bytes` declarations: `provisional`
   - `request_response`, `server_stream`, and `bidirectional_stream`: active-line public exchange vocabulary
   - `event_stream` and `bidirectional`: `internal_only` compatibility tokens
@@ -47,6 +55,7 @@ body: |-
   
   - Only `current_target` rows may appear in frozen release claims.
   - `active_line` rows may appear in planning and implementation docs but not as certified support.
+  - `intended_policy` rows may appear in governance and planning docs but must not be described as implemented runtime support without direct runtime evidence.
   - `provisional` and `internal_only` rows must not be implied as supported by analogy, docs defaults, type unions, or CLI help text.
   - Active-line first-class support and frozen current-target certification must be described as distinct support levels.
   - Presence of a framing token in canonical spec vocabulary does not establish mature runtime support by itself.
@@ -55,7 +64,8 @@ body: |-
   ## Traceability
   
   - Conformance docs: `docs/conformance/CURRENT_TARGET.md`, `docs/conformance/NEXT_TARGETS.md`
-  - ADRs: `adr:1007`, `adr:1067`, `adr:1068`, `adr:1096`, `adr:1131`
+  - ADRs: `adr:1007`, `adr:1067`, `adr:1068`, `adr:1096`, `adr:1131`, `adr:1133`
+  - Companion specs: `spc:2157`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1007"
@@ -63,3 +73,4 @@ adr_ids:
   - "adr:1068"
   - "adr:1096"
   - "adr:1131"
+  - "adr:1133"

@@ -8,36 +8,50 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "WebTransport is currently visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport subevents to be represented explicitly."
+summary: "WebTransport is visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport events to be represented explicitly while keeping native WT structure clear."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-05-27T17:30:26Z"
+    note: "Updated to model WebTransport native lanes and inner payload framing."
+    status: "draft"
+  -
+    at: "2026-05-27T17:59:39Z"
+    note: "Updated WebTransport boundary with lane-local app framing policy."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated WebTransport boundary to express native WT profiles through WebTransportBindingSpec.profile."
+    at: "2026-05-28T00:49:16Z"
 references: []
 body: |-
   ## Decision
   
-  1. WebTransport is governed as a session transport with distinct session, stream, datagram, and app-framed execution paths.
-  2. WebTransport support must preserve ASGI3 server-boundary projection and use explicit extension event schemas.
-  3. Session lifecycle, bidirectional stream chunks, datagrams, disconnects, and app-framed messages are separate runtime concerns.
-  4. `WebTransportBindingSpec.framing=webtransport` governs the outer transport/session layer, not the inner application payload framing inside streams or datagrams.
-  5. Inner application framings carried inside WebTransport lanes must be governed separately from the outer `webtransport` binding framing and may later include tokens such as `text`, `json`, `jsonrpc`, `binary`, or `bytes` only when explicit runtime and test support exists.
-  6. NDJSON must not be implied as a WebTransport transport framing merely because it may one day be used as an application payload shape inside a stream.
-  7. WebTransport may not be claimed as first-class support until its event, subevent, atom-chain, executor, and inner-framing evidence contracts pass.
-  8. WebTransport implementation must not create a separate programming model outside BindingSpec and KernelPlan compilation.
+  1. WebTransport is governed as a session transport with explicit native profiles: `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, and `datagram`.
+  2. Those profiles are represented through `WebTransportBindingSpec.profile`; Tigrbl does not introduce a separate canonical `lane` field for this policy.
+  3. `message` is not a peer native WebTransport transport profile.
+  4. App-level message framing, including JSON, JSON-RPC, text, bytes, binary, or NDJSON where explicitly supported, is an inner payload concern inside a selected stream or datagram profile.
+  5. `WebTransportBindingSpec.framing=webtransport` governs the outer transport/session layer only. It does not prove inner app-level framing support.
+  6. WebTransport stream profiles may target record-oriented framings only when boundary rules are explicit.
+  7. WebTransport datagram profiles exclude `jsonrpc` and `ndjson` by default because datagrams do not provide stream continuity or reliable record sequencing.
+  8. NDJSON must not be implied as a WebTransport transport framing merely because it may later be used as an application payload shape inside a stream.
+  9. WebTransport may not be claimed as first-class support until its event, atom-chain, executor, profile, and inner-framing evidence contracts pass.
+  10. WebTransport implementation must not create a separate programming model outside BindingSpec and KernelPlan compilation.
   
   ## Context
   
-  WebTransport is currently visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport subevents to be represented explicitly.
+  WebTransport is visible as a binding/spec surface but remains provisional in support-level governance. The target protocol set requires all tigr-asgi-contract WebTransport events to be represented explicitly while keeping native WT structure clear.
   
-  The live repo also now distinguishes more clearly between transport-level framing and application-level payload interpretation. Without that distinction, the repo can accidentally overclaim support by treating a transport token as if it already guaranteed mature inner message framing support.
+  The corrected BindingSpec model uses `profile` for WT session, stream, and datagram variants. This preserves protocol-native distinctions without adding another top-level taxonomy axis.
   
   ## Consequences
   
-  - WebTransport stream and datagram behavior receive separate SPEC coverage.
-  - App-framed WebTransport reuses message-family framing semantics only when explicitly governed.
-  - Certification requires real runtime and ordering evidence.
-  - Docs and support matrices must keep outer transport framing separate from inner payload framing claims.
+  - WebTransport session, bidi stream, unidi client stream, unidi server stream, and datagram behavior receive separate SPEC and test coverage.
+  - App-framed WebTransport payloads are validated through profile-local framing policy.
+  - Certification requires runtime evidence for profile handling and multiplexed session behavior where support is claimed.
+  - Docs and support matrices must keep outer transport identity separate from inner payload framing claims.
   
   ## Related
   
-  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131.
+  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131, ADR-1133, ADR-1134.

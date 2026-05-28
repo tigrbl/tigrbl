@@ -1,0 +1,78 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1133"
+number: 1133
+slug: "app-level-framing-support-policy"
+title: "App-Level Framing Support Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The contract and bridge taxonomy now separate canonical event identity from channel, family, exchange, direction, and app-level framing metadata. Tigrbl also has a dated framing matrix addendum that declares intended app-level framing support per protocol profile."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T17:58:49Z"
+    note: "Created as Tigrbl policy for per-binding and per-lane app-level framing support."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated app-level framing policy to use profile-local framing and exclude stdio from this slice."
+    at: "2026-05-28T00:49:17Z"
+references: []
+body: |-
+  ## Context
+  
+  The contract and bridge taxonomy now separate canonical event identity from channel, family, exchange, direction, and app-level framing metadata. Tigrbl also has a dated framing matrix addendum that declares intended app-level framing support per protocol profile.
+  
+  Without a dedicated policy, Tigrbl can accidentally infer app framing from protocol names, secure variants, WebTransport outer framing, or type-union tokens. That would overstate support and make runtime codecs hard to validate.
+  
+  ## Decision
+  
+  Tigrbl shall govern app-level framing as profile-local payload interpretation metadata.
+  
+  Each supported protocol/profile row must declare its framing set locally. Secure variants such as HTTPS, WSS, and secure WebTransport repeat their app-level framing policy locally; TLS, mTLS, ALPN, QUIC, and HTTP version facts remain scope metadata.
+  
+  Tigrbl shall use the following target framing policy:
+  
+  - `http.rest`: `json` required; `text`, `bytes`, and `binary` allowed for explicitly declared non-JSON endpoints.
+  - `https.rest`: `json` required; `text`, `bytes`, and `binary` allowed for explicitly declared non-JSON endpoints.
+  - `http.jsonrpc`: `jsonrpc` required and exclusive.
+  - `https.jsonrpc`: `jsonrpc` required and exclusive.
+  - `http.stream.request`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
+  - `https.stream.request`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
+  - `http.stream.response`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
+  - `https.stream.response`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
+  - `http.sse`: `sse` required and exclusive.
+  - `https.sse`: `sse` required and exclusive.
+  - `ws.message`: `text`, `bytes`, `binary`, `json`, `jsonrpc`, and `ndjson`, with JSON-RPC requiring explicit subprotocol or contract gating.
+  - `wss.message`: `text`, `bytes`, `binary`, `json`, `jsonrpc`, and `ndjson`, with JSON-RPC requiring explicit subprotocol or contract gating.
+  - `wt.session`: no app-level framing; session metadata only.
+  - `wts.session`: no app-level framing; session metadata only.
+  - `wt.bidi_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
+  - `wts.bidi_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
+  - `wt.unidi_client_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
+  - `wts.unidi_client_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
+  - `wt.unidi_server_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
+  - `wts.unidi_server_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
+  - `wt.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
+  - `wts.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
+  
+  `jsonrpc` means complete JSON-RPC message semantics. It must not be implied by `json`, `ndjson`, or a generic stream carrier.
+  
+  `ndjson` means newline-delimited JSON records and must not imply JSON-RPC semantics.
+  
+  `sse` is exclusive to the SSE profile.
+  
+  `webtransport` is outer transport identity/framing only. App-level framing lives inside the selected WebTransport profile.
+  
+  This slice does not add `StdioBindingSpec` or stdio framing policy.
+  
+  ## Consequences
+  
+  Binding specs, KernelPlan compilation, runtime codecs, docs projection, and support matrices can validate framing legality per profile row.
+  
+  Support claims must distinguish intended framing policy from implemented runtime support.
+  
+  Future framing additions require explicit governance rather than inference from existing transport, profile, or secure variants.

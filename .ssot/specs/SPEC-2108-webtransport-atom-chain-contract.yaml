@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2108"
 number: 2108
@@ -11,7 +11,11 @@ tags: []
 summary: "Define WebTransport session, stream, datagram, and app-framed atom chains."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated WebTransport atom chains with native lane classification."
+    at: "2026-05-27T17:42:20Z"
 references: []
 body: |-
   ## Intent
@@ -20,11 +24,23 @@ body: |-
   
   ## Contract
   
-  WebTransport chains declare session open/accept/ready, stream receive/send, datagram receive/send, app-framed message decode/encode paths, disconnect behavior, subevent ordering, and transport completion.
+  WebTransport chains declare session open/accept/ready, bidirectional stream receive/send, client-to-server unidirectional stream receive, server-to-client unidirectional stream send, datagram receive/send, app-framed payload decode/encode paths, disconnect behavior, subevent ordering, and transport completion.
+  
+  WebTransport is modeled as one session with native lanes for bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams.
+  
+  Bidirectional stream lanes classify as `family=stream` and `exchange=duplex`.
+  
+  Client-to-server unidirectional stream lanes classify as `family=stream` and `exchange=client_stream`.
+  
+  Server-to-client unidirectional stream lanes classify as `family=stream` and `exchange=server_stream`.
+  
+  Datagram lanes classify as `family=datagram`; where both peers may send datagrams under a session, the exchange is `duplex`.
+  
+  App-framed message decode/encode is inner payload framing within stream or datagram lanes. `message` is not a peer native WebTransport transport lane.
   
   ## Traceability
   
-  ADRs: adr:1091, adr:1092, adr:1094, adr:1096, adr:1100.
+  ADRs: adr:1091, adr:1092, adr:1094, adr:1096, adr:1100, adr:1132.
 spec_kind: "normative"
 adr_ids:
   - "adr:1091"
@@ -32,3 +48,4 @@ adr_ids:
   - "adr:1094"
   - "adr:1096"
   - "adr:1100"
+  - "adr:1132"

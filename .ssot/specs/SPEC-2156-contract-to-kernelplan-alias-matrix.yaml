@@ -1,0 +1,81 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2156"
+number: 2156
+slug: "contract-to-kernelplan-alias-matrix"
+title: "Contract To KernelPlan Alias Matrix"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how Tigrbl consumes tigr-asgi-contract classifications and normalizes local aliases into KernelPlan/runtime terms."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T17:42:53Z"
+    note: "Created alias matrix SPEC for contract-facing classifications and local runtime terms."
+    status: "draft"
+  -
+    at: "2026-05-27T18:17:17Z"
+    note: "Updated alias matrix with framing normalization rules."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated alias matrix with canonical BindingSpec normalization."
+    at: "2026-05-28T00:49:21Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define how Tigrbl consumes tigr-asgi-contract classifications and normalizes local aliases into KernelPlan/runtime terms.
+  
+  ## Contract
+  
+  Tigrbl consumes canonical ASGI event identity plus channel, family, exchange, direction, profile, and framing metadata from the contract bridge.
+  
+  Tigrbl may use local aliases for backwards-compatible KernelPlan tokens, but aliases must normalize before runtime support claims are made.
+  
+  ## BindingSpec Alias Matrix
+  
+  Canonical BindingSpecs are `HTTPBindingSpec`, `WebSocketBindingSpec`, and `WebTransportBindingSpec`.
+  
+  Convenience aliases normalize to canonical spec plus `secure`, `profile`, `family`, `exchange`, and default `framing` according to `SPEC-2158`.
+  
+  Local KernelPlan aliases may preserve older token names only when their canonical expansion is deterministic and visible to tests.
+  
+  ## Exchange Aliases
+  
+  | Contract-facing exchange | Local aliases allowed | Notes |
+  |---|---|---|
+  | `unary` | `request_response` | Alias only; canonical contract-facing term is `unary`. |
+  | `client_stream` | none required | Client-to-server continuous send pattern. |
+  | `server_stream` | `event_stream` where SSE-specific | SSE remains `server_stream` plus `framing=sse`. |
+  | `duplex` | `bidirectional`, `bidirectional_stream` | Local aliases must not hide whether the carrier is message, stream, or datagram. |
+  | `fire_and_forget` | none required | One-way send with no paired conversational reply contract. |
+  
+  ## Framing Rules
+  
+  `profile` and `framing` are separate. `rest`, `stream`, `server_stream`, `client_stream`, `message`, `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, and `datagram` are not framing tokens.
+  
+  The app-level framing matrix in `SPEC-2157` constrains legal framing per canonical BindingSpec profile.
+  
+  ## Path Rules
+  
+  `PathSpec.path` owns concrete address paths. BindingSpec aliases must not introduce a competing path value.
+  
+  Path kind and BindingSpec profile convergence is validated after alias normalization.
+  
+  ## Validation
+  
+  Tests must prove alias normalization happens before KernelPlan projection and that local aliases do not change contract-facing classification semantics.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1132"
+  - "adr:1133"
+  - "adr:1134"
+  - "adr:1006"
+  - "adr:1023"
+  - "adr:1067"
+  - "adr:1024"
+  - "adr:1096"

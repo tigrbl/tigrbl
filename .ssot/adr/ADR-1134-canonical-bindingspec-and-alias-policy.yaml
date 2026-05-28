@@ -1,0 +1,59 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1134"
+number: 1134
+slug: "canonical-bindingspec-and-alias-policy"
+title: "Canonical BindingSpec And Alias Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl currently exposes several protocol-specific BindingSpec classes such as HTTP REST, HTTP JSON-RPC, WebSocket, and WebTransport variants. Those classes are useful authoring shortcuts, but they blur the canonical model when each shortcut appears to be an independent binding taxonomy."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern canonical HTTP, WebSocket, and WebTransport BindingSpecs plus semantic aliases."
+    at: "2026-05-28T00:49:13Z"
+references: []
+body: |-
+  ## Context
+  
+  Tigrbl currently exposes several protocol-specific BindingSpec classes such as HTTP REST, HTTP JSON-RPC, WebSocket, and WebTransport variants. Those classes are useful authoring shortcuts, but they blur the canonical model when each shortcut appears to be an independent binding taxonomy.
+  
+  The corrected model keeps `PathSpec.path` as the first-class address authority and lets BindingSpecs select transport, security, profile, family, exchange, and framing behavior.
+  
+  ## Decision
+  
+  Tigrbl shall govern three canonical transport BindingSpecs for this slice:
+  
+  - `HTTPBindingSpec`
+  - `WebSocketBindingSpec`
+  - `WebTransportBindingSpec`
+  
+  Semantic convenience aliases may remain, including `HttpRestBindingSpec`, `HttpJsonRpcBindingSpec`, `HttpStreamBindingSpec`, `SseBindingSpec`, `WsBindingSpec`, `WsJsonRpcBindingSpec`, `WsNdjsonBindingSpec`, and WebTransport session, stream, and datagram aliases. Those aliases are authoring conveniences only.
+  
+  Every alias must normalize to a canonical BindingSpec before KernelPlan compilation, runtime dispatch, docs projection, support-matrix projection, or conformance testing.
+  
+  Canonical BindingSpecs use:
+  
+  - `secure` to distinguish HTTP from HTTPS, WS from WSS, and WT from secure WT where the contract needs that distinction.
+  - `profile` to distinguish protocol usage such as `rest`, `jsonrpc`, `stream`, `sse`, `message`, `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, and `datagram`.
+  - `family` to describe the native carrier unit: `request`, `session`, `message`, `stream`, or `datagram`.
+  - `exchange` to describe the app interaction pattern: `unary`, `client_stream`, `server_stream`, `duplex`, or `fire_and_forget`.
+  - `framing` to describe payload interpretation such as `json`, `jsonrpc`, `ndjson`, `sse`, `text`, `bytes`, or `binary`.
+  
+  `rest`, `stream`, `sse`, `message`, and WebTransport stream/datagram names are profiles, not framing tokens unless separately declared as framing values by the framing policy.
+  
+  `PathSpec.path` owns the concrete address path. BindingSpecs must not introduce an independent address path that can conflict with the containing PathSpec.
+  
+  This slice does not add or govern `StdioBindingSpec`.
+  
+  ## Consequences
+  
+  The compiler, docs projection, runtime support matrix, and tests can target canonical BindingSpecs while preserving ergonomic alias APIs.
+  
+  Alias expansion becomes a governed compatibility layer. Alias behavior must not drift from the canonical expansion table.
+  
+  Support claims must distinguish profile selection from app-level framing support and from current runtime implementation maturity.

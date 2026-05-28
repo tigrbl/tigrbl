@@ -1,0 +1,101 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2158"
+number: 2158
+slug: "canonical-bindingspec-normalization-contract"
+title: "Canonical BindingSpec Normalization Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the canonical BindingSpec normalization contract for Tigrbl."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created canonical BindingSpec and semantic alias normalization contract."
+    at: "2026-05-28T00:49:18Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the canonical BindingSpec normalization contract for Tigrbl.
+  
+  ## Canonical BindingSpecs
+  
+  The canonical BindingSpec set is:
+  
+  | Canonical spec | Transport identity | Secure selector | Profile selector |
+  |---|---|---|---|
+  | `HTTPBindingSpec` | HTTP-family request and stream transports | `secure=false` for HTTP and `secure=true` for HTTPS | `rest`, `jsonrpc`, `stream`, `client_stream`, `server_stream`, `sse` |
+  | `WebSocketBindingSpec` | WebSocket message transport | `secure=false` for WS and `secure=true` for WSS | `message`, `jsonrpc`, `ndjson` |
+  | `WebTransportBindingSpec` | WebTransport session transport | `secure=false` for WT and `secure=true` for secure WT where represented | `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, `datagram` |
+  
+  `StdioBindingSpec` is out of scope for this contract.
+  
+  ## Canonical Fields
+  
+  Canonical BindingSpecs must expose or normalize into:
+  
+  - `secure`
+  - `profile`
+  - `family`
+  - `exchange`
+  - `framing`
+  
+  `PathSpec.path` owns the address path. BindingSpecs must not define an independent path field that conflicts with the containing PathSpec.
+  
+  `PathSpec.kind` remains an address-category discriminator. It is not the same as BindingSpec `profile`.
+  
+  ## Alias Normalization
+  
+  Convenience aliases are valid only as authoring shortcuts. Before compiler, runtime, docs, or support-matrix use, they normalize as follows:
+  
+  | Alias | Canonical spec | secure | profile | family | exchange | default framing |
+  |---|---|---:|---|---|---|---|
+  | `HttpRestBindingSpec` | `HTTPBindingSpec` | `false` | `rest` | `request` | `unary` | `json` |
+  | `HttpsRestBindingSpec` | `HTTPBindingSpec` | `true` | `rest` | `request` | `unary` | `json` |
+  | `HttpJsonRpcBindingSpec` | `HTTPBindingSpec` | `false` | `jsonrpc` | `request` | `unary` | `jsonrpc` |
+  | `HttpsJsonRpcBindingSpec` | `HTTPBindingSpec` | `true` | `jsonrpc` | `request` | `unary` | `jsonrpc` |
+  | `HttpStreamBindingSpec` | `HTTPBindingSpec` | `false` | `server_stream` | `stream` | `server_stream` | `bytes` |
+  | `HttpsStreamBindingSpec` | `HTTPBindingSpec` | `true` | `server_stream` | `stream` | `server_stream` | `bytes` |
+  | `HttpClientStreamBindingSpec` | `HTTPBindingSpec` | `false` | `client_stream` | `stream` | `client_stream` | `bytes` |
+  | `HttpsClientStreamBindingSpec` | `HTTPBindingSpec` | `true` | `client_stream` | `stream` | `client_stream` | `bytes` |
+  | `SseBindingSpec` | `HTTPBindingSpec` | `false` | `sse` | `stream` | `server_stream` | `sse` |
+  | `HttpsSseBindingSpec` | `HTTPBindingSpec` | `true` | `sse` | `stream` | `server_stream` | `sse` |
+  | `WsBindingSpec` | `WebSocketBindingSpec` | `false` | `message` | `message` | `duplex` | `text` |
+  | `WssBindingSpec` | `WebSocketBindingSpec` | `true` | `message` | `message` | `duplex` | `text` |
+  | `WsJsonRpcBindingSpec` | `WebSocketBindingSpec` | `false` | `jsonrpc` | `message` | `duplex` | `jsonrpc` |
+  | `WssJsonRpcBindingSpec` | `WebSocketBindingSpec` | `true` | `jsonrpc` | `message` | `duplex` | `jsonrpc` |
+  | `WsNdjsonBindingSpec` | `WebSocketBindingSpec` | `false` | `ndjson` | `message` | `duplex` | `ndjson` |
+  | `WssNdjsonBindingSpec` | `WebSocketBindingSpec` | `true` | `ndjson` | `message` | `duplex` | `ndjson` |
+  | `WebTransportSessionBindingSpec` | `WebTransportBindingSpec` | profile-local | `session` | `session` | `unary` | `webtransport` |
+  | `WebTransportBidiStreamBindingSpec` | `WebTransportBindingSpec` | profile-local | `bidi_stream` | `stream` | `duplex` | `bytes` |
+  | `WebTransportClientStreamBindingSpec` | `WebTransportBindingSpec` | profile-local | `unidi_client_stream` | `stream` | `client_stream` | `bytes` |
+  | `WebTransportServerStreamBindingSpec` | `WebTransportBindingSpec` | profile-local | `unidi_server_stream` | `stream` | `server_stream` | `bytes` |
+  | `WebTransportDatagramBindingSpec` | `WebTransportBindingSpec` | profile-local | `datagram` | `datagram` | `duplex` | `bytes` |
+  
+  ## Rules
+  
+  Alias expansion must be deterministic and idempotent.
+  
+  Alias expansion must not change the containing `PathSpec.path`.
+  
+  Profile and framing are separate. `rest`, `stream`, `server_stream`, `client_stream`, `message`, `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, and `datagram` are profile or classification values, not app-level framing tokens.
+  
+  Runtime support claims must be made against canonical BindingSpec plus profile plus framing, not against alias names alone.
+  
+  ## Validation
+  
+  Static tests must prove every supported alias has one canonical expansion row.
+  
+  Runtime-facing tests must prove alias expansion happens before KernelPlan classification and docs/support projection.
+  
+  Negative tests must reject profile/framing confusion and BindingSpec path conflicts.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1134"
+  - "adr:1006"
+  - "adr:1133"
+  - "adr:1096"

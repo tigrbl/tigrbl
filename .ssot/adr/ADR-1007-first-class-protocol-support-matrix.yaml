@@ -11,14 +11,18 @@ tags: []
 summary: "Tigrbl needs an explicit statement of which protocols and framings are first-class and what first-class means."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated support matrix to distinguish intended app framing from implemented support."
+    at: "2026-05-27T17:59:51Z"
 references: []
 body: |-
   ## Decision
   
   - **Status:** Proposed
   - **Date:** 2026-04-20
-  - **Related ADRs:** ADR-1005, ADR-1006, ADR-1014, ADR-1016, ADR-1021, ADR-1022, ADR-1023, ADR-1024, ADR-1025, ADR-1096, ADR-1131
+  - **Related ADRs:** ADR-1005, ADR-1006, ADR-1014, ADR-1016, ADR-1021, ADR-1022, ADR-1023, ADR-1024, ADR-1025, ADR-1096, ADR-1131, ADR-1133
   
   1. A protocol or binding is first-class on the active line only if it has:
      - a canonical binding spec;
@@ -35,15 +39,16 @@ body: |-
      - SSE over HTTP/HTTPS with `sse` framing;
      - WebSocket over WS/WSS with `text` framing; and
      - WebSocket JSON-RPC over WS/WSS with `jsonrpc` framing and explicit websocket subprotocol governance.
-  4. WebSocket JSON-RPC remains active-line rather than frozen current-target support until its full runtime and certification lane closes.
-  5. WebTransport and app-framed WebTransport remain governed provisional surfaces rather than first-class support in this checkpoint.
-  6. Presence of a framing token in canonical type vocabulary does not by itself establish first-class support; runtime framing atoms, binding guards, and tests are the authoritative proof points.
-  7. Declared but not fully first-class framing vocabulary such as websocket `binary`, websocket `bytes`, generic message `bytes`, and datagram `bytes` must not be implied as current-target protocol support without explicit runtime and docs closure.
-  8. HTTP/3 and QUIC are transport substrates, not separate semantic bindings.
-  9. Protocols not in the governed first-class set are non-first-class by default and may not be implied by analogy.
-  10. First-class status requires public docs and tests, not just internal code paths.
-  11. First-class protocol support requires the canonical ingress-routing phase label `INGRESS_ROUTE`.
-  12. `INGRESS_DISPATCH` is not an allowed public, diagnostics, or compatibility phase label for first-class protocol support.
+  4. Intended app-level framing policy is governed separately from implemented runtime support. ADR-1133 records the intended per-binding and per-lane framing target.
+  5. WebSocket JSON-RPC remains active-line rather than frozen current-target support until its full runtime and certification lane closes.
+  6. WebTransport and app-framed WebTransport remain governed provisional surfaces rather than first-class support in this checkpoint.
+  7. Presence of a framing token in canonical type vocabulary does not by itself establish first-class support; runtime framing atoms, binding guards, and tests are the authoritative proof points.
+  8. Declared but not fully first-class framing vocabulary such as websocket `binary`, websocket `bytes`, generic message `bytes`, and datagram `bytes` must not be implied as current-target protocol support without explicit runtime and docs closure.
+  9. HTTP/3 and QUIC are transport substrates, not separate semantic bindings.
+  10. Protocols not in the governed first-class set are non-first-class by default and may not be implied by analogy.
+  11. First-class status requires public docs and tests, not just internal code paths.
+  12. First-class protocol support requires the canonical ingress-routing phase label `INGRESS_ROUTE`.
+  13. `INGRESS_DISPATCH` is not an allowed public, diagnostics, or compatibility phase label for first-class protocol support.
   
   ## Context
   
@@ -54,7 +59,8 @@ body: |-
   
   - active-line first-class support;
   - frozen current-target certification;
-  - provisional governed surfaces; and
+  - provisional governed surfaces;
+  - intended app-level framing policy; and
   - declared vocabulary that is not yet proof of first-class runtime behavior.
   
   ## Rejected Alternatives
@@ -63,4 +69,5 @@ body: |-
   - Treating transport substrate changes as new semantic bindings.
   - Promoting protocols or framings to first-class status without docs and tests.
   - Treating type-surface framing tokens as implementation proof.
+  - Treating intended app-level framing policy as implemented runtime support.
   - Treating `INGRESS_ROUTE` and `INGRESS_DISPATCH` as interchangeable routing labels.

@@ -1,0 +1,76 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2155"
+number: 2155
+slug: "contract-event-classification-consumption-contract"
+title: "Contract Event Classification Consumption Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define how Tigrbl consumes tigr-asgi-contract event classification as bridge truth."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T17:42:42Z"
+    note: "Created bridge consumption SPEC for tigr-asgi-contract classification rows."
+    status: "draft"
+  -
+    at: "2026-05-27T18:17:06Z"
+    note: "Updated bridge consumption contract with framing as subordinate metadata."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated contract classification consumption with BindingSpec profile normalization."
+    at: "2026-05-28T00:49:22Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define how Tigrbl consumes tigr-asgi-contract event classification as bridge truth.
+  
+  ## Contract
+  
+  Tigrbl consumes `(scope, channel, event)` plus classification metadata from tigr-asgi-contract. Canonical ASGI event names remain unchanged.
+  
+  Classification metadata may include:
+  
+  - `scope_type`
+  - `binding`
+  - `profile`
+  - `family`
+  - `exchange`
+  - `direction`
+  - `framing`
+  
+  `channel` is the ASGI callable side: `receive` or `send`.
+  
+  `direction` is semantic peer flow: client-to-server, server-to-client, bidirectional, or control.
+  
+  `binding` identifies the broad contract binding surface. Tigrbl-local BindingSpec governance refines that into canonical BindingSpec plus `profile`.
+  
+  ## Tigrbl Consumption Rules
+  
+  Tigrbl derives runtime semantics from `(scope, channel, event)` and classification attributes. It must not invent custom event names to replace canonical ASGI event names.
+  
+  Tigrbl BindingSpecs select contract classifications; they do not redefine the event taxonomy.
+  
+  Alias BindingSpecs normalize to canonical BindingSpec plus profile before classification is consumed by KernelPlan or runtime gating.
+  
+  ## Validation
+  
+  Static tests must verify that Tigrbl documentation and SSOT rows use canonical event names and classification attributes rather than a parallel event-name taxonomy.
+  
+  Runtime-facing tests must verify that BindingSpec aliases normalize before event classification consumption.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1132"
+  - "adr:1133"
+  - "adr:1134"
+  - "adr:1005"
+  - "adr:1006"
+  - "adr:1023"
+  - "adr:1024"
+  - "adr:1067"
+  - "adr:1096"

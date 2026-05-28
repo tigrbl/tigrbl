@@ -1,0 +1,47 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1132"
+number: 1132
+slug: "contract-event-classification-consumption-policy"
+title: "Contract event classification consumption policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl consumes ASGI-shaped server traffic through `scope`, `receive`, and `send`. The shared bridge with Tigrcorn and `tigr-asgi-contract` needs one contract truth for event identity and classification so Tigrbl does not invent parallel event names or diverging transport taxonomies."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-05-27T17:29:05Z"
+    note: "Created as the bridge consumption policy for tigr-asgi-contract event classification."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated bridge consumption policy with framing as subordinate metadata."
+    at: "2026-05-27T17:59:02Z"
+references: []
+body: |-
+  ## Context
+  
+  Tigrbl consumes ASGI-shaped server traffic through `scope`, `receive`, and `send`. The shared bridge with Tigrcorn and `tigr-asgi-contract` needs one contract truth for event identity and classification so Tigrbl does not invent parallel event names or diverging transport taxonomies.
+  
+  ## Decision
+  
+  Tigrbl shall consume `tigr-asgi-contract` event classification as bridge truth. Canonical ASGI and contract event names remain the event identity. Runtime classification is derived from `event + channel + scope_type + binding + family + exchange + direction` and any required payload discriminators such as stream direction, stream id, datagram id, selected subprotocol, framing, ALPN, or TLS metadata.
+  
+  Framing is consumed as subordinate bridge metadata. It describes payload interpretation for the selected binding or lane and must not redefine event identity, scope type, family, exchange, or direction.
+  
+  Tigrbl may map contract classification into local KernelPlan, atom, or runtime terms through explicit aliases. Local aliases must not change the bridge contract and must not require Tigrcorn or other ASGI servers to emit custom event-name fields.
+  
+  For WebTransport, Tigrbl shall treat the native lanes as session lifecycle, bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams. Message-shaped application payloads are inner framing concerns within those lanes, not a peer WebTransport transport lane.
+  
+  ## Consequences
+  
+  Bindings select and constrain contract classifications; they do not redefine the event taxonomy.
+  
+  KernelPlan compilation can continue to use local optimized names, but diagnostics and bridge conformance must be traceable to contract classification rows.
+  
+  Support claims require evidence against canonical ASGI event names and derived classification attributes rather than against parallel custom event names.
+  
+  Framing support claims require evidence against binding/lane-local framing policy rather than against protocol names or type-union tokens alone.

@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2107"
 number: 2107
@@ -11,7 +11,11 @@ tags: []
 summary: "Define WebSocket and WSS atom chains."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated WebSocket classification as message duplex over canonical events."
+    at: "2026-05-27T17:42:10Z"
 references: []
 body: |-
   ## Intent
@@ -22,12 +26,19 @@ body: |-
   
   WebSocket and WSS chains declare session connect and accept, receive loops, message decode and handling, outbound send, close behavior, per-message transaction options, close code/reason metadata, and WSS TLS metadata projection.
   
+  WebSocket and WSS classify the application carrier as `family=message` with `exchange=duplex` for message receive/send loops. Session open and close remain session lifecycle concerns.
+  
+  Channel classification distinguishes ASGI `receive` events such as connect, receive, and disconnect from ASGI `send` events such as accept, send, and close. Semantic direction remains separate metadata.
+  
+  Framing and subprotocol legality are binding constraints over the message carrier. They do not create alternate event identity names.
+  
   ## Traceability
   
-  ADRs: adr:1092, adr:1094, adr:1095, adr:1100.
+  ADRs: adr:1092, adr:1094, adr:1095, adr:1100, adr:1132.
 spec_kind: "normative"
 adr_ids:
   - "adr:1092"
   - "adr:1094"
   - "adr:1095"
   - "adr:1100"
+  - "adr:1132"

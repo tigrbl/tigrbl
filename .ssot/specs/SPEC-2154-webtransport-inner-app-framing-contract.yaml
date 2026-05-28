@@ -8,35 +8,59 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the governed distinction between outer WebTransport binding framing and inner application payload framing carried inside WebTransport session, stream, and datagram lanes."
+summary: "Govern inner application framing for WebTransport without confusing it with the outer WebTransport transport identity."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-05-27T17:42:30Z"
+    note: "Updated WebTransport inner app framing with lane-specific legality."
+    status: "draft"
+  -
+    at: "2026-05-27T18:17:37Z"
+    note: "Updated WebTransport inner framing contract with stream-boundary and datagram exclusion rules."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated WebTransport inner framing contract to use profile-local terminology."
+    at: "2026-05-28T00:49:23Z"
 references: []
 body: |-
   ## Intent
   
-  Define the governed distinction between outer WebTransport binding framing and inner application payload framing carried inside WebTransport session, stream, and datagram lanes.
+  Govern inner application framing for WebTransport without confusing it with the outer WebTransport transport identity.
   
   ## Contract
   
-  1. `WebTransportBindingSpec.framing=webtransport` governs the outer transport/session boundary.
-  2. Outer WebTransport framing must not be treated as evidence that a specific inner application payload framing is already mature or certified.
-  3. Inner application framing inside WebTransport streams or datagrams must be governed separately from the outer binding and may later include `text`, `json`, `jsonrpc`, `binary`, or `bytes` only when explicit runtime, docs, and test closure exists.
-  4. NDJSON must not be implied as a WebTransport transport framing by analogy with HTTP stream or websocket vocabulary.
-  5. Session lifecycle, stream chunk delivery, datagram delivery, and app-frame decode/encode are distinct verification concerns and must remain traceable as separate runtime behaviors.
-  6. Support matrices and docs projections must classify outer WebTransport support and inner application framing support independently.
+  WebTransport is governed through `WebTransportBindingSpec` profiles:
   
-  ## Traceability
+  - `session`
+  - `bidi_stream`
+  - `unidi_client_stream`
+  - `unidi_server_stream`
+  - `datagram`
   
-  - ADRs: `adr:1096`, `adr:1007`, `adr:1006`, `adr:1023`, `adr:1131`
-  - Companion specs: `spc:2058`, `spc:2108`
+  The `session` profile carries session lifecycle metadata and has no app-level payload framing.
   
-  ## Verification Plan
+  The stream profiles may carry app-level framed payloads only when the framing is legal for that profile and record-boundary behavior is explicit.
   
-  - Add direct tests proving outer WebTransport binding framing remains `webtransport`.
-  - Add tests proving inner application framing claims are not inferred without explicit runtime support.
-  - Add docs/support-matrix tests proving WebTransport outer support and inner payload support are projected separately.
+  The datagram profile may carry `bytes`, `binary`, `text`, or `json` payloads. `jsonrpc` and `ndjson` are excluded by default for datagrams because datagrams do not provide reliable stream continuity or ordered record sequencing.
+  
+  `message` is not a peer native WebTransport profile. Message-shaped application records live inside stream or datagram payload framing where explicitly supported.
+  
+  ## Required Separation
+  
+  `webtransport` identifies the outer transport/session layer.
+  
+  `framing` identifies inner app-level payload interpretation.
+  
+  `profile` identifies which WebTransport carrier is being used.
+  
+  ## Validation
+  
+  Tests must reject claims that `framing=webtransport` proves JSON, JSON-RPC, NDJSON, binary, bytes, text, or message support inside any WebTransport profile.
+  
+  Tests must reject a native WebTransport `message` profile unless a later ADR explicitly adds one.
 spec_kind: "normative"
 adr_ids:
   - "adr:1096"
@@ -44,3 +68,6 @@ adr_ids:
   - "adr:1006"
   - "adr:1023"
   - "adr:1131"
+  - "adr:1132"
+  - "adr:1133"
+  - "adr:1134"

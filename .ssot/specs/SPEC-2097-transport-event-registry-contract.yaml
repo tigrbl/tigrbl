@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2097"
 number: 2097
@@ -11,7 +11,11 @@ tags: []
 summary: "Define the canonical transport event registry for eventful protocol runtime support."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated transport event registry with channel and classification consumption rules."
+    at: "2026-05-27T17:41:45Z"
 references: []
 body: |-
   ## Intent
@@ -20,14 +24,21 @@ body: |-
   
   ## Contract
   
-  The registry declares inbound and outbound transport events, direction, required or optional status, event-to-scope mapping, extension namespace, and validation expectations for HTTP, WebSocket/WSS, WebTransport, static files, lifespan, callbacks, and webhooks.
+  The registry declares inbound and outbound transport events, ASGI channel, semantic direction, required or optional status, event-to-scope mapping, extension namespace, and validation expectations for HTTP, WebSocket/WSS, WebTransport, static files, lifespan, callbacks, and webhooks.
+  
+  Tigrbl must consume canonical ASGI and tigr-asgi-contract event names as event identity. It must not introduce a required alternate event-name field to restate a lane.
+  
+  Runtime classification uses `event + channel + scope_type + binding + family + exchange + direction` plus required payload discriminators.
+  
+  `channel` is the ASGI callable side, `receive` or `send`. `direction` is peer-flow semantics and remains distinct from channel.
   
   ## Traceability
   
-  ADRs: adr:1091, adr:1095, adr:1096, adr:1097.
+  ADRs: adr:1091, adr:1095, adr:1096, adr:1097, adr:1132.
 spec_kind: "normative"
 adr_ids:
   - "adr:1091"
   - "adr:1095"
   - "adr:1096"
   - "adr:1097"
+  - "adr:1132"

@@ -67,3 +67,52 @@ that the corresponding transport framing is fully implemented.
 - `pkgs/core/tigrbl_tests/tests/unit/runtime/test_webtransport_transport_events_contract.py`
 - `docs/developer/operator/websockets-and-sse.md`
 - `docs/monitoring-and-transport-support-matrix.md`
+
+## Dated Addendum: Intended App-Level Framing Support
+
+Date: 2026-05-27
+
+This addendum records the proposed contract target for app-level framing support.
+Each protocol, binding, and lane row owns its framing declaration locally. Secure
+variants repeat their framing policy explicitly; TLS, mTLS, ALPN, QUIC, and
+HTTP version facts remain scope metadata, not framing shortcuts.
+
+| Protocol / Binding / Lane | Family | Exchange | Explicit app-level framing support |
+|---|---|---|---|
+| `http.rest` | `request` | `unary` | `json` required; `text`, `bytes`, `binary` allowed for explicitly declared non-JSON endpoints |
+| `https.rest` | `request` | `unary` | `json` required; `text`, `bytes`, `binary` allowed for explicitly declared non-JSON endpoints |
+| `http.jsonrpc` | `request` | `unary` | `jsonrpc` required and exclusive |
+| `https.jsonrpc` | `request` | `unary` | `jsonrpc` required and exclusive |
+| `http.stream.request` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+| `https.stream.request` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+| `http.stream.response` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+| `https.stream.response` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+| `http.sse` | `stream` | `server_stream` | `sse` required and exclusive |
+| `https.sse` | `stream` | `server_stream` | `sse` required and exclusive |
+| `ws` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol/contract gating |
+| `wss` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol/contract gating |
+| `wt.session` | `session` | `unary` | no app-level framing; session metadata only |
+| `wts.session` | `session` | `unary` | no app-level framing; session metadata only |
+| `wt.bidi_stream` | `stream` | `duplex` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+| `wts.bidi_stream` | `stream` | `duplex` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+| `wt.unidi_client_stream` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+| `wts.unidi_client_stream` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+| `wt.unidi_server_stream` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+| `wts.unidi_server_stream` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
+| `wt.datagram` | `datagram` | `duplex` | `bytes`, `binary`, `text`, `json`; `jsonrpc` and `ndjson` excluded by default |
+| `wts.datagram` | `datagram` | `duplex` | `bytes`, `binary`, `text`, `json`; `jsonrpc` and `ndjson` excluded by default |
+
+### Addendum Rules
+
+- `jsonrpc` means complete JSON-RPC message semantics. It is not implied by
+  `json`, `ndjson`, or any stream carrier.
+- `ndjson` means newline-delimited JSON records. It does not imply JSON-RPC
+  semantics. Newline-delimited JSON-RPC would require a distinct governed
+  framing token, such as `ndjson-jsonrpc`.
+- `bytes` means raw byte payload.
+- `binary` means binary payload with a declared binary media/framing contract.
+  It is not automatically identical to `bytes`.
+- `sse` is exclusive to SSE.
+- For WebTransport, `webtransport` is outer transport framing only. App-level
+  framing lives inside the selected lane: bidirectional stream, unidirectional
+  stream, or datagram.

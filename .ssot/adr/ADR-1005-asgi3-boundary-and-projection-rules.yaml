@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.7.0"
 kind: "adr"
 id: "adr:1005"
 number: 1005
@@ -11,7 +11,11 @@ tags: []
 summary: "Tigrbl sits behind an ASGI-shaped server boundary. The architecture pack is explicit that richer semantics must be projected above `scope`, `receive`, and `send`, not by inventing a new server/app contract."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated to derive runtime semantics from scope channel and canonical event names."
+    at: "2026-05-27T17:29:23Z"
 references: []
 body: |-
   ## Decision
@@ -41,3 +45,7 @@ body: |-
   - Replacing ASGI with a framework-specific boundary.
   - Encoding all richer semantics into custom server APIs.
   - Making Tigrbl depend on one server's internal request/response objects.
+  
+  ## Classification update
+  
+  Tigrbl derives runtime semantics from `scope`, the ASGI channel (`receive` or `send`), and the canonical event name. Richer classification is metadata over that boundary, not a replacement for the ASGI callable contract and not a custom event-name system.

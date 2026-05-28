@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2100"
 number: 2100
@@ -8,26 +8,35 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define canonical scope schemas for protocol runtime surfaces."
+summary: "Define canonical scope schemas for protocol runtime surfaces consumed by Tigrbl at the ASGI boundary."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated scope schema consumption for broad contract scopes and metadata extensions."
+    at: "2026-05-27T17:41:33Z"
 references: []
 body: |-
   ## Intent
   
-  Define canonical scope schemas for protocol runtime surfaces.
+  Define canonical scope schemas for protocol runtime surfaces consumed by Tigrbl at the ASGI boundary.
   
   ## Contract
   
   Scope schemas cover HTTP version details, websocket secure and TLS metadata, WebTransport and QUIC extension metadata, lifespan metadata, static-file projection metadata, and validation fixtures for accepted server-boundary inputs.
   
+  Tigrbl consumes broad contract scope types only: `http`, `websocket`, `webtransport`, and `lifespan`. HTTP/1.1, HTTP/2, HTTP/3, TLS, mTLS, ALPN, QUIC, WebSocket subprotocols, and WebTransport capability flags are scope metadata or extension fields, not new scope types.
+  
+  Scope metadata may participate in classification, but runtime semantics are derived from `scope`, ASGI `channel`, canonical event name, binding, family, exchange, direction, and payload discriminators.
+  
   ## Traceability
   
-  ADRs: adr:1005, adr:1091, adr:1096, adr:1097.
+  ADRs: adr:1005, adr:1091, adr:1096, adr:1097, adr:1132.
 spec_kind: "normative"
 adr_ids:
   - "adr:1005"
   - "adr:1091"
   - "adr:1096"
   - "adr:1097"
+  - "adr:1132"

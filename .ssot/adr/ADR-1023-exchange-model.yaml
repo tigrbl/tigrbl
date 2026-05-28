@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.7.0"
 kind: "adr"
 id: "adr:1023"
 number: 1023
@@ -8,18 +8,22 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the active-line public exchange vocabulary, alias normalization, and provisional-token boundary."
+summary: "The repository exposes overlapping exchange tokens across Python bindings, runtime adapters, Rust specs, and architecture notes."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated with contract-facing exchange aliasing."
+    at: "2026-05-27T17:29:53Z"
 references: []
 body: |-
   ## Decision
-
+  
   - **Status:** Proposed
   - **Date:** 2026-04-20
   - **Related ADRs:** ADR-1006, ADR-1007, ADR-1016, ADR-1024, ADR-1025
-
+  
   1. Tigrbl execution normalizes onto a closed public exchange vocabulary on the active line.
   2. The canonical public exchange vocabulary is:
      - `request_response`;
@@ -34,15 +38,19 @@ body: |-
   9. Exchange taxonomy is orthogonal to lifecycle naming and does not authorize alternate ingress-routing phase labels.
   10. Exchange normalization, docs projection, and parity rendering anchor on the canonical routing phase `INGRESS_ROUTE`.
   11. Introducing a new public exchange class, promoting a provisional token, or renaming the canonical public exchange vocabulary requires an ADR.
-
+  
   ## Context
-
+  
   The repository exposes overlapping exchange tokens across Python bindings, runtime adapters, Rust specs, and architecture notes.
   This ADR closes the public exchange vocabulary on the active line without pretending that every visible token is already first-class or current-target support.
-
+  
   ## Rejected Alternatives
-
+  
   - Per-protocol execution models with no normalization layer.
   - Treating every new transport as a new exchange kind.
   - Treating `event_stream` as a fourth semantic exchange class.
   - Hiding exchange semantics inside transport adapters only.
+  
+  ## Classification update
+  
+  Tigrbl shall preserve its existing exchange vocabulary through explicit aliases when consuming the contract classification matrix. Contract-facing `unary` maps to local request/response handling, `duplex` maps to bidirectional stream or message handling, `client_stream` maps to client-originated streaming input, and `server_stream` maps to server-originated streaming output. Alias use must be visible in diagnostics and conformance evidence.

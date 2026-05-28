@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.7.0"
 kind: "adr"
 id: "adr:1006"
 number: 1006
@@ -8,37 +8,68 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Transport support in Tigrbl must scale horizontally. The architecture pack already normalizes REST, RPC, streaming, websocket, and WebTransport as bindings over the same semantic model."
+summary: "The canonical BindingSpec set for this governance slice is:"
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-05-27T17:29:33Z"
+    note: "Updated to keep bindings as selectors of contract classifications."
+    status: "draft"
+  -
+    at: "2026-05-27T17:59:14Z"
+    note: "Updated binding model with per-binding app framing selection rules."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated protocol binding model with canonical BindingSpecs, profile/framing separation, and path-first ownership."
+    at: "2026-05-28T00:49:15Z"
 references: []
 body: |-
   ## Decision
   
-  - **Status:** Proposed
-  - **Date:** 2026-04-14
-  - **Related ADRs:** ADR-0001, ADR-0003, ADR-0005, ADR-0007, ADR-0014, ADR-0016, ADR-0018, ADR-0023
-  
   1. A binding declares how a semantic operation is exposed over a transport/protocol surface.
   2. Bindings do not redefine operation semantics; they project them.
-  3. Binding responsibility includes:
-     - transport/protocol identifier;
-     - path/method or equivalent selector surface;
-     - framing information where applicable;
-     - transport-specific metadata required for docs and execution;
-     - capability constraints relevant to compilation/execution.
-  4. Semantic responsibility remains in the operation model, canonical operation definitions, and hooks/guards.
-  5. Docs generation is binding-driven: transport-facing artifacts are projections from bindings over semantic operations.
-  6. Any new protocol must enter through a binding specification, not a parallel route subsystem.
+  3. Binding responsibility includes transport identity, security metadata, profile selection, family, exchange, legal framing, docs metadata, and compiler/runtime constraints.
+  4. `PathSpec.path` remains the first-class address authority. Bindings do not own a separate address path.
+  5. Semantic responsibility remains in the operation model, canonical operation definitions, hooks, and guards.
+  6. Docs generation is binding-driven, but address projection is path-first.
+  7. Any new protocol must enter through a BindingSpec, not a parallel route subsystem.
+  
+  ## Canonical BindingSpec Update
+  
+  The canonical BindingSpec set for this governance slice is:
+  
+  - `HTTPBindingSpec`
+  - `WebSocketBindingSpec`
+  - `WebTransportBindingSpec`
+  
+  Convenience aliases remain allowed when they normalize to one of those canonical specs. Examples include REST, JSON-RPC, HTTP stream, SSE, WS/WSS message profiles, and WebTransport session, bidi stream, unidi stream, and datagram profiles.
+  
+  Aliases are not independent protocol taxonomies. They must expand into canonical BindingSpec fields before KernelPlan compilation, runtime dispatch, documentation projection, or support-matrix evaluation.
+  
+  ## Profile And Framing Separation
+  
+  Bindings select a protocol usage `profile` such as `rest`, `jsonrpc`, `stream`, `sse`, `message`, `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, or `datagram`.
+  
+  Bindings also select app-level `framing` such as `json`, `jsonrpc`, `ndjson`, `sse`, `text`, `bytes`, or `binary`.
+  
+  Profile and framing are separate fields. `rest` is not a framing token. `stream` is not a framing token. WebTransport stream and datagram profiles do not imply app-level message framing.
   
   ## Context
   
   Transport support in Tigrbl must scale horizontally. The architecture pack already normalizes REST, RPC, streaming, websocket, and WebTransport as bindings over the same semantic model.
-  This ADR freezes the separation between semantics and exposure.
+  
+  The current design also makes path first-class through PathSpec. BindingSpec normalization must preserve that path-first model.
   
   ## Rejected Alternatives
   
   - Separate route subsystems per protocol.
   - Protocol-specific handler decorators with unique semantics.
   - Treating bindings as runtime-only details with no spec representation.
+  - Treating each semantic convenience alias as a separate canonical BindingSpec family.
+  - Putting address paths directly on BindingSpecs when a containing PathSpec already owns the address.
+  
+  ## Classification Update
+  
+  Bindings select and constrain contract event classifications. A binding may choose a family, exchange, profile, framing, and legal event set, but it must not redefine canonical ASGI event identity or require a parallel event-name field at the server/framework boundary.
