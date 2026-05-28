@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2147"
 number: 2147
@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define slot-backed HotCtx metadata and fallback-only compatibility publication."
     at: "2026-05-03T04:38:10Z"
+    note: "Created to define slot-backed HotCtx metadata and fallback-only compatibility publication."
+    status: "draft"
 references: []
 body: |-
   ## Intent
@@ -51,5 +51,4 @@ spec_kind: "normative"
 adr_ids:
   - "adr:1128"
   - "adr:1125"
-  - "adr:1121"
   - "adr:1120"

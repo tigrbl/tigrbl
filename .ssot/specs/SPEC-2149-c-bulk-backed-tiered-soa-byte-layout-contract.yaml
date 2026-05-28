@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2149"
 number: 2149
@@ -13,9 +13,9 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define tiered SoA byte-lane design for C-bulk-backed hot-path narrowing."
     at: "2026-05-03T04:38:11Z"
+    note: "Created to define tiered SoA byte-lane design for C-bulk-backed hot-path narrowing."
+    status: "draft"
 references: []
 body: |-
   ## Intent
@@ -54,5 +54,4 @@ spec_kind: "normative"
 adr_ids:
   - "adr:1127"
   - "adr:1120"
-  - "adr:1121"
   - "adr:1115"
