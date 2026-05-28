@@ -6,6 +6,7 @@ from typing import Any
 from tigrbl_core._spec.binding_spec import (
     validate_app_framing_for_binding,
     validate_webtransport_inner_framing,
+    validate_webtransport_lane_exchange,
     webtransport_lane_for_profile,
     webtransport_runtime_family,
 )
@@ -116,6 +117,16 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             raise _unsupported("webtransport outer framing must remain webtransport")
         lane = webtransport_lane_for_profile(
             binding.get("lane") or binding.get("profile") or "webtransport"
+        )
+        validate_webtransport_lane_exchange(
+            lane=lane,
+            exchange=str(binding.get("exchange") or {
+                "session": "bidirectional_stream",
+                "bidi_stream": "bidirectional_stream",
+                "unidi_client_stream": "client_stream",
+                "unidi_server_stream": "server_stream",
+                "datagram": "bidirectional_stream",
+            }[lane]),
         )
         inner_framing = validate_webtransport_inner_framing(
             lane=lane,

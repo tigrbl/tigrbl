@@ -81,6 +81,14 @@ WEBTRANSPORT_INNER_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
     "datagram": ("bytes", "binary", "text", "json"),
 }
 
+WEBTRANSPORT_LANE_EXCHANGES: dict[str, str] = {
+    "session": "bidirectional_stream",
+    "bidi_stream": "bidirectional_stream",
+    "unidi_client_stream": "client_stream",
+    "unidi_server_stream": "server_stream",
+    "datagram": "bidirectional_stream",
+}
+
 _PROFILE_DEFAULTS: dict[str, tuple[str, str]] = {
     "rest": ("request_response", "json"),
     "jsonrpc": ("request_response", "jsonrpc"),
@@ -184,6 +192,18 @@ def validate_webtransport_inner_framing(
             f"unsupported WebTransport inner framing {selected!r} for lane {selected_lane!r}"
         )
     return selected
+
+
+def validate_webtransport_lane_exchange(*, lane: str, exchange: str | None) -> str:
+    selected_lane = webtransport_lane_for_profile(lane)
+    selected_exchange = normalize_exchange(exchange)
+    expected = WEBTRANSPORT_LANE_EXCHANGES[selected_lane]
+    if selected_exchange != expected:
+        raise ValueError(
+            f"invalid WebTransport exchange {selected_exchange!r} for lane "
+            f"{selected_lane!r}; expected {expected!r}"
+        )
+    return selected_exchange
 
 
 @dataclass(frozen=True, slots=True)
@@ -321,11 +341,17 @@ class WebTransportBindingSpec(SerdeMixin):
 
     def __post_init__(self) -> None:
         validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
+        profile_lane = webtransport_lane_for_profile(self.profile)
         lane = webtransport_lane_for_profile(self.lane or self.profile)
+        if self.lane is not None and self.profile not in {"webtransport", "session"} and lane != profile_lane:
+            raise ValueError(
+                f"WebTransport lane {lane!r} conflicts with profile {self.profile!r}"
+            )
         default_exchange, _default_framing = _PROFILE_DEFAULTS[lane]
         exchange = str(self.exchange or default_exchange)
         if self.exchange == "bidirectional_stream" and default_exchange != "bidirectional_stream":
             exchange = default_exchange
+        exchange = validate_webtransport_lane_exchange(lane=lane, exchange=exchange)
         validate_webtransport_inner_framing(
             lane=lane,
             inner_framing=self.inner_framing,
@@ -609,6 +635,7 @@ __all__ = [
     "SseBindingSpec",
     "TransportBindingSpec",
     "WEBTRANSPORT_INNER_FRAMING_SUPPORT",
+    "WEBTRANSPORT_LANE_EXCHANGES",
     "WEBTRANSPORT_NATIVE_LANES",
     "WebSocketBindingSpec",
     "WebTransportBindingSpec",
@@ -623,6 +650,7 @@ __all__ = [
     "project_binding_runtime_metadata",
     "resolve_rest_nested_prefix",
     "validate_app_framing_for_binding",
+    "validate_webtransport_lane_exchange",
     "validate_webtransport_inner_framing",
     "webtransport_lane_for_profile",
     "webtransport_runtime_family",

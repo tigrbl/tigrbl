@@ -4,10 +4,12 @@ import pytest
 
 from tigrbl_core._spec.binding_spec import (
     WEBTRANSPORT_INNER_FRAMING_SUPPORT,
+    WEBTRANSPORT_LANE_EXCHANGES,
     WEBTRANSPORT_NATIVE_LANES,
     WebTransportBindingSpec,
     project_binding_runtime_metadata,
     validate_webtransport_inner_framing,
+    validate_webtransport_lane_exchange,
 )
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
 
@@ -22,6 +24,7 @@ def test_webtransport_native_lane_table_has_no_message_lane() -> None:
     )
     assert "message" not in WEBTRANSPORT_NATIVE_LANES
     assert set(WEBTRANSPORT_INNER_FRAMING_SUPPORT) == set(WEBTRANSPORT_NATIVE_LANES)
+    assert set(WEBTRANSPORT_LANE_EXCHANGES) == set(WEBTRANSPORT_NATIVE_LANES)
 
 
 def test_webtransport_bindingspec_defaults_to_session_lane_and_outer_framing() -> None:
@@ -86,6 +89,59 @@ def test_webtransport_inner_framing_is_lane_gated() -> None:
         validate_webtransport_inner_framing(lane="datagram", inner_framing="jsonrpc")
     with pytest.raises(ValueError, match="inner framing"):
         validate_webtransport_inner_framing(lane="datagram", inner_framing="ndjson")
+
+
+@pytest.mark.parametrize(
+    ("lane", "exchange"),
+    (
+        ("session", "bidirectional_stream"),
+        ("bidi_stream", "bidirectional_stream"),
+        ("unidi_client_stream", "client_stream"),
+        ("unidi_server_stream", "server_stream"),
+        ("datagram", "bidirectional_stream"),
+    ),
+)
+def test_webtransport_lane_exchange_matrix_is_fail_closed(
+    lane: str,
+    exchange: str,
+) -> None:
+    assert validate_webtransport_lane_exchange(lane=lane, exchange=exchange) == exchange
+
+
+@pytest.mark.parametrize(
+    ("lane", "bad_exchange"),
+    (
+        ("session", "client_stream"),
+        ("bidi_stream", "server_stream"),
+        ("unidi_client_stream", "server_stream"),
+        ("unidi_server_stream", "client_stream"),
+        ("datagram", "client_stream"),
+    ),
+)
+def test_webtransport_lane_exchange_negative_corpus(
+    lane: str,
+    bad_exchange: str,
+) -> None:
+    with pytest.raises(ValueError, match="WebTransport exchange"):
+        validate_webtransport_lane_exchange(lane=lane, exchange=bad_exchange)
+
+    with pytest.raises(ValueError, match="WebTransport exchange"):
+        WebTransportBindingSpec(profile=lane, exchange=bad_exchange)  # type: ignore[arg-type]
+
+    with pytest.raises(ValueError, match="WebTransport exchange|unsupported"):
+        compile_binding_protocol_plan(
+            "Transport.bad",
+            {"kind": "webtransport", "profile": lane, "exchange": bad_exchange},
+        )
+
+
+def test_webtransport_profile_lane_disagreement_fails_closed() -> None:
+    with pytest.raises(ValueError, match="conflicts"):
+        WebTransportBindingSpec(profile="bidi_stream", lane="datagram")
+
+    binding = WebTransportBindingSpec(profile="webtransport", lane="bidi_stream")
+    assert binding.lane == "bidi_stream"
+    assert binding.exchange == "bidirectional_stream"
 
 
 def test_webtransport_rejects_message_profile_and_outer_framing_confusion() -> None:
