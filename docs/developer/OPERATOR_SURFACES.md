@@ -13,7 +13,6 @@
 - OpenRPC JSON
 - Lens / OpenRPC UI
 - JSON Schema bundle at `/schemas.json`
-- AsyncAPI spec at `/asyncapi.json`
 - OAS security scheme modeling for `apiKey`, `http`, `oauth2`, `openIdConnect`, and `mutualTLS`
 - auth/security plumbing through `AuthNProvider`, route/app auth configuration, security dependencies, and authz hooks
 - static files
@@ -24,9 +23,9 @@
 - forms / multipart
 - upload handling
 
-## De-scoped UI / discovery rows
+## Unsupported / de-scoped rows
 
-- AsyncAPI UI
+- AsyncAPI generation, mounting, and UI
 - JSON Schema UI
 - OIDC discovery/docs surface
 

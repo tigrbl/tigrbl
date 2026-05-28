@@ -76,7 +76,8 @@ def test_system_document_mounts_register_as_ordinary_route_backed_ops() -> None:
     assert "openrpc_json" in aliases
     assert "__lens__" in aliases
     assert "__json_schema__" in aliases
-    assert "__asyncapi__" in aliases
+    assert "__asyncapi__" not in aliases
+    assert "/asyncapi.json" not in doc_routes
     assert doc_routes["__openapi__"].inherit_owner_dependencies is False
     assert doc_routes["__docs__"].inherit_owner_dependencies is False
 

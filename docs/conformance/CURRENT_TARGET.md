@@ -83,7 +83,6 @@ Tigrbl currently targets framework ownership over:
 - mounted `/openrpc.json`
 - mounted Lens / OpenRPC UI at `/lens`
 - mounted JSON Schema bundle at `/schemas.json`
-- mounted AsyncAPI spec at `/asyncapi.json`
 
 ### OAS security schemes
 
@@ -179,11 +178,11 @@ Established now:
 
 ### Docs/UI rows de-scoped by docs/operator closure
 
-- AsyncAPI UI (spec emission kept)
+- AsyncAPI generation, mounting, and UI
 - JSON Schema UI (spec emission kept)
 - OIDC discovery/docs surface
 
-The de-scopes above keep the current target honest. They do **not** remove the already-closed OAS security-scheme rows for `oauth2`, `openIdConnect`, or `mutualTLS`, and they do **not** remove the emitted `/asyncapi.json` or `/schemas.json` surfaces.
+The unsupported surfaces above keep the current target honest. They do **not** remove the already-closed OAS security-scheme rows for `oauth2`, `openIdConnect`, or `mutualTLS`, and they do **not** remove the emitted `/schemas.json` surface. AsyncAPI generation and `/asyncapi.json` mounting are not supported.
 
 ## Current-target surfaces still missing
 

@@ -61,7 +61,6 @@ def build_parity_snapshot(spec: Any) -> dict[str, Any]:
     phase_plans: dict[str, list[str]] = {}
     openapi_paths: list[str] = []
     openrpc_methods: list[str] = []
-    asyncapi_channels: list[str] = []
 
     for binding in bindings:
         if not isinstance(binding, dict):
@@ -106,9 +105,6 @@ def build_parity_snapshot(spec: Any) -> dict[str, Any]:
         if route and transport in {"rest", "jsonrpc"} and exchange == "request_response":
             openapi_paths.append(str(route))
         openrpc_methods.append(alias)
-        if exchange != "request_response":
-            asyncapi_channels.append(str(route or alias))
-
     return {
         "app_name": str(payload.get("name", "")),
         "routes": routes,
@@ -122,7 +118,6 @@ def build_parity_snapshot(spec: Any) -> dict[str, Any]:
         "docs": {
             "openapi_paths": openapi_paths,
             "openrpc_methods": openrpc_methods,
-            "asyncapi_channels": asyncapi_channels,
         },
     }
 

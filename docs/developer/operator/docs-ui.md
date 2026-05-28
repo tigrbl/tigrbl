@@ -9,15 +9,14 @@ The framework keeps these public docs/spec surfaces:
 - `/openrpc.json`
 - Lens / OpenRPC UI at `/lens`
 - JSON Schema bundle at `/schemas.json`
-- AsyncAPI spec at `/asyncapi.json`
 
-## De-scoped UI rows
+## Unsupported / de-scoped UI rows
 
 The current cycle does **not** retain these interactive UI rows:
 
-- AsyncAPI UI — de-scoped to a later target while `/asyncapi.json` stays in scope
-- JSON Schema UI — de-scoped to a later target while `/schemas.json` stays in scope
-- OIDC discovery/docs surface — de-scoped from the current cycle
+- AsyncAPI spec generation, mounting, and UI - unsupported
+- JSON Schema UI - de-scoped to a later target while `/schemas.json` stays in scope
+- OIDC discovery/docs surface - de-scoped from the current cycle
 
 ## Rationale
 

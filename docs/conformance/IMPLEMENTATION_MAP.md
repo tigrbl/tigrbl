@@ -104,7 +104,7 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 | JSON-RPC 2.0 current surface | verified in checkpoint | Protocol / RPC Runtime | jsonrpc helpers/models | existing JSON-RPC tests | — | preserve envelope/error/docs alignment |
 | OpenRPC 1.2.6 emission + mounted `/openrpc.json` + `/lens` | verified in checkpoint | Protocol / RPC Runtime | openrpc/lens docs modules | existing OpenRPC tests | — | preserve mounted parity |
 | mounted `/schemas.json` JSON Schema bundle | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/json_schema.py` | operator pytest slice | interactive UI de-scoped | keep spec endpoint; UI stays de-scoped |
-| mounted `/asyncapi.json` AsyncAPI spec | verified in checkpoint | Docs & Runtime | `pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py` | operator pytest slice | interactive UI de-scoped | keep spec endpoint; UI stays de-scoped |
+| AsyncAPI generation and `/asyncapi.json` mount | unsupported | Docs & Runtime | n/a | unsupported-surface tests | AsyncAPI unsupported | keep absent from public helpers and auto-mounts |
 
 ## Retained RFC / security rows
 
@@ -134,7 +134,7 @@ Owner labels in this checkpoint are subsystem owners, not named individuals:
 | upload handling | verified in checkpoint | Operator Surface | `_request.py` uploaded-file model | `pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py` | — | preserve file metadata + body semantics |
 | bounded middleware catalog | verified in checkpoint | Operator Surface | `_middleware.py`, `_cors_middleware.py`, operator docs | docs parity + existing middleware tests | — | preserve the bounded catalog boundary |
 | generic auth surface kept dependency/hook-based only | verified in checkpoint | Operator Surface | existing auth deps + governed docs | docs parity pages | deliberate non-addition of a new auth middleware | preserve this decision in current target docs |
-| AsyncAPI UI | de-scoped | Governance + Operator Surface | current target docs + operator docs | docs parity pages | interactive UI not implemented | keep de-scoped this cycle |
+| AsyncAPI UI | unsupported | Governance + Operator Surface | current target docs + operator docs | docs parity pages | AsyncAPI unsupported | keep absent |
 | JSON Schema UI | de-scoped | Governance + Operator Surface | current target docs + operator docs | docs parity pages | interactive UI not implemented | keep de-scoped this cycle |
 | OIDC discovery/docs surface | de-scoped | Governance + Operator Surface | current target docs + operator docs | docs parity pages | discovery/docs not implemented | keep de-scoped this cycle |
 

@@ -36,10 +36,8 @@ from tigrbl_concrete.system import mount_lens as _mount_lens
 from tigrbl_concrete.system import mount_openapi as _mount_openapi
 from tigrbl_concrete.system import mount_openrpc as _mount_openrpc
 from tigrbl_concrete.system import mount_swagger as _mount_swagger
-from tigrbl_concrete.system import mount_asyncapi as _mount_asyncapi
 from tigrbl_concrete.system import mount_json_schema as _mount_json_schema
 from tigrbl_concrete.system import mount_static as _mount_static
-from tigrbl_concrete.system import build_asyncapi_spec as _build_asyncapi_spec
 from tigrbl_concrete.system import build_json_schema_bundle as _build_json_schema_bundle
 from tigrbl_concrete.system import build_openrpc_spec as _build_openrpc_spec
 from tigrbl_concrete.system.docs import build_openapi as _build_openapi
@@ -278,7 +276,6 @@ class TigrblApp(_App):
             self.mount_openrpc(path="/openrpc.json")
             self.mount_lens(path="/lens", spec_path="/openrpc.json")
             self.mount_json_schema(path="/schemas.json")
-            self.mount_asyncapi(path="/asyncapi.json")
         if routers:
             initial_routers.extend(list(routers))
         if initial_routers:
@@ -812,17 +809,11 @@ class TigrblApp(_App):
     def mount_json_schema(self, *, path: str = "/schemas.json") -> Any:
         return _mount_json_schema(self, path=path)
 
-    def mount_asyncapi(self, *, path: str = "/asyncapi.json") -> Any:
-        return _mount_asyncapi(self, path=path)
-
     def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
         return _mount_static(self, directory=directory, path=path)
 
     def build_json_schema_bundle(self) -> Dict[str, Any]:
         return _build_json_schema_bundle(self)
-
-    def build_asyncapi_spec(self) -> Dict[str, Any]:
-        return _build_asyncapi_spec(self)
 
     def websocket(self, path: str, **kwargs: Any) -> Callable[[Any], Any]:
         def _decorator(handler: Any) -> Any:

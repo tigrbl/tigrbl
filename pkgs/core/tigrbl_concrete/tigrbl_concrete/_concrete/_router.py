@@ -257,10 +257,6 @@ class Router(RouterBase):
         from tigrbl_concrete.system.docs.json_schema import _mount_json_schema
         return _mount_json_schema(self, path=path)
 
-    def mount_asyncapi(self, *, path: str = "/asyncapi.json") -> Any:
-        from tigrbl_concrete.system.docs.asyncapi import _mount_asyncapi
-        return _mount_asyncapi(self, path=path)
-
     def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
         from tigrbl_concrete.system.static import _mount_static
         return _mount_static(self, directory=directory, path=path)
@@ -276,10 +272,6 @@ class Router(RouterBase):
     def build_json_schema_bundle(self) -> dict[str, Any]:
         from tigrbl_concrete.system.docs.json_schema import _build_json_schema_bundle
         return _build_json_schema_bundle(self)
-
-    def build_asyncapi_spec(self) -> dict[str, Any]:
-        from tigrbl_concrete.system.docs.asyncapi import _build_asyncapi_spec
-        return _build_asyncapi_spec(self)
 
     def websocket(self, path: str, **kwargs: Any) -> Callable[[Any], Any]:
         def _decorator(handler: Any) -> Any:

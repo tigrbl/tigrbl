@@ -217,10 +217,6 @@ class App(AppBase):
         from tigrbl_concrete.system.docs.json_schema import _mount_json_schema
         return _mount_json_schema(self, path=path)
 
-    def mount_asyncapi(self, *, path: str = "/asyncapi.json") -> Any:
-        from tigrbl_concrete.system.docs.asyncapi import _mount_asyncapi
-        return _mount_asyncapi(self, path=path)
-
     def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
         from tigrbl_concrete.system.static import _mount_static
         return _mount_static(self, directory=directory, path=path)

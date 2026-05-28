@@ -25,11 +25,11 @@ def test_operator_surface_docs_record_de_scoped_docs_ui_and_auth_decisions() -> 
     middleware_catalog = (ROOT / "docs/developer/operator/middleware-catalog.md").read_text(encoding="utf-8")
     docs_ui = (ROOT / "docs/developer/operator/docs-ui.md").read_text(encoding="utf-8")
 
-    assert "AsyncAPI UI" in current_target
-    assert "de-scoped" in current_target
+    assert "AsyncAPI" in current_target
+    assert "unsupported" in current_target
     assert "JSON Schema UI" in current_target
     assert "OIDC discovery/docs surface" in current_target
     assert "dependency/hook-based only" in middleware_catalog
     assert "CORSMiddleware" in operator_surfaces
-    assert "/asyncapi.json" in docs_ui
+    assert "/asyncapi.json" not in docs_ui
     assert "/schemas.json" in docs_ui

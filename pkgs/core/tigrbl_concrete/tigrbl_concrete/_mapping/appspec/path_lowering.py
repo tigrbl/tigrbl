@@ -124,8 +124,8 @@ def _mount_docs_payload(router: Any, path_spec: PathSpec) -> None:
         router.mount_openrpc(path=path_spec.path)
     elif payload.kind == "jsonschema":
         router.mount_json_schema(path=path_spec.path)
-    elif payload.kind == "asyncapi":
-        router.mount_asyncapi(path=path_spec.path)
+    elif str(payload.kind) == "asyncapi":
+        raise NotImplementedError("AsyncAPI docs payloads are not supported.")
 
 
 def _mount_docs_uix(router: Any, path_spec: PathSpec) -> None:

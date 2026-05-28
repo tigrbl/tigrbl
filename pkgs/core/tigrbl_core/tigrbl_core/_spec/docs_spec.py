@@ -7,7 +7,7 @@ from .binding_spec import HttpJsonRpcBindingSpec
 from .path_spec import PathSpec
 from .serde import SerdeMixin
 
-DocsPayloadKind = Literal["openapi", "openrpc", "asyncapi", "jsonschema"]
+DocsPayloadKind = Literal["openapi", "openrpc", "jsonschema"]
 DocsUixKind = Literal["swagger", "redoc", "scalar", "lens", "custom"]
 
 
@@ -69,6 +69,8 @@ class DocsProjectionSpec(SerdeMixin):
             raise ValueError("OpenAPI docs projection must not include JSON-RPC protocols.")
         if kind == "openrpc" and protocols and "http.jsonrpc" not in protocols and "https.jsonrpc" not in protocols:
             raise ValueError("OpenRPC docs projection must include a JSON-RPC protocol.")
+        if str(kind) == "asyncapi":
+            raise ValueError("AsyncAPI docs payloads are not supported.")
 
     def _path_allowed(self, path: PathSpec) -> bool:
         if path.path in set(self.exclude_paths):

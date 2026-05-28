@@ -91,8 +91,8 @@ That means these surfaces are useful for diagnostics, operator inspection, and s
 | App-defined live event feed over SSE | Yes | Yes | A Tigrbl app can expose one |
 | Built-in framework live operational event feed | No | No | No built-in system event stream was found |
 | Built-in streaming transport-status feed | No | No | Not implemented as a framework-owned monitoring feed |
-| AsyncAPI spec emission | Yes | Yes | Spec surface exists at `/asyncapi.json` |
-| AsyncAPI interactive UI | De-scoped | No | Explicitly de-scoped |
+| AsyncAPI spec emission | Unsupported | No | AsyncAPI generation and `/asyncapi.json` mounting are intentionally unsupported |
+| AsyncAPI interactive UI | Unsupported | No | AsyncAPI UI is intentionally unsupported |
 
 ### Live Event Stream Explanation
 
@@ -186,4 +186,3 @@ The most accurate current description is:
 - Current-target operator surface summary: `docs/conformance/CURRENT_TARGET.md`
 - Eventful support-level policy: `.ssot/specs/SPEC-2058-support-level-matrix-for-eventful-surfaces.yaml`
 - Transport event registry: `pkgs/core/tigrbl_kernel/tigrbl_kernel/transport_events.py`
-

@@ -6,8 +6,6 @@ from pathlib import Path
 from httpx import ASGITransport, AsyncClient
 import pytest
 
-from tigrbl_concrete.system.docs.asyncapi import _build_asyncapi_spec
-
 
 DEMO_PATH = Path(__file__).resolve().parents[5] / "examples" / "transport_demo" / "app.py"
 
@@ -27,7 +25,7 @@ def test_transport_demo_negative_examples_preserve_wss_ndjson_fail_closed_contra
     failures = module.build_fail_closed_examples()
 
     assert "wss_ndjson" in failures
-    assert "fail closed" in failures["wss_ndjson"].lower()
+    assert "unsupported" in failures["wss_ndjson"].lower()
     assert "ndjson" in failures["wss_ndjson"].lower()
 
 
@@ -45,23 +43,6 @@ def test_transport_demo_registers_expected_websocket_metadata() -> None:
     assert "/wss/jsonrpc" in paths
     assert paths["/wss/jsonrpc"].protocol == "wss"
     assert paths["/wss/jsonrpc"].framing == "jsonrpc"
-
-
-def test_transport_demo_asyncapi_projects_sse_wss_and_webtransport_channels() -> None:
-    module = _load_demo_module()
-    app = module.build_app(db_path=DEMO_PATH.with_name("transport_demo_asyncapi.sqlite3"))
-
-    spec = _build_asyncapi_spec(app)
-
-    assert "/sse/events" in spec["channels"]
-    assert spec["channels"]["/sse/events"]["subscribe"]["bindings"]["http.sse"]["framing"] == "sse"
-    assert "/wss/jsonrpc" in spec["channels"]
-    assert spec["channels"]["/wss/jsonrpc"]["receive"]["bindings"]["wss"]["framing"] == "jsonrpc"
-    assert "/transport/session" in spec["channels"]
-    assert (
-        spec["channels"]["/transport/session"]["receive"]["bindings"]["webtransport"]["framing"]
-        == "webtransport"
-    )
 
 
 @pytest.mark.asyncio

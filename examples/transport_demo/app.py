@@ -199,7 +199,6 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
     app.mount_jsonrpc(prefix="/rpc")
     app.mount_openapi(path="/openapi.json")
     app.mount_openrpc(path="/openrpc.json")
-    app.mount_asyncapi(path="/asyncapi.json")
 
     @app.get("/matrix")
     def demo_matrix() -> dict[str, Any]:

@@ -67,7 +67,7 @@ The following remain server/runtime concerns for the frozen cycle:
 
 ## Docs/UI rows explicitly de-scoped by docs/operator closure
 
-- AsyncAPI UI (while `/asyncapi.json` stays in scope)
+- AsyncAPI generation, mounting, and UI
 - JSON Schema UI (while `/schemas.json` stays in scope)
 - OIDC discovery/docs surface
 

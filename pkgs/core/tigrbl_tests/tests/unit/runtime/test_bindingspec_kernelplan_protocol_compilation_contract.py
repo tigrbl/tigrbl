@@ -63,7 +63,7 @@ def test_bindingspec_protocol_metadata_compiles_into_kernelplan_inputs(
 
 def test_protocol_compilation_is_deterministic_for_equivalent_bindings() -> None:
     compile_binding = _require("tigrbl_kernel.protocol_bindings", "compile_binding_protocol_plan")
-    binding = {"kind": "ws", "path": "/socket", "framing": "jsonrpc"}
+    binding = {"kind": "ws", "path": "/socket", "framing": "jsonrpc", "subprotocols": ("jsonrpc",)}
 
     first = compile_binding(op_id="Socket.echo", binding=binding)
     second = compile_binding(op_id="Socket.echo", binding=dict(reversed(tuple(binding.items()))))

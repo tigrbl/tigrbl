@@ -12,7 +12,7 @@ from tigrbl_concrete._concrete._response import Response
 from tigrbl_concrete._concrete._streaming_response import StreamingResponse
 from tigrbl_concrete._concrete._app import App as TigrblApp
 from tigrbl_concrete._concrete._router import Router as TigrblRouter
-from tigrbl_concrete.system import mount_asyncapi, mount_json_schema, mount_lens, mount_openapi, mount_openrpc, mount_static, mount_swagger
+from tigrbl_concrete.system import mount_json_schema, mount_lens, mount_openapi, mount_openrpc, mount_static, mount_swagger
 
 
 async def _collect_asgi_messages(app: Any, scope: dict[str, Any], inbound: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
@@ -32,7 +32,7 @@ async def _collect_asgi_messages(app: Any, scope: dict[str, Any], inbound: list[
 
 
 @pytest.mark.asyncio
-async def test_docs_surfaces_include_json_schema_and_asyncapi_specs_and_static_mount(tmp_path: Path) -> None:
+async def test_docs_surfaces_include_json_schema_specs_and_static_mount(tmp_path: Path) -> None:
     app = TigrblApp(title="Operator Surface Docs")
     router = TigrblRouter()
     mount_openapi(app)
@@ -40,7 +40,6 @@ async def test_docs_surfaces_include_json_schema_and_asyncapi_specs_and_static_m
     mount_openrpc(app)
     mount_lens(app)
     mount_json_schema(app)
-    mount_asyncapi(app)
 
     @router.websocket("/ws/echo", summary="Echo socket")
     async def echo_socket(ws):
@@ -69,15 +68,13 @@ async def test_docs_surfaces_include_json_schema_and_asyncapi_specs_and_static_m
     assert openrpc_res.status_code == 200
     assert lens_res.status_code == 200
     assert schemas_res.status_code == 200
-    assert asyncapi_res.status_code == 200
+    assert asyncapi_res.status_code == 404
     assert static_res.status_code == 200
     assert static_res.text == "hello-static"
 
     assert openapi_res.json()["openapi"] == "3.1.0"
     assert schemas_res.json()["$schema"] == "https://json-schema.org/draft/2020-12/schema"
     assert isinstance(schemas_res.json()["$defs"], dict)
-    assert asyncapi_res.json()["asyncapi"] == "2.6.0"
-    assert "/ws/echo" in asyncapi_res.json()["channels"]
     assert "swagger" in swagger_res.text.lower()
     assert "openrpc" in lens_res.text.lower()
 

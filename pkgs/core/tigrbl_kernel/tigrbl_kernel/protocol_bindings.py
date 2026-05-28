@@ -3,25 +3,31 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
+from tigrbl_core._spec.binding_spec import validate_app_framing_for_binding
+
 
 def _unsupported(message: str) -> ValueError:
     return ValueError(f"binding protocol unsupported before runtime: {message}")
 
 
 def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dict[str, object]:
-    kind = binding.get("kind")
+    kind = binding.get("kind") or binding.get("proto")
     if not kind:
         raise ValueError(
             "BindingSpec binding source is required; transport guessing is ambiguous"
         )
 
     kind = str(kind)
+    profile = binding.get("profile")
+    if kind in {"http", "https"} and profile:
+        kind = f"{kind}.{profile}"
+    elif kind == "websocket":
+        kind = str(binding.get("proto") or "ws")
     framing = binding.get("framing")
     rows: tuple[dict[str, str], ...]
 
-    if kind == "http.rest":
-        if framing not in (None, "json"):
-            raise _unsupported("http.rest only supports json framing")
+    if kind in {"http.rest", "https.rest"}:
+        validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "json"))
         family = "response"
         framing = "json"
         anchors = (
@@ -34,9 +40,10 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "response", "subevent": "request.received"},
             {"family": "response", "subevent": "response.emit"},
         )
-    elif kind == "http.jsonrpc":
+    elif kind in {"http.jsonrpc", "https.jsonrpc"}:
         if not binding.get("rpc_method"):
             raise _unsupported("http.jsonrpc requires rpc_method")
+        validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "jsonrpc"))
         family = "response"
         framing = "jsonrpc"
         anchors = (
@@ -49,15 +56,17 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "response", "subevent": "request.received"},
             {"family": "response", "subevent": "response.emit"},
         )
-    elif kind == "http.stream":
+    elif kind in {"http.stream", "https.stream"}:
+        validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "stream"))
         family = "stream"
-        framing = "stream"
+        framing = str(framing or "stream")
         anchors = ("handler.invoke", "transport.emit", "transport.emit_complete")
         rows = (
             {"family": "stream", "subevent": "stream.chunk"},
             {"family": "stream", "subevent": "stream.close"},
         )
-    elif kind == "http.sse":
+    elif kind in {"http.sse", "https.sse"}:
+        validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "sse"))
         family = "stream"
         framing = "sse"
         anchors = (
@@ -71,11 +80,17 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "event_stream", "subevent": "message.emit"},
             {"family": "stream", "subevent": "stream.close"},
         )
-    elif kind in {"ws", "websocket"}:
+    elif kind in {"ws", "wss", "websocket"}:
         if binding.get("methods"):
             raise _unsupported("websocket bindings do not accept HTTP methods")
         family = "message"
         framing = str(framing or "text")
+        subprotocols = tuple(str(item).lower() for item in binding.get("subprotocols", ()))
+        validate_app_framing_for_binding(
+            binding_kind="wss" if kind == "wss" else "ws",
+            framing=framing,
+            subprotocols=subprotocols,
+        )
         anchors = (
             "transport.accept",
             "framing.decode",
@@ -91,6 +106,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     elif kind == "webtransport":
         if binding.get("exchange") == "request_response":
             raise _unsupported("webtransport request_response exchange")
+        validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "webtransport"))
         family = "session"
         framing = "webtransport"
         anchors = (

@@ -63,12 +63,6 @@ def mount_json_schema(*args: Any, **kwargs: Any) -> Any:
     return _mount_json_schema(*args, **kwargs)
 
 
-def mount_asyncapi(*args: Any, **kwargs: Any) -> Any:
-    from .docs import mount_asyncapi as _mount_asyncapi
-
-    return _mount_asyncapi(*args, **kwargs)
-
-
 def mount_static(*args: Any, **kwargs: Any) -> Any:
     from .static import _mount_static as _mount_static
 
@@ -111,12 +105,6 @@ def build_json_schema_bundle(*args: Any, **kwargs: Any) -> Any:
     return _build_json_schema_bundle(*args, **kwargs)
 
 
-def build_asyncapi_spec(*args: Any, **kwargs: Any) -> Any:
-    from .docs import build_asyncapi_spec as _build_asyncapi_spec
-
-    return _build_asyncapi_spec(*args, **kwargs)
-
-
 def stop_uvicorn_server(*args: Any, **kwargs: Any) -> Any:
     from .uvicorn import stop_uvicorn_server as _stop_uvicorn_server
 
@@ -133,7 +121,6 @@ __all__ = [
     'mount_openrpc',
     'mount_swagger',
     'mount_json_schema',
-    'mount_asyncapi',
     'mount_static',
     'build_favicon',
     'build_healthz_uix',
@@ -142,6 +129,5 @@ __all__ = [
     'build_openrpc_spec',
     'build_swagger',
     'build_json_schema_bundle',
-    'build_asyncapi_spec',
     'stop_uvicorn_server',
 ]

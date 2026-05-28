@@ -15,7 +15,7 @@ This section documents the current-target framework/operator surfaces that remai
 ## Boundary decisions recorded here
 
 - keep `/openapi.json`, Swagger UI, `/openrpc.json`, and Lens / OpenRPC UI
-- keep AsyncAPI spec emission at `/asyncapi.json`, but de-scope interactive AsyncAPI UI to a later target
+- keep AsyncAPI generation, mounting, and UI out of scope
 - keep JSON Schema bundle emission at `/schemas.json`, but de-scope interactive JSON Schema UI to a later target
 - de-scope the OIDC discovery/docs surface from the current cycle
 - keep the generic auth surface dependency/hook-based only rather than adding a new monolithic auth middleware abstraction in this cycle

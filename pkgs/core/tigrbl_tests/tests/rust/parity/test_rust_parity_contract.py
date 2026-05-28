@@ -80,7 +80,7 @@ def test_rust_parity_snapshot_matches_reference_contract() -> None:
     assert observed == expected
     assert observed["packed_plan"] == {"segments": 5, "hot_paths": 1, "fused_steps": 5}
     assert observed["docs"]["openapi_paths"] == ["/widgets", "/rpc/widgets.read"]
-    assert observed["docs"]["asyncapi_channels"] == ["/events", "/ws", "/transport"]
+    assert "asyncapi_channels" not in observed["docs"]
 
 
 def test_build_rust_kernel_attaches_parity_snapshot_without_marking_claimable() -> None:
