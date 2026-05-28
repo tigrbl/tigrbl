@@ -3,7 +3,6 @@ from __future__ import annotations
 
 _FAMILIES = {
     "request": ("request.received", "request.body.received"),
-    "response": ("response.emit", "response.emit_complete"),
     "session": ("session.open", "session.ready", "session.close"),
     "message": ("message.received", "message.decoded", "message.emit", "message.emit_complete"),
     "stream": ("stream.open", "stream.chunk.received", "stream.chunk.emit", "stream.close"),
@@ -11,19 +10,29 @@ _FAMILIES = {
 }
 
 _BINDING_FAMILY = {
-    "http.rest": "response",
-    "http.jsonrpc": "response",
+    "http.rest": "request",
+    "https.rest": "request",
+    "http.jsonrpc": "request",
+    "https.jsonrpc": "request",
     "http.stream": "stream",
+    "https.stream": "stream",
     "http.sse": "stream",
+    "https.sse": "stream",
     "ws": "message",
+    "wss": "message",
     "websocket": "message",
+    "webtransport": "session",
+    "webtransport.session": "session",
+    "webtransport.bidi_stream": "stream",
+    "webtransport.unidi_client_stream": "stream",
+    "webtransport.unidi_server_stream": "stream",
     "webtransport.datagram": "datagram",
 }
 
 _ALIASES = {
     "receive": {"message": "message.received", "request": "request.received"},
-    "emit": {"response": "response.emit", "message": "message.emit", "datagram": "datagram.emit"},
-    "complete": {"response": "response.emit_complete", "message": "message.emit_complete", "datagram": "datagram.emit_complete"},
+    "emit": {"message": "message.emit", "stream": "stream.chunk.emit", "datagram": "datagram.emit"},
+    "complete": {"message": "message.emit_complete", "stream": "stream.close", "datagram": "datagram.emit_complete"},
 }
 
 

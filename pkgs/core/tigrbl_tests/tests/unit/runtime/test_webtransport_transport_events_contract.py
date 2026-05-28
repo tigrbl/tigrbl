@@ -46,6 +46,41 @@ def test_webtransport_stream_events_cover_receive_send_and_completion() -> None:
     } <= subevents
 
 
+@pytest.mark.parametrize(
+    ("surface", "expected", "unexpected"),
+    (
+        (
+            "bidi_stream",
+            {"stream.open", "stream.chunk.received", "stream.chunk.emit", "stream.close"},
+            set(),
+        ),
+        (
+            "unidi_client_stream",
+            {"stream.open", "stream.chunk.received", "stream.close"},
+            {"stream.chunk.emit", "stream.emit_complete"},
+        ),
+        (
+            "unidi_server_stream",
+            {"stream.open", "stream.chunk.emit", "stream.emit_complete", "stream.close"},
+            {"stream.chunk.received"},
+        ),
+    ),
+)
+def test_webtransport_native_stream_lane_events_are_directional(
+    surface: str,
+    expected: set[str],
+    unexpected: set[str],
+) -> None:
+    compile_events = _require("tigrbl_kernel.webtransport_events", "compile_webtransport_events")
+
+    events = compile_events(surface=surface)
+    subevents = {event["subevent"] for event in events}
+
+    assert expected <= subevents
+    assert subevents.isdisjoint(unexpected)
+    assert all(event["family"] == "stream" for event in events)
+
+
 def test_webtransport_datagram_events_cover_receive_send_and_completion() -> None:
     compile_events = _require("tigrbl_kernel.webtransport_events", "compile_webtransport_events")
 
@@ -65,6 +100,14 @@ def test_webtransport_app_frame_events_cover_decode_encode_paths() -> None:
     assert "framing.decode" in anchors
     assert "framing.encode" in anchors
     assert "transport.emit" in anchors
+    assert {event["family"] for event in events} == {"stream"}
+
+
+def test_webtransport_rejects_native_message_surface() -> None:
+    compile_events = _require("tigrbl_kernel.webtransport_events", "compile_webtransport_events")
+
+    with pytest.raises(ValueError, match="message"):
+        compile_events(surface="message")
 
 
 def test_webtransport_event_order_places_disconnect_after_stream_and_datagram_completion() -> None:

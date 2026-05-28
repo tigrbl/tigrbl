@@ -36,7 +36,18 @@ BindingProfile = Literal[
     "sse",
     "websocket",
     "webtransport",
+    "session",
+    "bidi_stream",
+    "unidi_client_stream",
+    "unidi_server_stream",
     "message",
+    "datagram",
+]
+WebTransportLane = Literal[
+    "session",
+    "bidi_stream",
+    "unidi_client_stream",
+    "unidi_server_stream",
     "datagram",
 ]
 
@@ -54,6 +65,22 @@ APP_LEVEL_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
     "webtransport": ("webtransport",),
 }
 
+WEBTRANSPORT_NATIVE_LANES: tuple[str, ...] = (
+    "session",
+    "bidi_stream",
+    "unidi_client_stream",
+    "unidi_server_stream",
+    "datagram",
+)
+
+WEBTRANSPORT_INNER_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
+    "session": (),
+    "bidi_stream": ("bytes", "binary", "text", "json", "jsonrpc", "ndjson"),
+    "unidi_client_stream": ("bytes", "binary", "text", "json", "jsonrpc", "ndjson"),
+    "unidi_server_stream": ("bytes", "binary", "text", "json", "jsonrpc", "ndjson"),
+    "datagram": ("bytes", "binary", "text", "json"),
+}
+
 _PROFILE_DEFAULTS: dict[str, tuple[str, str]] = {
     "rest": ("request_response", "json"),
     "jsonrpc": ("request_response", "jsonrpc"),
@@ -61,6 +88,11 @@ _PROFILE_DEFAULTS: dict[str, tuple[str, str]] = {
     "sse": ("server_stream", "sse"),
     "websocket": ("bidirectional_stream", "text"),
     "webtransport": ("bidirectional_stream", "webtransport"),
+    "session": ("bidirectional_stream", "webtransport"),
+    "bidi_stream": ("bidirectional_stream", "webtransport"),
+    "unidi_client_stream": ("client_stream", "webtransport"),
+    "unidi_server_stream": ("server_stream", "webtransport"),
+    "datagram": ("bidirectional_stream", "webtransport"),
 }
 
 _PROFILE_BINDING_KIND: dict[tuple[str, str], str] = {
@@ -75,6 +107,11 @@ _PROFILE_BINDING_KIND: dict[tuple[str, str], str] = {
     ("ws", "websocket"): "ws",
     ("wss", "websocket"): "wss",
     ("webtransport", "webtransport"): "webtransport",
+    ("webtransport", "session"): "webtransport",
+    ("webtransport", "bidi_stream"): "webtransport",
+    ("webtransport", "unidi_client_stream"): "webtransport",
+    ("webtransport", "unidi_server_stream"): "webtransport",
+    ("webtransport", "datagram"): "webtransport",
 }
 
 
@@ -107,6 +144,45 @@ def validate_app_framing_for_binding(
             )
     if selected == "ndjson" and "jsonrpc" in binding_kind:
         raise ValueError("ndjson is not a JSON-RPC framing substitute")
+    return selected
+
+
+def webtransport_lane_for_profile(profile: str | None) -> str:
+    selected = str(profile or "webtransport")
+    if selected == "webtransport":
+        return "session"
+    if selected == "message":
+        raise ValueError("WebTransport does not support a native message lane")
+    if selected not in WEBTRANSPORT_NATIVE_LANES:
+        raise ValueError(f"unsupported WebTransport lane {selected!r}")
+    return selected
+
+
+def webtransport_runtime_family(lane: str) -> str:
+    selected = webtransport_lane_for_profile(lane)
+    if selected == "session":
+        return "session"
+    if selected == "datagram":
+        return "datagram"
+    return "stream"
+
+
+def validate_webtransport_inner_framing(
+    *,
+    lane: str,
+    inner_framing: str | None,
+) -> str | None:
+    selected_lane = webtransport_lane_for_profile(lane)
+    if inner_framing is None:
+        return None
+    selected = str(inner_framing)
+    allowed = WEBTRANSPORT_INNER_FRAMING_SUPPORT[selected_lane]
+    if not allowed:
+        raise ValueError("WebTransport session lane does not carry app-level framing")
+    if selected not in allowed:
+        raise ValueError(
+            f"unsupported WebTransport inner framing {selected!r} for lane {selected_lane!r}"
+        )
     return selected
 
 
@@ -230,12 +306,32 @@ class WsBindingSpec(SerdeMixin):
 class WebTransportBindingSpec(SerdeMixin):
     proto: Literal["webtransport"] = "webtransport"
     path: str = "/"
-    profile: Literal["webtransport"] = "webtransport"
+    profile: Literal[
+        "webtransport",
+        "session",
+        "bidi_stream",
+        "unidi_client_stream",
+        "unidi_server_stream",
+        "datagram",
+    ] = "webtransport"
+    lane: WebTransportLane | None = None
     exchange: Exchange = "bidirectional_stream"
     framing: Framing = "webtransport"
+    inner_framing: Framing | None = None
 
     def __post_init__(self) -> None:
         validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
+        lane = webtransport_lane_for_profile(self.lane or self.profile)
+        default_exchange, _default_framing = _PROFILE_DEFAULTS[lane]
+        exchange = str(self.exchange or default_exchange)
+        if self.exchange == "bidirectional_stream" and default_exchange != "bidirectional_stream":
+            exchange = default_exchange
+        validate_webtransport_inner_framing(
+            lane=lane,
+            inner_framing=self.inner_framing,
+        )
+        object.__setattr__(self, "lane", lane)
+        object.__setattr__(self, "exchange", exchange)
 
 
 @dataclass(frozen=True, slots=True)
@@ -399,53 +495,60 @@ def project_binding_runtime_metadata(binding: TransportBindingSpec) -> dict[str,
     proto = canonical_binding_kind(binding)
     exchange = normalize_exchange(getattr(binding, "exchange", None))
     framing = str(getattr(binding, "framing", ""))
+    inner_framing = getattr(binding, "inner_framing", None)
     family = _binding_family(binding)
     _validate_binding_exchange(family, exchange)
-    return {
+    metadata: dict[str, object] = {
         "proto": proto,
         "exchange": exchange,
         "framing": framing,
         "family": family,
         "subevents": _binding_subevents(family),
     }
+    if isinstance(binding, WebTransportBindingSpec):
+        metadata["lane"] = binding.lane or webtransport_lane_for_profile(binding.profile)
+        metadata["inner_framing"] = inner_framing
+    return metadata
 
 
 def compile_binding_event_key(binding: TransportBindingSpec) -> BindingEventKey:
     family = str(project_binding_runtime_metadata(binding)["family"])
     codes = {
+        "request": 10,
         "request_response": 10,
-        "rpc": 11,
+        "rpc": 10,
         "stream": 20,
-        "event_stream": 21,
-        "socket": 30,
-        "transport": 31,
+        "event_stream": 20,
+        "session": 30,
+        "transport": 30,
         "message": 40,
-        "datagram": 41,
+        "socket": 40,
+        "datagram": 50,
     }
     return BindingEventKey(family=family, family_code=codes[family])
 
 
 def _binding_family(binding: TransportBindingSpec) -> str:
     if isinstance(binding, HTTPBindingSpec):
-        if binding.profile == "jsonrpc":
-            return "rpc"
         if binding.profile == "stream":
             return "stream"
         if binding.profile == "sse":
-            return "event_stream"
-        return "request_response"
+            return "stream"
+        return "request"
     if isinstance(binding, WebSocketBindingSpec):
-        return "socket"
+        return "message"
+    if isinstance(binding, HttpRestBindingSpec):
+        return "request"
     if isinstance(binding, HttpJsonRpcBindingSpec):
-        return "rpc"
+        return "request"
     if isinstance(binding, HttpStreamBindingSpec):
         return "stream"
     if isinstance(binding, SseBindingSpec):
-        return "event_stream"
+        return "stream"
     if isinstance(binding, WsBindingSpec):
-        return "socket"
+        return "message"
     if isinstance(binding, WebTransportBindingSpec):
-        return "transport"
+        return webtransport_runtime_family(binding.lane or binding.profile)
     if isinstance(binding, MessageBindingSpec):
         return "message"
     if isinstance(binding, DatagramBindingSpec):
@@ -455,10 +558,12 @@ def _binding_family(binding: TransportBindingSpec) -> str:
 
 def _binding_subevents(family: str) -> tuple[str, ...]:
     subevents = {
+        "request": ("request.received", "response.emit"),
         "request_response": ("request.received", "response.sent"),
         "rpc": ("rpc.request", "rpc.response"),
         "stream": ("stream.open", "stream.message", "stream.close"),
         "event_stream": ("event_stream.open", "event_stream.event", "event_stream.close"),
+        "session": ("session.open", "session.close"),
         "socket": ("socket.open", "socket.message", "socket.close"),
         "transport": ("transport.open", "transport.datagram", "transport.close"),
         "message": ("message.received", "message.processed"),
@@ -469,14 +574,16 @@ def _binding_subevents(family: str) -> tuple[str, ...]:
 
 def _validate_binding_exchange(family: str, exchange: str) -> None:
     allowed = {
+        "request": {"request_response"},
         "request_response": {"request_response"},
         "rpc": {"request_response"},
-        "stream": {"server_stream"},
+        "stream": {"server_stream", "client_stream", "bidirectional_stream"},
         "event_stream": {"server_stream"},
         "socket": {"bidirectional_stream"},
+        "session": {"bidirectional_stream"},
         "transport": {"bidirectional_stream"},
-        "message": {"fire_and_forget"},
-        "datagram": {"fire_and_forget"},
+        "message": {"fire_and_forget", "bidirectional_stream"},
+        "datagram": {"fire_and_forget", "bidirectional_stream"},
     }
     if exchange not in allowed[family]:
         raise ValueError(
@@ -501,8 +608,11 @@ __all__ = [
     "MessageBindingSpec",
     "SseBindingSpec",
     "TransportBindingSpec",
+    "WEBTRANSPORT_INNER_FRAMING_SUPPORT",
+    "WEBTRANSPORT_NATIVE_LANES",
     "WebSocketBindingSpec",
     "WebTransportBindingSpec",
+    "WebTransportLane",
     "WsBindingSpec",
     "binding_kind_for",
     "canonical_binding_kind",
@@ -513,4 +623,7 @@ __all__ = [
     "project_binding_runtime_metadata",
     "resolve_rest_nested_prefix",
     "validate_app_framing_for_binding",
+    "validate_webtransport_inner_framing",
+    "webtransport_lane_for_profile",
+    "webtransport_runtime_family",
 ]

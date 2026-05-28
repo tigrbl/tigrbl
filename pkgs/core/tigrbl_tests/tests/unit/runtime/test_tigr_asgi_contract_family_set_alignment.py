@@ -16,7 +16,6 @@ def _require(module_name: str, attr_name: str):
     return value
 
 
-@pytest.mark.xfail(reason="Canonical family-set alignment is not complete in the current runtime taxonomy.")
 def test_runtime_taxonomy_uses_governed_tigr_asgi_contract_family_set() -> None:
     derive = _require("tigrbl_kernel.subevent_taxonomy", "derive_runtime_subevents")
 
@@ -26,7 +25,6 @@ def test_runtime_taxonomy_uses_governed_tigr_asgi_contract_family_set() -> None:
     assert observed == actual
 
 
-@pytest.mark.xfail(reason="Binding projections still emit legacy family values in part of the current checkout.")
 @pytest.mark.parametrize(
     ("binding", "expected_family"),
     (
@@ -36,6 +34,9 @@ def test_runtime_taxonomy_uses_governed_tigr_asgi_contract_family_set() -> None:
         ("http.sse", "stream"),
         ("ws", "message"),
         ("webtransport", "session"),
+        ("webtransport.bidi_stream", "stream"),
+        ("webtransport.unidi_client_stream", "stream"),
+        ("webtransport.unidi_server_stream", "stream"),
         ("webtransport.datagram", "datagram"),
     ),
 )

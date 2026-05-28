@@ -560,8 +560,11 @@ def build_individual_spec_json_schemas() -> dict[str, dict[str, Any]]:
             {
                 "proto": {"type": "string", "const": "webtransport"},
                 "path": {"type": "string"},
+                "profile": {"type": "string"},
+                "lane": {"type": ["string", "null"]},
                 "exchange": {"type": "string"},
                 "framing": {"type": "string"},
+                "inner_framing": {"type": ["string", "null"]},
             },
         ),
     )

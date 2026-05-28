@@ -3,7 +3,12 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from tigrbl_core._spec.binding_spec import validate_app_framing_for_binding
+from tigrbl_core._spec.binding_spec import (
+    validate_app_framing_for_binding,
+    validate_webtransport_inner_framing,
+    webtransport_lane_for_profile,
+    webtransport_runtime_family,
+)
 
 
 def _unsupported(message: str) -> ValueError:
@@ -28,7 +33,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
 
     if kind in {"http.rest", "https.rest"}:
         validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "json"))
-        family = "response"
+        family = "request"
         framing = "json"
         anchors = (
             "ingress.receive",
@@ -37,14 +42,14 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             "transport.emit_complete",
         )
         rows = (
-            {"family": "response", "subevent": "request.received"},
-            {"family": "response", "subevent": "response.emit"},
+            {"family": "request", "subevent": "request.received"},
+            {"family": "request", "subevent": "response.emit"},
         )
     elif kind in {"http.jsonrpc", "https.jsonrpc"}:
         if not binding.get("rpc_method"):
             raise _unsupported("http.jsonrpc requires rpc_method")
         validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "jsonrpc"))
-        family = "response"
+        family = "request"
         framing = "jsonrpc"
         anchors = (
             "framing.decode",
@@ -53,8 +58,8 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             "framing.encode",
         )
         rows = (
-            {"family": "response", "subevent": "request.received"},
-            {"family": "response", "subevent": "response.emit"},
+            {"family": "request", "subevent": "request.received"},
+            {"family": "request", "subevent": "response.emit"},
         )
     elif kind in {"http.stream", "https.stream"}:
         validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "stream"))
@@ -76,8 +81,8 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             "transport.emit_complete",
         )
         rows = (
-            {"family": "event_stream", "subevent": "message.encoded"},
-            {"family": "event_stream", "subevent": "message.emit"},
+            {"family": "stream", "subevent": "message.encoded"},
+            {"family": "stream", "subevent": "message.emit"},
             {"family": "stream", "subevent": "stream.close"},
         )
     elif kind in {"ws", "wss", "websocket"}:
@@ -107,20 +112,101 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
         if binding.get("exchange") == "request_response":
             raise _unsupported("webtransport request_response exchange")
         validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "webtransport"))
-        family = "session"
+        if framing and str(framing) != "webtransport":
+            raise _unsupported("webtransport outer framing must remain webtransport")
+        lane = webtransport_lane_for_profile(
+            binding.get("lane") or binding.get("profile") or "webtransport"
+        )
+        inner_framing = validate_webtransport_inner_framing(
+            lane=lane,
+            inner_framing=binding.get("inner_framing"),
+        )
+        family = webtransport_runtime_family(lane)
         framing = "webtransport"
-        anchors = (
-            "transport.accept",
-            "dispatch.subevent.derive",
-            "handler.invoke",
-            "transport.close",
-        )
-        rows = (
-            {"family": "session", "subevent": "session.open"},
-            {"family": "session", "subevent": "session.close"},
-        )
+        if lane == "session":
+            anchors = (
+                "transport.accept",
+                "dispatch.subevent.derive",
+                "handler.invoke",
+                "transport.close",
+            )
+            rows = (
+                {"family": "session", "subevent": "session.open"},
+                {"family": "session", "subevent": "session.close"},
+            )
+        elif lane == "bidi_stream":
+            anchors = (
+                "transport.accept",
+                "transport.receive",
+                "framing.decode",
+                "dispatch.subevent.derive",
+                "handler.invoke",
+                "framing.encode",
+                "transport.emit",
+                "transport.close",
+            )
+            rows = (
+                {"family": "stream", "subevent": "stream.open"},
+                {"family": "stream", "subevent": "stream.chunk.received"},
+                {"family": "stream", "subevent": "stream.chunk.emit"},
+                {"family": "stream", "subevent": "stream.close"},
+            )
+        elif lane == "unidi_client_stream":
+            anchors = (
+                "transport.accept",
+                "transport.receive",
+                "framing.decode",
+                "dispatch.subevent.derive",
+                "handler.invoke",
+                "transport.close",
+            )
+            rows = (
+                {"family": "stream", "subevent": "stream.open"},
+                {"family": "stream", "subevent": "stream.chunk.received"},
+                {"family": "stream", "subevent": "stream.close"},
+            )
+        elif lane == "unidi_server_stream":
+            anchors = (
+                "transport.accept",
+                "handler.invoke",
+                "framing.encode",
+                "transport.emit",
+                "transport.close",
+            )
+            rows = (
+                {"family": "stream", "subevent": "stream.open"},
+                {"family": "stream", "subevent": "stream.chunk.emit"},
+                {"family": "stream", "subevent": "stream.emit_complete"},
+                {"family": "stream", "subevent": "stream.close"},
+            )
+        elif lane == "datagram":
+            anchors = (
+                "transport.accept",
+                "transport.receive",
+                "framing.decode",
+                "dispatch.subevent.derive",
+                "handler.invoke",
+                "framing.encode",
+                "transport.emit",
+            )
+            rows = (
+                {"family": "datagram", "subevent": "datagram.received"},
+                {"family": "datagram", "subevent": "datagram.emit"},
+                {"family": "datagram", "subevent": "datagram.emit_complete"},
+            )
+        else:  # pragma: no cover - guarded by webtransport_lane_for_profile
+            raise _unsupported(f"webtransport lane {lane}")
     else:
         raise _unsupported(kind)
+
+    event_key_inputs = {
+        "family": family,
+        "binding": kind,
+        "framing": framing,
+    }
+    if kind == "webtransport":
+        event_key_inputs["lane"] = lane
+        event_key_inputs["inner_framing"] = inner_framing
 
     return {
         "op_id": op_id,
@@ -128,11 +214,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
         "family": family,
         "framing": framing,
         "atom_anchors": anchors,
-        "event_key_inputs": {
-            "family": family,
-            "binding": kind,
-            "framing": framing,
-        },
+        "event_key_inputs": event_key_inputs,
         "capability_requirements": {
             "required_mask": _required_mask(kind=kind, family=family, framing=str(framing)),
         },

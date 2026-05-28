@@ -21,11 +21,11 @@ def _require(module_name: str, attr_name: str):
     (
         (
             {"kind": "http.rest", "methods": ("GET",), "path": "/items"},
-            {"family": "response", "framing": "json", "anchors": ("ingress.receive", "dispatch.subevent.derive", "transport.emit_complete")},
+            {"family": "request", "framing": "json", "anchors": ("ingress.receive", "dispatch.subevent.derive", "transport.emit_complete")},
         ),
         (
             {"kind": "http.jsonrpc", "rpc_method": "Item.read", "endpoint": "/rpc"},
-            {"family": "response", "framing": "jsonrpc", "anchors": ("framing.decode", "dispatch.subevent.derive", "framing.encode")},
+            {"family": "request", "framing": "jsonrpc", "anchors": ("framing.decode", "dispatch.subevent.derive", "framing.encode")},
         ),
         (
             {"kind": "http.stream", "path": "/stream"},

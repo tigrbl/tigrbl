@@ -50,7 +50,7 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
                 "proto": "http.rest",
                 "exchange": "request_response",
                 "framing": "json",
-                "family": "request_response",
+                "family": "request",
             },
         ),
         (
@@ -61,7 +61,7 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
                 "proto": "http.jsonrpc",
                 "exchange": "request_response",
                 "framing": "jsonrpc",
-                "family": "rpc",
+                "family": "request",
             },
         ),
         (
@@ -79,7 +79,7 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
                 "proto": "http.sse",
                 "exchange": "server_stream",
                 "framing": "sse",
-                "family": "event_stream",
+                "family": "stream",
             },
         ),
         (
@@ -88,7 +88,7 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
                 "proto": "ws",
                 "exchange": "bidirectional_stream",
                 "framing": "text",
-                "family": "socket",
+                "family": "message",
             },
         ),
         (
@@ -97,7 +97,7 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
                 "proto": "webtransport",
                 "exchange": "bidirectional_stream",
                 "framing": "webtransport",
-                "family": "transport",
+                "family": "session",
             },
         ),
     )

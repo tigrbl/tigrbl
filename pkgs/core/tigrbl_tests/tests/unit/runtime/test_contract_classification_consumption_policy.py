@@ -9,11 +9,11 @@ def test_contract_to_kernelplan_alias_matrix_accepts_canonical_http_profiles() -
     rows = (
         (
             {"kind": "http", "profile": "rest", "path": "/items", "framing": "json"},
-            ("http.rest", "response", "json"),
+            ("http.rest", "request", "json"),
         ),
         (
             {"kind": "http", "profile": "jsonrpc", "rpc_method": "Item.read", "framing": "jsonrpc"},
-            ("http.jsonrpc", "response", "jsonrpc"),
+            ("http.jsonrpc", "request", "jsonrpc"),
         ),
         (
             {"kind": "https", "profile": "stream", "path": "/stream", "framing": "ndjson"},
@@ -73,4 +73,3 @@ def test_contract_classification_consumption_preserves_canonical_event_names() -
     subevents = {row["subevent"] for row in plan["lifecycle_rows"]}
     assert {"message.encoded", "message.emit", "stream.close"} <= subevents
     assert all("subsurface" not in row for row in plan["lifecycle_rows"])
-

@@ -26,7 +26,22 @@
     "framing": {
       "type": "string"
     },
+    "inner_framing": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lane": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
     "path": {
+      "type": "string"
+    },
+    "profile": {
       "type": "string"
     },
     "proto": {
@@ -37,8 +52,11 @@
   "required": [
     "proto",
     "path",
+    "profile",
+    "lane",
     "exchange",
-    "framing"
+    "framing",
+    "inner_framing"
   ],
   "title": "WebTransportBindingSpec",
   "type": "object"

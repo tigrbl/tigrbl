@@ -20,7 +20,6 @@ def _require(module_name: str, attr_name: str):
     ("family", "expected"),
     (
         ("request", ("request.received", "request.body.received")),
-        ("response", ("response.emit", "response.emit_complete")),
         ("session", ("session.open", "session.ready", "session.close")),
         ("message", ("message.received", "message.decoded", "message.emit", "message.emit_complete")),
         ("stream", ("stream.open", "stream.chunk.received", "stream.chunk.emit", "stream.close")),
@@ -42,11 +41,15 @@ def test_runtime_subevent_taxonomy_uses_qualified_family_specific_names(
 @pytest.mark.parametrize(
     ("binding", "expected_family"),
     (
-        ("http.rest", "response"),
-        ("http.jsonrpc", "response"),
+        ("http.rest", "request"),
+        ("http.jsonrpc", "request"),
         ("http.stream", "stream"),
         ("http.sse", "stream"),
         ("ws", "message"),
+        ("webtransport", "session"),
+        ("webtransport.bidi_stream", "stream"),
+        ("webtransport.unidi_client_stream", "stream"),
+        ("webtransport.unidi_server_stream", "stream"),
         ("webtransport.datagram", "datagram"),
     ),
 )
@@ -66,7 +69,7 @@ def test_coarse_channel_verbs_are_compatibility_aliases_not_primary_subevents() 
     resolve_alias = _require("tigrbl_kernel.subevent_taxonomy", "resolve_channel_verb_alias")
 
     assert resolve_alias("receive", family="message") == "message.received"
-    assert resolve_alias("emit", family="response") == "response.emit"
+    assert resolve_alias("emit", family="stream") == "stream.chunk.emit"
     assert resolve_alias("complete", family="datagram") == "datagram.emit_complete"
 
 

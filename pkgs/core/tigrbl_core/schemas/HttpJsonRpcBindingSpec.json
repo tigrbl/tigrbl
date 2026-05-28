@@ -20,6 +20,9 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
+    "endpoint": {
+      "type": "string"
+    },
     "exchange": {
       "type": "string"
     },
@@ -40,6 +43,7 @@
   "required": [
     "proto",
     "rpc_method",
+    "endpoint",
     "exchange",
     "framing"
   ],
