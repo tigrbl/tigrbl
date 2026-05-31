@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 import pytest
+import websockets
 
 ROOT = Path(__file__).resolve().parents[5]
 TIGRCORN_ROOT = ROOT.parent / "tigrcorn"
@@ -368,6 +369,91 @@ async def _websocket_wss_jsonrpc() -> dict[str, Any]:
         await _safe_close(server)
 
 
+async def _websocket_wss_jsonrpc_invalid_json() -> dict[str, Any]:
+    app = build_app()
+    config = build_config(
+        host="127.0.0.1",
+        port=0,
+        lifespan="off",
+        http_versions=["1.1"],
+        websocket=True,
+        ssl_certfile=str(SERVER_CERT),
+        ssl_keyfile=str(SERVER_KEY),
+    )
+    server, port = await _start_server(app=app, config=config)
+    try:
+        context = _ws_wss_client.build_client_ssl_context(str(SERVER_CERT))
+        async with websockets.connect(
+            f"wss://localhost:{port}/wss/jsonrpc",
+            ssl=context,
+            server_hostname="localhost",
+            subprotocols=["jsonrpc"],
+        ) as websocket:
+            await websocket.send("not-json")
+            try:
+                await asyncio.wait_for(websocket.recv(), timeout=1.5)
+            except websockets.exceptions.ConnectionClosed as exc:
+                close_code = getattr(getattr(exc, "rcvd", None), "code", None)
+                if close_code is None:
+                    close_code = getattr(websocket, "close_code", None)
+                return _ok(
+                    "wss-jsonrpc-invalid-json",
+                    {"close_code": close_code, "subprotocol": websocket.subprotocol},
+                )
+            return _err(
+                "wss-jsonrpc-invalid-json",
+                AssertionError("invalid JSON should close the websocket"),
+            )
+    except Exception as exc:
+        return _err("wss-jsonrpc-invalid-json", exc)
+    finally:
+        await _safe_close(server)
+
+
+async def _websocket_wss_jsonrpc_wrong_subprotocol() -> dict[str, Any]:
+    app = build_app()
+    config = build_config(
+        host="127.0.0.1",
+        port=0,
+        lifespan="off",
+        http_versions=["1.1"],
+        websocket=True,
+        ssl_certfile=str(SERVER_CERT),
+        ssl_keyfile=str(SERVER_KEY),
+    )
+    server, port = await _start_server(app=app, config=config)
+    try:
+        context = _ws_wss_client.build_client_ssl_context(str(SERVER_CERT))
+        try:
+            async with websockets.connect(
+                f"wss://localhost:{port}/wss/jsonrpc",
+                ssl=context,
+                server_hostname="localhost",
+                subprotocols=["not-jsonrpc"],
+            ) as websocket:
+                await websocket.send('{"jsonrpc":"2.0","method":"demo.echo","params":{"value":7},"id":1}')
+                try:
+                    await asyncio.wait_for(websocket.recv(), timeout=1.5)
+                except websockets.exceptions.ConnectionClosed as exc:
+                    close_code = getattr(getattr(exc, "rcvd", None), "code", None)
+                    if close_code is None:
+                        close_code = getattr(websocket, "close_code", None)
+                    return _ok(
+                        "wss-jsonrpc-wrong-subprotocol",
+                        {"mode": "closed", "close_code": close_code, "subprotocol": websocket.subprotocol},
+                    )
+                return _err(
+                    "wss-jsonrpc-wrong-subprotocol",
+                    AssertionError("wrong subprotocol must not receive a JSON-RPC reply"),
+                )
+        except websockets.exceptions.InvalidStatus as exc:
+            return _ok("wss-jsonrpc-wrong-subprotocol", {"mode": "handshake-refused", "status": exc.response.status_code})
+    except Exception as exc:
+        return _err("wss-jsonrpc-wrong-subprotocol", exc)
+    finally:
+        await _safe_close(server)
+
+
 async def _mtls_http11() -> dict[str, Any]:
     app = build_app()
     with tempfile.TemporaryDirectory() as tmpdir:
@@ -404,13 +490,82 @@ async def _mtls_http11() -> dict[str, Any]:
                 data = await reader.read(65535)
                 return _ok("mtls", {"raw_response": data.decode("utf-8", errors="replace")})
             finally:
-                writer.close()
                 with suppress(Exception):
-                    await writer.wait_closed()
+                    writer.close()
         except Exception as exc:
             return _err("mtls", exc)
         finally:
             await _safe_close(server)
+
+
+async def _mtls_http11_missing_client_cert() -> dict[str, Any]:
+    app = build_app()
+    with tempfile.TemporaryDirectory() as tmpdir:
+        client_cert_pem, _client_key_pem = generate_self_signed_certificate("interop-client", purpose="client")
+        client_cert = Path(tmpdir) / "client-cert.pem"
+        client_cert.write_bytes(client_cert_pem)
+        config = build_config(
+            host="127.0.0.1",
+            port=0,
+            lifespan="off",
+            http_versions=["1.1"],
+            ssl_certfile=str(SERVER_CERT),
+            ssl_keyfile=str(SERVER_KEY),
+            ssl_ca_certs=str(client_cert),
+            ssl_require_client_cert=True,
+        )
+        server, port = await _start_server(app=app, config=config)
+        try:
+            context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH, cafile=str(SERVER_CERT))
+            context.minimum_version = ssl.TLSVersion.TLSv1_3
+            context.set_alpn_protocols(["http/1.1"])
+            try:
+                reader, writer = await asyncio.open_connection(
+                    "127.0.0.1",
+                    port,
+                    ssl=context,
+                    server_hostname="localhost",
+                )
+            except Exception as exc:
+                return _ok("mtls-missing-client-cert", {"error": type(exc).__name__, "message": str(exc)})
+            try:
+                writer.write(b"GET /mtls/echo HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n")
+                await writer.drain()
+                try:
+                    data = await reader.read(65535)
+                except Exception as exc:
+                    return _ok("mtls-missing-client-cert", {"error": type(exc).__name__, "message": str(exc)})
+                if not data:
+                    return _ok("mtls-missing-client-cert", {"error": "connection-closed"})
+                return _err(
+                    "mtls-missing-client-cert",
+                    AssertionError(f"unexpected response without client cert: {data!r}"),
+                )
+            finally:
+                with suppress(Exception):
+                    writer.close()
+        finally:
+            await _safe_close(server)
+
+
+async def _http11_jsonrpc_invalid_method() -> dict[str, Any]:
+    app = build_app()
+    config = build_config(host="127.0.0.1", port=0, lifespan="off", http_versions=["1.1"])
+    server, port = await _start_server(app=app, config=config)
+    try:
+        response = await probe_http11(
+            "127.0.0.1",
+            port,
+            method="POST",
+            target="/rpc",
+            headers=[("content-type", "application/json")],
+            body=b'{"jsonrpc":"2.0","method":"DemoItem.unknown","params":{},"id":401}',
+        )
+        return _ok("h11-jsonrpc-invalid-method", response.to_jsonable())
+    except Exception as exc:
+        return _err("h11-jsonrpc-invalid-method", exc)
+    finally:
+        await _safe_close(server)
 
 
 async def _webtransport() -> dict[str, Any]:
@@ -518,6 +673,37 @@ async def test_tigrcorn_wss_jsonrpc_e2e() -> None:
     assert body["result"]["transport"] == "wss-jsonrpc"
     assert body["result"]["method"] == "demo.echo"
     assert body["result"]["params"] == {"value": 7}
+
+
+@pytest.mark.asyncio
+async def test_tigrcorn_wss_jsonrpc_t2_negative_behaviors() -> None:
+    invalid_json = await _websocket_wss_jsonrpc_invalid_json()
+    wrong_subprotocol = await _websocket_wss_jsonrpc_wrong_subprotocol()
+
+    _assert_ok(invalid_json)
+    _assert_ok(wrong_subprotocol)
+
+    assert invalid_json["payload"]["subprotocol"] == "jsonrpc"
+    assert invalid_json["payload"]["close_code"] == 1002
+    assert wrong_subprotocol["payload"]["mode"] in {"closed", "handshake-refused"}
+    if wrong_subprotocol["payload"]["mode"] == "closed":
+        assert wrong_subprotocol["payload"]["close_code"] == 1002
+
+
+@pytest.mark.asyncio
+async def test_transport_demo_t2_negative_http_and_mtls_cases() -> None:
+    bad_rpc = await _http11_jsonrpc_invalid_method()
+    no_cert = await _mtls_http11_missing_client_cert()
+
+    _assert_ok(bad_rpc)
+    _assert_ok(no_cert)
+
+    rpc_payload = bad_rpc["payload"]
+    assert rpc_payload["status"] == 200
+    rpc_body = json.loads(rpc_payload["body"])
+    assert rpc_body["jsonrpc"] == "2.0"
+    assert "error" in rpc_body
+    assert no_cert["payload"]
 
 
 @pytest.mark.asyncio

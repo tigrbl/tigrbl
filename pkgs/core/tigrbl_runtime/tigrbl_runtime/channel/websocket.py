@@ -24,7 +24,21 @@ class RuntimeWebSocketRoute:
 
 class RuntimeWebSocket:
     def __init__(self, channel: OpChannel) -> None:
-        self.scope = {"type": "websocket", "path": channel.path}
+        headers = channel.headers if isinstance(channel.headers, dict) else {}
+        raw_subprotocols = str(headers.get("sec-websocket-protocol") or "")
+        subprotocols = tuple(
+            token.strip()
+            for token in raw_subprotocols.split(",")
+            if token and token.strip()
+        )
+        self.scope = {
+            "type": "websocket",
+            "path": channel.path,
+            "scheme": channel.protocol,
+            "headers": dict(headers),
+            "query": dict(channel.query) if isinstance(channel.query, dict) else {},
+            "subprotocols": subprotocols,
+        }
         self.path_params = dict(channel.path_params)
         self.accepted = False
         self.closed = False
@@ -46,6 +60,7 @@ class RuntimeWebSocket:
         self.accepted = True
         state = self._state()
         state["accepted"] = True
+        state["selected_subprotocol"] = subprotocol
         state["transport_sent"] = True
 
     async def receive(self) -> dict[str, Any]:

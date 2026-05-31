@@ -96,12 +96,15 @@ def test_runtime_websocket_replays_buffered_receive_message() -> None:
         exchange="bidirectional_stream",
         protocol="ws",
         path="/ws/echo",
+        headers={"sec-websocket-protocol": "jsonrpc, demo"},
         state={"receive_queue": [{"type": "websocket.receive", "text": "hello"}]},
     )
 
     websocket = RuntimeWebSocket(channel)
 
     assert asyncio.run(websocket.receive_text()) == "hello"
+    assert websocket.scope["subprotocols"] == ("jsonrpc", "demo")
+    assert websocket.scope["headers"]["sec-websocket-protocol"] == "jsonrpc, demo"
 
 
 def test_concrete_websocket_export_is_runtime_websocket_facade() -> None:
@@ -168,6 +171,7 @@ def test_runtime_websocket_accept_send_and_close_delegate_to_channel_send() -> N
     assert websocket.accepted is True
     assert websocket.closed is True
     assert channel.state["closed"] is True
+    assert channel.state["selected_subprotocol"] == "jsonrpc"
 
 
 def test_runtime_websocket_receive_disconnect_marks_closed_state() -> None:
@@ -283,3 +287,82 @@ def test_send_transport_via_channel_emits_structured_webtransport_events() -> No
         "framing": "binary",
     }
     assert sent[4] == {"type": "webtransport.close", "code": 1000, "session_id": "s1"}
+    assert all(str(message["type"]).startswith("webtransport.") for message in sent)
+
+
+def test_send_transport_via_channel_rejects_invalid_webtransport_inbound_lane() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={"type": "webtransport", "path": "/transport/session"},
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = OpChannel(
+        kind="webtransport",
+        family="session",
+        exchange="bidirectional_stream",
+        protocol="webtransport",
+        path="/transport/session",
+        state={"session_id": "s1"},
+    )
+    ctx["channel_message"] = {
+        "type": "webtransport.stream.receive",
+        "session_id": "s1",
+        "stream_id": "4",
+        "stream_direction": "server_to_client",
+        "framing": "binary",
+    }
+    ctx.temp = {
+        "egress": {
+            "transport_response": {
+                "body": {"bidirectional_streams": [{"message": "invalid"}]},
+            }
+        }
+    }
+
+    try:
+        asyncio.run(send_transport_via_channel(env, ctx))
+    except ValueError as exc:
+        assert "server_to_client" in str(exc) or "receive events" in str(exc)
+    else:
+        raise AssertionError("invalid inbound WebTransport lanes must fail closed")
+    assert sent == []
+
+
+def test_send_transport_via_channel_closes_webtransport_disconnect_idempotently() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={"type": "webtransport", "path": "/transport/session"},
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = OpChannel(
+        kind="webtransport",
+        family="session",
+        exchange="bidirectional_stream",
+        protocol="webtransport",
+        path="/transport/session",
+        state={"session_id": "s1"},
+    )
+    ctx["channel_message"] = {
+        "type": "webtransport.disconnect",
+        "session_id": "s1",
+        "code": 1001,
+    }
+    ctx.temp = {"egress": {"transport_response": {"body": {"datagrams": [{"payload": "pong"}]}}}}
+
+    asyncio.run(send_transport_via_channel(env, ctx))
+
+    assert sent == [{"type": "webtransport.close", "code": 1001, "session_id": "s1"}]

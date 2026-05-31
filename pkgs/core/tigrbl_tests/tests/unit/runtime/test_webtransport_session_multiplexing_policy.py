@@ -117,3 +117,28 @@ def test_webtransport_session_rejects_cross_session_payloads() -> None:
             channel="receive",
             payload={"session_id": "sess-2", "datagram_id": "dg-1"},
         )
+
+
+def test_webtransport_session_close_is_idempotent_but_blocks_further_payload_events() -> None:
+    session = WebTransportSessionState(session_id="sess-1")
+
+    session.apply_event(event="webtransport.accept", channel="send", payload={"session_id": "sess-1"})
+    first = session.apply_event(
+        event="webtransport.close",
+        channel="send",
+        payload={"session_id": "sess-1"},
+    )
+    second = session.apply_event(
+        event="webtransport.close",
+        channel="send",
+        payload={"session_id": "sess-1"},
+    )
+
+    assert first["closed"] is True
+    assert second["closed"] is True
+    with pytest.raises(ValueError, match="session is closed"):
+        session.apply_event(
+            event="webtransport.stream.receive",
+            channel="receive",
+            payload={"session_id": "sess-1", "stream_id": "bidi-1", "stream_direction": "bidi"},
+        )

@@ -9,6 +9,7 @@ from tigrbl_core.config.constants import (
     __JSONRPC_DEFAULT_ENDPOINT__,
     __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__,
 )
+from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
 from tigrbl_typing.channel import OpChannel
 
 from .websocket import RuntimeWebSocket
@@ -476,16 +477,36 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
     if isinstance(state, dict):
         session_id = state.get("session_id")
     session_id = message.get("session_id") or session_id
+    message_type = str(message.get("type") or "")
+    if message_type == "webtransport.disconnect":
+        close: dict[str, Any] = {
+            "type": "webtransport.close",
+            "code": int(message.get("code") or 1000),
+        }
+        if session_id is not None:
+            close["session_id"] = session_id
+        await send(close)
+        return
+    structured_payload = isinstance(payload, Mapping) and any(
+        key in payload for key in ("bidirectional_streams", "unidirectional_streams", "datagrams")
+    )
+    if structured_payload:
+        if message_type not in {"webtransport.stream.receive", "webtransport.datagram.receive"}:
+            raise ValueError(
+                "structured WebTransport payloads require inbound stream.receive or datagram.receive events"
+            )
+        validate_webtransport_event_payload(
+            event=message_type,
+            channel="receive",
+            payload={**message, "session_id": session_id},
+        )
     accept: dict[str, Any] = {"type": "webtransport.accept"}
     if session_id is not None:
         accept["session_id"] = session_id
     await send(accept)
     if payload is not None:
         base = {**message, "session_id": session_id}
-        if isinstance(payload, Mapping) and any(
-            key in payload
-            for key in ("bidirectional_streams", "unidirectional_streams", "datagrams")
-        ):
+        if structured_payload:
             for event in _webtransport_structured_payload_events(
                 session_id=session_id,
                 inbound=base,

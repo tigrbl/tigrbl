@@ -24,6 +24,9 @@ from tigrbl.security import Security
 from tigrbl.types import Column, Integer, String
 
 
+_JSONRPC_PROTOCOL_CLOSE_CODE = 1002
+
+
 def _demo_db_path() -> Path:
     return Path(__file__).with_name("transport_demo.sqlite3")
 
@@ -127,6 +130,48 @@ def _decode_ctx_payload(ctx: Any) -> dict[str, Any]:
             if isinstance(parsed, dict):
                 return parsed
     return {}
+
+
+def _websocket_offered_subprotocols(ws: Any) -> tuple[str, ...]:
+    scope = getattr(ws, "scope", {}) or {}
+    declared = scope.get("subprotocols")
+    if isinstance(declared, (list, tuple)):
+        return tuple(str(item) for item in declared if str(item))
+    headers = scope.get("headers")
+    if isinstance(headers, dict):
+        raw = str(headers.get("sec-websocket-protocol") or "")
+        return tuple(token.strip() for token in raw.split(",") if token.strip())
+    return ()
+
+
+def _jsonrpc_error(
+    request_id: Any,
+    code: int,
+    message: str,
+    *,
+    detail: str | None = None,
+) -> dict[str, Any]:
+    error: dict[str, Any] = {"code": code, "message": message}
+    if detail:
+        error["data"] = {"detail": detail}
+    return {"jsonrpc": "2.0", "error": error, "id": request_id}
+
+
+async def _send_jsonrpc_error(
+    ws: Any,
+    request_id: Any,
+    code: int,
+    message: str,
+    *,
+    detail: str | None = None,
+) -> None:
+    await ws.send_text(
+        json.dumps(
+            _jsonrpc_error(request_id, code, message, detail=detail),
+            separators=(",", ":"),
+        )
+    )
+    await ws.close(code=1000)
 
 
 def build_fail_closed_examples() -> dict[str, str]:
@@ -282,15 +327,74 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
         summary="Secure WebSocket JSON-RPC echo",
     )
     async def wss_jsonrpc(ws) -> None:
+        if "jsonrpc" not in _websocket_offered_subprotocols(ws):
+            await ws.close(code=_JSONRPC_PROTOCOL_CLOSE_CODE)
+            return
         await ws.accept(subprotocol="jsonrpc")
-        text = await ws.receive_text()
-        request = json.loads(text or "{}")
+        try:
+            text = await ws.receive_text()
+        except RuntimeError:
+            await ws.close(code=1000)
+            return
+        try:
+            request = json.loads(text or "")
+        except Exception:
+            await ws.close(code=_JSONRPC_PROTOCOL_CLOSE_CODE)
+            return
+        if not isinstance(request, dict):
+            await _send_jsonrpc_error(
+                ws,
+                None,
+                -32600,
+                "Invalid Request",
+                detail="JSON-RPC request must be an object.",
+            )
+            return
+        request_id = request.get("id")
+        if request.get("jsonrpc") != "2.0":
+            await _send_jsonrpc_error(
+                ws,
+                request_id,
+                -32600,
+                "Invalid Request",
+                detail="jsonrpc must equal '2.0'.",
+            )
+            return
+        if "id" not in request:
+            await _send_jsonrpc_error(
+                ws,
+                None,
+                -32600,
+                "Invalid Request",
+                detail="id is required for the demo request-response rail.",
+            )
+            return
+        method = request.get("method")
+        if method != "demo.echo":
+            await _send_jsonrpc_error(
+                ws,
+                request_id,
+                -32601,
+                "Method not found",
+                detail="Only demo.echo is supported on this demo rail.",
+            )
+            return
+        params = request.get("params")
+        if params is not None and not isinstance(params, dict):
+            await _send_jsonrpc_error(
+                ws,
+                request_id,
+                -32602,
+                "Invalid params",
+                detail="params must be an object when present.",
+            )
+            return
         payload = {
             "jsonrpc": "2.0",
-            "id": request.get("id"),
+            "id": request_id,
             "result": {
-                "method": request.get("method"),
-                "params": request.get("params"),
+                "method": method,
+                "params": params,
                 "transport": "wss-jsonrpc",
             },
         }
