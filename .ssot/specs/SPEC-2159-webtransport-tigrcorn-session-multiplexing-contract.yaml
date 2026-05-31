@@ -1,0 +1,59 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2159"
+number: 2159
+slug: "webtransport-tigrcorn-session-multiplexing-contract"
+title: "WebTransport Tigrcorn Session Multiplexing Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the bridge-level proof required before Tigrbl may claim that it can use Tigrcorn to run multiple native WebTransport lanes under one session."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern bridge-level proof for one Tigrcorn-backed WebTransport session carrying mixed native lanes."
+    at: "2026-05-31T19:29:17Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the bridge-level proof required before Tigrbl may claim that it can use Tigrcorn to run multiple native WebTransport lanes under one session.
+  
+  ## Contract
+  
+  The bridge proof uses canonical Tigrcorn / tigr-asgi-contract event payloads and a Tigrbl app invocation through ASGI `scope`, `receive`, and `send`.
+  
+  The proof must not introduce a custom `subsurface` event field or custom event names. Event identity remains the canonical event `type`, while family, exchange, direction, lane, stream id, datagram id, and framing are classification or payload metadata.
+  
+  One proof session must include:
+  
+  - one WebTransport `scope`;
+  - one session id shared by all native lane events;
+  - WebTransport accept/open behavior;
+  - at least two bidirectional streams;
+  - at least one client-to-server unidirectional stream;
+  - at least one server-to-client unidirectional stream;
+  - at least two datagrams;
+  - interleaved stream and datagram traffic;
+  - server sends that preserve the originating `session_id` and lane identifier;
+  - rejection or absence of native `webtransport.message.*` traffic;
+  - session close behavior that terminates active lane ownership.
+  
+  ## Required Assertions
+  
+  The integration test must assert that all stream events preserve `stream_id`, all datagram events preserve `datagram_id`, all events preserve `session_id`, and framing remains lane-local.
+  
+  The integration test must assert that bidirectional streams classify as stream/duplex, client unidirectional streams classify as stream/client_stream, server unidirectional streams classify as stream/server_stream, and datagrams classify as datagram/duplex.
+  
+  ## Non-Goals
+  
+  This SPEC does not require a production browser WebTransport stack. It governs the Tigrbl-on-Tigrcorn contract bridge proof using canonical ASGI-style WebTransport scope and event payloads.
+  
+  This SPEC does not relax the existing rule that `message` is not a native WebTransport transport lane.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1096"
+  - "adr:1132"

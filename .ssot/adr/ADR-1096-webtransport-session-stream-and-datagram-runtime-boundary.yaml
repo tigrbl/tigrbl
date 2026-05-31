@@ -21,9 +21,13 @@ status_notes:
     note: "Updated WebTransport boundary with lane-local app framing policy."
     status: "draft"
   -
-    status: "draft"
-    note: "Updated WebTransport boundary to express native WT profiles through WebTransportBindingSpec.profile."
     at: "2026-05-28T00:49:16Z"
+    note: "Updated WebTransport boundary to express native WT profiles through WebTransportBindingSpec.profile."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated WebTransport boundary with explicit Tigrcorn session multiplexing proof requirement."
+    at: "2026-05-31T19:28:33Z"
 references: []
 body: |-
   ## Decision
@@ -36,8 +40,9 @@ body: |-
   6. WebTransport stream profiles may target record-oriented framings only when boundary rules are explicit.
   7. WebTransport datagram profiles exclude `jsonrpc` and `ndjson` by default because datagrams do not provide stream continuity or reliable record sequencing.
   8. NDJSON must not be implied as a WebTransport transport framing merely because it may later be used as an application payload shape inside a stream.
-  9. WebTransport may not be claimed as first-class support until its event, atom-chain, executor, profile, and inner-framing evidence contracts pass.
+  9. WebTransport may not be claimed as first-class support until its event, atom-chain, executor, profile, inner-framing, and session-multiplexing evidence contracts pass.
   10. WebTransport implementation must not create a separate programming model outside BindingSpec and KernelPlan compilation.
+  11. WebTransport session-multiplexing support is a distinct proof boundary. A lane-policy test, payload-classification test, or single-lane bridge test is insufficient to prove that one Tigrcorn-backed WebTransport session can carry multiple bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams.
   
   ## Context
   
@@ -45,13 +50,16 @@ body: |-
   
   The corrected BindingSpec model uses `profile` for WT session, stream, and datagram variants. This preserves protocol-native distinctions without adding another top-level taxonomy axis.
   
+  Tigrbl already has lane/framing policy proof and a limited Tigrcorn bridge test. Those tests prove classification and isolated event handling. They do not, by themselves, prove native WebTransport multiplexing under one session.
+  
   ## Consequences
   
   - WebTransport session, bidi stream, unidi client stream, unidi server stream, and datagram behavior receive separate SPEC and test coverage.
   - App-framed WebTransport payloads are validated through profile-local framing policy.
   - Certification requires runtime evidence for profile handling and multiplexed session behavior where support is claimed.
   - Docs and support matrices must keep outer transport identity separate from inner payload framing claims.
+  - A future WebTransport multiplexing claim must show one `session_id` preserving independent stream and datagram identities across mixed-lane send and receive events.
   
   ## Related
   
-  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131, ADR-1133, ADR-1134.
+  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131, ADR-1132, ADR-1133, ADR-1134.

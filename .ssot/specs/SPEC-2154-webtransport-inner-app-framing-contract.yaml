@@ -21,9 +21,13 @@ status_notes:
     note: "Updated WebTransport inner framing contract with stream-boundary and datagram exclusion rules."
     status: "draft"
   -
-    status: "draft"
-    note: "Updated WebTransport inner framing contract to use profile-local terminology."
     at: "2026-05-28T00:49:23Z"
+    note: "Updated WebTransport inner framing contract to use profile-local terminology."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated WebTransport inner framing contract with multiplexed lane-local framing proof requirements."
+    at: "2026-05-31T19:28:33Z"
 references: []
 body: |-
   ## Intent
@@ -56,11 +60,15 @@ body: |-
   
   `profile` identifies which WebTransport carrier is being used.
   
+  In a multiplexed WebTransport session, each stream or datagram keeps its own payload framing metadata. A selected framing on one stream or datagram must not bleed into another lane, and datagram framing restrictions continue to apply even when streams in the same session allow broader record-oriented framing.
+  
   ## Validation
   
   Tests must reject claims that `framing=webtransport` proves JSON, JSON-RPC, NDJSON, binary, bytes, text, or message support inside any WebTransport profile.
   
   Tests must reject a native WebTransport `message` profile unless a later ADR explicitly adds one.
+  
+  Tests that claim Tigrcorn-backed WebTransport multiplexing must prove lane-local framing preservation across at least two streams and two datagrams in one session.
 spec_kind: "normative"
 adr_ids:
   - "adr:1096"

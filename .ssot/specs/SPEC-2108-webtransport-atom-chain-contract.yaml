@@ -16,6 +16,10 @@ status_notes:
     at: "2026-05-27T17:42:20Z"
     note: "Updated WebTransport atom chains with native lane classification."
     status: "draft"
+  -
+    status: "draft"
+    note: "Updated WebTransport atom chain contract with native session multiplexing proof boundary."
+    at: "2026-05-31T19:28:33Z"
 references: []
 body: |-
   ## Intent
@@ -37,6 +41,21 @@ body: |-
   Datagram lanes classify as `family=datagram`; where both peers may send datagrams under a session, the exchange is `duplex`.
   
   App-framed message decode/encode is inner payload framing within stream or datagram lanes. `message` is not a peer native WebTransport transport lane.
+  
+  ## Multiplexing Proof Boundary
+  
+  Native WebTransport multiplexing is proven only when one WebTransport session preserves independent lane identity across mixed traffic. Required evidence includes:
+  
+  - a single `scope[type] == webtransport` and single `session_id`;
+  - at least two bidirectional stream ids;
+  - at least one client-to-server unidirectional stream id;
+  - at least one server-to-client unidirectional stream id;
+  - at least two datagram ids;
+  - interleaved stream and datagram send/receive events;
+  - no native `webtransport.message.*` event path;
+  - close behavior that prevents new stream or datagram traffic after session termination.
+  
+  Policy-only lane matrices and single-lane bridge tests do not satisfy this multiplexing proof boundary.
   
   ## Traceability
   

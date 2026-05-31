@@ -17,9 +17,13 @@ status_notes:
     note: "Created as the bridge consumption policy for tigr-asgi-contract event classification."
     status: "draft"
   -
-    status: "draft"
-    note: "Updated bridge consumption policy with framing as subordinate metadata."
     at: "2026-05-27T17:59:02Z"
+    note: "Updated bridge consumption policy with framing as subordinate metadata."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated classification consumption policy to distinguish bridge classification from session multiplexing proof."
+    at: "2026-05-31T19:28:33Z"
 references: []
 body: |-
   ## Context
@@ -36,6 +40,8 @@ body: |-
   
   For WebTransport, Tigrbl shall treat the native lanes as session lifecycle, bidirectional streams, client-to-server unidirectional streams, server-to-client unidirectional streams, and datagrams. Message-shaped application payloads are inner framing concerns within those lanes, not a peer WebTransport transport lane.
   
+  Consuming contract classification is not equivalent to proving a multiplexed WebTransport runtime. A multiplexing support claim requires a bridge test that drives one WebTransport scope/session through mixed Tigrcorn contract events and verifies independent stream and datagram identity across receive and send.
+  
   ## Consequences
   
   Bindings select and constrain contract classifications; they do not redefine the event taxonomy.
@@ -45,3 +51,5 @@ body: |-
   Support claims require evidence against canonical ASGI event names and derived classification attributes rather than against parallel custom event names.
   
   Framing support claims require evidence against binding/lane-local framing policy rather than against protocol names or type-union tokens alone.
+  
+  WebTransport bridge support claims must distinguish classification consumption, single-lane execution, and one-session native-lane multiplexing.
