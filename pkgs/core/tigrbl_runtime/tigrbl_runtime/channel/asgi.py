@@ -157,7 +157,7 @@ async def _receive_session_message(
     ctx: Any,
     *,
     connect_type: str,
-    receive_type: str,
+    receive_type: str | tuple[str, ...],
     disconnect_type: str,
 ) -> None:
     receive = getattr(env, "receive", None)
@@ -168,9 +168,12 @@ async def _receive_session_message(
     state["last_event"] = message
     if message.get("type") == connect_type:
         state["connected"] = True
+        if message.get("session_id") is not None:
+            state["session_id"] = message.get("session_id")
         message = await receive()
         state["last_event"] = message
-    if message.get("type") == receive_type:
+    receive_types = (receive_type,) if isinstance(receive_type, str) else receive_type
+    if message.get("type") in receive_types:
         queue = state.get("receive_queue")
         if isinstance(queue, deque):
             queue.append(message)
@@ -181,10 +184,21 @@ async def _receive_session_message(
             next_queue.append(message)
             state["receive_queue"] = next_queue
         payload = message.get("bytes")
+        if payload is None:
+            payload = message.get("data")
         if payload is None and message.get("text") is not None:
             payload = str(message.get("text")).encode("utf-8")
         ctx["body"] = payload
         ctx["channel_message"] = message
+        for key in (
+            "session_id",
+            "stream_id",
+            "stream_direction",
+            "datagram_id",
+            "framing",
+        ):
+            if message.get(key) is not None:
+                state[key] = message.get(key)
     elif message.get("type") == disconnect_type:
         state["disconnected"] = True
         ctx["channel_message"] = message
@@ -239,7 +253,11 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
             receive_type=(
                 "websocket.receive"
                 if scope_type == "websocket"
-                else "webtransport.receive"
+                else (
+                    "webtransport.receive",
+                    "webtransport.stream.receive",
+                    "webtransport.datagram.receive",
+                )
             ),
             disconnect_type=(
                 "websocket.disconnect"
@@ -298,6 +316,80 @@ async def _send_session_payload(
     await send({"type": close_type, "code": 1000})
 
 
+def _webtransport_payload_event(
+    *,
+    base: Mapping[str, Any],
+    payload: Any,
+) -> dict[str, Any]:
+    event_type = str(base.get("type") or "")
+    session_id = base.get("session_id")
+    if event_type == "webtransport.stream.receive":
+        out: dict[str, Any] = {
+            "type": "webtransport.stream.send",
+            "session_id": session_id,
+            "stream_id": base.get("stream_id"),
+            "stream_direction": base.get("stream_direction", "bidi"),
+        }
+        if base.get("framing") is not None:
+            out["framing"] = base.get("framing")
+        if isinstance(payload, (bytes, bytearray)):
+            out["data"] = bytes(payload)
+        elif isinstance(payload, str):
+            out["data"] = payload.encode("utf-8")
+        else:
+            out["data"] = json.dumps(payload, separators=(",", ":"), default=str).encode("utf-8")
+        out["more"] = False
+        return out
+    if event_type == "webtransport.datagram.receive":
+        out = {
+            "type": "webtransport.datagram.send",
+            "session_id": session_id,
+            "datagram_id": base.get("datagram_id"),
+        }
+        if base.get("framing") is not None:
+            out["framing"] = base.get("framing")
+        if isinstance(payload, (bytes, bytearray)):
+            out["data"] = bytes(payload)
+        elif isinstance(payload, str):
+            out["data"] = payload.encode("utf-8")
+        else:
+            out["data"] = json.dumps(payload, separators=(",", ":"), default=str).encode("utf-8")
+        return out
+    out = {"type": "webtransport.send", "session_id": session_id}
+    if isinstance(payload, (bytes, bytearray)):
+        out["bytes"] = bytes(payload)
+    elif isinstance(payload, str):
+        out["text"] = payload
+    else:
+        out["text"] = json.dumps(payload, separators=(",", ":"), default=str)
+    return out
+
+
+async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
+    send = getattr(env, "send", None)
+    if not callable(send):
+        return
+    channel = ctx.get("channel")
+    state = getattr(channel, "state", None) if channel is not None else None
+    message = ctx.get("channel_message")
+    if not isinstance(message, Mapping):
+        message = {}
+    session_id = None
+    if isinstance(state, dict):
+        session_id = state.get("session_id")
+    session_id = message.get("session_id") or session_id
+    accept: dict[str, Any] = {"type": "webtransport.accept"}
+    if session_id is not None:
+        accept["session_id"] = session_id
+    await send(accept)
+    if payload is not None:
+        await send(_webtransport_payload_event(base={**message, "session_id": session_id}, payload=payload))
+    close: dict[str, Any] = {"type": "webtransport.close", "code": 1000}
+    if session_id is not None:
+        close["session_id"] = session_id
+    await send(close)
+
+
 async def send_transport_via_channel(env: Any, ctx: Any) -> None:
     scope = getattr(env, "scope", {}) or {}
     scope_type = str(scope.get("type") or "http")
@@ -317,25 +409,16 @@ async def send_transport_via_channel(env: Any, ctx: Any) -> None:
             payload = transport.get("body")
         if payload is None:
             payload = getattr(ctx, "result", None)
-        await _send_session_payload(
-            env,
-            payload,
-            accept_type=(
-                "websocket.accept"
-                if scope_type == "websocket"
-                else "webtransport.accept"
-            ),
-            send_type=(
-                "websocket.send"
-                if scope_type == "websocket"
-                else "webtransport.send"
-            ),
-            close_type=(
-                "websocket.close"
-                if scope_type == "websocket"
-                else "webtransport.close"
-            ),
-        )
+        if scope_type == "webtransport":
+            await _send_webtransport_payload(env, ctx, payload)
+        else:
+            await _send_session_payload(
+                env,
+                payload,
+                accept_type="websocket.accept",
+                send_type="websocket.send",
+                close_type="websocket.close",
+            )
         if isinstance(state, dict):
             state["transport_sent"] = True
             state["emitted"] = payload is not None
