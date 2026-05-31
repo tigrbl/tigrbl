@@ -597,6 +597,11 @@ def _program_has_exact_http_like_no_input_binding(
 
 
 def _step_has_route_binding(step: StepFn) -> bool:
+    for candidate in (step, getattr(step, "__tigrbl_direct_run", None)):
+        endpoint = getattr(candidate, "__tigrbl_websocket_endpoint__", None)
+        path = getattr(candidate, "__tigrbl_websocket_path__", None)
+        if callable(endpoint) and isinstance(path, str) and path:
+            return True
     closure = getattr(step, "__closure__", None)
     if not closure:
         return False

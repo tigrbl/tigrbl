@@ -120,7 +120,10 @@ def _decode_ctx_payload(ctx: Any) -> dict[str, Any]:
     if isinstance(body, bytes):
         raw = body.decode("utf-8").strip()
         if raw:
-            parsed = json.loads(raw)
+            try:
+                parsed = json.loads(raw)
+            except Exception:
+                return {"message": raw, "datagram": raw}
             if isinstance(parsed, dict):
                 return parsed
     return {}
@@ -279,7 +282,7 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
         summary="Secure WebSocket JSON-RPC echo",
     )
     async def wss_jsonrpc(ws) -> None:
-        await ws.accept()
+        await ws.accept(subprotocol="jsonrpc")
         text = await ws.receive_text()
         request = json.loads(text or "{}")
         payload = {

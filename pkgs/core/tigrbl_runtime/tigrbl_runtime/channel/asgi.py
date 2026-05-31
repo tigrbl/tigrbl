@@ -159,6 +159,7 @@ async def _receive_session_message(
     connect_type: str,
     receive_type: str | tuple[str, ...],
     disconnect_type: str,
+    eager_payload_after_connect: bool = True,
 ) -> None:
     receive = getattr(env, "receive", None)
     if not callable(receive):
@@ -170,6 +171,9 @@ async def _receive_session_message(
         state["connected"] = True
         if message.get("session_id") is not None:
             state["session_id"] = message.get("session_id")
+        if not eager_payload_after_connect:
+            ctx["channel_message"] = message
+            return
         message = await receive()
         state["last_event"] = message
     receive_types = (receive_type,) if isinstance(receive_type, str) else receive_type
@@ -264,6 +268,7 @@ async def prepare_channel_context(env: Any, ctx: Any) -> OpChannel:
                 if scope_type == "websocket"
                 else "webtransport.disconnect"
             ),
+            eager_payload_after_connect=(scope_type != "websocket"),
         )
         message = ctx.get("channel_message")
         if (
@@ -365,6 +370,99 @@ def _webtransport_payload_event(
     return out
 
 
+def _coerce_webtransport_stream_id(value: Any, *, fallback: int) -> int:
+    try:
+        return int(value)
+    except Exception:
+        return fallback
+
+
+def _webtransport_structured_payload_events(
+    *,
+    session_id: Any,
+    inbound: Mapping[str, Any],
+    payload: Mapping[str, Any],
+) -> list[dict[str, Any]]:
+    events: list[dict[str, Any]] = []
+    inbound_type = str(inbound.get("type") or "")
+    inbound_stream_id = _coerce_webtransport_stream_id(
+        inbound.get("stream_id"),
+        fallback=4,
+    )
+    inbound_direction = str(inbound.get("stream_direction") or "bidi")
+    framing = inbound.get("framing")
+
+    if inbound_type == "webtransport.stream.receive":
+        bidi_rows = payload.get("bidirectional_streams")
+        if isinstance(bidi_rows, list) and bidi_rows:
+            first = bidi_rows[0] if isinstance(bidi_rows[0], Mapping) else {}
+            message = first.get("message") if isinstance(first, Mapping) else None
+            if message is None:
+                message = payload.get("message")
+            if message is None:
+                message = "demo-bidirectional"
+            event: dict[str, Any] = {
+                "type": "webtransport.stream.send",
+                "session_id": session_id,
+                "stream_id": inbound_stream_id,
+                "stream_direction": (
+                    inbound_direction
+                    if inbound_direction in {"bidi", "server_to_client"}
+                    else "bidi"
+                ),
+                "data": str(message).encode("utf-8"),
+                "more": False,
+            }
+            if framing is not None:
+                event["framing"] = framing
+            events.append(event)
+
+    uni_rows = payload.get("unidirectional_streams")
+    if isinstance(uni_rows, list):
+        for index, row in enumerate(uni_rows):
+            if not isinstance(row, Mapping):
+                continue
+            message = row.get("message")
+            if message is None:
+                continue
+            event = {
+                "type": "webtransport.stream.send",
+                "session_id": session_id,
+                "stream_id": inbound_stream_id + index + 1,
+                "stream_direction": "server_to_client",
+                "data": str(message).encode("utf-8"),
+                "more": False,
+            }
+            if framing is not None:
+                event["framing"] = framing
+            events.append(event)
+
+    datagram_rows = payload.get("datagrams")
+    if isinstance(datagram_rows, list):
+        for index, row in enumerate(datagram_rows):
+            if not isinstance(row, Mapping):
+                continue
+            if str(row.get("direction") or "") == "client-to-server":
+                continue
+            body = row.get("payload")
+            if body is None:
+                continue
+            event = {
+                "type": "webtransport.datagram.send",
+                "session_id": session_id,
+                "datagram_id": str(
+                    row.get("id")
+                    or inbound.get("datagram_id")
+                    or f"datagram-{index + 1}"
+                ),
+                "data": str(body).encode("utf-8"),
+            }
+            if framing is not None:
+                event["framing"] = framing
+            events.append(event)
+    return events
+
+
 async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
     send = getattr(env, "send", None)
     if not callable(send):
@@ -383,7 +481,19 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
         accept["session_id"] = session_id
     await send(accept)
     if payload is not None:
-        await send(_webtransport_payload_event(base={**message, "session_id": session_id}, payload=payload))
+        base = {**message, "session_id": session_id}
+        if isinstance(payload, Mapping) and any(
+            key in payload
+            for key in ("bidirectional_streams", "unidirectional_streams", "datagrams")
+        ):
+            for event in _webtransport_structured_payload_events(
+                session_id=session_id,
+                inbound=base,
+                payload=payload,
+            ):
+                await send(event)
+        else:
+            await send(_webtransport_payload_event(base=base, payload=payload))
     close: dict[str, Any] = {"type": "webtransport.close", "code": 1000}
     if session_id is not None:
         close["session_id"] = session_id

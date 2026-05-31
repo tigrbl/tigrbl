@@ -10,6 +10,7 @@ from contextlib import suppress
 from pathlib import Path
 from typing import Any
 
+import pytest
 
 ROOT = Path(__file__).resolve().parents[5]
 TIGRCORN_ROOT = ROOT.parent / "tigrcorn"
@@ -18,12 +19,49 @@ for src_dir in sorted((TIGRCORN_ROOT / "pkgs").glob("*/src")):
 sys.path.insert(0, str(TIGRCORN_ROOT / "src"))
 sys.path.insert(0, str(TIGRCORN_ROOT))
 
-from tests.fixtures_third_party.h11_http1_client import probe_http11  # noqa: E402
-from tests.fixtures_third_party.h11_stream_client import probe_h11_stream  # noqa: E402
-from tests.fixtures_third_party.h2_http2_client import probe_h2c  # noqa: E402
-from tests.fixtures_third_party.h3_http3_client import probe_h3  # noqa: E402
-from tests.fixtures_third_party.ws_wss_client import probe_ws_wss  # noqa: E402
-from tests.fixtures_third_party.wt_stream_client import probe_wt_stream  # noqa: E402
+
+def _load_module(name: str, path: Path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Unable to load module {name} from {path}")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+_h11_http1_client = _load_module(
+    "tigrcorn_h11_http1_client",
+    TIGRCORN_ROOT / "tests" / "fixtures_third_party" / "h11_http1_client.py",
+)
+_h11_stream_client = _load_module(
+    "tigrcorn_h11_stream_client",
+    TIGRCORN_ROOT / "tests" / "fixtures_third_party" / "h11_stream_client.py",
+)
+_h2_http2_client = _load_module(
+    "tigrcorn_h2_http2_client",
+    TIGRCORN_ROOT / "tests" / "fixtures_third_party" / "h2_http2_client.py",
+)
+_h3_http3_client = _load_module(
+    "tigrcorn_h3_http3_client",
+    TIGRCORN_ROOT / "tests" / "fixtures_third_party" / "h3_http3_client.py",
+)
+_ws_wss_client = _load_module(
+    "tigrcorn_ws_wss_client",
+    TIGRCORN_ROOT / "tests" / "fixtures_third_party" / "ws_wss_client.py",
+)
+_wt_stream_client = _load_module(
+    "tigrcorn_wt_stream_client",
+    TIGRCORN_ROOT / "tests" / "fixtures_third_party" / "wt_stream_client.py",
+)
+
+probe_http11 = _h11_http1_client.probe_http11
+probe_h11_stream = _h11_stream_client.probe_h11_stream
+probe_h2c = _h2_http2_client.probe_h2c
+probe_h3 = _h3_http3_client.probe_h3
+probe_ws_wss = _ws_wss_client.probe_ws_wss
+probe_wt_stream = _wt_stream_client.probe_wt_stream
+
 from tigrcorn.config.load import build_config  # noqa: E402
 from tigrcorn.server.runner import TigrCornServer  # noqa: E402
 from tigrcorn.transports.quic.handshake import generate_self_signed_certificate  # noqa: E402
@@ -75,6 +113,10 @@ def _ok(label: str, payload: Any) -> dict[str, Any]:
 
 def _err(label: str, exc: Exception) -> dict[str, Any]:
     return {"demo": label, "ok": False, "error": type(exc).__name__, "message": str(exc)}
+
+
+def _assert_ok(result: dict[str, Any]) -> None:
+    assert result.get("ok") is True, result
 
 
 async def _http11_rest() -> dict[str, Any]:
@@ -415,7 +457,7 @@ def _unsupported_wss_ndjson() -> dict[str, Any]:
         return _err("wss-ndjson", exc)
 
 
-async def main() -> int:
+async def _run_matrix_scenarios() -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
     scenarios: list[tuple[str, Any]] = [
         ("h11-rest", _http11_rest),
@@ -432,17 +474,69 @@ async def main() -> int:
         ("mtls", _mtls_http11),
         ("webtransport", _webtransport),
     ]
-    for label, fn in scenarios:
-        print(f"RUNNING {label}", file=sys.stderr, flush=True)
+    for _label, fn in scenarios:
         outcome = fn()
-        if asyncio.iscoroutine(outcome):
-            resolved = await outcome
-        else:
-            resolved = outcome
+        resolved = await outcome if asyncio.iscoroutine(outcome) else outcome
         if isinstance(resolved, list):
             results.extend(resolved)
         else:
             results.append(resolved)
+    return results
+
+
+@pytest.mark.asyncio
+async def test_transport_demo_tigrcorn_e2e_matrix() -> None:
+    results = await _run_matrix_scenarios()
+    failures = [result for result in results if not result.get("ok")]
+    assert not failures, failures
+
+
+@pytest.mark.asyncio
+async def test_tigrcorn_websocket_handshake_e2e() -> None:
+    ws_result = await _websocket_ws()
+    wss_result = await _websocket_wss()
+
+    _assert_ok(ws_result)
+    _assert_ok(wss_result)
+
+    assert ws_result["payload"]["received_text"] == "ws:hello-ws"
+    assert wss_result["payload"]["received_text"] == "wss:hello-wss"
+    assert wss_result["payload"]["tls"]["selected_alpn_protocol"] == "http/1.1"
+
+
+@pytest.mark.asyncio
+async def test_tigrcorn_wss_jsonrpc_e2e() -> None:
+    result = await _websocket_wss_jsonrpc()
+
+    _assert_ok(result)
+
+    payload = result["payload"]
+    assert payload["subprotocol"] == "jsonrpc"
+    body = json.loads(payload["received_text"])
+    assert body["jsonrpc"] == "2.0"
+    assert body["id"] == 501
+    assert body["result"]["transport"] == "wss-jsonrpc"
+    assert body["result"]["method"] == "demo.echo"
+    assert body["result"]["params"] == {"value": 7}
+
+
+@pytest.mark.asyncio
+async def test_tigrcorn_webtransport_single_session_demo() -> None:
+    result = await _webtransport()
+
+    _assert_ok(result)
+
+    payload = result["payload"]
+    assert payload["status"] == 200
+    assert payload["body"] == "hello-webtransport"
+    assert payload["received_initial_headers"] is True
+    assert payload["ended"] is True
+    assert payload["remote_settings"]
+    assert payload["datagrams_received"] >= 1
+
+
+async def main() -> int:
+    results = await _run_matrix_scenarios()
     print(json.dumps({"results": results}, indent=2))
     return 0 if all(result.get("ok") for result in results) else 1
 

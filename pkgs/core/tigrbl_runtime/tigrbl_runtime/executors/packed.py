@@ -2227,7 +2227,7 @@ class PackedPlanExecutor(ExecutorBase):
         maybe = exact.get((protocol, path))
         return maybe if isinstance(maybe, int) else -1
 
-    def _prime_exact_websocket_program(
+    def _prime_exact_channel_program(
         self,
         ctx: _Ctx,
         env: Any,
@@ -2235,11 +2235,16 @@ class PackedPlanExecutor(ExecutorBase):
         packed: PackedKernel,
     ) -> int:
         hot = self._ensure_hot_ctx(ctx, env)
-        if hot.scope_type != "websocket" or not hot.protocol or not hot.path:
+        if hot.scope_type not in {"websocket", "webtransport"} or not hot.path:
             return -1
-        program_id = self._resolve_program_id_from_exact_websocket(
-            plan, packed, hot.protocol, hot.path
-        )
+        if hot.scope_type == "websocket" and hot.protocol:
+            program_id = self._resolve_program_id_from_exact_websocket(
+                plan, packed, hot.protocol, hot.path
+            )
+        else:
+            program_id = -1
+        if program_id < 0:
+            program_id = self._resolve_program_id_from_channel(ctx, plan)
         if program_id < 0:
             return -1
         temp = getattr(ctx, "temp", None)
@@ -2250,33 +2255,32 @@ class PackedPlanExecutor(ExecutorBase):
             if program_id < len(getattr(packed, "hot_op_plans", ()))
             else None
         )
-        hot_runner_id = self._resolve_program_hot_runner_id(
-            packed, program_id, hot_op_plan
-        )
-        if hot_runner_id != _HOT_RUNNER_WS_UNARY_TEXT:
-            return -1
-
         proto_to_id = getattr(packed, "proto_to_id", None)
         selector_to_id = getattr(packed, "selector_to_id", None)
+        route_protocol = hot.protocol
+        route_selector = hot.selector
+        if hot.scope_type == "webtransport":
+            route_protocol = "webtransport"
+            route_selector = hot.path
         if isinstance(proto_to_id, Mapping):
-            proto_id = self._coerce_int(proto_to_id.get(hot.protocol))
+            proto_id = self._coerce_int(proto_to_id.get(route_protocol))
             if proto_id is not None:
                 hot.proto_id = proto_id
         if isinstance(selector_to_id, Mapping):
-            selector_id = self._coerce_int(selector_to_id.get(hot.selector))
+            selector_id = self._coerce_int(selector_to_id.get(route_selector))
             if selector_id is not None:
                 hot.selector_id = selector_id
         hot.program_id = program_id
         hot.route_program_id = program_id
         hot.route_opmeta_index = program_id
         if not hot.route_protocol:
-            hot.route_protocol = hot.protocol
+            hot.route_protocol = route_protocol
         if not hot.route_selector:
-            hot.route_selector = hot.selector
+            hot.route_selector = route_selector
         if not hot.dispatch_channel_protocol:
-            hot.dispatch_channel_protocol = hot.route_protocol or hot.protocol
+            hot.dispatch_channel_protocol = hot.route_protocol or route_protocol
         if not hot.dispatch_channel_selector:
-            hot.dispatch_channel_selector = hot.route_selector or hot.selector
+            hot.dispatch_channel_selector = hot.route_selector or route_selector
         hot.transport_kind_id = _TRANSPORT_KIND_CHANNEL
         ctx.path = hot.path
         temp["program_id"] = program_id
@@ -3205,12 +3209,7 @@ class PackedPlanExecutor(ExecutorBase):
                 initial = await receive()
                 if isinstance(initial, Mapping):
                     if initial.get("type") == "websocket.connect":
-                        next_message = await receive() if callable(receive) else {"type": "websocket.disconnect", "code": 1000}
-                        first_message = (
-                            next_message
-                            if isinstance(next_message, Mapping)
-                            else {"type": "websocket.disconnect", "code": 1000}
-                        )
+                        first_message = None
                     else:
                         first_message = initial
             websocket = _DirectWebSocketUnary(
@@ -3727,7 +3726,7 @@ class PackedPlanExecutor(ExecutorBase):
                 ctx, env, plan, packed
             )
         if program_id < 0:
-            program_id = self._prime_exact_websocket_program(ctx, env, plan, packed)
+            program_id = self._prime_exact_channel_program(ctx, env, plan, packed)
         if program_id < 0:
             program_id = await self._probe_ingress_for_program(ctx, plan, packed)
         if program_id < 0:
@@ -3744,6 +3743,11 @@ class PackedPlanExecutor(ExecutorBase):
                 send = getattr(env, "send", None)
                 if callable(send):
                     await send({"type": "websocket.close", "code": 4404})
+                return
+            if str(scope.get("type") or "") == "webtransport":
+                send = getattr(env, "send", None)
+                if callable(send):
+                    await send({"type": "webtransport.close", "code": 4404})
                 return
             await _send_json(
                 env, 404, {"detail": "No runtime operation matched request."}

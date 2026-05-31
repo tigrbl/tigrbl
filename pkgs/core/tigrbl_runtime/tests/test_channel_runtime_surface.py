@@ -11,6 +11,8 @@ from tigrbl_runtime.channel import (
     normalize_exchange,
     prepare_channel_context,
 )
+from tigrbl_runtime.channel.asgi import send_transport_via_channel
+from tigrbl_runtime.executors.types import _Ctx
 from tigrbl_typing.channel import OpChannel
 from tigrbl_typing.gw.raw import GwRawEnvelope
 
@@ -82,9 +84,9 @@ def test_prepare_channel_context_reads_initial_websocket_message() -> None:
     channel = asyncio.run(prepare_channel_context(env, ctx))
 
     assert channel.kind == "websocket"
-    assert ctx["body"] == b'{"jsonrpc":"2.0","method":"widgets.echo","id":1}'
-    assert ctx["temp"]["dispatch"]["binding_protocol"] == "wss.jsonrpc"
-    assert channel.state["receive_queue"][0]["type"] == "websocket.receive"
+    assert channel.state["connected"] is True
+    assert ctx.get("body") is None
+    assert "binding_protocol" not in ctx["temp"]["dispatch"]
 
 
 def test_runtime_websocket_replays_buffered_receive_message() -> None:
@@ -207,3 +209,77 @@ def test_runtime_websocket_receive_text_raises_on_disconnect() -> None:
 
 def test_normalize_exchange_maps_legacy_bidirectional_value() -> None:
     assert normalize_exchange("bidirectional") == "bidirectional_stream"
+
+
+def test_send_transport_via_channel_emits_structured_webtransport_events() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    env = GwRawEnvelope(
+        kind="asgi3",
+        scope={"type": "webtransport", "path": "/transport/session"},
+        receive=_empty_receive,
+        send=send,
+    )
+    ctx = _Ctx()
+    ctx["channel"] = OpChannel(
+        kind="webtransport",
+        family="session",
+        exchange="bidirectional_stream",
+        protocol="webtransport",
+        path="/transport/session",
+        state={"session_id": "s1"},
+    )
+    ctx["channel_message"] = {
+        "type": "webtransport.stream.receive",
+        "session_id": "s1",
+        "stream_id": "4",
+        "stream_direction": "bidi",
+        "framing": "binary",
+    }
+    ctx.temp = {
+        "egress": {
+            "transport_response": {
+                "body": {
+                    "bidirectional_streams": [{"message": "echo:payload"}],
+                    "unidirectional_streams": [{"message": "demo-unidirectional"}],
+                    "datagrams": [
+                        {"direction": "client-to-server", "payload": "ping"},
+                        {"direction": "server-to-client", "payload": "pong"},
+                    ],
+                }
+            }
+        }
+    }
+
+    asyncio.run(send_transport_via_channel(env, ctx))
+
+    assert sent[0] == {"type": "webtransport.accept", "session_id": "s1"}
+    assert sent[1] == {
+        "type": "webtransport.stream.send",
+        "session_id": "s1",
+        "stream_id": 4,
+        "stream_direction": "bidi",
+        "data": b"echo:payload",
+        "more": False,
+        "framing": "binary",
+    }
+    assert sent[2] == {
+        "type": "webtransport.stream.send",
+        "session_id": "s1",
+        "stream_id": 5,
+        "stream_direction": "server_to_client",
+        "data": b"demo-unidirectional",
+        "more": False,
+        "framing": "binary",
+    }
+    assert sent[3] == {
+        "type": "webtransport.datagram.send",
+        "session_id": "s1",
+        "datagram_id": "datagram-2",
+        "data": b"pong",
+        "framing": "binary",
+    }
+    assert sent[4] == {"type": "webtransport.close", "code": 1000, "session_id": "s1"}
