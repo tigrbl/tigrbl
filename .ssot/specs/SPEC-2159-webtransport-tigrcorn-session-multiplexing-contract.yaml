@@ -13,9 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to govern bridge-level proof for one Tigrcorn-backed WebTransport session carrying mixed native lanes."
     at: "2026-05-31T19:29:17Z"
+    note: "Created to govern bridge-level proof for one Tigrcorn-backed WebTransport session carrying mixed native lanes."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Clarified that the transport demo is narrower than full session multiplexing closure."
+    at: "2026-05-31T20:05:43Z"
 references: []
 body: |-
   ## Intent
@@ -47,6 +51,14 @@ body: |-
   The integration test must assert that all stream events preserve `stream_id`, all datagram events preserve `datagram_id`, all events preserve `session_id`, and framing remains lane-local.
   
   The integration test must assert that bidirectional streams classify as stream/duplex, client unidirectional streams classify as stream/client_stream, server unidirectional streams classify as stream/server_stream, and datagrams classify as datagram/duplex.
+  
+  ## Proof Class Boundary
+  
+  This SPEC governs the bridge-contract proof class for Tigrcorn-backed WebTransport multiplexing.
+  
+  The governed `examples/transport_demo` bundle is a narrower server-client proof slice. It may prove one session with one bidirectional stream, one unidirectional stream, and datagrams, but that narrower proof does not satisfy this full multiplexing contract on its own.
+  
+  Closing the demo proof and closing this multiplexing contract are separate obligations. Neither may be used to silently imply the other.
   
   ## Non-Goals
   

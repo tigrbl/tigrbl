@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2152"
 number: 2152
@@ -13,29 +13,23 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define the transport scenario matrix for the next nested AppSpec coverage slice."
     at: "2026-05-09T17:05:00Z"
+    note: "Created to define the transport scenario matrix for the next nested AppSpec coverage slice."
+    status: "draft"
   -
     status: "draft"
-    note: "Expanded websocket rows to include framing and subprotocol validation."
-    at: "2026-05-10T11:20:00Z"
-  -
-    status: "draft"
-    note: "Clarified that the transport matrix is a governed coverage contract, not a required production module."
-    at: "2026-05-10T12:00:00Z"
+    note: "Added proof-class labels and named Tigrcorn demo bundle coverage."
+    at: "2026-05-31T20:05:40Z"
 references: []
 body: |-
   ## Intent
-
+  
   Define the canonical AppSpec transport scenario matrix across path kinds, protocol bindings, exchange modes, framing modes, documentation projections, static surfaces, and nested mounts.
-
-  The matrix is a coverage truth for canonical lowering. Supported rows are not
-  merely declarative inventory; they must lower from canonical AppSpec graphs
-  into runtime behavior and docs/runtime parity checks.
-
+  
+  The matrix is a coverage truth for canonical lowering. Supported rows are not merely declarative inventory; they must lower from canonical AppSpec graphs into runtime behavior and docs/runtime parity checks.
+  
   ## Contract
-
+  
   1. Transport scenario coverage MUST be modeled separately from engine binding.
   2. `PathSpec` owns concrete address paths.
   3. Binding specs own protocol, exchange, framing, selector, and transport-specific invocation semantics.
@@ -44,7 +38,7 @@ body: |-
   6. HTTP REST and HTTP JSON-RPC MUST remain first-class request/response surfaces.
   7. HTTP stream and HTTPS stream MUST have canonical path representation instead of being hidden under generic resource paths.
   8. SSE MUST remain a server-stream surface with `sse` framing.
-  9. WebSocket and WSS MUST support text/binary baseline framing.
+  9. WebSocket and WSS MUST support text/binary baseline framing at the canonical binding layer.
   10. WS+JSON-RPC and WSS+JSON-RPC MUST be symmetric canonical scenarios represented by websocket protocol plus JSON-RPC framing or an equivalent normalized binding.
   11. WS+NDJSON and WSS+NDJSON MUST be explicit planned/fail-closed scenarios until `ndjson` framing and corresponding path kinds are implemented.
   12. WebTransport MUST remain a bidirectional stream/datagram-capable transport scenario.
@@ -54,41 +48,67 @@ body: |-
   16. Websocket subprotocol negotiation MUST be modeled separately from websocket message framing under `spc:2153`.
   17. The transport matrix MUST NOT be treated as a canonical spec graph entity or a required production module. It is a governed coverage contract whose rows are satisfied by canonical spec entities such as `PathSpec`, binding specs, docs projection specs, `AppSpec`, `RouterSpec`, `TableSpec`, and `OpSpec`.
   18. Runtime lowerers and docs emitters MUST derive supported rows from canonical AppSpec entities after normalization. Reconstructing transport support exclusively from legacy model/router artifacts is invalid for matrix closure.
-
+  19. Every scenario row MUST identify the proof class required for an honest support claim:
+     - `canonical-lowering` for canonical binding/path/docs/materialization proof;
+     - `bridge-contract` for canonical scope/event bridge proof over extension transports;
+     - `server-client-e2e` for live network proof on the named server rail.
+  20. Tigrcorn-specific support claims MUST NOT be marked supported unless the relevant `server-client-e2e` proof exists on Tigrcorn.
+  21. The governed `examples/transport_demo` bundle is the named Tigrcorn proof surface for the demo rows in this SPEC. It does not replace lower-level canonical or bridge-contract tests.
+  
   ## Implementation Boundary
-
+  
   The authoritative transport matrix is the SSOT/SPEC table and its linked tests. Implementations satisfy the matrix by adding fields, validation, and lowering behavior to the existing canonical spec layers. A standalone production `transport_matrix` module MUST NOT become a second source of truth for path kinds, protocol bindings, docs projection, static serving, nested mounts, or websocket framing/subprotocol semantics.
-
+  
   ## Transport Matrix
-
-  | Scenario | Binding | Path kind | Expected support |
-  |---|---|---|---|
-  | HTTP REST | `HttpRestBindingSpec(proto="http.rest")` | `resource` | Supported |
-  | HTTPS REST | `HttpRestBindingSpec(proto="https.rest")` | `resource` | Supported |
-  | HTTP JSON-RPC | `HttpJsonRpcBindingSpec(proto="http.jsonrpc")` | `jsonrpc` | Supported |
-  | HTTPS JSON-RPC | `HttpJsonRpcBindingSpec(proto="https.jsonrpc")` | `jsonrpc` | Supported |
-  | HTTP stream | `HttpStreamBindingSpec(proto="http.stream")` | `stream` | Planned canonical path coverage |
-  | HTTPS stream | `HttpStreamBindingSpec(proto="https.stream")` | `stream` | Planned canonical path coverage |
-  | HTTP SSE | `SseBindingSpec(proto="http.sse")` | `sse` | Supported |
-  | HTTPS SSE | `SseBindingSpec(proto="https.sse")` | `sse` | Supported |
-  | WS text | `WsBindingSpec(proto="ws", framing="text", subprotocols=())` | `websocket` | Supported |
-  | WSS text | `WsBindingSpec(proto="wss", framing="text", subprotocols=())` | `websocket` | Supported |
-  | WS binary | `WsBindingSpec(proto="ws", framing="binary", subprotocols=())` | `websocket` | Supported |
-  | WSS binary | `WsBindingSpec(proto="wss", framing="binary", subprotocols=())` | `websocket` | Supported |
-  | WS JSON-RPC | `WsBindingSpec(proto="ws", framing="jsonrpc", subprotocols=("jsonrpc",))` | `ws-jsonrpc` | Planned canonical symmetry |
-  | WSS JSON-RPC | `WsBindingSpec(proto="wss", framing="jsonrpc", subprotocols=("jsonrpc",))` | `wss-jsonrpc` | Partially supported; needs corpus symmetry |
-  | WS NDJSON | `WsBindingSpec(proto="ws", framing="ndjson", subprotocols=("ndjson",))` | `ws-ndjson` | Planned/fail-closed |
-  | WSS NDJSON | `WsBindingSpec(proto="wss", framing="ndjson", subprotocols=("ndjson",))` | `wss-ndjson` | Planned/fail-closed |
-  | WebTransport | `WebTransportBindingSpec()` | `webtransport` | Supported |
-  | Message bus | `MessageBindingSpec(proto=...)` | non-path or message address | Partial; address model pending |
-  | Datagram | `DatagramBindingSpec(proto=...)` | non-path or datagram address | Partial; address model pending |
-  | Docs payload | `DocsPayloadSpec(...)` | `docs-payload` | Supported by docs projection contract |
-  | Docs UIX | `DocsUixSpec(...)` | `docs-uix` | Supported by docs projection contract |
-  | Static files | static spec payload | `static` | Structural; canonical static spec pending |
-  | Nested app mount | mount spec payload | `mount` | Structural; canonical mount spec pending |
-
+  
+  | Scenario | Binding | Path kind | Expected support | Required proof |
+  |---|---|---|---|---|
+  | HTTP REST | `HttpRestBindingSpec(proto=http.rest)` | `resource` | Supported | `canonical-lowering`, `server-client-e2e` |
+  | HTTPS REST | `HttpRestBindingSpec(proto=https.rest)` | `resource` | Supported | `canonical-lowering`, `server-client-e2e` |
+  | HTTP JSON-RPC | `HttpJsonRpcBindingSpec(proto=http.jsonrpc)` | `jsonrpc` | Supported | `canonical-lowering`, `server-client-e2e` |
+  | HTTPS JSON-RPC | `HttpJsonRpcBindingSpec(proto=https.jsonrpc)` | `jsonrpc` | Supported | `canonical-lowering`, `server-client-e2e` |
+  | HTTP stream | `HttpStreamBindingSpec(proto=http.stream)` | `stream` | Planned canonical path coverage | `canonical-lowering`, `server-client-e2e` |
+  | HTTPS stream | `HttpStreamBindingSpec(proto=https.stream)` | `stream` | Planned canonical path coverage | `canonical-lowering`, `server-client-e2e` |
+  | HTTP SSE | `SseBindingSpec(proto=http.sse)` | `sse` | Supported | `canonical-lowering`, `server-client-e2e` |
+  | HTTPS SSE | `SseBindingSpec(proto=https.sse)` | `sse` | Supported | `canonical-lowering`, `server-client-e2e` |
+  | WS text | `WsBindingSpec(proto=ws, framing=text, subprotocols=())` | `websocket` | Canonically supported; Tigrcorn e2e proof still required | `canonical-lowering`, `server-client-e2e` |
+  | WSS text | `WsBindingSpec(proto=wss, framing=text, subprotocols=())` | `websocket` | Canonically supported; Tigrcorn e2e proof still required | `canonical-lowering`, `server-client-e2e` |
+  | WS binary | `WsBindingSpec(proto=ws, framing=binary, subprotocols=())` | `websocket` | Governed vocabulary; runtime support requires explicit closure | `canonical-lowering` |
+  | WSS binary | `WsBindingSpec(proto=wss, framing=binary, subprotocols=())` | `websocket` | Governed vocabulary; runtime support requires explicit closure | `canonical-lowering` |
+  | WS JSON-RPC | `WsBindingSpec(proto=ws, framing=jsonrpc, subprotocols=(jsonrpc,))` | `ws-jsonrpc` | Canonically supported; Tigrcorn e2e proof still required | `canonical-lowering`, `server-client-e2e` |
+  | WSS JSON-RPC | `WsBindingSpec(proto=wss, framing=jsonrpc, subprotocols=(jsonrpc,))` | `wss-jsonrpc` | Canonically supported; Tigrcorn e2e proof still required | `canonical-lowering`, `server-client-e2e` |
+  | WS NDJSON | `WsBindingSpec(proto=ws, framing=ndjson, subprotocols=(ndjson,))` | `ws-ndjson` | Planned/fail-closed | `canonical-lowering` |
+  | WSS NDJSON | `WsBindingSpec(proto=wss, framing=ndjson, subprotocols=(ndjson,))` | `wss-ndjson` | Planned/fail-closed | `canonical-lowering` |
+  | WebTransport | `WebTransportBindingSpec()` | `webtransport` | Binding family supported; Tigrcorn demo and multiplexing proof remain separate closures | `canonical-lowering`, `bridge-contract`, `server-client-e2e` |
+  | Message bus | `MessageBindingSpec(proto=...)` | non-path or message address | Partial; address model pending | `canonical-lowering` |
+  | Datagram | `DatagramBindingSpec(proto=...)` | non-path or datagram address | Partial; address model pending | `canonical-lowering` |
+  | Docs payload | `DocsPayloadSpec(...)` | `docs-payload` | Supported by docs projection contract | `canonical-lowering` |
+  | Docs UIX | `DocsUixSpec(...)` | `docs-uix` | Supported by docs projection contract | `canonical-lowering` |
+  | Static files | static spec payload | `static` | Structural; canonical static spec pending | `canonical-lowering` |
+  | Nested app mount | mount spec payload | `mount` | Structural; canonical mount spec pending | `canonical-lowering` |
+  
+  ## Tigrcorn Demo Rows
+  
+  The governed `examples/transport_demo` bundle is the named Tigrcorn proof surface for these rows:
+  
+  - h11 REST
+  - h2 REST
+  - h3/quic REST
+  - h11 JSON-RPC
+  - h2 JSON-RPC
+  - h3/quic JSON-RPC
+  - stream raw
+  - stream ndjson
+  - SSE
+  - `ws`
+  - `wss`
+  - `wss + jsonrpc`
+  - `wss + ndjson` fail-closed
+  - mTLS
+  - WebTransport single session with one bidirectional stream, one unidirectional stream, and datagrams
+  
   ## Validation Matrix
-
+  
   | Scenario | Expected |
   |---|---|
   | Every supported binding appears in the matrix | Valid. |
@@ -97,21 +117,22 @@ body: |-
   | `http.stream` lacks `stream` path coverage | Fails planned transport matrix test until implemented. |
   | `ws` JSON-RPC has no symmetric path kind with `wss` JSON-RPC | Fails planned transport matrix test until implemented. |
   | `ndjson` framing is referenced before supported | Must fail closed with explicit planned status. |
-  | `framing="jsonrpc"` is paired with an unrelated subprotocol such as `graphql-ws` | Invalid. |
+  | `framing=jsonrpc` is paired with an unrelated subprotocol such as `graphql-ws` | Invalid. |
   | Websocket docs projection includes framing or subprotocol metadata outside its selected binding scope | Invalid. |
   | Docs payload includes protocols outside its projection | Invalid. |
   | Docs UIX selects payload or projection not declared in the canonical tree | Invalid. |
   | Static and mount paths lack canonical payload shape | Planned/fail-closed until spec payloads are defined. |
   | A production `transport_matrix` module becomes the authority for supported transports | Invalid; the SSOT matrix is coverage truth and canonical spec entities own implementation behavior. |
-
+  | A Tigrcorn support claim lacks Tigrcorn `server-client-e2e` proof | Invalid for supported status; row must remain partial or planned. |
+  
   ## Traceability
-
-  - ADRs: `adr:1129`, `adr:1131`, `adr:1006`, `adr:1007`, `adr:1023`, `adr:1051`, `adr:1080`
-  - Companion specs: `spc:2153`
-  - Defines features: `feat:transport-scenario-matrix-001`, `feat:transport-stream-pathkind-001`, `feat:transport-ws-wss-jsonrpc-001`, `feat:transport-ws-wss-ndjson-001`, `feat:docs-transport-projection-selection-001`, `feat:ws-jsonrpc-subprotocol-parity-001`, `feat:ws-ndjson-fail-closed-001`, `feat:wsbindingspec-framing-subprotocol-validation-001`
-
+  
+  - ADRs: `adr:1129`, `adr:1131`, `adr:1006`, `adr:1007`, `adr:1022`, `adr:1023`, `adr:1051`, `adr:1080`
+  - Companion specs: `spc:2153`, `spc:2160`
+  - Defines features: `feat:transport-scenario-matrix-001`, `feat:transport-stream-pathkind-001`, `feat:transport-ws-wss-jsonrpc-001`, `feat:transport-ws-wss-ndjson-001`, `feat:docs-transport-projection-selection-001`, `feat:ws-jsonrpc-subprotocol-parity-001`, `feat:ws-ndjson-fail-closed-001`, `feat:wsbindingspec-framing-subprotocol-validation-001`, `feat:tigrcorn-transport-demo-proof-001`
+  
   ## Verification Plan
-
+  
   - `tst:transport-scenario-matrix-contract`
   - `tst:transport-stream-pathkind-contract`
   - `tst:transport-ws-jsonrpc-contract`
@@ -120,7 +141,8 @@ body: |-
   - `tst:ws-jsonrpc-subprotocol-parity-contract`
   - `tst:ws-ndjson-fail-closed-contract`
   - `tst:wsbindingspec-framing-subprotocol-validation-contract`
-
+  - `tst:tigrcorn-transport-demo-e2e-matrix`
+  
   Tests MUST assert transport matrix rows through canonical spec entities and their lowering/validation behavior. They MUST NOT require a standalone production `transport_matrix` module, and they MUST fail if runtime parity is achieved only through non-canonical legacy reconstruction.
 spec_kind: "normative"
 adr_ids:

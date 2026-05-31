@@ -1,0 +1,120 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2160"
+number: 2160
+slug: "tigrcorn-transport-demo-e2e-proof-contract"
+title: "Tigrcorn Transport Demo End-to-End Proof Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Govern the `examples/transport_demo` bundle as the named Tigrcorn server-client end-to-end proof surface for the transport demo matrix requested for this slice."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern the repo-owned examples/transport_demo Tigrcorn proof bundle."
+    at: "2026-05-31T20:06:13Z"
+references: []
+body: |-
+  ## Intent
+  
+  Govern the `examples/transport_demo` bundle as the named Tigrcorn server-client end-to-end proof surface for the transport demo matrix requested for this slice.
+  
+  ## Contract
+  
+  The `examples/transport_demo` bundle is a governed proof bundle, not just example documentation.
+  
+  For every positive row in this SPEC, support claims require repeatable server-client end-to-end proof on a live Tigrcorn rail. In-process ASGI smoke, metadata projection checks, and bridge-contract tests are informative but insufficient for row closure.
+  
+  The demo bundle proves a narrower, operator-facing matrix than the broader transport architecture and broader WebTransport multiplexing contract. Passing this demo does not automatically close every generic transport feature, and generic transport policy does not automatically prove this demo.
+  
+  ## Required Demo Rows
+  
+  Positive rows:
+  
+  - h11 REST
+  - h2 REST
+  - h3/quic REST
+  - h11 JSON-RPC
+  - h2 JSON-RPC
+  - h3/quic JSON-RPC
+  - stream raw
+  - stream ndjson
+  - SSE
+  - `ws`
+  - `wss`
+  - `wss + jsonrpc`
+  - mTLS
+  - WebTransport single session with one bidirectional stream, one unidirectional stream, and datagram messages
+  
+  Negative row:
+  
+  - `wss + ndjson` MUST remain explicit fail-closed behavior and MUST be proven as such rather than silently omitted.
+  
+  ## Proof Expectations
+  
+  For the HTTP-family rows:
+  
+  - the proof must show a live Tigrcorn listener;
+  - the client must traverse the named protocol rail;
+  - the response must match the protocol-native success shape for that row.
+  
+  For websocket rows:
+  
+  - the proof must show successful handshake acceptance before application payload exchange;
+  - `ws` and `wss` must remain distinct lowered route identities;
+  - the JSON-RPC row must return protocol-native JSON-RPC response semantics rather than plain text echo.
+  
+  For the mTLS row:
+  
+  - the proof must exercise a live TLS client-certificate exchange against Tigrcorn;
+  - the route must prove the mutual-TLS security classification rather than only route registration.
+  
+  For the WebTransport demo row:
+  
+  - one session must include exactly this narrower proof minimum:
+    - one bidirectional stream lane;
+    - one unidirectional stream lane;
+    - datagram traffic;
+  - the proof must remain server-client end-to-end on Tigrcorn;
+  - this narrower proof does not satisfy the broader `spc:2159` multiplexing contract.
+  
+  For the fail-closed `wss + ndjson` row:
+  
+  - the proof must show explicit negative behavior or validation failure;
+  - accidental timeout or missing route behavior is not sufficient to count as fail-closed proof.
+  
+  ## Required Test Partition
+  
+  This proof bundle must remain split into distinct verification rows:
+  
+  - metadata/docs/negative-example proof for the example bundle declaration itself;
+  - websocket lowering and handshake closure tests;
+  - live Tigrcorn server-client end-to-end matrix proof;
+  - narrower WebTransport demo proof;
+  - broader WebTransport bridge-contract multiplexing proof under `spc:2159`.
+  
+  ## Traceability
+  
+  - ADRs: `adr:1022`, `adr:1006`, `adr:1014`, `adr:1131`, `adr:1096`
+  - Companion specs: `spc:2152`, `spc:2153`, `spc:2159`
+  - Defines features: `feat:tigrcorn-transport-demo-proof-001`, `feat:tigrcorn-websocket-e2e-closure-001`, `feat:webtransport-single-session-demo-proof-001`
+  
+  ## Verification Plan
+  
+  - `tst:pkgs-core-tigrbl_tests-tests-unit-test_transport_demo_bundle.py`
+  - `tst:tigrcorn-transport-demo-e2e-matrix`
+  - `tst:tigrcorn-websocket-handshake-e2e`
+  - `tst:tigrcorn-wss-jsonrpc-e2e`
+  - `tst:tigrcorn-wss-ndjson-fail-closed`
+  - `tst:tigrcorn-webtransport-single-session-demo`
+  
+  The metadata/docs test proves declaration and fail-closed inventory only. It does not close live Tigrcorn support claims.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1022"
+  - "adr:1096"
+  - "adr:1131"
+  - "adr:1132"

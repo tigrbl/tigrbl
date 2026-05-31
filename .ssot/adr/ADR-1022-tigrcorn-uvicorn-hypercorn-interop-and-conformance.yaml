@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.7.0"
 kind: "adr"
 id: "adr:1022"
 number: 1022
@@ -11,7 +11,11 @@ tags: []
 summary: "Tigrbl is intended to remain ASGI-portable, but portability must be made concrete."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Added server-rail proof requirements for transport support claims."
+    at: "2026-05-31T20:05:39Z"
 references: []
 body: |-
   ## Decision
@@ -28,14 +32,23 @@ body: |-
   3. Server-specific optimizations may exist, but they may not redefine the core semantic framework contract.
   4. Interop status is evidence-based and test-lane-backed.
   5. Where a protocol surface depends on server extensions, that dependency must be documented explicitly rather than implied as universal ASGI behavior.
+  6. Server-specific support claims require repeatable server-client end-to-end proof on that server rail.
+  7. In-process ASGI smoke checks, metadata projection tests, and contract-event bridge tests are useful proof classes, but they are not sufficient on their own to claim Tigrcorn transport support.
+  8. Transport proof must distinguish:
+     - canonical lowering and metadata proof;
+     - bridge-contract proof over canonical scope and event payloads;
+     - real server-client end-to-end proof.
   
   ## Context
   
   Tigrbl is intended to remain ASGI-portable, but portability must be made concrete.
   Interop belongs after the semantic, spec, binding, and compilation foundation is frozen, because server differences should be evaluated against a stable boundary.
   
+  The active transport slice now includes runtime claims that can only be justified honestly if the proof class is explicit. WebSocket and WebTransport support, in particular, can appear healthy under in-process or bridge-level checks while still failing on the live Tigrcorn rail. The architecture must therefore require proof-class labeling before a server-specific support claim is treated as closed.
+  
   ## Rejected Alternatives
   
   - Assuming all ASGI servers are behaviorally identical.
   - Baking Tigrcorn-specific semantics into core Tigrbl behavior.
   - Implying interop for extension surfaces with no evidence.
+  - Treating in-process ASGI success or bridge-contract success as equivalent to live Tigrcorn end-to-end proof.

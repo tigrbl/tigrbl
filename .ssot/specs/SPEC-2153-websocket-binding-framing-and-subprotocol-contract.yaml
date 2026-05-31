@@ -17,9 +17,13 @@ status_notes:
     note: "Created to define websocket framing and subprotocol validation for AppSpec transport bindings."
     status: "draft"
   -
-    status: "draft"
-    note: "Updated WebSocket framing contract with full target framing set."
     at: "2026-05-27T18:17:48Z"
+    note: "Updated WebSocket framing contract with full target framing set."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Added websocket handshake, route identity, and protocol-native JSON-RPC proof clauses."
+    at: "2026-05-31T20:05:42Z"
 references: []
 body: |-
   ## Intent
@@ -32,7 +36,7 @@ body: |-
   2. `WsBindingSpec.subprotocols` MUST be an ordered tuple of websocket subprotocol tokens, defaulting to an empty tuple when no subprotocol is required or advertised.
   3. `WsBindingSpec.framing` MUST describe post-handshake message interpretation and MUST default to `text` unless the binding declares a different supported or governed framing token.
   4. WebSocket and WSS target framing vocabulary is `text`, `bytes`, `binary`, `json`, `jsonrpc`, and `ndjson`.
-  5. Websocket text is the mature baseline websocket framing surface.
+  5. Websocket text is the mature baseline websocket framing surface at the canonical binding layer.
   6. JSON-RPC websocket framing MUST be represented as `framing=jsonrpc` on `WsBindingSpec` or as an equivalent normalized binding that lowers to that canonical value.
   7. `framing=jsonrpc` MUST require or normalize a JSON-RPC-compatible websocket subprotocol token and MUST reject explicitly incompatible subprotocol combinations.
   8. Websocket `binary` and websocket `bytes` may remain in governed framing vocabulary, but they must not be described as equivalent to mature framing-atom support until explicit runtime decode/encode closure exists.
@@ -40,17 +44,21 @@ body: |-
   10. `PathSpec.kind` MUST converge with websocket binding declarations: generic websocket path kinds allow mature text behavior, JSON-RPC path kinds require JSON-RPC framing, and NDJSON path kinds require explicit planned/fail-closed NDJSON handling.
   11. Docs projection MUST derive websocket protocol, framing, and subprotocol metadata from selected websocket bindings rather than from docs payload paths or UIX paths.
   12. Runtime compilation MUST consume the normalized binding metadata and MUST NOT infer websocket framing solely from path strings.
+  13. A supported websocket server claim requires proof that the runtime accepts the websocket handshake before waiting for application payload.
+  14. A supported `wss` claim requires proof that secure websocket routes preserve their own lowered route identity and do not collapse onto `ws` metadata or handlers.
+  15. A supported websocket JSON-RPC claim requires proof of protocol-native JSON-RPC reply behavior; plain text echo of the inbound JSON-RPC request does not satisfy the contract.
+  16. Canonical binding support and live Tigrcorn server-client support are separate proof classes. A row may be canonically governed while still remaining partial on Tigrcorn.
   
   ## WebSocket Binding Matrix
   
   | Scenario | Binding | Path kind | Expected support |
   |---|---|---|---|
-  | WS text | `WsBindingSpec(proto=ws, framing=text, subprotocols=())` | `websocket` | Supported |
-  | WSS text | `WsBindingSpec(proto=wss, framing=text, subprotocols=())` | `websocket` | Supported |
+  | WS text | `WsBindingSpec(proto=ws, framing=text, subprotocols=())` | `websocket` | Canonically supported; Tigrcorn e2e proof still required |
+  | WSS text | `WsBindingSpec(proto=wss, framing=text, subprotocols=())` | `websocket` | Canonically supported; Tigrcorn e2e proof still required |
   | WS JSON | `WsBindingSpec(proto=ws, framing=json, subprotocols=())` | `websocket` | Governed vocabulary; runtime support requires explicit codec closure |
   | WSS JSON | `WsBindingSpec(proto=wss, framing=json, subprotocols=())` | `websocket` | Governed vocabulary; runtime support requires explicit codec closure |
-  | WS JSON-RPC | `WsBindingSpec(proto=ws, framing=jsonrpc, subprotocols=(jsonrpc,))` | `ws-jsonrpc` | Active-line supported |
-  | WSS JSON-RPC | `WsBindingSpec(proto=wss, framing=jsonrpc, subprotocols=(jsonrpc,))` | `wss-jsonrpc` | Active-line supported |
+  | WS JSON-RPC | `WsBindingSpec(proto=ws, framing=jsonrpc, subprotocols=(jsonrpc,))` | `ws-jsonrpc` | Canonically supported; live server support is proof-gated |
+  | WSS JSON-RPC | `WsBindingSpec(proto=wss, framing=jsonrpc, subprotocols=(jsonrpc,))` | `wss-jsonrpc` | Canonically supported; live server support is proof-gated |
   | WS bytes | `WsBindingSpec(proto=ws, framing=bytes, subprotocols=())` | `websocket` | Governed vocabulary; runtime support remains partial |
   | WSS bytes | `WsBindingSpec(proto=wss, framing=bytes, subprotocols=())` | `websocket` | Governed vocabulary; runtime support remains partial |
   | WS binary | `WsBindingSpec(proto=ws, framing=binary, subprotocols=())` | `websocket` | Governed vocabulary; runtime support remains partial |
@@ -72,12 +80,15 @@ body: |-
   | `PathSpec.kind=ws-jsonrpc` with non-JSON-RPC websocket framing | Invalid. |
   | `PathSpec.kind=websocket` with JSON-RPC framing but no explicit JSON-RPC path kind or convergence rule | Invalid or normalized to the JSON-RPC path kind by concrete lowering. |
   | Docs payload includes websocket metadata outside its selected projection | Invalid. |
+  | Server accepts only after first application payload | Invalid. |
+  | `wss` route lowers onto `ws` path, protocol, framing, or endpoint identity | Invalid. |
+  | JSON-RPC websocket route emits plain text echo instead of JSON-RPC response semantics | Invalid. |
   
   ## Traceability
   
-  - ADRs: `adr:1131`, `adr:1133`, `adr:1129`, `adr:1006`, `adr:1007`, `adr:1023`, `adr:1051`, `adr:1080`
+  - ADRs: `adr:1131`, `adr:1133`, `adr:1129`, `adr:1006`, `adr:1007`, `adr:1022`, `adr:1023`, `adr:1051`, `adr:1080`
   - Companion specs: `spc:2150`, `spc:2152`, `spc:2058`, `spc:2157`
-  - Defines features: `feat:wsbindingspec-subprotocols-001`, `feat:wsbindingspec-framing-001`, `feat:wsbindingspec-framing-subprotocol-validation-001`, `feat:ws-jsonrpc-subprotocol-parity-001`, `feat:ws-ndjson-fail-closed-001`, `feat:pathkind-websocket-binding-convergence-001`, `feat:docs-websocket-transport-projection-001`
+  - Defines features: `feat:wsbindingspec-subprotocols-001`, `feat:wsbindingspec-framing-001`, `feat:wsbindingspec-framing-subprotocol-validation-001`, `feat:ws-jsonrpc-subprotocol-parity-001`, `feat:ws-ndjson-fail-closed-001`, `feat:pathkind-websocket-binding-convergence-001`, `feat:docs-websocket-transport-projection-001`, `feat:tigrcorn-websocket-e2e-closure-001`
   
   ## Verification Plan
   
@@ -88,6 +99,11 @@ body: |-
   - `tst:ws-ndjson-fail-closed-contract`
   - `tst:pathkind-websocket-binding-convergence-contract`
   - `tst:docs-websocket-transport-projection-contract`
+  - `tst:websocket-accept-before-payload-contract`
+  - `tst:websocket-hotplan-route-identity-contract`
+  - `tst:tigrcorn-websocket-handshake-e2e`
+  - `tst:tigrcorn-wss-jsonrpc-e2e`
+  - `tst:tigrcorn-wss-ndjson-fail-closed`
 spec_kind: "normative"
 adr_ids:
   - "adr:1131"
