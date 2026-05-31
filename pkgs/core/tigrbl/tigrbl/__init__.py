@@ -160,6 +160,7 @@ from tigrbl_base._base import (  # noqa: E402
 from tigrbl_core._spec import (  # noqa: E402
     AppSpec,
     Arity,
+    BINDING_PROFILE_EXCHANGE_SUPPORT,
     BindingRegistrySpec,
     BindingSpec,
     HTTPBindingSpec,
@@ -215,6 +216,7 @@ from tigrbl_core._spec import (  # noqa: E402
     normalize_binding_spec,
     path_for_binding,
     validate_app_framing_for_binding,
+    validate_binding_profile_exchange,
 )
 from tigrbl_runtime.runtime.executor import _invoke  # noqa: E402
 
@@ -326,6 +328,7 @@ __all__ = [
     "Router",
     "Binding",
     "BindingRegistry",
+    "BINDING_PROFILE_EXCHANGE_SUPPORT",
     "Depends",
     "HTTPException",
     "TableBase",
@@ -390,6 +393,7 @@ __all__ = [
     "canonical_binding_kind",
     "normalize_binding_spec",
     "validate_app_framing_for_binding",
+    "validate_binding_profile_exchange",
     "bind",
     "rebind",
     "build_schemas",

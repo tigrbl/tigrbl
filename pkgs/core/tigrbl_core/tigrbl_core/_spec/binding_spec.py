@@ -65,6 +65,20 @@ APP_LEVEL_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
     "webtransport": ("webtransport",),
 }
 
+BINDING_PROFILE_EXCHANGE_SUPPORT: dict[str, tuple[str, ...]] = {
+    "http.rest": ("request_response",),
+    "https.rest": ("request_response",),
+    "http.jsonrpc": ("request_response",),
+    "https.jsonrpc": ("request_response",),
+    "http.stream": ("server_stream",),
+    "https.stream": ("server_stream",),
+    "http.sse": ("server_stream",),
+    "https.sse": ("server_stream",),
+    "ws": ("bidirectional_stream",),
+    "wss": ("bidirectional_stream",),
+    "webtransport": ("bidirectional_stream", "client_stream", "server_stream"),
+}
+
 WEBTRANSPORT_NATIVE_LANES: tuple[str, ...] = (
     "session",
     "bidi_stream",
@@ -155,6 +169,22 @@ def validate_app_framing_for_binding(
     return selected
 
 
+def validate_binding_profile_exchange(
+    *,
+    binding_kind: str,
+    exchange: str | None,
+) -> str:
+    allowed = BINDING_PROFILE_EXCHANGE_SUPPORT.get(binding_kind)
+    if allowed is None:
+        raise ValueError(f"unsupported binding kind {binding_kind!r}")
+    selected = normalize_exchange(exchange or allowed[0])
+    if selected not in allowed:
+        raise ValueError(
+            f"unsupported exchange {selected!r} for binding {binding_kind!r}"
+        )
+    return selected
+
+
 def webtransport_lane_for_profile(profile: str | None) -> str:
     selected = str(profile or "webtransport")
     if selected == "webtransport":
@@ -219,9 +249,12 @@ class HTTPBindingSpec(SerdeMixin):
 
     def __post_init__(self) -> None:
         default_exchange, default_framing = _PROFILE_DEFAULTS[self.profile]
-        exchange = str(self.exchange or default_exchange)
-        framing = str(self.framing or default_framing)
         kind = binding_kind_for(proto=self.proto, profile=self.profile)
+        exchange = validate_binding_profile_exchange(
+            binding_kind=kind,
+            exchange=str(self.exchange or default_exchange),
+        )
+        framing = str(self.framing or default_framing)
         validate_app_framing_for_binding(binding_kind=kind, framing=framing)
         if self.profile == "jsonrpc" and not self.rpc_method:
             raise ValueError("HTTPBindingSpec profile='jsonrpc' requires rpc_method")
@@ -240,12 +273,17 @@ class WebSocketBindingSpec(SerdeMixin):
 
     def __post_init__(self) -> None:
         subprotocols = tuple(str(item).lower() for item in self.subprotocols)
+        exchange = validate_binding_profile_exchange(
+            binding_kind=self.proto,
+            exchange=self.exchange,
+        )
         framing = validate_app_framing_for_binding(
             binding_kind=self.proto,
             framing=self.framing,
             subprotocols=subprotocols,
         )
         object.__setattr__(self, "subprotocols", subprotocols)
+        object.__setattr__(self, "exchange", exchange)
         object.__setattr__(self, "framing", framing)
 
 
@@ -259,6 +297,7 @@ class HttpRestBindingSpec(SerdeMixin):
     framing: Framing = "json"
 
     def __post_init__(self) -> None:
+        validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
         validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
 
 
@@ -272,6 +311,7 @@ class HttpJsonRpcBindingSpec(SerdeMixin):
     framing: Framing = "jsonrpc"
 
     def __post_init__(self) -> None:
+        validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
         validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
 
 
@@ -285,6 +325,7 @@ class HttpStreamBindingSpec(SerdeMixin):
     framing: Framing = "stream"
 
     def __post_init__(self) -> None:
+        validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
         validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
 
 
@@ -298,6 +339,7 @@ class SseBindingSpec(SerdeMixin):
     framing: Framing = "sse"
 
     def __post_init__(self) -> None:
+        validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
         validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
 
 
@@ -314,12 +356,17 @@ class WsBindingSpec(SerdeMixin):
         subprotocols = tuple(str(item).lower() for item in self.subprotocols)
         if self.framing == "jsonrpc" and not subprotocols:
             subprotocols = ("jsonrpc",)
+        exchange = validate_binding_profile_exchange(
+            binding_kind=self.proto,
+            exchange=self.exchange,
+        )
         validate_app_framing_for_binding(
             binding_kind=self.proto,
             framing=self.framing,
             subprotocols=subprotocols,
         )
         object.__setattr__(self, "subprotocols", subprotocols)
+        object.__setattr__(self, "exchange", exchange)
 
 
 @dataclass(frozen=True, slots=True)
@@ -623,6 +670,7 @@ __all__ = [
     "BindingRegistrySpec",
     "BindingEventKey",
     "APP_LEVEL_FRAMING_SUPPORT",
+    "BINDING_PROFILE_EXCHANGE_SUPPORT",
     "BindingProfile",
     "DatagramBindingSpec",
     "Exchange",
@@ -650,6 +698,7 @@ __all__ = [
     "project_binding_runtime_metadata",
     "resolve_rest_nested_prefix",
     "validate_app_framing_for_binding",
+    "validate_binding_profile_exchange",
     "validate_webtransport_lane_exchange",
     "validate_webtransport_inner_framing",
     "webtransport_lane_for_profile",
