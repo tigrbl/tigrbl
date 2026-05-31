@@ -12,6 +12,7 @@ from tigrbl_core._spec.binding_spec import (
     validate_webtransport_lane_exchange,
 )
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
+from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
 
 
 def test_webtransport_native_lane_table_has_no_message_lane() -> None:
@@ -209,3 +210,108 @@ def test_kernel_plan_rejects_webtransport_message_lane() -> None:
             "Transport.bad",
             {"kind": "webtransport", "profile": "message"},
         )
+
+
+@pytest.mark.parametrize(
+    ("event", "channel", "payload", "expected"),
+    (
+        (
+            "webtransport.stream.receive",
+            "receive",
+            {"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi", "framing": "jsonrpc"},
+            {"family": "stream", "lane": "bidi_stream", "exchange": "bidirectional_stream"},
+        ),
+        (
+            "webtransport.stream.receive",
+            "receive",
+            {"session_id": "s1", "stream_id": "st2", "stream_direction": "client_to_server", "framing": "ndjson"},
+            {"family": "stream", "lane": "unidi_client_stream", "exchange": "client_stream"},
+        ),
+        (
+            "webtransport.stream.send",
+            "send",
+            {"session_id": "s1", "stream_id": "st3", "stream_direction": "server_to_client", "framing": "text"},
+            {"family": "stream", "lane": "unidi_server_stream", "exchange": "server_stream"},
+        ),
+        (
+            "webtransport.datagram.send",
+            "send",
+            {"session_id": "s1", "datagram_id": "dg1", "framing": "json"},
+            {"family": "datagram", "lane": "datagram", "exchange": "bidirectional_stream"},
+        ),
+    ),
+)
+def test_webtransport_event_payload_projects_lane_boundary(
+    event: str,
+    channel: str,
+    payload: dict[str, object],
+    expected: dict[str, object],
+) -> None:
+    assert validate_webtransport_event_payload(
+        event=event,
+        channel=channel,
+        payload=payload,
+    ) == expected
+
+
+@pytest.mark.parametrize(
+    ("event", "channel", "payload", "match"),
+    (
+        (
+            "webtransport.stream.receive",
+            "receive",
+            {"session_id": "s1", "stream_direction": "bidi"},
+            "stream_id",
+        ),
+        (
+            "webtransport.stream.receive",
+            "receive",
+            {"session_id": "s1", "stream_id": "st1"},
+            "stream_direction",
+        ),
+        (
+            "webtransport.stream.receive",
+            "receive",
+            {"session_id": "s1", "stream_id": "st1", "stream_direction": "server_to_client"},
+            "server_to_client",
+        ),
+        (
+            "webtransport.stream.send",
+            "send",
+            {"session_id": "s1", "stream_id": "st1", "stream_direction": "client_to_server"},
+            "client_to_server",
+        ),
+        (
+            "webtransport.datagram.receive",
+            "receive",
+            {"session_id": "s1", "stream_id": "st1", "datagram_id": "dg1"},
+            "stream_id",
+        ),
+        (
+            "webtransport.stream.send",
+            "send",
+            {"session_id": "s1", "stream_id": "st1", "stream_direction": "bidi", "datagram_id": "dg1"},
+            "datagram_id",
+        ),
+        (
+            "webtransport.datagram.send",
+            "send",
+            {"session_id": "s1", "datagram_id": "dg1", "framing": "jsonrpc"},
+            "inner framing",
+        ),
+        (
+            "webtransport.message.receive",
+            "receive",
+            {"session_id": "s1"},
+            "message",
+        ),
+    ),
+)
+def test_webtransport_event_payload_negative_corpus(
+    event: str,
+    channel: str,
+    payload: dict[str, object],
+    match: str,
+) -> None:
+    with pytest.raises(ValueError, match=match):
+        validate_webtransport_event_payload(event=event, channel=channel, payload=payload)
