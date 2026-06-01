@@ -4,11 +4,44 @@
 <p><strong>Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.</strong></p>
 <a href="https://pypi.org/project/tigrbl_tests/"><img src="https://img.shields.io/pypi/v/tigrbl_tests?label=PyPI" alt="PyPI version for tigrbl_tests"/></a>
 <a href="https://pypi.org/project/tigrbl_tests/"><img src="https://static.pepy.tech/badge/tigrbl_tests" alt="Downloads for tigrbl_tests"/></a>
+<a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_tests"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_tests/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_tests/README.md.svg?label=hits" alt="Repository hits for tigrbl_tests README"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
-<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20to%203.15-3776ab" alt="Python requirement for tigrbl_tests"/></a>
+<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for tigrbl_tests"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md"><img src="https://img.shields.io/badge/workspace-core-1f6feb" alt="Workspace group for tigrbl_tests"/></a>
 </div>
+
+## What is tigrbl_tests?
+
+Reusable Tigrbl pytest fixtures, conformance assertions, integration helpers, and package test utilities.
+
+## Why use tigrbl_tests?
+
+Use it when downstream packages need the same Tigrbl fixtures, conformance helpers, and regression assertions used by the workspace.
+
+## When should I install tigrbl_tests?
+
+Install it in CI, package-local validation, transport integration tests, and compatibility checks.
+
+## Who is tigrbl_tests for?
+
+Maintainers, extension authors, and integration teams validating Tigrbl-compatible packages.
+
+## Where does tigrbl_tests fit?
+
+`tigrbl_tests` lives at `pkgs/core/tigrbl_tests` and serves reusable test, conformance, and integration support for Tigrbl packages.
+
+## How does tigrbl_tests work?
+
+It packages reusable pytest assets and helper modules that exercise public Tigrbl behavior instead of relying on private workspace state.
+
+## Certification Status
+
+- Package status: governed package in the `tigrbl/tigrbl` workspace.
+- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
+- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
+- Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
+- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
 
 ## Install
 
@@ -20,53 +53,98 @@ uv add tigrbl_tests
 pip install tigrbl_tests
 ```
 
+## Surface Coverage
+
+| Surface | Value |
+|---|---|
+| PyPI package | [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) |
+| Repository path | [`pkgs/core/tigrbl_tests`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests) |
+| Python import root | `benchmarks`, `tigrbl_tests`, `triage_tests`, `v4` |
+| Console scripts | none declared |
+| Entry points | none declared |
+| Optional extras | none declared |
+| Legal files | `LICENSE`, `NOTICE` |
+| Supported Python | `3.10 | 3.11 | 3.12 | 3.13 | 3.14` |
+
 ## What It Owns
 
-`tigrbl_tests` owns the tests boundary inside the split Python workspace. Key implementation roots include `benchmarks` with `comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark`; `examples` with `01-beginner-foundations/, 01_beginner_fundamentals/, 02-beginner-columns/, 02_beginner_models/, 03-beginner-mixins/, 03_beginner_specs/`.
+`tigrbl_tests` owns the `test support package` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
 
-## Use It When
+Implementation orientation:
+- `benchmarks`: comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark, tigrbl_sse_perf_suite, tigrbl_streaming_perf_suite, tigrbl_websocket_perf_suite, tigrbl_webtransport_perf_suite
+- `tigrbl_tests`: examples/, tests/
+- `v4`: tests/
 
-Use `tigrbl_tests` when you need reusable fixtures, conformance helpers, parity assets, and benchmark-oriented test surfaces for Tigrbl packages or downstream integrations.
+## Public API and Import Surface
 
-## Public Surface
+- Import roots: `benchmarks`, `tigrbl_tests`, `triage_tests`, `v4`.
+- Public symbols: public surface is module-oriented; import the package boundary and inspect submodules as needed.
+- Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/), [`tigrbl_client`](https://pypi.org/project/tigrbl_client/).
+- External runtime dependencies: `psycopg2-binary>=2.9.9`, `asyncpg>=0.30.0`, `pytest>=8.0`, `pytest-asyncio>=0.24.0`, `pytest-xdist>=3.6.1`, `pytest-json-report>=1.5.0`, `python-dotenv`, `requests>=2.32.3`, `flake8>=7.0`, `pytest-timeout>=2.3.1`, `ruff>=0.9.9`, `pytest-benchmark>=4.0.0`, `jinja2>=3.1.0`.
 
-- Primary module root: `benchmarks` with module families `comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark, tigrbl_sse_perf_suite, tigrbl_streaming_perf_suite`.
-- Primary module root: `examples` with module families `01-beginner-foundations/, 01_beginner_fundamentals/, 02-beginner-columns/, 02_beginner_models/, 03-beginner-mixins/, 03_beginner_specs/, 04-beginner-app-api/, 04_beginner_tables_columns/`.
+## Usage Examples
 
-## Internal Layout
+### Verify the installed package
 
-- Workspace path: `pkgs/core/tigrbl_tests`.
-- Package class: `core framework package`.
-- Python requirement: `>=3.10,<3.15`.
-- `benchmarks` modules: `comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark, tigrbl_sse_perf_suite, tigrbl_streaming_perf_suite, tigrbl_websocket_perf_suite, tigrbl_webtransport_perf_suite`.
-- `examples` modules: `01-beginner-foundations/, 01_beginner_fundamentals/, 02-beginner-columns/, 02_beginner_models/, 03-beginner-mixins/, 03_beginner_specs/, 04-beginner-app-api/, 04_beginner_tables_columns/, 05-beginner-usage/, 05_beginner_app_api/`.
+```bash
+python -m pip show tigrbl_tests
+python - <<'PY'
+from importlib.metadata import version
+print(version("tigrbl_tests"))
+PY
+```
 
-## Dependency Surface
+### Run packaged Tigrbl tests
 
-- Workspace package dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/), [`tigrbl_client`](https://pypi.org/project/tigrbl_client/).
-- External runtime dependencies: `psycopg2-binary>=2.9.9`, `asyncpg>=0.30.0`, `pytest>=8.0`, `pytest-asyncio>=0.24.0`, `pytest-xdist>=3.6.1`, `pytest-json-report>=1.5.0`, `python-dotenv`, `requests>=2.32.3`, `flake8>=7.0`, `pytest-timeout>=2.3.1`.
-- Optional extras: none declared.
+```bash
+uv run pytest pkgs/core/tigrbl_tests/tests -q
+python -m pytest --pyargs tigrbl_tests
+```
+
+### Import reusable test helpers
+
+```python
+import tigrbl_tests
+
+print(tigrbl_tests.__name__)
+```
+
+### Use it in downstream CI
+
+```bash
+pip install tigrbl-tests pytest
+pytest -q
+```
+
+## How To Choose This Package
+
+Choose `tigrbl_tests` when the quick-answer table matches your use case. Choose [`tigrbl`](https://pypi.org/project/tigrbl/) instead when you want the full public facade. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are building framework extensions or testing a specific internal boundary.
 
 ## Related Packages
 
 - [`tigrbl`](https://pypi.org/project/tigrbl/)
 - [`tigrbl_client`](https://pypi.org/project/tigrbl_client/)
 
-## Canonical Repository Docs
+## Documentation Links
 
-- `docs/README.md`
-- `docs/conformance/CURRENT_TARGET.md`
-- `docs/conformance/CURRENT_STATE.md`
-- `docs/conformance/NEXT_STEPS.md`
-- `docs/governance/DOC_POINTERS.md`
-- `docs/developer/PACKAGE_CATALOG.md`
-- `docs/developer/PACKAGE_LAYOUT.md`
+- [Workspace docs](https://github.com/tigrbl/tigrbl/blob/master/docs/README.md)
+- [Package catalog](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_CATALOG.md)
+- [Package layout](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_LAYOUT.md)
+- [Current target](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_TARGET.md)
+- [Current state](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_STATE.md)
+- [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json)
+- [Release workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml)
+
+## Support
+
+- Community: [Discord](https://discord.gg/K4YTAPapjR).
+- Issues: [GitHub Issues](https://github.com/tigrbl/tigrbl/issues).
+- Repository: [pkgs/core/tigrbl_tests](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests).
 
 ## Package-local Boundary
 
-This file is a package-local distribution entry point.
-Use this page for package installation and boundary orientation. Repository governance, conformance state, target status, and release evidence remain governed from `docs/` and `.ssot/`.
+This README is the package-local distribution entry point for `tigrbl_tests`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See `LICENSE` and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).
+Licensed under the Apache License, Version 2.0. See `LICENSE`, `NOTICE`, and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).

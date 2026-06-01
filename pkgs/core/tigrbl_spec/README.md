@@ -4,11 +4,44 @@
 <p><strong>Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.</strong></p>
 <a href="https://pypi.org/project/tigrbl_spec/"><img src="https://img.shields.io/pypi/v/tigrbl_spec?label=PyPI" alt="PyPI version for tigrbl_spec"/></a>
 <a href="https://pypi.org/project/tigrbl_spec/"><img src="https://static.pepy.tech/badge/tigrbl_spec" alt="Downloads for tigrbl_spec"/></a>
+<a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl_spec"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_spec/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_spec/README.md.svg?label=hits" alt="Repository hits for tigrbl_spec README"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
-<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20to%203.15-3776ab" alt="Python requirement for tigrbl_spec"/></a>
+<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for tigrbl_spec"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md"><img src="https://img.shields.io/badge/workspace-core-1f6feb" alt="Workspace group for tigrbl_spec"/></a>
 </div>
+
+## What is tigrbl_spec?
+
+Shared Tigrbl interfaces, protocol definitions, compatibility targets, and specification artifacts for framework integration.
+
+## Why use tigrbl_spec?
+
+Use it when you need this foundational Tigrbl layer directly as a small, focused dependency.
+
+## When should I install tigrbl_spec?
+
+Install it for extension packages, package-local tests, or internals that need this boundary without the whole facade.
+
+## Who is tigrbl_spec for?
+
+Framework maintainers, extension authors, and advanced users composing Tigrbl from split packages.
+
+## Where does tigrbl_spec fit?
+
+`tigrbl_spec` lives at `pkgs/core/tigrbl_spec` and serves a focused layer in the split Tigrbl framework.
+
+## How does tigrbl_spec work?
+
+It owns a narrow layer in the split workspace and is consumed by higher-level packages through explicit dependencies.
+
+## Certification Status
+
+- Package status: governed package in the `tigrbl/tigrbl` workspace.
+- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
+- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
+- Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
+- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
 
 ## Install
 
@@ -20,49 +53,103 @@ uv add tigrbl_spec
 pip install tigrbl_spec
 ```
 
+## Surface Coverage
+
+| Surface | Value |
+|---|---|
+| PyPI package | [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) |
+| Repository path | [`pkgs/core/tigrbl_spec`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_spec) |
+| Python import root | `tigrbl_spec` |
+| Console scripts | none declared |
+| Entry points | none declared |
+| Optional extras | none declared |
+| Legal files | `LICENSE`, `NOTICE` |
+| Supported Python | `3.10 | 3.11 | 3.12 | 3.13 | 3.14` |
+
 ## What It Owns
 
-`tigrbl_spec` owns the spec boundary inside the split Python workspace.
+`tigrbl_spec` owns the `foundational framework package` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
 
-## Use It When
+Implementation orientation:
+- Module layout is intentionally small or namespace-oriented.
 
-Use `tigrbl_spec` when you want this subsystem directly as a package boundary instead of consuming it only through the top-level `tigrbl` facade.
+## Public API and Import Surface
 
-## Public Surface
-
-- `tigrbl_spec` exposes `__version__`.
-
-## Internal Layout
-
-- Workspace path: `pkgs/core/tigrbl_spec`.
-- Package class: `core framework package`.
-- Python requirement: `>=3.10,<3.15`.
-
-## Dependency Surface
-
-- Workspace package dependencies: none declared.
+- Import roots: `tigrbl_spec`.
+- Public symbols: `__version__`.
+- Workspace dependencies: none declared.
 - External runtime dependencies: none declared.
-- Optional extras: none declared.
+
+## Usage Examples
+
+### Verify the installed package
+
+```bash
+python -m pip show tigrbl_spec
+python - <<'PY'
+from importlib.metadata import version
+print(version("tigrbl_spec"))
+PY
+```
+
+### Import the package boundary
+
+```python
+import importlib
+
+module = importlib.import_module("tigrbl_spec")
+print(module.__name__)
+```
+
+### Import a public symbol
+
+```python
+from tigrbl_spec import __version__
+
+print(__version__)
+```
+
+### Use with the facade when building applications
+
+```bash
+uv add tigrbl tigrbl_spec
+python - <<'PY'
+import tigrbl
+print(tigrbl.__name__)
+PY
+```
+
+## How To Choose This Package
+
+Choose `tigrbl_spec` when the quick-answer table matches your use case. Choose [`tigrbl`](https://pypi.org/project/tigrbl/) instead when you want the full public facade. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are building framework extensions or testing a specific internal boundary.
 
 ## Related Packages
 
 - [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
+- [`tigrbl-base`](https://pypi.org/project/tigrbl-base/)
+- [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
 
-## Canonical Repository Docs
+## Documentation Links
 
-- `docs/README.md`
-- `docs/conformance/CURRENT_TARGET.md`
-- `docs/conformance/CURRENT_STATE.md`
-- `docs/conformance/NEXT_STEPS.md`
-- `docs/governance/DOC_POINTERS.md`
-- `docs/developer/PACKAGE_CATALOG.md`
-- `docs/developer/PACKAGE_LAYOUT.md`
+- [Workspace docs](https://github.com/tigrbl/tigrbl/blob/master/docs/README.md)
+- [Package catalog](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_CATALOG.md)
+- [Package layout](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_LAYOUT.md)
+- [Current target](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_TARGET.md)
+- [Current state](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_STATE.md)
+- [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json)
+- [Release workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml)
+
+## Support
+
+- Community: [Discord](https://discord.gg/K4YTAPapjR).
+- Issues: [GitHub Issues](https://github.com/tigrbl/tigrbl/issues).
+- Repository: [pkgs/core/tigrbl_spec](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_spec).
 
 ## Package-local Boundary
 
-This file is a package-local distribution entry point.
-Use this page for package installation and boundary orientation. Repository governance, conformance state, target status, and release evidence remain governed from `docs/` and `.ssot/`.
+This README is the package-local distribution entry point for `tigrbl_spec`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
 
 ## License
 
-Licensed under the Apache License, Version 2.0. See `LICENSE` and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).
+Licensed under the Apache License, Version 2.0. See `LICENSE`, `NOTICE`, and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).

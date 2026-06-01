@@ -7,6 +7,8 @@
 <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml"><img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish workflow"/></a>
 <a href="https://hits.sh/github.com/tigrbl/tigrbl.svg"><img src="https://hits.sh/github.com/tigrbl/tigrbl.svg" alt="Repository hits for tigrbl"/></a>
 <a href="https://github.com/Tigrbl/tigrbl/blob/master/.ssot/registry.json"><img src="https://img.shields.io/badge/SSOT-governed-2f6f4e.svg" alt="SSOT governed workspace"/></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
+<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for Tigrbl workspace"/></a>
 <a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl"/></a>
 </div>
 
@@ -23,7 +25,7 @@ uv sync --all-extras --dev
 cargo test --workspace
 ```
 
-Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the public Python facade. Package-level README entry points under `pkgs/` and `crates/` now document the boundary, install target, and dependency surface for each distributable.
+Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the public Python facade. This root README is the repository and workspace entry point; the PyPI-facing facade package README lives at [`pkgs/core/tigrbl/README.md`](pkgs/core/tigrbl/README.md). Package-level README entry points under `pkgs/` and `crates/` document the boundary, install target, and dependency surface for each distributable.
 
 ## Package Families
 
