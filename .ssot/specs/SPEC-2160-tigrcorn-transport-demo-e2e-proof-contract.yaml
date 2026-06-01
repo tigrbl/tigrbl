@@ -29,6 +29,8 @@ body: |-
   For every positive row in this SPEC, support claims require repeatable server-client end-to-end proof on a live Tigrcorn rail. In-process ASGI smoke, metadata projection checks, and bridge-contract tests are informative but insufficient for row closure.
   
   The demo bundle proves a narrower, operator-facing matrix than the broader transport architecture and broader WebTransport multiplexing contract. Passing this demo does not automatically close every generic transport feature, and generic transport policy does not automatically prove this demo.
+
+  The demo bundle is current transport proof, not cross-client topology proof. Client-session coverage is classified separately by `spc:2161`.
   
   ## Required Demo Rows
   
@@ -79,6 +81,7 @@ body: |-
     - one unidirectional stream lane;
     - datagram traffic;
   - the proof must remain server-client end-to-end on Tigrcorn;
+  - the client-session classification is `single_client_single_session` unless a later proof explicitly adds more clients or more sessions;
   - this narrower proof does not satisfy the broader `spc:2159` multiplexing contract.
   
   For the fail-closed `wss + ndjson` row:

@@ -59,7 +59,8 @@ body: |-
   - Certification requires runtime evidence for profile handling and multiplexed session behavior where support is claimed.
   - Docs and support matrices must keep outer transport identity separate from inner payload framing claims.
   - A future WebTransport multiplexing claim must show one `session_id` preserving independent stream and datagram identities across mixed-lane send and receive events.
+  - WebTransport `profile` and runtime-internal lane classification remain transport-specific execution modeling and are not part of the cross-transport client-session coverage schema governed by ADR-1135.
   
   ## Related
   
-  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131, ADR-1132, ADR-1133, ADR-1134.
+  ADR-1005, ADR-1006, ADR-1007, ADR-1023, ADR-1024, ADR-1091, ADR-1092, ADR-1094, ADR-1131, ADR-1132, ADR-1133, ADR-1134, ADR-1135.

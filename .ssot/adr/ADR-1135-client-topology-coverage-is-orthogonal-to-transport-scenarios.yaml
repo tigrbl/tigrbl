@@ -1,0 +1,47 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1135"
+number: 1135
+slug: "client-topology-coverage-is-orthogonal-to-transport-scenarios"
+title: "Client topology coverage is orthogonal to transport scenarios"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Transport support, client topology, session scope, behavior class, pressure mode, and fault mode are separate coverage axes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-01T00:00:00Z"
+    note: "Created to govern client-session coverage as an orthogonal axis over transport scenario rows."
+    status: "draft"
+references: []
+body: |-
+  ## Decision
+
+  1. Transport support, client topology, session scope, behavior class, pressure mode, and fault mode are separate coverage axes.
+  2. The transport scenario matrix remains the source of transport rows. Client-session coverage classifies those rows; it does not add transport rows to the matrix.
+  3. Client topology coverage distinguishes at least `single_client_single_session`, `single_client_multi_session`, `sequential_clients`, `bounded_interleaved_clients`, `concurrent_clients`, and `churn_clients`.
+  4. Session scope coverage distinguishes `request_scoped`, `stream_scoped`, `connection_scoped`, and `transport_session_scoped` behavior.
+  5. Behavior coverage distinguishes lifecycle, identity, isolation, ordering, pressure, fault, and cleanup concerns.
+  6. Governed client-session proof identifiers are `client_id`, `session_id`, `stream_id`, and `datagram_id`.
+  7. `lane` remains an internal runtime classification term for transport-specific policy and must not become part of the cross-transport governed client-session proof schema.
+  8. Existing WebTransport proofs that exercise one Tigrcorn session, streams, and datagrams are single-client transport-session or intra-session multiplexing proofs unless a separate proof shows cross-client topology behavior.
+
+  ## Context
+
+  The transport matrix already governs protocol, exchange, framing, path, documentation, static, and nested mount coverage. That matrix is necessary but not sufficient to prove client-session behavior. A transport row can be supported for one client while still lacking proof for sequential clients, controlled interleaving, unconstrained concurrency, churn, pressure, or fault behavior.
+
+  WebTransport also has a runtime-internal profile/lane vocabulary. That vocabulary is useful for session, stream, and datagram execution, but it should not leak into the cross-transport client-session coverage schema.
+
+  ## Consequences
+
+  - Coverage claims must name both the transport scenario and the client-session axes being proven.
+  - Single-client transport proof must not be rebranded as multi-client topology proof.
+  - Cross-client proof can be added without changing the transport-row source of truth.
+  - Runtime telemetry emission is not required by this decision; this decision governs SSOT classification, proof schema, and validation helpers.
+
+  ## Related
+
+  ADR-1094, ADR-1096, SPEC-2152, SPEC-2159, SPEC-2160, SPEC-2161.

@@ -1,0 +1,121 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2161"
+number: 2161
+slug: "client-session-transport-scenario-coverage-contract"
+title: "Client Session x Transport Scenario Coverage Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Classify every transport scenario row across client topology, session scope, lifecycle, isolation, pressure, and fault concerns."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-01T00:00:00Z"
+    note: "Created to govern client-session coverage across transport matrix rows."
+    status: "draft"
+references: []
+body: |-
+  ## Intent
+
+  Classify client-session behavior honestly across the existing transport scenario matrix without making the transport matrix itself carry a second set of topology rows.
+
+  ## Contract
+
+  Every row in `spc:2152` MUST have an explicit disposition in the client-session coverage matrix.
+
+  Required dispositions:
+
+  - `covered`
+  - `required`
+  - `planned`
+  - `not_applicable`
+  - `fail_closed`
+
+  Required axes:
+
+  - `transport_scenario`
+  - `client_topology`
+  - `session_scope`
+  - `lifecycle_behavior`
+  - `isolation_property`
+  - `pressure_mode`
+  - `fault_mode`
+
+  Required client topology vocabulary:
+
+  - `single_client_single_session`
+  - `single_client_multi_session`
+  - `sequential_clients`
+  - `bounded_interleaved_clients`
+  - `concurrent_clients`
+  - `churn_clients`
+
+  Required session scope vocabulary:
+
+  - `request_scoped`
+  - `stream_scoped`
+  - `connection_scoped`
+  - `transport_session_scoped`
+
+  Required behavior groups:
+
+  - `lifecycle`
+  - `identity`
+  - `isolation`
+  - `ordering`
+  - `pressure`
+  - `fault`
+  - `cleanup`
+
+  Governed client-session proof records MAY use `client_id`, `session_id`, `stream_id`, `datagram_id`, `subevent`, and `error_kind`. They MUST NOT expose `lane` as a governed proof field.
+
+  ## Scope Classification Defaults
+
+  Unary REST and unary HTTP JSON-RPC rows are `request_scoped`.
+
+  HTTP stream and SSE rows are `stream_scoped`.
+
+  WebSocket and WSS rows are `connection_scoped`.
+
+  WebTransport rows are `transport_session_scoped`.
+
+  Non-session rows such as docs payload, docs UIX, static files, and nested app mounts are explicit `not_applicable` client-session cells unless a later ADR/SPEC extends this taxonomy to those surfaces.
+
+  ## Proof Class Language
+
+  A proof MUST name whether it covers a single client, sequential clients, bounded interleaving, unconstrained concurrent clients, or churn.
+
+  A proof MUST name the scope being isolated: request, stream, connection, or transport session.
+
+  A proof MUST name the behavior group being asserted: lifecycle, identity, isolation, ordering, pressure, fault, or cleanup.
+
+  A proof for single-client WebTransport intra-session multiplexing does not satisfy `sequential_clients`, `bounded_interleaved_clients`, `concurrent_clients`, or `churn_clients`.
+
+  ## Matrix Expectations
+
+  The client-session matrix is a coverage classification over `spc:2152`. It does not add transport support and does not override transport support dispositions.
+
+  Complete coverage means every relevant matrix cell is explicitly classified. It does not mean every cell is supported.
+
+  ## Traceability
+
+  - ADRs: `adr:1135`, `adr:1094`, `adr:1096`
+  - Companion specs: `spc:2152`, `spc:2159`, `spc:2160`
+  - Defines features: `feat:client-session-transport-coverage-matrix-001`, `feat:client-session-topology-coverage-001`, `feat:client-session-scope-classification-001`, `feat:client-session-isolation-properties-001`, `feat:client-session-pressure-modes-001`, `feat:client-session-fault-modes-001`
+
+  ## Verification Plan
+
+  - `tst:client-session-coverage-matrix-contract`
+  - `tst:client-session-topology-contract`
+  - `tst:client-session-scope-classification-contract`
+  - `tst:client-session-isolation-i9n`
+  - `tst:client-session-pressure-i9n`
+  - `tst:client-session-fault-mode-i9n`
+spec_kind: "normative"
+adr_ids:
+  - "adr:1135"
+  - "adr:1094"
+  - "adr:1096"

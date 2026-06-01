@@ -31,6 +31,8 @@ body: |-
   The bridge proof uses canonical Tigrcorn / tigr-asgi-contract event payloads and a Tigrbl app invocation through ASGI `scope`, `receive`, and `send`.
   
   The proof must not introduce a custom `subsurface` event field or custom event names. Event identity remains the canonical event `type`, while family, exchange, direction, lane, stream id, datagram id, and framing are classification or payload metadata.
+
+  This proof is a single-client transport-session proof with intra-session multiplexing. It proves one WebTransport session carrying multiple native stream and datagram identities; it does not prove sequential clients, bounded interleaved clients, concurrent clients, or churn clients.
   
   One proof session must include:
   
@@ -55,6 +57,8 @@ body: |-
   ## Proof Class Boundary
   
   This SPEC governs the bridge-contract proof class for Tigrcorn-backed WebTransport multiplexing.
+
+  Under `spc:2161`, this SPEC classifies as `single_client_multi_session` only when a proof explicitly uses more than one session for one client. Otherwise the current proof class is `single_client_single_session` with `transport_session_scoped` intra-session multiplexing.
   
   The governed `examples/transport_demo` bundle is a narrower server-client proof slice. It may prove one session with one bidirectional stream, one unidirectional stream, and datagrams, but that narrower proof does not satisfy this full multiplexing contract on its own.
   

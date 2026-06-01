@@ -7,6 +7,7 @@ __all__ = [
     "app_frame_codec",
     "anchors",
     "completion_fence",
+    "client_session_coverage",
     "dispatch_atoms",
     "framing_atoms",
     "loop_modes",
