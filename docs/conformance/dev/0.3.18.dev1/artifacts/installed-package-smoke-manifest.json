@@ -1,9 +1,9 @@
 {
-  "doctor_title": "Installed Package Smoke App",
+  "doctor_title": "Phase 12 Installed App",
   "doctor_version": "12.0.0",
   "install_mode": "isolated target install root",
   "installed_cli": {
-    "app_title": "Installed Package Smoke App",
+    "app_title": "Phase 12 Installed App",
     "commands": [
       "run",
       "serve",
@@ -26,19 +26,44 @@
       "--docs-path",
       "--openapi-path",
       "--openrpc-path",
-      "--lens-path"
+      "--lens-path",
+      "--statsd-addr",
+      "--dogstatsd-tags",
+      "--otel-endpoint",
+      "--trace-sample-rate",
+      "--drain-timeout",
+      "--shutdown-timeout",
+      "--concurrency-limit",
+      "--admission-queue",
+      "--backlog",
+      "--ws-heartbeat",
+      "--ws-heartbeat-timeout",
+      "--http2-max-concurrent-streams",
+      "--http2-initial-window-size",
+      "--http3-max-data",
+      "--http3-max-uni-streams",
+      "--alpn-policy",
+      "--ocsp-policy",
+      "--revocation-policy",
+      "--interop-bundle-dir",
+      "--benchmark-bundle-dir",
+      "--deployment-profile",
+      "--proxy-contract",
+      "--early-data-policy",
+      "--origin-static-policy",
+      "--quic-metrics",
+      "--qlog-dir"
     ],
     "servers": {
-      "gunicorn": false,
+      "gunicorn": true,
       "hypercorn": true,
-      "tigrcorn": false,
+      "tigrcorn": true,
       "uvicorn": true
     }
   },
-  "native_binding_support": "source-path fallback via bindings/python/tigrbl_native/python",
   "openapi_version": "3.1.0",
   "openrpc_version": "1.2.6",
-  "package_dir": "pkgs/core/tigrbl",
+  "package_dir": "pkgs\\core\\tigrbl",
   "routes_contains": {
     "/docs": true,
     "/lens": true,
@@ -47,7 +72,8 @@
     "/ping": true,
     "/ws/echo": true
   },
-  "sdist": "tigrbl-0.3.18.dev1.tar.gz",
+  "rust_binding_support": "source-path fallback via pkgs/core/tigrbl_runtime",
+  "sdist": "tigrbl-0.4.1.tar.gz",
   "sdist_contents": {
     "contains_cli": true,
     "contains_pyproject": true,
@@ -82,7 +108,7 @@
       "root_path": "/root"
     }
   },
-  "wheel": "tigrbl-0.3.18.dev1-py3-none-any.whl",
+  "wheel": "tigrbl-0.4.1-py3-none-any.whl",
   "wheel_entry_points": {
     "tigrbl": "tigrbl.cli:console_main"
   }

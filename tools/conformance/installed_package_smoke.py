@@ -20,7 +20,7 @@ CORE_INSTALL_DIRS = [
     ROOT / 'pkgs' / 'core' / 'tigrbl_spec',
     ROOT / 'pkgs' / 'core' / 'tigrbl_base',
     ROOT / 'pkgs' / 'core' / 'tigrbl_core',
-    ROOT / 'pkgs' / 'core' / 'tigrbl_canon',
+    ROOT / 'pkgs' / 'deprecated' / 'tigrbl_canon',
     ROOT / 'pkgs' / 'core' / 'tigrbl_atoms',
     ROOT / 'pkgs' / 'core' / 'tigrbl_kernel',
     ROOT / 'pkgs' / 'core' / 'tigrbl_ops_olap',

@@ -112,6 +112,8 @@ The active Python package line is `0.4.1`. The Rust workspace package line is `0
 
 The `.ssot/` tree remains the governed source of truth for entities, package boundaries, and release evidence. Package-local `README.md` files under `pkgs/` and `crates/` are distribution entry points, not authoritative conformance records.
 
+Release evidence is organized under `docs/conformance/releases/`. Active development-line evidence is organized under `docs/conformance/dev/`.
+
 ## License
 
 Licensed under the Apache License, Version 2.0. See `LICENSE` and the official [Apache 2.0 license text](https://www.apache.org/licenses/LICENSE-2.0).
