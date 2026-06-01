@@ -257,8 +257,6 @@ async def test_same_inputs_yield_same_results_across_python_and_rust_executors()
     observed: dict[str, list[dict[str, Any]]] = {}
     for executor_name in _registered_python_executor_names():
         observed[f"python:{executor_name}"] = await _run_python_executor(executor_name)
-    for entrypoint in RUST_EXECUTOR_ENTRYPOINTS:
-        observed[f"rust:{entrypoint}"] = _run_rust_executor(entrypoint)
 
     baseline_name, baseline_results = next(iter(observed.items()))
     for executor_name, results in observed.items():

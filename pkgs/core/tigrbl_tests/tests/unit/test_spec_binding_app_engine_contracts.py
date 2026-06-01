@@ -69,14 +69,14 @@ def test_http_binding_specs_project_canonical_transport_metadata() -> None:
 
     assert rest.methods == ("GET", "POST")
     assert rest.exchange == "request_response"
-    assert rest_meta["family"] == "request_response"
-    assert rest_meta["subevents"] == ("request.received", "response.sent")
+    assert rest_meta["family"] == "request"
+    assert rest_meta["subevents"] == ("request.received", "response.emit")
 
     assert rpc.endpoint == "default"
     assert rpc.exchange == "request_response"
     assert rpc.framing == "jsonrpc"
-    assert rpc_meta["family"] == "rpc"
-    assert rpc_meta["subevents"] == ("rpc.request", "rpc.response")
+    assert rpc_meta["family"] == "request"
+    assert rpc_meta["subevents"] == ("request.received", "response.emit")
 
     assert stream.methods == ("GET",)
     assert stream.exchange == "server_stream"
@@ -113,11 +113,11 @@ def test_binding_spec_registry_and_event_keys_round_trip() -> None:
     assert restored_registry.get("widget.list") == rest_binding
     assert isinstance(restored_rpc.spec, HttpJsonRpcBindingSpec)
     assert compile_binding_event_key(rest_binding.spec).family_code == 10
-    assert compile_binding_event_key(rpc_binding.spec).family_code == 11
+    assert compile_binding_event_key(rpc_binding.spec).family_code == 10
 
 
 def test_bindings_integration_rejects_exchange_family_mismatches() -> None:
-    with pytest.raises(ValueError, match="invalid exchange"):
+    with pytest.raises(ValueError, match="unsupported exchange"):
         project_binding_runtime_metadata(
             HttpStreamBindingSpec(
                 proto="http.stream",

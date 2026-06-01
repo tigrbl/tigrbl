@@ -4,9 +4,10 @@ import ast
 from pathlib import Path
 
 _STANDARDS = Path(__file__).resolve().parents[3]
+_PKGS = _STANDARDS.parent
 ROOT = _STANDARDS / "tigrbl" / "tigrbl"
 RUNTIME_ROOT = _STANDARDS / "tigrbl_runtime" / "tigrbl_runtime"
-CANON_ROOT = _STANDARDS / "tigrbl_canon" / "tigrbl_canon"
+CANON_ROOT = _PKGS / "deprecated" / "tigrbl_canon" / "tigrbl_canon"
 
 
 def _source(pkg_root: Path, rel: str) -> str:

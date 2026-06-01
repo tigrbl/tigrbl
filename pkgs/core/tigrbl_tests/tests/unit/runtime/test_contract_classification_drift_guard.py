@@ -19,7 +19,9 @@ def _contract_rows() -> list[dict[str, object]]:
         if candidate.exists():
             payload = yaml.safe_load(candidate.read_text(encoding="utf-8"))
             return list(payload["event_classifications"])
-    pytest.fail("tigr-asgi-contracts contract/event_classification.yaml was not found")
+    pytest.skip(
+        "adjacent tigr-asgi-contracts checkout is required for live drift guard"
+    )
 
 
 def test_all_supported_tigr_asgi_contract_rows_project_without_custom_event_names() -> None:
