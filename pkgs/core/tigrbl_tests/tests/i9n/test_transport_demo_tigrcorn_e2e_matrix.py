@@ -16,6 +16,11 @@ import websockets
 
 ROOT = Path(__file__).resolve().parents[5]
 TIGRCORN_ROOT = ROOT.parent / "tigrcorn"
+if not (TIGRCORN_ROOT / "tests" / "fixtures_third_party").exists():
+    pytest.skip(
+        "adjacent tigrcorn checkout with third-party transport fixtures is required",
+        allow_module_level=True,
+    )
 for src_dir in sorted((TIGRCORN_ROOT / "pkgs").glob("*/src")):
     sys.path.insert(0, str(src_dir))
 sys.path.insert(0, str(TIGRCORN_ROOT / "src"))

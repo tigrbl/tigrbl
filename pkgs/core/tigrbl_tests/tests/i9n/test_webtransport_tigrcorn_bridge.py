@@ -24,7 +24,7 @@ def _install_adjacent_tigrcorn_sources() -> None:
                 if value not in sys.path:
                     sys.path.insert(0, value)
         return
-    pytest.skip("adjacent tigrcorn checkout is required for this bridge test")
+    pytest.skip("adjacent tigrcorn checkout is required for this bridge test", allow_module_level=True)
 
 
 _install_adjacent_tigrcorn_sources()
