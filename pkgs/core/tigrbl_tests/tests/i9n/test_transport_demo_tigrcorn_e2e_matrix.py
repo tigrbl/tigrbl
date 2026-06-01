@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import importlib.util
 import json
+import os
 import ssl
 import sys
 import tempfile
@@ -72,23 +73,38 @@ CERTS = TIGRCORN_ROOT / "tests" / "fixtures_certs"
 SERVER_CERT = CERTS / "interop-localhost-cert.pem"
 SERVER_KEY = CERTS / "interop-localhost-key.pem"
 APP_PATH = ROOT / "examples" / "transport_demo" / "app.py"
+_TEMP_DEMO_DBS: list[tempfile.TemporaryDirectory[str]] = []
+
+
+def _load_transport_demo_app_module(tempdir: tempfile.TemporaryDirectory[str]) -> Any:
+    spec = importlib.util.spec_from_file_location("transport_demo_app", APP_PATH)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Unable to load transport demo app from {APP_PATH}")
+    module = importlib.util.module_from_spec(spec)
+    default_db = Path(tempdir.name) / "transport_demo_default.sqlite3"
+    old_db = os.environ.get("TIGRBL_TRANSPORT_DEMO_DB")
+    os.environ["TIGRBL_TRANSPORT_DEMO_DB"] = str(default_db)
+    try:
+        spec.loader.exec_module(module)
+    finally:
+        if old_db is None:
+            os.environ.pop("TIGRBL_TRANSPORT_DEMO_DB", None)
+        else:
+            os.environ["TIGRBL_TRANSPORT_DEMO_DB"] = old_db
+    return module
 
 
 def build_app() -> Any:
-    spec = importlib.util.spec_from_file_location("transport_demo_app", APP_PATH)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"Unable to load transport demo app from {APP_PATH}")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
-    return module.build_app()
+    tempdir = tempfile.TemporaryDirectory(prefix="tigrbl-transport-demo-")
+    _TEMP_DEMO_DBS.append(tempdir)
+    module = _load_transport_demo_app_module(tempdir)
+    return module.build_app(db_path=Path(tempdir.name) / "transport_demo.sqlite3")
 
 
 def build_fail_closed_examples() -> dict[str, str]:
-    spec = importlib.util.spec_from_file_location("transport_demo_app", APP_PATH)
-    if spec is None or spec.loader is None:
-        raise RuntimeError(f"Unable to load transport demo app from {APP_PATH}")
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    tempdir = tempfile.TemporaryDirectory(prefix="tigrbl-transport-demo-")
+    _TEMP_DEMO_DBS.append(tempdir)
+    module = _load_transport_demo_app_module(tempdir)
     return module.build_fail_closed_examples()
 
 

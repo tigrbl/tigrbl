@@ -2286,6 +2286,15 @@ class PackedPlanExecutor(ExecutorBase):
         temp["program_id"] = program_id
         return program_id
 
+    def _prime_exact_websocket_program(
+        self,
+        ctx: _Ctx,
+        env: Any,
+        plan: KernelPlan,
+        packed: PackedKernel,
+    ) -> int:
+        return self._prime_exact_channel_program(ctx, env, plan, packed)
+
     def _resolve_hot_exact_route_slices(
         self, packed: PackedKernel
     ) -> Mapping[int, tuple[int, int]]:

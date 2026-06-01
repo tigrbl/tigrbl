@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -28,6 +29,9 @@ _JSONRPC_PROTOCOL_CLOSE_CODE = 1002
 
 
 def _demo_db_path() -> Path:
+    configured = os.environ.get("TIGRBL_TRANSPORT_DEMO_DB")
+    if configured:
+        return Path(configured)
     return Path(__file__).with_name("transport_demo.sqlite3")
 
 
