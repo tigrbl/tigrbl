@@ -130,7 +130,14 @@ jobs:
             "${targets[@]}"
 
       - name: Refresh Rust lockfile
-        run: cargo generate-lockfile
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f Cargo.toml ]]; then
+            cargo generate-lockfile
+          else
+            echo "No root Cargo.toml present; skipping Rust lockfile refresh."
+          fi
 
       - name: Commit version updates
         id: commit
@@ -153,7 +160,11 @@ jobs:
 
           commit_created=false
           if ! git diff --quiet; then
-            git add Cargo.toml Cargo.lock pkgs crates
+            stage_paths=(pkgs)
+            [[ -f Cargo.toml ]] && stage_paths+=(Cargo.toml)
+            [[ -f Cargo.lock ]] && stage_paths+=(Cargo.lock)
+            [[ -d crates ]] && stage_paths+=(crates)
+            git add "${stage_paths[@]}"
             if ! git diff --cached --quiet; then
               git commit -m "release: prepare ${{ inputs.semver }} package versions"
               commit_created=true
