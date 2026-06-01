@@ -154,6 +154,8 @@ def validate_app_framing_for_binding(
     allowed = APP_LEVEL_FRAMING_SUPPORT.get(binding_kind)
     if allowed is None:
         raise ValueError(f"unsupported binding kind {binding_kind!r}")
+    if selected == "ndjson" and binding_kind in {"ws", "wss"}:
+        raise ValueError("WebSocket ndjson framing is unsupported and must fail closed")
     if selected not in allowed:
         raise ValueError(
             f"unsupported app-level framing {selected!r} for binding {binding_kind!r}"

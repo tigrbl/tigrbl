@@ -3,11 +3,14 @@ from __future__ import annotations
 import importlib.util
 from pathlib import Path
 
+import pytest
+
 from tigrbl_kernel import build_kernel_plan
 from tigrbl_kernel.models import OpKey
 
 
 DEMO_PATH = Path(__file__).resolve().parents[4] / "examples" / "transport_demo" / "app.py"
+pytest.importorskip("tigrbl")
 
 
 def _load_demo_module():
