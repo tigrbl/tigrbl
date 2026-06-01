@@ -17,7 +17,6 @@ resolution-markers = [
 [manifest]
 members = [
     "tigrbl",
-    "tigrbl-acme-ca",
     "tigrbl-atoms",
     "tigrbl-base",
     "tigrbl-canon",
@@ -55,7 +54,6 @@ members = [
     "tigrbl-orm",
     "tigrbl-runtime",
     "tigrbl-spec",
-    "tigrbl-spiffe",
     "tigrbl-tests",
     "tigrbl-typing",
 ]
@@ -2914,45 +2912,6 @@ dev = [
 ]
 
 [[package]]
-name = "tigrbl-acme-ca"
-version = "0.4.1"
-source = { editable = "pkgs/apps/tigrbl_acme_ca" }
-dependencies = [
-    { name = "tigrbl" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "flake8" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-benchmark" },
-    { name = "pytest-json-report" },
-    { name = "pytest-timeout" },
-    { name = "pytest-xdist" },
-    { name = "python-dotenv" },
-    { name = "requests" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "flake8", specifier = ">=7.0" },
-    { name = "pytest", specifier = ">=8.0" },
-    { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "pytest-benchmark", specifier = ">=4.0.0" },
-    { name = "pytest-json-report", specifier = ">=1.5.0" },
-    { name = "pytest-timeout", specifier = ">=2.3.1" },
-    { name = "pytest-xdist", specifier = ">=3.6.1" },
-    { name = "python-dotenv" },
-    { name = "requests", specifier = ">=2.32.3" },
-    { name = "ruff", specifier = ">=0.9.9" },
-]
-
-[[package]]
 name = "tigrbl-atoms"
 version = "0.4.1"
 source = { editable = "pkgs/core/tigrbl_atoms" }
@@ -4046,56 +4005,6 @@ dev = [
 [package.metadata.requires-dev]
 dev = [
     { name = "pytest", specifier = ">=8.0" },
-    { name = "ruff", specifier = ">=0.9.9" },
-]
-
-[[package]]
-name = "tigrbl-spiffe"
-version = "0.4.1"
-source = { editable = "pkgs/apps/tigrbl_spiffe" }
-dependencies = [
-    { name = "httpx" },
-    { name = "tigrbl" },
-]
-
-[package.optional-dependencies]
-grpc = [
-    { name = "grpcio" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "flake8" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-benchmark" },
-    { name = "pytest-json-report" },
-    { name = "pytest-timeout" },
-    { name = "pytest-xdist" },
-    { name = "python-dotenv" },
-    { name = "requests" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "grpcio", marker = "extra == 'grpc'", specifier = ">=1.64" },
-    { name = "httpx", specifier = ">=0.27" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
-]
-provides-extras = ["grpc"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "flake8", specifier = ">=7.0" },
-    { name = "pytest", specifier = ">=8.0" },
-    { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "pytest-benchmark", specifier = ">=4.0.0" },
-    { name = "pytest-json-report", specifier = ">=1.5.0" },
-    { name = "pytest-timeout", specifier = ">=2.3.1" },
-    { name = "pytest-xdist", specifier = ">=3.6.1" },
-    { name = "python-dotenv" },
-    { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
 ]
 

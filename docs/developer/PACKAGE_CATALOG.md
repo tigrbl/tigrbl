@@ -6,7 +6,7 @@ This document is the canonical workspace inventory for package and crate locatio
 
 - core Python packages: 15
 - engine packages: 22
-- application packages: 6
+- application packages: 0
 - Rust crates: 9
 - hybrid Python/Rust packages under `pkgs/`: 1
 
@@ -55,12 +55,7 @@ This document is the canonical workspace inventory for package and crate locatio
 
 ## Application packages
 
-- `tigrbl_acme_ca`
-- `tigrbl_api_cron`
-- `tigrbl_api_hpks`
-- `tigrbl_billing`
-- `tigrbl_kms`
-- `tigrbl_spiffe`
+Application packages are not owned by this workspace. `tigrbl_acme_ca` and `tigrbl_spiffe` live in independent repositories.
 
 ## Rust crates
 

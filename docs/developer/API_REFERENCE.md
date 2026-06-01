@@ -43,13 +43,8 @@
 - `tigrbl_engine_snowflake`
 - `tigrbl_engine_xlsx`
 
-### App packages (6)
-- `tigrbl_acme_ca`
-- `tigrbl_api_cron`
-- `tigrbl_api_hpks`
-- `tigrbl_billing`
-- `tigrbl_kms`
-- `tigrbl_spiffe`
+### App packages (0)
+Application packages are owned by independent repositories, not this workspace.
 
 ### Rust crates (9)
 - `tigrbl_rs_atoms`

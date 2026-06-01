@@ -14,7 +14,7 @@
 
 ## What This Repository Owns
 
-Tigrbl is a mixed Python and Rust workspace for schema-first service authoring and execution. The Python side owns the public facade, split framework layers, installable engine plugins, and packaged applications. The Rust side owns spec IR, ports, atoms, kernel compilation, runtime execution, and native engine crates. Active workspace manifests currently define `42` PyPI packages, `0` npm packages, and `11` Rust crates.
+Tigrbl is a mixed Python and Rust workspace for schema-first service authoring and execution. The Python side owns the public facade, split framework layers, and installable engine plugins. The Rust side owns spec IR, ports, atoms, kernel compilation, runtime execution, and native engine crates. Active workspace manifests currently define `40` PyPI packages, `0` npm packages, and `11` Rust crates.
 
 ## Install and Work on the Workspace
 
@@ -73,11 +73,6 @@ Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the publi
 - [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/)
 - [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/)
 
-### Application packages
-
-- [`tigrbl_acme_ca`](https://pypi.org/project/tigrbl_acme_ca/)
-- [`tigrbl_spiffe`](https://pypi.org/project/tigrbl_spiffe/)
-
 ### Rust workspace
 
 The Rust crates and optional Python extension bindings now live in the private
@@ -88,7 +83,7 @@ The Rust crates and optional Python extension bindings now live in the private
 - Install [`tigrbl`](https://pypi.org/project/tigrbl/) when you want the public Python authoring surface in one dependency.
 - Install split core packages when you want a narrower subsystem boundary such as runtime, ORM, kernel, typing, client, tests, or operation families.
 - Install engine packages when you want a backend-specific dependency surface for SQLite, Postgres, Redis, warehouse, tabular, or in-memory workflows.
-- Use the packaged apps when you want a ready-made Tigrbl application boundary for ACME CA or SPIFFE/SPIRE identity flows.
+- Use the independent `tigrbl_acme_ca` and `tigrbl_spiffe` repositories when you want ready-made Tigrbl application boundaries for ACME CA or SPIFFE/SPIRE identity flows.
 - Use the private `tigrbl_rs` repository when you are embedding or extending native Tigrbl compilation, runtime, or engine layers.
 - There are no active npm package manifests in this workspace at the moment.
 
