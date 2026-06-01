@@ -215,6 +215,55 @@ def test_normalize_exchange_maps_legacy_bidirectional_value() -> None:
     assert normalize_exchange("bidirectional") == "bidirectional_stream"
 
 
+def test_prepare_channel_context_traces_webtransport_receive_into_ctx() -> None:
+    messages = iter(
+        [
+            {"type": "webtransport.connect", "session_id": "s1"},
+            {
+                "type": "webtransport.stream.receive",
+                "session_id": "s1",
+                "stream_id": "4",
+                "stream_direction": "bidi",
+                "framing": "text",
+                "data": b"hello",
+            },
+        ]
+    )
+
+    async def _receive() -> dict[str, object]:
+        return next(messages)
+
+    scope = {"type": "webtransport", "scheme": "webtransport", "path": "/transport/session"}
+    env = GwRawEnvelope(kind="asgi3", scope=scope, receive=_receive, send=_noop_send)
+    ctx = {"temp": {}}
+
+    channel = asyncio.run(prepare_channel_context(env, ctx))
+
+    assert ctx["channel_message"]["type"] == "webtransport.stream.receive"
+    assert ctx["body"] == b"hello"
+    trace = scope["state"]["tigrbl_webtransport"]["trace"]
+    assert trace == [
+        {
+            "direction": "receive",
+            "phase": "ctx.channel_message",
+            "type": "webtransport.connect",
+            "session_id": "s1",
+        },
+        {
+            "direction": "receive",
+            "phase": "ctx.channel_message",
+            "type": "webtransport.stream.receive",
+            "session_id": "s1",
+            "stream_id": "4",
+            "stream_direction": "bidi",
+            "framing": "text",
+            "payload_bytes": 5,
+        },
+    ]
+    assert ctx["webtransport_trace"] is trace
+    assert channel.state["webtransport_trace"] is trace
+
+
 def test_send_transport_via_channel_emits_structured_webtransport_events() -> None:
     sent: list[dict[str, object]] = []
 
@@ -264,7 +313,7 @@ def test_send_transport_via_channel_emits_structured_webtransport_events() -> No
     assert sent[1] == {
         "type": "webtransport.stream.send",
         "session_id": "s1",
-        "stream_id": 4,
+        "stream_id": "4",
         "stream_direction": "bidi",
         "data": b"echo:payload",
         "more": False,
@@ -277,17 +326,53 @@ def test_send_transport_via_channel_emits_structured_webtransport_events() -> No
         "stream_direction": "server_to_client",
         "data": b"demo-unidirectional",
         "more": False,
-        "framing": "binary",
     }
     assert sent[3] == {
         "type": "webtransport.datagram.send",
         "session_id": "s1",
         "datagram_id": "datagram-2",
         "data": b"pong",
-        "framing": "binary",
     }
-    assert sent[4] == {"type": "webtransport.close", "code": 1000, "session_id": "s1"}
+    assert len(sent) == 4
+    assert not any(message["type"] == "webtransport.close" for message in sent)
     assert all(str(message["type"]).startswith("webtransport.") for message in sent)
+    assert env.scope["state"]["tigrbl_webtransport"]["trace"] == [
+        {
+            "direction": "send",
+            "phase": "transport.accept",
+            "type": "webtransport.accept",
+            "session_id": "s1",
+        },
+        {
+            "direction": "send",
+            "phase": "transport.emit",
+            "type": "webtransport.stream.send",
+            "session_id": "s1",
+            "stream_id": "4",
+            "stream_direction": "bidi",
+            "framing": "binary",
+            "more": False,
+            "payload_bytes": 12,
+        },
+        {
+            "direction": "send",
+            "phase": "transport.emit",
+            "type": "webtransport.stream.send",
+            "session_id": "s1",
+            "stream_id": 5,
+            "stream_direction": "server_to_client",
+            "more": False,
+            "payload_bytes": 19,
+        },
+        {
+            "direction": "send",
+            "phase": "transport.emit",
+            "type": "webtransport.datagram.send",
+            "session_id": "s1",
+            "datagram_id": "datagram-2",
+            "payload_bytes": 4,
+        },
+    ]
 
 
 def test_send_transport_via_channel_rejects_invalid_webtransport_inbound_lane() -> None:

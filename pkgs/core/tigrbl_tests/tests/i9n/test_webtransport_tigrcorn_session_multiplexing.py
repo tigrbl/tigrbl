@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import sys
 from pathlib import Path
 from typing import Any
@@ -98,10 +99,38 @@ async def _run_contract_session(
 ) -> list[dict[str, Any]]:
     sent: list[dict[str, Any]] = []
     pending = list(events)
+    scope.setdefault("state", {}).setdefault("tigrbl_webtransport", {})["eager_drain"] = True
 
     async def receive() -> dict[str, Any]:
         if pending:
             return pending.pop(0)
+        return {"type": "webtransport.disconnect", "session_id": "session-1", "code": 0}
+
+    async def send(message: dict[str, Any]) -> None:
+        sent.append(message)
+
+    await app(scope, receive, send)
+    return sent
+
+
+async def _run_delayed_contract_session(
+    app: TigrblApp,
+    scope: dict[str, Any],
+    events: list[dict[str, Any]],
+    *,
+    delayed_from_index: int,
+) -> list[dict[str, Any]]:
+    sent: list[dict[str, Any]] = []
+    index = 0
+
+    async def receive() -> dict[str, Any]:
+        nonlocal index
+        if index < len(events):
+            if index >= delayed_from_index:
+                await asyncio.sleep(0.01)
+            event = events[index]
+            index += 1
+            return event
         return {"type": "webtransport.disconnect", "session_id": "session-1", "code": 0}
 
     async def send(message: dict[str, Any]) -> None:
@@ -182,6 +211,99 @@ async def test_webtransport_tigrcorn_mixed_lane_framing_is_lane_local() -> None:
     assert by_stream["server-1"]["framing"] == "text"
     assert by_datagram["dg-server-1"]["framing"] == "json"
     assert by_datagram["dg-server-2"]["framing"] == "text"
+
+
+@pytest.mark.asyncio
+async def test_webtransport_tigrcorn_session_stays_open_for_delayed_lanes() -> None:
+    scope = _scope("/transport/echo-live")
+
+    app = TigrblApp(title="Tigrbl WebTransport Live Multiplexing")
+
+    async def echo(ctx: Any) -> str:
+        body = ctx.get("body")
+        if isinstance(body, (bytes, bytearray)):
+            return f"echo:{bytes(body).decode('utf-8')}"
+        return "echo:"
+
+    app.add_route(
+        "/transport/echo-live",
+        echo,
+        methods=("POST",),
+        tigrbl_binding=WebTransportBindingSpec(
+            proto="webtransport",
+            path="/transport/echo-live",
+            profile="bidi_stream",
+            inner_framing="text",
+        ),
+        tigrbl_exchange="bidirectional_stream",
+    )
+
+    events = [
+        webtransport_connect("session-1"),
+        webtransport_stream_receive("session-1", "bidi-1", b"alpha", stream_direction="bidi", framing="text"),
+        webtransport_stream_receive("session-1", "bidi-2", b"beta", stream_direction="bidi", framing="text"),
+        webtransport_datagram_receive("session-1", "dg-client-1", b"ping", framing="text"),
+        {"type": "webtransport.disconnect", "session_id": "session-1", "code": 1000},
+    ]
+
+    sent = await _run_delayed_contract_session(
+        app,
+        scope,
+        events,
+        delayed_from_index=2,
+    )
+
+    stream_sends = _stream_sends(sent)
+    datagram_sends = _datagram_sends(sent)
+
+    assert sum(1 for event in sent if event.get("type") == "webtransport.accept") == 1
+    assert stream_sends == [
+        {
+            "type": "webtransport.stream.send",
+            "session_id": "session-1",
+            "stream_id": "bidi-1",
+            "stream_direction": "bidi",
+            "framing": "text",
+            "data": b"echo:alpha",
+            "more": False,
+        },
+        {
+            "type": "webtransport.stream.send",
+            "session_id": "session-1",
+            "stream_id": "bidi-2",
+            "stream_direction": "bidi",
+            "framing": "text",
+            "data": b"echo:beta",
+            "more": False,
+        },
+    ]
+    assert datagram_sends == [
+        {
+            "type": "webtransport.datagram.send",
+            "session_id": "session-1",
+            "datagram_id": "dg-client-1",
+            "framing": "text",
+            "data": b"echo:ping",
+        },
+    ]
+    assert sent[-1] == {"type": "webtransport.close", "code": 1000, "session_id": "session-1"}
+    trace = scope["state"]["tigrbl_webtransport"]["trace"]
+    assert [
+        (item["direction"], item["type"], item.get("stream_id"), item.get("datagram_id"))
+        for item in trace
+        if item["direction"] == "receive"
+    ] == [
+        ("receive", "webtransport.connect", None, None),
+        ("receive", "webtransport.stream.receive", "bidi-1", None),
+        ("receive", "webtransport.stream.receive", "bidi-2", None),
+        ("receive", "webtransport.datagram.receive", None, "dg-client-1"),
+        ("receive", "webtransport.disconnect", None, None),
+    ]
+    latest_trace = getattr(app, "_webtransport_trace_latest")
+    trace_snapshots = getattr(app, "_webtransport_trace_snapshots")
+    assert latest_trace is not trace
+    assert latest_trace == trace
+    assert trace_snapshots[-1] == trace
 
 
 @pytest.mark.asyncio

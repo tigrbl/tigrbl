@@ -333,6 +333,9 @@ class App(AppBase):
         if scope_type == "lifespan":
             await self._handle_lifespan(scope, receive, send)
             return
+        if scope_type == "webtransport":
+            await self._handle_webtransport(scope, receive, send)
+            return
         if scope_type == "websocket":
             if not scope.get("scheme"):
                 scope = dict(scope)
@@ -402,6 +405,35 @@ class App(AppBase):
     ) -> None:
         env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
         await self.invoke(env)
+
+    async def _handle_webtransport(
+        self, scope: dict[str, Any], receive: Any, send: Any
+    ) -> None:
+        if not scope.get("scheme"):
+            scope = dict(scope)
+            scope["scheme"] = "webtransport"
+        scope_state = scope.setdefault("state", {})
+        if not isinstance(scope_state, dict):
+            scope_state = {}
+            scope["state"] = scope_state
+        wt_state = scope_state.setdefault("tigrbl_webtransport", {})
+        if not isinstance(wt_state, dict):
+            wt_state = {}
+            scope_state["tigrbl_webtransport"] = wt_state
+
+        while wt_state.get("closed") is not True:
+            env = GwRawEnvelope(kind="asgi3", scope=scope, receive=receive, send=send)
+            await self.invoke(env)
+            trace = wt_state.get("trace")
+            if isinstance(trace, list):
+                self._webtransport_trace_latest = list(trace)
+                snapshots = getattr(self, "_webtransport_trace_snapshots", None)
+                if not isinstance(snapshots, list):
+                    snapshots = []
+                    self._webtransport_trace_snapshots = snapshots
+                snapshots.append(list(trace))
+            if wt_state.get("closed") is True or wt_state.get("disconnected") is True:
+                break
 
     async def _handle_lifespan(
         self, _scope: dict[str, Any], receive: Any, send: Any
