@@ -135,6 +135,8 @@ def python_projects() -> list[dict[str, str]]:
 
 
 def cargo_members() -> list[Path]:
+    if not (ROOT / "Cargo.toml").exists():
+        return []
     root_manifest = read(ROOT / "Cargo.toml")
     members_match = re.search(r"(?ms)^members\s*=\s*\[(.*?)\]", root_manifest)
     if not members_match:
@@ -146,6 +148,8 @@ def cargo_members() -> list[Path]:
 
 
 def cargo_workspace_version() -> str:
+    if not (ROOT / "Cargo.toml").exists():
+        raise RuntimeError("Cargo workspace manifest was not found")
     match = CARGO_WORKSPACE_VERSION_RE.search(read(ROOT / "Cargo.toml"))
     if not match:
         raise RuntimeError("Cargo workspace package version was not found")
@@ -153,6 +157,8 @@ def cargo_workspace_version() -> str:
 
 
 def cargo_projects() -> list[dict[str, str]]:
+    if not (ROOT / "Cargo.toml").exists():
+        return []
     version = cargo_workspace_version()
     projects: list[dict[str, str]] = []
     for manifest in cargo_members():
