@@ -8,6 +8,8 @@ from typing import Any
 import pytest
 
 from tigrbl import WebTransportBindingSpec
+from tigrbl_core._spec.hook_spec import HookSpec
+from tigrbl_core._spec.hook_types import HookPhase
 from tigrbl_concrete._concrete._app import App as TigrblApp
 from tigrbl_runtime.protocol.webtransport import WebTransportSessionState
 
@@ -146,6 +148,10 @@ def _stream_sends(sent: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def _datagram_sends(sent: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return [event for event in sent if event.get("type") == "webtransport.datagram.send"]
+
+
+def _wt_state(scope: dict[str, Any]) -> dict[str, Any]:
+    return scope["state"]["tigrbl_webtransport"]
 
 
 @pytest.mark.asyncio
@@ -342,3 +348,230 @@ def test_webtransport_tigrcorn_session_close_cascade_blocks_late_lanes() -> None
             channel="send",
             payload={"session_id": "session-1", "datagram_id": "dg-server-late", "framing": "json"},
         )
+
+
+@pytest.mark.asyncio
+async def test_webtransport_hook_trace_records_actual_execution() -> None:
+    app = _app("/transport/multiplex")
+    observed: list[dict[str, Any]] = []
+
+    async def on_stream(ctx: dict[str, Any]) -> None:
+        observed.append(dict(ctx["webtransport"]))
+
+    app.hooks = (
+        HookSpec(
+            phase=HookPhase.PRE_HANDLER,
+            fn=on_stream,
+            family=("stream",),
+            subevents=("stream.chunk.received",),
+            name="wt-stream-ingress",
+        ),
+    )
+    scope = _scope("/transport/multiplex")
+    events = [
+        webtransport_connect("hook-session"),
+        webtransport_stream_receive(
+            "hook-session",
+            "bidi-1",
+            b"alpha",
+            stream_direction="bidi",
+            framing="text",
+        ),
+        {"type": "webtransport.disconnect", "session_id": "hook-session", "code": 1000},
+    ]
+
+    await _run_contract_session(app, scope, events)
+
+    hook_trace = _wt_state(scope)["hook_trace"]
+    assert observed and observed[0]["session_id"] == "hook-session"
+    assert observed[0]["stream_id"] == "bidi-1"
+    assert hook_trace == [
+        {
+            "hook": "wt-stream-ingress",
+            "phase": "PRE_HANDLER",
+            "session_id": "hook-session",
+            "stream_id": "bidi-1",
+            "datagram_id": None,
+            "stream_direction": "bidi",
+            "lane": "bidi_stream",
+            "family": "stream",
+            "exchange": "bidirectional_stream",
+            "event_type": "webtransport.stream.receive",
+            "subevent": "stream.chunk.received",
+            "framing": "text",
+        }
+    ]
+
+
+@pytest.mark.asyncio
+async def test_webtransport_hook_context_includes_session_and_stream_identity() -> None:
+    app = _app("/transport/multiplex")
+    contexts: list[dict[str, Any]] = []
+
+    def capture(ctx: dict[str, Any]) -> None:
+        contexts.append(dict(ctx["webtransport"]))
+
+    app.hooks = (
+        HookSpec(
+            phase=HookPhase.PRE_HANDLER,
+            fn=capture,
+            family=("session", "stream", "datagram"),
+            name="wt-context-capture",
+        ),
+    )
+    scope = _scope("/transport/multiplex")
+    events = [
+        webtransport_connect("ctx-session"),
+        webtransport_stream_receive(
+            "ctx-session",
+            "bidi-1",
+            b"alpha",
+            stream_direction="bidi",
+            framing="text",
+        ),
+        webtransport_datagram_receive("ctx-session", "dg-client-1", b"ping", framing="text"),
+        {"type": "webtransport.disconnect", "session_id": "ctx-session", "code": 1000},
+    ]
+
+    await _run_contract_session(app, scope, events)
+
+    stream_ctx = next(item for item in contexts if item["event_type"] == "webtransport.stream.receive")
+    datagram_ctx = next(item for item in contexts if item["event_type"] == "webtransport.datagram.receive")
+    assert stream_ctx["session_id"] == "ctx-session"
+    assert stream_ctx["stream_id"] == "bidi-1"
+    assert stream_ctx["lane"] == "bidi_stream"
+    assert datagram_ctx["session_id"] == "ctx-session"
+    assert datagram_ctx["datagram_id"] == "dg-client-1"
+    assert datagram_ctx["lane"] == "datagram"
+    assert datagram_ctx["stream_id"] is None
+
+
+@pytest.mark.asyncio
+async def test_webtransport_datagram_events_reach_hooks_with_session_scope() -> None:
+    app = _app("/transport/multiplex")
+    datagrams: list[dict[str, Any]] = []
+
+    def capture_datagram(ctx: dict[str, Any]) -> None:
+        datagrams.append(dict(ctx["webtransport"]))
+
+    app.hooks = (
+        HookSpec(
+            phase=HookPhase.PRE_HANDLER,
+            fn=capture_datagram,
+            family=("datagram",),
+            subevents=("datagram.received",),
+            name="wt-datagram-ingress",
+        ),
+    )
+    scope = _scope("/transport/multiplex")
+    events = [
+        webtransport_connect("dg-session"),
+        webtransport_datagram_receive("dg-session", "dg-client-1", b"ping", framing="json"),
+        {"type": "webtransport.disconnect", "session_id": "dg-session", "code": 1000},
+    ]
+
+    await _run_contract_session(app, scope, events)
+
+    assert datagrams == [
+        {
+            "session_id": "dg-session",
+            "stream_id": None,
+            "stream_direction": None,
+            "datagram_id": "dg-client-1",
+            "framing": "json",
+            "lane": "datagram",
+            "family": "datagram",
+            "exchange": "bidirectional_stream",
+            "event_type": "webtransport.datagram.receive",
+            "subevent": "datagram.received",
+            "event": {
+                "type": "webtransport.datagram.receive",
+                "session_id": "dg-session",
+                "datagram_id": "dg-client-1",
+                "data": b"ping",
+                "framing": "json",
+            },
+        }
+    ]
+
+
+@pytest.mark.asyncio
+async def test_webtransport_runtime_state_isolation_sequential_concurrent() -> None:
+    app = _app("/transport/multiplex")
+
+    async def run_session(session_id: str, stream_id: str) -> dict[str, Any]:
+        scope = _scope("/transport/multiplex")
+        events = [
+            webtransport_connect(session_id),
+            webtransport_stream_receive(
+                session_id,
+                stream_id,
+                b"payload",
+                stream_direction="bidi",
+                framing="text",
+            ),
+            {"type": "webtransport.disconnect", "session_id": session_id, "code": 1000},
+        ]
+        await _run_contract_session(app, scope, events)
+        return scope
+
+    first = await run_session("seq-a", "bidi-a")
+    second = await run_session("seq-b", "bidi-b")
+    concurrent_a, concurrent_b = await asyncio.gather(
+        run_session("concurrent-a", "bidi-ca"),
+        run_session("concurrent-b", "bidi-cb"),
+    )
+
+    assert _wt_state(first)["session"].session_id == "seq-a"
+    assert _wt_state(second)["session"].session_id == "seq-b"
+    assert _wt_state(first)["session"] is not _wt_state(second)["session"]
+    assert {item.get("session_id") for item in _wt_state(concurrent_a)["trace"]} == {"concurrent-a"}
+    assert {item.get("session_id") for item in _wt_state(concurrent_b)["trace"]} == {"concurrent-b"}
+    assert _wt_state(concurrent_a)["session"] is not _wt_state(concurrent_b)["session"]
+
+
+@pytest.mark.asyncio
+async def test_webtransport_runtime_does_not_reuse_session_registry_between_scopes() -> None:
+    app = _app("/transport/multiplex")
+    scope_a = _scope("/transport/multiplex")
+    scope_b = _scope("/transport/multiplex")
+
+    await _run_contract_session(
+        app,
+        scope_a,
+        [
+            webtransport_connect("registry-a"),
+            webtransport_stream_receive(
+                "registry-a",
+                "bidi-a",
+                b"alpha",
+                stream_direction="bidi",
+                framing="text",
+            ),
+            {"type": "webtransport.disconnect", "session_id": "registry-a", "code": 1000},
+        ],
+    )
+    await _run_contract_session(
+        app,
+        scope_b,
+        [
+            webtransport_connect("registry-b"),
+            webtransport_stream_receive(
+                "registry-b",
+                "bidi-b",
+                b"beta",
+                stream_direction="bidi",
+                framing="text",
+            ),
+            {"type": "webtransport.disconnect", "session_id": "registry-b", "code": 1000},
+        ],
+    )
+
+    state_a = _wt_state(scope_a)
+    state_b = _wt_state(scope_b)
+    assert state_a["session"].session_id == "registry-a"
+    assert state_b["session"].session_id == "registry-b"
+    assert state_a["session"] is not state_b["session"]
+    assert "bidi-a" in state_a["session"].streams
+    assert "bidi-a" not in state_b["session"].streams
+    assert state_a["trace"] is not state_b["trace"]

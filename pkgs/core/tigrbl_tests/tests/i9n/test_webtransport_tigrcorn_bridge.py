@@ -7,6 +7,8 @@ from typing import Any
 import pytest
 
 from tigrbl import WebTransportBindingSpec
+from tigrbl_core._spec.hook_spec import HookSpec
+from tigrbl_core._spec.hook_types import HookPhase
 from tigrbl_concrete._concrete._app import App as TigrblApp
 
 
@@ -175,4 +177,85 @@ async def test_tigrbl_webtransport_datagram_runs_over_tigrcorn_contract_events()
         "datagram",
         "duplex",
         "server_to_client",
+    )
+
+
+@pytest.mark.asyncio
+async def test_webtransport_bidi_and_unidi_lane_metadata_reaches_hooks() -> None:
+    app = TigrblApp(title="Tigrbl WebTransport Lane Metadata")
+    captured: list[dict[str, Any]] = []
+
+    def capture(ctx: dict[str, Any]) -> None:
+        captured.append(dict(ctx["webtransport"]))
+
+    async def lanes(ctx: Any) -> dict[str, Any]:
+        return {
+            "bidirectional_streams": [{"id": "bidi-1", "message": "reply-bidi"}],
+            "unidirectional_streams": [
+                {"id": "server-1", "message": "server-unidi", "framing": "text"}
+            ],
+        }
+
+    app.hooks = (
+        HookSpec(
+            phase=HookPhase.PRE_HANDLER,
+            fn=capture,
+            family=("stream",),
+            subevents=("stream.chunk.received",),
+            name="wt-stream-lane-ingress",
+        ),
+        HookSpec(
+            phase=HookPhase.POST_HANDLER,
+            fn=capture,
+            family=("stream",),
+            subevents=("stream.chunk.emit",),
+            name="wt-stream-lane-egress",
+        ),
+    )
+    app.add_route(
+        "/transport/lanes",
+        lanes,
+        methods=("POST",),
+        tigrbl_binding=WebTransportBindingSpec(
+            proto="webtransport",
+            path="/transport/lanes",
+            profile="bidi_stream",
+            inner_framing="text",
+        ),
+        tigrbl_exchange="bidirectional_stream",
+    )
+    scope = _scope("/transport/lanes")
+    scope.setdefault("state", {}).setdefault("tigrbl_webtransport", {})["eager_drain"] = True
+    events = [
+        webtransport_connect("lane-session"),
+        webtransport_stream_receive(
+            "lane-session",
+            "bidi-1",
+            b"alpha",
+            stream_direction="bidi",
+            framing="text",
+        ),
+        webtransport_stream_receive(
+            "lane-session",
+            "client-1",
+            b"upload",
+            stream_direction="client_to_server",
+            framing="text",
+        ),
+        {"type": "webtransport.disconnect", "session_id": "lane-session", "code": 1000},
+    ]
+
+    sent = await _run_contract_session(app, scope, events)
+
+    lanes_by_stream = {item["stream_id"]: item["lane"] for item in captured if item["stream_id"]}
+    assert lanes_by_stream["bidi-1"] == "bidi_stream"
+    assert lanes_by_stream["client-1"] == "unidi_client_stream"
+    assert any(
+        item["stream_id"] == "server-1" and item["lane"] == "unidi_server_stream"
+        for item in captured
+    )
+    assert any(
+        event.get("stream_id") == "server-1"
+        and event.get("stream_direction") == "server_to_client"
+        for event in sent
     )
