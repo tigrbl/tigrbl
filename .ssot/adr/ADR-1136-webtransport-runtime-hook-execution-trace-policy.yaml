@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1136"
+number: 1136
+slug: "webtransport-runtime-hook-execution-trace-policy"
+title: "WebTransport runtime traces must record actual hook execution"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl owns AppSpec binding, runtime context projection, hook execution, and hook/runtime trace visibility for WebTransport scopes. Trace records must represent actual hook execution events, not only configured hook names. Each WebTransport hook/runtime trace row should preserve session identity, stream identity, lane kind, event type, and execution phase while leaving QUIC/H3 packet lifecycle to Tigrcorn."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Tigrbl owns AppSpec binding, runtime context projection, hook execution, and hook/runtime trace visibility for WebTransport scopes. Trace records must represent actual hook execution events, not only configured hook names. Each WebTransport hook/runtime trace row should preserve session identity, stream identity, lane kind, event type, and execution phase while leaving QUIC/H3 packet lifecycle to Tigrcorn.

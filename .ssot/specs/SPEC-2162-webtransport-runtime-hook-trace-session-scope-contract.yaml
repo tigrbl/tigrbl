@@ -1,0 +1,22 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2162"
+number: 2162
+slug: "webtransport-runtime-hook-trace-session-scope-contract"
+title: "WebTransport runtime hook trace and session scope contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrbl's WebTransport runtime proof obligations: consume Tigrcorn WT session identity, keep one WT scope alive across lane events until disconnect, isolate per-scope runtime state, expose lane metadata to hooks, and record actual hook execution traces for session, stream, datagram, dispatch, egress, error, and close paths."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines Tigrbl's WebTransport runtime proof obligations: consume Tigrcorn WT session identity, keep one WT scope alive across lane events until disconnect, isolate per-scope runtime state, expose lane metadata to hooks, and record actual hook execution traces for session, stream, datagram, dispatch, egress, error, and close paths.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1136"
+  - "adr:1005"
+  - "adr:1006"
