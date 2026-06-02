@@ -215,6 +215,8 @@ class ClientSessionRecord:
     session_id: str
     closed: bool = False
     payloads: list[str] = field(default_factory=list)
+    streams_seen: set[str] = field(default_factory=set)
+    datagrams_seen: set[str] = field(default_factory=set)
 
 
 class ClientSessionTopologyRecorder:
@@ -320,20 +322,50 @@ class ClientSessionRobustnessRecorder:
         payload: object,
         *,
         framing: str = "json",
+        stream_id: str | None = None,
+        datagram_id: str | None = None,
     ) -> None:
         session = self.session_for(client_id, session_id)
         if session.closed:
-            self.fail_closed(client_id, session_id, "post_close_send")
+            self.fail_closed(
+                client_id,
+                session_id,
+                "post_close_send",
+                stream_id=stream_id,
+                datagram_id=datagram_id,
+            )
             raise RuntimeError("post-close send rejected")
         if framing not in {"json", "text", "bytes"}:
-            self.fail_closed(client_id, session_id, "unsupported_framing")
+            self.fail_closed(
+                client_id,
+                session_id,
+                "unsupported_framing",
+                stream_id=stream_id,
+                datagram_id=datagram_id,
+            )
             raise ValueError("unsupported framing rejected fail-closed")
         if not isinstance(payload, str) or not payload:
-            self.fail_closed(client_id, session_id, "malformed_payload")
+            self.fail_closed(
+                client_id,
+                session_id,
+                "malformed_payload",
+                stream_id=stream_id,
+                datagram_id=datagram_id,
+            )
             raise ValueError("malformed payload rejected")
         if len(session.payloads) >= self.queue_limit:
-            self.fail_closed(client_id, session_id, "pressure_budget_exceeded")
+            self.fail_closed(
+                client_id,
+                session_id,
+                "pressure_budget_exceeded",
+                stream_id=stream_id,
+                datagram_id=datagram_id,
+            )
             raise BufferError("bounded queue pressure rejected")
+        if stream_id is not None:
+            session.streams_seen.add(str(stream_id))
+        if datagram_id is not None:
+            session.datagrams_seen.add(str(datagram_id))
         session.payloads.append(payload)
 
     def cancel(self, client_id: str, session_id: str) -> None:
@@ -345,13 +377,24 @@ class ClientSessionRobustnessRecorder:
         self.fail_closed(client_id, session_id, "timeout")
 
     def session_for(self, client_id: str, session_id: str) -> ClientSessionRecord:
-        session = self.sessions[session_id]
+        try:
+            session = self.sessions[session_id]
+        except KeyError as exc:
+            self.fail_closed(client_id, session_id, "unknown_session")
+            raise KeyError("unknown session rejected") from exc
         if session.client_id != client_id:
             self.fail_closed(client_id, session_id, "cross_client_session_access")
             raise PermissionError("cross-client session access rejected")
         return session
 
-    def fail_closed(self, client_id: str, session_id: str, error_kind: str) -> dict[str, Any]:
+    def fail_closed(
+        self,
+        client_id: str,
+        session_id: str,
+        error_kind: str,
+        **identifiers: Any,
+    ) -> dict[str, Any]:
+        identifiers = {key: value for key, value in identifiers.items() if value is not None}
         row = build_matrix_row(
             transport_scenario=self.transport_scenario,
             client_topology=ClientTopology.CONCURRENT_CLIENTS,
@@ -363,6 +406,7 @@ class ClientSessionRobustnessRecorder:
             client_id=client_id,
             session_id=session_id,
             error_kind=error_kind,
+            **identifiers,
         )
         self.errors.append(row)
         return row

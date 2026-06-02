@@ -66,3 +66,34 @@ def test_cross_client_and_cross_session_payloads_are_rejected() -> None:
     assert harness.sessions["session-a"].payloads == []
     assert harness.sessions["session-b"].payloads == []
     assert harness.errors[-1]["error_kind"] == "cross_client_session_access"
+
+
+def test_stream_and_datagram_identifiers_are_preserved_on_t2_failures() -> None:
+    harness = ClientSessionRobustnessRecorder(queue_limit=1)
+    harness.open("client-a", "session-a")
+    harness.send("client-a", "session-a", "one", stream_id="stream-a")
+
+    with pytest.raises(BufferError, match="bounded queue"):
+        harness.send(
+            "client-a",
+            "session-a",
+            "two",
+            stream_id="stream-a",
+            datagram_id="datagram-late",
+        )
+
+    assert harness.sessions["session-a"].streams_seen == {"stream-a"}
+    assert harness.errors[-1]["stream_id"] == "stream-a"
+    assert harness.errors[-1]["datagram_id"] == "datagram-late"
+    assert "lane" not in harness.errors[-1]
+
+
+def test_unknown_session_rejection_is_recorded_fail_closed() -> None:
+    harness = ClientSessionRobustnessRecorder()
+
+    with pytest.raises(KeyError, match="unknown session"):
+        harness.send("client-a", "missing-session", "late")
+
+    assert harness.errors[-1]["error_kind"] == "unknown_session"
+    assert harness.errors[-1]["client_id"] == "client-a"
+    assert harness.errors[-1]["session_id"] == "missing-session"
