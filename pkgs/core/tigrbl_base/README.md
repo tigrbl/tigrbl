@@ -7,7 +7,7 @@
 <a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-base"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_base/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_base/README.md.svg?label=hits" alt="Repository hits for tigrbl-base README"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
-<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for tigrbl-base"/></a>
+<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%2C%203.11%2C%203.12%2C%203.13%2C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for tigrbl-base"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md"><img src="https://img.shields.io/badge/workspace-core-1f6feb" alt="Workspace group for tigrbl-base"/></a>
 </div>
 
@@ -64,7 +64,7 @@ pip install tigrbl-base
 | Entry points | none declared |
 | Optional extras | none declared |
 | Legal files | `LICENSE`, `NOTICE` |
-| Supported Python | `3.10 | 3.11 | 3.12 | 3.13 | 3.14` |
+| Supported Python | `3.10, 3.11, 3.12, 3.13, 3.14` |
 
 ## What It Owns
 
@@ -73,12 +73,63 @@ pip install tigrbl-base
 Implementation orientation:
 - `tigrbl_base`: _base/, column/
 
+Package catalog:
+- `_base/_app_base.py`, `_router_base.py`, and `_table_base.py`: abstract app, router, and table behavior used by concrete framework classes.
+- `_base/_op_base.py`, `_binding_base.py`, `_rest_map.py`, and `_rpc_map.py`: operation, binding, REST mapping, and JSON-RPC mapping contracts.
+- `_base/_schema_base.py`, `_request_base.py`, `_response_base.py`, `_headers_base.py`, and `_middleware_base.py`: request/response/schema/header/middleware abstractions.
+- `_base/_engine_base.py`, `_engine_provider_base.py`, `_session_abc.py`, `_session_base.py`, and `_storage.py`: engine, provider, session, and storage interfaces.
+- `_base/_column_base.py`, `_table_registry_base.py`, `_alias_base.py`, `_hook_base.py`, `_security_base.py`, and `_datatype_lowering.py`: table metadata, aliasing, hook/security contracts, and data-type lowering hooks.
+- `_base/_assembly.py` and `_mapping_access.py`: assembly and mapping helpers for concrete implementations.
+- `column/infer`: column inference planning, JSON hint handling, type interpretation, and utility helpers.
+
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_base`.
 - Public symbols: public surface is module-oriented; import the package boundary and inspect submodules as needed.
 - Workspace dependencies: [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/).
 - External runtime dependencies: `sqlalchemy>=2.0`, `pydantic>=2.0`.
+
+## Abstraction Semantics
+
+`tigrbl-base` is the abstract contract layer between core specs and concrete implementations. It is useful when you need interface behavior without importing the facade or concrete ASGI/application classes.
+
+The package answers questions such as:
+
+- What must an app/router/table expose for assembly?
+- How do REST and JSON-RPC maps represent operation bindings?
+- What does a request, response, middleware, hook, session, engine provider, or storage adapter need to provide?
+- How should column metadata be inferred before a concrete table class lowers it into ORM/schema/runtime behavior?
+
+It should not own route registration side effects, transport IO, database engine construction, or runtime execution. Those belong in `tigrbl-concrete`, engine packages, kernel/runtime packages, or the facade.
+
+## Base Contracts by Area
+
+| Area | Base responsibility |
+|---|---|
+| App/router/table | Provide shared assembly, inclusion, registration, and metadata contracts. |
+| Operations and bindings | Represent operation maps, REST maps, RPC maps, alias behavior, and binding access. |
+| Schema and IO | Provide base shape for request/response/schema objects without deciding concrete rendering. |
+| Engine/session/storage | Define provider/session/storage contracts so concrete engines can plug in consistently. |
+| Hooks/security/middleware | Provide registration and interface surfaces for lifecycle customization and request policy. |
+| Columns | Infer and lower type information while keeping spec-level intent separate from concrete ORM wiring. |
+
+## Column Inference
+
+`tigrbl_base.column.infer` supports the framework's schema-first and table-first workflows. It helps interpret Python typing, JSON hints, planning metadata, and column options before concrete packages lower them into SQLAlchemy/Pydantic/runtime representations.
+
+Best practices for column inference:
+- Keep inference deterministic; the same type hints and config should produce the same plan.
+- Keep storage intent separate from wire-schema intent.
+- Preserve explicit user configuration over inferred defaults.
+- Add tests for ambiguous type handling instead of silently guessing.
+
+## Extension Guidance
+
+- Depend on `tigrbl-base` when you are writing concrete adapters, engine adapters, or framework tests that need abstract contracts.
+- Do not import `tigrbl` facade classes here; base should remain lower than the public facade.
+- Keep methods small and contract-oriented. Put operational side effects in concrete implementations or atoms.
+- Treat base classes as compatibility surfaces. Renaming or tightening a method affects all concrete packages.
+- Prefer composition with `tigrbl-core` specs rather than duplicating spec fields in base classes.
 
 ## Usage Examples
 
@@ -140,6 +191,8 @@ Choose `tigrbl-base` when the quick-answer table matches your use case. Choose [
 - [Package layout](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_LAYOUT.md)
 - [Current target](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_TARGET.md)
 - [Current state](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_STATE.md)
+- [Next steps](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/NEXT_STEPS.md)
+- [Documentation pointers](https://github.com/tigrbl/tigrbl/blob/master/docs/governance/DOC_POINTERS.md)
 - [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json)
 - [Release workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml)
 
@@ -151,7 +204,7 @@ Choose `tigrbl-base` when the quick-answer table matches your use case. Choose [
 
 ## Package-local Boundary
 
-This README is the package-local distribution entry point for `tigrbl-base`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
+This file is a package-local distribution entry point. This README is the package-local distribution entry point for `tigrbl-base`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
 
 ## License
 

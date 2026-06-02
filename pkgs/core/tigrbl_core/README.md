@@ -7,7 +7,7 @@
 <a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-core"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_core/README.md"><img src="https://hits.sh/github.com/tigrbl/tigrbl/blob/master/pkgs/core/tigrbl_core/README.md.svg?label=hits" alt="Repository hits for tigrbl-core README"/></a>
 <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-525252" alt="Apache 2.0 license"/></a>
-<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for tigrbl-core"/></a>
+<a href="pyproject.toml"><img src="https://img.shields.io/badge/python-3.10%2C%203.11%2C%203.12%2C%203.13%2C%203.14-3776ab" alt="Python versions 3.10 | 3.11 | 3.12 | 3.13 | 3.14 for tigrbl-core"/></a>
 <a href="https://github.com/tigrbl/tigrbl/blob/master/docs/README.md"><img src="https://img.shields.io/badge/workspace-core-1f6feb" alt="Workspace group for tigrbl-core"/></a>
 </div>
 
@@ -64,7 +64,7 @@ pip install tigrbl-core
 | Entry points | none declared |
 | Optional extras | none declared |
 | Legal files | `LICENSE`, `NOTICE` |
-| Supported Python | `3.10 | 3.11 | 3.12 | 3.13 | 3.14` |
+| Supported Python | `3.10, 3.11, 3.12, 3.13, 3.14` |
 
 ## What It Owns
 
@@ -73,12 +73,84 @@ pip install tigrbl-core
 Implementation orientation:
 - `tigrbl_core`: _spec/, canonical_json, config/, core/, op/, schema/
 
+Package catalog:
+- `tigrbl_core/_spec/`: typed, serializable specifications for aliases, apps, bindings, columns, data types, docs, engines, fields, hooks, IO, middleware, operations, paths, requests, responses, routers, schemas, sessions, storage, tables, and table registries.
+- `tigrbl_core/config/`: constants, defaults, resolver logic, and engine traversal helpers used when app, router, table, column, op, and request layers are merged.
+- `tigrbl_core/op/`: canonical operation names, operation collection, and operation typing helpers.
+- `tigrbl_core/schema/`: dynamic schema construction, schema cache helpers, extras handling, list-parameter support, schema JSON helpers, and `get_schema` access.
+- `tigrbl_core/canonical_json.py`: deterministic JSON output used by docs, registry-like payloads, tests, and conformance artifacts.
+
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_core`.
 - Public symbols: public surface is module-oriented; import the package boundary and inspect submodules as needed.
 - Workspace dependencies: [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/).
 - External runtime dependencies: `pydantic>=2.10,<3`, `pyyaml`, `tomli-w`, `tomli>=2.0.1; python_version < '3.11'`.
+
+## Specification Model
+
+The core package is the contract layer. It defines the vocabulary consumed by base abstractions, concrete adapters, atoms, kernel planning, runtime routing, docs generation, and the public facade. Most application code should not construct these specs manually; application code should normally use facade decorators and shortcuts. Extension packages use the specs when they need deterministic, testable configuration objects.
+
+| Spec family | What it describes |
+|---|---|
+| `AppSpec`, `RouterSpec`, `TableSpec` | Container-level framework configuration and inheritance points. |
+| `ColumnSpec`, `FieldSpec`, data type specs | Field semantics, validation, storage, schema projection, and data-type lowering. |
+| `OpSpec` and op utilities | Operation name, alias, arity, binding, handler, schema, hook, response, and runtime intent. |
+| `HookSpec` and hook types | Hook targets, phases, predicates, ordering, and callable registration shape. |
+| `SchemaSpec`, `RequestSpec`, `ResponseSpec`, `IoSpec` | Input/output envelope behavior, request extraction, response shaping, and Pydantic model generation. |
+| `BindingSpec` | REST, JSON-RPC, stream, SSE, WebSocket, WSS, and WebTransport binding metadata. |
+| `EngineSpec`, `SessionSpec`, `StorageSpec` | Engine/provider/session/storage configuration without importing concrete engine implementations. |
+| `DocsSpec`, `PathSpec`, `MiddlewareSpec` | Documentation projection, route paths, and middleware configuration. |
+
+## Operation Semantics
+
+`tigrbl_core.op.canonical.DEFAULT_CANON_VERBS` is the default CRUD set:
+
+```text
+create, read, update, replace, delete, list, clear
+```
+
+Tables can change canonical wiring through mode/include/exclude attributes or a `should_wire_canonical(op)` helper. Core only decides whether an operation is part of the desired specification. Concrete packages and operation packs supply the actual handlers and routing behavior.
+
+Use this package when you need to inspect or build operation specs before runtime compilation. Use `tigrbl` when you simply want a working app surface.
+
+## Binding and Transport Semantics
+
+`BindingSpec` keeps four concerns distinct:
+
+- protocol or binding kind, such as HTTP REST, HTTP JSON-RPC, HTTP stream, SSE, WebSocket, WSS, or WebTransport;
+- exchange shape, such as request/response, server stream, bidirectional stream, client stream, server stream, session, or datagram;
+- framing, such as JSON, JSON-RPC, SSE, WebSocket text, stream framing, or WebTransport outer framing;
+- runtime lane metadata, especially for WebTransport session, stream, and datagram behavior.
+
+This separation is deliberate. Extension authors should not collapse protocol support into a single string or infer framing from the transport name. Invalid combinations should remain explicit validation failures so runtime behavior is fail-closed.
+
+## Configuration Precedence
+
+Core resolvers use this precedence pattern:
+
+```text
+request override > operation spec > column spec > table spec > router spec > app spec > defaults
+```
+
+The most specific layer wins. Keep default policy broad, then narrow behavior by table, column, and operation. Avoid hidden mutation of spec objects after a runtime plan has been compiled; build a fresh spec or invalidate the relevant cache when behavior truly changes.
+
+## Schema Construction
+
+Schema helpers build operation-specific request and response models from table metadata, column specs, request/response extras, list-parameter rules, and op-level configuration. `get_schema(...)` is the stable way to retrieve the generated model for a table operation and direction. Prefer it over hand-writing duplicate Pydantic envelopes when data belongs to a Tigrbl operation.
+
+Best practices for schema work:
+- Keep storage fields, wire fields, and virtual extras separate.
+- Put reusable schema behavior in table or column specs; reserve op specs for operation-specific differences.
+- Use canonical JSON helpers when writing deterministic docs or evidence artifacts.
+- Treat generated schemas as projections of the specs, not as the source of truth.
+
+## Extension Guidance
+
+- Depend on `tigrbl-core` when you need spec classes, op collection, schema generation, or config resolution without concrete app/router/runtime imports.
+- Keep specs serializable and deterministic. Do not attach live database sessions, request objects, or transport handles to core specs.
+- Validate protocol and binding assumptions in core or kernel-facing tests before adding runtime behavior.
+- Keep application-facing convenience APIs in `tigrbl` or `tigrbl-concrete`; keep cross-package contracts here.
 
 ## Usage Examples
 
@@ -140,6 +212,8 @@ Choose `tigrbl-core` when the quick-answer table matches your use case. Choose [
 - [Package layout](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_LAYOUT.md)
 - [Current target](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_TARGET.md)
 - [Current state](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_STATE.md)
+- [Next steps](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/NEXT_STEPS.md)
+- [Documentation pointers](https://github.com/tigrbl/tigrbl/blob/master/docs/governance/DOC_POINTERS.md)
 - [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json)
 - [Release workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml)
 
@@ -151,7 +225,7 @@ Choose `tigrbl-core` when the quick-answer table matches your use case. Choose [
 
 ## Package-local Boundary
 
-This README is the package-local distribution entry point for `tigrbl-core`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
+This file is a package-local distribution entry point. This README is the package-local distribution entry point for `tigrbl-core`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
 
 ## License
 
