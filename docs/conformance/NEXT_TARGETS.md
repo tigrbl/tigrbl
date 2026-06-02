@@ -81,7 +81,7 @@ Any other non-listed server/runtime adapters remain out of boundary until a new 
 
 The design direction now captured here and in the ADR set includes:
 
-- semantic datatype declarations separated from Rust engine lowering
+- semantic datatype declarations separated from optional runtime binding lowering
 - engine registries and lowerers instead of adapter hardcoding
 - `to_json`, `to_df`, `encode`, and `decode` as explicit adapter behaviors
 - table/program sequencing after the datatype semantic center is in place

@@ -267,7 +267,7 @@ def build_console_page() -> str:
 
 
 class RustRuntimeDemoHandler(BaseHTTPRequestHandler):
-    server_version = "tigrbl-rust-runtime-demo/0.2"
+    server_version = "tigrbl-rust-binding-demo/0.2"
 
     def do_GET(self) -> None:  # noqa: N802
         path = urlparse(self.path).path

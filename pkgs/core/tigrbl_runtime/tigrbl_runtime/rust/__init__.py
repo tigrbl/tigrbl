@@ -20,12 +20,6 @@ from tigrbl_kernel.rust_spec import (
     coerce_rust_spec_json,
 )
 from .compile import compile_app, normalize_spec
-from .parity import (
-    rust_parity_snapshot,
-    rust_transport_trace,
-    reference_parity_snapshot,
-    reference_transport_trace,
-)
 from .request import RustRequest
 from .response import RustResponse
 from .errors import RustBindingsUnavailableError
@@ -59,8 +53,6 @@ __all__ = [
     "create_runtime_from_compiled",
     "ffi_boundary_events",
     "rust_available",
-    "rust_parity_snapshot",
-    "rust_transport_trace",
     "normalize_spec",
     "register_python_atom",
     "register_python_callback",
@@ -68,7 +60,5 @@ __all__ = [
     "register_python_handler",
     "register_python_hook",
     "registered_python_callbacks",
-    "reference_parity_snapshot",
-    "reference_transport_trace",
     "wants_rust_backend",
 ]

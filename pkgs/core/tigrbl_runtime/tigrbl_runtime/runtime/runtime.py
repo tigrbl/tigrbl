@@ -18,7 +18,6 @@ from tigrbl_runtime.rust import (
     coerce_execution_backend,
     compile_app as compile_rust_app,
     create_runtime_from_compiled,
-    rust_parity_snapshot,
     normalize_spec as normalize_rust_spec,
 )
 from tigrbl_runtime.rust.runtime import RustRuntimeHandle
@@ -98,8 +97,6 @@ class Runtime(RuntimeBase):
             compiled_plan=compiled,
             backend="rust",
             normalized_spec=normalized,
-            parity_snapshot=rust_parity_snapshot(payload),
-            claimable=False,
         )
         handle = create_runtime_from_compiled(compiled)
         self._rust_compile_cache[cache_key] = (plan, handle)

@@ -4,7 +4,6 @@ from tigrbl_runtime import (
     Runtime,
     clear_rust_boundary_events,
     rust_boundary_events,
-    rust_transport_trace,
 )
 from tigrbl_core.config.constants import DEFAULT_ROOT_RESPONSE, TIGRBL_DEFAULT_ROOT_ALIAS
 
@@ -23,7 +22,6 @@ def test_rust_runtime_surface_exposes_boundary_trace_helpers() -> None:
         "callback_fence_exit",
         "response_exit",
     ]
-    assert rust_transport_trace("rest", include_hook=True)[-1]["event"] == "response_exit"
 
 
 def test_rust_runtime_returns_default_root_without_bindings() -> None:

@@ -34,8 +34,8 @@ body: |-
      - kernel may depend on declarative and atom layers but not on concrete;
      - runtime may depend on kernel, atoms, typing, and core, but not on concrete-owned execution details;
      - concrete may depend on runtime, typing, and core.
-  3. New packages and crates must fit this DAG rather than forcing exceptions.
-  4. The same ownership logic applies to Rust mirror crates.
+  3. New packages must fit this DAG rather than forcing exceptions.
+  4. The optional Rust runtime binding package must preserve the same ownership boundaries.
   
   ## Context
   

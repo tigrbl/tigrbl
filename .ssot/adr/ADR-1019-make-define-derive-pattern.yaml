@@ -27,7 +27,7 @@ body: |-
   2. Derivation must happen from canonical forms, not directly from raw user input.
   3. Public APIs should expose where they are in this pipeline.
   4. Canonical specs, binding projections, docs outputs, and compiled kernel plans are all derived artifacts.
-  5. This pattern applies across Python and Rust implementations and across docs/tooling layers.
+  5. This pattern applies across Python implementations, optional runtime binding projections, and docs/tooling layers.
   6. Shortcuts and decorators live in the make layer; semantics live in define; plans/docs/runtime projections live in derive.
   
   ## Context

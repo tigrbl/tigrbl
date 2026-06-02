@@ -25,7 +25,7 @@ Rows are excluded when they are deprecated, obsolete, removed, descoped, or expl
 | Operator, middleware, security, and request helper surfaces | 0 | 11 | 11 |
 | Protocol dispatch, framing, phases, and runtime taxonomy | 1 | 7 | 8 |
 | Public API, helpers, facades, compatibility, and aliases | 0 | 11 | 11 |
-| Python/Rust runtime lanes and performance | 0 | 1 | 1 |
+| Runtime binding and performance | 0 | 1 | 1 |
 | REST, JSON-RPC, Uvicorn, routing, and error parity | 0 | 9 | 9 |
 
 ## Freeze Blockers
@@ -67,7 +67,7 @@ The boundary must remain draft until every row has linked specs, required tests,
 | `feat:engine-extension-surface-001` | partial | Engine, DDL, schema, and datatype surfaces | T2 | 2 | 2 | 1 |
 | `feat:engine-resolver-multi-table-rpc-001` | partial | Engine, DDL, schema, and datatype surfaces | T2 | 5 | 48 | 1 |
 | `feat:gate-c-conformance-security-checkpoint-001` | partial | Operator, middleware, security, and request helper surfaces | T2 | 3 | 17 | 2 |
-| `feat:get-schema-python-helper-surface-001` | partial | Python/Rust runtime lanes and performance | T2 | 1 | 1 | 1 |
+| `feat:get-schema-python-helper-surface-001` | partial | Runtime binding and performance | T2 | 1 | 1 | 1 |
 | `feat:include-tables-helper-surface-001` | partial | Public API, helpers, facades, compatibility, and aliases | T2 | 2 | 1 | 1 |
 | `feat:integration-test-registry-coverage-001` | partial | Governance, conformance, profiles, tests, and evidence | T1 | 2 | 5 | 1 |
 | `feat:json-schema-mount-surface-001` | partial | Documentation, schema, UIX, and mount surfaces | T2 | 1 | 14 | 1 |

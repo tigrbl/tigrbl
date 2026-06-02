@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import asyncio
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, Mapping
 
@@ -207,6 +209,165 @@ def build_matrix_row(
     return row
 
 
+@dataclass
+class ClientSessionRecord:
+    client_id: str
+    session_id: str
+    closed: bool = False
+    payloads: list[str] = field(default_factory=list)
+
+
+class ClientSessionTopologyRecorder:
+    """Runtime-facing recorder for governed client-session proof rows."""
+
+    def __init__(self, transport_scenario: str = "WebTransport") -> None:
+        self.transport_scenario = transport_scenario
+        self.sessions: dict[str, ClientSessionRecord] = {}
+        self.events: list[dict[str, Any]] = []
+
+    def open(self, client_id: str, session_id: str, topology: ClientTopology) -> None:
+        if session_id in self.sessions and not self.sessions[session_id].closed:
+            raise ValueError(f"session already open: {session_id}")
+        self.sessions[session_id] = ClientSessionRecord(client_id=client_id, session_id=session_id)
+        self.events.append(self.record("open", client_id, session_id, topology))
+
+    def send(
+        self,
+        client_id: str,
+        session_id: str,
+        topology: ClientTopology,
+        payload: str,
+        **identifiers: Any,
+    ) -> None:
+        session = self.session_for(client_id, session_id)
+        session.payloads.append(payload)
+        self.events.append(
+            self.record(
+                "send",
+                client_id,
+                session_id,
+                topology,
+                payload=payload,
+                **identifiers,
+            )
+        )
+
+    async def send_async(
+        self,
+        client_id: str,
+        session_id: str,
+        topology: ClientTopology,
+        payload: str,
+        delay: float = 0.0,
+        **identifiers: Any,
+    ) -> None:
+        await asyncio.sleep(delay)
+        self.send(client_id, session_id, topology, payload, **identifiers)
+
+    def close(self, client_id: str, session_id: str, topology: ClientTopology) -> None:
+        session = self.session_for(client_id, session_id)
+        session.closed = True
+        self.events.append(self.record("close", client_id, session_id, topology))
+
+    def session_for(self, client_id: str, session_id: str) -> ClientSessionRecord:
+        session = self.sessions[session_id]
+        if session.client_id != client_id:
+            raise PermissionError("cross-client session access rejected")
+        if session.closed:
+            raise RuntimeError("post-close send rejected")
+        return session
+
+    def record(
+        self,
+        subevent: str,
+        client_id: str,
+        session_id: str,
+        topology: ClientTopology,
+        **extra: Any,
+    ) -> dict[str, Any]:
+        return build_matrix_row(
+            transport_scenario=self.transport_scenario,
+            client_topology=topology,
+            disposition=CoverageDisposition.COVERED,
+            lifecycle_behavior=CoverageDisposition.COVERED,
+            isolation_property=CoverageDisposition.COVERED,
+            pressure_mode=CoverageDisposition.REQUIRED,
+            fault_mode=CoverageDisposition.REQUIRED,
+            client_id=client_id,
+            session_id=session_id,
+            subevent=subevent,
+            **extra,
+        )
+
+
+class ClientSessionRobustnessRecorder:
+    def __init__(self, transport_scenario: str = "WebTransport", queue_limit: int = 2) -> None:
+        self.transport_scenario = transport_scenario
+        self.queue_limit = queue_limit
+        self.sessions: dict[str, ClientSessionRecord] = {}
+        self.errors: list[dict[str, Any]] = []
+
+    def open(self, client_id: str, session_id: str) -> None:
+        self.sessions[session_id] = ClientSessionRecord(client_id=client_id, session_id=session_id)
+
+    def close(self, client_id: str, session_id: str) -> None:
+        self.session_for(client_id, session_id).closed = True
+
+    def send(
+        self,
+        client_id: str,
+        session_id: str,
+        payload: object,
+        *,
+        framing: str = "json",
+    ) -> None:
+        session = self.session_for(client_id, session_id)
+        if session.closed:
+            self.fail_closed(client_id, session_id, "post_close_send")
+            raise RuntimeError("post-close send rejected")
+        if framing not in {"json", "text", "bytes"}:
+            self.fail_closed(client_id, session_id, "unsupported_framing")
+            raise ValueError("unsupported framing rejected fail-closed")
+        if not isinstance(payload, str) or not payload:
+            self.fail_closed(client_id, session_id, "malformed_payload")
+            raise ValueError("malformed payload rejected")
+        if len(session.payloads) >= self.queue_limit:
+            self.fail_closed(client_id, session_id, "pressure_budget_exceeded")
+            raise BufferError("bounded queue pressure rejected")
+        session.payloads.append(payload)
+
+    def cancel(self, client_id: str, session_id: str) -> None:
+        self.session_for(client_id, session_id).closed = True
+        self.fail_closed(client_id, session_id, "cancelled")
+
+    def timeout(self, client_id: str, session_id: str) -> None:
+        self.session_for(client_id, session_id).closed = True
+        self.fail_closed(client_id, session_id, "timeout")
+
+    def session_for(self, client_id: str, session_id: str) -> ClientSessionRecord:
+        session = self.sessions[session_id]
+        if session.client_id != client_id:
+            self.fail_closed(client_id, session_id, "cross_client_session_access")
+            raise PermissionError("cross-client session access rejected")
+        return session
+
+    def fail_closed(self, client_id: str, session_id: str, error_kind: str) -> dict[str, Any]:
+        row = build_matrix_row(
+            transport_scenario=self.transport_scenario,
+            client_topology=ClientTopology.CONCURRENT_CLIENTS,
+            disposition=CoverageDisposition.FAIL_CLOSED,
+            lifecycle_behavior=CoverageDisposition.COVERED,
+            isolation_property=CoverageDisposition.COVERED,
+            pressure_mode=CoverageDisposition.COVERED,
+            fault_mode=CoverageDisposition.COVERED,
+            client_id=client_id,
+            session_id=session_id,
+            error_kind=error_kind,
+        )
+        self.errors.append(row)
+        return row
+
+
 __all__ = [
     "BEHAVIOR_GROUP_VALUES",
     "CLIENT_TOPOLOGY_VALUES",
@@ -220,6 +381,9 @@ __all__ = [
     "TRANSPORT_SCENARIO_SESSION_SCOPES",
     "BehaviorGroup",
     "ClientTopology",
+    "ClientSessionRecord",
+    "ClientSessionRobustnessRecorder",
+    "ClientSessionTopologyRecorder",
     "CoverageDisposition",
     "SessionScope",
     "build_matrix_row",

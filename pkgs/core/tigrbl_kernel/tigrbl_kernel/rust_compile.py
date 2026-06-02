@@ -10,13 +10,12 @@ def _runtime_rust_helpers():
     rust = import_module("tigrbl_runtime.rust")
     return (
         rust.compile_app,
-        rust.rust_parity_snapshot,
         rust.normalize_spec,
     )
 
 
 def build_rust_kernel(app: Any) -> RustPlan:
-    compile_app, rust_parity_snapshot, normalize_spec = _runtime_rust_helpers()
+    compile_app, normalize_spec = _runtime_rust_helpers()
     payload = build_rust_app_spec(app)
     normalized = normalize_spec(payload)
     compiled = compile_app(payload)
@@ -25,16 +24,9 @@ def build_rust_kernel(app: Any) -> RustPlan:
         compiled_plan=compiled,
         backend="rust",
         normalized_spec=normalized,
-        parity_snapshot=rust_parity_snapshot(payload),
-        claimable=False,
     )
 
 
 def normalize_rust_spec(app: Any) -> str:
-    _, _, normalize_spec = _runtime_rust_helpers()
+    _, normalize_spec = _runtime_rust_helpers()
     return normalize_spec(build_rust_app_spec(app))
-
-
-def build_rust_parity_snapshot(app: Any) -> dict[str, object]:
-    _, rust_parity_snapshot, _ = _runtime_rust_helpers()
-    return rust_parity_snapshot(build_rust_app_spec(app))

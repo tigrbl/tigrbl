@@ -46,16 +46,9 @@
 ### App packages (0)
 Application packages are owned by independent repositories, not this workspace.
 
-### Rust crates (9)
-- `tigrbl_rs_atoms`
-- `tigrbl_rs_engine_inmemory`
-- `tigrbl_rs_engine_postgres`
-- `tigrbl_rs_engine_sqlite`
-- `tigrbl_rs_kernel`
-- `tigrbl_rs_ops_oltp`
-- `tigrbl_rs_ports`
-- `tigrbl_rs_runtime`
-- `tigrbl_rs_spec`
+### Optional Rust runtime binding
+Rust concerns in this repository are limited to the optional runtime binding
+surface owned by `pkgs/core/tigrbl_runtime/tigrbl_runtime/rust/`.
 
 ## Public surfaces currently documented in the supplied checkpoint
 
@@ -69,4 +62,4 @@ Application packages are owned by independent repositories, not this workspace.
 - OpenRPC JSON
 - Lens / OpenRPC UI
 - generic auth/security plumbing
-- additive Rust backend-selection and boundary-trace surfaces
+- optional Rust runtime binding surface

@@ -7,9 +7,6 @@ from typing import Any
 
 from tigrbl_core.config.constants import DEFAULT_ROOT_RESPONSE, TIGRBL_DEFAULT_ROOT_ALIAS
 
-from ._parity_contract import build_parity_snapshot as _build_parity_snapshot
-from ._parity_contract import transport_trace as _transport_trace
-
 _BOUNDARY_EVENTS: list[dict[str, Any]] = []
 _SEQ = 0
 
@@ -289,32 +286,3 @@ def register_python_handler(name: str) -> str:
 def register_python_engine(name: str) -> str:
     _record("register_python_engine", name=name)
     return _descriptor("python-engine", name)
-
-
-def build_parity_snapshot(spec: Any) -> dict[str, Any]:
-    payload = _build_parity_snapshot(spec)
-    _record("parity_snapshot", bindings=len(payload.get("routes", ())))
-    return payload
-
-
-def transport_trace(
-    transport: str,
-    *,
-    include_hook: bool = False,
-    include_error: bool = False,
-    include_docs: bool = False,
-) -> list[dict[str, Any]]:
-    trace = _transport_trace(
-        transport,
-        include_hook=include_hook,
-        include_error=include_error,
-        include_docs=include_docs,
-    )
-    _record(
-        "transport_trace",
-        transport=transport,
-        include_hook=include_hook,
-        include_error=include_error,
-        include_docs=include_docs,
-    )
-    return trace

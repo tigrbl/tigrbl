@@ -19,10 +19,9 @@ BOUNDARY_TITLE = "Tigrbl full-feature certification target"
 
 CONCERNS = (
     (
-        "Python/Rust runtime lanes and performance",
+        "Runtime binding and performance",
         (
             "python",
-            "rust",
             "microbench",
             "performance",
             "throughput",

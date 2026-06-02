@@ -42,20 +42,14 @@ Each Python package root must contain:
 
 Nested package roots inside a package directory are not allowed.
 
-## Hybrid package layout
+## Optional Rust runtime binding package layout
 
-Hybrid Python/Rust packages remain governed under `pkgs/`. They may contain:
+The optional Rust runtime binding package remains governed under `pkgs/`. It may contain:
 
 - `pyproject.toml`
 - `README.md`
 - `<package>/` or `src/<package>/` for the importable Python surface
 - `src/` for the Rust extension source
-
-## Rust crate layout
-
-Rust crates live under `crates/<crate>/` and must contain:
-
-- `Cargo.toml`
 - `README.md`
 - `src/`
 

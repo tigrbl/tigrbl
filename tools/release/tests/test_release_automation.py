@@ -57,40 +57,34 @@ def test_finalize_keeps_already_stable_versions() -> None:
 def test_release_plan_uses_required_github_tag_shape() -> None:
     plan = build_plan("patch", write_changes=False)
     tags = [release["tag"] for release in plan["github_releases"]]
-    assert "tigrbl==0.4.0.dev2" in tags
-    assert "tigrbl_rs_spec==0.4.0-dev.2" in tags
+    assert "tigrbl==0.4.3.dev1" in tags
     assert all("==" in tag for tag in tags)
 
 
 def test_release_plan_can_select_one_python_package() -> None:
-    plan = build_plan("patch", write_changes=False, packages="tigrbl_acme_ca")
+    plan = build_plan("patch", write_changes=False, packages="tigrbl")
 
-    assert [release["name"] for release in plan["python"]] == ["tigrbl_acme_ca"]
+    assert [release["name"] for release in plan["python"]] == ["tigrbl"]
     assert plan["crates"] == []
     assert plan["crate_publish_order"] == []
     assert [release["tag"] for release in plan["github_releases"]] == [
-        "tigrbl_acme_ca==0.4.0.dev2"
+        "tigrbl==0.4.3.dev1"
     ]
-    assert plan["package_selection"] == ["tigrbl_acme_ca"]
+    assert plan["package_selection"] == ["tigrbl"]
 
 
 def test_release_plan_can_select_package_subset() -> None:
     plan = build_plan(
         "patch",
         write_changes=False,
-        packages="tigrbl_acme_ca,tigrbl_rs_spec tigrbl_rs_ports",
+        packages="tigrbl",
     )
 
-    assert [release["name"] for release in plan["python"]] == ["tigrbl_acme_ca"]
-    assert [release["name"] for release in plan["crates"]] == [
-        "tigrbl_rs_spec",
-        "tigrbl_rs_ports",
-    ]
-    assert plan["crate_publish_order"] == ["tigrbl_rs_spec", "tigrbl_rs_ports"]
+    assert [release["name"] for release in plan["python"]] == ["tigrbl"]
+    assert plan["crates"] == []
+    assert plan["crate_publish_order"] == []
     assert plan["package_selection"] == [
-        "tigrbl_acme_ca",
-        "tigrbl_rs_ports",
-        "tigrbl_rs_spec",
+        "tigrbl",
     ]
 
 
@@ -109,7 +103,7 @@ def test_release_plan_rejects_versions_below_floor() -> None:
         ensure_allowed_target_version("tigrbl", "0.3.20.dev1", "0.3.20.dev2")
     with pytest.raises(ValueError, match="below the required floor"):
         ensure_allowed_target_version(
-            "tigrbl_rs_spec",
+            "tigrbl_runtime_bindings_rs",
             "0.1.13-dev.1",
             "0.1.13-dev.2",
             cargo=True,
@@ -248,10 +242,9 @@ def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: 
         json.dumps(
             {
                 "crates": [
-                    {"name": "tigrbl_rs_spec", "version": "0.1.10-dev.1"},
-                    {"name": "tigrbl_rs_ports", "version": "0.1.10-dev.1"},
+                    {"name": "tigrbl_runtime_bindings_rs", "version": "0.1.10-dev.1"},
                 ],
-                "crate_publish_order": ["tigrbl_rs_spec", "tigrbl_rs_ports"],
+                "crate_publish_order": ["tigrbl_runtime_bindings_rs"],
             }
         ),
         encoding="utf-8",
@@ -263,15 +256,7 @@ def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: 
     release_automation.publish_crates(summary, dry_run=True)
 
     assert calls == [
-        ["cargo", "package", "-p", "tigrbl_rs_spec"],
-        [
-            "cargo",
-            "package",
-            "-p",
-            "tigrbl_rs_ports",
-            "--config",
-            f'patch.crates-io.tigrbl_rs_spec.path="{release_automation.ROOT.joinpath("target", "package", "tigrbl_rs_spec-0.1.10-dev.1").as_posix()}"',
-        ],
+        ["cargo", "package", "-p", "tigrbl_runtime_bindings_rs"],
     ]
 
 
@@ -282,8 +267,10 @@ def test_publish_crates_verify_uses_package_before_publish(
     summary.write_text(
         json.dumps(
             {
-                "crates": [{"name": "tigrbl_rs_spec", "version": "0.1.10-dev.1"}],
-                "crate_publish_order": ["tigrbl_rs_spec"],
+                "crates": [
+                    {"name": "tigrbl_runtime_bindings_rs", "version": "0.1.10-dev.1"}
+                ],
+                "crate_publish_order": ["tigrbl_runtime_bindings_rs"],
             }
         ),
         encoding="utf-8",
@@ -296,6 +283,6 @@ def test_publish_crates_verify_uses_package_before_publish(
     release_automation.publish_crates(summary, dry_run=False, verify=True)
 
     assert calls == [
-        ["cargo", "package", "-p", "tigrbl_rs_spec"],
-        ["cargo", "publish", "-p", "tigrbl_rs_spec", "--locked"],
+        ["cargo", "package", "-p", "tigrbl_runtime_bindings_rs"],
+        ["cargo", "publish", "-p", "tigrbl_runtime_bindings_rs", "--locked"],
     ]

@@ -23,13 +23,6 @@ def python_package_roots() -> list[Path]:
     return package_roots
 
 
-def rust_crate_roots() -> list[Path]:
-    crates_dir = ROOT / "crates"
-    if not crates_dir.exists():
-        return []
-    return [child for child in sorted(crates_dir.iterdir()) if child.is_dir() and (child / "Cargo.toml").exists()]
-
-
 def markdown_allowed(path: Path, package_root: Path) -> bool:
     if any(part in {".pytest_cache", "__pycache__"} for part in path.parts):
         return True
@@ -72,21 +65,6 @@ def main() -> None:
             p.relative_to(ROOT)
             for p in package_root.rglob("*.md")
             if not markdown_allowed(p, package_root)
-        ]
-        if disallowed_markdown:
-            errors.append(f"{rel} contains non-authoritative Markdown files: {', '.join(map(str, disallowed_markdown))}")
-
-    # rust crate rules
-    for crate_root in rust_crate_roots():
-        rel = crate_root.relative_to(ROOT)
-        if not (crate_root / "README.md").is_file():
-            errors.append(f"{rel} missing README.md")
-        if not (crate_root / "src").is_dir():
-            errors.append(f"{rel} missing src/")
-        disallowed_markdown = [
-            p.relative_to(ROOT)
-            for p in crate_root.rglob("*.md")
-            if p != crate_root / "README.md"
         ]
         if disallowed_markdown:
             errors.append(f"{rel} contains non-authoritative Markdown files: {', '.join(map(str, disallowed_markdown))}")

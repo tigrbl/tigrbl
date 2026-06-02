@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "The repository exposes overlapping exchange tokens across Python bindings, runtime adapters, Rust specs, and architecture notes."
+summary: "The repository exposes overlapping exchange tokens across Python bindings, runtime adapters, optional runtime binding specs, and architecture notes."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -41,7 +41,7 @@ body: |-
   
   ## Context
   
-  The repository exposes overlapping exchange tokens across Python bindings, runtime adapters, Rust specs, and architecture notes.
+  The repository exposes overlapping exchange tokens across Python bindings, runtime adapters, optional runtime binding specs, and architecture notes.
   This ADR closes the public exchange vocabulary on the active line without pretending that every visible token is already first-class or current-target support.
   
   ## Rejected Alternatives

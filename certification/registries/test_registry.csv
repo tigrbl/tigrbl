@@ -1,9 +1,8 @@
-test_registry_row_id,test_case_id,test_case_pointer,test_set_id,test_set_pointer,mapped_feature_id,mapped_claim_id,mapped_claim_state,mapped_claim_lifecycle,evidence_bundle_id,evidence_artifact_id,evidence_pointer
+﻿test_registry_row_id,test_case_id,test_case_pointer,test_set_id,test_set_pointer,mapped_feature_id,mapped_claim_id,mapped_claim_state,mapped_claim_lifecycle,evidence_bundle_id,evidence_artifact_id,evidence_pointer
 TREG-0001,TCASE-0018,tools/ci/tests/test_certification_tree.py,TSET-0007,tools/ci/tests,,BLK-001,blocked,recertify_required,EBND-0024,EART-0099,tools/ci/tests/test_certification_tree.py
 TREG-0002,TCASE-0018,tools/ci/tests/test_certification_tree.py,TSET-0007,tools/ci/tests,,BLK-002,blocked,recertify_required,EBND-0024,EART-0099,tools/ci/tests/test_certification_tree.py
 TREG-0003,TCASE-0007,pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py,TSET-0004,pkgs/core/tigrbl_core/tests,,BLK-003,blocked,recertify_required,EBND-0019,EART-0080,pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
 TREG-0004,TCASE-0018,tools/ci/tests/test_certification_tree.py,TSET-0007,tools/ci/tests,,BLK-003,blocked,recertify_required,EBND-0024,EART-0099,tools/ci/tests/test_certification_tree.py
-TREG-0005,TCASE-0024,tools/ci/tests/test_rust_parity.py,TSET-0007,tools/ci/tests,,BLK-004,blocked,recertify_required,EBND-0024,EART-0105,tools/ci/tests/test_rust_parity.py
 TREG-0006,TCASE-0026,tools/ci/tests/test_tigrcorn_operator_surface.py,TSET-0007,tools/ci/tests,,BLK-005,blocked,recertify_required,EBND-0024,EART-0107,tools/ci/tests/test_tigrcorn_operator_surface.py
 TREG-0007,TCASE-0025,tools/ci/tests/test_tigrcorn_hardening.py,TSET-0007,tools/ci/tests,,BLK-006,blocked,recertify_required,EBND-0024,EART-0106,tools/ci/tests/test_tigrcorn_hardening.py
 TREG-0008,TCASE-0019,tools/ci/tests/test_claim_lifecycle.py,TSET-0007,tools/ci/tests,,BLK-007,blocked,recertify_required,EBND-0024,EART-0100,tools/ci/tests/test_claim_lifecycle.py
@@ -20,13 +19,13 @@ TREG-0018,TCASE-0020,tools/ci/tests/test_evidence_registry.py,TSET-0007,tools/ci
 TREG-0019,TCASE-0020,tools/ci/tests/test_evidence_registry.py,TSET-0007,tools/ci/tests,,EVD-002,evidenced,evidenced,EBND-0024,EART-0101,tools/ci/tests/test_evidence_registry.py
 TREG-0020,TCASE-0021,tools/ci/tests/test_gate_e_promotion.py,TSET-0007,tools/ci/tests,,EVD-003,evidenced,certified,EBND-0024,EART-0102,tools/ci/tests/test_gate_e_promotion.py
 TREG-0021,TCASE-0021,tools/ci/tests/test_gate_e_promotion.py,TSET-0007,tools/ci/tests,,EVD-004,evidenced,certified,EBND-0024,EART-0102,tools/ci/tests/test_gate_e_promotion.py
-TREG-0022,TCASE-0001,crates/tigrbl_rs_spec/tests/spec_contract.rs,TSET-0001,crates/tigrbl_rs_spec/tests,NEXT-FEAT-001,NEXT-003,target,implemented,EBND-0008,EART-0045,crates/tigrbl_rs_spec/tests/spec_contract.rs
+TREG-0022,TCASE-0001,,TSET-0001,,NEXT-FEAT-001,NEXT-003,target,implemented,EBND-0008,EART-0045,
 TREG-0023,TCASE-0010,pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py,TSET-0004,pkgs/core/tigrbl_core/tests,NEXT-FEAT-001,NEXT-003,target,implemented,EBND-0019,EART-0083,pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
 TREG-0024,TCASE-0003,pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py,TSET-0003,pkgs/core/tigrbl_base/tests,NEXT-FEAT-002,NEXT-004,target,implemented,EBND-0016,EART-0074,pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
 TREG-0025,TCASE-0005,pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py,TSET-0004,pkgs/core/tigrbl_core/tests,NEXT-FEAT-002,NEXT-004,target,implemented,EBND-0019,EART-0078,pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
-TREG-0026,TCASE-0001,crates/tigrbl_rs_spec/tests/spec_contract.rs,TSET-0001,crates/tigrbl_rs_spec/tests,NEXT-FEAT-003,NEXT-005,target,implemented,EBND-0008,EART-0045,crates/tigrbl_rs_spec/tests/spec_contract.rs
+TREG-0026,TCASE-0001,,TSET-0001,,NEXT-FEAT-003,NEXT-005,target,implemented,EBND-0008,EART-0045,
 TREG-0027,TCASE-0004,pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py,TSET-0004,pkgs/core/tigrbl_core/tests,NEXT-FEAT-003,NEXT-005,target,implemented,EBND-0019,EART-0077,pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
-TREG-0028,TCASE-0001,crates/tigrbl_rs_spec/tests/spec_contract.rs,TSET-0001,crates/tigrbl_rs_spec/tests,NEXT-FEAT-004,NEXT-006,target,implemented,EBND-0008,EART-0045,crates/tigrbl_rs_spec/tests/spec_contract.rs
+TREG-0028,TCASE-0001,,TSET-0001,,NEXT-FEAT-004,NEXT-006,target,implemented,EBND-0008,EART-0045,
 TREG-0029,TCASE-0006,pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py,TSET-0004,pkgs/core/tigrbl_core/tests,NEXT-FEAT-004,NEXT-006,target,implemented,EBND-0019,EART-0079,pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
 TREG-0030,TCASE-0008,pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py,TSET-0004,pkgs/core/tigrbl_core/tests,NEXT-FEAT-005,NEXT-007,target,implemented,EBND-0019,EART-0081,pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
 TREG-0031,TCASE-0009,pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py,TSET-0004,pkgs/core/tigrbl_core/tests,NEXT-FEAT-005,NEXT-007,target,implemented,EBND-0019,EART-0082,pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py

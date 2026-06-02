@@ -6,8 +6,8 @@ The repository root should remain small and predictable. It may contain:
 
 - package/workspace manifests (`pyproject.toml`, `Cargo.toml`, `Cargo.lock`, toolchain files)
 - governance entry points (`README.md`, `LICENSE`, `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`)
-- source roots (`pkgs/`, `crates/`, `examples/`, `docs/`)
-- repository configuration directories such as `.cargo/` and `.github/`
+- source roots (`pkgs/`, `examples/`, `docs/`)
+- repository configuration directories such as `.github/`
 - repository automation utilities under `tools/`
 
 The root must not accumulate:
@@ -24,7 +24,6 @@ The root must not accumulate:
 - `pkgs/core/` - core Python packages
 - `pkgs/engines/` - engine packages
 - `pkgs/apps/` - application packages
-- `crates/` - Rust crates
 - `examples/` - non-authoritative demos and verification helpers
 
 ## Python package layout
@@ -40,21 +39,14 @@ Each Python package root under `pkgs/` must contain:
 Nested package roots inside package directories are not allowed.
 Duplicate package mirrors inside an existing package root are not allowed.
 
-Hybrid Python/Rust packages may additionally contain `src/` for the Rust extension source.
+The optional Rust runtime binding package may additionally contain `src/` for
+the Rust extension source.
 
 ## Package-local documentation boundary
 
 All authoritative repository documentation lives under `docs/`.
 
 Package-local `README.md` files are allowed only as package distribution entry points. They must point readers back to the governed docs projection tree. Long-form Markdown files inside package directories are not authoritative and should be moved into `docs/` or archived under `docs/notes/archive/`.
-
-## Rust crate layout
-
-Each crate under `crates/` must contain:
-
-- `Cargo.toml`
-- `README.md`
-- `src/`
 
 ## Documentation authority
 

@@ -1,105 +1,17 @@
 from __future__ import annotations
 
 import asyncio
-from dataclasses import dataclass, field
-from typing import Any
 
 import pytest
 
 from tigrbl_runtime.protocol.client_session_coverage import (
     ClientTopology,
-    CoverageDisposition,
-    build_matrix_row,
+    ClientSessionTopologyRecorder,
 )
 
 
-@dataclass
-class InMemorySession:
-    client_id: str
-    session_id: str
-    closed: bool = False
-    payloads: list[str] = field(default_factory=list)
-
-
-class InMemoryTopologyHarness:
-    def __init__(self) -> None:
-        self.sessions: dict[str, InMemorySession] = {}
-        self.events: list[dict[str, Any]] = []
-
-    def open(self, client_id: str, session_id: str, topology: ClientTopology) -> None:
-        if session_id in self.sessions and not self.sessions[session_id].closed:
-            raise ValueError(f"session already open: {session_id}")
-        self.sessions[session_id] = InMemorySession(client_id=client_id, session_id=session_id)
-        self.events.append(self._record("open", client_id, session_id, topology))
-
-    def send(
-        self,
-        client_id: str,
-        session_id: str,
-        topology: ClientTopology,
-        payload: str,
-    ) -> None:
-        session = self._session_for(client_id, session_id)
-        session.payloads.append(payload)
-        self.events.append(
-            self._record(
-                "send",
-                client_id,
-                session_id,
-                topology,
-                payload=payload,
-            )
-        )
-
-    async def send_async(
-        self,
-        client_id: str,
-        session_id: str,
-        topology: ClientTopology,
-        payload: str,
-        delay: float,
-    ) -> None:
-        await asyncio.sleep(delay)
-        self.send(client_id, session_id, topology, payload)
-
-    def close(self, client_id: str, session_id: str, topology: ClientTopology) -> None:
-        session = self._session_for(client_id, session_id)
-        session.closed = True
-        self.events.append(self._record("close", client_id, session_id, topology))
-
-    def _session_for(self, client_id: str, session_id: str) -> InMemorySession:
-        session = self.sessions[session_id]
-        if session.client_id != client_id:
-            raise PermissionError("cross-client session access rejected")
-        if session.closed:
-            raise RuntimeError("post-close send rejected")
-        return session
-
-    @staticmethod
-    def _record(
-        subevent: str,
-        client_id: str,
-        session_id: str,
-        topology: ClientTopology,
-        **extra: Any,
-    ) -> dict[str, Any]:
-        return build_matrix_row(
-            transport_scenario="WebTransport",
-            client_topology=topology,
-            disposition=CoverageDisposition.COVERED,
-            lifecycle_behavior=CoverageDisposition.COVERED,
-            isolation_property=CoverageDisposition.COVERED,
-            pressure_mode=CoverageDisposition.REQUIRED,
-            fault_mode=CoverageDisposition.REQUIRED,
-            client_id=client_id,
-            session_id=session_id,
-            subevent=subevent,
-            **extra,
-        )
-
-
 def test_sequential_clients_complete_without_overlap_or_state_leakage() -> None:
-    harness = InMemoryTopologyHarness()
+    harness = ClientSessionTopologyRecorder()
 
     harness.open("client-a", "session-a", ClientTopology.SEQUENTIAL_CLIENTS)
     harness.send("client-a", "session-a", ClientTopology.SEQUENTIAL_CLIENTS, "a-1")
@@ -121,7 +33,7 @@ def test_sequential_clients_complete_without_overlap_or_state_leakage() -> None:
 
 
 def test_bounded_interleaved_clients_preserve_controlled_ordering() -> None:
-    harness = InMemoryTopologyHarness()
+    harness = ClientSessionTopologyRecorder()
     topology = ClientTopology.BOUNDED_INTERLEAVED_CLIENTS
     harness.open("client-a", "session-a", topology)
     harness.open("client-b", "session-b", topology)
@@ -147,7 +59,7 @@ def test_bounded_interleaved_clients_preserve_controlled_ordering() -> None:
 
 @pytest.mark.asyncio
 async def test_concurrent_clients_preserve_session_isolation() -> None:
-    harness = InMemoryTopologyHarness()
+    harness = ClientSessionTopologyRecorder()
     topology = ClientTopology.CONCURRENT_CLIENTS
     for index in range(6):
         harness.open(f"client-{index}", f"session-{index}", topology)
@@ -171,7 +83,7 @@ async def test_concurrent_clients_preserve_session_isolation() -> None:
 
 
 def test_churn_clients_reconnect_without_disrupting_active_clients() -> None:
-    harness = InMemoryTopologyHarness()
+    harness = ClientSessionTopologyRecorder()
     topology = ClientTopology.CHURN_CLIENTS
 
     harness.open("client-a", "session-a-1", topology)

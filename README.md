@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Tigrbl Workspace</h1>
 <img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="220"/>
-<p><strong>Schema-first Python and Rust workspace for REST APIs, JSON-RPC APIs, typed contracts, runtime pipelines, engine plugins, and native execution layers.</strong></p>
+<p><strong>Schema-first Python workspace for REST APIs, JSON-RPC APIs, typed contracts, runtime pipelines, engine plugins, and optional Rust runtime bindings.</strong></p>
 <a href="https://github.com/tigrbl/tigrbl"><img src="https://img.shields.io/badge/repo-tigrbl%2Ftigrbl-1f6feb" alt="Repository for tigrbl"/></a>
 <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml"><img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch coverage workflow"/></a>
 <a href="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml"><img src="https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml/badge.svg" alt="Publish workflow"/></a>
@@ -16,16 +16,15 @@
 
 ## What This Repository Owns
 
-Tigrbl is a mixed Python and Rust workspace for schema-first service authoring and execution. The Python side owns the public facade, split framework layers, and installable engine plugins. The Rust side owns spec IR, ports, atoms, kernel compilation, runtime execution, and native engine crates. Active workspace manifests currently define `40` PyPI packages, `0` npm packages, and `11` Rust crates.
+Tigrbl is a Python workspace for schema-first service authoring and execution. The repository owns the public facade, split framework layers, installable engine plugins, and an optional Rust runtime binding package under `pkgs/core/tigrbl_runtime`. Active workspace manifests currently define Python packages only; Rust concerns in this repo are limited to the optional runtime binding.
 
 ## Install and Work on the Workspace
 
 ```bash
 uv sync --all-extras --dev
-cargo test --workspace
 ```
 
-Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the public Python facade. This root README is the repository and workspace entry point; the PyPI-facing facade package README lives at [`pkgs/core/tigrbl/README.md`](pkgs/core/tigrbl/README.md). Package-level README entry points under `pkgs/` and `crates/` document the boundary, install target, and dependency surface for each distributable.
+Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the public Python facade. This root README is the repository and workspace entry point; the PyPI-facing facade package README lives at [`pkgs/core/tigrbl/README.md`](pkgs/core/tigrbl/README.md). Package-level README entry points under `pkgs/` document the boundary, install target, and dependency surface for each distributable.
 
 ## Package Families
 
@@ -75,10 +74,9 @@ Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the publi
 - [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/)
 - [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/)
 
-### Rust workspace
+### Optional Rust runtime binding
 
-The Rust crates and optional Python extension bindings now live in the private
-[`tigrbl_rs`](https://github.com/tigrbl/tigrbl_rs) repository.
+The only Rust-related surface owned by this repository is the optional runtime binding package under `pkgs/core/tigrbl_runtime`.
 
 ## How to Choose a Package
 
@@ -86,12 +84,11 @@ The Rust crates and optional Python extension bindings now live in the private
 - Install split core packages when you want a narrower subsystem boundary such as runtime, ORM, kernel, typing, client, tests, or operation families.
 - Install engine packages when you want a backend-specific dependency surface for SQLite, Postgres, Redis, warehouse, tabular, or in-memory workflows.
 - Use the independent `tigrbl_acme_ca` and `tigrbl_spiffe` repositories when you want ready-made Tigrbl application boundaries for ACME CA or SPIFFE/SPIRE identity flows.
-- Use the private `tigrbl_rs` repository when you are embedding or extending native Tigrbl compilation, runtime, or engine layers.
 - There are no active npm package manifests in this workspace at the moment.
 
 ## Current Package Line
 
-The active Python package line is `0.4.1`. The Rust workspace package line is `0.4.1`. Repository-governed target status and release evidence are not declared from this README; use the canonical docs below for that authority.
+The active Python package line is `0.4.1`. Repository-governed target status and release evidence are not declared from this README; use the canonical docs below for that authority.
 
 ## Canonical Repository Docs
 

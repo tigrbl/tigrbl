@@ -52,8 +52,7 @@ Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs
 | Certification-state report | `reports/certification_state/2026-04-07-registry-reclassification.md` |
 | Declared-surface current-state report | `.ssot/reports/current_state/2026-04-07-phase1-declarative-surface.md` |
 | Declared-surface certification-state report | `.ssot/reports/certification_state/2026-04-07-phase1-declarative-surface.md` |
-| Rust parity current-state report | `.ssot/reports/current_state/2026-04-09-phase4-native-parity.md` |
-| Rust parity certification-state report | `.ssot/reports/certification_state/2026-04-09-phase4-native-parity.md` |
+| Optional Rust runtime binding | `docs/testing/rust_runtime_binding.md` |
 | Tigrcorn operator-surface current-state report | `.ssot/reports/current_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
 | Tigrcorn operator-surface certification-state report | `.ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md` |
 | Tigrcorn hardening current-state report | `.ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md` |
@@ -108,7 +107,6 @@ Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs
 | Evidence-registry validator | `tools/ci/validate_evidence_registry.py` |
 | Evidence-bundle validator | `tools/ci/validate_evidence_bundles.py` |
 | Gate B surface-closure validator | `tools/ci/validate_gate_b_surface_closure.py` |
-| Rust parity validator | `tools/ci/validate_rust_parity.py` |
 | Tigrcorn operator-surface validator | `tools/ci/validate_tigrcorn_operator_surface.py` |
 | Tigrcorn hardening validator | `tools/ci/validate_tigrcorn_hardening.py` |
 | Claim-lifecycle validator | `tools/ci/validate_claim_lifecycle.py` |
@@ -131,16 +129,6 @@ Machine authority lives in `.ssot/registry.json`, `.ssot/adr/`, and `.ssot/specs
 
 | Previous root path | Archived path |
 |---|---|
-| `BUILD_PROOF.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/BUILD_PROOF.md` |
-| `CURRENT_STATE.md` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/CURRENT_STATE.md` |
-| `build_artifacts` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/build_artifacts` |
-| `build_artifacts_manifest.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/build_artifacts_manifest.txt` |
-| `cargo_build_workspace_debug.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_build_workspace_debug.log` |
-| `cargo_build_workspace_release.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_build_workspace_release.log` |
-| `cargo_metadata.json` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_metadata.json` |
-| `cargo_test_workspace.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/cargo_test_workspace.log` |
-| `rust_tool_versions.txt` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rust_tool_versions.txt` |
-| `rustup_source_attempt.log` | `docs/conformance/archive/2026/phase0-authority-reset/legacy-rust-native-checkpoint/rustup_source_attempt.log` |
 
 ## Runtime/kernel transport archive retained for traceability
 

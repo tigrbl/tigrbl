@@ -31,7 +31,6 @@ Tools are not tests unless they are registered as SSOT test entities for a speci
 - `tools/ci/validate_certification_tree.py`
 - `tools/ci/validate_ssot_authority_model.py`
 - `tools/ci/validate_declared_surface.py`
-- `tools/ci/validate_rust_parity.py`
 - `tools/ci/validate_tigrcorn_operator_surface.py`
 - `tools/ci/validate_tigrcorn_hardening.py`
 - `tools/ci/validate_claim_lifecycle.py`
@@ -58,7 +57,6 @@ Tools are not tests unless they are registered as SSOT test entities for a speci
 - the certification authority tree keeps the four-state truth model and authority-reset exit criteria machine-checked
 - the SSOT authority model keeps features, tests, claims, evidence, docs projections, and gate aggregation links synchronized
 - the declared-surface checkpoint stays documented and synchronized with the policy workflow
-- Rust backend claim language remains fail-closed until the Rust parity checkpoint is documented and wired in CI
 - the Tigrcorn operator surface stays documented, example-backed, and fail-closed for interop/benchmark certification claims
 - the Tigrcorn hardening package stays documented, profile-backed, and fail-closed for negative-certification claims
 - the Claim lifecycle and release certification-bundle artifacts stay synchronized and machine-checked

@@ -23,7 +23,6 @@ _RUST_EXPORTS = {
     "compiled_extension_available": "compiled_extension_available",
     "rust_available": "rust_available",
     "rust_boundary_events": "ffi_boundary_events",
-    "rust_transport_trace": "rust_transport_trace",
 }
 
 __all__ = [

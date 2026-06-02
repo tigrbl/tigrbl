@@ -8,34 +8,34 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Declare the runtime-wide DDL and schema-readiness lifecycle contract for Python and Rust runtimes."
+summary: "Declare the runtime-wide DDL and schema-readiness lifecycle contract for Python runtime and optional runtime binding."
 supersedes: []
 superseded_by: []
 status_notes:
   -
     status: "accepted"
-    note: "Accepted runtime-wide DDL/schema readiness lifecycle contract for Python and Rust."
+    note: "Accepted runtime-wide DDL/schema readiness lifecycle contract for Python and optional runtime binding execution."
     at: "2026-04-24T14:18:27Z"
 references: []
 body: |-
   ## Purpose
   
-  Declare the runtime-wide DDL and schema-readiness lifecycle contract for Python and Rust runtimes.
+  Declare the runtime-wide DDL and schema-readiness lifecycle contract for Python runtime and optional runtime binding.
   
   ## Scope
   
-  This SPEC applies to Python executors, Rust executors, runtime engine adapters, SQLite and future durable engine implementations, and ordinary request execution for canonical operations.
+  This SPEC applies to Python executors, optional runtime binding executors, runtime engine adapters, SQLite and future durable engine implementations, and ordinary request execution for canonical operations.
   
   Explicit DDL/admin operations, migrations, bootstrap commands, and runtime/application initialization phases are in scope as allowed schema-readiness phases. Ordinary CRUD request execution is in scope as a prohibited DDL phase.
   
   ## Requirements
   
   1. DDL and schema-readiness work MUST run during runtime initialization, engine initialization, explicit bootstrap, explicit migration, or explicit DDL/admin operations.
-  2. Ordinary Python and Rust request execution MUST NOT run table creation, index creation, schema migration, schema reflection, or implicit schema-readiness repair.
+  2. Ordinary Python request execution and optional runtime binding execution MUST NOT run table creation, index creation, schema migration, schema reflection, or implicit schema-readiness repair.
   3. Idempotent DDL such as `CREATE TABLE IF NOT EXISTS` and `CREATE INDEX IF NOT EXISTS` is still DDL and MUST NOT run on ordinary request hot paths.
   4. If schema readiness has not been established, ordinary request execution MUST fail closed with a clear configuration or runtime error.
   5. A deliberately configured development auto-initialization mode MAY run schema-readiness work only when that mode is explicit and evidenced as outside production request semantics.
-  6. Python and Rust conformance MUST be evidenced separately.
+  6. Optional runtime binding conformance is scoped to the binding package and MUST NOT create a repo-wide Rust certification lane.
   
   ## Python Runtime Requirements
   
@@ -43,23 +43,23 @@ body: |-
   2. Python initialization, bootstrapping, and explicit DDL/admin operations MAY perform schema readiness when explicitly requested.
   3. Python evidence MUST prove ordinary request execution does not perform DDL or implicit schema readiness.
   
-  ## Rust Runtime Requirements
+  ## Optional Runtime Binding Requirements
   
-  1. Rust request execution MUST NOT perform DDL or schema readiness in transaction begin.
-  2. Rust SQLite implementations MUST NOT create `_tigrbl_rows` tables or indexes inside ordinary request transactions.
-  3. Rust evidence MUST prove DDL is performed during initialization or an explicit readiness phase and not during ordinary create/read/update/delete execution.
+  1. Optional runtime binding request execution MUST NOT perform DDL or schema readiness in transaction begin.
+  2. Optional binding SQLite implementations MUST NOT create `_tigrbl_rows` tables or indexes inside ordinary request transactions.
+  3. Optional binding evidence MUST prove DDL is performed during initialization or an explicit readiness phase and not during ordinary create/read/update/delete execution.
   
   ## Evidence Requirements
   
   - Unit or integration tests showing DDL happens during initialization or explicit readiness phases.
   - Request-path tests or instrumentation proving DDL does not run for ordinary CRUD requests.
   - Fail-closed tests for missing schema readiness.
-  - Separate Python and Rust evidence rows.
+  - Separate Python and optional binding evidence rows when the binding package is in scope.
   
   ## Non-Goals
   
   - This SPEC does not define a migration language.
-  - This SPEC does not require a Rust-native server.
+  - This SPEC does not require a Rust-native server or a repo-wide Rust certification lane.
   - This SPEC does not prohibit explicit DDL/admin operations.
 spec_kind: "normative"
 adr_ids:

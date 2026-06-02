@@ -21,12 +21,12 @@ body: |-
   ## Decision
   Tigrbl runtime execution internals adopt byte-oriented, bounded, versioned, evidence-backed physical layout principles selected by measured hot-path throughput first and then constrained by width discipline, byte size, and semantic integrity. Public authoring surfaces such as AppSpec, OpSpec, RouterSpec, hooks, and table declarations remain semantic and ergonomic.
   
-  This decision is limited to atoms, runtime kernel plans, runtime execution metadata, event dispatch, identity/scalar references used by dispatch, callback fences, and Python/Rust runtime interchange. It does not govern engine-owned row, page, block, WAL, manifest, cache, or recovery formats.
+  This decision is limited to atoms, runtime kernel plans, runtime execution metadata, event dispatch, identity/scalar references used by dispatch, callback fences, and optional Rust runtime binding interchange. It does not govern engine-owned row, page, block, WAL, manifest, cache, or recovery formats.
   
   ## Rationale
   Runtime execution repeatedly traverses atoms, phases, subevents, handlers, callback fences, and dispatch metadata. Semantic objects are useful at authoring and validation boundaries, but object-heavy forms create avoidable allocation, pointer chasing, branch complexity, and parity drift in hot execution paths.
   
-  Byte-oriented physical forms let the runtime answer the common execution questions with compact metadata: kind, phase, subevent, visibility, skip or keep, offset, length, flags, and identity reference. They also make Python/Rust parity more concrete because both runtimes can validate explicit widths, tags, versions, reserved bits, and invalid states.
+  Byte-oriented physical forms let the runtime answer the common execution questions with compact metadata: kind, phase, subevent, visibility, skip or keep, offset, length, flags, and identity reference. They also give the optional Rust runtime binding explicit widths, tags, versions, reserved bits, and invalid states to validate.
 
   When multiple physical encodings satisfy the same semantic contract, the default runtime choice should be the fastest measured valid encoding for that category and workload. Width discipline, semantic integrity, and compatibility constraints may disqualify a faster encoding, but benchmark-backed throughput is otherwise the primary selection criterion.
   

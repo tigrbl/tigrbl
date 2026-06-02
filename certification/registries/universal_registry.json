@@ -114,35 +114,6 @@
     },
     {
       "claim_certified_boundary": false,
-      "claim_id": "BLK-004",
-      "claim_lifecycle": "recertify_required",
-      "claim_owner": "Governance",
-      "claim_profile_or_phase": "active_next_target",
-      "claim_public": true,
-      "claim_registry_row_id": "CREG-0004",
-      "claim_state": "blocked",
-      "claim_status": "blocked",
-      "claim_tier_target": "tier_0_blocked",
-      "claim_title": "Rust backend claims must remain blocked until Python-vs-Rust parity lanes pass as release evidence.",
-      "evidence_artifact_ids": [
-        "EART-0003",
-        "EART-0010"
-      ],
-      "evidence_bundle_ids": [
-        "EBND-0002",
-        "EBND-0003"
-      ],
-      "evidence_pointers": [
-        ".ssot/reports/certification_state/2026-04-09-phase4-native-parity.md",
-        "certification/claims/blocked.yaml"
-      ],
-      "mapped_feature_ids": [],
-      "required_test_pointers": [
-        "tools/ci/tests/test_rust_parity.py"
-      ]
-    },
-    {
-      "claim_certified_boundary": false,
       "claim_id": "BLK-005",
       "claim_lifecycle": "recertify_required",
       "claim_owner": "Governance",
@@ -685,7 +656,6 @@
         ".github/workflows/next-target-datatypes.yml",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_spec/src/datatypes/",
         "docs/conformance/NEXT_TARGETS.md",
         "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
@@ -694,8 +664,7 @@
         "NEXT-FEAT-001"
       ],
       "required_test_pointers": [
-        "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
-        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+        "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py"
       ]
     },
     {
@@ -779,7 +748,6 @@
         ".github/workflows/next-target-datatypes.yml",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_spec/src/datatypes/registry.rs",
         "docs/conformance/NEXT_TARGETS.md",
         "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
@@ -788,8 +756,7 @@
         "NEXT-FEAT-003"
       ],
       "required_test_pointers": [
-        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
-        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py"
       ]
     },
     {
@@ -828,8 +795,6 @@
         ".github/workflows/next-target-datatypes.yml",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_spec/src/datatypes/bridge.rs",
-        "crates/tigrbl_rs_spec/src/datatypes/engine_registry.rs",
         "docs/conformance/NEXT_TARGETS.md",
         "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
@@ -838,8 +803,7 @@
         "NEXT-FEAT-004"
       ],
       "required_test_pointers": [
-        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
-        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py"
       ]
     },
     {
@@ -876,7 +840,6 @@
         ".github/workflows/next-target-datatypes.yml",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
         "docs/conformance/NEXT_TARGETS.md",
         "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
@@ -1006,7 +969,6 @@
         ".github/workflows/next-target-datatypes.yml",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
         "docs/conformance/NEXT_TARGETS.md",
         "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"
@@ -1051,7 +1013,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1094,7 +1055,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1137,7 +1097,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1180,7 +1139,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1223,7 +1181,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1266,7 +1223,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1309,7 +1265,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1352,7 +1307,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1395,7 +1349,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1438,7 +1391,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1481,7 +1433,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1524,7 +1475,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1567,7 +1517,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1610,7 +1559,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1653,7 +1601,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_oltp"
       ],
@@ -1696,7 +1643,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_olap"
       ],
@@ -1739,7 +1685,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_olap"
       ],
@@ -1782,7 +1727,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -1825,7 +1769,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -1868,7 +1811,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -1911,7 +1853,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -1954,7 +1895,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -1997,7 +1937,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -2040,7 +1979,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -2083,7 +2021,6 @@
         ".ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md",
         "certification/claims/target.yaml",
         "certification/targets/next_target.yaml",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs",
         "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
         "pkgs/core/tigrbl_ops_realtime"
       ],
@@ -2442,12 +2379,6 @@
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": ".ssot/reports/certification_state/2026-04-09-phase4-native-parity.md",
-      "bundle_id": "EBND-0002",
-      "evidence_artifact_id": "EART-0003"
-    },
-    {
-      "artifact_kind": "artifact",
       "artifact_pointer": ".ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md",
       "bundle_id": "EBND-0002",
       "evidence_artifact_id": "EART-0004"
@@ -2514,187 +2445,156 @@
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs",
       "bundle_id": "EBND-0004",
       "evidence_artifact_id": "EART-0015"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs",
       "bundle_id": "EBND-0004",
       "evidence_artifact_id": "EART-0016"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0017"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0018"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0019"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0020"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0021"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0022"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0023"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0024"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0025"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0026"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0027"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0028"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0029"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0030"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs",
       "bundle_id": "EBND-0005",
       "evidence_artifact_id": "EART-0031"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0032"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0033"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0034"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0035"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0036"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0037"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0038"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs",
       "bundle_id": "EBND-0006",
       "evidence_artifact_id": "EART-0039"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/",
       "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0040"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/bridge.rs",
       "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0041"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/engine_registry.rs",
       "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0042"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/reflected.rs",
       "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0043"
     },
     {
       "artifact_kind": "artifact",
-      "artifact_pointer": "crates/tigrbl_rs_spec/src/datatypes/registry.rs",
       "bundle_id": "EBND-0007",
       "evidence_artifact_id": "EART-0044"
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "bundle_id": "EBND-0008",
       "evidence_artifact_id": "EART-0045"
     },
@@ -3054,12 +2954,6 @@
     },
     {
       "artifact_kind": "test_case",
-      "artifact_pointer": "tools/ci/tests/test_rust_parity.py",
-      "bundle_id": "EBND-0024",
-      "evidence_artifact_id": "EART-0105"
-    },
-    {
-      "artifact_kind": "test_case",
       "artifact_pointer": "tools/ci/tests/test_tigrcorn_hardening.py",
       "bundle_id": "EBND-0024",
       "evidence_artifact_id": "EART-0106"
@@ -3091,23 +2985,18 @@
       "evidence_bundle_id": "EBND-0003"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_ops_olap",
       "evidence_bundle_id": "EBND-0004"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_ops_oltp",
       "evidence_bundle_id": "EBND-0005"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_ops_realtime",
       "evidence_bundle_id": "EBND-0006"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_spec",
       "evidence_bundle_id": "EBND-0007"
     },
     {
-      "bundle_root": "crates/tigrbl_rs_spec/tests",
       "evidence_bundle_id": "EBND-0008"
     },
     {
@@ -3193,8 +3082,6 @@
         "pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py",
         ".github/workflows/next-target-datatypes.yml"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
-      "feature_description": "DataTypeSpec and StorageTypeRef define the active canonical semantic datatype center for the next target. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-001",
       "feature_name": "Canonical datatype semantic center",
       "feature_owner": "Next-target program",
@@ -3228,8 +3115,6 @@
         "pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py",
         "pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
-      "feature_description": "ColumnSpec.datatype is the canonical datatype attachment point on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-002",
       "feature_name": "ColumnSpec.datatype adoption",
       "feature_owner": "Next-target program",
@@ -3262,11 +3147,8 @@
         "EBND-0008"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
-        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
-      "feature_description": "TypeAdapter, BaseTypeAdapter, and TypeRegistry provide the executable datatype contract on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-003",
       "feature_name": "TypeAdapter and TypeRegistry contract",
       "feature_owner": "Next-target program",
@@ -3285,8 +3167,7 @@
         "TCASE-0001"
       ],
       "test_pointers": [
-        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py",
-        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+        "pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py"
       ]
     },
     {
@@ -3299,11 +3180,8 @@
         "EBND-0008"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
-        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
-      "feature_description": "EngineTypeLowerer, EngineRegistry, and EngineDatatypeBridge control engine-owned lowering on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-004",
       "feature_name": "Engine lowering and registry bridge",
       "feature_owner": "Next-target program",
@@ -3322,8 +3200,7 @@
         "TCASE-0001"
       ],
       "test_pointers": [
-        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py",
-        "crates/tigrbl_rs_spec/tests/spec_contract.rs"
+        "pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py"
       ]
     },
     {
@@ -3339,8 +3216,6 @@
         "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py",
         "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
-      "feature_description": "ReflectedTypeMapper governs reverse mapping and reflection import behavior on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-005",
       "feature_name": "Reflected type mapper and reverse mapping",
       "feature_owner": "Next-target program",
@@ -3376,8 +3251,6 @@
         "pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py",
         ".github/workflows/evidence-lanes.yml"
       ],
-      "feature_crate": "crates/tigrbl_rs_engine_inmemory",
-      "feature_description": "Relational, dataframe, file, cache, and probabilistic engine families align to the datatype bridge contract on the active next-target line. Package owner `pkgs/engines` and crate owner `crates/tigrbl_rs_engine_inmemory` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-006",
       "feature_name": "Engine-family datatype alignment",
       "feature_owner": "Next-target program",
@@ -3411,8 +3284,6 @@
         "pkgs/core/tigrbl_core/tests/test_table_portability_contract.py",
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
-      "feature_description": "Table portability and interoperability rules are specified as governed next-target work on the active line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-007",
       "feature_name": "Table portability and interoperability rules",
       "feature_owner": "Next-target program",
@@ -3446,8 +3317,6 @@
         "pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py",
         "pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
-      "feature_description": "Reflection-driven round-trip schema recovery is defined with best-effort and metadata-preserving modes on the active next-target line. Package owner `pkgs/core/tigrbl_core` and crate owner `crates/tigrbl_rs_spec` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-008",
       "feature_name": "Reflection-driven schema round-trip recovery",
       "feature_owner": "Next-target program",
@@ -3480,10 +3349,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/create.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `create` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-009",
       "feature_name": "Canonical op create",
@@ -3515,10 +3382,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/read.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `read` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-010",
       "feature_name": "Canonical op read",
@@ -3550,10 +3415,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/update.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `update` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-011",
       "feature_name": "Canonical op update",
@@ -3585,10 +3448,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/replace.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `replace` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-012",
       "feature_name": "Canonical op replace",
@@ -3620,10 +3481,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/merge.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `merge` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-013",
       "feature_name": "Canonical op merge",
@@ -3655,10 +3514,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/delete.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `delete` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-014",
       "feature_name": "Canonical op delete",
@@ -3690,10 +3547,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/list.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `list` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-015",
       "feature_name": "Canonical op list",
@@ -3725,10 +3580,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/clear.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `clear` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-016",
       "feature_name": "Canonical op clear",
@@ -3760,10 +3613,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/count.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `count` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-017",
       "feature_name": "Canonical op count",
@@ -3795,10 +3646,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/verbs/exists.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `exists` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-018",
       "feature_name": "Canonical op exists",
@@ -3830,10 +3679,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/create.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `bulk_create` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-019",
       "feature_name": "Canonical op bulk_create",
@@ -3865,10 +3712,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/update.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `bulk_update` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-020",
       "feature_name": "Canonical op bulk_update",
@@ -3900,10 +3745,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/replace.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `bulk_replace` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-021",
       "feature_name": "Canonical op bulk_replace",
@@ -3935,10 +3778,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/merge.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `bulk_merge` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-022",
       "feature_name": "Canonical op bulk_merge",
@@ -3970,10 +3811,8 @@
         "EBND-0005"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_oltp/src/bulk/delete.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_oltp",
       "feature_description": "Tracks the canonical `bulk_delete` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-023",
       "feature_name": "Canonical op bulk_delete",
@@ -4005,10 +3844,8 @@
         "EBND-0004"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_olap/src/verbs/aggregate.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_olap",
       "feature_description": "Tracks the canonical `aggregate` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-024",
       "feature_name": "Canonical op aggregate",
@@ -4040,10 +3877,8 @@
         "EBND-0004"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_olap/src/verbs/group_by.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_olap",
       "feature_description": "Tracks the canonical `group_by` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-025",
       "feature_name": "Canonical op group_by",
@@ -4075,10 +3910,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/publish.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `publish` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-026",
       "feature_name": "Canonical op publish",
@@ -4110,10 +3943,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/subscribe.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `subscribe` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-027",
       "feature_name": "Canonical op subscribe",
@@ -4145,10 +3976,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/tail.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `tail` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-028",
       "feature_name": "Canonical op tail",
@@ -4180,10 +4009,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/upload.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `upload` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-029",
       "feature_name": "Canonical op upload",
@@ -4215,10 +4042,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/download.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `download` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-030",
       "feature_name": "Canonical op download",
@@ -4250,10 +4075,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/append_chunk.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `append_chunk` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-031",
       "feature_name": "Canonical op append_chunk",
@@ -4285,10 +4108,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/send_datagram.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `send_datagram` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-032",
       "feature_name": "Canonical op send_datagram",
@@ -4320,10 +4141,8 @@
         "EBND-0006"
       ],
       "evidence_pointers": [
-        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py",
-        "crates/tigrbl_rs_ops_realtime/src/verbs/checkpoint.rs"
+        "pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_ops_realtime",
       "feature_description": "Tracks the canonical `checkpoint` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-033",
       "feature_name": "Canonical op checkpoint",
@@ -4358,7 +4177,6 @@
         "pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py",
         "pkgs/core/tigrbl_core/tigrbl_core/config/constants.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_spec",
       "feature_description": "Tracks the canonical `custom` surface as a governed feature with package/crate ownership and executable evidence pointers.",
       "feature_id": "NEXT-FEAT-034",
       "feature_name": "Canonical op custom",
@@ -4389,8 +4207,6 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
         "tools/conformance/installed_package_smoke.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_runtime",
-      "feature_description": "`tigrcorn` remains an explicitly supported server runner on the active next-target line. Package owner `pkgs/core/tigrbl` and crate owner `crates/tigrbl_rs_runtime` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-035",
       "feature_name": "Supported server tigrcorn",
       "feature_owner": "CLI / Developer Experience",
@@ -4424,8 +4240,6 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
         "tools/conformance/installed_package_smoke.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_runtime",
-      "feature_description": "`uvicorn` remains an explicitly supported server runner on the active next-target line. Package owner `pkgs/core/tigrbl` and crate owner `crates/tigrbl_rs_runtime` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-036",
       "feature_name": "Supported server uvicorn",
       "feature_owner": "CLI / Developer Experience",
@@ -4459,8 +4273,6 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
         "tools/conformance/installed_package_smoke.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_runtime",
-      "feature_description": "`hypercorn` remains an explicitly supported server runner on the active next-target line. Package owner `pkgs/core/tigrbl` and crate owner `crates/tigrbl_rs_runtime` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-037",
       "feature_name": "Supported server hypercorn",
       "feature_owner": "CLI / Developer Experience",
@@ -4494,8 +4306,6 @@
         "pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py",
         "tools/conformance/installed_package_smoke.py"
       ],
-      "feature_crate": "crates/tigrbl_rs_runtime",
-      "feature_description": "`gunicorn` remains an explicitly supported server runner on the active next-target line. Package owner `pkgs/core/tigrbl` and crate owner `crates/tigrbl_rs_runtime` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-038",
       "feature_name": "Supported server gunicorn",
       "feature_owner": "CLI / Developer Experience",
@@ -4532,8 +4342,6 @@
         "docs/conformance/NEXT_TARGETS.md",
         "docs/conformance/IMPLEMENTATION_MAP.md"
       ],
-      "feature_crate": "crates/tigrbl_rs_runtime",
-      "feature_description": "`daphne` remains tracked only as an out-of-boundary server/runtime row on the active next-target line. Package owner `pkgs/core/tigrbl` and crate owner `crates/tigrbl_rs_runtime` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-039",
       "feature_name": "Out-of-boundary server daphne",
       "feature_owner": "Server/runtime boundary",
@@ -4570,8 +4378,6 @@
         "docs/conformance/NEXT_TARGETS.md",
         "docs/conformance/IMPLEMENTATION_MAP.md"
       ],
-      "feature_crate": "crates/tigrbl_rs_runtime",
-      "feature_description": "`twisted` remains tracked only as an out-of-boundary server/runtime row on the active next-target line. Package owner `pkgs/core/tigrbl` and crate owner `crates/tigrbl_rs_runtime` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-040",
       "feature_name": "Out-of-boundary server twisted",
       "feature_owner": "Server/runtime boundary",
@@ -4608,8 +4414,6 @@
         "docs/conformance/NEXT_TARGETS.md",
         "docs/conformance/IMPLEMENTATION_MAP.md"
       ],
-      "feature_crate": "crates/tigrbl_rs_runtime",
-      "feature_description": "`granian` remains tracked only as an out-of-boundary server/runtime row on the active next-target line. Package owner `pkgs/core/tigrbl` and crate owner `crates/tigrbl_rs_runtime` define the tracked implementation surface.",
       "feature_id": "NEXT-FEAT-041",
       "feature_name": "Out-of-boundary server granian",
       "feature_owner": "Server/runtime boundary",
@@ -4681,7 +4485,6 @@
       "evidence_artifact_id": "EART-0045",
       "evidence_bundle_id": "EBND-0008",
       "test_case_id": "TCASE-0001",
-      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "test_set_id": "TSET-0001"
     },
     {
@@ -4839,13 +4642,6 @@
       "test_set_id": "TSET-0007"
     },
     {
-      "evidence_artifact_id": "EART-0105",
-      "evidence_bundle_id": "EBND-0024",
-      "test_case_id": "TCASE-0024",
-      "test_case_pointer": "tools/ci/tests/test_rust_parity.py",
-      "test_set_id": "TSET-0007"
-    },
-    {
       "evidence_artifact_id": "EART-0106",
       "evidence_bundle_id": "EBND-0024",
       "test_case_id": "TCASE-0025",
@@ -4914,20 +4710,6 @@
       "test_case_id": "TCASE-0018",
       "test_case_pointer": "tools/ci/tests/test_certification_tree.py",
       "test_registry_row_id": "TREG-0004",
-      "test_set_id": "TSET-0007",
-      "test_set_pointer": "tools/ci/tests"
-    },
-    {
-      "evidence_artifact_id": "EART-0105",
-      "evidence_bundle_id": "EBND-0024",
-      "evidence_pointer": "tools/ci/tests/test_rust_parity.py",
-      "mapped_claim_id": "BLK-004",
-      "mapped_claim_lifecycle": "recertify_required",
-      "mapped_claim_state": "blocked",
-      "mapped_feature_id": "",
-      "test_case_id": "TCASE-0024",
-      "test_case_pointer": "tools/ci/tests/test_rust_parity.py",
-      "test_registry_row_id": "TREG-0005",
       "test_set_id": "TSET-0007",
       "test_set_pointer": "tools/ci/tests"
     },
@@ -5158,16 +4940,13 @@
     {
       "evidence_artifact_id": "EART-0045",
       "evidence_bundle_id": "EBND-0008",
-      "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "mapped_claim_id": "NEXT-003",
       "mapped_claim_lifecycle": "implemented",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-001",
       "test_case_id": "TCASE-0001",
-      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "test_registry_row_id": "TREG-0022",
-      "test_set_id": "TSET-0001",
-      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+      "test_set_id": "TSET-0001"
     },
     {
       "evidence_artifact_id": "EART-0083",
@@ -5214,16 +4993,13 @@
     {
       "evidence_artifact_id": "EART-0045",
       "evidence_bundle_id": "EBND-0008",
-      "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "mapped_claim_id": "NEXT-005",
       "mapped_claim_lifecycle": "implemented",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-003",
       "test_case_id": "TCASE-0001",
-      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "test_registry_row_id": "TREG-0026",
-      "test_set_id": "TSET-0001",
-      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+      "test_set_id": "TSET-0001"
     },
     {
       "evidence_artifact_id": "EART-0077",
@@ -5242,16 +5018,13 @@
     {
       "evidence_artifact_id": "EART-0045",
       "evidence_bundle_id": "EBND-0008",
-      "evidence_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "mapped_claim_id": "NEXT-006",
       "mapped_claim_lifecycle": "implemented",
       "mapped_claim_state": "target",
       "mapped_feature_id": "NEXT-FEAT-004",
       "test_case_id": "TCASE-0001",
-      "test_case_pointer": "crates/tigrbl_rs_spec/tests/spec_contract.rs",
       "test_registry_row_id": "TREG-0028",
-      "test_set_id": "TSET-0001",
-      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+      "test_set_id": "TSET-0001"
     },
     {
       "evidence_artifact_id": "EART-0079",
@@ -5816,8 +5589,7 @@
   ],
   "test_sets": [
     {
-      "test_set_id": "TSET-0001",
-      "test_set_pointer": "crates/tigrbl_rs_spec/tests"
+      "test_set_id": "TSET-0001"
     },
     {
       "test_set_id": "TSET-0002",

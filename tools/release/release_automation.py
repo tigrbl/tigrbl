@@ -173,20 +173,7 @@ def cargo_projects() -> list[dict[str, str]]:
 
 
 def cargo_publish_order(projects: Iterable[dict[str, str]]) -> list[str]:
-    preferred = [
-        "tigrbl_rs_spec",
-        "tigrbl_rs_ports",
-        "tigrbl_rs_ops_olap",
-        "tigrbl_rs_ops_realtime",
-        "tigrbl_rs_engine_sqlite",
-        "tigrbl_rs_engine_postgres",
-        "tigrbl_rs_engine_inmemory",
-        "tigrbl_rs_atoms",
-        "tigrbl_rs_ops_oltp",
-        "tigrbl_rs_kernel",
-        "tigrbl_rs_runtime",
-        "tigrbl_runtime_bindings_rs",
-    ]
+    preferred = ["tigrbl_runtime_bindings_rs"]
     names = {project["name"] for project in projects}
     missing = names.difference(preferred)
     if missing:
@@ -614,7 +601,7 @@ def create_github_releases(plan_path: Path) -> None:
 def publish_crates(plan_path: Path, *, dry_run: bool, verify: bool = True) -> None:
     plan = json.loads(read(plan_path))
     if not plan["crate_publish_order"]:
-        raise RuntimeError("release plan does not include any Rust crates")
+        raise RuntimeError("release plan does not include an optional Rust runtime binding package")
     versions = {crate["name"]: crate["version"] for crate in plan["crates"]}
     packaged_locally: list[str] = []
     for crate in plan["crate_publish_order"]:

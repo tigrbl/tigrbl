@@ -12,7 +12,6 @@ except Exception:  # pragma: no cover
 
 from .rust_compile import (
     build_rust_kernel,
-    build_rust_parity_snapshot,
     normalize_rust_spec,
 )
 from .rust_plan import RustPlan
@@ -91,7 +90,6 @@ __all__ = [
     "SchemaOut",
     "build_kernel_plan",
     "build_rust_kernel",
-    "build_rust_parity_snapshot",
     "build_packed_kernel",
     "build_packed_kernel_measurement_view",
     "get_cached_specs",

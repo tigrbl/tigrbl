@@ -27,7 +27,6 @@ POLICY_VALIDATORS = (
     "tools/ci/validate_certification_tree.py",
     "tools/ci/validate_ssot_authority_model.py",
     "tools/ci/validate_declared_surface.py",
-    "tools/ci/validate_rust_parity.py",
     "tools/ci/validate_tigrcorn_operator_surface.py",
     "tools/ci/validate_tigrcorn_hardening.py",
     "tools/ci/validate_claim_lifecycle.py",
