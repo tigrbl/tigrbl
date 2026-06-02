@@ -531,6 +531,103 @@ async def test_webtransport_runtime_state_isolation_sequential_concurrent() -> N
 
 
 @pytest.mark.asyncio
+async def test_webtransport_concurrent_scopes_each_multi_lane_burst_isolated() -> None:
+    app = _app("/transport/multiplex")
+    captured: list[dict[str, Any]] = []
+
+    def capture(ctx: dict[str, Any]) -> None:
+        captured.append(dict(ctx["webtransport"]))
+
+    app.hooks = (
+        HookSpec(
+            phase=HookPhase.PRE_HANDLER,
+            fn=capture,
+            family=("stream", "datagram"),
+            subevents=("stream.chunk.received", "datagram.received"),
+            name="wt-burst-ingress",
+        ),
+        HookSpec(
+            phase=HookPhase.POST_HANDLER,
+            fn=capture,
+            family=("stream", "datagram"),
+            subevents=("stream.chunk.emit", "datagram.emit"),
+            name="wt-burst-egress",
+        ),
+    )
+
+    async def run_session(session_id: str) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+        scope = _scope("/transport/multiplex")
+        events = [
+            webtransport_connect(session_id),
+            webtransport_stream_receive(
+                session_id,
+                f"{session_id}-bidi-1",
+                b"alpha",
+                stream_direction="bidi",
+                framing="text",
+            ),
+            webtransport_stream_receive(
+                session_id,
+                f"{session_id}-bidi-2",
+                b"beta",
+                stream_direction="bidi",
+                framing="json",
+            ),
+            webtransport_stream_receive(
+                session_id,
+                f"{session_id}-upload-1",
+                b'{"upload":1}\n',
+                stream_direction="client_to_server",
+                framing="ndjson",
+            ),
+            webtransport_datagram_receive(session_id, f"{session_id}-dg-1", b"ping", framing="text"),
+            {"type": "webtransport.disconnect", "session_id": session_id, "code": 1000},
+        ]
+        sent = await _run_contract_session(app, scope, events)
+        return scope, sent
+
+    (scope_a, sent_a), (scope_b, sent_b) = await asyncio.gather(
+        run_session("burst-a"),
+        run_session("burst-b"),
+    )
+
+    for session_id, scope, sent in (("burst-a", scope_a, sent_a), ("burst-b", scope_b, sent_b)):
+        trace = _wt_state(scope)["trace"]
+        hook_trace = _wt_state(scope)["hook_trace"]
+        assert {row.get("session_id") for row in trace if row.get("session_id")} == {session_id}
+        assert {row.get("session_id") for row in hook_trace if row.get("session_id")} == {session_id}
+
+        stream_dispatches = [
+            row for row in trace if row.get("type") == "webtransport.stream.receive"
+        ]
+        assert sum(1 for row in stream_dispatches if row.get("stream_direction") == "bidi") == 2
+        assert sum(1 for row in stream_dispatches if row.get("stream_direction") == "client_to_server") == 1
+        assert any(row.get("type") == "webtransport.datagram.receive" for row in trace)
+
+        ingress_lanes = {
+            (row.get("event_type"), row.get("lane"))
+            for row in hook_trace
+            if row.get("phase") == "PRE_HANDLER"
+        }
+        egress_lanes = {
+            (row.get("event_type"), row.get("lane"))
+            for row in hook_trace
+            if row.get("phase") == "POST_HANDLER"
+        }
+        assert ("webtransport.stream.receive", "bidi_stream") in ingress_lanes
+        assert ("webtransport.stream.receive", "unidi_client_stream") in ingress_lanes
+        assert ("webtransport.datagram.receive", "datagram") in ingress_lanes
+        assert ("webtransport.stream.send", "bidi_stream") in egress_lanes
+        assert ("webtransport.stream.send", "unidi_server_stream") in egress_lanes
+        assert ("webtransport.datagram.send", "datagram") in egress_lanes
+
+        for event in _stream_sends(sent) + _datagram_sends(sent):
+            assert event["session_id"] == session_id
+
+    assert {item["session_id"] for item in captured if item.get("session_id")} == {"burst-a", "burst-b"}
+
+
+@pytest.mark.asyncio
 async def test_webtransport_runtime_does_not_reuse_session_registry_between_scopes() -> None:
     app = _app("/transport/multiplex")
     scope_a = _scope("/transport/multiplex")
