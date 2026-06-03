@@ -222,20 +222,16 @@ def pytest_addoption(parser):
     group.addoption(
         "--db-mode",
         choices=["sync", "async"],
-        help="Database mode to test (sync or async). If not specified, tests both modes.",
+        default="async",
+        help="Database mode to test (sync or async). Defaults to async.",
     )
 
 
 def pytest_generate_tests(metafunc):
     """Generate test parameters for db modes."""
     if "db_mode" in metafunc.fixturenames:
-        db_mode_option = metafunc.config.getoption("--db-mode")
-        if db_mode_option:
-            # Run only the specified mode
-            metafunc.parametrize("db_mode", [db_mode_option])
-        else:
-            # Run both modes by default
-            metafunc.parametrize("db_mode", ["sync", "async"])
+        db_mode_option = metafunc.config.getoption("--db-mode", default="async")
+        metafunc.parametrize("db_mode", [db_mode_option])
 
 
 @pytest.fixture
