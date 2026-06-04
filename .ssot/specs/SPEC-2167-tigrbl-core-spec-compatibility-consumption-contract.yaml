@@ -1,0 +1,24 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2167"
+number: 2167
+slug: "tigrbl-core-spec-compatibility-consumption-contract"
+title: "Tigrbl Core Spec Compatibility Consumption Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the compatibility consumption contract for `tigrbl_core._spec`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines the compatibility consumption contract for `tigrbl_core._spec`.
+  
+  `tigrbl_core._spec` must continue to provide existing compatibility imports and runtime behavior, while consuming schema/catalog authority from `tigrbl_spec`.
+  
+  `tigrbl_core` must not package or regenerate a competing authoritative schema catalog. Any schema-generation compatibility wrapper must delegate to `tigrbl_spec`.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1137"

@@ -1,0 +1,26 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2165"
+number: 2165
+slug: "tigrbl-spec-schema-migration-contract"
+title: "Tigrbl Spec Schema Migration Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the Tigrbl spec schema migration contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines the Tigrbl spec schema migration contract.
+  
+  Migrations are catalog-level and adjacent. Every version update requires a registered migration from the previous supported catalog version to the next catalog version.
+  
+  The public API must expose payload migration from a source catalog version to a target catalog version, report the migration path, and fail clearly when a downgrade, skipped transition, or unknown version is requested.
+  
+  Identity migrations are explicit registered migrations.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1137"

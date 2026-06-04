@@ -1,0 +1,26 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2166"
+number: 2166
+slug: "tigrbl-spec-generated-dataclass-binding-contract"
+title: "Tigrbl Spec Generated Dataclass Binding Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the generated dataclass binding contract for Tigrbl spec schemas."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines the generated dataclass binding contract for Tigrbl spec schemas.
+  
+  Generated dataclasses are checked in under a versioned `tigrbl_spec.models` module layout and are produced by a repository tool, not at package import time.
+  
+  Generated classes represent the schema contract. Runtime-only behavior and validation that cannot be expressed in JSON Schema must be layered outside the generated contract.
+  
+  CI must detect drift between packaged schemas and generated dataclasses.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1137"

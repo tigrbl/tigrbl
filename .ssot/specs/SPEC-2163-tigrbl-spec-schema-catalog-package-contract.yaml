@@ -1,0 +1,26 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2163"
+number: 2163
+slug: "tigrbl-spec-schema-catalog-package-contract"
+title: "Tigrbl Spec Schema Catalog Package Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the package contract for the Tigrbl spec schema catalog."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines the package contract for the Tigrbl spec schema catalog.
+  
+  The `tigrbl_spec` distribution must include versioned schema catalogs under `tigrbl_spec/schemas/{version}/`. Each catalog contains `manifest.json`, `bundle.json`, `shared.json`, and individual JSON Schema files for every governed spec kind.
+  
+  The schema catalog version is shared across the full catalog. The initial catalog version for this work is `0.3.20`.
+  
+  Wheel and sdist artifacts must contain the schema catalog files.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1137"

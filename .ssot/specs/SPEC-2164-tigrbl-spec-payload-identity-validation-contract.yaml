@@ -1,0 +1,26 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2164"
+number: 2164
+slug: "tigrbl-spec-payload-identity-validation-contract"
+title: "Tigrbl Spec Payload Identity and Validation Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the payload identity and validation contract for Tigrbl spec payloads."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines the payload identity and validation contract for Tigrbl spec payloads.
+  
+  Every root spec payload must carry `spec_kind`, `spec_schema_version`, and `spec_type`.
+  
+  `spec_type` is the stable URN `urn:tigrbl:spec:{spec_kind}:{spec_schema_version}`.
+  
+  The public `tigrbl_spec` API must load schemas, resolve current and supported catalog versions, validate payloads by kind, and provide a load/validate/migrate path for consumers.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1137"

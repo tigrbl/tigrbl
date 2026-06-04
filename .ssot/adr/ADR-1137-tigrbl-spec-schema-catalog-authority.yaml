@@ -1,0 +1,45 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1137"
+number: 1137
+slug: "tigrbl-spec-schema-catalog-authority"
+title: "Tigrbl Spec Schema Catalog Authority"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "`tigrbl_spec` owns Tigrbl's packaged spec schema catalog, generated dataclass bindings, validation API, and migration API."
+supersedes:
+  - "adr:1003"
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "External schema catalog authority moved to tigrbl_spec; spec-first semantics remain."
+    at: "2026-06-04T11:51:18Z"
+references: []
+body: |-
+  ## Decision
+  
+  `tigrbl_spec` owns Tigrbl's packaged spec schema catalog, generated dataclass bindings, validation API, and migration API.
+  
+  `tigrbl_core` consumes those artifacts and may layer runtime-only behavior over them, but it must not remain or become a second external schema authority.
+  
+  Schema versions are catalog-level. They apply to the complete spec schema set, not to individual spec kinds. Tigrbl spec schema versions may increment minor and patch components only; major-version bumps are outside this policy.
+  
+  Every catalog version update requires an explicit adjacent migration step. Identity migrations are required when a version bump does not need payload transformation.
+  
+  ## Context
+  
+  The repository currently has `tigrbl_spec` as a package boundary, while generated JSON Schema assets and spec-shape generation live under `tigrbl_core`. That makes distribution, validation, code generation, and migration authority ambiguous.
+  
+  This ADR specializes `adr:0610` for Tigrbl spec schemas and supersedes the part of `adr:1003` that made `tigrbl_core._spec` the durable external spec authority.
+  
+  ## Consequences
+  
+  - `tigrbl_spec` becomes the public schema and dataclass contract package.
+  - `tigrbl_core._spec` remains a compatibility and runtime-behavior surface.
+  - Serialized payloads carry `spec_kind`, `spec_schema_version`, and `spec_type`.
+  - Schema catalogs are packaged under versioned directories.
+  - Migrations are maintained for every catalog version transition.
+  - CI rejects schema/model drift, unsupported major-version changes, and missing migrations.
