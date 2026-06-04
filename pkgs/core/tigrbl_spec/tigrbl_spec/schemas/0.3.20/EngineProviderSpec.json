@@ -1,0 +1,54 @@
+{
+  "$defs": {
+    "EngineProviderSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.engine_spec:EngineProviderSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "EngineProviderSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "EngineProviderSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "spec": {
+      "anyOf": [
+        {
+          "$ref": "./EngineSpec.json"
+        },
+        {
+          "$ref": "./EngineSpec.json#/$defs/EngineSpecEnvelope"
+        }
+      ]
+    },
+    "spec_kind": {
+      "const": "EngineProviderSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:EngineProviderSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    }
+  },
+  "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
+    "spec"
+  ],
+  "title": "EngineProviderSpec",
+  "type": "object"
+}

@@ -41,7 +41,9 @@ classifiers = [
 requires-python = ">=3.10,<3.15"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
-dependencies = []
+dependencies = [
+    "jsonschema>=4.0",
+]
 
 
 [project.urls]
@@ -54,6 +56,16 @@ Issues = "https://github.com/tigrbl/tigrbl/issues"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+packages = [
+    { include = "tigrbl_spec" },
+]
+include = [
+    "tigrbl_spec/schemas/**/*.json",
+    "tigrbl_spec/migrations/**/*.py",
+    "tigrbl_spec/models/**/*.py",
+]
 
 [dependency-groups]
 dev = [

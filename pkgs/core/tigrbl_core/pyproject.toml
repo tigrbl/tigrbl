@@ -42,6 +42,7 @@ requires-python = ">=3.10,<3.15"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
+    "tigrbl_spec",
     "tigrbl-typing",
     "pydantic>=2.10,<3",
     "pyyaml",
@@ -59,6 +60,7 @@ Issues = "https://github.com/tigrbl/tigrbl/issues"
 
 [tool.uv.sources]
 "tigrbl-typing" = { workspace = true }
+"tigrbl_spec" = { workspace = true }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

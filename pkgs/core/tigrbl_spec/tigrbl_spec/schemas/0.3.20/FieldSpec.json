@@ -1,0 +1,70 @@
+{
+  "$defs": {
+    "FieldSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.field_spec:FieldSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "FieldSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "FieldSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allow_null_in": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "constraints": {
+      "$ref": "./shared.json#/$defs/AnyMap"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "py_type": {
+      "$ref": "./shared.json#/$defs/SerdeValue"
+    },
+    "required_in": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "spec_kind": {
+      "const": "FieldSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:FieldSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    }
+  },
+  "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
+    "py_type",
+    "constraints",
+    "description",
+    "required_in",
+    "allow_null_in"
+  ],
+  "title": "FieldSpec",
+  "type": "object"
+}
