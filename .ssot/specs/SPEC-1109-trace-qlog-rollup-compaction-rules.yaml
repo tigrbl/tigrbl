@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1109"
+number: 1109
+slug: "trace-qlog-rollup-compaction-rules"
+title: "Trace Qlog Rollup Compaction Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace/qlog rollup and compaction may reduce repeated event detail, but must preserve drillback identity, parentage, outcome counts, effect summaries, diagnostic classes, and enough atom/hook provenance to support replay, audit, and conformance review."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace/qlog rollup and compaction may reduce repeated event detail, but must preserve drillback identity, parentage, outcome counts, effect summaries, diagnostic classes, and enough atom/hook provenance to support replay, audit, and conformance review.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1165"
+  - "adr:1166"

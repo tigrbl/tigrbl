@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1070"
+number: 1070
+slug: "engine-and-transaction-requirement-projection-rules"
+title: "Engine And Transaction Requirement Projection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Atom-chain requirement projection must declare engine and transaction requirements before execution. Examples include transaction ownership, rollback requirement, constraint behavior, schema readiness, engine session parentage, isolation level where declared, and unsupported capability rejection. A chain requiring rollback, schema readiness, or engine-session isolation must not execute on an engine path that lacks those requirements unless an explicit downgrade is declared and accepted by policy."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Atom-chain requirement projection must declare engine and transaction requirements before execution. Examples include transaction ownership, rollback requirement, constraint behavior, schema readiness, engine session parentage, isolation level where declared, and unsupported capability rejection. A chain requiring rollback, schema readiness, or engine-session isolation must not execute on an engine path that lacks those requirements unless an explicit downgrade is declared and accepted by policy.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1155"
+  - "adr:1156"

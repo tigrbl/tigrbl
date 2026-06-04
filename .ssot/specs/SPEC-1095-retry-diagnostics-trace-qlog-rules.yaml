@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1095"
+number: 1095
+slug: "retry-diagnostics-trace-qlog-rules"
+title: "Retry Diagnostics Trace Qlog Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Retry diagnostics, trace records, qlog records, replay manifests, and rollups must record original_attempt_id, retry attempt_id, retry index, retry policy id, failure classification, budget/backoff decision, owner layer, idempotency or replay linkage, session and engine-session parentage, effect-fence state, terminal outcome, and rejection reason. Records must be deterministic for the same normalized retry scenario."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Retry diagnostics, trace records, qlog records, replay manifests, and rollups must record original_attempt_id, retry attempt_id, retry index, retry policy id, failure classification, budget/backoff decision, owner layer, idempotency or replay linkage, session and engine-session parentage, effect-fence state, terminal outcome, and rejection reason. Records must be deterministic for the same normalized retry scenario.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1162"

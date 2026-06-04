@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1047"
+number: 1047
+slug: "transport-delivery-guarantee-declaration-rules"
+title: "Transport Delivery Guarantee Declaration Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Each transport binding must declare its delivery class, ordering scope, retry policy, replay support, acknowledgement or cursor support, and loss behavior. Undeclared guarantees are unsupported, and unsupported guarantees must be rejected at compile time or binding resolution time instead of silently downgraded."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Each transport binding must declare its delivery class, ordering scope, retry policy, replay support, acknowledgement or cursor support, and loss behavior. Undeclared guarantees are unsupported, and unsupported guarantees must be rejected at compile time or binding resolution time instead of silently downgraded.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1149"

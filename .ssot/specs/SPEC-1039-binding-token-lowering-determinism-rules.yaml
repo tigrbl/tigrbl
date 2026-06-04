@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1039"
+number: 1039
+slug: "binding-token-lowering-determinism-rules"
+title: "Binding Token Lowering Determinism Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Requires the same table specs, operation specs, profiles, and framework defaults to produce the same ordered token set and normalized diagnostics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Requires the same table specs, operation specs, profiles, and framework defaults to produce the same ordered token set and normalized diagnostics.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1145"

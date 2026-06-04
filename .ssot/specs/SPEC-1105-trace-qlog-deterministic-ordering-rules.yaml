@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1105"
+number: 1105
+slug: "trace-qlog-deterministic-ordering-rules"
+title: "Trace Qlog Deterministic Ordering Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace/qlog events must have deterministic ordering and deterministic normalized shape for the same input, engine state, runtime plan, and declared nondeterminism policy. Fields that are inherently nondeterministic must be marked, normalized, or excluded from conformance comparisons."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace/qlog events must have deterministic ordering and deterministic normalized shape for the same input, engine state, runtime plan, and declared nondeterminism policy. Fields that are inherently nondeterministic must be marked, normalized, or excluded from conformance comparisons.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1165"
+  - "adr:1166"

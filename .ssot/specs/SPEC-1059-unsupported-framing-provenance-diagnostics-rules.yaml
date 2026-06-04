@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1059"
+number: 1059
+slug: "unsupported-framing-provenance-diagnostics-rules"
+title: "Unsupported Framing Provenance Diagnostics Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Unsupported framing diagnostics must identify the declared profile, binding token, selector source, transport, framing, lane, and available runtime identifiers that caused rejection. Diagnostics must be deterministic for the same invalid binding and must prove that no fallback path was used."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Unsupported framing diagnostics must identify the declared profile, binding token, selector source, transport, framing, lane, and available runtime identifiers that caused rejection. Diagnostics must be deterministic for the same invalid binding and must prove that no fallback path was used.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1152"

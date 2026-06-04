@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1003"
+number: 1003
+slug: "asgi-scope-projection-contract"
+title: "ASGI Scope Projection Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: define how ASGI scope maps to Tigrbl transport metadata without making ASGI scope the semantic authority. Required projection fields include scope type, method, path, query string, headers, client and server tuples, scheme, root path, subprotocols, extension metadata, WebTransport metadata where present, and normalized semantic and concrete ids. Valid scenarios include HTTP scope projecting request metadata, websocket scope projecting session/message metadata, and WebTransport-like scope projecting session metadata with explicit extension handling. Invalid scenarios include server-specific scope extensions becoming canonical state without an allowlist rule or missing identity fields being silently synthesized without trace."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Scope: define how ASGI scope maps to Tigrbl transport metadata without making ASGI scope the semantic authority. Required projection fields include scope type, method, path, query string, headers, client and server tuples, scheme, root path, subprotocols, extension metadata, WebTransport metadata where present, and normalized semantic and concrete ids. Valid scenarios include HTTP scope projecting request metadata, websocket scope projecting session/message metadata, and WebTransport-like scope projecting session metadata with explicit extension handling. Invalid scenarios include server-specific scope extensions becoming canonical state without an allowlist rule or missing identity fields being silently synthesized without trace.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1020"
+  - "adr:1061"

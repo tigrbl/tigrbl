@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1152"
+number: 1152
+slug: "unsupported-framing-diagnostics-preserve-provenance"
+title: "Unsupported Framing Diagnostics Preserve Provenance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: unsupported-framing rejection must preserve provenance for the selector, binding token, transport, framing, lane, profile, app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id values available at the rejection point. Rationale: fail-closed behavior is only certifiable when operators can prove which declared contract rejected the frame and that no fallback occurred. Consequence: diagnostics remain deterministic and replay must not admit previously rejected unsupported framing."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: unsupported-framing rejection must preserve provenance for the selector, binding token, transport, framing, lane, profile, app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id values available at the rejection point. Rationale: fail-closed behavior is only certifiable when operators can prove which declared contract rejected the frame and that no fallback occurred. Consequence: diagnostics remain deterministic and replay must not admit previously rejected unsupported framing.

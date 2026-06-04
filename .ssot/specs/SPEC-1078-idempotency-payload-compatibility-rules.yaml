@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1078"
+number: 1078
+slug: "idempotency-payload-compatibility-rules"
+title: "Idempotency Payload Compatibility Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Reuse of an idempotency key with a semantically different payload, selector, operation id, binding, principal, or parent scope must fail closed before side effects. Compatible retries may differ only in declared transport metadata or concrete attempt identifiers that do not change operation semantics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Reuse of an idempotency key with a semantically different payload, selector, operation id, binding, principal, or parent scope must fail closed before side effects. Compatible retries may differ only in declared transport metadata or concrete attempt identifiers that do not change operation semantics.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1157"
+  - "adr:1158"

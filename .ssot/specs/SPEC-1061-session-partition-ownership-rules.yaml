@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1061"
+number: 1061
+slug: "session-partition-ownership-rules"
+title: "Session Partition Ownership Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime session state must be owned by explicit identity partitions. Valid access requires matching app_id, router_id, table_id, op_id, attempt_id, session_id, trace_id, and runtime or binding plan identity where applicable. Missing or mismatched parentage fails closed before state read, state mutation, dispatch, or emission."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime session state must be owned by explicit identity partitions. Valid access requires matching app_id, router_id, table_id, op_id, attempt_id, session_id, trace_id, and runtime or binding plan identity where applicable. Missing or mismatched parentage fails closed before state read, state mutation, dispatch, or emission.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1153"

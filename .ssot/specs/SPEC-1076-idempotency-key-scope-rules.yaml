@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1076"
+number: 1076
+slug: "idempotency-key-scope-rules"
+title: "Idempotency Key Scope Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Idempotency keys are scoped by semantic and concrete parentage. Scope includes app_id, router_id, table_id, op_id, binding_id or runtime_plan_id, tenant or principal where available, session_id where applicable, engine_session_id where applicable, and the submitted idempotency key. Cross-op, cross-table, cross-session, cross-engine-session, or cross-principal reuse is invalid unless an explicit policy creates a shared scope."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Idempotency keys are scoped by semantic and concrete parentage. Scope includes app_id, router_id, table_id, op_id, binding_id or runtime_plan_id, tenant or principal where available, session_id where applicable, engine_session_id where applicable, and the submitted idempotency key. Cross-op, cross-table, cross-session, cross-engine-session, or cross-principal reuse is invalid unless an explicit policy creates a shared scope.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1157"
+  - "adr:1158"

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1106"
+number: 1106
+slug: "trace-qlog-export-support-grade-rules"
+title: "Trace Qlog Export Support Grade Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace/qlog export surfaces must declare support grade: disabled, experimental, diagnostic, or certification-grade. Experimental qlog-like outputs may support debugging, but certification evidence must only rely on certification-grade record schema, ordering, redaction, and scope guarantees."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace/qlog export surfaces must declare support grade: disabled, experimental, diagnostic, or certification-grade. Experimental qlog-like outputs may support debugging, but certification evidence must only rely on certification-grade record schema, ordering, redaction, and scope guarantees.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1165"
+  - "adr:1166"

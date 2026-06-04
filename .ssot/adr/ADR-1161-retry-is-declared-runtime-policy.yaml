@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1161"
+number: 1161
+slug: "retry-is-declared-runtime-policy"
+title: "Retry Is Declared Runtime Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl retry behavior is a declared runtime and operation policy, not a behavior inferred from transport shape, HTTP method, connection loss, engine exception, or handler implementation. Retry policy must declare eligible operations, retryable failure classes, max attempts, budget, backoff schedule, jitter policy, transport/runtime ownership, idempotency or replay coupling for mutations, and fail-closed unsupported cases. Consequence: undeclared retry fails closed before side effects, and transports cannot silently retry semantic operations."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl retry behavior is a declared runtime and operation policy, not a behavior inferred from transport shape, HTTP method, connection loss, engine exception, or handler implementation. Retry policy must declare eligible operations, retryable failure classes, max attempts, budget, backoff schedule, jitter policy, transport/runtime ownership, idempotency or replay coupling for mutations, and fail-closed unsupported cases. Consequence: undeclared retry fails closed before side effects, and transports cannot silently retry semantic operations.

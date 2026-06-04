@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1129"
+number: 1129
+slug: "runtime-rollup-effect-diagnostic-summary-rules"
+title: "Runtime Rollup Effect Diagnostic Summary Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime rollup must preserve normalized effect summaries, effect fence status, error classifications, diagnostic classes, idempotency duplicate/admitted/suppressed counts, retry counts, replay mode counts, transport-equivalence comparison classes, and trace/qlog correlation summaries without exposing raw secrets or foreign state."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime rollup must preserve normalized effect summaries, effect fence status, error classifications, diagnostic classes, idempotency duplicate/admitted/suppressed counts, retry counts, replay mode counts, transport-equivalence comparison classes, and trace/qlog correlation summaries without exposing raw secrets or foreign state.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1171"
+  - "adr:1172"

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1056"
+number: 1056
+slug: "webtransport-lane-framing-rejection-rules"
+title: "WebTransport Lane Framing Rejection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "WebTransport stream, datagram, and session lanes must reject framing values that belong to another lane. Stream payloads must not be accepted as datagrams, datagrams must not be accepted as stream chunks, and the outer WebTransport framing must remain WebTransport."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  WebTransport stream, datagram, and session lanes must reject framing values that belong to another lane. Stream payloads must not be accepted as datagrams, datagrams must not be accepted as stream chunks, and the outer WebTransport framing must remain WebTransport.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1151"

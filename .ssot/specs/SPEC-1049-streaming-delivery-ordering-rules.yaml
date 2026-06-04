@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1049"
+number: 1049
+slug: "streaming-delivery-ordering-rules"
+title: "Streaming Delivery Ordering Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "HTTP stream, SSE, WebSocket, and WebTransport stream bindings must declare their ordering scope. HTTP stream order is scoped to chunks within the response attempt, SSE order is scoped to emitted event sequence and reconnect cursor policy, WebSocket order is scoped to the connection lane, and WebTransport stream order is scoped to the stream_id."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  HTTP stream, SSE, WebSocket, and WebTransport stream bindings must declare their ordering scope. HTTP stream order is scoped to chunks within the response attempt, SSE order is scoped to emitted event sequence and reconnect cursor policy, WebSocket order is scoped to the connection lane, and WebTransport stream order is scoped to the stream_id.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1149"

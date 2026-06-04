@@ -1,0 +1,24 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1015"
+number: 1015
+slug: "table-profile-op-selection-matrix"
+title: "Table Profile Operation Selection Matrix"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the default operation set selected by each abstract and concrete table profile, including CRUD, bulk, OLTP, OLAP, realtime, stream, SSE, WebSocket, and WebTransport profiles."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define the default operation set selected by each abstract and concrete table profile, including CRUD, bulk, OLTP, OLAP, realtime, stream, SSE, WebSocket, and WebTransport profiles.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1085"
+  - "adr:1086"
+  - "adr:1102"
+  - "adr:1116"
+  - "adr:1121"

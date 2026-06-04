@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1117"
+number: 1117
+slug: "runtime-compaction-policy-declaration-rules"
+title: "Runtime Compaction Policy Declaration Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime compaction requires an explicit policy that declares eligible record kinds, compaction trigger, retention window, source ranges, redaction requirements, support grade, target sink, and whether the compacted output is proof-grade or diagnostic-only."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime compaction requires an explicit policy that declares eligible record kinds, compaction trigger, retention window, source ranges, redaction requirements, support grade, target sink, and whether the compacted output is proof-grade or diagnostic-only.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1169"
+  - "adr:1170"

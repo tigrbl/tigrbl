@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1082"
+number: 1082
+slug: "runtime-determinism-invariant-rules"
+title: "Runtime Determinism Invariant Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "For governed operations, same normalized input, same compiled runtime plan, same declared engine state, same idempotency or replay state, and same transport binding semantics must produce the same normalized result, error classification, persistence effects, emitted diagnostics, trace/qlog records, replay manifest, and rollup summary. Raw timing, transport byte layout, and ungoverned external effects are outside the invariant unless declared as normalized inputs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  For governed operations, same normalized input, same compiled runtime plan, same declared engine state, same idempotency or replay state, and same transport binding semantics must produce the same normalized result, error classification, persistence effects, emitted diagnostics, trace/qlog records, replay manifest, and rollup summary. Raw timing, transport byte layout, and ungoverned external effects are outside the invariant unless declared as normalized inputs.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1159"
+  - "adr:1160"

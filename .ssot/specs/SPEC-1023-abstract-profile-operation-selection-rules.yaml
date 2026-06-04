@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1023"
+number: 1023
+slug: "abstract-profile-operation-selection-rules"
+title: "Abstract Profile Operation Selection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define operation-selection rules for abstract table profiles, including CrudTable and RealtimeTable, and require those profiles to select semantic operations without emitting concrete binding tokens."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define operation-selection rules for abstract table profiles, including CrudTable and RealtimeTable, and require those profiles to select semantic operations without emitting concrete binding tokens.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1116"
+  - "adr:1086"

@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1159"
+number: 1159
+slug: "determinism-is-a-runtime-execution-invariant"
+title: "Determinism Is A Runtime Execution Invariant"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl treats determinism as a runtime execution invariant for governed operations: the same normalized input, same compiled runtime plan, same declared engine state, same idempotency/replay state, and same transport binding semantics must produce the same normalized result, diagnostics, persistence effects, trace/qlog records, replay manifest, and rollup summary. Consequence: nondeterministic sources such as wall-clock time, randomness, external service responses, unordered iteration, and concurrent delivery races must be either excluded from the invariant, declared as inputs, or rejected before certifiable deterministic behavior is claimed."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl treats determinism as a runtime execution invariant for governed operations: the same normalized input, same compiled runtime plan, same declared engine state, same idempotency/replay state, and same transport binding semantics must produce the same normalized result, diagnostics, persistence effects, trace/qlog records, replay manifest, and rollup summary. Consequence: nondeterministic sources such as wall-clock time, randomness, external service responses, unordered iteration, and concurrent delivery races must be either excluded from the invariant, declared as inputs, or rejected before certifiable deterministic behavior is claimed.

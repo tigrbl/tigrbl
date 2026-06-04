@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1065"
+number: 1065
+slug: "retry-replay-session-isolation-rules"
+title: "Retry Replay Session Isolation Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Retry and replay may correlate to prior attempts only through declared idempotency or replay policy and preserved parentage. A retry cannot reuse mutable state from an unrelated session, stream, datagram, or engine session, and replay must preserve the original session parentage without mutating closed or unrelated session state."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Retry and replay may correlate to prior attempts only through declared idempotency or replay policy and preserved parentage. A retry cannot reuse mutable state from an unrelated session, stream, datagram, or engine session, and replay must preserve the original session parentage without mutating closed or unrelated session state.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1153"
+  - "adr:1154"

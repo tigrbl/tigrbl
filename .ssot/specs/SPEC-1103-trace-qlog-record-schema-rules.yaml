@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1103"
+number: 1103
+slug: "trace-qlog-record-schema-rules"
+title: "Trace Qlog Record Schema Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace/qlog records must use a stable record schema that carries event kind, ordering index or timestamp policy, app_id, router_id, table_id, op_id, atom_id or hook_id, binding_id, runtime_plan_id, schema_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, request_id/connection_id/client_id where applicable, retry_id, replay_id, original_attempt_id, idempotency record id where applicable, lifecycle state, effect fence state, and normalized diagnostic/error classification."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace/qlog records must use a stable record schema that carries event kind, ordering index or timestamp policy, app_id, router_id, table_id, op_id, atom_id or hook_id, binding_id, runtime_plan_id, schema_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, request_id/connection_id/client_id where applicable, retry_id, replay_id, original_attempt_id, idempotency record id where applicable, lifecycle state, effect fence state, and normalized diagnostic/error classification.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1165"
+  - "adr:1166"

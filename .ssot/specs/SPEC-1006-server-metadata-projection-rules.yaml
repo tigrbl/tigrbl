@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1006"
+number: 1006
+slug: "server-metadata-projection-rules"
+title: "Server Metadata Projection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: define which ASGI server metadata may become canonical runtime metadata and which metadata remains trace-only. Canonical admission requires an explicit allowlist rule, a normalized field name, a declared parent identity scope, and a stated lifecycle or delivery implication when relevant. Valid scenarios include normalizing client/server address, selected subprotocol, TLS/ALPN data when governed, and trace-only preservation of unsupported extension metadata. Invalid scenarios include server-specific fields mutating canonical runtime state without a rule, metadata crossing session or engine-session scope, or unsupported metadata being silently dropped when trace/qlog preservation is required."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Scope: define which ASGI server metadata may become canonical runtime metadata and which metadata remains trace-only. Canonical admission requires an explicit allowlist rule, a normalized field name, a declared parent identity scope, and a stated lifecycle or delivery implication when relevant. Valid scenarios include normalizing client/server address, selected subprotocol, TLS/ALPN data when governed, and trace-only preservation of unsupported extension metadata. Invalid scenarios include server-specific fields mutating canonical runtime state without a rule, metadata crossing session or engine-session scope, or unsupported metadata being silently dropped when trace/qlog preservation is required.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1020"
+  - "adr:1061"

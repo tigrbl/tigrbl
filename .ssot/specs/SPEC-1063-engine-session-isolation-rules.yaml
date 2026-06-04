@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1063"
+number: 1063
+slug: "engine-session-isolation-rules"
+title: "Engine Session Isolation Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "engine_session_id and transaction_id must be owned by the attempt_id, session_id, app_id, router_id, table_id, and op_id that acquired them. Commit, rollback, flush, close, lease, reset, retry, and diagnostic events must fail closed when the engine session or transaction parentage does not match the active attempt partition."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  engine_session_id and transaction_id must be owned by the attempt_id, session_id, app_id, router_id, table_id, and op_id that acquired them. Commit, rollback, flush, close, lease, reset, retry, and diagnostic events must fail closed when the engine session or transaction parentage does not match the active attempt partition.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1154"

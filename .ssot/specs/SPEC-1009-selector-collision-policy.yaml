@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1009"
+number: 1009
+slug: "selector-collision-policy"
+title: "Selector Collision Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines compile-time collision rules. Same namespace, same selector, same op_id is allowed under governed composition. Same namespace, same selector, different op_id requires explicit override policy. Missing policy fails compilation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines compile-time collision rules. Same namespace, same selector, same op_id is allowed under governed composition. Same namespace, same selector, different op_id requires explicit override policy. Missing policy fails compilation.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1066"
+  - "adr:1065"

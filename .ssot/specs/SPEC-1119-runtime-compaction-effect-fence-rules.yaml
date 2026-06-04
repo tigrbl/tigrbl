@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1119"
+number: 1119
+slug: "runtime-compaction-effect-fence-rules"
+title: "Runtime Compaction Effect Fence Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime compaction may only compact completed and fenced attempts. Open sessions, in-flight streams, active datagrams, open transactions, pending retries, mutable idempotency records, and unfenced persistence effects are not eligible for compaction."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime compaction may only compact completed and fenced attempts. Open sessions, in-flight streams, active datagrams, open transactions, pending retries, mutable idempotency records, and unfenced persistence effects are not eligible for compaction.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1169"
+  - "adr:1170"

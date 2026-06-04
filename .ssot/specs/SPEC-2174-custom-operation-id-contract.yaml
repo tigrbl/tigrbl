@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2174"
+number: 2174
+slug: "custom-operation-id-contract"
+title: "Custom Operation ID Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines canonical identity requirements for custom operations. Rules: custom operations must compile with a stable canonical op_id; explicit op_id is preferred; deterministic fallback naming is allowed only when declared by the contract; runtime plan entries, OpenAPI/OpenRPC documentation, traces, replay records, and rollups must publish the same op_id. Valid scenario: a custom operation declares op_id Widget.recalculate_totals and every transport alias resolves to that id. Invalid scenario: a custom operation appears in runtime docs under one id but emits traces or replay records under a generated handler name. Invariants: no anonymous custom operations in compiled plans, fallback ids are deterministic where allowed, and rename/deprecation must use declared alias windows rather than silent identity changes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern explicit or deterministic canonical ids for custom operations."
+    at: "2026-06-04T12:42:29Z"
+references: []
+body: |-
+  Defines canonical identity requirements for custom operations. Rules: custom operations must compile with a stable canonical op_id; explicit op_id is preferred; deterministic fallback naming is allowed only when declared by the contract; runtime plan entries, OpenAPI/OpenRPC documentation, traces, replay records, and rollups must publish the same op_id. Valid scenario: a custom operation declares op_id Widget.recalculate_totals and every transport alias resolves to that id. Invalid scenario: a custom operation appears in runtime docs under one id but emits traces or replay records under a generated handler name. Invariants: no anonymous custom operations in compiled plans, fallback ids are deterministic where allowed, and rename/deprecation must use declared alias windows rather than silent identity changes.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1140"
+  - "adr:1141"

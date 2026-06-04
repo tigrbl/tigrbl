@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1147"
+number: 1147
+slug: "documentation-exposure-is-separate-from-runtime-exposure"
+title: "Documentation Exposure Is Separate From Runtime Exposure"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: table profile documentation visibility and runtime transport exposure are independent policy axes. Rationale: OpenAPI, OpenRPC, diagnostics, and generated docs can describe operations that are not mounted on a network transport, and runtime transports can be mounted without publishing those operations into docs. Consequence: docs exposure must never imply network exposure, and network exposure must never imply documentation publication."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: table profile documentation visibility and runtime transport exposure are independent policy axes. Rationale: OpenAPI, OpenRPC, diagnostics, and generated docs can describe operations that are not mounted on a network transport, and runtime transports can be mounted without publishing those operations into docs. Consequence: docs exposure must never imply network exposure, and network exposure must never imply documentation publication.

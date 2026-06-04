@@ -1,0 +1,34 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1067"
+number: 1067
+slug: "table-profile-axes-are-separate"
+title: "Table Profile Axes Are Separate"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Table profile configuration must model canon op selection, default op bindings, per-op bindings, documentation exposure, and runtime exposure as separate axes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  Table profile configuration must model canon op selection, default op bindings, per-op bindings, documentation exposure, and runtime exposure as separate axes.
+  
+  A table profile or binding token such as jsonrpc, rest, ws, stream, sse, or webtransport must not implicitly enable canonical operations, documentation projection, public network mounting, or ASGI exposure. Each axis must be represented explicitly during table config/spec normalization and compilation.
+  
+  ## Consequences
+  
+  - Table profiles can express operation-family intent without accidentally publishing transports.
+  - Binding defaults can be validated independently from docs and runtime exposure.
+  - Docs-only, ASGI-only, internal-only, and network-mounted surfaces remain distinguishable.
+  - Explicit OpSpec bindings remain local operation authority rather than being overwritten by broad table defaults.
+  
+  ## Rejected Alternatives
+  
+  - Treat binding_profiles=(jsonrpc,) as shorthand for operation selection, docs projection, and runtime mounting.
+  - Collapse documentation exposure and network exposure into generated binding presence.
+  - Let blanket table defaults override explicit per-op binding declarations.

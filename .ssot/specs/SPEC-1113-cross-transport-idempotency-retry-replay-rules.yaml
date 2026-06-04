@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1113"
+number: 1113
+slug: "cross-transport-idempotency-retry-replay-rules"
+title: "Cross-Transport Idempotency Retry Replay Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Equivalent transport attempts must preserve declared idempotency, retry, and replay behavior. Equivalent create attempts with the same idempotency key must not duplicate effects, retry parentage must remain stable, and replay manifests must compare normalized semantic outcomes across bindings."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Equivalent transport attempts must preserve declared idempotency, retry, and replay behavior. Equivalent create attempts with the same idempotency key must not duplicate effects, retry parentage must remain stable, and replay manifests must compare normalized semantic outcomes across bindings.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1167"
+  - "adr:1168"

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1013"
+number: 1013
+slug: "table-profile-axis-model"
+title: "Table Profile Axis Model"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the table profile axis model for separating canonical operation selection, blanket default bindings, per-operation bindings, documentation exposure, runtime exposure, and explicit override rules. A profile must preserve these axes independently during normalization, compilation, diagnostics, docs projection, runtime plan generation, trace, replay, and rollup. Binding profile tokens do not imply operation activation, docs visibility, public network mounting, or ASGI exposure unless those axes are declared."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines the table profile axis model for separating canonical operation selection, blanket default bindings, per-operation bindings, documentation exposure, runtime exposure, and explicit override rules. A profile must preserve these axes independently during normalization, compilation, diagnostics, docs projection, runtime plan generation, trace, replay, and rollup. Binding profile tokens do not imply operation activation, docs visibility, public network mounting, or ASGI exposure unless those axes are declared.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1067"

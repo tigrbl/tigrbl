@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1149"
+number: 1149
+slug: "transport-delivery-guarantees-are-declared-contracts"
+title: "Transport Delivery Guarantees Are Declared Contracts"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: each transport binding must declare its delivery, ordering, retry, and replay guarantees as an explicit contract. Rationale: protocol capability, runtime policy, and semantic operation behavior are different concerns and cannot be inferred safely from transport names. Consequence: unsupported or undeclared guarantees fail closed rather than being silently upgraded or downgraded."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: each transport binding must declare its delivery, ordering, retry, and replay guarantees as an explicit contract. Rationale: protocol capability, runtime policy, and semantic operation behavior are different concerns and cannot be inferred safely from transport names. Consequence: unsupported or undeclared guarantees fail closed rather than being silently upgraded or downgraded.

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1012"
+number: 1012
+slug: "compiled-selector-resolution-table"
+title: "Compiled Selector Resolution Table"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines runtime plan selector tables containing selector namespace, normalized selector key, op_id, precedence source, shadow policy, source owner, and diagnostics. Runtime dispatch treats these tables as authoritative."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines runtime plan selector tables containing selector namespace, normalized selector key, op_id, precedence source, shadow policy, source owner, and diagnostics. Runtime dispatch treats these tables as authoritative.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1066"
+  - "adr:1065"

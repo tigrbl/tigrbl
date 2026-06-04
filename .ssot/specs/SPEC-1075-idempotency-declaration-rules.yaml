@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1075"
+number: 1075
+slug: "idempotency-declaration-rules"
+title: "Idempotency Declaration Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Operations that support idempotency must declare the idempotency policy in the compiled runtime contract. The declaration identifies eligible verbs or custom ops, key source, duplicate response behavior, payload compatibility rules, storage/fence behavior, retry/replay coupling, and unsupported-policy rejection. Idempotency must not be inferred solely from HTTP method, transport, engine, or handler naming."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Operations that support idempotency must declare the idempotency policy in the compiled runtime contract. The declaration identifies eligible verbs or custom ops, key source, duplicate response behavior, payload compatibility rules, storage/fence behavior, retry/replay coupling, and unsupported-policy rejection. Idempotency must not be inferred solely from HTTP method, transport, engine, or handler naming.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1157"

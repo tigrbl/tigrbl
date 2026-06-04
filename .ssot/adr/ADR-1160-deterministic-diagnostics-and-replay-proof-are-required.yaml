@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1160"
+number: 1160
+slug: "deterministic-diagnostics-and-replay-proof-are-required"
+title: "Deterministic Diagnostics And Replay Proof Are Required"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Diagnostics, trace, qlog, replay, and rollup outputs must be deterministic for the same normalized execution inputs and declared state. Diagnostic determinism includes stable error classification, stable field ordering, stable identity parentage, stable source provenance, and stable unsupported-policy rejection. Consequence: determinism certification must compare normalized outputs and proof artifacts, not raw transport bytes or incidental runtime object layout."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Diagnostics, trace, qlog, replay, and rollup outputs must be deterministic for the same normalized execution inputs and declared state. Diagnostic determinism includes stable error classification, stable field ordering, stable identity parentage, stable source provenance, and stable unsupported-policy rejection. Consequence: determinism certification must compare normalized outputs and proof artifacts, not raw transport bytes or incidental runtime object layout.

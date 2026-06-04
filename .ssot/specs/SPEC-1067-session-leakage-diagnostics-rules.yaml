@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1067"
+number: 1067
+slug: "session-leakage-diagnostics-rules"
+title: "Session Leakage Diagnostics Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Session leakage diagnostics must identify the mismatched or missing identity field, the expected parent partition, the observed parent partition, the rejecting lifecycle state, and the available trace_id. Diagnostics must be deterministic and must not expose mutable state from the rejected foreign partition."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Session leakage diagnostics must identify the mismatched or missing identity field, the expected parent partition, the observed parent partition, the rejecting lifecycle state, and the available trace_id. Diagnostics must be deterministic and must not expose mutable state from the rejected foreign partition.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1153"
+  - "adr:1154"

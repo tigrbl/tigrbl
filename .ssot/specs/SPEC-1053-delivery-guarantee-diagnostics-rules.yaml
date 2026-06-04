@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1053"
+number: 1053
+slug: "delivery-guarantee-diagnostics-rules"
+title: "Delivery Guarantee Diagnostics Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Delivery diagnostics must report the declared ordering scope, retry source, replay source, idempotency source, unsupported guarantee rejection, and relevant correlation identifiers. Diagnostics must be deterministic for the same binding contract and must distinguish transport limitations from op-level policy limitations."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Delivery diagnostics must report the declared ordering scope, retry source, replay source, idempotency source, unsupported guarantee rejection, and relevant correlation identifiers. Diagnostics must be deterministic for the same binding contract and must distinguish transport limitations from op-level policy limitations.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1149"
+  - "adr:1150"

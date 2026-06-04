@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1107"
+number: 1107
+slug: "trace-qlog-redaction-and-leakage-prevention-rules"
+title: "Trace Qlog Redaction And Leakage Prevention Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace/qlog records must apply redaction before persistence or export, must prevent secret and credential exposure, and must not expose foreign session, stream, datagram, or engine-session state unless explicit parentage authorizes the reference."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace/qlog records must apply redaction before persistence or export, must prevent secret and credential exposure, and must not expose foreign session, stream, datagram, or engine-session state unless explicit parentage authorizes the reference.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1165"
+  - "adr:1166"

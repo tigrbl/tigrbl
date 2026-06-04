@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2170"
+number: 2170
+slug: "engine-session-transaction-lifecycle-contract"
+title: "Engine Session Transaction Lifecycle Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: Define engine session acquisition, engine_session_id allocation, transaction begin, flush, commit, rollback, close, lease/reset behavior, and error handling under one operation attempt. Valid scenario: engine session starts, transaction commits, and session closes under the same attempt_id and trace_id. Invalid scenario: one attempt commits or rolls back a transaction opened by another attempt, or a runtime silently downgrades rollback requirements on an engine that does not declare rollback support. Invariants: no engine session leakage, no cross-attempt transaction mutation, no engine downgrade without declaration, and deterministic rollback/commit outcome reporting."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define engine session and transaction lifecycle semantics."
+    at: "2026-06-04T12:32:45Z"
+references: []
+body: |-
+  Scope: Define engine session acquisition, engine_session_id allocation, transaction begin, flush, commit, rollback, close, lease/reset behavior, and error handling under one operation attempt. Valid scenario: engine session starts, transaction commits, and session closes under the same attempt_id and trace_id. Invalid scenario: one attempt commits or rolls back a transaction opened by another attempt, or a runtime silently downgrades rollback requirements on an engine that does not declare rollback support. Invariants: no engine session leakage, no cross-attempt transaction mutation, no engine downgrade without declaration, and deterministic rollback/commit outcome reporting.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1138"
+  - "adr:1139"

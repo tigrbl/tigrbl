@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1132"
+number: 1132
+slug: "runtime-frame-codec-registry-contract"
+title: "Runtime Frame Codec Registry Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime codec lookup must use an explicit registry keyed by governed codec names. Every supported framing token must resolve to a codec entry, every intentionally unsupported token must have an unsupported marker, and unknown codecs must fail closed before operation dispatch."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime codec lookup must use an explicit registry keyed by governed codec names. Every supported framing token must resolve to a codec entry, every intentionally unsupported token must have an unsupported marker, and unknown codecs must fail closed before operation dispatch.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1173"
+  - "adr:1174"

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1077"
+number: 1077
+slug: "idempotent-duplicate-result-rules"
+title: "Idempotent Duplicate Result Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A duplicate idempotent attempt must return the declared stable behavior. Valid behaviors include returning the original normalized result, returning a declared already-applied response, or returning a declared stable tombstone for duplicate DELETE. The runtime must not expose accidental behavior that depends on storage exceptions, transport retry timing, or handler side effects."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  A duplicate idempotent attempt must return the declared stable behavior. Valid behaviors include returning the original normalized result, returning a declared already-applied response, or returning a declared stable tombstone for duplicate DELETE. The runtime must not expose accidental behavior that depends on storage exceptions, transport retry timing, or handler side effects.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1157"

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1097"
+number: 1097
+slug: "replay-manifest-identity-rules"
+title: "Replay Manifest Identity Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A replay manifest must carry replay_id, original_attempt_id, replay_attempt_id where a new attempt is created, app_id, router_id, table_id, op_id, atom_id or hook_id where applicable, binding_id, runtime_plan_id, schema_id, attempt_id lineage, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, and idempotency record id where applicable. Missing or mismatched parentage fails closed."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  A replay manifest must carry replay_id, original_attempt_id, replay_attempt_id where a new attempt is created, app_id, router_id, table_id, op_id, atom_id or hook_id where applicable, binding_id, runtime_plan_id, schema_id, attempt_id lineage, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, and idempotency record id where applicable. Missing or mismatched parentage fails closed.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1163"
+  - "adr:1164"

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1041"
+number: 1041
+slug: "docs-runtime-exposure-axis-separation-rules"
+title: "Docs Runtime Exposure Axis Separation Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines documentation exposure and runtime transport exposure as independent axes. docs=true never mounts a transport; runtime=true never publishes documentation by itself."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines documentation exposure and runtime transport exposure as independent axes. docs=true never mounts a transport; runtime=true never publishes documentation by itself.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1147"

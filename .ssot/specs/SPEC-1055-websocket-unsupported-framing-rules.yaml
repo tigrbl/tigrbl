@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1055"
+number: 1055
+slug: "websocket-unsupported-framing-rules"
+title: "WebSocket Unsupported Framing Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "WebSocket bindings must reject unsupported application framing such as ndjson when the profile only declares JSON-RPC or text/json. Unsupported WebSocket framing must not fallback to text/json, JSON-RPC, or generic message dispatch without an explicit binding declaration."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  WebSocket bindings must reject unsupported application framing such as ndjson when the profile only declares JSON-RPC or text/json. Unsupported WebSocket framing must not fallback to text/json, JSON-RPC, or generic message dispatch without an explicit binding declaration.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1151"

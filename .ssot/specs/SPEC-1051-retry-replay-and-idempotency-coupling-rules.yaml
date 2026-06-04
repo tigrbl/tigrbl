@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1051"
+number: 1051
+slug: "retry-replay-and-idempotency-coupling-rules"
+title: "Retry Replay And Idempotency Coupling Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Retry and replay are valid only when the op contract declares idempotency, replay, or stable retry semantics for the operation and its side effects. Mutation retries require an idempotency key or declared replay policy; otherwise retry and replay must fail closed with a deterministic unsupported-policy diagnostic."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Retry and replay are valid only when the op contract declares idempotency, replay, or stable retry semantics for the operation and its side effects. Mutation retries require an idempotency key or declared replay policy; otherwise retry and replay must fail closed with a deterministic unsupported-policy diagnostic.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1150"

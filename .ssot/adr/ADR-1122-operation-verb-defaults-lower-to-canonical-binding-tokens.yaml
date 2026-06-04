@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1122"
+number: 1122
+slug: "operation-verb-defaults-lower-to-canonical-binding-tokens"
+title: "Operation Verb Defaults Lower To Canonical Binding Tokens"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Canonical operation verbs must lower to stable default binding tokens for supported table profiles and transports. Lowering must be deterministic and produce explicit binding records rather than hidden runtime inference."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Canonical operation verbs must lower to stable default binding tokens for supported table profiles and transports. Lowering must be deterministic and produce explicit binding records rather than hidden runtime inference.

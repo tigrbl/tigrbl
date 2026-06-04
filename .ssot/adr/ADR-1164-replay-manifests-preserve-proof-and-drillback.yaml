@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1164"
+number: 1164
+slug: "replay-manifests-preserve-proof-and-drillback"
+title: "Replay Manifests Preserve Proof And Drillback"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: replay manifests are first-class proof artifacts that preserve enough semantic identity, concrete parentage, normalized input, output, diagnostics, effect-fence, trace/qlog, schema, runtime plan, and nondeterminism declarations to compare replay against the original attempt. Replay output comparison is normalized and policy-scoped, not raw transport byte comparison. Consequence: replay can support audit, deterministic reproduction, rollup, and compaction without cross-session or cross-engine-session leakage."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: replay manifests are first-class proof artifacts that preserve enough semantic identity, concrete parentage, normalized input, output, diagnostics, effect-fence, trace/qlog, schema, runtime plan, and nondeterminism declarations to compare replay against the original attempt. Replay output comparison is normalized and policy-scoped, not raw transport byte comparison. Consequence: replay can support audit, deterministic reproduction, rollup, and compaction without cross-session or cross-engine-session leakage.

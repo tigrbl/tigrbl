@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1087"
+number: 1087
+slug: "cross-transport-determinism-equivalence-rules"
+title: "Cross Transport Determinism Equivalence Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "When transports bind to the same semantic operation and equivalent normalized inputs, REST, HTTP JSON-RPC, WebSocket JSON-RPC, stream/SSE, WebTransport stream, and WebTransport datagram surfaces must produce equivalent normalized semantics where the op declares equivalence. Transport-specific envelope fields are excluded; normalized result, error classification, persistence effects, idempotency behavior, and diagnostics are compared."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  When transports bind to the same semantic operation and equivalent normalized inputs, REST, HTTP JSON-RPC, WebSocket JSON-RPC, stream/SSE, WebTransport stream, and WebTransport datagram surfaces must produce equivalent normalized semantics where the op declares equivalence. Transport-specific envelope fields are excluded; normalized result, error classification, persistence effects, idempotency behavior, and diagnostics are compared.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1159"
+  - "adr:1160"

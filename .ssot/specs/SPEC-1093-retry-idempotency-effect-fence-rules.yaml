@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1093"
+number: 1093
+slug: "retry-idempotency-effect-fence-rules"
+title: "Retry Idempotency And Effect Fence Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Mutation retry requires declared idempotency, replay policy, or stable retry semantics before side effects. A retry must not reuse open transactions, partially committed state, or mutable engine/session state from a failed attempt unless a declared lease/reset policy makes that state safe. Effect fences must prove the failed attempt either rolled back, completed, or is quarantined before retry effects are admitted."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Mutation retry requires declared idempotency, replay policy, or stable retry semantics before side effects. A retry must not reuse open transactions, partially committed state, or mutable engine/session state from a failed attempt unless a declared lease/reset policy makes that state safe. Effect fences must prove the failed attempt either rolled back, completed, or is quarantined before retry effects are admitted.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1161"
+  - "adr:1162"

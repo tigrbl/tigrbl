@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1050"
+number: 1050
+slug: "datagram-delivery-rules"
+title: "Datagram Delivery Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "WebTransport datagram bindings must declare unordered and unreliable delivery unless a higher-level acknowledgement, deduplication, or replay policy is explicitly bound. Datagram delivery must not be lowered to stream ordering, request-response ordering, or exactly-once behavior by fallback."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  WebTransport datagram bindings must declare unordered and unreliable delivery unless a higher-level acknowledgement, deduplication, or replay policy is explicitly bound. Datagram delivery must not be lowered to stream ordering, request-response ordering, or exactly-once behavior by fallback.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1149"

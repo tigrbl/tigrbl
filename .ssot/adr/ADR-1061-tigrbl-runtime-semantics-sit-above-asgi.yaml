@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1061"
+number: 1061
+slug: "tigrbl-runtime-semantics-sit-above-asgi"
+title: "Tigrbl Runtime Semantics Sit Above ASGI"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl runtime semantics shall be defined above ASGI through explicit projection rules from scope, receive, and send into canonical runtime families, subevents, ids, lifecycle state, and delivery metadata. ASGI remains the server callable boundary, but runtime meaning belongs to the Tigrbl kernel/runtime contract. This enables portable behavior across Uvicorn, Tigrcorn, Hypercorn, and in-process ASGI clients while still preserving server-specific metadata as normalized or trace-only inputs. Projection rules must preserve identity fields needed for leakage prevention, trace, qlog, retry, replay, and runtime rollup, and must not invent stronger delivery guarantees than the carrier provides."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl runtime semantics shall be defined above ASGI through explicit projection rules from scope, receive, and send into canonical runtime families, subevents, ids, lifecycle state, and delivery metadata. ASGI remains the server callable boundary, but runtime meaning belongs to the Tigrbl kernel/runtime contract. This enables portable behavior across Uvicorn, Tigrcorn, Hypercorn, and in-process ASGI clients while still preserving server-specific metadata as normalized or trace-only inputs. Projection rules must preserve identity fields needed for leakage prevention, trace, qlog, retry, replay, and runtime rollup, and must not invent stronger delivery guarantees than the carrier provides.

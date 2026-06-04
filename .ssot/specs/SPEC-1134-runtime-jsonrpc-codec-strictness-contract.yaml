@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1134"
+number: 1134
+slug: "runtime-jsonrpc-codec-strictness-contract"
+title: "Runtime JSON-RPC Codec Strictness Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The jsonrpc codec must validate strict JSON-RPC 2.0 document framing. JSON, NDJSON, partial JSON-RPC, or future ndjson-jsonrpc representations must not be treated as aliases for strict JSON-RPC."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  The jsonrpc codec must validate strict JSON-RPC 2.0 document framing. JSON, NDJSON, partial JSON-RPC, or future ndjson-jsonrpc representations must not be treated as aliases for strict JSON-RPC.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1173"
+  - "adr:1174"

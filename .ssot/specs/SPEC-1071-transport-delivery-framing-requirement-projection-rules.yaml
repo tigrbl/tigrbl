@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1071"
+number: 1071
+slug: "transport-delivery-framing-requirement-projection-rules"
+title: "Transport Delivery And Framing Requirement Projection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Atom-chain requirement projection must declare transport delivery, ordering, framing, close, and fail-closed requirements consumed by REST, JSON-RPC, WebSocket, stream, WebTransport, and datagram surfaces where applicable. Unsupported framing or undeclared delivery semantics must fail closed before atom side effects or session mutation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Atom-chain requirement projection must declare transport delivery, ordering, framing, close, and fail-closed requirements consumed by REST, JSON-RPC, WebSocket, stream, WebTransport, and datagram surfaces where applicable. Unsupported framing or undeclared delivery semantics must fail closed before atom side effects or session mutation.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1155"
+  - "adr:1156"

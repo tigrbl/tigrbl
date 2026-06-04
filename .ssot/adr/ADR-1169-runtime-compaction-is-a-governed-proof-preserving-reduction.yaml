@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1169"
+number: 1169
+slug: "runtime-compaction-is-a-governed-proof-preserving-reduction"
+title: "Runtime Compaction Is A Governed Proof-Preserving Reduction"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime compaction is a declared reduction of completed runtime proof/state records. It may reduce repeated attempt, trace/qlog, replay, retry, idempotency, diagnostic, and rollup detail, but it must preserve required semantic identity, concrete instance identity, parentage, effect fences, replay drillback, and conformance reviewability."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime compaction is a declared reduction of completed runtime proof/state records. It may reduce repeated attempt, trace/qlog, replay, retry, idempotency, diagnostic, and rollup detail, but it must preserve required semantic identity, concrete instance identity, parentage, effect fences, replay drillback, and conformance reviewability.

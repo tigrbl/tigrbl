@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1171"
+number: 1171
+slug: "runtime-rollup-is-deterministic-runtime-summary-generation"
+title: "Runtime Rollup Is Deterministic Runtime Summary Generation"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime rollup is the declared generation of deterministic aggregate summaries from runtime records. It summarizes attempt, trace/qlog, replay, retry, idempotency, diagnostic, effect, and transport-equivalence records without erasing source proof. Rollup outputs may be consumed by compaction, reporting, replay review, or certification evidence when their policy and operators are declared."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime rollup is the declared generation of deterministic aggregate summaries from runtime records. It summarizes attempt, trace/qlog, replay, retry, idempotency, diagnostic, effect, and transport-equivalence records without erasing source proof. Rollup outputs may be consumed by compaction, reporting, replay review, or certification evidence when their policy and operators are declared.

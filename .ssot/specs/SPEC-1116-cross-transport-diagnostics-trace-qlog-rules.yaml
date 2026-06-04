@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1116"
+number: 1116
+slug: "cross-transport-diagnostics-trace-qlog-rules"
+title: "Cross-Transport Diagnostics Trace Qlog Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Equivalent attempts must emit comparable normalized diagnostics and trace/qlog records. Diagnostics may include transport-specific provenance, but conformance compares deterministic diagnostic class, semantic operation identity, parentage, effect state, and trace/qlog correlation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Equivalent attempts must emit comparable normalized diagnostics and trace/qlog records. Diagnostics may include transport-specific provenance, but conformance compares deterministic diagnostic class, semantic operation identity, parentage, effect state, and trace/qlog correlation.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1167"
+  - "adr:1168"

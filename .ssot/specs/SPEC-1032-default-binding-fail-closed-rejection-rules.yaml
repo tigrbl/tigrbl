@@ -1,0 +1,22 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1032"
+number: 1032
+slug: "default-binding-fail-closed-rejection-rules"
+title: "Default Binding Fail Closed Rejection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define fail-closed rejection for unknown verbs, custom verbs without explicit bindings, incompatible profile/verb pairs, and unsupported framing defaults."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define fail-closed rejection for unknown verbs, custom verbs without explicit bindings, incompatible profile/verb pairs, and unsupported framing defaults.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1144"
+  - "adr:1100"
+  - "adr:1102"

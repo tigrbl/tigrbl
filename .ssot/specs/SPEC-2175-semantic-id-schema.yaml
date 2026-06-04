@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2175"
+number: 2175
+slug: "semantic-id-schema"
+title: "Semantic ID Schema"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines semantic id fields for compiled objects. Required semantic ids include app_id, router_id, table_id, op_id, atom_id, hook_id, binding_id, runtime_plan_id, and schema_id where the corresponding object exists. Valid scenario: the same compiled app produces stable semantic ids across REST, JSON-RPC, WebSocket, stream, and WebTransport bindings where supported. Invalid scenario: a transport selector or handler name changes app_id, table_id, op_id, atom_id, or runtime_plan_id for the same compiled semantic object. Invariants: semantic ids are stable for the same compiled app, semantic ids are not concrete execution ids, transport projections do not rewrite semantic ownership, and docs, traces, replay records, and rollups reference the same semantic ids."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define stable ids for compiled semantic runtime objects."
+    at: "2026-06-04T12:47:47Z"
+references: []
+body: |-
+  Defines semantic id fields for compiled objects. Required semantic ids include app_id, router_id, table_id, op_id, atom_id, hook_id, binding_id, runtime_plan_id, and schema_id where the corresponding object exists. Valid scenario: the same compiled app produces stable semantic ids across REST, JSON-RPC, WebSocket, stream, and WebTransport bindings where supported. Invalid scenario: a transport selector or handler name changes app_id, table_id, op_id, atom_id, or runtime_plan_id for the same compiled semantic object. Invariants: semantic ids are stable for the same compiled app, semantic ids are not concrete execution ids, transport projections do not rewrite semantic ownership, and docs, traces, replay records, and rollups reference the same semantic ids.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1142"
+  - "adr:1143"

@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2173"
+number: 2173
+slug: "transport-selector-to-op-id-resolution-contract"
+title: "Transport Selector To Operation ID Resolution Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines selector namespaces, alias records, conflict checks, resolution rules, and runtime plan projection for canonical operation identity. Selector namespaces include REST method/path, HTTP JSON-RPC method, WebSocket path/subprotocol/framing, stream path, and WebTransport lane/profile where supported. Valid scenario: each selector alias for Widget.create resolves to the same canonical op_id and runtime plan entry. Invalid scenario: a later router/table selector silently shadows an existing selector or resolves to a different op_id without an explicit override policy. Invariants: selectors are aliases rather than operation identities, conflicts are checked within the correct namespace, alias resolution fails closed on ambiguity, and compiled selector indices expose alias-to-op_id provenance for docs, traces, replay, and equivalence testing."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern namespace-aware selector alias resolution into canonical op_id values."
+    at: "2026-06-04T12:42:16Z"
+references: []
+body: |-
+  Defines selector namespaces, alias records, conflict checks, resolution rules, and runtime plan projection for canonical operation identity. Selector namespaces include REST method/path, HTTP JSON-RPC method, WebSocket path/subprotocol/framing, stream path, and WebTransport lane/profile where supported. Valid scenario: each selector alias for Widget.create resolves to the same canonical op_id and runtime plan entry. Invalid scenario: a later router/table selector silently shadows an existing selector or resolves to a different op_id without an explicit override policy. Invariants: selectors are aliases rather than operation identities, conflicts are checked within the correct namespace, alias resolution fails closed on ambiguity, and compiled selector indices expose alias-to-op_id provenance for docs, traces, replay, and equivalence testing.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1140"
+  - "adr:1141"

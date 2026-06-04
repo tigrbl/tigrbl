@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1114"
+number: 1114
+slug: "cross-transport-delivery-framing-boundary-rules"
+title: "Cross-Transport Delivery Framing Boundary Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Equivalence evidence must respect delivery, ordering, streaming, datagram, and framing declarations. A stream, WebSocket, WebTransport stream, datagram, HTTP request, HTTP streaming response, or ASGI projection may participate only when its declared semantics match the operation and unsupported framing fails closed."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Equivalence evidence must respect delivery, ordering, streaming, datagram, and framing declarations. A stream, WebSocket, WebTransport stream, datagram, HTTP request, HTTP streaming response, or ASGI projection may participate only when its declared semantics match the operation and unsupported framing fails closed.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1167"
+  - "adr:1168"

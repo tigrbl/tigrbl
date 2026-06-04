@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1084"
+number: 1084
+slug: "deterministic-selector-atom-hook-ordering-rules"
+title: "Deterministic Selector Atom Hook Ordering Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Selector resolution, binding lowering, atom ordering, hook ordering, phase ordering, and requirement projection must use declared precedence and stable tie-breakers. Hidden route precedence, unscoped shadowing, unordered sets, and ambient registration order are invalid sources of deterministic behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Selector resolution, binding lowering, atom ordering, hook ordering, phase ordering, and requirement projection must use declared precedence and stable tie-breakers. Hidden route precedence, unscoped shadowing, unordered sets, and ambient registration order are invalid sources of deterministic behavior.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1159"

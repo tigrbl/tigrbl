@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1035"
+number: 1035
+slug: "binding-lowering-source-precedence-rules"
+title: "Binding Lowering Source Precedence Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines precedence for explicit OpSpec bindings, operation verb defaults, table profile defaults, and framework defaults. Explicit OpSpec bindings override default lowering, and every override must be visible in diagnostics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines precedence for explicit OpSpec bindings, operation verb defaults, table profile defaults, and framework defaults. Explicit OpSpec bindings override default lowering, and every override must be visible in diagnostics.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1145"
+  - "adr:1146"

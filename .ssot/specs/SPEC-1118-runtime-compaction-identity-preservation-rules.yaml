@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1118"
+number: 1118
+slug: "runtime-compaction-identity-preservation-rules"
+title: "Runtime Compaction Identity Preservation Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Compacted records must preserve app_id, router_id, table_id, op_id, atom_id/hook_id provenance, binding_id, runtime_plan_id, schema_id, attempt_id ranges, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, replay_id, retry_id, idempotency record id, and original_attempt_id where applicable."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Compacted records must preserve app_id, router_id, table_id, op_id, atom_id/hook_id provenance, binding_id, runtime_plan_id, schema_id, attempt_id ranges, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, replay_id, retry_id, idempotency record id, and original_attempt_id where applicable.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1169"
+  - "adr:1170"

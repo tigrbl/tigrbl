@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1136"
+number: 1136
+slug: "webtransport-inner-codec-dispatch-contract"
+title: "WebTransport Inner Codec Dispatch Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "WebTransport outer framing remains webtransport. Session lanes have no app-level inner framing, stream lanes may select stream-safe codecs through inner_framing, datagram lanes may select only datagram-safe codecs, and illegal lane/framing combinations fail closed before runtime dispatch."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  WebTransport outer framing remains webtransport. Session lanes have no app-level inner framing, stream lanes may select stream-safe codecs through inner_framing, datagram lanes may select only datagram-safe codecs, and illegal lane/framing combinations fail closed before runtime dispatch.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1173"
+  - "adr:1174"

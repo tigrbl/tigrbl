@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2169"
+number: 2169
+slug: "operation-attempt-lifecycle-contract"
+title: "Operation Attempt Lifecycle Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: Define one operation attempt from receipt to terminal outcome. Attempt states include received, resolved, planned, executing, committed, emitted, completed, failed, and aborted. Each attempt must carry attempt_id, trace_id, op_id, and applicable app_id, router_id, table_id, atom_id, session_id, stream_id, datagram_id, and engine_session_id. Valid scenario: retry with a declared idempotency key correlates to the original attempt without duplicating side effects. Invalid scenario: side effect is emitted without an attempt_id or is attributed to a different op_id. Invariants: deterministic parentage, idempotency key correlation where declared, no cross-session leakage, and no hidden lifecycle transition."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define operation attempt state and parentage semantics."
+    at: "2026-06-04T12:32:32Z"
+references: []
+body: |-
+  Scope: Define one operation attempt from receipt to terminal outcome. Attempt states include received, resolved, planned, executing, committed, emitted, completed, failed, and aborted. Each attempt must carry attempt_id, trace_id, op_id, and applicable app_id, router_id, table_id, atom_id, session_id, stream_id, datagram_id, and engine_session_id. Valid scenario: retry with a declared idempotency key correlates to the original attempt without duplicating side effects. Invalid scenario: side effect is emitted without an attempt_id or is attributed to a different op_id. Invariants: deterministic parentage, idempotency key correlation where declared, no cross-session leakage, and no hidden lifecycle transition.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1138"
+  - "adr:1139"

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1080"
+number: 1080
+slug: "idempotency-retry-replay-coupling-rules"
+title: "Idempotency Retry Replay Coupling Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Transport retry, runtime retry, and replay may consume idempotency only when the operation declares idempotent behavior or a replay policy. Non-idempotent mutation retry without policy fails closed. Replay must preserve original_attempt_id and duplicate attempts must link to the original attempt, trace_id, qlog record, and idempotency record."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Transport retry, runtime retry, and replay may consume idempotency only when the operation declares idempotent behavior or a replay policy. Non-idempotent mutation retry without policy fails closed. Replay must preserve original_attempt_id and duplicate attempts must link to the original attempt, trace_id, qlog record, and idempotency record.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1157"
+  - "adr:1158"

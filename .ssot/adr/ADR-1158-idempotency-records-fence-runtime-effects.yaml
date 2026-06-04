@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1158"
+number: 1158
+slug: "idempotency-records-fence-runtime-effects"
+title: "Idempotency Records Fence Runtime Effects"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: idempotency records must be written, confirmed, rolled back, and diagnosed with the same effect fence as the operation attempt they protect. A duplicate attempt may return a declared stable result only after the original effect and idempotency record are durably correlated. Consequence: partial failures, payload mismatches, cross-session key reuse, and cross-engine-session reuse fail closed with scoped diagnostics rather than producing accidental duplicate effects or stale responses."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: idempotency records must be written, confirmed, rolled back, and diagnosed with the same effect fence as the operation attempt they protect. A duplicate attempt may return a declared stable result only after the original effect and idempotency record are durably correlated. Consequence: partial failures, payload mismatches, cross-session key reuse, and cross-engine-session reuse fail closed with scoped diagnostics rather than producing accidental duplicate effects or stale responses.

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1068"
+number: 1068
+slug: "atom-chain-requirement-projection-rules"
+title: "Atom Chain Requirement Projection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Compiled atom and hook chains must emit a minimal runtime requirement projection for each governed op and runtime plan. The projection records enforceable requirements only: lifecycle, identity, engine, transport, framing, delivery, idempotency, retry, replay, diagnostics, and rollup or compaction requirements. It must not become a redundant capability vector or full atom inventory."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Compiled atom and hook chains must emit a minimal runtime requirement projection for each governed op and runtime plan. The projection records enforceable requirements only: lifecycle, identity, engine, transport, framing, delivery, idempotency, retry, replay, diagnostics, and rollup or compaction requirements. It must not become a redundant capability vector or full atom inventory.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1155"
+  - "adr:1156"

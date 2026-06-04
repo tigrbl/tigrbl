@@ -1,0 +1,22 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1025"
+number: 1025
+slug: "profile-operation-selection-invalid-combination-rules"
+title: "Profile Operation Selection Invalid Combination Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define invalid table profile operation-selection combinations, including mutation operations on read-only analytical profiles, stream/session operations on datagram profiles, custom operations inherited from defaults, and unknown profile identifiers."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define invalid table profile operation-selection combinations, including mutation operations on read-only analytical profiles, stream/session operations on datagram profiles, custom operations inherited from defaults, and unknown profile identifiers.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1121"
+  - "adr:1100"
+  - "adr:1102"

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1128"
+number: 1128
+slug: "runtime-rollup-drillback-manifest-rules"
+title: "Runtime Rollup Drillback Manifest Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Every runtime rollup output must include a manifest with source ranges, source content digests, rollup policy id, operator ids, grouping dimensions, redaction policy id, schema/runtime plan identity, source and target sinks, and drillback handles for replay, trace/qlog, audit, compaction, and conformance checks."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Every runtime rollup output must include a manifest with source ranges, source content digests, rollup policy id, operator ids, grouping dimensions, redaction policy id, schema/runtime plan identity, source and target sinks, and drillback handles for replay, trace/qlog, audit, compaction, and conformance checks.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1171"
+  - "adr:1172"

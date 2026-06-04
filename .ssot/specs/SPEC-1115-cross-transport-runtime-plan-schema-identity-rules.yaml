@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1115"
+number: 1115
+slug: "cross-transport-runtime-plan-schema-identity-rules"
+title: "Cross-Transport Runtime Plan Schema Identity Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Equivalence manifests must record canonical op_id, app_id, router_id, table_id, binding_id, runtime_plan_id, schema_id, engine session scope, trace_id, attempt_id, and normalized input/output schema versions so comparisons cannot mix different plans, schemas, or runtime instances."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Equivalence manifests must record canonical op_id, app_id, router_id, table_id, binding_id, runtime_plan_id, schema_id, engine session scope, trace_id, attempt_id, and normalized input/output schema versions so comparisons cannot mix different plans, schemas, or runtime instances.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1167"
+  - "adr:1168"

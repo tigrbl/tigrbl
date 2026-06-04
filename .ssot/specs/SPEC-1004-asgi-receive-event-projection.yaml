@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1004"
+number: 1004
+slug: "asgi-receive-event-projection"
+title: "ASGI Receive Event Projection"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: define how ASGI receive-channel events project into Tigrbl runtime events. Covered receive inputs include HTTP request body and disconnect, websocket connect/receive/disconnect, lifespan events where relevant, and WebTransport ASGI-like session, stream, and datagram receive events where a server extension provides them. Valid scenarios include websocket.receive projecting to message.received and WebTransport stream receive projecting to stream.chunk.received with session_id and stream_id. Invalid scenarios include treating a WebTransport stream payload as a generic message, accepting unsupported framing fallback, or allowing an unknown receive event to create an undocumented runtime semantic event."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Scope: define how ASGI receive-channel events project into Tigrbl runtime events. Covered receive inputs include HTTP request body and disconnect, websocket connect/receive/disconnect, lifespan events where relevant, and WebTransport ASGI-like session, stream, and datagram receive events where a server extension provides them. Valid scenarios include websocket.receive projecting to message.received and WebTransport stream receive projecting to stream.chunk.received with session_id and stream_id. Invalid scenarios include treating a WebTransport stream payload as a generic message, accepting unsupported framing fallback, or allowing an unknown receive event to create an undocumented runtime semantic event.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1020"
+  - "adr:1061"

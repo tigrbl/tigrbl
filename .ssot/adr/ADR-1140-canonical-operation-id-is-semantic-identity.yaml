@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1140"
+number: 1140
+slug: "canonical-operation-id-is-semantic-identity"
+title: "Canonical Operation ID Is Semantic Identity"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: op_id is the semantic identity of a Tigrbl operation. Transport selectors such as REST method/path, JSON-RPC method, WebSocket selector, stream path, and WebTransport lane do not define semantic identity. Context: Cross-transport execution, replay, trace correlation, rollups, and certification need one operation identity that survives binding changes and selector aliases. Consequences: Runtime plans, docs projections, traces, replay records, equivalence tests, and rollup records must carry the same op_id for the same semantic operation. Verification: Conformance tests must prove one op_id remains stable across REST, JSON-RPC, WebSocket JSON-RPC, and supported stream/session bindings."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern stable semantic operation identity across runtime, docs, traces, replay, rollups, and transports."
+    at: "2026-06-04T12:40:30Z"
+references: []
+body: |-
+  Decision: op_id is the semantic identity of a Tigrbl operation. Transport selectors such as REST method/path, JSON-RPC method, WebSocket selector, stream path, and WebTransport lane do not define semantic identity. Context: Cross-transport execution, replay, trace correlation, rollups, and certification need one operation identity that survives binding changes and selector aliases. Consequences: Runtime plans, docs projections, traces, replay records, equivalence tests, and rollup records must carry the same op_id for the same semantic operation. Verification: Conformance tests must prove one op_id remains stable across REST, JSON-RPC, WebSocket JSON-RPC, and supported stream/session bindings.

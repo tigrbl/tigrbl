@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1145"
+number: 1145
+slug: "binding-tokens-are-canonical-lowered-selectors"
+title: "Binding Tokens Are Canonical Lowered Selectors"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Binding token lowering converts table profiles, operation verbs, and explicit OpSpec bindings into canonical concrete selectors used by transport projection, documentation projection, and dispatch planning. Rationale: downstream surfaces need stable selector objects rather than recomputing profile and verb policy independently. Consequence: lowered tokens must preserve source provenance and be deterministic for the same specs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Binding token lowering converts table profiles, operation verbs, and explicit OpSpec bindings into canonical concrete selectors used by transport projection, documentation projection, and dispatch planning. Rationale: downstream surfaces need stable selector objects rather than recomputing profile and verb policy independently. Consequence: lowered tokens must preserve source provenance and be deterministic for the same specs.

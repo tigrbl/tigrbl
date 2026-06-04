@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1143"
+number: 1143
+slug: "runtime-parentage-identity-graph"
+title: "Runtime Parentage Identity Graph"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Runtime events must preserve parentage between concrete ids and semantic owners. Parentage examples include attempt_id to op_id to table_id to router_id to app_id, stream_id to session_id, datagram_id to session_id, transaction_id to engine_session_id to attempt_id, and replay_id to original_attempt_id. Context: without explicit parentage, session leakage, engine-session leakage, replay misattribution, retry ambiguity, and trace/qlog mis-correlation are hard to detect. Consequences: runtime context, channel state, trace records, qlog events, replay logs, and rollup records must expose enough parentage to validate scope ownership and drill back from concrete events to compiled semantic owners. Verification: conformance tests must prove attempts, atoms, streams, transactions, and replay records preserve required parentage and fail when parent scope is missing or mismatched."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to require parentage links between concrete runtime ids and semantic owners."
+    at: "2026-06-04T12:47:31Z"
+references: []
+body: |-
+  Decision: Runtime events must preserve parentage between concrete ids and semantic owners. Parentage examples include attempt_id to op_id to table_id to router_id to app_id, stream_id to session_id, datagram_id to session_id, transaction_id to engine_session_id to attempt_id, and replay_id to original_attempt_id. Context: without explicit parentage, session leakage, engine-session leakage, replay misattribution, retry ambiguity, and trace/qlog mis-correlation are hard to detect. Consequences: runtime context, channel state, trace records, qlog events, replay logs, and rollup records must expose enough parentage to validate scope ownership and drill back from concrete events to compiled semantic owners. Verification: conformance tests must prove attempts, atoms, streams, transactions, and replay records preserve required parentage and fail when parent scope is missing or mismatched.

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1007"
+number: 1007
+slug: "http-body-stream-projection"
+title: "HTTP Body Stream Projection"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: define binding-aware projection of ASGI HTTP body frames. Unary REST and HTTP JSON-RPC bindings project complete request bodies into request-family input with declared body completion. HTTP stream or client-stream bindings project body frames into stream-family chunks with ordering, end-of-body, abort, and backpressure metadata. Valid scenarios include REST create receiving a complete body as one request payload and HTTP stream bindings receiving ordered stream.chunk.received events. Invalid scenarios include stream bindings consuming the full body as one opaque request without policy, retry/replay losing body chunk boundaries, or projection claiming reliable ordering beyond ASGI frame order and the declared binding semantics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Scope: define binding-aware projection of ASGI HTTP body frames. Unary REST and HTTP JSON-RPC bindings project complete request bodies into request-family input with declared body completion. HTTP stream or client-stream bindings project body frames into stream-family chunks with ordering, end-of-body, abort, and backpressure metadata. Valid scenarios include REST create receiving a complete body as one request payload and HTTP stream bindings receiving ordered stream.chunk.received events. Invalid scenarios include stream bindings consuming the full body as one opaque request without policy, retry/replay losing body chunk boundaries, or projection claiming reliable ordering beyond ASGI frame order and the declared binding semantics.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1020"
+  - "adr:1061"

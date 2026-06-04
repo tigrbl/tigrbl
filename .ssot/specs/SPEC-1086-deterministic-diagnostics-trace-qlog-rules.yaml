@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1086"
+number: 1086
+slug: "deterministic-diagnostics-trace-qlog-rules"
+title: "Deterministic Diagnostics Trace Qlog Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Diagnostics, trace records, qlog records, replay manifests, and rollup records must be stable for the same normalized attempt. Required stable fields include event kind, op_id, runtime_plan_id, atom_id or hook_id where applicable, attempt_id policy, session or engine-session parentage, error classification, rejection reason, source spec or binding provenance, and effect-fence state."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Diagnostics, trace records, qlog records, replay manifests, and rollup records must be stable for the same normalized attempt. Required stable fields include event kind, op_id, runtime_plan_id, atom_id or hook_id where applicable, attempt_id policy, session or engine-session parentage, error classification, rejection reason, source spec or binding provenance, and effect-fence state.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1160"

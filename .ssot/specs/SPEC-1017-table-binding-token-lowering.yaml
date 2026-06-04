@@ -1,0 +1,22 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1017"
+number: 1017
+slug: "table-binding-token-lowering"
+title: "Table Binding Token Lowering"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define deterministic lowering from table binding profiles to concrete REST, HTTP JSON-RPC, WebSocket JSON-RPC, WebTransport session/stream/datagram, SSE, and stream binding tokens."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define deterministic lowering from table binding profiles to concrete REST, HTTP JSON-RPC, WebSocket JSON-RPC, WebTransport session/stream/datagram, SSE, and stream binding tokens.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1100"
+  - "adr:1145"
+  - "adr:1146"

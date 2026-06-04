@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1020"
+number: 1020
+slug: "asgi-is-projection-input-not-semantic-authority"
+title: "ASGI Is Projection Input Not Semantic Authority"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl shall treat ASGI scope, receive, and send messages as projection inputs into canonical runtime events, metadata, and identities. ASGI message shapes may inform projection but must not bypass kernel taxonomy, runtime lifecycle rules, operation identity, or transport delivery contracts. Valid scenarios include projecting websocket.receive to message.received, HTTP request body frames to request or stream events by binding kind, and server metadata to allowlisted normalized runtime metadata. Invalid scenarios include unknown ASGI messages becoming semantic runtime events without a rule, server-specific extension fields becoming canonical state by accident, or ASGI carrier details implying delivery guarantees not declared by Tigrbl."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl shall treat ASGI scope, receive, and send messages as projection inputs into canonical runtime events, metadata, and identities. ASGI message shapes may inform projection but must not bypass kernel taxonomy, runtime lifecycle rules, operation identity, or transport delivery contracts. Valid scenarios include projecting websocket.receive to message.received, HTTP request body frames to request or stream events by binding kind, and server metadata to allowlisted normalized runtime metadata. Invalid scenarios include unknown ASGI messages becoming semantic runtime events without a rule, server-specific extension fields becoming canonical state by accident, or ASGI carrier details implying delivery guarantees not declared by Tigrbl.

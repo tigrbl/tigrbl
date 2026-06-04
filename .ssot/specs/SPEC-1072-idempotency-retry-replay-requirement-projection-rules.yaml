@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1072"
+number: 1072
+slug: "idempotency-retry-replay-requirement-projection-rules"
+title: "Idempotency Retry And Replay Requirement Projection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Atom-chain requirement projection must declare idempotency, retry, replay, attempt parentage, dedupe key, and replay source requirements when the op or atom chain supports retryable or replayable behavior. CREATE with an idempotency key must avoid duplicate effects, replay must preserve original_attempt_id parentage, and unsupported retry or replay must fail closed rather than silently re-execute side effects."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Atom-chain requirement projection must declare idempotency, retry, replay, attempt parentage, dedupe key, and replay source requirements when the op or atom chain supports retryable or replayable behavior. CREATE with an idempotency key must avoid duplicate effects, replay must preserve original_attempt_id parentage, and unsupported retry or replay must fail closed rather than silently re-execute side effects.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1155"
+  - "adr:1156"

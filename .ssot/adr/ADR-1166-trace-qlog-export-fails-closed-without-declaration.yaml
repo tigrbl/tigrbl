@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1166"
+number: 1166
+slug: "trace-qlog-export-fails-closed-without-declaration"
+title: "Trace And Qlog Export Fails Closed Without Declaration"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace and qlog export requires declared record schema, support grade, redaction policy, partition policy, deterministic ordering policy, and supported export sink. Unsupported or undeclared qlog export must fail closed, or be explicitly labeled experimental and excluded from conformance proof."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace and qlog export requires declared record schema, support grade, redaction policy, partition policy, deterministic ordering policy, and supported export sink. Unsupported or undeclared qlog export must fail closed, or be explicitly labeled experimental and excluded from conformance proof.

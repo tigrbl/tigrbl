@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1123"
+number: 1123
+slug: "runtime-compaction-diagnostics-and-fail-closed-rules"
+title: "Runtime Compaction Diagnostics And Fail Closed Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Compaction diagnostics must be deterministic and leakage-safe. Unsupported policies, missing identity, unsupported rollup operators, redaction failure, mixed scope, open effects, and missing drillback manifests must fail closed with normalized diagnostic classification."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Compaction diagnostics must be deterministic and leakage-safe. Unsupported policies, missing identity, unsupported rollup operators, redaction failure, mixed scope, open effects, and missing drillback manifests must fail closed with normalized diagnostic classification.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1169"
+  - "adr:1170"

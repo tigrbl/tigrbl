@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1100"
+number: 1100
+slug: "binding-profile-generation-fails-closed"
+title: "Binding Profile Generation Fails Closed"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Require unsupported or ambiguous table binding lowering to fail at compile time instead of silently dropping, remapping, or widening transport exposure."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Require unsupported or ambiguous table binding lowering to fail at compile time instead of silently dropping, remapping, or widening transport exposure.

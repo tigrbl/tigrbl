@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1168"
+number: 1168
+slug: "unsupported-or-non-equivalent-bindings-are-excluded-from-equivalence"
+title: "Unsupported Or Non-Equivalent Bindings Are Excluded From Equivalence"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A transport binding participates in cross-transport equivalence only when the operation declares semantic compatibility with that transport, framing, delivery mode, and runtime lifecycle. Unsupported, undeclared, or non-equivalent bindings must fail closed or be excluded from equivalence evidence rather than coerced into a lossy comparison."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  A transport binding participates in cross-transport equivalence only when the operation declares semantic compatibility with that transport, framing, delivery mode, and runtime lifecycle. Unsupported, undeclared, or non-equivalent bindings must fail closed or be excluded from equivalence evidence rather than coerced into a lossy comparison.

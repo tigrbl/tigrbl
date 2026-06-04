@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1139"
+number: 1139
+slug: "kernel-runtime-state-ownership"
+title: "Kernel Runtime State Ownership"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: The kernel owns the shape and legality of runtime lifecycle state machines, while the runtime owns concrete transition execution, side effects, and observed transport or engine events. Context: Tigrbl needs formal semantics without moving transport/session mechanics into the kernel or letting adapters invent lifecycle rules. Consequences: Kernel plans must expose lifecycle requirements and legal transition tables; runtime adapters must enforce those tables and record concrete attempt, session, stream, datagram, engine session, atom, and trace identifiers. Verification: Tests must reject undocumented transitions, cross-session and cross-engine-session leakage, unsupported framing fallback, and undeclared engine/session downgrade behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to separate kernel lifecycle authority from runtime transition execution."
+    at: "2026-06-04T12:32:03Z"
+references: []
+body: |-
+  Decision: The kernel owns the shape and legality of runtime lifecycle state machines, while the runtime owns concrete transition execution, side effects, and observed transport or engine events. Context: Tigrbl needs formal semantics without moving transport/session mechanics into the kernel or letting adapters invent lifecycle rules. Consequences: Kernel plans must expose lifecycle requirements and legal transition tables; runtime adapters must enforce those tables and record concrete attempt, session, stream, datagram, engine session, atom, and trace identifiers. Verification: Tests must reject undocumented transitions, cross-session and cross-engine-session leakage, unsupported framing fallback, and undeclared engine/session downgrade behavior.

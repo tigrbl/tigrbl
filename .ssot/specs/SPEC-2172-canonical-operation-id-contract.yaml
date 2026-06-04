@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2172"
+number: 2172
+slug: "canonical-operation-id-contract"
+title: "Canonical Operation ID Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines the canonical op_id contract. Rules: every compiled semantic operation has one canonical op_id; op_id is stable across runtime plans, OpenAPI/OpenRPC projections, traces, replay records, rollups, and supported transport bindings; transport selectors do not create independent identities; custom operations must provide an explicit stable op_id or use a deterministic declared fallback. Valid scenario: Widget.create resolves to the same op_id through REST, HTTP JSON-RPC, WebSocket JSON-RPC, and supported stream/session bindings. Invalid scenario: REST create and JSON-RPC create compile with different op_id values for the same semantic operation. Invariants: one canonical op_id represents one semantic operation, op_id is not rewritten by transport projection, and deprecation or rename must preserve declared alias windows."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define stable canonical operation identity across runtime plans, docs, traces, replay, rollups, and transports."
+    at: "2026-06-04T12:42:03Z"
+references: []
+body: |-
+  Defines the canonical op_id contract. Rules: every compiled semantic operation has one canonical op_id; op_id is stable across runtime plans, OpenAPI/OpenRPC projections, traces, replay records, rollups, and supported transport bindings; transport selectors do not create independent identities; custom operations must provide an explicit stable op_id or use a deterministic declared fallback. Valid scenario: Widget.create resolves to the same op_id through REST, HTTP JSON-RPC, WebSocket JSON-RPC, and supported stream/session bindings. Invalid scenario: REST create and JSON-RPC create compile with different op_id values for the same semantic operation. Invariants: one canonical op_id represents one semantic operation, op_id is not rewritten by transport projection, and deprecation or rename must preserve declared alias windows.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1140"
+  - "adr:1141"

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1008"
+number: 1008
+slug: "selector-namespace-contract"
+title: "Selector Namespace Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines selector namespaces for REST method/path, JSON-RPC method/endpoint, WebSocket path/subprotocol, HTTP stream path, and WebTransport lane/session selectors. Selector equality is evaluated only inside a selector namespace and precedence scope."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines selector namespaces for REST method/path, JSON-RPC method/endpoint, WebSocket path/subprotocol, HTTP stream path, and WebTransport lane/session selectors. Selector equality is evaluated only inside a selector namespace and precedence scope.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1066"
+  - "adr:1065"

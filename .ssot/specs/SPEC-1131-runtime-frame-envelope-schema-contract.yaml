@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1131"
+number: 1131
+slug: "runtime-frame-envelope-schema-contract"
+title: "Runtime Frame Envelope Schema Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime frame envelopes must expose stable Frame and FrameContext shapes with kind, payload, framing, content_type, headers, id, method, lane, session_id, stream_id, datagram_id, and concrete runtime context fields needed for diagnostics, replay, trace/qlog, and transport equivalence."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime frame envelopes must expose stable Frame and FrameContext shapes with kind, payload, framing, content_type, headers, id, method, lane, session_id, stream_id, datagram_id, and concrete runtime context fields needed for diagnostics, replay, trace/qlog, and transport equivalence.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1173"
+  - "adr:1174"

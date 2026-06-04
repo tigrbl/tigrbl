@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1110"
+number: 1110
+slug: "cross-transport-equivalence-declaration-rules"
+title: "Cross-Transport Equivalence Declaration Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Each operation binding must declare whether it is semantically equivalent to other bindings of the same canonical op_id. Equivalence is declared per operation, transport, framing, delivery mode, lifecycle surface, and supported runtime profile; absence of a declaration means no equivalence claim."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Each operation binding must declare whether it is semantically equivalent to other bindings of the same canonical op_id. Equivalence is declared per operation, transport, framing, delivery mode, lifecycle surface, and supported runtime profile; absence of a declaration means no equivalence claim.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1167"
+  - "adr:1168"

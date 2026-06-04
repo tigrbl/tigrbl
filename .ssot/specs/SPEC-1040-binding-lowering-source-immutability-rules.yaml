@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1040"
+number: 1040
+slug: "binding-lowering-source-immutability-rules"
+title: "Binding Lowering Source Immutability Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Requires lowering to produce derived tokens without mutating source table specs, operation specs, profile declarations, or authored binding declarations."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Requires lowering to produce derived tokens without mutating source table specs, operation specs, profile declarations, or authored binding declarations.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1145"

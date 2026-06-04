@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1156"
+number: 1156
+slug: "requirement-projection-drives-fail-closed-enforcement"
+title: "Requirement Projection Drives Fail Closed Enforcement"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Runtime, dispatch, transport, and engine surfaces must consume atom-chain requirement projections and fail closed when a requirement is missing, unsupported, or downgraded without declaration. Diagnostics must include the source atom_id, hook_id where applicable, requirement key, owner identity, and concrete execution parentage. Consequence: unsupported transport framing, missing delivery guarantees, unavailable rollback behavior, or cross-session parentage cannot silently fall back into best-effort execution."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Runtime, dispatch, transport, and engine surfaces must consume atom-chain requirement projections and fail closed when a requirement is missing, unsupported, or downgraded without declaration. Diagnostics must include the source atom_id, hook_id where applicable, requirement key, owner identity, and concrete execution parentage. Consequence: unsupported transport framing, missing delivery guarantees, unavailable rollback behavior, or cross-session parentage cannot silently fall back into best-effort execution.

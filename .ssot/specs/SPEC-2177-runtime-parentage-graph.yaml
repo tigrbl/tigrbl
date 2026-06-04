@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2177"
+number: 2177
+slug: "runtime-parentage-graph"
+title: "Runtime Parentage Graph"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines parentage rules between semantic ids and concrete runtime ids. Required relationships include attempt_id to op_id to table_id to router_id to app_id, atom execution to atom_id plus attempt_id plus runtime_plan_id, stream_id to session_id, datagram_id to session_id, transaction_id to engine_session_id to attempt_id, trace_id to attempt_id or session_id as declared by event kind, and replay_id to original_attempt_id. Valid scenario: an attempt trace can be drilled back to op_id, table_id, router_id, and app_id, while atom execution events also name atom_id and runtime_plan_id. Invalid scenario: an event references a stream_id from another session_id, an engine_session_id from another attempt_id, or an atom execution only as an unlabeled callable. Invariants: every concrete event has stable identity and parentage, cross-scope references are explicit and validated, mismatched parentage fails closed, and rollup records retain enough parentage for drillback."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define parent-child identity relationships across semantic and concrete ids."
+    at: "2026-06-04T12:48:18Z"
+references: []
+body: |-
+  Defines parentage rules between semantic ids and concrete runtime ids. Required relationships include attempt_id to op_id to table_id to router_id to app_id, atom execution to atom_id plus attempt_id plus runtime_plan_id, stream_id to session_id, datagram_id to session_id, transaction_id to engine_session_id to attempt_id, trace_id to attempt_id or session_id as declared by event kind, and replay_id to original_attempt_id. Valid scenario: an attempt trace can be drilled back to op_id, table_id, router_id, and app_id, while atom execution events also name atom_id and runtime_plan_id. Invalid scenario: an event references a stream_id from another session_id, an engine_session_id from another attempt_id, or an atom execution only as an unlabeled callable. Invariants: every concrete event has stable identity and parentage, cross-scope references are explicit and validated, mismatched parentage fails closed, and rollup records retain enough parentage for drillback.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1142"
+  - "adr:1143"

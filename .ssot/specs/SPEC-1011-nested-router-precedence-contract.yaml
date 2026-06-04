@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1011"
+number: 1011
+slug: "nested-router-precedence-contract"
+title: "Nested Router Precedence Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines nested app, router, table, generated CRUD, inherited binding, and custom operation precedence order. Runtime selection must be derived from the compiled precedence result rather than registration order."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines nested app, router, table, generated CRUD, inherited binding, and custom operation precedence order. Runtime selection must be derived from the compiled precedence result rather than registration order.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1066"
+  - "adr:1065"

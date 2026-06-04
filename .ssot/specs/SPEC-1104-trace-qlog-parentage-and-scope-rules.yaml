@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1104"
+number: 1104
+slug: "trace-qlog-parentage-and-scope-rules"
+title: "Trace Qlog Parentage And Scope Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace/qlog parentage must be explicit and scope checked. Records with missing, foreign, or mismatched app, router, table, op, session, stream, datagram, engine session, attempt, retry, replay, or trace identity must fail closed or emit a contract violation instead of joining unrelated runtime state."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace/qlog parentage must be explicit and scope checked. Records with missing, foreign, or mismatched app, router, table, op, session, stream, datagram, engine session, attempt, retry, replay, or trace identity must fail closed or emit a contract violation instead of joining unrelated runtime state.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1165"
+  - "adr:1166"

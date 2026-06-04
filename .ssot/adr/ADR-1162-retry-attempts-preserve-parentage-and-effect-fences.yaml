@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1162"
+number: 1162
+slug: "retry-attempts-preserve-parentage-and-effect-fences"
+title: "Retry Attempts Preserve Parentage And Effect Fences"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: every retry attempt must be represented as a new concrete attempt linked to the original attempt, retry policy, trace, qlog, session, stream, datagram, engine session, and idempotency or replay state where applicable. A retry must not reuse an open transaction or mutable state from a failed attempt unless an explicit lease/reset policy declares that reuse. Consequence: retry budgets, backoff decisions, retryable failure classification, side-effect fences, and terminal outcomes are auditable and leakage-safe."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: every retry attempt must be represented as a new concrete attempt linked to the original attempt, retry policy, trace, qlog, session, stream, datagram, engine session, and idempotency or replay state where applicable. A retry must not reuse an open transaction or mutable state from a failed attempt unless an explicit lease/reset policy declares that reuse. Consequence: retry budgets, backoff decisions, retryable failure classification, side-effect fences, and terminal outcomes are auditable and leakage-safe.

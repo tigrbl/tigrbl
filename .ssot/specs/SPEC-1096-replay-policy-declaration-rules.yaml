@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1096"
+number: 1096
+slug: "replay-policy-declaration-rules"
+title: "Replay Policy Declaration Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Replay policy must be declared before replay is admitted. The policy identifies eligible operations, replay modes, original attempt source, normalized input snapshot requirements, schema and runtime plan compatibility, effectful or observe-only behavior, idempotency requirements, nondeterminism boundaries, and unsupported replay rejection. Replay must not be inferred from retry, transport redelivery, idempotency key reuse, qlog presence, or trace availability."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Replay policy must be declared before replay is admitted. The policy identifies eligible operations, replay modes, original attempt source, normalized input snapshot requirements, schema and runtime plan compatibility, effectful or observe-only behavior, idempotency requirements, nondeterminism boundaries, and unsupported replay rejection. Replay must not be inferred from retry, transport redelivery, idempotency key reuse, qlog presence, or trace availability.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1163"

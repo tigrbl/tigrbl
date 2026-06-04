@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1167"
+number: 1167
+slug: "cross-transport-equivalence-is-semantic-not-envelope-parity"
+title: "Cross-Transport Equivalence Is Semantic Not Envelope Parity"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Cross-transport equivalence compares the semantic operation outcome for declared equivalent bindings. It does not require every operation to bind to every transport, and it does not compare transport-specific envelopes, connection metadata, framing artifacts, or delivery mechanics except where those mechanics are declared as semantic behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Cross-transport equivalence compares the semantic operation outcome for declared equivalent bindings. It does not require every operation to bind to every transport, and it does not compare transport-specific envelopes, connection metadata, framing artifacts, or delivery mechanics except where those mechanics are declared as semantic behavior.

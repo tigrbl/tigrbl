@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2176"
+number: 2176
+slug: "concrete-instance-id-schema"
+title: "Concrete Instance ID Schema"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines concrete runtime id fields for executions and transport/session objects. Required concrete ids include attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, request_id, connection_id, client_id, replay_id, and original_attempt_id where the corresponding object or record exists. Valid scenario: stream_id values are unique within a session_id, attempt_id values are unique within a runtime execution, and transaction_id values are scoped to an engine_session_id linked to the owning attempt_id. Invalid scenario: the same stream_id appears twice in one session, an engine_session_id is reused across unrelated attempts without explicit parentage, or a replay record lacks original_attempt_id. Invariants: concrete ids are unique within declared parent scope, concrete ids are not semantic ids, cross-scope references are explicit and validated, and missing required concrete ids fail closed for trace, replay, leakage, and rollup surfaces."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define runtime ids for concrete executions and transport objects."
+    at: "2026-06-04T12:48:02Z"
+references: []
+body: |-
+  Defines concrete runtime id fields for executions and transport/session objects. Required concrete ids include attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, request_id, connection_id, client_id, replay_id, and original_attempt_id where the corresponding object or record exists. Valid scenario: stream_id values are unique within a session_id, attempt_id values are unique within a runtime execution, and transaction_id values are scoped to an engine_session_id linked to the owning attempt_id. Invalid scenario: the same stream_id appears twice in one session, an engine_session_id is reused across unrelated attempts without explicit parentage, or a replay record lacks original_attempt_id. Invariants: concrete ids are unique within declared parent scope, concrete ids are not semantic ids, cross-scope references are explicit and validated, and missing required concrete ids fail closed for trace, replay, leakage, and rollup surfaces.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1142"
+  - "adr:1143"

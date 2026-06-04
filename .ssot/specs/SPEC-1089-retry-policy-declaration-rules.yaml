@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1089"
+number: 1089
+slug: "retry-policy-declaration-rules"
+title: "Retry Policy Declaration Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Retry policy must be declared before operation execution. The policy identifies eligible operations, retryable failure classes, maximum attempts, budget, backoff schedule, jitter policy, idempotency or replay requirement for mutations, transport/runtime ownership, and unsupported retry rejection. Retry must not be inferred from transport shape, HTTP method, connection failure, engine exception, or handler implementation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Retry policy must be declared before operation execution. The policy identifies eligible operations, retryable failure classes, maximum attempts, budget, backoff schedule, jitter policy, idempotency or replay requirement for mutations, transport/runtime ownership, and unsupported retry rejection. Retry must not be inferred from transport shape, HTTP method, connection failure, engine exception, or handler implementation.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1161"

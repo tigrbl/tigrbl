@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1057"
+number: 1057
+slug: "http-sse-unsupported-framing-rules"
+title: "HTTP And SSE Unsupported Framing Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "HTTP REST, HTTP JSON-RPC, HTTP stream, and SSE bindings must reject framing mismatches. REST body framing must not fallback to JSON-RPC, JSON-RPC must not fallback to REST body parsing, and SSE events must not be interpreted as JSON-RPC messages unless the binding explicitly declares that semantic operation surface."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  HTTP REST, HTTP JSON-RPC, HTTP stream, and SSE bindings must reject framing mismatches. REST body framing must not fallback to JSON-RPC, JSON-RPC must not fallback to REST body parsing, and SSE events must not be interpreted as JSON-RPC messages unless the binding explicitly declares that semantic operation surface.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1151"

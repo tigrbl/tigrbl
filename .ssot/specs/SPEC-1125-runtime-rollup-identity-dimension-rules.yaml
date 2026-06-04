@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1125"
+number: 1125
+slug: "runtime-rollup-identity-dimension-rules"
+title: "Runtime Rollup Identity Dimension Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime rollup outputs must preserve grouping dimensions for app_id, router_id, table_id, op_id, atom_id/hook_id provenance, binding_id, runtime_plan_id, schema_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, retry_id, replay_id, idempotency record id, and attempt ranges where applicable."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime rollup outputs must preserve grouping dimensions for app_id, router_id, table_id, op_id, atom_id/hook_id provenance, binding_id, runtime_plan_id, schema_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, retry_id, replay_id, idempotency record id, and attempt ranges where applicable.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1171"
+  - "adr:1172"

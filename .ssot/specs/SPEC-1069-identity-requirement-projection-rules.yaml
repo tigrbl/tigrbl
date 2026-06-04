@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1069"
+number: 1069
+slug: "identity-requirement-projection-rules"
+title: "Identity Requirement Projection Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Atom-chain requirement projection must include the semantic and concrete ids needed to enforce ownership and drillback. Required fields are event-kind specific but include app_id, router_id, table_id, op_id, atom_id, hook_id, binding_id, runtime_plan_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, replay_id, and original_attempt_id where applicable."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Atom-chain requirement projection must include the semantic and concrete ids needed to enforce ownership and drillback. Required fields are event-kind specific but include app_id, router_id, table_id, op_id, atom_id, hook_id, binding_id, runtime_plan_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, replay_id, and original_attempt_id where applicable.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1155"

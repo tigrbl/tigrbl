@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1138"
+number: 1138
+slug: "runtime-execution-contract-authority"
+title: "Runtime Execution Contract Authority"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: The runtime execution contract is the authoritative interpretation of operation lifecycle semantics across Tigrbl atoms, kernel plans, and runtime protocol adapters. Context: Transport adapters and engine integrations need one shared meaning for receipt, resolution, planning, execution, commit, emission, completion, failure, and abort. Consequences: REST, JSON-RPC, WebSocket, stream, WebTransport, and datagram surfaces must project their local events into the same runtime lifecycle before claiming semantic support. Verification: Conformance tests must prove legal transitions, fail-closed illegal transitions, side-effect parentage, and completion fence semantics."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern formal runtime execution semantics across atoms, kernel plans, and runtime transports."
+    at: "2026-06-04T12:31:49Z"
+references: []
+body: |-
+  Decision: The runtime execution contract is the authoritative interpretation of operation lifecycle semantics across Tigrbl atoms, kernel plans, and runtime protocol adapters. Context: Transport adapters and engine integrations need one shared meaning for receipt, resolution, planning, execution, commit, emission, completion, failure, and abort. Consequences: REST, JSON-RPC, WebSocket, stream, WebTransport, and datagram surfaces must project their local events into the same runtime lifecycle before claiming semantic support. Verification: Conformance tests must prove legal transitions, fail-closed illegal transitions, side-effect parentage, and completion fence semantics.

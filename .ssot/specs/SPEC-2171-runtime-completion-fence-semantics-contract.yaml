@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2171"
+number: 2171
+slug: "runtime-completion-fence-semantics-contract"
+title: "Runtime Completion Fence Semantics Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: Define completion fences for runtime send completion, emit completion, stream close, datagram acceptance, peer delivery claims, failure, and terminal attempt completion. Valid scenario: stream, message, or datagram result reports the observed local completion fence before terminal success. Invalid scenario: runtime claims peer delivery when it only observed local send completion, or maps unsupported framing to another framing without declaration. Invariants: delivery claims are bounded by observed evidence, unsupported framing fails closed, retry/replay metadata preserves attempt boundaries, and completion cannot be asserted through an undocumented lifecycle transition."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define response, stream, datagram, and message completion semantics."
+    at: "2026-06-04T12:32:58Z"
+references: []
+body: |-
+  Scope: Define completion fences for runtime send completion, emit completion, stream close, datagram acceptance, peer delivery claims, failure, and terminal attempt completion. Valid scenario: stream, message, or datagram result reports the observed local completion fence before terminal success. Invalid scenario: runtime claims peer delivery when it only observed local send completion, or maps unsupported framing to another framing without declaration. Invariants: delivery claims are bounded by observed evidence, unsupported framing fails closed, retry/replay metadata preserves attempt boundaries, and completion cannot be asserted through an undocumented lifecycle transition.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1138"
+  - "adr:1139"

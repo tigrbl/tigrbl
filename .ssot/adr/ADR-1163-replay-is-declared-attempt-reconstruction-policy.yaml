@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1163"
+number: 1163
+slug: "replay-is-declared-attempt-reconstruction-policy"
+title: "Replay Is Declared Attempt Reconstruction Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl replay behavior is a declared attempt reconstruction policy, not a hidden retry path or transport redelivery behavior. Replay requires a replay policy, replay_id, original_attempt_id, normalized input snapshot, compiled runtime_plan_id, schema/version identity, transport binding identity, idempotency or effect mode, and deterministic comparison scope. Consequence: replay may reproduce or inspect a prior attempt only when the contract declares eligibility; otherwise replay fails closed before semantic dispatch or side effects."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl replay behavior is a declared attempt reconstruction policy, not a hidden retry path or transport redelivery behavior. Replay requires a replay policy, replay_id, original_attempt_id, normalized input snapshot, compiled runtime_plan_id, schema/version identity, transport binding identity, idempotency or effect mode, and deterministic comparison scope. Consequence: replay may reproduce or inspect a prior attempt only when the contract declares eligibility; otherwise replay fails closed before semantic dispatch or side effects.

@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1098"
+number: 1098
+slug: "replay-input-plan-schema-compatibility-rules"
+title: "Replay Input Plan Schema Compatibility Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Replay must consume recorded normalized inputs and must validate runtime_plan_id, binding identity, schema_id, operation identity, selector identity, and declared compatibility windows before execution or comparison. A replay with missing normalized input, incompatible schema evolution, unknown plan version, or mismatched binding fails closed with deterministic diagnostics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Replay must consume recorded normalized inputs and must validate runtime_plan_id, binding identity, schema_id, operation identity, selector identity, and declared compatibility windows before execution or comparison. A replay with missing normalized input, incompatible schema evolution, unknown plan version, or mismatched binding fails closed with deterministic diagnostics.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1163"
+  - "adr:1164"

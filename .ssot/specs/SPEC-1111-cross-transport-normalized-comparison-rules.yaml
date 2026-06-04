@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1111"
+number: 1111
+slug: "cross-transport-normalized-comparison-rules"
+title: "Cross-Transport Normalized Comparison Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Cross-transport equivalence compares normalized operation result, normalized error classification, persistence effects, effect fences, diagnostics, idempotency behavior, retry/replay parentage, and trace/qlog correlation. Transport envelopes, request wrappers, protocol-specific status containers, connection metadata, and framing bytes are excluded unless explicitly semantic."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Cross-transport equivalence compares normalized operation result, normalized error classification, persistence effects, effect fences, diagnostics, idempotency behavior, retry/replay parentage, and trace/qlog correlation. Transport envelopes, request wrappers, protocol-specific status containers, connection metadata, and framing bytes are excluded unless explicitly semantic.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1167"
+  - "adr:1168"

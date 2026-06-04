@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1122"
+number: 1122
+slug: "runtime-compaction-drillback-manifest-rules"
+title: "Runtime Compaction Drillback Manifest Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Every compaction output must write a manifest that records source record ranges, content digests, compaction policy id, compaction operator ids, redaction policy id, schema and runtime plan identity, source and target sinks, created attempt/trace identity, and drillback handles for replay, trace/qlog, audit, and conformance checks."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Every compaction output must write a manifest that records source record ranges, content digests, compaction policy id, compaction operator ids, redaction policy id, schema and runtime plan identity, source and target sinks, created attempt/trace identity, and drillback handles for replay, trace/qlog, audit, and conformance checks.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1169"
+  - "adr:1170"

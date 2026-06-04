@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1100"
+number: 1100
+slug: "replay-leakage-prevention-rules"
+title: "Replay Leakage Prevention Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Replay must not cross session, stream, datagram, engine session, transaction, table, operation, principal, tenant, or runtime plan partitions unless a declared policy creates a new owned replay partition. Replaying a closed session, unsupported framing failure, rejected input, or foreign engine-session state preserves the original fail-closed outcome and cannot reopen or mutate the original partition."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Replay must not cross session, stream, datagram, engine session, transaction, table, operation, principal, tenant, or runtime plan partitions unless a declared policy creates a new owned replay partition. Replaying a closed session, unsupported framing failure, rejected input, or foreign engine-session state preserves the original fail-closed outcome and cannot reopen or mutate the original partition.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1163"
+  - "adr:1164"

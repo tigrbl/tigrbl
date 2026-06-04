@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1083"
+number: 1083
+slug: "deterministic-runtime-plan-compilation-rules"
+title: "Deterministic Runtime Plan Compilation Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Equivalent normalized specs must compile to deterministic runtime plans, KernelPlan selector tables, binding tokens, atom-chain requirement projections, identity parentage metadata, and diagnostics metadata. Output order must be stable and independent of Python dict order, import order, router registration accidents, or filesystem traversal order."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Equivalent normalized specs must compile to deterministic runtime plans, KernelPlan selector tables, binding tokens, atom-chain requirement projections, identity parentage metadata, and diagnostics metadata. Output order must be stable and independent of Python dict order, import order, router registration accidents, or filesystem traversal order.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1159"

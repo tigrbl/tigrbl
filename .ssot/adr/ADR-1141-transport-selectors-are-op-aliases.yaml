@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1141"
+number: 1141
+slug: "transport-selectors-are-op-aliases"
+title: "Transport Selectors Are Operation Aliases"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: REST method/path, JSON-RPC method, WebSocket path/subprotocol, stream path, and WebTransport lane selectors are aliases to canonical op_id, not independent operation identities. Context: Different transport namespaces can legitimately expose the same semantic operation with different selector forms. Consequences: Selector indices must retain alias-to-op_id mappings, conflict checks must be namespace-aware, and docs/runtime projections must not fork operation identity by transport. Verification: Conformance tests must prove aliases resolve to the intended op_id and fail closed when a selector alias resolves to a different operation without explicit policy."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern selector-to-op_id aliasing across REST, JSON-RPC, WebSocket, stream, and WebTransport bindings."
+    at: "2026-06-04T12:41:49Z"
+references: []
+body: |-
+  Decision: REST method/path, JSON-RPC method, WebSocket path/subprotocol, stream path, and WebTransport lane selectors are aliases to canonical op_id, not independent operation identities. Context: Different transport namespaces can legitimately expose the same semantic operation with different selector forms. Consequences: Selector indices must retain alias-to-op_id mappings, conflict checks must be namespace-aware, and docs/runtime projections must not fork operation identity by transport. Verification: Conformance tests must prove aliases resolve to the intended op_id and fail closed when a selector alias resolves to a different operation without explicit policy.

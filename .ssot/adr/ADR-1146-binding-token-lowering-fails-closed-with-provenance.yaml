@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1146"
+number: 1146
+slug: "binding-token-lowering-fails-closed-with-provenance"
+title: "Binding Token Lowering Fails Closed With Provenance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: binding token lowering must reject unsupported transport, profile, operation, and framing combinations and must record which table profile, operation verb, or OpSpec binding produced each lowered token. Rationale: silent fallback would create hidden route exposure and cross-transport semantic drift. Consequence: compile-time lowering errors become explicit diagnostics and no unsupported framing can be substituted implicitly."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: binding token lowering must reject unsupported transport, profile, operation, and framing combinations and must record which table profile, operation verb, or OpSpec binding produced each lowered token. Rationale: silent fallback would create hidden route exposure and cross-transport semantic drift. Consequence: compile-time lowering errors become explicit diagnostics and no unsupported framing can be substituted implicitly.

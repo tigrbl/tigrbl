@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1064"
+number: 1064
+slug: "trace-qlog-session-parentage-rules"
+title: "Trace Qlog Session Parentage Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace and qlog records for session-affecting work must preserve enough semantic and concrete parentage to prove ownership. Required fields are event-kind specific but include trace_id plus applicable app_id, router_id, table_id, op_id, atom_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, replay_id, and original_attempt_id."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace and qlog records for session-affecting work must preserve enough semantic and concrete parentage to prove ownership. Required fields are event-kind specific but include trace_id plus applicable app_id, router_id, table_id, op_id, atom_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, replay_id, and original_attempt_id.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1153"
+  - "adr:1154"

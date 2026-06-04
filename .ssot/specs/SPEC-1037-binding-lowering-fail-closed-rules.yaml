@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1037"
+number: 1037
+slug: "binding-lowering-fail-closed-rules"
+title: "Binding Lowering Fail Closed Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines invalid lowering rejection for unsupported profile and transport pairs, unsupported framing, unknown binding kinds, custom operations without explicit binding, and datagram or stream lane mismatches."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines invalid lowering rejection for unsupported profile and transport pairs, unsupported framing, unknown binding kinds, custom operations without explicit binding, and datagram or stream lane mismatches.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1146"

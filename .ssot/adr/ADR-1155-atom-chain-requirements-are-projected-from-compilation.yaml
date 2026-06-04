@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1155"
+number: 1155
+slug: "atom-chain-requirements-are-projected-from-compilation"
+title: "Atom Chain Requirements Are Projected From Compilation"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl compiles atom and hook chains as the source of runtime requirements, then projects only the minimal enforceable requirements needed by runtime plans, transports, engines, diagnostics, retry/replay, and rollup/compaction. This projection is not a parallel capability algebra and is not a full atom inventory. Consequence: runtime enforcement can inspect declared requirements without expanding or reinterpreting the full atom chain on the dispatch hot path."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl compiles atom and hook chains as the source of runtime requirements, then projects only the minimal enforceable requirements needed by runtime plans, transports, engines, diagnostics, retry/replay, and rollup/compaction. This projection is not a parallel capability algebra and is not a full atom inventory. Consequence: runtime enforcement can inspect declared requirements without expanding or reinterpreting the full atom chain on the dispatch hot path.

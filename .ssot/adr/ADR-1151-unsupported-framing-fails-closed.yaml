@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1151"
+number: 1151
+slug: "unsupported-framing-fails-closed"
+title: "Unsupported Framing Fails Closed"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl must reject unsupported transport framing before semantic dispatch, atom execution, persistence effects, or session state mutation. Unsupported framing must never be silently lowered to a nearby supported framing such as websocket ndjson to text/json, WebTransport datagram to stream, stream to datagram, REST body to JSON-RPC, or SSE event to JSON-RPC message. Consequence: framing support is a declared binding property, and invalid framing combinations terminate with deterministic unsupported-framing diagnostics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl must reject unsupported transport framing before semantic dispatch, atom execution, persistence effects, or session state mutation. Unsupported framing must never be silently lowered to a nearby supported framing such as websocket ndjson to text/json, WebTransport datagram to stream, stream to datagram, REST body to JSON-RPC, or SSE event to JSON-RPC message. Consequence: framing support is a declared binding property, and invalid framing combinations terminate with deterministic unsupported-framing diagnostics.

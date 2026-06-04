@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1120"
+number: 1120
+slug: "runtime-compaction-algebra-rules"
+title: "Runtime Compaction Algebra Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Compaction rollup operators must be deterministic, order-stable, and declared per field. Count, min, max, set union, first, last, histogram, checksum, and diagnostic class aggregation must define associativity, commutativity, idempotence, ordering sensitivity, identity value, and invalid mixed-scope behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Compaction rollup operators must be deterministic, order-stable, and declared per field. Count, min, max, set union, first, last, histogram, checksum, and diagnostic class aggregation must define associativity, commutativity, idempotence, ordering sensitivity, identity value, and invalid mixed-scope behavior.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1169"
+  - "adr:1170"

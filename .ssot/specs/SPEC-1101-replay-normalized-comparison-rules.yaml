@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1101"
+number: 1101
+slug: "replay-normalized-comparison-rules"
+title: "Replay Normalized Comparison Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Replay comparison must compare normalized result, error classification, persistence effects, effect-fence outcome, emitted diagnostics, trace/qlog fields, idempotency behavior, lifecycle terminal state, and rollup summary according to the declared replay policy. Raw transport bytes, incidental object layout, wall-clock time, randomness, and undeclared external effects are excluded unless normalized as replay inputs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Replay comparison must compare normalized result, error classification, persistence effects, effect-fence outcome, emitted diagnostics, trace/qlog fields, idempotency behavior, lifecycle terminal state, and rollup summary according to the declared replay policy. Raw transport bytes, incidental object layout, wall-clock time, randomness, and undeclared external effects are excluded unless normalized as replay inputs.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1164"

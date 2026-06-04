@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1137"
+number: 1137
+slug: "binding-policy-to-frame-codec-runtime-integration-contract"
+title: "Binding Policy To Frame Codec Runtime Integration Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Binding policy, framing support matrices, kernel plan aliases, runtime codec registry, and docs/demo projections must agree. A binding row may claim runtime framing support only when legality, codec coverage, error mapping, and negative fail-closed behavior are proven."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Binding policy, framing support matrices, kernel plan aliases, runtime codec registry, and docs/demo projections must agree. A binding row may claim runtime framing support only when legality, codec coverage, error mapping, and negative fail-closed behavior are proven.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1173"
+  - "adr:1174"

@@ -1,0 +1,23 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1019"
+number: 1019
+slug: "table-profile-runtime-exposure-policy"
+title: "Table Profile Runtime Exposure Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define runtime exposure modes for table profiles and require explicit mounting decisions for ASGI-projected HTTP, WebSocket, WebTransport, stream, and datagram surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define runtime exposure modes for table profiles and require explicit mounting decisions for ASGI-projected HTTP, WebSocket, WebTransport, stream, and datagram surfaces.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1095"
+  - "adr:1098"
+  - "adr:1147"
+  - "adr:1148"

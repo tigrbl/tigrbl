@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1073"
+number: 1073
+slug: "projection-determinism-diagnostics-rules"
+title: "Projection Determinism And Diagnostics Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Requirement projection must be deterministic for the same compiled atom and hook chain. Diagnostics must name the requirement key, source atom_id, hook_id where applicable, op_id, runtime_plan_id, binding identity, concrete attempt or session ids, and rejection reason. Diagnostics must not rely only on handler names or transport adapter names."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Requirement projection must be deterministic for the same compiled atom and hook chain. Diagnostics must name the requirement key, source atom_id, hook_id where applicable, op_id, runtime_plan_id, binding identity, concrete attempt or session ids, and rejection reason. Diagnostics must not rely only on handler names or transport adapter names.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1155"
+  - "adr:1156"

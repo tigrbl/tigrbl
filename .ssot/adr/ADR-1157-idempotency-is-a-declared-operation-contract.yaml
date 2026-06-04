@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1157"
+number: 1157
+slug: "idempotency-is-a-declared-operation-contract"
+title: "Idempotency Is A Declared Operation Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl idempotency is declared by operation and runtime policy, not inferred from HTTP method, transport shape, engine behavior, or retry attempts. Idempotent execution requires a scoped key, stable semantic owner identity, concrete attempt parentage, payload compatibility rules, effect fencing, and declared duplicate-response semantics. Consequence: retries and replays may consume idempotency only when the operation contract declares it; otherwise mutation retry fails closed before side effects."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl idempotency is declared by operation and runtime policy, not inferred from HTTP method, transport shape, engine behavior, or retry attempts. Idempotent execution requires a scoped key, stable semantic owner identity, concrete attempt parentage, payload compatibility rules, effect fencing, and declared duplicate-response semantics. Consequence: retries and replays may consume idempotency only when the operation contract declares it; otherwise mutation retry fails closed before side effects.

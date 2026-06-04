@@ -1,0 +1,34 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1065"
+number: 1065
+slug: "compiled-selector-resolution-is-authoritative"
+title: "Compiled Selector Resolution Is Authoritative"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Compiled selector resolution tables are the runtime authority for transport selector dispatch."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  Compiled selector resolution tables are the runtime authority for transport selector dispatch.
+  
+  Runtime dispatch must consult precomputed selector tables that contain the selector namespace, normalized selector key, target op_id, precedence source, shadow policy, and diagnostics. Runtime dispatch must not rediscover nested-router precedence or resolve ambiguous selectors dynamically.
+  
+  ## Consequences
+  
+  - The dispatch hot path can be table-driven.
+  - Ambiguity is handled during compilation, not per request.
+  - Runtime plans become inspectable for route ownership and override provenance.
+  - Replay, trace, and rollup can report the selected op_id and selector source consistently.
+  
+  ## Rejected Alternatives
+  
+  - Keep precedence implicit in router/table registration order.
+  - Recompute selector precedence during each dispatch attempt.
+  - Treat the first runtime match as semantically authoritative when the compiled plan was ambiguous.

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1085"
+number: 1085
+slug: "deterministic-result-and-effect-rules"
+title: "Deterministic Result And Effect Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "For deterministic operation classes, normalized result shape, error shape, persistence effect set, emitted domain diagnostics, idempotent duplicate behavior, and declared rollback or commit outcome must match for equivalent attempts. Engine-generated values, timestamps, randomness, and external service responses must be normalized, supplied as declared inputs, or excluded from deterministic equivalence."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  For deterministic operation classes, normalized result shape, error shape, persistence effect set, emitted domain diagnostics, idempotent duplicate behavior, and declared rollback or commit outcome must match for equivalent attempts. Engine-generated values, timestamps, randomness, and external service responses must be normalized, supplied as declared inputs, or excluded from deterministic equivalence.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1159"

@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1153"
+number: 1153
+slug: "session-state-is-owned-by-runtime-identity-partitions"
+title: "Session State Is Owned By Runtime Identity Partitions"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl runtime session state is owned by explicit identity partitions instead of ambient transport, handler, or adapter state. Session-affecting state must be keyed by the applicable app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, trace_id, and binding/runtime plan identity. Consequence: any read, mutation, retry, replay, diagnostic, or emitted event that lacks required parentage or crosses a partition fails closed as a leakage violation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl runtime session state is owned by explicit identity partitions instead of ambient transport, handler, or adapter state. Session-affecting state must be keyed by the applicable app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, trace_id, and binding/runtime plan identity. Consequence: any read, mutation, retry, replay, diagnostic, or emitted event that lacks required parentage or crosses a partition fails closed as a leakage violation.

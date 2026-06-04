@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1121"
+number: 1121
+slug: "runtime-compaction-scope-compatibility-rules"
+title: "Runtime Compaction Scope Compatibility Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime compaction must reject mixed schema versions, mixed runtime plans, foreign sessions, foreign engine sessions, incompatible transport binding scopes, undeclared nondeterminism, and cross-tenant or cross-app ranges unless an explicit governed merge policy authorizes them."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime compaction must reject mixed schema versions, mixed runtime plans, foreign sessions, foreign engine sessions, incompatible transport binding scopes, undeclared nondeterminism, and cross-tenant or cross-app ranges unless an explicit governed merge policy authorizes them.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1169"
+  - "adr:1170"

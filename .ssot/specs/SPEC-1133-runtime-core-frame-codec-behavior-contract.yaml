@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1133"
+number: 1133
+slug: "runtime-core-frame-codec-behavior-contract"
+title: "Runtime Core Frame Codec Behavior Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The json, ndjson, text, bytes, and binary codecs are distinct. JSON decodes one document, NDJSON decodes newline-delimited records, text requires valid UTF-8, bytes is raw payload, and binary requires an explicit binary media/framing contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  The json, ndjson, text, bytes, and binary codecs are distinct. JSON decodes one document, NDJSON decodes newline-delimited records, text requires valid UTF-8, bytes is raw payload, and binary requires an explicit binary media/framing contract.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1173"
+  - "adr:1174"

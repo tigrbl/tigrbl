@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1092"
+number: 1092
+slug: "retry-budget-backoff-ordering-rules"
+title: "Retry Budget Backoff Ordering Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Retry budgets, max attempts, backoff schedule, jitter policy, ordering guarantees, and terminal exhaustion behavior must be declared and deterministic unless nondeterministic jitter is explicitly declared as an input. Retry order must preserve declared per-operation, per-session, per-stream, per-datagram, or per-engine-session ordering constraints."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Retry budgets, max attempts, backoff schedule, jitter policy, ordering guarantees, and terminal exhaustion behavior must be declared and deterministic unless nondeterministic jitter is explicitly declared as an input. Retry order must preserve declared per-operation, per-session, per-stream, per-datagram, or per-engine-session ordering constraints.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1161"
+  - "adr:1162"

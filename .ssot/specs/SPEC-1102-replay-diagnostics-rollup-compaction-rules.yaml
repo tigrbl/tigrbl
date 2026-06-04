@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1102"
+number: 1102
+slug: "replay-diagnostics-rollup-compaction-rules"
+title: "Replay Diagnostics Rollup Compaction Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Replay diagnostics, trace records, qlog records, replay manifests, rollups, and compaction summaries must preserve replay_id, original_attempt_id, replay attempt parentage, replay mode, policy id, compatibility decisions, nondeterminism declarations, effect-fence state, comparison outcome, and rejection reason. Compacted replay records must retain drillback to source identities without expanding full atom chains."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Replay diagnostics, trace records, qlog records, replay manifests, rollups, and compaction summaries must preserve replay_id, original_attempt_id, replay attempt parentage, replay mode, policy id, compatibility decisions, nondeterminism declarations, effect-fence state, comparison outcome, and rejection reason. Compacted replay records must retain drillback to source identities without expanding full atom chains.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1164"

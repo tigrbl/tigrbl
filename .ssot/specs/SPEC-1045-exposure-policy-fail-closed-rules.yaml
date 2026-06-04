@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1045"
+number: 1045
+slug: "exposure-policy-fail-closed-rules"
+title: "Exposure Policy Fail Closed Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines fail-closed rejection for unsupported docs publication, unsupported runtime transport binding, missing lowered binding tokens, and invalid docs/runtime combinations."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines fail-closed rejection for unsupported docs publication, unsupported runtime transport binding, missing lowered binding tokens, and invalid docs/runtime combinations.
+spec_kind: "governance"
+adr_ids:
+  - "adr:1147"
+  - "adr:1148"

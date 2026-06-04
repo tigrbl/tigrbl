@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1098"
+number: 1098
+slug: "asgi-transport-is-exposure-mode-not-table-class"
+title: "ASGI Transport Is Exposure Mode Not Table Class"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Treat ASGI as the projection surface for HTTP, WebSocket, WebTransport, stream, and datagram handling rather than as an independent table profile class."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Treat ASGI as the projection surface for HTTP, WebSocket, WebTransport, stream, and datagram handling rather than as an independent table profile class.

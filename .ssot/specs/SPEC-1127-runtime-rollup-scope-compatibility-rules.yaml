@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1127"
+number: 1127
+slug: "runtime-rollup-scope-compatibility-rules"
+title: "Runtime Rollup Scope Compatibility Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime rollup must reject mixed schema versions, runtime plans, app/router/table/op scopes, transport binding scopes, sessions, streams, datagrams, engine sessions, tenants, and undeclared nondeterminism unless a governed merge policy declares the merge as safe and comparable."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime rollup must reject mixed schema versions, runtime plans, app/router/table/op scopes, transport binding scopes, sessions, streams, datagrams, engine sessions, tenants, and undeclared nondeterminism unless a governed merge policy declares the merge as safe and comparable.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1171"
+  - "adr:1172"

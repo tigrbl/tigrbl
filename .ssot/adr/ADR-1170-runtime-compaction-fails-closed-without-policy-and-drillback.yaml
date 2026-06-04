@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1170"
+number: 1170
+slug: "runtime-compaction-fails-closed-without-policy-and-drillback"
+title: "Runtime Compaction Fails Closed Without Policy And Drillback"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime compaction must not run unless a compaction policy, compaction algebra, source range, schema/plan scope, redaction policy, and drillback manifest are declared. Unsupported, lossy, cross-scope, or unfenced compaction fails closed rather than erasing proof needed for replay, trace/qlog, idempotency, or audit."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime compaction must not run unless a compaction policy, compaction algebra, source range, schema/plan scope, redaction policy, and drillback manifest are declared. Unsupported, lossy, cross-scope, or unfenced compaction fails closed rather than erasing proof needed for replay, trace/qlog, idempotency, or audit.

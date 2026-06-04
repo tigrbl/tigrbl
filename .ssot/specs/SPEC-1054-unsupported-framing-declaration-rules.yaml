@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1054"
+number: 1054
+slug: "unsupported-framing-declaration-rules"
+title: "Unsupported Framing Declaration Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Each binding token and transport profile must declare the supported outer framing, inner framing, and lane-specific framing values. Any value outside that declaration is unsupported and must be rejected before dispatch, atom execution, persistence effects, or session state mutation."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Each binding token and transport profile must declare the supported outer framing, inner framing, and lane-specific framing values. Any value outside that declaration is unsupported and must be rejected before dispatch, atom execution, persistence effects, or session state mutation.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1151"

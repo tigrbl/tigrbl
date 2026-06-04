@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1135"
+number: 1135
+slug: "runtime-sse-websocket-frame-codec-contract"
+title: "Runtime SSE WebSocket Frame Codec Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "SSE and WebSocket text behavior must be represented through codec objects. SSE encoding preserves event, id, retry, and data fields, while WebSocket text codecs preserve existing ASGI websocket send adapter behavior and reject invalid text payloads."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  SSE and WebSocket text behavior must be represented through codec objects. SSE encoding preserves event, id, retry, and data fields, while WebSocket text codecs preserve existing ASGI websocket send adapter behavior and reject invalid text payloads.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1173"
+  - "adr:1174"

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1094"
+number: 1094
+slug: "retry-transport-runtime-ownership-rules"
+title: "Retry Transport Runtime Ownership Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "For every binding, retry ownership must be assigned to transport, runtime, engine adapter, or caller policy. Multiple layers must not independently retry the same semantic operation without a declared coordination policy. Transport-level redelivery must not become semantic retry unless the runtime retry policy declares equivalent behavior and parentage."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  For every binding, retry ownership must be assigned to transport, runtime, engine adapter, or caller policy. Multiple layers must not independently retry the same semantic operation without a declared coordination policy. Transport-level redelivery must not become semantic retry unless the runtime retry policy declares equivalent behavior and parentage.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1161"

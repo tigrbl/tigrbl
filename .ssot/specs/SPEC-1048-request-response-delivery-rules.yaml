@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1048"
+number: 1048
+slug: "request-response-delivery-rules"
+title: "Request Response Delivery Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "HTTP REST and HTTP JSON-RPC request-response bindings declare a single request attempt by default. The transport binding must not claim implicit retry, replay, exactly-once delivery, or cross-attempt ordering unless the op contract and runtime policy explicitly declare that behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  HTTP REST and HTTP JSON-RPC request-response bindings declare a single request attempt by default. The transport binding must not claim implicit retry, replay, exactly-once delivery, or cross-attempt ordering unless the op contract and runtime policy explicitly declare that behavior.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1149"

@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1165"
+number: 1165
+slug: "trace-qlog-governed-runtime-proof-records"
+title: "Trace And Qlog Are Governed Runtime Proof Records"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace and qlog records are governed runtime proof records, not generic monitoring dashboards and not raw transport logs. They preserve semantic and concrete identity, parentage, lifecycle transitions, effect fences, retry/replay/idempotency links, diagnostics, and rollup/compaction drillback. Transport qlog-like export remains a separate support status from governed runtime trace/qlog proof."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace and qlog records are governed runtime proof records, not generic monitoring dashboards and not raw transport logs. They preserve semantic and concrete identity, parentage, lifecycle transitions, effect fences, retry/replay/idempotency links, diagnostics, and rollup/compaction drillback. Transport qlog-like export remains a separate support status from governed runtime trace/qlog proof.

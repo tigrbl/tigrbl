@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1154"
+number: 1154
+slug: "engine-session-isolation-is-part-of-session-leakage-prevention"
+title: "Engine Session Isolation Is Part Of Session Leakage Prevention"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: engine_session_id and transaction ownership are part of session leakage prevention, not only database lifecycle management. An engine session or transaction opened for one attempt, session, stream, datagram, app, router, table, or op must not be committed, rolled back, reused, traced, replayed, or diagnosed as belonging to another partition. Consequence: engine session reuse requires explicit lease/reset semantics and cross-attempt or cross-session transaction mutation fails closed."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: engine_session_id and transaction ownership are part of session leakage prevention, not only database lifecycle management. An engine session or transaction opened for one attempt, session, stream, datagram, app, router, table, or op must not be committed, rolled back, reused, traced, replayed, or diagnosed as belonging to another partition. Consequence: engine session reuse requires explicit lease/reset semantics and cross-attempt or cross-session transaction mutation fails closed.

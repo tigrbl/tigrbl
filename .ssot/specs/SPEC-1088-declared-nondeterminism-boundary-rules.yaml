@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1088"
+number: 1088
+slug: "declared-nondeterminism-boundary-rules"
+title: "Declared Nondeterminism Boundary Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Wall-clock time, random values, unordered concurrent delivery, external service responses, database-generated values, and implementation-specific object layout are nondeterministic unless declared as inputs, constrained by policy, or normalized before comparison. A runtime path claiming determinism must fail closed or emit deterministic contract diagnostics when required nondeterministic inputs are missing or undeclared."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Wall-clock time, random values, unordered concurrent delivery, external service responses, database-generated values, and implementation-specific object layout are nondeterministic unless declared as inputs, constrained by policy, or normalized before comparison. A runtime path claiming determinism must fail closed or emit deterministic contract diagnostics when required nondeterministic inputs are missing or undeclared.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1159"
+  - "adr:1160"

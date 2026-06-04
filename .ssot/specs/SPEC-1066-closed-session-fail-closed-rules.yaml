@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1066"
+number: 1066
+slug: "closed-session-fail-closed-rules"
+title: "Closed Session Fail Closed Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A closed, aborted, or terminal session cannot receive payload, stream chunks, datagrams, retry effects, replay effects, or unsupported framing recovery that reopens or mutates the session. Any such input must fail closed with scoped diagnostics and without creating cross-session ownership transfer."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  A closed, aborted, or terminal session cannot receive payload, stream chunks, datagrams, retry effects, replay effects, or unsupported framing recovery that reopens or mutates the session. Any such input must fail closed with scoped diagnostics and without creating cross-session ownership transfer.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1153"

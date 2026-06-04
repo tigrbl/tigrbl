@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1026"
+number: 1026
+slug: "profile-operation-selection-determinism-rules"
+title: "Profile Operation Selection Determinism Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define deterministic selected-operation output for the same table profile, canonical operation catalog, operation overrides, and compile-time profile inputs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define deterministic selected-operation output for the same table profile, canonical operation catalog, operation overrides, and compile-time profile inputs.
+spec_kind: "operational"
+adr_ids:
+  - "adr:1116"
+  - "adr:1085"

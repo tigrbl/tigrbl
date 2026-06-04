@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1079"
+number: 1079
+slug: "idempotency-effect-fence-rules"
+title: "Idempotency Effect Fence Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The idempotency record and the protected operation effect must be fenced together. Commit may publish duplicate success only when both the effect and idempotency record are committed. Rollback, constraint failure, unsupported engine capability, or aborted lifecycle transition must not leave a reusable success record. Partial state must fail closed or remain pending according to declared recovery policy."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  The idempotency record and the protected operation effect must be fenced together. Commit may publish duplicate success only when both the effect and idempotency record are committed. Rollback, constraint failure, unsupported engine capability, or aborted lifecycle transition must not leave a reusable success record. Partial state must fail closed or remain pending according to declared recovery policy.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1158"

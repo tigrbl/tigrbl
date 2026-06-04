@@ -1,0 +1,36 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1066"
+number: 1066
+slug: "selector-namespaces-and-shadowing-control"
+title: "Selector Namespaces And Shadowing Control"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Selectors are governed by explicit namespaces and shadowing policy rather than by a global dispatch uniqueness rule."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  Selectors are governed by explicit namespaces and shadowing policy rather than by a global dispatch uniqueness rule.
+  
+  REST method/path, JSON-RPC method/endpoint, WebSocket path/subprotocol, HTTP stream path, and WebTransport lane/session selectors are separate selector namespaces. A selector collision is meaningful only inside the same namespace and precedence scope.
+  
+  The compiler must reject accidental collisions and hidden shadowing. The compiler may allow duplicate declarations only when they resolve to the same canonical op_id or when an explicit override policy records the previous owner, replacement owner, precedence owner, and reason.
+  
+  ## Consequences
+  
+  - Cross-transport aliases can point at the same op_id without being treated as collisions.
+  - Same-namespace collisions become compile-time diagnostics instead of runtime route precedence behavior.
+  - Generated CRUD bindings, custom operations, nested routers, included apps, and table defaults must participate in the same selector namespace rules.
+  - Intentional override remains possible, but it becomes visible and auditable.
+  
+  ## Rejected Alternatives
+  
+  - Enforce one global dispatch uniqueness rule across unrelated transport namespaces.
+  - Let framework route registration order determine runtime behavior silently.
+  - Allow generated defaults to shadow custom operations without declaration.

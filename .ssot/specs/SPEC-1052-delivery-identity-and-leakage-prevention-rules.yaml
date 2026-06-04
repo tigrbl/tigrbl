@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1052"
+number: 1052
+slug: "delivery-identity-and-leakage-prevention-rules"
+title: "Delivery Identity And Leakage Prevention Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Delivery state must be partitioned by the applicable runtime identity tuple, including app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id. No transport session, stream, datagram, or engine session may observe or mutate delivery state owned by another identity partition."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Delivery state must be partitioned by the applicable runtime identity tuple, including app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id. No transport session, stream, datagram, or engine session may observe or mutate delivery state owned by another identity partition.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1150"

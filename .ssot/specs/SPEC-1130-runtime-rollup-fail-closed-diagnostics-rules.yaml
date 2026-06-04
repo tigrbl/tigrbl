@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1130"
+number: 1130
+slug: "runtime-rollup-fail-closed-diagnostics-rules"
+title: "Runtime Rollup Fail Closed Diagnostics Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime rollup diagnostics must be deterministic and leakage-safe. Unsupported operators, missing policy, missing identity dimensions, mixed scope, lossy summary requests, redaction failures, and missing drillback manifests fail closed with normalized diagnostic classification."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime rollup diagnostics must be deterministic and leakage-safe. Unsupported operators, missing policy, missing identity dimensions, mixed scope, lossy summary requests, redaction failures, and missing drillback manifests fail closed with normalized diagnostic classification.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1171"
+  - "adr:1172"

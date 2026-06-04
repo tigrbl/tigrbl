@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1112"
+number: 1112
+slug: "cross-transport-binding-corpus-rules"
+title: "Cross-Transport Binding Corpus Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Equivalence testing must use a governed corpus that covers standard CRUD, list/query, bulk, merge, stream/session-compatible operations, datagram-compatible operations, custom operations, and first-class export operations where those operations declare equivalent transport bindings."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Equivalence testing must use a governed corpus that covers standard CRUD, list/query, bulk, merge, stream/session-compatible operations, datagram-compatible operations, custom operations, and first-class export operations where those operations declare equivalent transport bindings.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1167"
+  - "adr:1168"

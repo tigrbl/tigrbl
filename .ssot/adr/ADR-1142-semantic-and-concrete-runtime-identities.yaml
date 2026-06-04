@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1142"
+number: 1142
+slug: "semantic-and-concrete-runtime-identities"
+title: "Semantic And Concrete Runtime Identities"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl distinguishes semantic ids for compiled objects from concrete ids for runtime instances. Semantic ids include app_id, router_id, table_id, op_id, atom_id, hook_id, binding_id, runtime_plan_id, and schema_id. Concrete ids include attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, request_id, connection_id, client_id, and replay_id. Context: leakage prevention, replay safety, trace/qlog correlation, retry parentage, and rollup drillback all require knowing whether an id names a stable semantic object or a concrete execution instance. Consequences: runtime events, traces, qlog records, replay records, and diagnostics must carry both semantic owner identity and concrete instance identity where applicable. Verification: conformance tests must prove semantic id stability across transports and concrete id uniqueness within parent scope."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to distinguish stable semantic identities from per-execution concrete runtime identities."
+    at: "2026-06-04T12:47:16Z"
+references: []
+body: |-
+  Decision: Tigrbl distinguishes semantic ids for compiled objects from concrete ids for runtime instances. Semantic ids include app_id, router_id, table_id, op_id, atom_id, hook_id, binding_id, runtime_plan_id, and schema_id. Concrete ids include attempt_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, trace_id, request_id, connection_id, client_id, and replay_id. Context: leakage prevention, replay safety, trace/qlog correlation, retry parentage, and rollup drillback all require knowing whether an id names a stable semantic object or a concrete execution instance. Consequences: runtime events, traces, qlog records, replay records, and diagnostics must carry both semantic owner identity and concrete instance identity where applicable. Verification: conformance tests must prove semantic id stability across transports and concrete id uniqueness within parent scope.

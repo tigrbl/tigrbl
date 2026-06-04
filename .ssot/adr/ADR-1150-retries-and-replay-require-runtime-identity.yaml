@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1150"
+number: 1150
+slug: "retries-and-replay-require-runtime-identity"
+title: "Retries And Replay Require Runtime Identity"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl retry and replay behavior must be keyed by runtime identity instead of inferred from transport shape. Replayable work must carry the applicable app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id identifiers, plus an idempotency or replay policy when mutation effects are possible. Consequence: transports may retry delivery only when the op contract declares stable retry or replay semantics; otherwise retry and replay fail closed with diagnostics."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: Tigrbl retry and replay behavior must be keyed by runtime identity instead of inferred from transport shape. Replayable work must carry the applicable app_id, router_id, table_id, op_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id identifiers, plus an idempotency or replay policy when mutation effects are possible. Consequence: transports may retry delivery only when the op contract declares stable retry or replay semantics; otherwise retry and replay fail closed with diagnostics.

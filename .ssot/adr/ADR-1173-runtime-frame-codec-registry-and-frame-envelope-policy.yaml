@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1173"
+number: 1173
+slug: "runtime-frame-codec-registry-and-frame-envelope-policy"
+title: "Runtime Frame Codec Registry And Frame Envelope Policy"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime framing is a codec registry over first-class frame envelopes, not a transport layer and not operation legality authority. Binding specs and kernel plans decide legal framing combinations; runtime codecs own encode/decode behavior for governed frame representations. Frame and FrameContext records preserve frame kind, payload, framing token, content metadata, lane identity, and concrete session/stream/datagram ids. Unsupported codecs and illegal combinations fail closed before dispatch."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime framing is a codec registry over first-class frame envelopes, not a transport layer and not operation legality authority. Binding specs and kernel plans decide legal framing combinations; runtime codecs own encode/decode behavior for governed frame representations. Frame and FrameContext records preserve frame kind, payload, framing token, content metadata, lane identity, and concrete session/stream/datagram ids. Unsupported codecs and illegal combinations fail closed before dispatch.

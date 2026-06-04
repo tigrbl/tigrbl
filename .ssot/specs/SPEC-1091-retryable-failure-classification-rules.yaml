@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1091"
+number: 1091
+slug: "retryable-failure-classification-rules"
+title: "Retryable Failure Classification Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Only declared retryable failure classes may trigger retry. Retryable classifications must distinguish transient transport delivery, transient engine conflict, backpressure, timeout, cancellation, disconnect, unsupported framing, closed session, validation error, auth error, and permanent semantic failure. Unsupported framing, closed session mutation, validation failure, and undeclared engine downgrade must not be retried."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Only declared retryable failure classes may trigger retry. Retryable classifications must distinguish transient transport delivery, transient engine conflict, backpressure, timeout, cancellation, disconnect, unsupported framing, closed session, validation error, auth error, and permanent semantic failure. Unsupported framing, closed session mutation, validation failure, and undeclared engine downgrade must not be retried.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1161"
+  - "adr:1162"

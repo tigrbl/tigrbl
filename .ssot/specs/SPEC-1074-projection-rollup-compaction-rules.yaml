@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1074"
+number: 1074
+slug: "projection-rollup-compaction-rules"
+title: "Projection Rollup And Compaction Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Requirement projection must be compact enough to support runtime plan summaries, trace rollups, qlog correlation, replay manifests, and compaction without expanding the full atom chain. Rollups must preserve drillback to source atom_id, hook_id, op_id, runtime_plan_id, and concrete parentage so summaries remain auditable and leakage-safe."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Requirement projection must be compact enough to support runtime plan summaries, trace rollups, qlog correlation, replay manifests, and compaction without expanding the full atom chain. Rollups must preserve drillback to source atom_id, hook_id, op_id, runtime_plan_id, and concrete parentage so summaries remain auditable and leakage-safe.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1155"

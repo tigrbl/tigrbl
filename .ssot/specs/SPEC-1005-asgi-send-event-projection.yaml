@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1005"
+number: 1005
+slug: "asgi-send-event-projection"
+title: "ASGI Send Event Projection"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: define how Tigrbl runtime send intent projects to ASGI send-channel events. Covered outputs include HTTP response start/body, websocket accept/send/close, stream emits, WebTransport session/stream/datagram sends where extension support exists, and completion fence signaling. Valid scenarios include runtime response body chunks preserving declared ordering and completion fences, websocket close mapping to an ASGI close event, and unsupported WebTransport send surfaces failing closed when no declared server extension exists. Invalid scenarios include runtime send intent bypassing lifecycle state, completion fences being omitted, or ASGI send calls implying ordering or delivery guarantees beyond the binding contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Scope: define how Tigrbl runtime send intent projects to ASGI send-channel events. Covered outputs include HTTP response start/body, websocket accept/send/close, stream emits, WebTransport session/stream/datagram sends where extension support exists, and completion fence signaling. Valid scenarios include runtime response body chunks preserving declared ordering and completion fences, websocket close mapping to an ASGI close event, and unsupported WebTransport send surfaces failing closed when no declared server extension exists. Invalid scenarios include runtime send intent bypassing lifecycle state, completion fences being omitted, or ASGI send calls implying ordering or delivery guarantees beyond the binding contract.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1020"
+  - "adr:1061"

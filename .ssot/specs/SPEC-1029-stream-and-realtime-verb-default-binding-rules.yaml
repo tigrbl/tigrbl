@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1029"
+number: 1029
+slug: "stream-and-realtime-verb-default-binding-rules"
+title: "Stream And Realtime Verb Default Binding Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define default binding lowering for stream, SSE, realtime, and WebSocket JSON-RPC operation verbs, including required framing and subprotocol defaults."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define default binding lowering for stream, SSE, realtime, and WebSocket JSON-RPC operation verbs, including required framing and subprotocol defaults.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1122"
+  - "adr:1100"

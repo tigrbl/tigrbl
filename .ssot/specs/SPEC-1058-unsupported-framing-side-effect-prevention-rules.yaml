@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1058"
+number: 1058
+slug: "unsupported-framing-side-effect-prevention-rules"
+title: "Unsupported Framing Side Effect Prevention Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Unsupported framing rejection must have no persistence effects, no atom-chain side effects, no emitted operation result, no session state ownership transfer, and no cross-session or cross-engine-session leakage. Rejection may record diagnostics only within the rejecting attempt or transport/session identity partition."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Unsupported framing rejection must have no persistence effects, no atom-chain side effects, no emitted operation result, no session state ownership transfer, and no cross-session or cross-engine-session leakage. Rejection may record diagnostics only within the rejecting attempt or transport/session identity partition.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1151"
+  - "adr:1152"

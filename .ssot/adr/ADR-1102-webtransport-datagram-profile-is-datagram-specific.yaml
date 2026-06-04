@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1102"
+number: 1102
+slug: "webtransport-datagram-profile-is-datagram-specific"
+title: "WebTransport Datagram Profile Is Datagram Specific"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Constrain WebTransport datagram table profiles to datagram-safe operations and reject stream/session operations unless they use compatible WebTransport lanes."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Constrain WebTransport datagram table profiles to datagram-safe operations and reject stream/session operations unless they use compatible WebTransport lanes.

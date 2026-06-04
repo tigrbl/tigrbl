@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1172"
+number: 1172
+slug: "runtime-rollup-fails-closed-without-policy-operators-and-scope"
+title: "Runtime Rollup Fails Closed Without Policy Operators And Scope"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime rollup must not run unless a rollup policy, field-level operator algebra, source range, scope compatibility rule, redaction policy, and drillback manifest are declared. Unsupported operators, lossy summaries, mixed runtime scope, redaction failure, or missing drillback must fail closed."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime rollup must not run unless a rollup policy, field-level operator algebra, source range, scope compatibility rule, redaction policy, and drillback manifest are declared. Unsupported operators, lossy summaries, mixed runtime scope, redaction failure, or missing drillback must fail closed.

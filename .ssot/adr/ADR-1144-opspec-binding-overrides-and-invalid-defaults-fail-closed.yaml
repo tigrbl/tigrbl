@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1144"
+number: 1144
+slug: "opspec-binding-overrides-and-invalid-defaults-fail-closed"
+title: "OpSpec Binding Overrides And Invalid Defaults Fail Closed"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Explicit OpSpec binding declarations override verb defaults. Unsupported verbs, custom verbs without explicit bindings, and incompatible profile/verb/default combinations must fail closed at compile time."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Explicit OpSpec binding declarations override verb defaults. Unsupported verbs, custom verbs without explicit bindings, and incompatible profile/verb/default combinations must fail closed at compile time.

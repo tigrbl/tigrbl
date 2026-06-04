@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1028"
+number: 1028
+slug: "bulk-query-and-merge-verb-default-binding-rules"
+title: "Bulk Query And Merge Verb Default Binding Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define default binding lowering for bulk, query, and merge operation verbs across bulk CRUD, OLTP, OLAP, REST, and JSON-RPC compatible table profiles."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Define default binding lowering for bulk, query, and merge operation verbs across bulk CRUD, OLTP, OLAP, REST, and JSON-RPC compatible table profiles.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1122"
+  - "adr:1088"

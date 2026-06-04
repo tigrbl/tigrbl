@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1099"
+number: 1099
+slug: "replay-mode-effect-fence-rules"
+title: "Replay Mode And Effect Fence Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Replay mode must declare observe-only, compare-only, dry-run, or effectful behavior. Effectful replay requires idempotency, stable replay policy, or explicit effect-fence guarantees and must not duplicate persisted effects. Observe-only and compare-only replay must not mutate persistence, session state, engine session state, or external outputs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Replay mode must declare observe-only, compare-only, dry-run, or effectful behavior. Effectful replay requires idempotency, stable replay policy, or explicit effect-fence guarantees and must not duplicate persisted effects. Observe-only and compare-only replay must not mutate persistence, session state, engine session state, or external outputs.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1163"

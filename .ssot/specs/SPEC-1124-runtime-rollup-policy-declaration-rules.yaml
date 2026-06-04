@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1124"
+number: 1124
+slug: "runtime-rollup-policy-declaration-rules"
+title: "Runtime Rollup Policy Declaration Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime rollup requires an explicit policy that declares eligible record kinds, grouping dimensions, rollup window, source ranges, retention behavior, redaction requirements, output support grade, and target sink. Undeclared rollup is not conformance evidence."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Runtime rollup requires an explicit policy that declares eligible record kinds, grouping dimensions, rollup window, source ranges, retention behavior, redaction requirements, output support grade, and target sink. Undeclared rollup is not conformance evidence.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1171"
+  - "adr:1172"

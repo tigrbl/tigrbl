@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2178"
+number: 2178
+slug: "trace-identity-correlation"
+title: "Trace Identity Correlation"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines identity correlation requirements for trace, qlog, diagnostics, replay, and rollup events. Required ids are event-kind specific but must include trace_id and enough semantic and concrete parentage to locate the owner and instance; examples include attempt_id, op_id, table_id, router_id, app_id, runtime_plan_id, atom_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, replay_id, and original_attempt_id where applicable. Valid scenario: an atom execution trace records trace_id, atom_id, attempt_id, and runtime_plan_id, while replay records preserve replay_id and original_attempt_id. Invalid scenario: diagnostics report only a handler qualname, a trace event lacks parent attempt/session identity, or qlog cannot distinguish original execution from replay. Invariants: trace and qlog records preserve enough identity for drillback, missing required ids fail closed or emit declared contract violations, and correlation ids do not cross session or engine-session scopes without explicit parentage."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define required identity fields for trace and qlog-related events."
+    at: "2026-06-04T12:48:32Z"
+references: []
+body: |-
+  Defines identity correlation requirements for trace, qlog, diagnostics, replay, and rollup events. Required ids are event-kind specific but must include trace_id and enough semantic and concrete parentage to locate the owner and instance; examples include attempt_id, op_id, table_id, router_id, app_id, runtime_plan_id, atom_id, session_id, stream_id, datagram_id, engine_session_id, transaction_id, replay_id, and original_attempt_id where applicable. Valid scenario: an atom execution trace records trace_id, atom_id, attempt_id, and runtime_plan_id, while replay records preserve replay_id and original_attempt_id. Invalid scenario: diagnostics report only a handler qualname, a trace event lacks parent attempt/session identity, or qlog cannot distinguish original execution from replay. Invariants: trace and qlog records preserve enough identity for drillback, missing required ids fail closed or emit declared contract violations, and correlation ids do not cross session or engine-session scopes without explicit parentage.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1142"
+  - "adr:1143"

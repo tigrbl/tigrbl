@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1148"
+number: 1148
+slug: "asgi-runtime-exposure-is-a-projection-policy"
+title: "ASGI Runtime Exposure Is A Projection Policy"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: ASGI transport exposure is controlled by runtime projection policy and binding compatibility, not by table class or documentation profile alone. Rationale: ASGI scope, receive, and send are server-boundary inputs, while Tigrbl operation exposure is a semantic runtime decision. Consequence: runtime exposure must require declared compatible transport binding and must fail closed when unsupported."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Decision: ASGI transport exposure is controlled by runtime projection policy and binding compatibility, not by table class or documentation profile alone. Rationale: ASGI scope, receive, and send are server-boundary inputs, while Tigrbl operation exposure is a semantic runtime decision. Consequence: runtime exposure must require declared compatible transport binding and must fail closed when unsupported.

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1062"
+number: 1062
+slug: "stream-and-datagram-session-ownership-rules"
+title: "Stream And Datagram Session Ownership Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "stream_id and datagram_id are concrete child identifiers owned by exactly one session_id and transport binding partition. A stream or datagram cannot read, mutate, close, replay, or emit state for another session; cross-lane or cross-session ownership transfer is invalid unless a declared lifecycle transition explicitly creates a new owned instance."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  stream_id and datagram_id are concrete child identifiers owned by exactly one session_id and transport binding partition. A stream or datagram cannot read, mutate, close, replay, or emit state for another session; cross-lane or cross-session ownership transfer is invalid unless a declared lifecycle transition explicitly creates a new owned instance.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1153"

@@ -1,0 +1,20 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1060"
+number: 1060
+slug: "unsupported-framing-retry-replay-rules"
+title: "Unsupported Framing Retry Replay Rules"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Unsupported framing failures must not be retried or replayed into a supported framing. A new attempt may only proceed if the caller submits a supported framing declared by the operation binding; replay of the rejected attempt preserves the unsupported-framing outcome and diagnostic identity."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Unsupported framing failures must not be retried or replayed into a supported framing. A new attempt may only proceed if the caller submits a supported framing declared by the operation binding; replay of the rejected attempt preserves the unsupported-framing outcome and diagnostic identity.
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1152"

@@ -1,0 +1,25 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2168"
+number: 2168
+slug: "runtime-execution-state-machine-contract"
+title: "Runtime Execution State Machine Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Scope: Define canonical runtime object types, states, legal transitions, terminal states, fail-closed states, and required transition metadata for Tigrbl runtime execution. Required identifiers include app_id, router_id, table_id, op_id, atom_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id where applicable. Valid scenario: REST create moves through received, resolved, planned, executing, committed, emitted, completed. Invalid scenario: closed session receives payload or datagram moves through stream close. Invariants: no undocumented lifecycle transition, no cross-session leakage, no cross-engine-session leakage, and no unsupported framing fallback."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define canonical runtime object states and legal transitions."
+    at: "2026-06-04T12:32:19Z"
+references: []
+body: |-
+  Scope: Define canonical runtime object types, states, legal transitions, terminal states, fail-closed states, and required transition metadata for Tigrbl runtime execution. Required identifiers include app_id, router_id, table_id, op_id, atom_id, attempt_id, session_id, stream_id, datagram_id, engine_session_id, and trace_id where applicable. Valid scenario: REST create moves through received, resolved, planned, executing, committed, emitted, completed. Invalid scenario: closed session receives payload or datagram moves through stream close. Invariants: no undocumented lifecycle transition, no cross-session leakage, no cross-engine-session leakage, and no unsupported framing fallback.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1138"
+  - "adr:1139"

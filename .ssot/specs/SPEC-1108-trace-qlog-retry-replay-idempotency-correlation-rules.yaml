@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:1108"
+number: 1108
+slug: "trace-qlog-retry-replay-idempotency-correlation-rules"
+title: "Trace Qlog Retry Replay Idempotency Correlation Rules"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Trace/qlog records must preserve retry, replay, and idempotency parentage, including original_attempt_id, attempt_id, retry index or policy id, replay_id, idempotency key or record id, duplicate/admitted/suppressed decision, and normalized effect outcome."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Trace/qlog records must preserve retry, replay, and idempotency parentage, including original_attempt_id, attempt_id, retry index or policy id, replay_id, idempotency key or record id, duplicate/admitted/suppressed decision, and normalized effect outcome.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1165"
+  - "adr:1166"
