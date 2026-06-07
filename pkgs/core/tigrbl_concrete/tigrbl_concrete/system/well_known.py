@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
+import re
 from typing import Any
 
 from tigrbl_concrete._concrete._response import Response
@@ -42,15 +43,14 @@ def normalize_well_known_name(name: str) -> str:
     return "/".join(parts)
 
 
-def well_known_path(name: str, *, prefix: str = WELL_KNOWN_PREFIX) -> str:
-    clean_prefix = str(prefix or WELL_KNOWN_PREFIX).strip().rstrip("/")
-    if not clean_prefix.startswith("/"):
-        clean_prefix = f"/{clean_prefix}"
-    if clean_prefix != WELL_KNOWN_PREFIX and not clean_prefix.endswith(
-        WELL_KNOWN_PREFIX
-    ):
-        clean_prefix = f"{clean_prefix}{WELL_KNOWN_PREFIX}"
-    return f"{clean_prefix}/{normalize_well_known_name(name)}"
+def well_known_path(name: str) -> str:
+    return f"{WELL_KNOWN_PREFIX}/{normalize_well_known_name(name)}"
+
+
+def well_known_route_name(name: str) -> str:
+    token = normalize_well_known_name(name)
+    slug = re.sub(r"[^0-9A-Za-z_]+", "_", token).strip("_")
+    return f"well_known_{slug or 'resource'}"
 
 
 def _resource_endpoint(resource: WellKnownResource) -> Callable[[], Any]:
@@ -79,6 +79,7 @@ def _resource_endpoint(resource: WellKnownResource) -> Callable[[], Any]:
             headers=resource.headers,
         )
 
+    _endpoint.__name__ = well_known_route_name(resource.name)
     return _endpoint
 
 
@@ -109,8 +110,6 @@ def mount_well_known(
     router: Any,
     resources: Sequence[WellKnownResource | Mapping[str, Any]] | Mapping[str, Any],
     *,
-    include_system_alias: bool = False,
-    system_prefix: str | None = None,
     tags: list[str] | None = None,
 ) -> tuple[str, ...]:
     """Mount explicit resources under ``/.well-known``.
@@ -128,9 +127,6 @@ def mount_well_known(
     route_tags = tags if tags is not None else ["well-known"]
     for resource in _coerce_resources(resources):
         paths = [well_known_path(resource.name)]
-        if include_system_alias:
-            alias_prefix = system_prefix or getattr(router, "system_prefix", "/system")
-            paths.append(well_known_path(resource.name, prefix=alias_prefix))
 
         for path in paths:
             if path in seen:
@@ -140,6 +136,7 @@ def mount_well_known(
                 path,
                 _resource_endpoint(resource),
                 methods=["GET"],
+                name=well_known_route_name(resource.name),
                 tags=route_tags,
                 include_in_schema=False,
                 inherit_owner_dependencies=False,

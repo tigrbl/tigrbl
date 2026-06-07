@@ -67,33 +67,37 @@ def test_mount_well_known_publishes_explicit_root_resource() -> None:
         client.close()
 
 
-def test_app_method_can_mount_system_alias_when_explicitly_requested() -> None:
-    app = TigrblApp(engine=mem(async_=False), system_prefix="/system")
+def test_app_and_included_router_can_both_mount_well_known_resources() -> None:
+    app = TigrblApp(engine=mem(async_=False), mount_system=False)
+    router = TigrblRouter(engine=mem(async_=False))
 
-    mounted = app.mount_well_known(
+    app_mounted = app.mount_well_known(
         [
             WellKnownResource(
                 name="/.well-known/openid-configuration",
                 payload=OIDC_DISCOVERY_PAYLOAD,
                 headers={"cache-control": "public, max-age=300"},
             )
-        ],
-        include_system_alias=True,
+        ]
     )
+    router_mounted = router.mount_well_known({"jwks.json": {"keys": []}})
+    app.include_router(router)
 
-    assert mounted == (
-        "/.well-known/openid-configuration",
-        "/system/.well-known/openid-configuration",
-    )
+    assert app_mounted == ("/.well-known/openid-configuration",)
+    assert router_mounted == ("/.well-known/jwks.json",)
 
     client = _client(app)
     try:
-        root = client.get("/.well-known/openid-configuration")
-        alias = client.get("/system/.well-known/openid-configuration")
-        assert root.status_code == 200
-        assert alias.status_code == 200
-        assert root.json() == alias.json() == OIDC_DISCOVERY_PAYLOAD
-        assert root.headers["cache-control"] == "public, max-age=300"
+        discovery = client.get("/.well-known/openid-configuration")
+        jwks = client.get("/.well-known/jwks.json")
+
+        assert discovery.status_code == 200
+        assert discovery.json() == OIDC_DISCOVERY_PAYLOAD
+        assert discovery.headers["cache-control"] == "public, max-age=300"
+        assert jwks.status_code == 200
+        assert jwks.json() == {"keys": []}
+        assert client.get("/system/.well-known/openid-configuration").status_code == 404
+        assert client.get("/system/.well-known/jwks.json").status_code == 404
     finally:
         client.close()
 
@@ -146,6 +150,6 @@ def test_well_known_path_normalization_accepts_relative_and_canonical_names() ->
         "/.well-known/openid-configuration"
     )
     assert well_known_path("/.well-known/jwks.json") == "/.well-known/jwks.json"
-    assert well_known_path("oauth-authorization-server", prefix="/system") == (
-        "/system/.well-known/oauth-authorization-server"
+    assert well_known_path("oauth-authorization-server") == (
+        "/.well-known/oauth-authorization-server"
     )
