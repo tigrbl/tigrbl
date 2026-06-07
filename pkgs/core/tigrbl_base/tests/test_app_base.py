@@ -44,3 +44,49 @@ def test_collect_spec_normalizes_and_collects() -> None:
     assert spec.security_deps == ("sec",)
     assert spec.deps == ("dep",)
     assert spec.middlewares == ("mw",)
+
+
+def test_collect_spec_deduplicates_routers_without_dropping_child_order() -> None:
+    class Parent:
+        ROUTERS = ("root",)
+
+    class Child(Parent):
+        ROUTERS = ("api", "api", "admin")
+
+    spec = AppBase.collect_spec(Child)
+
+    assert spec.routers == ("api", "admin", "root")
+
+
+def test_bind_spec_normalizes_falsy_strings_and_sequences() -> None:
+    spec = AppSpec(
+        title="",
+        version="",
+        execution_backend="",
+        jsonrpc_prefix="",
+        system_prefix="",
+        routers=["api"],
+        ops=None,
+        tables=None,
+        schemas=None,
+        hooks=None,
+        security_deps=None,
+        deps=None,
+        middlewares=None,
+    )
+
+    bound = AppBase.bind_spec(spec)
+
+    assert bound.title == "Tigrbl"
+    assert bound.version == "0.1.0"
+    assert bound.execution_backend == "auto"
+    assert bound.jsonrpc_prefix == "/rpc"
+    assert bound.system_prefix == "/system"
+    assert bound.routers == ("api",)
+    assert bound.ops == ()
+    assert bound.tables == ()
+    assert bound.schemas == ()
+    assert bound.hooks == ()
+    assert bound.security_deps == ()
+    assert bound.deps == ()
+    assert bound.middlewares == ()

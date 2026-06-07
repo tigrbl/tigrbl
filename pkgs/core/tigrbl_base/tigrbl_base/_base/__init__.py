@@ -29,6 +29,9 @@ _EXPORTS = {
 
 __all__ = list(_EXPORTS)
 
+for _symbol in __all__:
+    globals().pop(_symbol, None)
+
 
 def __getattr__(name: str) -> Any:
     module_name = _EXPORTS.get(name)

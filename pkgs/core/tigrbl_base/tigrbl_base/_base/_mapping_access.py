@@ -15,5 +15,11 @@ class AttrDict(dict):
     def __setattr__(self, key: str, value: Any) -> None:  # pragma: no cover - trivial
         self[key] = value
 
+    def __delattr__(self, item: str) -> None:
+        try:
+            del self[item]
+        except KeyError as exc:
+            raise AttributeError(item) from exc
+
 
 __all__ = ["AttrDict"]

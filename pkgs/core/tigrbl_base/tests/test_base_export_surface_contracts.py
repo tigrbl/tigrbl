@@ -48,3 +48,18 @@ def test_base_exports_lazy_load_requested_symbols(symbol: str, module_name: str)
     assert module_name in sys.modules
     assert exported is getattr(sys.modules[module_name], symbol)
     assert base.__dict__[symbol] is exported
+
+
+def test_base_exports_unknown_symbol_fails_closed() -> None:
+    base = import_module("tigrbl_base._base")
+
+    with pytest.raises(AttributeError):
+        getattr(base, "MissingBase")
+
+
+def test_base_exports_mapping_targets_existing_symbols() -> None:
+    base = import_module("tigrbl_base._base")
+
+    for symbol, relative_module in base._EXPORTS.items():
+        module = import_module(f"tigrbl_base._base.{relative_module}")
+        assert getattr(module, symbol) is getattr(base, symbol)

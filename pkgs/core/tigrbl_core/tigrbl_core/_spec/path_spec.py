@@ -67,7 +67,13 @@ class PathSpec(SerdeMixin):
         if "routes" in payload:
             raise ValueError("PathSpec does not accept 'routes'; use path-owned specs.")
         if "engine" in payload or "engine_name" in payload:
-            raise ValueError("PathSpec does not own engines; bind engines at app, router, table, or op scope.")
+            rejected = ", ".join(
+                field for field in ("engine", "engine_name") if field in payload
+            )
+            raise ValueError(
+                "PathSpec does not own engines; rejected "
+                f"{rejected}; bind engines at app, router, table, or op scope."
+            )
         return super().from_dict(payload)
 
     def binding_path(self, binding: TransportBindingSpec) -> str:

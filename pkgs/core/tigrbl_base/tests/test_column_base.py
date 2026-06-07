@@ -47,3 +47,43 @@ def test_column_base_registers_name_on_owner() -> None:
 
     column.__set_name__(Owner, "name")
     assert Owner.__tigrbl_colspecs__["name"] is column
+
+
+def test_column_base_owner_registration_isolated_between_subclasses() -> None:
+    base_column = ColumnBase(storage=StorageSpec(type_=String))
+
+    class BaseOwner:
+        __tigrbl_colspecs__ = {"base": base_column}
+
+    child_column = ColumnBase(storage=StorageSpec(type_=String))
+
+    class ChildOwner(BaseOwner):
+        pass
+
+    child_column.__set_name__(ChildOwner, "child")
+
+    assert BaseOwner.__tigrbl_colspecs__ == {"base": base_column}
+    assert ChildOwner.__tigrbl_colspecs__ == {
+        "base": base_column,
+        "child": child_column,
+    }
+
+
+def test_column_base_preserves_default_and_read_hooks_from_spec() -> None:
+    def default_factory(ctx: dict) -> str:
+        return str(ctx["name"]).lower()
+
+    def read_producer(obj: object, ctx: dict) -> str:
+        return f"{obj!r}:{ctx['name']}"
+
+    spec = ColumnSpec(
+        storage=StorageSpec(type_=String, nullable=False),
+        default_factory=default_factory,
+        read_producer=read_producer,
+    )
+
+    column = ColumnBase(spec=spec)
+
+    assert column.default_factory is default_factory
+    assert column.read_producer is read_producer
+    assert column.storage is spec.storage

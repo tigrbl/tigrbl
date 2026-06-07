@@ -29,3 +29,24 @@ def test_table_registry_base_setattr_and_missing_attr() -> None:
 
     with pytest.raises(AttributeError):
         _ = registry.missing
+
+
+def test_table_registry_base_register_many_preserves_alias_and_model_keys() -> None:
+    registry = TableRegistryBase()
+
+    registry.register_many([("model_alias", Model), SAStyleModel])
+
+    assert list(registry) == ["model_alias", "Model", "SAStyleModel"]
+    assert registry["model_alias"] is Model
+    assert registry["Model"] is Model
+    assert registry["SAStyleModel"] is SAStyleModel
+
+
+def test_table_registry_base_attribute_assignment_tracks_mapping() -> None:
+    registry = TableRegistryBase()
+
+    registry.Widget = Model
+    registry.tables = (SAStyleModel,)
+
+    assert registry["Widget"] is Model
+    assert registry.tables == (SAStyleModel,)

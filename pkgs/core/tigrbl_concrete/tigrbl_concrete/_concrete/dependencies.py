@@ -7,6 +7,8 @@ from typing import Any, Callable
 
 class Dependency:
     def __init__(self, dependency: Callable[..., Any]) -> None:
+        if not callable(dependency):
+            raise TypeError("Dependency wrappers require a callable target.")
         self.dependency = dependency
 
 

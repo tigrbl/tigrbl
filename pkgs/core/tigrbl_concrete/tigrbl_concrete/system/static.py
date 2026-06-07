@@ -17,9 +17,17 @@ def _safe_join(base: Path, relative: str) -> Path | None:
 
 
 def _mount_static(router: Any, *, directory: str | Path, path: str = "/static") -> Any:
-    mount_path = path if str(path).startswith('/') else f'/{path}'
+    mount_path_raw = str(path or "")
+    if not mount_path_raw.startswith("/"):
+        raise ValueError("static mount path must be absolute.")
+    mount_path = mount_path_raw.rstrip("/") or "/"
+    if mount_path in {"/rpc", "/system", "/docs", "/openapi.json", "/openrpc.json"}:
+        raise ValueError(f"static mount path {mount_path!r} is reserved.")
+    directory_path = Path(directory).resolve()
+    if not directory_path.exists() or not directory_path.is_dir():
+        raise ValueError("static mount directory must exist and be a directory.")
     mounts = list(getattr(router, '_static_mounts', []) or [])
-    mounts.append({'path': mount_path.rstrip('/') or '/', 'directory': str(Path(directory).resolve())})
+    mounts.append({'path': mount_path, 'directory': str(directory_path)})
     router._static_mounts = mounts
     return router
 
