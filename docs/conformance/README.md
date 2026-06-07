@@ -1,25 +1,35 @@
 # Conformance
 
-This section defines the frozen current target, the current repository state, the next-target plan, the RFC/security evidence map, the durable evidence model, the implementation map, the next steps, the claim registry, the dev/release bundles, and the gate model.
+This directory is a non-authoritative projection and evidence area. The
+authoritative source for features, claims, tests, evidence, boundaries, releases,
+ADRs, and specs is the SSOT tree:
 
-## Read first
+- `.ssot/registry.json`
+- `.ssot/adr/`
+- `.ssot/specs/`
+- `.ssot/releases/`
+- `.ssot/reports/`
 
-1. `CURRENT_TARGET.md`
-2. `CURRENT_STATE.md`
-3. `NEXT_TARGETS.md`
-4. `RFC_SECURITY_EVIDENCE_MAP.md`
-5. `EVIDENCE_MODEL.md`
-6. `IMPLEMENTATION_MAP.md`
-7. `NEXT_STEPS.md`
-8. `CLAIM_REGISTRY.md`
-9. `GATE_MODEL.md`
-10. `dev/0.3.19.dev1/EVIDENCE_INDEX.md`
-11. `releases/0.3.18/EVIDENCE_INDEX.md`
+Do not treat root-level conformance projections as source of truth when they
+disagree with SSOT state. Stale current-target, gate, claim-registry, and
+evidence-registry projections have been removed from this directory.
 
-## Recent audit checkpoints
+## Reader Path
 
-- `audit/2026/p10-gate-b/README.md`
-- `audit/2026/p11-gate-c/README.md`
-- `audit/2026/p12-gate-d/README.md`
-- `audit/2026/p13-gate-e/README.md`
-- `audit/2026/post-promotion-handoff/README.md`
+1. Inspect `.ssot/registry.json` for current entity state.
+2. Inspect `.ssot/adr/` and `.ssot/specs/` for governing decisions and specs.
+3. Inspect `.ssot/releases/` for boundary and release snapshots.
+4. Inspect `.ssot/reports/` for generated reports and verification artifacts.
+5. Use `docs/conformance/releases/`, `docs/conformance/dev/`, and
+   `docs/conformance/audit/` only as historical or checkpoint evidence unless a
+   file explicitly says it was generated from the current SSOT state.
+
+## Directory Roles
+
+- `releases/` stores historical release evidence bundles.
+- `dev/` stores development checkpoint evidence bundles.
+- `audit/` stores captured audit/checkpoint material.
+- `archive/` stores legacy conformance material retained for traceability.
+
+Any new conformance summary should be generated from SSOT state and should state
+its generation source and timestamp.
