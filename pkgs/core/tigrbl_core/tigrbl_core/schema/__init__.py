@@ -12,6 +12,15 @@ from .spec_json import (
     build_shared_json_schema,
     build_spec_json_schema_bundle,
 )
+from .provenance import (
+    SurfaceDependencyEdge,
+    SurfaceProvenanceChain,
+    SurfaceProvenanceError,
+    SurfaceProvenanceNode,
+    SurfaceProvenanceReport,
+    validate_surface_provenance_chain,
+    validate_surface_provenance_chains,
+)
 from .utils import (
     namely_model,
     _make_bulk_ids_model,
@@ -39,4 +48,11 @@ __all__ = [
     "build_individual_spec_json_schemas",
     "build_shared_json_schema",
     "build_spec_json_schema_bundle",
+    "SurfaceDependencyEdge",
+    "SurfaceProvenanceChain",
+    "SurfaceProvenanceError",
+    "SurfaceProvenanceNode",
+    "SurfaceProvenanceReport",
+    "validate_surface_provenance_chain",
+    "validate_surface_provenance_chains",
 ]

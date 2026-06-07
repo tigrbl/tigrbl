@@ -1,0 +1,17 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1175"
+number: 1175
+slug: "json-schema-first-surface-provenance"
+title: "JSON Schema First Surface Provenance"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Public surface provenance begins with the governed JSON Schema when a JSON Schema exists. Lineage, provenance, and dependency edges are enforced as typed relationships instead of overloading matrix columns. Surfaces without JSON Schema provenance are partial until an explicit missing-schema disposition is declared."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Public surface provenance begins with the governed JSON Schema when a JSON Schema exists. Lineage, provenance, and dependency edges are enforced as typed relationships instead of overloading matrix columns. Surfaces without JSON Schema provenance are partial until an explicit missing-schema disposition is declared.

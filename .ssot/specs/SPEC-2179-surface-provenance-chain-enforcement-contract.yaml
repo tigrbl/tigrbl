@@ -1,0 +1,22 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2179"
+number: 2179
+slug: "surface-provenance-chain-enforcement-contract"
+title: "Surface Provenance Chain Enforcement Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines typed enforcement for public surface lineage, provenance, and dependency chains. A complete chain begins with the governed JSON Schema artifact, then the spec dataclass, base contract, concrete implementation, construction surface, public import/shortcut/decorator surface, collection/include/mount surface, compiled projection, runtime behavior, and tests/evidence/claims. Validators must fail closed for missing JSON Schema provenance unless explicitly marked partial, dangling dependency edges, duplicate nodes, and non-make helpers recorded as make construction surfaces."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Defines typed enforcement for public surface lineage, provenance, and dependency chains. A complete chain begins with the governed JSON Schema artifact, then the spec dataclass, base contract, concrete implementation, construction surface, public import/shortcut/decorator surface, collection/include/mount surface, compiled projection, runtime behavior, and tests/evidence/claims. Validators must fail closed for missing JSON Schema provenance unless explicitly marked partial, dangling dependency edges, duplicate nodes, and non-make helpers recorded as make construction surfaces.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1175"
+  - "adr:1137"
+  - "adr:0609"
