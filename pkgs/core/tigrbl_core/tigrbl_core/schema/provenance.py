@@ -71,6 +71,7 @@ class SurfaceProvenanceReport:
     surface: str
     passed: bool
     errors: tuple[str, ...]
+    warnings: tuple[str, ...] = ()
 
 
 class SurfaceProvenanceError(ValueError):
@@ -84,16 +85,17 @@ def validate_surface_provenance_chain(
 ) -> SurfaceProvenanceReport:
     """Validate lineage, provenance, and dependency edges for one surface.
 
-    T0 is covered by artifact presence and dependency resolution. T1 is covered
-    by JSON-schema-first ordering. T2 is covered by fail-closed validation of
-    duplicate nodes, dangling dependencies, and construction-kind semantics.
+    Ordering and malformed construction semantics are errors. Missing chain
+    nodes are warnings so gaps remain visible without being confused with
+    invalid lineage/provenance/dependency order.
     """
 
-    errors = tuple(_validate(chain))
+    errors, warnings = _validate(chain)
     report = SurfaceProvenanceReport(
         surface=chain.surface,
         passed=not errors,
         errors=errors,
+        warnings=warnings,
     )
     if strict and errors:
         raise SurfaceProvenanceError("; ".join(errors))
@@ -120,17 +122,18 @@ def validate_surface_provenance_chains(
     return reports
 
 
-def _validate(chain: SurfaceProvenanceChain) -> Sequence[str]:
+def _validate(chain: SurfaceProvenanceChain) -> tuple[tuple[str, ...], tuple[str, ...]]:
     errors: list[str] = []
+    warnings: list[str] = []
     if not chain.surface:
         errors.append("surface must be non-empty")
     if not chain.nodes:
         errors.append("chain must declare at least one node")
-        return errors
+        return tuple(errors), tuple(warnings)
 
     names = [node.name for node in chain.nodes]
     if any(not name for name in names):
-        errors.append("node names must be non-empty")
+        warnings.append("node names must be non-empty")
 
     duplicates = sorted({name for name in names if names.count(name) > 1})
     if duplicates:
@@ -141,29 +144,40 @@ def _validate(chain: SurfaceProvenanceChain) -> Sequence[str]:
         errors.append("first provenance node must be a JSON Schema")
     if first.stage == "json_schema" and first.name == "missing":
         if not chain.allow_missing_json_schema:
-            errors.append("missing JSON Schema requires allow_missing_json_schema")
+            warnings.append("missing JSON Schema requires allow_missing_json_schema")
 
     last_order = -1
+    declared_stages: set[ProvenanceStage] = set()
     for node in chain.nodes:
+        declared_stages.add(node.stage)
         order = _ORDER_INDEX[node.stage]
         if order < last_order:
             errors.append(f"{node.name} is out of provenance order")
         last_order = max(last_order, order)
-        if node.kind == "make" and not node.name.startswith("make"):
+        if node.kind == "make" and not _is_make_name(node.name):
             errors.append(f"{node.name} is not a make construction surface")
         if node.kind is not None and node.stage != "construction":
             errors.append(f"{node.name} has construction kind outside construction")
 
+    if "json_schema" in declared_stages and "verification" in declared_stages:
+        for stage in _ORDER:
+            if stage not in declared_stages:
+                warnings.append(f"provenance stage is not declared: {stage}")
+
     known = set(names)
     for edge in chain.dependencies:
         if edge.source not in known:
-            errors.append(f"dependency source is not declared: {edge.source}")
+            warnings.append(f"dependency source is not declared: {edge.source}")
         if edge.target not in known:
-            errors.append(f"dependency target is not declared: {edge.target}")
+            warnings.append(f"dependency target is not declared: {edge.target}")
         if not edge.relation:
             errors.append(f"dependency relation is empty: {edge.source}->{edge.target}")
 
-    return errors
+    return tuple(errors), tuple(warnings)
+
+
+def _is_make_name(name: str) -> bool:
+    return name == "make" or name.startswith("make")
 
 
 __all__ = [

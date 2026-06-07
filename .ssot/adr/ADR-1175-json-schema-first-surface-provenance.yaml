@@ -15,3 +15,5 @@ status_notes: []
 references: []
 body: |-
   Public surface provenance begins with the governed JSON Schema when a JSON Schema exists. Lineage, provenance, and dependency edges are enforced as typed relationships instead of overloading matrix columns. Surfaces without JSON Schema provenance are partial until an explicit missing-schema disposition is declared.
+  
+  Every row, lineage family, and provenance chain that appears in the spec/surface matrix must be represented by an authoritative machine-readable provenance inventory. The matrix is a projection of that inventory, not an independent registry. Tests must fail on invalid declared order or malformed dependency semantics and must warn on declared gaps or missing nodes only when those gaps carry an explicit disposition.

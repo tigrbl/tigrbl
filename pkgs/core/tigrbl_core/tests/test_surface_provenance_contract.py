@@ -45,6 +45,7 @@ def test_surface_provenance_t0_t1_accepts_json_schema_first_chain() -> None:
 
     assert report.passed is True
     assert report.errors == ()
+    assert report.warnings == ()
 
 
 def test_surface_provenance_t1_rejects_non_schema_first_lineage() -> None:
@@ -60,7 +61,7 @@ def test_surface_provenance_t1_rejects_non_schema_first_lineage() -> None:
         validate_surface_provenance_chain(chain)
 
 
-def test_surface_provenance_t2_rejects_dangling_dependency_edges() -> None:
+def test_surface_provenance_t2_warns_for_dangling_dependency_edges() -> None:
     chain = SurfaceProvenanceChain(
         surface="Schema",
         nodes=(
@@ -72,8 +73,11 @@ def test_surface_provenance_t2_rejects_dangling_dependency_edges() -> None:
         ),
     )
 
-    with pytest.raises(SurfaceProvenanceError, match="dependency target"):
-        validate_surface_provenance_chain(chain)
+    report = validate_surface_provenance_chain(chain)
+
+    assert report.passed is True
+    assert report.errors == ()
+    assert "dependency target is not declared: Schema" in report.warnings
 
 
 def test_surface_provenance_t2_rejects_factory_in_make_column() -> None:
@@ -110,6 +114,8 @@ def test_surface_provenance_t2_accepts_actual_make_constructor() -> None:
     report = validate_surface_provenance_chain(chain)
 
     assert report.passed is True
+    assert report.errors == ()
+    assert "provenance stage is not declared: collection" in report.warnings
 
 
 def test_surface_provenance_t2_reports_all_chain_errors() -> None:
@@ -130,5 +136,19 @@ def test_surface_provenance_t2_reports_all_chain_errors() -> None:
 
     assert reports[0].passed is True
     assert reports[1].passed is False
-    assert "missing JSON Schema" in "; ".join(reports[1].errors)
+    assert "missing JSON Schema" in "; ".join(reports[1].warnings)
     assert "duplicate provenance nodes" in "; ".join(reports[1].errors)
+
+
+def test_surface_provenance_t2_rejects_out_of_order_existing_nodes() -> None:
+    chain = SurfaceProvenanceChain(
+        surface="Column",
+        nodes=(
+            SurfaceProvenanceNode("json_schema", "ColumnSpec.json"),
+            SurfaceProvenanceNode("concrete", "Column"),
+            SurfaceProvenanceNode("base_contract", "ColumnBase"),
+        ),
+    )
+
+    with pytest.raises(SurfaceProvenanceError, match="out of provenance order"):
+        validate_surface_provenance_chain(chain)

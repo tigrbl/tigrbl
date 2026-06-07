@@ -21,6 +21,13 @@ from .provenance import (
     validate_surface_provenance_chain,
     validate_surface_provenance_chains,
 )
+from .provenance_inventory import (
+    MATRIX_COLUMNS,
+    RELATION_DIRECTIONS,
+    SurfaceInventoryRow,
+    inventory_matrix_signatures,
+    load_surface_provenance_inventory,
+)
 from .utils import (
     namely_model,
     _make_bulk_ids_model,
@@ -55,4 +62,9 @@ __all__ = [
     "SurfaceProvenanceReport",
     "validate_surface_provenance_chain",
     "validate_surface_provenance_chains",
+    "MATRIX_COLUMNS",
+    "RELATION_DIRECTIONS",
+    "SurfaceInventoryRow",
+    "inventory_matrix_signatures",
+    "load_surface_provenance_inventory",
 ]

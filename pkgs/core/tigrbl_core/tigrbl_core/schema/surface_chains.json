@@ -1,0 +1,2842 @@
+{
+  "rows": [
+    {
+      "disposition": "partial",
+      "id": "001-aliasspec",
+      "matrix": {
+        "Base": "`AliasBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Alias`",
+        "Dataclass": "no, ABC",
+        "Decorator(s)": "`alias`, `alias_ctx`, `op_alias`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`AliasSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "complete",
+      "id": "002-appspec",
+      "matrix": {
+        "Base": "`AppBase`",
+        "Class collection": "`ROUTERS`, `TABLES`, `OPS`, `WELL_KNOWN`, `SCHEMAS`, `HOOKS`, `DEPS`, `SECURITY_DEPS`, `MIDDLEWARES`, `ENGINES`, `ENGINE`, `ENGINE_NAME`, `RESPONSE`, `JSONRPC_PREFIX`, `SYSTEM_PREFIX`, `LIFESPAN`, `TITLE`, `DESCRIPTION`, `VERSION`, `EXECUTION_BACKEND`",
+        "Concrete(s)": "`App`, `TigrblApp`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "`include_router`",
+        "Include bulk": "`include_routers`",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.app`",
+        "Spec": "`AppSpec`",
+        "define_*": "`defineAppSpec`",
+        "derive_*": "`deriveApp`",
+        "make_*": "n/a"
+      },
+      "partial_reasons": []
+    },
+    {
+      "disposition": "partial",
+      "id": "003-bindingregistryspec",
+      "matrix": {
+        "Base": "`BindingRegistryBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`BindingRegistry`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`BindingRegistrySpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "004-bindingspec",
+      "matrix": {
+        "Base": "`BindingBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Binding`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`BindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "005-columnspec",
+      "matrix": {
+        "Base": "`ColumnBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Column`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.column`, `acol`, `vcol`",
+        "Spec": "`ColumnSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "`makeColumn`, `makeVirtualColumn`"
+      },
+      "partial_reasons": [
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "006-datatypespec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`DataTypeSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "007-docspayloadspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "`mount_openapi`, `mount_openrpc`, `mount_json_schema`",
+        "Shortcut(s)": "n/a",
+        "Spec": "`DocsPayloadSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "008-docsprojectionspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`DocsProjectionSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "009-docsuixspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "`mount_swagger`, `mount_lens`, `mount_healthz_uix`",
+        "Shortcut(s)": "n/a",
+        "Spec": "`DocsUixSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "010-engineproviderspec",
+      "matrix": {
+        "Base": "`EngineProviderBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Provider`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`EngineProviderSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "011-engineregistry",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`EngineRegistry`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "012-enginespec",
+      "matrix": {
+        "Base": "`EngineBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Engine`",
+        "Dataclass": "yes",
+        "Decorator(s)": "`engine_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.engine`, `engine_spec`, `engine`, `prov`, `provider_sqlite_memory`, `provider_sqlite_file`, `provider_postgres`, `sqlite_cfg`, `pg_cfg`, `mem`, `sqlitef`, `pg`, `pga`, `pgs`",
+        "Spec": "`EngineSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "013-fieldspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`FieldSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "014-foreignkeyspec",
+      "matrix": {
+        "Base": "`ForeignKeyBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`ForeignKey`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`ForeignKeySpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "015-hookspec",
+      "matrix": {
+        "Base": "`HookBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Hook`",
+        "Dataclass": "yes",
+        "Decorator(s)": "`hook_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.hook`, `hook_spec`, `hook`",
+        "Spec": "`HookSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "016-httpbindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`HTTPBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "017-httpjsonrpcbindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "`mount_jsonrpc`",
+        "Shortcut(s)": "n/a",
+        "Spec": "`HttpJsonRpcBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "018-httprestbindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "`get`, `post`, `put`, `patch`, `delete`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "`mount_rest`",
+        "Shortcut(s)": "`tigrbl.shortcuts.rest`",
+        "Spec": "`HttpRestBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "019-httpstreambindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "`stream_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`HttpStreamBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "020-iospec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`IOSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "021-middlewarespec",
+      "matrix": {
+        "Base": "`MiddlewareBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Middleware`",
+        "Dataclass": "no",
+        "Decorator(s)": "`middleware`, `middlewares`, `MiddlewareConfig`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`MiddlewareSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "022-opspec",
+      "matrix": {
+        "Base": "`OpBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Op`",
+        "Dataclass": "yes",
+        "Decorator(s)": "`op_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.op`, `op`",
+        "Spec": "`OpSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "`make`"
+      },
+      "partial_reasons": [
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "023-pathspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "`mount_static`, `mount_app`",
+        "Shortcut(s)": "n/a",
+        "Spec": "`PathSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "024-reflecteddatatype",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`ReflectedDatatype`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "025-requestspec",
+      "matrix": {
+        "Base": "`RequestBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Request`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`RequestSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "026-responsespec",
+      "matrix": {
+        "Base": "`ResponseBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Response`, `TransportResponse`",
+        "Dataclass": "yes",
+        "Decorator(s)": "`response_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.responses`, `as_json`, `as_html`, `as_text`, `as_redirect`, `as_stream`, `as_event_stream`, `as_file`",
+        "Spec": "`ResponseSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "complete",
+      "id": "027-routerspec",
+      "matrix": {
+        "Base": "`RouterBase`",
+        "Class collection": "`PATHS`, `TAGS`, `PREFIX`, `NAME`",
+        "Concrete(s)": "`Router`, `TigrblRouter`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "`include_table`",
+        "Include bulk": "`include_tables`",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.router`",
+        "Spec": "`RouterSpec`",
+        "define_*": "`defineRouterSpec`",
+        "derive_*": "`deriveRouter`",
+        "make_*": "n/a"
+      },
+      "partial_reasons": []
+    },
+    {
+      "disposition": "partial",
+      "id": "028-schemaref",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`SchemaRef`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "029-schemaspec",
+      "matrix": {
+        "Base": "`SchemaBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Schema`",
+        "Dataclass": "yes",
+        "Decorator(s)": "`schema_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.schema`, `schema_spec`, `schema`",
+        "Spec": "`SchemaSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "030-sessionspec",
+      "matrix": {
+        "Base": "`SessionABC`, `TigrblSessionBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`DefaultSession`",
+        "Dataclass": "yes",
+        "Decorator(s)": "`session_ctx`, `read_only_session`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`session_spec`, `readonly`, `tx_read_committed`, `tx_repeatable_read`, `tx_serializable`",
+        "Spec": "`SessionSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "031-ssebindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "`sse_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`SseBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "032-storagespec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`StorageSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "033-storagetransformspec",
+      "matrix": {
+        "Base": "`StorageTransformBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`StorageTransform`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`StorageTransformSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "034-storagetyperef",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`StorageTypeRef`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "035-tableregistryspec",
+      "matrix": {
+        "Base": "`TableRegistryBase`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`TableRegistry`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`TableRegistrySpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "complete",
+      "id": "036-tablespec",
+      "matrix": {
+        "Base": "`TableBase`",
+        "Class collection": "`COLUMNS`",
+        "Concrete(s)": "`Table`",
+        "Dataclass": "yes",
+        "Decorator(s)": "`allow_anon`",
+        "Include": "`include_model`",
+        "Include bulk": "`include_models`",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.shortcuts.table`",
+        "Spec": "`TableSpec`",
+        "define_*": "`defineTableSpec`",
+        "derive_*": "`deriveTable`",
+        "make_*": "n/a"
+      },
+      "partial_reasons": []
+    },
+    {
+      "disposition": "partial",
+      "id": "037-templatespec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`TemplateSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "038-transportbindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`TransportBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "039-typeregistry",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`TypeRegistry`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "040-websocketbindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`WebSocketBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "041-webtransportbindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "`webtransport_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`WebTransportBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "042-wellknownresourcespec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`WellKnownResource`",
+        "Dataclass": "yes",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none",
+        "Mount": "`mount_well_known`",
+        "Shortcut(s)": "n/a",
+        "Spec": "`WellKnownResourceSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "043-wsbindingspec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "yes",
+        "Decorator(s)": "`websocket_ctx`",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "generated",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "`WsBindingSpec`",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "044-schemas-bundle-json",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "`schemas/bundle.json`",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "045-schemas-shared-json",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "`schemas/shared.json`",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "046-attrdict",
+      "matrix": {
+        "Base": "`AttrDict`",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "047-route",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Route`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "048-backgroundtask",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`BackgroundTask`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "049-body",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Body`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "050-uploadedfile",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`UploadedFile`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "051-websocket",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`WebSocket`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "052-dependency",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`Dependency`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "053-apikey",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`APIKey`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "054-httpbasic",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`HTTPBasic`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "055-httpbearer",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`HTTPBearer`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "056-openapisecuritydependency",
+      "matrix": {
+        "Base": "`OpenAPISecurityDependency`",
+        "Class collection": "n/a",
+        "Concrete(s)": "`OAuth2`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "057-openidconnect",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`OpenIdConnect`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "058-mutualtls",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`MutualTLS`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "059-corsmiddleware",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`CORSMiddleware`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "060-favicon-path",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`FAVICON_PATH`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "061-htmlresponse",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`HTMLResponse`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "062-jsonresponse",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`JSONResponse`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "063-plaintextresponse",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`PlainTextResponse`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "064-streamingresponse",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`StreamingResponse`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "065-eventstreamresponse",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`EventStreamResponse`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "066-fileresponse",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`FileResponse`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "067-redirectresponse",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`RedirectResponse`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "068-wrap-sessionmaker",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "`wrap_sessionmaker`",
+        "Dataclass": "no",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "069-mount-diagnostics",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`mount_diagnostics`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "070-mount-favicon",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`mount_favicon`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "071-build-healthz-uix",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_healthz_uix`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "072-build-openapi",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_openapi`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "073-build-swagger",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_swagger`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "074-build-lens",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_lens`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "075-build-favicon",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_favicon`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "076-build-openrpc-spec",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_openrpc_spec`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "077-build-json-schema-bundle",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_json_schema_bundle`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "078-build-rest-router",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`build_rest_router`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "079-stop-uvicorn-server",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`stop_uvicorn_server`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "080-normalize-well-known-name",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`normalize_well_known_name`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "081-well-known-path",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "`well_known_path`",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "082-bind",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`bind`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "083-rebind",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`rebind`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "084-build-schemas",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`build_schemas`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "085-build-hooks",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`build_hooks`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "086-build-handlers",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`build_handlers`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "087-register-rpc",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`register_rpc`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "088-build-rest",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`build_rest`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "089-rpc-call",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`rpc_call`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "090-set-auth",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`set_auth`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "091-add-middleware",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`add_middleware`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "092-add-route",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`add_route`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "093-add-router-route",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`add_router_route`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "094-attach-diagnostics",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`attach_diagnostics`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "095-initialize",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`initialize`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "096-install-engines",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`install_engines`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "097-registry",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "`registry`",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "098-table-config",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "`table_config`",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "099-tigrbl-allow-anon",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "`__tigrbl_allow_anon__`",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "n/a",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: public_surface",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "100-tigrbl-decorators",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.decorators`",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "101-tigrbl-factories",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "`tigrbl.factories`",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: construction",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "102-depends",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "`Depends`",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    },
+    {
+      "disposition": "partial",
+      "id": "103-security",
+      "matrix": {
+        "Base": "n/a",
+        "Class collection": "n/a",
+        "Concrete(s)": "n/a",
+        "Dataclass": "n/a",
+        "Decorator(s)": "n/a",
+        "Include": "n/a",
+        "Include bulk": "n/a",
+        "JSON schema": "none; missing spec",
+        "Mount": "n/a",
+        "Shortcut(s)": "`Security`",
+        "Spec": "missing",
+        "define_*": "n/a",
+        "derive_*": "n/a",
+        "make_*": "n/a"
+      },
+      "partial_reasons": [
+        "missing provenance stage: spec_dataclass",
+        "missing provenance stage: base_contract",
+        "missing provenance stage: concrete",
+        "missing provenance stage: public_surface",
+        "missing provenance stage: collection",
+        "missing JSON Schema provenance",
+        "missing first-class spec"
+      ]
+    }
+  ],
+  "schema_version": 1,
+  "source": "docs/spec-surface-matrix.md"
+}

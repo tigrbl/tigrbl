@@ -8,13 +8,17 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Defines typed enforcement for public surface lineage, provenance, and dependency chains. A complete chain begins with the governed JSON Schema artifact, then the spec dataclass, base contract, concrete implementation, construction surface, public import/shortcut/decorator surface, collection/include/mount surface, compiled projection, runtime behavior, and tests/evidence/claims. Validators must fail closed for missing JSON Schema provenance unless explicitly marked partial, dangling dependency edges, duplicate nodes, and non-make helpers recorded as make construction surfaces."
+summary: "Defines typed enforcement for public surface lineage, provenance, and dependency chains. A complete chain begins with the governed JSON Schema artifact, then the spec dataclass, base contract, concrete implementation, construction surface, public import/shortcut/decorator surface, collection/include/mount surface, compiled projection, runtime behavior, and tests/evidence/claims."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Defines typed enforcement for public surface lineage, provenance, and dependency chains. A complete chain begins with the governed JSON Schema artifact, then the spec dataclass, base contract, concrete implementation, construction surface, public import/shortcut/decorator surface, collection/include/mount surface, compiled projection, runtime behavior, and tests/evidence/claims. Validators must fail closed for missing JSON Schema provenance unless explicitly marked partial, dangling dependency edges, duplicate nodes, and non-make helpers recorded as make construction surfaces.
+  Defines typed enforcement for public surface lineage, provenance, and dependency chains. A complete chain begins with the governed JSON Schema artifact, then the spec dataclass, base contract, concrete implementation, construction surface, public import/shortcut/decorator surface, collection/include/mount surface, compiled projection, runtime behavior, and tests/evidence/claims.
+  
+  Validators must raise errors for order violations, duplicate declared nodes, invalid construction-kind classification, and malformed dependency relations. Validators must raise warnings for missing nodes within a chain, including missing JSON Schema provenance and dependency edges that point at undeclared nodes.
+  
+  A repository-wide provenance inventory is required for every spec/surface matrix row, lineage family, and provenance chain. Inventory conformance tests must verify matrix row coverage, chain validation, complete-row warning absence, partial-row expected-warning declarations, import/path/symbol resolution for declared nodes, dependency relation vocabulary and direction, matrix projection parity, and SSOT verification-node resolution.
 spec_kind: "normative"
 adr_ids:
   - "adr:1175"
