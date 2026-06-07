@@ -8,6 +8,7 @@ from tigrbl_core.schema import (
     SurfaceProvenanceError,
     SurfaceProvenanceNode,
     validate_surface_provenance_chain,
+    validate_surface_provenance_chains,
 )
 
 
@@ -57,3 +58,77 @@ def test_surface_provenance_t1_rejects_non_schema_first_lineage() -> None:
 
     with pytest.raises(SurfaceProvenanceError, match="first provenance node"):
         validate_surface_provenance_chain(chain)
+
+
+def test_surface_provenance_t2_rejects_dangling_dependency_edges() -> None:
+    chain = SurfaceProvenanceChain(
+        surface="Schema",
+        nodes=(
+            SurfaceProvenanceNode("json_schema", "SchemaSpec.json"),
+            SurfaceProvenanceNode("spec_dataclass", "SchemaSpec"),
+        ),
+        dependencies=(
+            SurfaceDependencyEdge("SchemaSpec.json", "Schema", "json_schema_of"),
+        ),
+    )
+
+    with pytest.raises(SurfaceProvenanceError, match="dependency target"):
+        validate_surface_provenance_chain(chain)
+
+
+def test_surface_provenance_t2_rejects_factory_in_make_column() -> None:
+    chain = SurfaceProvenanceChain(
+        surface="Schema",
+        nodes=(
+            SurfaceProvenanceNode("json_schema", "SchemaSpec.json"),
+            SurfaceProvenanceNode("spec_dataclass", "SchemaSpec"),
+            SurfaceProvenanceNode("construction", "schema", kind="make"),
+        ),
+    )
+
+    with pytest.raises(SurfaceProvenanceError, match="not a make"):
+        validate_surface_provenance_chain(chain)
+
+
+def test_surface_provenance_t2_accepts_actual_make_constructor() -> None:
+    chain = SurfaceProvenanceChain(
+        surface="Column",
+        nodes=(
+            SurfaceProvenanceNode("json_schema", "ColumnSpec.json"),
+            SurfaceProvenanceNode("spec_dataclass", "ColumnSpec"),
+            SurfaceProvenanceNode("base_contract", "ColumnBase"),
+            SurfaceProvenanceNode("concrete", "Column"),
+            SurfaceProvenanceNode("construction", "makeColumn", kind="make"),
+            SurfaceProvenanceNode("public_surface", "tigrbl.shortcuts.column"),
+            SurfaceProvenanceNode(
+                "verification",
+                "tst:surface-provenance-chain-t2-contract",
+            ),
+        ),
+    )
+
+    report = validate_surface_provenance_chain(chain)
+
+    assert report.passed is True
+
+
+def test_surface_provenance_t2_reports_all_chain_errors() -> None:
+    reports = validate_surface_provenance_chains(
+        (
+            _schema_chain(),
+            SurfaceProvenanceChain(
+                surface="OAuth2",
+                nodes=(
+                    SurfaceProvenanceNode("json_schema", "missing"),
+                    SurfaceProvenanceNode("concrete", "OAuth2"),
+                    SurfaceProvenanceNode("concrete", "OAuth2"),
+                ),
+            ),
+        ),
+        strict=False,
+    )
+
+    assert reports[0].passed is True
+    assert reports[1].passed is False
+    assert "missing JSON Schema" in "; ".join(reports[1].errors)
+    assert "duplicate provenance nodes" in "; ".join(reports[1].errors)
