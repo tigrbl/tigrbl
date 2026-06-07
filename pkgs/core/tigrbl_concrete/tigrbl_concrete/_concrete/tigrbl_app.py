@@ -148,6 +148,8 @@ class TigrblApp(_App):
         setattr(app, "_tigrbl_docs_payloads", {})
         setattr(app, "_tigrbl_docs_uix", {})
         install_appspec_engine_inventory(app, spec)
+        if tuple(getattr(spec, "well_known", ()) or ()):
+            app.mount_well_known(tuple(getattr(spec, "well_known", ()) or ()))
         existing_tables = dict(getattr(app, "tables", {}) or {})
         table_registry = TableRegistry(tables=spec_tables)
         for name, table in existing_tables.items():

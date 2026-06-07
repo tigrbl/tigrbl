@@ -6,6 +6,7 @@ from typing import Any, Callable, Optional, Sequence
 from .._spec.engine_spec import EngineCfg, EngineSpec
 from .._spec.monotone import as_tuple, merge_mro_sequence_attr
 from .._spec.response_spec import ResponseSpec
+from .._spec.well_known_spec import WellKnownResourceSpec
 from .serde import SerdeMixin
 
 
@@ -51,6 +52,7 @@ def normalize_app_spec(spec: "AppSpec") -> "AppSpec":
         engines=_seqify(spec.engines),
         routers=routers,
         ops=ops,
+        well_known=_seqify(spec.well_known),
         tables=tables,
         schemas=_seqify(spec.schemas),
         hooks=_seqify(spec.hooks),
@@ -83,6 +85,7 @@ class AppSpec(SerdeMixin):
 
     # NEW: orchestration/topology knobs
     ops: Sequence[Any] = field(default_factory=tuple)  # op descriptors or specs
+    well_known: Sequence[WellKnownResourceSpec] = field(default_factory=tuple)
     tables: Sequence[Any] = field(default_factory=tuple)  # table refs owned by app
     schemas: Sequence[Any] = field(default_factory=tuple)  # schema classes/defs
     hooks: Sequence[Callable[..., Any]] = field(default_factory=tuple)
@@ -106,6 +109,7 @@ class AppSpec(SerdeMixin):
         self.engines = _seqify(self.engines)
         self.routers = _seqify(self.routers)
         self.ops = _seqify(self.ops)
+        self.well_known = _seqify(self.well_known)
         self.tables = _seqify(self.tables)
         self.schemas = _seqify(self.schemas)
         self.hooks = _seqify(self.hooks)
@@ -113,6 +117,14 @@ class AppSpec(SerdeMixin):
         self.deps = _seqify(self.deps)
         self.middlewares = _seqify(self.middlewares)
 
+        for resource in self.well_known:
+            if isinstance(resource, str):
+                raise TypeError("AppSpec.well_known entries must be nested specs, not strings.")
+            if not isinstance(resource, WellKnownResourceSpec):
+                raise TypeError(
+                    "AppSpec.well_known entries must be WellKnownResourceSpec; "
+                    f"got {type(resource).__name__}."
+                )
         validate_engine_inventory(self.engines)
         validate_engine_name_binding(
             self.engine_name,
@@ -255,6 +267,7 @@ class AppSpec(SerdeMixin):
                 or ()
             ),
             ops=tuple(merge_seq_attr(app, "OPS") or ()),
+            well_known=tuple(merge_seq_attr(app, "WELL_KNOWN") or ()),
             tables=tuple(merge_seq_attr(app, "TABLES") or ()),
             schemas=tuple(merge_seq_attr(app, "SCHEMAS") or ()),
             hooks=tuple(merge_seq_attr(app, "HOOKS") or ()),
@@ -277,6 +290,7 @@ class AppSpec(SerdeMixin):
                 engines=tuple(spec.engines or ()),
                 routers=tuple(spec.routers or ()),
                 ops=tuple(spec.ops or ()),
+                well_known=tuple(spec.well_known or ()),
                 tables=tuple(spec.tables or ()),
                 schemas=tuple(spec.schemas or ()),
                 hooks=tuple(spec.hooks or ()),

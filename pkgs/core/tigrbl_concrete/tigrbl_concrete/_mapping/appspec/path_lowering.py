@@ -33,6 +33,8 @@ def lower_appspec_routers(app: Any, spec: Any) -> None:
         setattr(router, "_tigrbl_docs_uix", _collect_docs_uix(router._tigrbl_path_specs))
 
         install_scope_engine_names(router=router)
+        if tuple(getattr(router_spec, "well_known", ()) or ()):
+            router.mount_well_known(tuple(getattr(router_spec, "well_known", ()) or ()))
         _lower_router_paths(router, router_spec)
         app.include_router(router, prefix=getattr(router_spec, "prefix", None))
 

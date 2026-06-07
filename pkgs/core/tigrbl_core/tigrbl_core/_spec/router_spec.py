@@ -10,6 +10,7 @@ from .._spec.path_spec import PathSpec
 from .._spec.response_spec import ResponseSpec
 from .._spec.schema_spec import SchemaSpec
 from .._spec.table_spec import TableSpec
+from .._spec.well_known_spec import WellKnownResourceSpec
 from .serde import SerdeMixin
 
 
@@ -29,10 +30,13 @@ class RouterSpec(SerdeMixin):
     deps: Sequence[Callable[..., Any]] = field(default_factory=tuple)
     middlewares: Sequence[Any] = field(default_factory=tuple)
     response: Optional[ResponseSpec] = None
+    well_known: Sequence[WellKnownResourceSpec] = field(default_factory=tuple)
     paths: Sequence[PathSpec] = field(default_factory=tuple)
     tables: Sequence[Any] = field(default_factory=tuple)
 
     def __post_init__(self) -> None:
+        self.well_known = tuple(self.well_known or ())
+        self._validate_nested_specs("well_known", self.well_known, (WellKnownResourceSpec,))
         self._validate_nested_specs("paths", self.paths, (PathSpec,))
         self._validate_nested_specs("tables", self.tables, (TableSpec,))
         self._validate_nested_specs("ops", self.ops, (OpSpec,))
@@ -102,6 +106,7 @@ class RouterSpec(SerdeMixin):
             engine_name=engine_name,
             tags=merge_seq_attr(router, "TAGS", include_inherited=True),
             ops=merge_seq_attr(router, "OPS", include_inherited=True),
+            well_known=merge_seq_attr(router, "WELL_KNOWN", include_inherited=True),
             paths=merge_seq_attr(router, "PATHS", include_inherited=True),
             tables=merge_seq_attr(router, "TABLES", include_inherited=True),
             schemas=merge_seq_attr(router, "SCHEMAS", include_inherited=True),

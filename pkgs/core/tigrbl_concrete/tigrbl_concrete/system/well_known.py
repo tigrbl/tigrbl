@@ -8,8 +8,11 @@ import re
 from typing import Any
 
 from tigrbl_concrete._concrete._response import Response
-
-WELL_KNOWN_PREFIX = "/.well-known"
+from tigrbl_core._spec.well_known_spec import (
+    WELL_KNOWN_PREFIX,
+    normalize_well_known_name,
+    well_known_path,
+)
 
 
 @dataclass(frozen=True)
@@ -21,30 +24,6 @@ class WellKnownResource:
     media_type: str = "application/json"
     status_code: int = 200
     headers: Mapping[str, str] | None = None
-
-
-def normalize_well_known_name(name: str) -> str:
-    token = str(name or "").strip()
-    if token.startswith(f"{WELL_KNOWN_PREFIX}/"):
-        token = token[len(WELL_KNOWN_PREFIX) + 1 :]
-    elif token.startswith("/"):
-        raise ValueError(
-            "Well-known resource names must be relative or start with "
-            f"{WELL_KNOWN_PREFIX}/."
-        )
-    token = token.strip("/")
-    if not token:
-        raise ValueError("Well-known resource name must not be empty.")
-    parts = token.split("/")
-    if any(part in {"", ".", ".."} for part in parts):
-        raise ValueError(f"Invalid well-known resource name: {name!r}.")
-    if any("?" in part or "#" in part for part in parts):
-        raise ValueError(f"Invalid well-known resource name: {name!r}.")
-    return "/".join(parts)
-
-
-def well_known_path(name: str) -> str:
-    return f"{WELL_KNOWN_PREFIX}/{normalize_well_known_name(name)}"
 
 
 def well_known_route_name(name: str) -> str:
@@ -99,6 +78,17 @@ def _coerce_resources(
             continue
         if isinstance(resource, Mapping):
             coerced.append(WellKnownResource(**dict(resource)))
+            continue
+        if hasattr(resource, "name") and hasattr(resource, "payload"):
+            coerced.append(
+                WellKnownResource(
+                    name=str(getattr(resource, "name")),
+                    payload=getattr(resource, "payload"),
+                    media_type=str(getattr(resource, "media_type", "application/json")),
+                    status_code=int(getattr(resource, "status_code", 200)),
+                    headers=getattr(resource, "headers", None),
+                )
+            )
             continue
         raise TypeError(
             "Well-known resources must be WellKnownResource instances or mappings."

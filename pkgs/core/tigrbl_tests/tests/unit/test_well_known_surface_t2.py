@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 from httpx import ASGITransport, Client
 
-from tigrbl import TigrblApp, TigrblRouter
+from tigrbl import AppSpec, RouterSpec, TigrblApp, TigrblRouter, WellKnownResourceSpec
 from tigrbl.factories.engine import mem
 from tigrbl.system import (
     WellKnownResource,
@@ -125,6 +125,57 @@ def test_router_method_mounts_well_known_resource_when_router_is_included() -> N
         assert response.json() == {"keys": []}
     finally:
         client.close()
+
+
+def test_appspec_well_known_resources_materialize_on_app_and_router() -> None:
+    spec = AppSpec(
+        well_known=(
+            WellKnownResourceSpec(
+                name="openid-configuration",
+                payload=OIDC_DISCOVERY_PAYLOAD,
+                headers={"cache-control": "public, max-age=300"},
+            ),
+        ),
+        routers=(
+            RouterSpec(
+                name="public",
+                well_known=(
+                    WellKnownResourceSpec(name="jwks.json", payload={"keys": []}),
+                ),
+            ),
+        ),
+    )
+
+    app = TigrblApp.from_spec(spec)
+
+    client = _client(app)
+    try:
+        discovery = client.get("/.well-known/openid-configuration")
+        jwks = client.get("/.well-known/jwks.json")
+
+        assert discovery.status_code == 200
+        assert discovery.json() == OIDC_DISCOVERY_PAYLOAD
+        assert discovery.headers["cache-control"] == "public, max-age=300"
+        assert jwks.status_code == 200
+        assert jwks.json() == {"keys": []}
+        assert client.get("/system/.well-known/openid-configuration").status_code == 404
+    finally:
+        client.close()
+
+
+def test_well_known_resource_spec_round_trips_through_appspec_serde() -> None:
+    source = AppSpec(
+        well_known=(
+            WellKnownResourceSpec(
+                name="oauth-authorization-server",
+                payload={"issuer": "https://issuer.example"},
+            ),
+        )
+    )
+
+    restored = AppSpec.from_dict(source.to_dict())
+
+    assert restored.well_known == source.well_known
 
 
 @pytest.mark.parametrize(
