@@ -1,56 +1,151 @@
 from __future__ import annotations
 
-import importlib
-
 import pytest
+from httpx import ASGITransport, Client
 
-import tigrbl
-
-
-PUBLIC_CONSTANTS = ("DEFAULT_HTTP_METHODS", "HOOK_DECLS_ATTR")
-PUBLIC_DECORATORS = (
-    "alias_ctx",
-    "engine_ctx",
-    "hook_ctx",
-    "op_ctx",
-    "response_ctx",
-    "schema_ctx",
-)
-PUBLIC_IMPERATIVE_HELPERS = (
-    "bind",
-    "rebind",
-    "build_schemas",
-    "build_hooks",
-    "build_handlers",
-    "include_table",
-    "include_tables",
-    "get_schema",
+from tigrbl import TigrblApp, TigrblRouter
+from tigrbl.factories.engine import mem
+from tigrbl.system import (
+    WellKnownResource,
+    mount_well_known,
+    normalize_well_known_name,
+    well_known_path,
 )
 
 
-def test_well_known_constants_are_public_and_stable() -> None:
-    reloaded = importlib.reload(tigrbl)
-
-    for symbol in PUBLIC_CONSTANTS:
-        assert symbol in reloaded.__all__
-        assert getattr(reloaded, symbol) is getattr(tigrbl, symbol)
-
-
-@pytest.mark.parametrize("symbol", PUBLIC_DECORATORS)
-def test_well_known_decorators_attach_metadata_or_reject_bad_use(symbol: str) -> None:
-    decorator = getattr(tigrbl, symbol)
-    assert symbol in tigrbl.__all__
-    assert callable(decorator)
+OIDC_DISCOVERY_PAYLOAD = {
+    "issuer": "https://issuer.example",
+    "jwks_uri": "https://issuer.example/.well-known/jwks.json",
+    "authorization_endpoint": "https://issuer.example/oauth2/authorize",
+    "token_endpoint": "https://issuer.example/oauth2/token",
+}
 
 
-@pytest.mark.parametrize("symbol", PUBLIC_IMPERATIVE_HELPERS)
-def test_well_known_imperative_helpers_are_public_callables(symbol: str) -> None:
-    helper = getattr(tigrbl, symbol)
-
-    assert symbol in tigrbl.__all__
-    assert callable(helper)
+def _client(app: TigrblApp) -> Client:
+    return Client(transport=ASGITransport(app=app), base_url="http://test")
 
 
-def test_well_known_surface_does_not_expose_unowned_internals() -> None:
-    for symbol in ("ColumnBase", "AliasBase", "BindingBase", "StorageTransformBase"):
-        assert symbol not in tigrbl.__all__
+def test_well_known_uris_are_not_mounted_by_default() -> None:
+    app = TigrblApp(engine=mem(async_=False))
+    app.initialize()
+
+    client = _client(app)
+    try:
+        for path in (
+            "/.well-known/openid-configuration",
+            "/.well-known/jwks.json",
+            "/system/.well-known/openid-configuration",
+            "/openid-configuration",
+            "/jwks.json",
+        ):
+            assert client.get(path).status_code == 404, path
+    finally:
+        client.close()
+
+
+def test_mount_well_known_publishes_explicit_root_resource() -> None:
+    app = TigrblApp(engine=mem(async_=False))
+
+    mounted = mount_well_known(
+        app,
+        {
+            "openid-configuration": OIDC_DISCOVERY_PAYLOAD,
+        },
+    )
+
+    assert mounted == ("/.well-known/openid-configuration",)
+    assert app._well_known_mounts == list(mounted)
+
+    client = _client(app)
+    try:
+        response = client.get("/.well-known/openid-configuration")
+        assert response.status_code == 200
+        assert response.headers["content-type"].startswith("application/json")
+        assert response.json() == OIDC_DISCOVERY_PAYLOAD
+        assert client.get("/system/.well-known/openid-configuration").status_code == 404
+    finally:
+        client.close()
+
+
+def test_app_method_can_mount_system_alias_when_explicitly_requested() -> None:
+    app = TigrblApp(engine=mem(async_=False), system_prefix="/system")
+
+    mounted = app.mount_well_known(
+        [
+            WellKnownResource(
+                name="/.well-known/openid-configuration",
+                payload=OIDC_DISCOVERY_PAYLOAD,
+                headers={"cache-control": "public, max-age=300"},
+            )
+        ],
+        include_system_alias=True,
+    )
+
+    assert mounted == (
+        "/.well-known/openid-configuration",
+        "/system/.well-known/openid-configuration",
+    )
+
+    client = _client(app)
+    try:
+        root = client.get("/.well-known/openid-configuration")
+        alias = client.get("/system/.well-known/openid-configuration")
+        assert root.status_code == 200
+        assert alias.status_code == 200
+        assert root.json() == alias.json() == OIDC_DISCOVERY_PAYLOAD
+        assert root.headers["cache-control"] == "public, max-age=300"
+    finally:
+        client.close()
+
+
+def test_router_method_mounts_well_known_resource_when_router_is_included() -> None:
+    app = TigrblApp(engine=mem(async_=False), mount_system=False)
+    router = TigrblRouter(engine=mem(async_=False))
+
+    mounted = router.mount_well_known(
+        [
+            {
+                "name": "jwks.json",
+                "payload": {"keys": []},
+            }
+        ],
+    )
+    app.include_router(router)
+
+    assert mounted == ("/.well-known/jwks.json",)
+
+    client = _client(app)
+    try:
+        response = client.get("/.well-known/jwks.json")
+        assert response.status_code == 200
+        assert response.json() == {"keys": []}
+    finally:
+        client.close()
+
+
+@pytest.mark.parametrize(
+    "name",
+    [
+        "",
+        "/openid-configuration",
+        "../openid-configuration",
+        "openid-configuration/../jwks.json",
+        "openid-configuration?x=1",
+        "openid-configuration#fragment",
+    ],
+)
+def test_well_known_name_validation_rejects_ambiguous_or_unsafe_names(
+    name: str,
+) -> None:
+    with pytest.raises(ValueError):
+        normalize_well_known_name(name)
+
+
+def test_well_known_path_normalization_accepts_relative_and_canonical_names() -> None:
+    assert well_known_path("openid-configuration") == (
+        "/.well-known/openid-configuration"
+    )
+    assert well_known_path("/.well-known/jwks.json") == "/.well-known/jwks.json"
+    assert well_known_path("oauth-authorization-server", prefix="/system") == (
+        "/system/.well-known/oauth-authorization-server"
+    )

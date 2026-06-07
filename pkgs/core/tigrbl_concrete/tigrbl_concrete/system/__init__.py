@@ -69,6 +69,27 @@ def mount_static(*args: Any, **kwargs: Any) -> Any:
     return _mount_static(*args, **kwargs)
 
 
+def mount_well_known(*args: Any, **kwargs: Any) -> Any:
+    from .well_known import mount_well_known as _mount_well_known
+
+    return _mount_well_known(*args, **kwargs)
+
+
+def normalize_well_known_name(*args: Any, **kwargs: Any) -> Any:
+    from .well_known import normalize_well_known_name as _normalize_well_known_name
+
+    return _normalize_well_known_name(*args, **kwargs)
+
+
+def well_known_path(*args: Any, **kwargs: Any) -> Any:
+    from .well_known import well_known_path as _well_known_path
+
+    return _well_known_path(*args, **kwargs)
+
+
+from .well_known import WellKnownResource  # noqa: E402
+
+
 def build_openapi(*args: Any, **kwargs: Any) -> Any:
     from .docs import build_openapi as _build_openapi
 
@@ -113,6 +134,7 @@ def stop_uvicorn_server(*args: Any, **kwargs: Any) -> Any:
 
 __all__ = [
     'FAVICON_PATH',
+    'WellKnownResource',
     'mount_diagnostics',
     'mount_healthz_uix',
     'mount_favicon',
@@ -122,6 +144,9 @@ __all__ = [
     'mount_swagger',
     'mount_json_schema',
     'mount_static',
+    'mount_well_known',
+    'normalize_well_known_name',
+    'well_known_path',
     'build_favicon',
     'build_healthz_uix',
     'build_lens',

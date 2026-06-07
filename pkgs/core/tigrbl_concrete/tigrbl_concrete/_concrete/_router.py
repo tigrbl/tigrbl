@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any, Callable
 from types import SimpleNamespace
 
@@ -260,6 +261,11 @@ class Router(RouterBase):
     def mount_static(self, *, directory: str | Path, path: str = "/static") -> Any:
         from tigrbl_concrete.system.static import _mount_static
         return _mount_static(self, directory=directory, path=path)
+
+    def mount_well_known(self, resources: Any, **kwargs: Any) -> tuple[str, ...]:
+        from tigrbl_concrete.system.well_known import mount_well_known
+
+        return mount_well_known(self, resources, **kwargs)
 
     def mount_app(self, *, app: Any, path: str) -> Any:
         mount_path = path if str(path).startswith("/") else f"/{path}"

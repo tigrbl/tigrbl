@@ -685,6 +685,11 @@ class TigrblApp(_App):
         """Register a route directly on this app instance."""
         super().add_route(path, endpoint, **kwargs)
 
+    def mount_well_known(self, resources: Any, **kwargs: Any) -> tuple[str, ...]:
+        from tigrbl_concrete.system.well_known import mount_well_known
+
+        return mount_well_known(self, resources, **kwargs)
+
     def include_routers(self, routers: Sequence[Any]) -> None:
         """Mount multiple Routers, supporting optional per-item prefixes."""
         for entry in routers:
