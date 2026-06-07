@@ -8,12 +8,11 @@ ROOT = repo_root()
 
 REQUIRED_CANONICAL_DOCS = [
     Path("docs/README.md"),
+    Path("docs/conformance/README.md"),
     Path("docs/conformance/CURRENT_TARGET.md"),
-    Path("docs/conformance/CURRENT_STATE.md"),
-    Path("docs/conformance/NEXT_STEPS.md"),
-    Path("docs/conformance/NEXT_TARGETS.md"),
     Path("docs/governance/DOC_POINTERS.md"),
     Path("docs/governance/PATH_LENGTH_POLICY.md"),
+    Path("docs/governance/PACKAGE_STRUCTURE_POLICY.md"),
     Path("docs/developer/PACKAGE_CATALOG.md"),
     Path("docs/developer/PACKAGE_LAYOUT.md"),
     Path("docs/developer/AUTHORING_BCP.md"),
@@ -24,9 +23,8 @@ REQUIRED_CANONICAL_DOCS = [
 ]
 
 ROOT_README_REQUIRED_STRINGS = [
+    ".ssot/registry.json",
     "docs/conformance/CURRENT_TARGET.md",
-    "docs/conformance/CURRENT_STATE.md",
-    "docs/conformance/NEXT_STEPS.md",
     "docs/developer/AUTHORING_BCP.md",
     "docs/governance/DOC_POINTERS.md",
     "CONTRIBUTING.md",
@@ -35,14 +33,12 @@ ROOT_README_REQUIRED_STRINGS = [
 ]
 
 PACKAGE_README_REQUIRED_STRINGS = [
-    "This file is a package-local distribution entry point.",
+    "package-local distribution entry point",
     "docs/README.md",
     "docs/conformance/CURRENT_TARGET.md",
-    "docs/conformance/CURRENT_STATE.md",
-    "docs/conformance/NEXT_STEPS.md",
-    "docs/governance/DOC_POINTERS.md",
     "docs/developer/PACKAGE_CATALOG.md",
     "docs/developer/PACKAGE_LAYOUT.md",
+    ".ssot/registry.json",
 ]
 
 POINTER_DOCS = [
@@ -139,10 +135,11 @@ def main() -> None:
 
     docs_readme = (ROOT / "docs" / "README.md").read_text()
     for needle in [
+        ".ssot/registry.json",
+        ".ssot/adr/",
+        ".ssot/specs/",
+        "conformance/README.md",
         "conformance/CURRENT_TARGET.md",
-        "conformance/CURRENT_STATE.md",
-        "conformance/NEXT_STEPS.md",
-        "conformance/NEXT_TARGETS.md",
         "developer/AUTHORING_BCP.md",
         "governance/DOC_POINTERS.md",
     ]:

@@ -20,10 +20,15 @@ claims, evidence, boundaries, releases, ADRs, or specs.
 |---|---|
 | Repository overview | `README.md` |
 | Documentation overview | `docs/README.md` |
+| Documentation pointer map | `docs/governance/DOC_POINTERS.md` |
 | Governance policies | `docs/governance/` |
 | Conformance evidence area | `docs/conformance/` |
+| Conformance overview | `docs/conformance/README.md` |
+| Current frozen target narrative | `docs/conformance/CURRENT_TARGET.md` |
 | Developer and operator docs | `docs/developer/` |
 | Application authoring BCP | `docs/developer/AUTHORING_BCP.md` |
+| Package catalog | `docs/developer/PACKAGE_CATALOG.md` |
+| Package layout | `docs/developer/PACKAGE_LAYOUT.md` |
 | Release-note policy | `docs/release-notes/README.md` |
 | Working and archived notes | `docs/notes/` |
 
@@ -59,3 +64,4 @@ snapshots instead.
 Validation tooling under `tools/ci/` is a guardrail layer over repository state.
 It is not an authority source. Validators that still reference removed
 conformance projections should be retired or rewritten to consume SSOT state.
+The current CI validation guide lives at `docs/developer/CI_VALIDATION.md`.

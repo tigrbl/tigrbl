@@ -17,20 +17,15 @@ The authoritative source of truth for governed repository state is `.ssot/regist
 5. `../.ssot/adr/ADR-1039-cli-contract-and-server-selection-contract.yaml`
 6. `../.ssot/adr/ADR-1060-docs-ci-non-authoritative-projections.yaml`
 7. `../.ssot/specs/SPEC-1002-docs-ci-projection-authority-contract.yaml`
-8. `conformance/CURRENT_TARGET.md`
-9. `conformance/CURRENT_STATE.md`
-10. `conformance/NEXT_STEPS.md`
-11. `conformance/NEXT_TARGETS.md`
-12. `conformance/RFC_SECURITY_EVIDENCE_MAP.md`
-13. `conformance/EVIDENCE_MODEL.md`
-14. `conformance/IMPLEMENTATION_MAP.md`
-15. `developer/AUTHORING_BCP.md`
-16. `governance/DOC_POINTERS.md`
+8. `conformance/README.md`
+9. `conformance/CURRENT_TARGET.md`
+10. `developer/AUTHORING_BCP.md`
+11. `governance/DOC_POINTERS.md`
 
 ## Sections
 
 - `governance/` - non-authoritative narrative projections of project rules, claim model, versioning, target boundary, release policy, structure policy, and path-length policy
-- `conformance/` - non-authoritative narrative and evidence projections for the frozen current target, current state, next targets, RFC evidence map, evidence model, implementation map, next steps, claim registry, dev/release bundles, gates, freeze artifacts, and audit evidence
+- `conformance/` - non-authoritative narrative and evidence projections for the frozen current target, dev/release bundles, gates, release history, archived legacy material, and audit/checkpoint evidence
 - `.ssot/adr/` - authoritative architectural decisions that govern the current target, the handoff boundary, and next-target work
 - `.ssot/specs/` - authoritative normative specs for the SSOT model and repo-governed contracts
 - `developer/` - non-authoritative operator and developer guidance for authoring BCPs, operator surfaces, operator reference pages, the implemented CLI surface, the certification lane model, package inventory, and CI validation guidance
