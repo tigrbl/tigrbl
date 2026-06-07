@@ -131,6 +131,13 @@ Best practices for column inference:
 - Treat base classes as compatibility surfaces. Renaming or tightening a method affects all concrete packages.
 - Prefer composition with `tigrbl-core` specs rather than duplicating spec fields in base classes.
 
+Authoring BCP for this boundary:
+- Do use `tigrbl-base` for abstract app/router/table/session/request/response/binding/security/middleware/storage contracts and column inference behavior.
+- Do keep column inference deterministic and spec-driven before concrete packages lower intent into ORM, schema, runtime, or docs behavior.
+- Do not make `tigrbl-base` the public application import path for normal service code.
+- Do not put route registration side effects, direct database transaction calls, concrete engine construction, FastAPI/Starlette route objects, or runtime execution into this package.
+- Avoid treating SQLAlchemy materialization as the source of truth here. Base may prepare and validate metadata, but reusable field behavior should remain represented by Tigrbl specs.
+
 ## Usage Examples
 
 ### Verify the installed package

@@ -16,6 +16,7 @@ ROOT = repo_root()
 POLICY_VALIDATORS = (
     "tools/ci/validate_package_layout.py",
     "tools/ci/validate_doc_pointers.py",
+    "tools/ci/validate_authoring_bcp_docs.py",
     "tools/ci/validate_root_clutter.py",
     "tools/ci/validate_path_lengths.py",
     "tools/ci/lint_claim_language.py",
@@ -52,6 +53,7 @@ REQUIRED_CANONICAL_DOCS = [
     "docs/governance/PATH_LENGTH_POLICY.md",
     "docs/developer/PACKAGE_CATALOG.md",
     "docs/developer/PACKAGE_LAYOUT.md",
+    "docs/developer/AUTHORING_BCP.md",
     "docs/developer/CI_VALIDATION.md",
     "CONTRIBUTING.md",
     "CODE_OF_CONDUCT.md",

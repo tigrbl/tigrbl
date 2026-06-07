@@ -12,6 +12,7 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 SCRIPTS = [
     'tools/ci/validate_package_layout.py',
     'tools/ci/validate_doc_pointers.py',
+    'tools/ci/validate_authoring_bcp_docs.py',
     'tools/ci/validate_root_clutter.py',
     'tools/ci/lint_claim_language.py',
     'tools/ci/validate_path_lengths.py',

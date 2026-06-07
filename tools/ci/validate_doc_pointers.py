@@ -16,6 +16,7 @@ REQUIRED_CANONICAL_DOCS = [
     Path("docs/governance/PATH_LENGTH_POLICY.md"),
     Path("docs/developer/PACKAGE_CATALOG.md"),
     Path("docs/developer/PACKAGE_LAYOUT.md"),
+    Path("docs/developer/AUTHORING_BCP.md"),
     Path("docs/developer/CI_VALIDATION.md"),
     Path("CONTRIBUTING.md"),
     Path("CODE_OF_CONDUCT.md"),
@@ -26,6 +27,7 @@ ROOT_README_REQUIRED_STRINGS = [
     "docs/conformance/CURRENT_TARGET.md",
     "docs/conformance/CURRENT_STATE.md",
     "docs/conformance/NEXT_STEPS.md",
+    "docs/developer/AUTHORING_BCP.md",
     "docs/governance/DOC_POINTERS.md",
     "CONTRIBUTING.md",
     "CODE_OF_CONDUCT.md",
@@ -141,6 +143,7 @@ def main() -> None:
         "conformance/CURRENT_STATE.md",
         "conformance/NEXT_STEPS.md",
         "conformance/NEXT_TARGETS.md",
+        "developer/AUTHORING_BCP.md",
         "governance/DOC_POINTERS.md",
     ]:
         if needle not in docs_readme:

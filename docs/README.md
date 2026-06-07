@@ -24,7 +24,8 @@ The authoritative source of truth for governed repository state is `.ssot/regist
 12. `conformance/RFC_SECURITY_EVIDENCE_MAP.md`
 13. `conformance/EVIDENCE_MODEL.md`
 14. `conformance/IMPLEMENTATION_MAP.md`
-15. `governance/DOC_POINTERS.md`
+15. `developer/AUTHORING_BCP.md`
+16. `governance/DOC_POINTERS.md`
 
 ## Sections
 
@@ -32,7 +33,7 @@ The authoritative source of truth for governed repository state is `.ssot/regist
 - `conformance/` - non-authoritative narrative and evidence projections for the frozen current target, current state, next targets, RFC evidence map, evidence model, implementation map, next steps, claim registry, dev/release bundles, gates, freeze artifacts, and audit evidence
 - `.ssot/adr/` - authoritative architectural decisions that govern the current target, the handoff boundary, and next-target work
 - `.ssot/specs/` - authoritative normative specs for the SSOT model and repo-governed contracts
-- `developer/` - non-authoritative operator guidance for operator surfaces, operator reference pages, the implemented CLI surface, the certification lane model, package inventory, and CI validation guidance
+- `developer/` - non-authoritative operator and developer guidance for authoring BCPs, operator surfaces, operator reference pages, the implemented CLI surface, the certification lane model, package inventory, and CI validation guidance
 - `release-notes/` - governed release-note entry point and release-note claim policy examples
 - `notes/` - work-in-progress and archived notes
 - `conformance/archive/` - archived legacy status/build proof materials retained for traceability

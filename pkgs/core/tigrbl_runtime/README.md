@@ -73,6 +73,13 @@ pip install tigrbl-runtime
 Implementation orientation:
 - `tigrbl_runtime`: callbacks, channel/, config/, executors/, handle, protocol/, runtime/, rust/, transactions, webhooks
 
+Runtime authoring BCP:
+- Do use this package for runtime-owned routing, request execution, transport-unit execution, framing atoms, transport channels, transaction helpers, and kernel integration.
+- Do keep handler invocation, transaction progression, error handling, and transport emission aligned with compiled plans.
+- Do not make application route handlers, FastAPI/Starlette objects, direct SQLAlchemy session calls, or ad-hoc engine construction the runtime contract.
+- Do not bypass kernel plans or lifecycle phases when adding REST, JSON-RPC, stream, SSE, WebSocket, or WebTransport behavior.
+- Avoid hiding behavior in transport wrappers that diagnostics and compiled plans cannot inspect.
+
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_runtime`.

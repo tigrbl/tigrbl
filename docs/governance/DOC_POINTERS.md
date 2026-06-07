@@ -23,6 +23,7 @@ claims, evidence, boundaries, releases, ADRs, or specs.
 | Governance policies | `docs/governance/` |
 | Conformance evidence area | `docs/conformance/` |
 | Developer and operator docs | `docs/developer/` |
+| Application authoring BCP | `docs/developer/AUTHORING_BCP.md` |
 | Release-note policy | `docs/release-notes/README.md` |
 | Working and archived notes | `docs/notes/` |
 

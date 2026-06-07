@@ -126,6 +126,24 @@ PY
 
 Choose `tigrbl-orm` when the quick-answer table matches your use case. Choose [`tigrbl`](https://pypi.org/project/tigrbl/) instead when you want the full public facade. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are building framework extensions or testing a specific internal boundary.
 
+## Authoring BCP
+
+`tigrbl-orm` is the SQLAlchemy-facing implementation boundary for Tigrbl table and persistence helpers. Normal application documentation should still lead with the `tigrbl` facade, Tigrbl table/column helpers, and Tigrbl specs.
+
+Do:
+- Do use this package when implementing or testing ORM helpers, table mixins, persistence primitives, and SQLAlchemy-facing compatibility behavior.
+- Do keep ORM behavior aligned with Tigrbl table, column, datatype, storage, IO, and operation specs.
+- Do let Tigrbl specs describe reusable field and operation intent before ORM materialization.
+
+Do not:
+- Do not present raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the preferred application authoring surface when Tigrbl column helpers or specs can express the behavior.
+- Do not put application route authoring, FastAPI/Starlette route objects, ad-hoc engine construction in handlers, or direct transaction control in this package's public examples.
+- Do not treat SQLAlchemy tables as the only source of truth for schema, docs, runtime, hooks, and diagnostics.
+
+Avoid:
+- Avoid duplicating field behavior across ORM declarations and Tigrbl specs. Keep the spec layer authoritative for behavior that must project into storage, validation, runtime, and docs.
+- Avoid exposing implementation-only ORM helpers as facade-level guidance unless the package boundary is explicit.
+
 ## Related Packages
 
 - [`tigrbl`](https://pypi.org/project/tigrbl/)

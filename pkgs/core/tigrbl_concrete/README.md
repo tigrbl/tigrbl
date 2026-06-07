@@ -158,6 +158,14 @@ Security primitives include API key, HTTP Basic, HTTP Bearer, mutual TLS, OAuth2
 - Keep docs, diagnostics, and transport helpers generated from actual registration state.
 - Treat `_concrete` classes as framework implementation surfaces; public application documentation should continue to prefer facade imports.
 
+Authoring BCP for this boundary:
+- Do use `tigrbl-concrete` to lower specs and base contracts into concrete app, router, table, operation, schema, request, response, engine, security, docs, diagnostics, and transport implementations.
+- Do keep REST and JSON-RPC projections tied to the same operation inventory and handler resolution path.
+- Do keep framework-internal ASGI, Starlette-compatible, SQLAlchemy, and engine mechanics behind concrete Tigrbl adapters.
+- Do not teach application users to bypass the `tigrbl` facade and import `_concrete` classes for normal service code.
+- Do not wire one-off handlers around kernel/runtime plans, diagnostics, generated docs, or operation specs.
+- Avoid hard-coded documentation and diagnostics that can drift away from actual registrations.
+
 ## Usage Examples
 
 ### Verify the installed package

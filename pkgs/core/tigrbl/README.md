@@ -154,6 +154,40 @@ Tigrbl is organized as a split framework behind this facade:
 
 Use the facade for application code unless you are maintaining a framework layer, testing a boundary in isolation, or writing a package that intentionally plugs into one of the lower layers.
 
+## Authoring BCP
+
+The facade is the normal application authoring surface. Use `docs/developer/AUTHORING_BCP.md` for the full policy; this package README keeps the public-package guidance explicit because it is the README most application developers see first.
+
+Do:
+
+- Do import application-facing classes, decorators, helpers, and shortcuts from `tigrbl` unless you are intentionally maintaining a lower-level package.
+- Do create services with `TigrblApp`, `TigrblRouter`, facade route/operation decorators, table helpers, column helpers, hook decorators, response decorators, schema helpers, and engine decorators.
+- Do model domain actions as Tigrbl operations, including canonical CRUD operations, operation-pack verbs, or explicit custom operation specs.
+- Do use operation handlers through Tigrbl specs and kernel/runtime dispatch so REST, JSON-RPC, OpenAPI, OpenRPC, diagnostics, schemas, hooks, and tests stay aligned.
+- Do express field behavior through Tigrbl table, column, datatype, storage, IO, request, response, and operation specs.
+- Do use `get_schema(...)` or schema helpers for operation request/response payloads.
+- Do bind engines declaratively at app, router, table, or operation scope.
+- Do use lifecycle hooks for policy, validation, enrichment, audit, response shaping, and post-response work.
+- Do use `/system/methodz`, `/system/hookz`, `/system/kernelz`, OpenAPI, and OpenRPC to inspect the registered framework state.
+
+Do not:
+
+- Do not author application endpoints with FastAPI `FastAPI`, `APIRouter`, dependency wiring, route decorators, middleware registration, docs generation, or lifecycle hooks.
+- Do not author application endpoints with Starlette route, request, response, middleware, background-task, or lifecycle classes.
+- Do not use raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the primary application authoring surface when Tigrbl column helpers or specs can represent the field behavior.
+- Do not build ad-hoc SQLAlchemy engines, sessions, or sessionmakers inside request handlers.
+- Do not call direct database/session methods such as `flush()` or `commit()` from application hooks or handlers unless you are implementing a framework-level atom with the correct lifecycle guard contract.
+- Do not wrap model behavior in one-off route handlers when an operation spec can represent the behavior.
+- Do not bypass kernel/runtime plans when wiring REST, JSON-RPC, stream, SSE, WebSocket, or WebTransport behavior.
+
+Avoid:
+
+- Avoid treating ASGI, FastAPI, Starlette, SQLAlchemy ORM materialization, or direct DB methods as the user-facing application contract. Tigrbl owns the authoring contract; lower-level libraries are implementation substrates behind Tigrbl-owned adapters, engines, tests, or benchmarks.
+- Avoid duplicating field behavior in SQLAlchemy, Pydantic, docs, and route handlers. Put reusable behavior in Tigrbl specs so storage, schema, docs, runtime, hooks, and diagnostics read the same source.
+- Avoid hand-written Pydantic envelopes for payloads that belong to a Tigrbl operation.
+- Avoid transport-specific wrappers for authentication, authorization, validation, or dispatch when security dependencies, hooks, operation specs, or lifecycle phases can express the rule once.
+- Avoid teaching lower-level internals in application README examples unless the example is clearly marked as a test, benchmark, migration, engine adapter, or framework-internal compatibility surface.
+
 ## Default CRUD and Operation Semantics
 
 The canonical default operation set is `create`, `read`, `update`, `replace`, `delete`, `list`, and `clear`. Tables can opt out, opt into a subset, or add explicit operation specs. Additional operation packs provide bulk, analytical, and realtime verbs such as `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_merge`, `bulk_delete`, `count`, `exists`, `aggregate`, `group_by`, `tail`, `subscribe`, `publish`, `upload`, `download`, `append_chunk`, `checkpoint`, and transport-oriented handlers.

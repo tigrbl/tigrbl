@@ -152,6 +152,12 @@ Best practices for schema work:
 - Validate protocol and binding assumptions in core or kernel-facing tests before adding runtime behavior.
 - Keep application-facing convenience APIs in `tigrbl` or `tigrbl-concrete`; keep cross-package contracts here.
 
+Authoring BCP for this boundary:
+- Do treat `ColumnSpec`, `FieldSpec`, `OpSpec`, `HookSpec`, `SchemaSpec`, `BindingSpec`, `EngineSpec`, `SessionSpec`, and related specs as the contract vocabulary that other Tigrbl packages consume.
+- Do keep specs independent of FastAPI, Starlette, SQLAlchemy sessions, live request objects, and transport handles.
+- Do not move application route authoring, direct database calls, concrete engine creation, or runtime dispatch side effects into `tigrbl-core`.
+- Avoid duplicating spec fields in helper classes or generated schemas. Specs should remain the source that schema, docs, kernel, runtime, base, concrete, and facade layers project from.
+
 ## Usage Examples
 
 ### Verify the installed package

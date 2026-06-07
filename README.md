@@ -26,6 +26,34 @@ uv sync --all-extras --dev
 
 Most users start with [`tigrbl`](https://pypi.org/project/tigrbl/) for the public Python facade. This root README is the repository and workspace entry point; the PyPI-facing facade package README lives at [`pkgs/core/tigrbl/README.md`](pkgs/core/tigrbl/README.md). Package-level README entry points under `pkgs/` document the boundary, install target, and dependency surface for each distributable.
 
+## Authoring BCP
+
+Tigrbl application code should stay on Tigrbl-owned authoring surfaces. The detailed policy is in `docs/developer/AUTHORING_BCP.md`; this root README states the repository-level rule for contributors, examples, and package docs.
+
+Do:
+
+- Do build application services with `TigrblApp`, `TigrblRouter`, Tigrbl facade decorators, table helpers, column helpers, operation specs, hook specs, binding specs, engine specs, and generated schemas.
+- Do model domain behavior as Tigrbl operations and handlers so REST, JSON-RPC, OpenAPI, OpenRPC, `/system/methodz`, `/system/hookz`, `/system/kernelz`, schemas, and tests all describe the same behavior.
+- Do express field behavior through Tigrbl table, column, datatype, storage, IO, request, response, and operation specs.
+- Do bind engines declaratively at app, router, table, or operation scope.
+- Do put authentication, authorization, validation, enrichment, auditing, and response shaping in security dependencies or lifecycle hooks such as `PRE_HANDLER`, `POST_HANDLER`, `EGRESS_SHAPE`, and `POST_RESPONSE`.
+- Do let kernel/runtime phases own dispatch and transaction progression.
+
+Do not:
+
+- Do not author Tigrbl application endpoints with FastAPI `FastAPI`, `APIRouter`, dependency wiring, route decorators, middleware registration, docs generation, or lifecycle hooks.
+- Do not author Tigrbl application endpoints with Starlette route, request, response, middleware, background-task, or lifecycle classes.
+- Do not use raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the primary application authoring surface when Tigrbl column helpers or specs can represent the field behavior.
+- Do not create ad-hoc SQLAlchemy engines, sessions, or sessionmakers inside request handlers.
+- Do not call direct database/session methods such as `flush()` or `commit()` from application hooks or handlers.
+- Do not bypass operation specs, handlers, kernel plans, runtime atoms, or lifecycle phases with one-off route wrappers for model behavior.
+
+Avoid:
+
+- Avoid treating ASGI, FastAPI, Starlette, SQLAlchemy ORM materialization, or direct DB methods as the application contract. They may appear behind Tigrbl-owned internals, engine adapters, compatibility tests, or benchmarks, but not as the recommended user-facing authoring path.
+- Avoid duplicating field and payload rules across SQLAlchemy, Pydantic, route handlers, and docs. Put reusable rules in specs and retrieve operation payload models through schema helpers such as `get_schema(...)`.
+- Avoid README examples that teach lower-level framework internals as normal application style unless the example is explicitly marked as a test, benchmark, migration, engine adapter, or framework-internal compatibility surface.
+
 ## Package Families
 
 ### Core Python packages
@@ -97,6 +125,7 @@ The active Python package line is `0.4.1`. Repository-governed target status and
 - `docs/conformance/CURRENT_STATE.md`
 - `docs/conformance/NEXT_STEPS.md`
 - `docs/conformance/NEXT_TARGETS.md`
+- `docs/developer/AUTHORING_BCP.md`
 - `docs/governance/DOC_POINTERS.md`
 - `CONTRIBUTING.md`
 - `CODE_OF_CONDUCT.md`
