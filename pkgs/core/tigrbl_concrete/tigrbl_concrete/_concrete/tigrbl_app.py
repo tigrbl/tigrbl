@@ -55,6 +55,7 @@ from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
 from tigrbl_concrete._mapping.appspec import (
     install_appspec_engine_inventory,
+    lower_concrete_engine_inputs,
     lower_appspec_routers,
 )
 from tigrbl_core.config.constants import (
@@ -130,6 +131,7 @@ class TigrblApp(_App):
     @classmethod
     def from_spec(cls, spec: AppSpec) -> "TigrblApp":
         """Materialize an app instance from an :class:`~tigrbl.AppSpec`."""
+        spec = lower_concrete_engine_inputs(spec)
         spec = normalize_app_spec(spec)
         spec_tables = tuple(spec.tables or ())
         app = cls(

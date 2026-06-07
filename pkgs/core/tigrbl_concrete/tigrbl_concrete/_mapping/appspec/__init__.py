@@ -4,7 +4,11 @@ from .docs_lowering import (
     projection_for_docs_path,
     selected_projection_entries,
 )
-from .engine_lowering import install_appspec_engine_inventory, install_scope_engine_names
+from .engine_lowering import (
+    install_appspec_engine_inventory,
+    install_scope_engine_names,
+    lower_concrete_engine_inputs,
+)
 from .path_lowering import lower_appspec_routers
 
 __all__ = [
@@ -14,5 +18,6 @@ __all__ = [
     "selected_projection_entries",
     "install_appspec_engine_inventory",
     "install_scope_engine_names",
+    "lower_concrete_engine_inputs",
     "lower_appspec_routers",
 ]
