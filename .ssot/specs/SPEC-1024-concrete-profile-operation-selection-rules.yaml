@@ -15,6 +15,8 @@ status_notes: []
 references: []
 body: |-
   Define operation-selection rules for concrete table profiles, including BulkCrudTable, OltpTable, OlapTable, checkpoint profiles, stream, SSE, WebSocket, and WebTransport table lane profiles.
+
+  Concrete profile classes declare a complete TableProfileSpec. Their TABLE_PROFILE is the sole table-level source for generated/default ops and exposure policy.
 spec_kind: "normative"
 adr_ids:
   - "adr:1116"

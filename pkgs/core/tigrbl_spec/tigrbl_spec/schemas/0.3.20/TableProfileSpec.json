@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "TableProfileSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.table_profile_spec:TableProfileSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "TableProfileSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "TableProfileSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "custom": {
+      "type": "boolean"
+    },
+    "default_bindings": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "./BindingSpec.json"
+              },
+              {
+                "$ref": "./BindingSpec.json#/$defs/BindingSpecEnvelope"
+              }
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "docs_exposure": {
+      "enum": [
+        "none",
+        "declared",
+        "default"
+      ],
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "namespace": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ops": {
+      "additionalProperties": false,
+      "properties": {
+        "__tuple__": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "./OpSpec.json"
+              },
+              {
+                "$ref": "./OpSpec.json#/$defs/OpSpecEnvelope"
+              }
+            ]
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "__tuple__"
+      ],
+      "type": "object"
+    },
+    "role": {
+      "enum": [
+        "abstract",
+        "concrete"
+      ],
+      "type": "string"
+    },
+    "runtime_exposure": {
+      "enum": [
+        "none",
+        "declared",
+        "default"
+      ],
+      "type": "string"
+    },
+    "spec_kind": {
+      "const": "TableProfileSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:TableProfileSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    }
+  },
+  "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
+    "kind",
+    "role",
+    "ops",
+    "default_bindings",
+    "docs_exposure",
+    "runtime_exposure",
+    "custom",
+    "namespace"
+  ],
+  "title": "TableProfileSpec",
+  "type": "object"
+}

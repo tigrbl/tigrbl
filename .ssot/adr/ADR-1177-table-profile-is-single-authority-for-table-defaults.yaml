@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1177"
+number: 1177
+slug: "table-profile-is-single-authority-for-table-defaults"
+title: "Table Profile Is Single Authority For Table Defaults"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "TABLE_PROFILE is the sole table-level authority for generated/default ops, default bindings, docs exposure, and runtime exposure."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  TABLE_PROFILE is the sole table-level authority for generated/default ops, default bindings, docs exposure, and runtime exposure.
+
+  TABLE_PROFILE.ops is complete table-level op policy. A profile with one op means exactly one table-level op, not a patch over a hidden default set.
+
+  Legacy class attrs such as DEFAULT_CANON_VERBS, should_wire_canonical, __tigrbl_defaults_* attrs, loose binding_profiles config, OPS, and __tigrbl_ops__ cannot coexist with an explicit TABLE_PROFILE because that would create ambiguous precedence.

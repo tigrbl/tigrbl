@@ -14,4 +14,6 @@ superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Unsupported, ambiguous, or semantically incompatible profile-to-operation matrix rows must fail at compile time instead of silently dropping operations, widening operation sets, or inheriting custom operations.
+  Unsupported, ambiguous, or semantically incompatible profile-to-operation matrix rows must fail at class creation, TableSpec collection, or compile time instead of silently dropping operations, widening operation sets, or inheriting custom operations.
+
+  Mixed default authorities, malformed TableProfileSpec declarations, unknown profile keys, and unsupported profile/binding combinations are rejected instead of merged by precedence guesses.

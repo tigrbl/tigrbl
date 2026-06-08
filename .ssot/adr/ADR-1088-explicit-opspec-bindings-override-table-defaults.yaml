@@ -8,10 +8,12 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Let explicit operation binding declarations override table profile defaults while preserving compile-time compatibility validation and visible override records."
+summary: "Represent explicit operation binding overrides inside the complete TableProfileSpec.ops declaration while preserving compile-time compatibility validation and visible override records."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Let explicit operation binding declarations override table profile defaults while preserving compile-time compatibility validation and visible override records.
+  Explicit operation binding declarations override table defaults only when represented inside the complete TableProfileSpec.ops declaration.
+
+  Table-level op policy is not split across TABLE_PROFILE and external __tigrbl_ops__/OPS patches. A profile with one op is exactly one op.

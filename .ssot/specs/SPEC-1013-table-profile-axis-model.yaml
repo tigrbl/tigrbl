@@ -14,7 +14,9 @@ superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Defines the table profile axis model for separating canonical operation selection, blanket default bindings, per-operation bindings, documentation exposure, runtime exposure, and explicit override rules. A profile must preserve these axes independently during normalization, compilation, diagnostics, docs projection, runtime plan generation, trace, replay, and rollup. Binding profile tokens do not imply operation activation, docs visibility, public network mounting, or ASGI exposure unless those axes are declared.
+  Defines the table profile axis model for separating canonical operation selection, blanket default bindings, per-operation bindings, documentation exposure, runtime exposure, and explicit override rules.
+
+  These axes are fields on TableProfileSpec. They are not separate class attributes with implicit precedence. A profile must preserve the axes independently during normalization, compilation, diagnostics, docs projection, runtime plan generation, trace, replay, and rollup.
 spec_kind: "normative"
 adr_ids:
   - "adr:1067"

@@ -749,13 +749,14 @@ def _normalize_bindings(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpec,
     normalized: list[OpSpec] = []
     for spec in specs:
         merged = list(tuple(getattr(spec, "bindings", ()) or ()))
-        if spec.expose_routes:
+        has_declared_bindings = bool(merged)
+        if spec.expose_routes and not has_declared_bindings:
             for path, methods in _rest_bindings_for_spec(model, spec):
                 binding = _default_route_binding(spec, path, methods)
                 if binding not in merged:
                     merged.append(binding)
 
-        if spec.expose_rpc:
+        if spec.expose_rpc and not has_declared_bindings:
             rpc_binding = HttpJsonRpcBindingSpec(
                 proto="http.jsonrpc",
                 rpc_method=f"{model.__name__}.{spec.alias}",
@@ -763,7 +764,7 @@ def _normalize_bindings(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpec,
             if rpc_binding not in merged:
                 merged.append(rpc_binding)
 
-        if spec.expose_method:
+        if spec.expose_method and not has_declared_bindings:
             for binding in tuple(getattr(spec, "bindings", ()) or ()):
                 if isinstance(binding, WsBindingSpec) and binding.framing == "jsonrpc":
                     rpc_binding = HttpJsonRpcBindingSpec(

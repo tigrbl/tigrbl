@@ -11,6 +11,13 @@ from sqlalchemy import CheckConstraint, ForeignKey, MetaData
 from sqlalchemy.types import Enum as SAEnum, String
 
 from ._datatype_lowering import lower_datatype_to_sqla_type
+from tigrbl_core._spec.table_profile_spec import (
+    CRUD_TABLE_PROFILE,
+    PLAIN_TABLE_PROFILE,
+    REALTIME_TABLE_PROFILE,
+    TableProfileError,
+    coerce_table_profile,
+)
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers – type inference & SA type instantiation
@@ -342,6 +349,39 @@ def _attach_model_ops_namespace(model: type) -> None:
     model.opspecs = ops_ns
 
 
+def _normalize_table_profile_declaration(cls: type) -> None:
+    profile_attr = "TABLE_PROFILE"
+    explicit_profile = profile_attr in cls.__dict__
+
+    legacy_attrs = {
+        "DEFAULT_CANON_VERBS",
+        "should_wire_canonical",
+        "__tigrbl_defaults_mode__",
+        "__tigrbl_defaults_include__",
+        "__tigrbl_defaults_exclude__",
+        "__tigrbl_ops__",
+        "OPS",
+    }
+    present_legacy = sorted(name for name in legacy_attrs if name in cls.__dict__)
+    cfg = cls.__dict__.get("table_config")
+    if isinstance(cfg, dict) and (
+        "binding_profiles" in cfg
+        or "default_bindings" in cfg
+        or "default_binding_profiles" in cfg
+    ):
+        present_legacy.append("table_config.binding_profiles")
+
+    if explicit_profile and present_legacy:
+        raise TableProfileError(
+            f"{cls.__name__} declares TABLE_PROFILE and legacy table default "
+            f"authority {', '.join(present_legacy)}"
+        )
+
+    value = cls.__dict__.get(profile_attr, getattr(cls, profile_attr, PLAIN_TABLE_PROFILE))
+    normalized = coerce_table_profile(value)
+    setattr(cls, profile_attr, normalized)
+
+
 # ──────────────────────────────────────────────────────────────────────────────
 # Declarative Base
 # ──────────────────────────────────────────────────────────────────────────────
@@ -349,8 +389,11 @@ def _attach_model_ops_namespace(model: type) -> None:
 
 class TableBase(DeclarativeBase):
     __allow_unmapped__ = True
+    TABLE_PROFILE = PLAIN_TABLE_PROFILE
 
     def __init_subclass__(cls, **kw):
+        _normalize_table_profile_declaration(cls)
+
         # 0) Remove any previously registered class with the same module path.
         try:
             reg = TableBase.registry._class_registry
@@ -540,4 +583,14 @@ class TableBase(DeclarativeBase):
         return getattr(self, key)
 
 
-__all__ = ["TableBase"]
+class CrudTableBase(TableBase):
+    __abstract__ = True
+    TABLE_PROFILE = CRUD_TABLE_PROFILE
+
+
+class RealtimeTableBase(TableBase):
+    __abstract__ = True
+    TABLE_PROFILE = REALTIME_TABLE_PROFILE
+
+
+__all__ = ["CrudTableBase", "RealtimeTableBase", "TableBase"]

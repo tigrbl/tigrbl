@@ -8,13 +8,15 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the default operation set selected by each abstract and concrete table profile, including CRUD, bulk, OLTP, OLAP, realtime, stream, SSE, WebSocket, and WebTransport profiles."
+summary: "Define the complete operation set selected by each abstract and concrete table profile, including CRUD, bulk, OLTP, OLAP, realtime, stream, SSE, WebSocket, and WebTransport profiles."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Define the default operation set selected by each abstract and concrete table profile, including CRUD, bulk, OLTP, OLAP, realtime, stream, SSE, WebSocket, and WebTransport profiles.
+  Define the complete operation set selected by each abstract and concrete table profile, including CRUD, bulk, OLTP, OLAP, realtime, stream, SSE, WebSocket, and WebTransport profiles.
+
+  The selected operations are represented by TableProfileSpec.ops. A profile with one op has exactly one op.
 spec_kind: "normative"
 adr_ids:
   - "adr:1085"

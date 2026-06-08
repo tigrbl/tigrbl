@@ -1,0 +1,24 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2180"
+number: 2180
+slug: "tableprofilespec-contract"
+title: "TableProfileSpec Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the typed TableProfileSpec contract for complete table-level op policy, default bindings, docs exposure, runtime exposure, and custom profile metadata."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  TableProfileSpec is the typed table-level profile declaration.
+
+  It includes kind, role, ops, default_bindings, docs_exposure, runtime_exposure, custom, and namespace. Its ops field uses existing OpSpec entries and represents the complete table-level op set. Its default_bindings field uses existing BindingSpec entries.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1176"
+  - "adr:1177"
+  - "adr:1178"

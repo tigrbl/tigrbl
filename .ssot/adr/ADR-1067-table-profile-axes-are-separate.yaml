@@ -16,9 +16,9 @@ references: []
 body: |-
   ## Decision
   
-  Table profile configuration must model canon op selection, default op bindings, per-op bindings, documentation exposure, and runtime exposure as separate axes.
+  Table profile configuration must model canon op selection, default op bindings, per-op bindings, documentation exposure, and runtime exposure as separate axes inside TableProfileSpec.
   
-  A table profile or binding token such as jsonrpc, rest, ws, stream, sse, or webtransport must not implicitly enable canonical operations, documentation projection, public network mounting, or ASGI exposure. Each axis must be represented explicitly during table config/spec normalization and compilation.
+  A table profile or binding token such as jsonrpc, rest, ws, stream, sse, or webtransport must not implicitly enable canonical operations, documentation projection, public network mounting, or ASGI exposure. Each axis must be represented explicitly in TABLE_PROFILE during table config/spec normalization and compilation.
   
   ## Consequences
   

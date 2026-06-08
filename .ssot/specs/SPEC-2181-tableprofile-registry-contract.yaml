@@ -1,0 +1,22 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2181"
+number: 2181
+slug: "tableprofile-registry-contract"
+title: "TableProfile Registry Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define built-in and custom table profile registration, reserved-name checks, namespace requirements, and unknown-profile fail-closed behavior."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  The table profile registry owns profile lookup and extension validation.
+
+  Built-in profile kinds are reserved. Custom profile kinds must be explicitly registered, namespaced, and collision-checked. Unknown profile keys fail closed.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1178"

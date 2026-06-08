@@ -8,10 +8,12 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define table-level profiles that select default operation sets and default transport/documentation exposure without making abstract table classes mount network routes."
+summary: "Define table-level profiles as typed TableProfileSpec values that select complete operation sets and default transport/documentation exposure without making abstract table classes mount network routes."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Define table-level profiles that select default operation sets and default transport/documentation exposure without making abstract table classes mount network routes.
+  Define table-level profiles as typed TableProfileSpec values that select complete operation sets and default transport/documentation exposure without making abstract table classes mount network routes.
+
+  TABLE_PROFILE is the table-level source of truth for generated/default ops, default bindings, docs exposure, and runtime exposure.

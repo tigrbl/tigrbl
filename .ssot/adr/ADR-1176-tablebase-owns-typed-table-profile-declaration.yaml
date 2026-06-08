@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1176"
+number: 1176
+slug: "tablebase-owns-typed-table-profile-declaration"
+title: "TableBase Owns Typed Table Profile Declaration"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "TableBase owns the typed TABLE_PROFILE declaration slot; no separate TableProfileBase layer is introduced."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  TableBase owns the typed TABLE_PROFILE declaration slot for every table.
+
+  CrudTableBase and RealtimeTableBase are abstract semantic presets that inherit directly from TableBase. Public concrete table profile classes compose those presets through the concrete Table construction surface.
+
+  This avoids a parallel TableProfileBase layer and keeps the table profile contract universal to tables.

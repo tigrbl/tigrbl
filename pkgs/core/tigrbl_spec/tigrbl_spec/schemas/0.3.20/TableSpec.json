@@ -108,6 +108,19 @@
     "security_deps": {
       "$ref": "./shared.json#/$defs/StepFnTuple"
     },
+    "table_profile": {
+      "anyOf": [
+        {
+          "$ref": "./TableProfileSpec.json"
+        },
+        {
+          "$ref": "./TableProfileSpec.json#/$defs/TableProfileSpecEnvelope"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
     "spec_kind": {
       "const": "TableSpec",
       "description": "Tigrbl spec payload kind."
@@ -137,7 +150,8 @@
     "portability_class",
     "interoperable_with",
     "roundtrip_mode",
-    "response"
+    "response",
+    "table_profile"
   ],
   "title": "TableSpec",
   "type": "object"

@@ -15,3 +15,5 @@ status_notes: []
 references: []
 body: |-
   Table profile operation selection defines semantic operation membership only. It must not imply concrete transport bindings, documentation exposure, or runtime mounting.
+
+  Operation membership is represented by TableProfileSpec.ops. That field is complete table-level op policy and is projected through TableSpec.collect for compiler/runtime consumption.

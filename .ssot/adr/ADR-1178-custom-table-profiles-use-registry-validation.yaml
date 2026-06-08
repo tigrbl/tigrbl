@@ -1,0 +1,19 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1178"
+number: 1178
+slug: "custom-table-profiles-use-registry-validation"
+title: "Custom Table Profiles Use Registry Validation"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Custom table profiles are allowed only through validated TableProfileSpec values and registry collision checks."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  Custom table profiles are supported through validated TableProfileSpec values.
+
+  Built-in profile names are reserved. Custom profiles must be marked custom, must declare a namespace, and must pass registry collision checks before use.

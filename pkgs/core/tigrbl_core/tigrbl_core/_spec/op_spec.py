@@ -206,6 +206,15 @@ def _as_specs(value: Any, table: type) -> List["OpSpec"]:
 
 
 def _generate_canonical(table: type) -> List["OpSpec"]:
+    profile = getattr(table, "TABLE_PROFILE", None)
+    if profile is not None:
+        try:
+            from tigrbl_core._spec.table_profile_spec import coerce_table_profile
+
+            return list(coerce_table_profile(profile).bind_table(table).ops)
+        except Exception:
+            raise
+
     from tigrbl_core.op.canonical import should_wire_canonical
 
     specs: List[OpSpec] = []

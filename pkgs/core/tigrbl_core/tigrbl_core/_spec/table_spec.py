@@ -7,6 +7,8 @@ from .._spec.app_spec import merge_seq_attr
 from .._spec.engine_spec import EngineCfg
 from .._spec.response_spec import ResponseSpec
 from .serde import SerdeMixin
+from .table_profile_bindings import lower_table_profile_bindings
+from .table_profile_spec import TableProfileSpec, coerce_table_profile
 
 
 def resolve_table_engine(model: type) -> Any | None:
@@ -82,6 +84,7 @@ class TableSpec(SerdeMixin):
     roundtrip_mode: str = "best_effort"
 
     response: Optional[ResponseSpec] = None
+    table_profile: TableProfileSpec | None = None
 
     def __init_subclass__(cls, **kwargs: Any) -> None:
         super().__init_subclass__(**kwargs)
@@ -122,11 +125,31 @@ class TableSpec(SerdeMixin):
 
     @classmethod
     def collect(cls, model: type) -> "TableSpec":
+        table_profile = (
+            coerce_table_profile(getattr(model, "TABLE_PROFILE"))
+            if hasattr(model, "TABLE_PROFILE")
+            else None
+        )
+        legacy_ops_declared = (
+            "OPS" in getattr(model, "__dict__", {})
+            and not bool(getattr(model, "__tigrbl_profile_generated_ops__", False))
+        ) or "__tigrbl_ops__" in getattr(model, "__dict__", {})
+        collected_ops = (
+            merge_seq_attr(model, "OPS", include_inherited=True)
+            if legacy_ops_declared or table_profile is None
+            else table_profile.bind_table(model).ops
+        )
+        if table_profile is not None:
+            collected_ops = lower_table_profile_bindings(
+                model,
+                table_profile,
+                tuple(collected_ops),
+            )
         return cls(
             model=model,
             engine=resolve_table_engine(model),
             engine_name=getattr(model, "ENGINE_NAME", None),
-            ops=merge_seq_attr(model, "OPS", include_inherited=True),
+            ops=collected_ops,
             columns=merge_seq_attr(model, "COLUMNS", include_inherited=True),
             schemas=merge_seq_attr(model, "SCHEMAS", include_inherited=True),
             hooks=merge_seq_attr(model, "HOOKS", include_inherited=True),
@@ -141,4 +164,5 @@ class TableSpec(SerdeMixin):
             roundtrip_mode=str(
                 _resolve_table_metadata(model, "roundtrip_mode", "best_effort")
             ),
+            table_profile=table_profile,
         )

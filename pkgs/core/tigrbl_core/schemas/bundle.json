@@ -2563,6 +2563,121 @@
       ],
       "type": "object"
     },
+    "TableProfileSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "custom": {
+          "type": "boolean"
+        },
+        "default_bindings": {
+          "additionalProperties": false,
+          "properties": {
+            "__tuple__": {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/BindingSpec"
+                  },
+                  {
+                    "$ref": "#/$defs/BindingSpecEnvelope"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "__tuple__"
+          ],
+          "type": "object"
+        },
+        "docs_exposure": {
+          "enum": [
+            "none",
+            "declared",
+            "default"
+          ],
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "namespace": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ops": {
+          "additionalProperties": false,
+          "properties": {
+            "__tuple__": {
+              "items": {
+                "anyOf": [
+                  {
+                    "$ref": "#/$defs/OpSpec"
+                  },
+                  {
+                    "$ref": "#/$defs/OpSpecEnvelope"
+                  }
+                ]
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "__tuple__"
+          ],
+          "type": "object"
+        },
+        "role": {
+          "enum": [
+            "abstract",
+            "concrete"
+          ],
+          "type": "string"
+        },
+        "runtime_exposure": {
+          "enum": [
+            "none",
+            "declared",
+            "default"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "role",
+        "ops",
+        "default_bindings",
+        "docs_exposure",
+        "runtime_exposure",
+        "custom",
+        "namespace"
+      ],
+      "title": "TableProfileSpec",
+      "type": "object"
+    },
+    "TableProfileSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.table_profile_spec:TableProfileSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "TableProfileSpecEnvelope",
+      "type": "object"
+    },
     "TableRegistrySpec": {
       "additionalProperties": false,
       "properties": {
@@ -2681,6 +2796,19 @@
         },
         "security_deps": {
           "$ref": "#/$defs/StepFnTuple"
+        },
+        "table_profile": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TableProfileSpec"
+            },
+            {
+              "$ref": "#/$defs/TableProfileSpecEnvelope"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -2696,7 +2824,8 @@
         "portability_class",
         "interoperable_with",
         "roundtrip_mode",
-        "response"
+        "response",
+        "table_profile"
       ],
       "title": "TableSpec",
       "type": "object"
@@ -2957,6 +3086,7 @@
     "StorageSpec": "#/$defs/StorageSpec",
     "StorageTransformSpec": "#/$defs/StorageTransformSpec",
     "StorageTypeRef": "#/$defs/StorageTypeRef",
+    "TableProfileSpec": "#/$defs/TableProfileSpec",
     "TableRegistrySpec": "#/$defs/TableRegistrySpec",
     "TableSpec": "#/$defs/TableSpec",
     "TemplateSpec": "#/$defs/TemplateSpec",

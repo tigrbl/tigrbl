@@ -136,6 +136,7 @@ TIGRBL_DEFAULTS_MODE_ATTR = "__tigrbl_defaults_mode__"  # canonical verb wiring 
 TIGRBL_DEFAULTS_INCLUDE_ATTR = "__tigrbl_defaults_include__"  # verbs to force include
 TIGRBL_DEFAULTS_EXCLUDE_ATTR = "__tigrbl_defaults_exclude__"  # verbs to force exclude
 TIGRBL_SCHEMA_DECLS_ATTR = "__tigrbl_schema_decls__"  # declared schemas map
+TIGRBL_TABLE_PROFILE_ATTR = "TABLE_PROFILE"  # complete table default policy
 
 # Aggregate of recognized model-level config attributes
 MODEL_LEVEL_CFGS: frozenset[str] = frozenset(
@@ -161,6 +162,7 @@ MODEL_LEVEL_CFGS: frozenset[str] = frozenset(
         TIGRBL_DEFAULTS_INCLUDE_ATTR,
         TIGRBL_DEFAULTS_EXCLUDE_ATTR,
         TIGRBL_SCHEMA_DECLS_ATTR,
+        TIGRBL_TABLE_PROFILE_ATTR,
         "__resource__",  # resource name override for REST
     }
 )
@@ -231,6 +233,7 @@ __all__ = [
     "TIGRBL_REQUEST_EXTRAS_ATTR",
     "TIGRBL_RESPONSE_EXTRAS_ATTR",
     "TIGRBL_OPS_ATTR",
+    "TIGRBL_TABLE_PROFILE_ATTR",
     "TIGRBL_VERB_ALIASES_ATTR",
     "TIGRBL_VERB_ALIAS_POLICY_ATTR",
     "TIGRBL_NESTED_PATHS_ATTR",

@@ -15,6 +15,8 @@ status_notes: []
 references: []
 body: |-
   Define compatibility rules for default table bindings, explicit OpSpec overrides, custom operations, checkpoint profiles, and fail-closed unsupported capability handling.
+
+  Explicit binding overrides are represented inside the complete TableProfileSpec.ops declaration. A table class must not split default binding authority across TABLE_PROFILE and legacy class attributes.
 spec_kind: "normative"
 adr_ids:
   - "adr:1088"

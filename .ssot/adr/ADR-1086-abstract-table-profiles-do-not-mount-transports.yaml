@@ -14,4 +14,6 @@ superseded_by: []
 status_notes: []
 references: []
 body: |-
-  Keep abstract table profiles as operation-selection policy only; concrete transport exposure must be produced by explicit binding profiles or operation specifications.
+  Keep abstract table profiles as operation-selection policy only; concrete transport exposure must be produced by explicit TableProfileSpec declarations, concrete table profile classes, or operation specifications.
+
+  Abstract profiles use role="abstract" and runtime_exposure="none".
