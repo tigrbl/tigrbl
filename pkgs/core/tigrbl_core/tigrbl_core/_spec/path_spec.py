@@ -15,6 +15,7 @@ from .binding_spec import (
 from .op_spec import OpSpec
 from .serde import SerdeMixin
 from .table_spec import TableSpec
+from .well_known_spec import WellKnownResourceSpec
 
 PathKind = Literal[
     "resource",
@@ -31,6 +32,7 @@ PathKind = Literal[
     "docs-uix",
     "static",
     "mount",
+    "well-known",
 ]
 
 
@@ -48,6 +50,7 @@ class PathSpec(SerdeMixin):
     docs_uix: Any | None = None
     static: Any | None = None
     mount: Any | None = None
+    well_known: WellKnownResourceSpec | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.path, str) or not self.path.startswith("/"):
@@ -140,6 +143,7 @@ class PathSpec(SerdeMixin):
             "docs-uix",
             "static",
             "mount",
+            "well-known",
         }
         if self.kind not in valid:
             raise ValueError(f"PathSpec.kind must be a canonical path kind; got {self.kind!r}.")
@@ -150,6 +154,7 @@ class PathSpec(SerdeMixin):
             "docs-uix": ("docs_uix", self.docs_uix),
             "static": ("static", self.static),
             "mount": ("mount", self.mount),
+            "well-known": ("well_known", self.well_known),
         }
         if self.kind in payload_fields:
             field_name, value = payload_fields[self.kind]
@@ -161,11 +166,16 @@ class PathSpec(SerdeMixin):
                 ("docs_uix", self.docs_uix),
                 ("static", self.static),
                 ("mount", self.mount),
+                ("well_known", self.well_known),
             ):
                 if value is not None:
                     raise ValueError(
                         f"PathSpec.{field_name} is only valid on its matching canonical path kind."
                     )
+        if self.well_known is not None and not isinstance(
+            self.well_known, WellKnownResourceSpec
+        ):
+            raise TypeError("PathSpec.well_known must be WellKnownResourceSpec.")
 
     def _validate_tables(self) -> None:
         for table in self.tables:

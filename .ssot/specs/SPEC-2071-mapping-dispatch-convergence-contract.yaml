@@ -1,17 +1,22 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2071"
 number: 2071
 slug: "mapping-dispatch-convergence-contract"
 title: "Mapping dispatch convergence contract"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "This contract keeps mapping and canonical route projection code converged on declaration materialization instead of semantic dispatch."
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "spc:2150"
+status_notes:
+  -
+    status: "superseded"
+    note: "PathSpec-owned address composition and docs projection supersede route registration/projection contracts."
+    at: "2026-06-07T18:05:26Z"
 references: []
 body: |-
   ## Purpose

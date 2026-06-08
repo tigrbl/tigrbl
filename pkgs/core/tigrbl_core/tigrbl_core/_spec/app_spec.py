@@ -184,6 +184,8 @@ class AppSpec(SerdeMixin):
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "AppSpec":
+        if "routes" in payload:
+            raise ValueError("AppSpec does not accept 'routes'; use path-owned specs.")
         return super().from_dict(payload)
 
     @classmethod

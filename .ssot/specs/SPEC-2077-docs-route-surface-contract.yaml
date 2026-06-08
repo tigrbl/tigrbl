@@ -1,29 +1,34 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2077"
 number: 2077
 slug: "docs-route-surface-contract"
 title: "Documentation route surface contract"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Documentation route surface contract"
 supersedes: []
-superseded_by: []
+superseded_by:
+  - "spc:2150"
 status_notes:
   -
-    status: "draft"
-    note: "Updated docs route surface with mount evidence."
     at: "2026-04-21T07:42:57Z"
-  -
-    status: "draft"
     note: "Updated docs route surface with mount evidence."
-    at: "2026-04-21T08:15:23Z"
-  -
     status: "draft"
-    note: "Specified favicon, Swagger UIX, Lens UIX, and runtime executor endpoint parity contract."
+  -
+    at: "2026-04-21T08:15:23Z"
+    note: "Updated docs route surface with mount evidence."
+    status: "draft"
+  -
     at: "2026-04-24T10:54:06Z"
+    note: "Specified favicon, Swagger UIX, Lens UIX, and runtime executor endpoint parity contract."
+    status: "draft"
+  -
+    status: "superseded"
+    note: "PathSpec-owned address composition and docs projection supersede route registration/projection contracts."
+    at: "2026-06-07T18:05:26Z"
 references: []
 body: |-
   ## Decision

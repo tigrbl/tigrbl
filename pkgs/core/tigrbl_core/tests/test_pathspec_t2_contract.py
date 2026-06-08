@@ -8,6 +8,7 @@ from tigrbl_core._spec import (
     HttpStreamBindingSpec,
     OpSpec,
     PathSpec,
+    WellKnownResourceSpec,
     WsBindingSpec,
     validate_path_binding,
 )
@@ -98,3 +99,27 @@ def test_pathspec_round_trip_preserves_kind_path_ops_and_binding_metadata() -> N
     assert isinstance(binding, HttpStreamBindingSpec)
     assert binding.proto == "https.stream"
     assert binding.framing == "ndjson"
+
+
+def test_pathspec_well_known_kind_requires_spec_payload_and_round_trips() -> None:
+    path = PathSpec(
+        path="/.well-known/openid-configuration",
+        kind="well-known",
+        well_known=WellKnownResourceSpec(
+            name="openid-configuration",
+            payload={"issuer": "https://issuer.example"},
+        ),
+    )
+
+    restored = PathSpec.from_dict(path.to_dict())
+
+    assert restored == path
+
+
+def test_pathspec_well_known_rejects_non_well_known_payload() -> None:
+    with pytest.raises(TypeError, match="PathSpec.well_known"):
+        PathSpec(
+            path="/.well-known/openid-configuration",
+            kind="well-known",
+            well_known={"name": "openid-configuration"},  # type: ignore[arg-type]
+        )

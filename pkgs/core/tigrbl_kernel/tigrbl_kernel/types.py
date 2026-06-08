@@ -37,6 +37,7 @@ EFFECT_BY_ATOM_NAME = {
     "sys.handler_tail": EFFECT_WIRE,
     "sys.handler_upload": EFFECT_WIRE,
     "sys.handler_download": EFFECT_WIRE,
+    "sys.handler_well_known": EFFECT_WIRE,
     "sys.handler_append_chunk": EFFECT_WIRE,
     "sys.handler_send_datagram": EFFECT_WIRE,
     "sys.handler_checkpoint": EFFECT_WIRE,

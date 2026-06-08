@@ -55,6 +55,15 @@ def test_mount_well_known_publishes_explicit_root_resource() -> None:
 
     assert mounted == ("/.well-known/openid-configuration",)
     assert app._well_known_mounts == list(mounted)
+    assert any(
+        path.kind == "well-known"
+        and path.path == "/.well-known/openid-configuration"
+        for path in app._tigrbl_path_specs
+    )
+    assert all(
+        getattr(route, "path", None) != "/.well-known/openid-configuration"
+        for route in app.routes
+    )
 
     client = _client(app)
     try:
@@ -147,6 +156,13 @@ def test_appspec_well_known_resources_materialize_on_app_and_router() -> None:
     )
 
     app = TigrblApp.from_spec(spec)
+    assert all(
+        getattr(route, "path", None) not in {
+            "/.well-known/openid-configuration",
+            "/.well-known/jwks.json",
+        }
+        for route in app.routes
+    )
 
     client = _client(app)
     try:
@@ -161,6 +177,31 @@ def test_appspec_well_known_resources_materialize_on_app_and_router() -> None:
         assert client.get("/system/.well-known/openid-configuration").status_code == 404
     finally:
         client.close()
+
+
+def test_appspec_well_known_resources_compile_to_kernel_atom() -> None:
+    spec = AppSpec(
+        well_known=(
+            WellKnownResourceSpec(
+                name="openid-configuration",
+                payload=OIDC_DISCOVERY_PAYLOAD,
+            ),
+        ),
+    )
+    app = TigrblApp.from_spec(spec)
+    app.runtime.kernel.kernel_plan(app)
+    path_model = app._tigrbl_kernel_well_known_model
+
+    labels = app.runtime.kernel.plan_labels(
+        path_model,
+        "well_known_openid_configuration",
+    )
+
+    assert any(
+        label.endswith("atom:sys:handler_well_known@sys.handler.persistence")
+        for label in labels
+    )
+    assert "hook:wire:tigrbl:route:handler" not in labels
 
 
 def test_well_known_resource_spec_round_trips_through_appspec_serde() -> None:

@@ -1,37 +1,34 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "adr"
 id: "adr:1129"
 number: 1129
 slug: "nested-appspec-path-scoped-docs-projection-policy"
 title: "Nested AppSpec Path-Scoped Docs Projection Policy"
-status: "draft"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Tigrbl canonical AppSpec authoring should be a nested, address-first spec tree for exposed surfaces, while concrete classes and decorators may remain ergonomic lowerers into that tree."
-supersedes: []
+supersedes:
+  - "adr:1028"
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to govern the next nested AppSpec and docs projection planning slice."
     at: "2026-05-09T16:16:12Z"
-  -
+    note: "Created to govern the next nested AppSpec and docs projection planning slice."
     status: "draft"
-    note: "Expanded governed feature scope for the next pre-freeze corpus and projection slice."
+  -
     at: "2026-05-09T16:40:13Z"
-  -
+    note: "Expanded governed feature scope for the next pre-freeze corpus and projection slice."
     status: "draft"
-    note: "Linked engine inventory and transport matrix follow-on scope."
+  -
     at: "2026-05-09T20:35:00Z"
-  -
+    note: "Linked engine inventory and transport matrix follow-on scope."
     status: "draft"
-    note: "Linked websocket binding framing and subprotocol follow-on scope."
-    at: "2026-05-10T11:20:00Z"
   -
-    status: "draft"
-    note: "Clarified that transport matrix scope is SSOT coverage, not a standalone production module."
-    at: "2026-05-10T12:00:00Z"
+    status: "accepted"
+    note: "PathSpec-owned address composition supersedes route-backed spec normalization; legacy route registration remains compatibility only."
+    at: "2026-06-07T18:05:16Z"
 references: []
 body: |-
   ## Decision

@@ -48,6 +48,8 @@ class RouterSpec(SerdeMixin):
             raise ValueError(
                 "RouterSpec does not accept 'models'; use 'tables' with nested TableSpec values."
             )
+        if "routes" in payload:
+            raise ValueError("RouterSpec does not accept 'routes'; use path-owned specs.")
         return super().from_dict(payload)
 
     @staticmethod

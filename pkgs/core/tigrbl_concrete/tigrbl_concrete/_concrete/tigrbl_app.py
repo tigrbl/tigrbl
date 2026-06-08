@@ -53,6 +53,8 @@ from ._websocket import WebSocketRoute
 from ._table_registry import TableRegistry
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.app_spec import _seqify, normalize_app_spec
+from tigrbl_core._spec.path_spec import PathSpec
+from tigrbl_core._spec.well_known_spec import well_known_path
 from tigrbl_concrete._mapping.appspec import (
     install_appspec_engine_inventory,
     lower_concrete_engine_inputs,
@@ -144,12 +146,21 @@ class TigrblApp(_App):
             execution_backend=getattr(spec, "execution_backend", None),
         )
         setattr(app, "_tigrbl_app_spec", spec)
-        setattr(app, "_tigrbl_path_specs", tuple())
+        setattr(
+            app,
+            "_tigrbl_path_specs",
+            tuple(
+                PathSpec(
+                    path=well_known_path(resource.name),
+                    kind="well-known",
+                    well_known=resource,
+                )
+                for resource in tuple(getattr(spec, "well_known", ()) or ())
+            ),
+        )
         setattr(app, "_tigrbl_docs_payloads", {})
         setattr(app, "_tigrbl_docs_uix", {})
         install_appspec_engine_inventory(app, spec)
-        if tuple(getattr(spec, "well_known", ()) or ()):
-            app.mount_well_known(tuple(getattr(spec, "well_known", ()) or ()))
         existing_tables = dict(getattr(app, "tables", {}) or {})
         table_registry = TableRegistry(tables=spec_tables)
         for name, table in existing_tables.items():

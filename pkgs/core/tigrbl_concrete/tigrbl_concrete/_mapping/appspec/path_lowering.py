@@ -7,6 +7,7 @@ from typing import Any
 
 from tigrbl_core._spec.docs_spec import DocsPayloadSpec, DocsUixSpec
 from tigrbl_core._spec.path_spec import PathSpec
+from tigrbl_core._spec.well_known_spec import well_known_path
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_concrete._concrete.tigrbl_router import TigrblRouter
 
@@ -28,13 +29,23 @@ def lower_appspec_routers(app: Any, spec: Any) -> None:
         setattr(router, "name", getattr(router_spec, "name", "router"))
         setattr(router, "engine_name", getattr(router_spec, "engine_name", None))
         setattr(router, "_tigrbl_route_prefix", _normalize_prefix(getattr(router_spec, "prefix", "")))
-        setattr(router, "_tigrbl_path_specs", tuple(getattr(router_spec, "paths", ()) or ()))
+        well_known_paths = tuple(
+            PathSpec(
+                path=well_known_path(resource.name),
+                kind="well-known",
+                well_known=resource,
+            )
+            for resource in tuple(getattr(router_spec, "well_known", ()) or ())
+        )
+        setattr(
+            router,
+            "_tigrbl_path_specs",
+            (*well_known_paths, *tuple(getattr(router_spec, "paths", ()) or ())),
+        )
         setattr(router, "_tigrbl_docs_payloads", _collect_docs_payloads(router._tigrbl_path_specs))
         setattr(router, "_tigrbl_docs_uix", _collect_docs_uix(router._tigrbl_path_specs))
 
         install_scope_engine_names(router=router)
-        if tuple(getattr(router_spec, "well_known", ()) or ()):
-            router.mount_well_known(tuple(getattr(router_spec, "well_known", ()) or ()))
         _lower_router_paths(router, router_spec)
         app.include_router(router, prefix=getattr(router_spec, "prefix", None))
 

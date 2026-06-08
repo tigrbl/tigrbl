@@ -30,6 +30,7 @@ from . import handler_subscribe as _handler_subscribe
 from . import handler_tail as _handler_tail
 from . import handler_update as _handler_update
 from . import handler_upload as _handler_upload
+from . import handler_well_known as _handler_well_known
 from . import start_tx as _start_tx
 
 RunFn = Callable[[Optional[object], Any], Any]
@@ -100,6 +101,12 @@ _ORDERED: Tuple[Tuple[str, str, str, RunFn], ...] = (
     ("sys", "handler_tail", _handler_tail.ANCHOR, _handler_tail.INSTANCE),
     ("sys", "handler_upload", _handler_upload.ANCHOR, _handler_upload.INSTANCE),
     ("sys", "handler_download", _handler_download.ANCHOR, _handler_download.INSTANCE),
+    (
+        "sys",
+        "handler_well_known",
+        _handler_well_known.ANCHOR,
+        _handler_well_known.INSTANCE,
+    ),
     (
         "sys",
         "handler_append_chunk",

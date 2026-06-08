@@ -2,15 +2,16 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-import re
 from typing import Any
 
-from tigrbl_concrete._concrete._response import Response
+from tigrbl_core._spec.path_spec import PathSpec
 from tigrbl_core._spec.well_known_spec import (
     WELL_KNOWN_PREFIX,
+    WellKnownResourceSpec,
     normalize_well_known_name,
+    well_known_op_alias,
     well_known_path,
 )
 
@@ -27,39 +28,7 @@ class WellKnownResource:
 
 
 def well_known_route_name(name: str) -> str:
-    token = normalize_well_known_name(name)
-    slug = re.sub(r"[^0-9A-Za-z_]+", "_", token).strip("_")
-    return f"well_known_{slug or 'resource'}"
-
-
-def _resource_endpoint(resource: WellKnownResource) -> Callable[[], Any]:
-    payload = resource.payload
-    if callable(payload):
-        return payload
-
-    async def _endpoint() -> Response:
-        if resource.media_type == "application/json":
-            return Response.from_json(
-                payload,
-                status_code=resource.status_code,
-                headers=resource.headers,
-            )
-        if resource.media_type.startswith("text/"):
-            return Response.text(
-                str(payload),
-                status_code=resource.status_code,
-                headers=resource.headers,
-            )
-        content = payload if isinstance(payload, bytes) else str(payload).encode()
-        return Response(
-            status_code=resource.status_code,
-            body=content,
-            media_type=resource.media_type,
-            headers=resource.headers,
-        )
-
-    _endpoint.__name__ = well_known_route_name(resource.name)
-    return _endpoint
+    return well_known_op_alias(name)
 
 
 def _coerce_resources(
@@ -108,13 +77,10 @@ def mount_well_known(
     resource they intend to publish.
     """
 
-    add_route = getattr(router, "add_route", None)
-    if not callable(add_route):
-        raise TypeError("Router-like object must provide add_route(...).")
-
     mounted: list[str] = []
     seen: set[str] = set()
-    route_tags = tags if tags is not None else ["well-known"]
+    del tags
+    path_specs = list(getattr(router, "_tigrbl_path_specs", ()) or ())
     for resource in _coerce_resources(resources):
         paths = [well_known_path(resource.name)]
 
@@ -122,17 +88,22 @@ def mount_well_known(
             if path in seen:
                 continue
             seen.add(path)
-            add_route(
-                path,
-                _resource_endpoint(resource),
-                methods=["GET"],
-                name=well_known_route_name(resource.name),
-                tags=route_tags,
-                include_in_schema=False,
-                inherit_owner_dependencies=False,
+            path_specs.append(
+                PathSpec(
+                    path=path,
+                    kind="well-known",
+                    well_known=WellKnownResourceSpec(
+                        name=resource.name,
+                        payload=resource.payload,
+                        media_type=resource.media_type,
+                        status_code=resource.status_code,
+                        headers=resource.headers,
+                    ),
+                )
             )
             mounted.append(path)
 
+    setattr(router, "_tigrbl_path_specs", tuple(path_specs))
     mounts = list(getattr(router, "_well_known_mounts", ()) or ())
     mounts.extend(mounted)
     setattr(router, "_well_known_mounts", mounts)

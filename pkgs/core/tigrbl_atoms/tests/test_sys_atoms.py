@@ -36,6 +36,7 @@ from tigrbl_atoms.atoms.sys import (
     handler_tail,
     handler_update,
     handler_upload,
+    handler_well_known,
     start_tx,
 )
 from tigrbl_atoms.types import Atom, ExecutingCtx, GuardedCtx, OperatedCtx, ResolvedCtx
@@ -68,6 +69,7 @@ def test_sys_registry_contains_expected_atoms() -> None:
         ("sys", "handler_tail"),
         ("sys", "handler_upload"),
         ("sys", "handler_download"),
+        ("sys", "handler_well_known"),
         ("sys", "handler_append_chunk"),
         ("sys", "handler_send_datagram"),
         ("sys", "handler_checkpoint"),
@@ -165,6 +167,10 @@ def test_sys_registry_binds_expected_anchor_and_instance_samples() -> None:
         handler_download.ANCHOR,
         handler_download.INSTANCE,
     )
+    assert REGISTRY[("sys", "handler_well_known")] == (
+        handler_well_known.ANCHOR,
+        handler_well_known.INSTANCE,
+    )
     assert REGISTRY[("sys", "handler_append_chunk")] == (
         handler_append_chunk.ANCHOR,
         handler_append_chunk.INSTANCE,
@@ -215,6 +221,7 @@ def test_sys_instances_and_impls_use_atom_contract() -> None:
         handler_tail,
         handler_upload,
         handler_download,
+        handler_well_known,
         handler_append_chunk,
         handler_send_datagram,
         handler_checkpoint,

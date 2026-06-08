@@ -1,17 +1,22 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2008"
 number: 2008
 slug: "http-route-registration"
 title: "Canonical HTTP Route Registration"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Canonical HTTP Route Registration"
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "spc:2150"
+status_notes:
+  -
+    status: "superseded"
+    note: "PathSpec-owned address composition and docs projection supersede route registration/projection contracts."
+    at: "2026-06-07T18:05:26Z"
 references: []
 body: |-
   ## Decision

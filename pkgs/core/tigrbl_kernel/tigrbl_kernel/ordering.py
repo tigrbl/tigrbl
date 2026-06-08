@@ -57,6 +57,7 @@ _PREF: Dict[str, Tuple[str, ...]] = {
         "sys:handler_bulk_replace",
         "sys:handler_bulk_merge",
         "sys:handler_bulk_delete",
+        "sys:handler_well_known",
         "sys:handler_persistence",
     ),
     _ev.BATCH_RESULT_SLOTS: ("batch:result_slots",),

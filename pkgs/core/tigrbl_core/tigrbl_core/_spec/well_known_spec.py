@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from dataclasses import dataclass
+import re
 from typing import Any
 
 from .serde import SerdeMixin
@@ -53,9 +54,16 @@ def well_known_path(name: str) -> str:
     return f"{WELL_KNOWN_PREFIX}/{normalize_well_known_name(name)}"
 
 
+def well_known_op_alias(name: str) -> str:
+    token = normalize_well_known_name(name)
+    slug = re.sub(r"[^0-9A-Za-z_]+", "_", token).strip("_")
+    return f"well_known_{slug or 'resource'}"
+
+
 __all__ = [
     "WELL_KNOWN_PREFIX",
     "WellKnownResourceSpec",
     "normalize_well_known_name",
+    "well_known_op_alias",
     "well_known_path",
 ]

@@ -1,39 +1,43 @@
-schema_version: "0.2.0"
+schema_version: "0.7.0"
 kind: "spec"
 id: "spc:2150"
 number: 2150
 slug: "nested-appspec-path-and-docs-projection-contract"
 title: "Nested AppSpec Path and Docs Projection Contract"
-status: "draft"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Define the next-slice contract for nested canonical AppSpec composition, path-scoped protocol bindings, and documentation projection selection."
-supersedes: []
+supersedes:
+  - "spc:2008"
+  - "spc:2066"
+  - "spc:2071"
+  - "spc:2077"
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define the next nested AppSpec, path-scoped binding, and docs projection slice."
     at: "2026-05-09T16:16:45Z"
-  -
+    note: "Created to define the next nested AppSpec, path-scoped binding, and docs projection slice."
     status: "draft"
-    note: "Expanded traceability to include corpus, projection, rejection, and parity scope targets."
+  -
     at: "2026-05-09T16:40:20Z"
-  -
+    note: "Expanded traceability to include corpus, projection, rejection, and parity scope targets."
     status: "draft"
-    note: "Linked engine inventory and transport matrix companion contracts."
+  -
     at: "2026-05-09T20:35:00Z"
-  -
+    note: "Linked engine inventory and transport matrix companion contracts."
     status: "draft"
-    note: "Linked websocket binding framing and subprotocol companion contract."
-    at: "2026-05-10T11:20:00Z"
+  -
+    status: "accepted"
+    note: "PathSpec-owned address composition and docs projection supersede route registration/projection contracts."
+    at: "2026-06-07T18:05:26Z"
 references: []
 body: |-
   ## Intent
   
   Define the next-slice contract for nested canonical AppSpec composition, path-scoped protocol bindings, and documentation projection selection.
-
+  
   This contract is not only a validation shape. The nested canonical tree is the
   authority that concrete lowering, docs emission, runtime compilation, and
   conformance checks must consume.
