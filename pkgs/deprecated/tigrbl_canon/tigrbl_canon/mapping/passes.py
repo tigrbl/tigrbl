@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Callable, Iterable, List
 
 from .hook_mro_collect import mro_collect_decorated_hooks
-from tigrbl.op import resolve as resolve_ops
+from tigrbl_core._spec.op_spec import resolve as resolve_ops
 from tigrbl_atoms import VALID_HOOK_PHASES
 from tigrbl_core._spec.monotone import stable_keyed_overlay
 from .context import MappingContext

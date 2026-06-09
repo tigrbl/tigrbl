@@ -1,7 +1,7 @@
 <div align="center">
 <h1>tigrbl-canon</h1>
 <img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="140"/>
-<p><strong>Deprecated compatibility package for Tigrbl canonical mapping, router binding, schema attachment, RPC and REST exposure, and column inference utilities.</strong></p>
+<p><strong>Deprecated legacy compatibility package for Tigrbl canonical mapping, router binding, schema attachment, RPC and REST exposure, and column inference utilities.</strong></p>
 <a href="https://pypi.org/project/tigrbl-canon/"><img src="https://img.shields.io/pypi/v/tigrbl-canon?label=PyPI" alt="PyPI version for tigrbl-canon"/></a>
 <a href="https://pypi.org/project/tigrbl-canon/"><img src="https://static.pepy.tech/badge/tigrbl-canon" alt="Downloads for tigrbl-canon"/></a>
 <a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-canon"/></a>
@@ -13,15 +13,15 @@
 
 ## What is tigrbl-canon?
 
-Deprecated compatibility package for Tigrbl canonical mapping, router binding, schema attachment, RPC and REST exposure, and column inference utilities.
+Deprecated legacy compatibility package for Tigrbl canonical mapping, router binding, schema attachment, RPC and REST exposure, and column inference utilities. New code should not add this package; it exists only to carry older `tigrbl_canon` import paths during migrations.
 
 ## Why use tigrbl-canon?
 
-Use it only when maintaining older integrations that still import the historical canonical package boundary.
+Use it only when maintaining older integrations that still import the historical canonical package boundary. Do not use it for new Tigrbl applications or extensions.
 
 ## When should I install tigrbl-canon?
 
-Install it for compatibility migrations; prefer the current split packages for new work.
+Install it only for compatibility migrations that still require `tigrbl_canon` imports. Prefer the current split packages for new work.
 
 ## Who is tigrbl-canon for?
 
@@ -29,15 +29,15 @@ Maintainers carrying legacy Tigrbl integrations forward.
 
 ## Where does tigrbl-canon fit?
 
-`tigrbl-canon` lives at `pkgs/deprecated/tigrbl_canon` and serves legacy compatibility while migrating to current split packages.
+`tigrbl-canon` lives at `pkgs/deprecated/tigrbl_canon` and serves legacy compatibility while migrating to current split packages. It is not part of the active facade dependency path.
 
 ## How does tigrbl-canon work?
 
-It depends on current split packages and keeps historical import paths available while newer package boundaries own active behavior.
+It depends on current split packages and keeps historical import paths available while newer package boundaries own active behavior. It must not depend on the `tigrbl` facade package.
 
 ## Certification Status
 
-- Package status: governed package in the `tigrbl/tigrbl` workspace.
+- Package status: deprecated, inactive compatibility package in the `tigrbl/tigrbl` workspace.
 - Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
 - Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
 - Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
@@ -68,7 +68,7 @@ pip install tigrbl-canon
 
 ## What It Owns
 
-`tigrbl-canon` owns the `deprecated compatibility package` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
+`tigrbl-canon` owns the `deprecated legacy compatibility package` boundary. It should be installed only when an older integration still needs the historical `tigrbl_canon` import root during migration.
 
 Implementation orientation:
 - `tigrbl_canon`: column/, mapping/
@@ -77,7 +77,7 @@ Implementation orientation:
 
 - Import roots: `tigrbl_canon`.
 - Public symbols: `_DEPRECATION_MESSAGE`.
-- Workspace dependencies: [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl`](https://pypi.org/project/tigrbl/).
+- Workspace dependencies: [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/).
 - External runtime dependencies: none declared.
 
 ## Usage Examples
@@ -103,7 +103,7 @@ print(tigrbl_canon.__name__)
 ### Prefer current split packages for new code
 
 ```bash
-uv add tigrbl tigrbl-core tigrbl-runtime
+uv add tigrbl-core tigrbl-base tigrbl-runtime
 ```
 
 ### Audit remaining legacy imports
@@ -114,7 +114,7 @@ rg "tigrbl_canon|tigrbl-canon" .
 
 ## How To Choose This Package
 
-Choose `tigrbl-canon` when the quick-answer table matches your use case. Choose [`tigrbl`](https://pypi.org/project/tigrbl/) instead when you want the full public facade. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are building framework extensions or testing a specific internal boundary.
+Choose `tigrbl-canon` only when an existing integration still imports `tigrbl_canon` and cannot migrate immediately. Choose lower-level packages such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when building framework extensions or testing a specific internal boundary.
 
 ## Related Packages
 
@@ -123,7 +123,6 @@ Choose `tigrbl-canon` when the quick-answer table matches your use case. Choose 
 - [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
 - [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
 - [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/)
-- [`tigrbl`](https://pypi.org/project/tigrbl/)
 
 ## Documentation Links
 

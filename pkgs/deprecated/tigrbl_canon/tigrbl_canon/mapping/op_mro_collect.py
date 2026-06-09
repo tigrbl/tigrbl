@@ -6,7 +6,7 @@ from functools import lru_cache
 from typing import Any, Callable, Dict
 
 from tigrbl_concrete._concrete._op import Op as OpSpec
-from tigrbl.decorators.op import _maybe_await, _normalize_persist, _unwrap
+from tigrbl_concrete._decorators.op import _maybe_await, _normalize_persist, _unwrap
 from tigrbl_runtime.runtime.executor import _Ctx
 
 logger = logging.getLogger("uvicorn")

@@ -1,7 +1,7 @@
 [project]
 name = "tigrbl-canon"
 version = "0.4.2"
-description = "Deprecated compatibility package for Tigrbl canonical mapping, router binding, schema attachment, RPC and REST exposure, and column inference utilities."
+description = "Deprecated legacy compatibility package for Tigrbl canonical mapping, router binding, schema attachment, RPC and REST exposure, and column inference utilities."
 readme = "README.md"
 license = { file = "LICENSE" }
 keywords = [
@@ -58,7 +58,6 @@ dependencies = [
     "tigrbl-core",
     "tigrbl-runtime",
     "tigrbl-atoms",
-    "tigrbl",
 ]
 
 
@@ -75,7 +74,6 @@ Issues = "https://github.com/tigrbl/tigrbl/issues"
 "tigrbl-core" = { workspace = true }
 "tigrbl-runtime" = { workspace = true }
 "tigrbl-atoms" = { workspace = true }
-"tigrbl" = { workspace = true }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

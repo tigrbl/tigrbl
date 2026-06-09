@@ -9,8 +9,8 @@ from typing import Any, Callable, Dict, Iterable, Union
 from tigrbl_runtime.runtime.executor import _Ctx
 from tigrbl_concrete._concrete._op import Op as OpSpec
 from .op_mro_collect import mro_alias_map_for
-from tigrbl.decorators.op import _maybe_await, _unwrap
-from tigrbl.decorators.hook import HOOK_DECLS_ATTR
+from tigrbl_concrete._decorators.op import _maybe_await, _unwrap
+from tigrbl_concrete._decorators.hook import HOOK_DECLS_ATTR
 from tigrbl_concrete._concrete import Hook
 
 logger = logging.getLogger("uvicorn")

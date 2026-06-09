@@ -8,7 +8,7 @@ from typing import Dict
 
 from tigrbl_core.config.constants import TIGRBL_SCHEMA_DECLS_ATTR
 
-from tigrbl.decorators.schema import _SchemaDecl
+from tigrbl_concrete._decorators.schema import _SchemaDecl
 from pydantic import BaseModel, create_model
 
 logger = logging.getLogger("uvicorn")

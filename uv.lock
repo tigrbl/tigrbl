@@ -3290,7 +3290,6 @@ name = "tigrbl-canon"
 version = "0.4.2"
 source = { editable = "pkgs/deprecated/tigrbl_canon" }
 dependencies = [
-    { name = "tigrbl" },
     { name = "tigrbl-atoms" },
     { name = "tigrbl-base" },
     { name = "tigrbl-core" },
@@ -3306,7 +3305,6 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
     { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
     { name = "tigrbl-base", editable = "pkgs/core/tigrbl_base" },
     { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
