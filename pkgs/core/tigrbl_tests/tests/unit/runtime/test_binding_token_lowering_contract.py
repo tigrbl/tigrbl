@@ -5,10 +5,14 @@ from dataclasses import replace
 import pytest
 
 from tigrbl import (
+    JsonRpcOlapTable,
+    JsonRpcOltpTable,
     JsonRpcTable,
+    RestOlapTable,
     RestJsonRpcOlapTable,
     RestJsonRpcOltpTable,
     RestJsonRpcTable,
+    RestOltpTable,
     RestTable,
     WebSocketJsonRpcTable,
     WebTransportBidiTable,
@@ -125,6 +129,37 @@ def test_rest_jsonrpc_oltp_and_olap_tokens_keep_semantic_targets() -> None:
     }
 
 
+def test_oltp_and_olap_token_details_preserve_protocol_specific_selectors() -> None:
+    rest_oltp = {token.op_alias: token for token in _tokens(RestOltpTable)}
+    rest_olap = {token.op_alias: token for token in _tokens(RestOlapTable)}
+    jsonrpc_oltp = {token.op_alias: token for token in _tokens(JsonRpcOltpTable)}
+    jsonrpc_olap = {token.op_alias: token for token in _tokens(JsonRpcOlapTable)}
+
+    assert rest_oltp["merge"].methods == ("PATCH",)
+    assert rest_oltp["merge"].path == "/merge"
+    assert rest_olap["aggregate"].methods == ("GET",)
+    assert rest_olap["aggregate"].path == "/aggregate"
+    assert jsonrpc_oltp["merge"].rpc_method == "JsonRpcOltpTable.merge"
+    assert jsonrpc_oltp["merge"].framing == "jsonrpc"
+    assert jsonrpc_olap["aggregate"].rpc_method == "JsonRpcOlapTable.aggregate"
+    assert jsonrpc_olap["aggregate"].framing == "jsonrpc"
+
+
+def test_dual_tokens_keep_independent_rest_path_and_jsonrpc_method() -> None:
+    pairs = {}
+    for token in _tokens(RestJsonRpcOltpTable):
+        pairs.setdefault(token.op_alias, {})[token.binding_kind] = token
+
+    merge = pairs["merge"]
+
+    assert merge["http.rest"].path == "/merge"
+    assert merge["http.rest"].methods == ("PATCH",)
+    assert merge["http.rest"].rpc_method is None
+    assert merge["http.jsonrpc"].path == ""
+    assert merge["http.jsonrpc"].methods == ()
+    assert merge["http.jsonrpc"].rpc_method == "RestJsonRpcOltpTable.merge"
+
+
 def test_opspec_binding_overrides_are_applied_before_defaults() -> None:
     explicit = HttpStreamBindingSpec(proto="http.stream", path="/explicit")
 
@@ -218,3 +253,16 @@ def test_binding_token_lowering_does_not_mutate_source_specs() -> None:
 
     assert before == after
     assert all(not op.bindings for op in RestTable.TABLE_PROFILE.ops)
+
+
+@pytest.mark.parametrize(
+    "table",
+    (RestJsonRpcTable, RestJsonRpcOltpTable, RestJsonRpcOlapTable),
+)
+def test_dual_binding_token_lowering_does_not_mutate_source_specs(table: type) -> None:
+    before = tuple(table.TABLE_PROFILE.ops)
+    _ = TableSpec.collect(table)
+    after = tuple(table.TABLE_PROFILE.ops)
+
+    assert before == after
+    assert all(not op.bindings for op in table.TABLE_PROFILE.ops)

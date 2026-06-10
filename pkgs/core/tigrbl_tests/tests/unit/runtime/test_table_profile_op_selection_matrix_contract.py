@@ -120,18 +120,45 @@ def test_abstract_profiles_do_not_emit_concrete_binding_tokens() -> None:
 
 
 def test_olap_profile_rejects_mutation_ops() -> None:
-    for kind, match in (
-        ("rest_olap", "REST target"),
-        ("jsonrpc_olap", "JSON-RPC target"),
-        ("rest_jsonrpc_olap", "REST target"),
+    for kind, target, match in (
+        ("rest_olap", "create", "REST target"),
+        ("rest_olap", "update", "REST target"),
+        ("rest_olap", "delete", "REST target"),
+        ("rest_olap", "merge", "REST target"),
+        ("jsonrpc_olap", "create", "JSON-RPC target"),
+        ("jsonrpc_olap", "update", "JSON-RPC target"),
+        ("jsonrpc_olap", "delete", "JSON-RPC target"),
+        ("jsonrpc_olap", "merge", "JSON-RPC target"),
+        ("rest_jsonrpc_olap", "create", "REST target"),
+        ("rest_jsonrpc_olap", "update", "REST target"),
+        ("rest_jsonrpc_olap", "delete", "REST target"),
+        ("rest_jsonrpc_olap", "merge", "REST target"),
     ):
         profile = TableProfileSpec(
             kind=kind,
-            ops=(OpSpec(alias="create", target="create"),),
+            ops=(OpSpec(alias=target, target=target),),
         )
 
         with pytest.raises(TableProfileError, match=match):
             lower_table_profile_bindings(OlapTable, profile, tuple(profile.ops))
+
+
+def test_oltp_profile_rejects_analytical_ops() -> None:
+    for kind, target, match in (
+        ("rest_oltp", "aggregate", "REST target"),
+        ("rest_oltp", "group_by", "REST target"),
+        ("jsonrpc_oltp", "aggregate", "JSON-RPC target"),
+        ("jsonrpc_oltp", "group_by", "JSON-RPC target"),
+        ("rest_jsonrpc_oltp", "aggregate", "REST target"),
+        ("rest_jsonrpc_oltp", "group_by", "REST target"),
+    ):
+        profile = TableProfileSpec(
+            kind=kind,
+            ops=(OpSpec(alias=target, target=target),),
+        )
+
+        with pytest.raises(TableProfileError, match=match):
+            lower_table_profile_bindings(OltpTable, profile, tuple(profile.ops))
 
 
 def test_datagram_profile_rejects_stream_and_session_ops() -> None:

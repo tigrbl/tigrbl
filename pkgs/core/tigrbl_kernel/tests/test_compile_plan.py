@@ -10,6 +10,8 @@ from tigrbl_core._spec.binding_spec import (
 )
 from tigrbl_core._spec.app_spec import AppSpec
 from tigrbl_core._spec.op_spec import OpSpec
+from tigrbl_core._spec.table_spec import TableSpec
+from tigrbl import RestJsonRpcTable
 
 from tigrbl_kernel._compile import _compile_plan
 from tigrbl_kernel.models import KernelPlan, OpKey
@@ -133,3 +135,30 @@ def test_compile_plan_accepts_appspec_and_declared_tigrbl_ops() -> None:
     assert plan.opmeta[0].target == "list"
     assert plan.opkey_to_meta[OpKey("https.rest", "GET /gadgets")] == 0
     assert plan.proto_indices["https.rest"]["exact"]["GET /gadgets"] == 0
+
+
+def test_compile_plan_keeps_table_profile_rest_jsonrpc_bindings_separate() -> None:
+    class DualProfileTable:
+        __tigrbl_ops__ = (TableSpec.collect(RestJsonRpcTable).ops[0],)
+
+    compiler = CompilerFixture()
+    app = AppFixture(tables=(DualProfileTable,))
+
+    plan = _compile_plan(compiler, app)
+
+    assert len(plan.opmeta) == 1
+    assert plan.opmeta[0].alias == "create"
+    assert plan.opmeta[0].target == "create"
+    assert plan.opkey_to_meta[OpKey("http.rest", "POST /create")] == 0
+    assert (
+        plan.opkey_to_meta[
+            OpKey("http.jsonrpc", "default:RestJsonRpcTable.create")
+        ]
+        == 0
+    )
+    assert plan.proto_indices["http.rest"]["exact"]["POST /create"] == 0
+    jsonrpc = plan.proto_indices["http.jsonrpc"]["endpoints"]["default"]
+    assert jsonrpc["RestJsonRpcTable.create"]["meta_index"] == 0
+    assert jsonrpc["RestJsonRpcTable.create"]["selector"] == (
+        "default:RestJsonRpcTable.create"
+    )

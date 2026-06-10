@@ -46,6 +46,25 @@ def test_custom_table_profile_cannot_use_reserved_builtin_name() -> None:
         TableProfileSpec(kind="rest", custom=True, namespace="acme")
 
 
+@pytest.mark.parametrize(
+    "kind",
+    (
+        "rest_jsonrpc",
+        "rest_oltp",
+        "jsonrpc_oltp",
+        "rest_jsonrpc_oltp",
+        "rest_olap",
+        "jsonrpc_olap",
+        "rest_jsonrpc_olap",
+    ),
+)
+def test_custom_table_profile_cannot_use_protocol_family_builtin_names(
+    kind: str,
+) -> None:
+    with pytest.raises(TableProfileError, match="reserved kind"):
+        TableProfileSpec(kind=kind, custom=True, namespace="acme")
+
+
 def test_table_profile_schema_validates_serialized_payload() -> None:
     payload = with_identity("TableProfileSpec", PLAIN_TABLE_PROFILE.to_dict())
 

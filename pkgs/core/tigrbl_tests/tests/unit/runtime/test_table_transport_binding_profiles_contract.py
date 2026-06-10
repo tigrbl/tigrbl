@@ -216,6 +216,30 @@ def test_explicit_opspec_bindings_override_table_defaults() -> None:
     assert _spec(Explicit).ops[0].bindings == (explicit,)
 
 
+def test_explicit_opspec_bindings_suppress_both_dual_profile_defaults() -> None:
+    explicit = _spec(StreamTable).ops[0].bindings[0]
+
+    class Explicit(RestJsonRpcTable):
+        __abstract__ = True
+        TABLE_PROFILE = TableProfileSpec(
+            kind="rest_jsonrpc",
+            ops=(
+                OpSpec(alias="read", target="read", bindings=(explicit,)),
+                OpSpec(alias="list", target="list"),
+            ),
+        )
+
+    spec = _spec(Explicit)
+
+    assert tuple(type(binding).__name__ for binding in spec.ops[0].bindings) == (
+        "HttpStreamBindingSpec",
+    )
+    assert tuple(type(binding).__name__ for binding in spec.ops[1].bindings) == (
+        "HttpRestBindingSpec",
+        "HttpJsonRpcBindingSpec",
+    )
+
+
 def test_docs_exposure_does_not_imply_network_mount() -> None:
     profile = TableProfileSpec(
         kind="tests.docs-only",

@@ -15,6 +15,8 @@ from tigrbl_core._spec import (
     WsBindingSpec,
 )
 from tigrbl_core._spec.docs_spec import validate_docs_tree
+from tigrbl_core._spec.table_spec import TableSpec
+from tigrbl import RestJsonRpcTable
 
 
 def _op(alias: str, *bindings: object, tags: tuple[str, ...] = ()) -> OpSpec:
@@ -185,6 +187,71 @@ def test_docs_projection_respects_excludes_and_rpc_method_filters() -> None:
     assert len(selected) == 1
     assert selected[0].path == "/rpc"
     assert selected[0].rpc_methods == ("Item.create",)
+
+
+def test_docs_projection_selects_rest_and_openrpc_surfaces_for_dual_table_profile() -> None:
+    profile_op = TableSpec.collect(RestJsonRpcTable).ops[0]
+    rest_binding, jsonrpc_binding = profile_op.bindings
+    paths = (
+        PathSpec(
+            path="/create",
+            kind="resource",
+            ops=(
+                OpSpec(
+                    alias=profile_op.alias,
+                    target=profile_op.target,
+                    bindings=(rest_binding,),
+                ),
+            ),
+        ),
+        PathSpec(
+            path="/rpc",
+            kind="jsonrpc",
+            ops=(
+                OpSpec(
+                    alias=profile_op.alias,
+                    target=profile_op.target,
+                    bindings=(jsonrpc_binding,),
+                ),
+            ),
+        ),
+    )
+
+    openapi = DocsPayloadSpec(
+        kind="openapi",
+        projection=DocsProjectionSpec(
+            name="rest-surface",
+            include_protocols=("http.rest",),
+            include_path_kinds=("resource",),
+        ),
+    )
+    openrpc = DocsPayloadSpec(
+        kind="openrpc",
+        projection=DocsProjectionSpec(
+            name="rpc-surface",
+            include_protocols=("http.jsonrpc",),
+            include_path_kinds=("jsonrpc",),
+            rpc_methods=("RestJsonRpcTable.create",),
+        ),
+    )
+
+    rest_selected = openapi.projection.select(paths)
+    rpc_selected = openrpc.projection.select(paths)
+
+    assert [(item.path, item.op, item.protocols) for item in rest_selected] == [
+        ("/create", "create", ("http.rest",)),
+    ]
+    assert [
+        (item.path, item.op, item.protocols, item.rpc_methods)
+        for item in rpc_selected
+    ] == [
+        (
+            "/rpc",
+            "create",
+            ("http.jsonrpc",),
+            ("RestJsonRpcTable.create",),
+        ),
+    ]
 
 
 def test_docs_paths_remain_separate_from_runtime_projection() -> None:
