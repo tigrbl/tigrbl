@@ -1,11 +1,11 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from importlib import import_module
-import warnings
-
-from tigrbl_canon import _DEPRECATION_MESSAGE
-
-warnings.warn(_DEPRECATION_MESSAGE, DeprecationWarning, stacklevel=2)
 
 __all__ = [
     "bind",

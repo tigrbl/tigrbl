@@ -1,3 +1,7 @@
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
 import logging
 
 # tigrbl/v3/mapping/columns.py

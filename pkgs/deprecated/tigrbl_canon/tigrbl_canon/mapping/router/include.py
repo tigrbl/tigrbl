@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 import logging
 from dataclasses import replace
 from types import SimpleNamespace

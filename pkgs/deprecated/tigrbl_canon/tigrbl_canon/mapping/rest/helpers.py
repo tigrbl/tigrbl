@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from warnings import warn
 
 from tigrbl_base._base._rest_map import (

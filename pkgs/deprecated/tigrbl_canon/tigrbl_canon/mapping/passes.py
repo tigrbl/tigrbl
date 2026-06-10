@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from typing import Any, Callable, Iterable, List
 
 from .hook_mro_collect import mro_collect_decorated_hooks

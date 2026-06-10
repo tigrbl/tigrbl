@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from typing import TYPE_CHECKING, Any, Optional, Set, Tuple
 
 if TYPE_CHECKING:

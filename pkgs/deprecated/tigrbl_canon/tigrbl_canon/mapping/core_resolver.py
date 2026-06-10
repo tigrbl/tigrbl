@@ -2,6 +2,11 @@
 
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from typing import Annotated, Any, Iterable, get_args, get_origin
 
 from tigrbl_ops_oltp.crud.params import Param

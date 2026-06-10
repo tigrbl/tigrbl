@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from functools import lru_cache
 
 from tigrbl_core._spec.table_spec import TableSpec

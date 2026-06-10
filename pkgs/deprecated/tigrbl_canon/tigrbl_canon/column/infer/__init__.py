@@ -1,3 +1,7 @@
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
 from .core import infer
 from .types import (
     Email,

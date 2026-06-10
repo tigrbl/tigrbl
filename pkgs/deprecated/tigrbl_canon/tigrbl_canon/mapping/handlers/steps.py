@@ -1,6 +1,11 @@
 # tigrbl/v3/mapping/handlers/steps.py
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 import inspect
 import logging
 from functools import lru_cache

@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 import inspect
 import logging
 from typing import Annotated, Any, Awaitable, Callable, Mapping, Optional, Sequence

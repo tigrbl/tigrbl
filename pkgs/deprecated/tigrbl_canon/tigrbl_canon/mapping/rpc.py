@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from warnings import warn
 
 from tigrbl_concrete._mapping.rpc import register_and_attach, rpc_call

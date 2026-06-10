@@ -7,6 +7,11 @@ engine/app/table modules.
 
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 import logging
 from types import SimpleNamespace
 from typing import Any, Callable, Iterable, Mapping

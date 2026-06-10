@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from typing import Any, Dict, Optional, get_origin
 
 from .types import DataKind, PyTypeInfo, Inferred

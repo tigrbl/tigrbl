@@ -1,5 +1,10 @@
 # tigrbl/v3/mapping/schemas/__init__.py
 from __future__ import annotations
+
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
 import logging
 
 from .builder import build_and_attach

@@ -1,6 +1,11 @@
 # tigrbl/v3/config/resolver.py
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 from dataclasses import asdict, is_dataclass
 from types import MappingProxyType
 from typing import Any, Dict, Iterable, Mapping, Optional

@@ -1,5 +1,10 @@
 # tigrbl/v3/mapping/handlers/ctx.py
 from __future__ import annotations
+
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
 import logging
 
 from typing import Any, Mapping, Sequence

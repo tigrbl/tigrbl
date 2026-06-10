@@ -1,6 +1,11 @@
 # tigrbl/tigrbl/v3/engine/resolver.py
 from __future__ import annotations
 
+from tigrbl_canon import _warn_deprecated_import
+
+_warn_deprecated_import(__name__)
+
+
 import asyncio
 import inspect
 import hashlib
