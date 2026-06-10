@@ -17,3 +17,5 @@ body: |-
   Table profile operation selection defines semantic operation membership only. It must not imply concrete transport bindings, documentation exposure, or runtime mounting.
 
   Operation membership is represented by TableProfileSpec.ops. That field is complete table-level op policy and is projected through TableSpec.collect for compiler/runtime consumption.
+
+  Protocol-family variants for CRUD, OLTP, and OLAP profiles select the same semantic operation sets for the same workload family. REST-only, HTTP JSON-RPC-only, and REST+JSON-RPC variants differ in binding lowering, not in semantic op membership.

@@ -17,3 +17,5 @@ body: |-
   Define table-level profiles as typed TableProfileSpec values that select complete operation sets and default transport/documentation exposure without making abstract table classes mount network routes.
 
   TABLE_PROFILE is the table-level source of truth for generated/default ops, default bindings, docs exposure, and runtime exposure.
+
+  HTTP table profile families are explicit by protocol. REST-only, HTTP JSON-RPC-only, and REST+JSON-RPC parity profiles are distinct built-in profile kinds. OLTP and OLAP compatibility names resolve to REST-basis profiles; JSON-RPC and parity OLTP/OLAP behavior requires the corresponding explicit protocol-family class.

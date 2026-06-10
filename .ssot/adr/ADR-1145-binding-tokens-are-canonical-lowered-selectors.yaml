@@ -15,3 +15,5 @@ status_notes: []
 references: []
 body: |-
   Decision: Binding token lowering converts table profiles, operation verbs, and explicit OpSpec bindings into canonical concrete selectors used by transport projection, documentation projection, and dispatch planning. Rationale: downstream surfaces need stable selector objects rather than recomputing profile and verb policy independently. Consequence: lowered tokens must preserve source provenance and be deterministic for the same specs.
+
+  REST+JSON-RPC profile tokens are represented as separate canonical selectors for the REST and HTTP JSON-RPC bindings. They are not collapsed into a single mixed selector, so docs, kernel planning, and dispatch can reason about each protocol surface independently.

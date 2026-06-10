@@ -19,3 +19,5 @@ body: |-
   CrudTableBase and RealtimeTableBase are abstract semantic presets that inherit directly from TableBase. Public concrete table profile classes compose those presets through the concrete Table construction surface.
 
   This avoids a parallel TableProfileBase layer and keeps the table profile contract universal to tables.
+
+  Protocol-specific table classes declare their selected profile through TABLE_PROFILE on the concrete class. Compatibility names such as OltpTable and OlapTable inherit from their REST-basis concrete profile classes rather than introducing a second default source.

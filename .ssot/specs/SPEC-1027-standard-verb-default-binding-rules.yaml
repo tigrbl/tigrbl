@@ -15,6 +15,8 @@ status_notes: []
 references: []
 body: |-
   Define default binding lowering for create, read, update, delete, and list verbs across REST and HTTP JSON-RPC table profiles.
+
+  RestJsonRpcTable applies the same CRUD semantic verbs as RestTable and JsonRpcTable, but lowers each supported operation to both REST and HTTP JSON-RPC defaults. The binding family is selected by profile kind, not inferred from class name substrings.
 spec_kind: "normative"
 adr_ids:
   - "adr:1122"

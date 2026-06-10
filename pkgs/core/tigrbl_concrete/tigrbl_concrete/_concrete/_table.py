@@ -140,6 +140,16 @@ class JsonRpcTable(CrudTable):
     )
 
 
+class RestJsonRpcTable(CrudTable):
+    __abstract__ = True
+    TABLE_PROFILE = make_table_profile(
+        "rest_jsonrpc",
+        ("create", "read", "update", "replace", "delete", "list", "clear"),
+        docs_exposure="default",
+        runtime_exposure="default",
+    )
+
+
 class BulkCrudTable(CrudTable):
     __abstract__ = True
     TABLE_PROFILE = make_table_profile(
@@ -161,10 +171,10 @@ class BulkCrudTable(CrudTable):
     )
 
 
-class OltpTable(CrudTable):
+class RestOltpTable(CrudTable):
     __abstract__ = True
     TABLE_PROFILE = make_table_profile(
-        "oltp",
+        "rest_oltp",
         (
             "create",
             "read",
@@ -181,14 +191,82 @@ class OltpTable(CrudTable):
     )
 
 
-class OlapTable(TableBase):
+class JsonRpcOltpTable(CrudTable):
     __abstract__ = True
     TABLE_PROFILE = make_table_profile(
-        "olap",
+        "jsonrpc_oltp",
+        (
+            "create",
+            "read",
+            "update",
+            "replace",
+            "merge",
+            "delete",
+            "list",
+            "count",
+            "exists",
+        ),
+        docs_exposure="default",
+        runtime_exposure="default",
+    )
+
+
+class RestJsonRpcOltpTable(CrudTable):
+    __abstract__ = True
+    TABLE_PROFILE = make_table_profile(
+        "rest_jsonrpc_oltp",
+        (
+            "create",
+            "read",
+            "update",
+            "replace",
+            "merge",
+            "delete",
+            "list",
+            "count",
+            "exists",
+        ),
+        docs_exposure="default",
+        runtime_exposure="default",
+    )
+
+
+class OltpTable(RestOltpTable):
+    __abstract__ = True
+
+
+class RestOlapTable(Table):
+    __abstract__ = True
+    TABLE_PROFILE = make_table_profile(
+        "rest_olap",
         ("read", "list", "count", "exists", "aggregate", "group_by"),
         docs_exposure="default",
         runtime_exposure="default",
     )
+
+
+class JsonRpcOlapTable(Table):
+    __abstract__ = True
+    TABLE_PROFILE = make_table_profile(
+        "jsonrpc_olap",
+        ("read", "list", "count", "exists", "aggregate", "group_by"),
+        docs_exposure="default",
+        runtime_exposure="default",
+    )
+
+
+class RestJsonRpcOlapTable(Table):
+    __abstract__ = True
+    TABLE_PROFILE = make_table_profile(
+        "rest_jsonrpc_olap",
+        ("read", "list", "count", "exists", "aggregate", "group_by"),
+        docs_exposure="default",
+        runtime_exposure="default",
+    )
+
+
+class OlapTable(RestOlapTable):
+    __abstract__ = True
 
 
 class StreamTable(RealtimeTable):
@@ -295,10 +373,17 @@ __all__ = [
     "BulkCrudTable",
     "CrudTable",
     "EventStreamTable",
+    "JsonRpcOlapTable",
+    "JsonRpcOltpTable",
     "JsonRpcTable",
     "OlapTable",
     "OltpTable",
     "RealtimeTable",
+    "RestJsonRpcOlapTable",
+    "RestJsonRpcOltpTable",
+    "RestJsonRpcTable",
+    "RestOlapTable",
+    "RestOltpTable",
     "RestTable",
     "SseTable",
     "StreamTable",

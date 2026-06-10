@@ -17,6 +17,8 @@ body: |-
   Define operation-selection rules for concrete table profiles, including BulkCrudTable, OltpTable, OlapTable, checkpoint profiles, stream, SSE, WebSocket, and WebTransport table lane profiles.
 
   Concrete profile classes declare a complete TableProfileSpec. Their TABLE_PROFILE is the sole table-level source for generated/default ops and exposure policy.
+
+  OltpTable and OlapTable are compatibility classes for the REST-basis OLTP and OLAP profiles. JSON-RPC and REST+JSON-RPC OLTP/OLAP behavior is selected only by the explicit protocol-family concrete classes.
 spec_kind: "normative"
 adr_ids:
   - "adr:1116"

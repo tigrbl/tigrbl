@@ -15,3 +15,5 @@ status_notes: []
 references: []
 body: |-
   Canonical operation verbs must lower to stable default binding tokens for supported table profiles and transports. Lowering must be deterministic and produce explicit binding records rather than hidden runtime inference.
+
+  REST+JSON-RPC table profiles lower each supported operation to two canonical binding tokens in stable REST-then-HTTP-JSON-RPC order. REST-only and HTTP JSON-RPC-only profile variants lower to exactly one matching binding family.

@@ -17,3 +17,5 @@ body: |-
   Custom table profiles are supported through validated TableProfileSpec values.
 
   Built-in profile names are reserved. Custom profiles must be marked custom, must declare a namespace, and must pass registry collision checks before use.
+
+  Built-in REST+JSON-RPC, REST OLTP/OLAP, JSON-RPC OLTP/OLAP, and dual OLTP/OLAP profile kinds are reserved and cannot be reused by custom profiles.

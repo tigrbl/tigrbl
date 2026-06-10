@@ -15,6 +15,8 @@ status_notes: []
 references: []
 body: |-
   Define deterministic lowering from table binding profiles to concrete REST, HTTP JSON-RPC, WebSocket JSON-RPC, WebTransport session/stream/datagram, SSE, and stream binding tokens.
+
+  Dual REST+JSON-RPC table profiles produce one canonical token per lowered binding. Token order is stable per operation: REST first, then HTTP JSON-RPC. Each token retains the selected profile kind and binding source.
 spec_kind: "operational"
 adr_ids:
   - "adr:1100"

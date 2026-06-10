@@ -19,8 +19,20 @@ from .table_profile_spec import TableProfileError, TableProfileSpec
 BindingSource = Literal["explicit", "table_profile"]
 
 _NO_DEFAULT_BINDING_PROFILES = {"plain", "crud", "realtime"}
-_REST_PROFILES = {"rest", "bulk_crud", "oltp", "olap"}
-_JSONRPC_PROFILES = {"jsonrpc"}
+_REST_PROFILES = {
+    "rest",
+    "bulk_crud",
+    "oltp",
+    "olap",
+    "rest_oltp",
+    "rest_olap",
+}
+_JSONRPC_PROFILES = {"jsonrpc", "jsonrpc_oltp", "jsonrpc_olap"}
+_REST_JSONRPC_PROFILES = {
+    "rest_jsonrpc",
+    "rest_jsonrpc_oltp",
+    "rest_jsonrpc_olap",
+}
 _STREAM_PROFILES = {"stream"}
 _SSE_PROFILES = {"sse", "event_stream"}
 _WEBSOCKET_PROFILES = {"websocket"}
@@ -87,6 +99,19 @@ _REST_PROFILE_TARGETS = {
     },
     "oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
     "olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
+    "rest_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
+    "rest_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
+    "rest_jsonrpc": set(_REST_METHODS),
+    "rest_jsonrpc_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
+    "rest_jsonrpc_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
+}
+_JSONRPC_PROFILE_TARGETS = {
+    "jsonrpc": set(_REST_METHODS),
+    "jsonrpc_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
+    "jsonrpc_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
+    "rest_jsonrpc": set(_REST_METHODS),
+    "rest_jsonrpc_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
+    "rest_jsonrpc_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
 }
 
 
@@ -176,6 +201,11 @@ def lower_default_bindings_for_op(
         return (_rest_binding(table=table, profile=profile, op=op),)
     if kind in _JSONRPC_PROFILES:
         return (_jsonrpc_binding(table=table, profile=profile, op=op),)
+    if kind in _REST_JSONRPC_PROFILES:
+        return (
+            _rest_binding(table=table, profile=profile, op=op),
+            _jsonrpc_binding(table=table, profile=profile, op=op),
+        )
     if kind in _STREAM_PROFILES:
         return (_stream_binding(table=table, profile=profile, op=op),)
     if kind in _SSE_PROFILES:
@@ -266,6 +296,11 @@ def _jsonrpc_binding(
     profile: TableProfileSpec,
     op: OpSpec,
 ) -> LoweredBinding:
+    allowed = _JSONRPC_PROFILE_TARGETS.get(profile.kind, set(_REST_METHODS))
+    if op.target not in allowed:
+        raise TableProfileError(
+            f"profile {profile.kind!r} does not support JSON-RPC target {op.target!r}"
+        )
     if op.target not in _REST_METHODS:
         raise TableProfileError(
             f"profile {profile.kind!r} does not support default JSON-RPC binding for target {op.target!r}"

@@ -5,7 +5,16 @@ import pytest
 from tigrbl import (
     CrudTable,
     EventStreamTable,
+    JsonRpcOlapTable,
+    JsonRpcOltpTable,
     JsonRpcTable,
+    OlapTable,
+    OltpTable,
+    RestJsonRpcOlapTable,
+    RestJsonRpcOltpTable,
+    RestJsonRpcTable,
+    RestOlapTable,
+    RestOltpTable,
     RestTable,
     RealtimeTable,
     SseTable,
@@ -63,6 +72,65 @@ def test_resttable_lowers_to_http_rest_bindings() -> None:
 
 def test_jsonrpctable_lowers_to_http_jsonrpc_bindings() -> None:
     assert set(_binding_names(JsonRpcTable)) == {"HttpJsonRpcBindingSpec"}
+
+
+def test_rest_jsonrpc_table_lowers_to_both_http_binding_families() -> None:
+    for op in _spec(RestJsonRpcTable).ops:
+        assert tuple(type(binding).__name__ for binding in op.bindings) == (
+            "HttpRestBindingSpec",
+            "HttpJsonRpcBindingSpec",
+        )
+
+
+def test_oltp_protocol_table_profiles_lower_to_selected_http_families() -> None:
+    expected_targets = (
+        "create",
+        "read",
+        "update",
+        "replace",
+        "merge",
+        "delete",
+        "list",
+        "count",
+        "exists",
+    )
+
+    assert tuple(op.target for op in _spec(RestOltpTable).ops) == expected_targets
+    assert tuple(op.target for op in _spec(JsonRpcOltpTable).ops) == expected_targets
+    assert tuple(op.target for op in _spec(RestJsonRpcOltpTable).ops) == expected_targets
+    assert set(_binding_names(RestOltpTable)) == {"HttpRestBindingSpec"}
+    assert set(_binding_names(JsonRpcOltpTable)) == {"HttpJsonRpcBindingSpec"}
+    assert {
+        tuple(type(binding).__name__ for binding in op.bindings)
+        for op in _spec(RestJsonRpcOltpTable).ops
+    } == {("HttpRestBindingSpec", "HttpJsonRpcBindingSpec")}
+
+
+def test_olap_protocol_table_profiles_lower_to_selected_http_families() -> None:
+    expected_targets = ("read", "list", "count", "exists", "aggregate", "group_by")
+
+    assert tuple(op.target for op in _spec(RestOlapTable).ops) == expected_targets
+    assert tuple(op.target for op in _spec(JsonRpcOlapTable).ops) == expected_targets
+    assert tuple(op.target for op in _spec(RestJsonRpcOlapTable).ops) == expected_targets
+    assert set(_binding_names(RestOlapTable)) == {"HttpRestBindingSpec"}
+    assert set(_binding_names(JsonRpcOlapTable)) == {"HttpJsonRpcBindingSpec"}
+    assert {
+        tuple(type(binding).__name__ for binding in op.bindings)
+        for op in _spec(RestJsonRpcOlapTable).ops
+    } == {("HttpRestBindingSpec", "HttpJsonRpcBindingSpec")}
+
+
+def test_legacy_oltp_and_olap_names_are_rest_basis_compatibility_profiles() -> None:
+    assert OltpTable.TABLE_PROFILE.kind == "rest_oltp"
+    assert OlapTable.TABLE_PROFILE.kind == "rest_olap"
+    assert tuple(op.target for op in _spec(OltpTable).ops) == tuple(
+        op.target for op in _spec(RestOltpTable).ops
+    )
+    assert tuple(op.target for op in _spec(OlapTable).ops) == tuple(
+        op.target for op in _spec(RestOlapTable).ops
+    )
+    assert set(_binding_names(OltpTable)) == {"HttpRestBindingSpec"}
+    assert set(_binding_names(OlapTable)) == {"HttpRestBindingSpec"}
 
 
 def test_streamtable_op_binding_compatibility() -> None:

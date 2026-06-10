@@ -17,6 +17,8 @@ body: |-
   Define compatibility rules for default table bindings, explicit OpSpec overrides, custom operations, checkpoint profiles, and fail-closed unsupported capability handling.
 
   Explicit binding overrides are represented inside the complete TableProfileSpec.ops declaration. A table class must not split default binding authority across TABLE_PROFILE and legacy class attributes.
+
+  Explicit OpSpec.bindings suppress REST-only, JSON-RPC-only, and dual REST+JSON-RPC profile defaults for that operation. Custom operations receive no implicit REST or JSON-RPC defaults.
 spec_kind: "normative"
 adr_ids:
   - "adr:1088"

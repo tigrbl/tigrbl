@@ -15,6 +15,8 @@ status_notes: []
 references: []
 body: |-
   Define default binding lowering for bulk, query, and merge operation verbs across bulk CRUD, OLTP, OLAP, REST, and JSON-RPC compatible table profiles.
+
+  OLTP query and merge verbs are supported by REST, HTTP JSON-RPC, and REST+JSON-RPC OLTP protocol-family profiles. OLAP query and aggregate verbs are supported by REST, HTTP JSON-RPC, and REST+JSON-RPC OLAP protocol-family profiles.
 spec_kind: "normative"
 adr_ids:
   - "adr:1122"

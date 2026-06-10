@@ -17,6 +17,8 @@ body: |-
   Define the complete operation set selected by each abstract and concrete table profile, including CRUD, bulk, OLTP, OLAP, realtime, stream, SSE, WebSocket, and WebTransport profiles.
 
   The selected operations are represented by TableProfileSpec.ops. A profile with one op has exactly one op.
+
+  RestJsonRpcTable selects create, read, update, replace, delete, list, and clear. REST, JSON-RPC, and dual OLTP profile classes select create, read, update, replace, merge, delete, list, count, and exists. REST, JSON-RPC, and dual OLAP profile classes select read, list, count, exists, aggregate, and group_by.
 spec_kind: "normative"
 adr_ids:
   - "adr:1085"

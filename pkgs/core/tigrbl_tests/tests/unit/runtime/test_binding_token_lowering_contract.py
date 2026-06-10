@@ -6,6 +6,9 @@ import pytest
 
 from tigrbl import (
     JsonRpcTable,
+    RestJsonRpcOlapTable,
+    RestJsonRpcOltpTable,
+    RestJsonRpcTable,
     RestTable,
     WebSocketJsonRpcTable,
     WebTransportBidiTable,
@@ -67,6 +70,59 @@ def test_table_profile_defaults_lower_to_ordered_binding_tokens() -> None:
             "clear",
         )
     )
+
+
+def test_rest_jsonrpc_profile_lowers_to_ordered_dual_tokens() -> None:
+    tokens = _tokens(RestJsonRpcTable)
+
+    assert tuple((token.op_alias, token.binding_kind) for token in tokens[:4]) == (
+        ("create", "http.rest"),
+        ("create", "http.jsonrpc"),
+        ("read", "http.rest"),
+        ("read", "http.jsonrpc"),
+    )
+    assert {token.binding_kind for token in tokens} == {"http.rest", "http.jsonrpc"}
+    assert {
+        token.rpc_method
+        for token in tokens
+        if token.binding_kind == "http.jsonrpc"
+    } == {
+        f"RestJsonRpcTable.{alias}"
+        for alias in ("create", "read", "update", "replace", "delete", "list", "clear")
+    }
+
+
+def test_rest_jsonrpc_oltp_and_olap_tokens_keep_semantic_targets() -> None:
+    oltp_tokens = _tokens(RestJsonRpcOltpTable)
+    olap_tokens = _tokens(RestJsonRpcOlapTable)
+
+    assert tuple(token.binding_kind for token in oltp_tokens[:2]) == (
+        "http.rest",
+        "http.jsonrpc",
+    )
+    assert {token.op_target for token in oltp_tokens} == {
+        "create",
+        "read",
+        "update",
+        "replace",
+        "merge",
+        "delete",
+        "list",
+        "count",
+        "exists",
+    }
+    assert {token.op_target for token in olap_tokens} == {
+        "read",
+        "list",
+        "count",
+        "exists",
+        "aggregate",
+        "group_by",
+    }
+    assert {token.binding_kind for token in olap_tokens} == {
+        "http.rest",
+        "http.jsonrpc",
+    }
 
 
 def test_opspec_binding_overrides_are_applied_before_defaults() -> None:

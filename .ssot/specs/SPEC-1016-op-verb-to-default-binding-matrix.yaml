@@ -15,6 +15,8 @@ status_notes: []
 references: []
 body: |-
   Define the default transport binding tokens generated for canonical operation verbs and reject incompatible verb/profile combinations.
+
+  REST profile kinds lower supported verbs to HttpRestBindingSpec. HTTP JSON-RPC profile kinds lower supported verbs to HttpJsonRpcBindingSpec. REST+JSON-RPC profile kinds lower supported verbs to both bindings in REST-then-JSON-RPC order. OLAP profile kinds reject mutation verbs before kernel planning.
 spec_kind: "normative"
 adr_ids:
   - "adr:1088"

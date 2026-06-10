@@ -15,3 +15,5 @@ status_notes: []
 references: []
 body: |-
   Decision: binding token lowering must reject unsupported transport, profile, operation, and framing combinations and must record which table profile, operation verb, or OpSpec binding produced each lowered token. Rationale: silent fallback would create hidden route exposure and cross-transport semantic drift. Consequence: compile-time lowering errors become explicit diagnostics and no unsupported framing can be substituted implicitly.
+
+  Protocol-family profile variants must preserve their profile kind on every lowered token. If a dual profile cannot produce every required binding for a supported operation, lowering fails instead of degrading to a single protocol.

@@ -15,3 +15,5 @@ status_notes: []
 references: []
 body: |-
   Explicit OpSpec binding declarations override verb defaults. Unsupported verbs, custom verbs without explicit bindings, and incompatible profile/verb/default combinations must fail closed at compile time.
+
+  Dual REST+JSON-RPC profile defaults are still suppressed per operation by explicit OpSpec.bindings. OLAP mutation verbs and other profile-incompatible operation/default pairs must raise before kernel plan construction for REST, JSON-RPC, and dual profile variants.

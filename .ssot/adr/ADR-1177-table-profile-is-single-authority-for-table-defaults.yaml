@@ -19,3 +19,5 @@ body: |-
   TABLE_PROFILE.ops is complete table-level op policy. A profile with one op means exactly one table-level op, not a patch over a hidden default set.
 
   Legacy class attrs such as DEFAULT_CANON_VERBS, should_wire_canonical, __tigrbl_defaults_* attrs, loose binding_profiles config, OPS, and __tigrbl_ops__ cannot coexist with an explicit TABLE_PROFILE because that would create ambiguous precedence.
+
+  REST, HTTP JSON-RPC, and REST+JSON-RPC defaults are configured only through the selected TABLE_PROFILE kind. A profile variant never layers additional hidden defaults from a second class attribute or config location.

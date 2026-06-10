@@ -4,6 +4,8 @@ import pytest
 
 from tigrbl import (
     JsonRpcTable,
+    RestJsonRpcOlapTable,
+    RestJsonRpcTable,
     RestTable,
     SseTable,
     StreamTable,
@@ -37,6 +39,16 @@ def test_create_read_update_delete_list_verbs_lower_to_jsonrpc_defaults() -> Non
 
     assert set(bindings) >= {"create", "read", "update", "delete", "list"}
     assert set(bindings.values()) == {("HttpJsonRpcBindingSpec",)}
+
+
+def test_create_read_update_delete_list_verbs_lower_to_rest_jsonrpc_defaults() -> None:
+    bindings = _bindings_by_target(RestJsonRpcTable)
+
+    assert bindings["create"] == ("HttpRestBindingSpec", "HttpJsonRpcBindingSpec")
+    assert bindings["read"] == ("HttpRestBindingSpec", "HttpJsonRpcBindingSpec")
+    assert bindings["update"] == ("HttpRestBindingSpec", "HttpJsonRpcBindingSpec")
+    assert bindings["delete"] == ("HttpRestBindingSpec", "HttpJsonRpcBindingSpec")
+    assert bindings["list"] == ("HttpRestBindingSpec", "HttpJsonRpcBindingSpec")
 
 
 def test_stream_verbs_lower_to_stream_compatible_defaults() -> None:
@@ -118,6 +130,42 @@ def test_custom_verbs_do_not_receive_implicit_defaults() -> None:
     )
 
     assert lowered[0].bindings == ()
+
+
+def test_custom_verbs_do_not_receive_implicit_dual_defaults() -> None:
+    profile = TableProfileSpec(
+        kind="tests.custom",
+        ops=(OpSpec(alias="custom_action", target="custom"),),
+        custom=True,
+        namespace="tests",
+    )
+
+    lowered = lower_table_profile_bindings(
+        RestJsonRpcTable,
+        profile,
+        tuple(profile.bind_table(RestJsonRpcTable).ops),
+    )
+
+    assert lowered[0].bindings == ()
+
+
+def test_olap_mutation_verb_defaults_fail_closed_for_http_profile_family() -> None:
+    for kind, match in (
+        ("rest_olap", "REST target"),
+        ("jsonrpc_olap", "JSON-RPC target"),
+        ("rest_jsonrpc_olap", "REST target"),
+    ):
+        profile = TableProfileSpec(
+            kind=kind,
+            ops=(OpSpec(alias="create", target="create"),),
+        )
+
+        with pytest.raises(TableProfileError, match=match):
+            lower_table_profile_bindings(
+                RestJsonRpcOlapTable,
+                profile,
+                tuple(profile.ops),
+            )
 
 
 def test_unknown_verb_default_binding_fails_closed() -> None:

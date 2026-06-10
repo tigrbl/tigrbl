@@ -5,9 +5,16 @@ import pytest
 from tigrbl import (
     BulkCrudTable,
     CrudTable,
+    JsonRpcOlapTable,
+    JsonRpcOltpTable,
     OlapTable,
     OltpTable,
     RealtimeTable,
+    RestJsonRpcOlapTable,
+    RestJsonRpcOltpTable,
+    RestJsonRpcTable,
+    RestOlapTable,
+    RestOltpTable,
     WebTransportDatagramTable,
 )
 from tigrbl_core._spec import OpSpec, TableProfileError, TableProfileSpec, TableSpec
@@ -56,8 +63,20 @@ def test_bulk_crud_profile_selects_bulk_and_crud_ops() -> None:
     )
 
 
+def test_rest_jsonrpc_profile_selects_crud_ops() -> None:
+    assert _targets(RestJsonRpcTable) == (
+        "create",
+        "read",
+        "update",
+        "replace",
+        "delete",
+        "list",
+        "clear",
+    )
+
+
 def test_oltp_profile_selects_transactional_query_and_merge_ops() -> None:
-    assert _targets(OltpTable) == (
+    expected = (
         "create",
         "read",
         "update",
@@ -68,10 +87,14 @@ def test_oltp_profile_selects_transactional_query_and_merge_ops() -> None:
         "count",
         "exists",
     )
+    assert _targets(RestOltpTable) == expected
+    assert _targets(JsonRpcOltpTable) == expected
+    assert _targets(RestJsonRpcOltpTable) == expected
+    assert _targets(OltpTable) == expected
 
 
 def test_olap_profile_selects_read_only_analytical_ops() -> None:
-    assert _targets(OlapTable) == (
+    expected = (
         "read",
         "list",
         "count",
@@ -79,6 +102,10 @@ def test_olap_profile_selects_read_only_analytical_ops() -> None:
         "aggregate",
         "group_by",
     )
+    assert _targets(RestOlapTable) == expected
+    assert _targets(JsonRpcOlapTable) == expected
+    assert _targets(RestJsonRpcOlapTable) == expected
+    assert _targets(OlapTable) == expected
 
 
 def test_checkpoint_profile_selects_checkpoint_ops_only() -> None:
@@ -93,13 +120,18 @@ def test_abstract_profiles_do_not_emit_concrete_binding_tokens() -> None:
 
 
 def test_olap_profile_rejects_mutation_ops() -> None:
-    profile = TableProfileSpec(
-        kind="olap",
-        ops=(OpSpec(alias="create", target="create"),),
-    )
+    for kind, match in (
+        ("rest_olap", "REST target"),
+        ("jsonrpc_olap", "JSON-RPC target"),
+        ("rest_jsonrpc_olap", "REST target"),
+    ):
+        profile = TableProfileSpec(
+            kind=kind,
+            ops=(OpSpec(alias="create", target="create"),),
+        )
 
-    with pytest.raises(TableProfileError, match="REST target"):
-        lower_table_profile_bindings(OlapTable, profile, tuple(profile.ops))
+        with pytest.raises(TableProfileError, match=match):
+            lower_table_profile_bindings(OlapTable, profile, tuple(profile.ops))
 
 
 def test_datagram_profile_rejects_stream_and_session_ops() -> None:
