@@ -251,3 +251,16 @@ def test_packed_executor_source_avoids_runtime_shadow_compiler_helpers() -> None
     )
 
     assert all(name not in source for name in forbidden)
+
+
+def test_packed_executor_private_helpers_delegate_to_owner_packages() -> None:
+    from tigrbl_atoms.atoms.transport.websocket_unary import DirectWebSocketUnary
+    from tigrbl_kernel.packed_access import http_method_id, stable_name_hash64
+    from tigrbl_runtime.executors import packed
+    from tigrbl_runtime.executors.packed import PackedPlanExecutor
+
+    assert packed._DirectWebSocketUnary is DirectWebSocketUnary
+    assert PackedPlanExecutor._http_method_id("POST") == http_method_id("POST")
+    assert PackedPlanExecutor._stable_name_hash64("/items") == stable_name_hash64(
+        "/items"
+    )

@@ -5,26 +5,92 @@ from collections.abc import Mapping
 from dataclasses import dataclass, fields, is_dataclass
 import inspect
 import json
-import uuid as _uuid
-import decimal as _dc
-import datetime as _dt
-import zlib
 from importlib import import_module
 from typing import Any, ClassVar
 from operator import attrgetter
 from types import SimpleNamespace
-from urllib.parse import unquote_plus
 
 from tigrbl_atoms._ctx import _ctx_view
 from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__
 from tigrbl_atoms.types import build_error_ctx, error_phase_for, select_error_edge
 from tigrbl_atoms.atoms.wire.validate_in import _coerce_if_needed
+from tigrbl_atoms.atoms.transport.websocket_unary import (
+    DirectWebSocketUnary as _DirectWebSocketUnary,
+)
+from tigrbl_atoms.packed_inputs import (
+    DECODER_BOOL as _DECODER_BOOL,
+    DECODER_DATE as _DECODER_DATE,
+    DECODER_DATETIME as _DECODER_DATETIME,
+    DECODER_DECIMAL as _DECODER_DECIMAL,
+    DECODER_FLOAT as _DECODER_FLOAT,
+    DECODER_INT as _DECODER_INT,
+    DECODER_NONE as _DECODER_NONE,
+    DECODER_STR as _DECODER_STR,
+    DECODER_TIME as _DECODER_TIME,
+    DECODER_UUID as _DECODER_UUID,
+    DECODE_STRATEGY_BODY_ONLY_MAPPING as _DECODE_STRATEGY_BODY_ONLY_MAPPING,
+    DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD as _DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD,
+    DECODE_STRATEGY_GENERIC_HASHED as _DECODE_STRATEGY_GENERIC_HASHED,
+    PARAM_SOURCE_BODY as _PARAM_SOURCE_BODY,
+    PARAM_SOURCE_HEADER as _PARAM_SOURCE_HEADER,
+    PARAM_SOURCE_PATH as _PARAM_SOURCE_PATH,
+    PARAM_SOURCE_QUERY as _PARAM_SOURCE_QUERY,
+    QUERY_VALUE_HAS_PERCENT as _QUERY_VALUE_HAS_PERCENT,
+    QUERY_VALUE_HAS_PLUS as _QUERY_VALUE_HAS_PLUS,
+    body_hash_items as _atom_body_hash_items,
+    coerce_header_pairs as _atom_coerce_header_pairs,
+    compiled_lookup_name as _atom_compiled_lookup_name,
+    content_type_from_raw_headers as _atom_content_type_from_raw_headers,
+    decode_query_span_value as _atom_decode_query_span_value,
+    decode_scalar as _atom_decode_scalar,
+    ensure_body_bytes as _atom_ensure_body_bytes,
+    header_hash_pairs as _atom_header_hash_pairs,
+    lookup_hashed_mapping as _atom_lookup_hashed_mapping,
+    lookup_hashed_pairs as _atom_lookup_hashed_pairs,
+    lookup_query_value as _atom_lookup_query_value,
+    parse_query_spans as _atom_parse_query_spans,
+    path_hash_items as _atom_path_hash_items,
+    publish_compiled_slots as _atom_publish_compiled_slots,
+)
 from tigrbl_kernel.models import (
     KernelPlan,
     OpKey,
     PackedHotSection,
     PackedHotSectionDirectory,
     PackedKernel,
+)
+from tigrbl_kernel.packed_access import (
+    DIRECT_INVOKE_RUN as _DIRECT_INVOKE_RUN,
+    DIRECT_INVOKE_RUN_WITH_DEP as _DIRECT_INVOKE_RUN_WITH_DEP,
+    DIRECT_INVOKE_RUN_WITH_NONE as _DIRECT_INVOKE_RUN_WITH_NONE,
+    DIRECT_INVOKE_STEP as _DIRECT_INVOKE_STEP,
+    HOT_RUNNER_COMPILED_PARAM as _HOT_RUNNER_COMPILED_PARAM,
+    HOT_RUNNER_GENERIC as _HOT_RUNNER_GENERIC,
+    HOT_RUNNER_LINEAR_DIRECT as _HOT_RUNNER_LINEAR_DIRECT,
+    HOT_RUNNER_WS_UNARY_TEXT as _HOT_RUNNER_WS_UNARY_TEXT,
+    HTTP_METHOD_ID_BY_NAME as _HTTP_METHOD_ID_BY_NAME,
+    TRANSPORT_KIND_CHANNEL as _TRANSPORT_KIND_CHANNEL,
+    TRANSPORT_KIND_GENERIC as _TRANSPORT_KIND_GENERIC,
+    TRANSPORT_KIND_JSONRPC as _TRANSPORT_KIND_JSONRPC,
+    TRANSPORT_KIND_REST as _TRANSPORT_KIND_REST,
+    hot_array as _kernel_hot_array,
+    hot_block_sections as _kernel_hot_block_sections,
+    hot_block_view as _kernel_hot_block_view,
+    hot_count as _kernel_hot_count,
+    hot_int_at as _kernel_hot_int_at,
+    hot_section as _kernel_hot_section,
+    http_method_id as _kernel_http_method_id,
+    resolve_program_hot_runner_id as _kernel_resolve_program_hot_runner_id,
+    stable_name_hash64 as _kernel_stable_name_hash64,
+)
+from tigrbl_kernel.packed_selectors import (
+    normalize_jsonrpc_mount_path as _kernel_normalize_jsonrpc_mount_path,
+    resolve_hot_exact_jsonrpc_routes as _kernel_resolve_hot_exact_jsonrpc_routes,
+    resolve_hot_exact_route_slices as _kernel_resolve_hot_exact_route_slices,
+    resolve_hot_exact_route_verify as _kernel_resolve_hot_exact_route_verify,
+    resolve_hot_exact_websocket_routes as _kernel_resolve_hot_exact_websocket_routes,
+    resolve_program_id_from_exact_route as _kernel_resolve_program_id_from_exact_route,
+    resolve_program_id_from_exact_websocket as _kernel_resolve_program_id_from_exact_websocket,
 )
 from tigrbl_typing.status.exceptions import HTTPException
 from tigrbl_typing.phases import normalize_phase
@@ -34,49 +100,22 @@ from tigrbl_atoms._request import Request
 from .base import ExecutorBase
 from .types import HotCtx, _Ctx
 
-_HOT_RUNNER_GENERIC = 0
-_HOT_RUNNER_LINEAR_DIRECT = 1
-_HOT_RUNNER_COMPILED_PARAM = 2
-_HOT_RUNNER_WS_UNARY_TEXT = 3
-_DIRECT_INVOKE_STEP = 0
-_DIRECT_INVOKE_RUN = 1
-_DIRECT_INVOKE_RUN_WITH_NONE = 2
-_DIRECT_INVOKE_RUN_WITH_DEP = 3
-_TRANSPORT_KIND_GENERIC = 0
-_TRANSPORT_KIND_REST = 1
-_TRANSPORT_KIND_JSONRPC = 2
-_TRANSPORT_KIND_CHANNEL = 3
-_PARAM_SOURCE_BODY = 1
-_PARAM_SOURCE_QUERY = 2
-_PARAM_SOURCE_PATH = 4
-_PARAM_SOURCE_HEADER = 8
-_DECODE_STRATEGY_GENERIC_HASHED = 0
-_DECODE_STRATEGY_BODY_ONLY_MAPPING = 1
-_DECODE_STRATEGY_BODY_ONLY_SINGLE_FIELD = 2
-_DECODER_NONE = 0
-_DECODER_STR = 1
-_DECODER_INT = 2
-_DECODER_FLOAT = 3
-_DECODER_BOOL = 4
-_DECODER_UUID = 5
-_DECODER_DECIMAL = 6
-_DECODER_DATETIME = 7
-_DECODER_DATE = 8
-_DECODER_TIME = 9
-_QUERY_VALUE_HAS_PLUS = 1
-_QUERY_VALUE_HAS_PERCENT = 2
 _WRAPPER_KEYS = frozenset({"data", "payload", "body", "item"})
-_HTTP_METHOD_ID_BY_NAME = {
-    "GET": 1,
-    "HEAD": 2,
-    "POST": 3,
-    "PUT": 4,
-    "PATCH": 5,
-    "DELETE": 6,
-    "OPTIONS": 7,
-    "TRACE": 8,
-    "CONNECT": 9,
-}
+_COMPAT_CONSTANTS = (
+    _DECODER_BOOL,
+    _DECODER_DATE,
+    _DECODER_DATETIME,
+    _DECODER_DECIMAL,
+    _DECODER_FLOAT,
+    _DECODER_INT,
+    _DECODER_NONE,
+    _DECODER_STR,
+    _DECODER_TIME,
+    _DECODER_UUID,
+    _QUERY_VALUE_HAS_PERCENT,
+    _QUERY_VALUE_HAS_PLUS,
+    _HTTP_METHOD_ID_BY_NAME,
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -119,149 +158,6 @@ class _CompiledParamPlan:
     needs_query: bool
     needs_header: bool
     needs_path: bool
-
-
-class _DirectWebSocketUnary:
-    __slots__ = (
-        "_receive",
-        "_send",
-        "_buffered",
-        "_buffered_text",
-        "_buffered_bytes",
-        "_path",
-        "_path_params",
-        "_scope",
-        "accepted",
-        "closed",
-        "sent_payload",
-    )
-
-    def __init__(
-        self,
-        *,
-        receive: Any,
-        send: Any,
-        path: str,
-        path_params: Mapping[str, Any] | None,
-        buffered_message: Mapping[str, Any] | None,
-    ) -> None:
-        self._receive = receive
-        self._send = send
-        self._buffered = None
-        self._buffered_text = None
-        self._buffered_bytes = None
-        self._path = path
-        self._scope = None
-        if isinstance(buffered_message, Mapping):
-            if buffered_message.get("type") == "websocket.receive":
-                text = buffered_message.get("text")
-                if isinstance(text, str):
-                    self._buffered_text = text
-                else:
-                    raw = buffered_message.get("bytes")
-                    if isinstance(raw, bytes):
-                        self._buffered_bytes = raw
-                    elif isinstance(raw, bytearray):
-                        self._buffered_bytes = bytes(raw)
-                    else:
-                        self._buffered = (
-                            buffered_message
-                            if isinstance(buffered_message, dict)
-                            else dict(buffered_message)
-                        )
-            else:
-                self._buffered = (
-                    buffered_message
-                    if isinstance(buffered_message, dict)
-                    else dict(buffered_message)
-                )
-        if isinstance(path_params, dict):
-            self._path_params = path_params
-        elif path_params:
-            self._path_params = dict(path_params)
-        else:
-            self._path_params = None
-        self.accepted = False
-        self.closed = False
-        self.sent_payload = False
-
-    @property
-    def scope(self) -> dict[str, Any]:
-        scope = self._scope
-        if scope is None:
-            scope = {"type": "websocket", "path": self._path}
-            self._scope = scope
-        return scope
-
-    @property
-    def path_params(self) -> dict[str, Any]:
-        path_params = self._path_params
-        if path_params is None:
-            path_params = {}
-            self._path_params = path_params
-        return path_params
-
-    async def accept(self, subprotocol: str | None = None) -> None:
-        if self.accepted:
-            return
-        if callable(self._send):
-            message = {"type": "websocket.accept"}
-            if subprotocol is not None:
-                message["subprotocol"] = subprotocol
-            await self._send(message)
-        self.accepted = True
-
-    async def receive(self) -> dict[str, Any]:
-        if self._buffered is not None:
-            message = self._buffered
-            self._buffered = None
-            return message
-        if callable(self._receive):
-            message = await self._receive()
-            return dict(message) if isinstance(message, Mapping) else {"type": "websocket.disconnect", "code": 1006}
-        return {"type": "websocket.disconnect", "code": 1006}
-
-    async def receive_text(self) -> str:
-        if self._buffered_text is not None:
-            text = self._buffered_text
-            self._buffered_text = None
-            return text
-        if self._buffered_bytes is not None:
-            raw = self._buffered_bytes
-            self._buffered_bytes = None
-            return raw.decode("utf-8")
-        message = await self.receive()
-        if message.get("type") == "websocket.disconnect":
-            self.closed = True
-            raise RuntimeError("websocket disconnected")
-        text = message.get("text")
-        if isinstance(text, str):
-            return text
-        raw = message.get("bytes")
-        if isinstance(raw, (bytes, bytearray)):
-            return bytes(raw).decode("utf-8")
-        return ""
-
-    async def send_text(self, data: str) -> None:
-        await self.accept()
-        if callable(self._send):
-            await self._send({"type": "websocket.send", "text": data})
-        self.sent_payload = True
-
-    async def send_bytes(self, data: bytes) -> None:
-        await self.accept()
-        if callable(self._send):
-            payload = data if isinstance(data, bytes) else bytes(data)
-            await self._send({"type": "websocket.send", "bytes": payload})
-        self.sent_payload = True
-
-    async def close(self, code: int = 1000) -> None:
-        if self.closed:
-            return
-        await self.accept()
-        if callable(self._send):
-            await self._send({"type": "websocket.close", "code": code})
-        self.closed = True
 
 
 class PackedPlanExecutor(ExecutorBase):
@@ -693,34 +589,19 @@ class PackedPlanExecutor(ExecutorBase):
 
     @staticmethod
     def _hot_block_view(packed: PackedKernel) -> Mapping[str, Any]:
-        view = getattr(packed, "hot_block_view", None)
-        return view if isinstance(view, Mapping) else {}
+        return _kernel_hot_block_view(packed)
 
     @staticmethod
     def _hot_block_sections(packed: PackedKernel) -> PackedHotSectionDirectory | None:
-        sections = getattr(packed, "hot_block_sections", None)
-        return (
-            sections
-            if isinstance(sections, PackedHotSectionDirectory)
-            else None
-        )
+        return _kernel_hot_block_sections(packed)
 
     @classmethod
     def _hot_section(cls, packed: PackedKernel, key: str) -> PackedHotSection | None:
-        directory = cls._hot_block_sections(packed)
-        if directory is None:
-            return None
-        return directory.get(key)
+        return _kernel_hot_section(packed, key)
 
     @classmethod
     def _hot_array(cls, packed: PackedKernel, key: str, fallback: tuple[Any, ...] | tuple[int, ...] | tuple[str, ...]) -> tuple[Any, ...]:
-        view = cls._hot_block_view(packed)
-        values = view.get(key)
-        if isinstance(values, tuple):
-            return values
-        if isinstance(values, list):
-            return tuple(values)
-        return fallback
+        return _kernel_hot_array(packed, key, fallback)
 
     @classmethod
     def _hot_int_at(
@@ -730,14 +611,7 @@ class PackedPlanExecutor(ExecutorBase):
         index: int,
         fallback: tuple[int, ...] | tuple[Any, ...],
     ) -> int | None:
-        section = cls._hot_section(packed, key)
-        if section is not None:
-            if 0 <= index < int(section.count):
-                return section.get_int(index)
-            return None
-        if 0 <= index < len(fallback):
-            return int(fallback[index])
-        return None
+        return _kernel_hot_int_at(packed, key, index, fallback)
 
     @classmethod
     def _hot_count(
@@ -746,126 +620,42 @@ class PackedPlanExecutor(ExecutorBase):
         key: str,
         fallback: tuple[int, ...] | tuple[Any, ...] | tuple[str, ...],
     ) -> int:
-        section = cls._hot_section(packed, key)
-        if section is not None:
-            return int(section.count)
-        return len(fallback)
+        return _kernel_hot_count(packed, key, fallback)
 
     @staticmethod
     def _stable_name_hash64(value: str, *, lowercase: bool = False) -> int:
-        normalized = value.lower() if lowercase else value
-        encoded = normalized.encode("utf-8")
-        lo = zlib.crc32(encoded) & 0xFFFFFFFF
-        hi = zlib.crc32(encoded, 0x9E3779B9) & 0xFFFFFFFF
-        return (hi << 32) | lo
+        return _kernel_stable_name_hash64(value, lowercase=lowercase)
 
     @classmethod
     def _http_method_id(cls, method: str) -> int:
-        normalized = str(method or "").upper()
-        cached = _HTTP_METHOD_ID_BY_NAME.get(normalized)
-        if cached is not None:
-            return cached
-        return 1024 + (cls._stable_name_hash64(normalized) & 0xFFFF)
+        return _kernel_http_method_id(method)
 
     @staticmethod
     def _coerce_header_pairs(
         raw_scope: Mapping[str, Any] | None,
     ) -> tuple[tuple[bytes, bytes], ...]:
-        if not isinstance(raw_scope, Mapping):
-            return ()
-        raw_headers = raw_scope.get("headers", ())
-        out: list[tuple[bytes, bytes]] = []
-        for key, value in raw_headers or ():
-            if not isinstance(key, (bytes, bytearray)):
-                continue
-            if not isinstance(value, (bytes, bytearray)):
-                continue
-            out.append((bytes(key).lower(), bytes(value)))
-        return tuple(out)
+        return _atom_coerce_header_pairs(raw_scope)
 
     @staticmethod
     def _content_type_from_raw_headers(raw_headers: tuple[tuple[bytes, bytes], ...]) -> str:
-        for key, value in reversed(raw_headers):
-            if key == b"content-type":
-                return value.decode("latin-1").lower()
-        return ""
+        return _atom_content_type_from_raw_headers(raw_headers)
 
     @staticmethod
     def _decode_scalar(value: Any, decoder_id: int) -> Any:
-        if value is None or decoder_id == _DECODER_NONE:
-            return value
-        if isinstance(value, bytes):
-            raw_text = value.decode("utf-8")
-        else:
-            raw_text = value if isinstance(value, str) else str(value)
-        text = raw_text.strip()
-        if decoder_id == _DECODER_STR:
-            return raw_text if isinstance(value, str) else text
-        if decoder_id == _DECODER_INT:
-            return int(text)
-        if decoder_id == _DECODER_FLOAT:
-            return float(text)
-        if decoder_id == _DECODER_BOOL:
-            lowered = text.lower()
-            if lowered in {"true", "1", "yes", "y", "on"}:
-                return True
-            if lowered in {"false", "0", "no", "n", "off"}:
-                return False
-            return value
-        if decoder_id == _DECODER_UUID:
-            return _uuid.UUID(text)
-        if decoder_id == _DECODER_DECIMAL:
-            return _dc.Decimal(text)
-        if decoder_id == _DECODER_DATETIME:
-            return _dt.datetime.fromisoformat(text)
-        if decoder_id == _DECODER_DATE:
-            return _dt.date.fromisoformat(text)
-        if decoder_id == _DECODER_TIME:
-            return _dt.time.fromisoformat(text)
-        return value
+        return _atom_decode_scalar(value, decoder_id)
 
     @staticmethod
     def _parse_query_spans(raw_query: bytes) -> tuple[tuple[int, int, int, int], ...]:
-        if not raw_query:
-            return ()
-        out: list[tuple[int, int, int, int]] = []
-        cursor = 0
-        for chunk in raw_query.split(b"&"):
-            chunk_start = cursor
-            cursor += len(chunk) + 1
-            if not chunk:
-                continue
-            raw_key, _, raw_value = chunk.partition(b"=")
-            try:
-                key = unquote_plus(raw_key.decode("latin-1"))
-            except Exception:
-                continue
-            flags = 0
-            if b"+" in raw_value:
-                flags |= _QUERY_VALUE_HAS_PLUS
-            if b"%" in raw_value:
-                flags |= _QUERY_VALUE_HAS_PERCENT
-            value_start = chunk_start + len(raw_key) + (1 if b"=" in chunk else 0)
-            value_end = chunk_start + len(chunk)
-            out.append(
-                (
-                    PackedPlanExecutor._stable_name_hash64(key),
-                    value_start,
-                    value_end,
-                    flags,
-                )
-            )
-        return tuple(out)
+        return _atom_parse_query_spans(
+            raw_query,
+            name_hash=PackedPlanExecutor._stable_name_hash64,
+        )
 
     @staticmethod
     def _decode_query_span_value(
         raw_query: bytes, start: int, end: int, flags: int
     ) -> str:
-        raw_value = raw_query[start:end]
-        text = raw_value.decode("latin-1")
-        if flags & (_QUERY_VALUE_HAS_PLUS | _QUERY_VALUE_HAS_PERCENT):
-            return unquote_plus(text)
-        return text
+        return _atom_decode_query_span_value(raw_query, start, end, flags)
 
     @classmethod
     def _ensure_hot_request(cls, ctx: _Ctx, hot: HotCtx) -> Request | Any | None:
@@ -883,73 +673,24 @@ class PackedPlanExecutor(ExecutorBase):
 
     @staticmethod
     async def _ensure_body_bytes(ctx: _Ctx, hot: HotCtx) -> bytes:
-        if isinstance(hot.body_bytes, bytes):
-            return hot.body_bytes
-        body = getattr(ctx, "body", None)
-        if isinstance(body, bytes):
-            hot.body_bytes = body
-            hot.body_view = memoryview(body)
-            return body
-        if isinstance(body, bytearray):
-            hot.body_bytes = bytes(body)
-            hot.body_view = memoryview(hot.body_bytes)
-            return hot.body_bytes
-        if isinstance(body, memoryview):
-            hot.body_bytes = body.tobytes()
-            hot.body_view = memoryview(hot.body_bytes)
-            return hot.body_bytes
-        if hot.scope_type != "http" or not callable(hot.raw_receive):
-            hot.body_bytes = b""
-            hot.body_view = memoryview(hot.body_bytes)
-            return hot.body_bytes
-        message = await hot.raw_receive()
-        chunks: list[bytes] = []
-        while isinstance(message, dict) and message.get("type") == "http.request":
-            chunk = message.get("body", b"")
-            if isinstance(chunk, (bytes, bytearray)):
-                chunks.append(bytes(chunk))
-            if not bool(message.get("more_body", False)):
-                break
-            message = await hot.raw_receive()
-        hot.body_bytes = b"".join(chunks)
-        hot.body_view = memoryview(hot.body_bytes)
-        if hot.body_bytes:
-            ctx.body = hot.body_bytes
-        return hot.body_bytes
+        return await _atom_ensure_body_bytes(ctx, hot)
 
     @classmethod
     def _body_hash_items(cls, body: Any) -> Mapping[int, Any]:
-        if not isinstance(body, Mapping):
-            return {}
-        out: dict[int, Any] = {}
-        for key, value in body.items():
-            if not isinstance(key, str):
-                continue
-            out[cls._stable_name_hash64(key)] = value
-        return out
+        return _atom_body_hash_items(body, name_hash=cls._stable_name_hash64)
 
     @classmethod
     def _header_hash_pairs(
         cls, raw_headers: tuple[tuple[bytes, bytes], ...]
     ) -> tuple[tuple[int, bytes], ...]:
-        return tuple(
-            (
-                cls._stable_name_hash64(
-                    key_bytes.decode("latin-1"), lowercase=True
-                ),
-                raw_value,
-            )
-            for key_bytes, raw_value in raw_headers
+        return _atom_header_hash_pairs(
+            raw_headers,
+            name_hash=lambda value: cls._stable_name_hash64(value, lowercase=True),
         )
 
     @classmethod
     def _path_hash_items(cls, path_params: Mapping[str, Any] | None) -> Mapping[int, Any]:
-        if not isinstance(path_params, Mapping):
-            return {}
-        out: dict[int, Any] = {}
-        for key, value in path_params.items():
-            out[cls._stable_name_hash64(str(key))] = value
-        return out
+        return _atom_path_hash_items(path_params, name_hash=cls._stable_name_hash64)
 
     @classmethod
     def _lookup_query_value(
@@ -958,30 +699,19 @@ class PackedPlanExecutor(ExecutorBase):
         query_spans: tuple[tuple[int, int, int, int], ...],
         target_hash: int,
     ) -> tuple[bool, Any]:
-        for item_hash, value_start, value_end, flags in query_spans:
-            if int(item_hash) != int(target_hash):
-                continue
-            return True, cls._decode_query_span_value(
-                raw_query, int(value_start), int(value_end), int(flags)
-            )
-        return False, None
+        return _atom_lookup_query_value(raw_query, query_spans, target_hash)
 
     @staticmethod
     def _lookup_hashed_mapping(
         items: Mapping[int, Any], target_hash: int
     ) -> tuple[bool, Any]:
-        if int(target_hash) in items:
-            return True, items[int(target_hash)]
-        return False, None
+        return _atom_lookup_hashed_mapping(items, target_hash)
 
     @staticmethod
     def _lookup_hashed_pairs(
         items: tuple[tuple[int, bytes], ...], target_hash: int
     ) -> tuple[bool, Any]:
-        for item_hash, raw_value in items:
-            if int(item_hash) == int(target_hash):
-                return True, raw_value.decode("latin-1")
-        return False, None
+        return _atom_lookup_hashed_pairs(items, target_hash)
 
     @classmethod
     def _param_shape_descriptor_slice(
@@ -1076,11 +806,7 @@ class PackedPlanExecutor(ExecutorBase):
 
     @staticmethod
     def _compiled_lookup_name(field_name: str, field_meta: Any) -> str:
-        if isinstance(field_meta, Mapping):
-            alias_in = field_meta.get("alias_in")
-            if alias_in:
-                return str(alias_in)
-        return field_name
+        return _atom_compiled_lookup_name(field_name, field_meta)
 
     @staticmethod
     def _publish_compiled_slots(
@@ -1090,28 +816,13 @@ class PackedPlanExecutor(ExecutorBase):
         slot_values: list[Any],
         slot_present: bytearray,
     ) -> None:
-        hot.slot_field_names = field_names
-        hot.slot_field_index = field_index
-        hot.slot_values = slot_values
-        hot.slot_present = slot_present
-        hot.in_values_view = None
-        hot.route_payload = None
-        hot.in_present_names = tuple(
-            field_names[idx] for idx in range(len(field_names)) if slot_present[idx]
+        _atom_publish_compiled_slots(
+            hot,
+            field_names,
+            field_index,
+            slot_values,
+            slot_present,
         )
-        hot.assembled_slot_values = None
-        hot.assembled_slot_present = None
-        hot.virtual_slot_values = None
-        hot.virtual_slot_present = None
-        hot.assembled_values_view = None
-        hot.virtual_in_view = None
-        hot.absent_fields = ()
-        hot.used_default_factory = ()
-        hot.compiled_in_invalid = None
-        hot.compiled_in_errors = None
-        hot.compiled_in_coerced = ()
-        hot.compiled_input_ready = True
-        hot.lazy_published = True
 
     def _resolve_param_shape_decode_strategy(
         self,
@@ -2198,23 +1909,11 @@ class PackedPlanExecutor(ExecutorBase):
         plan: KernelPlan,
         packed: PackedKernel,
     ) -> Mapping[tuple[str, str], int]:
-        packed_id = id(packed)
-        cached = self._hot_exact_websocket_route_cache.get(packed_id)
-        if cached is not None:
-            return cached
-        exact: dict[tuple[str, str], int] = {}
-        for proto in ("ws", "wss"):
-            bucket = plan.proto_indices.get(proto)
-            if not isinstance(bucket, Mapping):
-                continue
-            exact_bucket = bucket.get("exact")
-            if not isinstance(exact_bucket, Mapping):
-                continue
-            for path, meta_index in exact_bucket.items():
-                if isinstance(path, str) and isinstance(meta_index, int):
-                    exact[(proto, path)] = meta_index
-        self._hot_exact_websocket_route_cache[packed_id] = exact
-        return exact
+        return _kernel_resolve_hot_exact_websocket_routes(
+            plan,
+            packed,
+            self._hot_exact_websocket_route_cache,
+        )
 
     def _resolve_program_id_from_exact_websocket(
         self,
@@ -2223,9 +1922,13 @@ class PackedPlanExecutor(ExecutorBase):
         protocol: str,
         path: str,
     ) -> int:
-        exact = self._resolve_hot_exact_websocket_routes(plan, packed)
-        maybe = exact.get((protocol, path))
-        return maybe if isinstance(maybe, int) else -1
+        return _kernel_resolve_program_id_from_exact_websocket(
+            plan,
+            packed,
+            protocol,
+            path,
+            self._hot_exact_websocket_route_cache,
+        )
 
     def _prime_exact_channel_program(
         self,
@@ -2250,11 +1953,6 @@ class PackedPlanExecutor(ExecutorBase):
         temp = getattr(ctx, "temp", None)
         if not isinstance(temp, dict):
             return -1
-        hot_op_plan = (
-            packed.hot_op_plans[program_id]
-            if program_id < len(getattr(packed, "hot_op_plans", ()))
-            else None
-        )
         proto_to_id = getattr(packed, "proto_to_id", None)
         selector_to_id = getattr(packed, "selector_to_id", None)
         route_protocol = hot.protocol
@@ -2298,179 +1996,41 @@ class PackedPlanExecutor(ExecutorBase):
     def _resolve_hot_exact_route_slices(
         self, packed: PackedKernel
     ) -> Mapping[int, tuple[int, int]]:
-        packed_id = id(packed)
-        cached = self._hot_exact_route_cache.get(packed_id)
-        if cached is not None:
-            return cached
-        method_ids = self._hot_section(packed, "exact_method_ids")
-        path_hashes = self._hot_section(packed, "exact_path_hashes")
-        program_ids = self._hot_section(packed, "exact_program_ids")
-        if method_ids is None or path_hashes is None or program_ids is None:
-            self._hot_exact_route_cache[packed_id] = {}
-            return {}
-        if not (
-            int(method_ids.count) == int(path_hashes.count) == int(program_ids.count)
-        ):
-            self._hot_exact_route_cache[packed_id] = {}
-            return {}
-        directory: dict[int, tuple[int, int]] = {}
-        total = int(method_ids.count)
-        current_method_id = -1
-        current_start = 0
-        current_count = 0
-        for index in range(total):
-            method_id = int(method_ids.get_int(index))
-            if method_id == current_method_id:
-                current_count += 1
-                continue
-            if current_count > 0:
-                directory[current_method_id] = (current_start, current_count)
-            current_method_id = method_id
-            current_start = index
-            current_count = 1
-        if current_count > 0:
-            directory[current_method_id] = (current_start, current_count)
-        frozen = {int(method_id): (int(start), int(count)) for method_id, (start, count) in directory.items()}
-        self._hot_exact_route_cache[packed_id] = frozen
-        return frozen
+        return _kernel_resolve_hot_exact_route_slices(
+            packed,
+            self._hot_exact_route_cache,
+        )
 
     def _resolve_program_id_from_exact_route(
         self, packed: PackedKernel, method: str, path: str
     ) -> int:
-        method_id = self._http_method_id(method)
-        path_hash = self._stable_name_hash64(path)
-        path_hashes = self._hot_section(packed, "exact_path_hashes")
-        program_ids = self._hot_section(packed, "exact_program_ids")
-        method_slices = self._resolve_hot_exact_route_slices(packed)
-        method_slice = method_slices.get(method_id)
-        if (
-            method_slice is not None
-            and path_hashes is not None
-            and program_ids is not None
-            and int(path_hashes.count) == int(program_ids.count)
-        ):
-            start_index, count = method_slice
-            found_index = path_hashes.find_aligned_u64(
-                path_hash,
-                start_index=start_index,
-                count=count,
-            )
-            if start_index <= found_index < start_index + count:
-                program_id = int(program_ids.get_int(found_index))
-                verify = self._resolve_hot_exact_route_verify(packed)
-                method_verify = verify.get(method_id, {})
-                candidates = method_verify.get(path_hash, ())
-                if candidates:
-                    for candidate_path, candidate_program_id in candidates:
-                        if candidate_path == path:
-                            return int(candidate_program_id)
-                    return -1
-                return program_id
-        method_ids = self._hot_array(packed, "exact_method_ids", tuple())
-        path_hash_array = self._hot_array(packed, "exact_path_hashes", tuple())
-        program_id_array = self._hot_array(packed, "exact_program_ids", tuple())
-        for candidate_method_id, candidate_hash, program_id in zip(
-            method_ids, path_hash_array, program_id_array
-        ):
-            if (
-                int(candidate_method_id) == int(method_id)
-                and int(candidate_hash) == int(path_hash)
-            ):
-                return int(program_id)
-        route = getattr(packed, "rest_exact_route_to_program", None)
-        if not isinstance(route, Mapping):
-            return -1
-        maybe = route.get((method.upper(), path))
-        return maybe if isinstance(maybe, int) else -1
+        return _kernel_resolve_program_id_from_exact_route(
+            packed,
+            method,
+            path,
+            self._hot_exact_route_cache,
+            self._hot_exact_route_verify_cache,
+        )
 
     def _resolve_hot_exact_route_verify(
         self, packed: PackedKernel
     ) -> Mapping[int, Mapping[int, tuple[tuple[str, int], ...]]]:
-        packed_id = id(packed)
-        cached = self._hot_exact_route_verify_cache.get(packed_id)
-        if cached is not None:
-            return cached
-
-        route = getattr(packed, "rest_exact_route_to_program", None)
-        if not isinstance(route, Mapping):
-            self._hot_exact_route_verify_cache[packed_id] = {}
-            return {}
-
-        verify: dict[int, dict[int, list[tuple[str, int]]]] = {}
-        for route_key, program_id in route.items():
-            if (
-                not isinstance(route_key, tuple)
-                or len(route_key) != 2
-                or not isinstance(route_key[0], str)
-                or not isinstance(route_key[1], str)
-                or not isinstance(program_id, int)
-            ):
-                continue
-            method_name, exact_path = route_key
-            method_id = self._http_method_id(method_name)
-            path_hash = self._stable_name_hash64(exact_path)
-            method_bucket = verify.setdefault(method_id, {})
-            method_bucket.setdefault(path_hash, []).append((exact_path, program_id))
-
-        frozen = {
-            int(method_id): {
-                int(path_hash): tuple(entries)
-                for path_hash, entries in method_bucket.items()
-            }
-            for method_id, method_bucket in verify.items()
-        }
-        self._hot_exact_route_verify_cache[packed_id] = frozen
-        return frozen
+        return _kernel_resolve_hot_exact_route_verify(
+            packed,
+            self._hot_exact_route_verify_cache,
+        )
 
     def _resolve_hot_exact_jsonrpc_routes(
         self, plan: KernelPlan
     ) -> Mapping[str, Mapping[str, tuple[int, str, str]]]:
-        plan_id = id(plan)
-        cached = self._hot_exact_jsonrpc_cache.get(plan_id)
-        if cached is not None:
-            return cached
-
-        proto_indices = getattr(plan, "proto_indices", {}) or {}
-        exact_routes: dict[str, dict[str, tuple[int, str, str]]] = {}
-        if isinstance(proto_indices, Mapping):
-            for proto, bucket in proto_indices.items():
-                if not isinstance(proto, str) or not proto.endswith(".jsonrpc"):
-                    continue
-                if not isinstance(bucket, Mapping):
-                    continue
-                endpoints = bucket.get("endpoints")
-                if not isinstance(endpoints, Mapping):
-                    continue
-                for endpoint, endpoint_bucket in endpoints.items():
-                    if not isinstance(endpoint, str) or not endpoint:
-                        continue
-                    if not isinstance(endpoint_bucket, Mapping):
-                        continue
-                    method_map = exact_routes.setdefault(endpoint, {})
-                    for rpc_method, entry in endpoint_bucket.items():
-                        if not isinstance(rpc_method, str) or not rpc_method:
-                            continue
-                        if not isinstance(entry, Mapping):
-                            continue
-                        meta_index = entry.get("meta_index")
-                        if not isinstance(meta_index, int):
-                            continue
-                        selector = str(
-                            entry.get("selector") or f"{endpoint}:{rpc_method}"
-                        )
-                        method_map[rpc_method] = (meta_index, str(proto), selector)
-
-        frozen = {
-            endpoint: dict(method_map)
-            for endpoint, method_map in exact_routes.items()
-        }
-        self._hot_exact_jsonrpc_cache[plan_id] = frozen
-        return frozen
+        return _kernel_resolve_hot_exact_jsonrpc_routes(
+            plan,
+            self._hot_exact_jsonrpc_cache,
+        )
 
     @staticmethod
     def _normalize_jsonrpc_mount_path(path: str) -> str:
-        normalized = str(path or "").rstrip("/")
-        return normalized or "/"
+        return _kernel_normalize_jsonrpc_mount_path(path)
 
     def _resolve_jsonrpc_endpoint_for_path(self, ctx: _Ctx, hot: HotCtx) -> str | None:
         path = self._normalize_jsonrpc_mount_path(hot.path)
@@ -2883,20 +2443,11 @@ class PackedPlanExecutor(ExecutorBase):
         program_id: int,
         hot_op_plan: Any | None,
     ) -> int:
-        if hot_op_plan is not None:
-            program_hot_runner_id = cls._coerce_int(
-                getattr(hot_op_plan, "program_hot_runner_id", None)
-            )
-            if program_hot_runner_id is not None:
-                return program_hot_runner_id
-        fallback = tuple(getattr(packed, "program_hot_runner_ids", ()) or ())
-        value = cls._hot_int_at(
+        return _kernel_resolve_program_hot_runner_id(
             packed,
-            "program_hot_runner_ids",
             program_id,
-            fallback,
+            hot_op_plan,
         )
-        return int(value) if value is not None else _HOT_RUNNER_GENERIC
 
     def _resolve_program_linear_direct_runner(
         self,

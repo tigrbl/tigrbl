@@ -1,7 +1,24 @@
 from __future__ import annotations
 
+from types import SimpleNamespace
+
 import pytest
 
+from tigrbl_atoms.packed_inputs import (
+    DECODER_BOOL,
+    DECODER_INT,
+    body_hash_items,
+    coerce_header_pairs,
+    content_type_from_raw_headers,
+    decode_scalar,
+    ensure_body_bytes,
+    header_hash_pairs,
+    lookup_hashed_mapping,
+    lookup_hashed_pairs,
+    lookup_query_value,
+    parse_query_spans,
+    path_hash_items,
+)
 from tigrbl_atoms.protocol_runtime import (
     run_http_rest_chain,
     run_transport_emit,
@@ -18,10 +35,12 @@ from tigrbl_atoms.atoms.transport.asgi_channel import (
     webtransport_structured_payload_events,
 )
 from tigrbl_atoms.atoms.transport.completion_fence import emit_with_fence
+from tigrbl_atoms.atoms.transport.websocket_unary import DirectWebSocketUnary
 from tigrbl_atoms.runtime_callbacks import register_callback, run_callback_fence
 from tigrbl_atoms.runtime_channel import create_channel_state, transition_channel_state
 from tigrbl_atoms.runtime_loop_regions import execute_loop_region
 from tigrbl_atoms.runtime_transactions import run_subevent_tx_unit
+from tigrbl_kernel.packed_access import stable_name_hash64
 
 
 @pytest.mark.asyncio
@@ -181,3 +200,76 @@ async def test_atom_owned_framing_completion_and_loop_steps_execute() -> None:
     assert completion["completion_fence"] == "POST_EMIT"
     assert sent == [{"subevent": "message.emit", "payload": b"ok"}]
     assert loop_result == {"items": ["a"], "exit_reason": "break", "closed": True}
+
+
+@pytest.mark.asyncio
+async def test_atom_owned_packed_input_helpers_execute_without_runtime() -> None:
+    raw_query = b"name=Ada+Lovelace&enabled=true"
+    query_spans = parse_query_spans(raw_query, name_hash=stable_name_hash64)
+    name_hash = stable_name_hash64("name")
+    enabled_hash = stable_name_hash64("enabled")
+    header_pairs = coerce_header_pairs(
+        {"headers": ((b"Content-Type", b"application/json"),)}
+    )
+    content_type_hash = stable_name_hash64("content-type", lowercase=True)
+
+    assert decode_scalar("42", DECODER_INT) == 42
+    assert decode_scalar("true", DECODER_BOOL) is True
+    assert lookup_query_value(raw_query, query_spans, name_hash) == (
+        True,
+        "Ada Lovelace",
+    )
+    assert body_hash_items({"name": "Ada"}, name_hash=stable_name_hash64) == {
+        name_hash: "Ada"
+    }
+    assert path_hash_items({"enabled": "true"}, name_hash=stable_name_hash64) == {
+        enabled_hash: "true"
+    }
+    hashed_headers = header_hash_pairs(
+        header_pairs,
+        name_hash=lambda value: stable_name_hash64(value, lowercase=True),
+    )
+    assert content_type_from_raw_headers(header_pairs) == "application/json"
+    assert lookup_hashed_pairs(hashed_headers, content_type_hash) == (
+        True,
+        "application/json",
+    )
+    assert lookup_hashed_mapping({name_hash: "Ada"}, name_hash) == (True, "Ada")
+
+    hot = SimpleNamespace(
+        body_bytes=None,
+        body_view=None,
+        scope_type="http",
+        raw_receive=None,
+    )
+    ctx = SimpleNamespace(body=bytearray(b'{"name":"Ada"}'))
+    assert await ensure_body_bytes(ctx, hot) == b'{"name":"Ada"}'
+    assert hot.body_view.tobytes() == b'{"name":"Ada"}'
+
+
+@pytest.mark.asyncio
+async def test_atom_owned_direct_websocket_unary_executes_without_runtime() -> None:
+    sent: list[dict[str, object]] = []
+
+    async def _send(message: dict[str, object]) -> None:
+        sent.append(message)
+
+    websocket = DirectWebSocketUnary(
+        receive=None,
+        send=_send,
+        path="/ws",
+        path_params={"item_id": "7"},
+        buffered_message={"type": "websocket.receive", "text": "hello"},
+    )
+
+    assert websocket.scope == {"type": "websocket", "path": "/ws"}
+    assert websocket.path_params == {"item_id": "7"}
+    assert await websocket.receive_text() == "hello"
+    await websocket.send_text("ok")
+    await websocket.close(1000)
+
+    assert sent == [
+        {"type": "websocket.accept"},
+        {"type": "websocket.send", "text": "ok"},
+        {"type": "websocket.close", "code": 1000},
+    ]
