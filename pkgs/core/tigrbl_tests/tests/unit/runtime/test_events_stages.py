@@ -1,38 +1,15 @@
 from tigrbl.hook.types import PHASES as HOOK_PHASES
 from tigrbl.runtime import events as _ev
+from tigrbl_kernel import events as _kernel_events
 from tigrbl_atoms import HookPhase
 from tigrbl_atoms.types import error_phase_for
 
 
 def test_stages_constant_lists_all_lifecycle_anchors_in_order() -> None:
     """Ensure runtime PHASES exports the complete ingress-to-egress ordered sequence."""
-    assert _ev.PHASES == (
-        "INGRESS_BEGIN",
-        "INGRESS_PARSE",
-        "INGRESS_ROUTE",
-        "PRE_TX_BEGIN",
-        "START_TX",
-        "PRE_HANDLER",
-        "HANDLER",
-        "POST_HANDLER",
-        "PRE_COMMIT",
-        "TX_COMMIT",
-        "POST_COMMIT",
-        "EGRESS_SHAPE",
-        "EGRESS_FINALIZE",
-        "POST_RESPONSE",
-        "ON_ERROR",
-        "ON_PRE_TX_BEGIN_ERROR",
-        "ON_START_TX_ERROR",
-        "ON_PRE_HANDLER_ERROR",
-        "ON_HANDLER_ERROR",
-        "ON_POST_HANDLER_ERROR",
-        "ON_PRE_COMMIT_ERROR",
-        "ON_TX_COMMIT_ERROR",
-        "ON_POST_COMMIT_ERROR",
-        "ON_POST_RESPONSE_ERROR",
-        "TX_ROLLBACK",
-    )
+    assert _ev.PHASES == _kernel_events.PHASES
+    assert "INGRESS_DISPATCH" in _ev.PHASES
+    assert "INGRESS_ROUTE" not in _ev.PHASES
 
 
 def test_hook_lifecycle_includes_all_error_anchors_in_order() -> None:

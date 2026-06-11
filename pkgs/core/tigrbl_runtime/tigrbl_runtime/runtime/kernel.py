@@ -22,6 +22,7 @@ __all__ = [
     "Kernel",
     "get_cached_specs",
     "_default_kernel",
+    "bind_runtime_executor",
     "build_packed_kernel_measurement_view",
     "build_phase_chains",
     "plan_labels",
@@ -31,5 +32,9 @@ __all__ = [
 ]
 
 
-Kernel._run = _run
-Kernel._run_phase_chain = _run_phase_chain
+def bind_runtime_executor(kernel_cls: type = Kernel) -> type:
+    """Attach legacy runtime executor methods when an explicit bridge is needed."""
+
+    kernel_cls._run = _run
+    kernel_cls._run_phase_chain = _run_phase_chain
+    return kernel_cls

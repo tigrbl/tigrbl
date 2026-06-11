@@ -1,84 +1,193 @@
-"""Planned conformance coverage for runtime frame codec semantics."""
+from __future__ import annotations
+
+import json
 
 import pytest
 
-
-pytestmark = pytest.mark.skip(
-    reason="Runtime frame codec conformance is not fully implemented yet."
+from tigrbl_atoms.atoms.framing import app_frame
+from tigrbl_atoms.atoms.framing.codec import decode_frame, encode_frame
+from tigrbl_core._spec.binding_spec import (
+    WsBindingSpec,
+    validate_app_framing_for_binding,
+    validate_webtransport_inner_framing,
 )
+from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
+from tigrbl_runtime.protocol import app_frame_codec as runtime_app_frame
+from tigrbl_runtime.protocol import framing_atoms as runtime_framing
 
 
 def test_runtime_frame_codec_registry_static_t0() -> None:
-    raise NotImplementedError
+    assert runtime_framing.encode_frame is encode_frame
+    assert runtime_framing.decode_frame is decode_frame
+    assert runtime_app_frame.encode_app_frame is app_frame.encode_app_frame
+    assert runtime_app_frame.decode_app_frame is app_frame.decode_app_frame
 
 
 def test_runtime_frame_envelope_schema_static_t0() -> None:
-    raise NotImplementedError
+    frame = app_frame.encode_app_frame(kind=7, flags=1, payload=b"abc")
+
+    assert frame[:4] == bytes((app_frame.SUPPORTED_VERSION, 7, 1, 0))
+    assert int.from_bytes(frame[4:8], "big") == 3
+    assert app_frame.decode_app_frame(frame) == {
+        "version": app_frame.SUPPORTED_VERSION,
+        "kind": 7,
+        "flags": 1,
+        "length": 3,
+        "payload": b"abc",
+    }
 
 
 def test_framing_support_matrix_codec_coverage_t0() -> None:
-    raise NotImplementedError
+    assert validate_app_framing_for_binding(binding_kind="http.rest", framing="json") == "json"
+    assert (
+        validate_app_framing_for_binding(
+            binding_kind="http.jsonrpc",
+            framing="jsonrpc",
+        )
+        == "jsonrpc"
+    )
+    assert validate_app_framing_for_binding(binding_kind="http.sse", framing="sse") == "sse"
+    assert validate_app_framing_for_binding(binding_kind="ws", framing="text") == "text"
 
 
 def test_jsonrpc_ndjson_distinction_static_t0() -> None:
-    raise NotImplementedError
+    with pytest.raises(ValueError, match="ndjson"):
+        validate_app_framing_for_binding(
+            binding_kind="http.jsonrpc",
+            framing="ndjson",
+        )
 
 
 def test_webtransport_inner_codec_legality_static_t0() -> None:
-    raise NotImplementedError
+    assert validate_webtransport_inner_framing(lane="bidi_stream", inner_framing="json") == "json"
+    assert validate_webtransport_inner_framing(lane="datagram", inner_framing=None) is None
+    with pytest.raises(ValueError, match="session lane"):
+        validate_webtransport_inner_framing(lane="session", inner_framing="json")
 
 
 def test_runtime_json_codec_roundtrip_t1() -> None:
-    raise NotImplementedError
+    payload = {"ok": True, "count": 2}
+
+    assert decode_frame("json", encode_frame("json", payload)) == payload
 
 
 def test_runtime_jsonrpc_codec_strict_validation_t1() -> None:
-    raise NotImplementedError
+    encoded = encode_frame("jsonrpc", {"method": "items.list", "params": {}})
+
+    assert decode_frame("jsonrpc", encoded)["jsonrpc"] == "2.0"
+    with pytest.raises(ValueError, match="invalid jsonrpc"):
+        decode_frame("jsonrpc", json.dumps({"method": "items.list"}).encode("utf-8"))
 
 
 def test_runtime_ndjson_codec_record_boundary_t1() -> None:
-    raise NotImplementedError
+    with pytest.raises(ValueError, match="unsupported framing"):
+        encode_frame("ndjson", [{"a": 1}, {"a": 2}])
 
 
 def test_runtime_text_bytes_binary_codec_t1() -> None:
-    raise NotImplementedError
+    assert decode_frame("websocket.text", b"hello") == "hello"
+    with pytest.raises(ValueError, match="invalid websocket.text"):
+        decode_frame("websocket.text", b"\xff")
 
 
 def test_runtime_sse_codec_event_format_t1() -> None:
-    raise NotImplementedError
+    assert encode_frame(
+        "sse",
+        {"event": "ready", "id": "1", "data": "ok"},
+    ) == b"event: ready\nid: 1\ndata: ok\n\n"
 
 
 def test_runtime_websocket_text_codec_adapter_t1() -> None:
-    raise NotImplementedError
+    assert encode_frame("websocket.text", {"text": "pong"}) == {
+        "type": "websocket.send",
+        "text": "pong",
+    }
 
 
 def test_webtransport_inner_codec_dispatch_t1() -> None:
-    raise NotImplementedError
+    projection = validate_webtransport_event_payload(
+        event="webtransport.stream.receive",
+        channel="receive",
+        payload={"stream_id": "s1", "stream_direction": "bidi", "framing": "json"},
+    )
+
+    assert projection == {
+        "family": "stream",
+        "lane": "bidi_stream",
+        "exchange": "bidirectional_stream",
+    }
 
 
 def test_binding_policy_to_codec_runtime_integration_t2() -> None:
-    raise NotImplementedError
+    binding = WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc")
+
+    assert binding.framing == "jsonrpc"
+    assert binding.subprotocols == ("jsonrpc",)
+    assert decode_frame("jsonrpc", encode_frame("jsonrpc", {"method": "ping"}))[
+        "method"
+    ] == "ping"
 
 
 def test_framing_negative_corpus_runtime_t2() -> None:
-    raise NotImplementedError
+    bad_cases = (
+        lambda: decode_frame("json", b"{"),
+        lambda: decode_frame("jsonrpc", b'{"jsonrpc":"2.0"}'),
+        lambda: encode_frame("yaml", {}),
+        lambda: app_frame.decode_app_frame(b"\x01"),
+        lambda: app_frame.decode_app_frame(bytes((1, 1, 0x80, 0)) + (0).to_bytes(4, "big")),
+    )
+
+    for case in bad_cases:
+        with pytest.raises(ValueError):
+            case()
 
 
 def test_websocket_jsonrpc_subprotocol_codec_t2() -> None:
-    raise NotImplementedError
+    with pytest.raises(ValueError, match="ndjson"):
+        WsBindingSpec(proto="ws", path="/events", framing="ndjson")
+
+    assert WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc").subprotocols == (
+        "jsonrpc",
+    )
 
 
 def test_webtransport_stream_inner_codec_runtime_t2() -> None:
-    raise NotImplementedError
+    assert (
+        validate_webtransport_event_payload(
+            event="webtransport.stream.send",
+            channel="send",
+            payload={"stream_id": "s1", "stream_direction": "server_to_client", "framing": "json"},
+        )["lane"]
+        == "unidi_server_stream"
+    )
 
 
 def test_webtransport_datagram_inner_codec_runtime_t2() -> None:
-    raise NotImplementedError
+    with pytest.raises(ValueError, match="unsupported WebTransport inner framing"):
+        validate_webtransport_event_payload(
+            event="webtransport.datagram.receive",
+            channel="receive",
+            payload={"datagram_id": "d1", "framing": "jsonrpc"},
+        )
 
 
 def test_transport_demo_frame_codec_matrix_t2() -> None:
-    raise NotImplementedError
+    frames = (
+        encode_frame("json", {"transport": "http"}),
+        encode_frame("jsonrpc", {"method": "rpc.call"}),
+        encode_frame("sse", {"data": "event"}),
+        encode_frame("websocket.text", "socket"),
+    )
+
+    assert frames[0] == b'{"transport":"http"}'
+    assert frames[1] == b'{"method":"rpc.call","jsonrpc":"2.0"}'
+    assert frames[2] == b"data: event\n\n"
+    assert frames[3] == {"type": "websocket.send", "text": "socket"}
 
 
 def test_codec_errors_map_to_runtime_fail_closed_t2() -> None:
-    raise NotImplementedError
+    decoder = app_frame.FrameStreamDecoder(max_payload_size=1)
+    oversized = app_frame.encode_app_frame(kind=1, payload=b"xx")
+
+    with pytest.raises(ValueError, match="configured limit"):
+        list(decoder.feed(oversized))

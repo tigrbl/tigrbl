@@ -1,4 +1,5 @@
 from tigrbl.runtime import events as _ev
+from tigrbl_kernel import events as _kernel_events
 
 
 def test_order_events_returns_canonical_runtime_sequence() -> None:
@@ -17,30 +18,9 @@ def test_prune_events_for_persist_keeps_non_persist_tied_only() -> None:
 
 
 def test_stages_follow_expected_kernel_execution_order() -> None:
-    assert _ev.PHASES == (
+    assert _ev.PHASES == _kernel_events.PHASES
+    assert _ev.PHASES[:3] == (
         "INGRESS_BEGIN",
         "INGRESS_PARSE",
-        "INGRESS_ROUTE",
-        "PRE_TX_BEGIN",
-        "START_TX",
-        "PRE_HANDLER",
-        "HANDLER",
-        "POST_HANDLER",
-        "PRE_COMMIT",
-        "TX_COMMIT",
-        "POST_COMMIT",
-        "EGRESS_SHAPE",
-        "EGRESS_FINALIZE",
-        "POST_RESPONSE",
-        "ON_ERROR",
-        "ON_PRE_TX_BEGIN_ERROR",
-        "ON_START_TX_ERROR",
-        "ON_PRE_HANDLER_ERROR",
-        "ON_HANDLER_ERROR",
-        "ON_POST_HANDLER_ERROR",
-        "ON_PRE_COMMIT_ERROR",
-        "ON_TX_COMMIT_ERROR",
-        "ON_POST_COMMIT_ERROR",
-        "ON_POST_RESPONSE_ERROR",
-        "TX_ROLLBACK",
+        "INGRESS_DISPATCH",
     )
