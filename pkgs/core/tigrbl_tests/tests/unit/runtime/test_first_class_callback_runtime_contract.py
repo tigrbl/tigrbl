@@ -17,7 +17,7 @@ def _require(module_name: str, attr_name: str):
 
 
 def test_callback_registration_produces_first_class_runtime_descriptor() -> None:
-    register = _require("tigrbl_runtime.callbacks", "register_callback")
+    register = _require("tigrbl_atoms.runtime_callbacks", "register_callback")
 
     descriptor = register(
         name="inventory.after_emit",
@@ -57,7 +57,7 @@ def test_callback_metadata_compiles_into_kernelplan_without_callable_object() ->
 
 
 def test_callback_fence_records_enter_and_exit_in_order() -> None:
-    run_fence = _require("tigrbl_runtime.callbacks", "run_callback_fence")
+    run_fence = _require("tigrbl_atoms.runtime_callbacks", "run_callback_fence")
     trace: list[str] = []
 
     result = run_fence(
@@ -75,7 +75,7 @@ def test_callback_fence_records_enter_and_exit_in_order() -> None:
 
 
 def test_missing_callback_fails_before_invocation_with_typed_error_context() -> None:
-    run_fence = _require("tigrbl_runtime.callbacks", "run_callback_fence")
+    run_fence = _require("tigrbl_atoms.runtime_callbacks", "run_callback_fence")
 
     with pytest.raises(ValueError) as exc_info:
         run_fence(
@@ -91,7 +91,7 @@ def test_missing_callback_fails_before_invocation_with_typed_error_context() -> 
 
 
 def test_callback_exception_is_wrapped_with_phase_and_callback_metadata() -> None:
-    run_fence = _require("tigrbl_runtime.callbacks", "run_callback_fence")
+    run_fence = _require("tigrbl_atoms.runtime_callbacks", "run_callback_fence")
 
     def failing_callback(_ctx):
         raise RuntimeError("callback exploded")
@@ -110,8 +110,8 @@ def test_callback_exception_is_wrapped_with_phase_and_callback_metadata() -> Non
 
 
 def test_callback_descriptor_roundtrips_through_runtime_codec() -> None:
-    encode = _require("tigrbl_runtime.callbacks", "encode_callback_descriptor")
-    decode = _require("tigrbl_runtime.callbacks", "decode_callback_descriptor")
+    encode = _require("tigrbl_atoms.runtime_callbacks", "encode_callback_descriptor")
+    decode = _require("tigrbl_atoms.runtime_callbacks", "decode_callback_descriptor")
     descriptor = {
         "name": "inventory.engine",
         "kind": "engine",

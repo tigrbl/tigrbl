@@ -15,7 +15,7 @@ from tigrbl_kernel.channel_taxonomy import (
     webtransport_event_metadata as _webtransport_event_metadata,
 )
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
-from tigrbl_runtime.protocol.webtransport_session import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
 from tigrbl_typing.channel import OpChannel
 
 
@@ -271,7 +271,7 @@ async def _receive_webtransport_session_messages(
             "webtransport.stream.receive",
             "webtransport.datagram.receive",
         }:
-            validate_webtransport_event_payload(
+            projection = validate_webtransport_event_payload(
                 event=message_type,
                 channel="receive",
                 payload={**message, "session_id": state.get("session_id")},
@@ -281,6 +281,7 @@ async def _receive_webtransport_session_messages(
                     event=message_type,
                     channel="receive",
                     payload={**message, "session_id": state.get("session_id")},
+                    projection=projection,
                 )
             queue.append(message)
             for key in (

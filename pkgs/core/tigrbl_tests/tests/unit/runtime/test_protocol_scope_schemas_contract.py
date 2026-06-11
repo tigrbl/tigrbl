@@ -23,7 +23,7 @@ def _field(value: object, name: str) -> object:
 
 
 def test_http_and_websocket_scopes_normalize_protocol_metadata() -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.scope_schemas", "validate_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_scope", "validate_scope")
 
     http = validate_scope(
         {
@@ -52,7 +52,7 @@ def test_http_and_websocket_scopes_normalize_protocol_metadata() -> None:
 
 
 def test_webtransport_and_lifespan_scopes_validate_extensions() -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.scope_schemas", "validate_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_scope", "validate_scope")
 
     transport = validate_scope(
         {
@@ -69,7 +69,7 @@ def test_webtransport_and_lifespan_scopes_validate_extensions() -> None:
 
 
 def test_message_and_datagram_scopes_normalize_runtime_metadata() -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.scope_schemas", "validate_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_scope", "validate_scope")
 
     message = validate_scope(
         {
@@ -96,7 +96,7 @@ def test_message_and_datagram_scopes_normalize_runtime_metadata() -> None:
 
 
 def test_http_scope_normalizes_headers_to_lowercase_byte_pairs() -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.scope_schemas", "validate_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_scope", "validate_scope")
 
     scope = validate_scope(
         {
@@ -114,7 +114,7 @@ def test_http_scope_normalizes_headers_to_lowercase_byte_pairs() -> None:
 
 
 def test_secure_scope_derives_tls_metadata_from_scheme_and_extensions() -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.scope_schemas", "validate_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_scope", "validate_scope")
 
     scope = validate_scope(
         {
@@ -131,7 +131,7 @@ def test_secure_scope_derives_tls_metadata_from_scheme_and_extensions() -> None:
 
 
 def test_invalid_protocol_scope_fails_closed_before_dispatch() -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.scope_schemas", "validate_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_scope", "validate_scope")
 
     with pytest.raises(ValueError, match="scope|protocol|type|required"):
         validate_scope({"type": "websocket", "scheme": "wss"})
@@ -147,7 +147,7 @@ def test_invalid_protocol_scope_fails_closed_before_dispatch() -> None:
     ),
 )
 def test_invalid_protocol_scope_extensions_fail_closed(bad_scope: dict[str, object]) -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.scope_schemas", "validate_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_scope", "validate_scope")
 
     with pytest.raises(ValueError, match="scope|protocol|extension|required|peer"):
         validate_scope(bad_scope)

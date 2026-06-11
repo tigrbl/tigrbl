@@ -222,7 +222,7 @@ def _build_raw_handler(model: type, spec: OpSpec):
         core_fn = getattr(_core, target)
     except AttributeError:
         async def _unsupported_raw(ctx: Any):
-            from tigrbl_runtime.runtime.status.exceptions import HTTPException
+            from tigrbl_typing.status.exceptions import HTTPException
 
             raise HTTPException(
                 status_code=501,
@@ -909,7 +909,7 @@ def _materialize_rest_router(
             **path_params: Any,
         ) -> Any:
             from tigrbl_concrete._concrete import engine_resolver as _resolver
-            from tigrbl_runtime.runtime.executor.invoke import invoke_op
+            from tigrbl_runtime.executors.invoke import invoke_op
 
             db = None
             release = None

@@ -19,7 +19,12 @@ from tigrbl_concrete._concrete import (
     WebTransportServerStreamTable,
     WebTransportTable,
 )
+import tigrbl_concrete._concrete as concrete
 from tigrbl_core._spec.table_spec import TableSpec
+from tigrbl_core._spec.table_profile_spec import (
+    get_builtin_table_profile_definition,
+    iter_builtin_table_profile_definitions,
+)
 from tigrbl_base._base import CrudTableBase, RealtimeTableBase, TableBase
 
 
@@ -82,3 +87,58 @@ def test_webtransport_lane_profiles_collect_expected_ops() -> None:
     assert _targets(WebTransportClientStreamTable) == ("upload", "append_chunk")
     assert _targets(WebTransportServerStreamTable) == ("download", "tail")
     assert _targets(WebTransportDatagramTable) == ("send_datagram",)
+
+
+def test_builtin_table_profile_taxonomy_matches_exported_classes() -> None:
+    checked: set[str] = set()
+    for row in iter_builtin_table_profile_definitions():
+        for class_name in row.public_class_names:
+            if not hasattr(concrete, class_name):
+                continue
+            table = getattr(concrete, class_name)
+            spec = TableSpec.collect(table)
+
+            assert table.TABLE_PROFILE.kind == row.kind
+            assert spec.table_profile.role == row.role
+            assert spec.table_profile.docs_exposure == row.docs_exposure
+            assert spec.table_profile.runtime_exposure == row.runtime_exposure
+            assert tuple(op.target for op in spec.ops) == row.targets
+            checked.add(class_name)
+
+    assert checked == {
+        "BulkCrudTable",
+        "CrudTable",
+        "EventStreamTable",
+        "JsonRpcOlapTable",
+        "JsonRpcOltpTable",
+        "JsonRpcTable",
+        "OlapTable",
+        "OltpTable",
+        "RealtimeTable",
+        "RestJsonRpcOlapTable",
+        "RestJsonRpcOltpTable",
+        "RestJsonRpcTable",
+        "RestOlapTable",
+        "RestOltpTable",
+        "RestTable",
+        "SseTable",
+        "StreamTable",
+        "WebSocketJsonRpcTable",
+        "WebSocketTable",
+        "WebTransportBidiTable",
+        "WebTransportClientStreamTable",
+        "WebTransportDatagramTable",
+        "WebTransportServerStreamTable",
+        "WebTransportTable",
+    }
+
+
+def test_compatibility_oltp_and_olap_taxonomy_rows_are_rest_basis() -> None:
+    assert get_builtin_table_profile_definition("rest_oltp").public_class_names == (
+        "RestOltpTable",
+        "OltpTable",
+    )
+    assert get_builtin_table_profile_definition("rest_olap").public_class_names == (
+        "RestOlapTable",
+        "OlapTable",
+    )

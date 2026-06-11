@@ -4,6 +4,8 @@ from dataclasses import dataclass, field
 from collections.abc import Mapping
 from typing import Any
 
+from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
+
 
 def create_channel_state(
     *,
@@ -129,7 +131,6 @@ class WebTransportSessionState:
         channel: str,
         payload: dict[str, Any],
     ) -> Mapping[str, object]:
-        del channel, payload
         if event in {
             "webtransport.connect",
             "webtransport.accept",
@@ -141,8 +142,10 @@ class WebTransportSessionState:
                 "lane": "session",
                 "exchange": "request_response",
             }
-        raise ValueError(
-            "WebTransport event projection is required for non-session events"
+        return validate_webtransport_event_payload(
+            event=event,
+            channel=channel,
+            payload=payload,
         )
 
     def snapshot(self) -> dict[str, object]:

@@ -28,7 +28,7 @@ async def _async_chunks():
 
 @pytest.mark.asyncio
 async def test_iterator_producer_normalizes_sync_and_async_iterators() -> None:
-    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    normalize = _require("tigrbl_atoms.protocol_runtime", "normalize_iterator_producer")
 
     sync_producer = normalize(_sync_chunks(), chunk_type="bytes")
     async_producer = normalize(_async_chunks(), chunk_type="bytes")
@@ -39,7 +39,7 @@ async def test_iterator_producer_normalizes_sync_and_async_iterators() -> None:
 
 @pytest.mark.asyncio
 async def test_iterator_producer_normalizes_single_yield_callable() -> None:
-    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    normalize = _require("tigrbl_atoms.protocol_runtime", "normalize_iterator_producer")
 
     producer = normalize(lambda: b"only", chunk_type="bytes")
 
@@ -48,7 +48,7 @@ async def test_iterator_producer_normalizes_single_yield_callable() -> None:
 
 @pytest.mark.asyncio
 async def test_iterator_producer_preserves_empty_iterator_completion() -> None:
-    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    normalize = _require("tigrbl_atoms.protocol_runtime", "normalize_iterator_producer")
 
     producer = normalize(iter(()), chunk_type="bytes")
 
@@ -57,7 +57,7 @@ async def test_iterator_producer_preserves_empty_iterator_completion() -> None:
 
 @pytest.mark.asyncio
 async def test_iterator_producer_maps_exceptions_and_runs_finalization() -> None:
-    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    normalize = _require("tigrbl_atoms.protocol_runtime", "normalize_iterator_producer")
     finalized: list[str] = []
 
     def failing():
@@ -73,7 +73,7 @@ async def test_iterator_producer_maps_exceptions_and_runs_finalization() -> None
 
 @pytest.mark.asyncio
 async def test_iterator_producer_runs_finalizer_on_consumer_cancellation() -> None:
-    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    normalize = _require("tigrbl_atoms.protocol_runtime", "normalize_iterator_producer")
     finalized: list[str] = []
 
     async def chunks():
@@ -89,7 +89,7 @@ async def test_iterator_producer_runs_finalizer_on_consumer_cancellation() -> No
 
 @pytest.mark.asyncio
 async def test_iterator_producer_rejects_invalid_chunk_type_before_transport_emit() -> None:
-    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    normalize = _require("tigrbl_atoms.protocol_runtime", "normalize_iterator_producer")
 
     async def invalid():
         yield {"not": "bytes"}
@@ -101,7 +101,7 @@ async def test_iterator_producer_rejects_invalid_chunk_type_before_transport_emi
 
 @pytest.mark.asyncio
 async def test_iterator_producer_cannot_be_reiterated_after_close() -> None:
-    normalize = _require("tigrbl_runtime.protocol.iterators", "normalize_iterator_producer")
+    normalize = _require("tigrbl_atoms.protocol_runtime", "normalize_iterator_producer")
 
     producer = normalize(_sync_chunks(), chunk_type="bytes")
     assert await anext(producer) == b"a"

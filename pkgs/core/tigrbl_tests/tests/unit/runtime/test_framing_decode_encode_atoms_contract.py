@@ -17,7 +17,7 @@ def _require(module_name: str, attr_name: str):
 
 
 def test_framing_decode_atom_handles_json_payload() -> None:
-    decode = _require("tigrbl_runtime.protocol.framing_atoms", "decode_frame")
+    decode = _require("tigrbl_atoms.atoms.framing.codec", "decode_frame")
 
     json_payload = decode("json", b'{"name":"Ada"}')
 
@@ -25,7 +25,7 @@ def test_framing_decode_atom_handles_json_payload() -> None:
 
 
 def test_framing_decode_atom_handles_jsonrpc_payload() -> None:
-    decode = _require("tigrbl_runtime.protocol.framing_atoms", "decode_frame")
+    decode = _require("tigrbl_atoms.atoms.framing.codec", "decode_frame")
 
     rpc_payload = decode(
         "jsonrpc",
@@ -39,7 +39,7 @@ def test_framing_decode_atom_handles_jsonrpc_payload() -> None:
 
 
 def test_framing_encode_atom_handles_jsonrpc_success_payload() -> None:
-    encode = _require("tigrbl_runtime.protocol.framing_atoms", "encode_frame")
+    encode = _require("tigrbl_atoms.atoms.framing.codec", "encode_frame")
 
     rpc = encode("jsonrpc", {"id": 7, "result": {"ok": True}})
 
@@ -49,7 +49,7 @@ def test_framing_encode_atom_handles_jsonrpc_success_payload() -> None:
 
 
 def test_framing_encode_atom_handles_jsonrpc_error_payload() -> None:
-    encode = _require("tigrbl_runtime.protocol.framing_atoms", "encode_frame")
+    encode = _require("tigrbl_atoms.atoms.framing.codec", "encode_frame")
 
     rpc = encode("jsonrpc", {"id": 7, "error": {"code": -32600, "message": "Invalid Request"}})
 
@@ -60,7 +60,7 @@ def test_framing_encode_atom_handles_jsonrpc_error_payload() -> None:
 
 
 def test_framing_encode_atom_handles_sse_payload() -> None:
-    encode = _require("tigrbl_runtime.protocol.framing_atoms", "encode_frame")
+    encode = _require("tigrbl_atoms.atoms.framing.codec", "encode_frame")
 
     sse = encode("sse", {"event": "item", "id": "1", "retry": 1000, "data": "ready"})
 
@@ -71,7 +71,7 @@ def test_framing_encode_atom_handles_sse_payload() -> None:
 
 
 def test_framing_encode_atom_handles_websocket_text_payload() -> None:
-    encode = _require("tigrbl_runtime.protocol.framing_atoms", "encode_frame")
+    encode = _require("tigrbl_atoms.atoms.framing.codec", "encode_frame")
 
     ws = encode("websocket.text", {"text": "ready"})
 
@@ -89,7 +89,7 @@ def test_framing_encode_atom_handles_websocket_text_payload() -> None:
 def test_framing_decode_atom_maps_malformed_payloads_to_typed_errors(
     framing: str, payload: bytes
 ) -> None:
-    decode = _require("tigrbl_runtime.protocol.framing_atoms", "decode_frame")
+    decode = _require("tigrbl_atoms.atoms.framing.codec", "decode_frame")
 
     with pytest.raises(ValueError, match="framing|decode|invalid|malformed"):
         decode(framing, payload)

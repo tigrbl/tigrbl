@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any, Sequence
 
-from tigrbl_runtime.runtime.status.exceptions import HTTPException
-from tigrbl_runtime.runtime.status.mappings import status
+from tigrbl_typing.status.exceptions import HTTPException
+from tigrbl_typing.status.mappings import status
 from tigrbl_base._base._security_base import OpenAPISecurityDependency
 
 

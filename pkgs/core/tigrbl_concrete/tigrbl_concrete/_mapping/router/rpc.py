@@ -12,7 +12,7 @@ from tigrbl_ops_oltp.crud.helpers.model import _coerce_pk_value, _single_pk_name
 from tigrbl_ops_oltp.crud import ops as _crud_ops
 from tigrbl_ops_oltp.crud import bulk as _crud_bulk
 from ..._mapping.op_resolver import resolve as resolve_ops
-from tigrbl_runtime.runtime.executor.invoke import invoke_op
+from tigrbl_runtime.executors.invoke import invoke_op
 from tigrbl_base._base._rpc_map import _serialize_output
 
 logger = logging.getLogger("uvicorn")

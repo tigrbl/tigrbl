@@ -15,7 +15,7 @@ from tigrbl_core._spec import F, IO, S
 from tigrbl_base.column import acol
 from tigrbl_core._spec import StorageTransform
 from tigrbl_core.schema import builder as v3_builder
-from tigrbl_runtime.runtime import kernel as runtime_kernel
+import tigrbl_kernel as runtime_kernel
 from tigrbl_runtime.runtime import system as runtime_system
 from tigrbl.factories.engine import mem, sqlitef
 from tigrbl_concrete._concrete import engine_resolver as _resolver

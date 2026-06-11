@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_runtime.protocol.webtransport import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
 
 
 def test_session_state_is_partitioned_by_app_router_table_and_op() -> None:

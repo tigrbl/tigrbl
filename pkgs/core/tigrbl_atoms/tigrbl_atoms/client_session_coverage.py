@@ -148,9 +148,9 @@ def validate_no_internal_lane(record: Mapping[str, Any]) -> None:
 
 def validate_governed_identifier_fields(record: Mapping[str, Any]) -> None:
     validate_no_internal_lane(record)
-    for field in ("stream_id", "datagram_id"):
-        if field in record and record[field] is None:
-            raise ValueError(f"{field} must be omitted or populated")
+    for identifier_field in ("stream_id", "datagram_id"):
+        if identifier_field in record and record[identifier_field] is None:
+            raise ValueError(f"{identifier_field} must be omitted or populated")
 
 
 def validate_matrix_row(row: Mapping[str, Any]) -> None:

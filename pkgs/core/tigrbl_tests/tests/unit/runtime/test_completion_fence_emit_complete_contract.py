@@ -52,7 +52,7 @@ def test_post_emit_completion_fence_is_rejected_as_user_hook_phase() -> None:
 
 @pytest.mark.asyncio
 async def test_emit_complete_fires_only_after_transport_acknowledges_send() -> None:
-    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    emit_with_fence = _require("tigrbl_atoms.atoms.transport.completion_fence", "emit_with_fence")
     trace: list[str] = []
 
     async def send(_message: object) -> str:
@@ -72,7 +72,7 @@ async def test_emit_complete_fires_only_after_transport_acknowledges_send() -> N
 
 @pytest.mark.asyncio
 async def test_emit_complete_is_emitted_exactly_once_for_multiple_ack_signals() -> None:
-    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    emit_with_fence = _require("tigrbl_atoms.atoms.transport.completion_fence", "emit_with_fence")
     trace: list[str] = []
 
     async def send(_message: object) -> tuple[str, str]:
@@ -91,7 +91,7 @@ async def test_emit_complete_is_emitted_exactly_once_for_multiple_ack_signals() 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("send_result", ("queued", "scheduled", "buffered"))
 async def test_queued_or_scheduled_send_is_not_emit_complete(send_result: str) -> None:
-    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    emit_with_fence = _require("tigrbl_atoms.atoms.transport.completion_fence", "emit_with_fence")
     trace: list[str] = []
 
     async def send(_message: object) -> str:
@@ -110,7 +110,7 @@ async def test_queued_or_scheduled_send_is_not_emit_complete(send_result: str) -
 
 @pytest.mark.asyncio
 async def test_failed_send_routes_to_error_without_emit_complete() -> None:
-    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    emit_with_fence = _require("tigrbl_atoms.atoms.transport.completion_fence", "emit_with_fence")
     trace: list[str] = []
 
     async def send(_message: object) -> str:
@@ -129,7 +129,7 @@ async def test_failed_send_routes_to_error_without_emit_complete() -> None:
 
 @pytest.mark.asyncio
 async def test_emit_complete_trace_occurs_after_send_acknowledgement() -> None:
-    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    emit_with_fence = _require("tigrbl_atoms.atoms.transport.completion_fence", "emit_with_fence")
     trace: list[str] = []
 
     async def send(_message: object) -> str:
@@ -149,7 +149,7 @@ async def test_emit_complete_trace_occurs_after_send_acknowledgement() -> None:
 
 @pytest.mark.asyncio
 async def test_cancelled_send_is_not_emit_complete() -> None:
-    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    emit_with_fence = _require("tigrbl_atoms.atoms.transport.completion_fence", "emit_with_fence")
     trace: list[str] = []
 
     async def send(_message: object) -> str:
@@ -169,7 +169,7 @@ async def test_cancelled_send_is_not_emit_complete() -> None:
 
 @pytest.mark.asyncio
 async def test_emit_complete_name_is_derived_from_emitted_subevent() -> None:
-    emit_with_fence = _require("tigrbl_runtime.protocol.completion_fence", "emit_with_fence")
+    emit_with_fence = _require("tigrbl_atoms.atoms.transport.completion_fence", "emit_with_fence")
     trace: list[str] = []
 
     async def send(_message: object) -> str:

@@ -7,7 +7,7 @@ import pytest
 from tigrbl import APIKey
 from tigrbl.security import Depends, Security
 from tigrbl_concrete._concrete.dependencies import Dependency
-from tigrbl_runtime.runtime.status.exceptions import HTTPException
+from tigrbl_typing.status.exceptions import HTTPException
 
 
 def _dep() -> str:

@@ -52,7 +52,7 @@ def test_sse_chain_declares_error_branch_and_disconnect_finalization() -> None:
 
 @pytest.mark.asyncio
 async def test_sse_lazy_runtime_does_not_prebuffer_iterator() -> None:
-    run_sse = _require("tigrbl_runtime.protocol.sse", "run_sse_chain")
+    run_sse = _require("tigrbl_atoms.protocol_runtime", "run_sse_chain")
     produced: list[int] = []
 
     async def events():
@@ -70,7 +70,7 @@ async def test_sse_lazy_runtime_does_not_prebuffer_iterator() -> None:
 
 @pytest.mark.asyncio
 async def test_sse_lazy_runtime_accepts_sync_iterators() -> None:
-    run_sse = _require("tigrbl_runtime.protocol.sse", "run_sse_chain")
+    run_sse = _require("tigrbl_atoms.protocol_runtime", "run_sse_chain")
 
     sent: list[dict[str, object]] = []
     result = await run_sse(
@@ -86,7 +86,7 @@ async def test_sse_lazy_runtime_accepts_sync_iterators() -> None:
 
 @pytest.mark.asyncio
 async def test_sse_lazy_runtime_rejects_invalid_event_before_emit() -> None:
-    run_sse = _require("tigrbl_runtime.protocol.sse", "run_sse_chain")
+    run_sse = _require("tigrbl_atoms.protocol_runtime", "run_sse_chain")
 
     async def events():
         yield {"data": object()}
@@ -101,7 +101,7 @@ async def test_sse_lazy_runtime_rejects_invalid_event_before_emit() -> None:
 
 @pytest.mark.asyncio
 async def test_sse_disconnect_cancels_iterator_and_emits_session_close() -> None:
-    run_sse = _require("tigrbl_runtime.protocol.sse", "run_sse_chain")
+    run_sse = _require("tigrbl_atoms.protocol_runtime", "run_sse_chain")
     finalized: list[str] = []
 
     async def events():
@@ -120,7 +120,7 @@ async def test_sse_disconnect_cancels_iterator_and_emits_session_close() -> None
 
 @pytest.mark.asyncio
 async def test_sse_normal_exhaustion_emits_stream_end_and_session_close() -> None:
-    run_sse = _require("tigrbl_runtime.protocol.sse", "run_sse_chain")
+    run_sse = _require("tigrbl_atoms.protocol_runtime", "run_sse_chain")
 
     async def events():
         yield {"event": "item", "data": "1"}

@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict, Mapping, Optional, Sequence
 
 from tigrbl_concrete._concrete.dependencies import Depends
-from tigrbl_runtime.runtime.status.exceptions import HTTPException
+from tigrbl_typing.status.exceptions import HTTPException
 
 
 def _ok(result: Any, id_: Any) -> Dict[str, Any]:

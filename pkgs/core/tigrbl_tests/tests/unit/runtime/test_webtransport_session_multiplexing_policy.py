@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_runtime.protocol.webtransport import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
 
 
 def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_independently() -> None:

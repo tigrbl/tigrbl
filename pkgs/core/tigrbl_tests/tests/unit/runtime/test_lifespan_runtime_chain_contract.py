@@ -17,7 +17,7 @@ def _require(module_name: str, attr_name: str):
 
 
 def test_lifespan_startup_chain_sets_ready_after_successful_completion() -> None:
-    run = _require("tigrbl_runtime.protocol.lifespan_chain", "run_lifespan_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_lifespan_chain")
     trace: list[str] = []
 
     result = run(event="startup", handlers=(lambda state: state.update({"db": "ready"}),), trace=trace.append)
@@ -28,7 +28,7 @@ def test_lifespan_startup_chain_sets_ready_after_successful_completion() -> None
 
 
 def test_lifespan_startup_failure_prevents_ready_state() -> None:
-    run = _require("tigrbl_runtime.protocol.lifespan_chain", "run_lifespan_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_lifespan_chain")
 
     def fail(_state):
         raise RuntimeError("database unavailable")
@@ -42,7 +42,7 @@ def test_lifespan_startup_failure_prevents_ready_state() -> None:
 
 
 def test_lifespan_shutdown_runs_cleanup_and_clears_ready_state() -> None:
-    run = _require("tigrbl_runtime.protocol.lifespan_chain", "run_lifespan_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_lifespan_chain")
     cleanup: list[str] = []
 
     result = run(
@@ -73,7 +73,7 @@ def test_lifespan_chain_compiles_kernelplan_owned_event_order() -> None:
 
 
 def test_lifespan_shutdown_failure_still_reports_cleanup_error_context() -> None:
-    run = _require("tigrbl_runtime.protocol.lifespan_chain", "run_lifespan_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_lifespan_chain")
 
     def cleanup(_state):
         raise RuntimeError("cleanup failed")

@@ -9,7 +9,7 @@ from tigrbl_base._base._rpc_map import (
     _validate_input,
 )
 from ..._concrete import engine_resolver as _resolver
-from tigrbl_runtime.runtime import executor as _executor
+from tigrbl_runtime.executors.invoke import invoke_op
 
 logger = logging.getLogger("uvicorn")
 logger.debug("Loaded module v3/mapping/router/resource_proxy")
@@ -94,13 +94,6 @@ class _ResourceProxy:
                     seed_ctx["response_serializer"] = lambda result: _serialize_output(
                         self._model, alias, alias, result
                     )
-                invoke_op = getattr(_executor, "invoke_op", None)
-                if not callable(invoke_op):
-                    from tigrbl_runtime.runtime.executor.invoke import (
-                        invoke_op as _invoke_op,
-                    )
-
-                    invoke_op = _invoke_op
                 return await invoke_op(
                     request=request,
                     db=db,

@@ -14,27 +14,44 @@ from .binding_spec import (
     canonical_binding_kind,
 )
 from .op_spec import OpSpec, TargetOp
-from .table_profile_spec import TableProfileError, TableProfileSpec
+from .table_profile_spec import (
+    BUILTIN_TABLE_PROFILE_DEFINITIONS,
+    TableProfileError,
+    TableProfileSpec,
+)
 
 BindingSource = Literal["explicit", "table_profile"]
 
-_NO_DEFAULT_BINDING_PROFILES = {"plain", "crud", "realtime"}
+_NO_DEFAULT_BINDING_PROFILES = {
+    kind
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if not row.binding_families
+}
 _REST_PROFILES = {
-    "rest",
-    "bulk_crud",
-    "oltp",
-    "olap",
-    "rest_oltp",
-    "rest_olap",
+    kind
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if row.binding_families == ("http.rest",)
 }
-_JSONRPC_PROFILES = {"jsonrpc", "jsonrpc_oltp", "jsonrpc_olap"}
+_JSONRPC_PROFILES = {
+    kind
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if row.binding_families == ("http.jsonrpc",)
+}
 _REST_JSONRPC_PROFILES = {
-    "rest_jsonrpc",
-    "rest_jsonrpc_oltp",
-    "rest_jsonrpc_olap",
+    kind
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if row.binding_families == ("http.rest", "http.jsonrpc")
 }
-_STREAM_PROFILES = {"stream"}
-_SSE_PROFILES = {"sse", "event_stream"}
+_STREAM_PROFILES = {
+    kind
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if row.binding_families == ("http.stream",)
+}
+_SSE_PROFILES = {
+    kind
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if row.binding_families == ("http.sse",)
+}
 _WEBSOCKET_PROFILES = {"websocket"}
 _WEBSOCKET_JSONRPC_PROFILES = {"websocket_jsonrpc"}
 _WEBTRANSPORT_PROFILE_LANES = {
@@ -84,34 +101,14 @@ _WEBTRANSPORT_LANE_TARGETS = {
     "datagram": {"send_datagram"},
 }
 _REST_PROFILE_TARGETS = {
-    "rest": set(_REST_METHODS),
-    "bulk_crud": {
-        "create",
-        "read",
-        "update",
-        "replace",
-        "delete",
-        "list",
-        "bulk_create",
-        "bulk_update",
-        "bulk_replace",
-        "bulk_delete",
-    },
-    "oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
-    "olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
-    "rest_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
-    "rest_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
-    "rest_jsonrpc": set(_REST_METHODS),
-    "rest_jsonrpc_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
-    "rest_jsonrpc_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
+    kind: set(row.targets)
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if "http.rest" in row.binding_families
 }
 _JSONRPC_PROFILE_TARGETS = {
-    "jsonrpc": set(_REST_METHODS),
-    "jsonrpc_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
-    "jsonrpc_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
-    "rest_jsonrpc": set(_REST_METHODS),
-    "rest_jsonrpc_oltp": {"create", "read", "update", "replace", "merge", "delete", "list", "count", "exists"},
-    "rest_jsonrpc_olap": {"read", "list", "count", "exists", "aggregate", "group_by"},
+    kind: set(row.targets)
+    for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
+    if "http.jsonrpc" in row.binding_families
 }
 
 
@@ -166,9 +163,7 @@ def lower_binding_tokens_for_ops(
         if explicit:
             source: BindingSource = (
                 "table_profile"
-                if dict(getattr(op, "extra", {}) or {}).get(
-                    "__tigrbl_binding_source__"
-                )
+                if dict(getattr(op, "extra", {}) or {}).get("__tigrbl_binding_source__")
                 == "table_profile"
                 else "explicit"
             )
@@ -263,7 +258,9 @@ def _tokens_for_bindings(
     )
 
 
-def _rest_binding(*, table: type, profile: TableProfileSpec, op: OpSpec) -> LoweredBinding:
+def _rest_binding(
+    *, table: type, profile: TableProfileSpec, op: OpSpec
+) -> LoweredBinding:
     allowed = _REST_PROFILE_TARGETS.get(profile.kind, set(_REST_METHODS))
     if op.target not in allowed:
         raise TableProfileError(
@@ -321,7 +318,9 @@ def _jsonrpc_binding(
     )
 
 
-def _stream_binding(*, table: type, profile: TableProfileSpec, op: OpSpec) -> LoweredBinding:
+def _stream_binding(
+    *, table: type, profile: TableProfileSpec, op: OpSpec
+) -> LoweredBinding:
     if op.target not in _STREAM_TARGETS:
         raise TableProfileError(
             f"profile {profile.kind!r} does not support stream target {op.target!r}"
@@ -339,7 +338,9 @@ def _stream_binding(*, table: type, profile: TableProfileSpec, op: OpSpec) -> Lo
     )
 
 
-def _sse_binding(*, table: type, profile: TableProfileSpec, op: OpSpec) -> LoweredBinding:
+def _sse_binding(
+    *, table: type, profile: TableProfileSpec, op: OpSpec
+) -> LoweredBinding:
     if op.target not in _SSE_TARGETS:
         raise TableProfileError(
             f"profile {profile.kind!r} does not support SSE target {op.target!r}"
@@ -429,7 +430,9 @@ def _token_from_binding(
         op_target=str(op.target),
         binding_kind=canonical_binding_kind(binding),
         path=str(getattr(binding, "path", "") or ""),
-        methods=tuple(str(method).upper() for method in getattr(binding, "methods", ()) or ()),
+        methods=tuple(
+            str(method).upper() for method in getattr(binding, "methods", ()) or ()
+        ),
         rpc_method=getattr(binding, "rpc_method", None),
         framing=str(getattr(binding, "framing", "") or ""),
         exchange=str(getattr(binding, "exchange", "") or ""),

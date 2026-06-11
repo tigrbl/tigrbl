@@ -13,9 +13,9 @@ from tigrbl_kernel.eventkey_hooks import compile_hook_buckets
 from tigrbl_kernel.lifecycle_matrix import select_subevents
 from tigrbl_kernel.subevent_handlers import compile_subevent_handlers
 from tigrbl_kernel.transaction_units import compile_subevent_tx_units
-from tigrbl_runtime.channel.state import create_channel_state, transition_channel_state
-from tigrbl_runtime.protocol.subevent_handlers import dispatch_subevent
-from tigrbl_runtime.transactions import run_subevent_tx_unit
+from tigrbl_atoms.runtime_channel import create_channel_state, transition_channel_state
+from tigrbl_atoms.protocol_runtime import dispatch_subevent
+from tigrbl_atoms.runtime_transactions import run_subevent_tx_unit
 from tigrbl_tests.tests.unit.test_declared_surface_docs import _build_app
 
 

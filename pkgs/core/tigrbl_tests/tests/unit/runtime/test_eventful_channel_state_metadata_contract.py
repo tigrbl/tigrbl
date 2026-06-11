@@ -17,7 +17,7 @@ def _require(module_name: str, attr_name: str):
 
 
 def test_channel_state_initializes_with_identity_and_open_status() -> None:
-    create_state = _require("tigrbl_runtime.channel.state", "create_channel_state")
+    create_state = _require("tigrbl_atoms.runtime_channel", "create_channel_state")
 
     state = create_state(
         channel_id="ch-1",
@@ -35,8 +35,8 @@ def test_channel_state_initializes_with_identity_and_open_status() -> None:
 
 
 def test_channel_state_tracks_receive_emit_and_completion_transitions() -> None:
-    create_state = _require("tigrbl_runtime.channel.state", "create_channel_state")
-    transition = _require("tigrbl_runtime.channel.state", "transition_channel_state")
+    create_state = _require("tigrbl_atoms.runtime_channel", "create_channel_state")
+    transition = _require("tigrbl_atoms.runtime_channel", "transition_channel_state")
     state = create_state(channel_id="ch-1", binding="websocket", family="message")
 
     state = transition(state, subevent="message.received", payload_size=12)
@@ -53,8 +53,8 @@ def test_channel_state_tracks_receive_emit_and_completion_transitions() -> None:
 
 
 def test_channel_state_records_close_code_reason_and_final_subevent() -> None:
-    create_state = _require("tigrbl_runtime.channel.state", "create_channel_state")
-    transition = _require("tigrbl_runtime.channel.state", "transition_channel_state")
+    create_state = _require("tigrbl_atoms.runtime_channel", "create_channel_state")
+    transition = _require("tigrbl_atoms.runtime_channel", "transition_channel_state")
     state = create_state(channel_id="ch-1", binding="websocket", family="session")
 
     state = transition(state, subevent="session.close", close_code=1001, close_reason="going away")
@@ -67,8 +67,8 @@ def test_channel_state_records_close_code_reason_and_final_subevent() -> None:
 
 
 def test_channel_error_context_includes_channel_state_metadata() -> None:
-    create_state = _require("tigrbl_runtime.channel.state", "create_channel_state")
-    build_error = _require("tigrbl_runtime.channel.state", "build_channel_error_ctx")
+    create_state = _require("tigrbl_atoms.runtime_channel", "create_channel_state")
+    build_error = _require("tigrbl_atoms.runtime_channel", "build_channel_error_ctx")
     state = create_state(channel_id="ch-err", binding="http.sse", family="stream")
 
     error_ctx = build_error(
@@ -87,8 +87,8 @@ def test_channel_error_context_includes_channel_state_metadata() -> None:
 
 
 def test_channel_state_rejects_transition_after_close() -> None:
-    create_state = _require("tigrbl_runtime.channel.state", "create_channel_state")
-    transition = _require("tigrbl_runtime.channel.state", "transition_channel_state")
+    create_state = _require("tigrbl_atoms.runtime_channel", "create_channel_state")
+    transition = _require("tigrbl_atoms.runtime_channel", "transition_channel_state")
     state = create_state(channel_id="ch-closed", binding="websocket", family="message")
     state = transition(state, subevent="session.close", close_code=1000)
 

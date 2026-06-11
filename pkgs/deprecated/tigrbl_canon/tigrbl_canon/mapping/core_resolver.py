@@ -10,8 +10,8 @@ _warn_deprecated_import(__name__)
 from typing import Annotated, Any, Iterable, get_args, get_origin
 
 from tigrbl_ops_oltp.crud.params import Param
-from tigrbl_runtime.runtime.status.exceptions import HTTPException
-from tigrbl_runtime.runtime.status.mappings import status
+from tigrbl_typing.status.exceptions import HTTPException
+from tigrbl_typing.status.mappings import status
 from tigrbl_typing.protocols import RequestLike
 
 

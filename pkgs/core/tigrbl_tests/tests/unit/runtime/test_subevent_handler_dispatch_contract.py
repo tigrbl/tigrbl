@@ -18,7 +18,7 @@ def _require(module_name: str, attr_name: str):
 
 def test_subevent_handler_dispatch_selects_exact_eventkey_handler() -> None:
     compile_handlers = _require("tigrbl_kernel.subevent_handlers", "compile_subevent_handlers")
-    dispatch = _require("tigrbl_runtime.protocol.subevent_handlers", "dispatch_subevent")
+    dispatch = _require("tigrbl_atoms.protocol_runtime", "dispatch_subevent")
 
     table = compile_handlers(
         [
@@ -33,7 +33,7 @@ def test_subevent_handler_dispatch_selects_exact_eventkey_handler() -> None:
 
 def test_subevent_handler_dispatch_uses_eventkey_not_selector_scan() -> None:
     compile_handlers = _require("tigrbl_kernel.subevent_handlers", "compile_subevent_handlers")
-    dispatch = _require("tigrbl_runtime.protocol.subevent_handlers", "dispatch_subevent")
+    dispatch = _require("tigrbl_atoms.protocol_runtime", "dispatch_subevent")
 
     table = compile_handlers(
         [
@@ -64,7 +64,7 @@ def test_ordered_multi_handler_dispatch_preserves_declared_order() -> None:
 
 def test_missing_subevent_handler_returns_no_match_sentinel() -> None:
     compile_handlers = _require("tigrbl_kernel.subevent_handlers", "compile_subevent_handlers")
-    dispatch = _require("tigrbl_runtime.protocol.subevent_handlers", "dispatch_subevent")
+    dispatch = _require("tigrbl_atoms.protocol_runtime", "dispatch_subevent")
 
     table = compile_handlers(
         [{"handler_id": "on-message", "family": "socket", "subevent": "message.received"}]

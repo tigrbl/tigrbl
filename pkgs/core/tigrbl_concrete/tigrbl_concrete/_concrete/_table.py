@@ -10,7 +10,7 @@ from ._engine import Engine  # reuse the collector
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_concrete._mapping.model_helpers import _ensure_model_namespaces
 from tigrbl_core._spec.table_spec import TableSpec
-from tigrbl_core._spec.table_profile_spec import make_table_profile
+from tigrbl_core._spec.table_profile_spec import make_builtin_table_profile
 from tigrbl_base._base._table_base import CrudTableBase, RealtimeTableBase, TableBase
 
 
@@ -122,113 +122,37 @@ class RealtimeTable(Table, RealtimeTableBase):
 
 class RestTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "rest",
-        ("create", "read", "update", "replace", "delete", "list", "clear"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("rest")
 
 
 class JsonRpcTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "jsonrpc",
-        ("create", "read", "update", "replace", "delete", "list", "clear"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("jsonrpc")
 
 
 class RestJsonRpcTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "rest_jsonrpc",
-        ("create", "read", "update", "replace", "delete", "list", "clear"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("rest_jsonrpc")
 
 
 class BulkCrudTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "bulk_crud",
-        (
-            "create",
-            "read",
-            "update",
-            "replace",
-            "delete",
-            "list",
-            "bulk_create",
-            "bulk_update",
-            "bulk_replace",
-            "bulk_delete",
-        ),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("bulk_crud")
 
 
 class RestOltpTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "rest_oltp",
-        (
-            "create",
-            "read",
-            "update",
-            "replace",
-            "merge",
-            "delete",
-            "list",
-            "count",
-            "exists",
-        ),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("rest_oltp")
 
 
 class JsonRpcOltpTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "jsonrpc_oltp",
-        (
-            "create",
-            "read",
-            "update",
-            "replace",
-            "merge",
-            "delete",
-            "list",
-            "count",
-            "exists",
-        ),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("jsonrpc_oltp")
 
 
 class RestJsonRpcOltpTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "rest_jsonrpc_oltp",
-        (
-            "create",
-            "read",
-            "update",
-            "replace",
-            "merge",
-            "delete",
-            "list",
-            "count",
-            "exists",
-        ),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("rest_jsonrpc_oltp")
 
 
 class OltpTable(RestOltpTable):
@@ -237,32 +161,17 @@ class OltpTable(RestOltpTable):
 
 class RestOlapTable(Table):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "rest_olap",
-        ("read", "list", "count", "exists", "aggregate", "group_by"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("rest_olap")
 
 
 class JsonRpcOlapTable(Table):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "jsonrpc_olap",
-        ("read", "list", "count", "exists", "aggregate", "group_by"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("jsonrpc_olap")
 
 
 class RestJsonRpcOlapTable(Table):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "rest_jsonrpc_olap",
-        ("read", "list", "count", "exists", "aggregate", "group_by"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("rest_jsonrpc_olap")
 
 
 class OlapTable(RestOlapTable):
@@ -271,102 +180,52 @@ class OlapTable(RestOlapTable):
 
 class StreamTable(RealtimeTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "stream",
-        ("tail", "download"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("stream")
 
 
 class SseTable(StreamTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "sse",
-        ("subscribe", "tail"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("sse")
 
 
 class EventStreamTable(SseTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "event_stream",
-        ("subscribe", "tail"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("event_stream")
 
 
 class WebSocketTable(RealtimeTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "websocket",
-        ("publish", "subscribe"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("websocket")
 
 
 class WebSocketJsonRpcTable(WebSocketTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "websocket_jsonrpc",
-        ("create", "read", "update", "replace", "delete", "list"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("websocket_jsonrpc")
 
 
 class WebTransportTable(RealtimeTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "webtransport",
-        ("publish", "subscribe", "tail"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("webtransport")
 
 
 class WebTransportBidiTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "webtransport_bidi",
-        ("publish", "subscribe", "tail"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("webtransport_bidi")
 
 
 class WebTransportClientStreamTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "webtransport_client_stream",
-        ("upload", "append_chunk"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("webtransport_client_stream")
 
 
 class WebTransportServerStreamTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "webtransport_server_stream",
-        ("download", "tail"),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("webtransport_server_stream")
 
 
 class WebTransportDatagramTable(WebTransportTable):
     __abstract__ = True
-    TABLE_PROFILE = make_table_profile(
-        "webtransport_datagram",
-        ("send_datagram",),
-        docs_exposure="default",
-        runtime_exposure="default",
-    )
+    TABLE_PROFILE = make_builtin_table_profile("webtransport_datagram")
 
 
 __all__ = [

@@ -49,7 +49,7 @@ def test_http_stream_chain_rejects_unknown_producer_kind() -> None:
 
 @pytest.mark.asyncio
 async def test_http_stream_runtime_emits_start_chunks_and_final_completion() -> None:
-    run_chain = _require("tigrbl_runtime.protocol.http_stream", "run_http_stream_chain")
+    run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_stream_chain")
 
     async def chunks():
         yield b"a"
@@ -70,7 +70,7 @@ async def test_http_stream_runtime_emits_start_chunks_and_final_completion() -> 
 
 @pytest.mark.asyncio
 async def test_http_stream_runtime_supports_sync_iterators_without_buffering() -> None:
-    run_chain = _require("tigrbl_runtime.protocol.http_stream", "run_http_stream_chain")
+    run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_stream_chain")
 
     sent: list[dict[str, object]] = []
     result = await run_chain({"producer": iter((b"a", b"b", b"c")), "send": sent.append})
@@ -84,7 +84,7 @@ async def test_http_stream_runtime_supports_sync_iterators_without_buffering() -
 
 @pytest.mark.asyncio
 async def test_http_stream_runtime_rejects_invalid_chunk_before_emit() -> None:
-    run_chain = _require("tigrbl_runtime.protocol.http_stream", "run_http_stream_chain")
+    run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_stream_chain")
 
     async def chunks():
         yield {"not": "bytes"}
@@ -99,7 +99,7 @@ async def test_http_stream_runtime_rejects_invalid_chunk_before_emit() -> None:
 
 @pytest.mark.asyncio
 async def test_http_stream_disconnect_cancels_producer_and_finalizes() -> None:
-    run_chain = _require("tigrbl_runtime.protocol.http_stream", "run_http_stream_chain")
+    run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_stream_chain")
     finalized: list[str] = []
 
     async def chunks():

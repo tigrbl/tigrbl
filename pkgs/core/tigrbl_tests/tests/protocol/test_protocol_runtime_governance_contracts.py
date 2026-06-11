@@ -4,9 +4,9 @@ from tigrbl_kernel.loop_modes import select_loop_mode
 from tigrbl_kernel.protocol_completion import compile_completion_fence
 from tigrbl_kernel.protocol_legality_matrix import generate_legality_matrix
 from tigrbl_kernel.segment_fusion import fuse_segments
-from tigrbl_runtime.protocol.anchors import canonical_protocol_anchor_order
-from tigrbl_runtime.protocol.dispatch_atoms import derive_runtime_event
-from tigrbl_runtime.protocol.loop_modes import build_loop_controller
+from tigrbl_kernel.protocol_anchors import canonical_protocol_anchor_order
+from tigrbl_kernel.dispatch_taxonomy import derive_runtime_event
+from tigrbl_kernel.loop_modes import build_loop_controller
 
 
 def test_two_axis_lifecycle_matrix_contract() -> None:

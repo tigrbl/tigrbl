@@ -58,8 +58,8 @@ from tigrbl_ops_oltp.crud.params import Body, Path
 from tigrbl_core._spec import OpSpec
 from tigrbl.op.types import CANON
 from tigrbl.rest import _nested_prefix
-from tigrbl_runtime.runtime.status.exceptions import HTTPException
-from tigrbl_runtime.runtime.status.mappings import status as _status
+from tigrbl_typing.status.exceptions import HTTPException
+from tigrbl_typing.status.mappings import status as _status
 from tigrbl.schema.builder import _strip_parent_fields
 from tigrbl_concrete._concrete.dependencies import Depends
 

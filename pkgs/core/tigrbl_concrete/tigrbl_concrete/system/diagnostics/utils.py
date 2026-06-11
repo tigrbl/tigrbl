@@ -7,7 +7,7 @@ from typing import Any, Iterable
 
 from sqlalchemy import text
 
-from tigrbl_runtime.runtime.labels import (
+from tigrbl_kernel.labels import (
     label_callable as _kernel_label_callable,
     label_hook as _kernel_label_hook,
 )

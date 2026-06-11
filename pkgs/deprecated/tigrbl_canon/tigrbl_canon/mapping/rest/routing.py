@@ -10,7 +10,7 @@ from types import SimpleNamespace
 from typing import Any, Dict, Optional, Sequence, Tuple
 
 
-from tigrbl_runtime.runtime.status.mappings import status as _status
+from tigrbl_typing.status.mappings import status as _status
 from tigrbl_concrete._concrete.dependencies import Depends
 from tigrbl_core._spec import OpSpec
 from tigrbl_core.config.constants import CANON

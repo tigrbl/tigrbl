@@ -17,7 +17,7 @@ def _require(module_name: str, attr_name: str):
 
 
 def test_static_file_chain_resolves_route_and_emits_file_response() -> None:
-    run = _require("tigrbl_runtime.protocol.static_files", "run_static_file_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_static_file_chain")
 
     result = run(
         request={"path": "/assets/app.css", "method": "GET"},
@@ -33,7 +33,7 @@ def test_static_file_chain_resolves_route_and_emits_file_response() -> None:
 
 
 def test_static_file_chain_rejects_path_traversal_before_file_lookup() -> None:
-    run = _require("tigrbl_runtime.protocol.static_files", "run_static_file_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_static_file_chain")
     looked_up: list[str] = []
 
     result = run(
@@ -49,7 +49,7 @@ def test_static_file_chain_rejects_path_traversal_before_file_lookup() -> None:
 
 
 def test_static_file_chain_returns_governed_404_for_missing_file() -> None:
-    run = _require("tigrbl_runtime.protocol.static_files", "run_static_file_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_static_file_chain")
 
     result = run(
         request={"path": "/assets/missing.txt", "method": "GET"},
@@ -74,7 +74,7 @@ def test_static_file_chain_compiles_range_and_cache_header_atoms() -> None:
 
 
 def test_static_file_range_request_emits_partial_content_metadata() -> None:
-    run = _require("tigrbl_runtime.protocol.static_files", "run_static_file_chain")
+    run = _require("tigrbl_atoms.protocol_runtime", "run_static_file_chain")
 
     result = run(
         request={"path": "/assets/video.bin", "method": "GET", "headers": {"range": "bytes=0-3"}},

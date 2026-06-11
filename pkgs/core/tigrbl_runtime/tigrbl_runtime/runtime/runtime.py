@@ -31,7 +31,7 @@ class Runtime(RuntimeBase):
         self,
         kernel: Kernel | None = None,
         *,
-        default_executor: str = "numba_packed",
+        default_executor: str = "packed",
         kernel_backend: str | ExecutionBackend = ExecutionBackend.AUTO,
         atoms_backend: str | ExecutionBackend = ExecutionBackend.AUTO,
         executor_backend: str | ExecutionBackend = ExecutionBackend.PYTHON,

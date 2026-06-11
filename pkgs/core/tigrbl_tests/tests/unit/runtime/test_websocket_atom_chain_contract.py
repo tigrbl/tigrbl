@@ -67,7 +67,7 @@ def test_websocket_chain_rejects_unknown_scheme() -> None:
 
 @pytest.mark.asyncio
 async def test_websocket_runtime_processes_message_loop_and_clean_close() -> None:
-    run_ws = _require("tigrbl_runtime.protocol.websocket", "run_websocket_chain")
+    run_ws = _require("tigrbl_atoms.protocol_runtime", "run_websocket_chain")
 
     result = await run_ws(
         {
@@ -84,7 +84,7 @@ async def test_websocket_runtime_processes_message_loop_and_clean_close() -> Non
 
 @pytest.mark.asyncio
 async def test_websocket_runtime_decodes_text_and_binary_frames_separately() -> None:
-    run_ws = _require("tigrbl_runtime.protocol.websocket", "run_websocket_chain")
+    run_ws = _require("tigrbl_atoms.protocol_runtime", "run_websocket_chain")
 
     result = await run_ws(
         {
@@ -103,7 +103,7 @@ async def test_websocket_runtime_decodes_text_and_binary_frames_separately() -> 
 
 @pytest.mark.asyncio
 async def test_websocket_runtime_propagates_close_reason_metadata() -> None:
-    run_ws = _require("tigrbl_runtime.protocol.websocket", "run_websocket_chain")
+    run_ws = _require("tigrbl_atoms.protocol_runtime", "run_websocket_chain")
 
     result = await run_ws(
         {
@@ -119,7 +119,7 @@ async def test_websocket_runtime_propagates_close_reason_metadata() -> None:
 
 @pytest.mark.asyncio
 async def test_websocket_handler_failure_closes_with_typed_error_metadata() -> None:
-    run_ws = _require("tigrbl_runtime.protocol.websocket", "run_websocket_chain")
+    run_ws = _require("tigrbl_atoms.protocol_runtime", "run_websocket_chain")
 
     async def handler(_message: object) -> object:
         raise RuntimeError("bad message")

@@ -8,13 +8,6 @@ from typing import Any
 _EXPORTS = {
     "build_asgi_channel": "channel",
     "prepare_channel_context": "channel",
-    "Kernel": "kernel",
-    "build_phase_chains": "kernel",
-    "get_cached_specs": "kernel",
-    "_default_kernel": "kernel",
-    "status": "status",
-    "STEP_KINDS": "labels",
-    "DOMAINS": "labels",
     "RuntimeBase": "base",
     "Runtime": "runtime",
     "GwRawEnvelope": "_typing_aliases",

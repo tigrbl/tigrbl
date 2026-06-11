@@ -336,7 +336,7 @@ def include_model(
             if hasattr(rv, "__await__"):
                 rv = await rv
             if rv is False:
-                from tigrbl_runtime.runtime.status.exceptions import HTTPException
+                from tigrbl_typing.status.exceptions import HTTPException
 
                 raise HTTPException(status_code=403, detail="Forbidden")
 

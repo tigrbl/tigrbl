@@ -12,15 +12,13 @@ from tigrbl_core._spec.binding_spec import (
     validate_webtransport_inner_framing,
 )
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
-from tigrbl_runtime.protocol import app_frame_codec as runtime_app_frame
-from tigrbl_runtime.protocol import framing_atoms as runtime_framing
 
 
-def test_runtime_frame_codec_registry_static_t0() -> None:
-    assert runtime_framing.encode_frame is encode_frame
-    assert runtime_framing.decode_frame is decode_frame
-    assert runtime_app_frame.encode_app_frame is app_frame.encode_app_frame
-    assert runtime_app_frame.decode_app_frame is app_frame.decode_app_frame
+def test_atom_frame_codec_registry_static_t0() -> None:
+    assert callable(encode_frame)
+    assert callable(decode_frame)
+    assert callable(app_frame.encode_app_frame)
+    assert callable(app_frame.decode_app_frame)
 
 
 def test_runtime_frame_envelope_schema_static_t0() -> None:

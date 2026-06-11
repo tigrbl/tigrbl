@@ -11,7 +11,7 @@ from tigrbl import WebTransportBindingSpec
 from tigrbl_core._spec.hook_spec import HookSpec
 from tigrbl_core._spec.hook_types import HookPhase
 from tigrbl_concrete._concrete._app import App as TigrblApp
-from tigrbl_runtime.protocol.webtransport import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
 
 
 def _install_adjacent_tigrcorn_sources() -> None:

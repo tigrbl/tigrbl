@@ -85,7 +85,7 @@ def mount_diagnostics(
     kernelz_endpoint = build_kernelz_endpoint(source_router)
 
     async def _runtime_kernelz(_ctx: Any) -> Any:
-        from tigrbl_runtime.runtime.kernel import _default_kernel as K
+        from tigrbl_kernel import _default_kernel as K
 
         K.ensure_primed(source_router)
         payload: dict[str, dict[str, list[str]]] = {}

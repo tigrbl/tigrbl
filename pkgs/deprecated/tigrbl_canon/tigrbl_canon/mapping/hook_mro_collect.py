@@ -11,7 +11,7 @@ import logging
 from functools import lru_cache
 from typing import Any, Callable, Dict, Iterable, Union
 
-from tigrbl_runtime.runtime.executor import _Ctx
+from tigrbl_runtime.executors.types import _Ctx
 from tigrbl_concrete._concrete._op import Op as OpSpec
 from .op_mro_collect import mro_alias_map_for
 from tigrbl_concrete._decorators.op import _maybe_await, _unwrap

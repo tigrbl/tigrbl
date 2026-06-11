@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterable, AsyncIterator, Iterable
 
-from tigrbl_runtime.protocol._iterators import iter_items
+from tigrbl_atoms.protocol_runtime import iter_items
 
 from ._response import Response
 

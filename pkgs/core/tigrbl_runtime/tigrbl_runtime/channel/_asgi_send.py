@@ -9,7 +9,7 @@ from tigrbl_atoms.atoms.transport.asgi_channel import (
     webtransport_structured_payload_events as _webtransport_structured_payload_events,
 )
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
-from tigrbl_runtime.protocol.webtransport_session import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
 
 from ._asgi_webtransport import (
     _run_webtransport_hooks,
@@ -132,10 +132,16 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
                 payload=payload,
             ):
                 if isinstance(session, WebTransportSessionState):
+                    projection = validate_webtransport_event_payload(
+                        event=str(event.get("type")),
+                        channel="send",
+                        payload=dict(event),
+                    )
                     session.apply_event(
                         event=str(event.get("type")),
                         channel="send",
                         payload=dict(event),
+                        projection=projection,
                     )
                 _trace_webtransport_event(
                     shared_state,
@@ -148,10 +154,16 @@ async def _send_webtransport_payload(env: Any, ctx: Any, payload: Any) -> None:
         else:
             event = _webtransport_payload_event(base=base, payload=payload)
             if isinstance(session, WebTransportSessionState):
+                projection = validate_webtransport_event_payload(
+                    event=str(event.get("type")),
+                    channel="send",
+                    payload=dict(event),
+                )
                 session.apply_event(
                     event=str(event.get("type")),
                     channel="send",
                     payload=dict(event),
+                    projection=projection,
                 )
             _trace_webtransport_event(
                 shared_state,

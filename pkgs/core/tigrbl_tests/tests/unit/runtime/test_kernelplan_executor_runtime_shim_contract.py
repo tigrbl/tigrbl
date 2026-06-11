@@ -3,254 +3,79 @@ from __future__ import annotations
 import importlib
 from pathlib import Path
 
+import pytest
 
-_SHIM_EXPORTS = (
-    (
-        "tigrbl_runtime.protocol.http_unary",
-        "run_http_rest_chain",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol.http_unary",
-        "run_http_jsonrpc_chain",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol.http_stream",
-        "run_http_stream_chain",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    ("tigrbl_runtime.protocol.sse", "run_sse_chain", "tigrbl_atoms.protocol_runtime"),
-    (
-        "tigrbl_runtime.protocol.websocket",
-        "run_websocket_chain",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol.lifespan_chain",
-        "run_lifespan_chain",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol.static_files",
-        "run_static_file_chain",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol.webtransport",
-        "validate_webtransport_scope",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol.transport_atoms",
-        "run_transport_emit",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol.subevent_handlers",
-        "dispatch_subevent",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol._iterators",
-        "iter_items",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    (
-        "tigrbl_runtime.protocol._iterators",
-        "aclose_if_supported",
-        "tigrbl_atoms.protocol_runtime",
-    ),
-    ("tigrbl_runtime.callbacks", "register_callback", "tigrbl_atoms.runtime_callbacks"),
-    (
-        "tigrbl_runtime.callbacks",
-        "run_callback_fence",
-        "tigrbl_atoms.runtime_callbacks",
-    ),
-    (
-        "tigrbl_runtime.channel.state",
-        "create_channel_state",
-        "tigrbl_atoms.runtime_channel",
-    ),
-    (
-        "tigrbl_runtime.channel.state",
-        "transition_channel_state",
-        "tigrbl_atoms.runtime_channel",
-    ),
-    (
-        "tigrbl_runtime.transactions",
-        "run_subevent_tx_unit",
-        "tigrbl_atoms.runtime_transactions",
-    ),
-    (
-        "tigrbl_runtime.protocol.app_frame_codec",
-        "encode_app_frame",
-        "tigrbl_atoms.atoms.framing.app_frame",
-    ),
-    (
-        "tigrbl_runtime.protocol.app_frame_codec",
-        "decode_app_frame",
-        "tigrbl_atoms.atoms.framing.app_frame",
-    ),
-    (
-        "tigrbl_runtime.protocol.app_frame_codec",
-        "decode_app_frames",
-        "tigrbl_atoms.atoms.framing.app_frame",
-    ),
-    (
-        "tigrbl_runtime.protocol.app_frame_codec",
-        "FrameStreamDecoder",
-        "tigrbl_atoms.atoms.framing.app_frame",
-    ),
-    (
-        "tigrbl_runtime.protocol.framing_atoms",
-        "decode_frame",
-        "tigrbl_atoms.atoms.framing.codec",
-    ),
-    (
-        "tigrbl_runtime.protocol.framing_atoms",
-        "encode_frame",
-        "tigrbl_atoms.atoms.framing.codec",
-    ),
-    (
-        "tigrbl_runtime.protocol.completion_fence",
-        "emit_with_fence",
-        "tigrbl_atoms.atoms.transport.completion_fence",
-    ),
-    (
-        "tigrbl_runtime.executors.loop_regions",
-        "execute_loop_region",
-        "tigrbl_atoms.runtime_loop_regions",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_message_payload",
-        "tigrbl_atoms.atoms.transport.asgi_channel",
-        "message_payload",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_webtransport_payload_size",
-        "tigrbl_atoms.atoms.transport.asgi_channel",
-        "payload_size",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_webtransport_payload_event",
-        "tigrbl_atoms.atoms.transport.asgi_channel",
-        "webtransport_payload_event",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_webtransport_structured_payload_events",
-        "tigrbl_atoms.atoms.transport.asgi_channel",
-        "webtransport_structured_payload_events",
-    ),
-    (
-        "tigrbl_runtime.protocol.anchors",
-        "canonical_protocol_anchor_order",
-        "tigrbl_kernel.protocol_anchors",
-    ),
-    (
-        "tigrbl_runtime.protocol.anchors",
-        "python_protocol_anchor_trace",
-        "tigrbl_kernel.protocol_anchors",
-    ),
-    (
-        "tigrbl_runtime.protocol.anchors",
-        "rust_protocol_anchor_trace",
-        "tigrbl_kernel.protocol_anchors",
-    ),
-    (
-        "tigrbl_runtime.protocol.dispatch_atoms",
-        "derive_runtime_event",
-        "tigrbl_kernel.dispatch_taxonomy",
-    ),
-    (
-        "tigrbl_runtime.protocol.dispatch_atoms",
-        "resolve_operation",
-        "tigrbl_kernel.dispatch_taxonomy",
-    ),
-    (
-        "tigrbl_runtime.protocol.loop_modes",
-        "build_loop_controller",
-        "tigrbl_kernel.loop_modes",
-    ),
-    (
-        "tigrbl_runtime.runtime.events",
-        "PHASES",
-        "tigrbl_kernel.events",
-    ),
-    (
-        "tigrbl_runtime.runtime.events",
-        "order_events",
-        "tigrbl_kernel.events",
-    ),
-    (
-        "tigrbl_runtime.runtime.events",
-        "prune_events_for_persist",
-        "tigrbl_kernel.events",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "normalize_exchange",
-        "tigrbl_kernel.channel_taxonomy",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_channel_family",
-        "tigrbl_kernel.channel_taxonomy",
-        "channel_family",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_channel_kind",
-        "tigrbl_kernel.channel_taxonomy",
-        "channel_kind",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_subevents",
-        "tigrbl_kernel.channel_taxonomy",
-        "channel_subevents",
-    ),
-    (
-        "tigrbl_runtime.channel.asgi",
-        "_webtransport_event_metadata",
-        "tigrbl_kernel.channel_taxonomy",
-        "webtransport_event_metadata",
-    ),
+
+REMOVED_RUNTIME_SHIMS = (
+    "tigrbl_runtime.callbacks",
+    "tigrbl_runtime.transactions",
+    "tigrbl_runtime.channel.state",
+    "tigrbl_runtime.executors.helpers",
+    "tigrbl_runtime.executors.loop_regions",
+    "tigrbl_runtime.protocol.anchors",
+    "tigrbl_runtime.protocol.app_frame_codec",
+    "tigrbl_runtime.protocol.completion_fence",
+    "tigrbl_runtime.protocol.dispatch_atoms",
+    "tigrbl_runtime.protocol.framing_atoms",
+    "tigrbl_runtime.protocol.http_stream",
+    "tigrbl_runtime.protocol.http_unary",
+    "tigrbl_runtime.protocol.lifespan_chain",
+    "tigrbl_runtime.protocol.loop_modes",
+    "tigrbl_runtime.protocol.scope_schemas",
+    "tigrbl_runtime.protocol.sse",
+    "tigrbl_runtime.protocol.static_files",
+    "tigrbl_runtime.protocol.transport_atoms",
+    "tigrbl_runtime.protocol.webtransport",
+    "tigrbl_runtime.protocol.websocket",
+    "tigrbl_runtime.runtime.events",
+    "tigrbl_runtime.runtime.kernel",
+    "tigrbl_runtime.runtime.labels",
+    "tigrbl_runtime.runtime.executor",
 )
 
 
-def test_runtime_surfaces_delegate_to_authoritative_implementations() -> None:
-    for item in _SHIM_EXPORTS:
-        runtime_module_name, attr_name, target_module_name, *target_attr = item
-        runtime_module = importlib.import_module(runtime_module_name)
-        target_module = importlib.import_module(target_module_name)
-        assert getattr(runtime_module, attr_name) is getattr(
-            target_module, target_attr[0] if target_attr else attr_name
-        )
+@pytest.mark.parametrize("module_name", REMOVED_RUNTIME_SHIMS)
+def test_runtime_shim_modules_are_removed(module_name: str) -> None:
+    with pytest.raises(ModuleNotFoundError):
+        importlib.import_module(module_name)
 
 
-def test_packed_executor_source_avoids_runtime_shadow_compiler_helpers() -> None:
-    packed_module = importlib.import_module("tigrbl_runtime.executors.packed")
-    source = Path(packed_module.__file__).read_text(encoding="utf-8")
-
+def test_runtime_package_source_does_not_consume_runtime_shims() -> None:
+    runtime_module = importlib.import_module("tigrbl_runtime")
+    runtime_root = Path(runtime_module.__file__).parent
     forbidden = (
-        "tigrbl_runtime.protocol.http_unary",
-        "tigrbl_runtime.protocol.http_stream",
-        "tigrbl_runtime.protocol.sse",
-        "tigrbl_runtime.protocol.websocket",
-        "tigrbl_runtime.protocol.lifespan_chain",
-        "tigrbl_runtime.protocol.static_files",
-        "tigrbl_runtime.protocol.transport_atoms",
-        "tigrbl_runtime.protocol.subevent_handlers",
-        "tigrbl_runtime.callbacks",
-        "tigrbl_runtime.transactions",
+        "from tigrbl_runtime.protocol",
+        "import tigrbl_runtime.protocol",
+        "from tigrbl_runtime.callbacks",
+        "import tigrbl_runtime.callbacks",
+        "from tigrbl_runtime.transactions",
+        "import tigrbl_runtime.transactions",
+        "from tigrbl_runtime.channel.state",
+        "import tigrbl_runtime.channel.state",
+        "from tigrbl_runtime.executors.helpers",
+        "import tigrbl_runtime.executors.helpers",
+        "from tigrbl_runtime.executors.loop_regions",
+        "import tigrbl_runtime.executors.loop_regions",
+        "from tigrbl_runtime.runtime.kernel",
+        "import tigrbl_runtime.runtime.kernel",
+        "from tigrbl_runtime.runtime.executor",
+        "import tigrbl_runtime.runtime.executor",
+        "from tigrbl_runtime.runtime.events",
+        "import tigrbl_runtime.runtime.events",
+        "from tigrbl_runtime.runtime.labels",
+        "import tigrbl_runtime.runtime.labels",
+        "from tigrbl_runtime.runtime.status",
+        "import tigrbl_runtime.runtime.status",
     )
 
-    assert all(name not in source for name in forbidden)
+    offenders: list[tuple[str, str]] = []
+    for path in runtime_root.rglob("*.py"):
+        source = path.read_text(encoding="utf-8")
+        for needle in forbidden:
+            if needle in source:
+                offenders.append((path.relative_to(runtime_root).as_posix(), needle))
+
+    assert offenders == []
 
 
 def test_packed_executor_private_helpers_delegate_to_owner_packages() -> None:

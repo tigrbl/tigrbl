@@ -28,9 +28,9 @@ def test_runtime_attaches_self_to_executors() -> None:
     assert runtime.executors["numba_packed"].runtime is runtime
 
 
-def test_runtime_default_executor_is_numba_packed() -> None:
+def test_runtime_default_executor_is_packed() -> None:
     runtime = Runtime()
-    assert runtime.default_executor == "numba_packed"
+    assert runtime.default_executor == "packed"
 
 
 @pytest.mark.asyncio

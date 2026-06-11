@@ -64,8 +64,8 @@ def test_http_jsonrpc_chain_compiles_decode_and_encode_framing_atoms() -> None:
 
 @pytest.mark.asyncio
 async def test_rest_jsonrpc_equivalent_ops_share_outcome_semantics() -> None:
-    run_rest = _require("tigrbl_runtime.protocol.http_unary", "run_http_rest_chain")
-    run_rpc = _require("tigrbl_runtime.protocol.http_unary", "run_http_jsonrpc_chain")
+    run_rest = _require("tigrbl_atoms.protocol_runtime", "run_http_rest_chain")
+    run_rpc = _require("tigrbl_atoms.protocol_runtime", "run_http_jsonrpc_chain")
 
     async def handler(payload):
         return {"name": payload["name"], "ok": True}
@@ -97,7 +97,7 @@ async def test_rest_jsonrpc_equivalent_ops_share_outcome_semantics() -> None:
 
 @pytest.mark.asyncio
 async def test_http_unary_chain_does_not_emit_after_completion_fence() -> None:
-    run_rest = _require("tigrbl_runtime.protocol.http_unary", "run_http_rest_chain")
+    run_rest = _require("tigrbl_atoms.protocol_runtime", "run_http_rest_chain")
     emitted: list[dict[str, object]] = []
 
     result = await run_rest(

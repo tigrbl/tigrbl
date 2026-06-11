@@ -121,7 +121,7 @@ def test_webtransport_event_order_places_disconnect_after_stream_and_datagram_co
 
 
 def test_webtransport_scope_validation_rejects_missing_quic_metadata() -> None:
-    validate_scope = _require("tigrbl_runtime.protocol.webtransport", "validate_webtransport_scope")
+    validate_scope = _require("tigrbl_atoms.protocol_runtime", "validate_webtransport_scope")
 
     with pytest.raises(ValueError, match="webtransport|quic|scope|metadata"):
         validate_scope({"type": "webtransport", "path": "/transport"})

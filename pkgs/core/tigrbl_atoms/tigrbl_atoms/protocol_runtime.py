@@ -337,6 +337,92 @@ async def iter_items(source: object) -> AsyncIterator[object]:
             yield item
 
 
+class _NormalizedIteratorProducer:
+    def __init__(
+        self,
+        source: object,
+        *,
+        chunk_type: str | type | tuple[type, ...] | None = None,
+        finalizer: Callable[[], object] | None = None,
+    ) -> None:
+        self._source = source() if callable(source) else source
+        self._chunk_type = chunk_type
+        self._finalizer = finalizer
+        self._aiter: AsyncIterator[object] | None = None
+        self._closed = False
+        self._finalized = False
+
+    def __aiter__(self) -> "_NormalizedIteratorProducer":
+        return self
+
+    async def __anext__(self) -> object:
+        if self._closed:
+            raise RuntimeError("iterator producer is closed or exhausted")
+        if self._aiter is None:
+            self._aiter = iter_items(self._source)
+        try:
+            item = await anext(self._aiter)
+        except StopAsyncIteration:
+            self._closed = True
+            await self._run_finalizer()
+            raise
+        except Exception:
+            self._closed = True
+            await self._run_finalizer()
+            raise
+        self._validate_chunk(item)
+        return item
+
+    async def aclose(self) -> None:
+        if self._closed:
+            return
+        self._closed = True
+        await aclose_if_supported(self._source)
+        await self._run_finalizer()
+
+    def _validate_chunk(self, item: object) -> None:
+        expected = self._expected_type()
+        if expected is not None and not isinstance(item, expected):
+            name = (
+                self._chunk_type
+                if isinstance(self._chunk_type, str)
+                else getattr(expected, "__name__", "chunk")
+            )
+            raise TypeError(f"iterator chunk must be {name}")
+
+    def _expected_type(self) -> type | tuple[type, ...] | None:
+        if self._chunk_type is None:
+            return None
+        if isinstance(self._chunk_type, str):
+            if self._chunk_type == "bytes":
+                return (bytes, bytearray, memoryview)
+            if self._chunk_type == "str":
+                return str
+            raise ValueError(f"unsupported iterator chunk type: {self._chunk_type}")
+        return self._chunk_type
+
+    async def _run_finalizer(self) -> None:
+        if self._finalized or self._finalizer is None:
+            return
+        self._finalized = True
+        result = self._finalizer()
+        if inspect.isawaitable(result):
+            await result
+
+
+def normalize_iterator_producer(
+    source: object,
+    *,
+    chunk_type: str | type | tuple[type, ...] | None = None,
+    finalizer: Callable[[], object] | None = None,
+) -> AsyncIterator[object]:
+    return _NormalizedIteratorProducer(
+        source,
+        chunk_type=chunk_type,
+        finalizer=finalizer,
+    )
+
+
 async def aclose_if_supported(source: object) -> None:
     close = getattr(source, "aclose", None)
     if callable(close):
@@ -404,6 +490,7 @@ __all__ = [
     "aclose_if_supported",
     "dispatch_subevent",
     "iter_items",
+    "normalize_iterator_producer",
     "run_http_jsonrpc_chain",
     "run_http_rest_chain",
     "run_http_stream_chain",

@@ -49,7 +49,7 @@ def test_transport_close_atom_runs_after_loop_exit_or_error() -> None:
 
 
 def test_emit_complete_atom_requires_acknowledged_transport_send() -> None:
-    run_emit = _require("tigrbl_runtime.protocol.transport_atoms", "run_transport_emit")
+    run_emit = _require("tigrbl_atoms.protocol_runtime", "run_transport_emit")
     trace: list[str] = []
 
     result = run_emit(
@@ -64,7 +64,7 @@ def test_emit_complete_atom_requires_acknowledged_transport_send() -> None:
 
 @pytest.mark.parametrize("send_result", ("queued", "scheduled", "buffered"))
 def test_emit_complete_atom_does_not_fire_for_unacknowledged_send(send_result: str) -> None:
-    run_emit = _require("tigrbl_runtime.protocol.transport_atoms", "run_transport_emit")
+    run_emit = _require("tigrbl_atoms.protocol_runtime", "run_transport_emit")
     trace: list[str] = []
 
     result = run_emit(

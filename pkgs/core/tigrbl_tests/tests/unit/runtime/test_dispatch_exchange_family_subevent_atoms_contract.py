@@ -17,7 +17,7 @@ def _require(module_name: str, attr_name: str):
 
 
 def test_dispatch_atom_derives_rest_request_metadata() -> None:
-    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
+    derive = _require("tigrbl_kernel.dispatch_taxonomy", "derive_runtime_event")
 
     metadata = derive({"binding": "http.rest", "method": "GET", "path": "/items"})
 
@@ -27,7 +27,7 @@ def test_dispatch_atom_derives_rest_request_metadata() -> None:
 
 
 def test_dispatch_atom_derives_jsonrpc_request_metadata() -> None:
-    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
+    derive = _require("tigrbl_kernel.dispatch_taxonomy", "derive_runtime_event")
 
     metadata = derive({"binding": "http.jsonrpc", "method": "items.list"})
 
@@ -58,7 +58,7 @@ def test_dispatch_atom_derives_jsonrpc_request_metadata() -> None:
     ),
 )
 def test_dispatch_atom_derives_eventful_transport_metadata(event, expected) -> None:
-    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
+    derive = _require("tigrbl_kernel.dispatch_taxonomy", "derive_runtime_event")
 
     metadata = derive(event)
 
@@ -66,15 +66,15 @@ def test_dispatch_atom_derives_eventful_transport_metadata(event, expected) -> N
 
 
 def test_dispatch_atoms_fail_closed_before_handler_on_unknown_binding() -> None:
-    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
+    derive = _require("tigrbl_kernel.dispatch_taxonomy", "derive_runtime_event")
 
     with pytest.raises(ValueError, match="binding|exchange|subevent|unsupported"):
         derive({"binding": "unknown.transport", "path": "/items"})
 
 
 def test_dispatch_metadata_feeds_operation_resolution() -> None:
-    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
-    resolve = _require("tigrbl_runtime.protocol.dispatch_atoms", "resolve_operation")
+    derive = _require("tigrbl_kernel.dispatch_taxonomy", "derive_runtime_event")
+    resolve = _require("tigrbl_kernel.dispatch_taxonomy", "resolve_operation")
 
     metadata = derive({"binding": "http.rest", "method": "POST", "path": "/items"})
     operation = resolve(metadata)
@@ -86,7 +86,7 @@ def test_dispatch_metadata_feeds_operation_resolution() -> None:
 
 
 def test_dispatch_atom_rejects_unqualified_subevent_aliases() -> None:
-    derive = _require("tigrbl_runtime.protocol.dispatch_atoms", "derive_runtime_event")
+    derive = _require("tigrbl_kernel.dispatch_taxonomy", "derive_runtime_event")
 
     with pytest.raises(ValueError, match="qualified|subevent|request.received"):
         derive({"binding": "http.rest", "method": "GET", "subevent": "receive"})

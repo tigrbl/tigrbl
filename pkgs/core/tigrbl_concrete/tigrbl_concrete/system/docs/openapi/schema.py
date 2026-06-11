@@ -6,7 +6,7 @@ from typing import Any
 
 JSON_SCHEMA_DRAFT_2020_12_DIALECT = "https://json-schema.org/draft/2020-12/schema"
 
-from tigrbl_runtime.runtime.status.mappings import status
+from tigrbl_typing.status.mappings import status
 from .helpers import (
     _request_schema_from_handler,
     _resolve_component_schema_ref,

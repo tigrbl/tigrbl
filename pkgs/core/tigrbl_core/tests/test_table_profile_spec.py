@@ -4,9 +4,13 @@ import pytest
 
 from tigrbl_core._spec.op_spec import OpSpec
 from tigrbl_core._spec.table_profile_spec import (
+    BUILTIN_TABLE_PROFILE_DEFINITIONS,
+    BUILTIN_TABLE_PROFILE_KINDS,
     PLAIN_TABLE_PROFILE,
     TableProfileError,
     TableProfileSpec,
+    get_table_profile,
+    iter_builtin_table_profile_definitions,
     make_profile_op,
     register_table_profile,
 )
@@ -96,6 +100,24 @@ def test_table_profile_schema_rejects_invalid_role() -> None:
 def test_table_profile_registry_rejects_duplicate_builtin() -> None:
     with pytest.raises(TableProfileError, match="already registered"):
         register_table_profile(PLAIN_TABLE_PROFILE)
+
+
+def test_all_builtin_table_profiles_are_registered() -> None:
+    assert set(BUILTIN_TABLE_PROFILE_DEFINITIONS) == set(BUILTIN_TABLE_PROFILE_KINDS)
+
+    for row in iter_builtin_table_profile_definitions():
+        profile = get_table_profile(row.kind)
+
+        assert profile.kind == row.kind
+        assert profile.role == row.role
+        assert tuple(op.target for op in profile.ops) == row.targets
+        assert profile.docs_exposure == row.docs_exposure
+        assert profile.runtime_exposure == row.runtime_exposure
+
+
+def test_builtin_table_profile_rejects_wrong_role() -> None:
+    with pytest.raises(TableProfileError, match="requires role 'abstract'"):
+        TableProfileSpec(kind="crud", role="concrete")
 
 
 def test_registered_custom_table_profile_is_returned() -> None:

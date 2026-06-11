@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_runtime.protocol.client_session_coverage import (
+from tigrbl_atoms.client_session_coverage import (
     ClientSessionRobustnessRecorder,
 )
 

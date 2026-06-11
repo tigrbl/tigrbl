@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_runtime.protocol._iterators import aclose_if_supported, iter_items
+from tigrbl_atoms.protocol_runtime import aclose_if_supported, iter_items
 
 
 @pytest.mark.asyncio

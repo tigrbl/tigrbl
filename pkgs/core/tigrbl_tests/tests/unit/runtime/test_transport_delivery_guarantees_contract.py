@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
-from tigrbl_runtime.protocol.webtransport import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
 
 
 def test_each_transport_binding_declares_delivery_guarantees() -> None:

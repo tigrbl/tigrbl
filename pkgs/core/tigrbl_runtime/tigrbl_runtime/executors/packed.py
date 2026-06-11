@@ -359,7 +359,7 @@ class PackedPlanExecutor(ExecutorBase):
 
     @classmethod
     def _resolve_error_helpers(cls):
-        from tigrbl_runtime.runtime.status import (
+        from tigrbl_typing.status import (
             StatusDetailError,
             create_standardized_error,
         )

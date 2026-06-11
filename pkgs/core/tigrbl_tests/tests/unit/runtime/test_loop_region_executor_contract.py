@@ -23,7 +23,7 @@ async def _async_messages() -> object:
 
 @pytest.mark.asyncio
 async def test_loop_region_executor_continues_until_governed_break_condition() -> None:
-    execute_loop = _require("tigrbl_runtime.executors.loop_regions", "execute_loop_region")
+    execute_loop = _require("tigrbl_atoms.runtime_loop_regions", "execute_loop_region")
 
     trace = await execute_loop(
         {
@@ -42,7 +42,7 @@ async def test_loop_region_executor_continues_until_governed_break_condition() -
 
 @pytest.mark.asyncio
 async def test_loop_region_executor_routes_loop_local_errors_to_errorctx() -> None:
-    execute_loop = _require("tigrbl_runtime.executors.loop_regions", "execute_loop_region")
+    execute_loop = _require("tigrbl_atoms.runtime_loop_regions", "execute_loop_region")
 
     async def failing_producer() -> object:
         yield "first"

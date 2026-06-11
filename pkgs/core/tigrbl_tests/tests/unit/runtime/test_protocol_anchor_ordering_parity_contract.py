@@ -17,7 +17,7 @@ def _require(module_name: str, attr_name: str):
 
 
 def test_protocol_anchor_order_contains_dispatch_framing_transport_and_completion() -> None:
-    anchor_order = _require("tigrbl_runtime.protocol.anchors", "canonical_protocol_anchor_order")
+    anchor_order = _require("tigrbl_kernel.protocol_anchors", "canonical_protocol_anchor_order")
 
     order = tuple(anchor_order("http.stream", "stream.chunk"))
 
@@ -28,7 +28,7 @@ def test_protocol_anchor_order_contains_dispatch_framing_transport_and_completio
 
 
 def test_protocol_error_anchors_are_ordered_on_governed_error_edges_only() -> None:
-    anchor_order = _require("tigrbl_runtime.protocol.anchors", "canonical_protocol_anchor_order")
+    anchor_order = _require("tigrbl_kernel.protocol_anchors", "canonical_protocol_anchor_order")
 
     ok_order = tuple(anchor_order("http.rest", "request.received", edge="ok"))
     err_order = tuple(anchor_order("http.rest", "request.received", edge="err"))
@@ -40,8 +40,8 @@ def test_protocol_error_anchors_are_ordered_on_governed_error_edges_only() -> No
 
 
 def test_python_and_rust_protocol_anchor_traces_match() -> None:
-    python_trace = _require("tigrbl_runtime.protocol.anchors", "python_protocol_anchor_trace")
-    rust_trace = _require("tigrbl_runtime.protocol.anchors", "rust_protocol_anchor_trace")
+    python_trace = _require("tigrbl_kernel.protocol_anchors", "python_protocol_anchor_trace")
+    rust_trace = _require("tigrbl_kernel.protocol_anchors", "rust_protocol_anchor_trace")
 
     case = {"binding": "websocket", "subevent": "message.received", "messages": ["ping"]}
 

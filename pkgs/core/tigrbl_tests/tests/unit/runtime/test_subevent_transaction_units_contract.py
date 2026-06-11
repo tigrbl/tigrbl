@@ -31,7 +31,7 @@ def test_lifecycle_matrix_declares_transaction_unit_per_subevent_cell() -> None:
 
 
 def test_transactional_handler_subevent_opens_and_commits_one_tx_unit() -> None:
-    run = _require("tigrbl_runtime.transactions", "run_subevent_tx_unit")
+    run = _require("tigrbl_atoms.runtime_transactions", "run_subevent_tx_unit")
     trace: list[str] = []
 
     result = run(
@@ -45,7 +45,7 @@ def test_transactional_handler_subevent_opens_and_commits_one_tx_unit() -> None:
 
 
 def test_non_transactional_emit_complete_does_not_open_transaction() -> None:
-    run = _require("tigrbl_runtime.transactions", "run_subevent_tx_unit")
+    run = _require("tigrbl_atoms.runtime_transactions", "run_subevent_tx_unit")
     trace: list[str] = []
 
     result = run(
@@ -59,7 +59,7 @@ def test_non_transactional_emit_complete_does_not_open_transaction() -> None:
 
 
 def test_handler_failure_rolls_back_only_active_subevent_transaction_unit() -> None:
-    run = _require("tigrbl_runtime.transactions", "run_subevent_tx_unit")
+    run = _require("tigrbl_atoms.runtime_transactions", "run_subevent_tx_unit")
     trace: list[str] = []
 
     def fail(_ctx):

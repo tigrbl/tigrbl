@@ -107,7 +107,7 @@ def test_loop_mode_accepts_explicit_owner_when_no_subevent_handlers_exist() -> N
 
 
 def test_runtime_loop_trace_marks_owner_control_without_dispatch_selection() -> None:
-    build_loop = _require("tigrbl_runtime.protocol.loop_modes", "build_loop_controller")
+    build_loop = _require("tigrbl_kernel.loop_modes", "build_loop_controller")
 
     controller = build_loop(mode="owner", binding="websocket")
 
@@ -117,7 +117,7 @@ def test_runtime_loop_trace_marks_owner_control_without_dispatch_selection() -> 
 
 
 def test_runtime_loop_trace_marks_dispatch_control_with_subevent_selection() -> None:
-    build_loop = _require("tigrbl_runtime.protocol.loop_modes", "build_loop_controller")
+    build_loop = _require("tigrbl_kernel.loop_modes", "build_loop_controller")
 
     controller = build_loop(
         mode="dispatch",

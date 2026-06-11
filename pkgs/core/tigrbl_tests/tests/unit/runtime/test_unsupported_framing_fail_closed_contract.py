@@ -6,7 +6,7 @@ from tigrbl_core._spec import WebTransportBindingSpec, WsBindingSpec
 from tigrbl_core._spec.binding_spec import validate_app_framing_for_binding
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
-from tigrbl_runtime.protocol.webtransport import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import WebTransportSessionState
 
 
 def test_unknown_transport_framing_rejects_before_dispatch() -> None:
