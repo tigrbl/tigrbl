@@ -1,0 +1,392 @@
+from __future__ import annotations
+
+from collections.abc import Mapping as ABCMapping
+from dataclasses import MISSING, fields, is_dataclass
+from functools import lru_cache
+from typing import (
+    Any,
+    Awaitable,
+    Callable,
+    Mapping,
+    MutableMapping,
+    Optional,
+    Protocol,
+    Sequence,
+    Union,
+    runtime_checkable,
+)
+
+try:
+    from sqlalchemy.ext.asyncio import AsyncSession
+    from sqlalchemy.orm import Session
+except Exception:  # pragma: no cover - optional ORM dependency for runtime typing
+    AsyncSession = Session = Any  # type: ignore[assignment]
+
+from tigrbl_atoms.types import BaseCtx
+from tigrbl_base._base import AttrDict
+
+from .hot import (
+    _LAZY_MISSING,
+    _HotTemp,
+    _ensure_hot_in_values_view,
+    HotCtx,
+)
+
+
+@runtime_checkable
+class Request(Protocol):
+    state: Any
+
+
+class _ResponseState:
+    """Context-bound response namespace.
+
+    Keeps ``ctx['result']`` synchronized with ``ctx.response.result`` updates so
+    POST_RESPONSE hooks can safely shape egress payloads.
+    """
+
+    __slots__ = ("_ctx", "_data")
+
+    def __init__(self, ctx: "_Ctx", value: Any = None) -> None:
+        object.__setattr__(self, "_ctx", ctx)
+        object.__setattr__(self, "_data", {})
+
+        source = getattr(value, "__dict__", None)
+        if isinstance(source, dict):
+            for key, item in source.items():
+                setattr(self, key, item)
+        elif value is not None:
+            result = getattr(value, "result", None)
+            setattr(self, "result", result)
+
+    def __getattr__(self, name: str) -> Any:
+        data = object.__getattribute__(self, "_data")
+        return data.get(name)
+
+    def __delitem__(self, key: str) -> None:
+        if key in self._FIELD_NAMES:
+            object.__setattr__(self, key, None)
+            return
+        del object.__getattribute__(self, "bag")[key]
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if (
+            name == "result"
+            and isinstance(value, Mapping)
+            and not isinstance(value, AttrDict)
+        ):
+            value = AttrDict(value)
+        data = object.__getattribute__(self, "_data")
+        data[name] = value
+        if name == "result":
+            ctx = object.__getattribute__(self, "_ctx")
+            ctx["result"] = value
+
+
+@runtime_checkable
+class _Step(Protocol):
+    def __call__(self, ctx: "_Ctx") -> Union[Any, Awaitable[Any]]: ...
+
+
+HandlerStep = Union[
+    _Step,
+    Callable[["_Ctx"], Any],
+    Callable[["_Ctx"], Awaitable[Any]],
+]
+PhaseChains = Mapping[str, Sequence[HandlerStep]]
+
+
+@lru_cache(maxsize=256)
+def _promotion_field_plan(
+    cls: type[Any],
+) -> tuple[tuple[str, ...], frozenset[str]]:
+    cls_fields = fields(cls)
+    names = tuple(f.name for f in cls_fields)
+    required = frozenset(
+        f.name
+        for f in cls_fields
+        if f.default is MISSING and f.default_factory is MISSING
+    )
+    return names, required
+
+
+class _Ctx(BaseCtx[Any, Any], MutableMapping[str, Any]):
+    """Dict-like runtime context with attribute access and atom promotion support."""
+
+    __slots__ = ()
+
+    _FIELD_NAMES = {
+        "env",
+        "bag",
+        "temp",
+        "error",
+        "current_phase",
+        "error_phase",
+        "phase",
+        "stage",
+        "capability_mask",
+        "exact_route",
+        "route_family",
+        "route_subevents",
+        "binding",
+        "exchange",
+        "tx_scope",
+        "plan",
+    }
+    _BASE_FIELD_NAMES = frozenset(field.name for field in fields(BaseCtx))
+
+    @staticmethod
+    def _field_exists(name: str) -> bool:
+        return name in _Ctx._BASE_FIELD_NAMES
+
+    def _get_field_value(self, name: str) -> Any:
+        try:
+            return object.__getattribute__(self, name)
+        except AttributeError:
+            return object.__getattribute__(self, "bag").get(name)
+
+    def _set_field_value(self, name: str, value: Any) -> None:
+        if name == "temp":
+            value = _HotTemp.from_mapping(
+                value if isinstance(value, ABCMapping) else {}
+            )
+        if self._field_exists(name):
+            object.__setattr__(self, name, value)
+            return
+        object.__getattribute__(self, "bag")[name] = value
+
+    def _hot_ctx(self) -> HotCtx | None:
+        temp = object.__getattribute__(self, "temp")
+        if isinstance(temp, dict):
+            hot = temp.get("hot_ctx")
+            return hot if isinstance(hot, HotCtx) else None
+        return None
+
+    def _lazy_bag_value(self, name: str, *, cache: bool) -> Any:
+        hot = self._hot_ctx()
+        if hot is None:
+            return _LAZY_MISSING
+        if name == "payload":
+            value = hot.route_payload
+            if value is None:
+                parsed = hot.parsed_json
+                if isinstance(parsed, dict) and parsed.get("jsonrpc") == "2.0":
+                    params = parsed.get("params")
+                    if isinstance(params, (Mapping, list)):
+                        value = params
+                elif isinstance(parsed, (Mapping, list)):
+                    value = parsed
+            if value is None:
+                value = _ensure_hot_in_values_view(hot)
+            if value is None:
+                return _LAZY_MISSING
+        elif name == "path_params":
+            value = hot.route_path_params or hot.path_params
+            if value is None:
+                return _LAZY_MISSING
+        else:
+            return _LAZY_MISSING
+        if cache:
+            object.__getattribute__(self, "bag")[name] = value
+        return value
+
+    def __getattr__(self, name: str) -> Any:
+        bag = object.__getattribute__(self, "bag")
+        if name in bag:
+            return bag.get(name)
+        value = self._lazy_bag_value(name, cache=True)
+        return None if value is _LAZY_MISSING else value
+
+    def __contains__(self, key: str) -> bool:
+        if key in self._FIELD_NAMES:
+            return True
+        bag = object.__getattribute__(self, "bag")
+        return key in bag or self._lazy_bag_value(key, cache=False) is not _LAZY_MISSING
+
+    def __getitem__(self, key: str) -> Any:
+        if key in self._FIELD_NAMES:
+            return self._get_field_value(key)
+        bag = object.__getattribute__(self, "bag")
+        if key == "response" and key not in bag:
+            bag[key] = _ResponseState(self)
+        if key in bag:
+            return bag[key]
+        value = self._lazy_bag_value(key, cache=True)
+        if value is _LAZY_MISSING:
+            raise KeyError(key)
+        return value
+
+    def get(self, key: str, default: Any = None) -> Any:
+        if key in self._FIELD_NAMES:
+            value = self._get_field_value(key)
+            return default if value is None else value
+        bag = object.__getattribute__(self, "bag")
+        if key == "response" and key not in bag:
+            bag[key] = _ResponseState(self)
+        if key in bag:
+            return bag.get(key, default)
+        value = self._lazy_bag_value(key, cache=True)
+        return default if value is _LAZY_MISSING else value
+
+    def items(self):
+        merged = {name: self._get_field_value(name) for name in self._FIELD_NAMES}
+        merged.update(object.__getattribute__(self, "bag"))
+        return merged.items()
+
+    def keys(self):
+        return dict(self.items()).keys()
+
+    def values(self):
+        return dict(self.items()).values()
+
+    def __iter__(self):
+        return iter(dict(self.items()))
+
+    def __len__(self) -> int:
+        return len(dict(self.items()))
+
+    def setdefault(self, key: str, default: Any = None) -> Any:
+        return object.__getattribute__(self, "bag").setdefault(key, default)
+
+    def update(self, *args: Any, **kwargs: Any) -> None:
+        object.__getattribute__(self, "bag").update(*args, **kwargs)
+
+    def pop(self, key: str, default: Any = None) -> Any:
+        return object.__getattribute__(self, "bag").pop(key, default)
+
+    def clear(self) -> None:
+        object.__getattribute__(self, "bag").clear()
+
+    def __setitem__(self, key: str, value: Any) -> None:
+        if key in self._FIELD_NAMES:
+            self._set_field_value(key, value)
+            return
+
+        bag = object.__getattribute__(self, "bag")
+        if (
+            key == "response"
+            and value is not None
+            and not isinstance(value, _ResponseState)
+            and (
+                (isinstance(value, Mapping) and "result" in value)
+                or hasattr(value, "result")
+            )
+        ):
+            value = _ResponseState(self, value)
+        if key == "result":
+            response = bag.get("response")
+            if isinstance(response, _ResponseState):
+                data = object.__getattribute__(response, "_data")
+                data["result"] = value
+        bag[key] = value
+
+    def __delitem__(self, key: str) -> None:
+        if key in self._FIELD_NAMES:
+            raise KeyError(key)
+        del object.__getattribute__(self, "bag")[key]
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if name in self._FIELD_NAMES:
+            self._set_field_value(name, value)
+            return
+        self.__setitem__(name, value)
+
+    def promote(self, cls: type[Any], /, **updates: object) -> Any:
+        """Promote runtime contexts into atom dataclass contexts."""
+        if not is_dataclass(cls):
+            raise TypeError(f"promote target must be a dataclass type, got {cls!r}")
+
+        field_names, required_names = _promotion_field_plan(cls)
+        bag = object.__getattribute__(self, "bag")
+        data: dict[str, object] = {}
+        missing_required: list[str] = []
+
+        for name in field_names:
+            if name in updates:
+                continue
+            if name in self._FIELD_NAMES:
+                data[name] = self._get_field_value(name)
+                continue
+            if name in bag:
+                data[name] = bag[name]
+                continue
+            if name in required_names:
+                missing_required.append(name)
+
+        if missing_required:
+            raise TypeError(
+                f"cannot promote {type(self).__name__} -> {cls.__name__}; "
+                f"missing required fields: {', '.join(missing_required)}"
+            )
+
+        data.update(updates)
+        return cls(**data)
+
+    @classmethod
+    def ensure(
+        cls,
+        *,
+        request: Optional[Request],
+        db: Union[Session, AsyncSession, None],
+        seed: Optional[MutableMapping[str, Any] | BaseCtx[Any, Any]] = None,
+    ) -> "_Ctx":
+        if seed is None:
+            ctx = cls()
+        elif isinstance(seed, _Ctx):
+            ctx = seed
+        elif isinstance(seed, BaseCtx):
+            seed_values = {f.name: getattr(seed, f.name) for f in fields(type(seed))}
+            bag = dict(seed_values.pop("bag", {}) or {})
+            for key, value in seed_values.items():
+                if key in cls._FIELD_NAMES:
+                    continue
+                bag[key] = value
+            ctx = cls(
+                env=seed_values.get("env"),
+                bag=bag,
+                temp=_HotTemp.from_mapping(seed_values.get("temp") or {}),
+                error=seed_values.get("error"),
+                current_phase=seed_values.get("current_phase"),
+                error_phase=seed_values.get("error_phase"),
+            )
+        else:
+            seed_values = dict(seed)
+            seed_fields = {
+                name: seed_values.pop(name)
+                for name in cls._FIELD_NAMES
+                if name in seed_values
+            }
+            ctx = cls(
+                env=seed_fields.get("env"),
+                bag=seed_values,
+                temp=_HotTemp.from_mapping(seed_fields.get("temp") or {}),
+                error=seed_fields.get("error"),
+                current_phase=seed_fields.get("current_phase"),
+                error_phase=seed_fields.get("error_phase"),
+            )
+
+        if request is not None:
+            ctx.request = request
+            state = getattr(request, "state", None)
+            if state is not None and getattr(state, "ctx", None) is None:
+                try:
+                    state.ctx = ctx  # make ctx available to deps
+                except Exception:  # pragma: no cover
+                    pass
+        if db is not None:
+            ctx._raw_db = db
+            if "db" not in ctx:
+                ctx.db = db
+        if not isinstance(getattr(ctx, "temp", None), dict):
+            ctx.temp = {}
+        return ctx
+
+
+__all__ = [
+    "_Ctx",
+    "HandlerStep",
+    "PhaseChains",
+    "Request",
+    "Session",
+    "AsyncSession",
+]
