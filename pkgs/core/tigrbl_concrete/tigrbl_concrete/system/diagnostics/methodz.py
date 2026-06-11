@@ -37,6 +37,8 @@ def build_methodz_endpoint(router: Any):
                 methods.append(entry)
                 per_model.setdefault(mname, []).append(entry)
         methods.sort(key=lambda x: (x["model"], x["alias"]))
+        for entries in per_model.values():
+            entries.sort(key=lambda x: x["alias"])
         cache = {"methods": methods, **per_model}
         return cache
 

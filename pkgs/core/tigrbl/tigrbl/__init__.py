@@ -61,6 +61,18 @@ def _install_alias(alias: str, target: str) -> None:
 for alias, target in _ALIAS_MODULES.items():
     _install_alias(alias, target)
 
+for alias, target in {
+    "runtime.events": "tigrbl_kernel.events",
+    "runtime.labels": "tigrbl_kernel.labels",
+    "runtime.status": "tigrbl_typing.status",
+}.items():
+    _install_alias(alias, target)
+    parent_alias, attr_name = alias.rsplit(".", 1)
+    parent_module = sys.modules.get(f"{__name__}.{parent_alias}")
+    target_module = sys.modules.get(target) or _optional_import(target)
+    if parent_module is not None and target_module is not None:
+        setattr(parent_module, attr_name, target_module)
+
 
 _spec = import_module("tigrbl_core._spec")
 _base = import_module("tigrbl_base._base")
@@ -141,7 +153,7 @@ from tigrbl_concrete._concrete import (  # noqa: E402
     TigrblRouter,
 )
 from tigrbl_concrete._concrete.dependencies import Depends  # noqa: E402
-from tigrbl_runtime.runtime.status.exceptions import HTTPException  # noqa: E402
+from tigrbl_typing.status.exceptions import HTTPException  # noqa: E402
 from tigrbl.engine import resolver  # noqa: E402
 from tigrbl.system import mount_diagnostics  # noqa: E402
 from tigrbl_core.config.constants import DEFAULT_HTTP_METHODS, HOOK_DECLS_ATTR  # noqa: E402
@@ -166,6 +178,10 @@ from tigrbl.decorators import (  # noqa: E402
     stream_ctx,
     websocket_ctx,
     webtransport_ctx,
+)
+from tigrbl_concrete._decorators.middlewares import (  # noqa: E402
+    middleware as middleware,
+    middlewares as middlewares,
 )
 from tigrbl.factories.op import op  # noqa: E402
 from tigrbl.schema import _build_list_params, _build_schema, get_schema  # noqa: E402
@@ -241,7 +257,7 @@ from tigrbl_core._spec import (  # noqa: E402
     validate_app_framing_for_binding,
     validate_binding_profile_exchange,
 )
-from tigrbl_runtime.runtime.executor import _invoke  # noqa: E402
+from tigrbl_runtime.executors.invoke import _invoke  # noqa: E402
 
 
 def bind(*args, **kwargs):

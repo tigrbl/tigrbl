@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from ...runtime.kernel import _default_kernel as K
+from tigrbl_kernel import _default_kernel as K
 
 
 def build_kernelz_endpoint(router: Any):

@@ -1,11 +1,13 @@
-﻿"""Hook type definitions exposed without importing runtime package internals."""
+"""Middleware declaration and composition helpers."""
 
 from __future__ import annotations
 
-from tigrbl_atoms import HookPhase, HookPhases, HookPredicate, StepFn
+from tigrbl_concrete._decorators.middlewares import (
+    MiddlewareConfig,
+    middleware,
+    middlewares,
+)
 
-PHASE = HookPhase
-PHASES = tuple(h.value for h in HookPhases)
+from .compose import apply_middlewares
 
-__all__ = ["HookPhase", "HookPhases", "PHASE", "PHASES", "StepFn", "HookPredicate"]
-
+__all__ = ["MiddlewareConfig", "apply_middlewares", "middleware", "middlewares"]

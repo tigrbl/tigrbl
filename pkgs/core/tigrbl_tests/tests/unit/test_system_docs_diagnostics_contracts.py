@@ -20,6 +20,7 @@ from tigrbl.factories.engine import mem
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl.security import Security
+from tigrbl._spec import OpSpec
 from tigrbl.system import (
     build_json_schema_bundle,
     build_openapi,
@@ -143,6 +144,27 @@ async def test_diagnostics_mount_uses_system_prefix_and_stable_healthz_payload()
 
 
 @pytest.mark.asyncio
+async def test_diagnostics_mount_exposes_methodz_and_kernelz_only_under_prefix() -> None:
+    app = TigrblApp(mount_system=False)
+    app.include_table(SystemDocsWidget)
+    app.include_router(mount_diagnostics(app), prefix="/internal")
+
+    async with AsyncClient(
+        transport=ASGITransport(app=app),
+        base_url="http://test",
+    ) as client:
+        methodz = await client.get("/internal/methodz")
+        kernelz = await client.get("/internal/kernelz")
+        default_methodz = await client.get("/system/methodz")
+        default_kernelz = await client.get("/system/kernelz")
+
+    assert methodz.status_code == 200
+    assert kernelz.status_code == 200
+    assert default_methodz.status_code == 404
+    assert default_kernelz.status_code == 404
+
+
+@pytest.mark.asyncio
 async def test_diagnostics_endpoint_builders_project_operations_hooks_and_kernel() -> None:
     app = _build_app()
 
@@ -172,6 +194,78 @@ async def test_diagnostics_endpoint_builders_project_operations_hooks_and_kernel
     )
     assert "SystemDocsWidget" in hook_payload
     assert "SystemDocsWidget" in kernel_payload
+
+
+@pytest.mark.asyncio
+async def test_methodz_payload_is_stable_sorted_and_filters_non_rpc_ops() -> None:
+    class MethodzPayloadWidget(TableBase, GUIDPk):
+        __tablename__ = "system_docs_methodz_payload_widgets"
+        __tigrbl_ops__ = (
+            OpSpec(alias="z_hidden", target="custom", expose_rpc=False),
+            OpSpec(alias="alpha_visible", target="custom"),
+        )
+
+        name = Column(String, nullable=False)
+
+    app = TigrblApp(engine=mem(async_=False), mount_system=False)
+    app.include_table(MethodzPayloadWidget)
+
+    methodz = build_methodz_endpoint(app)
+    first = await methodz()
+    second = await methodz()
+
+    assert first is second
+    entries = first["methods"]
+    aliases = [entry["alias"] for entry in entries if entry["model"] == "MethodzPayloadWidget"]
+
+    assert aliases == sorted(aliases)
+    assert "alpha_visible" in aliases
+    assert "z_hidden" not in aliases
+
+    visible = next(
+        entry
+        for entry in entries
+        if entry["model"] == "MethodzPayloadWidget" and entry["alias"] == "alpha_visible"
+    )
+    assert set(visible) == {
+        "method",
+        "model",
+        "alias",
+        "target",
+        "arity",
+        "persist",
+        "request_model",
+        "response_model",
+        "routes",
+        "rpc",
+        "tags",
+    }
+    assert visible["method"] == "MethodzPayloadWidget.alpha_visible"
+    assert visible["target"] == "custom"
+    assert visible["rpc"] is True
+    assert first["MethodzPayloadWidget"] == [
+        entry for entry in entries if entry["model"] == "MethodzPayloadWidget"
+    ]
+
+
+@pytest.mark.asyncio
+async def test_kernelz_payload_is_stable_and_projects_kernel_phase_labels() -> None:
+    app = _build_app()
+    kernelz = build_kernelz_endpoint(app)
+
+    first = await kernelz()
+    second = await kernelz()
+
+    assert first == second
+    assert "SystemDocsWidget" in first
+    assert "create" in first["SystemDocsWidget"]
+    create_labels = first["SystemDocsWidget"]["create"]
+
+    assert create_labels
+    assert all(isinstance(label, str) and label for label in create_labels)
+    assert any(label.startswith("START_TX:") for label in create_labels)
+    assert any(label.startswith("HANDLER:") for label in create_labels)
+    assert any(label.startswith("TX_COMMIT:") for label in create_labels)
 
 
 @pytest.mark.unit

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import asyncio
+import hashlib
 import importlib
 import importlib.util
 import inspect
@@ -193,7 +194,9 @@ def _resolve_target(args: argparse.Namespace) -> str | None:
 
 
 def _load_module_from_path(path: Path) -> Any:
-    module_name = f"_tigrbl_cli_{path.stem}_{abs(hash(str(path.resolve())))}"
+    resolved = str(path.resolve())
+    digest = hashlib.sha256(resolved.encode("utf-8")).hexdigest()[:16]
+    module_name = f"_tigrbl_cli_{path.stem}_{digest}"
     spec = importlib.util.spec_from_file_location(module_name, path)
     if spec is None or spec.loader is None:
         raise CLIError(f"Could not load Python module from '{path}'")
@@ -208,7 +211,13 @@ def _load_target_object(target: str) -> Any:
     if not raw:
         raise CLIError("An app target is required. Use <module:attr> or <path.py:attr>.")
 
-    source, attr = (raw.rsplit(":", 1) + ["app"])[:2] if ":" in raw else (raw, "app")
+    raw_path = Path(raw)
+    if raw.endswith(".py") or raw_path.exists():
+        source, attr = raw, "app"
+    elif ":" in raw:
+        source, attr = raw.rsplit(":", 1)
+    else:
+        source, attr = raw, "app"
     source_path = Path(source)
     if source.endswith(".py") or source_path.exists():
         if not source_path.exists():
