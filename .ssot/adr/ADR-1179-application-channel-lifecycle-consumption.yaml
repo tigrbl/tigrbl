@@ -1,0 +1,21 @@
+schema_version: "0.7.0"
+kind: "adr"
+id: "adr:1179"
+number: 1179
+slug: "application-channel-lifecycle-consumption"
+title: "Applications consume contract channel lifecycle states"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: tigrbl consumes contract channel_lifecycle states as operation constraints and does not branch on protocol mechanics such as RST_STREAM, RESET_STREAM, STOP_SENDING, WebSocket closing frames, HTTP/2 half-closed labels, HTTP/3 stream errors, or QUIC stream states. RFC 9113, RFC 9114, RFC 9000, RFC 8441, and RFC 9220 are enforcement inputs for tigr-asgi-contract and tigrcorn boundaries, not direct application policy inputs. read_closed, write_closed, closing, closed, failed, and lost are interpreted as application policy inputs for operations, transactions, hooks, retries, audit, and API errors."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-14T07:43:39Z"
+    note: "Accepted for application lifecycle consumption ownership."
+    status: "accepted"
+references: []
+body: |-
+  Decision: tigrbl consumes contract channel_lifecycle states as operation constraints and does not branch on protocol mechanics such as RST_STREAM, RESET_STREAM, STOP_SENDING, WebSocket closing frames, HTTP/2 half-closed labels, HTTP/3 stream errors, or QUIC stream states. RFC 9113, RFC 9114, RFC 9000, RFC 8441, and RFC 9220 are enforcement inputs for tigr-asgi-contract and tigrcorn boundaries, not direct application policy inputs. read_closed, write_closed, closing, closed, failed, and lost are interpreted as application policy inputs for operations, transactions, hooks, retries, audit, and API errors.

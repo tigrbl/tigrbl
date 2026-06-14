@@ -1,0 +1,24 @@
+schema_version: "0.7.0"
+kind: "spec"
+id: "spc:2182"
+number: 2182
+slug: "application-channel-lifecycle-reaction-contract"
+title: "Application channel lifecycle reaction contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC defines how tigrbl maps contract channel_lifecycle states to operation outcomes. read_closed ends input without forcing rollback. write_closed suppresses outward delivery. closing suppresses new outward work and may allow drain. closed finalizes according to phase. failed and lost are disconnect and cancellation policy candidates. Protocol-specific terms from HTTP/2 RFC 9113, HTTP/3 RFC 9114, QUIC RFC 9000, WebSocket over HTTP/2 RFC 8441, and WebSocket over HTTP/3 RFC 9220 are invalid at the application reaction boundary; tigrbl consumes only contract-owned lifecycle states and events."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-14T07:43:48Z"
+    note: "Accepted for tigrbl lifecycle reaction planning."
+    status: "accepted"
+references: []
+body: |-
+  This SPEC defines how tigrbl maps contract channel_lifecycle states to operation outcomes. read_closed ends input without forcing rollback. write_closed suppresses outward delivery. closing suppresses new outward work and may allow drain. closed finalizes according to phase. failed and lost are disconnect and cancellation policy candidates. Protocol-specific terms from HTTP/2 RFC 9113, HTTP/3 RFC 9114, QUIC RFC 9000, WebSocket over HTTP/2 RFC 8441, and WebSocket over HTTP/3 RFC 9220 are invalid at the application reaction boundary; tigrbl consumes only contract-owned lifecycle states and events.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1179"
