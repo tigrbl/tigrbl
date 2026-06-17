@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1190"
+number: 1190
+slug: "webtransport-http2-bindings-remain-fallback-capability-gated"
+title: "WebTransport H2 bindings remain fallback capability gated"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl treats WebTransport-over-H2 as a draft fallback binding surface that must be capability-gated and kept distinct from QUIC-native WebTransport."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    at: "2026-06-17T12:42:30Z"
+references: []
+body: |-
+  Decision: Tigrbl treats WebTransport-over-H2 as a draft fallback binding surface that must be capability-gated and kept distinct from QUIC-native WebTransport.
+  
+  Owned boundary:
+  - Tigrbl owns fallback binding legality, app projection, and fail-closed behavior for WebTransport-over-H2 when runtime capability metadata allows it.
+  - Tigrbl must keep H2 fallback behavior separate from H3 WebTransport table/profile claims.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns WebTransport contract vocabulary.
+  - Tigrcorn owns the HTTP/2 fallback runtime carrier.
+  
+  Forbidden claims:
+  - Tigrbl must not claim QUIC stream IDs or QUIC datagrams for WebTransport-over-H2.
+  - Tigrbl must not silently upgrade H2 fallback bindings into H3 WebTransport claims.

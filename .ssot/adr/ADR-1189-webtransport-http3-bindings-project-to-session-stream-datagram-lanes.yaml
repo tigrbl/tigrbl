@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1189"
+number: 1189
+slug: "webtransport-http3-bindings-project-to-session-stream-datagram-lanes"
+title: "WebTransport H3 bindings project to session stream and datagram lanes"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl projects WebTransport-over-H3 app behavior through explicit session, bidirectional stream, unidirectional stream, and datagram lane bindings."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    at: "2026-06-17T12:42:26Z"
+references: []
+body: |-
+  Decision: Tigrbl projects WebTransport-over-H3 app behavior through explicit session, bidirectional stream, unidirectional stream, and datagram lane bindings.
+  
+  Owned boundary:
+  - Tigrbl owns binding legality, table/profile projection, lane selection, and fail-closed behavior for WebTransport H3 app surfaces.
+  - Tigrbl must preserve draft-target maturity and consume runtime capability metadata.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns WebTransport contract vocabulary.
+  - Tigrcorn owns WebTransport-over-H3 runtime behavior.
+  
+  Forbidden claims:
+  - Tigrbl must not treat WebTransport lanes as WebSocket sessions.
+  - Tigrbl must not claim runtime support without Tigrcorn capability/evidence.

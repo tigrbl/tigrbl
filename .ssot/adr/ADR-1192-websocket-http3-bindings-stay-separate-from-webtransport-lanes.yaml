@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1192"
+number: 1192
+slug: "websocket-http3-bindings-stay-separate-from-webtransport-lanes"
+title: "H3 WebSocket bindings stay separate from WebTransport lanes"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl projects WebSocket-over-H3 through WebSocket message and session bindings only, and forbids combining those bindings with WebTransport lane semantics."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    at: "2026-06-17T12:42:37Z"
+references: []
+body: |-
+  Decision: Tigrbl projects WebSocket-over-H3 through WebSocket message and session bindings only, and forbids combining those bindings with WebTransport lane semantics.
+  
+  Owned boundary:
+  - Tigrbl owns WebSocket binding legality, app-facing session/message projection, subprotocol policy, and fail-closed behavior for H3-capable WebSocket surfaces.
+  - Tigrbl may consume RFC 9220 capability metadata from the runtime.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns WebSocket contract vocabulary.
+  - Tigrcorn owns RFC 9220 runtime support.
+  
+  Forbidden claims:
+  - H3 WebSocket bindings must not imply WebTransport support.
+  - H3 WebSocket and H3 WebTransport must remain separate binding concepts even if exposed by the same listener.

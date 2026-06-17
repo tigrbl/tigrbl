@@ -1,0 +1,38 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1186"
+number: 1186
+slug: "http11-app-streams-project-through-http-body-bindings"
+title: "HTTP/1.1 app streams project through HTTP body bindings"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl projects application streaming over HTTP/1.1 only through HTTP request-body and response-body bindings, not native transport stream lanes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T12:31:48Z"
+    note: "Accepted to govern the h11 binding stack boundary before per-stack specs and features are added."
+    status: "accepted"
+references: []
+body: |-
+  Decision: Tigrbl projects application streaming over HTTP/1.1 only through HTTP request-body and response-body bindings, not native transport stream lanes.
+  
+  Owned boundary:
+  - Tigrbl owns declarative binding legality and app-facing projection for HTTP/1.1 request-body and response-body streams.
+  - Tigrbl may model client-stream and server-stream application exchanges over HTTP body bindings when the contract/runtime capability permits it.
+  - Tigrbl must preserve the distinction between app-level stream behavior and protocol-native stream identity.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns the HTTP scope/event vocabulary and legality surface.
+  - Tigrcorn owns HTTP/1.1 parser/runtime behavior, backpressure, disconnect handling, and evidence.
+  
+  Non-goals:
+  - This ADR does not make Tigrbl responsible for wire protocol parsing or HTTP server flow-control algorithms.
+  - This ADR does not define HTTP/2, HTTP/3, QUIC, WebSocket, or WebTransport stream semantics.
+  
+  Forbidden claims:
+  - Tigrbl must not claim native HTTP/1.1 stream IDs, multiplexing, bidirectional transport streams, or unidirectional transport streams.
+  - Tigrbl must not reuse HTTP/2, HTTP/3, QUIC, or WebTransport stream-ID semantics for HTTP/1.1 body bindings.

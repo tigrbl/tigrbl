@@ -1,0 +1,33 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1191"
+number: 1191
+slug: "websocket-http2-bindings-remain-message-session-projections"
+title: "H2 WebSocket bindings remain message and session projections"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: Tigrbl projects WebSocket-over-H2 through WebSocket message and session bindings only, with RFC 8441 carrier capability treated as runtime metadata."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern the stack boundary before per-stack specs and features are added."
+    at: "2026-06-17T12:42:34Z"
+references: []
+body: |-
+  Decision: Tigrbl projects WebSocket-over-H2 through WebSocket message and session bindings only, with RFC 8441 carrier capability treated as runtime metadata.
+  
+  Owned boundary:
+  - Tigrbl owns WebSocket binding legality, app-facing session/message projection, subprotocol policy, and fail-closed behavior.
+  - Tigrbl does not own RFC 8441 wire behavior.
+  
+  Peer inputs:
+  - tigr-asgi-contracts owns WebSocket contract vocabulary.
+  - Tigrcorn owns RFC 8441 runtime support.
+  
+  Forbidden claims:
+  - H2 WebSocket bindings must not be modeled as WebTransport lanes.
+  - H2 WebSocket bindings must not be treated as generic H2 app-stream lanes.
