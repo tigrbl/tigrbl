@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1174"
 number: 1174
@@ -11,7 +11,11 @@ tags: []
 summary: "Runtime codec lookup is separate from binding legality. JSON, JSON-RPC, NDJSON, text, bytes, and binary are distinct frame representations. WebTransport outer framing remains webtransport, while application payload framing is lane-scoped through inner_framing after lane legality validation. Unsupported or undeclared lane/framing combinations fail closed and must not silently fall back to generic JSON or text."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "WebTransport inner framing remains lane-local and must be enforced before inner payload encode/decode dispatch; JSON-RPC and NDJSON remain distinct framings."
+    at: "2026-06-17T08:29:22Z"
 references: []
 body: |-
   Runtime codec lookup is separate from binding legality. JSON, JSON-RPC, NDJSON, text, bytes, and binary are distinct frame representations. WebTransport outer framing remains webtransport, while application payload framing is lane-scoped through inner_framing after lane legality validation. Unsupported or undeclared lane/framing combinations fail closed and must not silently fall back to generic JSON or text.

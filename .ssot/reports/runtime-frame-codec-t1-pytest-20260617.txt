@@ -1,0 +1,27 @@
+============================= test session starts =============================
+platform win32 -- Python 3.12.5, pytest-9.0.3, pluggy-1.6.0
+benchmark: 5.2.3 (defaults: timer=time.perf_counter disable_gc=False min_rounds=5 min_time=0.000005 max_time=1.0 calibration_precision=10 warmup=False warmup_iterations=100000)
+rootdir: E:\swarmauri_github\tigrbl\pkgs\core\tigrbl_tests
+configfile: pyproject.toml
+plugins: timeout-2.4.0, xdist-3.8.0, asyncio-1.3.0, metadata-3.1.1, benchmark-5.2.3, json-report-1.5.0, anyio-4.13.0, ssot-conformance-0.2.24
+timeout: 300.0s
+timeout method: thread
+timeout func_only: False
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=function, asyncio_default_test_loop_scope=function
+collected 20 items / 7 deselected / 13 selected
+
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_atom_frame_codec_registry_static_t0 PASSED [  7%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_frame_envelope_schema_static_t0 PASSED [ 15%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_framing_support_matrix_codec_coverage_t0 PASSED [ 23%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_jsonrpc_ndjson_distinction_static_t0 PASSED [ 30%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_webtransport_inner_codec_legality_static_t0 PASSED [ 38%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_json_codec_roundtrip_t1 PASSED [ 46%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_jsonrpc_codec_strict_validation_t1 PASSED [ 53%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_ndjson_codec_record_boundary_t1 PASSED [ 61%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_text_bytes_binary_codec_t1 PASSED [ 69%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_sse_codec_event_format_t1 PASSED [ 76%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_websocket_text_codec_adapter_t1 PASSED [ 84%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_runtime_websocket_frame_codec_adapters_t1 PASSED [ 92%]
+pkgs\core\tigrbl_tests\tests\unit\runtime\test_runtime_frame_codec_contract.py::test_webtransport_inner_codec_dispatch_t1 PASSED [100%]
+
+====================== 13 passed, 7 deselected in 0.24s =======================

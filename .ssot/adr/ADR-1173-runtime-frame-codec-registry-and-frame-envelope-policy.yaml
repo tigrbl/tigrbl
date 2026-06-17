@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1173"
 number: 1173
@@ -11,7 +11,11 @@ tags: []
 summary: "Runtime framing is a codec registry over first-class frame envelopes, not a transport layer and not operation legality authority. Binding specs and kernel plans decide legal framing combinations; runtime codecs own encode/decode behavior for governed frame representations. Frame and FrameContext records preserve frame kind, payload, framing token, content metadata, lane identity, and concrete session/stream/datagram ids. Unsupported codecs and illegal combinations fail closed before dispatch."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Runtime frame codec policy now requires executable scalar, NDJSON, JSON-RPC message, WebSocket adapter, and WebTransport inner codec coverage before a framing is claimed as runtime-supported."
+    at: "2026-06-17T08:29:19Z"
 references: []
 body: |-
   Runtime framing is a codec registry over first-class frame envelopes, not a transport layer and not operation legality authority. Binding specs and kernel plans decide legal framing combinations; runtime codecs own encode/decode behavior for governed frame representations. Frame and FrameContext records preserve frame kind, payload, framing token, content metadata, lane identity, and concrete session/stream/datagram ids. Unsupported codecs and illegal combinations fail closed before dispatch.

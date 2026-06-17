@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2154"
 number: 2154
@@ -26,8 +26,8 @@ status_notes:
     status: "draft"
   -
     status: "draft"
-    note: "Updated WebTransport inner framing contract with multiplexed lane-local framing proof requirements."
-    at: "2026-05-31T19:28:33Z"
+    note: "WebTransport inner framing contract updated to require lane legality validation before stream or datagram payload encode/decode dispatch."
+    at: "2026-06-17T08:29:31Z"
 references: []
 body: |-
   ## Intent

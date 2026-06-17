@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2153"
 number: 2153
@@ -22,8 +22,8 @@ status_notes:
     status: "draft"
   -
     status: "draft"
-    note: "Added websocket handshake, route identity, and protocol-native JSON-RPC proof clauses."
-    at: "2026-05-31T20:05:42Z"
+    note: "WebSocket framing contract updated for implemented NDJSON support through explicit codec adapters instead of fail-closed fallback behavior."
+    at: "2026-06-17T08:29:28Z"
 references: []
 body: |-
   ## Intent

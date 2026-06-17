@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:1137"
 number: 1137
@@ -11,7 +11,11 @@ tags: []
 summary: "Binding policy, framing support matrices, kernel plan aliases, runtime codec registry, and docs/demo projections must agree. A binding row may claim runtime framing support only when legality, codec coverage, error mapping, and negative fail-closed behavior are proven."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Binding-policy integration now requires a concrete runtime codec path, or an explicitly documented output-only encoder such as SSE, before support is claimed."
+    at: "2026-06-17T08:29:25Z"
 references: []
 body: |-
   Binding policy, framing support matrices, kernel plan aliases, runtime codec registry, and docs/demo projections must agree. A binding row may claim runtime framing support only when legality, codec coverage, error mapping, and negative fail-closed behavior are proven.

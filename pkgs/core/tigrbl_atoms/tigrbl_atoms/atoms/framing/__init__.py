@@ -10,7 +10,12 @@ from .app_frame import (
     decode_app_frames,
     encode_app_frame,
 )
-from .codec import decode_frame, encode_frame
+from .codec import (
+    decode_frame,
+    decode_webtransport_inner_frame,
+    encode_frame,
+    encode_webtransport_inner_frame,
+)
 
 __all__ = [
     "DEFAULT_MAX_PAYLOAD_SIZE",
@@ -21,6 +26,8 @@ __all__ = [
     "decode_app_frame",
     "decode_app_frames",
     "decode_frame",
+    "decode_webtransport_inner_frame",
     "encode_app_frame",
     "encode_frame",
+    "encode_webtransport_inner_frame",
 ]

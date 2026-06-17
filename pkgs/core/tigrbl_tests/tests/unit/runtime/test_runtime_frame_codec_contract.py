@@ -5,7 +5,12 @@ import json
 import pytest
 
 from tigrbl_atoms.atoms.framing import app_frame
-from tigrbl_atoms.atoms.framing.codec import decode_frame, encode_frame
+from tigrbl_atoms.atoms.framing.codec import (
+    decode_frame,
+    decode_webtransport_inner_frame,
+    encode_frame,
+    encode_webtransport_inner_frame,
+)
 from tigrbl_core._spec.binding_spec import (
     WsBindingSpec,
     validate_app_framing_for_binding,
@@ -73,16 +78,42 @@ def test_runtime_jsonrpc_codec_strict_validation_t1() -> None:
     encoded = encode_frame("jsonrpc", {"method": "items.list", "params": {}})
 
     assert decode_frame("jsonrpc", encoded)["jsonrpc"] == "2.0"
+    assert decode_frame(
+        "jsonrpc",
+        encode_frame("jsonrpc", {"id": 1, "result": {"ok": True}}),
+    ) == {"id": 1, "result": {"ok": True}, "jsonrpc": "2.0"}
+    assert decode_frame(
+        "jsonrpc",
+        encode_frame(
+            "jsonrpc",
+            [
+                {"method": "items.list", "id": 1},
+                {"id": 1, "result": []},
+            ],
+        ),
+    ) == [
+        {"method": "items.list", "id": 1, "jsonrpc": "2.0"},
+        {"id": 1, "result": [], "jsonrpc": "2.0"},
+    ]
     with pytest.raises(ValueError, match="invalid jsonrpc"):
         decode_frame("jsonrpc", json.dumps({"method": "items.list"}).encode("utf-8"))
 
 
 def test_runtime_ndjson_codec_record_boundary_t1() -> None:
-    with pytest.raises(ValueError, match="unsupported framing"):
-        encode_frame("ndjson", [{"a": 1}, {"a": 2}])
+    records = [{"a": 1}, {"a": 2}]
+
+    encoded = encode_frame("ndjson", records)
+
+    assert encoded == b'{"a":1}\n{"a":2}\n'
+    assert decode_frame("ndjson", encoded) == records
 
 
 def test_runtime_text_bytes_binary_codec_t1() -> None:
+    assert encode_frame("text", "hello") == b"hello"
+    assert decode_frame("text", b"hello") == "hello"
+    for framing in ("bytes", "binary", "stream"):
+        assert encode_frame(framing, b"\x00raw") == b"\x00raw"
+        assert decode_frame(framing, bytearray(b"\x00raw")) == b"\x00raw"
     assert decode_frame("websocket.text", b"hello") == "hello"
     with pytest.raises(ValueError, match="invalid websocket.text"):
         decode_frame("websocket.text", b"\xff")
@@ -102,6 +133,36 @@ def test_runtime_websocket_text_codec_adapter_t1() -> None:
     }
 
 
+def test_runtime_websocket_frame_codec_adapters_t1() -> None:
+    json_message = encode_frame("websocket.json", {"ok": True})
+    assert json_message == {"type": "websocket.send", "text": '{"ok":true}'}
+    assert decode_frame("websocket.json", json_message) == {"ok": True}
+
+    rpc_message = encode_frame("websocket.jsonrpc", {"method": "ping", "id": 1})
+    assert rpc_message == {
+        "type": "websocket.send",
+        "text": '{"method":"ping","id":1,"jsonrpc":"2.0"}',
+    }
+    assert decode_frame("websocket.jsonrpc", rpc_message)["method"] == "ping"
+
+    ndjson_message = encode_frame("websocket.ndjson", [{"a": 1}, {"a": 2}])
+    assert ndjson_message == {
+        "type": "websocket.send",
+        "text": '{"a":1}\n{"a":2}\n',
+    }
+    assert decode_frame("websocket.ndjson", ndjson_message) == [{"a": 1}, {"a": 2}]
+
+    raw = b"\x00\xff"
+    assert encode_frame("websocket.bytes", raw) == {
+        "type": "websocket.send",
+        "bytes": raw,
+    }
+    assert decode_frame(
+        "websocket.binary",
+        {"type": "websocket.receive", "bytes": raw},
+    ) == raw
+
+
 def test_webtransport_inner_codec_dispatch_t1() -> None:
     projection = validate_webtransport_event_payload(
         event="webtransport.stream.receive",
@@ -114,6 +175,24 @@ def test_webtransport_inner_codec_dispatch_t1() -> None:
         "lane": "bidi_stream",
         "exchange": "bidirectional_stream",
     }
+    encoded = encode_webtransport_inner_frame(
+        lane="bidi_stream",
+        framing="json",
+        payload={"ok": True},
+    )
+    assert decode_webtransport_inner_frame(
+        lane="bidi_stream",
+        framing="json",
+        payload=encoded,
+    ) == {"ok": True}
+    assert (
+        encode_webtransport_inner_frame(
+            lane="datagram",
+            framing="bytes",
+            payload=b"raw",
+        )
+        == b"raw"
+    )
 
 
 def test_binding_policy_to_codec_runtime_integration_t2() -> None:
