@@ -1,0 +1,43 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1183"
+number: 1183
+slug: "webhook-is-inbound-http-event-ingress"
+title: "Webhook is inbound HTTP event ingress"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The previous first-class webhook wording treated outbound remote delivery as the primary webhook surface. That conflicts with the selected taxonomy: outbound remote POST delivery is a callback, while first-class webhook support should model externally invoked event ingress."
+supersedes:
+  - "adr:1099"
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T10:16:38Z"
+    note: "Accepted to align first-class webhook taxonomy with inbound event ingress."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Webhook taxonomy corrected: first-class webhook now means inbound HTTP event ingress; outbound delivery is callback delivery."
+    at: "2026-06-17T10:17:00Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. In Tigrbl, a first-class webhook is an inbound HTTP event ingress surface.
+  2. An inbound webhook lowers through existing canonical composition: `PathSpec(kind=resource)` owns the address, `OpSpec(target=custom)` owns semantic handling, and `HttpRestBindingSpec(methods=(POST,))` owns the HTTP selector.
+  3. A webhook is not an app lifespan callback, not a well-known resource, and not a public hook phase.
+  4. `CallbackSpec` is not introduced. In-process callback behavior remains hook or runtime callback-fence behavior, depending on whether it is public semantic execution or runtime-owned completion metadata.
+  5. Outbound delivery to a remote HTTP endpoint is callback delivery, even when external ecosystems call that pattern a webhook.
+  
+  ## Context
+  
+  The previous first-class webhook wording treated outbound remote delivery as the primary webhook surface. That conflicts with the selected taxonomy: outbound remote POST delivery is a callback, while first-class webhook support should model externally invoked event ingress.
+  
+  ## Consequences
+  
+  - Inbound webhook support extends or profiles `PathSpec`, `OpSpec`, and `HttpRestBindingSpec`; it does not create a parallel router model.
+  - Webhook schema, signature verification, idempotency, acknowledgement policy, and handler binding become explicit ingress concerns.
+  - Surface matrix rows must distinguish inbound webhook ingress from outbound callback delivery.
+  - Startup and shutdown lifespans remain app lifecycle APIs, not callback APIs.

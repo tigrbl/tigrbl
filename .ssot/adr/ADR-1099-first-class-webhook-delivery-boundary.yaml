@@ -1,17 +1,22 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1099"
 number: 1099
 slug: "first-class-webhook-delivery-boundary"
 title: "First-class webhook delivery boundary"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "The target runtime needs outbound event delivery without conflating it with in-process hooks or continuation callbacks."
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "adr:1183"
+status_notes:
+  -
+    status: "superseded"
+    note: "Webhook taxonomy corrected: first-class webhook now means inbound HTTP event ingress; outbound delivery is callback delivery."
+    at: "2026-06-17T10:17:00Z"
 references: []
 body: |-
   ## Decision

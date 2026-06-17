@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2028"
 number: 2028
@@ -11,7 +11,11 @@ tags: []
 summary: "This document defines the governed hook extension surface for Tigrbl."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Clarified callback vocabulary after inbound webhook taxonomy decision."
+    at: "2026-06-17T10:19:25Z"
 references: []
 body: |-
   ## Intent
@@ -37,6 +41,9 @@ body: |-
   - `INGRESS_ROUTE` remains runtime-owned and is not a hook phase.
   - `POST_EMIT` remains a runtime-owned completion fence and is not a hook phase.
   - `INGRESS_DISPATCH` is invalid in hook declarations, selector semantics, and hook-oriented diagnostics.
+  - Callback vocabulary does not introduce `CallbackSpec`; public callback behavior remains ordinary `HookSpec` behavior when it is in-process semantic execution.
+  - Runtime callback fences are diagnostics/runtime metadata and do not widen the public hook phase vocabulary.
+  - App startup and shutdown lifespan handlers are lifecycle APIs, not callback or webhook APIs.
   
   ## Feature Granularity
   
@@ -53,10 +60,12 @@ body: |-
   - attachment/ordering feature: declaration surfaces and deterministic execution order
   - projection feature: public or base export surfaces that project hook contracts
   - authoring-helper feature: private authoring helpers that materialize hook-facing declarations
+  - callback-delivery feature: outbound runtime delivery to remote endpoints; not part of the public hook phase set
+  - inbound-webhook feature: externally invoked HTTP event ingress; modeled through path/op/binding composition rather than hook phases
   
   ## Traceability
   
   - ADRs: `adr:1004`, `adr:1009`, `adr:1010`, `adr:1052`, `adr:1053`, `adr:1062`, `adr:1063`, `adr:1070`
-  - Related specs: `spc:2025`, `spc:2026`, `spc:2060`, `spc:2061`
+  - Related specs: `spc:2025`, `spc:2026`, `spc:2060`, `spc:2061`, `spc:1138`, `spc:1139`
 spec_kind: "local-policy"
 adr_ids: []

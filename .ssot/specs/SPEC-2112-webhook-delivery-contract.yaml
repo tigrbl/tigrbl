@@ -1,17 +1,22 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2112"
 number: 2112
 slug: "webhook-delivery-contract"
 title: "Webhook Delivery Contract"
-status: "draft"
+status: "superseded"
 origin: "repo-local"
 decision_date: null
 tags: []
 summary: "Define first-class outbound webhook delivery."
 supersedes: []
-superseded_by: []
-status_notes: []
+superseded_by:
+  - "spc:1139"
+status_notes:
+  -
+    status: "superseded"
+    note: "Outbound remote delivery is now governed as callback delivery; first-class webhook means inbound ingress."
+    at: "2026-06-17T10:17:38Z"
 references: []
 body: |-
   ## Intent

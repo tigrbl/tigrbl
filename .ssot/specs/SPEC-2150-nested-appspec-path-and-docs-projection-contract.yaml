@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2150"
 number: 2150
@@ -29,9 +29,13 @@ status_notes:
     note: "Linked engine inventory and transport matrix companion contracts."
     status: "draft"
   -
-    status: "accepted"
-    note: "PathSpec-owned address composition and docs projection supersede route registration/projection contracts."
     at: "2026-06-07T18:05:26Z"
+    note: "PathSpec-owned address composition and docs projection supersede route registration/projection contracts."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Added inbound webhook lowering as path-owned HTTP POST event ingress."
+    at: "2026-06-17T10:19:15Z"
 references: []
 body: |-
   ## Intent
@@ -50,6 +54,7 @@ body: |-
   4. Canonical `TableSpec` identity MUST be spec-native, using fields such as `name`, `resource`, and optional `model_ref`; concrete runtime model classes are lowerer inputs, not canonical identity.
   5. `OpSpec` entries nested under a table or path inherit containing context and define semantic operation fields such as alias, target, arity, schemas, lifecycle defaults, and response policy.
   6. `HttpRestBindingSpec` nested under an op selects the op by HTTP method at the containing `PathSpec` path.
+  6a. Inbound webhook ingress MUST be represented as ordinary path-owned HTTP POST composition: `PathSpec(kind=resource)` owns the address, `OpSpec(target=custom)` owns semantic handling and acknowledgement policy, and `HttpRestBindingSpec(methods=(POST,))` owns the selector.
   7. `HttpJsonRpcBindingSpec` nested under an op selects the op by JSON-RPC method at the containing dispatcher `PathSpec` path; multiple table groups may share one dispatcher path.
   8. WebSocket, WSS+JSON-RPC, SSE, and WebTransport bindings follow the same rule: the containing `PathSpec` owns the address path, and the binding owns the protocol-specific selector or stream semantics.
   8a. `WsBindingSpec.subprotocols` owns WebSocket handshake negotiation, while `WsBindingSpec.framing` owns post-handshake message interpretation under `spc:2153`.
@@ -111,8 +116,8 @@ body: |-
   
   ## Traceability
   
-  - ADRs: `adr:1129`, `adr:1130`, `adr:1052`, `adr:1080`, `adr:1014`, `adr:1051`
-  - Companion specs: `spc:2151`, `spc:2152`, `spc:2153`
+  - ADRs: `adr:1129`, `adr:1130`, `adr:1052`, `adr:1080`, `adr:1014`, `adr:1051`, `adr:1183`
+  - Companion specs: `spc:2151`, `spc:2152`, `spc:2153`, `spc:1138`
   - Defines features: `feat:nested-appspec-pathspec-composition-001`, `feat:path-scoped-protocol-binding-composition-001`, `feat:docs-projectionspec-contract-001`, `feat:docs-payload-projection-selection-001`, `feat:docs-uix-projection-selection-001`, `feat:shared-jsonrpc-dispatcher-table-crud-parity-001`, `feat:nested-appspec-multisurface-corpus-fixtures-001`, `feat:docs-projection-openapi-openrpc-selection-tests-001`, `feat:canonical-spec-concrete-class-rejection-001`, `feat:crud-rest-jsonrpc-shared-dispatcher-parity-corpus-001`, `feat:pathspec-engine-rejection-001`, `feat:docs-transport-projection-selection-001`, `feat:pathkind-websocket-binding-convergence-001`, `feat:docs-websocket-transport-projection-001`
   
   ## Verification Plan
@@ -121,6 +126,7 @@ body: |-
   - Add engine inventory fixtures through `spc:2151` to prove engine binding does not belong to `PathSpec`.
   - Add transport matrix fixtures through `spc:2152` to prove every supported and planned/fail-closed transport scenario is explicit.
   - Add websocket path kind convergence fixtures through `spc:2153` to prove websocket bindings and containing paths agree.
+  - Add inbound webhook fixtures through `spc:1138` to prove webhook authoring lowers to path-owned HTTP POST custom ops.
   - Add negative corpus fixtures that reject concrete runtime model objects as canonical table/op identity in normalized specs.
   - Add OpenAPI/OpenRPC projection tests proving docs inclusion is determined by `DocsProjectionSpec`, not by incidental mounted paths.
   - Add shared JSON-RPC dispatcher tests proving multiple tables can share one dispatcher path while preserving default CRUD parity with REST paths.
@@ -133,3 +139,4 @@ adr_ids:
   - "adr:1014"
   - "adr:1051"
   - "adr:1131"
+  - "adr:1183"

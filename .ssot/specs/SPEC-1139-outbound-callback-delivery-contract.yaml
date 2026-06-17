@@ -1,0 +1,48 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1139"
+number: 1139
+slug: "outbound-callback-delivery-contract"
+title: "Outbound Callback Delivery Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define outbound callback delivery as the replacement contract for the prior outbound webhook-delivery surface."
+supersedes:
+  - "spc:2112"
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T10:17:30Z"
+    note: "Created to replace outbound webhook delivery terminology with callback delivery."
+    status: "draft"
+  -
+    status: "accepted"
+    note: "Outbound remote delivery is now governed as callback delivery; first-class webhook means inbound ingress."
+    at: "2026-06-17T10:17:38Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define outbound callback delivery as the replacement contract for the prior outbound webhook-delivery surface.
+  
+  ## Contract
+  
+  1. Outbound callback delivery emits a runtime-managed event payload to a configured remote endpoint.
+  2. The delivery contract MUST declare event schema, endpoint metadata, payload framing, signing or authentication, retry and backoff policy, timeout behavior, idempotency key handling, dead-letter behavior, delivery status, and completion subevents.
+  3. HTTP POST is an allowed outbound delivery mechanism, but using HTTP POST does not make this surface an inbound webhook.
+  4. Outbound callback delivery MUST NOT be represented as `WebhookSpec` and MUST NOT imply a public `CallbackSpec`.
+  5. Delivery ordering relative to transaction completion, egress shaping, egress finalization, callback fences, and `POST_EMIT` MUST be explicit and diagnostics-visible.
+  6. Compatibility modules or test names that still use webhook vocabulary are historical aliases until renamed; normative docs and new tests use callback-delivery vocabulary.
+  
+  ## Traceability
+  
+  ADRs: adr:1184, adr:1183, adr:1068.
+  Supersedes: spc:2112.
+  Related specs: spc:2098, spc:2101.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1184"
+  - "adr:1183"
+  - "adr:1068"

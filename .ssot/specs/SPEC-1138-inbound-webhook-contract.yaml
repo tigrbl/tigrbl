@@ -1,0 +1,45 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1138"
+number: 1138
+slug: "inbound-webhook-contract"
+title: "Inbound Webhook Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define first-class inbound webhook ingress without inventing a parallel router, callback, or lifecycle model."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define first-class inbound webhook ingress."
+    at: "2026-06-17T10:17:15Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define first-class inbound webhook ingress without inventing a parallel router, callback, or lifecycle model.
+  
+  ## Contract
+  
+  1. An inbound webhook is an externally invoked HTTP event ingress endpoint.
+  2. Canonical lowering MUST use existing spec composition:
+     - `PathSpec(kind=resource)` owns the webhook URL path.
+     - `OpSpec(target=custom)` owns handler semantics, request/response schemas, dependencies, and acknowledgement policy.
+     - `HttpRestBindingSpec(proto=http.rest or https.rest, methods=(POST,), path=<containing path>)` owns the HTTP POST selector.
+  3. The inbound webhook contract MAY define authoring conveniences, but those conveniences MUST normalize to `PathSpec + OpSpec + HttpRestBindingSpec` before runtime compilation, documentation projection, or conformance checks consume them.
+  4. Signature verification, timestamp tolerance, replay protection, idempotency keys, event-type selection, payload schema, acknowledgement status, and failure response policy are ingress concerns and MUST be explicit in the webhook op contract or associated policy metadata.
+  5. Startup and shutdown lifespan handlers are not webhook callbacks.
+  6. `POST_RESPONSE` hooks are in-process semantic hooks. `POST_EMIT` remains a runtime-owned completion fence and is not a public webhook or callback hook phase.
+  7. Inbound webhook documentation projection MUST expose the HTTP POST ingress operation through the ordinary docs projection path selected for HTTP/REST operations.
+  
+  ## Traceability
+  
+  ADRs: adr:1183, adr:1068.
+  Related specs: spc:2028, spc:2150.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1183"
+  - "adr:1068"

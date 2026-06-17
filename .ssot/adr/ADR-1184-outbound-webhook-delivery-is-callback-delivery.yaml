@@ -1,0 +1,37 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1184"
+number: 1184
+slug: "outbound-webhook-delivery-is-callback-delivery"
+title: "Outbound webhook delivery is callback delivery"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "The existing runtime helper under webhook delivery implements outbound POST-like delivery to a configured endpoint. Under the chosen vocabulary, that behavior is callback delivery. Keeping it useful while correcting the taxonomy avoids deleting working runtime behavior."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to reclassify outbound remote delivery as callback delivery."
+    at: "2026-06-17T10:16:51Z"
+references: []
+body: |-
+  ## Decision
+  
+  1. Runtime-managed delivery to a remote endpoint is outbound callback delivery, not the first-class webhook surface.
+  2. The existing outbound delivery contract retains its delivery concerns: endpoint metadata, payload framing, signing, retry, timeout, idempotency, dead-letter handling, completion subevents, and delivery status.
+  3. Names that currently say webhook for outbound delivery are historical compatibility names until implementation and tests are renamed.
+  4. Outbound callback delivery may use HTTP POST, but the transport method does not make it an inbound webhook.
+  5. Callback delivery ordering must be explicit relative to transaction completion, response egress, callback fences, and runtime completion fences.
+  
+  ## Context
+  
+  The existing runtime helper under webhook delivery implements outbound POST-like delivery to a configured endpoint. Under the chosen vocabulary, that behavior is callback delivery. Keeping it useful while correcting the taxonomy avoids deleting working runtime behavior.
+  
+  ## Consequences
+  
+  - Existing outbound webhook delivery specs and tests should be superseded or retitled toward callback delivery.
+  - First-class inbound webhook work can proceed independently as HTTP event ingress.
+  - Runtime subevents should use callback-delivery vocabulary where the runtime is emitting an outbound event.
