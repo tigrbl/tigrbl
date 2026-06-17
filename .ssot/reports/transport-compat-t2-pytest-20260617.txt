@@ -1,0 +1,10 @@
+Command:
+uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_codec_authority.py pkgs/core/tigrbl_tests/tests/architecture/test_transport_hot_path_boundary.py pkgs/core/tigrbl_tests/tests/architecture/test_transport_removal_readiness.py
+
+Result:
+8 passed in 0.62s
+
+Coverage:
+- JSON-RPC frame codec authority is enforced in tigrbl_atoms and does not import deprecated transport shims.
+- Atoms, kernel, and runtime hot-path packages do not import or dynamically reference deprecated transport shim modules.
+- Deprecated REST and JSON-RPC transport modules retain warning-bearing compatibility shims and replacement schema coverage before removal.
