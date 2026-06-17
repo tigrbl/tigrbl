@@ -11,6 +11,7 @@ from tigrbl_core._spec.binding_spec import (
     webtransport_lane_for_profile,
     webtransport_runtime_family,
 )
+from tigrbl_kernel.resume_policy import compile_resume_policy
 
 
 def _unsupported(message: str) -> ValueError:
@@ -239,8 +240,11 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     if kind == "webtransport":
         event_key_inputs["lane"] = lane
         event_key_inputs["inner_framing"] = inner_framing
+    resume_policy = compile_resume_policy(kind, binding)
+    if resume_policy.enabled:
+        event_key_inputs["resume_mode"] = resume_policy.mode
 
-    return {
+    plan: dict[str, object] = {
         "op_id": op_id,
         "binding_kind": kind,
         "family": family,
@@ -252,6 +256,9 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
         },
         "lifecycle_rows": rows,
     }
+    if resume_policy.enabled:
+        plan["resume_policy"] = resume_policy.as_dict()
+    return plan
 
 
 def _required_mask(*, kind: str, family: str, framing: str) -> int:
