@@ -80,6 +80,41 @@ def test_webtransport_stream_id_provisioning_selects_uint8_or_uint16() -> None:
         WebTransportStreamIdProvisioning(max_streams=65_537)
 
 
+def test_lane_id_provisioning_rejects_invalid_encoding_inputs() -> None:
+    with pytest.raises(ValueError, match="lane_id must be an integer"):
+        LaneId(True)
+    with pytest.raises(ValueError, match="lane_id must be an integer"):
+        LaneId("1")  # type: ignore[arg-type]
+    with pytest.raises(ValueError, match="Initiator"):
+        LaneId.encode(initiator=2, direction=Direction.BIDI, ordinal=0)  # type: ignore[arg-type]
+    with pytest.raises(ValueError, match="Direction"):
+        LaneId.encode(initiator=Initiator.CLIENT, direction=2, ordinal=0)  # type: ignore[arg-type]
+    with pytest.raises(ValueError, match="ordinal must be an integer"):
+        LaneId.encode(
+            initiator=Initiator.CLIENT,
+            direction=Direction.BIDI,
+            ordinal=True,  # type: ignore[arg-type]
+        )
+    with pytest.raises(ValueError, match="14 bits"):
+        LaneId.encode(
+            initiator=Initiator.CLIENT,
+            direction=Direction.BIDI,
+            ordinal=16_384,
+            width=StreamIdWidth.UINT16,
+        )
+
+
+def test_webtransport_stream_id_provisioning_rejects_invalid_stream_caps() -> None:
+    with pytest.raises(ValueError, match="integer"):
+        WebTransportStreamIdProvisioning(max_streams=True)  # type: ignore[arg-type]
+    with pytest.raises(ValueError, match="integer"):
+        WebTransportStreamIdProvisioning(max_streams="256")  # type: ignore[arg-type]
+    with pytest.raises(ValueError, match="between 1 and uint16"):
+        WebTransportStreamIdProvisioning(max_streams=0)
+    with pytest.raises(ValueError, match="between 1 and uint16"):
+        WebTransportStreamIdProvisioning(max_streams=65_537)
+
+
 def test_webtransport_session_exposes_provisioning_and_caps_distinct_streams() -> None:
     session = WebTransportSessionState(session_id="sess-1", max_streams=2)
 

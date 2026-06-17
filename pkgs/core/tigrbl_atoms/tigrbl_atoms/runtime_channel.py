@@ -36,6 +36,8 @@ class LaneId:
     width: StreamIdWidth = StreamIdWidth.UINT8
 
     def __post_init__(self) -> None:
+        if isinstance(self.value, bool) or not isinstance(self.value, int):
+            raise ValueError("lane_id must be an integer")
         width = StreamIdWidth(self.width)
         object.__setattr__(self, "width", width)
         max_value = (1 << int(width)) - 1
@@ -62,7 +64,11 @@ class LaneId:
         ordinal: int,
         width: StreamIdWidth = StreamIdWidth.UINT8,
     ) -> "LaneId":
+        initiator = Initiator(initiator)
+        direction = Direction(direction)
         width = StreamIdWidth(width)
+        if isinstance(ordinal, bool) or not isinstance(ordinal, int):
+            raise ValueError("ordinal must be an integer")
         ordinal_bits = int(width) - 2
         max_ordinal = (1 << ordinal_bits) - 1
         if not 0 <= ordinal <= max_ordinal:
@@ -76,6 +82,8 @@ class WebTransportStreamIdProvisioning:
     max_streams: int
 
     def __post_init__(self) -> None:
+        if isinstance(self.max_streams, bool) or not isinstance(self.max_streams, int):
+            raise ValueError("max WT streams must be an integer")
         if not 1 <= self.max_streams <= UINT16_MAX_STREAMS:
             raise ValueError("max WT streams must be between 1 and uint16")
 
