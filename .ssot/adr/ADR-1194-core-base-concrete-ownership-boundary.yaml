@@ -1,0 +1,42 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1194"
+number: 1194
+slug: "core-base-concrete-ownership-boundary"
+title: "Core base concrete ownership boundary"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Recent callback/webhook work exposed a recurring package-boundary failure: code that should be expressed as concrete authoring, core specs, base abstractions, atoms, or kernel compilation often lands in runtime or in the wrong upstream package. The same risk exists across the core/base/concrete split unless those boundaries are stated and enforced directly."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern tigrbl_core, tigrbl_base, and tigrbl_concrete ownership boundaries."
+    at: "2026-06-17T15:53:00Z"
+references: []
+body: |-
+  ## Decision
+  1. `tigrbl_core`, `tigrbl_base`, and `tigrbl_concrete` are separate ownership layers, not interchangeable implementation buckets.
+  2. `tigrbl_core` owns declarative spec records, schema contracts, spec validation, spec serialization, and spec export policy. It must not own concrete authoring helpers, decorators, shortcuts, factories, base abstractions, kernel compilation, or runtime execution.
+  3. `tigrbl_base` owns reusable abstract/base behavior only when multiple concrete families share real behavior. It must not own one-off helpers, concrete aliases, decorators, shortcuts, factories, lowering orchestration, kernel compilation, or runtime execution.
+  4. `tigrbl_concrete` owns user-facing authoring surfaces: concrete classes, decorators, shortcuts, aliases, factories, and governed CamelCase `Make*`, `Define*`, and `Derive*` forms. It lowers authoring forms into `tigrbl_core` specs.
+  5. `tigrbl_concrete` must not define new canonical specs, own reusable base abstractions that belong in `tigrbl_base`, compile kernel plans, import `tigrbl_kernel` during package import, or execute runtime behavior.
+  6. Concrete lowering produces canonical specs and metadata for atoms/kernel compilation. Runtime receives already-compiled plans; it is not an authoring or lowering layer.
+  7. Package names are retained. Governance is established through explicit ownership contracts and architecture tests.
+  ## Context
+  Recent callback/webhook work exposed a recurring package-boundary failure: code that should be expressed as concrete authoring, core specs, base abstractions, atoms, or kernel compilation often lands in runtime or in the wrong upstream package. The same risk exists across the core/base/concrete split unless those boundaries are stated and enforced directly.
+  `adr:1002` governs the whole package DAG. This ADR narrows the core/base/concrete ownership rule so new surfaces can be placed before implementation begins.
+  ## Consequences
+  - New declarative contracts begin in `tigrbl_core` only when they are canonical spec records.
+  - New shared inheritance behavior begins in `tigrbl_base` only when more than one concrete family uses it.
+  - New public authoring ergonomics begin in `tigrbl_concrete` and lower into existing or new core specs.
+  - Architecture tests must reject core importing base/concrete/kernel/runtime, base importing concrete/kernel/runtime, and concrete importing kernel/runtime execution internals beyond approved public adapters.
+  - Existing export and helper specs must link to this ADR or its focused package contracts.
+  ## Rejected Alternatives
+  - Treating `tigrbl_core` as a convenient home for any small shared helper.
+  - Treating `tigrbl_base` as a staging area for concrete authoring APIs.
+  - Treating `tigrbl_concrete` as a runtime or kernel compilation layer.
+  - Renaming packages before executable ownership boundaries are in place.

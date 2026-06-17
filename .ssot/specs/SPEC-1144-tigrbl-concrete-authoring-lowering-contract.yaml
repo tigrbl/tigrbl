@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1144"
+number: 1144
+slug: "tigrbl-concrete-authoring-lowering-contract"
+title: "tigrbl_concrete authoring and lowering contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A canonical spec, base abstraction, kernel compiler, or runtime executor inside `tigrbl_concrete` is non-conforming unless a later accepted ADR supersedes this contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern tigrbl_concrete authoring, factory, shortcut, and lowering ownership."
+    at: "2026-06-17T15:53:44Z"
+references: []
+body: |-
+  ## Contract
+  1. `tigrbl_concrete` is the public authoring and concrete lowering layer.
+  2. `tigrbl_concrete` owns concrete classes, decorators, shortcuts, aliases, factory surfaces, and governed CamelCase `Make*`, `Define*`, and `Derive*` authoring forms.
+  3. `tigrbl_concrete` lowers concrete authoring forms into canonical `tigrbl_core` specs and metadata for atoms/kernel compilation.
+  4. `tigrbl_concrete` may depend on `tigrbl_core`, `tigrbl_base`, and approved runtime-facing public adapters only where import-time behavior does not load kernel or execute plans.
+  5. `tigrbl_concrete` must not define new canonical specs, own reusable base abstractions that belong in `tigrbl_base`, compile kernel plans, import `tigrbl_kernel` during package import, or execute runtime behavior.
+  6. Concrete shortcuts and aliases must expand to canonical forms; they must not create independent feature trees unavailable through core specs.
+  7. Concrete authoring helpers that exist only for compatibility must emit deprecation warnings and delegate to the owning concrete or spec surface with a removal path.
+  ## Required Verification
+  - Static import tests prove concrete package import does not load `tigrbl_kernel` and does not import runtime execution internals outside an allowlist.
+  - Authoring surface tests prove concrete owns decorators, shortcuts, aliases, factories, and Make/Define/Derive forms.
+  - Lowering tests prove concrete authoring lowers to `tigrbl_core` specs rather than runtime construction paths.
+  ## Non-Conformance
+  A canonical spec, base abstraction, kernel compiler, or runtime executor inside `tigrbl_concrete` is non-conforming unless a later accepted ADR supersedes this contract.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1194"
+  - "adr:1002"
+  - "adr:1017"
+  - "adr:1018"
+  - "adr:1019"

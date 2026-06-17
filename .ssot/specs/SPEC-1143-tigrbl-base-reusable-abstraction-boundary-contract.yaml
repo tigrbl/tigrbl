@@ -1,0 +1,38 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1143"
+number: 1143
+slug: "tigrbl-base-reusable-abstraction-boundary-contract"
+title: "tigrbl_base reusable abstraction boundary contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A concrete alias, decorator, shortcut, factory, lowering orchestrator, kernel compiler, or runtime executor inside `tigrbl_base` is non-conforming unless a later accepted ADR supersedes this contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern tigrbl_base reusable abstraction ownership and import boundaries."
+    at: "2026-06-17T15:53:29Z"
+references: []
+body: |-
+  ## Contract
+  1. `tigrbl_base` is the reusable abstraction layer for inheritance-oriented contract surfaces.
+  2. `tigrbl_base` owns abstract/base forms only when multiple concrete families share meaningful behavior or a stable inheritance contract.
+  3. `tigrbl_base` may normalize spec-shaped inputs only to support base behavior and must delegate canonical declaration authority to `tigrbl_core` specs.
+  4. `tigrbl_base` must not define one-off helpers, concrete authoring aliases, decorators, shortcuts, factories, `Make*`, `Define*`, or `Derive*` authoring forms.
+  5. `tigrbl_base` must not orchestrate concrete-to-spec lowering, compile kernel plans, execute runtime behavior, or import `tigrbl_concrete`, `tigrbl_kernel`, or `tigrbl_runtime`.
+  6. A new base form must cite at least one concrete family or public inheritance contract that justifies base-layer ownership.
+  ## Required Verification
+  - Static import tests prove `tigrbl_base` does not import concrete, kernel, or runtime packages.
+  - Public export tests prove base exports are base abstractions, not concrete authoring aliases or factories.
+  - Base behavior tests prove shared abstractions operate through core specs without concrete/runtime dependencies.
+  ## Non-Conformance
+  A concrete alias, decorator, shortcut, factory, lowering orchestrator, kernel compiler, or runtime executor inside `tigrbl_base` is non-conforming unless a later accepted ADR supersedes this contract.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1194"
+  - "adr:1002"
+  - "adr:1053"

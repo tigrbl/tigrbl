@@ -1,0 +1,39 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1142"
+number: 1142
+slug: "tigrbl-core-declarative-spec-authority-contract"
+title: "tigrbl_core declarative spec authority contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "A concrete helper, decorator, shortcut, factory, base abstraction, kernel compiler, or runtime executor inside `tigrbl_core` is non-conforming unless a later accepted ADR supersedes this contract."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern tigrbl_core declarative spec ownership and import boundaries."
+    at: "2026-06-17T15:53:16Z"
+references: []
+body: |-
+  ## Contract
+  1. `tigrbl_core` is the declarative spec authority layer.
+  2. `tigrbl_core` owns canonical spec records, schema contracts, validation primitives, serialization/compatibility behavior for spec records, and private/public spec export policy.
+  3. `tigrbl_core` may expose canonical spec objects through controlled public facades and compatibility projections.
+  4. `tigrbl_core` must not define concrete authoring helpers, decorators, shortcuts, factories, `Make*`, `Define*`, or `Derive*` authoring forms.
+  5. `tigrbl_core` must not define reusable base abstractions that belong in `tigrbl_base`.
+  6. `tigrbl_core` must not compile kernel plans, execute runtime behavior, or import `tigrbl_base`, `tigrbl_concrete`, `tigrbl_kernel`, or `tigrbl_runtime`.
+  7. Core additions that are not canonical declarative spec records require explicit ownership justification or relocation before implementation.
+  ## Required Verification
+  - Static import tests prove `tigrbl_core` does not import base, concrete, kernel, or runtime packages.
+  - Public export tests prove core public surfaces are spec/schema/validation surfaces, not authoring helpers.
+  - Contract tests prove core specs serialize, validate, and round-trip without concrete/runtime dependencies.
+  ## Non-Conformance
+  A concrete helper, decorator, shortcut, factory, base abstraction, kernel compiler, or runtime executor inside `tigrbl_core` is non-conforming unless a later accepted ADR supersedes this contract.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1194"
+  - "adr:1002"
+  - "adr:1052"
