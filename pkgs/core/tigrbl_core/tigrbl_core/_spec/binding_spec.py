@@ -60,8 +60,8 @@ APP_LEVEL_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
     "https.stream": ("stream", "bytes", "binary", "text", "json", "ndjson"),
     "http.sse": ("sse",),
     "https.sse": ("sse",),
-    "ws": ("text", "bytes", "binary", "json", "jsonrpc"),
-    "wss": ("text", "bytes", "binary", "json", "jsonrpc"),
+    "ws": ("text", "bytes", "binary", "json", "jsonrpc", "ndjson"),
+    "wss": ("text", "bytes", "binary", "json", "jsonrpc", "ndjson"),
     "webtransport": ("webtransport",),
 }
 
@@ -154,17 +154,16 @@ def validate_app_framing_for_binding(
     allowed = APP_LEVEL_FRAMING_SUPPORT.get(binding_kind)
     if allowed is None:
         raise ValueError(f"unsupported binding kind {binding_kind!r}")
-    if selected == "ndjson" and binding_kind in {"ws", "wss"}:
-        raise ValueError("WebSocket ndjson framing is unsupported and must fail closed")
     if selected not in allowed:
         raise ValueError(
             f"unsupported app-level framing {selected!r} for binding {binding_kind!r}"
         )
-    if selected == "jsonrpc" and binding_kind in {"ws", "wss"}:
+    if selected in {"jsonrpc", "ndjson"} and binding_kind in {"ws", "wss"}:
         lowered = tuple(str(item).lower() for item in subprotocols)
-        if "jsonrpc" not in lowered:
+        if selected not in lowered:
             raise ValueError(
-                "WebSocket jsonrpc framing requires subprotocols to include 'jsonrpc'."
+                f"WebSocket {selected} framing requires subprotocols to include "
+                f"'{selected}'."
             )
     if selected == "ndjson" and "jsonrpc" in binding_kind:
         raise ValueError("ndjson is not a JSON-RPC framing substitute")

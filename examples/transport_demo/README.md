@@ -28,7 +28,7 @@ The app entrypoint is [app.py](/E:/swarmauri_github/tigrbl/examples/transport_de
 | websocket `ws` | `/ws/echo` | runnable |
 | websocket `wss` | `/wss/echo` | runnable at app/binding level; needs TLS-capable serving layer |
 | `wss + jsonrpc` | `/wss/jsonrpc` | runnable at app/binding level; requires `jsonrpc` subprotocol |
-| `wss + ndjson` | fail-closed negative demo | intentionally rejected by `WsBindingSpec` |
+| `wss + ndjson` | fail-closed negative demo | rejected without the required `ndjson` subprotocol |
 | mtls | `/mtls/echo` | docs and security-scheme demo are runnable; real client cert exchange depends on serving layer and cert material |
 | webtransport session | `/transport/session` | provisional binding demo; the app models the session payload and metadata honestly, but this repo does not yet claim a mature release-grade WebTransport server path |
 
@@ -91,7 +91,7 @@ curl -X POST http://127.0.0.1:8000/rpc -H "Content-Type: application/json" -d "{
 
 - `ws/wss` text echo uses `/ws/echo` and `/wss/echo`.
 - `wss + jsonrpc` uses `/wss/jsonrpc` and requires the `jsonrpc` subprotocol.
-- `wss + ndjson` is intentionally negative in this repo. `WsBindingSpec(proto="wss", framing="ndjson")` still raises a fail-closed `ValueError`, and this bundle keeps that behavior explicit instead of pretending there is a working newline-delimited websocket framing.
+- `wss + ndjson` requires the `ndjson` subprotocol. The negative demo intentionally omits that subprotocol so `WsBindingSpec(proto="wss", framing="ndjson")` still raises before runtime dispatch.
 
 ## mTLS Notes
 
@@ -111,4 +111,3 @@ For a client-side SPIFFE/TLS helper example, reuse [exchange_mtls.py](/E:/swarma
 - one client-to-server datagram and one server-to-client datagram
 
 That matches the requested demo shape while staying honest that current repo support is still provisional at the WebTransport transport boundary.
-

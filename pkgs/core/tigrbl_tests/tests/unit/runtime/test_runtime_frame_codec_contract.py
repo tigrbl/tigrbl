@@ -209,6 +209,13 @@ def test_framing_negative_corpus_runtime_t2() -> None:
     bad_cases = (
         lambda: decode_frame("json", b"{"),
         lambda: decode_frame("jsonrpc", b'{"jsonrpc":"2.0"}'),
+        lambda: decode_frame("jsonrpc", b'{"jsonrpc":"2.0","id":1}'),
+        lambda: decode_frame(
+            "jsonrpc",
+            b'{"jsonrpc":"2.0","id":1,"error":{"code":"bad","message":"x"}}',
+        ),
+        lambda: decode_frame("ndjson", b'{"ok":true}\n\n'),
+        lambda: encode_frame("ndjson", {"not": "a record sequence"}),
         lambda: encode_frame("yaml", {}),
         lambda: app_frame.decode_app_frame(b"\x01"),
         lambda: app_frame.decode_app_frame(bytes((1, 1, 0x80, 0)) + (0).to_bytes(4, "big")),
@@ -220,12 +227,40 @@ def test_framing_negative_corpus_runtime_t2() -> None:
 
 
 def test_websocket_jsonrpc_subprotocol_codec_t2() -> None:
-    with pytest.raises(ValueError, match="ndjson"):
+    with pytest.raises(ValueError, match="requires subprotocols"):
         WsBindingSpec(proto="ws", path="/events", framing="ndjson")
+
+    ndjson = WsBindingSpec(
+        proto="ws",
+        path="/events",
+        framing="ndjson",
+        subprotocols=("ndjson",),
+    )
+    assert ndjson.framing == "ndjson"
+    assert ndjson.subprotocols == ("ndjson",)
+    assert decode_frame(
+        "websocket.ndjson",
+        encode_frame("websocket.ndjson", [{"event": "ready"}]),
+    ) == [{"event": "ready"}]
 
     assert WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc").subprotocols == (
         "jsonrpc",
     )
+
+
+def test_runtime_websocket_frame_codec_adapters_t2() -> None:
+    bad_cases = (
+        lambda: decode_frame("websocket.text", b"\xff"),
+        lambda: decode_frame("websocket.json", {"type": "websocket.receive", "text": "not-json"}),
+        lambda: decode_frame("websocket.ndjson", b'{"ok":true}\n\n'),
+        lambda: decode_frame("websocket.jsonrpc", b'{"jsonrpc":"2.0","id":1}'),
+        lambda: encode_frame("websocket.bytes", "not-bytes"),
+        lambda: decode_frame("websocket.binary", {"type": "websocket.receive", "text": "wrong-slot"}),
+    )
+
+    for case in bad_cases:
+        with pytest.raises(ValueError):
+            case()
 
 
 def test_webtransport_stream_inner_codec_runtime_t2() -> None:
@@ -237,6 +272,16 @@ def test_webtransport_stream_inner_codec_runtime_t2() -> None:
         )["lane"]
         == "unidi_server_stream"
     )
+    encoded = encode_webtransport_inner_frame(
+        lane="unidi_server_stream",
+        framing="ndjson",
+        payload=[{"chunk": 1}, {"chunk": 2}],
+    )
+    assert decode_webtransport_inner_frame(
+        lane="unidi_server_stream",
+        framing="ndjson",
+        payload=encoded,
+    ) == [{"chunk": 1}, {"chunk": 2}]
 
 
 def test_webtransport_datagram_inner_codec_runtime_t2() -> None:
@@ -246,20 +291,41 @@ def test_webtransport_datagram_inner_codec_runtime_t2() -> None:
             channel="receive",
             payload={"datagram_id": "d1", "framing": "jsonrpc"},
         )
+    with pytest.raises(ValueError, match="unsupported WebTransport inner framing"):
+        encode_webtransport_inner_frame(
+            lane="datagram",
+            framing="ndjson",
+            payload=[{"bad": True}],
+        )
+    with pytest.raises(ValueError, match="session lane"):
+        decode_webtransport_inner_frame(
+            lane="session",
+            framing="json",
+            payload=b'{"bad":true}',
+        )
 
 
 def test_transport_demo_frame_codec_matrix_t2() -> None:
     frames = (
         encode_frame("json", {"transport": "http"}),
         encode_frame("jsonrpc", {"method": "rpc.call"}),
+        encode_frame("ndjson", [{"transport": "stream"}]),
         encode_frame("sse", {"data": "event"}),
         encode_frame("websocket.text", "socket"),
+        encode_frame("websocket.json", {"socket": "json"}),
+        encode_frame("websocket.ndjson", [{"socket": "ndjson"}]),
     )
 
     assert frames[0] == b'{"transport":"http"}'
     assert frames[1] == b'{"method":"rpc.call","jsonrpc":"2.0"}'
-    assert frames[2] == b"data: event\n\n"
-    assert frames[3] == {"type": "websocket.send", "text": "socket"}
+    assert frames[2] == b'{"transport":"stream"}\n'
+    assert frames[3] == b"data: event\n\n"
+    assert frames[4] == {"type": "websocket.send", "text": "socket"}
+    assert frames[5] == {"type": "websocket.send", "text": '{"socket":"json"}'}
+    assert frames[6] == {
+        "type": "websocket.send",
+        "text": '{"socket":"ndjson"}\n',
+    }
 
 
 def test_codec_errors_map_to_runtime_fail_closed_t2() -> None:

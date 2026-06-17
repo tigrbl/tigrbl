@@ -149,7 +149,7 @@ def test_kernel_plan_rejects_profile_exchange_drift(binding) -> None:
         compile_binding_protocol_plan("Transport.bad", binding)
 
 
-def test_websocket_jsonrpc_and_ndjson_fail_closed_policy() -> None:
+def test_websocket_jsonrpc_and_ndjson_subprotocol_policy() -> None:
     assert (
         validate_app_framing_for_binding(
             binding_kind="ws",
@@ -160,8 +160,14 @@ def test_websocket_jsonrpc_and_ndjson_fail_closed_policy() -> None:
     )
     with pytest.raises(ValueError, match="subprotocols"):
         WebSocketBindingSpec(proto="ws", path="/socket", framing="jsonrpc")
-    with pytest.raises(ValueError, match="framing"):
+    with pytest.raises(ValueError, match="subprotocols"):
         WsBindingSpec(proto="wss", path="/socket", framing="ndjson")
+    assert WsBindingSpec(
+        proto="wss",
+        path="/socket",
+        framing="ndjson",
+        subprotocols=("NDJSON",),
+    ).subprotocols == ("ndjson",)
 
 
 @pytest.mark.parametrize(

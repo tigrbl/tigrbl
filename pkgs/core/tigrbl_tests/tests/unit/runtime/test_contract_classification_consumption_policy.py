@@ -48,6 +48,22 @@ def test_contract_to_kernelplan_alias_matrix_accepts_websocket_profiles() -> Non
     assert plan["family"] == "message"
     assert plan["framing"] == "jsonrpc"
 
+    ndjson_plan = compile_binding_protocol_plan(
+        "Socket.events",
+        {
+            "kind": "websocket",
+            "proto": "ws",
+            "profile": "websocket",
+            "path": "/socket/events",
+            "framing": "ndjson",
+            "subprotocols": ("ndjson",),
+        },
+    )
+
+    assert ndjson_plan["binding_kind"] == "ws"
+    assert ndjson_plan["family"] == "message"
+    assert ndjson_plan["framing"] == "ndjson"
+
 
 def test_kernelplan_rejects_unsupported_framing_combinations_before_runtime() -> None:
     invalid = (

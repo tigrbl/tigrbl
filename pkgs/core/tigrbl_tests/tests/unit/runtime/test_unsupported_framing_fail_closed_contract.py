@@ -14,9 +14,18 @@ def test_unknown_transport_framing_rejects_before_dispatch() -> None:
         validate_app_framing_for_binding(binding_kind="http.rest", framing="jsonrpc")
 
 
-def test_websocket_ndjson_framing_does_not_fallback_to_text_json() -> None:
-    with pytest.raises(ValueError, match="fail closed"):
+def test_websocket_ndjson_framing_requires_explicit_subprotocol() -> None:
+    with pytest.raises(ValueError, match="requires subprotocols"):
         WsBindingSpec(proto="ws", path="/socket", framing="ndjson")
+
+    binding = WsBindingSpec(
+        proto="ws",
+        path="/socket",
+        framing="ndjson",
+        subprotocols=("ndjson",),
+    )
+
+    assert binding.framing == "ndjson"
 
 
 def test_websocket_jsonrpc_profile_rejects_non_jsonrpc_framing() -> None:

@@ -52,13 +52,13 @@ async def _run_websocket(
     return sent
 
 
-def test_transport_demo_negative_examples_preserve_wss_ndjson_fail_closed_contract() -> None:
+def test_transport_demo_negative_examples_preserve_wss_ndjson_subprotocol_contract() -> None:
     module = _load_demo_module()
 
     failures = module.build_fail_closed_examples()
 
     assert "wss_ndjson" in failures
-    assert "unsupported" in failures["wss_ndjson"].lower()
+    assert "subprotocols" in failures["wss_ndjson"].lower()
     assert "ndjson" in failures["wss_ndjson"].lower()
 
 

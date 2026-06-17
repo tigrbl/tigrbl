@@ -102,7 +102,7 @@ def test_transport_path_kinds_converge_with_bindings() -> None:
         )
 
 
-def test_websocket_jsonrpc_subprotocol_required_and_ndjson_fails_closed() -> None:
+def test_websocket_jsonrpc_and_ndjson_subprotocols_are_required() -> None:
     binding = WsBindingSpec(
         proto="wss",
         path="/wss/rpc",
@@ -124,16 +124,27 @@ def test_websocket_jsonrpc_subprotocol_required_and_ndjson_fails_closed() -> Non
             subprotocols=("v2",),
         )
 
-    with pytest.raises(ValueError, match="fail closed"):
-        WsBindingSpec(proto="ws", path="/ws/ndjson", framing="ndjson", subprotocols=("ndjson",))
+    with pytest.raises(ValueError, match="requires subprotocols"):
+        WsBindingSpec(proto="ws", path="/ws/ndjson", framing="ndjson")
 
-    with pytest.raises(ValueError, match="fail closed"):
+    validate_path_binding(
+        PathSpec(path="/ws/ndjson", kind="ws-ndjson"),
+        WsBindingSpec(
+            proto="ws",
+            path="/ws/ndjson",
+            framing="ndjson",
+            subprotocols=("ndjson",),
+        ),
+    )
+    validate_path_binding(
+        PathSpec(path="/wss/ndjson", kind="wss-ndjson"),
         WsBindingSpec(
             proto="wss",
             path="/wss/ndjson",
             framing="ndjson",
             subprotocols=("ndjson",),
-        )
+        ),
+    )
 
 
 def test_docs_projection_selects_transport_metadata_explicitly() -> None:

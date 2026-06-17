@@ -1,50 +1,61 @@
 # Tigrbl Current Framing Support Matrix
 
-Saved from live repo review on 2026-05-23.
+Saved from live repo review on 2026-06-17.
 
 This note reflects current support found in the live checkout. It is intentionally
 grounded in spec, kernel, runtime, and test surfaces rather than aspirational
 framing vocabulary.
 
-## Emoji Legend
+## Legend
 
-- `🟢` supported
-- `🟡` partial or constrained
-- `🟠` provisional or tracked
-- `🔴` not supported or fail-closed
+- `supported` means policy and executable encode/decode coverage exist.
+- `partial` means policy exists but the transport surface is constrained or output-only.
+- `provisional` means vocabulary or event modeling exists but mature serving support is not claimed.
+- `not supported` means the combination still fails closed.
 
 ## Current Support Matrix
 
 | Proto | Binding | Default framing | Current support | Notes |
 |---|---|---|---|---|
-| `http.rest` | `HttpRestBindingSpec` | `json` | `🟢 json` | REST currently rejects non-`json` framing. |
-| `https.rest` | `HttpRestBindingSpec` | `json` | `🟢 json` | Same behavior as `http.rest`. |
-| `http.jsonrpc` | `HttpJsonRpcBindingSpec` | `jsonrpc` | `🟢 jsonrpc` | Explicit JSON-RPC binding plus runtime encode/decode support. |
-| `https.jsonrpc` | `HttpJsonRpcBindingSpec` | `jsonrpc` | `🟢 jsonrpc` | Same behavior as `http.jsonrpc`. |
-| `http.stream` | `HttpStreamBindingSpec` | `stream` | `🟢 stream` | First-class HTTP streaming binding. |
-| `https.stream` | `HttpStreamBindingSpec` | `stream` | `🟢 stream` | Same behavior as `http.stream`. |
-| `http.sse` | `SseBindingSpec` | `sse` | `🟢 sse` | First-class SSE surface with encoder support. |
-| `https.sse` | `SseBindingSpec` | `sse` | `🟢 sse` | Same behavior as `http.sse`. |
-| `ws` | `WsBindingSpec` | `text` | `🟢 text`, `🟡 jsonrpc`, `🟡 binary/bytes raw`, `🔴 ndjson` | `jsonrpc` requires the `jsonrpc` subprotocol; `ndjson` is explicitly fail-closed. |
-| `wss` | `WsBindingSpec` | `text` | `🟢 text`, `🟡 jsonrpc`, `🟡 binary/bytes raw`, `🔴 ndjson` | Same behavior as `ws`, with secure-scope support. |
-| `webtransport` | `WebTransportBindingSpec` | `webtransport` | `🟠 transport/session only` | Present in binding, kernel, and event-model surfaces, but still provisional. |
-| arbitrary `str` | `MessageBindingSpec` | `bytes` | `🟡 declared` | Declared at spec level; first-class runtime framing support was not established in this review. |
-| arbitrary `str` | `DatagramBindingSpec` | `bytes` | `🟡 declared`, `🟠 webtransport-aligned` | Declared at spec level; strongest concrete evidence is under WebTransport event coverage. |
+| `http.rest` | `HttpRestBindingSpec` | `json` | `supported: json` | REST currently rejects non-`json` framing. |
+| `https.rest` | `HttpRestBindingSpec` | `json` | `supported: json` | Same behavior as `http.rest`. |
+| `http.jsonrpc` | `HttpJsonRpcBindingSpec` | `jsonrpc` | `supported: jsonrpc` | Explicit JSON-RPC binding plus runtime encode/decode support for request, response, error, and batch documents. |
+| `https.jsonrpc` | `HttpJsonRpcBindingSpec` | `jsonrpc` | `supported: jsonrpc` | Same behavior as `http.jsonrpc`. |
+| `http.stream` | `HttpStreamBindingSpec` | `stream` | `supported: stream`, `bytes`, `binary`, `text`, `json`, `ndjson` | First-class HTTP streaming binding with executable codec atoms. |
+| `https.stream` | `HttpStreamBindingSpec` | `stream` | `supported: stream`, `bytes`, `binary`, `text`, `json`, `ndjson` | Same behavior as `http.stream`. |
+| `http.sse` | `SseBindingSpec` | `sse` | `partial: sse encode-only` | First-class SSE surface with encoder support. |
+| `https.sse` | `SseBindingSpec` | `sse` | `partial: sse encode-only` | Same behavior as `http.sse`. |
+| `ws` | `WsBindingSpec` | `text` | `supported: text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson` | `jsonrpc` requires the `jsonrpc` subprotocol; `ndjson` requires the `ndjson` subprotocol. |
+| `wss` | `WsBindingSpec` | `text` | `supported: text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson` | Same behavior as `ws`, with secure-scope support. |
+| `webtransport` | `WebTransportBindingSpec` | `webtransport` | `partial: lane-validated inner codecs` | Inner stream lanes support `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`; datagrams support `bytes`, `binary`, `text`, and `json`. The serving boundary remains provisional. |
+| arbitrary `str` | `MessageBindingSpec` | `bytes` | `provisional: declared` | Declared at spec level; strongest concrete evidence is still WebSocket message and WebTransport event coverage. |
+| arbitrary `str` | `DatagramBindingSpec` | `bytes` | `partial: WebTransport-aligned` | WebTransport datagram inner codecs execute for `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` remain excluded. |
 
 ## Important Distinction
 
-The framing token vocabulary is broader than actual implemented support. The spec
+The framing token vocabulary is broader than actual transport maturity. The spec
 declares `json`, `jsonrpc`, `ndjson`, `sse`, `stream`, `text`, `binary`,
-`bytes`, and `webtransport`, but the runtime framing atoms reviewed here
-explicitly implement only:
+`bytes`, and `webtransport`. Runtime codec atoms now explicitly implement:
 
 - `json`
-- `jsonrpc`
-- `sse`
+- `jsonrpc` request, response, error, and batch documents
+- `ndjson`
+- `text`
+- `bytes`
+- `binary`
+- `stream`
+- `sse` encode-only
 - `websocket.text`
+- `websocket.json`
+- `websocket.jsonrpc`
+- `websocket.ndjson`
+- `websocket.bytes`
+- `websocket.binary`
+- WebTransport inner encode/decode helpers after lane legality validation
 
-That means token presence in the type surface should not be treated as evidence
-that the corresponding transport framing is fully implemented.
+Token presence in a type surface is still not enough by itself. A framing is
+runtime-supported only when binding policy and executable codec tests both cover
+it.
 
 ## Key Repo Signals
 
@@ -54,17 +65,20 @@ that the corresponding transport framing is fully implemented.
 - `SseBindingSpec` defaults to `sse`.
 - `WsBindingSpec` defaults to `text`.
 - `WsBindingSpec framing="jsonrpc"` requires the `jsonrpc` subprotocol.
-- `WsBindingSpec framing="ndjson"` is planned but not implemented and fails closed.
-- `WebTransportBindingSpec` exists, but repo docs and tests still place it in a provisional bucket rather than a fully mature current-target surface.
+- `WsBindingSpec framing="ndjson"` requires the `ndjson` subprotocol.
+- `WebTransportBindingSpec` validates lane-local inner framing before runtime codec dispatch.
+- Remaining gaps: REST non-JSON request/response framing, HTTP client-stream exchange split, distinct `wt`/`wts` alias rows, and mature WebTransport serving support.
 
 ## File Pointers
 
 - `pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py`
 - `pkgs/core/tigrbl_kernel/tigrbl_kernel/protocol_bindings.py`
-- `pkgs/core/tigrbl_runtime/tigrbl_runtime/protocol/framing_atoms.py`
+- `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/framing/codec.py`
+- `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/framing/app_frame.py`
 - `pkgs/core/tigrbl_core/tests/test_canonical_appspec_transport_contract.py`
-- `pkgs/core/tigrbl_tests/tests/unit/runtime/test_websocket_atom_chain_contract.py`
-- `pkgs/core/tigrbl_tests/tests/unit/runtime/test_webtransport_transport_events_contract.py`
+- `pkgs/core/tigrbl_tests/tests/unit/runtime/test_runtime_frame_codec_contract.py`
+- `pkgs/core/tigrbl_tests/tests/unit/runtime/test_websocket_framing_runtime_contract.py`
+- `pkgs/core/tigrbl_tests/tests/unit/runtime/test_webtransport_lane_framing_policy.py`
 - `docs/developer/operator/websockets-and-sse.md`
 - `docs/monitoring-and-transport-support-matrix.md`
 
@@ -89,8 +103,8 @@ HTTP version facts remain scope metadata, not framing shortcuts.
 | `https.stream.response` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
 | `http.sse` | `stream` | `server_stream` | `sse` required and exclusive |
 | `https.sse` | `stream` | `server_stream` | `sse` required and exclusive |
-| `ws` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol/contract gating |
-| `wss` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol/contract gating |
+| `ws` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` and `ndjson` require explicit subprotocol/contract gating |
+| `wss` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` and `ndjson` require explicit subprotocol/contract gating |
 | `wt.session` | `session` | `unary` | no app-level framing; session metadata only |
 | `wts.session` | `session` | `unary` | no app-level framing; session metadata only |
 | `wt.bidi_stream` | `stream` | `duplex` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |

@@ -48,14 +48,23 @@ def test_websocket_jsonrpc_framing_requires_jsonrpc_subprotocol(proto: str) -> N
 
 
 @pytest.mark.parametrize("proto", ("ws", "wss"))
-def test_websocket_ndjson_fails_closed(proto: str) -> None:
-    with pytest.raises(ValueError, match="fail closed"):
+def test_websocket_ndjson_requires_matching_subprotocol(proto: str) -> None:
+    with pytest.raises(ValueError, match="requires subprotocols"):
         WsBindingSpec(
             proto=proto,  # type: ignore[arg-type]
             path="/stream",
             framing="ndjson",
-            subprotocols=("ndjson",),
         )
+
+    binding = WsBindingSpec(
+        proto=proto,  # type: ignore[arg-type]
+        path="/stream",
+        framing="ndjson",
+        subprotocols=("NDJSON",),
+    )
+
+    assert binding.framing == "ndjson"
+    assert binding.subprotocols == ("ndjson",)
 
 
 @pytest.mark.parametrize("framing", ("sse", "webtransport", "stream"))
