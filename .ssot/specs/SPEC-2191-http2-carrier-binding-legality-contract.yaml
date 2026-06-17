@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2191"
+number: 2191
+slug: "http2-carrier-binding-legality-contract"
+title: "HTTP/2 carrier binding legality contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrbl HTTP/2 binding legality for request-stream, push-stream, and explicit extension-context carrier behavior. Source specification: RFC 9113 https://www.rfc-editor.org/rfc/rfc9113. Tigrbl consumes runtime capability metadata and does not own HTTP/2 stream ID allocation or flow-control algorithms."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack binding projection."
+    at: "2026-06-17T12:49:25Z"
+references: []
+body: |-
+  Defines Tigrbl HTTP/2 binding legality for request-stream, push-stream, and explicit extension-context carrier behavior. Source specification: RFC 9113 https://www.rfc-editor.org/rfc/rfc9113. Tigrbl consumes runtime capability metadata and does not own HTTP/2 stream ID allocation or flow-control algorithms.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1187"

@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2193"
+number: 2193
+slug: "webtransport-h3-lane-binding-projection-contract"
+title: "WebTransport H3 lane binding projection contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrbl WebTransport-over-H3 binding projection through session, bidirectional stream, unidirectional stream, and datagram lanes. Source specification: draft-ietf-webtrans-http3-15 https://datatracker.ietf.org/doc/draft-ietf-webtrans-http3/. Tigrbl must preserve draft-target maturity and must not treat WebTransport lanes as WebSocket sessions."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack binding projection."
+    at: "2026-06-17T12:49:32Z"
+references: []
+body: |-
+  Defines Tigrbl WebTransport-over-H3 binding projection through session, bidirectional stream, unidirectional stream, and datagram lanes. Source specification: draft-ietf-webtrans-http3-15 https://datatracker.ietf.org/doc/draft-ietf-webtrans-http3/. Tigrbl must preserve draft-target maturity and must not treat WebTransport lanes as WebSocket sessions.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1189"

@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2196"
+number: 2196
+slug: "h3-websocket-message-session-binding-contract"
+title: "H3 WebSocket message and session binding contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrbl WebSocket-over-H3 projection through WebSocket message and session bindings only. Source specification: RFC 9220 https://www.rfc-editor.org/rfc/rfc9220. H3 WebSocket bindings must remain separate from WebTransport-over-H3 even when exposed by the same listener."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack binding projection."
+    at: "2026-06-17T12:49:42Z"
+references: []
+body: |-
+  Defines Tigrbl WebSocket-over-H3 projection through WebSocket message and session bindings only. Source specification: RFC 9220 https://www.rfc-editor.org/rfc/rfc9220. H3 WebSocket bindings must remain separate from WebTransport-over-H3 even when exposed by the same listener.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1192"

@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2195"
+number: 2195
+slug: "h2-websocket-message-session-binding-contract"
+title: "H2 WebSocket message and session binding contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrbl WebSocket-over-H2 projection through WebSocket message and session bindings only. Source specification: RFC 8441 https://www.rfc-editor.org/rfc/rfc8441. RFC 8441 carrier capability is runtime metadata; H2 WebSocket bindings must not be modeled as WebTransport lanes."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack binding projection."
+    at: "2026-06-17T12:49:38Z"
+references: []
+body: |-
+  Defines Tigrbl WebSocket-over-H2 projection through WebSocket message and session bindings only. Source specification: RFC 8441 https://www.rfc-editor.org/rfc/rfc8441. RFC 8441 carrier capability is runtime metadata; H2 WebSocket bindings must not be modeled as WebTransport lanes.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1191"

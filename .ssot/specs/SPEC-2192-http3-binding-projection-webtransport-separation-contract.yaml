@@ -1,0 +1,24 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2192"
+number: 2192
+slug: "http3-binding-projection-webtransport-separation-contract"
+title: "HTTP/3 binding projection and WebTransport separation contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Defines Tigrbl plain HTTP/3 binding projection through HTTP/3 request and push carrier legality while keeping WebTransport lane semantics in WebTransport-specific bindings. Source specifications: RFC 9114 https://www.rfc-editor.org/rfc/rfc9114 and RFC 9000 https://www.rfc-editor.org/rfc/rfc9000. Plain H3 bindings must not claim WebTransport streams or datagrams."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern transport stack binding projection."
+    at: "2026-06-17T12:49:28Z"
+references: []
+body: |-
+  Defines Tigrbl plain HTTP/3 binding projection through HTTP/3 request and push carrier legality while keeping WebTransport lane semantics in WebTransport-specific bindings. Source specifications: RFC 9114 https://www.rfc-editor.org/rfc/rfc9114 and RFC 9000 https://www.rfc-editor.org/rfc/rfc9000. Plain H3 bindings must not claim WebTransport streams or datagrams.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1188"
