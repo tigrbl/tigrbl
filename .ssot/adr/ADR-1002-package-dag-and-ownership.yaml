@@ -13,43 +13,63 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Updated package DAG ownership to remove in-core optional Rust parity obligations."
     at: "2026-06-17T10:22:34Z"
+    note: "Updated package DAG ownership to remove in-core optional Rust parity obligations."
+    status: "draft"
+  -
+    at: "2026-06-17T15:42:27Z"
+    note: "Clarify runtime minimality, kernel plan ownership, concrete authoring ownership, and no package renaming at this time."
+    status: "draft"
+  -
+    at: "2026-06-17T15:44:10Z"
+    note: "Refresh content hash after whitespace normalization for runtime minimality ADR."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Normalize runtime minimality ADR body whitespace before commit."
+    at: "2026-06-17T15:44:44Z"
 references: []
 body: |-
   ## Decision
-
   - **Status:** Proposed
   - **Date:** 2026-04-14
-  - **Related ADRs:** ADR-0003, ADR-0015, ADR-0016, ADR-0020, ADR-0022, ADR-0025, ADR-1185
-
+  - **Related ADRs:** ADR-0003, ADR-0015, ADR-0016, ADR-0020, ADR-0022, ADR-0025, ADR-1183, ADR-1184, ADR-1185
   1. Package ownership is frozen as follows:
      - `tigrbl_core`: authoritative declarative types and core semantic spec objects.
      - `tigrbl_spec`: re-export and facade only.
      - `tigrbl_typing`: shared protocols and low-level typing surfaces.
-     - `tigrbl_atoms`: structural atoms and canonical handler shims.
-     - `tigrbl_kernel`: Python lowering, plan compilation, segment packing, and optimization.
-     - `tigrbl_runtime`: Python live execution, context, loops, and runtime-owned abstractions.
-     - `tigrbl_concrete`: ASGI adapter layer and public decorator/app surface.
+     - `tigrbl_base`: reusable abstract/base forms only when multiple concrete families share behavior.
+     - `tigrbl_concrete`: public concrete classes, decorators, shortcuts, aliases, and `Make*`, `Define*`, and `Derive*` authoring forms that lower into canonical specs.
+     - `tigrbl_atoms`: small executable atoms, canonical handler shims, and primitive compiled operations.
+     - `tigrbl_kernel`: Python lowering, plan compilation, segment packing, optimization, and the compiled kernel plan that represents the program.
+     - `tigrbl_runtime`: minimal Python execution host for already-compiled kernel plans, runtime context, loop ownership, dispatch, and execution-only runtime-owned abstractions.
      - ops packages: executable operation implementations grouped by domain.
-  2. Import direction is frozen:
+  2. `tigrbl_runtime` executes the compiled program; it does not define the program.
+  3. `tigrbl_runtime` must not own new specs, base forms, concrete authoring classes, decorators, shortcuts, factories, `Make*`, `Define*`, `Derive*`, build helpers, or lowering from concrete forms into specs.
+  4. New user-facing surfaces start in `tigrbl_concrete`, lower into `tigrbl_core` specs, compile through `tigrbl_atoms` and `tigrbl_kernel`, and are executed by `tigrbl_runtime` only after they are represented in a kernel plan.
+  5. Import direction is frozen:
      - declarative layers may not depend on runtime or concrete layers;
      - kernel may depend on declarative and atom layers but not on concrete;
-     - runtime may depend on kernel, atoms, typing, and core, but not on concrete-owned execution details;
-     - concrete may depend on runtime, typing, and core.
-  3. New packages must fit this DAG rather than forcing exceptions.
-  4. External-language runtimes or plugins are out-of-core unless explicitly governed by a later ADR. They may consume public Python contracts, but they do not create core parity, certification, benchmark, or documentation obligations.
-
+     - runtime may depend on kernel, atoms, typing, and core for execution of compiled plans, but not on concrete-owned authoring details;
+     - concrete may depend on typing, core, base, and runtime-facing public adapters only where the dependency does not load kernel during concrete import.
+  6. New packages must fit this DAG rather than forcing exceptions.
+  7. External-language runtimes or plugins are out-of-core unless explicitly governed by a later ADR. They may consume public Python contracts, but they do not create core parity, certification, benchmark, or documentation obligations.
+  8. Package names are retained at this time. The governance correction is explicit ownership, not renaming `tigrbl_runtime` or `tigrbl_kernel`.
   ## Context
-
   The repo already has a strong macro-shape, but several architectural gaps come from boundary leakage: declarative layers owning runtime details, runtime owning concrete transport details, concrete code bypassing compiled/runtime paths, or alternate runtime experiments forcing duplicate parity surfaces.
-
-  A precise Python-owned package DAG is required so that future additions do not recreate cycles, semantic duplication, or unsupported runtime parity lanes.
-
+  The recurring failure mode is that `tigrbl_runtime` is treated as the place for runnable feature code. That is incorrect. Most feature logic belongs upstream: specs in `tigrbl_core`, shared abstractions in `tigrbl_base`, concrete authoring and aliases in `tigrbl_concrete`, primitive compiled behavior in `tigrbl_atoms`, and plan compilation in `tigrbl_kernel`.
+  The kernel plan is the compiled program. Runtime exists to execute that plan with the smallest practical surface area.
+  ## Consequences
+  - Callback and webhook authoring helpers must migrate out of `tigrbl_runtime` and into concrete lowering surfaces.
+  - Runtime may keep execution primitives only when they operate on already-compiled plan data or runtime context.
+  - Architecture tests must fail when runtime grows public authoring, lowering, spec, base, decorator, shortcut, or factory surfaces.
+  - New feature proposals must identify package ownership before runtime implementation work begins.
+  - Existing package names are preserved for now; future renaming remains a separate decision if executable boundaries do not prevent misuse.
   ## Rejected Alternatives
-
   - A permissive import graph with case-by-case exceptions.
   - Allowing runtime to depend on concrete request/transport types.
+  - Treating `tigrbl_runtime` as the general home for runnable feature behavior.
+  - Renaming `tigrbl_runtime` or `tigrbl_kernel` before executable ownership boundaries are documented and enforced.
+  - Adding `tigrbl_compiler` before kernel compilation responsibilities prove too large for the current package boundary.
   - Splitting ownership by transport or implementation language rather than by architectural responsibility.
   - Keeping an in-core Rust parity lane after the project has selected a Python-only runtime.

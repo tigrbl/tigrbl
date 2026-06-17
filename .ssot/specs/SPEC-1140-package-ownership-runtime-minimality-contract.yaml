@@ -1,0 +1,57 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1140"
+number: 1140
+slug: "package-ownership-runtime-minimality-contract"
+title: "Package ownership and runtime minimality contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Runtime code that defines specs, bases, concrete authoring classes, decorators, shortcuts, factories, make/define/derive/build helpers, or concrete-to-spec lowering is release-blocking unless it is an explicitly deprecated compatibility shim with a removal path."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T15:42:34Z"
+    note: "Created to govern runtime-minimal package ownership and executable boundary enforcement."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Normalize runtime minimality spec body whitespace before commit."
+    at: "2026-06-17T15:45:13Z"
+references: []
+body: |-
+  ## Contract
+  1. `tigrbl_runtime` is an execution host for already-compiled kernel plans.
+  2. `tigrbl_runtime` may own runtime context, loop execution, dispatch of compiled plan steps, execution fences, runtime diagnostics, and execution-only adapters.
+  3. `tigrbl_runtime` must not introduce or expose public authoring surfaces, including:
+     - `*Spec` declarations;
+     - `*Base` abstractions;
+     - concrete classes used to author program shape;
+     - decorators;
+     - shortcuts;
+     - public factories;
+     - public `Make*`, `Define*`, or `Derive*` forms;
+     - public `build*`, `make*`, `define*`, or `derive*` helpers for feature construction;
+     - lowering functions that transform concrete authoring forms into core specs.
+  4. Concrete authoring surfaces belong in `tigrbl_concrete`.
+  5. Reusable abstract forms belong in `tigrbl_base` only when multiple concrete families share behavior.
+  6. Declarative contracts belong in `tigrbl_core` and may be re-exported through `tigrbl_spec`.
+  7. Executable primitives and atom legality belong in `tigrbl_atoms`.
+  8. Compilation, plan assembly, segment packing, optimization, and the compiled program model belong in `tigrbl_kernel`.
+  9. A feature may add runtime code only when that code consumes a compiled plan or performs execution that cannot be represented upstream.
+  10. Compatibility shims in `tigrbl_runtime` are allowed only when they emit deprecation warnings, delegate to the owning package, and are tracked by a removal contract.
+  ## Required Verification
+  - Static package-boundary tests fail on forbidden public authoring names in `pkgs/core/tigrbl_runtime/tigrbl_runtime`.
+  - Static import tests fail when runtime callback/webhook modules import concrete authoring surfaces or own core spec lowering outside an approved allowlist.
+  - Public API tests keep `tigrbl_runtime.__all__` limited to execution-host primitives.
+  - Feature tests must prove concrete authoring surfaces lower upstream before runtime execution is exercised.
+  ## Non-Conformance
+  Runtime code that defines specs, bases, concrete authoring classes, decorators, shortcuts, factories, make/define/derive/build helpers, or concrete-to-spec lowering is release-blocking unless it is an explicitly deprecated compatibility shim with a removal path.
+  spec_kind: normative
+  adr_ids:
+  - adr:1002
+spec_kind: "normative"
+adr_ids:
+  - "adr:1002"
