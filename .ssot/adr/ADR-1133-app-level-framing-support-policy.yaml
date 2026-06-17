@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1133"
 number: 1133
@@ -17,9 +17,13 @@ status_notes:
     note: "Created as Tigrbl policy for per-binding and per-lane app-level framing support."
     status: "draft"
   -
-    status: "draft"
-    note: "Updated app-level framing policy to use profile-local framing and exclude stdio from this slice."
     at: "2026-05-28T00:49:17Z"
+    note: "Updated app-level framing policy to use profile-local framing and exclude stdio from this slice."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated by adr:1182: app-level framing matrix rows now require explicit stream initiator and carrier legality metadata for h11 h2 h3 and WebTransport distinctions."
+    at: "2026-06-17T10:09:25Z"
 references: []
 body: |-
   ## Context

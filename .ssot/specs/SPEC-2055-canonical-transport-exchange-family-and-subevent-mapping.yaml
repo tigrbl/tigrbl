@@ -1,4 +1,4 @@
-schema_version: "0.1.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2055"
 number: 2055
@@ -9,10 +9,13 @@ origin: "repo-local"
 decision_date: null
 tags: []
 summary: "This document defines the normative mapping from declared transport bindings to canonical exchange, framing, runtime family, and default runtime subevents."
-supersedes:
-  - "spc:2007"
+supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated by adr:1182: canonical transport mapping now distinguishes exchange from carrier_kind and stream_initiator legality metadata."
+    at: "2026-06-17T10:10:38Z"
 references: []
 body: |-
   ## Intent
@@ -46,4 +49,5 @@ body: |-
   - ADRs: `adr:1007`, `adr:1024`, `adr:1025`, `adr:1067`, `adr:1068`
   - Related specs: `spc:2019`
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1182"

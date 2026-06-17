@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:1007"
 number: 1007
@@ -11,7 +11,11 @@ tags: []
 summary: "Scope: define binding-aware projection of ASGI HTTP body frames. Unary REST and HTTP JSON-RPC bindings project complete request bodies into request-family input with declared body completion. HTTP stream or client-stream bindings project body frames into stream-family chunks with ordering, end-of-body, abort, and backpressure metadata. Valid scenarios include REST create receiving a complete body as one request payload and HTTP stream bindings receiving ordered stream.chunk.received events. Invalid scenarios include stream bindings consuming the full body as one opaque request without policy, retry/replay losing body chunk boundaries, or projection claiming reliable ordering beyond ASGI frame order and the declared binding semantics."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated by adr:1182: HTTP body stream projection must preserve declared client_stream semantics for request-body streaming instead of collapsing stream bindings to unary bodies."
+    at: "2026-06-17T10:10:54Z"
 references: []
 body: |-
   Scope: define binding-aware projection of ASGI HTTP body frames. Unary REST and HTTP JSON-RPC bindings project complete request bodies into request-family input with declared body completion. HTTP stream or client-stream bindings project body frames into stream-family chunks with ordering, end-of-body, abort, and backpressure metadata. Valid scenarios include REST create receiving a complete body as one request payload and HTTP stream bindings receiving ordered stream.chunk.received events. Invalid scenarios include stream bindings consuming the full body as one opaque request without policy, retry/replay losing body chunk boundaries, or projection claiming reliable ordering beyond ASGI frame order and the declared binding semantics.
@@ -19,3 +23,4 @@ spec_kind: "normative"
 adr_ids:
   - "adr:1020"
   - "adr:1061"
+  - "adr:1182"

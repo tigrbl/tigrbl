@@ -25,9 +25,13 @@ status_notes:
     note: "Updated WebTransport inner framing contract to use profile-local terminology."
     status: "draft"
   -
-    status: "draft"
-    note: "WebTransport inner framing contract updated to require lane legality validation before stream or datagram payload encode/decode dispatch."
     at: "2026-06-17T08:29:31Z"
+    note: "WebTransport inner framing contract updated to require lane legality validation before stream or datagram payload encode/decode dispatch."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated by adr:1182: WebTransport inner framing remains lane-local while bidirectional stream initiator metadata must be preserved separately from framing."
+    at: "2026-06-17T10:11:10Z"
 references: []
 body: |-
   ## Intent
@@ -79,3 +83,4 @@ adr_ids:
   - "adr:1132"
   - "adr:1133"
   - "adr:1134"
+  - "adr:1182"

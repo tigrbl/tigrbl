@@ -21,9 +21,13 @@ status_notes:
     note: "Updated app-level framing matrix to use canonical BindingSpec profiles."
     status: "draft"
   -
-    status: "draft"
-    note: "App-level framing matrix updated to distinguish executable runtime codec support from policy vocabulary and transport-only placeholders."
     at: "2026-06-17T08:29:34Z"
+    note: "App-level framing matrix updated to distinguish executable runtime codec support from policy vocabulary and transport-only placeholders."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated by adr:1182: matrix conformance must report protocol support, runtime support, and missing stream initiator legality as separate facts."
+    at: "2026-06-17T10:10:45Z"
 references: []
 body: |-
   ## Intent
@@ -85,3 +89,4 @@ adr_ids:
   - "adr:1096"
   - "adr:1131"
   - "adr:1134"
+  - "adr:1182"

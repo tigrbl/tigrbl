@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2106"
 number: 2106
@@ -11,7 +11,11 @@ tags: []
 summary: "Define HTTP stream and SSE atom chains."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated by adr:1182: HTTP stream chains must distinguish inbound client_stream request-body chunks from outbound server_stream response chunks."
+    at: "2026-06-17T10:11:01Z"
 references: []
 body: |-
   ## Intent
@@ -29,3 +33,4 @@ spec_kind: "normative"
 adr_ids:
   - "adr:1092"
   - "adr:1094"
+  - "adr:1182"
