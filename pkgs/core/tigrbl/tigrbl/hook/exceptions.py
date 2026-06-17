@@ -1,3 +1,3 @@
-"""Compatibility shim for runtime-owned exceptions."""
+"""Compatibility shim for hook declaration exceptions."""
 
-from ..runtime.exceptions import *  # noqa: F403, F401
+from tigrbl_core._spec.exceptions import *  # noqa: F403, F401

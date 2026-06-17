@@ -7,7 +7,7 @@ import pytest
 
 
 REMOVED_RUNTIME_SHIMS = (
-    "tigrbl_runtime.callbacks",
+    "tigrbl_runtime.webhooks",
     "tigrbl_runtime.transactions",
     "tigrbl_runtime.channel.state",
     "tigrbl_runtime.executors.helpers",
@@ -46,8 +46,8 @@ def test_runtime_package_source_does_not_consume_runtime_shims() -> None:
     forbidden = (
         "from tigrbl_runtime.protocol",
         "import tigrbl_runtime.protocol",
-        "from tigrbl_runtime.callbacks",
-        "import tigrbl_runtime.callbacks",
+        "from tigrbl_runtime.webhooks",
+        "import tigrbl_runtime.webhooks",
         "from tigrbl_runtime.transactions",
         "import tigrbl_runtime.transactions",
         "from tigrbl_runtime.channel.state",

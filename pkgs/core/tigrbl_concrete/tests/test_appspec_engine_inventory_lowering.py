@@ -13,6 +13,7 @@ from tigrbl_core._spec import (
 from tigrbl import TigrblApp
 from tigrbl_concrete._concrete import engine_resolver as resolver
 from tigrbl_concrete._mapping.appspec import lower_concrete_engine_inputs
+from tigrbl_concrete.webhooks import DefineInboundWebhook
 
 
 def _sqlite(name: str) -> dict[str, object]:
@@ -148,3 +149,30 @@ def test_concrete_lowering_rejects_conflicting_duplicate_inventory_names() -> No
         ValueError, match="conflicts with existing engine name 'primary'"
     ):
         lower_concrete_engine_inputs(spec)
+
+
+def test_inbound_webhook_authoring_lowers_to_core_path_and_op_specs() -> None:
+    path = DefineInboundWebhook(
+        path="/webhooks/stripe",
+        provider="stripe",
+        event_type="invoice.paid",
+        signing_secret_ref="secret:stripe",
+    )
+
+    assert isinstance(path, PathSpec)
+    assert path.kind == "resource"
+    assert path.path == "/webhooks/stripe"
+    assert len(path.ops) == 1
+
+    op = path.ops[0]
+    assert isinstance(op, OpSpec)
+    assert op.alias == "webhook_stripe_invoice_paid"
+    assert op.target == "custom"
+    assert op.expose_rpc is False
+    assert op.http_methods == ("POST",)
+    assert op.status_code == 202
+
+    binding = op.bindings[0]
+    assert binding.methods == ("POST",)
+    assert binding.path == "/webhooks/stripe"
+    assert op.extra["webhook"]["direction"] == "inbound"

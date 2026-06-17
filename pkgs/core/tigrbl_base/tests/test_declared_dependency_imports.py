@@ -50,3 +50,9 @@ def test_only_declared_dependencies_are_imported() -> None:
         "Found imports that are not in the static dependency allowlist: "
         f"{sorted(disallowed)}"
     )
+
+
+def test_base_does_not_import_concrete_kernel_or_runtime() -> None:
+    imported = _collect_top_level_imports(PACKAGE_DIR)
+
+    assert imported.isdisjoint({"tigrbl_concrete", "tigrbl_kernel", "tigrbl_runtime"})

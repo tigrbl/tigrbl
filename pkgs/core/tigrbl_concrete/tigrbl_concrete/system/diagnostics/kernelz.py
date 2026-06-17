@@ -4,15 +4,19 @@ from __future__ import annotations
 
 from typing import Any
 
-from tigrbl_kernel import _default_kernel as K
 
-
-def build_kernelz_endpoint(router: Any):
+def build_kernelz_endpoint(router: Any, *, kernel: Any | None = None):
     """Return an async handler that serves the Kernel's cached plan."""
 
     async def _kernelz():
-        K.ensure_primed(router)
-        payload = K.kernelz_payload(router)
+        if kernel is None:
+            return {}
+        ensure_primed = getattr(kernel, "ensure_primed", None)
+        kernelz_payload = getattr(kernel, "kernelz_payload", None)
+        if not callable(ensure_primed) or not callable(kernelz_payload):
+            return {}
+        ensure_primed(router)
+        payload = kernelz_payload(router)
         models = getattr(router, "models", {}) or {}
         if not models:
             return payload

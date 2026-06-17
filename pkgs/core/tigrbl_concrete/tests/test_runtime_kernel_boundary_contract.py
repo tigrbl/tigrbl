@@ -44,3 +44,41 @@ def test_installed_concrete_distribution_metadata_omits_kernel_dependency() -> N
     assert "tigrbl-runtime" in normalized
     assert "tigrbl-kernel" not in normalized
 
+
+def test_concrete_authoring_and_lowering_modules_do_not_import_runtime() -> None:
+    authoring_roots = (
+        SOURCE_ROOT / "factories",
+        SOURCE_ROOT / "shortcuts",
+        SOURCE_ROOT / "_decorators",
+        SOURCE_ROOT / "_mapping" / "appspec",
+    )
+    authoring_files = [
+        path
+        for root in authoring_roots
+        for path in root.rglob("*.py")
+        if path.exists()
+    ]
+    authoring_files.append(SOURCE_ROOT / "webhooks.py")
+
+    violations = [
+        str(path.relative_to(PACKAGE_ROOT))
+        for path in authoring_files
+        if "tigrbl_runtime" in _imports(path)
+    ]
+
+    assert violations == []
+
+
+def test_camelcase_define_make_derive_authoring_surfaces_are_not_runtime_owned() -> None:
+    runtime_root = PACKAGE_ROOT.parent / "tigrbl_runtime" / "tigrbl_runtime"
+    runtime_exports: list[tuple[str, str]] = []
+    for path in runtime_root.rglob("*.py"):
+        tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                if node.name.startswith(("Make", "Define", "Derive")):
+                    runtime_exports.append(
+                        (str(path.relative_to(runtime_root)), node.name)
+                    )
+
+    assert runtime_exports == []

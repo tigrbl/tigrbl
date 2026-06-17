@@ -14,6 +14,7 @@ def mount_diagnostics(
     router: Any,
     *,
     get_db: Optional[Callable[..., Any]] = None,
+    kernel: Any | None = None,
 ) -> Router:
     """
     Create & return a Router that exposes:
@@ -82,18 +83,22 @@ def mount_diagnostics(
         inherit_owner_dependencies=False,
     )
 
-    kernelz_endpoint = build_kernelz_endpoint(source_router)
+    kernelz_endpoint = build_kernelz_endpoint(source_router, kernel=kernel)
 
     async def _runtime_kernelz(_ctx: Any) -> Any:
-        from tigrbl_kernel import _default_kernel as K
-
-        K.ensure_primed(source_router)
+        if kernel is None:
+            return {}
+        ensure_primed = getattr(kernel, "ensure_primed", None)
+        plan_labels = getattr(kernel, "plan_labels", None)
+        if not callable(ensure_primed) or not callable(plan_labels):
+            return {}
+        ensure_primed(source_router)
         payload: dict[str, dict[str, list[str]]] = {}
         for model in table_iter(source_router):
             model_name = getattr(model, "__name__", str(model))
             payload[model_name] = {}
             for sp in opspecs(model):
-                payload[model_name][sp.alias] = K.plan_labels(model, sp.alias)
+                payload[model_name][sp.alias] = plan_labels(model, sp.alias)
         return payload
 
     router.add_route(

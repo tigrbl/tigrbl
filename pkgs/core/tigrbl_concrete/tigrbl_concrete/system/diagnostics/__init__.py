@@ -1,4 +1,3 @@
-from tigrbl_kernel import _default_kernel, build_phase_chains
 from .router import mount_diagnostics
 from .healthz import build_healthz_endpoint, build_healthz_html, mount_healthz_uix
 from .methodz import build_methodz_endpoint
@@ -31,6 +30,4 @@ __all__ = [
     "_opspecs",
     "_label_callable",
     "_label_hook",
-    "build_phase_chains",
-    "_default_kernel",
 ]

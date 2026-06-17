@@ -417,7 +417,9 @@ class TigrblRouter(_Router):
         px = prefix if prefix is not None else self.system_prefix
         prov = _resolver.resolve_provider(router=self)
         get_db = prov.get_db if prov else None
-        router = _mount_diagnostics(self, get_db=get_db)
+        runtime = getattr(self, "runtime", None)
+        kernel = getattr(runtime, "kernel", None)
+        router = _mount_diagnostics(self, get_db=get_db, kernel=kernel)
         self.include_router(router, prefix=px)
         if app is not None and app is not self:
             include_other = getattr(app, "include_router", None)

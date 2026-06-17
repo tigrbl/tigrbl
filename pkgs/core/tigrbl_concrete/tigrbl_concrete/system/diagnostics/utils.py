@@ -7,11 +7,6 @@ from typing import Any, Iterable
 
 from sqlalchemy import text
 
-from tigrbl_kernel.labels import (
-    label_callable as _kernel_label_callable,
-    label_hook as _kernel_label_hook,
-)
-
 
 def table_iter(router: Any) -> Iterable[type]:
     tables = getattr(router, "tables", None)
@@ -56,8 +51,12 @@ async def maybe_execute(db: Any, stmt: str):
 
 
 def label_callable(fn: Any) -> str:
-    return _kernel_label_callable(fn)
+    qualname = getattr(fn, "__qualname__", None)
+    name = qualname or getattr(fn, "__name__", None)
+    if name:
+        return str(name)
+    return repr(fn)
 
 
 def label_hook(fn: Any, phase: str) -> str:
-    return _kernel_label_hook(fn, phase)
+    return f"{phase}:{label_callable(fn)}"

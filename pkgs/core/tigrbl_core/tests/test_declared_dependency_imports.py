@@ -15,6 +15,7 @@ ALLOWED_TOP_LEVEL_IMPORTS = {
     "tomllib",
     "yaml",
     "tigrbl_atoms",
+    "tigrbl_spec",
     "pydantic",
     "pydantic_core",
 }
@@ -52,3 +53,16 @@ def test_only_declared_dependencies_are_imported() -> None:
         "Found imports that are not in the static dependency allowlist: "
         f"{sorted(disallowed)}"
     )
+
+
+def test_core_does_not_import_base_concrete_kernel_or_runtime() -> None:
+    imported = _collect_top_level_imports(PACKAGE_DIR)
+
+    forbidden = {
+        "tigrbl_base",
+        "tigrbl_concrete",
+        "tigrbl_kernel",
+        "tigrbl_runtime",
+    }
+
+    assert imported.isdisjoint(forbidden)

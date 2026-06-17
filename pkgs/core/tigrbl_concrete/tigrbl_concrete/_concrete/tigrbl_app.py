@@ -945,7 +945,9 @@ class TigrblApp(_App):
         px = prefix if prefix is not None else self.system_prefix
         prov = _resolver.resolve_provider(router=self)
         get_db = prov.get_db if prov else None
-        router = _mount_diagnostics(self, get_db=get_db)
+        runtime = getattr(self, "runtime", None)
+        kernel = getattr(runtime, "kernel", None)
+        router = _mount_diagnostics(self, get_db=get_db, kernel=kernel)
         include_self = getattr(self, "include_router", None)
         if callable(include_self):
             include_self(router, prefix=px)
@@ -953,8 +955,6 @@ class TigrblApp(_App):
             include_other = getattr(app, "include_router", None)
             if callable(include_other):
                 include_other(router, prefix=px)
-        runtime = getattr(self, "runtime", None)
-        kernel = getattr(runtime, "kernel", None)
         invalidate = getattr(kernel, "invalidate_kernelz_payload", None)
         if callable(invalidate):
             invalidate(self)

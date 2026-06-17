@@ -3,11 +3,11 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_core._spec import HttpRestBindingSpec, OpSpec, PathSpec
-from tigrbl_runtime.webhooks import (
+from tigrbl_concrete.webhooks import (
+    DefineInboundWebhook,
     InboundWebhookReplayError,
     InboundWebhookSignatureError,
     build_inbound_webhook_ack,
-    define_inbound_webhook,
     record_inbound_webhook_idempotency,
     sign_inbound_webhook_body,
     verify_inbound_webhook_signature,
@@ -15,7 +15,7 @@ from tigrbl_runtime.webhooks import (
 
 
 def test_inbound_webhook_lowers_to_resource_path_post_rest_op() -> None:
-    path = define_inbound_webhook(
+    path = DefineInboundWebhook(
         path="/webhooks/stripe",
         provider="stripe",
         event_type="invoice.paid",

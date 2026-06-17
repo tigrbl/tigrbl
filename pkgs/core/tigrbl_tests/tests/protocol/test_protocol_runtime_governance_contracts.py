@@ -1,5 +1,11 @@
 from __future__ import annotations
 
+import ast
+import importlib
+from pathlib import Path
+
+import pytest
+
 from tigrbl_kernel.loop_modes import select_loop_mode
 from tigrbl_kernel.protocol_completion import compile_completion_fence
 from tigrbl_kernel.protocol_legality_matrix import generate_legality_matrix
@@ -7,6 +13,15 @@ from tigrbl_kernel.segment_fusion import fuse_segments
 from tigrbl_kernel.protocol_anchors import canonical_protocol_anchor_order
 from tigrbl_kernel.dispatch_taxonomy import derive_runtime_event
 from tigrbl_kernel.loop_modes import build_loop_controller
+
+
+RUNTIME_ROOT = (
+    Path(__file__).resolve().parents[3] / "tigrbl_runtime" / "tigrbl_runtime"
+)
+FORBIDDEN_RUNTIME_AUTHORING_MODULES = (
+    "tigrbl_runtime.webhooks",
+)
+FORBIDDEN_RUNTIME_AUTHORING_EXPORT_PREFIXES = ("Make", "Define", "Derive")
 
 
 def test_two_axis_lifecycle_matrix_contract() -> None:
@@ -91,3 +106,21 @@ def test_eventkey_hook_bucket_compilation_contract() -> None:
         row["binding"] == "websocket" and row["subevent"] == "session.open"
         for row in matrix
     )
+
+
+@pytest.mark.parametrize("module_name", FORBIDDEN_RUNTIME_AUTHORING_MODULES)
+def test_runtime_does_not_expose_authoring_helper_modules(module_name: str) -> None:
+    with pytest.raises(ModuleNotFoundError):
+        importlib.import_module(module_name)
+
+
+def test_runtime_does_not_define_make_define_derive_authoring_surfaces() -> None:
+    offenders: list[tuple[str, str]] = []
+    for path in RUNTIME_ROOT.rglob("*.py"):
+        tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=str(path))
+        for node in ast.walk(tree):
+            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                if node.name.startswith(FORBIDDEN_RUNTIME_AUTHORING_EXPORT_PREFIXES):
+                    offenders.append((str(path.relative_to(RUNTIME_ROOT)), node.name))
+
+    assert offenders == []

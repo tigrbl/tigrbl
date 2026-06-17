@@ -6,8 +6,8 @@ from enum import Enum
 from typing import Any, Iterable, Mapping, Sequence, Union
 
 from tigrbl_core.config.constants import HOOK_DECLS_ATTR
+from tigrbl_core._spec.exceptions import InvalidHookPhaseError
 from tigrbl_concrete._concrete import Hook
-from tigrbl_runtime.runtime.exceptions import InvalidHookPhaseError
 from tigrbl_atoms import HookPhase, HookPhases
 
 
