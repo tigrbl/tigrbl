@@ -4,6 +4,7 @@ from .backend import (
     ExecutionBackend,
     RustBackendConfig,
     coerce_execution_backend,
+    reject_rust_backend,
     wants_rust_backend,
 )
 from .callbacks import (
@@ -14,7 +15,7 @@ from .callbacks import (
     register_python_hook,
     registered_python_callbacks,
 )
-from tigrbl_kernel.rust_spec import (
+from .codec import (
     build_rust_app_spec,
     coerce_rust_spec_dict,
     coerce_rust_spec_json,
@@ -22,7 +23,7 @@ from tigrbl_kernel.rust_spec import (
 from .compile import compile_app, normalize_spec
 from .request import RustRequest
 from .response import RustResponse
-from .errors import RustBindingsUnavailableError
+from .errors import RustBindingsUnavailableError, RustSupportDeprecatedError
 from .runtime import (
     RustRuntimeHandle,
     create_runtime,
@@ -39,6 +40,7 @@ __all__ = [
     "ExecutionBackend",
     "RustBackendConfig",
     "RustBindingsUnavailableError",
+    "RustSupportDeprecatedError",
     "RustRequest",
     "RustResponse",
     "RustRuntimeHandle",
@@ -60,5 +62,6 @@ __all__ = [
     "register_python_handler",
     "register_python_hook",
     "registered_python_callbacks",
+    "reject_rust_backend",
     "wants_rust_backend",
 ]

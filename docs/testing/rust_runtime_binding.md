@@ -1,22 +1,14 @@
-# Optional Rust runtime binding
+# Deprecated Rust Runtime Binding
 
-Tigrbl's Rust concern is limited to the optional runtime binding package.
+Tigrbl runtime execution is Python-only.
 
-The binding surface may expose:
+Tests for Rust-named surfaces should assert deprecation behavior:
 
-- `ExecutionBackend`
-- `RustBackendConfig`
-- Rust binding availability checks
-- FFI boundary event readers and clearers
-- callback registration helpers
-- `build_rust_kernel`
-- `normalize_rust_spec`
-- `Runtime(executor_backend="rust")`
+- availability checks return `False`;
+- `Runtime(executor_backend="rust")` raises;
+- `rust_handle()` and `execute_rust()` raise;
+- Rust kernel/spec helpers raise;
+- Rust atom, handler, and engine registration helpers raise.
 
-The repo does not maintain any broader Rust certification program. Rust work
-outside this optional runtime binding package is out of scope for
-`tigrbl/tigrbl`.
-
-Tests for this surface should verify that the optional binding can be imported,
-compiled, and invoked when present, and that Python callers retain a clear
-failure mode when the binding is unavailable.
+Do not add tests that require a Rust compiler, Cargo workspace, native extension,
+PyO3, maturin, or crates.io publication.

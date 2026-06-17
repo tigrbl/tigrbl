@@ -93,9 +93,6 @@ jobs:
           pkgs/core/tigrbl_client/tests/unit/test_tigrbl_nested_crud.py
           -p no:cacheprovider
 
-      - name: Run Rust next-target spec contract
-        run: cargo test -p tigrbl_rs_spec --test spec_contract
-
   evidence-lanes:
     runs-on: ubuntu-latest
     needs: governance

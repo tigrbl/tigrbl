@@ -5,7 +5,7 @@ import inspect
 from typing import Any
 from typing import Callable, Optional, Sequence
 
-from tigrbl_core._spec.app_spec import AppSpec
+from tigrbl_core._spec.app_spec import AppSpec, normalize_execution_backend
 from tigrbl_core._spec.engine_spec import EngineCfg
 from tigrbl_core._spec.response_spec import ResponseSpec
 
@@ -100,7 +100,7 @@ class AppBase(AppSpec):
             title=spec.title,
             description=spec.description,
             version=spec.version,
-            execution_backend=spec.execution_backend,
+            execution_backend=normalize_execution_backend(spec.execution_backend),
             engine=spec.engine,
             routers=routers,
             ops=tuple(spec.ops or ()),
@@ -133,7 +133,7 @@ class AppBase(AppSpec):
             title=str(spec.title or "Tigrbl"),
             description=spec.description,
             version=str(spec.version or "0.1.0"),
-            execution_backend=str(spec.execution_backend or "auto"),
+            execution_backend=normalize_execution_backend(spec.execution_backend),
             engine=spec.engine,
             routers=cls._bind_mapped_children(spec.routers, parent=parent),
             ops=cls._bind_mapped_children(spec.ops, parent=parent),

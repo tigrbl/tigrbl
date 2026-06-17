@@ -41,13 +41,10 @@ package_boundary_decl: "boundaries" "{" boundary_item* "}"
 
 boundary_item: "typing_channel" "=" python_path
              | "runtime_channel" "=" python_path
-             | "rust_ports_channel" "=" rust_path
-             | "rust_runtime_channel" "=" rust_path
              | "forbidden_owner" "=" package_name
 
 package_name: qualified_name
 python_path: qualified_name
-rust_path: qualified_name
 
 // ---------------------------------------------------------------------------
 // OpChannel Contract
@@ -556,7 +553,7 @@ packed_segment_item: "phase" "=" phase_ref
                    | "fusible" "=" boolean
                    | "barrier" "=" barrier_kind
 
-executor_kind: "python" | "rust" | "numba" | "callback" | "transport"
+executor_kind: "python" | "numba" | "callback" | "transport"
 
 step_table: "steps" "[" [packed_step ("," packed_step)*] "]"
 packed_step: "step" INT "{" packed_step_item* "}"

@@ -16,7 +16,7 @@ OpChannelSubevent = Literal[
 
 @dataclass(slots=True)
 class OpChannel:
-    """Runtime transport descriptor shared across Python and Rust surfaces."""
+    """Runtime transport descriptor for Python execution surfaces."""
 
     kind: OpChannelKind
     family: OpChannelFamily

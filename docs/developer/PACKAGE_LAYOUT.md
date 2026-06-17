@@ -6,13 +6,10 @@ This document defines the normalized workspace layout enforced in the package-la
 
 Allowed top-level repository entries are:
 
-- `.cargo/`
 - `.github/`
 - `.gitignore`
 - `CODE_OF_CONDUCT.md`
 - `CONTRIBUTING.md`
-- `Cargo.lock`
-- `Cargo.toml`
 - `LICENSE`
 - `README.md`
 - `SECURITY.md`
@@ -21,7 +18,6 @@ Allowed top-level repository entries are:
 - `examples/`
 - `pkgs/`
 - `pyproject.toml`
-- `rust-toolchain.toml`
 - `tools/`
 
 ## Python workspace package layout
@@ -42,16 +38,10 @@ Each Python package root must contain:
 
 Nested package roots inside a package directory are not allowed.
 
-## Optional Rust runtime binding package layout
+## Rust Runtime Binding Package Layout
 
-The optional Rust runtime binding package remains governed under `pkgs/`. It may contain:
-
-- `pyproject.toml`
-- `README.md`
-- `<package>/` or `src/<package>/` for the importable Python surface
-- `src/` for the Rust extension source
-- `README.md`
-- `src/`
+No Rust runtime binding package layout is supported. Tigrbl packages are Python
+packages, and runtime execution is Python-only.
 
 ## Documentation boundary
 

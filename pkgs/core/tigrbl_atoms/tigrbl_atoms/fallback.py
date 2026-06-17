@@ -1,11 +1,12 @@
 from __future__ import annotations
 
-from importlib import import_module
+import warnings
 
 
 def rust_atoms_enabled() -> bool:
-    try:
-        import_module("tigrbl_runtime.rust")
-    except Exception:
-        return False
-    return True
+    warnings.warn(
+        "tigrbl_atoms Rust registration is deprecated; atoms are Python-only.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return False

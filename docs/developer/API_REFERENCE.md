@@ -46,9 +46,10 @@
 ### App packages (0)
 Application packages are owned by independent repositories, not this workspace.
 
-### Optional Rust runtime binding
-Rust concerns in this repository are limited to the optional runtime binding
-surface owned by `pkgs/core/tigrbl_runtime/tigrbl_runtime/rust/`.
+### Deprecated Rust runtime binding
+Tigrbl runtime execution is Python-only. Rust-named compatibility imports under
+`pkgs/core/tigrbl_runtime/tigrbl_runtime/rust/` remain only to warn and fail
+explicitly for legacy callers.
 
 ## Public surfaces currently documented in the supplied checkpoint
 
@@ -62,4 +63,4 @@ surface owned by `pkgs/core/tigrbl_runtime/tigrbl_runtime/rust/`.
 - OpenRPC JSON
 - Lens / OpenRPC UI
 - generic auth/security plumbing
-- optional Rust runtime binding surface
+- deprecated Rust compatibility shims

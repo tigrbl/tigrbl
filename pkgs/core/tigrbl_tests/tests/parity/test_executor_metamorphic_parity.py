@@ -15,8 +15,6 @@ from tigrbl.types import Column, String
 from tigrbl_runtime import Runtime
 
 
-RUST_EXECUTOR_ENTRYPOINTS = ("rust_handle", "runtime_execute_rust")
-
 REQUEST_SEQUENCE: tuple[dict[str, Any], ...] = (
     {
         "transport": "rest",
@@ -30,7 +28,6 @@ REQUEST_SEQUENCE: tuple[dict[str, Any], ...] = (
         "operation": "widgets.read",
         "method": "GET",
         "path": "/widgets/w1",
-        "rust_path": "/widgets/{item_id}",
         "path_params": {"id": "w1"},
     },
     {
@@ -128,29 +125,6 @@ def _make_widget_model(label: str) -> type[TableBase]:
     return type("ExecutorParityWidget", (TableBase,), attrs)
 
 
-def _rust_spec() -> dict[str, Any]:
-    bindings: list[dict[str, Any]] = []
-    for target, transport, path in (
-        ("create", "rest", "/widgets"),
-        ("read", "rest", "/widgets/{item_id}"),
-        ("list", "rest", "/widgets"),
-        ("create", "jsonrpc", "/rpc"),
-        ("read", "jsonrpc", "/rpc"),
-        ("list", "jsonrpc", "/rpc"),
-    ):
-        alias = f"widgets.{target}"
-        bindings.append(
-            {
-                "alias": alias,
-                "transport": transport,
-                "path": path,
-                "op": {"name": alias, "kind": target, "route": path},
-                "table": {"name": "widgets"},
-            }
-        )
-    return {"name": "executor-parity-demo", "bindings": bindings}
-
-
 def _normalize_record(
     request: Mapping[str, Any],
     response: Mapping[str, Any],
@@ -217,43 +191,8 @@ async def _run_python_executor(executor_name: str) -> list[dict[str, Any]]:
     return results
 
 
-def _rust_envelope(request: Mapping[str, Any]) -> dict[str, Any]:
-    envelope = {
-        "operation": request["operation"],
-        "transport": request["transport"],
-        "path": request.get("rust_path", request["path"]),
-        "method": request["method"],
-    }
-    if "body" in request:
-        envelope["body"] = request["body"]
-    if "path_params" in request:
-        envelope["path_params"] = request["path_params"]
-    return envelope
-
-
-def _run_rust_executor(entrypoint: str) -> list[dict[str, Any]]:
-    runtime = Runtime(executor_backend="rust")
-    handle = runtime.rust_handle(_rust_spec())
-    results: list[dict[str, Any]] = []
-
-    for request in REQUEST_SEQUENCE:
-        envelope = _rust_envelope(request)
-        if entrypoint == "rust_handle":
-            if request["transport"] == "rest":
-                response = handle.execute_rest(envelope)
-            else:
-                response = handle.execute_jsonrpc(envelope)
-        elif entrypoint == "runtime_execute_rust":
-            response = runtime.execute_rust(envelope, handle=handle)
-        else:  # pragma: no cover - guards the local matrix declaration
-            raise AssertionError(f"unknown rust executor entrypoint: {entrypoint}")
-        results.append(_normalize_record(request, response))
-
-    return results
-
-
 @pytest.mark.asyncio
-async def test_same_inputs_yield_same_results_across_python_and_rust_executors() -> None:
+async def test_same_inputs_yield_same_results_across_python_executors() -> None:
     observed: dict[str, list[dict[str, Any]]] = {}
     for executor_name in _registered_python_executor_names():
         observed[f"python:{executor_name}"] = await _run_python_executor(executor_name)

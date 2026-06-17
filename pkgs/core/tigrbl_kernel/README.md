@@ -81,12 +81,12 @@ Package catalog:
 - `tigrbl_kernel/protocol_bindings.py`, `tigrbl_kernel/protocol_phase_tree.py`, `tigrbl_kernel/protocol_chains/`, `tigrbl_kernel/protocol_completion.py`, `tigrbl_kernel/protocol_fusion.py`, and `tigrbl_kernel/protocol_legality_matrix.py`: transport-specific plan compilation, phase tree construction, chain definitions, completion semantics, fusion, and legality checks.
 - `tigrbl_kernel/eventkey.py`, `tigrbl_kernel/events.py`, `tigrbl_kernel/transport_events.py`, `tigrbl_kernel/webtransport_events.py`, `tigrbl_kernel/subevent_taxonomy.py`, and `tigrbl_kernel/subevent_handlers.py`: event-key construction, subevent taxonomy, and protocol subevent handler mapping.
 - `tigrbl_kernel/opchannel_capabilities.py`, `tigrbl_kernel/loop_modes.py`, `tigrbl_kernel/loop_regions.py`, `tigrbl_kernel/segment_fusion.py`, and `tigrbl_kernel/contract_classification.py`: channel capability checks, loop planning, segment grouping, and contract classification.
-- `tigrbl_kernel/rust_plan.py`, `tigrbl_kernel/rust_compile.py`, and `tigrbl_kernel/rust_spec.py`: optional Rust runtime binding planning and compile contracts.
+- `tigrbl_kernel/rust_plan.py`, `tigrbl_kernel/rust_compile.py`, and `tigrbl_kernel/rust_spec.py`: deprecated compatibility shims; kernel planning is Python-only.
 
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_kernel`.
-- Public symbols: `BatchOpPlan`, `ExecutionBackend`, `Kernel`, `OpView`, `PackedKernel`, `RustBackendConfig`, `RustPlan`, `SchemaIn`, `SchemaOut`, `build_kernel_plan`, `build_packed_kernel`, `build_packed_kernel_measurement_view`.
+- Public symbols: `BatchOpPlan`, `ExecutionBackend`, `Kernel`, `OpView`, `PackedKernel`, `SchemaIn`, `SchemaOut`, `build_kernel_plan`, `build_packed_kernel`, `build_packed_kernel_measurement_view`.
 - Workspace dependencies: [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/).
 - External runtime dependencies: none declared.
 

@@ -1,22 +1,21 @@
 from __future__ import annotations
 
+import pytest
+
 from tigrbl_atoms import (
-    rust_atoms_enabled,
     register_rust_atom,
     register_rust_hook,
+    rust_atoms_enabled,
 )
-from tigrbl_runtime import clear_rust_boundary_events, rust_boundary_events
 
 
-def test_rust_atom_and_hook_registrars_round_trip_through_binding_trace() -> None:
-    clear_rust_boundary_events()
-    atom_descriptor = register_rust_atom("demo.atom", lambda ctx: ctx)
-    hook_descriptor = register_rust_hook("demo.hook", lambda ctx: ctx)
+def test_rust_atom_and_hook_registrars_are_deprecated() -> None:
+    with pytest.warns(DeprecationWarning):
+        assert rust_atoms_enabled() is False
 
-    assert rust_atoms_enabled() is True
-    assert atom_descriptor == "python-atom:demo.atom"
-    assert hook_descriptor == "python-hook:demo.hook"
-
-    names = [item["event"] for item in rust_boundary_events()]
-    semantic_names = [name for name in names if name.startswith("register_python_")]
-    assert semantic_names[-2:] == ["register_python_atom", "register_python_hook"]
+    with pytest.warns(DeprecationWarning):
+        with pytest.raises(RuntimeError, match="Python-only"):
+            register_rust_atom("demo.atom", lambda ctx: ctx)
+    with pytest.warns(DeprecationWarning):
+        with pytest.raises(RuntimeError, match="Python-only"):
+            register_rust_hook("demo.hook", lambda ctx: ctx)

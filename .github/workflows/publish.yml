@@ -13,11 +13,6 @@ on:
         required: true
         type: boolean
         default: false
-      crates:
-        description: Publish selected Tigrbl Rust crates to crates.io
-        required: true
-        type: boolean
-        default: false
       packages:
         description: Comma-separated package names to release, or all
         required: true
@@ -77,14 +72,13 @@ jobs:
     outputs:
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
       has_python: ${{ steps.matrices.outputs.has_python }}
-      has_crates: ${{ steps.matrices.outputs.has_crates }}
       python_validation_matrix: ${{ steps.matrices.outputs.python_validation_matrix }}
       python_build_matrix: ${{ steps.matrices.outputs.python_build_matrix }}
     steps:
       - name: Validate target selection
-        if: ${{ !inputs.gh && !inputs.pypi && !inputs.crates }}
+        if: ${{ !inputs.gh && !inputs.pypi }}
         run: |
-          echo "Select at least one publish target: gh, pypi, or crates." >&2
+          echo "Select at least one publish target: gh or pypi." >&2
           exit 1
 
       - name: Check out repository
@@ -97,9 +91,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
 
       - name: Compute and apply version plan
         run: >-
@@ -122,22 +113,9 @@ jobs:
           if [[ "${{ inputs.pypi }}" == "true" ]]; then
             targets+=(--pypi)
           fi
-          if [[ "${{ inputs.crates }}" == "true" ]]; then
-            targets+=(--crates)
-          fi
           python tools/release/release_automation.py validate-release-targets \
             --summary release-plan.json \
             "${targets[@]}"
-
-      - name: Refresh Rust lockfile
-        shell: bash
-        run: |
-          set -euo pipefail
-          if [[ -f Cargo.toml ]]; then
-            cargo generate-lockfile
-          else
-            echo "No root Cargo.toml present; skipping Rust lockfile refresh."
-          fi
 
       - name: Commit version updates
         id: commit
@@ -161,9 +139,6 @@ jobs:
           commit_created=false
           if ! git diff --quiet; then
             stage_paths=(pkgs)
-            [[ -f Cargo.toml ]] && stage_paths+=(Cargo.toml)
-            [[ -f Cargo.lock ]] && stage_paths+=(Cargo.lock)
-            [[ -d crates ]] && stage_paths+=(crates)
             git add "${stage_paths[@]}"
             if ! git diff --cached --quiet; then
               git commit -m "release: prepare ${{ inputs.semver }} package versions"
@@ -209,12 +184,11 @@ jobs:
               summary.write(f"- Remote verified: `{os.environ['REMOTE_SHA']}`\n")
               summary.write(f"- Commit created: `{os.environ['COMMIT_CREATED']}`\n\n")
               summary.write("### Version plan\n")
-              for kind, releases in (("pypi", plan.get("python", [])), ("crate", plan.get("crates", []))):
-                  for release in releases:
-                      summary.write(
-                          f"- {release['name']}: {release['old_version']} -> "
-                          f"{release['version']} ({kind})\n"
-                      )
+              for release in plan.get("python", []):
+                  summary.write(
+                      f"- {release['name']}: {release['old_version']} -> "
+                      f"{release['version']} (pypi)\n"
+                  )
           PY
 
       - name: Generate release matrices
@@ -229,53 +203,6 @@ jobs:
         with:
           name: release-plan
           path: release-plan.json
-
-  resolve-rust-toolchains:
-    name: Resolve latest Rust toolchains
-    runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.resolve.outputs.matrix }}
-    steps:
-      - name: Resolve latest three stable Rust releases
-        id: resolve
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          python - <<'PY'
-          import json
-          import os
-          import re
-          import urllib.request
-
-          request = urllib.request.Request(
-              "https://api.github.com/repos/rust-lang/rust/releases?per_page=100",
-              headers={
-                  "Accept": "application/vnd.github+json",
-                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
-                  "X-GitHub-Api-Version": "2022-11-28",
-              },
-          )
-          releases = json.load(urllib.request.urlopen(request, timeout=30))
-          versions = {}
-          for release in releases:
-              tag = release.get("tag_name", "")
-              match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)", tag)
-              if not match:
-                  continue
-              version = tuple(int(part) for part in match.groups())
-              series = version[:2]
-              if series not in versions or version > versions[series]:
-                  versions[series] = version
-
-          latest = sorted(versions.values(), reverse=True)[:3]
-          if len(latest) != 3:
-              raise SystemExit("failed to resolve three Rust stable releases")
-          matrix = {"toolchain": [".".join(map(str, version)) for version in latest]}
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
-              out.write(f"matrix={json.dumps(matrix, separators=(',', ':'))}\n")
-          PY
 
   validate-python-packages:
     name: Validate Python package (${{ matrix.package }})
@@ -321,12 +248,7 @@ jobs:
 
           for version in 3.10 3.11 3.12 3.13 3.14; do
             echo "Running ${package_dir}/tests under Python ${version}"
-            pyo3_env=()
-            if [[ "${version}" == "3.14" ]]; then
-              echo "Enabling PyO3 ABI3 forward compatibility for Python ${version}"
-              pyo3_env=(PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1)
-            fi
-            env "${pyo3_env[@]}" uv run \
+            uv run \
               --isolated \
               --package "${{ matrix.package }}" \
               --group dev \
@@ -378,58 +300,6 @@ jobs:
           path: dist/*
           if-no-files-found: error
 
-  validate-rust-crates:
-    name: Validate Rust crates (${{ matrix.toolchain }})
-    if: ${{ needs.prepare-release.outputs.has_crates == 'true' }}
-    runs-on: ubuntu-latest
-    needs:
-      - prepare-release
-      - resolve-rust-toolchains
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJson(needs.resolve-rust-toolchains.outputs.matrix) }}
-    steps:
-      - name: Check out prepared release commit
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.prepare-release.outputs.commit_sha }}
-
-      - name: Set up Rust ${{ matrix.toolchain }}
-        uses: dtolnay/rust-toolchain@master
-        with:
-          toolchain: ${{ matrix.toolchain }}
-
-      - name: Test all Rust workspace crates
-        run: cargo test --workspace --locked --all-targets
-
-  dry-run-crates:
-    name: Dry-run crates.io packages
-    if: ${{ inputs.crates && needs.prepare-release.outputs.has_crates == 'true' }}
-    runs-on: ubuntu-latest
-    needs:
-      - prepare-release
-      - validate-rust-crates
-    steps:
-      - name: Check out prepared release commit
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.prepare-release.outputs.commit_sha }}
-
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Download release plan
-        uses: actions/download-artifact@v4
-        with:
-          name: release-plan
-          path: .
-
-      - name: Dry-run crates.io packages
-        run: >-
-          python tools/release/release_automation.py publish-crates
-          --summary release-plan.json
-          --dry-run
-
   github-release:
     name: Create GitHub releases
     if: ${{ inputs.gh && !failure() && !cancelled() }}
@@ -437,7 +307,6 @@ jobs:
     needs:
       - prepare-release
       - validate-python-packages
-      - validate-rust-crates
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -471,7 +340,6 @@ jobs:
     needs:
       - prepare-release
       - validate-python-packages
-      - validate-rust-crates
       - build-python-packages
     strategy:
       fail-fast: false
@@ -656,39 +524,3 @@ jobs:
 
           print(f"PyPI publish verification passed for {len(expected)} artifact(s).")
           PY
-
-  publish-crates:
-    name: Publish crates.io packages
-    if: ${{ inputs.crates && needs.prepare-release.outputs.has_crates == 'true' && !failure() && !cancelled() }}
-    runs-on: ubuntu-latest
-    needs:
-      - prepare-release
-      - validate-python-packages
-      - validate-rust-crates
-      - dry-run-crates
-    env:
-      CARGO_API_TOKEN: ${{ secrets.CRATES_API_TOKEN }}
-      CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_API_TOKEN }}
-    steps:
-      - name: Check out prepared release commit
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.prepare-release.outputs.commit_sha }}
-
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Download release plan
-        uses: actions/download-artifact@v4
-        with:
-          name: release-plan
-          path: .
-
-      - name: Validate crates.io token
-        run: test -n "${CARGO_API_TOKEN}"
-
-      - name: Publish crates.io packages
-        run: >-
-          python tools/release/release_automation.py publish-crates
-          --summary release-plan.json
-          --skip-dry-run

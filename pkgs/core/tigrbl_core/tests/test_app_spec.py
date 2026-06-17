@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from tigrbl_core._spec.app_spec import AppSpec
 
 
@@ -14,12 +16,13 @@ def test_collect_reads_scalar_and_sequence_attributes() -> None:
         ROUTERS = ("router",)
         OPS = ("op",)
 
-    spec = AppSpec.collect(DemoApp)
+    with pytest.warns(DeprecationWarning):
+        spec = AppSpec.collect(DemoApp)
 
     assert spec.title == "Demo"
     assert spec.description == "desc"
     assert spec.version == "1.0.0"
-    assert spec.execution_backend == "rust"
+    assert spec.execution_backend == "python"
     assert spec.jsonrpc_prefix == "/r"
     assert spec.system_prefix == "/s"
     assert spec.routers == ("router",)

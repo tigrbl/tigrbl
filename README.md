@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Tigrbl Workspace</h1>
 <img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="220"/>
-<p><strong>Schema-first Python workspace for REST APIs, JSON-RPC APIs, typed contracts, runtime pipelines, engine plugins, and optional Rust runtime bindings.</strong></p>
+<p><strong>Schema-first Python workspace for REST APIs, JSON-RPC APIs, typed contracts, runtime pipelines, engine plugins, and Python runtime execution.</strong></p>
 <a href="https://github.com/tigrbl/tigrbl"><img src="https://img.shields.io/badge/repo-tigrbl%2Ftigrbl-1f6feb" alt="Repository for tigrbl"/></a>
 <a href="https://pypi.org/project/tigrbl/"><img src="https://img.shields.io/pypi/v/tigrbl?label=tigrbl%20PyPI" alt="PyPI version for tigrbl"/></a>
 <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml"><img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch coverage workflow"/></a>
@@ -17,7 +17,7 @@
 
 ## What is Tigrbl Workspace?
 
-Tigrbl is the repository for a schema-first Python framework family. It contains the public `tigrbl` facade package, split framework packages, operation packs, installable engine plugins, tests, governance docs, and optional runtime binding work.
+Tigrbl is the repository for a schema-first Python framework family. It contains the public `tigrbl` facade package, split framework packages, operation packs, installable engine plugins, tests, governance docs, and Python runtime work.
 
 Most application developers should start with the [`tigrbl`](https://pypi.org/project/tigrbl/) distribution. This root README is the repository and workspace entry point; the PyPI-facing facade package README lives at [`pkgs/core/tigrbl/README.md`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl). Package-local README files under `pkgs/` document install targets, package boundaries, dependency surfaces, and links back to governed docs.
 
@@ -150,7 +150,7 @@ The repository-level public API is the published package family. Application cod
 | [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) | `tigrbl_core` | Core specs, config resolution, operation vocabulary, schema generation |
 | [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) | `tigrbl_base` | Abstract contracts, mapping helpers, column inference |
 | [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) | `tigrbl_concrete` | Concrete adapters, decorators, docs, diagnostics, engine resolution, transport helpers |
-| [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | `tigrbl_runtime` | Runtime-owned routing, execution, transport-unit handling, optional runtime binding surfaces |
+| [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | `tigrbl_runtime` | Runtime-owned routing, execution, and transport-unit handling |
 | [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) | `tigrbl_atoms` | Phase names, atom implementations, typed contexts, runtime units |
 | [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) | `tigrbl_kernel` | Kernel planning, packed plans, protocol chains, labels, capability masks |
 | [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) | `tigrbl_orm` | SQLAlchemy-facing table, mixin, column, and persistence helpers |
@@ -229,7 +229,7 @@ Tigrbl is organized as a split framework behind the facade:
 | Concrete adapters | `tigrbl-concrete` | [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) | [`pkgs/core/tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete) | Concrete app/router/table/response/request/security/decorator/engine/system/transport implementations |
 | Atoms | `tigrbl-atoms` | [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) | [`pkgs/core/tigrbl_atoms`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_atoms) | Phase names, stage transitions, contexts, atom implementations, transactions, batch atoms, and transport atoms |
 | Kernel | `tigrbl-kernel` | [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) | [`pkgs/core/tigrbl_kernel`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_kernel) | Operation-view compilation, hook ordering, labels, packed plans, protocol chains, lifecycle rows, event keys, capability masks, and dispatch plans |
-| Runtime | `tigrbl-runtime` | [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | [`pkgs/core/tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) | Runtime-owned routing, request execution, framing atoms, transport channels, transactions, and optional runtime binding work |
+| Runtime | `tigrbl-runtime` | [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | [`pkgs/core/tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) | Runtime-owned routing, request execution, framing atoms, transport channels, transactions, and Python execution |
 | Operation packs | `tigrbl-ops-*` | [`oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`olap`](https://pypi.org/project/tigrbl-ops-olap/), [`realtime`](https://pypi.org/project/tigrbl-ops-realtime/) | [`pkgs/core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core) | Canonical operation definitions for CRUD, analytics, realtime, streaming, pub/sub, and transport workloads |
 | ORM | `tigrbl-orm` | [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) | [`pkgs/core/tigrbl_orm`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_orm) | SQLAlchemy-facing table and mixin helpers used by Tigrbl models and internals |
 | Engines | `tigrbl-engine-*` | Engine PyPI distributions | [`pkgs/engines`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines) | Backend-specific persistence, cache, queue, rate, bloom, dedupe, dataframe, warehouse, and database integrations |
@@ -397,9 +397,9 @@ Use that same mental model for schema, response, path, engine, and operation beh
 | `tigrbl_engine_sqlite` | [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) | [`pkgs/engines/tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_sqlite) | SQLite integration |
 | `tigrbl_engine_xlsx` | [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) | [`pkgs/engines/tigrbl_engine_xlsx`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_xlsx) | XLSX-backed workflows |
 
-### Optional Runtime Binding
+### Runtime Execution
 
-The only Rust-related surface owned by this repository is the optional runtime binding package under [`pkgs/core/tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime). Active workspace manifests currently define Python packages only.
+Tigrbl runtime execution is Python-only. Rust-named compatibility imports under `tigrbl_runtime.rust`, `tigrbl_kernel.rust_*`, and related registration helpers are deprecated shims that raise explicit errors when used for execution or registration.
 
 ## How To Choose a Package
 
@@ -407,7 +407,7 @@ The only Rust-related surface owned by this repository is the optional runtime b
 - Choose [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) when you need spec classes, operation collection, schema generation, or config resolution without concrete app/router/runtime imports.
 - Choose [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) when you are writing concrete adapters, engine adapters, or framework tests that need abstract contracts.
 - Choose [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) when you need concrete classes, decorators, engine resolution, docs mounting, or diagnostics without taking the facade dependency.
-- Choose [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are maintaining runtime execution, transport-unit handling, transaction helpers, or optional runtime binding surfaces.
+- Choose [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are maintaining runtime execution, transport-unit handling, or transaction helpers.
 - Choose operation packs when you need canonical CRUD, analytical, realtime, stream, or transport-oriented operation definitions.
 - Choose engine packages when you need a backend-specific dependency surface for SQLite, Postgres, Redis, Snowflake, BigQuery, DuckDB, warehouse, tabular, or in-memory workflows.
 

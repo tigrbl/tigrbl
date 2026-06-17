@@ -71,7 +71,8 @@ pip install tigrbl-ops-oltp
 `tigrbl-ops-oltp` owns the `operation-family package` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
 
 Implementation orientation:
-- `tigrbl_ops_oltp`: crud/, fallback, rust_handlers
+- `tigrbl_ops_oltp`: crud/, fallback
+- `tigrbl_ops_oltp.rust_handlers` is a deprecated compatibility shim; handlers are Python-only.
 
 ## Public API and Import Surface
 

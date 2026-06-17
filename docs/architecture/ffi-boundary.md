@@ -1,10 +1,8 @@
-# Optional Rust Runtime Binding FFI Boundary
+# Deprecated Rust Runtime FFI Boundary
 
-The intended boundary is narrow and explicit:
+Tigrbl runtime execution is Python-only.
 
-1. Python authors specs, hooks, handlers, atoms, and engine selections.
-2. Python serializes the canonical spec once and crosses FFI at startup when the optional binding is enabled.
-3. The optional binding compiles the kernel plan and instantiates its runtime handle.
-4. The binding only crosses FFI again when the compiled plan hits an explicitly registered Python callback, hook, handler, engine hook, or atom callback fence.
-
-This document is limited to the optional runtime binding package. It does not define a broader Rust runtime program for this repository.
+The former Rust runtime FFI boundary is deprecated. Compatibility imports remain
+only to produce explicit deprecation warnings and failure modes for callers that
+still reference Rust-named helpers. They must not be used as execution,
+planning, registration, packaging, or certification surfaces.

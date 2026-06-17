@@ -71,12 +71,14 @@ pip install tigrbl_engine_inmemory
 `tigrbl_engine_inmemory` owns the `engine plugin` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
 
 Implementation orientation:
-- `tigrbl_engine_inmemory`: engine, plugin, rust, session
+- `tigrbl_engine_inmemory`: engine, plugin, session
+- `tigrbl_engine_inmemory.rust` is a deprecated compatibility shim; engine registration is Python-only.
 
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_engine_inmemory`.
-- Public symbols: `__version__`, `register`, `register_rust_engine`.
+- Public symbols: `__version__`, `register`.
+- `register_rust_engine` is deprecated and raises when called.
 - Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/).
 - External runtime dependencies: none declared.
 

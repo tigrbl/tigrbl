@@ -4,7 +4,6 @@ import asyncio
 import json
 import logging
 import random
-import sqlite3
 from pathlib import Path
 from statistics import mean, median, pstdev
 from tempfile import TemporaryDirectory
@@ -13,8 +12,6 @@ from typing import Any, Callable
 
 import httpx
 import pytest
-from sqlalchemy import String
-
 from tests.i9n.uvicorn_utils import run_uvicorn_in_task, stop_uvicorn_server
 from tests.perf.helper_fastapi_create_app import (
     create_fastapi_app,
@@ -29,14 +26,6 @@ from tests.perf.helper_tigrbl_create_app import (
     initialize_tigrbl_app,
     tigrbl_create_path,
 )
-from tigrbl_base._base import AppBase, ColumnBase, TableBase
-from tigrbl_core._spec.app_spec import AppSpec
-from tigrbl_core._spec.binding_spec import HttpRestBindingSpec
-from tigrbl_core._spec.engine_spec import EngineSpec
-from tigrbl_core._spec.op_spec import OpSpec
-from tigrbl_core._spec.storage_spec import StorageSpec
-from tigrbl_runtime import Runtime, compiled_extension_available
-
 
 RESULTS_PATH = Path(__file__).with_name(
     "benchmark_results_executors_seq_10_rounds.json"
@@ -45,136 +34,7 @@ REPO_ROOT = Path(__file__).resolve().parents[5]
 BENCH_TMP_ROOT = REPO_ROOT / ".tmp" / "perf-benchmarks"
 OPS_COUNT = 25
 SEQUENTIAL_ROUNDS = 10
-SCENARIOS = ("fastapi", "tigrbl_python_executor", "tigrbl_rust_executor")
-
-
-class RustBenchmarkItem(TableBase):
-    __tablename__ = "benchmark_item"
-    __resource__ = "items"
-
-    id = ColumnBase(storage=StorageSpec(type_=String, primary_key=True))
-    name = ColumnBase(storage=StorageSpec(type_=String))
-
-    __tigrbl_ops__ = (
-        OpSpec(
-            alias="items.create",
-            target="create",
-            arity="collection",
-            expose_rpc=False,
-            expose_method=False,
-            bindings=(
-                HttpRestBindingSpec(
-                    proto="http.rest",
-                    methods=("POST",),
-                    path="/items",
-                ),
-            ),
-            tx_scope="read_write",
-        ),
-    )
-
-
-class RustBenchmarkAppSpec(AppBase):
-    TITLE = "rust_executor_benchmark"
-    VERSION = "0.1.0"
-    DESCRIPTION = "Tigrbl create benchmark served by the Rust executor."
-    EXECUTION_BACKEND = "rust"
-    TABLES = (RustBenchmarkItem,)
-
-
-class TigrblRustExecutorCreateApp:
-    """Small ASGI adapter that sends HTTP create requests to Runtime(..., rust)."""
-
-    def __init__(self, db_path: Path) -> None:
-        self.spec: AppSpec = AppBase.collect_spec(RustBenchmarkAppSpec)
-        self.spec.engine = EngineSpec.from_any(
-            {"kind": "sqlite", "path": str(db_path), "async": False}
-        )
-        self.runtime = Runtime(executor_backend="rust")
-        self.handle = self.runtime.rust_handle(self.spec)
-
-    def close(self) -> None:
-        self.handle = None
-        self.runtime = None
-
-    async def __call__(self, scope: dict[str, Any], receive: Any, send: Any) -> None:
-        if scope["type"] == "lifespan":
-            await self._lifespan(receive, send)
-            return
-
-        if scope["type"] != "http":
-            await self._send_json(send, 404, {"error": "unsupported scope"})
-            return
-
-        method = str(scope.get("method") or "").upper()
-        path = str(scope.get("path") or "")
-        if method == "GET" and path == "/healthz":
-            await self._send_json(
-                send,
-                200,
-                {
-                    "status": "ok",
-                    "executor": "rust",
-                    "compiled_extension_available": compiled_extension_available(),
-                    "runtime": self.handle.describe(),
-                },
-            )
-            return
-
-        if method != "POST" or path != "/items":
-            await self._send_json(send, 404, {"error": f"unknown route {path}"})
-            return
-
-        payload = await self._read_json(receive)
-        response = self.handle.execute_rest(
-            {
-                "operation": "items.create",
-                "transport": "rest",
-                "path": "/items",
-                "method": "POST",
-                "body": payload,
-            }
-        )
-        body = dict(response.get("body") or {})
-        await self._send_json(send, int(response["status"]), body)
-
-    @staticmethod
-    async def _lifespan(receive: Any, send: Any) -> None:
-        message = await receive()
-        if message.get("type") == "lifespan.startup":
-            await send({"type": "lifespan.startup.complete"})
-        message = await receive()
-        if message.get("type") == "lifespan.shutdown":
-            await send({"type": "lifespan.shutdown.complete"})
-
-    @staticmethod
-    async def _read_json(receive: Any) -> dict[str, Any]:
-        chunks: list[bytes] = []
-        more_body = True
-        while more_body:
-            message = await receive()
-            chunks.append(message.get("body", b""))
-            more_body = bool(message.get("more_body", False))
-        raw = b"".join(chunks) or b"{}"
-        payload = json.loads(raw.decode("utf-8"))
-        if not isinstance(payload, dict):
-            raise ValueError("request body must be a JSON object")
-        return payload
-
-    @staticmethod
-    async def _send_json(send: Any, status: int, payload: Any) -> None:
-        body = json.dumps(payload, sort_keys=True).encode("utf-8")
-        await send(
-            {
-                "type": "http.response.start",
-                "status": status,
-                "headers": [
-                    (b"content-type", b"application/json"),
-                    (b"content-length", str(len(body)).encode("ascii")),
-                ],
-            }
-        )
-        await send({"type": "http.response.body", "body": body})
+SCENARIOS = ("fastapi", "tigrbl_python_executor")
 
 
 def _quantile(values: list[float], q: float) -> float:
@@ -222,18 +82,6 @@ def _pairwise_deltas(
                 "throughput_ratio": means[left] / means[right] if means[right] else 0.0,
             }
     return deltas
-
-
-def fetch_tigrbl_rust_names(_app: TigrblRustExecutorCreateApp, db_path: Path) -> list[str]:
-    with sqlite3.connect(db_path) as conn:
-        rows = conn.execute(
-            "SELECT name FROM benchmark_item ORDER BY id"
-        ).fetchall()
-    return [row[0] for row in rows]
-
-
-def dispose_tigrbl_rust_app(app: TigrblRustExecutorCreateApp) -> None:
-    app.close()
 
 
 async def _benchmark_app(
@@ -319,13 +167,6 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
             initialize=initialize_tigrbl_app,
             dispose_app=dispose_tigrbl_app,
         ),
-        "tigrbl_rust_executor": dict(
-            create_app=lambda db_path: TigrblRustExecutorCreateApp(db_path),
-            endpoint_path="/items",
-            fetch_names=fetch_tigrbl_rust_names,
-            initialize=None,
-            dispose_app=dispose_tigrbl_rust_app,
-        ),
     }
     order_rng = random.Random(20260424)
     rounds: list[dict[str, Any]] = []
@@ -385,7 +226,7 @@ async def _run_sequential_consistency_benchmark() -> dict[str, Any]:
 
 
 @pytest.mark.perf
-def test_fastapi_vs_tigrbl_python_vs_tigrbl_rust_sequential_10_rounds() -> None:
+def test_fastapi_vs_tigrbl_python_executor_sequential_10_rounds() -> None:
     logging.getLogger("httpx").setLevel(logging.WARNING)
     logging.getLogger("httpcore").setLevel(logging.WARNING)
     payload = asyncio.run(_run_sequential_consistency_benchmark())
@@ -396,12 +237,11 @@ def test_fastapi_vs_tigrbl_python_vs_tigrbl_rust_sequential_10_rounds() -> None:
         ops = step["ops_per_second"]
         print(
             "[perf] round={round} order={order} fastapi={fastapi:.3f} "
-            "tigrbl_python={python:.3f} tigrbl_rust={rust:.3f}".format(
+            "tigrbl_python={python:.3f}".format(
                 round=step["step"],
                 order="->".join(step["order"]),
                 fastapi=ops["fastapi"],
                 python=ops["tigrbl_python_executor"],
-                rust=ops["tigrbl_rust_executor"],
             )
         )
 

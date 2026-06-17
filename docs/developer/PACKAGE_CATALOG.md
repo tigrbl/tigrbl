@@ -1,13 +1,13 @@
 # Package Catalog
 
-This document is the canonical workspace inventory for package and crate locations.
+This document is the canonical workspace inventory for Python package locations.
 
 ## Counts
 
 - core Python packages: 15
 - engine packages: 22
 - application packages: 0
-- optional Rust runtime binding packages under `pkgs/`: 1
+- Rust runtime binding packages under `pkgs/`: 0
 
 ## Core Python packages
 
@@ -56,9 +56,10 @@ This document is the canonical workspace inventory for package and crate locatio
 
 Application packages are not owned by this workspace. `tigrbl_acme_ca` and `tigrbl_spiffe` live in independent repositories.
 
-## Optional Rust runtime binding packages
+## Deprecated Rust runtime binding packages
 
-- `pkgs/core/tigrbl_runtime`
+None. Tigrbl runtime execution is Python-only. Rust-named compatibility modules
+inside Python packages are deprecated shims, not package boundaries.
 
 ## Package README policy
 

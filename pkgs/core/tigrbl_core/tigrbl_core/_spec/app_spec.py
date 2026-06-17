@@ -2,6 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional, Sequence
+import warnings
 
 from .._spec.engine_spec import EngineCfg, EngineSpec
 from .._spec.monotone import as_tuple, merge_mro_sequence_attr
@@ -46,7 +47,9 @@ def normalize_app_spec(spec: "AppSpec") -> "AppSpec":
         title=str(spec.title or "Tigrbl"),
         description=spec.description,
         version=str(spec.version or "0.1.0"),
-        execution_backend=str(getattr(spec, "execution_backend", None) or "auto"),
+        execution_backend=normalize_execution_backend(
+            getattr(spec, "execution_backend", None),
+        ),
         engine=spec.engine,
         engine_name=spec.engine_name,
         engines=_seqify(spec.engines),
@@ -64,6 +67,23 @@ def normalize_app_spec(spec: "AppSpec") -> "AppSpec":
         system_prefix=str(spec.system_prefix or "/system"),
         lifespan=spec.lifespan,
     )
+
+
+def normalize_execution_backend(value: Any) -> str:
+    lowered = str(value or "auto").strip().lower()
+    if not lowered:
+        return "auto"
+    if lowered == "rust":
+        warnings.warn(
+            "AppSpec.execution_backend='rust' is deprecated; "
+            "Tigrbl runtime execution is Python-only.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return "python"
+    if lowered in {"auto", "python"}:
+        return lowered
+    raise ValueError(f"unsupported execution backend: {value!r}")
 
 
 @dataclass(eq=False)
@@ -106,6 +126,7 @@ class AppSpec(SerdeMixin):
     lifespan: Optional[Callable[..., Any]] = None
 
     def __post_init__(self) -> None:
+        self.execution_backend = normalize_execution_backend(self.execution_backend)
         self.engines = _seqify(self.engines)
         self.routers = _seqify(self.routers)
         self.ops = _seqify(self.ops)

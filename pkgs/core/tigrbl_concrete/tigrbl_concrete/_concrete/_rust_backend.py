@@ -1,28 +1,36 @@
 from __future__ import annotations
 
 from typing import Any
+import warnings
 
 
 def normalize_execution_backend(value: Any) -> str:
     if value is None:
         return "auto"
     lowered = str(value).strip().lower()
-    if lowered not in {"auto", "python", "rust"}:
+    if lowered == "rust":
+        raise ValueError(
+            "execution_backend='rust' is deprecated and unavailable; "
+            "Tigrbl runtime execution is Python-only."
+        )
+    if lowered not in {"auto", "python"}:
         raise ValueError(f"unsupported execution backend: {value!r}")
     return lowered
 
 
 def ffi_boundary_events() -> list[dict[str, Any]]:
-    try:
-        from tigrbl_runtime.rust import ffi_boundary_events as _ffi_boundary_events
-    except Exception:
-        return []
-    return list(_ffi_boundary_events())
+    warnings.warn(
+        "Rust boundary tracing is deprecated; Tigrbl runtime execution is Python-only.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return []
 
 
 def clear_ffi_boundary_events() -> None:
-    try:
-        from tigrbl_runtime.rust import clear_ffi_boundary_events as _clear
-    except Exception:
-        return None
-    _clear()
+    warnings.warn(
+        "Rust boundary tracing is deprecated; Tigrbl runtime execution is Python-only.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+    return None

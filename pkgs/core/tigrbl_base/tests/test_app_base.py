@@ -1,5 +1,6 @@
 from tigrbl_base._base._app_base import AppBase
 from tigrbl_core._spec.app_spec import AppSpec
+import pytest
 
 
 def test_app_base_defaults() -> None:
@@ -29,13 +30,14 @@ def test_collect_spec_normalizes_and_collects() -> None:
         DEPS = ("dep",)
         MIDDLEWARES = ("mw",)
 
-    spec = AppBase.collect_spec(Child)
+    with pytest.warns(DeprecationWarning):
+        spec = AppBase.collect_spec(Child)
 
     assert isinstance(spec, AppSpec)
     assert spec.title == "Parent"
     assert spec.description == "desc"
     assert spec.version == "1.0.0"
-    assert spec.execution_backend == "rust"
+    assert spec.execution_backend == "python"
     assert spec.routers == ("r1",)
     assert spec.ops == ("op1",)
     assert spec.tables == ("table1",)
