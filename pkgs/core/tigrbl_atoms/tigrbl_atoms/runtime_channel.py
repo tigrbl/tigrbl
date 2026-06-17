@@ -2,9 +2,118 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from collections.abc import Mapping
+from enum import IntEnum
 from typing import Any
 
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
+
+UINT8_MAX_STREAMS = 256
+UINT16_MAX_STREAMS = 65_536
+
+
+class Initiator(IntEnum):
+    CLIENT = 0
+    SERVER = 1
+
+
+class Direction(IntEnum):
+    BIDI = 0
+    UNI = 1
+
+
+class StreamIdWidth(IntEnum):
+    UINT8 = 8
+    UINT16 = 16
+
+    @property
+    def label(self) -> str:
+        return f"uint{int(self)}"
+
+
+@dataclass(frozen=True, slots=True)
+class LaneId:
+    value: int
+    width: StreamIdWidth = StreamIdWidth.UINT8
+
+    def __post_init__(self) -> None:
+        width = StreamIdWidth(self.width)
+        object.__setattr__(self, "width", width)
+        max_value = (1 << int(width)) - 1
+        if not 0 <= self.value <= max_value:
+            raise ValueError(f"lane_id must fit {width.label}")
+
+    @property
+    def initiator(self) -> Initiator:
+        return Initiator(self.value & 0b01)
+
+    @property
+    def direction(self) -> Direction:
+        return Direction((self.value >> 1) & 0b01)
+
+    @property
+    def ordinal(self) -> int:
+        return self.value >> 2
+
+    @staticmethod
+    def encode(
+        *,
+        initiator: Initiator,
+        direction: Direction,
+        ordinal: int,
+        width: StreamIdWidth = StreamIdWidth.UINT8,
+    ) -> "LaneId":
+        width = StreamIdWidth(width)
+        ordinal_bits = int(width) - 2
+        max_ordinal = (1 << ordinal_bits) - 1
+        if not 0 <= ordinal <= max_ordinal:
+            raise ValueError(f"ordinal must fit in {ordinal_bits} bits")
+        value = (ordinal << 2) | (int(direction) << 1) | int(initiator)
+        return LaneId(value, width=width)
+
+
+@dataclass(frozen=True, slots=True)
+class WebTransportStreamIdProvisioning:
+    max_streams: int
+
+    def __post_init__(self) -> None:
+        if not 1 <= self.max_streams <= UINT16_MAX_STREAMS:
+            raise ValueError("max WT streams must be between 1 and uint16")
+
+    @property
+    def width(self) -> StreamIdWidth:
+        if self.max_streams <= UINT8_MAX_STREAMS:
+            return StreamIdWidth.UINT8
+        return StreamIdWidth.UINT16
+
+    @property
+    def lanes_per_transport_class(self) -> int:
+        return 1 << (int(self.width) - 2)
+
+    @property
+    def total_lanes(self) -> int:
+        return 1 << int(self.width)
+
+    def encode_lane(
+        self,
+        *,
+        initiator: Initiator,
+        direction: Direction,
+        ordinal: int,
+    ) -> LaneId:
+        return LaneId.encode(
+            initiator=initiator,
+            direction=direction,
+            ordinal=ordinal,
+            width=self.width,
+        )
+
+    def as_dict(self) -> dict[str, object]:
+        return {
+            "max_streams": self.max_streams,
+            "width": self.width.label,
+            "lanes_per_transport_class": self.lanes_per_transport_class,
+            "total_lanes": self.total_lanes,
+        }
 
 
 def create_channel_state(
@@ -89,8 +198,15 @@ class WebTransportSessionState:
     session_id: str
     accepted: bool = False
     closed: bool = False
+    max_streams: int = UINT8_MAX_STREAMS
     streams: dict[str, WebTransportLaneState] = field(default_factory=dict)
     datagrams_seen: set[str] = field(default_factory=set)
+    stream_id_provisioning: WebTransportStreamIdProvisioning = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.stream_id_provisioning = WebTransportStreamIdProvisioning(
+            max_streams=self.max_streams
+        )
 
     def apply_event(
         self,
@@ -153,6 +269,7 @@ class WebTransportSessionState:
             "session_id": self.session_id,
             "accepted": self.accepted,
             "closed": self.closed,
+            "stream_id_provisioning": self.stream_id_provisioning.as_dict(),
             "streams": {
                 stream_id: {
                     "lane": state.lane,
@@ -166,6 +283,19 @@ class WebTransportSessionState:
             },
             "datagrams_seen": tuple(sorted(self.datagrams_seen)),
         }
+
+    def provision_lane_id(
+        self,
+        *,
+        initiator: Initiator,
+        direction: Direction,
+        ordinal: int,
+    ) -> LaneId:
+        return self.stream_id_provisioning.encode_lane(
+            initiator=initiator,
+            direction=direction,
+            ordinal=ordinal,
+        )
 
     def _validate_session_id(self, payload: dict[str, Any]) -> None:
         payload_session_id = payload.get("session_id")
@@ -196,6 +326,8 @@ class WebTransportSessionState:
         state = self.streams.get(stream_id)
         lane = str(projection["lane"])
         if state is None:
+            if len(self.streams) >= self.stream_id_provisioning.max_streams:
+                raise ValueError("WebTransport session max_streams exceeded")
             state = WebTransportLaneState(
                 lane=lane,
                 family=str(projection["family"]),
@@ -227,6 +359,13 @@ class WebTransportSessionState:
 
 
 __all__ = [
+    "Direction",
+    "Initiator",
+    "LaneId",
+    "StreamIdWidth",
+    "UINT8_MAX_STREAMS",
+    "UINT16_MAX_STREAMS",
+    "WebTransportStreamIdProvisioning",
     "build_channel_error_ctx",
     "create_channel_state",
     "transition_channel_state",

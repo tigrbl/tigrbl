@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1180"
+number: 1180
+slug: "webtransport-lane-id-bounded-uint-encoding"
+title: "WebTransport lane IDs use bounded uint encoding"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "WebTransport lane identifiers encode initiator, direction, and ordinal into a bounded unsigned integer. Sessions with max_streams <= 256 use uint8 and provide 64 ordinals per initiator/direction class. Sessions with max_streams between 257 and 65536 use uint16. A single WebTransport session must not support more than uint16 streams."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted for WebTransport lane and stream provisioning implementation."
+    at: "2026-06-17T09:01:17Z"
+references: []
+body: |-
+  WebTransport lane identifiers encode initiator, direction, and ordinal into a bounded unsigned integer. Sessions with max_streams <= 256 use uint8 and provide 64 ordinals per initiator/direction class. Sessions with max_streams between 257 and 65536 use uint16. A single WebTransport session must not support more than uint16 streams.

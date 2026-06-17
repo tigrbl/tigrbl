@@ -2,7 +2,115 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_atoms.runtime_channel import WebTransportSessionState
+from tigrbl_atoms.runtime_channel import (
+    Direction,
+    Initiator,
+    LaneId,
+    StreamIdWidth,
+    WebTransportSessionState,
+    WebTransportStreamIdProvisioning,
+)
+
+
+def test_lane_id_encodes_uint8_initiator_direction_and_ordinal_examples() -> None:
+    control = LaneId.encode(
+        initiator=Initiator.CLIENT,
+        direction=Direction.BIDI,
+        ordinal=0,
+    )
+    events = LaneId.encode(
+        initiator=Initiator.SERVER,
+        direction=Direction.UNI,
+        ordinal=0,
+    )
+    logs = LaneId.encode(
+        initiator=Initiator.SERVER,
+        direction=Direction.UNI,
+        ordinal=1,
+    )
+    upload = LaneId.encode(
+        initiator=Initiator.CLIENT,
+        direction=Direction.UNI,
+        ordinal=0,
+    )
+    download = LaneId.encode(
+        initiator=Initiator.SERVER,
+        direction=Direction.UNI,
+        ordinal=2,
+    )
+
+    assert control.value == 0
+    assert events.value == 3
+    assert logs.value == 7
+    assert upload.value == 2
+    assert download.value == 11
+    assert logs.initiator is Initiator.SERVER
+    assert logs.direction is Direction.UNI
+    assert logs.ordinal == 1
+    assert LaneId(255).ordinal == 63
+    with pytest.raises(ValueError, match="uint8"):
+        LaneId(256)
+    with pytest.raises(ValueError, match="6 bits"):
+        LaneId.encode(
+            initiator=Initiator.CLIENT,
+            direction=Direction.BIDI,
+            ordinal=64,
+        )
+
+
+def test_webtransport_stream_id_provisioning_selects_uint8_or_uint16() -> None:
+    compact = WebTransportStreamIdProvisioning(max_streams=256)
+    expanded = WebTransportStreamIdProvisioning(max_streams=257)
+
+    assert compact.width is StreamIdWidth.UINT8
+    assert compact.lanes_per_transport_class == 64
+    assert compact.total_lanes == 256
+    assert expanded.width is StreamIdWidth.UINT16
+    assert expanded.lanes_per_transport_class == 16_384
+    assert expanded.total_lanes == 65_536
+    lane = expanded.encode_lane(
+        initiator=Initiator.SERVER,
+        direction=Direction.UNI,
+        ordinal=64,
+    )
+    assert lane.width is StreamIdWidth.UINT16
+    assert lane.value == 259
+    assert lane.ordinal == 64
+    with pytest.raises(ValueError, match="uint16"):
+        WebTransportStreamIdProvisioning(max_streams=65_537)
+
+
+def test_webtransport_session_exposes_provisioning_and_caps_distinct_streams() -> None:
+    session = WebTransportSessionState(session_id="sess-1", max_streams=2)
+
+    assert session.snapshot()["stream_id_provisioning"] == {
+        "max_streams": 2,
+        "width": "uint8",
+        "lanes_per_transport_class": 64,
+        "total_lanes": 256,
+    }
+    assert session.provision_lane_id(
+        initiator=Initiator.CLIENT,
+        direction=Direction.BIDI,
+        ordinal=0,
+    ).value == 0
+    session.apply_event(
+        event="webtransport.stream.receive",
+        channel="receive",
+        payload={"session_id": "sess-1", "stream_id": "stream-1", "stream_direction": "bidi"},
+    )
+    session.apply_event(
+        event="webtransport.stream.receive",
+        channel="receive",
+        payload={"session_id": "sess-1", "stream_id": "stream-2", "stream_direction": "bidi"},
+    )
+
+    with pytest.raises(ValueError, match="max_streams"):
+        session.apply_event(
+            event="webtransport.stream.receive",
+            channel="receive",
+            payload={"session_id": "sess-1", "stream_id": "stream-3", "stream_direction": "bidi"},
+        )
 
 
 def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_independently() -> None:

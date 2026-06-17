@@ -1,0 +1,25 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2183"
+number: 2183
+slug: "webtransport-lane-id-provisioning-contract"
+title: "WebTransport Lane ID Provisioning Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC defines WebTransport lane-id provisioning in Tigrbl. LaneId bit 0 encodes initiator, bit 1 encodes direction, and the remaining high bits encode ordinal. max_streams <= 256 selects uint8 with 64 ordinals per initiator/direction class and 256 total lane ids. 257 <= max_streams <= 65536 selects uint16. max_streams above 65536 is invalid for a single WebTransport session. Runtime session state must expose the selected width and enforce max_streams for distinct streams."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted for bounded uint8 and uint16 WebTransport lane provisioning."
+    at: "2026-06-17T09:01:33Z"
+references: []
+body: |-
+  This SPEC defines WebTransport lane-id provisioning in Tigrbl. LaneId bit 0 encodes initiator, bit 1 encodes direction, and the remaining high bits encode ordinal. max_streams <= 256 selects uint8 with 64 ordinals per initiator/direction class and 256 total lane ids. 257 <= max_streams <= 65536 selects uint16. max_streams above 65536 is invalid for a single WebTransport session. Runtime session state must expose the selected width and enforce max_streams for distinct streams.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1180"
+  - "adr:1096"
