@@ -139,6 +139,10 @@ _EXPORTS = {
     "classify_binding_stack": "transport_stack",
     "compose_h3_binding_projections": "transport_stack",
     "require_binding_stack": "transport_stack",
+    "ExposureDecision": "exposure_policy",
+    "ExposurePolicyError": "exposure_policy",
+    "exposed_surfaces": "exposure_policy",
+    "resolve_exposure_policy": "exposure_policy",
 }
 
 __all__ = list(_EXPORTS)
