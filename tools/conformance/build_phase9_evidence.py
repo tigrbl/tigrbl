@@ -4,9 +4,15 @@ from dataclasses import dataclass
 from pathlib import Path
 import json
 import re
-from typing import Iterable
+import sys
 
 ROOT = Path(__file__).resolve().parents[2]
+CI_ROOT = ROOT / 'tools' / 'ci'
+if str(CI_ROOT) not in sys.path:
+    sys.path.insert(0, str(CI_ROOT))
+
+from ssot_legacy_authority import evidence_registry_projection, legacy_claim_rows  # noqa: E402
+
 CONFORMANCE = ROOT / 'docs' / 'conformance'
 DEV_VERSION = '0.3.18.dev1'
 RELEASE_VERSION = '0.3.17'
@@ -361,17 +367,7 @@ CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
 
 
 def parse_claim_ids() -> list[str]:
-    ids: list[str] = []
-    for line in (CONFORMANCE / 'CLAIM_REGISTRY.md').read_text(encoding='utf-8').splitlines():
-        match = CLAIM_ROW_RE.match(line)
-        if not match:
-            continue
-        claim_id = match.group(1).strip()
-        if claim_id in {'Claim ID', '---'}:
-            continue
-        if re.match(r'^(?:[A-Z]+-\d+|RFC-\d+|OIDC-\d+)$', claim_id):
-            ids.append(claim_id)
-    return ids
+    return sorted(legacy_claim_rows())
 
 
 def classify(claim_id: str) -> str:
@@ -406,26 +402,15 @@ def rel(path: Path) -> str:
 
 
 def build_registry() -> dict[str, object]:
-    claims: dict[str, object] = {}
-    for claim_id in parse_claim_ids():
-        if claim_id in CLAIM_OVERRIDES:
-            claims[claim_id] = CLAIM_OVERRIDES[claim_id]
-            continue
-        template = GROUPS[classify(claim_id)]
-        claims[claim_id] = {
-            'lane_classes': template.lane_classes,
-            'tests': template.tests,
-            'ci_jobs': template.ci_jobs,
-            'artifact_paths': template.artifact_paths,
-            'doc_paths': template.doc_paths,
+    registry = evidence_registry_projection()
+    registry.update(
+        {
+            'generated_at': CURRENT_DATE,
+            'dev_bundle': rel(DEV_ROOT),
+            'release_bundle': rel(RELEASE_ROOT),
         }
-    return {
-        'schema_version': 1,
-        'generated_at': CURRENT_DATE,
-        'dev_bundle': rel(DEV_ROOT),
-        'release_bundle': rel(RELEASE_ROOT),
-        'claims': claims,
-    }
+    )
+    return registry
 
 
 def build_gate_results_docs() -> None:

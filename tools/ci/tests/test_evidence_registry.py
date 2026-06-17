@@ -3,19 +3,16 @@ from __future__ import annotations
 import os
 import subprocess
 import sys
-sys.dont_write_bytecode = True
 from pathlib import Path
-import json
-import re
+
+sys.dont_write_bytecode = True
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(REPO_ROOT / 'tools' / 'ci'))
 sys.path.insert(0, str(REPO_ROOT / 'tools' / 'conformance'))
 
 import build_phase9_evidence  # noqa: E402
-
-CLAIM_REGISTRY = REPO_ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
-EVIDENCE_REGISTRY = REPO_ROOT / 'docs' / 'conformance' / 'EVIDENCE_REGISTRY.json'
-CLAIM_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|')
+from ssot_legacy_authority import evidence_registry_projection, legacy_claim_rows  # noqa: E402
 
 
 def _run(script: str) -> subprocess.CompletedProcess[str]:
@@ -32,21 +29,11 @@ def _run(script: str) -> subprocess.CompletedProcess[str]:
 
 
 def _claim_ids() -> set[str]:
-    ids: set[str] = set()
-    for line in CLAIM_REGISTRY.read_text(encoding='utf-8').splitlines():
-        match = CLAIM_RE.match(line)
-        if not match:
-            continue
-        claim_id = match.group(1).strip()
-        if claim_id in {'Claim ID', '---'}:
-            continue
-        if re.match(r'^(?:[A-Z]+-\d+|RFC-\d+|OIDC-\d+)$', claim_id):
-            ids.add(claim_id)
-    return ids
+    return set(legacy_claim_rows())
 
 
-def test_claim_registry_rows_are_covered_by_evidence_registry() -> None:
-    data = json.loads(EVIDENCE_REGISTRY.read_text(encoding='utf-8'))
+def test_ssot_legacy_claim_rows_are_covered_by_evidence_projection() -> None:
+    data = evidence_registry_projection()
     claims = set(data['claims'])
     assert _claim_ids() <= claims
 

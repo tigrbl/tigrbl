@@ -5,6 +5,7 @@ import os
 import subprocess
 from pathlib import Path
 from common import repo_root, fail
+from ssot_legacy_authority import load_registry, validate_active_boundary_frozen
 
 ROOT = repo_root()
 MARKER_PATH = ROOT / "docs" / "conformance" / "gates" / "TARGET_FREEZE_CURRENT_CYCLE.json"
@@ -26,7 +27,10 @@ def git_changed_files(diff_range: str) -> set[str]:
 
 def main() -> None:
     if not MARKER_PATH.is_file():
-        fail([f"missing boundary freeze marker {MARKER_PATH.relative_to(ROOT)}"])
+        errors = validate_active_boundary_frozen(load_registry())
+        fail(errors)
+        print("boundary freeze diff policy passed from SSOT active boundary")
+        return
 
     completed = subprocess.run(
         ["git", "rev-parse", "--is-inside-work-tree"],

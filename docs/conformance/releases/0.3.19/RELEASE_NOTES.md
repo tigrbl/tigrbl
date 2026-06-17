@@ -1,6 +1,6 @@
 # Release Notes - 0.3.19
 
-Supported claim ids: CERT-003, CERT-004, CERT-005
+Supported claim ids: CERT-001, CERT-002
 
 `rel:tigrbl-0.3.19` is the SSOT-published release for frozen boundary
 `bnd:tigrbl-0.3.19-certification-001`.

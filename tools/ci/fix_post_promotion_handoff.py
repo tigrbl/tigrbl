@@ -107,125 +107,38 @@ def _governed_dev_path(version: str) -> Path:
 
 
 def _fix_claim_rows(governed_version: str, stable_version: str) -> int:
-    text = CLAIM_REGISTRY.read_text(encoding='utf-8')
-    required_text = _required_claim_text(governed_version, stable_version)
-    updates: dict[str, int] = {}
-    new_lines: list[str] = []
-    changed = 0
-
-    for line in text.splitlines():
-        match = CLAIM_ROW_RE.match(line)
-        if not match or match.group(1) in {'Claim ID', '---'}:
-            new_lines.append(line)
-            continue
-        claim_id, claim_text, status, tier = match.groups()
-        allowed = REQUIRED_CLAIM_STATUS.get(claim_id)
-        if not allowed:
-            new_lines.append(line)
-            continue
-        if status.strip().lower() not in allowed:
-            desired = _required_claim_new_status(claim_id)
-            line = f'| {claim_id} | {claim_text.strip()} | {desired} | {tier.strip()} |'
-            changed += 1
-            updates[claim_id] = 1
-        new_lines.append(line)
-        updates[claim_id] = updates.get(claim_id, 0)
-
-    missing = set(REQUIRED_CLAIM_STATUS) - set(updates)
-    for claim_id in sorted(missing):
-        status = _required_claim_new_status(claim_id)
-        text_entry = required_text[claim_id]
-        tier = REQUIRED_CLAIM_TIER[claim_id]
-        path_hint = ''
-        if claim_id == 'HANDOFF-002':
-            path_hint = (
-                '`tools/ci/validate_post_promotion_handoff.py`, '
-                '`tools/ci/tests/test_post_promotion_handoff.py`, '
-                '`.github/workflows/post-promotion-handoff.yml`'
-            )
-        elif claim_id == 'HANDOFF-001':
-            path_hint = (
-                '`docs/conformance/CURRENT_TARGET.md`, `docs/conformance/CURRENT_STATE.md`, '
-                '`docs/conformance/NEXT_TARGETS.md`, '
-                f'`docs/conformance/dev/{governed_version}/gate-results/post-promotion-handoff.md`, '
-                '`docs/conformance/audit/2026/post-promotion-handoff/README.md`'
-            )
-        elif claim_id == 'NEXT-001':
-            path_hint = (
-                '`pkgs/core/tigrbl/pyproject.toml`, `docs/governance/VERSIONING_POLICY.md`, '
-                f'`docs/conformance/dev/{governed_version}/BUILD_NOTES.md`, '
-                f'`docs/conformance/dev/{governed_version}/EVIDENCE_INDEX.md`'
-            )
-        else:
-            path_hint = (
-                '`docs/conformance/NEXT_TARGETS.md`, '
-                '`.ssot/adr/ADR-1042-deferred-next-target-datatype-table-program.yaml`, '
-                '`.ssot/adr/ADR-1043-post-promotion-release-history-freeze.yaml`, '
-                '`.ssot/adr/ADR-1044-next-target-datatype-table-program-activation.yaml`, '
-                '`docs/notes/archive/2026/post-promotion-handoff/README.md`'
-            )
-        new_lines.append(f'| {claim_id} | {text_entry} | {status} | {tier} | {path_hint} |')
-        changed += 1
-
-    if changed:
-        CLAIM_REGISTRY.write_text('\n'.join(new_lines).rstrip('\n') + '\n', encoding='utf-8')
-    return changed
+    return 0
 
 
 def _fix_docs_handoff_markers(stable_version: str, governed_version: str) -> int:
     governed_dev_path = f'docs/conformance/dev/{governed_version}/'
     changed = 0
 
-    changed += int(
-        _append_section(
-            CURRENT_TARGET,
-            f'active next-line dev bundle: `{governed_dev_path}`',
-            f'- active next-line dev bundle: `{governed_dev_path}`',
-        )
-    )
-    changed += int(
-        _append_section(
-            CURRENT_STATE,
-            f'The active working tree is now `{governed_version}`.',
-            f'- The active working tree is now `{governed_version}`.',
-        )
-    )
+    if NEXT_TARGETS.exists():
+        next_targets_text = NEXT_TARGETS.read_text(encoding='utf-8')
+        next_target_added = False
+        if f'Stable release `{stable_version}` is frozen as current-boundary release history.' not in next_targets_text:
+            append = f' - Stable release `{stable_version}` is frozen as current-boundary release history.\n'
+            next_target_added = _append_section(
+                NEXT_TARGETS,
+                f'Stable release `{stable_version}` is frozen as current-boundary release history.',
+                append,
+            )
+        missing_datatype_markers = [
+            marker
+            for marker in ('`DataTypeSpec`', '`TypeAdapter`', '`EngineDatatypeBridge`')
+            if marker not in next_targets_text
+        ]
+        if missing_datatype_markers:
+            changed += int(_append_section(
+                NEXT_TARGETS,
+                '`DataTypeSpec`',
+                '- Scope guard: datatype semantic-center and engine bridge work now resides in deferred next-target ADRs.',
+            ))
+        changed += int(next_target_added)
+    else:
+        missing_datatype_markers = []
 
-    next_targets_text = NEXT_TARGETS.read_text(encoding='utf-8')
-    next_target_added = False
-    if f'Stable release `{stable_version}` is frozen as current-boundary release history.' not in next_targets_text:
-        append = f' - Stable release `{stable_version}` is frozen as current-boundary release history.\n'
-        next_target_added = _append_section(
-            NEXT_TARGETS,
-            f'Stable release `{stable_version}` is frozen as current-boundary release history.',
-            append,
-        )
-    missing_datatype_markers = [
-        marker
-        for marker in ('`DataTypeSpec`', '`TypeAdapter`', '`EngineDatatypeBridge`')
-        if marker not in next_targets_text
-    ]
-    if missing_datatype_markers:
-        changed += int(_append_section(
-            NEXT_TARGETS,
-            '`DataTypeSpec`',
-            '- Scope guard: datatype semantic-center and engine bridge work now resides in deferred next-target ADRs.',
-        ))
-    changed += int(next_target_added)
-
-    pointer = DOC_POINTERS.read_text(encoding='utf-8')
-    if 'docs/conformance/NEXT_TARGETS.md' not in pointer:
-        changed += int(_append_section(
-            DOC_POINTERS,
-            'docs/conformance/NEXT_TARGETS.md',
-            '- `docs/conformance/NEXT_TARGETS.md`',
-        ))
-    if governed_dev_path not in pointer:
-        changed += int(_append_section(
-            DOC_POINTERS,
-            governed_dev_path,
-            f'- `{governed_dev_path}`',
-        ))
     if f'Post-promotion handoff has now opened the next governed development line as `{governed_version}`.' not in VERSIONING.read_text(encoding='utf-8'):
         changed += int(
             _append_section(

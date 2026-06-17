@@ -1,12 +1,11 @@
 # Claims - 0.3.19
 
-Supported claim ids: CERT-003, CERT-004, CERT-005
+Supported claim ids: CERT-001, CERT-002
 
 `rel:tigrbl-0.3.19` is certified only inside
 `bnd:tigrbl-0.3.19-certification-001`.
 
 | Claim ID | Status | Meaning |
 |---|---|---|
-| CERT-003 | achieved | The frozen boundary contains only implemented in-boundary features with linked claims, tests, and evidence. |
-| CERT-004 | achieved | The release was certified, promoted, and published through SSOT release gates. |
-| CERT-005 | achieved | AsyncAPI UI, JSON Schema UI, and non-security-scheme OIDC/OAuth/JWT/DPoP closure remain tracked outside the certified boundary. |
+| CERT-001 | asserted | The stable-release current-boundary Tier 3 certification claim is carried by SSOT as `clm:cert-001`. |
+| CERT-002 | asserted | The stable-release RFC/security Tier 3 certification claim is carried by SSOT as `clm:cert-002`. |

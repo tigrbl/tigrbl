@@ -4,6 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 from common import repo_root, fail
+from ssot_legacy_authority import load_registry, validate_active_boundary_frozen
 
 ROOT = repo_root()
 MARKER_PATH = ROOT / "docs" / "conformance" / "gates" / "TARGET_FREEZE_CURRENT_CYCLE.json"
@@ -17,7 +18,10 @@ def sha256_file(path: Path) -> str:
 def main() -> None:
     errors: list[str] = []
     if not MARKER_PATH.is_file():
-        fail([f"missing boundary freeze marker {MARKER_PATH.relative_to(ROOT)}"])
+        errors.extend(validate_active_boundary_frozen(load_registry()))
+        fail(errors)
+        print("SSOT active boundary freeze validation passed")
+        return
 
     marker = json.loads(MARKER_PATH.read_text())
     manifest_rel = marker.get("manifest_path")

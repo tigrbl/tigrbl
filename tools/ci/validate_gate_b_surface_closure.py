@@ -1,18 +1,10 @@
 from __future__ import annotations
 
-from pathlib import Path
-import re
-
 from common import repo_root, fail
+from ssot_legacy_authority import assert_claims_passing, legacy_claim_rows, validate_claim_links
 
 ROOT = repo_root()
-CLAIM_REGISTRY = ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
-CURRENT_TARGET = ROOT / 'docs' / 'conformance' / 'CURRENT_TARGET.md'
-CURRENT_STATE = ROOT / 'docs' / 'conformance' / 'CURRENT_STATE.md'
-GATE_B_DOC = ROOT / 'docs' / 'conformance' / 'gates' / 'GATE_B_SURFACE_CLOSURE.md'
 
-CLAIM_ROW_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|', re.MULTILINE)
-ALLOWED_STATUSES = {'verified in checkpoint', 'implemented', 'de-scoped'}
 GATE_B_CLAIMS = {
     'OAS-006',
     'RPC-002',
@@ -49,38 +41,11 @@ REQUIRED_PATHS = [
 ]
 
 
-def parse_claim_rows() -> dict[str, tuple[str, str]]:
-    rows: dict[str, tuple[str, str]] = {}
-    for match in CLAIM_ROW_RE.finditer(CLAIM_REGISTRY.read_text(encoding='utf-8')):
-        claim_id, claim_text, status = match.groups()
-        if claim_id in {'Claim ID', '---'}:
-            continue
-        rows[claim_id] = (claim_text.strip(), status.strip().lower())
-    return rows
-
-
 def main() -> None:
     errors: list[str] = []
-    rows = parse_claim_rows()
-    missing_claims = sorted(GATE_B_CLAIMS - set(rows))
-    if missing_claims:
-        errors.append(f'missing Gate B claim rows: {", ".join(missing_claims)}')
-
-    for claim_id in sorted(GATE_B_CLAIMS & set(rows)):
-        _claim_text, status = rows[claim_id]
-        if status not in ALLOWED_STATUSES:
-            errors.append(f'{claim_id} must be implemented, verified in checkpoint, or de-scoped (got {status!r})')
-
-    current_target_text = CURRENT_TARGET.read_text(encoding='utf-8')
-    current_state_text = CURRENT_STATE.read_text(encoding='utf-8')
-    gate_b_text = GATE_B_DOC.read_text(encoding='utf-8')
-
-    if '## Current-target surfaces still missing\n\nNone.' not in current_target_text:
-        errors.append('docs/conformance/CURRENT_TARGET.md must declare no current-target surfaces still missing')
-    if 'no unresolved current-target surface gaps' not in current_state_text:
-        errors.append('docs/conformance/CURRENT_STATE.md must declare that no unresolved current-target surface gaps remain')
-    if 'Passed in the Gate B surface-closure checkpoint.' not in gate_b_text:
-        errors.append('docs/conformance/gates/GATE_B_SURFACE_CLOSURE.md must record Gate B as passed in the Gate B surface-closure checkpoint')
+    rows = legacy_claim_rows()
+    errors.extend(assert_claims_passing(GATE_B_CLAIMS, rows))
+    errors.extend(validate_claim_links(GATE_B_CLAIMS))
 
     for path in REQUIRED_PATHS:
         if not path.exists():

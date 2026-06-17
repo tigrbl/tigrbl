@@ -1,36 +1,25 @@
 from __future__ import annotations
 
-from pathlib import Path
 import json
-import re
 
 from common import repo_root, fail
 from release_identity import current_stable_release_root, current_stable_release_version, promotion_source_dev_version
+from ssot_legacy_authority import assert_claims_passing, legacy_claim_rows, validate_claim_links
 
 ROOT = repo_root()
-CLAIM_REGISTRY = ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
-CURRENT_TARGET = ROOT / 'docs' / 'conformance' / 'CURRENT_TARGET.md'
-CURRENT_STATE = ROOT / 'docs' / 'conformance' / 'CURRENT_STATE.md'
-GATE_MODEL = ROOT / 'docs' / 'conformance' / 'GATE_MODEL.md'
-GATE_E_DOC = ROOT / 'docs' / 'conformance' / 'gates' / 'GATE_E_PROMOTION.md'
 README = ROOT / 'README.md'
 DOC_POINTERS = ROOT / 'docs' / 'governance' / 'DOC_POINTERS.md'
-CLAIM_ROW_RE = re.compile(r'^\|\s*([A-Z0-9-]+)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|\s*(.*?)\s*\|', re.MULTILINE)
+REQUIRED_CLAIMS = {'GATE-013', 'GATE-014', 'CERT-001', 'CERT-002'}
 
 
-def parse_claim_rows() -> dict[str, tuple[str, str, str]]:
-    rows: dict[str, tuple[str, str, str]] = {}
-    for match in CLAIM_ROW_RE.finditer(CLAIM_REGISTRY.read_text(encoding='utf-8')):
-        claim_id, claim_text, status, tier = match.groups()
-        if claim_id in {'Claim ID', '---'}:
-            continue
-        rows[claim_id] = (claim_text.strip(), status.strip().lower(), tier.strip())
-    return rows
+def _is_t3(tier: str) -> bool:
+    normalized = tier.lower().replace(' ', '')
+    return normalized.startswith('t3') or normalized.startswith('tier3')
 
 
 def main() -> None:
     errors: list[str] = []
-    rows = parse_claim_rows()
+    rows = legacy_claim_rows()
     stable_release_version = current_stable_release_version()
     source_dev_version = promotion_source_dev_version()
     release_root = current_stable_release_root()
@@ -51,46 +40,21 @@ def main() -> None:
         ROOT / 'docs' / 'conformance' / 'audit' / '2026' / 'p13-gate-e' / 'README.md',
     ]
 
-    for claim_id in ('GATE-013', 'GATE-014', 'CERT-001', 'CERT-002'):
-        if claim_id not in rows:
-            errors.append(f'missing Gate E claim row: {claim_id}')
-
+    errors.extend(assert_claims_passing(REQUIRED_CLAIMS, rows))
+    errors.extend(validate_claim_links(REQUIRED_CLAIMS))
     for claim_id in ('CERT-001', 'CERT-002'):
-        if claim_id in rows:
-            _text, status, tier = rows[claim_id]
-            if status != 'achieved':
-                errors.append(f'{claim_id} must be achieved (got {status!r})')
-            if not tier.lower().startswith('tier 3'):
-                errors.append(f'{claim_id} must be Tier 3 (got {tier!r})')
+        row = rows.get(claim_id)
+        if row is not None and not _is_t3(row.tier):
+            errors.append(f'{claim_id} must be T3 in SSOT (got {row.tier!r})')
 
-    if 'GATE-013' in rows:
-        _text, status, _tier = rows['GATE-013']
-        if status not in {'verified in checkpoint', 'achieved'}:
-            errors.append(f'GATE-013 must be verified in checkpoint or achieved (got {status!r})')
-    if 'GATE-014' in rows:
-        _text, status, _tier = rows['GATE-014']
-        if status not in {'implemented', 'verified in checkpoint'}:
-            errors.append(f'GATE-014 must be implemented or verified in checkpoint (got {status!r})')
-
-    current_target_text = CURRENT_TARGET.read_text(encoding='utf-8')
-    current_state_text = CURRENT_STATE.read_text(encoding='utf-8')
-    gate_model_text = GATE_MODEL.read_text(encoding='utf-8')
-    gate_e_text = GATE_E_DOC.read_text(encoding='utf-8')
     readme_text = README.read_text(encoding='utf-8')
     pointer_text = DOC_POINTERS.read_text(encoding='utf-8')
 
-    if '- Gate E status: passed in the Gate E promotion checkpoint' not in current_target_text:
-        errors.append('docs/conformance/CURRENT_TARGET.md must record Gate E as passed in the Gate E promotion checkpoint')
-    if 'Gate E: passed in the Gate E promotion checkpoint' not in current_state_text:
-        errors.append('docs/conformance/CURRENT_STATE.md must record Gate E as passed in the Gate E promotion checkpoint')
-    if 'Gate E is passed in the Gate E promotion checkpoint' not in gate_model_text:
-        errors.append('docs/conformance/GATE_MODEL.md must record Gate E as passed in the Gate E promotion checkpoint')
-    if 'Passed in the Gate E promotion checkpoint.' not in gate_e_text:
-        errors.append('docs/conformance/gates/GATE_E_PROMOTION.md must record Gate E as passed in the Gate E promotion checkpoint')
     if 'docs/conformance/releases/' not in readme_text or 'docs/conformance/dev/' not in readme_text:
         errors.append('README.md must point readers to release and dev conformance evidence roots')
-    if f'Current stable release bundle | `docs/conformance/releases/{stable_release_version}/` |' not in pointer_text:
-        errors.append('docs/governance/DOC_POINTERS.md must point to the promoted stable release bundle')
+    for marker in ('.ssot/registry.json', '.ssot/releases/', 'docs/conformance/releases/'):
+        if marker not in pointer_text:
+            errors.append(f'docs/governance/DOC_POINTERS.md must point to {marker}')
 
     for path in required_paths:
         if not path.exists():

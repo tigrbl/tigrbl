@@ -3,9 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 import re
 from common import repo_root, fail
+from ssot_legacy_authority import PASSING_CLAIM_STATUSES, legacy_claim_rows
 
 ROOT = repo_root()
-CLAIM_REGISTRY = ROOT / "docs" / "conformance" / "CLAIM_REGISTRY.md"
 RELEASE_NOTE_BASES = [
     ROOT / "docs" / "release-notes",
     ROOT / "docs" / "conformance" / "releases",
@@ -25,16 +25,20 @@ UNSUPPORTED_STATUSES = {
 
 
 def parse_claim_registry() -> dict[str, tuple[str, str]]:
-    claims: dict[str, tuple[str, str]] = {}
-    for line in CLAIM_REGISTRY.read_text().splitlines():
-        if not line.startswith("|"):
-            continue
-        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
-        if len(cells) < 5 or cells[0] in {"Claim ID", "---"}:
-            continue
-        claim_id, _, status, tier = cells[:4]
-        claims[claim_id] = (status.lower(), tier)
-    return claims
+    return {
+        display_id: (row.status, row.tier)
+        for display_id, row in legacy_claim_rows().items()
+    }
+
+
+def is_tier3_or_higher(tier: str) -> bool:
+    normalized = tier.lower().replace(" ", "")
+    return (
+        normalized.startswith("t3")
+        or normalized.startswith("t4")
+        or normalized.startswith("tier3")
+        or normalized.startswith("tier4")
+    )
 
 
 def iter_release_note_files() -> list[Path]:
@@ -74,7 +78,7 @@ def main() -> None:
                 errors.append(f"{rel} references unknown claim id {claim_id}")
                 continue
             status, _tier = claims[claim_id]
-            if status in UNSUPPORTED_STATUSES:
+            if status in UNSUPPORTED_STATUSES or status not in PASSING_CLAIM_STATUSES:
                 errors.append(
                     f"{rel} references unsupported claim id {claim_id} with status {status}"
                 )
@@ -84,7 +88,7 @@ def main() -> None:
                 if claim_id not in claims:
                     continue
                 _status, tier = claims[claim_id]
-                if not tier.lower().startswith("tier 3") and not tier.lower().startswith("tier 4"):
+                if not is_tier3_or_higher(tier):
                     errors.append(
                         f"{rel} uses Tier 3+ wording while referencing non-Tier-3 claim {claim_id} ({tier})"
                     )

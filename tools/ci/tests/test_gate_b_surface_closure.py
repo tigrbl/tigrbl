@@ -6,13 +6,15 @@ import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
-CLAIM_REGISTRY = REPO_ROOT / 'docs' / 'conformance' / 'CLAIM_REGISTRY.md'
+sys.path.insert(0, str(REPO_ROOT / 'tools' / 'ci'))
+
 CURRENT_TARGET = REPO_ROOT / 'docs' / 'conformance' / 'CURRENT_TARGET.md'
-CURRENT_STATE = REPO_ROOT / 'docs' / 'conformance' / 'CURRENT_STATE.md'
+CONFORMANCE_README = REPO_ROOT / 'docs' / 'conformance' / 'README.md'
+
+from ssot_legacy_authority import is_claim_passing, legacy_claim_rows  # noqa: E402
 
 
 GATE_B_PREFIXES = ('OP-', 'CLI-', 'GATE-007', 'GATE-008', 'OAS-006', 'RPC-002', 'RPC-003')
-ALLOWED = {'verified in checkpoint', 'implemented', 'de-scoped'}
 
 
 def _run(script: str) -> subprocess.CompletedProcess[str]:
@@ -29,15 +31,7 @@ def _run(script: str) -> subprocess.CompletedProcess[str]:
 
 
 def _claim_statuses() -> dict[str, str]:
-    statuses: dict[str, str] = {}
-    for line in CLAIM_REGISTRY.read_text(encoding='utf-8').splitlines():
-        if not line.startswith('|'):
-            continue
-        cells = [cell.strip() for cell in line.strip().strip('|').split('|')]
-        if len(cells) < 3 or cells[0] in {'Claim ID', '---'}:
-            continue
-        statuses[cells[0]] = cells[2].lower()
-    return statuses
+    return {display_id: row.status for display_id, row in legacy_claim_rows().items()}
 
 
 def test_gate_b_surface_validator_passes() -> None:
@@ -46,19 +40,20 @@ def test_gate_b_surface_validator_passes() -> None:
 
 
 def test_gate_b_claim_rows_have_closed_or_descoped_status() -> None:
-    statuses = _claim_statuses()
+    rows = legacy_claim_rows()
     relevant = {
-        claim_id: status
-        for claim_id, status in statuses.items()
+        claim_id: row
+        for claim_id, row in rows.items()
         if claim_id.startswith('OP-') or claim_id.startswith('CLI-') or claim_id in {'GATE-007', 'GATE-008', 'OAS-006', 'RPC-002', 'RPC-003'}
     }
     assert relevant
-    bad = {claim_id: status for claim_id, status in relevant.items() if status not in ALLOWED}
+    bad = {claim_id: row.status for claim_id, row in relevant.items() if not is_claim_passing(row)}
     assert not bad, bad
 
 
-def test_current_target_and_current_state_record_no_open_surface_gaps() -> None:
+def test_conformance_docs_declare_ssot_as_authority() -> None:
     current_target = CURRENT_TARGET.read_text(encoding='utf-8')
-    current_state = CURRENT_STATE.read_text(encoding='utf-8')
+    conformance_readme = CONFORMANCE_README.read_text(encoding='utf-8')
     assert '## Current-target surfaces still missing\n\nNone.' in current_target
-    assert 'no unresolved current-target surface gaps' in current_state
+    assert '.ssot/registry.json' in conformance_readme
+    assert 'non-authoritative projection' in conformance_readme

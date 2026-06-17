@@ -54,7 +54,7 @@ Tools are not tests unless they are registered as SSOT test entities for a speci
 - the Gate A freeze manifest matches the current frozen boundary and claim-control documents
 - boundary-doc changes cannot land without synchronized claim-registry and freeze-artifact updates
 - release-note files must declare governed claim IDs
-- every claim row maps to tests, CI jobs, and artifact paths in `docs/conformance/EVIDENCE_REGISTRY.json`
+- every SSOT claim row maps to existing SSOT tests and evidence with resolvable paths
 - dev/release bundle structures contain the required governed files and directories
 - the certification authority tree keeps the four-state truth model and authority-reset exit criteria machine-checked
 - the SSOT authority model keeps features, tests, claims, evidence, docs projections, and gate aggregation links synchronized

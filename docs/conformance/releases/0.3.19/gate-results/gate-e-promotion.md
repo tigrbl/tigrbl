@@ -1,6 +1,6 @@
 # Gate E Promotion - 0.3.19
 
-Supported claim ids: CERT-003, CERT-004, CERT-005
+Supported claim ids: CERT-001, CERT-002
 
 - Boundary freeze: passed
 - Certification: passed

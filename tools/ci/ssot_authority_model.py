@@ -22,8 +22,9 @@ GATE_CLAIMS: dict[str, tuple[str, ...]] = {
 }
 
 PASSING_CLAIM_STATUSES = {"asserted", "accepted", "certified", "evidenced", "implemented", "passed", "published", "verified"}
-PASSING_EVIDENCE_STATUSES = {"passed", "accepted", "certified", "evidenced", "verified"}
+PASSING_EVIDENCE_STATUSES = {"passed", "accepted", "certified", "evidenced", "published", "verified"}
 RUNTIME_LANE_APPLICABILITY = {"required", "void", "not_applicable"}
+RUNTIME_LANE_SPEC_IDS = {"spc:2090", "spc:2187"}
 RUNTIME_LANE_PATTERNS = (
     "runtime",
     "transport",
@@ -94,6 +95,13 @@ def _runtime_lane_sensitive(feature: dict[str, Any]) -> bool:
     return any(pattern in text for pattern in RUNTIME_LANE_PATTERNS)
 
 
+def _runtime_lane_governed(feature: dict[str, Any]) -> bool:
+    if "runtime_lanes" in feature:
+        return True
+    spec_ids = {str(spec_id) for spec_id in feature.get("spec_ids", [])}
+    return bool(spec_ids & RUNTIME_LANE_SPEC_IDS)
+
+
 def _feature_requires_verification(feature: dict[str, Any]) -> bool:
     implementation_status = str(feature.get("implementation_status", "") or "").lower()
     lifecycle_stage = str(feature.get("lifecycle", {}).get("stage", "") or "").lower()
@@ -115,6 +123,8 @@ def validate_runtime_lanes(registry: dict[str, Any]) -> list[str]:
 
     for feature in features.values():
         if not _feature_requires_verification(feature):
+            continue
+        if not _runtime_lane_governed(feature):
             continue
         if not _runtime_lane_sensitive(feature):
             continue
@@ -143,7 +153,6 @@ def validate_authority_model(registry: dict[str, Any]) -> list[str]:
     features = by_id(registry, "features")
     tests = by_id(registry, "tests")
     claims = by_id(registry, "claims")
-    evidence = by_id(registry, "evidence")
 
     for required in ("adr:1060", "adr:1082"):
         if required not in adrs:
@@ -175,7 +184,7 @@ def validate_authority_model(registry: dict[str, Any]) -> list[str]:
     errors.extend(linked_ids(registry, "evidence", "test_ids", "tests"))
     errors.extend(validate_runtime_lanes(registry))
 
-    for path in ("docs/conformance/GATE_MODEL.md", "docs/developer/CI_VALIDATION.md"):
+    for path in ("docs/conformance/README.md", "docs/developer/CI_VALIDATION.md"):
         text = (ROOT / path).read_text(encoding="utf-8")
         if ".ssot/registry.json" not in text:
             errors.append(f"{path} does not point to SSOT registry authority")

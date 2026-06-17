@@ -63,12 +63,12 @@ def test_governance_only_feature_with_validator_passes() -> None:
     assert validate_authority_model(registry) == []
 
 
-def test_runtime_sensitive_feature_without_rust_lane_fails() -> None:
+def test_runtime_sensitive_feature_without_python_lane_fails() -> None:
     registry = deepcopy(load_registry())
     registry["features"].append(
         {
-            "id": "feat:fixture-runtime-without-rust-lane",
-            "title": "Fixture runtime without Rust lane",
+            "id": "feat:fixture-runtime-without-python-lane",
+            "title": "Fixture runtime without Python lane",
             "description": "Negative fixture for runtime governance.",
             "implementation_status": "implemented",
             "lifecycle": {"stage": "active", "replacement_feature_ids": [], "note": None},
@@ -80,7 +80,7 @@ def test_runtime_sensitive_feature_without_rust_lane_fails() -> None:
         }
     )
     errors = validate_runtime_lanes(registry)
-    assert "feat:fixture-runtime-without-rust-lane is runtime-sensitive but has no runtime_lanes metadata" in errors
+    assert "feat:fixture-runtime-without-python-lane is runtime-sensitive but has no runtime_lanes metadata" in errors
 
 
 def test_future_absent_runtime_feature_does_not_require_runtime_lanes() -> None:
@@ -258,6 +258,6 @@ def test_gate_d_blocks_when_reproducibility_evidence_fails() -> None:
 def test_docs_and_ci_projection_drift_is_detected() -> None:
     registry = load_registry()
     assert validate_authority_model(registry) == []
-    gate_model = (REPO_ROOT / "docs" / "conformance" / "GATE_MODEL.md").read_text(encoding="utf-8")
-    assert ".ssot/registry.json" in gate_model
-    assert "non-authoritative" in gate_model.lower()
+    conformance_readme = (REPO_ROOT / "docs" / "conformance" / "README.md").read_text(encoding="utf-8")
+    assert ".ssot/registry.json" in conformance_readme
+    assert "non-authoritative" in conformance_readme.lower()
