@@ -1,3 +1,4 @@
 from .app import defineAppSpec, deriveApp
+from .webhook import DefineWebhook
 
-__all__ = ["defineAppSpec", "deriveApp"]
+__all__ = ["DefineWebhook", "defineAppSpec", "deriveApp"]

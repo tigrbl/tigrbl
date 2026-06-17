@@ -59,6 +59,7 @@ _EXPORTS = {
     "Request": "_request",
     "UploadedFile": "_request",
     "WebSocket": "_websocket",
+    "Webhook": "_webhook",
     "Body": "_body",
     "Depends": "dependencies",
     "APIKey": "_security",

@@ -17,28 +17,36 @@ status_notes:
     note: "Created to govern callback and webhook concrete aliasing, lowering, and runtime exclusion."
     status: "draft"
   -
-    status: "draft"
-    note: "Normalize callback webhook lowering spec body whitespace before commit."
     at: "2026-06-17T15:45:21Z"
+    note: "Normalize callback webhook lowering spec body whitespace before commit."
+    status: "draft"
+  -
+    at: "2026-06-17T16:39:59Z"
+    note: "Normalize webhook concrete naming to Webhook and remove Inbound public symbol guidance."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Clarify Webhook excludes built-in signature idempotency and acknowledgement helpers."
+    at: "2026-06-17T17:06:33Z"
 references: []
 body: |-
   ## Contract
   1. Tigrbl does not introduce `CallbackSpec`.
   2. Tigrbl does not introduce `WebhookSpec`.
   3. A first-class webhook is inbound HTTP event ingress.
-  4. Inbound webhook authoring belongs in `tigrbl_concrete` as a concrete form such as `InboundWebhook`.
-  5. `InboundWebhook` lowers to existing canonical specs:
+  4. Webhook authoring belongs in `tigrbl_concrete` as an inbound concrete form such as `Webhook`.
+  5. `Webhook` lowers to existing canonical specs:
      - `PathSpec` owns the path and path kind;
      - `OpSpec` owns the custom semantic operation;
      - `HttpRestBindingSpec` owns the HTTP selector, including `POST`.
-  6. Webhook signature verification, idempotency policy, acknowledgement policy, and provider metadata are ingress policy for the concrete webhook surface unless a later spec promotes a narrower declarative field into an existing core spec.
+  6. Provider metadata is ingress metadata for the concrete webhook surface. Signature verification, idempotency, acknowledgement, and provider-specific validation are runtime/security behavior supplied through existing security dependencies, hooks, handlers, or later governed surfaces; they are not built into the concrete Webhook object.
   7. Outbound remote delivery is callback delivery, even when external ecosystems call that pattern a webhook.
   8. Callback authoring belongs in `tigrbl_concrete` as a concrete alias/helper such as `PostEmitCallback`, `CallbackDelivery`, or another governed CamelCase concrete form.
   9. Callback authoring lowers to existing hook or kernel callback-fence metadata; it does not create `CallbackSpec`.
   10. Runtime may execute compiled callback delivery, retry, dead-letter, and completion-fence behavior only after callback/webhook authoring has been lowered and compiled upstream.
   11. Historical runtime webhook/callback helper names are compatibility shims only and must delegate to the owning concrete or execution primitive with deprecation warnings.
   ## Required Verification
-  - Concrete lowering tests prove inbound webhook authoring produces `PathSpec`, `OpSpec`, and `HttpRestBindingSpec` without a `WebhookSpec`.
+  - Concrete lowering tests prove webhook authoring produces `PathSpec`, `OpSpec`, and `HttpRestBindingSpec` without a `WebhookSpec`, while docstrings document inbound semantics without `Inbound*`, signature, idempotency, or acknowledgement public helper names.
   - Concrete lowering tests prove callback authoring aliases to hook or kernel callback-fence metadata without a `CallbackSpec`.
   - Runtime boundary tests prove callback/webhook authoring helpers are absent from runtime except approved deprecated shims.
   - Public API tests prove `CallbackSpec` and `WebhookSpec` are not exported from the spec package.

@@ -5,6 +5,7 @@ from importlib import import_module
 _MODULES = (
     "app",
     "rest",
+    "webhook",
 )
 
 __all__ = list(_MODULES)

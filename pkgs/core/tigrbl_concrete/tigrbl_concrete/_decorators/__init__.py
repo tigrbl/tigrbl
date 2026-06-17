@@ -34,6 +34,8 @@ _EXPORTS = {
     "put": "tigrbl_concrete._decorators.rest",
     "patch": "tigrbl_concrete._decorators.rest",
     "delete": "tigrbl_concrete._decorators.rest",
+    # webhook
+    "webhook": "tigrbl_concrete._decorators.webhook",
     # authn
     "allow_anon": "tigrbl_concrete._decorators.allow_anon",
     # response
@@ -52,3 +54,6 @@ def __getattr__(name: str) -> Any:
         raise AttributeError(name)
     module = import_module(module_name)
     return getattr(module, name)
+
+
+webhook = import_module("tigrbl_concrete._decorators.webhook").webhook

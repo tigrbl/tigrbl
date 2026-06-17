@@ -13,7 +13,7 @@ from tigrbl_core._spec import (
 from tigrbl import TigrblApp
 from tigrbl_concrete._concrete import engine_resolver as resolver
 from tigrbl_concrete._mapping.appspec import lower_concrete_engine_inputs
-from tigrbl_concrete.webhooks import DefineInboundWebhook
+from tigrbl_concrete.webhooks import DefineWebhook
 
 
 def _sqlite(name: str) -> dict[str, object]:
@@ -151,12 +151,11 @@ def test_concrete_lowering_rejects_conflicting_duplicate_inventory_names() -> No
         lower_concrete_engine_inputs(spec)
 
 
-def test_inbound_webhook_authoring_lowers_to_core_path_and_op_specs() -> None:
-    path = DefineInboundWebhook(
+def test_webhook_authoring_lowers_to_core_path_and_op_specs() -> None:
+    path = DefineWebhook(
         path="/webhooks/stripe",
         provider="stripe",
         event_type="invoice.paid",
-        signing_secret_ref="secret:stripe",
     )
 
     assert isinstance(path, PathSpec)
@@ -176,3 +175,4 @@ def test_inbound_webhook_authoring_lowers_to_core_path_and_op_specs() -> None:
     assert binding.methods == ("POST",)
     assert binding.path == "/webhooks/stripe"
     assert op.extra["webhook"]["direction"] == "inbound"
+    assert set(op.extra["webhook"]) == {"direction", "provider", "event_type"}
