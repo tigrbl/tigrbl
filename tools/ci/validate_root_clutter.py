@@ -20,7 +20,6 @@ ALLOWED_ROOT_ENTRIES = {
     "README.md",
     "SECURITY.md",
     "bindings",
-    "certification",
     "crates",
     "docs",
     "examples",

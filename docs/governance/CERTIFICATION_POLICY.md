@@ -4,13 +4,13 @@
 
 Certification language is controlled. This repository may only use certification wording when the documented claim tier permits it.
 
-The authoritative certification control surface is the SSOT at `.ssot/registry.json` together with `.ssot/adr/` and `.ssot/specs/`. The `certification/` tree is a derived projection layer. Narrative conformance docs and certification projections must agree with the SSOT.
+The authoritative certification control surface is the SSOT at `.ssot/registry.json` together with `.ssot/adr/` and `.ssot/specs/`. The `.ssot/projections/certification/` tree is a derived projection layer. Narrative conformance docs and certification projections must agree with the SSOT.
 
 ## Boundary rule
 
 Certification applies only within the declared current target boundary. Server/runtime transport ownership remains outside the framework claim set unless explicitly added later.
 
-The authoritative machine-readable boundary record lives in `.ssot/registry.json`. `certification/boundary.yaml` is the derived certification projection entry point.
+The authoritative machine-readable boundary record lives in `.ssot/registry.json`. `.ssot/projections/certification/boundary.yaml` is the derived certification projection entry point.
 
 ## Claim language rule
 

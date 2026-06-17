@@ -11,19 +11,19 @@ It separates:
 - blocked closure items
 - evidence-backed claims
 
-The projection files `certification/claims/target.yaml` and `certification/targets/next_target.yaml` are deprecated and must not receive new source edits. New planning, feature, claim, and boundary work belongs in the SSOT.
+The projection files `.ssot/projections/certification/claims/target.yaml` and `.ssot/projections/certification/targets/next_target.yaml` are deprecated and must not receive new source edits. New planning, feature, claim, and boundary work belongs in the SSOT.
 
 For normalized tracking across features, claims, tests, and evidence, use the
 generated universal registry artifact at
-`certification/registries/universal_registry.json`.
+`.ssot/projections/certification/registries/universal_registry.json`.
 
 That file is the consolidated machine-readable registry view consumed by the CSV
 registry outputs:
 
-- `certification/registries/feature_registry.csv`
-- `certification/registries/claims_registry.csv`
-- `certification/registries/test_registry.csv`
-- `certification/registries/naming_conventions.csv`
+- `.ssot/projections/certification/registries/feature_registry.csv`
+- `.ssot/projections/certification/registries/claims_registry.csv`
+- `.ssot/projections/certification/registries/test_registry.csv`
+- `.ssot/projections/certification/registries/naming_conventions.csv`
 
 Build and validate it with:
 
@@ -31,7 +31,7 @@ Build and validate it with:
 - `python tools/ci/generate_registry_csvs.py`
 - `python tools/ci/validate_universal_registry.py`
 
-See `certification/boundary.yaml` for the derived certification projection
+See `.ssot/projections/certification/boundary.yaml` for the derived certification projection
 entry point.
 
 Machine validation is enforced by `tools/ci/validate_certification_tree.py`.

@@ -2,7 +2,7 @@
 
 The authoritative source of truth for governed repository state is `.ssot/registry.json`, with authored ADRs in `.ssot/adr/` and authored specs in `.ssot/specs/`.
 
-`certification/` contains derived certification projections, gate inputs, and historical release bundles. `certification/claims/target.yaml` and `certification/targets/next_target.yaml` are deprecated projection artifacts and must not receive new source edits.
+`.ssot/projections/certification/` contains derived certification projections, gate inputs, and historical release bundles. `.ssot/projections/certification/claims/target.yaml` and `.ssot/projections/certification/targets/next_target.yaml` are deprecated projection artifacts and must not receive new source edits.
 
 `docs/` is a non-authoritative narrative, evidence, release-bundle, and operator projection layer over SSOT state. Post-promotion handoff records the post-promotion handoff that freezes stable release `0.3.18` as release history and opens the governed next-target planning line `0.3.19.dev1`.
 

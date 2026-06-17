@@ -15,14 +15,14 @@ authority:
       - id: evidenced
         meaning: Claim has mapped evidence artifacts, validators, or release-bundle proof and can be audited directly.
   authoritative_paths:
-    target_definition: certification/targets/next_target.yaml
-    current_claims: certification/claims/current.yaml
-    target_claims: certification/claims/target.yaml
-    blocked_claims: certification/claims/blocked.yaml
-    evidenced_claims: certification/claims/evidenced.yaml
-    gates: certification/gates/
-    evidence_schema: certification/evidence/schema.json
-    profiles: certification/profiles/
+    target_definition: .ssot/projections/certification/targets/next_target.yaml
+    current_claims: .ssot/projections/certification/claims/current.yaml
+    target_claims: .ssot/projections/certification/claims/target.yaml
+    blocked_claims: .ssot/projections/certification/claims/blocked.yaml
+    evidenced_claims: .ssot/projections/certification/claims/evidenced.yaml
+    gates: .ssot/projections/certification/gates/
+    evidence_schema: .ssot/projections/certification/evidence/schema.json
+    profiles: .ssot/projections/certification/profiles/
     adr: .ssot/adr/
     specs: .ssot/specs/
     reports_current_state: reports/current_state/
@@ -37,7 +37,7 @@ authority:
     - docs/conformance/EVIDENCE_MODEL.md
 current_release:
   version: 0.3.18
-  profile: certification/profiles/current_release.yaml
+  profile: .ssot/projections/certification/profiles/current_release.yaml
   gate_sequence:
     - gate-a
     - gate-b
@@ -46,7 +46,7 @@ current_release:
     - gate-e
 active_line:
   version: 0.3.19.dev1
-  profile: certification/profiles/active_next_target.yaml
+  profile: .ssot/projections/certification/profiles/active_next_target.yaml
 fail_closed_rules:
   - Public claims must carry a certified_boundary flag.
   - Next-target features must declare owner, package, crate, test_class, and claim_target.

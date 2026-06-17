@@ -13,7 +13,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/current.yaml
+      - .ssot/projections/certification/claims/current.yaml
       - docs/conformance/releases/0.3.18/
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -35,7 +35,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/current.yaml
+      - .ssot/projections/certification/claims/current.yaml
       - pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -57,7 +57,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/current.yaml
+      - .ssot/projections/certification/claims/current.yaml
       - pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -79,7 +79,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/current.yaml
+      - .ssot/projections/certification/claims/current.yaml
       - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -101,7 +101,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/current.yaml
+      - .ssot/projections/certification/claims/current.yaml
       - docs/developer/operator/
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -122,7 +122,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/current.yaml
+      - .ssot/projections/certification/claims/current.yaml
       - pkgs/core/tigrbl/tigrbl/cli.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -144,7 +144,7 @@ claims:
     boundary_inclusion: true
     target_mapping: active_next_target
     owning_modules:
-      - certification/claims/current.yaml
+      - .ssot/projections/certification/claims/current.yaml
       - docs/conformance/dev/0.3.19.dev1/
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -161,7 +161,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/evidenced.yaml
+      - .ssot/projections/certification/claims/evidenced.yaml
       - docs/conformance/releases/0.3.18/gate-results/
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -181,7 +181,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/evidenced.yaml
+      - .ssot/projections/certification/claims/evidenced.yaml
       - docs/conformance/EVIDENCE_REGISTRY.json
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -203,7 +203,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/evidenced.yaml
+      - .ssot/projections/certification/claims/evidenced.yaml
       - docs/conformance/CURRENT_STATE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -224,7 +224,7 @@ claims:
     boundary_inclusion: true
     target_mapping: current_release
     owning_modules:
-      - certification/claims/evidenced.yaml
+      - .ssot/projections/certification/claims/evidenced.yaml
       - docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -245,11 +245,11 @@ claims:
     boundary_inclusion: true
     target_mapping: active_next_target
     owning_modules:
-      - certification/claims/blocked.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
       - .ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/claims/blocked.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
     required_test_classes:
       - tools/ci/tests/test_certification_tree.py
     preserved_evidence:
@@ -265,11 +265,11 @@ claims:
     boundary_inclusion: true
     target_mapping: active_next_target
     owning_modules:
-      - certification/claims/blocked.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
       - .ssot/reports/current_state/2026-04-09-phase6-tigrcorn-hardening.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/claims/blocked.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
     required_test_classes:
       - tools/ci/tests/test_certification_tree.py
     preserved_evidence:
@@ -285,17 +285,17 @@ claims:
     boundary_inclusion: true
     target_mapping: active_next_target
     owning_modules:
-      - certification/claims/blocked.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/claims/blocked.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - tools/ci/tests/test_certification_tree.py
       - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
     preserved_evidence:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .github/workflows/next-target-datatypes.yml
     release_gate_coverage:
       - A
@@ -308,7 +308,7 @@ claims:
     boundary_inclusion: true
     target_mapping: active_next_target
     owning_modules:
-      - certification/claims/blocked.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
       - .ssot/reports/certification_state/2026-04-09-phase5-tigrcorn-operator-surface.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -328,7 +328,7 @@ claims:
     boundary_inclusion: true
     target_mapping: active_next_target
     owning_modules:
-      - certification/claims/blocked.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
       - .ssot/reports/certification_state/2026-04-09-phase6-tigrcorn-hardening.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -348,7 +348,7 @@ claims:
     boundary_inclusion: true
     target_mapping: active_next_target
     owning_modules:
-      - certification/claims/blocked.yaml
+      - .ssot/projections/certification/claims/blocked.yaml
       - .ssot/reports/certification_state/2026-04-09-phase7-claims-evidence-promotion.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
@@ -369,13 +369,13 @@ claims:
     boundary_inclusion: true
     target_mapping: N1
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_semantic_datatype_core.py
     preserved_evidence:
@@ -392,14 +392,14 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/column_spec.py
       - pkgs/core/tigrbl_base/tigrbl_base/_base/_column_base.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_column_datatype_integration.py
       - pkgs/core/tigrbl_base/tests/test_column_datatype_lowering.py
@@ -417,13 +417,13 @@ claims:
     boundary_inclusion: true
     target_mapping: N1
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_adapter_registry_contract.py
     preserved_evidence:
@@ -440,13 +440,13 @@ claims:
     boundary_inclusion: true
     target_mapping: N2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_engine_bridge_lowering.py
     preserved_evidence:
@@ -463,13 +463,13 @@ claims:
     boundary_inclusion: true
     target_mapping: N5
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
       - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
@@ -487,14 +487,14 @@ claims:
     boundary_inclusion: true
     target_mapping: N2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
       - .github/workflows/evidence-lanes.yml
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_engine_family_alignment.py
     preserved_evidence:
@@ -511,18 +511,18 @@ claims:
     boundary_inclusion: true
     target_mapping: N4
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/table_spec.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
     preserved_evidence:
       - pkgs/core/tigrbl_core/tests/test_table_portability_contract.py
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     release_gate_coverage:
       - A
       - B
@@ -534,13 +534,13 @@ claims:
     boundary_inclusion: true
     target_mapping: N5
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
       - docs/conformance/NEXT_TARGETS.md
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
     required_test_classes:
       - pkgs/core/tigrbl_core/tests/test_schema_roundtrip_recovery.py
       - pkgs/core/tigrbl_core/tests/test_reflection_roundtrip_recovery.py
@@ -558,12 +558,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -580,12 +580,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -602,12 +602,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -624,12 +624,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -646,12 +646,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -668,12 +668,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -690,12 +690,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -712,12 +712,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -734,12 +734,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -756,12 +756,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -778,12 +778,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -800,12 +800,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -822,12 +822,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -844,12 +844,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -866,12 +866,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_oltp
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -888,12 +888,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_olap
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -910,12 +910,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_olap
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -932,12 +932,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -954,12 +954,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -976,12 +976,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -998,12 +998,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -1020,12 +1020,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -1042,12 +1042,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -1064,12 +1064,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -1086,12 +1086,12 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_ops_realtime
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - .ssot/reports/current_state/2026-04-08-phase3-feature-module-closure.md
     required_test_classes:
       - pkgs/core/tigrbl_atoms/tests/test_sys_atoms.py
@@ -1108,13 +1108,13 @@ claims:
     boundary_inclusion: true
     target_mapping: N3
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
       - pkgs/core/tigrbl_core/tigrbl_core/config/constants.py
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl_core/tigrbl_core/_spec/op_spec.py
     required_test_classes:
       - tools/ci/tests/test_certification_tree.py
@@ -1132,13 +1132,13 @@ claims:
     boundary_inclusion: true
     target_mapping: T2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
@@ -1157,13 +1157,13 @@ claims:
     boundary_inclusion: true
     target_mapping: T2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
@@ -1182,13 +1182,13 @@ claims:
     boundary_inclusion: true
     target_mapping: T2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
@@ -1207,13 +1207,13 @@ claims:
     boundary_inclusion: true
     target_mapping: T2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - pkgs/core/tigrbl/tigrbl/cli.py
       - docs/developer/CLI_REFERENCE.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/developer/CLI_REFERENCE.md
     required_test_classes:
@@ -1232,13 +1232,13 @@ claims:
     boundary_inclusion: false
     target_mapping: T2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     required_test_classes:
@@ -1253,13 +1253,13 @@ claims:
     boundary_inclusion: false
     target_mapping: T2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     required_test_classes:
@@ -1274,13 +1274,13 @@ claims:
     boundary_inclusion: false
     target_mapping: T2
     owning_modules:
-      - certification/claims/target.yaml
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/claims/target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     adr_link: .ssot/adr/ADR-1026-certification-truth-model.yaml
     public_contract_artifacts:
-      - certification/targets/next_target.yaml
+      - .ssot/projections/certification/targets/next_target.yaml
       - docs/conformance/NEXT_TARGETS.md
       - docs/conformance/IMPLEMENTATION_MAP.md
     required_test_classes:

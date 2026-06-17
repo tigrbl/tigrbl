@@ -57,7 +57,6 @@ ROOT_RELATIVE_PREFIXES = {
     ".github",
     ".cargo",
     ".ssot",
-    "certification",
     "reports",
 }
 ROOT_RELATIVE_FILES = {

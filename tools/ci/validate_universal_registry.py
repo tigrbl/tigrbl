@@ -2,15 +2,16 @@ from __future__ import annotations
 
 import json
 
-from common import fail
+from common import fail, repo_relative
 from registry_model import REGISTRY_DIR, build_universal_registry
 
 
 def main() -> None:
     errors: list[str] = []
     target = REGISTRY_DIR / "universal_registry.json"
+    target_rel = repo_relative(target)
     if not target.exists():
-        errors.append("certification/registries/universal_registry.json is missing")
+        errors.append(f"{target_rel} is missing")
         fail(errors)
         return
 
@@ -18,7 +19,7 @@ def main() -> None:
     current = json.loads(target.read_text(encoding="utf-8"))
     if current != expected:
         errors.append(
-            "certification/registries/universal_registry.json is out of date; run python tools/ci/build_universal_registry.py"
+            f"{target_rel} is out of date; run python tools/ci/build_universal_registry.py"
         )
 
     fail(errors)

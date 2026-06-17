@@ -24,7 +24,7 @@ TEST_FILE_SUFFIXES = (
     ".spec.js",
     ".spec.jsx",
 )
-DOC_PREFIXES = ("docs/", ".ssot/", "reports/", "certification/")
+DOC_PREFIXES = ("docs/", ".ssot/", "reports/")
 CODE_PREFIXES = ("pkgs/", "crates/", "tools/", ".github/", "apps/", "scripts/")
 ROOT_CODE_FILES = {
     "pyproject.toml",

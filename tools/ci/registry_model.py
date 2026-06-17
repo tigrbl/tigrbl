@@ -3,12 +3,12 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from common import repo_root
+from common import certification_projection_root, repo_relative, repo_root
 from simple_yaml import load_yaml
 
 
 ROOT = repo_root()
-CERT = ROOT / "certification"
+CERT = certification_projection_root()
 REGISTRY_DIR = CERT / "registries"
 
 CLAIM_FILES = {
@@ -17,6 +17,10 @@ CLAIM_FILES = {
     "blocked": CERT / "claims" / "blocked.yaml",
     "evidenced": CERT / "claims" / "evidenced.yaml",
 }
+
+
+def cert_path(*parts: str) -> str:
+    return repo_relative(CERT.joinpath(*parts))
 
 
 def load_yaml_file(path: Path) -> Any:
@@ -117,11 +121,13 @@ def claim_status(claim_state: str, lifecycle: str | None) -> str:
 def feature_description(feature: dict[str, Any], claim_title: str) -> str:
     name = feature["name"]
     package = feature["package"]
-    crate = feature["crate"]
     if name.startswith("Canonical op "):
         op = name.replace("Canonical op ", "", 1)
         return f"Tracks the canonical `{op}` surface as a governed feature with package/crate ownership and executable evidence pointers."
-    return f"{claim_title} Package owner `{package}` and crate owner `{crate}` define the tracked implementation surface."
+    crate = feature.get("crate")
+    if crate:
+        return f"{claim_title} Package owner `{package}` and crate owner `{crate}` define the tracked implementation surface."
+    return f"{claim_title} Package owner `{package}` defines the tracked implementation surface."
 
 
 def sequence_map(keys: list[str], prefix: str) -> dict[str, str]:
@@ -229,7 +235,7 @@ def build_universal_registry() -> dict[str, Any]:
                 "feature_phase": feature["phase"],
                 "feature_owner": feature["owner"],
                 "feature_package": feature["package"],
-                "feature_crate": feature["crate"],
+                "feature_crate": feature.get("crate", ""),
                 "feature_test_class": feature["test_class"],
                 "mapped_claim_id": claim_id,
                 "mapped_claim_state": claim_state,
@@ -313,7 +319,7 @@ def build_universal_registry() -> dict[str, Any]:
             "source_id_format": "NEXT-FEAT-NNN",
             "generated_registry_id_format": "FREG-NNNN",
             "example": "NEXT-FEAT-009 / FREG-0009",
-            "notes": "Feature rows in certification/targets/next_target.yaml.",
+            "notes": f"Feature rows in {cert_path('targets', 'next_target.yaml')}.",
         },
         {
             "entity_type": "claim",
@@ -358,16 +364,16 @@ def build_universal_registry() -> dict[str, Any]:
             "name": "universal-certification-registry",
             "description": "Single normalized registry artifact for features, claims, tests, and evidence.",
             "source_roots": {
-                "targets": "certification/targets/next_target.yaml",
+                "targets": cert_path("targets", "next_target.yaml"),
                 "claims": [norm(str(path.relative_to(ROOT))) for path in CLAIM_FILES.values()],
-                "lifecycle": "certification/claims/lifecycle.yaml",
+                "lifecycle": cert_path("claims", "lifecycle.yaml"),
             },
             "output_roots": {
-                "universal_registry": "certification/registries/universal_registry.json",
-                "feature_registry_csv": "certification/registries/feature_registry.csv",
-                "claims_registry_csv": "certification/registries/claims_registry.csv",
-                "test_registry_csv": "certification/registries/test_registry.csv",
-                "naming_conventions_csv": "certification/registries/naming_conventions.csv",
+                "universal_registry": cert_path("registries", "universal_registry.json"),
+                "feature_registry_csv": cert_path("registries", "feature_registry.csv"),
+                "claims_registry_csv": cert_path("registries", "claims_registry.csv"),
+                "test_registry_csv": cert_path("registries", "test_registry.csv"),
+                "naming_conventions_csv": cert_path("registries", "naming_conventions.csv"),
             },
         },
         "naming_conventions": naming_conventions,

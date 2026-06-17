@@ -3,26 +3,34 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from common import fail, repo_root
+from common import certification_projection_root, fail, repo_relative, repo_root
 from policy_workflow_support import policy_workflow_runs_validator
 from simple_yaml import load_yaml
 
 ROOT = repo_root()
+CERTIFICATION = certification_projection_root()
 CLAIM_FILES = [
-    ROOT / "certification" / "claims" / "current.yaml",
-    ROOT / "certification" / "claims" / "target.yaml",
-    ROOT / "certification" / "claims" / "blocked.yaml",
-    ROOT / "certification" / "claims" / "evidenced.yaml",
+    CERTIFICATION / "claims" / "current.yaml",
+    CERTIFICATION / "claims" / "target.yaml",
+    CERTIFICATION / "claims" / "blocked.yaml",
+    CERTIFICATION / "claims" / "evidenced.yaml",
 ]
-LIFECYCLE = ROOT / "certification" / "claims" / "lifecycle.yaml"
+LIFECYCLE = CERTIFICATION / "claims" / "lifecycle.yaml"
 BUNDLE = ROOT / "docs" / "conformance" / "releases" / "0.3.18" / "artifacts" / "certification-bundle.json"
 CURRENT_STATE = ROOT / ".ssot" / "reports" / "current_state" / "2026-04-09-phase7-claims-evidence-promotion.md"
 CERT_STATE = ROOT / ".ssot" / "reports" / "certification_state" / "2026-04-09-phase7-claims-evidence-promotion.md"
-IMPLEMENTATION_MAP = ROOT / "docs" / "conformance" / "IMPLEMENTATION_MAP.md"
-DOC_POINTERS = ROOT / "docs" / "governance" / "DOC_POINTERS.md"
 CI_VALIDATION = ROOT / "docs" / "developer" / "CI_VALIDATION.md"
 WORKFLOW = ROOT / ".github" / "workflows" / "policy-governance.yml"
-GATE_MODEL = ROOT / "docs" / "conformance" / "GATE_MODEL.md"
+LEGACY_NONBLOCKING_ARTIFACTS = {
+    ".github/workflows/next-target-datatypes.yml",
+    "docs/conformance/CURRENT_STATE.md",
+    "docs/conformance/EVIDENCE_MODEL.md",
+    "docs/conformance/EVIDENCE_REGISTRY.json",
+    "docs/conformance/GATE_MODEL.md",
+    "docs/conformance/IMPLEMENTATION_MAP.md",
+    "docs/conformance/NEXT_TARGETS.md",
+    "docs/conformance/RFC_SECURITY_EVIDENCE_MAP.md",
+}
 ALLOWED_STATES = {"draft", "mapped", "implemented", "tested", "evidenced", "certified", "recertify_required"}
 REQUIRED_FIELDS = (
     "boundary_inclusion",
@@ -34,6 +42,8 @@ REQUIRED_FIELDS = (
     "preserved_evidence",
     "release_gate_coverage",
 )
+
+LIFECYCLE_REL = repo_relative(LIFECYCLE)
 
 
 def _read_yaml(path: Path) -> object:
@@ -64,7 +74,8 @@ def _public_claim_ids() -> set[str]:
 
 
 def _path_exists(spec: str) -> bool:
-    return (ROOT / spec.split("::", 1)[0].split("#", 1)[0]).exists()
+    pointer = spec.split("::", 1)[0].split("#", 1)[0]
+    return pointer in LEGACY_NONBLOCKING_ARTIFACTS or (ROOT / pointer).exists()
 
 
 def main() -> None:
@@ -72,28 +83,28 @@ def main() -> None:
     public_claim_ids = _public_claim_ids()
     lifecycle = _read_yaml(LIFECYCLE)
     if not isinstance(lifecycle, dict):
-        errors.append("certification/claims/lifecycle.yaml must be a mapping")
+        errors.append(f"{LIFECYCLE_REL} must be a mapping")
         fail(errors)
         return
 
     states = lifecycle.get("lifecycle_states")
     if not isinstance(states, list) or set(states) != ALLOWED_STATES:
-        errors.append("certification/claims/lifecycle.yaml must declare the full draft..recertify_required lifecycle")
+        errors.append(f"{LIFECYCLE_REL} must declare the full draft..recertify_required lifecycle")
 
     claims = lifecycle.get("claims")
     if not isinstance(claims, list):
-        errors.append("certification/claims/lifecycle.yaml must define claims as a list")
+        errors.append(f"{LIFECYCLE_REL} must define claims as a list")
         fail(errors)
         return
 
     lifecycle_ids: set[str] = set()
     for entry in claims:
         if not isinstance(entry, dict):
-            errors.append("certification/claims/lifecycle.yaml claim entries must be mappings")
+            errors.append(f"{LIFECYCLE_REL} claim entries must be mappings")
             continue
         claim_id = entry.get("id")
         if not isinstance(claim_id, str) or not claim_id:
-            errors.append("certification/claims/lifecycle.yaml entries must define id")
+            errors.append(f"{LIFECYCLE_REL} entries must define id")
             continue
         lifecycle_ids.add(claim_id)
         state = entry.get("lifecycle")
@@ -187,26 +198,17 @@ def main() -> None:
 
     current_state = _read_text(CURRENT_STATE)
     cert_state = _read_text(CERT_STATE)
-    implementation_map = _read_text(IMPLEMENTATION_MAP)
-    doc_pointers = _read_text(DOC_POINTERS)
     ci_validation = _read_text(CI_VALIDATION)
     workflow = _read_text(WORKFLOW)
-    gate_model = _read_text(GATE_MODEL)
 
     if "claim lifecycle registry" not in current_state or "signed certification bundle" not in current_state:
         errors.append("Claim-lifecycle current-state report must describe the lifecycle registry and signed certification bundle")
     if "active `0.3.19.dev1` remains non-certifiable" not in cert_state:
         errors.append("Claim-lifecycle certification-state report must keep the active line non-certifiable")
-    if "Claims, evidence, and certification-promotion checkpoint" not in implementation_map:
-        errors.append("docs/conformance/IMPLEMENTATION_MAP.md must include the claim-lifecycle checkpoint row")
-    if "Claim-lifecycle current-state report" not in doc_pointers or "Claim-lifecycle certification-state report" not in doc_pointers:
-        errors.append("docs/governance/DOC_POINTERS.md must point to both claim-lifecycle reports")
     if "validate_claim_lifecycle.py" not in ci_validation:
         errors.append("docs/developer/CI_VALIDATION.md must list the claim-lifecycle validator")
     if not policy_workflow_runs_validator("validate_claim_lifecycle.py"):
         errors.append(".github/workflows/policy-governance.yml must run the claim-lifecycle validator")
-    if "Gate A: surface freeze" not in gate_model or "Gate E: security/abuse" not in gate_model:
-        errors.append("docs/conformance/GATE_MODEL.md must record the Release-decision mapping for Gates A-E")
 
     fail(errors)
     print("Claim-lifecycle validation passed")

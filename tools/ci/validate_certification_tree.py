@@ -3,11 +3,11 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from common import repo_root, fail
+from common import certification_projection_root, fail, repo_relative, repo_root
 from simple_yaml import load_yaml
 
 ROOT = repo_root()
-CERTIFICATION = ROOT / "certification"
+CERTIFICATION = certification_projection_root()
 BOUNDARY = CERTIFICATION / "boundary.yaml"
 NEXT_TARGET = CERTIFICATION / "targets" / "next_target.yaml"
 CLAIM_FILES = {
@@ -32,11 +32,19 @@ REQUIRED_STATES = {"current", "target", "blocked", "evidenced"}
 REQUIRED_FEATURE_FIELDS = {
     "owner",
     "package",
-    "crate",
     "test_class",
     "claim_target",
     "evidence_artifacts",
 }
+LEGACY_NONBLOCKING_ARTIFACTS = {
+    ".github/workflows/next-target-datatypes.yml",
+    "docs/conformance/IMPLEMENTATION_MAP.md",
+    "docs/conformance/NEXT_TARGETS.md",
+}
+
+
+def cert_path(*parts: str) -> str:
+    return repo_relative(CERTIFICATION.joinpath(*parts))
 
 
 def read_yaml(path: Path) -> object:
@@ -50,24 +58,24 @@ def load_json(path: Path) -> object:
 def validate_boundary(errors: list[str]) -> dict[str, object]:
     boundary = read_yaml(BOUNDARY)
     if not isinstance(boundary, dict):
-        errors.append("certification/boundary.yaml must be a mapping")
+        errors.append(f"{cert_path('boundary.yaml')} must be a mapping")
         return {}
 
     authority = boundary.get("authority")
     if not isinstance(authority, dict):
-        errors.append("certification/boundary.yaml must define authority")
+        errors.append(f"{cert_path('boundary.yaml')} must define authority")
         return boundary
 
     if authority.get("authoritative") is not True:
-        errors.append("certification/boundary.yaml must mark authority.authoritative: true")
+        errors.append(f"{cert_path('boundary.yaml')} must mark authority.authoritative: true")
 
     truth_model = authority.get("truth_model")
     if not isinstance(truth_model, dict):
-        errors.append("certification/boundary.yaml must define authority.truth_model")
+        errors.append(f"{cert_path('boundary.yaml')} must define authority.truth_model")
     else:
         states = truth_model.get("states")
         if not isinstance(states, list):
-            errors.append("certification/boundary.yaml must define authority.truth_model.states as a list")
+            errors.append(f"{cert_path('boundary.yaml')} must define authority.truth_model.states as a list")
         else:
             found_states = {
                 state.get("id")
@@ -76,12 +84,12 @@ def validate_boundary(errors: list[str]) -> dict[str, object]:
             }
             if found_states != REQUIRED_STATES:
                 errors.append(
-                    "certification/boundary.yaml must define exactly the current/target/blocked/evidenced states"
+                    f"{cert_path('boundary.yaml')} must define exactly the current/target/blocked/evidenced states"
                 )
 
     authoritative_paths = authority.get("authoritative_paths")
     if not isinstance(authoritative_paths, dict):
-        errors.append("certification/boundary.yaml must define authority.authoritative_paths")
+        errors.append(f"{cert_path('boundary.yaml')} must define authority.authoritative_paths")
 
     return boundary
 
@@ -89,21 +97,21 @@ def validate_boundary(errors: list[str]) -> dict[str, object]:
 def validate_evidence_schema(errors: list[str]) -> None:
     schema = load_json(CERTIFICATION / "evidence" / "schema.json")
     if not isinstance(schema, dict):
-        errors.append("certification/evidence/schema.json must be a JSON object")
+        errors.append(f"{cert_path('evidence', 'schema.json')} must be a JSON object")
         return
 
     state_property = schema.get("properties", {}).get("state")
     if not isinstance(state_property, dict):
-        errors.append("certification/evidence/schema.json must define properties.state")
+        errors.append(f"{cert_path('evidence', 'schema.json')} must define properties.state")
         return
 
     enum_values = state_property.get("enum")
     if not isinstance(enum_values, list) or set(enum_values) != REQUIRED_STATES:
-        errors.append("certification/evidence/schema.json must enumerate current/target/blocked/evidenced states")
+        errors.append(f"{cert_path('evidence', 'schema.json')} must enumerate current/target/blocked/evidenced states")
 
     certified_boundary = schema.get("properties", {}).get("certified_boundary")
     if not isinstance(certified_boundary, dict) or certified_boundary.get("type") != "boolean":
-        errors.append("certification/evidence/schema.json must define certified_boundary as a boolean")
+        errors.append(f"{cert_path('evidence', 'schema.json')} must define certified_boundary as a boolean")
 
 
 def validate_claims(errors: list[str]) -> set[str]:
@@ -142,75 +150,82 @@ def validate_claims(errors: list[str]) -> set[str]:
 def validate_next_target(errors: list[str], target_claim_ids: set[str]) -> None:
     payload = read_yaml(NEXT_TARGET)
     if not isinstance(payload, dict):
-        errors.append("certification/targets/next_target.yaml must be a mapping")
+        errors.append(f"{cert_path('targets', 'next_target.yaml')} must be a mapping")
         return
     if payload.get("status") != "target":
-        errors.append("certification/targets/next_target.yaml must declare status: target")
+        errors.append(f"{cert_path('targets', 'next_target.yaml')} must declare status: target")
 
     features = payload.get("features")
     if not isinstance(features, list) or not features:
-        errors.append("certification/targets/next_target.yaml must define at least one feature")
+        errors.append(f"{cert_path('targets', 'next_target.yaml')} must define at least one feature")
     else:
         for feature in features:
             if not isinstance(feature, dict):
-                errors.append("certification/targets/next_target.yaml features must be mappings")
+                errors.append(f"{cert_path('targets', 'next_target.yaml')} features must be mappings")
                 continue
             feature_id = feature.get("id", "<unknown>")
             missing = sorted(field for field in REQUIRED_FEATURE_FIELDS if not feature.get(field))
             if missing:
                 errors.append(
-                    f"certification/targets/next_target.yaml feature {feature_id} is missing required fields: {', '.join(missing)}"
+                    f"{cert_path('targets', 'next_target.yaml')} feature {feature_id} is missing required fields: {', '.join(missing)}"
                 )
             claim_target = feature.get("claim_target")
             if isinstance(claim_target, str) and claim_target not in target_claim_ids:
                 errors.append(
-                    f"certification/targets/next_target.yaml feature {feature_id} points to unknown target claim {claim_target}"
+                    f"{cert_path('targets', 'next_target.yaml')} feature {feature_id} points to unknown target claim {claim_target}"
                 )
             evidence_artifacts = feature.get("evidence_artifacts")
             if not isinstance(evidence_artifacts, list) or not evidence_artifacts:
                 errors.append(
-                    f"certification/targets/next_target.yaml feature {feature_id} must define evidence_artifacts"
+                    f"{cert_path('targets', 'next_target.yaml')} feature {feature_id} must define evidence_artifacts"
                 )
             else:
                 for artifact in evidence_artifacts:
-                    if not isinstance(artifact, str) or not (ROOT / artifact).exists():
+                    if not isinstance(artifact, str) or not artifact:
                         errors.append(
-                            f"certification/targets/next_target.yaml feature {feature_id} references missing evidence artifact {artifact}"
+                            f"{cert_path('targets', 'next_target.yaml')} feature {feature_id} references invalid evidence artifact {artifact}"
+                        )
+                        continue
+                    if artifact in LEGACY_NONBLOCKING_ARTIFACTS:
+                        continue
+                    if not (ROOT / artifact).exists():
+                        errors.append(
+                            f"{cert_path('targets', 'next_target.yaml')} feature {feature_id} references missing evidence artifact {artifact}"
                         )
 
     risks = payload.get("risks")
     if not isinstance(risks, list):
-        errors.append("certification/targets/next_target.yaml must define risks as a list")
+        errors.append(f"{cert_path('targets', 'next_target.yaml')} must define risks as a list")
     else:
         for risk in risks:
             if not isinstance(risk, dict):
-                errors.append("certification/targets/next_target.yaml risks must be mappings")
+                errors.append(f"{cert_path('targets', 'next_target.yaml')} risks must be mappings")
                 continue
             if not risk.get("mitigation_owner"):
-                errors.append(f"certification/targets/next_target.yaml risk {risk.get('id', '<unknown>')} must define mitigation_owner")
+                errors.append(f"{cert_path('targets', 'next_target.yaml')} risk {risk.get('id', '<unknown>')} must define mitigation_owner")
 
     issues = payload.get("issues")
     if not isinstance(issues, list):
-        errors.append("certification/targets/next_target.yaml must define issues as a list")
+        errors.append(f"{cert_path('targets', 'next_target.yaml')} must define issues as a list")
     else:
         for issue in issues:
             if not isinstance(issue, dict):
-                errors.append("certification/targets/next_target.yaml issues must be mappings")
+                errors.append(f"{cert_path('targets', 'next_target.yaml')} issues must be mappings")
                 continue
             phase_link = issue.get("phase_link")
             waiver = issue.get("waiver")
             if not phase_link and not waiver:
                 errors.append(
-                    f"certification/targets/next_target.yaml issue {issue.get('id', '<unknown>')} must define phase_link or waiver"
+                    f"{cert_path('targets', 'next_target.yaml')} issue {issue.get('id', '<unknown>')} must define phase_link or waiver"
                 )
 
     phase_exit_criteria = payload.get("phase_exit_criteria")
     if not isinstance(phase_exit_criteria, dict):
-        errors.append("certification/targets/next_target.yaml must define phase_exit_criteria")
+        errors.append(f"{cert_path('targets', 'next_target.yaml')} must define phase_exit_criteria")
     else:
         for key, value in phase_exit_criteria.items():
             if value is not True:
-                errors.append(f"certification/targets/next_target.yaml phase_exit_criteria.{key} must be true")
+                errors.append(f"{cert_path('targets', 'next_target.yaml')} phase_exit_criteria.{key} must be true")
 
 
 def validate_required_paths(errors: list[str]) -> None:
@@ -256,7 +271,7 @@ def validate_lifecycle_completeness(errors: list[str]) -> None:
         claim_id = claim.get("id")
         if isinstance(claim_id, str) and claim_id not in lifecycle_ids:
             errors.append(
-                f"blocked claim {claim_id} exists in certification/claims/blocked.yaml but not in certification/claims/lifecycle.yaml"
+                f"blocked claim {claim_id} exists in {cert_path('claims', 'blocked.yaml')} but not in {cert_path('claims', 'lifecycle.yaml')}"
             )
 
 

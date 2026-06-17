@@ -478,7 +478,7 @@ def compliance_security_posture() -> dict[str, Any]:
         "pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py",
         "pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py",
-        "certification/claims/current.yaml",
+        ".ssot/projections/certification/claims/current.yaml",
     ]
     fastapi_evidence = []
     for module_name in ("fastapi.security", "fastapi.openapi", "fastapi.exceptions"):
