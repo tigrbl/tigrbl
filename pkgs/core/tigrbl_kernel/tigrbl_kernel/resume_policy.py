@@ -70,6 +70,8 @@ def compile_resume_policy(binding_kind: str, binding: Mapping[str, Any]) -> Resu
     )
     if policy.enabled and binding_kind in {"http.stream", "https.stream"} and mode == "cursor":
         raise ValueError("HTTP stream resume cursor mode is reserved for SSE")
+    if policy.enabled and mode in {"cursor", "replay"} and policy.replay_window < 1:
+        raise ValueError("resume replay_window must be positive for cursor or replay mode")
     return policy
 
 

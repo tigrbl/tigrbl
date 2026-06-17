@@ -5,6 +5,11 @@ from time import monotonic
 from typing import Any
 
 
+RESUMABLE_SCOPE_BINDINGS = frozenset(
+    {"http.stream", "https.stream", "http.sse", "https.sse", "ws", "wss", "webtransport"}
+)
+
+
 @dataclass(frozen=True, slots=True)
 class ResumeScope:
     client_id: str
@@ -21,6 +26,8 @@ class ResumeScope:
         ):
             if not isinstance(value, str) or not value:
                 raise ValueError(f"{name} is required")
+        if self.binding not in RESUMABLE_SCOPE_BINDINGS:
+            raise ValueError(f"binding {self.binding!r} is not resumable")
 
     def as_dict(self) -> dict[str, str]:
         return {
@@ -64,6 +71,8 @@ class ResumeLedger:
     ) -> ResumeLedgerEntry:
         if not token:
             raise ValueError("resume token is required")
+        if ttl_seconds is not None and ttl_seconds <= 0:
+            raise ValueError("ttl_seconds must be positive")
         entry = ResumeLedgerEntry(
             scope=scope,
             token=token,
@@ -77,6 +86,8 @@ class ResumeLedger:
         entry = self._entries[token]
         if entry.closed:
             raise ValueError("cannot record resume payload after close")
+        if not isinstance(payload, dict):
+            raise ValueError("resume payload must be a dict")
         entry.events.append(dict(payload))
         if len(entry.events) > self.replay_window:
             entry.events.pop(0)
@@ -102,7 +113,11 @@ class ResumeLedger:
         if entry.scope != scope:
             return {"accepted": False, "reason": "identity_mismatch"}
         oldest_offset = max(0, entry.next_offset - len(entry.events))
-        if requested_offset < oldest_offset or requested_offset > entry.next_offset:
+        if (
+            not isinstance(requested_offset, int)
+            or requested_offset < oldest_offset
+            or requested_offset > entry.next_offset
+        ):
             return {"accepted": False, "reason": "out_of_window"}
         replay_index = requested_offset - oldest_offset
         return {
@@ -113,4 +128,4 @@ class ResumeLedger:
         }
 
 
-__all__ = ["ResumeLedger", "ResumeLedgerEntry", "ResumeScope"]
+__all__ = ["RESUMABLE_SCOPE_BINDINGS", "ResumeLedger", "ResumeLedgerEntry", "ResumeScope"]
