@@ -54,6 +54,8 @@ claims, evidence, boundaries, releases, ADRs, or specs.
 | Development checkpoint evidence bundles | `docs/conformance/dev/` |
 | Audit and checkpoint captures | `docs/conformance/audit/` |
 | Archived legacy conformance material | `docs/conformance/archive/` |
+| Declared-surface current-state report | `.ssot/reports/current_state/2026-04-07-phase1-declarative-surface.md` |
+| Declared-surface certification-state report | `.ssot/reports/certification_state/2026-04-07-phase1-declarative-surface.md` |
 
 Root-level conformance gate documents, shadow claim registries, and shadow
 evidence registries are intentionally not listed here. Use SSOT entities and
