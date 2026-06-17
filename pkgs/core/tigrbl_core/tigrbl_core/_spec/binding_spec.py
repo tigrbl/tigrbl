@@ -28,6 +28,7 @@ Framing = Literal[
     "binary",
     "bytes",
     "webtransport",
+    "multipart/form-data",
 ]
 BindingProfile = Literal[
     "rest",
@@ -52,8 +53,8 @@ WebTransportLane = Literal[
 ]
 
 APP_LEVEL_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
-    "http.rest": ("json",),
-    "https.rest": ("json",),
+    "http.rest": ("json", "multipart/form-data"),
+    "https.rest": ("json", "multipart/form-data"),
     "http.jsonrpc": ("jsonrpc",),
     "https.jsonrpc": ("jsonrpc",),
     "http.stream": ("stream", "bytes", "binary", "text", "json", "ndjson"),

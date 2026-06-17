@@ -72,6 +72,13 @@ def test_canonical_bindingspecs_serde_roundtrip() -> None:
 
 def test_http_framing_policy_runtime_gates() -> None:
     assert validate_app_framing_for_binding(binding_kind="http.rest", framing="json") == "json"
+    assert (
+        validate_app_framing_for_binding(
+            binding_kind="http.rest",
+            framing="multipart/form-data",
+        )
+        == "multipart/form-data"
+    )
     assert validate_app_framing_for_binding(binding_kind="http.jsonrpc", framing="jsonrpc") == "jsonrpc"
     assert validate_app_framing_for_binding(binding_kind="http.stream", framing="ndjson") == "ndjson"
     assert validate_app_framing_for_binding(binding_kind="http.sse", framing="sse") == "sse"
@@ -82,6 +89,70 @@ def test_http_framing_policy_runtime_gates() -> None:
         validate_app_framing_for_binding(binding_kind="http.jsonrpc", framing="json")
     with pytest.raises(ValueError, match="framing"):
         validate_app_framing_for_binding(binding_kind="http.sse", framing="json")
+
+
+def test_http_rest_multipart_form_data_binding_policy_t2() -> None:
+    binding = HTTPBindingSpec(
+        proto="https",
+        profile="rest",
+        path="/upload",
+        methods=("POST",),
+        framing="multipart/form-data",
+    )
+    alias = HttpRestBindingSpec(
+        proto="http.rest",
+        methods=("POST",),
+        path="/upload",
+        framing="multipart/form-data",
+    )
+    plan = compile_binding_protocol_plan(
+        "Upload.create",
+        {
+            "kind": "http.rest",
+            "path": "/upload",
+            "methods": ("POST",),
+            "framing": "multipart/form-data",
+        },
+    )
+
+    assert binding.framing == "multipart/form-data"
+    assert alias.framing == "multipart/form-data"
+    assert "ingress.receive" in plan["atom_anchors"]
+    assert "transport.emit_complete" in plan["atom_anchors"]
+
+
+@pytest.mark.parametrize(
+    "spec",
+    (
+        lambda: HTTPBindingSpec(
+            proto="http",
+            profile="jsonrpc",
+            rpc_method="Upload.create",
+            framing="multipart/form-data",
+        ),
+        lambda: HTTPBindingSpec(
+            proto="http",
+            profile="stream",
+            path="/upload",
+            framing="multipart/form-data",
+        ),
+        lambda: HTTPBindingSpec(
+            proto="http",
+            profile="sse",
+            path="/events",
+            framing="multipart/form-data",
+        ),
+        lambda: WsBindingSpec(
+            proto="ws",
+            path="/upload",
+            framing="multipart/form-data",
+        ),
+        lambda: WebTransportBindingSpec(inner_framing="multipart/form-data"),
+    ),
+)
+def test_multipart_form_data_binding_policy_negative_corpus_t2(spec) -> None:
+    with pytest.raises(ValueError, match="multipart/form-data|framing"):
+        spec()
 
 
 def test_profile_exchange_policy_matrix_is_public_and_fail_closed() -> None:

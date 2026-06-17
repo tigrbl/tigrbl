@@ -1,0 +1,8 @@
+Command:
+uv run pytest pkgs/core/tigrbl_tests/tests/unit/runtime/test_canonical_bindingspec_framing_policy.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_runtime_frame_codec_contract.py
+
+Result:
+55 passed in 0.35s
+
+Scope:
+Verified multipart/form-data is accepted only for REST binding specs, rejected for JSON-RPC, stream, SSE, WebSocket, and WebTransport binding policies, and remains covered by the runtime frame codec contract.
