@@ -1,0 +1,27 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2185"
+number: 2185
+slug: "protocol-stream-initiator-legality-contract"
+title: "Protocol Stream Initiator Legality Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC defines protocol stream legality before runtime frame-codec dispatch. Rows that describe app payload support must declare carrier_kind, stream_initiator, direction, exchange, extension_context, and app framing separately. h11 request-body streaming maps to client_stream and h11 response-body streaming maps to server_stream, but h11 does not provide native bidirectional application streams. h2 client initiated request streams may carry request and response data and tunnel extensions, but server initiated bidirectional application streams are not valid plain HTTP/2. Plain h3 request streams are client initiated bidirectional QUIC streams; plain h3 server initiated bidirectional streams fail closed unless an extension binding explicitly authorizes them. WebTransport stream rows must preserve initiator and direction when available, including client initiated bidi and server initiated bidi metadata."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created for h11 h2 h3 and WebTransport stream initiator legality coverage."
+    at: "2026-06-17T10:03:22Z"
+references: []
+body: |-
+  This SPEC defines protocol stream legality before runtime frame-codec dispatch. Rows that describe app payload support must declare carrier_kind, stream_initiator, direction, exchange, extension_context, and app framing separately. h11 request-body streaming maps to client_stream and h11 response-body streaming maps to server_stream, but h11 does not provide native bidirectional application streams. h2 client initiated request streams may carry request and response data and tunnel extensions, but server initiated bidirectional application streams are not valid plain HTTP/2. Plain h3 request streams are client initiated bidirectional QUIC streams; plain h3 server initiated bidirectional streams fail closed unless an extension binding explicitly authorizes them. WebTransport stream rows must preserve initiator and direction when available, including client initiated bidi and server initiated bidi metadata.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1182"
+  - "adr:1023"
+  - "adr:1133"
+  - "adr:1174"

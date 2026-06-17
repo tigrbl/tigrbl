@@ -1,0 +1,26 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2186"
+number: 2186
+slug: "h3-non-webtransport-stream-taxonomy-contract"
+title: "H3 Non-WebTransport Stream Taxonomy Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC defines the plain HTTP/3 stream taxonomy used by Tigrbl support matrices. h3 request streams are client initiated bidirectional streams carrying one request and its responses. h3 push streams are server initiated unidirectional response streams and are not arbitrary bidirectional application streams. h3 control and QPACK streams are typed transport streams and must not be treated as app-level payload carriers. Extension streams must name the extension context before application framing is allowed. WebTransport-over-h3 is outside this plain h3 taxonomy and remains governed by WebTransport BindingSpec profiles and lane-local inner framing rules."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to keep plain HTTP/3 stream taxonomy separate from WebTransport semantics."
+    at: "2026-06-17T10:03:34Z"
+references: []
+body: |-
+  This SPEC defines the plain HTTP/3 stream taxonomy used by Tigrbl support matrices. h3 request streams are client initiated bidirectional streams carrying one request and its responses. h3 push streams are server initiated unidirectional response streams and are not arbitrary bidirectional application streams. h3 control and QPACK streams are typed transport streams and must not be treated as app-level payload carriers. Extension streams must name the extension context before application framing is allowed. WebTransport-over-h3 is outside this plain h3 taxonomy and remains governed by WebTransport BindingSpec profiles and lane-local inner framing rules.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1182"
+  - "adr:1174"
+  - "adr:1179"

@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1182"
+number: 1182
+slug: "protocol-stream-initiator-and-carrier-legality"
+title: "Protocol stream initiator and carrier legality"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl shall model stream legality with explicit carrier and initiator metadata before runtime frame-codec dispatch. Payload codecs remain separate from transport legality. h11 supports request-body and response-body streaming but not independent bidirectional streams. h2 request streams are client initiated and bidirectional at the transport layer; server push is response-only and not application bidirectional. Plain h3 request streams are client initiated bidirectional QUIC streams, push uses server initiated unidirectional push streams, and server initiated bidirectional streams are invalid unless an extension binding explicitly authorizes them. WebTransport may carry client and server initiated bidi or unidi streams, but those initiator and direction facts must be lane metadata rather than new codecs."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted to govern h11 h2 h3 and WebTransport stream shape legality before runtime codec dispatch."
+    at: "2026-06-17T10:03:05Z"
+references: []
+body: |-
+  Tigrbl shall model stream legality with explicit carrier and initiator metadata before runtime frame-codec dispatch. Payload codecs remain separate from transport legality. h11 supports request-body and response-body streaming but not independent bidirectional streams. h2 request streams are client initiated and bidirectional at the transport layer; server push is response-only and not application bidirectional. Plain h3 request streams are client initiated bidirectional QUIC streams, push uses server initiated unidirectional push streams, and server initiated bidirectional streams are invalid unless an extension binding explicitly authorizes them. WebTransport may carry client and server initiated bidi or unidi streams, but those initiator and direction facts must be lane metadata rather than new codecs.
