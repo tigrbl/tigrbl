@@ -174,6 +174,9 @@ def test_webtransport_inner_codec_dispatch_t1() -> None:
         "family": "stream",
         "lane": "bidi_stream",
         "exchange": "bidirectional_stream",
+        "stream_direction": "bidi",
+        "direction": "bidirectional",
+        "stream_initiator": "client",
     }
     encoded = encode_webtransport_inner_frame(
         lane="bidi_stream",

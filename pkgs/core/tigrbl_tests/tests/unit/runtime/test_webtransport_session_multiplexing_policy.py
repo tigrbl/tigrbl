@@ -159,6 +159,7 @@ def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_indepen
             "session_id": "sess-1",
             "stream_id": "bidi-1",
             "stream_direction": "bidi",
+            "stream_initiator": "client",
             "framing": "jsonrpc",
         },
     )
@@ -194,10 +195,14 @@ def test_webtransport_session_tracks_multiple_stream_lanes_and_datagrams_indepen
     assert snapshot["accepted"] is True
     assert snapshot["streams"] == before_datagram
     assert snapshot["streams"]["bidi-1"]["lane"] == "bidi_stream"
+    assert snapshot["streams"]["bidi-1"]["stream_initiator"] == "client"
+    assert snapshot["streams"]["bidi-1"]["direction"] == "bidirectional"
     assert snapshot["streams"]["bidi-1"]["chunks_received"] == 1
     assert snapshot["streams"]["client-1"]["lane"] == "unidi_client_stream"
     assert snapshot["streams"]["client-1"]["exchange"] == "client_stream"
+    assert snapshot["streams"]["client-1"]["stream_initiator"] == "client"
     assert snapshot["streams"]["server-1"]["lane"] == "unidi_server_stream"
+    assert snapshot["streams"]["server-1"]["stream_initiator"] == "server"
     assert snapshot["streams"]["server-1"]["chunks_sent"] == 1
     assert snapshot["datagrams_seen"] == ("dg-1",)
 

@@ -109,6 +109,15 @@ _STREAM_DIRECTIONS = {
     "client_to_server": "unidi_client_stream",
     "server_to_client": "unidi_server_stream",
 }
+_STREAM_DIRECTION_METADATA = {
+    "bidi": "bidirectional",
+    "client_to_server": "client_to_server",
+    "server_to_client": "server_to_client",
+}
+_UNIDI_INITIATORS = {
+    "client_to_server": "client",
+    "server_to_client": "server",
+}
 
 
 def validate_webtransport_event_payload(
@@ -141,7 +150,15 @@ def _validate_session_payload(
     expected_channel = "receive" if event in {"webtransport.connect", "webtransport.disconnect"} else "send"
     if channel != expected_channel:
         raise ValueError(f"{event} is only valid on {expected_channel}")
-    _forbid(payload, "stream_id", "stream_direction", "datagram_id", "framing")
+    _forbid(
+        payload,
+        "stream_id",
+        "stream_direction",
+        "stream_initiator",
+        "lane_id",
+        "datagram_id",
+        "framing",
+    )
     return {"family": "session", "lane": "session", "exchange": "request_response"}
 
 
@@ -166,6 +183,11 @@ def _validate_stream_payload(
     else:
         direction = str(direction) if direction in _STREAM_DIRECTIONS else "bidi"
     lane = _STREAM_DIRECTIONS[str(direction)]
+    stream_initiator = _stream_initiator(
+        payload.get("stream_initiator"),
+        stream_direction=str(direction),
+        channel=channel,
+    )
     if channel == "receive" and lane == "unidi_server_stream":
         raise ValueError("server_to_client unidirectional streams cannot be receive events")
     if channel == "send" and lane == "unidi_client_stream":
@@ -174,7 +196,7 @@ def _validate_stream_payload(
         lane=lane,
         inner_framing=payload.get("framing"),
     )
-    return {
+    projection = {
         "family": "stream",
         "lane": lane,
         "exchange": {
@@ -182,7 +204,15 @@ def _validate_stream_payload(
             "unidi_client_stream": "client_stream",
             "unidi_server_stream": "server_stream",
         }[lane],
+        "stream_direction": str(direction),
+        "direction": _STREAM_DIRECTION_METADATA[str(direction)],
+        "stream_initiator": stream_initiator,
     }
+    _copy_int_field(payload, projection, "lane_id")
+    _copy_int_field(payload, projection, "stream_ordinal")
+    if payload.get("stream_id_width") is not None:
+        projection["stream_id_width"] = str(payload["stream_id_width"])
+    return projection
 
 
 def _validate_datagram_payload(
@@ -195,7 +225,7 @@ def _validate_datagram_payload(
     if channel != expected_channel:
         raise ValueError(f"{event} is only valid on {expected_channel}")
     _require(payload, "datagram_id")
-    _forbid(payload, "stream_id", "stream_direction")
+    _forbid(payload, "stream_id", "stream_direction", "stream_initiator", "lane_id")
     validate_webtransport_inner_framing(
         lane="datagram",
         inner_framing=payload.get("framing"),
@@ -214,6 +244,38 @@ def _forbid(payload: dict[str, Any], *fields: str) -> None:
     if present:
         joined = ", ".join(present)
         raise ValueError(f"WebTransport payload field not valid for event: {joined}")
+
+
+def _stream_initiator(
+    value: object,
+    *,
+    stream_direction: str,
+    channel: str,
+) -> str:
+    if stream_direction in _UNIDI_INITIATORS:
+        expected = _UNIDI_INITIATORS[stream_direction]
+        if value is not None and str(value) != expected:
+            raise ValueError(f"{stream_direction} stream_initiator must be {expected}")
+        return expected
+    if value is None:
+        return "client"
+    token = str(value)
+    if token not in {"client", "server"}:
+        raise ValueError("WebTransport stream_initiator must be client or server")
+    return token
+
+
+def _copy_int_field(
+    payload: dict[str, Any],
+    projection: dict[str, object],
+    field: str,
+) -> None:
+    value = payload.get(field)
+    if value is None:
+        return
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"WebTransport payload {field} must be an integer")
+    projection[field] = value
 
 
 __all__ = [

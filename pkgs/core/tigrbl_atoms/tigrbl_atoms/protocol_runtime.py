@@ -66,6 +66,8 @@ async def run_http_jsonrpc_chain(request: Mapping[str, Any]) -> dict[str, object
 
 
 async def run_http_stream_chain(config: Mapping[str, Any]) -> dict[str, object]:
+    if str(config.get("exchange") or "server_stream") == "client_stream":
+        return await run_http_client_stream_chain(config)
     producer = config.get("producer")
     send = config.get("send")
     disconnect_after = config.get("disconnect_after")
@@ -99,6 +101,43 @@ async def run_http_stream_chain(config: Mapping[str, Any]) -> dict[str, object]:
         "exit_reason": "producer.exhausted",
         "chunks_emitted": chunks_emitted,
         "completion_fence": "POST_EMIT",
+    }
+
+
+async def run_http_client_stream_chain(config: Mapping[str, Any]) -> dict[str, object]:
+    source = config.get("chunks", config.get("body_chunks", config.get("body", ())))
+    disconnect_after = config.get("disconnect_after")
+    handler = config.get("handler")
+    chunks: list[bytes] = []
+    subevents = ["request.body.receive"]
+
+    async for chunk in iter_items(source):
+        if not isinstance(chunk, (bytes, bytearray, memoryview, str)):
+            raise TypeError("client stream chunk must be bytes or str")
+        body = chunk.encode("utf-8") if isinstance(chunk, str) else bytes(chunk)
+        chunks.append(body)
+        subevents.append("stream.chunk.received")
+        if disconnect_after is not None and len(chunks) >= int(disconnect_after):
+            await aclose_if_supported(source)
+            return {
+                "exchange": "client_stream",
+                "exit_reason": "disconnect",
+                "chunks_received": len(chunks),
+                "body": b"".join(chunks),
+                "subevents": tuple(subevents),
+                "completion_fence": "POST_HANDLER",
+            }
+
+    subevents.append("stream.receive_complete")
+    result = await _call_handler(handler, b"".join(chunks))
+    return {
+        "exchange": "client_stream",
+        "exit_reason": "request.body_complete",
+        "chunks_received": len(chunks),
+        "body": b"".join(chunks),
+        "result": result,
+        "subevents": tuple(subevents),
+        "completion_fence": "POST_HANDLER",
     }
 
 
@@ -491,6 +530,7 @@ __all__ = [
     "dispatch_subevent",
     "iter_items",
     "normalize_iterator_producer",
+    "run_http_client_stream_chain",
     "run_http_jsonrpc_chain",
     "run_http_rest_chain",
     "run_http_stream_chain",

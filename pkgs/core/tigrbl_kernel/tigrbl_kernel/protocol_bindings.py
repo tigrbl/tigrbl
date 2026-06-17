@@ -73,18 +73,30 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "request", "subevent": "response.emit"},
         )
     elif kind in {"http.stream", "https.stream"}:
-        validate_binding_profile_exchange(
+        exchange = validate_binding_profile_exchange(
             binding_kind=kind,
             exchange=str(binding.get("exchange") or "server_stream"),
         )
         validate_app_framing_for_binding(binding_kind=kind, framing=str(framing or "stream"))
         family = "stream"
         framing = str(framing or "stream")
-        anchors = ("handler.invoke", "transport.emit", "transport.emit_complete")
-        rows = (
-            {"family": "stream", "subevent": "stream.chunk"},
-            {"family": "stream", "subevent": "stream.close"},
-        )
+        if exchange == "client_stream":
+            anchors = (
+                "transport.receive",
+                "dispatch.subevent.derive",
+                "handler.invoke",
+                "transport.emit_complete",
+            )
+            rows = (
+                {"family": "stream", "subevent": "stream.chunk.received"},
+                {"family": "stream", "subevent": "stream.receive_complete"},
+            )
+        else:
+            anchors = ("handler.invoke", "transport.emit", "transport.emit_complete")
+            rows = (
+                {"family": "stream", "subevent": "stream.chunk"},
+                {"family": "stream", "subevent": "stream.close"},
+            )
     elif kind in {"http.sse", "https.sse"}:
         validate_binding_profile_exchange(
             binding_kind=kind,

@@ -90,8 +90,8 @@ def test_profile_exchange_policy_matrix_is_public_and_fail_closed() -> None:
         "https.rest": ("request_response",),
         "http.jsonrpc": ("request_response",),
         "https.jsonrpc": ("request_response",),
-        "http.stream": ("server_stream",),
-        "https.stream": ("server_stream",),
+        "http.stream": ("server_stream", "client_stream"),
+        "https.stream": ("server_stream", "client_stream"),
         "http.sse": ("server_stream",),
         "https.sse": ("server_stream",),
         "ws": ("bidirectional_stream",),
@@ -113,18 +113,42 @@ def test_profile_exchange_policy_matrix_is_public_and_fail_closed() -> None:
         validate_binding_profile_exchange(binding_kind="ftp", exchange="request_response")
 
 
+def test_http_stream_client_stream_exchange_is_governed_request_body_support() -> None:
+    binding = HTTPBindingSpec(
+        proto="https",
+        profile="stream",
+        path="/upload",
+        exchange="client_stream",
+    )
+    alias = HttpStreamBindingSpec(
+        proto="http.stream",
+        path="/upload",
+        exchange="client_stream",
+    )
+    plan = compile_binding_protocol_plan(
+        "Upload.append",
+        {"kind": "http.stream", "path": "/upload", "exchange": "client_stream"},
+    )
+
+    assert binding.exchange == "client_stream"
+    assert alias.exchange == "client_stream"
+    assert "transport.receive" in plan["atom_anchors"]
+    assert tuple(row["subevent"] for row in plan["lifecycle_rows"]) == (
+        "stream.chunk.received",
+        "stream.receive_complete",
+    )
+
+
 @pytest.mark.parametrize(
     "spec",
     (
         lambda: HTTPBindingSpec(proto="http", profile="rest", exchange="server_stream"),
         lambda: HTTPBindingSpec(proto="http", profile="jsonrpc", rpc_method="Item.read", exchange="client_stream"),
-        lambda: HTTPBindingSpec(proto="https", profile="stream", exchange="client_stream"),
         lambda: HTTPBindingSpec(proto="http", profile="sse", exchange="bidirectional_stream"),
         lambda: WebSocketBindingSpec(proto="ws", path="/socket", exchange="fire_and_forget"),
         lambda: WsBindingSpec(proto="wss", path="/socket", exchange="server_stream"),
         lambda: HttpRestBindingSpec(proto="http.rest", methods=("GET",), path="/items", exchange="server_stream"),
         lambda: HttpJsonRpcBindingSpec(proto="http.jsonrpc", rpc_method="Item.read", exchange="server_stream"),
-        lambda: HttpStreamBindingSpec(proto="http.stream", path="/stream", exchange="client_stream"),
         lambda: SseBindingSpec(proto="http.sse", path="/events", exchange="client_stream"),
     ),
 )
@@ -138,7 +162,6 @@ def test_profile_exchange_negative_corpus(spec) -> None:
     (
         {"kind": "http.rest", "path": "/items", "exchange": "server_stream"},
         {"kind": "http.jsonrpc", "rpc_method": "Item.read", "exchange": "client_stream"},
-        {"kind": "http.stream", "path": "/stream", "exchange": "client_stream"},
         {"kind": "http.sse", "path": "/events", "exchange": "bidirectional_stream"},
         {"kind": "ws", "path": "/socket", "exchange": "fire_and_forget"},
         {"kind": "wss", "path": "/socket", "exchange": "server_stream"},

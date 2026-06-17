@@ -61,6 +61,10 @@ def webtransport_payload_event(
             "stream_id": base.get("stream_id"),
             "stream_direction": base.get("stream_direction", "bidi"),
         }
+        if base.get("stream_initiator") is not None:
+            out["stream_initiator"] = base.get("stream_initiator")
+        elif out["stream_direction"] == "bidi":
+            out["stream_initiator"] = "client"
         if base.get("framing") is not None:
             out["framing"] = base.get("framing")
         if isinstance(payload, (bytes, bytearray)):
@@ -155,6 +159,7 @@ def webtransport_structured_payload_events(
                 "session_id": session_id,
                 "stream_id": inbound_stream_id,
                 "stream_direction": "bidi",
+                "stream_initiator": current.get("stream_initiator", "client"),
                 "data": str(message).encode("utf-8"),
                 "more": False,
             }
@@ -195,6 +200,7 @@ def webtransport_structured_payload_events(
                 "session_id": session_id,
                 "stream_id": stream_id,
                 "stream_direction": "server_to_client",
+                "stream_initiator": "server",
                 "data": str(message).encode("utf-8"),
                 "more": False,
             }

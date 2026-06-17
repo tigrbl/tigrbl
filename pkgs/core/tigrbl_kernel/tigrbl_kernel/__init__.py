@@ -100,6 +100,7 @@ __all__ = [
     "normalize_rust_spec",
     "packed_kernel_measurement",
     "plan_labels",
+    "protocol_streams",
     "serialize_packed_kernel_measurement_view",
     "segment_fusion",
     "transport_atoms",

@@ -196,6 +196,12 @@ class WebTransportLaneState:
     lane: str
     family: str
     exchange: str
+    stream_initiator: str | None = None
+    stream_direction: str | None = None
+    direction: str | None = None
+    lane_id: int | None = None
+    stream_ordinal: int | None = None
+    stream_id_width: str | None = None
     closed: bool = False
     chunks_received: int = 0
     chunks_sent: int = 0
@@ -283,6 +289,12 @@ class WebTransportSessionState:
                     "lane": state.lane,
                     "family": state.family,
                     "exchange": state.exchange,
+                    "stream_initiator": state.stream_initiator,
+                    "stream_direction": state.stream_direction,
+                    "direction": state.direction,
+                    "lane_id": state.lane_id,
+                    "stream_ordinal": state.stream_ordinal,
+                    "stream_id_width": state.stream_id_width,
                     "closed": state.closed,
                     "chunks_received": state.chunks_received,
                     "chunks_sent": state.chunks_sent,
@@ -333,6 +345,7 @@ class WebTransportSessionState:
         stream_id = str(payload["stream_id"])
         state = self.streams.get(stream_id)
         lane = str(projection["lane"])
+        lane_metadata = self._stream_lane_metadata(payload=payload, projection=projection)
         if state is None:
             if len(self.streams) >= self.stream_id_provisioning.max_streams:
                 raise ValueError("WebTransport session max_streams exceeded")
@@ -340,10 +353,18 @@ class WebTransportSessionState:
                 lane=lane,
                 family=str(projection["family"]),
                 exchange=str(projection["exchange"]),
+                stream_initiator=lane_metadata["stream_initiator"],
+                stream_direction=lane_metadata["stream_direction"],
+                direction=lane_metadata["direction"],
+                lane_id=lane_metadata["lane_id"],
+                stream_ordinal=lane_metadata["stream_ordinal"],
+                stream_id_width=lane_metadata["stream_id_width"],
             )
             self.streams[stream_id] = state
         elif state.lane != lane:
             raise ValueError("WebTransport stream_id lane metadata changed")
+        elif not self._same_stream_metadata(state, lane_metadata):
+            raise ValueError("WebTransport stream_id initiator metadata changed")
         if state.closed and event not in {
             "webtransport.stream.close",
             "webtransport.stream.reset",
@@ -364,6 +385,68 @@ class WebTransportSessionState:
     def _apply_datagram_event(self, payload: dict[str, Any]) -> None:
         datagram_id = str(payload["datagram_id"])
         self.datagrams_seen.add(datagram_id)
+
+    def _stream_lane_metadata(
+        self,
+        *,
+        payload: dict[str, Any],
+        projection: Mapping[str, object],
+    ) -> dict[str, Any]:
+        lane_id = projection.get("lane_id")
+        if lane_id is None:
+            lane_id = payload.get("lane_id")
+        stream_ordinal = projection.get("stream_ordinal")
+        stream_id_width = projection.get("stream_id_width")
+        if lane_id is not None:
+            lane = LaneId(int(lane_id), width=self.stream_id_provisioning.width)
+            lane_id = lane.value
+            stream_ordinal = lane.ordinal
+            stream_id_width = lane.width.label
+            inferred_initiator = "server" if lane.initiator is Initiator.SERVER else "client"
+            inferred_direction = (
+                "bidirectional" if lane.direction is Direction.BIDI else "unidi"
+            )
+            if projection.get("stream_initiator") is not None and str(
+                projection["stream_initiator"]
+            ) != inferred_initiator:
+                raise ValueError("WebTransport lane_id initiator mismatch")
+            if projection.get("direction") == "bidirectional" and inferred_direction != "bidirectional":
+                raise ValueError("WebTransport lane_id direction mismatch")
+            if projection.get("direction") in {"client_to_server", "server_to_client"} and inferred_direction != "unidi":
+                raise ValueError("WebTransport lane_id direction mismatch")
+        return {
+            "stream_initiator": _optional_str(projection.get("stream_initiator")),
+            "stream_direction": _optional_str(projection.get("stream_direction")),
+            "direction": _optional_str(projection.get("direction")),
+            "lane_id": lane_id,
+            "stream_ordinal": stream_ordinal,
+            "stream_id_width": _optional_str(stream_id_width),
+        }
+
+    def _same_stream_metadata(
+        self,
+        state: WebTransportLaneState,
+        metadata: Mapping[str, Any],
+    ) -> bool:
+        for field in (
+            "stream_initiator",
+            "stream_direction",
+            "direction",
+            "lane_id",
+            "stream_ordinal",
+            "stream_id_width",
+        ):
+            current = getattr(state, field)
+            proposed = metadata.get(field)
+            if current is not None and proposed is not None and current != proposed:
+                return False
+        return True
+
+
+def _optional_str(value: object) -> str | None:
+    if value is None:
+        return None
+    return str(value)
 
 
 __all__ = [

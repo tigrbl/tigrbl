@@ -35,7 +35,7 @@ def channel_family(scope_type: str, exchange: str) -> str:
         return "socket"
     if scope_type == "webtransport":
         return "session"
-    if exchange in {"server_stream", "bidirectional_stream"}:
+    if exchange in {"server_stream", "client_stream", "bidirectional_stream"}:
         return "stream"
     if exchange == "fire_and_forget":
         return "request"
@@ -48,7 +48,7 @@ def channel_kind(scope_type: str, exchange: str) -> str:
         return "websocket"
     if scope_type == "webtransport":
         return "webtransport"
-    if exchange == "server_stream":
+    if exchange in {"server_stream", "client_stream", "bidirectional_stream"}:
         return "stream"
     if exchange == "event_stream":
         return "sse"
@@ -59,7 +59,7 @@ def channel_subevents(scope_type: str, exchange: str) -> tuple[str, ...]:
     exchange = normalize_exchange(exchange)
     if scope_type in {"websocket", "webtransport"}:
         return ("connect", "receive", "emit", "complete", "disconnect")
-    if exchange in {"server_stream", "bidirectional_stream", "event_stream"}:
+    if exchange in {"server_stream", "client_stream", "bidirectional_stream", "event_stream"}:
         return ("receive", "emit", "complete")
     return ("receive", "emit", "complete")
 
@@ -85,7 +85,17 @@ def webtransport_event_metadata(
         )
     except ValueError:
         projection = {}
-    for key in ("family", "lane", "exchange"):
+    for key in (
+        "family",
+        "lane",
+        "exchange",
+        "stream_initiator",
+        "stream_direction",
+        "direction",
+        "lane_id",
+        "stream_ordinal",
+        "stream_id_width",
+    ):
         if projection.get(key) is not None:
             metadata[key] = projection[key]
     if "family" not in metadata:

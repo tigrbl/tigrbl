@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from tigrbl_core._spec.binding_spec import (
     BindingRegistrySpec,
     BindingSpec,
@@ -9,6 +11,7 @@ from tigrbl_core._spec.binding_spec import (
     SseBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
+    project_binding_runtime_metadata,
     resolve_rest_nested_prefix,
 )
 from tigrbl_core.config.constants import (
@@ -65,3 +68,30 @@ def test_jsonrpc_binding_spec_exposes_endpoint_default_from_core_constants() -> 
 
     assert binding.endpoint == __JSONRPC_DEFAULT_ENDPOINT__
     assert __JSONRPC_DEFAULT_ENDPOINT_MAPPINGS__[binding.endpoint] == "/rpc"
+
+
+def test_http_stream_binding_accepts_explicit_client_stream_request_body() -> None:
+    binding = HttpStreamBindingSpec(
+        proto="http.stream",
+        path="/upload",
+        methods=("POST",),
+        exchange="client_stream",
+        framing="ndjson",
+    )
+
+    metadata = project_binding_runtime_metadata(binding)
+
+    assert binding.exchange == "client_stream"
+    assert metadata["family"] == "stream"
+    assert metadata["carrier_kind"] == "http_request_body"
+    assert metadata["stream_initiator"] == "client"
+    assert metadata["direction"] == "client_to_server"
+
+
+def test_http_stream_binding_rejects_native_bidirectional_exchange() -> None:
+    with pytest.raises(ValueError, match="unsupported exchange"):
+        HttpStreamBindingSpec(
+            proto="http.stream",
+            path="/duplex",
+            exchange="bidirectional_stream",
+        )

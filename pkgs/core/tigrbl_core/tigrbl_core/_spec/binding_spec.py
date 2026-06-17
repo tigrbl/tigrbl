@@ -70,8 +70,8 @@ BINDING_PROFILE_EXCHANGE_SUPPORT: dict[str, tuple[str, ...]] = {
     "https.rest": ("request_response",),
     "http.jsonrpc": ("request_response",),
     "https.jsonrpc": ("request_response",),
-    "http.stream": ("server_stream",),
-    "https.stream": ("server_stream",),
+    "http.stream": ("server_stream", "client_stream"),
+    "https.stream": ("server_stream", "client_stream"),
     "http.sse": ("server_stream",),
     "https.sse": ("server_stream",),
     "ws": ("bidirectional_stream",),
@@ -582,6 +582,23 @@ def project_binding_runtime_metadata(binding: TransportBindingSpec) -> dict[str,
     if isinstance(binding, WebTransportBindingSpec):
         metadata["lane"] = binding.lane or webtransport_lane_for_profile(binding.profile)
         metadata["inner_framing"] = inner_framing
+        if metadata["lane"] == "bidi_stream":
+            metadata["direction"] = "bidirectional"
+        elif metadata["lane"] == "unidi_client_stream":
+            metadata["stream_initiator"] = "client"
+            metadata["direction"] = "client_to_server"
+        elif metadata["lane"] == "unidi_server_stream":
+            metadata["stream_initiator"] = "server"
+            metadata["direction"] = "server_to_client"
+    elif family == "stream" and proto in {"http.stream", "https.stream"}:
+        if exchange == "client_stream":
+            metadata["carrier_kind"] = "http_request_body"
+            metadata["stream_initiator"] = "client"
+            metadata["direction"] = "client_to_server"
+        elif exchange == "server_stream":
+            metadata["carrier_kind"] = "http_response_body"
+            metadata["stream_initiator"] = "server"
+            metadata["direction"] = "server_to_client"
     return metadata
 
 

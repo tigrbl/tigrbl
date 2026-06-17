@@ -40,11 +40,31 @@ def test_http_stream_chain_declares_disconnect_and_error_edges() -> None:
     assert chain["err_target"] in {"ON_HANDLER_ERROR", "transport.close", "POST_EMIT"}
 
 
+def test_http_client_stream_chain_compiles_request_body_receive_path() -> None:
+    compile_chain = _require("tigrbl_kernel.protocol_chains.http_stream", "compile_http_stream_chain")
+
+    chain = compile_chain({"path": "/upload", "method": "POST", "exchange": "client_stream"})
+    anchors = tuple(chain["anchors"])
+
+    assert chain["exchange"] == "client_stream"
+    assert chain["family"] == "stream"
+    assert "request.body.receive" in anchors
+    assert "stream.chunk.received" in anchors
+    assert anchors.index("request.body.receive") < anchors.index("stream.receive_complete")
+
+
 def test_http_stream_chain_rejects_unknown_producer_kind() -> None:
     compile_chain = _require("tigrbl_kernel.protocol_chains.http_stream", "compile_http_stream_chain")
 
     with pytest.raises(ValueError, match="producer|iterator|stream"):
         compile_chain({"path": "/stream", "method": "GET", "producer": "buffer_all"})
+
+
+def test_http_stream_chain_rejects_unknown_client_consumer_kind() -> None:
+    compile_chain = _require("tigrbl_kernel.protocol_chains.http_stream", "compile_http_stream_chain")
+
+    with pytest.raises(ValueError, match="consumer|request_body"):
+        compile_chain({"path": "/upload", "exchange": "client_stream", "consumer": "buffer_all"})
 
 
 @pytest.mark.asyncio
@@ -83,6 +103,29 @@ async def test_http_stream_runtime_supports_sync_iterators_without_buffering() -
 
 
 @pytest.mark.asyncio
+async def test_http_client_stream_runtime_preserves_inbound_chunk_order() -> None:
+    run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_client_stream_chain")
+
+    result = await run_chain({"chunks": (b"a", "b", bytearray(b"c"))})
+
+    assert result["exchange"] == "client_stream"
+    assert result["chunks_received"] == 3
+    assert result["body"] == b"abc"
+    assert result["exit_reason"] == "request.body_complete"
+    assert result["completion_fence"] == "POST_HANDLER"
+
+
+@pytest.mark.asyncio
+async def test_http_stream_runtime_dispatches_client_stream_when_exchange_declared() -> None:
+    run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_stream_chain")
+
+    result = await run_chain({"exchange": "client_stream", "body": [b"one", b"two"]})
+
+    assert result["body"] == b"onetwo"
+    assert result["chunks_received"] == 2
+
+
+@pytest.mark.asyncio
 async def test_http_stream_runtime_rejects_invalid_chunk_before_emit() -> None:
     run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_stream_chain")
 
@@ -95,6 +138,14 @@ async def test_http_stream_runtime_rejects_invalid_chunk_before_emit() -> None:
         await run_chain({"producer": chunks(), "send": sent.append})
 
     assert [message["type"] for message in sent] == ["http.response.start"]
+
+
+@pytest.mark.asyncio
+async def test_http_client_stream_runtime_rejects_invalid_inbound_chunk() -> None:
+    run_chain = _require("tigrbl_atoms.protocol_runtime", "run_http_client_stream_chain")
+
+    with pytest.raises(TypeError, match="client stream chunk"):
+        await run_chain({"chunks": [{"not": "bytes"}]})
 
 
 @pytest.mark.asyncio

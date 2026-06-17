@@ -42,6 +42,8 @@ def test_wt_stream_receive_projects_stream_chunk_received() -> None:
     assert metadata["family"] == "stream"
     assert metadata["lane"] == "bidi_stream"
     assert metadata["exchange"] == "bidirectional_stream"
+    assert metadata["stream_initiator"] == "client"
+    assert metadata["direction"] == "bidirectional"
     assert payload_size({"data": b"chunk"}) == 5
 
 
@@ -62,6 +64,10 @@ def test_http_body_stream_projects_by_binding_kind() -> None:
         SimpleNamespace(scope={"type": "http", "method": "GET", "path": "/events"}),
         exchange="server_stream",
     )
+    upload = build_asgi_channel(
+        SimpleNamespace(scope={"type": "http", "method": "POST", "path": "/upload"}),
+        exchange="client_stream",
+    )
 
     assert unary.kind == "http"
     assert unary.family == "response"
@@ -70,6 +76,9 @@ def test_http_body_stream_projects_by_binding_kind() -> None:
     assert unary.query == {"a": ["1"]}
     assert stream.kind == "stream"
     assert stream.family == "stream"
+    assert upload.kind == "stream"
+    assert upload.family == "stream"
+    assert upload.exchange == "client_stream"
 
 
 def test_asgi_message_cannot_bypass_kernel_taxonomy() -> None:
