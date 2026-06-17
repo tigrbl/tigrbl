@@ -3,18 +3,6 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any, Dict, List, Mapping
 
-try:  # pragma: no cover - additive optional integration
-    _runtime_rust = import_module("tigrbl_runtime.rust")
-    ExecutionBackend = _runtime_rust.ExecutionBackend
-    RustBackendConfig = _runtime_rust.RustBackendConfig
-except Exception:  # pragma: no cover
-    ExecutionBackend = RustBackendConfig = None
-
-from .rust_compile import (
-    build_rust_kernel,
-    normalize_rust_spec,
-)
-from .rust_plan import RustPlan
 from .measure import (
     build_packed_kernel_measurement_view,
     load_packed_kernel_hot_block,
@@ -79,17 +67,13 @@ def plan_labels(model: type, alias: str) -> list[str]:
 
 
 __all__ = [
-    "ExecutionBackend",
     "Kernel",
-    "RustBackendConfig",
-    "RustPlan",
     "BatchOpPlan",
     "OpView",
     "PackedKernel",
     "SchemaIn",
     "SchemaOut",
     "build_kernel_plan",
-    "build_rust_kernel",
     "build_packed_kernel",
     "build_packed_kernel_measurement_view",
     "get_cached_specs",
@@ -97,7 +81,6 @@ __all__ = [
     "load_packed_kernel_hot_block",
     "load_packed_kernel_hot_sections",
     "measure_packed_kernel",
-    "normalize_rust_spec",
     "packed_kernel_measurement",
     "plan_labels",
     "protocol_streams",

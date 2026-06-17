@@ -84,8 +84,8 @@ Runtime authoring BCP:
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_runtime`.
-- Public symbols: `Runtime`, `RuntimeBase`, `ExecutionBackend`, `RustBackendConfig`, `RustBindingsUnavailableError`.
-- Rust-named symbols are deprecated compatibility shims and must not be used for execution.
+- Public symbols: `Runtime`, `RuntimeBase`.
+- Rust-named symbols live only under `tigrbl_runtime.rust` as deprecated compatibility shims and must not be used for execution.
 - Workspace dependencies: [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/), [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/).
 - External runtime dependencies: `numba>=0.61.2`.
 
@@ -113,9 +113,9 @@ print(module.__name__)
 ### Import a public symbol
 
 ```python
-from tigrbl_runtime import ExecutionBackend
+from tigrbl_runtime import Runtime
 
-print(ExecutionBackend)
+print(Runtime)
 ```
 
 ### Use with the facade when building applications

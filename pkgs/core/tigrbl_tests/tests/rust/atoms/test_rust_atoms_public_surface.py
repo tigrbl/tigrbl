@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_atoms import (
+from tigrbl_atoms.fallback import rust_atoms_enabled
+from tigrbl_atoms.rust import (
     register_rust_atom,
     register_rust_hook,
-    rust_atoms_enabled,
 )
 
 

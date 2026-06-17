@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_runtime import (
-    Runtime,
+from tigrbl_runtime import Runtime
+from tigrbl_runtime.rust import (
     RustBindingsUnavailableError,
-    clear_rust_boundary_events,
+    clear_ffi_boundary_events,
     compiled_extension_available,
+    ffi_boundary_events,
     rust_available,
-    rust_boundary_events,
 )
 
 
@@ -18,9 +18,9 @@ def test_rust_runtime_public_surface_is_deprecated() -> None:
     with pytest.warns(DeprecationWarning):
         assert compiled_extension_available() is False
     with pytest.warns(DeprecationWarning):
-        clear_rust_boundary_events()
+        clear_ffi_boundary_events()
     with pytest.warns(DeprecationWarning):
-        assert rust_boundary_events() == []
+        assert ffi_boundary_events() == []
 
     with pytest.warns(DeprecationWarning):
         with pytest.raises(RustBindingsUnavailableError, match="Python-only"):

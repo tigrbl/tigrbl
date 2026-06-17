@@ -21,7 +21,8 @@ def test_app_and_router_accept_python_execution_backend() -> None:
 
 def test_app_router_and_runtime_reject_rust_execution_backend() -> None:
     from tigrbl_concrete._concrete import TigrblApp, TigrblRouter
-    from tigrbl_runtime import Runtime, RustBindingsUnavailableError
+    from tigrbl_runtime import Runtime
+    from tigrbl_runtime.rust import RustBindingsUnavailableError
 
     with pytest.raises(ValueError, match="Python-only"):
         TigrblApp(mount_system=False, execution_backend="rust")

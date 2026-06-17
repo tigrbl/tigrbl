@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_kernel.rust_compile import build_rust_kernel, normalize_rust_spec
-from tigrbl_runtime import ExecutionBackend
+from tigrbl_runtime.rust import ExecutionBackend
 
 
 def test_rust_kernel_plan_helpers_are_deprecated() -> None:

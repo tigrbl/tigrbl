@@ -3,9 +3,6 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
-from .fallback import rust_atoms_enabled
-from .rust import register_rust_atom, register_rust_callback, register_rust_hook
-
 _LAZY_EXPORTS = {
     "PHASE_SEQUENCE": "types",
     "INGRESS_PHASES": "types",
@@ -40,10 +37,6 @@ __all__ = [
     "TypedErr",
     "ErrorCtx",
     "build_error_ctx",
-    "rust_atoms_enabled",
-    "register_rust_atom",
-    "register_rust_callback",
-    "register_rust_hook",
 ]
 
 

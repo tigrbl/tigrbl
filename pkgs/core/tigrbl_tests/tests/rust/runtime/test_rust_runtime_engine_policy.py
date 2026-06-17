@@ -2,7 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_runtime import Runtime, RustBindingsUnavailableError
+from tigrbl_runtime import Runtime
+from tigrbl_runtime.rust import RustBindingsUnavailableError
 
 
 def test_rust_runtime_engine_policy_is_unavailable() -> None:

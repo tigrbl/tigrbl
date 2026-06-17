@@ -86,7 +86,7 @@ Package catalog:
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_kernel`.
-- Public symbols: `BatchOpPlan`, `ExecutionBackend`, `Kernel`, `OpView`, `PackedKernel`, `SchemaIn`, `SchemaOut`, `build_kernel_plan`, `build_packed_kernel`, `build_packed_kernel_measurement_view`.
+- Public symbols: `BatchOpPlan`, `Kernel`, `OpView`, `PackedKernel`, `SchemaIn`, `SchemaOut`, `build_kernel_plan`, `build_packed_kernel`, `build_packed_kernel_measurement_view`.
 - Workspace dependencies: [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/).
 - External runtime dependencies: none declared.
 
