@@ -1,0 +1,12 @@
+Command:
+uv run pytest pkgs/core/tigrbl_tests/tests/unit/runtime/test_runtime_frame_codec_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_unsupported_framing_fail_closed_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_canonical_bindingspec_framing_policy.py
+
+Result:
+59 passed in 0.43s
+
+Coverage:
+- Runtime frame codecs are exposed through an explicit registry.
+- Unsupported codec names fail closed before codec fallback.
+- SSE remains encode-only and fails closed for decode.
+- HTTP/SSE, WebSocket, and WebTransport lane framing mismatch tests pass.
+- Multipart/form-data remains unsupported until the multipart tranche.

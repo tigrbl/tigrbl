@@ -6,10 +6,14 @@ import pytest
 
 from tigrbl_atoms.atoms.framing import app_frame
 from tigrbl_atoms.atoms.framing.codec import (
+    FRAME_CODECS,
+    FrameCodec,
     decode_frame,
     decode_webtransport_inner_frame,
     encode_frame,
     encode_webtransport_inner_frame,
+    get_frame_codec,
+    supported_frame_codecs,
 )
 from tigrbl_core._spec.binding_spec import (
     WsBindingSpec,
@@ -24,6 +28,33 @@ def test_atom_frame_codec_registry_static_t0() -> None:
     assert callable(decode_frame)
     assert callable(app_frame.encode_app_frame)
     assert callable(app_frame.decode_app_frame)
+    assert isinstance(get_frame_codec("json"), FrameCodec)
+    assert tuple(FRAME_CODECS) == supported_frame_codecs()
+
+
+def test_runtime_frame_codec_registry_lookup_t1() -> None:
+    expected = {
+        "json",
+        "jsonrpc",
+        "ndjson",
+        "text",
+        "bytes",
+        "binary",
+        "stream",
+        "sse",
+        "websocket.text",
+        "websocket.json",
+        "websocket.jsonrpc",
+        "websocket.ndjson",
+        "websocket.bytes",
+        "websocket.binary",
+    }
+
+    assert set(supported_frame_codecs()) == expected
+    assert get_frame_codec("sse").supports_encode is True
+    assert get_frame_codec("sse").supports_decode is False
+    with pytest.raises(ValueError, match="unsupported framing kind: yaml"):
+        get_frame_codec("yaml")
 
 
 def test_runtime_frame_envelope_schema_static_t0() -> None:
@@ -124,6 +155,8 @@ def test_runtime_sse_codec_event_format_t1() -> None:
         "sse",
         {"event": "ready", "id": "1", "data": "ok"},
     ) == b"event: ready\nid: 1\ndata: ok\n\n"
+    with pytest.raises(ValueError, match="unsupported framing decode kind: sse"):
+        decode_frame("sse", b"data: ok\n\n")
 
 
 def test_runtime_websocket_text_codec_adapter_t1() -> None:
@@ -220,6 +253,7 @@ def test_framing_negative_corpus_runtime_t2() -> None:
         lambda: decode_frame("ndjson", b'{"ok":true}\n\n'),
         lambda: encode_frame("ndjson", {"not": "a record sequence"}),
         lambda: encode_frame("yaml", {}),
+        lambda: encode_frame("multipart/form-data", b""),
         lambda: app_frame.decode_app_frame(b"\x01"),
         lambda: app_frame.decode_app_frame(bytes((1, 1, 0x80, 0)) + (0).to_bytes(4, "big")),
     )
