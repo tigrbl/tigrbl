@@ -42,6 +42,7 @@ def test_runtime_frame_codec_registry_lookup_t1() -> None:
         "binary",
         "stream",
         "sse",
+        "multipart/form-data",
         "websocket.text",
         "websocket.json",
         "websocket.jsonrpc",
@@ -159,6 +160,56 @@ def test_runtime_sse_codec_event_format_t1() -> None:
         decode_frame("sse", b"data: ok\n\n")
 
 
+def test_runtime_multipart_form_data_codec_roundtrip_t1() -> None:
+    encoded = encode_frame(
+        "multipart/form-data",
+        {
+            "boundary": "tigrbl-boundary",
+            "parts": [
+                {"name": "title", "content": "hello"},
+                {
+                    "name": "upload",
+                    "filename": "hello.txt",
+                    "headers": {"content-type": "text/plain"},
+                    "content": b"file bytes",
+                },
+            ],
+        },
+    )
+
+    assert encoded["content_type"] == "multipart/form-data; boundary=tigrbl-boundary"
+    assert b"--tigrbl-boundary\r\n" in encoded["body"]
+
+    decoded = decode_frame("multipart/form-data", encoded)
+
+    assert decoded["boundary"] == "tigrbl-boundary"
+    assert decoded["parts"][0]["name"] == "title"
+    assert decoded["parts"][0]["content"] == b"hello"
+    assert decoded["parts"][1]["name"] == "upload"
+    assert decoded["parts"][1]["filename"] == "hello.txt"
+    assert decoded["parts"][1]["headers"]["content-type"] == "text/plain"
+    assert decoded["parts"][1]["content"] == b"file bytes"
+
+
+def test_runtime_multipart_form_data_codec_rejects_malformed_payload_t1() -> None:
+    bad_cases = (
+        lambda: encode_frame("multipart/form-data", {"boundary": "bad boundary", "parts": []}),
+        lambda: encode_frame("multipart/form-data", {"boundary": "ok", "parts": []}),
+        lambda: encode_frame(
+            "multipart/form-data",
+            {"boundary": "ok", "parts": [{"content": b"missing name"}]},
+        ),
+        lambda: decode_frame(
+            "multipart/form-data",
+            {"content_type": "multipart/form-data; boundary=ok", "body": b"not multipart"},
+        ),
+    )
+
+    for case in bad_cases:
+        with pytest.raises(ValueError, match="multipart/form-data"):
+            case()
+
+
 def test_runtime_websocket_text_codec_adapter_t1() -> None:
     assert encode_frame("websocket.text", {"text": "pong"}) == {
         "type": "websocket.send",
@@ -253,7 +304,6 @@ def test_framing_negative_corpus_runtime_t2() -> None:
         lambda: decode_frame("ndjson", b'{"ok":true}\n\n'),
         lambda: encode_frame("ndjson", {"not": "a record sequence"}),
         lambda: encode_frame("yaml", {}),
-        lambda: encode_frame("multipart/form-data", b""),
         lambda: app_frame.decode_app_frame(b"\x01"),
         lambda: app_frame.decode_app_frame(bytes((1, 1, 0x80, 0)) + (0).to_bytes(4, "big")),
     )
