@@ -132,6 +132,13 @@ _EXPORTS = {
     "make_builtin_table_profile": "table_profile_spec",
     "register_table_profile": "table_profile_spec",
     "TableRegistrySpec": "table_registry_spec",
+    "BINDING_STACK_PROJECTIONS": "transport_stack",
+    "BindingStackError": "transport_stack",
+    "BindingStackProjection": "transport_stack",
+    "binding_stack_maturity": "transport_stack",
+    "classify_binding_stack": "transport_stack",
+    "compose_h3_binding_projections": "transport_stack",
+    "require_binding_stack": "transport_stack",
 }
 
 __all__ = list(_EXPORTS)
