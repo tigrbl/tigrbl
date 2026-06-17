@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tigrbl import TableBase
-from tigrbl.runtime import kernel as runtime_kernel
+import tigrbl_kernel as runtime_kernel
 from tigrbl.schema import builder as v3_builder
 
 

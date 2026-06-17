@@ -14,7 +14,7 @@ from tigrbl_atoms import HookPhases as PHASES
 from tigrbl.orm.mixins import GUIDPk
 from tigrbl.orm.tables import TableBase
 from tigrbl.runtime import system as runtime_system
-from tigrbl.runtime.executor import _Ctx
+from tigrbl_runtime.executors import _Ctx
 from tigrbl_kernel import build_phase_chains
 from tigrbl._spec import IO, S
 from tigrbl.factories.column import acol

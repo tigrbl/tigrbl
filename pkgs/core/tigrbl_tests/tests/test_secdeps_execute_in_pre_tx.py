@@ -8,7 +8,7 @@ from tigrbl._spec import OpSpec
 from tigrbl.runtime import events as _ev
 from tigrbl.runtime import system as _sys
 from tigrbl_kernel import Kernel
-from tigrbl.runtime.executor.invoke import invoke_op
+from tigrbl_runtime.executors.invoke import invoke_op
 
 
 class _FakeDB:

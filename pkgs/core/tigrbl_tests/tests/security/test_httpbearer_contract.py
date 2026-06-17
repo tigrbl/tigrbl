@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 
 from tigrbl import HTTPBearer
-from tigrbl.runtime.status import HTTPException
+from tigrbl_typing.status.exceptions import HTTPException
 
 
 def test_httpbearer_missing_credentials_raise_401_bearer_challenge() -> None:
@@ -39,4 +39,3 @@ def test_httpbearer_auto_error_false_returns_none_for_missing_or_bad_header() ->
     assert dependency(SimpleNamespace(headers={})) is None
     assert dependency(SimpleNamespace(headers={"authorization": "Basic abc"})) is None
     assert dependency(SimpleNamespace(headers={"authorization": "Bearer   "})) is None
-
