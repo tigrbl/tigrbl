@@ -1,3 +1,28 @@
+# Root policy: ignore every new root-level entry unless explicitly allowed.
+/*
+
+# Root entries intentionally allowed by repository policy.
+!/.codex/
+!/.github/
+!/.gitignore
+!/.ssot/
+!/CODE_OF_CONDUCT.md
+!/CONTRIBUTING.md
+!/LICENSE
+!/NOTICE
+!/README.md
+!/SECURITY.md
+!/assets/
+!/bindings/
+!/docs/
+!/examples/
+!/pkgs/
+!/pyproject.toml
+!/tests/
+!/tools/
+!/uv.lock
+
+# Generated caches and build artifacts.
 __pycache__/
 .pytest_cache/
 .ruff_cache/
@@ -13,24 +38,25 @@ site/
 target/
 *.egg-info/
 *.pyc
+*.pyd
 *.tmp*
 *.zip
-/.vendor
-/.tmp
 *.body
-.pip-cache/
-*.pyd
-.tmp-release-plan-check.json
-/.uv-pytest-tigrbl-tests
 perf.sqlite
-
-# Local generated caches and temporary package artifacts
-.tmp/
-.tmp*/
-tmp/
-.uv-cache*/
-.uv-python*/
-.venv*/
-.venv-gitvs*/
-generation_examples/
 node_modules/
+
+# Root-local generated caches and temporary package artifacts.
+/.benchmarks/
+/.pip-cache/
+/.tmp
+/.tmp/
+/.tmp*/
+/.uv-cache*/
+/.uv-pytest*/
+/.uv-pytest-tigrbl-tests/
+/.uv-python*/
+/.vendor
+/.venv*/
+/.venv-gitvs*/
+/generation_examples/
+/tmp/
