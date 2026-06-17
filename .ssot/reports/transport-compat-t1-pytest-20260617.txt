@@ -1,0 +1,10 @@
+Command:
+uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_transport_deprecation_warnings.py pkgs/core/tigrbl_tests/tests/unit/test_transport_compat_imports.py pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_schema_namespace.py pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_id_example.py
+
+Result:
+11 passed, 4 warnings
+
+Scope:
+T0/T1 runtime coverage for deprecated transport compatibility warnings, import
+compatibility shims, JSON-RPC schema namespace, and legacy RPCRequest schema
+example behavior.

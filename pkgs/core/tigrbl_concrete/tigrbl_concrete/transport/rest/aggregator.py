@@ -29,6 +29,12 @@ from typing import Any, Mapping, Optional, Sequence
 
 from tigrbl_concrete._concrete._router import Router
 from tigrbl_concrete._concrete.dependencies import Depends
+from tigrbl_concrete.transport._deprecation import (
+    REST_WARNING,
+    warn_deprecated_transport_module,
+)
+
+warn_deprecated_transport_module(REST_WARNING, __name__)
 
 
 def _norm_prefix(p: Optional[str]) -> str:
