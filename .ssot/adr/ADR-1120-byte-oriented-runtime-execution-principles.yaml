@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1120"
 number: 1120
@@ -13,32 +13,38 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to govern byte-oriented runtime execution principles for atoms, kernel plans, and runtime dispatch."
     at: "2026-04-28T15:58:52Z"
+    note: "Created to govern byte-oriented runtime execution principles for atoms, kernel plans, and runtime dispatch."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated byte-oriented principles to remove optional Rust runtime interchange as a design driver."
+    at: "2026-06-17T10:23:17Z"
 references: []
 body: |-
   ## Decision
   Tigrbl runtime execution internals adopt byte-oriented, bounded, versioned, evidence-backed physical layout principles selected by measured hot-path throughput first and then constrained by width discipline, byte size, and semantic integrity. Public authoring surfaces such as AppSpec, OpSpec, RouterSpec, hooks, and table declarations remain semantic and ergonomic.
-  
-  This decision is limited to atoms, runtime kernel plans, runtime execution metadata, event dispatch, identity/scalar references used by dispatch, callback fences, and optional Rust runtime binding interchange. It does not govern engine-owned row, page, block, WAL, manifest, cache, or recovery formats.
-  
+
+  This decision is limited to atoms, runtime kernel plans, runtime execution metadata, event dispatch, identity/scalar references used by dispatch, callback fences, and Python-owned runtime execution artifacts. It does not govern engine-owned row, page, block, WAL, manifest, cache, or recovery formats.
+
   ## Rationale
-  Runtime execution repeatedly traverses atoms, phases, subevents, handlers, callback fences, and dispatch metadata. Semantic objects are useful at authoring and validation boundaries, but object-heavy forms create avoidable allocation, pointer chasing, branch complexity, and parity drift in hot execution paths.
-  
-  Byte-oriented physical forms let the runtime answer the common execution questions with compact metadata: kind, phase, subevent, visibility, skip or keep, offset, length, flags, and identity reference. They also give the optional Rust runtime binding explicit widths, tags, versions, reserved bits, and invalid states to validate.
+  Runtime execution repeatedly traverses atoms, phases, subevents, handlers, callback fences, and dispatch metadata. Semantic objects are useful at authoring and validation boundaries, but object-heavy forms create avoidable allocation, pointer chasing, branch complexity, and hot-path cost.
+
+  Byte-oriented physical forms let the Python runtime answer common execution questions with compact metadata: kind, phase, subevent, visibility, skip or keep, offset, length, flags, and identity reference.
 
   When multiple physical encodings satisfy the same semantic contract, the default runtime choice should be the fastest measured valid encoding for that category and workload. Width discipline, semantic integrity, and compatibility constraints may disqualify a faster encoding, but benchmark-backed throughput is otherwise the primary selection criterion.
-  
+
   ## Runtime Principles
   The runtime principle set includes byte-oriented design, byte-level programming, binary encoding, packed representation, bit-packing, fixed-width fields, explicit endianness for portable formats, schema-first binary layout, offset-table design, dense metadata scanning, hot/cold field splitting, lazy semantic decoding, copy-avoidant design, safe zero-copy views, opaque fixed-width identifiers, data-oriented design, structure-of-arrays layout, locality of reference, allocation minimization, object amplification avoidance, dispatch minimization, predictable control flow, batching, boundary batching, semantic/physical separation, codec boundaries, ingress validation with internal trust, regex and text at boundaries, versioned formats, reserved bits, bounded parsing, fuzz-testable layouts, hot-path minimalism, cold-path richness, state-machine parsing, measurement-driven optimization, workload-shaped layout, physical invariants first, and evidence-oriented design.
 
   Dominant hot-path metadata should be overwhelmingly u8 and u16, with u32 reserved for larger offsets, registries, and shape IDs, u64 reserved for declared local hash or plan-instance cases, and u128 or u256 reserved for declared identity classes only.
-  
+
   ## Consequences
   New runtime physical layouts must define field widths, offsets, tags, flags, versions, reserved bits, invalid states, bounds, selection-policy evidence, and conformance evidence before they are treated as release-grade runtime contracts. Benchmark tables and primitive comparisons remain informative evidence artifacts unless a narrower SPEC explicitly makes a result normative. Rich labels, traces, schema names, diagnostics, and human-readable annotations belong in cold metadata or diagnostics projections unless profiling and SPEC authority justify hot-path inclusion.
-  
+
+  Rust runtime interchange is no longer a driver for this ADR under `adr:1185`. CPython-native or C-extension hot paths may still be governed by separate specs when they remain Python-orchestrated and do not create alternate runtime parity obligations.
+
   Engine storage principles such as page-oriented layout, WAL records, SSTable blocks, bloom filters, restart points, compression units, crash recovery, read/write/space amplification, and manifest/data separation remain out of scope for this ADR and require separate engine ADRs and SPECs.
-  
+
   ## Traceability
-  Extends ADR-1100, ADR-1102, ADR-1113, ADR-1114, ADR-1115, ADR-1116, ADR-1117, ADR-1118, and ADR-1119. Runtime SPECs should derive concrete layout and evidence requirements from this principle rather than embedding engine-storage concerns in atoms, kernel, or runtime execution artifacts.
+  Extends ADR-1100, ADR-1102, ADR-1113, ADR-1114, ADR-1115, ADR-1116, ADR-1117, ADR-1118, ADR-1119, and ADR-1185. Runtime SPECs should derive concrete layout and evidence requirements from this principle rather than embedding engine-storage or alternate-runtime concerns in atoms, kernel, or runtime execution artifacts.

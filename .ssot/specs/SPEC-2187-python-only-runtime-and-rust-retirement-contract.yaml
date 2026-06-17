@@ -1,0 +1,56 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2187"
+number: 2187
+slug: "python-only-runtime-and-rust-retirement-contract"
+title: "Python-only runtime and Rust retirement contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the Python-only runtime contract and the retirement requirements for in-core Rust parity surfaces."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    at: "2026-06-17T10:24:36Z"
+    note: "Accepted Python-only runtime contract and Rust parity retirement evidence requirements."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Accepted Python-only runtime contract and Rust parity retirement evidence requirements."
+    at: "2026-06-17T10:34:04Z"
+references: []
+body: |-
+  ## Purpose
+  Define the Python-only runtime contract and the retirement requirements for in-core Rust parity surfaces.
+
+  ## Scope
+  This SPEC applies to `tigrbl_kernel`, `tigrbl_runtime`, `tigrbl_atoms`, public facade exports, SSOT registry rows, docs, tests, examples, and benchmarks that previously modeled an optional Rust runtime binding or Rust executor parity lane.
+
+  ## Requirements
+  1. `tigrbl_kernel` MUST NOT expose supported Rust compiler, plan, or spec helpers, including `rust_spec`, `rust_plan`, or `rust_compile`.
+  2. `tigrbl_runtime` MUST NOT advertise `executor_backend=rust` as a supported core backend.
+  3. `tigrbl_atoms` and `tigrbl_runtime` MUST NOT expose Rust callback, atom, trace, or runtime helpers as supported public core surfaces.
+  4. SSOT ADRs, SPECs, features, tests, docs, and benchmarks MUST NOT require Rust/runtime-binding parity for core release or certification.
+  5. Compatibility shims, if retained temporarily, MUST be explicit deprecation shims and MUST fail closed or warn clearly rather than behaving as supported runtime paths.
+  6. Performance evidence MUST use Python runtime and CPython/native-C hot-path rails. Rust executor comparison is non-normative and out of core scope.
+  7. Future Rust support, if reintroduced, MUST be external to core and MUST NOT create repo-wide parity obligations unless a later ADR explicitly reverses this decision.
+
+  ## Non-Goals
+  - This SPEC does not prohibit downstream experiments from calling public Python APIs.
+  - This SPEC does not define a replacement Rust runtime.
+  - This SPEC does not remove Python-owned KernelPlan, atom, engine, or runtime contracts.
+
+  ## Evidence Requirements
+  - Tests reject or deprecate imports of `tigrbl_kernel.rust_spec`, `tigrbl_kernel.rust_plan`, and `tigrbl_kernel.rust_compile`.
+  - Tests reject `Runtime(executor_backend=rust)` or equivalent backend selection.
+  - Export-surface tests prove Rust helpers are not public core exports.
+  - Registry/docs scan tests prove optional Rust/runtime-binding parity language does not remain in active SSOT/docs surfaces except retirement records.
+  - Benchmark tests prove performance rails no longer include `tigrbl_rust_executor` as a required core scenario.
+
+  ## Traceability
+  Governed by `adr:1185`.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1185"

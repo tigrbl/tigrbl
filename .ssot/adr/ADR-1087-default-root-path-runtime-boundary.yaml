@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1087"
 number: 1087
@@ -8,42 +8,46 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrbl apps may execute through Python executor paths or the optional optional runtime binding binding. A request to the root path `/` should not depend on which executor or runtime handle is active. Without a governed default, Python ASGI apps, optional optional runtime binding handles, and demo/server surfaces can drift between 404, executor errors, or app-specific behavior."
+summary: "Tigrbl apps execute through Python runtime paths. A request to the root path `/` should have a governed framework default unless the application explicitly owns that route."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted default GET / behavior for all Tigrbl apps and optional optional runtime binding binding handles unless explicitly overridden."
     at: "2026-04-24T20:24:13Z"
+    note: "Accepted default GET / behavior for all Tigrbl apps and runtime bindings unless explicitly overridden."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated accepted default-root boundary for Python-only runtime scope."
+    at: "2026-06-17T10:23:46Z"
 references: []
 body: |-
   ## Context
   
-  Tigrbl apps may execute through Python executor paths or the optional optional runtime binding binding. A request to the root path `/` should not depend on which executor or runtime handle is active. Without a governed default, Python ASGI apps, optional optional runtime binding handles, and demo/server surfaces can drift between 404, executor errors, or app-specific behavior.
+  Tigrbl apps execute through Python runtime paths. A request to the root path `/` should have a governed framework default unless the application explicitly owns that route.
   
   The root path is also a natural user and health-smoke entry point, but it must not steal authority from application-owned routes.
   
   ## Decision
   
-  Tigrbl SHALL define a runtime-wide default for `GET /`.
+  Tigrbl SHALL define a Python runtime default for `GET /`.
   
   1. Every Tigrbl app SHALL expose a default response at path `/` for `GET` unless that app explicitly registers or compiles a non-default root binding for `/`.
-  2. The default response SHALL be identical across Python executors, optional optional runtime binding binding handles, and framework-owned demo/server surfaces.
-  3. The default response body SHALL be `{"ok": true}` with HTTP status `200`.
-  4. An explicit app, router, or compiled runtime binding for `GET /` or the root path SHALL override the framework default.
-  5. The default SHALL NOT widen application business semantics, diagnostics semantics, or `/system/healthz` semantics; it is only a framework-owned root fallback.
-  6. Runtime implementations SHALL avoid executing persistence, engine/session acquisition, or custom handlers to produce the default fallback.
+  2. The default response body SHALL be `{ok: true}` with HTTP status `200`.
+  3. An explicit app, router, or compiled runtime binding for `GET /` or the root path SHALL override the framework default.
+  4. The default SHALL NOT widen application business semantics, diagnostics semantics, or `/system/healthz` semantics; it is only a framework-owned root fallback.
+  5. Runtime implementations SHALL avoid executing persistence, engine/session acquisition, or custom handlers to produce the default fallback.
+  6. Rust/runtime-binding root parity is retired under `adr:1185`.
   
   ## Consequences
   
-  - Python runtime behavior and optional optional runtime binding binding behavior for an otherwise empty app converge on the same `GET /` response.
+  - Python runtime behavior for an otherwise empty app converges on the same `GET /` response.
   - Applications can still own `/` by registering their own root route.
   - Root smoke checks can assert framework availability without depending on docs, diagnostics, or application tables.
-  - Runtime binding tests must cover both the default and override cases.
+  - Runtime binding tests are no longer required for this ADR.
   
   ## Rejected Alternatives
   
   - Leaving empty apps to return 404 or runtime missing-binding errors at `/`.
   - Redirecting `/` to docs or diagnostics, which would conflate root fallback behavior with optional system or documentation mounts.
-  - Making the default executor-specific.
+  - Making the default depend on executor implementation language.

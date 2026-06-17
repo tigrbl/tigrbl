@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2148"
 number: 2148
@@ -8,7 +8,7 @@ status: "draft"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Define the benchmark, call-graph, KC or kernel-plan packing, and `TGPKHOT1` evidence gates for performance-sensitive runtime layout and executor changes."
+summary: "Define the benchmark, call-graph, KC or kernel-plan packing, and `TGPKHOT1` evidence gates for performance-sensitive Python runtime layout and executor changes."
 supersedes: []
 superseded_by: []
 status_notes:
@@ -16,20 +16,26 @@ status_notes:
     at: "2026-05-03T04:38:11Z"
     note: "Created to define benchmark, call-graph, kernel-plan packing, and TGPKHOT1 non-regression evidence gates."
     status: "draft"
+  -
+    status: "draft"
+    note: "Updated performance evidence contract to remove Rust executor benchmark rails as core gates."
+    at: "2026-06-17T10:24:26Z"
 references: []
 body: |-
   ## Intent
-  Define the benchmark, call-graph, KC or kernel-plan packing, and `TGPKHOT1` evidence gates for performance-sensitive runtime layout and executor changes.
-  
+  Define the benchmark, call-graph, KC or kernel-plan packing, and `TGPKHOT1` evidence gates for performance-sensitive Python runtime layout and executor changes.
+
   ## Required Artifact Families
   A governed hot-path change MUST produce or refresh the applicable artifact families for the affected surfaces:
   - kernel-plan benchmark JSON and markdown reports
   - sequential unary benchmark JSON artifacts where applicable
-  - Tigrbl call graph JSON
+  - Tigrbl Python runtime call graph JSON
   - FastAPI call graph JSON where parity exists
   - `TGPKHOT1` binary, summary, hexdump, benchmark JSON, and benchmark markdown where a packed hot block exists
   - perf-suite manifest and report outputs that summarize the accepted rails
-  
+
+  Rust executor benchmark rails are retired under `adr:1185` and MUST NOT be required for core release or certification evidence.
+
   ## Governed Surfaces
   The benchmark and call-graph rail set MUST cover the repository's governed transport families as they exist:
   - REST unary
@@ -38,25 +44,27 @@ body: |-
   - SSE
   - websocket
   - webtransport
-  
+
   When a parity framework exists, the report SHOULD include an apples-to-apples comparison. When parity does not exist, the Tigrbl-only supplemental rail MUST still be benchmarked and reported.
-  
+
   ## Non-Regression Gate
   A hot-path change is non-conformant if it:
   - lowers the accepted throughput baseline for an already-governed surface
   - increases the accepted `TGPKHOT1` raw-byte baseline for an already-governed packed surface
   - claims a hot-path win using only primitive microbenchmarks without representative surface evidence
-  
+  - reintroduces Rust executor comparison as a required core evidence rail
+
   ## Packing And Raw-Byte Discipline
   `TGPKHOT1` remains the packed hot-path budget carrier for compiled-runtime execution metadata. New hot-block sections or wider fields are non-conformant unless an equal-or-greater reduction elsewhere keeps total governed raw bytes flat or lower.
-  
+
   Kernel-plan packing work, KC or packed-plan artifact changes, and executor metadata changes MUST identify which packed sections changed and how those changes affect raw bytes, representative throughput, and hot call-graph shape.
-  
+
   ## Evidence
-  Representative reports MUST cite the command or runner used, the fixture or corpus shape, the measured throughput or latency result, and the packed raw-byte result for the affected surface.
+  Representative reports MUST cite the command or runner used, the fixture or corpus shape, the measured throughput or latency result, and the packed raw-byte result for the affected surface. Evidence MUST identify Python runtime and CPython/native-C rails explicitly when those rails are in scope.
 spec_kind: "normative"
 adr_ids:
   - "adr:1127"
   - "adr:1128"
   - "adr:1120"
   - "adr:1125"
+  - "adr:1185"

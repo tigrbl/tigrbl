@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1083"
 number: 1083
@@ -8,41 +8,45 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Tigrbl owns Python runtime execution and an optional runtime binding path. Durable binding implementations must not mix connection open, table creation, index creation, transaction begin, operation execution, and commit inside the per-request execution path."
+summary: "Tigrbl owns Python runtime execution. Python runtime implementations must not mix connection open, table creation, index creation, transaction begin, operation execution, and commit inside the per-request execution path. That would mix schema readiness work with ordinary request handling and make request latency reflect bootstrap cost."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted runtime-wide DDL initialization boundary for Python request execution and optional runtime binding execution."
     at: "2026-04-24T14:14:42Z"
+    note: "Accepted runtime-wide DDL initialization boundary for Python request execution and optional runtime binding execution."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated accepted DDL boundary to remove optional runtime binding conformance after Python-only runtime decision."
+    at: "2026-06-17T10:23:27Z"
 references: []
 body: |-
   ## Context
   
-  Tigrbl owns Python runtime execution and an optional runtime binding path. Durable binding implementations must not mix connection open, table creation, index creation, transaction begin, operation execution, and commit inside the per-request execution path. That would mix schema readiness work with ordinary request handling and make request latency reflect bootstrap cost.
+  Tigrbl owns Python runtime execution. Python runtime implementations must not mix connection open, table creation, index creation, transaction begin, operation execution, and commit inside the per-request execution path. That would mix schema readiness work with ordinary request handling and make request latency reflect bootstrap cost.
   
-  The same boundary applies to Python. Python initialization and explicit DDL/admin operations may prepare schema state, but ordinary CRUD request execution must not silently create tables, create indexes, run migrations, or perform implicit schema readiness work.
+  Python initialization and explicit DDL/admin operations may prepare schema state, but ordinary CRUD request execution must not silently create tables, create indexes, run migrations, or perform implicit schema readiness work.
   
   ## Decision
   
-  DDL and schema readiness are initialization, bootstrap, migration, or explicit DDL/admin work across all Tigrbl runtimes.
+  DDL and schema readiness are initialization, bootstrap, migration, or explicit DDL/admin work for Tigrbl's Python runtime.
   
-  1. Python ordinary request execution and optional runtime binding execution must not run DDL, schema migration, table creation, index creation, or implicit schema readiness checks.
+  1. Python ordinary request execution must not run DDL, schema migration, table creation, index creation, or implicit schema readiness checks.
   2. Runtime initialization, engine initialization, explicit bootstrap, explicit migration, and explicit DDL/admin operations may run DDL when they are the declared operation.
   3. Idempotent DDL is still DDL and belongs outside ordinary request execution.
   4. If required schema readiness has not been established, ordinary request execution must fail closed with a clear runtime or configuration error unless a deliberately configured development auto-initialization mode is in scope.
-  5. Optional runtime binding conformance is scoped to the binding package and must not create a repo-wide Rust certification lane.
+  5. Rust/runtime-binding conformance is retired under `adr:1185` and no longer creates evidence obligations for this ADR.
   
   ## Consequences
   
-  - Optional runtime binding SQLite code must move `_tigrbl_rows` table/index initialization out of transaction begin and into a runtime or engine readiness phase.
-  - Python request paths must preserve the same invariant and prove that `create_all`, schema reflection, or implicit bootstrap do not happen during ordinary CRUD requests.
+  - Python request paths must prove that `create_all`, schema reflection, or implicit bootstrap do not happen during ordinary CRUD requests.
   - Performance evidence can distinguish runtime execution from schema/bootstrap work.
   - Future engines inherit the same lifecycle boundary.
+  - Retired Rust/runtime-binding tests or docs must not be used as evidence for this ADR.
   
   ## Rejected alternatives
   
   - Allowing each runtime to decide independently whether idempotent DDL can run per request.
   - Treating per-request `CREATE TABLE IF NOT EXISTS` as acceptable because it is idempotent.
-  - Recording the rule as Rust-only even though the architectural boundary is runtime-wide.
+  - Keeping optional Rust/runtime-binding evidence obligations after selecting a Python-only runtime.

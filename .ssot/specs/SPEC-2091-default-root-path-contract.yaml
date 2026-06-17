@@ -1,4 +1,4 @@
-schema_version: "0.2.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2091"
 number: 2091
@@ -8,37 +8,40 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Declare the default root-path behavior for all Tigrbl runtimes and apps."
+summary: "Declare the default root-path behavior for Tigrbl Python runtime surfaces and apps."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted cross-runtime default root path contract."
     at: "2026-04-24T20:24:31Z"
+    note: "Accepted cross-runtime default root path contract."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated accepted default-root contract for Python-only runtime scope."
+    at: "2026-06-17T10:24:18Z"
 references: []
 body: |-
   ## Purpose
   
-  Declare the default root-path behavior for all Tigrbl runtimes and apps.
+  Declare the default root-path behavior for Tigrbl Python runtime surfaces and apps.
   
   ## Scope
   
-  This SPEC applies to Tigrbl app instances, Python executor paths, optional runtime binding executor paths, direct optional runtime binding handles, and framework-owned demos or server adapters that expose Tigrbl runtime behavior.
+  This SPEC applies to Tigrbl app instances, Python executor paths, and framework-owned demos or server adapters that expose Tigrbl runtime behavior.
   
   ## Requirements
   
   1. A Tigrbl runtime surface MUST treat path `/` with method `GET` as a framework-owned default root request when no explicit non-default root binding is present.
   2. The default root response MUST use HTTP status `200`.
-  3. The default root response body MUST be the JSON object `{"ok": true}`.
-  4. The default root response shape MUST be identical for Python executor and optional runtime binding executor surfaces.
-  5. The default root response MUST be installed for all Tigrbl apps, including apps with system mounts disabled.
-  6. An app, router, or compiled runtime plan that declares an explicit non-default root binding for `/` MUST override the default root response.
-  7. Override detection MUST remove or bypass the framework default before dispatch when the explicit root route is registered on an app.
-  8. Direct optional runtime binding handles with no explicit root binding MUST return the default root response instead of raising a missing-binding error for `GET /`.
-  9. Runtime default-root handling MUST NOT acquire an engine session, begin a transaction, or execute persistence work.
-  10. The default root response MUST NOT replace `/system/healthz`, diagnostics endpoints, docs mounts, or application-owned root handlers.
-  11. Conformance tests MUST cover both default root behavior and explicit-root override behavior for Python and optional runtime binding lanes.
+  3. The default root response body MUST be the JSON object `{ok: true}`.
+  4. The default root response MUST be installed for all Tigrbl apps, including apps with system mounts disabled.
+  5. An app, router, or compiled runtime plan that declares an explicit non-default root binding for `/` MUST override the default root response.
+  6. Override detection MUST remove or bypass the framework default before dispatch when the explicit root route is registered on an app.
+  7. Runtime default-root handling MUST NOT acquire an engine session, begin a transaction, or execute persistence work.
+  8. The default root response MUST NOT replace `/system/healthz`, diagnostics endpoints, docs mounts, or application-owned root handlers.
+  9. Conformance tests MUST cover both default root behavior and explicit-root override behavior for Python runtime lanes.
+  10. Optional Rust/runtime-binding root behavior is retired under `adr:1185` and is not a required conformance lane.
   
   ## Non-Goals
   
@@ -48,7 +51,8 @@ body: |-
   
   ## Traceability
   
-  This SPEC is governed by ADR-1087.
+  This SPEC is governed by ADR-1087 and ADR-1185.
 spec_kind: "normative"
 adr_ids:
   - "adr:1087"
+  - "adr:1185"

@@ -1,0 +1,48 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1185"
+number: 1185
+slug: "python-only-runtime-and-rust-parity-retirement"
+title: "Python-only runtime and Rust parity retirement"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl core is a Python-only runtime and no longer carries a Rust parity lane."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted retirement of in-core Rust parity and Rust kernel compiler surfaces."
+    at: "2026-06-17T10:22:02Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl core is a Python-only runtime and no longer carries a Rust parity lane.
+
+  The repository deprecates and then removes the in-core Rust kernel surfaces:
+
+  - `tigrbl_kernel.rust_spec`
+  - `tigrbl_kernel.rust_plan`
+  - `tigrbl_kernel.rust_compile`
+
+  Rust executor parity, Rust runtime demos, Rust benchmark lanes, and Rust compatibility claims are retired as core goals. Public runtime selection must not advertise or accept `executor_backend=rust` as a supported core execution path.
+
+  Future Rust work, if any, must live outside the core Tigrbl runtime as an external plugin, separate project, or downstream experiment. Such work may consume public Python contracts, but it must not impose SSOT parity, certification, release, benchmark, or documentation obligations on the core repository.
+
+  ## Rationale
+  Maintaining Rust parity duplicates compiler, executor, docs, benchmark, and runtime governance work. The active codebase is moving toward Python-owned kernel compilation, Python runtime execution, and CPython/native-C hot-path acceleration where needed. Keeping in-core Rust parity language makes every runtime decision ambiguous and preserves tests that the project no longer intends to support.
+
+  ## Consequences
+  - `tigrbl_kernel` remains the Python kernel planning and compilation owner.
+  - `tigrbl_runtime` remains the Python runtime execution owner.
+  - Rust-specific public imports and executor backends must be deprecated or removed.
+  - SSOT specs, feature descriptions, tests, docs, and benchmarks must stop requiring optional Rust/runtime-binding parity.
+  - Performance work should use Python/CPython-native evidence rails, not Rust executor comparison as a core release gate.
+
+  ## Migration Policy
+  If a compatibility window is needed, legacy Rust imports may exist only as explicit deprecation shims that emit `DeprecationWarning` or fail closed with a clear unsupported-runtime error. After the window closes, the modules and runtime backend selectors should be removed.
+
+  ## Traceability
+  Updates package ownership, kernel/executor placement, runtime lifecycle, default-root, docs endpoint, and hot-path performance governance. The companion SPEC is `spc:2187`.
