@@ -1,0 +1,25 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2188"
+number: 2188
+slug: "transport-compatibility-deprecation-contract"
+title: "Transport compatibility deprecation contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Contract: tigrbl.transport.* and tigrbl_concrete.transport.* modules are compatibility shims and must not be treated as runtime hot-path transport implementations. Deprecated imports must remain importable during the compatibility window and emit DeprecationWarning with actionable replacement text. REST warning: tigrbl.transport.rest is deprecated and retained only as a compatibility shim. It is not used by the Tigrbl runtime hot path and will be removed in a future release. Use TigrblApp/TigrblRouter mounting APIs or tigrbl_concrete model binding surfaces instead. JSON-RPC models warning: tigrbl.transport.jsonrpc.models is deprecated and retained only as a compatibility shim. It is not used by the Tigrbl runtime hot path and will be removed in a future release. Use the JSON-RPC schema namespace once available; use tigrbl_atoms.atoms.framing codecs for runtime JSON-RPC payload validation. JSON-RPC helpers warning: tigrbl.transport.jsonrpc.helpers is deprecated and retained only as a compatibility shim. It is not used by the Tigrbl runtime hot path and will be removed in a future release. Use tigrbl_atoms.atoms.framing.encode_frame/decode_frame with framing=jsonrpc for JSON-RPC envelopes. Removal readiness requires updated examples, docs, import compatibility tests, warning tests, and an architecture test proving the runtime hot path does not import compatibility transport modules."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to define the deprecation window, warning text, replacement surfaces, and import compatibility obligations for transport shims."
+    at: "2026-06-17T12:43:18Z"
+references: []
+body: |-
+  Contract: tigrbl.transport.* and tigrbl_concrete.transport.* modules are compatibility shims and must not be treated as runtime hot-path transport implementations. Deprecated imports must remain importable during the compatibility window and emit DeprecationWarning with actionable replacement text. REST warning: tigrbl.transport.rest is deprecated and retained only as a compatibility shim. It is not used by the Tigrbl runtime hot path and will be removed in a future release. Use TigrblApp/TigrblRouter mounting APIs or tigrbl_concrete model binding surfaces instead. JSON-RPC models warning: tigrbl.transport.jsonrpc.models is deprecated and retained only as a compatibility shim. It is not used by the Tigrbl runtime hot path and will be removed in a future release. Use the JSON-RPC schema namespace once available; use tigrbl_atoms.atoms.framing codecs for runtime JSON-RPC payload validation. JSON-RPC helpers warning: tigrbl.transport.jsonrpc.helpers is deprecated and retained only as a compatibility shim. It is not used by the Tigrbl runtime hot path and will be removed in a future release. Use tigrbl_atoms.atoms.framing.encode_frame/decode_frame with framing=jsonrpc for JSON-RPC envelopes. Removal readiness requires updated examples, docs, import compatibility tests, warning tests, and an architecture test proving the runtime hot path does not import compatibility transport modules.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1193"
+  - "adr:1173"

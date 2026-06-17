@@ -46,11 +46,14 @@ _KNOWN_TRANSPORTS = {
     },
     "callback": {
         "scope_type": None,
-        "events": (("callback.emit", "outbound", False, "message.emit"),),
+        "events": (
+            ("callback.delivery.emit", "outbound", False, "message.emit"),
+            ("callback.delivery.emit_complete", "outbound", False, "message.processed"),
+        ),
     },
     "webhook": {
         "scope_type": "http",
-        "events": (("webhook.emit", "outbound", False, "message.emit"),),
+        "events": (("webhook.receive", "inbound", False, "request.received"),),
     },
 }
 

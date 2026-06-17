@@ -4,7 +4,7 @@ id: "spc:1138"
 number: 1138
 slug: "inbound-webhook-contract"
 title: "Inbound Webhook Contract"
-status: "draft"
+status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
@@ -13,9 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created to define first-class inbound webhook ingress."
     at: "2026-06-17T10:17:15Z"
+    note: "Created to define first-class inbound webhook ingress."
+    status: "draft"
+  -
+    status: "accepted"
+    note: "Inbound webhook ingress is implemented through PathSpec, OpSpec, POST HttpRestBindingSpec lowering, signature verification, idempotency, and ack tests."
+    at: "2026-06-17T12:15:57Z"
 references: []
 body: |-
   ## Intent

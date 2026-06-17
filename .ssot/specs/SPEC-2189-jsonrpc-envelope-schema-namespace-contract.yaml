@@ -1,0 +1,26 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2189"
+number: 2189
+slug: "jsonrpc-envelope-schema-namespace-contract"
+title: "JSON-RPC envelope schema namespace contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Contract: JSON-RPC public envelope model classes must have a non-transport schema namespace before tigrbl.transport.jsonrpc.models and tigrbl_concrete.transport.jsonrpc.models are removed. The schema namespace must preserve request, notification, success response, error response, batch, id, and error object behavior currently relied on by tests and examples. Runtime JSON-RPC payload validation remains authoritative in the tigrbl_atoms frame codec registry; schema models are public data contracts and authoring aids, not dispatch hot-path modules. Compatibility modules may re-export the schema namespace during the deprecation window, but new code must import from the schema namespace or call tigrbl_atoms.atoms.framing encode/decode APIs for runtime frames."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to move JSON-RPC envelope schemas out of deprecated transport helper namespaces while preserving codec authority."
+    at: "2026-06-17T12:43:27Z"
+references: []
+body: |-
+  Contract: JSON-RPC public envelope model classes must have a non-transport schema namespace before tigrbl.transport.jsonrpc.models and tigrbl_concrete.transport.jsonrpc.models are removed. The schema namespace must preserve request, notification, success response, error response, batch, id, and error object behavior currently relied on by tests and examples. Runtime JSON-RPC payload validation remains authoritative in the tigrbl_atoms frame codec registry; schema models are public data contracts and authoring aids, not dispatch hot-path modules. Compatibility modules may re-export the schema namespace during the deprecation window, but new code must import from the schema namespace or call tigrbl_atoms.atoms.framing encode/decode APIs for runtime frames.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1193"
+  - "adr:1173"
+  - "adr:1174"

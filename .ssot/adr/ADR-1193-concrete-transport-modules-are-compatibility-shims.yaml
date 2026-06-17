@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1193"
+number: 1193
+slug: "concrete-transport-modules-are-compatibility-shims"
+title: "Concrete transport modules are compatibility shims"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision proposal: tigrbl.transport.* and tigrbl_concrete.transport.* are retained as public compatibility and authoring shims, not runtime hot-path transport implementations. REST and JSON-RPC runtime dispatch stays on concrete app/router binding through tigrbl_runtime and tigrbl_kernel. Runtime frame codecs in tigrbl_atoms own payload encode/decode behavior for JSON, JSON-RPC, NDJSON, SSE, WebSocket adapter frames, and WebTransport inner frames. Deprecation must preserve import compatibility for one compatibility window, emit explicit DeprecationWarning messages, and provide replacement schema/runtime codec namespaces before removal. Hard removal without the window would break public imports, examples, docs, and existing JSON-RPC schema tests, but not the runtime execution hot path."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern deprecation of tigrbl.transport and tigrbl_concrete.transport compatibility modules."
+    at: "2026-06-17T12:43:04Z"
+references: []
+body: |-
+  Decision proposal: tigrbl.transport.* and tigrbl_concrete.transport.* are retained as public compatibility and authoring shims, not runtime hot-path transport implementations. REST and JSON-RPC runtime dispatch stays on concrete app/router binding through tigrbl_runtime and tigrbl_kernel. Runtime frame codecs in tigrbl_atoms own payload encode/decode behavior for JSON, JSON-RPC, NDJSON, SSE, WebSocket adapter frames, and WebTransport inner frames. Deprecation must preserve import compatibility for one compatibility window, emit explicit DeprecationWarning messages, and provide replacement schema/runtime codec namespaces before removal. Hard removal without the window would break public imports, examples, docs, and existing JSON-RPC schema tests, but not the runtime execution hot path.

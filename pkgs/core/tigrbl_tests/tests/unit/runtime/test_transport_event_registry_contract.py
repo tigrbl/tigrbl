@@ -45,6 +45,27 @@ def test_transport_event_rows_declare_direction_scope_mapping_and_requirement() 
     assert row["extension_namespace"] in {"asgi", "tigrbl", None}
 
 
+def test_callback_and_webhook_transport_events_keep_directional_taxonomy() -> None:
+    registry = _require("tigrbl_kernel.transport_events", "build_transport_event_registry")
+
+    rows = {event["event"]: event for event in registry()}
+
+    callback_emit = rows["callback.delivery.emit"]
+    assert callback_emit["transport"] == "callback"
+    assert callback_emit["direction"] == "outbound"
+    assert callback_emit["scope_type"] is None
+
+    callback_complete = rows["callback.delivery.emit_complete"]
+    assert callback_complete["transport"] == "callback"
+    assert callback_complete["direction"] == "outbound"
+
+    webhook_receive = rows["webhook.receive"]
+    assert webhook_receive["transport"] == "webhook"
+    assert webhook_receive["direction"] == "inbound"
+    assert webhook_receive["scope_type"] == "http"
+    assert "webhook.emit" not in rows
+
+
 @pytest.mark.parametrize(
     ("transport", "required_events"),
     (
