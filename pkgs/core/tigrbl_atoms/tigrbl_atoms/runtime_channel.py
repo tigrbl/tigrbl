@@ -5,10 +5,41 @@ from collections.abc import Mapping
 from enum import IntEnum
 from typing import Any
 
-from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
+from tigrbl_core._spec.binding_spec import validate_webtransport_inner_framing
 
 UINT8_MAX_STREAMS = 256
 UINT16_MAX_STREAMS = 65_536
+_STREAM_EVENTS = {
+    "webtransport.stream.receive",
+    "webtransport.stream.send",
+    "webtransport.stream.close",
+    "webtransport.stream.reset",
+    "webtransport.stream.stop_sending",
+}
+_DATAGRAM_EVENTS = {
+    "webtransport.datagram.receive",
+    "webtransport.datagram.send",
+}
+_SESSION_EVENTS = {
+    "webtransport.connect",
+    "webtransport.accept",
+    "webtransport.disconnect",
+    "webtransport.close",
+}
+_STREAM_DIRECTIONS = {
+    "bidi": "bidi_stream",
+    "client_to_server": "unidi_client_stream",
+    "server_to_client": "unidi_server_stream",
+}
+_STREAM_DIRECTION_METADATA = {
+    "bidi": "bidirectional",
+    "client_to_server": "client_to_server",
+    "server_to_client": "server_to_client",
+}
+_UNIDI_INITIATORS = {
+    "client_to_server": "client",
+    "server_to_client": "server",
+}
 
 
 class Initiator(IntEnum):
@@ -449,6 +480,166 @@ def _optional_str(value: object) -> str | None:
     return str(value)
 
 
+def validate_webtransport_event_payload(
+    *,
+    event: str,
+    channel: str,
+    payload: dict[str, Any],
+) -> dict[str, object]:
+    if not isinstance(payload, dict):
+        raise ValueError("WebTransport event payload must be a mapping")
+    if channel not in {"receive", "send"}:
+        raise ValueError("WebTransport event channel must be receive or send")
+    if event in _SESSION_EVENTS:
+        return _validate_session_payload(event=event, channel=channel, payload=payload)
+    if event in _STREAM_EVENTS:
+        return _validate_stream_payload(event=event, channel=channel, payload=payload)
+    if event in _DATAGRAM_EVENTS:
+        return _validate_datagram_payload(event=event, channel=channel, payload=payload)
+    if event.startswith("webtransport.message"):
+        raise ValueError("WebTransport message is not a native transport lane")
+    raise ValueError(f"unsupported WebTransport event {event!r}")
+
+
+def _validate_session_payload(
+    *,
+    event: str,
+    channel: str,
+    payload: dict[str, Any],
+) -> dict[str, object]:
+    expected_channel = (
+        "receive"
+        if event in {"webtransport.connect", "webtransport.disconnect"}
+        else "send"
+    )
+    if channel != expected_channel:
+        raise ValueError(f"{event} is only valid on {expected_channel}")
+    _forbid(
+        payload,
+        "stream_id",
+        "stream_direction",
+        "stream_initiator",
+        "lane_id",
+        "datagram_id",
+        "framing",
+    )
+    return {"family": "session", "lane": "session", "exchange": "request_response"}
+
+
+def _validate_stream_payload(
+    *,
+    event: str,
+    channel: str,
+    payload: dict[str, Any],
+) -> dict[str, object]:
+    expected_channel = "receive" if event == "webtransport.stream.receive" else "send"
+    if channel != expected_channel:
+        raise ValueError(f"{event} is only valid on {expected_channel}")
+    _require(payload, "stream_id")
+    _forbid(payload, "datagram_id")
+    direction = payload.get("stream_direction")
+    if event in {
+        "webtransport.stream.receive",
+        "webtransport.stream.send",
+    }:
+        if not isinstance(direction, str) or direction not in _STREAM_DIRECTIONS:
+            raise ValueError("WebTransport stream payload requires valid stream_direction")
+    else:
+        direction = str(direction) if direction in _STREAM_DIRECTIONS else "bidi"
+    lane = _STREAM_DIRECTIONS[str(direction)]
+    stream_initiator = _stream_initiator(
+        payload.get("stream_initiator"),
+        stream_direction=str(direction),
+    )
+    if channel == "receive" and lane == "unidi_server_stream":
+        raise ValueError("server_to_client unidirectional streams cannot be receive events")
+    if channel == "send" and lane == "unidi_client_stream":
+        raise ValueError("client_to_server unidirectional streams cannot be send events")
+    validate_webtransport_inner_framing(
+        lane=lane,
+        inner_framing=payload.get("framing"),
+    )
+    projection = {
+        "family": "stream",
+        "lane": lane,
+        "exchange": {
+            "bidi_stream": "bidirectional_stream",
+            "unidi_client_stream": "client_stream",
+            "unidi_server_stream": "server_stream",
+        }[lane],
+        "stream_direction": str(direction),
+        "direction": _STREAM_DIRECTION_METADATA[str(direction)],
+        "stream_initiator": stream_initiator,
+    }
+    _copy_int_field(payload, projection, "lane_id")
+    _copy_int_field(payload, projection, "stream_ordinal")
+    if payload.get("stream_id_width") is not None:
+        projection["stream_id_width"] = str(payload["stream_id_width"])
+    return projection
+
+
+def _validate_datagram_payload(
+    *,
+    event: str,
+    channel: str,
+    payload: dict[str, Any],
+) -> dict[str, object]:
+    expected_channel = "receive" if event == "webtransport.datagram.receive" else "send"
+    if channel != expected_channel:
+        raise ValueError(f"{event} is only valid on {expected_channel}")
+    _require(payload, "datagram_id")
+    _forbid(payload, "stream_id", "stream_direction", "stream_initiator", "lane_id")
+    validate_webtransport_inner_framing(
+        lane="datagram",
+        inner_framing=payload.get("framing"),
+    )
+    return {"family": "datagram", "lane": "datagram", "exchange": "bidirectional_stream"}
+
+
+def _require(payload: dict[str, Any], field: str) -> None:
+    value = payload.get(field)
+    if value is None or value == "":
+        raise ValueError(f"WebTransport payload requires {field}")
+
+
+def _forbid(payload: dict[str, Any], *fields: str) -> None:
+    present = [field for field in fields if field in payload and payload[field] is not None]
+    if present:
+        joined = ", ".join(present)
+        raise ValueError(f"WebTransport payload field not valid for event: {joined}")
+
+
+def _stream_initiator(
+    value: object,
+    *,
+    stream_direction: str,
+) -> str:
+    if stream_direction in _UNIDI_INITIATORS:
+        expected = _UNIDI_INITIATORS[stream_direction]
+        if value is not None and str(value) != expected:
+            raise ValueError(f"{stream_direction} stream_initiator must be {expected}")
+        return expected
+    if value is None:
+        return "client"
+    token = str(value)
+    if token not in {"client", "server"}:
+        raise ValueError("WebTransport stream_initiator must be client or server")
+    return token
+
+
+def _copy_int_field(
+    payload: dict[str, Any],
+    projection: dict[str, object],
+    field: str,
+) -> None:
+    value = payload.get(field)
+    if value is None:
+        return
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"WebTransport payload {field} must be an integer")
+    projection[field] = value
+
+
 __all__ = [
     "Direction",
     "Initiator",
@@ -462,4 +653,5 @@ __all__ = [
     "transition_channel_state",
     "WebTransportLaneState",
     "WebTransportSessionState",
+    "validate_webtransport_event_payload",
 ]

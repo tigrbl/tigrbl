@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from types import SimpleNamespace
+import zlib
 
 import pytest
-
-pytest.importorskip("tigrbl_kernel")
 
 from tigrbl_atoms.packed_inputs import (
     DECODER_BOOL,
@@ -42,7 +41,14 @@ from tigrbl_atoms.runtime_callbacks import register_callback, run_callback_fence
 from tigrbl_atoms.runtime_channel import create_channel_state, transition_channel_state
 from tigrbl_atoms.runtime_loop_regions import execute_loop_region
 from tigrbl_atoms.runtime_transactions import run_subevent_tx_unit
-from tigrbl_kernel.packed_access import stable_name_hash64
+
+
+def _stable_name_hash64(value: str, *, lowercase: bool = False) -> int:
+    normalized = value.lower() if lowercase else value
+    encoded = normalized.encode("utf-8")
+    lo = zlib.crc32(encoded) & 0xFFFFFFFF
+    hi = zlib.crc32(encoded, 0x9E3779B9) & 0xFFFFFFFF
+    return (hi << 32) | lo
 
 
 @pytest.mark.asyncio
@@ -208,13 +214,13 @@ async def test_atom_owned_framing_completion_and_loop_steps_execute() -> None:
 @pytest.mark.asyncio
 async def test_atom_owned_packed_input_helpers_execute_without_runtime() -> None:
     raw_query = b"name=Ada+Lovelace&enabled=true"
-    query_spans = parse_query_spans(raw_query, name_hash=stable_name_hash64)
-    name_hash = stable_name_hash64("name")
-    enabled_hash = stable_name_hash64("enabled")
+    query_spans = parse_query_spans(raw_query, name_hash=_stable_name_hash64)
+    name_hash = _stable_name_hash64("name")
+    enabled_hash = _stable_name_hash64("enabled")
     header_pairs = coerce_header_pairs(
         {"headers": ((b"Content-Type", b"application/json"),)}
     )
-    content_type_hash = stable_name_hash64("content-type", lowercase=True)
+    content_type_hash = _stable_name_hash64("content-type", lowercase=True)
 
     assert decode_scalar("42", DECODER_INT) == 42
     assert decode_scalar("true", DECODER_BOOL) is True
@@ -222,15 +228,15 @@ async def test_atom_owned_packed_input_helpers_execute_without_runtime() -> None
         True,
         "Ada Lovelace",
     )
-    assert body_hash_items({"name": "Ada"}, name_hash=stable_name_hash64) == {
+    assert body_hash_items({"name": "Ada"}, name_hash=_stable_name_hash64) == {
         name_hash: "Ada"
     }
-    assert path_hash_items({"enabled": "true"}, name_hash=stable_name_hash64) == {
+    assert path_hash_items({"enabled": "true"}, name_hash=_stable_name_hash64) == {
         enabled_hash: "true"
     }
     hashed_headers = header_hash_pairs(
         header_pairs,
-        name_hash=lambda value: stable_name_hash64(value, lowercase=True),
+        name_hash=lambda value: _stable_name_hash64(value, lowercase=True),
     )
     assert content_type_from_raw_headers(header_pairs) == "application/json"
     assert lookup_hashed_pairs(hashed_headers, content_type_hash) == (

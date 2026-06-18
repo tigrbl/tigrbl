@@ -14,7 +14,8 @@ def test_spec_json_schema_bundle_is_manifest_for_shared_and_individual_files() -
     bundle = build_spec_json_schema_bundle()
 
     assert bundle["$schema"] == JSON_SCHEMA_DRAFT_2020_12
-    assert bundle["title"] == "Tigrbl Core Spec Schema Manifest"
+    assert bundle["authority"] == "tigrbl_spec"
+    assert bundle["catalog_version"] == bundle["schema_version"]
     assert bundle["shared"] == SHARED_SCHEMA_NAME
     assert bundle["schemas"]["AppSpec"] == "AppSpec.json"
     assert bundle["schemas"]["ColumnSpec"] == "ColumnSpec.json"
