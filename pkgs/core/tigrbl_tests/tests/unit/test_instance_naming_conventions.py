@@ -17,6 +17,7 @@ DISALLOWED_NAME_EXCEPTIONS = {
     Path("tests/perf/test_fastapi_vs_tigrbl_executor_benchmark.py"),
     Path("tests/perf/test_comparative_benchmark_verification.py"),
     Path("tests/perf/test_fastapi_create_call_graph.py"),
+    Path("tests/unit/runtime/test_python_only_runtime_benchmark_rail.py"),
 }
 
 

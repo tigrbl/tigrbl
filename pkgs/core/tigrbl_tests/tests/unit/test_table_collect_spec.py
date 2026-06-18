@@ -34,7 +34,15 @@ def test_collect_table_spec_merges_mro():
     assert spec.model is Model
     # Engine precedence follows right-most wrapper in the class MRO.
     assert spec.engine == "db_b"
-    assert spec.ops == ("a", "b")
+    assert tuple(op.alias for op in spec.ops) == (
+        "create",
+        "read",
+        "update",
+        "replace",
+        "delete",
+        "list",
+        "clear",
+    )
     assert spec.columns == ("col_a", "col_b")
     assert spec.schemas == ("SchemaA", "SchemaB")
     assert spec.hooks == ("hook_a", "hook_b")

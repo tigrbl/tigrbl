@@ -23,12 +23,12 @@ class IncludeTablesBeta(TableBase):
 
 def test_public_include_tables_helper_bulk_binds_namespaces_without_host_mount() -> None:
     router = TigrblRouter(engine=mem(async_=False))
-    host = TigrblApp(engine=mem(async_=False), mount_system=False)
+    app = TigrblApp(engine=mem(async_=False), mount_system=False)
 
     included = include_tables(
         router,
         [IncludeTablesAlpha, IncludeTablesBeta],
-        app=host,
+        app=app,
         base_prefix="/v1",
         mount_router=False,
     )
@@ -50,24 +50,24 @@ def test_public_include_tables_helper_bulk_binds_namespaces_without_host_mount()
 
     assert all(model_router is not None for model_router in included.values())
     assert any(str(route.path).startswith("/v1/") for route in router.routes)
-    assert not any(str(route.path).startswith("/v1/") for route in host.routes)
+    assert not any(str(route.path).startswith("/v1/") for route in app.routes)
 
 
 def test_public_include_tables_helper_mounts_each_table_under_base_prefix() -> None:
     router = TigrblRouter(engine=mem(async_=False))
-    host = TigrblApp(engine=mem(async_=False), mount_system=False)
+    app = TigrblApp(engine=mem(async_=False), mount_system=False)
 
     include_tables(
         router,
         [IncludeTablesAlpha, IncludeTablesBeta],
-        app=host,
+        app=app,
         base_prefix="/v1",
     )
 
     mounted_paths = sorted(str(route.path) for route in router.routes)
     host_paths = sorted(
         str(route.path)
-        for route in host.routes
+        for route in app.routes
         if str(route.path).startswith("/v1/")
     )
 

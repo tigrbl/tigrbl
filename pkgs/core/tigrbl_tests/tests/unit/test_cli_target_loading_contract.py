@@ -63,7 +63,7 @@ def test_path_target_resolution_raises_clear_error_for_missing_file() -> None:
 
 
 def test_target_surface_loading_coerces_instances_classes_factories_and_router_wrappers() -> None:
-    instance = TigrblApp(title="instance", mount_system=False)
+    app = TigrblApp(title="instance", mount_system=False)
 
     class AppClass(TigrblApp):
         def __init__(self) -> None:
@@ -74,7 +74,7 @@ def test_target_surface_loading_coerces_instances_classes_factories_and_router_w
 
     wrapper = SimpleNamespace(router=TigrblApp(title="wrapped", mount_system=False))
 
-    assert tigrbl_cli._coerce_target_to_app(instance) is instance
+    assert tigrbl_cli._coerce_target_to_app(app) is app
     assert tigrbl_cli._coerce_target_to_app(AppClass).title == "class"
     assert tigrbl_cli._coerce_target_to_app(factory).title == "factory"
     assert tigrbl_cli._coerce_target_to_app(wrapper).title == "wrapped"

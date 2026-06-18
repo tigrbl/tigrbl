@@ -21,6 +21,7 @@ from tigrbl_concrete.system.diagnostics.utils import (
     opspecs as _opspecs,
     table_iter as _table_iter,
 )
+from tigrbl_kernel import _default_kernel
 
 __all__ = [
     "mount_diagnostics",
@@ -38,4 +39,5 @@ __all__ = [
     "_opspecs",
     "_label_callable",
     "_label_hook",
+    "_default_kernel",
 ]

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import is_dataclass, replace
 import re
 from typing import Any
 
@@ -192,6 +192,9 @@ def _lower_router_spec(router: Any, builder: _EngineInventoryBuilder) -> Any:
 
 
 def _lower_table_spec(table: Any, builder: _EngineInventoryBuilder, prefix: str) -> Any:
+    if not is_dataclass(table):
+        return table
+
     table_name = _table_token(table, prefix)
     engine_name = getattr(table, "engine_name", None)
     engine = getattr(table, "engine", None)

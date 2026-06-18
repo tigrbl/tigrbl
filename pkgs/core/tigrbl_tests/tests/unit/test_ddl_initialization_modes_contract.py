@@ -84,13 +84,13 @@ async def test_async_initialize_returns_task_and_marks_ddl_executed() -> None:
 async def test_mixed_sync_async_router_initialize_uses_async_task_mode() -> None:
     app = TigrblApp(engine=mem(async_=False))
 
-    async_router = TigrblRouter(engine=mem(async_=True))
-    async_router.include_table(DdlMixedAsyncWidget, prefix="")
-    app.include_router(async_router)
+    router = TigrblRouter(engine=mem(async_=True))
+    router.include_table(DdlMixedAsyncWidget, prefix="")
+    app.include_router(router)
 
-    sync_router = TigrblRouter(engine=mem(async_=False))
-    sync_router.include_table(DdlMixedSyncWidget, prefix="")
-    app.include_router(sync_router)
+    router = TigrblRouter(engine=mem(async_=False))
+    router.include_table(DdlMixedSyncWidget, prefix="")
+    app.include_router(router)
 
     result = app.initialize()
 

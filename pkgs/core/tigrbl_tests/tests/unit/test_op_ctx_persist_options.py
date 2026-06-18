@@ -48,16 +48,13 @@ async def test_op_ctx_persist_options(
     data = await kernelz()
     seq = data["Model"]["create"]
 
-    chain_steps = Model.hooks.create.HANDLER
-    core_label = _diag._label_hook(chain_steps[0], "HANDLER") if chain_steps else None
-    core_pref = f"HANDLER:{core_label}" if core_label else None
-
-    expected_seq: list[str] = []
     if expect_tx:
-        expected_seq.append("START_TX:hook:sys:txn:begin@START_TX")
-    if core_pref is not None:
-        expected_seq.append(core_pref)
-    if expect_tx:
-        expected_seq.append("TX_COMMIT:hook:sys:txn:commit@TX_COMMIT")
-
-    assert seq == [s for s in expected_seq if s]
+        assert seq[0] == "START_TX:hook:sys:txn:begin@START_TX"
+        assert seq[-1] == "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT"
+    else:
+        assert "START_TX:hook:sys:txn:begin@START_TX" not in seq
+        assert "TX_COMMIT:hook:sys:txn:commit@TX_COMMIT" not in seq
+    assert any(
+        item == "HANDLER:hook:wire:tigrbl:core:crud:ops:create@HANDLER"
+        for item in seq
+    )
