@@ -15,7 +15,7 @@ from tigrbl_atoms.atoms.sys.phase_db import run as _bind_phase_db
 from tigrbl_atoms.phases import phase_info
 from tigrbl_atoms.types import EdgeTarget, PhaseTreeEdge, PhaseTreeNode, error_phase_for
 from tigrbl_core.config.resolver import resolve_cfg
-from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase
 
 from . import events as _ev
 from .atoms import (

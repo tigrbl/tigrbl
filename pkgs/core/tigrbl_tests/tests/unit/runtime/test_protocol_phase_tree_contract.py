@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_core._spec.hook_types import HookPhase
+from tigrbl_kernel.helpers import _g
 from tigrbl_typing import phases
 
 
@@ -94,3 +95,28 @@ def test_transaction_legacy_aliases_are_no_longer_normalized() -> None:
             f"{still_normalized}"
         )
     assert still_normalized == []
+
+
+def test_transaction_legacy_aliases_have_explicit_input_compatibility() -> None:
+    assert phases.canonicalize_phase_input("END_TX") == "TX_COMMIT"
+    assert phases.canonicalize_phase_input("ON_END_TX_ERROR") == "ON_TX_COMMIT_ERROR"
+    assert phases.canonicalize_phase_input("ON_ROLLBACK") == "TX_ROLLBACK"
+
+
+def test_legacy_phase_map_keys_are_accepted_only_at_input_lookup_boundary() -> None:
+    legacy_commit = object()
+    legacy_rollback = object()
+    phases_by_name = {
+        "END_TX": (legacy_commit,),
+        "ON_ROLLBACK": (legacy_rollback,),
+    }
+
+    assert _g(phases_by_name, "TX_COMMIT") == (legacy_commit,)
+    assert _g(phases_by_name, "TX_ROLLBACK") == (legacy_rollback,)
+
+
+def test_transaction_legacy_aliases_do_not_appear_in_protocol_projection() -> None:
+    projection = phases.compile_protocol_phase_projection("http.rest")
+    phase_names = _phase_names_from_projection(projection)
+
+    assert {"END_TX", "ON_END_TX_ERROR", "ON_ROLLBACK"}.isdisjoint(phase_names)
