@@ -53,6 +53,8 @@ requires-python = ">=3.10,<3.15"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
+    "tigrbl",
+    "tigrbl-concrete",
     "tigrbl-ops-oltp",
     "tigrbl-base",
     "tigrbl-core",
@@ -69,6 +71,8 @@ Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/deprecated/tigrb
 Issues = "https://github.com/tigrbl/tigrbl/issues"
 
 [tool.uv.sources]
+"tigrbl" = { workspace = true }
+"tigrbl-concrete" = { workspace = true }
 "tigrbl-ops-oltp" = { workspace = true }
 "tigrbl-base" = { workspace = true }
 "tigrbl-core" = { workspace = true }

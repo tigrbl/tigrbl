@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, ClassVar, Self
+from typing import Any, ClassVar
+from typing_extensions import Self
 
 from tigrbl_spec.schema import CURRENT_SCHEMA_VERSION, identity_fields, spec_kinds, validate_payload
 
