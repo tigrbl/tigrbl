@@ -93,7 +93,7 @@ from tigrbl_kernel.packed_selectors import (
     resolve_program_id_from_exact_websocket as _kernel_resolve_program_id_from_exact_websocket,
 )
 from tigrbl_typing.status.exceptions import HTTPException
-from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase
 from tigrbl_typing.status.mappings import status as _status
 from tigrbl_atoms._request import Request
 

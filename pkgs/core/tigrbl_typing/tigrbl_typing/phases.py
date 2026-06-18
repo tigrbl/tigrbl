@@ -13,6 +13,12 @@ PHASE_ALIASES: dict[str, str] = {
 def normalize_phase(name: str | None) -> str | None:
     if name is None:
         return None
+    return str(name)
+
+
+def canonicalize_phase_input(name: str | None) -> str | None:
+    if name is None:
+        return None
     return PHASE_ALIASES.get(str(name), str(name))
 
 HookPhase = Literal[
@@ -93,7 +99,7 @@ class PHASE(str, Enum):
 
     @classmethod
     def _missing_(cls, value: object):
-        normalized = normalize_phase(str(value)) if value is not None else None
+        normalized = canonicalize_phase_input(str(value)) if value is not None else None
         if normalized != value:
             return cls(normalized)
         return None
@@ -157,6 +163,7 @@ __all__ = [
     "Phase",
     "HookPhase",
     "PHASE_ALIASES",
+    "canonicalize_phase_input",
     "compile_protocol_phase_projection",
     "normalize_phase",
 ]

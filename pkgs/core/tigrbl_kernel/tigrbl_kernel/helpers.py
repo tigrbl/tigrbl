@@ -6,7 +6,7 @@ import logging
 from typing import Any, Iterable, Mapping, Optional, Sequence
 
 from tigrbl_atoms.types import AtomFailure, BaseCtx, FailedCtx, build_error_ctx
-from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.phases import canonicalize_phase_input
 
 try:
     from tigrbl_kernel import trace as _trace  # type: ignore
@@ -210,7 +210,7 @@ async def _run_chain(ctx: Any, chain: Optional[Iterable[Any]], *, phase: str) ->
 def _g(phases: Optional[Mapping[str, Sequence[Any]]], key: str) -> Sequence[Any]:
     if not phases:
         return ()
-    normalized = normalize_phase(key) or key
+    normalized = canonicalize_phase_input(key) or key
     chain = phases.get(normalized, ())
     if chain:
         return chain

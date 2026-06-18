@@ -23,6 +23,7 @@ from .phases import (
     PhaseName,
     phase_info,
 )
+from tigrbl_typing.phases import canonicalize_phase_input
 from .stages import (
     Guarded,
     Boot,
@@ -263,7 +264,11 @@ _PHASE_ALIASES = {
 
 
 def normalize_phase(phase: str) -> Phase:
-    return _PHASE_ALIASES.get(str(phase), str(phase))  # type: ignore[return-value]
+    return str(phase)  # type: ignore[return-value]
+
+
+def canonicalize_phase(phase: str) -> Phase:
+    return canonicalize_phase_input(phase)  # type: ignore[return-value]
 
 _ANCHOR_STAGE: Dict[str, Tuple[Stage, Stage]] = {
     INGRESS_CTX_INIT: (Boot, Boot),
@@ -429,7 +434,7 @@ def all_events_ordered() -> List[str]:
 
 
 def events_for_phase(phase: Phase) -> List[str]:
-    phase = normalize_phase(phase)
+    phase = canonicalize_phase(phase)
     if phase not in PHASES:
         raise ValueError(f"Unknown phase: {phase!r}")
     return [a for a, info in _ANCHORS.items() if info.phase == phase]
@@ -543,4 +548,5 @@ __all__ = [
     "prune_events_for_persist",
     "order_events",
     "normalize_phase",
+    "canonicalize_phase",
 ]

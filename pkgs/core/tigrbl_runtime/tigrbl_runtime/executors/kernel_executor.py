@@ -4,7 +4,7 @@ from typing import Any
 
 from .invoke import _invoke
 from .types import _Ctx
-from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase
 
 
 async def _run(

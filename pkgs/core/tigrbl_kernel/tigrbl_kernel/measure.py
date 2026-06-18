@@ -6,7 +6,7 @@ import struct
 import zlib
 from typing import Any, Mapping
 
-from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase
 
 from .models import (
     HotOpPlan,

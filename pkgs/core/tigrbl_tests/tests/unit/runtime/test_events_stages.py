@@ -45,9 +45,11 @@ def test_hook_lifecycle_includes_all_error_anchors_in_order() -> None:
     assert HOOK_PHASES[9:] == error_anchors
 
 
-def test_legacy_transaction_phase_names_normalize_to_canonical_names() -> None:
+def test_legacy_transaction_phase_names_are_accepted_at_input_boundaries() -> None:
     assert HookPhase("END_TX") is HookPhase.TX_COMMIT
     assert HookPhase("ON_END_TX_ERROR") is HookPhase.ON_TX_COMMIT_ERROR
     assert HookPhase("ON_ROLLBACK") is HookPhase.TX_ROLLBACK
     assert error_phase_for("END_TX") == "ON_TX_COMMIT_ERROR"
     assert _ev.is_error_phase("ON_ROLLBACK") is True
+    assert _ev.normalize_phase("ON_ROLLBACK") == "ON_ROLLBACK"
+    assert _ev.canonicalize_phase("ON_ROLLBACK") == "TX_ROLLBACK"

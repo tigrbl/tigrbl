@@ -3,7 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Any, Awaitable, Callable, Tuple
 
-from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.phases import canonicalize_phase_input
 
 
 class HookPhase(str, Enum):
@@ -30,7 +30,7 @@ class HookPhase(str, Enum):
 
     @classmethod
     def _missing_(cls, value: object):
-        normalized = normalize_phase(str(value)) if value is not None else None
+        normalized = canonicalize_phase_input(str(value)) if value is not None else None
         if normalized != value:
             return cls(normalized)
         return None

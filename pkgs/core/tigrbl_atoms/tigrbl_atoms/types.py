@@ -20,7 +20,7 @@ from tigrbl_typing.protocols import (
     is_dependency_like,
     is_response_like,
 )
-from tigrbl_typing.phases import normalize_phase
+from tigrbl_typing.phases import canonicalize_phase_input
 
 
 S = TypeVar("S")
@@ -72,9 +72,9 @@ class EdgeTarget:
 
     def __post_init__(self) -> None:
         if self.ref is not None:
-            object.__setattr__(self, "ref", normalize_phase(self.ref))
+            object.__setattr__(self, "ref", canonicalize_phase_input(self.ref))
         if self.fallback is not None:
-            object.__setattr__(self, "fallback", normalize_phase(self.fallback))
+            object.__setattr__(self, "fallback", canonicalize_phase_input(self.fallback))
         if self.kind not in _EDGE_TARGET_KINDS:
             raise ValueError(f"unknown edge target kind: {self.kind!r}")
         if self.kind in {"node", "terminal", "loop", "rollback"} and not self.ref:
@@ -208,7 +208,7 @@ def normalize_typed_err(error: object, *, ctx: object | None = None) -> TypedErr
 def error_phase_for(phase: str | None) -> str:
     if not phase:
         return "ON_ERROR"
-    phase_name = str(normalize_phase(phase))
+    phase_name = str(canonicalize_phase_input(phase))
     if phase_name in _ERROR_PHASES:
         return phase_name
     candidate = f"ON_{phase_name}_ERROR"
@@ -221,7 +221,7 @@ def phase_requires_rollback(
     tx_open: bool = True,
     owns_tx: bool = True,
 ) -> bool:
-    return bool(tx_open and owns_tx and normalize_phase(phase) in _TX_PHASES)
+    return bool(tx_open and owns_tx and canonicalize_phase_input(phase) in _TX_PHASES)
 
 
 def select_error_edge(
@@ -486,7 +486,7 @@ class HookPhase(str, Enum):
 
     @classmethod
     def _missing_(cls, value: object):
-        normalized = normalize_phase(str(value)) if value is not None else None
+        normalized = canonicalize_phase_input(str(value)) if value is not None else None
         if normalized != value:
             return cls(normalized)
         return None
