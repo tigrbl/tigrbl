@@ -3,6 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
+import pytest
+
+pytest.importorskip("tigrbl")
+
 from tigrbl_core._spec.binding_spec import (
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,

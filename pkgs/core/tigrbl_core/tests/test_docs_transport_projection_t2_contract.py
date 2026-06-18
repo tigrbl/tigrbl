@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import pytest
 
+pytest.importorskip("tigrbl")
+
 from tigrbl_core._spec import (
     DocsPayloadSpec,
     DocsProjectionSpec,

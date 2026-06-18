@@ -4,6 +4,8 @@ from types import SimpleNamespace
 
 import pytest
 
+pytest.importorskip("tigrbl_kernel")
+
 from tigrbl_atoms.packed_inputs import (
     DECODER_BOOL,
     DECODER_INT,
@@ -157,6 +159,7 @@ def test_atom_owned_asgi_channel_payload_steps_are_concrete_behaviors() -> None:
         "session_id": "s1",
         "stream_id": 4,
         "stream_direction": "bidi",
+        "stream_initiator": "client",
         "framing": "bytes",
         "data": b'{"ok":true}',
         "more": False,
