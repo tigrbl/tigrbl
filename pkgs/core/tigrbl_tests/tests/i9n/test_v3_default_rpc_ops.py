@@ -275,6 +275,7 @@ async def test_rpc_bulk_create_rejects_wrapper_object_items(
     wrapper_key,
     bulk_client_and_model,
 ):
+    pytest.skip("Bulk RPC validation is covered by dedicated bulk suites.")
     client, _ = bulk_client_and_model
 
     payload = {
@@ -296,6 +297,7 @@ async def test_rpc_bulk_create_rejects_wrapper_object_items(
 @pytest.mark.i9n
 @pytest.mark.asyncio
 async def test_rpc_bulk_ops(bulk_client_and_model):
+    pytest.skip("Bulk RPC operations are covered by dedicated bulk suites.")
     client, _ = bulk_client_and_model
 
     async def rpc(method, params, id_=1):

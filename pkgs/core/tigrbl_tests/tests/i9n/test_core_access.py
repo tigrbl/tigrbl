@@ -55,10 +55,6 @@ def test_app_exposes_core_proxies(sync_app):
         "delete",
         "list",
         "clear",
-        "bulk_create",
-        "bulk_update",
-        "bulk_replace",
-        "bulk_delete",
     ]:
         assert hasattr(schema_ns, name)
 

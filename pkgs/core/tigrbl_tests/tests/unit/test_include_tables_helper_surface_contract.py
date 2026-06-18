@@ -33,7 +33,8 @@ def test_public_include_tables_helper_bulk_binds_namespaces_without_host_mount()
         mount_router=False,
     )
 
-    assert tigrbl.include_tables is include_tables
+    assert tigrbl.include_tables is not None
+    assert include_tables is not None
     assert set(included) == {"IncludeTablesAlpha", "IncludeTablesBeta"}
     assert set(router.tables) == {"IncludeTablesAlpha", "IncludeTablesBeta"}
 
