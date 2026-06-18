@@ -764,7 +764,7 @@ def _normalize_bindings(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpec,
             if rpc_binding not in merged:
                 merged.append(rpc_binding)
 
-        if spec.expose_method and not has_declared_bindings:
+        if spec.expose_method:
             for binding in tuple(getattr(spec, "bindings", ()) or ()):
                 if isinstance(binding, WsBindingSpec) and binding.framing == "jsonrpc":
                     rpc_binding = HttpJsonRpcBindingSpec(
