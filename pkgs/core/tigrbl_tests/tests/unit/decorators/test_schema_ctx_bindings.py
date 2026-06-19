@@ -15,6 +15,7 @@ def test_schema_ctx_internal_binding_attaches_decl_to_schema():
     assert decl.alias == "Search"
     assert decl.kind == "in"
     assert not hasattr(Widget, TIGRBL_SCHEMA_DECLS_ATTR)
+    assert not hasattr(Widget, "schemas")
 
 
 def test_schema_ctx_external_binding_uses_for_argument():
@@ -27,6 +28,7 @@ def test_schema_ctx_external_binding_uses_for_argument():
 
     mapping = getattr(Gadget, TIGRBL_SCHEMA_DECLS_ATTR)
     assert mapping["Result"]["out"] is ResultSchema
+    assert Gadget.schemas.Result.out is ResultSchema
     decl = ResultSchema.__tigrbl_schema_decl__
     assert decl.alias == "Result"
     assert decl.kind == "out"

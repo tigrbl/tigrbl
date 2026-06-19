@@ -55,9 +55,11 @@ async def test_schema_ctx_bindings(schema_ctx_client):
 @pytest.mark.i9n
 @pytest.mark.asyncio
 async def test_schema_ctx_request_response_schema(schema_ctx_client):
-    _, router, _, _ = schema_ctx_client
+    _, router, Widget, _ = schema_ctx_client
     create_schema = router.schemas.Widget.create.in_
     read_schema = router.schemas.Widget.read.out
+    assert create_schema is Widget.schemas.create.in_
+    assert read_schema is Widget.schemas.read.out
     assert create_schema.model_fields["name"].is_required()
     assert "age" in read_schema.model_fields
 

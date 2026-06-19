@@ -25,6 +25,8 @@ def test_schema_ctx_promotes_plain_classes_to_pydantic():
 
     assert issubclass(ping_model, BaseModel)
     assert issubclass(pong_model, BaseModel)
+    assert Widget.schemas.Ping.in_ is ping_model
+    assert Widget.schemas.Ping.out is pong_model
 
     inst = ping_model()
     assert inst.attempts == 1

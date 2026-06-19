@@ -1,0 +1,38 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1145"
+number: 1145
+slug: "schema-ctx-declaration-autobinding-contract"
+title: "schema_ctx declaration auto-binding contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "This SPEC defines auto-binding behavior for schema declarations authored through `schema_ctx`."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Scope
+  This SPEC defines auto-binding behavior for schema declarations authored through `schema_ctx`.
+  
+  ## Requirements
+  1. `schema_ctx(alias=A, kind="in", for_=T)` MUST create or reuse `T.schemas.A` and assign the normalized schema class to `T.schemas.A.in_` before the decorator returns.
+  2. `schema_ctx(alias=A, kind="out", for_=T)` MUST create or reuse `T.schemas.A` and assign the normalized schema class to `T.schemas.A.out` before the decorator returns.
+  3. The decorator MUST continue to attach `__tigrbl_schema_decl__` to the normalized schema class and MUST continue to record explicit declarations on the target table when `for_` is provided.
+  4. Table-local nested schema declarations MUST be bound after the owning table class is created for Tigrbl table classes that participate in the table class creation hook.
+  5. Auto-binding MUST create only lightweight `SimpleNamespace` schema containers and MUST NOT materialize default operation schemas, handlers, hooks, REST routers, RPC maps, kernel plans, engines, sessions, or DDL.
+  6. Full schema materialization MUST treat auto-bound schema namespace entries as explicit schema declarations and preserve them unless a later operation-specific override intentionally replaces the corresponding request or response schema.
+  7. Invalid `kind` values and non-class decorator targets MUST keep their current fail-closed behavior.
+  
+  ## Non-Goals
+  - This SPEC does not change `TableSpec.schemas` serialization or schema catalog versioning.
+  - This SPEC does not make plain Python classes into table classes.
+  - This SPEC does not introduce automatic runtime binding or app/router inclusion.
+  
+  ## Feature Mapping
+  - `feat:schema-ctx-declaration-autobind-001`
+spec_kind: "local-policy"
+adr_ids:
+  - "adr:1195"

@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional
 
 from pydantic import BaseModel, create_model
 
+from tigrbl_base._base._schema_base import SchemaBase
 from tigrbl_core.config.constants import TIGRBL_SCHEMA_DECLS_ATTR
 
 logger = logging.getLogger("uvicorn")
@@ -56,6 +57,7 @@ def _register_schema_decl(
     bucket[kind] = schema_cls
     mapping[alias] = bucket
     setattr(target_model, TIGRBL_SCHEMA_DECLS_ATTR, mapping)
+    SchemaBase.bind_declared_schema(target_model, alias, kind, schema_cls)
     logger.debug("Registered schema %s for alias '%s'", schema_cls, alias)
 
 

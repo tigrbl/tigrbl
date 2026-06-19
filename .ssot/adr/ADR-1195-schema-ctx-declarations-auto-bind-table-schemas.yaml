@@ -1,0 +1,41 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1195"
+number: 1195
+slug: "schema-ctx-declarations-auto-bind-table-schemas"
+title: "schema_ctx declarations auto-bind to table schemas"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Today `schema_ctx` records declaration metadata, and `Model.schemas.<alias>.in_` or `.out` becomes reliable after `build_schemas`, `bind`, or model inclusion. That is correct for full model materialization, but it makes simple schema declaration introspection surprising: a user can declare a schema in or for a table and still find `Table.schemas` absent until a separate binding step runs."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  1. `schema_ctx` declarations become immediately available on the target table's `schemas` namespace when the target table is known.
+  2. External declarations using `schema_ctx(..., for_=Table)` must bind `Table.schemas.<alias>.in_` or `Table.schemas.<alias>.out` during decoration, while also preserving the existing declaration metadata for later full binding.
+  3. Nested table-local declarations must bind after the owning table class is created. The preferred implementation is an owner-class creation hook on the Tigrbl table base; if a class does not participate in that hook, the existing `build_schemas`/`bind` path remains the compatibility path.
+  4. Auto-binding is limited to the declared schema object. It must not invoke full operation schema generation, handler materialization, REST mounting, RPC registration, kernel compilation, or database DDL.
+  5. Later full binding must merge with the auto-bound namespace, preserving explicit schema declarations unless an operation-level request/response override deliberately replaces them.
+  
+  ## Context
+  Today `schema_ctx` records declaration metadata, and `Model.schemas.<alias>.in_` or `.out` becomes reliable after `build_schemas`, `bind`, or model inclusion. That is correct for full model materialization, but it makes simple schema declaration introspection surprising: a user can declare a schema in or for a table and still find `Table.schemas` absent until a separate binding step runs.
+  
+  The ergonomic target is immediate availability of declared schemas without conflating declaration binding with full runtime binding.
+  
+  ## Consequences
+  - Declarative schema aliases are inspectable directly after external decoration and after owner table class creation for table-local declarations.
+  - Full binding remains the only path that generates default operation schemas or mounts runtime surfaces.
+  - Existing `SchemaBase.collect` behavior remains valid because the declaration metadata is preserved.
+  - Tests must cover external immediate binding, table-local class creation binding, and full binding merge semantics.
+  
+  ## Feature Mapping
+  - Governs `feat:schema-ctx-declaration-autobind-001`.
+  
+  ## Rejected Alternatives
+  - Calling full `build_schemas` from `schema_ctx`; this would over-bind operations and create side effects from a declarative decorator.
+  - Requiring callers to keep calling `build_schemas` just to inspect explicitly declared schemas.
+  - Treating `TableSpec.schemas` as a substitute for `Table.schemas`; the former is declaration data, while the latter is the runtime-accessible namespace.

@@ -18,6 +18,7 @@ from tigrbl_core._spec.table_profile_spec import (
     TableProfileError,
     coerce_table_profile,
 )
+from ._schema_base import SchemaBase
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Helpers – type inference & SA type instantiation
@@ -520,6 +521,10 @@ class TableBase(DeclarativeBase):
 
         # 2) Let SQLAlchemy map the class (PK now exists)
         super().__init_subclass__(**kw)
+
+        # 2.3) Surface table-local schema_ctx declarations immediately without
+        # invoking full schema synthesis or runtime binding.
+        SchemaBase.bind_nested_declarations(cls)
 
         # 2.5) Surface ctx-only op declarations for lightweight introspection.
         has_decorated_ops = False

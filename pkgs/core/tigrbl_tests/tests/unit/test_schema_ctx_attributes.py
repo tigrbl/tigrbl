@@ -3,6 +3,7 @@ from pydantic import BaseModel
 
 from tigrbl import schema_ctx
 from tigrbl import build_schemas
+from tigrbl import TableBase
 
 
 def test_schema_ctx_records_alias() -> None:
@@ -23,6 +24,20 @@ def test_schema_ctx_registers_alias_namespace() -> None:
 
     build_schemas(Model, [])
     assert hasattr(Model.schemas, "Foo")
+
+
+def test_schema_ctx_table_local_schema_is_available_before_build() -> None:
+    class Widget(TableBase):
+        @schema_ctx(alias="Search", kind="in")
+        class SearchIn(BaseModel):
+            q: str
+
+        @schema_ctx(alias="Search", kind="out")
+        class SearchOut(BaseModel):
+            id: int
+
+    assert Widget.schemas.Search.in_ is Widget.SearchIn
+    assert Widget.schemas.Search.out is Widget.SearchOut
 
 
 def test_schema_ctx_records_kind_in() -> None:
@@ -84,8 +99,22 @@ def test_schema_ctx_explicit_for_registration() -> None:
     class ExtSchema(BaseModel):
         id: int
 
+    assert Target.schemas.Ext.out is ExtSchema
+
     build_schemas(Target, [])
     assert Target.schemas.Ext.out is ExtSchema
+
+
+def test_schema_ctx_build_preserves_auto_bound_table_schema() -> None:
+    class Target(TableBase):
+        @schema_ctx(alias="Ext", kind="out")
+        class ExtSchema(BaseModel):
+            id: int
+
+    assert Target.schemas.Ext.out is Target.ExtSchema
+
+    build_schemas(Target, [])
+    assert Target.schemas.Ext.out is Target.ExtSchema
 
 
 def test_schema_ctx_non_class_target_raises_type_error() -> None:
