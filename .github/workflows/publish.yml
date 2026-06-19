@@ -370,24 +370,21 @@ jobs:
           name: ${{ matrix.artifact }}
           path: dist
 
-      - name: Validate PyPI token
-        env:
-          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
-        run: test -n "${UV_PUBLISH_TOKEN}"
-
-      - name: Publish selected Python packages
-        env:
-          UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Select publishable Python distributions
         run: |
           set -euo pipefail
           shopt -s nullglob
+          rm -rf .publish-python
+          mkdir -p .publish-python
           artifacts=()
           for artifact in dist/*; do
+            [[ -f "$artifact" ]] || continue
             if [[ "$artifact" == *"linux_x86_64.whl" ]]; then
               echo "Skipping unsupported wheel tag: ${artifact}"
               continue
             fi
             artifacts+=("$artifact")
+            cp "$artifact" .publish-python/
           done
           if [[ ${#artifacts[@]} -eq 0 ]]; then
             echo "No publishable artifacts found."
@@ -407,18 +404,19 @@ jobs:
               print(f"- {path} size={path.stat().st_size} sha256={digest}")
           PY
 
-          echo "Running uv publish against https://upload.pypi.org/legacy/"
-          set +e
-          uv publish --verbose --publish-url https://upload.pypi.org/legacy/ --check-url https://pypi.org/simple/ "${artifacts[@]}"
-          publish_status=$?
-          set -e
-          echo "uv publish exit status: ${publish_status}"
-          if [[ "${publish_status}" -ne 0 ]]; then
-            echo "PyPI publishing failed."
-            exit "${publish_status}"
-          fi
-          echo "uv publish completed successfully."
+      - name: Publish selected Python packages with trusted publishing
+        uses: cobycloud/actions/actions/pypi-publish@main
+        with:
+          publish-mode: trusted
+          packages-dir: .publish-python
+          repository-url: https://upload.pypi.org/legacy/
+          skip-existing: "true"
 
+      - name: Verify selected Python packages on PyPI
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          artifacts=(.publish-python/*)
           echo "Verifying published artifacts through the PyPI JSON API."
           python - "${artifacts[@]}" <<'PY'
           from __future__ import annotations
