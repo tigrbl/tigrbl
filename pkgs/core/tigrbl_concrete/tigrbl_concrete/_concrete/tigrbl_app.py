@@ -69,11 +69,7 @@ from tigrbl_core.config.constants import (
     __JSONRPC_DEFAULT_ENDPOINT__,
 )
 from tigrbl_concrete.system.favicon import FAVICON_PATH, mount_favicon
-from ._rust_backend import (
-    clear_ffi_boundary_events as _clear_rust_boundary_events,
-    ffi_boundary_events as _rust_boundary_events,
-    normalize_execution_backend as _normalize_execution_backend,
-)
+from ._execution_backend import normalize_execution_backend as _normalize_execution_backend
 
 
 # optional compat: legacy transactional decorator
@@ -315,12 +311,6 @@ class TigrblApp(_App):
             and self.__class__.__name__ not in self._table_registry
         ):
             self.include_table(self.__class__)
-
-    def rust_trace(self) -> list[dict[str, Any]]:
-        return _rust_boundary_events()
-
-    def clear_rust_trace(self) -> None:
-        _clear_rust_boundary_events()
 
     def _has_local_op_declarations(self) -> bool:
         """Return True when the app subclass declares op_alias/op_ctx operations."""

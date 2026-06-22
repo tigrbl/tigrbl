@@ -399,7 +399,7 @@ Use that same mental model for schema, response, path, engine, and operation beh
 
 ### Runtime Execution
 
-Tigrbl runtime execution is Python-only. Rust-named compatibility imports under `tigrbl_runtime.rust`, `tigrbl_kernel.rust_*`, and related registration helpers are deprecated shims that raise explicit errors when used for execution or registration.
+Tigrbl runtime execution is Python-only. Rust-named runtime, kernel, atom, handler, and engine compatibility modules have been removed from this repository.
 
 ## How To Choose a Package
 

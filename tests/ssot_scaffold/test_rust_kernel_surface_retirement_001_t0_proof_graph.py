@@ -34,4 +34,4 @@ def test_rust_kernel_surface_retirement_t0_registry_contract() -> None:
     )
 
     for module_name in ("rust_spec.py", "rust_plan.py", "rust_compile.py"):
-        assert (ROOT / "pkgs/core/tigrbl_kernel/tigrbl_kernel" / module_name).exists()
+        assert not (ROOT / "pkgs/core/tigrbl_kernel/tigrbl_kernel" / module_name).exists()

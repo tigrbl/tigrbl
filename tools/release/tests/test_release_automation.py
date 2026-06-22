@@ -22,11 +22,6 @@ def test_python_finalize_converts_dev_to_release() -> None:
     assert str(Version.parse("0.3.19.dev1").bump("finalize")) == "0.3.19"
 
 
-def test_cargo_dev_release_uses_semver_prerelease() -> None:
-    assert str(Version.parse("0.1.0", cargo=True).bump("minor")) == "0.2.0-dev.1"
-    assert str(Version.parse("0.2.0-dev.1", cargo=True).bump("finalize")) == "0.2.0"
-
-
 def test_python_bump_named_actions_map_to_expected_behavior() -> None:
     assert str(Version.parse("0.3.19").bump("minor")) == "0.4.0.dev1"
     assert str(Version.parse("0.3.19").bump("patch")) == "0.3.20.dev1"
@@ -51,13 +46,15 @@ def test_w_major_bump_is_rejected() -> None:
 
 def test_finalize_keeps_already_stable_versions() -> None:
     assert str(Version.parse("0.3.19").bump("finalize")) == "0.3.19"
-    assert str(Version.parse("0.1.0", cargo=True).bump("finalize")) == "0.1.0"
 
 
 def test_release_plan_uses_required_github_tag_shape() -> None:
     plan = build_plan("patch", write_changes=False)
     tags = [release["tag"] for release in plan["github_releases"]]
-    assert "tigrbl==0.4.3.dev1" in tags
+    tigrbl_release = next(
+        release for release in plan["python"] if release["name"] == "tigrbl"
+    )
+    assert f"tigrbl=={tigrbl_release['version']}" in tags
     assert all("==" in tag for tag in tags)
 
 
@@ -65,10 +62,10 @@ def test_release_plan_can_select_one_python_package() -> None:
     plan = build_plan("patch", write_changes=False, packages="tigrbl")
 
     assert [release["name"] for release in plan["python"]] == ["tigrbl"]
-    assert plan["crates"] == []
-    assert plan["crate_publish_order"] == []
+    assert "crates" not in plan
+    assert "crate_publish_order" not in plan
     assert [release["tag"] for release in plan["github_releases"]] == [
-        "tigrbl==0.4.3.dev1"
+        f"tigrbl=={plan['python'][0]['version']}"
     ]
     assert plan["package_selection"] == ["tigrbl"]
 
@@ -81,8 +78,8 @@ def test_release_plan_can_select_package_subset() -> None:
     )
 
     assert [release["name"] for release in plan["python"]] == ["tigrbl"]
-    assert plan["crates"] == []
-    assert plan["crate_publish_order"] == []
+    assert "crates" not in plan
+    assert "crate_publish_order" not in plan
     assert plan["package_selection"] == [
         "tigrbl",
     ]
@@ -101,13 +98,6 @@ def test_release_plan_rejects_downversioning() -> None:
 def test_release_plan_rejects_versions_below_floor() -> None:
     with pytest.raises(ValueError, match="below the required floor"):
         ensure_allowed_target_version("tigrbl", "0.3.20.dev1", "0.3.20.dev2")
-    with pytest.raises(ValueError, match="below the required floor"):
-        ensure_allowed_target_version(
-            "tigrbl_runtime_bindings_rs",
-            "0.1.13-dev.1",
-            "0.1.13-dev.2",
-            cargo=True,
-        )
 
 
 def test_create_github_releases_marks_dev_tags_as_prereleases(
@@ -218,7 +208,6 @@ def test_validate_release_targets_rejects_existing_pypi_version(
         json.dumps(
             {
                 "python": [{"name": "tigrbl", "version": "0.4.0.dev1"}],
-                "crates": [],
                 "github_releases": [],
             }
         ),
@@ -232,57 +221,4 @@ def test_validate_release_targets_rejects_existing_pypi_version(
             summary,
             github=False,
             pypi=True,
-            crates=False,
         )
-
-
-def test_publish_crates_dry_run_uses_cargo_package(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
-    summary = tmp_path / "release-plan.json"
-    summary.write_text(
-        json.dumps(
-            {
-                "crates": [
-                    {"name": "tigrbl_runtime_bindings_rs", "version": "0.1.10-dev.1"},
-                ],
-                "crate_publish_order": ["tigrbl_runtime_bindings_rs"],
-            }
-        ),
-        encoding="utf-8",
-    )
-    calls: list[list[str]] = []
-
-    monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: calls.append(args))
-
-    release_automation.publish_crates(summary, dry_run=True)
-
-    assert calls == [
-        ["cargo", "package", "-p", "tigrbl_runtime_bindings_rs"],
-    ]
-
-
-def test_publish_crates_verify_uses_package_before_publish(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
-    summary = tmp_path / "release-plan.json"
-    summary.write_text(
-        json.dumps(
-            {
-                "crates": [
-                    {"name": "tigrbl_runtime_bindings_rs", "version": "0.1.10-dev.1"}
-                ],
-                "crate_publish_order": ["tigrbl_runtime_bindings_rs"],
-            }
-        ),
-        encoding="utf-8",
-    )
-    calls: list[list[str]] = []
-
-    monkeypatch.setattr(release_automation, "run", lambda args, **kwargs: calls.append(args))
-    monkeypatch.setattr(release_automation.time, "sleep", lambda seconds: None)
-
-    release_automation.publish_crates(summary, dry_run=False, verify=True)
-
-    assert calls == [
-        ["cargo", "package", "-p", "tigrbl_runtime_bindings_rs"],
-        ["cargo", "publish", "-p", "tigrbl_runtime_bindings_rs", "--locked"],
-    ]

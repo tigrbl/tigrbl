@@ -10,13 +10,16 @@ from tigrbl_runtime.executors import (
     NumbaPackedPlanExecutor,
     PackedPlanExecutor,
 )
-from tigrbl_runtime.rust import (
-    ExecutionBackend,
-    RustBackendConfig,
-    reject_rust_backend,
-    RustBindingsUnavailableError,
-)
 from .base import RuntimeBase
+
+
+def _normalize_execution_backend(value: Any) -> str:
+    lowered = str(value or "auto").strip().lower()
+    if not lowered:
+        return "auto"
+    if lowered in {"auto", "python"}:
+        return lowered
+    raise ValueError(f"unsupported execution backend: {value!r}")
 
 
 class Runtime(RuntimeBase):
@@ -27,30 +30,16 @@ class Runtime(RuntimeBase):
         kernel: Kernel | None = None,
         *,
         default_executor: str = "packed",
-        kernel_backend: str | ExecutionBackend = ExecutionBackend.AUTO,
-        atoms_backend: str | ExecutionBackend = ExecutionBackend.AUTO,
-        executor_backend: str | ExecutionBackend = ExecutionBackend.PYTHON,
-        rust_backend: RustBackendConfig | None = None,
+        kernel_backend: str = "auto",
+        atoms_backend: str = "auto",
+        executor_backend: str = "python",
     ) -> None:
         resolved_kernel = kernel if kernel is not None else _kernel()
         super().__init__(kernel=resolved_kernel)
         self.default_executor = default_executor
-        self.kernel_backend = reject_rust_backend(
-            kernel_backend,
-            label="kernel_backend",
-        )
-        self.atoms_backend = reject_rust_backend(
-            atoms_backend,
-            label="atoms_backend",
-        )
-        self.executor_backend = reject_rust_backend(
-            executor_backend,
-            label="executor_backend",
-        )
-        self.rust_backend = rust_backend or RustBackendConfig(
-            backend=self.executor_backend
-        )
-        reject_rust_backend(self.rust_backend, label="rust_backend")
+        self.kernel_backend = _normalize_execution_backend(kernel_backend)
+        self.atoms_backend = _normalize_execution_backend(atoms_backend)
+        self.executor_backend = _normalize_execution_backend(executor_backend)
         self.register_executor(PackedPlanExecutor())
         self.register_executor(NumbaPackedPlanExecutor())
 
@@ -65,36 +54,6 @@ class Runtime(RuntimeBase):
             return int(revision)
         except Exception:
             return 0
-
-    def _uses_rust_executor(self) -> bool:
-        return False
-
-    def _compile_rust(self, app: Any) -> tuple[Any, Any]:
-        del app
-        raise RustBindingsUnavailableError(
-            "Runtime._compile_rust is unavailable. "
-            "Tigrbl runtime execution is Python-only."
-        )
-
-    def rust_handle(self, app: Any) -> Any:
-        del app
-        raise RustBindingsUnavailableError(
-            "Runtime.rust_handle is unavailable. "
-            "Tigrbl runtime execution is Python-only."
-        )
-
-    def execute_rust(
-        self,
-        envelope: Any,
-        *,
-        app: Any | None = None,
-        handle: Any | None = None,
-    ) -> dict[str, Any]:
-        del envelope, app, handle
-        raise RustBindingsUnavailableError(
-            "Runtime.execute_rust is unavailable. "
-            "Tigrbl runtime execution is Python-only."
-        )
 
     def compile(self, *args: Any, **kwargs: Any) -> tuple[Any, Any | None]:
         if args:

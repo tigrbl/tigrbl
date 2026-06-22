@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import importlib.util
+
 import tigrbl
 import tigrbl_atoms
 import tigrbl_kernel
@@ -36,3 +38,15 @@ def test_public_facades_do_not_resolve_rust_runtime_surfaces() -> None:
     for module in (tigrbl_atoms, tigrbl_kernel, tigrbl_runtime):
         for name in RUST_PUBLIC_NAMES:
             assert not hasattr(module, name), f"{module.__name__}.{name}"
+
+
+def test_retired_rust_modules_are_not_importable() -> None:
+    for module_name in (
+        "tigrbl_runtime.rust",
+        "tigrbl_kernel.rust_compile",
+        "tigrbl_kernel.rust_plan",
+        "tigrbl_kernel.rust_spec",
+        "tigrbl_atoms.rust",
+        "tigrbl_atoms.fallback",
+    ):
+        assert importlib.util.find_spec(module_name) is None

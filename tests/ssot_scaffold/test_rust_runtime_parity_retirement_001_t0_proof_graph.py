@@ -32,4 +32,4 @@ def test_rust_runtime_parity_retirement_t0_registry_contract() -> None:
     assert test["path"].endswith(
         "test_rust_runtime_parity_retirement_001_t0_proof_graph.py"
     )
-    assert (ROOT / "docs/testing/rust_runtime_binding.md").exists()
+    assert not (ROOT / "pkgs/core/tigrbl_runtime/tigrbl_runtime/rust").exists()

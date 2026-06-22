@@ -1,15 +1,8 @@
 from __future__ import annotations
 
-import pytest
+import importlib.util
 
 import tigrbl_kernel
-from tigrbl_kernel.rust_compile import build_rust_kernel, normalize_rust_spec
-from tigrbl_kernel.rust_plan import RustPlan
-from tigrbl_kernel.rust_spec import (
-    build_rust_app_spec,
-    coerce_rust_spec_dict,
-    coerce_rust_spec_json,
-)
 
 
 def test_rust_kernel_surface_retirement_t1_public_facade() -> None:
@@ -25,21 +18,11 @@ def test_rust_kernel_surface_retirement_t1_public_facade() -> None:
         assert not hasattr(tigrbl_kernel, name)
 
 
-def test_rust_kernel_surface_retirement_t1_shims_fail_closed() -> None:
-    for helper in (build_rust_kernel, normalize_rust_spec):
-        with pytest.warns(DeprecationWarning):
-            with pytest.raises(RuntimeError, match="Python-only"):
-                helper({"name": "kernel-demo"})
-
-    for helper in (
-        build_rust_app_spec,
-        coerce_rust_spec_dict,
-        coerce_rust_spec_json,
+def test_rust_kernel_surface_retirement_t1_shims_are_removed() -> None:
+    for module_name in (
+        "tigrbl_kernel.rust_compile",
+        "tigrbl_kernel.rust_plan",
+        "tigrbl_kernel.rust_spec",
     ):
-        with pytest.warns(DeprecationWarning):
-            with pytest.raises(RuntimeError, match="Python-only"):
-                helper({"name": "kernel-demo"})
-
-    with pytest.warns(DeprecationWarning):
-        plan = RustPlan(description="deprecated compatibility shim")
-    assert plan.backend == "deprecated-rust"
+        assert importlib.util.find_spec(module_name) is None
+    assert not hasattr(tigrbl_kernel.Kernel(), "compile_rust_plan")

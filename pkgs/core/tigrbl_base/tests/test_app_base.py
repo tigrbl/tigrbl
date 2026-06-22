@@ -17,7 +17,7 @@ def test_collect_spec_normalizes_and_collects() -> None:
     class Parent:
         TITLE = "Parent"
         VERSION = "1.0.0"
-        EXECUTION_BACKEND = "rust"
+        EXECUTION_BACKEND = "python"
         ROUTERS = ("r1",)
 
     class Child(Parent):
@@ -30,8 +30,7 @@ def test_collect_spec_normalizes_and_collects() -> None:
         DEPS = ("dep",)
         MIDDLEWARES = ("mw",)
 
-    with pytest.warns(DeprecationWarning):
-        spec = AppBase.collect_spec(Child)
+    spec = AppBase.collect_spec(Child)
 
     assert isinstance(spec, AppSpec)
     assert spec.title == "Parent"

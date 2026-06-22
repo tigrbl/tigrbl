@@ -39,7 +39,7 @@ Each change should:
 
 ## Testing expectations
 
-At a minimum, run the test lanes that cover the surface you changed. The existing checkpoint evidence shows Rust workspace tests and selected Python native-surface tests; see `docs/developer/TESTING_GUIDE.md` and the archived validation materials for the current baseline.
+At a minimum, run the test lanes that cover the surface you changed; see `docs/developer/TESTING_GUIDE.md` and the archived validation materials for the current baseline.
 
 ## Security issues
 

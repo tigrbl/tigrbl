@@ -52,10 +52,8 @@ MARKDOWN_LINK_RE = re.compile(r"\[[^\]]+\]\(([^)]+)\)")
 ROOT_RELATIVE_PREFIXES = {
     "docs",
     "pkgs",
-    "crates",
     "tools",
     ".github",
-    ".cargo",
     ".ssot",
     "reports",
 }
@@ -65,10 +63,7 @@ ROOT_RELATIVE_FILES = {
     "CODE_OF_CONDUCT.md",
     "SECURITY.md",
     "LICENSE",
-    "Cargo.toml",
-    "Cargo.lock",
     "pyproject.toml",
-    "rust-toolchain.toml",
 }
 
 
@@ -77,7 +72,6 @@ def package_readmes() -> list[Path]:
         "pkgs/core/*/README.md",
         "pkgs/engines/*/README.md",
         "pkgs/apps/*/README.md",
-        "crates/*/README.md",
     ]
     files: list[Path] = []
     for pattern in patterns:

@@ -24,7 +24,6 @@ from .cache import _SpecsOnceCache, _WeakMaybeDict
 from .models import KernelPlan, OpView
 from .opview_compiler import compile_opview_from_specs
 from .types import DEFAULT_PHASE_ORDER as _DEFAULT_PHASE_ORDER
-from .rust_compile import build_rust_kernel as _build_rust_kernel
 from .utils import (
     _opspecs,
     _table_iter,
@@ -154,9 +153,6 @@ class Kernel:
         if isinstance(payload, dict):
             return payload
         return {}
-
-    def compile_rust_plan(self, app: Any):
-        return _build_rust_kernel(app)
 
     def invalidate_kernelz_payload(self, app: Optional[Any] = None) -> None:
         with self._lock:

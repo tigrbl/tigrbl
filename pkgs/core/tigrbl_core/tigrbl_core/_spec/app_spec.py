@@ -2,7 +2,6 @@
 from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any, Callable, Optional, Sequence
-import warnings
 
 from .._spec.engine_spec import EngineCfg, EngineSpec
 from .._spec.monotone import as_tuple, merge_mro_sequence_attr
@@ -73,14 +72,6 @@ def normalize_execution_backend(value: Any) -> str:
     lowered = str(value or "auto").strip().lower()
     if not lowered:
         return "auto"
-    if lowered == "rust":
-        warnings.warn(
-            "AppSpec.execution_backend='rust' is deprecated; "
-            "Tigrbl runtime execution is Python-only.",
-            DeprecationWarning,
-            stacklevel=2,
-        )
-        return "python"
     if lowered in {"auto", "python"}:
         return lowered
     raise ValueError(f"unsupported execution backend: {value!r}")

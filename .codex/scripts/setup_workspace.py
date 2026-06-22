@@ -32,7 +32,6 @@ def main() -> int:
     env["VIRTUAL_ENV"] = str(venv_path.resolve())
     env["PATH"] = str(venv_path / "Scripts") + os.pathsep + env.get("PATH", "")
 
-    run(["cargo", "fetch", "--locked"], env=env)
     run(
         [
             "uv",

@@ -1,19 +1,10 @@
 from __future__ import annotations
 
-import pytest
+import importlib.util
 
 import tigrbl_atoms
 import tigrbl_runtime
-from tigrbl_atoms.fallback import rust_atoms_enabled
-from tigrbl_atoms.rust import register_rust_atom, register_rust_callback, register_rust_hook
 from tigrbl_runtime import Runtime
-from tigrbl_runtime.rust import (
-    RustBindingsUnavailableError,
-    clear_ffi_boundary_events,
-    create_runtime,
-    ffi_boundary_events,
-    rust_available,
-)
 
 
 def test_rust_runtime_parity_retirement_t1_public_facades() -> None:
@@ -43,24 +34,12 @@ def test_rust_runtime_parity_retirement_t1_public_facades() -> None:
         assert not hasattr(tigrbl_atoms, name)
 
 
-def test_rust_runtime_parity_retirement_t1_shims_fail_closed() -> None:
-    with pytest.warns(DeprecationWarning):
-        assert rust_available() is False
-    with pytest.warns(DeprecationWarning):
-        clear_ffi_boundary_events()
-    with pytest.warns(DeprecationWarning):
-        assert ffi_boundary_events() == []
-    with pytest.warns(DeprecationWarning):
-        assert rust_atoms_enabled() is False
+def test_rust_runtime_parity_retirement_t1_shims_are_removed() -> None:
+    assert importlib.util.find_spec("tigrbl_runtime.rust") is None
+    assert importlib.util.find_spec("tigrbl_atoms.rust") is None
+    assert importlib.util.find_spec("tigrbl_atoms.fallback") is None
 
-    with pytest.warns(DeprecationWarning):
-        with pytest.raises(RustBindingsUnavailableError, match="Python-only"):
-            create_runtime({"name": "runtime-demo"})
-    with pytest.warns(DeprecationWarning):
-        with pytest.raises(RustBindingsUnavailableError, match="Python-only"):
-            Runtime(executor_backend="rust")
-
-    for registrar in (register_rust_atom, register_rust_callback, register_rust_hook):
-        with pytest.warns(DeprecationWarning):
-            with pytest.raises(RuntimeError, match="Python-only"):
-                registrar("demo", lambda ctx: ctx)
+    runtime = Runtime(executor_backend="python")
+    assert runtime.executor_backend == "python"
+    assert not hasattr(runtime, "rust_handle")
+    assert not hasattr(runtime, "execute_rust")

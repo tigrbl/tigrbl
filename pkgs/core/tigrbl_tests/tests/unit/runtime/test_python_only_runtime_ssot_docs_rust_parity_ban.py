@@ -11,7 +11,6 @@ RETIREMENT_RECORDS = {
     ".ssot/adr/ADR-1120-byte-oriented-runtime-execution-principles.yaml",
     ".ssot/adr/ADR-1185-python-only-runtime-and-rust-parity-retirement.yaml",
     ".ssot/specs/SPEC-2187-python-only-runtime-and-rust-retirement-contract.yaml",
-    "docs/testing/rust_runtime_binding.md",
 }
 
 FORBIDDEN_SUPPORT_PHRASES = (
@@ -48,10 +47,5 @@ def test_docs_and_ssot_do_not_advertise_rust_parity_as_current_support() -> None
     assert problems == []
 
 
-def test_deprecated_rust_runtime_doc_is_explicitly_python_only() -> None:
-    text = (ROOT / "docs/testing/rust_runtime_binding.md").read_text(
-        encoding="utf-8"
-    )
-    assert "Tigrbl runtime execution is Python-only." in text
-    assert "deprecated" in text.lower()
-    assert "Do not add tests that require a Rust compiler" in text
+def test_deprecated_rust_runtime_binding_doc_is_removed() -> None:
+    assert not (ROOT / "docs/testing/rust_runtime_binding.md").exists()

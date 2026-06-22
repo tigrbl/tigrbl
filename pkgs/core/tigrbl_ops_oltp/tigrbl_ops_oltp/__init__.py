@@ -5,9 +5,6 @@ from __future__ import annotations
 from importlib import import_module
 from typing import Any
 
-from .fallback import rust_handlers_enabled
-from .rust_handlers import register_rust_handler
-
 _LAZY_EXPORTS = {
     "Body": "crud",
     "Header": "crud",
@@ -49,9 +46,7 @@ __all__ = [
     "exists",
     "list",
     "merge",
-    "rust_handlers_enabled",
     "read",
-    "register_rust_handler",
     "replace",
     "update",
 ]

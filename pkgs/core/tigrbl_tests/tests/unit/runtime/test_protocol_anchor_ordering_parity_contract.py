@@ -39,13 +39,11 @@ def test_protocol_error_anchors_are_ordered_on_governed_error_edges_only() -> No
     assert err_order.index("err.classify") < err_order.index("err.transport.shape")
 
 
-def test_rust_protocol_anchor_trace_is_deprecated() -> None:
+def test_retired_protocol_anchor_trace_is_absent() -> None:
     python_trace = _require("tigrbl_kernel.protocol_anchors", "python_protocol_anchor_trace")
-    rust_trace = _require("tigrbl_kernel.protocol_anchors", "rust_protocol_anchor_trace")
 
     case = {"binding": "websocket", "subevent": "message.received", "messages": ["ping"]}
 
     assert tuple(python_trace(case))
-    with pytest.warns(DeprecationWarning):
-        with pytest.raises(RuntimeError, match="unavailable"):
-            rust_trace(case)
+    module = importlib.import_module("tigrbl_kernel.protocol_anchors")
+    assert not hasattr(module, "rust_protocol_anchor_trace")

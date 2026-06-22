@@ -13,7 +13,6 @@ Allowed top-level repository entries are:
 - `LICENSE`
 - `README.md`
 - `SECURITY.md`
-- `crates/`
 - `docs/`
 - `examples/`
 - `pkgs/`

@@ -25,13 +25,11 @@ TEST_FILE_SUFFIXES = (
     ".spec.jsx",
 )
 DOC_PREFIXES = ("docs/", ".ssot/", "reports/")
-CODE_PREFIXES = ("pkgs/", "crates/", "tools/", ".github/", "apps/", "scripts/")
+CODE_PREFIXES = ("pkgs/", "tools/", ".github/", "apps/", "scripts/")
 ROOT_CODE_FILES = {
     "pyproject.toml",
     "package.json",
     "package-lock.json",
-    "Cargo.toml",
-    "Cargo.lock",
     "Makefile",
     "uv.lock",
 }

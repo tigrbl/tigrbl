@@ -59,8 +59,6 @@ def classify_bundle(path: str) -> str:
         return path.split("/tests/")[0] + "/tests"
     if path.startswith("pkgs/") and len(parts) >= 3:
         return "/".join(parts[:3])
-    if path.startswith("crates/") and len(parts) >= 2:
-        return "/".join(parts[:2])
     if path.startswith("docs/") and len(parts) >= 2:
         return "/".join(parts[:2])
     if path.startswith("tools/") and len(parts) >= 2:

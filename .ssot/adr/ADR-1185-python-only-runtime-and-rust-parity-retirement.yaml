@@ -1,4 +1,4 @@
-schema_version: "0.8.0"
+﻿schema_version: "0.8.0"
 kind: "adr"
 id: "adr:1185"
 number: 1185
@@ -13,15 +13,15 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted retirement of in-core Rust parity and Rust kernel compiler surfaces."
     at: "2026-06-17T10:22:02Z"
+    note: "Accepted retirement of in-core Rust parity and Rust kernel compiler surfaces."
+    status: "accepted"
 references: []
 body: |-
   ## Decision
   Tigrbl core is a Python-only runtime and no longer carries a Rust parity lane.
 
-  The repository deprecates and then removes the in-core Rust kernel surfaces:
+  The repository removes the in-core Rust kernel surfaces:
 
   - `tigrbl_kernel.rust_spec`
   - `tigrbl_kernel.rust_plan`
@@ -37,12 +37,12 @@ body: |-
   ## Consequences
   - `tigrbl_kernel` remains the Python kernel planning and compilation owner.
   - `tigrbl_runtime` remains the Python runtime execution owner.
-  - Rust-specific public imports and executor backends must be deprecated or removed.
+  - Rust-specific public imports and executor backends must be removed.
   - SSOT specs, feature descriptions, tests, docs, and benchmarks must stop requiring optional Rust/runtime-binding parity.
   - Performance work should use Python/CPython-native evidence rails, not Rust executor comparison as a core release gate.
 
   ## Migration Policy
-  If a compatibility window is needed, legacy Rust imports may exist only as explicit deprecation shims that emit `DeprecationWarning` or fail closed with a clear unsupported-runtime error. After the window closes, the modules and runtime backend selectors should be removed.
+  The compatibility window is closed. Legacy Rust imports, registration helpers, and runtime backend selectors are removed from core packages rather than retained as shims.
 
   ## Traceability
   Updates package ownership, kernel/executor placement, runtime lifecycle, default-root, docs endpoint, and hot-path performance governance. The companion SPEC is `spc:2187`.

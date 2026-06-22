@@ -72,13 +72,11 @@ pip install tigrbl_engine_inmemory
 
 Implementation orientation:
 - `tigrbl_engine_inmemory`: engine, plugin, session
-- `tigrbl_engine_inmemory.rust` is a deprecated compatibility shim; engine registration is Python-only.
 
 ## Public API and Import Surface
 
 - Import roots: `tigrbl_engine_inmemory`.
 - Public symbols: `__version__`, `register`.
-- `register_rust_engine` is deprecated and raises when called.
 - Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/).
 - External runtime dependencies: none declared.
 

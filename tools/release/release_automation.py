@@ -7,24 +7,16 @@ import re
 import subprocess
 import sys
 import tempfile
-import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterable
 
 
 ROOT = Path(__file__).resolve().parents[2]
 PYPROJECT_VERSION_RE = re.compile(r'(?m)^(version\s*=\s*)"([^"]+)"')
-CARGO_WORKSPACE_VERSION_RE = re.compile(
-    r'(?ms)^(\[workspace\.package\].*?^version\s*=\s*)"([^"]+)"'
-)
-CARGO_PACKAGE_NAME_RE = re.compile(r'(?m)^name\s*=\s*"([^"]+)"')
-CARGO_DEP_RE = re.compile(r'^(\s*)([A-Za-z0-9_-]+)\s*=\s*\{([^}]*)\}(\s*)$')
 PACKAGE_SPLIT_RE = re.compile(r"[\s,]+")
 PYTHON_VERSION_FLOOR = "0.4.0.dev1"
-CARGO_VERSION_FLOOR = "0.4.0-dev.1"
 
 
 @dataclass(frozen=True)
@@ -33,14 +25,10 @@ class Version:
     minor: int
     patch: int
     dev: int | None = None
-    cargo: bool = False
 
     @classmethod
-    def parse(cls, value: str, *, cargo: bool = False) -> "Version":
-        if cargo:
-            match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)(?:-dev\.(\d+))?", value)
-        else:
-            match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)(?:\.dev(\d+))?", value)
+    def parse(cls, value: str) -> "Version":
+        match = re.fullmatch(r"(\d+)\.(\d+)\.(\d+)(?:\.dev(\d+))?", value)
         if not match:
             raise ValueError(f"unsupported version {value!r}")
         major, minor, patch, dev = match.groups()
@@ -49,7 +37,6 @@ class Version:
             int(minor),
             int(patch),
             int(dev) if dev is not None else None,
-            cargo=cargo,
         )
 
     def bump(self, semver: str) -> "Version":
@@ -66,26 +53,22 @@ class Version:
         if segment == "finalize":
             if self.dev is None:
                 return self
-            return Version(self.major, self.minor, self.patch, cargo=self.cargo)
+            return Version(self.major, self.minor, self.patch)
         if segment == "minor":
-            return Version(self.major, self.minor + 1, 0, 1, self.cargo)
+            return Version(self.major, self.minor + 1, 0, 1)
         if segment in {"patch", "dev"}:
             if self.dev is None:
-                return Version(self.major, self.minor, self.patch + 1, 1, self.cargo)
-            return Version(self.major, self.minor, self.patch, self.dev + 1, self.cargo)
+                return Version(self.major, self.minor, self.patch + 1, 1)
+            return Version(self.major, self.minor, self.patch, self.dev + 1)
         raise ValueError(f"unsupported semver bump action {semver!r}")
 
     def __str__(self) -> str:
         base = f"{self.major}.{self.minor}.{self.patch}"
         if self.dev is None:
             return base
-        if self.cargo:
-            return f"{base}-dev.{self.dev}"
         return f"{base}.dev{self.dev}"
 
     def is_less_than(self, other: "Version") -> bool:
-        if self.cargo != other.cargo:
-            raise ValueError("cannot compare Python and Cargo versions")
         left = (self.major, self.minor, self.patch)
         right = (other.major, other.minor, other.patch)
         if left != right:
@@ -134,53 +117,6 @@ def python_projects() -> list[dict[str, str]]:
     return projects
 
 
-def cargo_members() -> list[Path]:
-    if not (ROOT / "Cargo.toml").exists():
-        return []
-    root_manifest = read(ROOT / "Cargo.toml")
-    members_match = re.search(r"(?ms)^members\s*=\s*\[(.*?)\]", root_manifest)
-    if not members_match:
-        raise RuntimeError("Cargo workspace members were not found")
-    members: list[Path] = []
-    for member in re.findall(r'"([^"]+)"', members_match.group(1)):
-        members.append(ROOT / member / "Cargo.toml")
-    return members
-
-
-def cargo_workspace_version() -> str:
-    if not (ROOT / "Cargo.toml").exists():
-        raise RuntimeError("Cargo workspace manifest was not found")
-    match = CARGO_WORKSPACE_VERSION_RE.search(read(ROOT / "Cargo.toml"))
-    if not match:
-        raise RuntimeError("Cargo workspace package version was not found")
-    return match.group(2)
-
-
-def cargo_projects() -> list[dict[str, str]]:
-    if not (ROOT / "Cargo.toml").exists():
-        return []
-    version = cargo_workspace_version()
-    projects: list[dict[str, str]] = []
-    for manifest in cargo_members():
-        text = read(manifest)
-        name_match = CARGO_PACKAGE_NAME_RE.search(text)
-        if not name_match:
-            raise RuntimeError(f"Cargo package name not found in {manifest}")
-        projects.append(
-            {"name": name_match.group(1), "version": version, "path": relative(manifest)}
-        )
-    return projects
-
-
-def cargo_publish_order(projects: Iterable[dict[str, str]]) -> list[str]:
-    preferred = ["tigrbl_runtime_bindings_rs"]
-    names = {project["name"] for project in projects}
-    missing = names.difference(preferred)
-    if missing:
-        raise RuntimeError(f"missing Cargo publish order entries: {sorted(missing)}")
-    return [name for name in preferred if name in names]
-
-
 def parse_package_selection(value: str | None) -> set[str] | None:
     if value is None:
         return None
@@ -203,11 +139,10 @@ def filter_projects(
 def validate_package_selection(
     selected: set[str] | None,
     py_projects: list[dict[str, str]],
-    cargo: list[dict[str, str]],
 ) -> None:
     if selected is None:
         return
-    known = {project["name"] for project in [*py_projects, *cargo]}
+    known = {project["name"] for project in py_projects}
     unknown = selected.difference(known)
     if unknown:
         known_list = ", ".join(sorted(known))
@@ -219,16 +154,14 @@ def ensure_allowed_target_version(
     name: str,
     old_version: str,
     new_version: str,
-    *,
-    cargo: bool = False,
 ) -> None:
-    old = Version.parse(old_version, cargo=cargo)
-    new = Version.parse(new_version, cargo=cargo)
-    floor = Version.parse(CARGO_VERSION_FLOOR if cargo else PYTHON_VERSION_FLOOR, cargo=cargo)
+    old = Version.parse(old_version)
+    new = Version.parse(new_version)
+    floor = Version.parse(PYTHON_VERSION_FLOOR)
     if new.is_less_than(floor):
         raise ValueError(
             f"{name} target version {new_version} is below the required floor "
-            f"{CARGO_VERSION_FLOOR if cargo else PYTHON_VERSION_FLOOR}"
+            f"{PYTHON_VERSION_FLOOR}"
         )
     if old.is_greater_than(new):
         raise ValueError(
@@ -239,9 +172,7 @@ def ensure_allowed_target_version(
 
 def ensure_all_versions_meet_floor(
     all_py_projects: list[dict[str, str]],
-    all_cargo: list[dict[str, str]],
     py_releases: list[dict[str, str]],
-    cargo_releases: list[dict[str, str]],
 ) -> None:
     planned_python = {release["name"]: release["version"] for release in py_releases}
     for project in all_py_projects:
@@ -252,16 +183,6 @@ def ensure_all_versions_meet_floor(
             target_version,
         )
 
-    if all_cargo:
-        planned_cargo_version = cargo_releases[0]["version"] if cargo_releases else cargo_workspace_version()
-        for project in all_cargo:
-            ensure_allowed_target_version(
-                project["name"],
-                project["version"],
-                planned_cargo_version,
-                cargo=True,
-            )
-
 
 def replace_python_version(path: Path, new_version: str) -> bool:
     text = read(path)
@@ -271,53 +192,13 @@ def replace_python_version(path: Path, new_version: str) -> bool:
     return write_if_changed(path, updated)
 
 
-def replace_cargo_workspace_version(new_version: str) -> bool:
-    path = ROOT / "Cargo.toml"
-    text = read(path)
-    updated, count = CARGO_WORKSPACE_VERSION_RE.subn(
-        rf'\g<1>"{new_version}"', text, count=1
-    )
-    if count != 1:
-        raise RuntimeError("Cargo workspace package version was not updated")
-    return write_if_changed(path, updated)
-
-
-def update_cargo_internal_dependency_versions(
-    manifests: Iterable[Path], internal_names: set[str], new_version: str
-) -> list[str]:
-    changed: list[str] = []
-    for manifest in manifests:
-        lines = read(manifest).splitlines(keepends=True)
-        next_lines: list[str] = []
-        touched = False
-        for line in lines:
-            line_ending = "\n" if line.endswith("\n") else ""
-            content = line[:-1] if line_ending else line
-            match = CARGO_DEP_RE.match(content)
-            if not match or match.group(2) not in internal_names or "path" not in match.group(3):
-                next_lines.append(line)
-                continue
-            indent, dep_name, body, trailing = match.groups()
-            if re.search(r'\bversion\s*=', body):
-                body = re.sub(r'\bversion\s*=\s*"[^"]+"', f'version = "{new_version}"', body)
-            else:
-                body = f'{body.rstrip()}, version = "{new_version}"'
-            next_lines.append(f"{indent}{dep_name} = {{{body}}}{trailing}{line_ending}")
-            touched = True
-        if touched and write_if_changed(manifest, "".join(next_lines)):
-            changed.append(relative(manifest))
-    return changed
-
-
 def build_plan(
     semver: str, *, write_changes: bool, packages: str | None = None
 ) -> dict[str, object]:
     all_py_projects = python_projects()
-    all_cargo = cargo_projects()
     selected = parse_package_selection(packages)
-    validate_package_selection(selected, all_py_projects, all_cargo)
+    validate_package_selection(selected, all_py_projects)
     py_projects = filter_projects(all_py_projects, selected)
-    cargo = filter_projects(all_cargo, selected)
     changed: list[str] = []
 
     py_releases: list[dict[str, str]] = []
@@ -328,52 +209,19 @@ def build_plan(
         if write_changes and replace_python_version(ROOT / project["path"], new_version):
             changed.append(project["path"])
 
-    cargo_releases: list[dict[str, str]] = []
-    if cargo:
-        cargo_old_version = cargo_workspace_version()
-        cargo_new_version = str(Version.parse(cargo_old_version, cargo=True).bump(semver))
-        ensure_allowed_target_version(
-            "Cargo workspace",
-            cargo_old_version,
-            cargo_new_version,
-            cargo=True,
-        )
-        cargo_releases = [
-            {**project, "old_version": cargo_old_version, "version": cargo_new_version}
-            for project in cargo
-        ]
-        if write_changes and replace_cargo_workspace_version(cargo_new_version):
-            changed.append("Cargo.toml")
-        if write_changes:
-            changed.extend(
-                update_cargo_internal_dependency_versions(
-                    cargo_members(),
-                    {project["name"] for project in all_cargo},
-                    cargo_new_version,
-                )
-            )
-
     all_releases = [
         {"kind": "pypi", "tag": f'{release["name"]}=={release["version"]}', **release}
         for release in py_releases
-    ] + [
-        {"kind": "crate", "tag": f'{release["name"]}=={release["version"]}', **release}
-        for release in cargo_releases
     ]
 
-    is_prerelease = any(
-        Version.parse(release["version"], cargo=release["kind"] == "crate").dev is not None
-        for release in all_releases
-    )
-    ensure_all_versions_meet_floor(all_py_projects, all_cargo, py_releases, cargo_releases)
+    is_prerelease = any(Version.parse(release["version"]).dev is not None for release in all_releases)
+    ensure_all_versions_meet_floor(all_py_projects, py_releases)
 
     return {
         "semver": semver,
         "prerelease": is_prerelease,
         "package_selection": sorted(selected) if selected is not None else "all",
         "python": py_releases,
-        "crates": cargo_releases,
-        "crate_publish_order": cargo_publish_order(cargo_releases),
         "github_releases": all_releases,
         "changed_files": sorted(set(changed)),
     }
@@ -406,7 +254,6 @@ def matrix_output(plan_path: Path, *, python_versions: str, output: Path | None)
     }
     values = {
         "has_python": "true" if plan["python"] else "false",
-        "has_crates": "true" if plan["crates"] else "false",
         "python_validation_matrix": json.dumps(python_validation, separators=(",", ":")),
         "python_build_matrix": json.dumps(python_build, separators=(",", ":")),
     }
@@ -474,9 +321,7 @@ def url_exists(url: str) -> bool:
         raise RuntimeError(f"{url} lookup failed with HTTP {exc.code}") from exc
 
 
-def validate_release_targets(
-    plan_path: Path, *, github: bool, pypi: bool, crates: bool
-) -> None:
+def validate_release_targets(plan_path: Path, *, github: bool, pypi: bool) -> None:
     plan = json.loads(read(plan_path))
     failures: list[str] = []
 
@@ -511,14 +356,6 @@ def validate_release_targets(
             if url_exists(url):
                 failures.append(f"PyPI version already exists: {project} {version}")
 
-    if crates:
-        for release in plan["crates"]:
-            crate = release["name"]
-            version = release["version"]
-            url = f"https://crates.io/api/v1/crates/{crate}/{version}"
-            if url_exists(url):
-                failures.append(f"crates.io version already exists: {crate} {version}")
-
     if failures:
         print("Release target validation failed:")
         for failure in failures:
@@ -530,8 +367,6 @@ def validate_release_targets(
         selected.append("GitHub releases")
     if pypi:
         selected.append("PyPI")
-    if crates:
-        selected.append("crates.io")
     print(f"Release target validation passed for: {', '.join(selected) or 'none'}")
 
 
@@ -598,41 +433,6 @@ def create_github_releases(plan_path: Path) -> None:
             Path(notes_path).unlink(missing_ok=True)
 
 
-def publish_crates(plan_path: Path, *, dry_run: bool, verify: bool = True) -> None:
-    plan = json.loads(read(plan_path))
-    if not plan["crate_publish_order"]:
-        raise RuntimeError("release plan does not include an optional Rust runtime binding package")
-    versions = {crate["name"]: crate["version"] for crate in plan["crates"]}
-    packaged_locally: list[str] = []
-    for crate in plan["crate_publish_order"]:
-        patch_args: list[str] = []
-        for packaged in packaged_locally:
-            package_dir = ROOT / "target" / "package" / f"{packaged}-{versions[packaged]}"
-            patch_args.extend(
-                [
-                    "--config",
-                    f'patch.crates-io.{packaged}.path="{package_dir.as_posix()}"',
-                ]
-            )
-        # `cargo package` verification uses transient local path patches for
-        # previously packaged internal crates. Those patch sources are not part
-        # of the committed workspace lockfile, so `--locked` can reject the
-        # package-only resolver update before verification starts. Keep the real
-        # publish command locked; only the local packaging verification needs to
-        # resolve these temporary patch paths.
-        package_command = ["cargo", "package", "-p", crate, *patch_args]
-        publish_command = ["cargo", "publish", "-p", crate, "--locked"]
-        if dry_run:
-            run(package_command)
-            packaged_locally.append(crate)
-            continue
-        if verify:
-            run(package_command)
-        run(publish_command)
-        packaged_locally.append(crate)
-        time.sleep(20)
-
-
 def build_pypi_packages(plan_path: Path, *, out_dir: str) -> None:
     plan = json.loads(read(plan_path))
     if not plan["python"]:
@@ -681,12 +481,6 @@ def main(argv: list[str] | None = None) -> int:
     validate_targets.add_argument("--summary", type=Path, required=True)
     validate_targets.add_argument("--github", action="store_true")
     validate_targets.add_argument("--pypi", action="store_true")
-    validate_targets.add_argument("--crates", action="store_true")
-
-    crates = subparsers.add_parser("publish-crates")
-    crates.add_argument("--summary", type=Path, required=True)
-    crates.add_argument("--dry-run", action="store_true")
-    crates.add_argument("--skip-dry-run", action="store_true")
 
     pypi = subparsers.add_parser("build-pypi-packages")
     pypi.add_argument("--summary", type=Path, required=True)
@@ -718,11 +512,7 @@ def main(argv: list[str] | None = None) -> int:
             args.summary,
             github=args.github,
             pypi=args.pypi,
-            crates=args.crates,
         )
-        return 0
-    if args.command == "publish-crates":
-        publish_crates(args.summary, dry_run=args.dry_run, verify=not args.skip_dry_run)
         return 0
     if args.command == "build-pypi-packages":
         build_pypi_packages(args.summary, out_dir=args.out_dir)

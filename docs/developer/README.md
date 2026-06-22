@@ -10,7 +10,7 @@ This section collects developer-facing summaries and pointers.
 - `operator/README.md` - operator reference pages and current boundary decisions
 - `CLI_REFERENCE.md` - implemented unified CLI surface, commands, flags, and smoke semantics
 - `TESTING_GUIDE.md` - current certification lane model, test classes, and validation guidance
-- `PACKAGE_CATALOG.md` - canonical workspace inventory for packages and crates
+- `PACKAGE_CATALOG.md` - canonical workspace inventory for packages
 - `PACKAGE_LAYOUT.md` - normalized package layout rules enforced by CI
 - `CI_VALIDATION.md` - repository validation workflow and script inventory
 

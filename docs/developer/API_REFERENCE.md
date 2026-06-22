@@ -46,10 +46,9 @@
 ### App packages (0)
 Application packages are owned by independent repositories, not this workspace.
 
-### Deprecated Rust runtime binding
-Tigrbl runtime execution is Python-only. Rust-named compatibility imports under
-`pkgs/core/tigrbl_runtime/tigrbl_runtime/rust/` remain only to warn and fail
-explicitly for legacy callers.
+### Rust runtime binding
+Tigrbl runtime execution is Python-only. No Rust runtime binding package or
+Rust-named compatibility import surface is exposed by this repository.
 
 ## Public surfaces currently documented in the supplied checkpoint
 
@@ -63,4 +62,4 @@ explicitly for legacy callers.
 - OpenRPC JSON
 - Lens / OpenRPC UI
 - generic auth/security plumbing
-- deprecated Rust compatibility shims
+- Python-only runtime execution

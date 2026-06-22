@@ -71,8 +71,7 @@ pip install tigrbl-runtime
 `tigrbl-runtime` owns the `foundational framework package` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
 
 Implementation orientation:
-- `tigrbl_runtime`: callbacks, channel/, config/, executors/, handle, protocol/, runtime/, transactions, webhooks
-- `tigrbl_runtime/rust/`: deprecated compatibility shims only; Rust execution is unavailable.
+- `tigrbl_runtime`: callbacks, channel/, config/, executors/, protocol/, runtime/, transactions, webhooks
 
 Runtime authoring BCP:
 - Do use this package for runtime-owned routing, request execution, transport-unit execution, framing atoms, transport channels, transaction helpers, and kernel integration.
@@ -85,7 +84,6 @@ Runtime authoring BCP:
 
 - Import roots: `tigrbl_runtime`.
 - Public symbols: `Runtime`, `RuntimeBase`.
-- Rust-named symbols live only under `tigrbl_runtime.rust` as deprecated compatibility shims and must not be used for execution.
 - Workspace dependencies: [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/), [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/), [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/).
 - External runtime dependencies: `numba>=0.61.2`.
 

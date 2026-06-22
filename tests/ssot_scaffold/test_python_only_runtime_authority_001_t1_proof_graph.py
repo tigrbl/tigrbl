@@ -1,33 +1,29 @@
 from __future__ import annotations
 
+import importlib.util
+
 import pytest
 
 import tigrbl_runtime
 from tigrbl_runtime import Runtime
-from tigrbl_runtime.rust import (
-    ExecutionBackend,
-    RustBackendConfig,
-    RustBindingsUnavailableError,
-)
 
 
 def test_python_only_runtime_authority_t1_backend_selection() -> None:
     assert set(tigrbl_runtime.__all__) == {"Runtime", "RuntimeBase"}
     assert not hasattr(tigrbl_runtime, "ExecutionBackend")
     assert not hasattr(tigrbl_runtime, "RustBackendConfig")
+    assert importlib.util.find_spec("tigrbl_runtime.rust") is None
 
     python_runtime = Runtime(executor_backend="python")
-    auto_runtime = Runtime(executor_backend=ExecutionBackend.AUTO)
+    auto_runtime = Runtime(executor_backend="auto")
 
-    assert python_runtime.executor_backend is ExecutionBackend.PYTHON
-    assert auto_runtime.executor_backend is ExecutionBackend.AUTO
+    assert python_runtime.executor_backend == "python"
+    assert auto_runtime.executor_backend == "auto"
 
     for kwargs in (
-        {"executor_backend": "rust"},
-        {"kernel_backend": "rust"},
-        {"atoms_backend": "rust"},
-        {"rust_backend": RustBackendConfig(backend=ExecutionBackend.RUST)},
+        {"executor_backend": "native"},
+        {"kernel_backend": "native"},
+        {"atoms_backend": "native"},
     ):
-        with pytest.warns(DeprecationWarning):
-            with pytest.raises(RustBindingsUnavailableError, match="Python-only"):
-                Runtime(**kwargs)
+        with pytest.raises(ValueError, match="unsupported execution backend"):
+            Runtime(**kwargs)
