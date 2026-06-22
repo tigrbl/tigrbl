@@ -2,6 +2,10 @@
 
 Saved from live repo review on 2026-06-17.
 
+Reader-facing transport, stream, and framing guidance now lives in
+`docs/developer/TRANSPORTS_AND_FRAMING.md`. This note remains as the dated
+framing review that fed that consolidated document.
+
 This note reflects current support found in the live checkout. It is intentionally
 grounded in spec, kernel, runtime, and test surfaces rather than aspirational
 framing vocabulary.

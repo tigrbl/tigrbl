@@ -102,6 +102,8 @@ If the question is whether Tigrbl itself ships a built-in live operational conso
 
 ## Transport / Proto Support Matrix
 
+For the consolidated protocol, carrier, stream, and framing matrix, see `docs/developer/TRANSPORTS_AND_FRAMING.md`. This section focuses on support and monitoring status, not every binding or framing rule.
+
 | Transport / Proto Surface | Support level in repo | Implemented now | Monitoring / health support |
 |---|---:|---:|---|
 | HTTP unary / REST | Current target | Yes | Only generic `healthz`-style monitoring |

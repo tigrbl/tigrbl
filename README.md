@@ -1,7 +1,7 @@
 <div align="center">
 <h1>Tigrbl Workspace</h1>
 <img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="220"/>
-<p><strong>Schema-first Python workspace for REST APIs, JSON-RPC APIs, typed contracts, runtime pipelines, engine plugins, and Python runtime execution.</strong></p>
+<p><strong>Schema-first Python workspace for REST, JSON-RPC, streaming, SSE, WebSocket, WebTransport-aware runtime planning, typed contracts, diagnostics, hooks, and engine plugins.</strong></p>
 <a href="https://github.com/tigrbl/tigrbl"><img src="https://img.shields.io/badge/repo-tigrbl%2Ftigrbl-1f6feb" alt="Repository for tigrbl"/></a>
 <a href="https://pypi.org/project/tigrbl/"><img src="https://img.shields.io/pypi/v/tigrbl?label=tigrbl%20PyPI" alt="PyPI version for tigrbl"/></a>
 <a href="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml"><img src="https://github.com/tigrbl/tigrbl/actions/workflows/branch-coverage.yml/badge.svg?branch=master" alt="Branch coverage workflow"/></a>
@@ -23,7 +23,7 @@ Most application developers should start with the [`tigrbl`](https://pypi.org/pr
 
 ## Why use Tigrbl?
 
-Use Tigrbl when you want one schema-first authoring model to project API behavior across REST, JSON-RPC, OpenAPI, OpenRPC, diagnostics, hooks, runtime plans, engine-backed handlers, and typed request/response models.
+Use Tigrbl when you want one schema-first authoring model to project API behavior across REST, JSON-RPC, OpenAPI, OpenRPC, HTTP streaming, SSE, WebSocket, WebTransport-aware runtime planning, diagnostics, hooks, engine-backed handlers, and typed request/response models.
 
 The workspace is organized so application code can use a stable facade while framework maintainers can work on narrow layers: core specs, base contracts, concrete adapters, atoms, kernel planning, runtime execution, operation packs, ORM helpers, and engines.
 
@@ -69,7 +69,7 @@ Tigrbl separates authoring intent from runtime execution:
 - Concrete adapters lower specs and base contracts into usable app/router/table/operation/docs/diagnostics/engine/transport behavior.
 - Atoms and kernel packages build reviewable phase plans and dispatch metadata.
 - Runtime packages execute compiled plans across request, stream, message, session, and transport-unit flows.
-- Operation packs provide canonical CRUD, analytical, and realtime operation definitions.
+- Operation packs provide canonical CRUD, analytical, realtime, streaming, pub/sub, and transport-oriented operation definitions.
 - Engine packages provide backend-specific persistence, cache, queue, rate, bloom, dedupe, dataframe, warehouse, and database integrations.
 
 ## Certification Status
@@ -287,7 +287,7 @@ Route conflicts are intentional. JSON-RPC methods remain independently addressab
 
 ## REST, JSON-RPC, And Transport Projection
 
-Tigrbl projects operation inventory across protocol surfaces while keeping protocol, exchange, and framing separate.
+Tigrbl projects operation inventory across protocol surfaces while keeping protocol, carrier, exchange, stream direction, and framing separate. The full public matrix is in [`docs/developer/TRANSPORTS_AND_FRAMING.md`](docs/developer/TRANSPORTS_AND_FRAMING.md).
 
 | Surface | Binding family | Framing | Primary use |
 |---|---|---|---|
@@ -297,8 +297,9 @@ Tigrbl projects operation inventory across protocol surfaces while keeping proto
 | SSE | stream | SSE | Browser-friendly event streams |
 | WebSocket/WSS | message | text or JSON-RPC when negotiated | Bidirectional message workflows |
 | WebTransport | session, stream, or datagram | WebTransport outer framing plus lane-specific inner framing | Session, stream, and datagram transports with fail-closed lane validation |
+| h11 / h2 / h3 / QUIC carrier metadata | delegated server/runtime boundary | binding-dependent | Serving-stack protocol mechanics, runtime capability metadata, and deployment controls |
 
-Strict JSON-RPC document framing is `jsonrpc`; newline-delimited JSON-RPC should be modeled distinctly rather than collapsed into plain `ndjson`. Unsupported combinations fail closed during binding or runtime planning instead of being guessed.
+Strict JSON-RPC document framing is `jsonrpc`; newline-delimited JSON-RPC should be modeled distinctly rather than collapsed into plain `ndjson`. Unsupported combinations fail closed during binding or runtime planning instead of being guessed. Tigrbl owns binding declarations, runtime planning, channel metadata, and frame codecs; the serving/runtime stack owns wire-level HTTP/1.1, HTTP/2, HTTP/3, QUIC, TLS termination, HPACK, QPACK, ALPN, and flow control.
 
 ## Request Lifecycle and Hook Phases
 
@@ -403,7 +404,7 @@ Tigrbl runtime execution is Python-only. Rust-named runtime, kernel, atom, handl
 
 ## How To Choose a Package
 
-- Choose [`tigrbl`](https://pypi.org/project/tigrbl/) when you want the full public facade: app composition, schema-first routing, REST and JSON-RPC projection, docs generation, engine integration, and CLI workflow.
+- Choose [`tigrbl`](https://pypi.org/project/tigrbl/) when you want the full public facade: app composition, schema-first routing, REST, JSON-RPC, streaming, SSE, WebSocket, WebTransport-aware runtime planning, docs generation, engine integration, and CLI workflow.
 - Choose [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) when you need spec classes, operation collection, schema generation, or config resolution without concrete app/router/runtime imports.
 - Choose [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) when you are writing concrete adapters, engine adapters, or framework tests that need abstract contracts.
 - Choose [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) when you need concrete classes, decorators, engine resolution, docs mounting, or diagnostics without taking the facade dependency.
@@ -426,6 +427,7 @@ Tigrbl runtime execution is Python-only. Rust-named runtime, kernel, atom, handl
 ## Canonical Repository Docs
 
 - `docs/README.md`
+- `docs/developer/TRANSPORTS_AND_FRAMING.md`
 - `docs/conformance/README.md`
 - `docs/conformance/CURRENT_TARGET.md`
 - `docs/developer/AUTHORING_BCP.md`

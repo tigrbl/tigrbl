@@ -1,7 +1,7 @@
 <div align="center">
 <h1>tigrbl</h1>
 <img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="140"/>
-<p><strong>Schema-first ASGI framework for REST and JSON-RPC APIs with OpenAPI, OpenRPC, SQLAlchemy, typed validation, hooks, and engine plugins.</strong></p>
+<p><strong>Schema-first ASGI framework for REST, JSON-RPC, streaming, SSE, WebSocket, WebTransport-aware runtime planning, OpenAPI, OpenRPC, typed validation, hooks, diagnostics, and engine plugins.</strong></p>
 <a href="https://pypi.org/project/tigrbl/"><img src="https://img.shields.io/pypi/v/tigrbl?label=PyPI" alt="PyPI version for tigrbl"/></a>
 <a href="https://pypi.org/project/tigrbl/"><img src="https://static.pepy.tech/badge/tigrbl" alt="Downloads for tigrbl"/></a>
 <a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl"/></a>
@@ -13,7 +13,7 @@
 
 ## What is tigrbl?
 
-Schema-first ASGI framework for REST and JSON-RPC APIs with OpenAPI, OpenRPC, SQLAlchemy, typed validation, hooks, and engine plugins.
+Schema-first ASGI framework for REST, JSON-RPC, streaming, SSE, WebSocket, WebTransport-aware runtime planning, OpenAPI, OpenRPC, typed validation, hooks, diagnostics, and engine plugins.
 
 ## Why use tigrbl?
 
@@ -21,7 +21,7 @@ Use it when you want the public Tigrbl authoring surface in one install target i
 
 ## When should I install tigrbl?
 
-Install it for application projects, examples, service skeletons, and teams that want REST, JSON-RPC, docs, schemas, engines, and CLI support from one facade.
+Install it for application projects, examples, service skeletons, and teams that want REST, JSON-RPC, streaming, SSE, WebSocket, docs, schemas, engines, and CLI support from one facade.
 
 ## Who is tigrbl for?
 
@@ -29,7 +29,7 @@ Application developers, platform teams, and service owners building schema-first
 
 ## Where does tigrbl fit?
 
-`tigrbl` lives at `pkgs/core/tigrbl` and serves schema-first service authoring, REST and JSON-RPC projection, docs, engines, and CLI workflows.
+`tigrbl` lives at `pkgs/core/tigrbl` and serves schema-first service authoring, REST, JSON-RPC, streaming, SSE, WebSocket, WebTransport-aware runtime planning, docs, engines, and CLI workflows.
 
 ## How does tigrbl work?
 
@@ -82,7 +82,7 @@ Implementation orientation:
 Facade orientation:
 - Authoring API: app/router factories, table helpers, column helpers, schema helpers, operation decorators, hook decorators, response decorators, and engine decorators.
 - Compatibility imports: facade modules such as `tigrbl.op`, `tigrbl.config`, `tigrbl.schema`, `tigrbl.ddl`, `tigrbl.security`, and `tigrbl.system` forward into the split packages that now own the implementation.
-- Runtime projection: model operations are compiled into REST bindings, JSON-RPC methods, OpenAPI, OpenRPC, diagnostics, schemas, and engine-backed handlers.
+- Runtime projection: model operations are compiled into REST bindings, JSON-RPC methods, HTTP streams, SSE responses, WebSocket channels, WebTransport-aware runtime units, OpenAPI, OpenRPC, diagnostics, schemas, and engine-backed handlers.
 - Operational boundary: this package is the application-facing install target; lower-level packages own specs, atoms, kernel planning, runtime execution, base abstractions, concrete adapters, ORM helpers, and engine plugins.
 
 ## Public API and Import Surface
@@ -262,7 +262,7 @@ Bulk operations are not part of the minimal canonical default set. They are enab
 
 ## REST, JSON-RPC, and Transport Projection
 
-Tigrbl projects the same operation inventory across multiple protocol surfaces:
+Tigrbl projects the same operation inventory across multiple protocol surfaces while keeping protocol, carrier, exchange, stream direction, and framing separate. The full public matrix is in [`docs/developer/TRANSPORTS_AND_FRAMING.md`](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/TRANSPORTS_AND_FRAMING.md).
 
 | Surface | Binding family | Framing | Primary use |
 |---|---|---|---|
@@ -272,8 +272,9 @@ Tigrbl projects the same operation inventory across multiple protocol surfaces:
 | SSE | stream | SSE | Browser-friendly event streams. |
 | WebSocket/WSS | message | text or JSON-RPC when negotiated | Bidirectional message workflows. |
 | WebTransport | session, stream, or datagram | WebTransport outer framing plus lane-specific inner framing | Session, stream, and datagram transports with fail-closed lane validation. |
+| h11 / h2 / h3 / QUIC carrier metadata | delegated server/runtime boundary | binding-dependent | Serving-stack protocol mechanics, runtime capability metadata, and deployment controls. |
 
-The framework keeps protocol, exchange, and framing separate. For example, strict JSON-RPC document framing is `jsonrpc`; newline-delimited JSON-RPC should be modeled distinctly rather than collapsed into plain `ndjson`. Unsupported combinations fail closed during binding or runtime planning instead of being guessed.
+The framework keeps protocol, exchange, and framing separate. For example, strict JSON-RPC document framing is `jsonrpc`; newline-delimited JSON-RPC should be modeled distinctly rather than collapsed into plain `ndjson`. Unsupported combinations fail closed during binding or runtime planning instead of being guessed. Tigrbl owns binding declarations, runtime planning, channel metadata, and frame codecs; the serving/runtime stack owns wire-level HTTP/1.1, HTTP/2, HTTP/3, QUIC, TLS termination, HPACK, QPACK, ALPN, and flow control.
 
 ## Request Lifecycle and Hook Phases
 
@@ -401,7 +402,7 @@ Common table-level declarations include:
 
 ## How To Choose This Package
 
-Choose `tigrbl` when you want the full public facade: app composition, schema-first routing, REST and JSON-RPC projection, docs generation, engine integration, and CLI workflow. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) only when you are building framework extensions or testing a specific internal boundary.
+Choose `tigrbl` when you want the full public facade: app composition, schema-first routing, REST, JSON-RPC, streaming, SSE, WebSocket, WebTransport-aware runtime planning, docs generation, engine integration, and CLI workflow. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) only when you are building framework extensions or testing a specific internal boundary.
 
 ## Related Packages
 
@@ -418,6 +419,7 @@ Choose `tigrbl` when you want the full public facade: app composition, schema-fi
 ## Documentation Links
 
 - [Workspace docs](https://github.com/tigrbl/tigrbl/blob/master/docs/README.md)
+- [Transports and framing](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/TRANSPORTS_AND_FRAMING.md)
 - [Package catalog](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_CATALOG.md)
 - [Package layout](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_LAYOUT.md)
 - [Current target](https://github.com/tigrbl/tigrbl/blob/master/docs/conformance/CURRENT_TARGET.md)

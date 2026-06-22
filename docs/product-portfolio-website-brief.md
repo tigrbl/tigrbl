@@ -4,18 +4,18 @@ Audience: copywriting, technical writing, developer relations, design, and websi
 
 Purpose: provide a source-grounded brief for updating the Tigrbl product portfolio website. This is not a replacement for the SSOT registry, package READMEs, or release evidence. It is a website planning artifact derived from the current repository checkout.
 
-Last researched from repo: 2026-06-19.
+Last researched from repo: 2026-06-22.
 
 ## Executive Summary
 
-Tigrbl is a schema-first Python framework family for building ASGI APIs where one authoring model projects into REST, JSON-RPC, OpenAPI, OpenRPC, diagnostics, hooks, runtime plans, typed request/response models, and engine-backed handlers.
+Tigrbl is a schema-first Python framework family for building ASGI APIs where one authoring model projects into REST, JSON-RPC, HTTP streaming, SSE, WebSocket, WebTransport-aware runtime planning, OpenAPI, OpenRPC, diagnostics, hooks, typed request/response models, and engine-backed handlers.
 
 The website should present Tigrbl as a product portfolio, not as a single monolithic package. The app-facing product is the `tigrbl` facade package. Behind it is a governed package family: core specs, base contracts, concrete adapters, atoms, kernel planning, runtime execution, operation packs, ORM helpers, client tooling, testing utilities, and engine plugins.
 
 The strongest public story is:
 
 - Schema-first application authoring through `tigrbl`.
-- REST and JSON-RPC projection from the same operation inventory.
+- REST, JSON-RPC, streaming, SSE, WebSocket, and WebTransport-aware runtime projection from the same operation inventory.
 - OpenAPI 3.1, OpenRPC, Swagger UI, Lens/OpenRPC UI, and JSON Schema bundle output.
 - Lifecycle hooks, kernel plans, diagnostics, typed schemas, and operation packs.
 - Engine plugin portfolio for databases, in-memory services, cache, queue, rate limiting, dataframes, files, and warehouses.
@@ -28,21 +28,22 @@ The website must avoid overstating support:
 - Tigrbl does not ship a built-in monitoring dashboard.
 - Tigrbl can support app-defined live streams through SSE and WebSockets, but it does not currently ship a framework-owned live operational event console.
 - WebTransport is present as a provisional/partial line and demo surface, not a mature release-grade transport story.
+- HTTP/1.1, HTTP/2, HTTP/3, QUIC, HPACK, QPACK, TLS termination, ALPN, and flow control are server/runtime-layer concerns; Tigrbl documents binding, planning, framing, and capability boundaries rather than claiming full wire-protocol ownership.
 - AsyncAPI generation, mounting, and UI are de-scoped in current docs and should not be advertised as supported.
 
 ## Primary Positioning
 
 Recommended one-line positioning:
 
-> Tigrbl is a schema-first Python framework for building REST and JSON-RPC APIs from one governed authoring model, with typed contracts, lifecycle hooks, runtime plans, OpenAPI/OpenRPC docs, and pluggable engines.
+> Tigrbl is a schema-first Python framework for projecting one governed authoring model across REST, JSON-RPC, streaming, SSE, WebSocket, transport-aware runtime plans, OpenAPI/OpenRPC docs, typed contracts, lifecycle hooks, and pluggable engines.
 
 Short version:
 
-> Schema-first Python APIs with REST, JSON-RPC, typed contracts, runtime plans, and engine plugins.
+> Schema-first Python APIs with REST, JSON-RPC, streaming, WebSocket, typed contracts, runtime plans, and engine plugins.
 
 Developer-oriented version:
 
-> Define application behavior once with Tigrbl specs, operations, hooks, and engines; project it into REST, JSON-RPC, OpenAPI, OpenRPC, diagnostics, schemas, and runtime execution.
+> Define application behavior once with Tigrbl specs, operations, hooks, and engines; project it into REST, JSON-RPC, HTTP streams, SSE, WebSocket channels, OpenAPI, OpenRPC, diagnostics, schemas, and runtime execution.
 
 Portfolio-oriented version:
 
@@ -55,7 +56,7 @@ Tigrbl is:
 - A schema-first Python ASGI framework family.
 - A public facade package named `tigrbl`.
 - A workspace of split packages for framework authors and extension authors.
-- A REST and JSON-RPC projection system.
+- A REST, JSON-RPC, streaming, SSE, WebSocket, and transport-aware runtime projection system.
 - A typed contract and documentation generation surface.
 - A runtime planning and execution pipeline.
 - An engine plugin ecosystem.
@@ -87,9 +88,9 @@ Website implication: make the home page simple, then give the portfolio page a l
 
 ### 3. Protocol and Documentation Parity
 
-REST and JSON-RPC are first-class surfaces. OpenAPI, OpenRPC, Swagger UI, Lens/OpenRPC UI, and JSON Schema bundle output are documented operator surfaces.
+REST, JSON-RPC, HTTP streaming, SSE, and WebSocket are first-class surfaces. WebTransport is a provisional/partial active line. OpenAPI, OpenRPC, Swagger UI, Lens/OpenRPC UI, and JSON Schema bundle output are documented operator surfaces.
 
-Website implication: include an "API projection" section that shows REST and RPC as peers, not REST as the only product.
+Website implication: include an "API and transport projection" section that shows REST, RPC, streaming, SSE, WebSocket, and carefully labeled WebTransport-aware planning as parts of the same operation model, not REST as the only product.
 
 ### 4. Lifecycle and Governance
 
@@ -195,7 +196,7 @@ Recommended sections:
 - Table/operation/schema example.
 - Hook lifecycle overview.
 - Engine binding overview.
-- REST plus JSON-RPC projection from one operation inventory.
+- REST, JSON-RPC, streaming, SSE, and WebSocket projection from one operation inventory.
 - OpenAPI/OpenRPC/docs generation.
 
 Do not use FastAPI or Starlette route examples as the primary teaching path.
@@ -212,6 +213,7 @@ Recommended sections:
 - SSE.
 - WebSocket.
 - WebTransport as provisional/partial.
+- HTTP/2, HTTP/3, and QUIC as delegated serving/runtime concerns, not framework-owned wire-protocol claims.
 - OpenAPI 3.1 and Swagger UI.
 - OpenRPC and Lens/OpenRPC UI.
 - JSON Schema bundle.
@@ -321,7 +323,7 @@ Use these terms confidently:
 
 - Schema-first API framework.
 - Public Python facade package.
-- REST and JSON-RPC projection.
+- REST, JSON-RPC, streaming, SSE, WebSocket, and transport-aware runtime projection.
 - OpenAPI 3.1 emission.
 - OpenRPC emission.
 - Swagger UI and Lens/OpenRPC UI.
@@ -339,7 +341,7 @@ Use these terms with qualifiers:
 - Monitoring: "bounded diagnostics" is accurate; "monitoring dashboard" is not.
 - Live event stream: "app-defined live streams through SSE/WebSocket" is accurate; "built-in live operational console" is not.
 - WebTransport: say "provisional", "partial", or "tracked active line"; do not present as mature.
-- HTTP/3/QUIC: mention as operator/server-profile and Tigrcorn-facing controls where relevant, not as a blanket application guarantee.
+- HTTP/2, HTTP/3, QUIC, HPACK, QPACK, TLS termination, ALPN, and flow control: mention as delegated server/runtime-profile concerns where relevant, not as blanket framework-owned guarantees.
 - Certification: tie to specific SSOT records, conformance docs, or release workflows.
 
 Do not claim:
@@ -358,11 +360,11 @@ Do not claim:
 
 Headline:
 
-Schema-first Python APIs, projected across REST, JSON-RPC, docs, and runtime.
+Schema-first Python APIs, projected across REST, JSON-RPC, streaming, WebSocket, docs, and runtime.
 
 Supporting copy:
 
-Tigrbl lets teams define service behavior once with specs, operations, hooks, schemas, and engines, then project that behavior into REST, JSON-RPC, OpenAPI, OpenRPC, diagnostics, and runtime execution.
+Tigrbl lets teams define service behavior once with specs, operations, hooks, schemas, and engines, then project that behavior into REST, JSON-RPC, HTTP streams, SSE, WebSocket channels, OpenAPI, OpenRPC, diagnostics, and runtime execution.
 
 Primary CTA:
 
@@ -430,12 +432,12 @@ Tone:
 Developer relations should produce:
 
 - A quickstart video or article: install `tigrbl`, create an app shell, expose a health endpoint, inspect docs.
-- A REST plus JSON-RPC parity walkthrough.
+- A REST, JSON-RPC, and streaming projection walkthrough.
 - A hooks and lifecycle walkthrough.
 - A docs generation walkthrough: OpenAPI, Swagger UI, OpenRPC, Lens, JSON Schema bundle.
 - A WebSocket and SSE example with clear "app-defined stream" language.
 - An engine-binding demo for SQLite or Postgres, plus a lightweight in-memory engine demo.
-- A transport demo explainer that labels WebTransport as provisional.
+- A transport demo explainer that labels WebTransport as provisional and h11/h2/h3/QUIC mechanics as delegated server/runtime concerns.
 - A "from FastAPI habits to Tigrbl authoring" migration article, focused on Tigrbl-owned surfaces.
 
 Devrel should not publish demos that teach direct FastAPI/Starlette route authoring as the main pattern.
@@ -511,6 +513,7 @@ Primary source files used for this brief:
 - `docs/developer/API_REFERENCE.md`
 - `docs/developer/PACKAGE_CATALOG.md`
 - `docs/developer/OPERATOR_SURFACES.md`
+- `docs/developer/TRANSPORTS_AND_FRAMING.md`
 - `docs/developer/operator/websockets-and-sse.md`
 - `docs/monitoring-and-transport-support-matrix.md`
 - `docs/appspec-internal-spec-matrix.md`
@@ -518,4 +521,3 @@ Primary source files used for this brief:
 - `docs/governance/README.md`
 - `examples/transport_demo/README.md`
 - Package metadata from `pkgs/core/*/pyproject.toml` and `pkgs/engines/*/pyproject.toml`.
-
