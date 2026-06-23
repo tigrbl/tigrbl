@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Literal
 
-from .runtime import assert_widget_rest_crud_over_http
+from .runtime import ServerKind, assert_widget_rest_crud_over_http
 
 EquivalenceStatus = Literal[
     "equivalent",
@@ -31,14 +31,15 @@ class FrameworkImplementation:
 
     framework: FrameworkName
     code_ref: str
-    start_server: Callable[[], Any]
-    exercise: Callable[[Any], Any]
+    app: Callable[[], Any]
+    server_kind: ServerKind
+    exercise: Callable[[Any, ServerKind], Any]
     normalize: Callable[[Any], Any]
 
     def certify(self) -> Any:
-        """Start the framework example and return normalized proof evidence."""
+        """Serve the framework app and return normalized proof evidence."""
 
-        return self.normalize(self.exercise(self.start_server()))
+        return self.normalize(self.exercise(self.app(), self.server_kind))
 
 
 @dataclass(frozen=True)
@@ -131,14 +132,16 @@ def matrix_rows() -> tuple[dict[str, str], ...]:
 def _impl(
     framework: FrameworkName,
     code_ref: str,
-    start_server: Callable[[], Any],
-    exercise: Callable[[Any], Any],
+    app: Callable[[], Any],
+    server_kind: ServerKind,
+    exercise: Callable[[Any, ServerKind], Any],
     normalize: Callable[[Any], Any],
 ) -> FrameworkImplementation:
     return FrameworkImplementation(
         framework=framework,
         code_ref=code_ref,
-        start_server=start_server,
+        app=app,
+        server_kind=server_kind,
         exercise=exercise,
         normalize=normalize,
     )
@@ -154,6 +157,7 @@ def _rest_crud_case(
             "tigrbl",
             "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
             _lazy_attr("tigrbl_impl", tigrbl_attr),
+            "asgi",
             assert_widget_rest_crud_over_http,
             lambda result: result,
         ),
@@ -161,6 +165,7 @@ def _rest_crud_case(
             "fastapi",
             "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
             _lazy_attr("fastapi_impl", fastapi_attr),
+            "asgi",
             assert_widget_rest_crud_over_http,
             lambda result: result,
         ),
@@ -168,6 +173,7 @@ def _rest_crud_case(
             "flask",
             "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
             _lazy_attr("flask_impl", flask_attr),
+            "wsgi",
             assert_widget_rest_crud_over_http,
             lambda result: result,
         ),
@@ -175,13 +181,13 @@ def _rest_crud_case(
 
 
 def _lazy_attr(module_name: str, attr_name: str) -> Callable[[], Any]:
-    """Load and call a framework startup function only during certification."""
+    """Load a framework app only during certification."""
 
     def _get() -> Any:
         module = import_module(
             f"tigrbl_equivalence_contracts.frameworks.{module_name}"
         )
-        return getattr(module, attr_name)()
+        return getattr(module, attr_name)
 
     return _get
 
@@ -209,9 +215,9 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
             "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
         ),
         implementations=_rest_crud_case(
-            "start_server",
-            "start_server",
-            "start_server",
+            "app",
+            "app",
+            "app",
         ),
     ),
 )

@@ -1,15 +1,16 @@
 """HTTP pedagogy for certifying framework equivalence.
 
 The framework implementation files show how a Tigrbl, FastAPI, or Flask app is
-authored and started.  This file shows the one client-side lesson that every
-implementation must satisfy:
+authored.  This file shows the shared runtime lesson that every implementation
+must satisfy:
 
 1. start a real local HTTP server;
 2. call that server with ``httpx``;
 3. assert the exact Widget CRUD responses that developers should expect.
 
-Keeping the client assertions here is intentional.  If three frameworks claim
-the same REST CRUD behavior, they should be exercised by the same client code.
+Keeping startup and client assertions here is intentional.  If three frameworks
+claim the same REST CRUD behavior, they should be served and exercised by the
+same proof code.
 """
 
 from __future__ import annotations
@@ -17,9 +18,12 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 import socket
+import threading
 import time
+from typing import Any, Literal
 
 WidgetCrudEvidence = tuple[dict, ...]
+ServerKind = Literal["asgi", "wsgi"]
 
 EXPECTED_WIDGET_CRUD_EVIDENCE: WidgetCrudEvidence = (
     {
@@ -49,15 +53,30 @@ EXPECTED_WIDGET_CRUD_EVIDENCE: WidgetCrudEvidence = (
 
 @dataclass(frozen=True)
 class RunningHttpServer:
-    """A tiny handle for the real server created by a framework example.
+    """A tiny handle for a real local server created by this runtime lesson.
 
-    The framework modules own their app construction and server startup.  The
-    shared client assertion only needs the base URL and a way to stop the server
-    after the HTTP proof has finished.
+    The common startup path returns the base URL used by the shared client
+    assertions and a stop callback used after the proof has finished.
     """
 
     base_url: str
     stop: Callable[[], None]
+
+
+def start_http_server(app: Any, server_kind: ServerKind) -> RunningHttpServer:
+    """Start an ASGI or WSGI app as a real local HTTP server.
+
+    The app object comes from the framework example.  The mechanics here are
+    deliberately shared so the equivalence proof does not depend on three
+    separate copies of port selection, thread startup, readiness polling, or
+    shutdown behavior.
+    """
+
+    if server_kind == "asgi":
+        return _start_asgi_server(app)
+    if server_kind == "wsgi":
+        return _start_wsgi_server(app)
+    raise ValueError(f"unsupported server kind: {server_kind}")
 
 
 class WidgetCrudClientAssertions:
@@ -131,17 +150,65 @@ class WidgetCrudClientAssertions:
 
 
 def assert_widget_rest_crud_over_http(
-    server: RunningHttpServer,
+    app: Any,
+    server_kind: ServerKind,
 ) -> WidgetCrudEvidence:
-    """Run the shared Widget CRUD proof against one started framework server."""
+    """Start one framework app and run the shared Widget CRUD proof."""
 
+    server = start_http_server(app, server_kind)
     try:
         return WidgetCrudClientAssertions().run(server.base_url)
     finally:
         server.stop()
 
 
-def wait_for_http_server(base_url: str) -> None:
+def _start_asgi_server(app: Any) -> RunningHttpServer:
+    """Serve a Tigrbl or FastAPI ASGI app with uvicorn."""
+
+    import uvicorn
+
+    port = _free_http_port()
+    server = uvicorn.Server(
+        uvicorn.Config(
+            app,
+            host="127.0.0.1",
+            port=port,
+            lifespan="off",
+            log_level="warning",
+        )
+    )
+    thread = threading.Thread(target=server.run, daemon=True)
+    thread.start()
+    base_url = f"http://127.0.0.1:{port}"
+    _wait_for_http_server(base_url)
+
+    def stop() -> None:
+        server.should_exit = True
+        thread.join(timeout=10)
+
+    return RunningHttpServer(base_url=base_url, stop=stop)
+
+
+def _start_wsgi_server(app: Any) -> RunningHttpServer:
+    """Serve a Flask WSGI app with Werkzeug's local server."""
+
+    from werkzeug.serving import make_server
+
+    port = _free_http_port()
+    server = make_server("127.0.0.1", port, app)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    base_url = f"http://127.0.0.1:{port}"
+    _wait_for_http_server(base_url)
+
+    def stop() -> None:
+        server.shutdown()
+        thread.join(timeout=10)
+
+    return RunningHttpServer(base_url=base_url, stop=stop)
+
+
+def _wait_for_http_server(base_url: str) -> None:
     """Block until a just-started local server accepts HTTP requests."""
 
     import httpx
@@ -156,7 +223,7 @@ def wait_for_http_server(base_url: str) -> None:
     raise RuntimeError(f"server did not start at {base_url}")
 
 
-def free_http_port() -> int:
+def _free_http_port() -> int:
     """Ask the OS for an available localhost TCP port for a demo server."""
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:

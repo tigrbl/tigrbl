@@ -1,18 +1,10 @@
 from __future__ import annotations
 
-import threading
-
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from sqlalchemy import String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
-from tigrbl_equivalence_contracts.runtime import (
-    RunningHttpServer,
-    free_http_port,
-    wait_for_http_server,
-)
-import uvicorn
 
 
 class Base(DeclarativeBase):
@@ -95,28 +87,3 @@ def delete_widget(id: str) -> dict[str, int]:
         session.delete(row)
         session.commit()
         return {"deleted": 1}
-
-
-def start_server() -> RunningHttpServer:
-    """Start the FastAPI ASGI app as a real local HTTP server."""
-
-    port = free_http_port()
-    server = uvicorn.Server(
-        uvicorn.Config(
-            app,
-            host="127.0.0.1",
-            port=port,
-            lifespan="off",
-            log_level="warning",
-        )
-    )
-    thread = threading.Thread(target=server.run, daemon=True)
-    thread.start()
-    base_url = f"http://127.0.0.1:{port}"
-    wait_for_http_server(base_url)
-
-    def stop() -> None:
-        server.should_exit = True
-        thread.join(timeout=10)
-
-    return RunningHttpServer(base_url=base_url, stop=stop)
