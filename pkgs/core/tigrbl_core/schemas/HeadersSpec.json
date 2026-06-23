@@ -1,0 +1,40 @@
+{
+  "$defs": {
+    "HeadersSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "./shared.json#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.headers_spec:HeadersSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HeadersSpecEnvelope",
+      "type": "object"
+    }
+  },
+  "$id": "HeadersSpec.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "expose": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "required": {
+      "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "values": {
+      "$ref": "./shared.json#/$defs/StringMap"
+    }
+  },
+  "required": [
+    "values",
+    "required",
+    "expose"
+  ],
+  "title": "HeadersSpec",
+  "type": "object"
+}

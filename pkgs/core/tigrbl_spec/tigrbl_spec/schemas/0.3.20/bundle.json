@@ -810,6 +810,57 @@
       "title": "ForeignKeySpecEnvelope",
       "type": "object"
     },
+    "HeadersSpec": {
+      "additionalProperties": false,
+      "properties": {
+        "expose": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "required": {
+          "$ref": "#/$defs/StringTuple"
+        },
+        "spec_kind": {
+          "const": "HeadersSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:HeadersSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
+        "values": {
+          "$ref": "#/$defs/StringMap"
+        }
+      },
+      "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
+        "values",
+        "required",
+        "expose"
+      ],
+      "title": "HeadersSpec",
+      "type": "object"
+    },
+    "HeadersSpecEnvelope": {
+      "additionalProperties": {
+        "$ref": "#/$defs/SerdeValue"
+      },
+      "properties": {
+        "__dataclass__": {
+          "const": "tigrbl_core._spec.headers_spec:HeadersSpec"
+        }
+      },
+      "required": [
+        "__dataclass__"
+      ],
+      "title": "HeadersSpecEnvelope",
+      "type": "object"
+    },
     "HookFamilyTuple": {
       "additionalProperties": false,
       "properties": {
@@ -3538,6 +3589,7 @@
     "EngineSpec": "#/$defs/EngineSpec",
     "FieldSpec": "#/$defs/FieldSpec",
     "ForeignKeySpec": "#/$defs/ForeignKeySpec",
+    "HeadersSpec": "#/$defs/HeadersSpec",
     "HookSpec": "#/$defs/HookSpec",
     "HttpJsonRpcBindingSpec": "#/$defs/HttpJsonRpcBindingSpec",
     "HttpRestBindingSpec": "#/$defs/HttpRestBindingSpec",

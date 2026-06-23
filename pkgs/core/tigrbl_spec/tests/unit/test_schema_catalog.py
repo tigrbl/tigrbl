@@ -21,9 +21,12 @@ def test_package_can_load_current_schema_manifest_and_bundle() -> None:
     assert manifest["catalog_version"] == CURRENT_SCHEMA_VERSION
     assert manifest["authority"] == "tigrbl_spec"
     assert manifest["schemas"]["AppSpec"] == "AppSpec.json"
+    assert manifest["schemas"]["HeadersSpec"] == "HeadersSpec.json"
     assert bundle["catalog_version"] == CURRENT_SCHEMA_VERSION
     assert bundle["schemas"]["ColumnSpec"] == "#/$defs/ColumnSpec"
+    assert bundle["schemas"]["HeadersSpec"] == "#/$defs/HeadersSpec"
     assert "AppSpec" in spec_kinds()
+    assert "HeadersSpec" in spec_kinds()
 
 
 def test_loaded_schema_contains_identity_fields() -> None:
@@ -34,3 +37,16 @@ def test_loaded_schema_contains_identity_fields() -> None:
     assert schema["properties"]["spec_type"]["const"] == (
         f"urn:tigrbl:spec:AppSpec:{CURRENT_SCHEMA_VERSION}"
     )
+
+
+def test_headers_schema_contains_identity_and_collection_fields() -> None:
+    schema = load_schema("HeadersSpec")
+
+    assert schema["properties"]["spec_kind"]["const"] == "HeadersSpec"
+    assert schema["properties"]["spec_schema_version"]["const"] == CURRENT_SCHEMA_VERSION
+    assert schema["properties"]["spec_type"]["const"] == (
+        f"urn:tigrbl:spec:HeadersSpec:{CURRENT_SCHEMA_VERSION}"
+    )
+    assert schema["properties"]["values"] == {"$ref": "./shared.json#/$defs/StringMap"}
+    assert schema["properties"]["required"] == {"$ref": "./shared.json#/$defs/StringTuple"}
+    assert schema["properties"]["expose"] == {"$ref": "./shared.json#/$defs/StringTuple"}

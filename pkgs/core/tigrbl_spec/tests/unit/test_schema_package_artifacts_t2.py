@@ -39,6 +39,7 @@ def test_built_wheel_and_sdist_contain_schema_migration_and_model_artifacts() ->
             "tigrbl_spec/schemas/0.3.20/manifest.json",
             "tigrbl_spec/schemas/0.3.20/bundle.json",
             "tigrbl_spec/schemas/0.3.20/AppSpec.json",
+            "tigrbl_spec/schemas/0.3.20/HeadersSpec.json",
             "tigrbl_spec/migrations/__init__.py",
             "tigrbl_spec/models/v0_3_20/__init__.py",
         ]

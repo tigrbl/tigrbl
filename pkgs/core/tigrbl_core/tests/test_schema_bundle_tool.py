@@ -23,6 +23,7 @@ def test_bundle_tool_rewrites_cross_file_refs_to_internal_defs() -> None:
 
     assert bundle["$id"] == "bundle.json"
     assert bundle["schemas"]["ColumnSpec"] == "#/$defs/ColumnSpec"
+    assert bundle["schemas"]["HeadersSpec"] == "#/$defs/HeadersSpec"
     assert bundle["$defs"]["BindingSpec"]["properties"]["spec"] == {
         "$ref": "#/$defs/TransportBindingSpec"
     }
@@ -30,4 +31,5 @@ def test_bundle_tool_rewrites_cross_file_refs_to_internal_defs() -> None:
         "$ref": "#/$defs/StorageSpec"
     }
     assert "ColumnSpecEnvelope" in bundle["$defs"]
+    assert "HeadersSpecEnvelope" in bundle["$defs"]
     assert "SerdeValue" in bundle["$defs"]

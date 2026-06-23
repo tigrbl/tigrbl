@@ -19,6 +19,7 @@ def test_spec_json_schema_bundle_is_manifest_for_shared_and_individual_files() -
     assert bundle["shared"] == SHARED_SCHEMA_NAME
     assert bundle["schemas"]["AppSpec"] == "AppSpec.json"
     assert bundle["schemas"]["ColumnSpec"] == "ColumnSpec.json"
+    assert bundle["schemas"]["HeadersSpec"] == "HeadersSpec.json"
 
 
 def test_shared_schema_contains_common_defs_and_transport_union() -> None:
@@ -64,5 +65,14 @@ def test_individual_schemas_are_emitted_per_spec() -> None:
     assert set(INDIVIDUAL_SPEC_NAMES).issubset(schemas)
     assert schemas["AppSpec"]["$id"] == "AppSpec.json"
     assert schemas["ColumnSpec"]["$id"] == "ColumnSpec.json"
+    assert schemas["HeadersSpec"]["$id"] == "HeadersSpec.json"
     assert schemas["OpSpec"]["$id"] == "OpSpec.json"
     assert schemas["WsBindingSpec"]["$id"] == "WsBindingSpec.json"
+
+
+def test_headers_spec_schema_is_a_collection_shape() -> None:
+    schema = build_individual_spec_json_schemas()["HeadersSpec"]
+
+    assert schema["properties"]["values"] == {"$ref": "./shared.json#/$defs/StringMap"}
+    assert schema["properties"]["required"] == {"$ref": "./shared.json#/$defs/StringTuple"}
+    assert schema["properties"]["expose"] == {"$ref": "./shared.json#/$defs/StringTuple"}

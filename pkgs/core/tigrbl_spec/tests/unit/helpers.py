@@ -87,6 +87,20 @@ def engine_payload() -> dict[str, object]:
     )
 
 
+def headers_payload() -> dict[str, object]:
+    return with_identity(
+        "HeadersSpec",
+        {
+            "values": {
+                "content-type": "application/json",
+                "x-trace": "abc",
+            },
+            "required": {"__tuple__": ["content-type"]},
+            "expose": {"__tuple__": ["x-trace"]},
+        },
+    )
+
+
 def op_payload() -> dict[str, object]:
     return with_identity(
         "OpSpec",
@@ -170,5 +184,6 @@ def representative_payloads() -> dict[str, dict[str, object]]:
         "BindingSpec": binding_payload(),
         "ColumnSpec": column_payload(),
         "EngineSpec": engine_payload(),
+        "HeadersSpec": headers_payload(),
         "SessionSpec": session_payload(),
     }
