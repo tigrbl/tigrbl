@@ -59,6 +59,16 @@ Use `python tools/docs/update_equivalence_docs.py --write` after changing the
 source inputs. CI runs `tools/ci/validate_equivalence_docs.py` to fail when
 those generated blocks drift.
 
+## Certifiable Runtime Contracts
+
+Runtime equivalence demonstrations live in
+`examples/equivalence_contracts`. That local uv project is not published to
+PyPI. Its tests certify declared equivalence, analogy, and projection-only
+claims as executable behavior.
+
+Run `python tools/ci/validate_equivalence_runtime_contracts.py` to execute the
+certification tests.
+
 ## Reader Path
 
 1. Start with `AUTHORING_BCP.md` to understand the current application
