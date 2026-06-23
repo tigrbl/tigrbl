@@ -1,11 +1,32 @@
-"""Flask route-surface implementation for Tigrbl WebTransportTable."""
+"""Flask implementation for the WebTransportTable Widget route surface."""
 
 from __future__ import annotations
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+from sqlalchemy import String, create_engine, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.pool import StaticPool
 
 from .runtime import ROUTES
 
+
+class Base(DeclarativeBase):
+    pass
+
+
+class WidgetRow(Base):
+    __tablename__ = "widgets_web_transport_table"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+
+
+engine = create_engine(
+    "sqlite+pysqlite://",
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+    future=True,
+)
+Base.metadata.create_all(engine)
 app = Flask(__name__)
 
 
@@ -28,10 +49,17 @@ def openapi_json():
 
 
 @app.get("/widgetwebtransporttable")
-def get_1():
-    return jsonify({"table_class": "WebTransportTable", "path": "/widgetwebtransporttable", "method": "GET"})
+def list_widgets():
+    with Session(engine) as session:
+        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
+        return jsonify([{"id": row.id, "name": row.name} for row in rows])
 
 
 @app.post("/widgetwebtransporttable")
-def post_2():
-    return jsonify({"table_class": "WebTransportTable", "path": "/widgetwebtransporttable", "method": "POST"})
+def create_widget():
+    payload = request.get_json()
+    with Session(engine) as session:
+        row = WidgetRow(id=payload["id"], name=payload["name"])
+        session.add(row)
+        session.commit()
+        return jsonify({"id": row.id, "name": row.name}), 201
