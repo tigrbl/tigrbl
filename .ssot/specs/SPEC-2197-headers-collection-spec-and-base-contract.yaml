@@ -1,0 +1,38 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2197"
+number: 2197
+slug: "headers-collection-spec-and-base-contract"
+title: "Headers collection spec and base contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Headers collection spec and base contract"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created for additive HeadersSpec, HeadersBase, and runtime header compatibility work."
+    at: "2026-06-23T22:14:04Z"
+references: []
+body: |-
+  ## Contract
+  1. Headers are governed as plural collection surfaces.
+  2. `HeadersSpec` owns declarative header collection values and collection metadata such as required or exposed header names.
+  3. `HeadersBase` owns reusable base behavior for mapping-compatible construction, normalized lookup, conversion back to `HeadersSpec`, and raw byte-pair projection.
+  4. Concrete request and response header surfaces may accept `HeadersSpec` and `HeadersBase` values, but they must continue to accept the existing plain mapping and pair-iterable forms.
+  5. `RequestSpec.headers` and `ResponseSpec.headers` remain plain string-map compatible until a later accepted ADR explicitly changes the serialized contract.
+
+  ## Required Verification
+  - Core tests prove `HeadersSpec` normalizes, serializes, and exports through the governed spec facade.
+  - Base tests prove `HeadersBase` handles mappings, pair iterables, `HeadersSpec`, normalized lookup, and raw header projection.
+  - Runtime compatibility tests prove concrete request/response header behavior accepts the new collection forms without breaking plain mapping inputs.
+
+  ## Non-Conformance
+  Header work is non-conforming if it forces existing request or response specs to use a wrapped `HeadersSpec` shape, introduces a singular collection name, or moves concrete header ergonomics into `tigrbl_core`.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1196"
+  - "adr:1194"

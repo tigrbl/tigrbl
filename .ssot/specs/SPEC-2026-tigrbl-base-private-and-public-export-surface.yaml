@@ -22,6 +22,7 @@ body: |-
   
   - The canonical base-layer export surface is the full key set of `tigrbl_base._base.__init__._EXPORTS`.
   - Each governed base export identifies a reusable base-layer class, protocol, or support type owned by the `tigrbl_base` package.
+  - `HeadersBase` and `HeaderCookiesBase` are governed base support types for reusable request/response header and cookie behavior.
   - The base layer remains distinct from `tigrbl_concrete`, `tigrbl_core._spec`, and the top-level facade.
   
   ## Public Operator Projection
@@ -42,6 +43,8 @@ body: |-
   
   ## Traceability
   
-  - ADRs: `adr:1002`, `adr:1053`
+  - ADRs: `adr:1002`, `adr:1053`, `adr:1196`
+  - Companion specs: `spc:2197`
 spec_kind: "local-policy"
-adr_ids: []
+adr_ids:
+  - "adr:1196"

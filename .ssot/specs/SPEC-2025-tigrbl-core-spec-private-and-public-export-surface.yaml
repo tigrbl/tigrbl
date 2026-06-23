@@ -27,7 +27,7 @@ body: |-
   - The canonical `_spec` module surface is the unique set of backing modules referenced by `tigrbl_core._spec.__init__._EXPORTS`, together with `hook_types` for the `PHASE` and `PHASES` aliases.
   - The canonical `_spec` export surface is the full key set of `tigrbl_core._spec.__init__._EXPORTS`.
   - `PHASE` and `PHASES` are governed `_spec` aliases even though they are materialized through special-case logic rather than ordinary `_EXPORTS` lookup.
-  - `AppSpec`, `RouterSpec`, `TableSpec`, `ColumnSpec`, `FieldSpec`, `IOSpec`, `ForeignKeySpec`, and `ResponseSpec` remain governed typed contract objects when nested into authored composition surfaces.
+  - `AppSpec`, `RouterSpec`, `TableSpec`, `ColumnSpec`, `FieldSpec`, `HeadersSpec`, `IOSpec`, `ForeignKeySpec`, and `ResponseSpec` remain governed typed contract objects when nested into authored composition surfaces.
   
   ## Public Operator Projection
   
@@ -62,8 +62,9 @@ body: |-
   ## Traceability
   
   - ADRs: `adr:1003`, `adr:1052`
-  - Companion spec: `spc:1000`
+  - Companion specs: `spc:1000`, `spc:2197`
 spec_kind: "local-policy"
 adr_ids:
   - "adr:1003"
   - "adr:1052"
+  - "adr:1196"

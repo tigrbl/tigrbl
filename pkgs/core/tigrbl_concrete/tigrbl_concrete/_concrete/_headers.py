@@ -6,6 +6,8 @@ from collections.abc import Iterable, Mapping, MutableMapping
 from typing import Any
 from http.cookies import SimpleCookie
 
+from tigrbl_core._spec.headers_spec import HeadersSpec
+
 
 class HeaderCookies(dict[str, str]):
     """Dot-addressable cookie mapping parsed from a Cookie header value."""
@@ -34,12 +36,15 @@ class Headers(MutableMapping[str, str]):
 
     def __init__(
         self,
-        values: Iterable[tuple[str, str]] | Mapping[str, str] | None = None,
+        values: Iterable[tuple[str, str]] | Mapping[str, str] | HeadersSpec | None = None,
     ) -> None:
         self._data: dict[str, tuple[str, str]] = {}
         if values is None:
             return
-        items = values.items() if hasattr(values, "items") else values
+        if isinstance(values, HeadersSpec):
+            items = values.values.items()
+        else:
+            items = values.items() if hasattr(values, "items") else values
         for key, value in items:
             self[key] = self._normalize_value(value)
 
@@ -100,6 +105,13 @@ class Headers(MutableMapping[str, str]):
 
     def as_list(self) -> list[tuple[str, str]]:
         return list(self.items())
+
+    @property
+    def raw_headers(self) -> list[tuple[bytes, bytes]]:
+        return [
+            (key.encode("latin-1"), value.encode("latin-1"))
+            for key, value in self.items()
+        ]
 
     def append(self, item: tuple[str, str]) -> None:
         key, value = item

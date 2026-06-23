@@ -1,0 +1,36 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1196"
+number: 1196
+slug: "plural-headers-collection-contract"
+title: "Plural headers collection contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Plural headers collection contract"
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created to govern additive HeadersSpec and HeadersBase rollout without changing existing plain header maps."
+    at: "2026-06-23T22:13:53Z"
+references: []
+body: |-
+  ## Decision
+  Tigrbl models HTTP headers as plural collection surfaces.
+
+  `HeadersSpec` is the declarative collection contract in `tigrbl_core` when header collection metadata is required. `HeadersBase` owns reusable mapping behavior in `tigrbl_base`. Concrete request and response objects may accept both while preserving existing plain mapping inputs.
+
+  ## Constraints
+  - The canonical naming is plural: `HeadersSpec`, `HeadersBase`, and `Headers`.
+  - `RequestSpec.headers` and `ResponseSpec.headers` must preserve the existing plain string-map shape.
+  - A singular `HeaderSpec` is reserved for a future per-header declaration object, if one is ever needed.
+  - Runtime implementations must keep case-insensitive lookup and transport raw-header projection behavior.
+
+  ## Consequences
+  - New declarative header metadata belongs in `HeadersSpec`.
+  - Shared header collection behavior belongs in `HeadersBase`.
+  - Concrete header ergonomics remain in `tigrbl_concrete`.
+  - Existing AppSpec JSON that uses `"headers": {"X": "Y"}` remains valid.

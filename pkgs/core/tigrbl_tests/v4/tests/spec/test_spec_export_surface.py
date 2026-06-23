@@ -14,6 +14,7 @@ def test_public_facade_exports_governed_spec_contracts() -> None:
         "IOSpec",
         "StorageSpec",
         "ForeignKeySpec",
+        "HeadersSpec",
         "OpSpec",
         "ResponseSpec",
     )

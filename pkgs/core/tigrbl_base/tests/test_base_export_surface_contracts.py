@@ -15,6 +15,8 @@ _BASE_EXPORT_CASES = [
     ("EngineBase", "tigrbl_base._base._engine_base"),
     ("EngineProviderBase", "tigrbl_base._base._engine_provider_base"),
     ("ForeignKeyBase", "tigrbl_base._base._storage"),
+    ("HeaderCookiesBase", "tigrbl_base._base._headers_base"),
+    ("HeadersBase", "tigrbl_base._base._headers_base"),
     ("RequestBase", "tigrbl_base._base._request_base"),
     ("RouterBase", "tigrbl_base._base._router_base"),
     ("SchemaBase", "tigrbl_base._base._schema_base"),

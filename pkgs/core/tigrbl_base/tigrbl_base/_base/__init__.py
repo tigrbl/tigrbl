@@ -13,6 +13,8 @@ _EXPORTS = {
     "AliasBase": "_alias_base",
     "EngineBase": "_engine_base",
     "EngineProviderBase": "_engine_provider_base",
+    "HeaderCookiesBase": "_headers_base",
+    "HeadersBase": "_headers_base",
     "HookBase": "_hook_base",
     "RouterBase": "_router_base",
     "ForeignKeyBase": "_storage",

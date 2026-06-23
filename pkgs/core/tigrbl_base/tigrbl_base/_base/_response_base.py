@@ -38,18 +38,13 @@ class ResponseBase(ResponseSpec):
         payload = (
             body if body is not None else (content if content is not None else b"")
         )
-        normalized_headers = {
-            str(key).lower(): str(value)
-            for key, value in (
-                headers.items() if hasattr(headers, "items") else (headers or [])
-            )
-        }
+        headers_base = HeadersBase(headers)
 
         super().__init__(
             kind=kind,
             media_type=media_type,
             status_code=status_code,
-            headers=dict(normalized_headers),
+            headers=dict(headers_base),
             envelope=envelope,
             template=template,
             filename=filename,
@@ -59,15 +54,13 @@ class ResponseBase(ResponseSpec):
             redirect_to=redirect_to,
         )
         self.status_code = status_code
-        self.headers: HeadersBase = HeadersBase(normalized_headers)
+        self.headers: HeadersBase = headers_base
         self.body = payload
         self.media_type = media_type
 
     @property
     def raw_headers(self) -> list[tuple[bytes, bytes]]:
-        return [
-            (k.encode("latin-1"), v.encode("latin-1")) for k, v in self.headers.items()
-        ]
+        return self.headers.raw_headers
 
     @property
     def headers_map(self) -> HeadersBase:

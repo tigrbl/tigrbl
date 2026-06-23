@@ -52,6 +52,7 @@ _EXPORTS = {
     "validate_docs_uix_path": "docs_spec",
     "FieldSpec": "field_spec",
     "F": "field_spec",
+    "HeadersSpec": "headers_spec",
     "BaseTypeAdapter": "datatypes",
     "HookSpec": "hook_spec",
     "IOSpec": "io_spec",
