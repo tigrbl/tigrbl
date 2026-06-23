@@ -158,6 +158,12 @@ Use the facade for application code unless you are maintaining a framework layer
 
 The facade is the normal application authoring surface. Use `docs/developer/AUTHORING_BCP.md` for the full policy; this package README keeps the public-package guidance explicit because it is the README most application developers see first.
 
+If you are translating concepts from Starlette, FastAPI, ASGI 3, WebSocket,
+WebTransport, SQLAlchemy, or backend-specific SQL engines, start with
+[`docs/developer/EQUIVALENCE_INDEX.md`](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/EQUIVALENCE_INDEX.md).
+Those guides describe analogous lower-layer concepts while keeping Tigrbl-owned
+authoring surfaces as the application contract.
+
 Do:
 
 - Do import application-facing classes, decorators, helpers, and shortcuts from `tigrbl` unless you are intentionally maintaining a lower-level package.
@@ -419,6 +425,10 @@ Choose `tigrbl` when you want the full public facade: app composition, schema-fi
 ## Documentation Links
 
 - [Workspace docs](https://github.com/tigrbl/tigrbl/blob/master/docs/README.md)
+- [Equivalence guide index](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/EQUIVALENCE_INDEX.md)
+- [Application authoring equivalence](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/AUTHORING_EQUIVALENCE.md)
+- [Transport equivalence](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/TRANSPORT_EQUIVALENCE.md)
+- [Engine and SQL equivalence](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/ENGINE_SQL_EQUIVALENCE.md)
 - [Transports and framing](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/TRANSPORTS_AND_FRAMING.md)
 - [Package catalog](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_CATALOG.md)
 - [Package layout](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/PACKAGE_LAYOUT.md)

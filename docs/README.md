@@ -20,8 +20,12 @@ The authoritative source of truth for governed repository state is `.ssot/regist
 8. `conformance/README.md`
 9. `conformance/CURRENT_TARGET.md`
 10. `developer/AUTHORING_BCP.md`
-11. `developer/TRANSPORTS_AND_FRAMING.md`
-12. `governance/DOC_POINTERS.md`
+11. `developer/EQUIVALENCE_INDEX.md`
+12. `developer/AUTHORING_EQUIVALENCE.md`
+13. `developer/TRANSPORT_EQUIVALENCE.md`
+14. `developer/ENGINE_SQL_EQUIVALENCE.md`
+15. `developer/TRANSPORTS_AND_FRAMING.md`
+16. `governance/DOC_POINTERS.md`
 
 ## Sections
 
@@ -29,7 +33,7 @@ The authoritative source of truth for governed repository state is `.ssot/regist
 - `conformance/` - non-authoritative narrative and evidence projections for the frozen current target, dev/release bundles, gates, release history, archived legacy material, and audit/checkpoint evidence
 - `.ssot/adr/` - authoritative architectural decisions that govern the current target, the handoff boundary, and next-target work
 - `.ssot/specs/` - authoritative normative specs for the SSOT model and repo-governed contracts
-- `developer/` - non-authoritative operator and developer guidance for authoring BCPs, transport and framing support, operator surfaces, operator reference pages, the implemented CLI surface, the certification lane model, package inventory, and CI validation guidance
+- `developer/` - non-authoritative operator and developer guidance for authoring BCPs, application/transport/engine equivalence maps, transport and framing support, operator surfaces, operator reference pages, the implemented CLI surface, the certification lane model, package inventory, and CI validation guidance
 - `release-notes/` - governed release-note entry point and release-note claim policy examples
 - `notes/` - work-in-progress and archived notes
 - `conformance/archive/` - archived legacy status/build proof materials retained for traceability

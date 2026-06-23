@@ -4,6 +4,10 @@ Tigrbl is a schema-first ASGI framework family with a transport-aware runtime mo
 
 This page is the reader-facing transport and framing map for the current checkout. The normative contracts remain the SSOT registry and authored SPEC rows; this document consolidates them into one practical reference.
 
+For a translation guide comparing these surfaces to ASGI 3, Starlette,
+FastAPI, WebSocket, and WebTransport concepts, see
+`docs/developer/TRANSPORT_EQUIVALENCE.md`.
+
 ## Status Legend
 
 | Status | Meaning |

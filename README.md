@@ -240,6 +240,12 @@ Use the facade for application code unless you are maintaining a framework layer
 
 Tigrbl application code should stay on Tigrbl-owned authoring surfaces. The detailed policy is in [`docs/developer/AUTHORING_BCP.md`](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/AUTHORING_BCP.md); this root README states the repository-level rule for contributors, examples, package docs, and workspace maintenance.
 
+For readers translating from Starlette, FastAPI, ASGI 3, WebSocket, WebTransport,
+SQLAlchemy, or database-engine concepts, use
+[`docs/developer/EQUIVALENCE_INDEX.md`](docs/developer/EQUIVALENCE_INDEX.md).
+Those guides explain nearby concepts without making lower-layer frameworks the
+Tigrbl application authoring contract.
+
 Do:
 
 - Do build application services with `TigrblApp`, `TigrblRouter`, Tigrbl facade decorators, table helpers, column helpers, operation specs, hook specs, binding specs, engine specs, and generated schemas.
@@ -427,6 +433,10 @@ Tigrbl runtime execution is Python-only. Rust-named runtime, kernel, atom, handl
 ## Canonical Repository Docs
 
 - `docs/README.md`
+- `docs/developer/EQUIVALENCE_INDEX.md`
+- `docs/developer/AUTHORING_EQUIVALENCE.md`
+- `docs/developer/TRANSPORT_EQUIVALENCE.md`
+- `docs/developer/ENGINE_SQL_EQUIVALENCE.md`
 - `docs/developer/TRANSPORTS_AND_FRAMING.md`
 - `docs/conformance/README.md`
 - `docs/conformance/CURRENT_TARGET.md`

@@ -1,0 +1,95 @@
+# Application Authoring Equivalence
+
+This document compares Tigrbl application authoring to Starlette and FastAPI.
+It is a translation guide, not a policy replacement. The application-facing
+policy remains `docs/developer/AUTHORING_BCP.md`, and governed claims remain in
+SSOT entities.
+
+Tigrbl is the normative column in this document. Starlette and FastAPI columns
+explain nearby concepts for readers who know those frameworks.
+
+## Core Rule
+
+Application code should describe service behavior through Tigrbl-owned
+authoring surfaces:
+
+- app, router, path, table, column, operation, hook, response, binding, engine,
+  docs, session, and middleware specs;
+- facade classes and helpers such as `TigrblApp`, `TigrblRouter`, table
+  classes, column helpers, decorators, schema helpers, and engine helpers;
+- operation specs and table profiles that lower into REST, JSON-RPC, streaming,
+  SSE, WebSocket, WebTransport-aware runtime planning, docs, diagnostics, and
+  tests.
+
+Starlette and FastAPI authoring surfaces are analogous where they solve a
+similar web-framework problem. They are not equivalent as Tigrbl application
+contracts when they become the source of endpoint, schema, operation,
+transaction, or docs behavior.
+
+## Application Authoring Matrix
+
+| Intent | Tigrbl authoring surface | Starlette analogue | FastAPI analogue | Equivalence level | Notes |
+|---|---|---|---|---|---|
+| ASGI app object | `TigrblApp`, `AppSpec`, app factories | `Starlette(...)` | `FastAPI(...)` | Equivalent only at ASGI callable boundary | All can be served as ASGI apps, but Tigrbl semantics sit above the callable boundary. |
+| Router composition | `TigrblRouter`, `RouterSpec`, `include_router` | `Router`, `Mount`, `Route` lists | `APIRouter`, `include_router` | Analogous | Tigrbl routers carry table, operation, docs, engine, hook, and diagnostics intent. |
+| Route/path declaration | `PathSpec`, table inclusion, operation bindings | `Route`, `WebSocketRoute`, `Mount` | Path operation decorators | Analogous | In Tigrbl, paths are projections from operation and binding intent, not the semantic root. |
+| Domain operation | `OpSpec`, canonical verbs, operation-pack verbs, custom op specs | Endpoint callable plus route metadata | Path operation function plus metadata | Not equivalent | Tigrbl operation identity must remain visible to REST, JSON-RPC, schemas, hooks, diagnostics, and runtime plans. |
+| Resource/table model | Tigrbl table classes, `TableSpec`, `TableProfileSpec` | No built-in equivalent | No built-in equivalent | Tigrbl-specific | Starlette/FastAPI usually combine Pydantic, ORM, and handler code outside the framework core. |
+| Field declaration | Column helpers, `ColumnSpec`, `FieldSpec`, `IOSpec`, `StorageSpec`, `DataTypeSpec` | No built-in equivalent | Pydantic fields and external ORM columns | Tigrbl-specific | Tigrbl separates schema, validation, storage, IO, docs, and runtime behavior before lowering. |
+| Request/response schemas | `SchemaSpec`, `SchemaRef`, `get_schema(...)`, schema decorators | User-defined validation layer | Pydantic request and response models | Analogous | Tigrbl schemas derive from table/column/operation intent where possible. |
+| Handler logic | `OpSpec.handler`, `op_ctx`, table operation handlers | Endpoint callable | Path operation function | Analogous with different authority | Handler logic should remain attached to an operation, not hidden behind a transport-only route. |
+| Dependencies | `deps`, `security_deps`, dependency helpers, lifecycle phases | Endpoint dependencies through custom code | `Depends(...)` and security dependencies | Analogous | In Tigrbl, dependency placement must preserve operation diagnostics and phase ordering. |
+| Authorization and validation | Security deps, hooks, operation specs, policy hooks | Middleware or endpoint code | Dependencies, middleware, route code | Analogous | Prefer Tigrbl security deps or hooks over route-specific wrappers. |
+| Middleware | `MiddlewareSpec`, facade middleware helpers, concrete middleware support | `Middleware(...)` | `add_middleware(...)` | Analogous | Middleware can be configured, but model behavior should stay in operations and hooks. |
+| Lifecycle and side effects | Hook phases, runtime phases, atoms, transaction boundaries | Lifespan, middleware, background tasks | Lifespan, dependencies, background tasks | Not equivalent | Tigrbl phase semantics are part of operation/runtime planning. |
+| Transactions and sessions | `EngineSpec`, engine binding, session policy, runtime phases | User-managed state or extensions | User-managed dependency/session patterns | Not equivalent | Tigrbl runtime owns guarded transaction progression. |
+| Docs generation | OpenAPI, OpenRPC, JSON Schema, docs UIX derived from Tigrbl surfaces | No built-in OpenAPI | Built-in OpenAPI | Analogous output, different authority | Tigrbl docs should derive from operation/binding/schema intent, not FastAPI route metadata. |
+| Diagnostics | `/system/methodz`, `/system/hookz`, `/system/kernelz` | No built-in equivalent | No built-in equivalent | Tigrbl-specific | Diagnostics inspect Tigrbl registration and runtime plans. |
+| Static files and mounted apps | Tigrbl system/static/mount helpers and app/router mounting | `StaticFiles`, `Mount` | `StaticFiles`, `mount` | Analogous | Mounted apps do not become operation semantics unless declared that way. |
+| Errors and response shaping | `ResponseSpec`, response decorators, typed exceptions, transport response shaping | `Response`, `HTTPException` | `Response`, `HTTPException` | Analogous | Tigrbl should keep response shaping aligned across bindings where the operation declares parity. |
+| Testing surface | Tigrbl app plus diagnostics, docs, and protocol projections | ASGI client and endpoint tests | TestClient and OpenAPI tests | Analogous | Tests should assert Tigrbl operation, schema, docs, and binding behavior, not only route calls. |
+
+## Common Translations
+
+| If you would write this in Starlette or FastAPI | In Tigrbl, start with | Why |
+|---|---|---|
+| Add `GET /items/{id}` | A table canonical `read` op or explicit `OpSpec` with REST binding | The same operation can also project to JSON-RPC, docs, hooks, schemas, and diagnostics. |
+| Add `POST /items` | A canonical `create` op or table profile that selects `create` | Input schema, persistence, hooks, response, and docs stay attached to one operation identity. |
+| Add `APIRouter(prefix="/v1")` | `TigrblRouter` or `RouterSpec` with prefix/scope policy | Router metadata can include table, engine, dependency, docs, and hook intent. |
+| Add `Depends(get_db)` | Declarative engine binding plus runtime session policy | Runtime phases own session and transaction progression. |
+| Add `Depends(require_user)` | `security_deps` or `PRE_HANDLER` hook | Security remains visible to operation compilation and diagnostics. |
+| Add a Pydantic request model | Column/schema specs or operation schema overrides | Reusable rules should not drift across Pydantic, ORM, docs, and handlers. |
+| Add `@app.websocket(...)` | `WsBindingSpec`, `websocket_ctx`, or a WebSocket table profile | WebSocket framing, exchange, and subprotocol metadata must be declared explicitly. |
+| Add `StreamingResponse` | `HttpStreamBindingSpec`, `stream_ctx`, or stream table profile | Streaming should be a binding/runtime property, not only a response object. |
+| Add raw SQLAlchemy `mapped_column(...)` | Tigrbl column helper or `ColumnSpec` when the field belongs to a Tigrbl table | SQLAlchemy is a lowering target and implementation substrate. |
+
+## Non-Equivalence Rules
+
+- A Starlette or FastAPI route is not equivalent to a Tigrbl operation unless
+  the Tigrbl operation identity, schema, binding, docs, hooks, diagnostics, and
+  runtime behavior are preserved.
+- A FastAPI dependency is not automatically equivalent to a Tigrbl dependency
+  or security dependency. Phase ordering and diagnostics matter.
+- A Pydantic model is not equivalent to a Tigrbl table or column contract.
+  Tigrbl separates logical datatype, validation, IO, storage, docs, and runtime
+  projection.
+- A SQLAlchemy ORM model is not equivalent to a Tigrbl table authoring surface
+  when Tigrbl specs can represent the behavior.
+- A docs page generated by another framework is not an authority for Tigrbl
+  surface support.
+
+## Allowed Lower-Layer Uses
+
+Starlette, FastAPI, SQLAlchemy, raw ASGI callables, and direct database APIs may
+appear when the code is explicitly one of these:
+
+- framework internals;
+- concrete adapters;
+- engine adapters;
+- compatibility tests;
+- migration aids;
+- benchmarks;
+- lower-layer examples that are clearly labeled as such.
+
+They should not be presented as the recommended application authoring path for
+new Tigrbl services.

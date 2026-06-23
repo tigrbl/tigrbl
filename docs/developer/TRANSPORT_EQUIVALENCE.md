@@ -1,0 +1,122 @@
+# Transport, ASGI, and WebSocket Equivalence
+
+This document compares Tigrbl transport semantics to ASGI 3, Starlette, and
+FastAPI surfaces. It complements `TRANSPORTS_AND_FRAMING.md`, which remains the
+reader-facing transport and framing map for the current checkout.
+
+## Core Rule
+
+ASGI 3 is the server callable boundary:
+
+```python
+async def app(scope, receive, send):
+    ...
+```
+
+Tigrbl preserves that boundary. It does not replace ASGI with a custom app
+contract. Tigrbl runtime semantics sit above ASGI through explicit projection
+from scope, receive, send, binding declarations, runtime classification,
+channel metadata, and compiled operation plans.
+
+Equivalence should be evaluated at the semantic operation outcome for declared
+compatible bindings. It should not compare envelopes, connection metadata,
+framing artifacts, HTTP version mechanics, or delivery guarantees unless those
+details are declared as semantic behavior.
+
+## Transport Matrix
+
+| Surface | Tigrbl surface | ASGI / Starlette / FastAPI analogue | Equivalence level | Notes |
+|---|---|---|---|---|
+| ASGI app callable | `TigrblApp` / `TigrblRouter` mounted behind ASGI | Any ASGI 3 app | Equivalent only at callable boundary | The callable shape is shared; semantic authority is not. |
+| HTTP request/response | `HttpRestBindingSpec`, `HTTPBindingSpec(profile="rest")` | HTTP route / path operation | Equivalent for declared operation outcomes | Tigrbl owns operation identity, schema, hooks, diagnostics, and lifecycle. |
+| JSON-RPC over HTTP | `HttpJsonRpcBindingSpec`, `HTTPBindingSpec(profile="jsonrpc")` | Custom HTTP route in Starlette/FastAPI | Tigrbl-specific projection | JSON-RPC method identity and OpenRPC output are first-class Tigrbl projections. |
+| HTTP request stream | `HttpStreamBindingSpec(exchange="client_stream")` | Request body iteration | Analogous | The stream must be declared in binding/runtime metadata. |
+| HTTP response stream | `HttpStreamBindingSpec(exchange="server_stream")` | Streaming response | Analogous | A streaming response object alone is not the semantic contract. |
+| SSE | `SseBindingSpec`, event stream table/profile support | `StreamingResponse` with `text/event-stream` or extension helpers | Analogous | SSE framing is exclusive to SSE bindings. |
+| WebSocket text | `WsBindingSpec` or `WebSocketBindingSpec` with text framing | WebSocket endpoint | Equivalent for declared message semantics | Socket lifecycle is delegated; message semantics are Tigrbl runtime behavior. |
+| WebSocket JSON-RPC | WebSocket binding with `framing="jsonrpc"` and matching subprotocol/contract gate | Custom WebSocket handler | Analogous, not automatic | JSON-RPC framing and subprotocol negotiation are distinct fields. |
+| WebSocket NDJSON | WebSocket binding with `framing="ndjson"` and matching subprotocol/contract gate | Custom WebSocket handler | Active line / fail-closed unless declared | NDJSON is not JSON-RPC. |
+| WebTransport session | `WebTransportBindingSpec(profile="session")` | ASGI extension or delegated server support | Provisional / delegated | Session lane carries lifecycle metadata, not application payload frames. |
+| WebTransport bidi stream | `WebTransportBindingSpec(profile="bidi_stream")` | Delegated HTTP/3/WebTransport stack | Provisional / delegated | Inner framing must be valid for the lane. |
+| WebTransport unidi client stream | `WebTransportBindingSpec(profile="unidi_client_stream")` | Delegated HTTP/3/WebTransport stack | Provisional / delegated | Client-initiated stream metadata must be preserved. |
+| WebTransport unidi server stream | `WebTransportBindingSpec(profile="unidi_server_stream")` | Delegated HTTP/3/WebTransport stack | Provisional / delegated | Server-initiated stream metadata must be preserved. |
+| WebTransport datagram | `WebTransportBindingSpec(profile="datagram")` | Delegated HTTP/3/WebTransport stack | Provisional / delegated | Datagram lanes reject JSON-RPC and NDJSON. |
+| HTTP/1.1 wire mechanics | Binding metadata and body carrier modeling | Server/runtime stack | Delegated | Tigrbl does not own h11 parsing, TLS, or socket behavior. |
+| HTTP/2 wire mechanics | Binding metadata and runtime capability metadata | Server/runtime stack | Delegated | Stream IDs, flow control, and HPACK are server/runtime concerns. |
+| HTTP/3 and QUIC mechanics | Plain H3 carrier modeling separate from WebTransport lanes | Server/runtime stack | Delegated | QUIC, QPACK, ALPN, TLS, and flow control remain outside framework-owned conformance. |
+
+## ASGI Projection
+
+| ASGI input | Tigrbl projection | Equivalence note |
+|---|---|---|
+| `scope.type == "http"` | HTTP request, REST, JSON-RPC, stream, or SSE binding context depending on declared binding | Scope type alone does not choose operation semantics. |
+| `scope.type == "websocket"` | WebSocket message/session context with declared framing and subprotocol metadata | WebSocket transport does not imply JSON-RPC or NDJSON. |
+| `scope.type == "lifespan"` | App startup/shutdown behavior where supported by the concrete/runtime layer | Lifespan is not a callback or webhook API. |
+| ASGI `receive` body events | Request body, stream, or message inputs after binding classification | Raw event shape is projection input, not semantic authority. |
+| ASGI `send` events | Response, stream, event, socket, or completion output after runtime planning | Transport emission must follow declared binding and lifecycle rules. |
+| Server extension metadata | Normalized or trace-only metadata when allowlisted | Server-specific fields must not silently become canonical runtime state. |
+
+## WebSocket Rules
+
+Tigrbl keeps these concepts separate:
+
+| Concept | Tigrbl field | Rule |
+|---|---|---|
+| Transport security | `proto` | `ws` and `wss` are transport variants. |
+| Handshake negotiation | `subprotocols` | JSON-RPC and NDJSON require explicit matching subprotocol or contract gating. |
+| Message interpretation | `framing` | Text, bytes, binary, JSON, JSON-RPC, and NDJSON are distinct application framing modes. |
+| Runtime exchange | `exchange` | WebSocket message workflows use bidirectional stream semantics. |
+
+Subprotocol selection alone does not define decoding semantics. Framing alone
+does not prove the handshake contract. Documentation and runtime compilation
+should validate both fields from the binding graph.
+
+## WebTransport Rules
+
+WebTransport is modeled as outer transport identity plus lane-specific runtime
+metadata.
+
+| Lane | Runtime family | Allowed inner application framing | Equivalence note |
+|---|---|---|---|
+| `session` | session | none | Carries lifecycle metadata, not application payload frames. |
+| `bidi_stream` | stream | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson` | Bidirectional stream metadata must remain explicit. |
+| `unidi_client_stream` | stream | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson` | Direction is client to server. |
+| `unidi_server_stream` | stream | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson` | Direction is server to client. |
+| `datagram` | datagram | `bytes`, `binary`, `text`, `json` | JSON-RPC and NDJSON are intentionally excluded. |
+
+Plain HTTP/3 bindings must not claim WebTransport streams or datagrams.
+WebTransport outer framing does not define inner application framing.
+
+## Cross-Transport Equivalence
+
+An operation can participate in cross-transport equivalence only when it
+declares semantic compatibility with the transport, framing, delivery mode, and
+runtime lifecycle being compared.
+
+Good equivalence questions:
+
+- Does `Widget.read` return the same semantic row through REST and JSON-RPC?
+- Does a declared WebSocket JSON-RPC message produce the same operation outcome
+  as HTTP JSON-RPC when the operation declares that compatibility?
+- Does a stream operation preserve declared ordering, completion, and error
+  semantics across compatible stream bindings?
+
+Bad equivalence questions:
+
+- Does a REST response envelope byte-for-byte match a JSON-RPC response?
+- Does WebSocket metadata match HTTP request metadata?
+- Does HTTP/3 stream behavior prove WebTransport lane behavior?
+- Does a server-specific ASGI extension field define a Tigrbl runtime
+  guarantee?
+
+## Source Pointers
+
+- `docs/developer/TRANSPORTS_AND_FRAMING.md`
+- `pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py`
+- `.ssot/adr/ADR-1005-asgi3-boundary-and-projection-rules.yaml`
+- `.ssot/adr/ADR-1020-asgi-is-projection-input-not-semantic-authority.yaml`
+- `.ssot/adr/ADR-1061-tigrbl-runtime-semantics-sit-above-asgi.yaml`
+- `.ssot/adr/ADR-1131-websocket-binding-framing-and-subprotocol-policy.yaml`
+- `.ssot/adr/ADR-1133-app-level-framing-support-policy.yaml`
+- `.ssot/adr/ADR-1167-cross-transport-equivalence-is-semantic-not-envelope-parity.yaml`
+- `.ssot/adr/ADR-1168-unsupported-or-non-equivalent-bindings-are-excluded-from-equivalence.yaml`
