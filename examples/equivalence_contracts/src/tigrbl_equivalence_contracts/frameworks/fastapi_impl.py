@@ -5,6 +5,7 @@ from pydantic import BaseModel
 from sqlalchemy import String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
+from tigrbl_equivalence_contracts.runtime import TABLE_CLASS_SURFACES
 
 
 class Base(DeclarativeBase):
@@ -38,6 +39,11 @@ class WidgetOut(BaseModel):
 
 
 app = FastAPI()
+
+
+@app.get("/healthz")
+def healthz() -> dict[str, str]:
+    return {"status": "ok"}
 
 
 @app.post("/widget", response_model=WidgetOut, status_code=201)
@@ -87,3 +93,25 @@ def delete_widget(id: str) -> dict[str, int]:
         session.delete(row)
         session.commit()
         return {"deleted": 1}
+
+
+def _table_surface_response(table_class: str, path: str, method: str):
+    def route(item_id: str | None = None) -> dict[str, str | None]:
+        return {
+            "table_class": table_class,
+            "path": path,
+            "method": method,
+            "item_id": item_id,
+        }
+
+    return route
+
+
+for surface in TABLE_CLASS_SURFACES:
+    for route_path, methods in surface["routes"]:
+        for method in methods:
+            app.add_api_route(
+                route_path,
+                _table_surface_response(surface["class_name"], route_path, method),
+                methods=[method],
+            )

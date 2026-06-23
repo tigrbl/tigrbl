@@ -12,7 +12,12 @@ from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Literal
 
-from .runtime import ServerKind, assert_widget_rest_crud_over_http
+from .runtime import (
+    TABLE_CLASS_SURFACES,
+    ServerKind,
+    assert_table_class_surface_over_http,
+    assert_widget_rest_crud_over_http,
+)
 
 EquivalenceStatus = Literal[
     "equivalent",
@@ -33,13 +38,16 @@ class FrameworkImplementation:
     code_ref: str
     app: Callable[[], Any]
     server_kind: ServerKind
-    exercise: Callable[[Any, ServerKind], Any]
+    exercise: Callable[..., Any]
+    exercise_args: tuple[Any, ...]
     normalize: Callable[[Any], Any]
 
     def certify(self) -> Any:
         """Serve the framework app and return normalized proof evidence."""
 
-        return self.normalize(self.exercise(self.app(), self.server_kind))
+        return self.normalize(
+            self.exercise(self.app(), self.server_kind, *self.exercise_args)
+        )
 
 
 @dataclass(frozen=True)
@@ -134,7 +142,8 @@ def _impl(
     code_ref: str,
     app: Callable[[], Any],
     server_kind: ServerKind,
-    exercise: Callable[[Any, ServerKind], Any],
+    exercise: Callable[..., Any],
+    exercise_args: tuple[Any, ...],
     normalize: Callable[[Any], Any],
 ) -> FrameworkImplementation:
     return FrameworkImplementation(
@@ -143,6 +152,7 @@ def _impl(
         app=app,
         server_kind=server_kind,
         exercise=exercise,
+        exercise_args=exercise_args,
         normalize=normalize,
     )
 
@@ -159,6 +169,7 @@ def _rest_crud_case(
             _lazy_attr("tigrbl_impl", tigrbl_attr),
             "asgi",
             assert_widget_rest_crud_over_http,
+            (),
             lambda result: result,
         ),
         _impl(
@@ -167,6 +178,7 @@ def _rest_crud_case(
             _lazy_attr("fastapi_impl", fastapi_attr),
             "asgi",
             assert_widget_rest_crud_over_http,
+            (),
             lambda result: result,
         ),
         _impl(
@@ -175,6 +187,41 @@ def _rest_crud_case(
             _lazy_attr("flask_impl", flask_attr),
             "wsgi",
             assert_widget_rest_crud_over_http,
+            (),
+            lambda result: result,
+        ),
+    )
+
+
+def _table_class_surface_case(
+    surface: dict[str, Any],
+) -> tuple[FrameworkImplementation, ...]:
+    return (
+        _impl(
+            "tigrbl",
+            "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
+            _lazy_attr("tigrbl_impl", "app"),
+            "asgi",
+            assert_table_class_surface_over_http,
+            (surface,),
+            lambda result: result,
+        ),
+        _impl(
+            "fastapi",
+            "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
+            _lazy_attr("fastapi_impl", "app"),
+            "asgi",
+            assert_table_class_surface_over_http,
+            (surface,),
+            lambda result: result,
+        ),
+        _impl(
+            "flask",
+            "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
+            _lazy_attr("flask_impl", "app"),
+            "wsgi",
+            assert_table_class_surface_over_http,
+            (surface,),
             lambda result: result,
         ),
     )
@@ -203,21 +250,47 @@ def _assert_all_equal(values: Any, message: str) -> None:
         raise AssertionError(f"{message}: {items!r}")
 
 
-CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
-    CertifiableEquivalence(
-        id="rest-crud.widget",
-        category="rest-crud",
-        intent="Author REST CRUD for a Widget resource with id and name columns.",
+_WIDGET_REST_CRUD_EQUIVALENCE = CertifiableEquivalence(
+    id="rest-crud.widget",
+    category="rest-crud",
+    intent="Author REST CRUD for a Widget resource with id and name columns.",
+    status="analogous",
+    claim="Tigrbl RestTable, FastAPI routes, and Flask routes can expose the same Widget REST CRUD surface.",
+    source_documents=(
+        "docs/developer/AUTHORING_EQUIVALENCE.md",
+        "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
+    ),
+    implementations=_rest_crud_case(
+        "app",
+        "app",
+        "app",
+    ),
+)
+
+
+def _table_class_equivalence(surface: dict[str, Any]) -> CertifiableEquivalence:
+    class_name = surface["class_name"]
+    return CertifiableEquivalence(
+        id=f"table-class.{surface['slug']}",
+        category="table-class",
+        intent=(
+            f"Author a Widget resource with Tigrbl {class_name} and compare its "
+            "projected route surface to FastAPI and Flask."
+        ),
         status="analogous",
-        claim="Tigrbl RestTable, FastAPI routes, and Flask routes can expose the same Widget REST CRUD surface.",
+        claim=(
+            f"Tigrbl {class_name}, FastAPI routes, and Flask routes can expose "
+            "the same Widget route surface for the table class."
+        ),
         source_documents=(
             "docs/developer/AUTHORING_EQUIVALENCE.md",
             "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
         ),
-        implementations=_rest_crud_case(
-            "app",
-            "app",
-            "app",
-        ),
-    ),
+        implementations=_table_class_surface_case(surface),
+    )
+
+
+CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
+    _WIDGET_REST_CRUD_EQUIVALENCE,
+    *tuple(_table_class_equivalence(surface) for surface in TABLE_CLASS_SURFACES),
 )

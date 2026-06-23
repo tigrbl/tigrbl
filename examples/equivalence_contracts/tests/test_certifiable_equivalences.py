@@ -6,7 +6,10 @@ from tigrbl_equivalence_contracts import (
     equivalence_by_id,
     matrix_rows,
 )
-from tigrbl_equivalence_contracts.runtime import EXPECTED_WIDGET_CRUD_EVIDENCE
+from tigrbl_equivalence_contracts.runtime import (
+    EXPECTED_WIDGET_CRUD_EVIDENCE,
+    TABLE_CLASS_SURFACES,
+)
 
 
 def test_every_declared_equivalence_certifies() -> None:
@@ -42,16 +45,24 @@ def test_widget_rest_crud_equivalence_has_tigrbl_fastapi_flask_code() -> None:
     }
 
 
-def test_matrix_only_tracks_widget_rest_crud() -> None:
-    assert matrix_rows() == (
-        {
-            "id": "rest-crud.widget",
-            "category": "rest-crud",
-            "intent": "Author REST CRUD for a Widget resource with id and name columns.",
-            "status": "analogous",
-            "tigrbl": "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
-            "fastapi": "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
-            "flask": "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
-            "test": "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
-        },
-    )
+def test_matrix_tracks_one_equivalence_per_concrete_tigrbl_table_class() -> None:
+    rows = matrix_rows()
+    table_rows = [row for row in rows if row["category"] == "table-class"]
+
+    assert len(table_rows) == len(TABLE_CLASS_SURFACES)
+    assert {row["id"] for row in table_rows} == {
+        f"table-class.{surface['slug']}" for surface in TABLE_CLASS_SURFACES
+    }
+    assert all(row["status"] == "analogous" for row in table_rows)
+
+
+def test_each_table_class_equivalence_certifies_expected_route_surface() -> None:
+    for surface in TABLE_CLASS_SURFACES:
+        result = equivalence_by_id(f"table-class.{surface['slug']}").certify()
+
+        assert result.status == "analogous"
+        assert set(result.evidence["observed"]) == {"tigrbl", "fastapi", "flask"}
+        assert result.evidence["observed"]["tigrbl"] == tuple(
+            {"path": path, "methods": tuple(methods)}
+            for path, methods in surface["routes"]
+        )
