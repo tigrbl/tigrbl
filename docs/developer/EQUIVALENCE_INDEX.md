@@ -49,6 +49,16 @@ of being coerced into a lossy comparison.
 | Authoring policy | `AUTHORING_BCP.md` | Current application-facing Tigrbl authoring policy. |
 | Transport and framing map | `TRANSPORTS_AND_FRAMING.md` | Current transport surface, framing matrix, fail-closed rules, and source pointers. |
 
+## Generated Sections
+
+The equivalence guides contain generated blocks for live facade exports,
+binding/framing support, WebTransport lanes, engine package entry points,
+datatype lowering, reflection hints, and built-in table profiles.
+
+Use `python tools/docs/update_equivalence_docs.py --write` after changing the
+source inputs. CI runs `tools/ci/validate_equivalence_docs.py` to fail when
+those generated blocks drift.
+
 ## Reader Path
 
 1. Start with `AUTHORING_BCP.md` to understand the current application

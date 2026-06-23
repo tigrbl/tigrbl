@@ -21,6 +21,7 @@ Tools are not tests unless they are registered as SSOT test entities for a speci
 - `tools/ci/validate_package_layout.py`
 - `tools/ci/validate_doc_pointers.py`
 - `tools/ci/validate_authoring_bcp_docs.py`
+- `tools/ci/validate_equivalence_docs.py`
 - `tools/ci/validate_root_clutter.py`
 - `tools/ci/validate_path_lengths.py`
 - `tools/ci/lint_claim_language.py`
@@ -48,6 +49,7 @@ Tools are not tests unless they are registered as SSOT test entities for a speci
 - package-local Markdown does not bypass the governed docs tree
 - required pointer documents exist and resolve to live files or directories
 - authoring BCP docs stay present, explicit, linked, and protected from application-facing README code examples that teach FastAPI, Starlette, Flask, raw SQLAlchemy column authoring, or direct DB/session transaction calls as normal Tigrbl style
+- equivalence-guide generated blocks stay synchronized with live facade exports, binding/framing support, WebTransport lane metadata, engine plugin package metadata, datatype lowering, reflection hints, and built-in table-profile definitions
 - root clutter and generated artifact directories are rejected
 - file names, directory names, and repository-relative paths stay within the governed limits
 - claim wording outside governance/conformance records does not overstate current release status

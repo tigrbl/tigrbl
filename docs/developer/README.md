@@ -10,6 +10,7 @@ This section collects developer-facing summaries and pointers.
 - `ROUTER_TABLE_EQUIVALENCE.md` - Tigrbl, FastAPI, and Flask router/table equivalence matrices
 - `TRANSPORT_EQUIVALENCE.md` - ASGI 3, HTTP, streaming, SSE, WebSocket, WebTransport, and delegated carrier equivalence guide
 - `ENGINE_SQL_EQUIVALENCE.md` - engine, SQLAlchemy, SQL dialect, datatype lowering, and backend plugin equivalence guide
+- Generated equivalence blocks are maintained with `tools/docs/update_equivalence_docs.py --write` and checked by `tools/ci/validate_equivalence_docs.py`
 - `TRANSPORTS_AND_FRAMING.md` - current transport surface, binding, stream, carrier, framing, and fail-closed reference
 - `API_REFERENCE.md` - high-level workspace and public surface inventory
 - `OPERATOR_SURFACES.md` - current operator surface status summary
