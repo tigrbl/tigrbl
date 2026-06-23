@@ -114,7 +114,7 @@ def _impl(
     )
 
 
-def _contract_case(
+def _rest_crud_case(
     tigrbl_attr: str,
     fastapi_attr: str,
     flask_attr: str,
@@ -124,29 +124,24 @@ def _contract_case(
             "tigrbl",
             "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
             _lazy_attr("tigrbl_impl", tigrbl_attr),
-            lambda value: value,
-            lambda result: _runtime_call("normalize_contract", result),
+            lambda demo: demo(),
+            lambda result: result,
         ),
         _impl(
             "fastapi",
             "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
             _lazy_attr("fastapi_impl", fastapi_attr),
-            lambda value: value,
-            lambda result: _runtime_call("normalize_contract", result),
+            lambda demo: demo(),
+            lambda result: result,
         ),
         _impl(
             "flask",
             "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
             _lazy_attr("flask_impl", flask_attr),
-            lambda value: value,
-            lambda result: _runtime_call("normalize_contract", result),
+            lambda demo: demo(),
+            lambda result: result,
         ),
     )
-
-
-def _runtime_call(attr_name: str, *args: Any) -> Any:
-    module = import_module("tigrbl_equivalence_contracts.runtime")
-    return getattr(module, attr_name)(*args)
 
 
 def _lazy_attr(module_name: str, attr_name: str) -> Callable[[], Any]:
@@ -179,10 +174,10 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
             "docs/developer/AUTHORING_EQUIVALENCE.md",
             "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
         ),
-        implementations=_contract_case(
-            "rest_crud_contract",
-            "rest_crud_contract",
-            "rest_crud_contract",
+        implementations=_rest_crud_case(
+            "assert_rest_crud_e2e",
+            "assert_rest_crud_e2e",
+            "assert_rest_crud_e2e",
         ),
     ),
 )

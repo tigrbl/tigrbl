@@ -32,18 +32,30 @@ def test_widget_rest_crud_equivalence_has_tigrbl_fastapi_flask_code() -> None:
     result = equivalence_by_id("rest-crud.widget").certify()
 
     assert result.status == "analogous"
-    assert result.evidence["observed"]["tigrbl"] == {
-        "resource": "Widget",
-        "table": "widgets",
-        "fields": {"id": "string", "name": "string"},
-        "routes": (
-            ("POST", "/widgets"),
-            ("GET", "/widgets"),
-            ("GET", "/widgets/{id}"),
-            ("PATCH", "/widgets/{id}"),
-            ("DELETE", "/widgets/{id}"),
-        ),
-    }
+    assert result.evidence["observed"]["tigrbl"] == (
+        {
+            "step": "create",
+            "status_code": 201,
+            "json": {"id": "widget-1", "name": "First"},
+        },
+        {
+            "step": "read_created",
+            "status_code": 200,
+            "json": {"id": "widget-1", "name": "First"},
+        },
+        {
+            "step": "list_created",
+            "status_code": 200,
+            "json": [{"id": "widget-1", "name": "First"}],
+        },
+        {
+            "step": "update",
+            "status_code": 200,
+            "json": {"id": "widget-1", "name": "Second"},
+        },
+        {"step": "delete", "status_code": 200, "json": {"deleted": 1}},
+        {"step": "list_deleted", "status_code": 200, "json": []},
+    )
     assert set(result.evidence["observed"]) == {"tigrbl", "fastapi", "flask"}
     assert result.evidence["code_refs"] == {
         "tigrbl": "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
