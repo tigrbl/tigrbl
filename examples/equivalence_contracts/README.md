@@ -12,11 +12,11 @@ python tools/ci/validate_equivalence_runtime_contracts.py
 Or run the local uv project directly:
 
 ```powershell
-uv run --project examples/equivalence_contracts --no-sync python -m unittest discover -s examples/equivalence_contracts/tests
+uv run --project examples/equivalence_contracts --group dev python -m pytest -q examples/equivalence_contracts/tests
 ```
 
-Or run the tests without uv:
+Or run the tests with an already prepared environment:
 
 ```powershell
-python -m unittest discover -s examples/equivalence_contracts/tests
+python -m pytest -q examples/equivalence_contracts/tests
 ```

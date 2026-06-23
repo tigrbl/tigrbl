@@ -1,13 +1,12 @@
 from __future__ import annotations
 
 import os
-from pathlib import Path
 import subprocess
 import sys
 
 sys.dont_write_bytecode = True
 
-from common import fail, repo_root
+from common import fail, repo_root  # noqa: E402
 
 
 ROOT = repo_root()
@@ -45,10 +44,13 @@ def main() -> None:
         [
             sys.executable,
             "-m",
-            "unittest",
-            "discover",
-            "-s",
+            "pytest",
+            "-q",
             "examples/equivalence_contracts/tests",
+            "-p",
+            "no:cacheprovider",
+            "--basetemp",
+            str(ROOT / ".tmp" / "equivalence-runtime-pytest"),
         ],
         cwd=ROOT,
         env=env,
