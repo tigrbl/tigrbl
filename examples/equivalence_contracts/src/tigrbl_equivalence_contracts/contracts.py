@@ -20,12 +20,12 @@ FrameworkName = Literal["tigrbl", "fastapi", "flask"]
 class FrameworkImplementation:
     framework: FrameworkName
     code_ref: str
-    build: Callable[[], Any]
+    implementation: Callable[[], Any]
     exercise: Callable[[Any], Any]
     normalize: Callable[[Any], Any]
 
     def certify(self) -> Any:
-        return self.normalize(self.exercise(self.build()))
+        return self.normalize(self.exercise(self.implementation()))
 
 
 @dataclass(frozen=True)
@@ -101,74 +101,72 @@ def matrix_rows() -> tuple[dict[str, str], ...]:
 def _impl(
     framework: FrameworkName,
     code_ref: str,
-    build: Callable[[], Any],
+    implementation: Callable[[], Any],
     exercise: Callable[[Any], Any],
     normalize: Callable[[Any], Any],
 ) -> FrameworkImplementation:
     return FrameworkImplementation(
         framework=framework,
         code_ref=code_ref,
-        build=build,
+        implementation=implementation,
         exercise=exercise,
         normalize=normalize,
     )
 
 
 def _http_get(path: str) -> tuple[FrameworkImplementation, ...]:
-    tigrbl_builder = "build_health_app" if path == "/health" else "build_router_app"
-    fastapi_builder = "build_health_app" if path == "/health" else "build_router_app"
-    flask_builder = "build_health_app" if path == "/health" else "build_router_app"
+    app_name = "health_app" if path == "/health" else "router_app"
     return (
         _impl(
             "tigrbl",
             "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
-            _lazy_builder("tigrbl_impl", tigrbl_builder),
+            _lazy_attr("tigrbl_impl", app_name),
             lambda app: _runtime_call("call_asgi_get", app, path),
             lambda result: _runtime_call("normalize_http_result", result),
         ),
         _impl(
             "fastapi",
             "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
-            _lazy_builder("fastapi_impl", fastapi_builder),
+            _lazy_attr("fastapi_impl", app_name),
             lambda app: _runtime_call("call_asgi_get", app, path),
             lambda result: _runtime_call("normalize_http_result", result),
         ),
         _impl(
             "flask",
             "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
-            _lazy_builder("flask_impl", flask_builder),
+            _lazy_attr("flask_impl", app_name),
             lambda app: _runtime_call("call_flask_get", app, path),
             lambda result: _runtime_call("normalize_http_result", result),
         ),
     )
 
 
-def _projection_case(
-    tigrbl_builder: str,
-    fastapi_builder: str,
-    flask_builder: str,
+def _contract_case(
+    tigrbl_attr: str,
+    fastapi_attr: str,
+    flask_attr: str,
 ) -> tuple[FrameworkImplementation, ...]:
     return (
         _impl(
             "tigrbl",
             "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
-            _lazy_builder("tigrbl_impl", tigrbl_builder),
+            _lazy_attr("tigrbl_impl", tigrbl_attr),
             lambda value: value,
-            lambda result: _runtime_call("normalize_projection", result),
+            lambda result: _runtime_call("normalize_contract", result),
         ),
         _impl(
             "fastapi",
             "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
-            _lazy_builder("fastapi_impl", fastapi_builder),
+            _lazy_attr("fastapi_impl", fastapi_attr),
             lambda value: value,
-            lambda result: _runtime_call("normalize_projection", result),
+            lambda result: _runtime_call("normalize_contract", result),
         ),
         _impl(
             "flask",
             "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
-            _lazy_builder("flask_impl", flask_builder),
+            _lazy_attr("flask_impl", flask_attr),
             lambda value: value,
-            lambda result: _runtime_call("normalize_projection", result),
+            lambda result: _runtime_call("normalize_contract", result),
         ),
     )
 
@@ -178,14 +176,14 @@ def _runtime_call(attr_name: str, *args: Any) -> Any:
     return getattr(module, attr_name)(*args)
 
 
-def _lazy_builder(module_name: str, attr_name: str) -> Callable[[], Any]:
-    def _build() -> Any:
+def _lazy_attr(module_name: str, attr_name: str) -> Callable[[], Any]:
+    def _get() -> Any:
         module = import_module(
             f"tigrbl_equivalence_contracts.frameworks.{module_name}"
         )
-        return getattr(module, attr_name)()
+        return getattr(module, attr_name)
 
-    return _build
+    return _get
 
 
 def _assert_all_equal(values: Any, message: str) -> None:
@@ -212,7 +210,7 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
         category="router",
         intent="Group a read endpoint under a versioned router or blueprint prefix.",
         status="analogous",
-        claim="TigrblRouter, FastAPI APIRouter, and Flask Blueprint prefixes can project the same read route behavior.",
+        claim="TigrblRouter, FastAPI APIRouter, and Flask Blueprint prefixes can expose the same read route behavior.",
         source_documents=("docs/developer/ROUTER_TABLE_EQUIVALENCE.md",),
         implementations=_http_get("/v1/items/item-1"),
     ),
@@ -221,12 +219,12 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
         category="table",
         intent="Declare an Item resource with id/name fields and create/list/read operations.",
         status="analogous",
-        claim="FastAPI and Flask resource patterns can match the same resource projection as a Tigrbl table profile.",
+        claim="FastAPI and Flask resource patterns can match the same resource contract as a Tigrbl table profile.",
         source_documents=("docs/developer/ROUTER_TABLE_EQUIVALENCE.md",),
-        implementations=_projection_case(
-            "build_table_projection",
-            "build_table_projection",
-            "build_table_projection",
+        implementations=_contract_case(
+            "table_contract",
+            "table_contract",
+            "table_contract",
         ),
     ),
     CertifiableEquivalence(
@@ -236,10 +234,10 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
         status="projection-only",
         claim="Tigrbl, FastAPI, and Flask extension-style WebSocket declarations can project the same channel contract.",
         source_documents=("docs/developer/TRANSPORT_EQUIVALENCE.md",),
-        implementations=_projection_case(
-            "build_websocket_projection",
-            "build_websocket_projection",
-            "build_websocket_projection",
+        implementations=_contract_case(
+            "websocket_contract",
+            "websocket_contract",
+            "websocket_contract",
         ),
     ),
     CertifiableEquivalence(
@@ -249,10 +247,10 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
         status="projection-only",
         claim="Each framework-facing table shape can preserve the same logical datatype contract while SQL physical names vary by engine.",
         source_documents=("docs/developer/ENGINE_SQL_EQUIVALENCE.md",),
-        implementations=_projection_case(
-            "build_sql_projection",
-            "build_sql_projection",
-            "build_sql_projection",
+        implementations=_contract_case(
+            "sql_contract",
+            "sql_contract",
+            "sql_contract",
         ),
     ),
 )

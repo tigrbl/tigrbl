@@ -30,7 +30,7 @@ def normalize_http_result(result: Mapping[str, Any]) -> dict[str, Any]:
     }
 
 
-def normalize_projection(result: Mapping[str, Any]) -> dict[str, Any]:
+def normalize_contract(result: Mapping[str, Any]) -> dict[str, Any]:
     return _freeze(result)
 
 
