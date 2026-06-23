@@ -4,6 +4,9 @@ from dataclasses import dataclass
 from typing import Any
 
 from flask import Blueprint, Flask, jsonify
+from sqlalchemy import JSON, String
+from sqlalchemy.dialects import sqlite
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 
 health_app = Flask(__name__)
@@ -30,11 +33,26 @@ router_app.register_blueprint(blueprint)
 class ItemModel:
     id: str
     name: str
+    metadata: dict[str, Any]
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class ItemRow(Base):
+    __tablename__ = "equivalence_item"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    metadata_: Mapped[dict[str, Any]] = mapped_column(
+        "metadata", JSON, nullable=False
+    )
 
 
 table_contract: dict[str, Any] = {
     "resource": "Item",
-    "fields": {"id": "string", "name": "string"},
+    "fields": {"id": "string", "name": "string", "metadata": "json"},
     "operations": ("create", "list", "read"),
     "profile": "resource",
     "bindings": ("http.rest", "http.jsonrpc"),
@@ -50,10 +68,12 @@ websocket_contract = {
 }
 
 
+sqlite_dialect = sqlite.dialect()
 sql_contract = {
-    "logical_fields": {"id": "uuid", "name": "string", "metadata": "json"},
-    "lowerings": {
-        "sqlite": {"id": "TEXT", "metadata": "JSON"},
-        "postgres": {"id": "UUID", "metadata": "JSONB"},
-    },
+    "dialect": "sqlite",
+    "table": ItemRow.__tablename__,
+    "columns": tuple(
+        (column.name, column.type.compile(dialect=sqlite_dialect), column.primary_key)
+        for column in ItemRow.__table__.columns
+    ),
 }

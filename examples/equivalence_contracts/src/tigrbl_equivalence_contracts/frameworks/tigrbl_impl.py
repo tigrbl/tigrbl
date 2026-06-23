@@ -3,15 +3,14 @@ from __future__ import annotations
 from typing import Any
 
 from tigrbl import (
-    TableBase,
+    RestJsonRpcTable,
     TigrblApp,
     TigrblRouter,
-    WebSocketBindingSpec,
+    TableSpec,
+    websocket_ctx,
 )
-from tigrbl.orm.mixins import GUIDPk
-from tigrbl.types import Column, String
-from tigrbl_core._spec.datatypes import DataTypeSpec, EngineDatatypeBridge
-from tigrbl_core._spec.table_profile_spec import get_builtin_table_profile_definition
+from tigrbl.types import Column, JSON, String
+from sqlalchemy.dialects import sqlite
 
 
 health_app = TigrblApp()
@@ -34,27 +33,36 @@ def read_item(item_id: str) -> dict[str, str]:
 router_app.include_router(router)
 
 
-class ItemTable(TableBase, GUIDPk):
+class ItemTable(RestJsonRpcTable):
     __tablename__ = "equivalence_item"
     __allow_unmapped__ = True
 
+    id = Column(String, primary_key=True)
     name = Column(String, nullable=False)
+    meta = Column("metadata", JSON, nullable=False)
 
 
 table_app = TigrblApp()
 table_app.include_table(ItemTable)
 table_app.initialize()
 
-table_profile = get_builtin_table_profile_definition("rest_jsonrpc")
+item_table_spec = TableSpec.collect(ItemTable)
 table_contract = {
     "resource": "Item",
-    "fields": {"id": "string", "name": "string"},
+    "fields": {"id": "string", "name": "string", "metadata": "json"},
     "operations": ("create", "list", "read"),
     "profile": "resource",
     "bindings": tuple(
-        kind
-        for kind in table_profile.binding_families
-        if kind in {"http.rest", "http.jsonrpc"}
+        family
+        for family, binding_type in (
+            ("http.rest", "HttpRestBindingSpec"),
+            ("http.jsonrpc", "HttpJsonRpcBindingSpec"),
+        )
+        if any(
+            type(binding).__name__ == binding_type
+            for op in item_table_spec.ops
+            for binding in tuple(op.bindings or ())
+        )
     ),
 }
 
@@ -62,18 +70,19 @@ table_contract = {
 websocket_app = TigrblApp()
 
 
-@websocket_app.websocket("/ws/echo", framing="json", subprotocols=("json",))
-async def echo(websocket: Any) -> None:
-    await websocket.accept()
-    await websocket.send_text(await websocket.receive_text())
-
-
-websocket_binding = WebSocketBindingSpec(
-    proto="ws",
-    path="/ws/echo",
+@websocket_ctx(
+    "/ws/echo",
+    alias="echo",
     framing="json",
     subprotocols=("json",),
+    bind=websocket_app,
 )
+def echo(cls, ctx: dict[str, Any]) -> dict[str, str]:
+    return {"echo": str(ctx.get("text", ""))}
+
+
+websocket_spec = echo.__func__.__tigrbl_op_spec__
+websocket_binding = websocket_spec.bindings[0]
 websocket_contract = {
     "path": websocket_binding.path,
     "exchange": websocket_binding.exchange,
@@ -83,25 +92,12 @@ websocket_contract = {
 }
 
 
-datatype_bridge = EngineDatatypeBridge()
+sqlite_dialect = sqlite.dialect()
 sql_contract = {
-    "logical_fields": {"id": "uuid", "name": "string", "metadata": "json"},
-    "lowerings": {
-        "sqlite": {
-            "id": datatype_bridge.lower(
-                "sqlite", DataTypeSpec("uuid"), strict=True
-            ).physical_name,
-            "metadata": datatype_bridge.lower(
-                "sqlite", DataTypeSpec("json"), strict=True
-            ).physical_name,
-        },
-        "postgres": {
-            "id": datatype_bridge.lower(
-                "postgres", DataTypeSpec("uuid"), strict=True
-            ).physical_name,
-            "metadata": datatype_bridge.lower(
-                "postgres", DataTypeSpec("json"), strict=True
-            ).physical_name,
-        },
-    },
+    "dialect": "sqlite",
+    "table": ItemTable.__tablename__,
+    "columns": tuple(
+        (column.name, column.type.compile(dialect=sqlite_dialect), column.primary_key)
+        for column in ItemTable.__table__.columns
+    ),
 }

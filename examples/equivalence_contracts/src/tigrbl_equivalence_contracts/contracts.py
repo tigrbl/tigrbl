@@ -241,11 +241,11 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
         ),
     ),
     CertifiableEquivalence(
-        id="sql.logical-datatype-lowering",
+        id="sql.sqlite-table",
         category="sql",
-        intent="Track logical field types separately from engine-specific SQL lowerings.",
+        intent="Declare the same Item table shape for SQLite-backed persistence.",
         status="projection-only",
-        claim="Each framework-facing table shape can preserve the same logical datatype contract while SQL physical names vary by engine.",
+        claim="Tigrbl table classes and SQLAlchemy-backed FastAPI/Flask models can declare the same SQLite table shape.",
         source_documents=("docs/developer/ENGINE_SQL_EQUIVALENCE.md",),
         implementations=_contract_case(
             "sql_contract",

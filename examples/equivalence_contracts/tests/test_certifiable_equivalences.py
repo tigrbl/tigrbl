@@ -76,9 +76,13 @@ def test_websocket_equivalence_is_declared_for_all_frameworks() -> None:
 
 
 def test_engine_equivalence_certifies_logical_identity_not_physical_sql_parity() -> None:
-    result = equivalence_by_id("sql.logical-datatype-lowering").certify()
+    result = equivalence_by_id("sql.sqlite-table").certify()
 
     assert result.status == "projection-only"
-    assert result.evidence["observed"]["tigrbl"]["logical_fields"]["id"] == "uuid"
-    assert result.evidence["observed"]["tigrbl"]["lowerings"]["sqlite"]["id"] == "TEXT"
-    assert result.evidence["observed"]["tigrbl"]["lowerings"]["postgres"]["id"] == "UUID"
+    assert result.evidence["observed"]["tigrbl"]["dialect"] == "sqlite"
+    assert result.evidence["observed"]["tigrbl"]["table"] == "equivalence_item"
+    assert result.evidence["observed"]["tigrbl"]["columns"] == (
+        ("id", "VARCHAR", True),
+        ("name", "VARCHAR", False),
+        ("metadata", "JSON", False),
+    )
