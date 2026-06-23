@@ -1,87 +1,97 @@
 from __future__ import annotations
 
-from typing import Any
-
-from fastapi import APIRouter, FastAPI, WebSocket
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from sqlalchemy import JSON, String
-from sqlalchemy.dialects import sqlite
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-
-
-health_app = FastAPI()
-
-
-@health_app.get("/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
-
-
-router_app = FastAPI()
-router = APIRouter(prefix="/v1")
-
-
-@router.get("/items/{item_id}")
-def read_item(item_id: str) -> dict[str, str]:
-    return {"id": item_id, "name": "Ada"}
-
-
-router_app.include_router(router)
-
-
-class ItemModel(BaseModel):
-    id: str
-    name: str
-    metadata: dict[str, Any]
+from sqlalchemy import String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 
 
 class Base(DeclarativeBase):
     pass
 
 
-class ItemRow(Base):
-    __tablename__ = "equivalence_item"
+class WidgetRow(Base):
+    __tablename__ = "widgets"
 
     id: Mapped[str] = mapped_column(String, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
-    metadata_: Mapped[dict[str, Any]] = mapped_column(
-        "metadata", JSON, nullable=False
-    )
 
 
-table_contract: dict[str, Any] = {
-    "resource": "Item",
-    "fields": {"id": "string", "name": "string", "metadata": "json"},
-    "operations": ("create", "list", "read"),
-    "profile": "resource",
-    "bindings": ("http.rest", "http.jsonrpc"),
-}
+engine = create_engine("sqlite+pysqlite:///:memory:", future=True)
+Base.metadata.create_all(engine)
 
 
-websocket_app = FastAPI()
+class WidgetIn(BaseModel):
+    id: str
+    name: str
 
 
-@websocket_app.websocket("/ws/echo")
-async def echo(websocket: WebSocket) -> None:
-    await websocket.accept(subprotocol="json")
-    await websocket.send_text(await websocket.receive_text())
+class WidgetOut(BaseModel):
+    id: str
+    name: str
 
 
-websocket_contract = {
-    "path": "/ws/echo",
-    "exchange": "bidirectional_stream",
-    "framing": "json",
-    "subprotocols": ("json",),
-    "message": {"echo": "same text payload"},
-}
+app = FastAPI()
 
 
-sqlite_dialect = sqlite.dialect()
-sql_contract = {
-    "dialect": "sqlite",
-    "table": ItemRow.__tablename__,
-    "columns": tuple(
-        (column.name, column.type.compile(dialect=sqlite_dialect), column.primary_key)
-        for column in ItemRow.__table__.columns
+@app.post("/widgets", response_model=WidgetOut)
+def create_widget(payload: WidgetIn) -> WidgetOut:
+    with Session(engine) as session:
+        row = WidgetRow(id=payload.id, name=payload.name)
+        session.add(row)
+        session.commit()
+        return WidgetOut(id=row.id, name=row.name)
+
+
+@app.get("/widgets", response_model=list[WidgetOut])
+def list_widgets() -> list[WidgetOut]:
+    with Session(engine) as session:
+        return [
+            WidgetOut(id=row.id, name=row.name)
+            for row in session.query(WidgetRow).order_by(WidgetRow.id)
+        ]
+
+
+@app.get("/widgets/{id}", response_model=WidgetOut)
+def read_widget(id: str) -> WidgetOut:
+    with Session(engine) as session:
+        row = session.get(WidgetRow, id)
+        if row is None:
+            raise HTTPException(status_code=404)
+        return WidgetOut(id=row.id, name=row.name)
+
+
+@app.patch("/widgets/{id}", response_model=WidgetOut)
+def update_widget(id: str, payload: WidgetIn) -> WidgetOut:
+    with Session(engine) as session:
+        row = session.get(WidgetRow, id)
+        if row is None:
+            raise HTTPException(status_code=404)
+        row.name = payload.name
+        session.commit()
+        return WidgetOut(id=row.id, name=row.name)
+
+
+@app.delete("/widgets/{id}")
+def delete_widget(id: str) -> dict[str, str]:
+    with Session(engine) as session:
+        row = session.get(WidgetRow, id)
+        if row is None:
+            raise HTTPException(status_code=404)
+        session.delete(row)
+        session.commit()
+        return {"deleted": id}
+
+
+rest_crud_contract = {
+    "resource": "Widget",
+    "table": "widgets",
+    "fields": {"id": "string", "name": "string"},
+    "routes": (
+        ("POST", "/widgets"),
+        ("GET", "/widgets"),
+        ("GET", "/widgets/{id}"),
+        ("PATCH", "/widgets/{id}"),
+        ("DELETE", "/widgets/{id}"),
     ),
 }

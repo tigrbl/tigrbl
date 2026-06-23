@@ -114,33 +114,6 @@ def _impl(
     )
 
 
-def _http_get(path: str) -> tuple[FrameworkImplementation, ...]:
-    app_name = "health_app" if path == "/health" else "router_app"
-    return (
-        _impl(
-            "tigrbl",
-            "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
-            _lazy_attr("tigrbl_impl", app_name),
-            lambda app: _runtime_call("call_asgi_get", app, path),
-            lambda result: _runtime_call("normalize_http_result", result),
-        ),
-        _impl(
-            "fastapi",
-            "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
-            _lazy_attr("fastapi_impl", app_name),
-            lambda app: _runtime_call("call_asgi_get", app, path),
-            lambda result: _runtime_call("normalize_http_result", result),
-        ),
-        _impl(
-            "flask",
-            "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
-            _lazy_attr("flask_impl", app_name),
-            lambda app: _runtime_call("call_flask_get", app, path),
-            lambda result: _runtime_call("normalize_http_result", result),
-        ),
-    )
-
-
 def _contract_case(
     tigrbl_attr: str,
     fastapi_attr: str,
@@ -197,60 +170,19 @@ def _assert_all_equal(values: Any, message: str) -> None:
 
 CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
     CertifiableEquivalence(
-        id="app.http-health",
-        category="application",
-        intent="Author a simple GET endpoint returning a stable JSON payload.",
-        status="equivalent",
-        claim="TigrblApp, FastAPI, and Flask can expose the same HTTP GET behavior.",
-        source_documents=("docs/developer/AUTHORING_EQUIVALENCE.md",),
-        implementations=_http_get("/health"),
-    ),
-    CertifiableEquivalence(
-        id="router.prefix-read",
-        category="router",
-        intent="Group a read endpoint under a versioned router or blueprint prefix.",
+        id="rest-crud.widget",
+        category="rest-crud",
+        intent="Author REST CRUD for a Widget resource with id and name columns.",
         status="analogous",
-        claim="TigrblRouter, FastAPI APIRouter, and Flask Blueprint prefixes can expose the same read route behavior.",
-        source_documents=("docs/developer/ROUTER_TABLE_EQUIVALENCE.md",),
-        implementations=_http_get("/v1/items/item-1"),
-    ),
-    CertifiableEquivalence(
-        id="table.resource-contract",
-        category="table",
-        intent="Declare an Item resource with id/name fields and create/list/read operations.",
-        status="analogous",
-        claim="FastAPI and Flask resource patterns can match the same resource contract as a Tigrbl table profile.",
-        source_documents=("docs/developer/ROUTER_TABLE_EQUIVALENCE.md",),
-        implementations=_contract_case(
-            "table_contract",
-            "table_contract",
-            "table_contract",
+        claim="Tigrbl RestTable, FastAPI routes, and Flask routes can expose the same Widget REST CRUD surface.",
+        source_documents=(
+            "docs/developer/AUTHORING_EQUIVALENCE.md",
+            "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
         ),
-    ),
-    CertifiableEquivalence(
-        id="websocket.echo-contract",
-        category="transport",
-        intent="Declare a WebSocket echo channel with JSON text framing.",
-        status="projection-only",
-        claim="Tigrbl, FastAPI, and Flask extension-style WebSocket declarations can project the same channel contract.",
-        source_documents=("docs/developer/TRANSPORT_EQUIVALENCE.md",),
         implementations=_contract_case(
-            "websocket_contract",
-            "websocket_contract",
-            "websocket_contract",
-        ),
-    ),
-    CertifiableEquivalence(
-        id="sql.sqlite-table",
-        category="sql",
-        intent="Declare the same Item table shape for SQLite-backed persistence.",
-        status="projection-only",
-        claim="Tigrbl table classes and SQLAlchemy-backed FastAPI/Flask models can declare the same SQLite table shape.",
-        source_documents=("docs/developer/ENGINE_SQL_EQUIVALENCE.md",),
-        implementations=_contract_case(
-            "sql_contract",
-            "sql_contract",
-            "sql_contract",
+            "rest_crud_contract",
+            "rest_crud_contract",
+            "rest_crud_contract",
         ),
     ),
 )

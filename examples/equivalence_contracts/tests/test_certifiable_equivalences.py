@@ -28,61 +28,40 @@ def test_matrix_tracks_every_runtime_equivalence() -> None:
     assert all(row["test"].endswith("test_certifiable_equivalences.py") for row in rows)
 
 
-def test_app_http_health_runs_all_frameworks() -> None:
-    result = equivalence_by_id("app.http-health").certify()
+def test_widget_rest_crud_equivalence_has_tigrbl_fastapi_flask_code() -> None:
+    result = equivalence_by_id("rest-crud.widget").certify()
 
-    assert result.status == "equivalent"
+    assert result.status == "analogous"
+    assert result.evidence["observed"]["tigrbl"] == {
+        "resource": "Widget",
+        "table": "widgets",
+        "fields": {"id": "string", "name": "string"},
+        "routes": (
+            ("POST", "/widgets"),
+            ("GET", "/widgets"),
+            ("GET", "/widgets/{id}"),
+            ("PATCH", "/widgets/{id}"),
+            ("DELETE", "/widgets/{id}"),
+        ),
+    }
     assert set(result.evidence["observed"]) == {"tigrbl", "fastapi", "flask"}
-    assert result.evidence["observed"]["tigrbl"] == {
-        "status_code": 200,
-        "json": {"status": "ok"},
+    assert result.evidence["code_refs"] == {
+        "tigrbl": "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
+        "fastapi": "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
+        "flask": "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
     }
 
 
-def test_router_prefix_read_runs_all_frameworks() -> None:
-    result = equivalence_by_id("router.prefix-read").certify()
-
-    assert result.status == "analogous"
-    assert result.evidence["observed"]["tigrbl"] == {
-        "status_code": 200,
-        "json": {"id": "item-1", "name": "Ada"},
-    }
-
-
-def test_table_equivalence_has_tigrbl_fastapi_flask_code() -> None:
-    result = equivalence_by_id("table.resource-contract").certify()
-
-    assert result.status == "analogous"
-    assert result.evidence["observed"]["tigrbl"]["operations"] == (
-        "create",
-        "list",
-        "read",
-    )
-    assert result.evidence["observed"]["tigrbl"]["bindings"] == (
-        "http.rest",
-        "http.jsonrpc",
-    )
-    assert result.evidence["code_refs"]["fastapi"].endswith("fastapi_impl.py")
-    assert result.evidence["code_refs"]["flask"].endswith("flask_impl.py")
-
-
-def test_websocket_equivalence_is_declared_for_all_frameworks() -> None:
-    result = equivalence_by_id("websocket.echo-contract").certify()
-
-    assert result.status == "projection-only"
-    assert result.evidence["observed"]["tigrbl"]["path"] == "/ws/echo"
-    assert result.evidence["observed"]["tigrbl"]["framing"] == "json"
-    assert result.evidence["observed"]["tigrbl"]["subprotocols"] == ("json",)
-
-
-def test_engine_equivalence_certifies_logical_identity_not_physical_sql_parity() -> None:
-    result = equivalence_by_id("sql.sqlite-table").certify()
-
-    assert result.status == "projection-only"
-    assert result.evidence["observed"]["tigrbl"]["dialect"] == "sqlite"
-    assert result.evidence["observed"]["tigrbl"]["table"] == "equivalence_item"
-    assert result.evidence["observed"]["tigrbl"]["columns"] == (
-        ("id", "VARCHAR", True),
-        ("name", "VARCHAR", False),
-        ("metadata", "JSON", False),
+def test_matrix_only_tracks_widget_rest_crud() -> None:
+    assert matrix_rows() == (
+        {
+            "id": "rest-crud.widget",
+            "category": "rest-crud",
+            "intent": "Author REST CRUD for a Widget resource with id and name columns.",
+            "status": "analogous",
+            "tigrbl": "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
+            "fastapi": "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
+            "flask": "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
+            "test": "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
+        },
     )
