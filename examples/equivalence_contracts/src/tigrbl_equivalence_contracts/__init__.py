@@ -4,18 +4,16 @@ from .contracts import (
     CERTIFIABLE_EQUIVALENCES,
     CertifiableEquivalence,
     CertificationResult,
-    RouteDeclaration,
-    TableDeclaration,
     certify_all,
     equivalence_by_id,
+    matrix_rows,
 )
 
 __all__ = [
     "CERTIFIABLE_EQUIVALENCES",
     "CertifiableEquivalence",
     "CertificationResult",
-    "RouteDeclaration",
-    "TableDeclaration",
     "certify_all",
     "equivalence_by_id",
+    "matrix_rows",
 ]

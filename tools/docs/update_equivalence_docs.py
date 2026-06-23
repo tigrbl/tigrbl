@@ -26,7 +26,7 @@ class GeneratedBlock:
 
 
 def _add_workspace_paths() -> None:
-    candidates = [ROOT]
+    candidates = [ROOT, ROOT / "examples" / "equivalence_contracts" / "src"]
     for base in (ROOT / "pkgs" / "core", ROOT / "pkgs" / "apps", ROOT / "pkgs" / "engines"):
         if not base.is_dir():
             continue
@@ -441,6 +441,50 @@ def render_reflection_hints() -> str:
     )
 
 
+def render_certifiable_equivalence_matrix() -> str:
+    _add_workspace_paths()
+    from tigrbl_equivalence_contracts import matrix_rows  # noqa: PLC0415
+
+    rows = []
+    for row in matrix_rows():
+        rows.append(
+            [
+                _code(row["id"]),
+                row["category"],
+                row["intent"],
+                _code(row["status"]),
+                _code(row["tigrbl"]),
+                _code(row["fastapi"]),
+                _code(row["flask"]),
+                _code(row["test"]),
+            ]
+        )
+    return "\n\n".join(
+        [
+            _generated_note(
+                [
+                    "examples/equivalence_contracts/src/tigrbl_equivalence_contracts/contracts.py",
+                    "examples/equivalence_contracts/src/tigrbl_equivalence_contracts/frameworks/",
+                    "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
+                ]
+            ),
+            _markdown_table(
+                [
+                    "Equivalence ID",
+                    "Category",
+                    "Intent",
+                    "Status",
+                    "Tigrbl code",
+                    "FastAPI code",
+                    "Flask code",
+                    "Parity test",
+                ],
+                rows,
+            ),
+        ]
+    )
+
+
 def generated_blocks() -> tuple[GeneratedBlock, ...]:
     return (
         GeneratedBlock(
@@ -482,6 +526,11 @@ def generated_blocks() -> tuple[GeneratedBlock, ...]:
             ROOT / "docs" / "developer" / "ENGINE_SQL_EQUIVALENCE.md",
             "equivalence-docs:reflection-hints",
             render_reflection_hints,
+        ),
+        GeneratedBlock(
+            ROOT / "docs" / "developer" / "EQUIVALENCE_INDEX.md",
+            "equivalence-docs:certifiable-matrix",
+            render_certifiable_equivalence_matrix,
         ),
     )
 

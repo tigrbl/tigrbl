@@ -4,6 +4,7 @@ from tigrbl_equivalence_contracts import (
     CERTIFIABLE_EQUIVALENCES,
     certify_all,
     equivalence_by_id,
+    matrix_rows,
 )
 
 
@@ -17,59 +18,67 @@ def test_every_declared_equivalence_certifies() -> None:
     }
 
 
-def test_transport_read_equivalence_ignores_transport_envelope_fields() -> None:
-    result = equivalence_by_id("transport.rest-jsonrpc-websocket-read").certify()
+def test_matrix_tracks_every_runtime_equivalence() -> None:
+    rows = matrix_rows()
+
+    assert {row["id"] for row in rows} == {case.id for case in CERTIFIABLE_EQUIVALENCES}
+    assert all(row["tigrbl"] for row in rows)
+    assert all(row["fastapi"] for row in rows)
+    assert all(row["flask"] for row in rows)
+    assert all(row["test"].endswith("test_certifiable_equivalences.py") for row in rows)
+
+
+def test_app_http_health_runs_all_frameworks() -> None:
+    result = equivalence_by_id("app.http-health").certify()
 
     assert result.status == "equivalent"
-    assert result.evidence["transport_count"] == 3
-    assert result.evidence["normalized_result"] == {
-        "diagnostics": {"classification": "ok"},
-        "effects": ("read:item-1",),
-        "value": {"id": "item-1", "name": "Ada"},
+    assert set(result.evidence["observed"]) == {"tigrbl", "fastapi", "flask"}
+    assert result.evidence["observed"]["tigrbl"] == {
+        "status_code": 200,
+        "json": {"status": "ok"},
     }
 
 
-def test_stream_equivalence_preserves_ordering_and_completion() -> None:
-    result = equivalence_by_id("transport.stream-sse-webtransport-tail").certify()
-
-    assert result.status == "equivalent"
-    assert result.evidence["families"] == ("stream",)
-    assert result.evidence["normalized_result"]["ordering"] == "ordered"
-    assert result.evidence["normalized_result"]["completion"] == "complete"
-
-
-def test_router_equivalence_is_projection_not_authority_equivalence() -> None:
-    result = equivalence_by_id("router.fastapi-flask-tigrbl-prefix").certify()
+def test_router_prefix_read_runs_all_frameworks() -> None:
+    result = equivalence_by_id("router.prefix-read").certify()
 
     assert result.status == "analogous"
-    assert result.evidence["projection"] == {
-        "path": "/v1/items/{item_id}",
-        "methods": ("GET",),
-        "endpoint": "Item.read",
+    assert result.evidence["observed"]["tigrbl"] == {
+        "status_code": 200,
+        "json": {"id": "item-1", "name": "Ada"},
     }
-    assert result.evidence["authorities"]["tigrbl.router"] == "operation binding"
-    assert result.evidence["authorities"]["fastapi.apirouter"] == "path operation"
 
 
-def test_table_equivalence_keeps_tigrbl_table_authority_explicit() -> None:
-    result = equivalence_by_id("table.fastapi-flask-tigrbl-resource").certify()
+def test_table_equivalence_has_tigrbl_fastapi_flask_code() -> None:
+    result = equivalence_by_id("table.resource-contract").certify()
 
     assert result.status == "analogous"
-    assert result.evidence["profile"] == "rest_jsonrpc"
-    assert result.evidence["projection"]["operations"] == ("create", "list", "read")
-    assert result.evidence["binding_families"] == ("http.rest", "http.jsonrpc")
-    assert result.evidence["authorities"]["tigrbl.table-profile"] == "TableProfileSpec"
+    assert result.evidence["observed"]["tigrbl"]["operations"] == (
+        "create",
+        "list",
+        "read",
+    )
+    assert result.evidence["observed"]["tigrbl"]["bindings"] == (
+        "http.rest",
+        "http.jsonrpc",
+    )
+    assert result.evidence["code_refs"]["fastapi"].endswith("fastapi_impl.py")
+    assert result.evidence["code_refs"]["flask"].endswith("flask_impl.py")
+
+
+def test_websocket_equivalence_is_declared_for_all_frameworks() -> None:
+    result = equivalence_by_id("websocket.echo-contract").certify()
+
+    assert result.status == "projection-only"
+    assert result.evidence["observed"]["tigrbl"]["path"] == "/ws/echo"
+    assert result.evidence["observed"]["tigrbl"]["framing"] == "json"
+    assert result.evidence["observed"]["tigrbl"]["subprotocols"] == ("json",)
 
 
 def test_engine_equivalence_certifies_logical_identity_not_physical_sql_parity() -> None:
-    result = equivalence_by_id("engine.logical-datatype-lowering").certify()
+    result = equivalence_by_id("sql.logical-datatype-lowering").certify()
 
     assert result.status == "projection-only"
-    assert result.evidence["lowerings"]["uuid"] == {
-        "sqlite": "TEXT",
-        "postgres": "UUID",
-    }
-    assert result.evidence["lowerings"]["json"] == {
-        "sqlite": "JSON",
-        "postgres": "JSONB",
-    }
+    assert result.evidence["observed"]["tigrbl"]["logical_fields"]["id"] == "uuid"
+    assert result.evidence["observed"]["tigrbl"]["lowerings"]["sqlite"]["id"] == "TEXT"
+    assert result.evidence["observed"]["tigrbl"]["lowerings"]["postgres"]["id"] == "UUID"

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import shutil
 import subprocess
 import sys
 
@@ -40,13 +41,22 @@ def main() -> None:
     env = dict(os.environ)
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     env["PYTHONPATH"] = _workspace_pythonpath()
+    uv = shutil.which("uv")
+    if uv is None:
+        fail(["uv is required to validate examples/equivalence_contracts"])
     result = subprocess.run(
         [
-            sys.executable,
+            uv,
+            "run",
+            "--project",
+            str(PROJECT),
+            "--group",
+            "dev",
+            "python",
             "-m",
             "pytest",
             "-q",
-            "examples/equivalence_contracts/tests",
+            str(PROJECT / "tests"),
             "-p",
             "no:cacheprovider",
             "--basetemp",
