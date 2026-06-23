@@ -464,7 +464,7 @@ def render_certifiable_equivalence_matrix() -> str:
             _generated_note(
                 [
                     "examples/equivalence_contracts/src/tigrbl_equivalence_contracts/contracts.py",
-                    "examples/equivalence_contracts/src/tigrbl_equivalence_contracts/frameworks/",
+                    "examples/equivalence_contracts/src/tigrbl_equivalence_contracts/equivalences/",
                     "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
                 ]
             ),

@@ -25,10 +25,8 @@ The goal is not only test parity. The goal is readable, certifiable pedagogy:
 Every equivalence must have four parts:
 
 1. **Contract/catalog entry** in `src/tigrbl_equivalence_contracts/contracts.py`.
-2. **Vendor implementations** under `src/tigrbl_equivalence_contracts/frameworks/`
-   or a more specific equivalence implementation package when the matrix grows.
-3. **Runtime proof code** in `src/tigrbl_equivalence_contracts/runtime.py` or an
-   equivalence-specific runtime module.
+2. **Vendor implementations** inside that equivalence's own folder.
+3. **Runtime proof code** inside that equivalence's own folder.
 4. **Pytest coverage** under `tests/` that certifies the matrix entry and asserts
    the expected evidence.
 
@@ -38,16 +36,17 @@ If any of the four parts is missing, the equivalence is incomplete.
 
 Use the Widget REST CRUD equivalence as the reference style:
 
-- `frameworks/tigrbl_impl.py` defines a `Widget` `RestTable` and module-level
-  `app`.
-- `frameworks/fastapi_impl.py` defines the SQLAlchemy row, Pydantic models,
-  FastAPI routes, and module-level `app`.
-- `frameworks/flask_impl.py` defines the SQLAlchemy row, Flask routes, and
-  module-level `app`.
-- `runtime.py` owns common server lifecycle and the single shared `httpx` client
-  assertion sequence.
-- `contracts.py` maps each framework app to its runtime server kind and shared
-  proof.
+- `equivalences/rest_crud_widget/tigrbl_impl.py` defines a `Widget`
+  `RestTable` and module-level `app`.
+- `equivalences/rest_crud_widget/fastapi_impl.py` defines the SQLAlchemy row,
+  Pydantic models, FastAPI routes, and module-level `app`.
+- `equivalences/rest_crud_widget/flask_impl.py` defines the SQLAlchemy row,
+  Flask routes, and module-level `app`.
+- `equivalences/rest_crud_widget/runtime.py` owns the equivalence-specific
+  `httpx` client assertion sequence.
+- `equivalences/rest_crud_widget/contract.py` maps each framework app to its
+  runtime proof.
+- Top-level `contracts.py` only aggregates per-equivalence contracts.
 - `tests/test_certifiable_equivalences.py` asserts certification, matrix rows,
   and expected evidence.
 
@@ -107,7 +106,7 @@ matters for equivalence, pedagogy, or certification.
 
 ## Directory Organization
 
-Keep the current layout while the matrix is small:
+Every equivalence gets its own directory:
 
 ```text
 examples/equivalence_contracts/
@@ -117,16 +116,28 @@ examples/equivalence_contracts/
   src/tigrbl_equivalence_contracts/
     contracts.py
     runtime.py
-    frameworks/
-      tigrbl_impl.py
-      fastapi_impl.py
-      flask_impl.py
+    equivalences/
+      rest_crud_widget/
+        contract.py
+        runtime.py
+        tigrbl_impl.py
+        fastapi_impl.py
+        flask_impl.py
+      table_base/
+        contract.py
+        runtime.py
+        tigrbl_impl.py
+        fastapi_impl.py
+        flask_impl.py
   tests/
     test_certifiable_equivalences.py
 ```
 
-When adding more equivalences, prefer a repeatable grouping by equivalence ID if
-single files become crowded. For example:
+Do not add new equivalence implementation modules directly under shared
+top-level folders. Shared top-level modules may contain only common mechanics
+such as server lifecycle helpers and the aggregate matrix loader.
+
+Use normalized directory names based on the equivalence ID:
 
 ```text
 src/tigrbl_equivalence_contracts/
@@ -171,7 +182,9 @@ Runtime code owns common behavior:
 - final parity assertions.
 
 Runtime code may be a shared module when behavior is common across equivalences,
-or equivalence-specific when the protocol/client proof is different.
+but every equivalence must still have its own `runtime.py` that names the
+expected evidence and exposes the proof callable used by that equivalence's
+contract.
 
 ## Test Rules
 

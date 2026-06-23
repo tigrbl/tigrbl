@@ -1,3 +1,5 @@
+"""FastAPI implementation for Widget REST CRUD."""
+
 from __future__ import annotations
 
 from fastapi import FastAPI, HTTPException
@@ -5,7 +7,6 @@ from pydantic import BaseModel
 from sqlalchemy import String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
-from tigrbl_equivalence_contracts.runtime import TABLE_CLASS_SURFACES
 
 
 class Base(DeclarativeBase):
@@ -14,17 +15,11 @@ class Base(DeclarativeBase):
 
 class WidgetRow(Base):
     __tablename__ = "widgets"
-
     id: Mapped[str] = mapped_column(String, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
 
 
-engine = create_engine(
-    "sqlite+pysqlite://",
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
-    future=True,
-)
+engine = create_engine("sqlite+pysqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool, future=True)
 Base.metadata.create_all(engine)
 
 
@@ -58,10 +53,7 @@ def create_widget(payload: WidgetIn) -> WidgetOut:
 @app.get("/widget", response_model=list[WidgetOut])
 def list_widgets() -> list[WidgetOut]:
     with Session(engine) as session:
-        return [
-            WidgetOut(id=row.id, name=row.name)
-            for row in session.query(WidgetRow).order_by(WidgetRow.id)
-        ]
+        return [WidgetOut(id=row.id, name=row.name) for row in session.query(WidgetRow).order_by(WidgetRow.id)]
 
 
 @app.get("/widget/{id}", response_model=WidgetOut)
@@ -93,25 +85,3 @@ def delete_widget(id: str) -> dict[str, int]:
         session.delete(row)
         session.commit()
         return {"deleted": 1}
-
-
-def _table_surface_response(table_class: str, path: str, method: str):
-    def route(item_id: str | None = None) -> dict[str, str | None]:
-        return {
-            "table_class": table_class,
-            "path": path,
-            "method": method,
-            "item_id": item_id,
-        }
-
-    return route
-
-
-for surface in TABLE_CLASS_SURFACES:
-    for route_path, methods in surface["routes"]:
-        for method in methods:
-            app.add_api_route(
-                route_path,
-                _table_surface_response(surface["class_name"], route_path, method),
-                methods=[method],
-            )

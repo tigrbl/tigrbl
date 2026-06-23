@@ -1,10 +1,11 @@
+"""Flask implementation for Widget REST CRUD."""
+
 from __future__ import annotations
 
 from flask import Flask, abort, jsonify, request
 from sqlalchemy import String, create_engine, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
-from tigrbl_equivalence_contracts.runtime import TABLE_CLASS_SURFACES
 
 
 class Base(DeclarativeBase):
@@ -13,20 +14,12 @@ class Base(DeclarativeBase):
 
 class WidgetRow(Base):
     __tablename__ = "widgets"
-
     id: Mapped[str] = mapped_column(String, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
 
 
-engine = create_engine(
-    "sqlite+pysqlite://",
-    connect_args={"check_same_thread": False},
-    poolclass=StaticPool,
-    future=True,
-)
+engine = create_engine("sqlite+pysqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool, future=True)
 Base.metadata.create_all(engine)
-
-
 app = Flask(__name__)
 
 
@@ -82,51 +75,3 @@ def delete_widget(id: str):
         session.delete(row)
         session.commit()
         return jsonify({"deleted": 1})
-
-
-@app.get("/openapi.json")
-def openapi_json():
-    return jsonify(
-        {
-            "openapi": "3.1.0",
-            "paths": {
-                path: {method.lower(): {} for method in methods}
-                for surface in TABLE_CLASS_SURFACES
-                for path, methods in surface["routes"]
-            },
-        }
-    )
-
-
-def _table_surface_response(table_class: str, path: str, method: str):
-    def route(item_id: str | None = None):
-        return jsonify(
-            {
-                "table_class": table_class,
-                "path": path,
-                "method": method,
-                "item_id": item_id,
-            }
-        )
-
-    route.__name__ = (
-        f"{table_class}_{method}_{path}"
-        .replace("/", "_")
-        .replace("{", "")
-        .replace("}", "")
-        .replace("-", "_")
-    )
-    return route
-
-
-for surface in TABLE_CLASS_SURFACES:
-    for route_path, methods in surface["routes"]:
-        flask_path = route_path.replace("{item_id}", "<item_id>")
-        for method in methods:
-            app.add_url_rule(
-                flask_path,
-                view_func=_table_surface_response(
-                    surface["class_name"], route_path, method
-                ),
-                methods=[method],
-            )

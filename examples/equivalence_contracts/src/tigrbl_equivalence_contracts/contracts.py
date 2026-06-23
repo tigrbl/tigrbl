@@ -1,9 +1,4 @@
-"""The equivalence matrix that points human readers at runnable examples.
-
-The implementation files are deliberately ordinary framework code.  This
-module records which framework examples should be compared, which documents
-they support, and which shared runtime lesson certifies their HTTP behavior.
-"""
+"""The equivalence matrix that points human readers at runnable examples."""
 
 from __future__ import annotations
 
@@ -12,21 +7,9 @@ from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Literal
 
-from .runtime import (
-    TABLE_CLASS_SURFACES,
-    ServerKind,
-    assert_table_class_surface_over_http,
-    assert_widget_rest_crud_over_http,
-)
+from .runtime import ServerKind
 
-EquivalenceStatus = Literal[
-    "equivalent",
-    "analogous",
-    "projection-only",
-    "tigrbl-specific",
-    "not-equivalent",
-]
-
+EquivalenceStatus = Literal["equivalent", "analogous", "projection-only", "tigrbl-specific", "not-equivalent"]
 FrameworkName = Literal["tigrbl", "fastapi", "flask"]
 
 
@@ -45,9 +28,7 @@ class FrameworkImplementation:
     def certify(self) -> Any:
         """Serve the framework app and return normalized proof evidence."""
 
-        return self.normalize(
-            self.exercise(self.app(), self.server_kind, *self.exercise_args)
-        )
+        return self.normalize(self.exercise(self.app(), self.server_kind, *self.exercise_args))
 
 
 @dataclass(frozen=True)
@@ -62,12 +43,7 @@ class CertificationResult:
 
 @dataclass(frozen=True)
 class CertifiableEquivalence:
-    """A row in the technical-marketing equivalence matrix.
-
-    Each row names the developer intent, points at source files for visual
-    inspection, and runs the same client-side assertions against every listed
-    framework implementation.
-    """
+    """A row in the technical-marketing equivalence matrix."""
 
     id: str
     category: str
@@ -80,10 +56,7 @@ class CertifiableEquivalence:
     def certify(self) -> CertificationResult:
         """Run every implementation and fail if any observed result differs."""
 
-        observed = {
-            implementation.framework: implementation.certify()
-            for implementation in self.implementations
-        }
+        observed = {implementation.framework: implementation.certify() for implementation in self.implementations}
         _assert_all_equal(observed.values(), f"{self.id} implementations diverged")
         return CertificationResult(
             equivalence_id=self.id,
@@ -93,10 +66,7 @@ class CertifiableEquivalence:
                 "category": self.category,
                 "intent": self.intent,
                 "observed": observed,
-                "code_refs": {
-                    implementation.framework: implementation.code_ref
-                    for implementation in self.implementations
-                },
+                "code_refs": {implementation.framework: implementation.code_ref for implementation in self.implementations},
             },
         )
 
@@ -122,18 +92,16 @@ def matrix_rows() -> tuple[dict[str, str], ...]:
     rows: list[dict[str, str]] = []
     for case in CERTIFIABLE_EQUIVALENCES:
         refs = {item.framework: item.code_ref for item in case.implementations}
-        rows.append(
-            {
-                "id": case.id,
-                "category": case.category,
-                "intent": case.intent,
-                "status": case.status,
-                "tigrbl": refs["tigrbl"],
-                "fastapi": refs["fastapi"],
-                "flask": refs["flask"],
-                "test": "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
-            }
-        )
+        rows.append({
+            "id": case.id,
+            "category": case.category,
+            "intent": case.intent,
+            "status": case.status,
+            "tigrbl": refs["tigrbl"],
+            "fastapi": refs["fastapi"],
+            "flask": refs["flask"],
+            "test": "examples/equivalence_contracts/tests/test_certifiable_equivalences.py",
+        })
     return tuple(rows)
 
 
@@ -146,94 +114,14 @@ def _impl(
     exercise_args: tuple[Any, ...],
     normalize: Callable[[Any], Any],
 ) -> FrameworkImplementation:
-    return FrameworkImplementation(
-        framework=framework,
-        code_ref=code_ref,
-        app=app,
-        server_kind=server_kind,
-        exercise=exercise,
-        exercise_args=exercise_args,
-        normalize=normalize,
-    )
-
-
-def _rest_crud_case(
-    tigrbl_attr: str,
-    fastapi_attr: str,
-    flask_attr: str,
-) -> tuple[FrameworkImplementation, ...]:
-    return (
-        _impl(
-            "tigrbl",
-            "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
-            _lazy_attr("tigrbl_impl", tigrbl_attr),
-            "asgi",
-            assert_widget_rest_crud_over_http,
-            (),
-            lambda result: result,
-        ),
-        _impl(
-            "fastapi",
-            "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
-            _lazy_attr("fastapi_impl", fastapi_attr),
-            "asgi",
-            assert_widget_rest_crud_over_http,
-            (),
-            lambda result: result,
-        ),
-        _impl(
-            "flask",
-            "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
-            _lazy_attr("flask_impl", flask_attr),
-            "wsgi",
-            assert_widget_rest_crud_over_http,
-            (),
-            lambda result: result,
-        ),
-    )
-
-
-def _table_class_surface_case(
-    surface: dict[str, Any],
-) -> tuple[FrameworkImplementation, ...]:
-    return (
-        _impl(
-            "tigrbl",
-            "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
-            _lazy_attr("tigrbl_impl", "app"),
-            "asgi",
-            assert_table_class_surface_over_http,
-            (surface,),
-            lambda result: result,
-        ),
-        _impl(
-            "fastapi",
-            "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
-            _lazy_attr("fastapi_impl", "app"),
-            "asgi",
-            assert_table_class_surface_over_http,
-            (surface,),
-            lambda result: result,
-        ),
-        _impl(
-            "flask",
-            "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
-            _lazy_attr("flask_impl", "app"),
-            "wsgi",
-            assert_table_class_surface_over_http,
-            (surface,),
-            lambda result: result,
-        ),
-    )
+    return FrameworkImplementation(framework, code_ref, app, server_kind, exercise, exercise_args, normalize)
 
 
 def _lazy_attr(module_name: str, attr_name: str) -> Callable[[], Any]:
-    """Load a framework app only during certification."""
+    """Load an equivalence app only during certification."""
 
     def _get() -> Any:
-        module = import_module(
-            f"tigrbl_equivalence_contracts.frameworks.{module_name}"
-        )
+        module = import_module(f"tigrbl_equivalence_contracts.{module_name}")
         return getattr(module, attr_name)
 
     return _get
@@ -250,47 +138,11 @@ def _assert_all_equal(values: Any, message: str) -> None:
         raise AssertionError(f"{message}: {items!r}")
 
 
-_WIDGET_REST_CRUD_EQUIVALENCE = CertifiableEquivalence(
-    id="rest-crud.widget",
-    category="rest-crud",
-    intent="Author REST CRUD for a Widget resource with id and name columns.",
-    status="analogous",
-    claim="Tigrbl RestTable, FastAPI routes, and Flask routes can expose the same Widget REST CRUD surface.",
-    source_documents=(
-        "docs/developer/AUTHORING_EQUIVALENCE.md",
-        "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
-    ),
-    implementations=_rest_crud_case(
-        "app",
-        "app",
-        "app",
-    ),
-)
+_CONTRACT_MODULES = ('equivalences.rest_crud_widget.contract', 'equivalences.table_base.contract', 'equivalences.rest_table.contract', 'equivalences.json_rpc_table.contract', 'equivalences.rest_json_rpc_table.contract', 'equivalences.bulk_crud_table.contract', 'equivalences.rest_oltp_table.contract', 'equivalences.oltp_table.contract', 'equivalences.json_rpc_oltp_table.contract', 'equivalences.rest_json_rpc_oltp_table.contract', 'equivalences.rest_olap_table.contract', 'equivalences.olap_table.contract', 'equivalences.json_rpc_olap_table.contract', 'equivalences.rest_json_rpc_olap_table.contract', 'equivalences.stream_table.contract', 'equivalences.sse_table.contract', 'equivalences.event_stream_table.contract', 'equivalences.web_socket_table.contract', 'equivalences.web_socket_json_rpc_table.contract', 'equivalences.web_transport_table.contract', 'equivalences.web_transport_bidi_table.contract', 'equivalences.web_transport_client_stream_table.contract', 'equivalences.web_transport_server_stream_table.contract', 'equivalences.web_transport_datagram_table.contract')
 
 
-def _table_class_equivalence(surface: dict[str, Any]) -> CertifiableEquivalence:
-    class_name = surface["class_name"]
-    return CertifiableEquivalence(
-        id=f"table-class.{surface['slug']}",
-        category="table-class",
-        intent=(
-            f"Author a Widget resource with Tigrbl {class_name} and compare its "
-            "projected route surface to FastAPI and Flask."
-        ),
-        status="analogous",
-        claim=(
-            f"Tigrbl {class_name}, FastAPI routes, and Flask routes can expose "
-            "the same Widget route surface for the table class."
-        ),
-        source_documents=(
-            "docs/developer/AUTHORING_EQUIVALENCE.md",
-            "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
-        ),
-        implementations=_table_class_surface_case(surface),
-    )
+def _load_contracts() -> tuple[CertifiableEquivalence, ...]:
+    return tuple(import_module(f"tigrbl_equivalence_contracts.{module_name}").CONTRACT for module_name in _CONTRACT_MODULES)
 
 
-CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
-    _WIDGET_REST_CRUD_EQUIVALENCE,
-    *tuple(_table_class_equivalence(surface) for surface in TABLE_CLASS_SURFACES),
-)
+CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = _load_contracts()
