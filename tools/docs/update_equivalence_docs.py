@@ -167,7 +167,14 @@ def render_router_table_public_surface() -> str:
         ),
         (
             "REST and JSON-RPC table classes",
-            ["CrudTable", "RestTable", "JsonRpcTable", "RestJsonRpcTable", "BulkCrudTable"],
+            [
+                "CrudTable",
+                "RestTable",
+                "JsonRpcTable",
+                "RestJsonRpcTable",
+                "RestBulkCrudTable",
+                "JsonRpcBulkCrudTable",
+            ],
         ),
         (
             "OLTP and OLAP table classes",

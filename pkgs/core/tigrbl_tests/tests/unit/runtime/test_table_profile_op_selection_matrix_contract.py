@@ -5,11 +5,13 @@ import pytest
 from tigrbl import (
     BulkCrudTable,
     CrudTable,
+    JsonRpcBulkCrudTable,
     JsonRpcOlapTable,
     JsonRpcOltpTable,
     OlapTable,
     OltpTable,
     RealtimeTable,
+    RestBulkCrudTable,
     RestJsonRpcOlapTable,
     RestJsonRpcOltpTable,
     RestJsonRpcTable,
@@ -48,8 +50,8 @@ def test_abstract_realtime_profile_selects_realtime_ops_without_transport_bindin
     assert all(not op.bindings for op in spec.ops)
 
 
-def test_bulk_crud_profile_selects_bulk_and_crud_ops() -> None:
-    assert _targets(BulkCrudTable) == (
+def test_bulk_crud_profiles_select_bulk_and_crud_ops() -> None:
+    expected = (
         "create",
         "read",
         "update",
@@ -61,6 +63,9 @@ def test_bulk_crud_profile_selects_bulk_and_crud_ops() -> None:
         "bulk_replace",
         "bulk_delete",
     )
+    assert BulkCrudTable is RestBulkCrudTable
+    assert _targets(RestBulkCrudTable) == expected
+    assert _targets(JsonRpcBulkCrudTable) == expected
 
 
 def test_rest_jsonrpc_profile_selects_crud_ops() -> None:
@@ -195,4 +200,5 @@ def test_unknown_table_profile_fails_closed() -> None:
 
 
 def test_profile_operation_selection_is_deterministic() -> None:
-    assert TableSpec.collect(BulkCrudTable).ops == TableSpec.collect(BulkCrudTable).ops
+    assert TableSpec.collect(RestBulkCrudTable).ops == TableSpec.collect(RestBulkCrudTable).ops
+    assert TableSpec.collect(JsonRpcBulkCrudTable).ops == TableSpec.collect(JsonRpcBulkCrudTable).ops

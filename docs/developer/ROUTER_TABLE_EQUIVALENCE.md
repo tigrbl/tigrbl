@@ -37,7 +37,7 @@ Source inputs: `pkgs/core/tigrbl/tigrbl/__init__.py`, `pkgs/core/tigrbl_core/tig
 | --- | --- | --- |
 | Router composition | `TigrblRouter`, `RouterSpec`, `include_table`, `include_tables` | present |
 | Table bases and specs | `Table`, `TableBase`, `CrudTableBase`, `RealtimeTableBase`, `TableSpec`, `TableProfileSpec` | present |
-| REST and JSON-RPC table classes | `CrudTable`, `RestTable`, `JsonRpcTable`, `RestJsonRpcTable`, `BulkCrudTable` | present |
+| REST and JSON-RPC table classes | `CrudTable`, `RestTable`, `JsonRpcTable`, `RestJsonRpcTable`, `RestBulkCrudTable`, `JsonRpcBulkCrudTable` | present |
 | OLTP and OLAP table classes | `OltpTable`, `RestOltpTable`, `JsonRpcOltpTable`, `OlapTable`, `RestOlapTable`, `JsonRpcOlapTable` | present |
 | Streaming table classes | `StreamTable`, `SseTable`, `EventStreamTable`, `WebSocketTable`, `WebSocketJsonRpcTable` | present |
 | WebTransport table classes | `WebTransportTable`, `WebTransportBidiTable`, `WebTransportClientStreamTable`, `WebTransportServerStreamTable`, `WebTransportDatagramTable` | present |
@@ -100,7 +100,8 @@ Source inputs: `pkgs/core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py`.
 | `rest` | `concrete` | `create`, `read`, `update`, `replace`, `delete`, `list`, `clear` | `http.rest` | `default` | `default` | `RestTable` |
 | `jsonrpc` | `concrete` | `create`, `read`, `update`, `replace`, `delete`, `list`, `clear` | `http.jsonrpc` | `default` | `default` | `JsonRpcTable` |
 | `rest_jsonrpc` | `concrete` | `create`, `read`, `update`, `replace`, `delete`, `list`, `clear` | `http.rest`, `http.jsonrpc` | `default` | `default` | `RestJsonRpcTable` |
-| `bulk_crud` | `concrete` | `create`, `read`, `update`, `replace`, `delete`, `list`, `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_delete` | `http.rest` | `default` | `default` | `BulkCrudTable` |
+| `rest_bulk_crud` | `concrete` | `create`, `read`, `update`, `replace`, `delete`, `list`, `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_delete` | `http.rest` | `default` | `default` | `RestBulkCrudTable` |
+| `jsonrpc_bulk_crud` | `concrete` | `create`, `read`, `update`, `replace`, `delete`, `list`, `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_delete` | `http.jsonrpc` | `default` | `default` | `JsonRpcBulkCrudTable` |
 | `oltp` | `concrete` | `create`, `read`, `update`, `replace`, `merge`, `delete`, `list`, `count`, `exists` | `http.rest` | `default` | `default` | none |
 | `olap` | `concrete` | `read`, `list`, `count`, `exists`, `aggregate`, `group_by` | `http.rest` | `default` | `default` | none |
 | `rest_oltp` | `concrete` | `create`, `read`, `update`, `replace`, `merge`, `delete`, `list`, `count`, `exists` | `http.rest` | `default` | `default` | `RestOltpTable`, `OltpTable` |

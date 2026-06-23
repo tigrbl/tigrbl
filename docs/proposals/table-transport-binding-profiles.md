@@ -55,7 +55,8 @@ The following table classes are proposed as author-facing presets. Abstract rows
 | `CrudTable` | abstract | none | `create`, `read`, `update`, `replace`, `delete`, `list`, `clear` |
 | `RestTable` | concrete | `http.rest` | `create`, `read`, `update`, `replace`, `delete`, `list`, `clear` |
 | `JsonRpcTable` | concrete | `http.jsonrpc` | `create`, `read`, `update`, `replace`, `delete`, `list`, `clear` |
-| `BulkCrudTable` | concrete | `http.rest`, `http.jsonrpc` | `create`, `read`, `update`, `replace`, `delete`, `list`, `clear`, `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_merge`, `bulk_delete` |
+| `RestBulkCrudTable` | concrete | `http.rest` | `create`, `read`, `update`, `replace`, `delete`, `list`, `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_delete` |
+| `JsonRpcBulkCrudTable` | concrete | `http.jsonrpc` | `create`, `read`, `update`, `replace`, `delete`, `list`, `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_delete` |
 | `OltpTable` | concrete | `http.rest`, `http.jsonrpc` | `create`, `read`, `update`, `replace`, `merge`, `delete`, `list`, `clear`, `count`, `exists`, `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_merge`, `bulk_delete` |
 | `OlapTable` | concrete | `http.rest`, `http.jsonrpc` | `count`, `exists`, `aggregate`, `group_by` |
 | `RealtimeTable` | abstract | none | `publish`, `subscribe`, `tail`, `upload`, `download`, `append_chunk`, `send_datagram`, `checkpoint` |
@@ -80,7 +81,8 @@ The following table classes are proposed as author-facing presets. Abstract rows
 | `CrudTable` | yes | yes | yes | yes | no | yes | yes | yes | no | no | no |
 | `RestTable` | yes | yes | yes | yes | no | yes | yes | yes | no | no | no |
 | `JsonRpcTable` | yes | yes | yes | yes | no | yes | yes | yes | no | no | no |
-| `BulkCrudTable` | yes | yes | yes | yes | no | yes | yes | yes | no | no | `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_merge`, `bulk_delete` |
+| `RestBulkCrudTable` | yes | yes | yes | yes | no | yes | yes | yes | no | no | `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_delete` |
+| `JsonRpcBulkCrudTable` | yes | yes | yes | yes | no | yes | yes | yes | no | no | `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_delete` |
 | `OltpTable` | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes | `bulk_create`, `bulk_update`, `bulk_replace`, `bulk_merge`, `bulk_delete` |
 
 ### OLAP Tables

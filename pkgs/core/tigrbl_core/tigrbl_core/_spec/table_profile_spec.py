@@ -108,7 +108,7 @@ BUILTIN_TABLE_PROFILE_DEFINITIONS: Mapping[str, BuiltinTableProfile] = {
             ("RestJsonRpcTable",),
         ),
         BuiltinTableProfile(
-            "bulk_crud",
+            "rest_bulk_crud",
             "concrete",
             (
                 "create",
@@ -125,7 +125,27 @@ BUILTIN_TABLE_PROFILE_DEFINITIONS: Mapping[str, BuiltinTableProfile] = {
             ("http.rest",),
             "default",
             "default",
-            ("BulkCrudTable",),
+            ("RestBulkCrudTable",),
+        ),
+        BuiltinTableProfile(
+            "jsonrpc_bulk_crud",
+            "concrete",
+            (
+                "create",
+                "read",
+                "update",
+                "replace",
+                "delete",
+                "list",
+                "bulk_create",
+                "bulk_update",
+                "bulk_replace",
+                "bulk_delete",
+            ),
+            ("http.jsonrpc",),
+            "default",
+            "default",
+            ("JsonRpcBulkCrudTable",),
         ),
         BuiltinTableProfile(
             "oltp", "concrete", _OLTP_TARGETS, ("http.rest",), "default", "default"

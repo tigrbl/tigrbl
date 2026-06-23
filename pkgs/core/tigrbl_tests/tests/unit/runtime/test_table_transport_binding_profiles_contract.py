@@ -5,6 +5,7 @@ import pytest
 from tigrbl import (
     CrudTable,
     EventStreamTable,
+    JsonRpcBulkCrudTable,
     JsonRpcOlapTable,
     JsonRpcOltpTable,
     JsonRpcTable,
@@ -13,6 +14,7 @@ from tigrbl import (
     RestJsonRpcOlapTable,
     RestJsonRpcOltpTable,
     RestJsonRpcTable,
+    RestBulkCrudTable,
     RestOlapTable,
     RestOltpTable,
     RestTable,
@@ -80,6 +82,26 @@ def test_rest_jsonrpc_table_lowers_to_both_http_binding_families() -> None:
             "HttpRestBindingSpec",
             "HttpJsonRpcBindingSpec",
         )
+
+
+def test_bulk_crud_protocol_table_profiles_lower_to_selected_http_families() -> None:
+    expected_targets = (
+        "create",
+        "read",
+        "update",
+        "replace",
+        "delete",
+        "list",
+        "bulk_create",
+        "bulk_update",
+        "bulk_replace",
+        "bulk_delete",
+    )
+
+    assert tuple(op.target for op in _spec(RestBulkCrudTable).ops) == expected_targets
+    assert tuple(op.target for op in _spec(JsonRpcBulkCrudTable).ops) == expected_targets
+    assert set(_binding_names(RestBulkCrudTable)) == {"HttpRestBindingSpec"}
+    assert set(_binding_names(JsonRpcBulkCrudTable)) == {"HttpJsonRpcBindingSpec"}
 
 
 def test_oltp_protocol_table_profiles_lower_to_selected_http_families() -> None:

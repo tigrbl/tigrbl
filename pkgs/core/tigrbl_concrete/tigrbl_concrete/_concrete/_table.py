@@ -135,9 +135,17 @@ class RestJsonRpcTable(CrudTable):
     TABLE_PROFILE = make_builtin_table_profile("rest_jsonrpc")
 
 
-class BulkCrudTable(CrudTable):
+class RestBulkCrudTable(CrudTable):
     __abstract__ = True
-    TABLE_PROFILE = make_builtin_table_profile("bulk_crud")
+    TABLE_PROFILE = make_builtin_table_profile("rest_bulk_crud")
+
+
+class JsonRpcBulkCrudTable(CrudTable):
+    __abstract__ = True
+    TABLE_PROFILE = make_builtin_table_profile("jsonrpc_bulk_crud")
+
+
+BulkCrudTable = RestBulkCrudTable
 
 
 class RestOltpTable(CrudTable):
@@ -232,12 +240,14 @@ __all__ = [
     "BulkCrudTable",
     "CrudTable",
     "EventStreamTable",
+    "JsonRpcBulkCrudTable",
     "JsonRpcOlapTable",
     "JsonRpcOltpTable",
     "JsonRpcTable",
     "OlapTable",
     "OltpTable",
     "RealtimeTable",
+    "RestBulkCrudTable",
     "RestJsonRpcOlapTable",
     "RestJsonRpcOltpTable",
     "RestJsonRpcTable",

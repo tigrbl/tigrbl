@@ -36,15 +36,15 @@ If any of the four parts is missing, the equivalence is incomplete.
 
 Use the Widget REST CRUD equivalence as the reference style:
 
-- `equivalences/rest_crud_widget/tigrbl_impl.py` defines a `Widget`
+- `equivalences/rest_table/tigrbl_impl.py` defines a `Widget`
   `RestTable` and module-level `app`.
-- `equivalences/rest_crud_widget/fastapi_impl.py` defines the SQLAlchemy row,
+- `equivalences/rest_table/fastapi_impl.py` defines the SQLAlchemy row,
   Pydantic models, FastAPI routes, and module-level `app`.
-- `equivalences/rest_crud_widget/flask_impl.py` defines the SQLAlchemy row,
+- `equivalences/rest_table/flask_impl.py` defines the SQLAlchemy row,
   Flask routes, and module-level `app`.
-- `equivalences/rest_crud_widget/runtime.py` owns the equivalence-specific
+- `equivalences/rest_table/runtime.py` owns the equivalence-specific
   `httpx` client assertion sequence.
-- `equivalences/rest_crud_widget/contract.py` maps each framework app to its
+- `equivalences/rest_table/contract.py` maps each framework app to its
   runtime proof.
 - Top-level `contracts.py` only aggregates per-equivalence contracts.
 - `tests/test_certifiable_equivalences.py` asserts certification, matrix rows,
@@ -117,7 +117,7 @@ examples/equivalence_contracts/
     contracts.py
     runtime.py
     equivalences/
-      rest_crud_widget/
+      rest_table/
         contract.py
         runtime.py
         tigrbl_impl.py
@@ -143,7 +143,7 @@ Use normalized directory names based on the equivalence ID:
 src/tigrbl_equivalence_contracts/
   contracts.py
   equivalences/
-    rest_crud_widget/
+    rest_table/
       runtime.py
       tigrbl_impl.py
       fastapi_impl.py
@@ -158,7 +158,7 @@ proof callable.
 
 Contract entries should be small and declarative:
 
-- Use stable IDs such as `rest-crud.widget`.
+- Use stable IDs such as `table-class.rest-table`.
 - Use intent text that describes the developer task.
 - Use claims that are precise enough to test.
 - Point `code_ref` fields at readable implementation files.

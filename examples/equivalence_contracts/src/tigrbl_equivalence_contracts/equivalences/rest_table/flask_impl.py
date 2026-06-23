@@ -1,11 +1,25 @@
-"""Flask route-surface implementation for Tigrbl RestTable."""
+"""Flask implementation for Widget REST CRUD."""
 
 from __future__ import annotations
 
-from flask import Flask, jsonify
+from flask import Flask, abort, jsonify, request
+from sqlalchemy import String, create_engine, select
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.pool import StaticPool
 
-from .runtime import ROUTES
 
+class Base(DeclarativeBase):
+    pass
+
+
+class WidgetRow(Base):
+    __tablename__ = "widgets"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+
+
+engine = create_engine("sqlite+pysqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool, future=True)
+Base.metadata.create_all(engine)
 app = Flask(__name__)
 
 
@@ -14,49 +28,50 @@ def healthz():
     return jsonify({"status": "ok"})
 
 
-@app.get("/openapi.json")
-def openapi_json():
-    return jsonify(
-        {
-            "openapi": "3.1.0",
-            "paths": {
-                path: {method.lower(): {} for method in methods}
-                for path, methods in ROUTES
-            },
-        }
-    )
+@app.post("/widget")
+def create_widget():
+    payload = request.get_json()
+    with Session(engine) as session:
+        row = WidgetRow(id=payload["id"], name=payload["name"])
+        session.add(row)
+        session.commit()
+        return jsonify({"id": row.id, "name": row.name}), 201
 
 
-@app.get("/widgetresttable")
-def get_1():
-    return jsonify({"table_class": "RestTable", "path": "/widgetresttable", "method": "GET"})
+@app.get("/widget")
+def list_widgets():
+    with Session(engine) as session:
+        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
+        return jsonify([{"id": row.id, "name": row.name} for row in rows])
 
 
-@app.post("/widgetresttable")
-def post_2():
-    return jsonify({"table_class": "RestTable", "path": "/widgetresttable", "method": "POST"})
+@app.get("/widget/<id>")
+def read_widget(id: str):
+    with Session(engine) as session:
+        row = session.get(WidgetRow, id)
+        if row is None:
+            abort(404)
+        return jsonify({"id": row.id, "name": row.name})
 
 
-@app.delete("/widgetresttable")
-def delete_3():
-    return jsonify({"table_class": "RestTable", "path": "/widgetresttable", "method": "DELETE"})
+@app.patch("/widget/<id>")
+def update_widget(id: str):
+    payload = request.get_json()
+    with Session(engine) as session:
+        row = session.get(WidgetRow, id)
+        if row is None:
+            abort(404)
+        row.name = payload["name"]
+        session.commit()
+        return jsonify({"id": row.id, "name": row.name})
 
 
-@app.get("/widgetresttable/<item_id>")
-def get_4(item_id: str):
-    return jsonify({"table_class": "RestTable", "path": "/widgetresttable/{item_id}", "method": "GET", "item_id": item_id})
-
-
-@app.patch("/widgetresttable/<item_id>")
-def patch_5(item_id: str):
-    return jsonify({"table_class": "RestTable", "path": "/widgetresttable/{item_id}", "method": "PATCH", "item_id": item_id})
-
-
-@app.put("/widgetresttable/<item_id>")
-def put_6(item_id: str):
-    return jsonify({"table_class": "RestTable", "path": "/widgetresttable/{item_id}", "method": "PUT", "item_id": item_id})
-
-
-@app.delete("/widgetresttable/<item_id>")
-def delete_7(item_id: str):
-    return jsonify({"table_class": "RestTable", "path": "/widgetresttable/{item_id}", "method": "DELETE", "item_id": item_id})
+@app.delete("/widget/<id>")
+def delete_widget(id: str):
+    with Session(engine) as session:
+        row = session.get(WidgetRow, id)
+        if row is None:
+            abort(404)
+        session.delete(row)
+        session.commit()
+        return jsonify({"deleted": 1})

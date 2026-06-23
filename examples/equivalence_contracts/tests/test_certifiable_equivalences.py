@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from tigrbl_equivalence_contracts import CERTIFIABLE_EQUIVALENCES, certify_all, equivalence_by_id, matrix_rows
-from tigrbl_equivalence_contracts.equivalences.rest_crud_widget.runtime import EXPECTED_WIDGET_CRUD_EVIDENCE
+from tigrbl_equivalence_contracts.equivalences.rest_table.runtime import EXPECTED_WIDGET_CRUD_EVIDENCE
 
 TABLE_CLASS_IDS = tuple(row["id"] for row in matrix_rows() if row["category"] == "table-class")
 
@@ -22,20 +22,20 @@ def test_matrix_tracks_every_runtime_equivalence() -> None:
     assert all(row["test"].endswith("test_certifiable_equivalences.py") for row in rows)
 
 
-def test_widget_rest_crud_equivalence_has_tigrbl_fastapi_flask_code() -> None:
-    result = equivalence_by_id("rest-crud.widget").certify()
+def test_rest_table_equivalence_has_tigrbl_fastapi_flask_widget_crud_code() -> None:
+    result = equivalence_by_id("table-class.rest-table").certify()
     assert result.status == "analogous"
     assert result.evidence["observed"]["tigrbl"] == EXPECTED_WIDGET_CRUD_EVIDENCE
     assert set(result.evidence["observed"]) == {"tigrbl", "fastapi", "flask"}
     assert result.evidence["code_refs"] == {
-        "tigrbl": "src/tigrbl_equivalence_contracts/equivalences/rest_crud_widget/tigrbl_impl.py",
-        "fastapi": "src/tigrbl_equivalence_contracts/equivalences/rest_crud_widget/fastapi_impl.py",
-        "flask": "src/tigrbl_equivalence_contracts/equivalences/rest_crud_widget/flask_impl.py",
+        "tigrbl": "src/tigrbl_equivalence_contracts/equivalences/rest_table/tigrbl_impl.py",
+        "fastapi": "src/tigrbl_equivalence_contracts/equivalences/rest_table/fastapi_impl.py",
+        "flask": "src/tigrbl_equivalence_contracts/equivalences/rest_table/flask_impl.py",
     }
 
 
 def test_matrix_tracks_one_equivalence_per_concrete_tigrbl_table_class() -> None:
-    assert len(TABLE_CLASS_IDS) == 23
+    assert len(TABLE_CLASS_IDS) == 24
     assert len(set(TABLE_CLASS_IDS)) == len(TABLE_CLASS_IDS)
 
 

@@ -3,10 +3,12 @@ from __future__ import annotations
 from tigrbl_concrete._concrete import (
     BulkCrudTable,
     CrudTable,
+    JsonRpcBulkCrudTable,
     JsonRpcTable,
     OlapTable,
     OltpTable,
     RealtimeTable,
+    RestBulkCrudTable,
     RestTable,
     SseTable,
     StreamTable,
@@ -55,7 +57,9 @@ def test_rest_and_jsonrpc_profiles_collect_complete_crud_ops() -> None:
 
 
 def test_concrete_query_profiles_collect_expected_ops() -> None:
-    assert "bulk_create" in _targets(BulkCrudTable)
+    assert BulkCrudTable is RestBulkCrudTable
+    assert "bulk_create" in _targets(RestBulkCrudTable)
+    assert _targets(JsonRpcBulkCrudTable) == _targets(RestBulkCrudTable)
     assert "merge" in _targets(OltpTable)
     assert _targets(OlapTable) == (
         "read",
@@ -106,15 +110,16 @@ def test_builtin_table_profile_taxonomy_matches_exported_classes() -> None:
             checked.add(class_name)
 
     assert checked == {
-        "BulkCrudTable",
         "CrudTable",
         "EventStreamTable",
+        "JsonRpcBulkCrudTable",
         "JsonRpcOlapTable",
         "JsonRpcOltpTable",
         "JsonRpcTable",
         "OlapTable",
         "OltpTable",
         "RealtimeTable",
+        "RestBulkCrudTable",
         "RestJsonRpcOlapTable",
         "RestJsonRpcOltpTable",
         "RestJsonRpcTable",
