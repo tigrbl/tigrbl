@@ -8,6 +8,9 @@ SSOT entities.
 Tigrbl is the normative column in this document. Starlette and FastAPI columns
 explain nearby concepts for readers who know those frameworks.
 
+For explicit FastAPI, Flask, and Tigrbl router/table comparisons, see
+`docs/developer/ROUTER_TABLE_EQUIVALENCE.md`.
+
 ## Core Rule
 
 Application code should describe service behavior through Tigrbl-owned
@@ -80,8 +83,8 @@ transaction, or docs behavior.
 
 ## Allowed Lower-Layer Uses
 
-Starlette, FastAPI, SQLAlchemy, raw ASGI callables, and direct database APIs may
-appear when the code is explicitly one of these:
+Starlette, FastAPI, Flask, SQLAlchemy, raw ASGI callables, and direct database
+APIs may appear when the code is explicitly one of these:
 
 - framework internals;
 - concrete adapters;

@@ -33,7 +33,7 @@ of being coerced into a lossy comparison.
 | Delegated | Tigrbl models or consumes metadata, while another stack owns concrete mechanics. |
 | Provisional | The surface is modeled or partially implemented and should not be presented as mature release-grade support. |
 | Active line | The surface is implemented or tracked, but is not the main current-target support row. |
-| Tigrbl-specific | The concept is owned by Tigrbl and has no direct Starlette, FastAPI, ASGI, SQLAlchemy, or SQL dialect equivalent. |
+| Tigrbl-specific | The concept is owned by Tigrbl and has no direct Starlette, FastAPI, Flask, ASGI, SQLAlchemy, or SQL dialect equivalent. |
 | Lower-layer only | The concept may appear in internals, adapters, tests, migrations, or benchmarks, but not as primary application authoring guidance. |
 | Not equivalent | The surface differs in semantic ownership, lifecycle, or runtime guarantees. |
 | Unsupported | The surface is intentionally rejected or out of the current support boundary. |
@@ -43,6 +43,7 @@ of being coerced into a lossy comparison.
 | Need | Document | Scope |
 |---|---|---|
 | Application authoring comparison | `AUTHORING_EQUIVALENCE.md` | Tigrbl, Starlette, and FastAPI authoring concepts. |
+| Router and table comparison | `ROUTER_TABLE_EQUIVALENCE.md` | Tigrbl, FastAPI, and Flask router/table concept maps. |
 | Transport, ASGI 3, WebSocket, and WebTransport comparison | `TRANSPORT_EQUIVALENCE.md` | ASGI callable boundary, HTTP, streaming, SSE, WebSocket, WebTransport, and delegated carrier mechanics. |
 | Engine and SQL comparison | `ENGINE_SQL_EQUIVALENCE.md` | Engine specs, SQLAlchemy substrate, engine plugins, datatype lowering, and SQL dialect differences. |
 | Authoring policy | `AUTHORING_BCP.md` | Current application-facing Tigrbl authoring policy. |
@@ -54,17 +55,20 @@ of being coerced into a lossy comparison.
    authoring rule.
 2. Use `AUTHORING_EQUIVALENCE.md` to translate Starlette or FastAPI concepts
    into Tigrbl-owned authoring surfaces.
-3. Use `TRANSPORT_EQUIVALENCE.md` when the question involves ASGI 3, HTTP,
+3. Use `ROUTER_TABLE_EQUIVALENCE.md` when the question involves FastAPI
+   routers, Flask blueprints, Tigrbl routers, or Tigrbl table/resource
+   surfaces.
+4. Use `TRANSPORT_EQUIVALENCE.md` when the question involves ASGI 3, HTTP,
    streaming, SSE, WebSocket, WebTransport, or delegated h11/h2/h3/QUIC
    behavior.
-4. Use `ENGINE_SQL_EQUIVALENCE.md` when the question involves SQLAlchemy,
+5. Use `ENGINE_SQL_EQUIVALENCE.md` when the question involves SQLAlchemy,
    database engines, SQL dialects, datatype lowering, sessions, transactions,
    or backend plugins.
 
 ## Boundary Notes
 
 - Tigrbl application examples should use Tigrbl-owned authoring surfaces.
-- Starlette and FastAPI may appear in compatibility tests, benchmarks,
+- Starlette, FastAPI, and Flask may appear in compatibility tests, benchmarks,
   migration notes, or framework-internal adapter discussion, but they are not
   the recommended Tigrbl application authoring contract.
 - ASGI 3 is the runtime callable boundary. It is not the semantic authority for

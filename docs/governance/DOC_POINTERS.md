@@ -29,6 +29,7 @@ claims, evidence, boundaries, releases, ADRs, or specs.
 | Application authoring BCP | `docs/developer/AUTHORING_BCP.md` |
 | Equivalence guide index | `docs/developer/EQUIVALENCE_INDEX.md` |
 | Tigrbl, Starlette, and FastAPI application authoring comparison | `docs/developer/AUTHORING_EQUIVALENCE.md` |
+| Tigrbl, FastAPI, and Flask router/table comparison | `docs/developer/ROUTER_TABLE_EQUIVALENCE.md` |
 | Transport, ASGI 3, WebSocket, and WebTransport comparison | `docs/developer/TRANSPORT_EQUIVALENCE.md` |
 | Engine, SQLAlchemy, SQL dialect, and backend plugin comparison | `docs/developer/ENGINE_SQL_EQUIVALENCE.md` |
 | Transport and framing reference | `docs/developer/TRANSPORTS_AND_FRAMING.md` |

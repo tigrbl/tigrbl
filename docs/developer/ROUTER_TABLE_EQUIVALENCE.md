@@ -1,0 +1,110 @@
+# Router and Table Equivalence
+
+This document compares Tigrbl routers and tables to FastAPI and Flask
+concepts. It is a translation guide, not a policy replacement. The
+application-facing policy remains `docs/developer/AUTHORING_BCP.md`.
+
+Tigrbl is the normative column. FastAPI and Flask columns describe nearby
+concepts for readers who know those frameworks.
+
+## Core Rule
+
+Tigrbl routers and tables are not just URL registration helpers.
+
+- A Tigrbl router can carry route composition, table inclusion, operation
+  inventory, JSON-RPC mounting, docs projection, diagnostics, engine scope,
+  dependency scope, and hook behavior.
+- A Tigrbl table can carry canonical operation selection, table profile,
+  column specs, schema behavior, storage intent, default bindings, docs
+  exposure, runtime exposure, hooks, and engine binding.
+
+FastAPI routers and Flask blueprints are useful analogues for routing
+composition. They are not equivalent to Tigrbl routers when table, operation,
+schema, docs, engine, and runtime behavior are part of the Tigrbl contract.
+
+FastAPI and Flask do not have a built-in Tigrbl table equivalent. Their table
+concepts usually come from external layers such as SQLAlchemy, SQLModel,
+Flask-SQLAlchemy, Pydantic models, or hand-written repository/service code.
+
+## Router Equivalence Matrix
+
+| Intent | Tigrbl router surface | FastAPI analogue | Flask analogue | Equivalence level | Notes |
+|---|---|---|---|---|---|
+| Group routes under a prefix | `TigrblRouter(prefix=...)`, `RouterSpec.PREFIX`, `include_router` | `APIRouter(prefix=...)` | `Blueprint(url_prefix=...)`, app route registration | Analogous | Prefix grouping is the closest shared router concept. |
+| Include a nested router | `include_router(...)`, `ROUTERS`, router specs | `include_router(...)` | Register a `Blueprint` or compose app factories | Analogous | Tigrbl nested routers can also preserve engine, table, docs, and diagnostics scope. |
+| Include a resource/table group | `include_table(...)`, `include_tables(...)`, router `TABLES` | No built-in equivalent; usually routes plus models/services | No built-in equivalent; usually blueprint plus ORM/repository code | Tigrbl-specific | Table inclusion can generate operation projections across bindings. |
+| Attach REST routes | Table/default bindings, explicit `HttpRestBindingSpec`, REST mounting | Path decorators on `APIRouter` | `@blueprint.route(...)` or `app.add_url_rule(...)` | Analogous | Tigrbl routes are projections from operation and binding declarations. |
+| Attach JSON-RPC methods | JSON-RPC mounting plus `HttpJsonRpcBindingSpec` | Custom route or external package | Custom route or external package | Tigrbl-specific | JSON-RPC is first-class in Tigrbl operation projection. |
+| Attach WebSocket handlers | `WsBindingSpec`, `websocket_ctx`, WebSocket table profiles | `websocket` support in FastAPI | Extension or server-specific Flask setup | Analogous | WebSocket framing and subprotocol metadata must be explicit in Tigrbl. |
+| Attach streaming or SSE routes | `HttpStreamBindingSpec`, `SseBindingSpec`, stream/SSE table profiles | Streaming response or SSE package | Generator response or SSE package | Analogous | Tigrbl treats stream/SSE as binding and runtime metadata. |
+| Declare router-level dependencies | Router deps, security deps, specs, hooks | `dependencies=[Depends(...)]` | `before_request`, decorators, extension hooks | Analogous | Tigrbl dependency placement must preserve phase ordering and diagnostics. |
+| Bind an engine at router scope | Router engine binding / `RouterSpec.ENGINE` | Usually dependency-injected session factory | Usually extension app context or request context | Tigrbl-specific | Engine precedence participates in app > router > table > operation resolution. |
+| Mount docs and diagnostics | OpenAPI, OpenRPC, JSON Schema, `/system/*` helpers | OpenAPI generated from routes | Extension-specific or custom docs | Not equivalent | Tigrbl docs and diagnostics derive from specs, operations, bindings, and runtime plans. |
+| Runtime dispatch | Kernel/runtime plans and route projections | FastAPI route dispatch | Flask request dispatch | Not equivalent | Tigrbl routing must preserve operation identity and lifecycle semantics. |
+
+## Router Translation Examples
+
+| If you would write this | In Tigrbl, start with | Why |
+|---|---|---|
+| `APIRouter(prefix="/v1")` | `TigrblRouter(prefix="/v1")` or `RouterSpec` | Prefix composition is analogous, but Tigrbl can carry table, engine, hook, docs, and diagnostics scope. |
+| `Blueprint("admin", __name__, url_prefix="/admin")` | `TigrblRouter(prefix="/admin")` plus selected tables/ops | Blueprint grouping maps to router grouping; table and operation semantics remain Tigrbl-owned. |
+| `router.include_router(items_router)` | `include_router(items_router)` | Similar composition shape; Tigrbl also preserves generated operation projections. |
+| Register many resource routes by hand | `include_tables(...)` or router `TABLES` | Tigrbl can derive REST, JSON-RPC, docs, schemas, hooks, and diagnostics from table operation inventory. |
+| Add a router dependency for auth | Router `security_deps`, `deps`, or hook policy | Keeps policy visible to operation compilation and diagnostics. |
+
+## Table Equivalence Matrix
+
+| Intent | Tigrbl table surface | FastAPI analogue | Flask analogue | Equivalence level | Notes |
+|---|---|---|---|---|---|
+| Resource/table declaration | Tigrbl table class, `TableSpec`, `TableProfileSpec` | No built-in table primitive; often Pydantic plus SQLAlchemy/SQLModel | No built-in table primitive; often Flask-SQLAlchemy or SQLAlchemy model | Tigrbl-specific | Tigrbl tables own more than persistence shape. |
+| Operation inventory | Canonical ops, operation-pack verbs, `OpSpec`, table profiles | Route functions grouped around a model/service | Blueprint routes or MethodView grouped around a model/service | Not equivalent | Tigrbl operation identity drives bindings, docs, hooks, diagnostics, and runtime plans. |
+| Default CRUD | `Table`, `CrudTable`, `RestTable`, `JsonRpcTable`, `RestJsonRpcTable` and related profiles | Hand-authored CRUD path operations or generator package | Hand-authored CRUD routes or extension package | Analogous | Tigrbl default ops are declared table behavior. |
+| Backend profile | `OltpTable`, `OlapTable`, stream/SSE/WebSocket/WebTransport table profiles | Service-layer conventions or separate routers | Service-layer conventions or separate blueprints | Tigrbl-specific | Profiles select operation families and binding defaults. |
+| Field declaration | `ColumnSpec`, column helpers, `FieldSpec`, `IOSpec`, `StorageSpec`, `DataTypeSpec` | Pydantic fields plus external ORM fields | SQLAlchemy/Flask-SQLAlchemy fields plus marshaling layer | Projection-only | Tigrbl separates logical, wire, storage, docs, and runtime behavior. |
+| Request/response model generation | Schema specs, schema helpers, `get_schema(...)` | Pydantic request/response models | Marshmallow, Pydantic, manual serializers, or extension-specific schemas | Analogous | Generated schemas should derive from Tigrbl specs where possible. |
+| Persistence and session behavior | Engine binding, storage specs, runtime transaction phases | Dependency-injected session and ORM code | App/request context sessions or extension sessions | Not equivalent | Tigrbl runtime owns guarded transaction progression. |
+| Docs exposure | Binding-derived OpenAPI, OpenRPC, JSON Schema, declared transport metadata | FastAPI OpenAPI from path operations and models | Extension/custom documentation | Not equivalent | Tigrbl docs exposure is separate from runtime exposure. |
+| Runtime exposure | Table profile runtime exposure and binding lowering | Registered path operations | Registered URL rules | Projection-only | Network exposure follows declared bindings and fail-closed validation. |
+| Hooks and policy | Hook specs, decorators, phase-aware handlers | Dependencies, decorators, middleware | Decorators, `before_request`, extensions | Analogous | Tigrbl hooks must preserve operation phase semantics. |
+| Diagnostics | Method, hook, and kernel diagnostics | No built-in equivalent | No built-in equivalent | Tigrbl-specific | Diagnostics inspect generated operation and runtime state. |
+
+## Table Translation Examples
+
+| If you would write this | In Tigrbl, start with | Why |
+|---|---|---|
+| FastAPI Pydantic model plus CRUD routes | Tigrbl table class with column specs and canonical CRUD ops | The table can project one operation inventory into REST, JSON-RPC, docs, schemas, hooks, and diagnostics. |
+| SQLModel or SQLAlchemy model behind FastAPI routes | Tigrbl table plus `ColumnSpec`/storage/datatype specs | SQLAlchemy can remain a lowering target while Tigrbl owns application authoring. |
+| Flask-SQLAlchemy model plus Blueprint routes | Tigrbl table plus `TigrblRouter.include_table(...)` | The table and router preserve resource, operation, docs, engine, and runtime behavior together. |
+| Flask `MethodView` for CRUD | Tigrbl canonical ops or explicit `OpSpec` entries | CRUD behavior should remain operation inventory, not handler-class route dispatch. |
+| Separate read/write endpoints for one model | Table profiles and explicit op bindings | Tigrbl can make binding, docs, and runtime exposure decisions explicit per operation. |
+
+## Non-Equivalence Rules
+
+- A FastAPI `APIRouter` or Flask `Blueprint` is not equivalent to a Tigrbl
+  router when the Tigrbl router carries table inclusion, engine scope,
+  generated operation bindings, docs, diagnostics, or runtime planning.
+- A FastAPI Pydantic model is not equivalent to a Tigrbl table. It may map to a
+  request/response schema projection.
+- A SQLAlchemy, SQLModel, or Flask-SQLAlchemy model is not equivalent to a
+  Tigrbl table when Tigrbl specs can represent the field, storage, schema,
+  operation, and binding behavior.
+- A Flask `MethodView` or FastAPI path operation collection is not equivalent
+  to Tigrbl table operation inventory unless the Tigrbl operation specs remain
+  the semantic source.
+- Router or table docs generated by another framework are not support
+  authority for Tigrbl docs, bindings, diagnostics, or runtime exposure.
+
+## Documentation Pattern
+
+When adding router or table examples, document each row with these fields:
+
+| Field | Purpose |
+|---|---|
+| Intent | What the application author is trying to express. |
+| Tigrbl surface | The Tigrbl-owned surface that should be used in application examples. |
+| FastAPI analogue | The closest FastAPI concept, if one exists. |
+| Flask analogue | The closest Flask concept, if one exists. |
+| Equivalence level | `Equivalent`, `Analogous`, `Projection-only`, `Delegated`, `Tigrbl-specific`, `Lower-layer only`, `Not equivalent`, or `Unsupported`. |
+| Notes | Scope boundaries, generated projections, and fail-closed behavior. |
+
+This format keeps concept translation separate from support claims.

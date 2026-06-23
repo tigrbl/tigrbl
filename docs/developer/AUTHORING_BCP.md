@@ -39,6 +39,9 @@ Do not:
   hooks.
 - Do not author application endpoints with Starlette route, request, response,
   middleware, background-task, or lifecycle classes.
+- Do not author application endpoints with Flask `Flask`, `Blueprint`, route
+  decorators, request/response globals, `MethodView`, extension registration,
+  or lifecycle hooks.
 - Do not wrap Tigrbl model behavior in transport-specific route handlers when
   an operation spec can represent the behavior.
 - Do not use FastAPI or Starlette documentation generation as the source of
@@ -133,10 +136,10 @@ The following uses are allowed when they are explicit about their boundary:
   storage, reflection, and datatype-lowering behavior.
 - Base/concrete internals may lower `ColumnSpec` and related metadata into
   SQLAlchemy constructs.
-- Tests, examples, and benchmarks may use FastAPI, Starlette, SQLAlchemy
-  `Column(...)`, or SQLAlchemy `mapped_column(...)` when they are validating
-  compatibility, parity, legacy behavior, migration behavior, or lower-level
-  framework boundaries.
+- Tests, examples, and benchmarks may use FastAPI, Starlette, Flask,
+  SQLAlchemy `Column(...)`, or SQLAlchemy `mapped_column(...)` when they are
+  validating compatibility, parity, legacy behavior, migration behavior, or
+  lower-level framework boundaries.
 - Deprecated and archived docs may preserve historical examples, but they are
   not current authoring guidance.
 
@@ -159,6 +162,8 @@ Do not:
 
 - Do not teach FastAPI or Starlette route authoring as an application pattern in
   active Tigrbl README examples.
+- Do not teach Flask route, blueprint, or `MethodView` authoring as an
+  application pattern in active Tigrbl README examples.
 - Do not teach raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the
   preferred application column authoring pattern in active Tigrbl README
   examples.

@@ -22,10 +22,11 @@ The authoritative source of truth for governed repository state is `.ssot/regist
 10. `developer/AUTHORING_BCP.md`
 11. `developer/EQUIVALENCE_INDEX.md`
 12. `developer/AUTHORING_EQUIVALENCE.md`
-13. `developer/TRANSPORT_EQUIVALENCE.md`
-14. `developer/ENGINE_SQL_EQUIVALENCE.md`
-15. `developer/TRANSPORTS_AND_FRAMING.md`
-16. `governance/DOC_POINTERS.md`
+13. `developer/ROUTER_TABLE_EQUIVALENCE.md`
+14. `developer/TRANSPORT_EQUIVALENCE.md`
+15. `developer/ENGINE_SQL_EQUIVALENCE.md`
+16. `developer/TRANSPORTS_AND_FRAMING.md`
+17. `governance/DOC_POINTERS.md`
 
 ## Sections
 

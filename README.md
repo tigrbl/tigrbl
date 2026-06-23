@@ -138,7 +138,7 @@ Avoid:
 
 - Avoid using the root README as the only documentation for a distributable. Each package README should still explain its own install target and boundary.
 - Avoid duplicating release claims outside governed evidence records.
-- Avoid moving application examples toward FastAPI, Starlette, direct SQLAlchemy authoring, or direct DB/session method calls when Tigrbl-owned authoring surfaces can express the behavior.
+- Avoid moving application examples toward FastAPI, Flask, Starlette, direct SQLAlchemy authoring, or direct DB/session method calls when Tigrbl-owned authoring surfaces can express the behavior.
 
 ## Public API and Import Surfaces
 
@@ -240,8 +240,8 @@ Use the facade for application code unless you are maintaining a framework layer
 
 Tigrbl application code should stay on Tigrbl-owned authoring surfaces. The detailed policy is in [`docs/developer/AUTHORING_BCP.md`](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/AUTHORING_BCP.md); this root README states the repository-level rule for contributors, examples, package docs, and workspace maintenance.
 
-For readers translating from Starlette, FastAPI, ASGI 3, WebSocket, WebTransport,
-SQLAlchemy, or database-engine concepts, use
+For readers translating from Starlette, FastAPI, Flask, ASGI 3, WebSocket,
+WebTransport, SQLAlchemy, or database-engine concepts, use
 [`docs/developer/EQUIVALENCE_INDEX.md`](docs/developer/EQUIVALENCE_INDEX.md).
 Those guides explain nearby concepts without making lower-layer frameworks the
 Tigrbl application authoring contract.
@@ -268,7 +268,7 @@ Do not:
 
 Avoid:
 
-- Avoid treating ASGI, FastAPI, Starlette, SQLAlchemy ORM materialization, or direct DB methods as the application contract. They may appear behind Tigrbl-owned internals, engine adapters, compatibility tests, or benchmarks, but not as the recommended user-facing authoring path.
+- Avoid treating ASGI, FastAPI, Flask, Starlette, SQLAlchemy ORM materialization, or direct DB methods as the application contract. They may appear behind Tigrbl-owned internals, engine adapters, compatibility tests, or benchmarks, but not as the recommended user-facing authoring path.
 - Avoid duplicating field and payload rules across SQLAlchemy, Pydantic, route handlers, and docs. Put reusable rules in specs and retrieve operation payload models through schema helpers such as `get_schema(...)`.
 - Avoid README examples that teach lower-level framework internals as normal application style unless the example is explicitly marked as a test, benchmark, migration, engine adapter, or framework-internal compatibility surface.
 - Avoid adding transport-only shortcuts that make REST, JSON-RPC, docs, diagnostics, hooks, and tests disagree about what the service supports.
@@ -435,6 +435,7 @@ Tigrbl runtime execution is Python-only. Rust-named runtime, kernel, atom, handl
 - `docs/README.md`
 - `docs/developer/EQUIVALENCE_INDEX.md`
 - `docs/developer/AUTHORING_EQUIVALENCE.md`
+- `docs/developer/ROUTER_TABLE_EQUIVALENCE.md`
 - `docs/developer/TRANSPORT_EQUIVALENCE.md`
 - `docs/developer/ENGINE_SQL_EQUIVALENCE.md`
 - `docs/developer/TRANSPORTS_AND_FRAMING.md`

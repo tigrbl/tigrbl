@@ -47,7 +47,7 @@ Tools are not tests unless they are registered as SSOT test entities for a speci
 - package layout matches the normalized workspace policy
 - package-local Markdown does not bypass the governed docs tree
 - required pointer documents exist and resolve to live files or directories
-- authoring BCP docs stay present, explicit, linked, and protected from application-facing README code examples that teach FastAPI, Starlette, raw SQLAlchemy column authoring, or direct DB/session transaction calls as normal Tigrbl style
+- authoring BCP docs stay present, explicit, linked, and protected from application-facing README code examples that teach FastAPI, Starlette, Flask, raw SQLAlchemy column authoring, or direct DB/session transaction calls as normal Tigrbl style
 - root clutter and generated artifact directories are rejected
 - file names, directory names, and repository-relative paths stay within the governed limits
 - claim wording outside governance/conformance records does not overstate current release status

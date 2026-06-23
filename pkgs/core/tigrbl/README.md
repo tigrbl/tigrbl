@@ -158,8 +158,8 @@ Use the facade for application code unless you are maintaining a framework layer
 
 The facade is the normal application authoring surface. Use `docs/developer/AUTHORING_BCP.md` for the full policy; this package README keeps the public-package guidance explicit because it is the README most application developers see first.
 
-If you are translating concepts from Starlette, FastAPI, ASGI 3, WebSocket,
-WebTransport, SQLAlchemy, or backend-specific SQL engines, start with
+If you are translating concepts from Starlette, FastAPI, Flask, ASGI 3,
+WebSocket, WebTransport, SQLAlchemy, or backend-specific SQL engines, start with
 [`docs/developer/EQUIVALENCE_INDEX.md`](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/EQUIVALENCE_INDEX.md).
 Those guides describe analogous lower-layer concepts while keeping Tigrbl-owned
 authoring surfaces as the application contract.
@@ -188,7 +188,7 @@ Do not:
 
 Avoid:
 
-- Avoid treating ASGI, FastAPI, Starlette, SQLAlchemy ORM materialization, or direct DB methods as the user-facing application contract. Tigrbl owns the authoring contract; lower-level libraries are implementation substrates behind Tigrbl-owned adapters, engines, tests, or benchmarks.
+- Avoid treating ASGI, FastAPI, Flask, Starlette, SQLAlchemy ORM materialization, or direct DB methods as the user-facing application contract. Tigrbl owns the authoring contract; lower-level libraries are implementation substrates behind Tigrbl-owned adapters, engines, tests, or benchmarks.
 - Avoid duplicating field behavior in SQLAlchemy, Pydantic, docs, and route handlers. Put reusable behavior in Tigrbl specs so storage, schema, docs, runtime, hooks, and diagnostics read the same source.
 - Avoid hand-written Pydantic envelopes for payloads that belong to a Tigrbl operation.
 - Avoid transport-specific wrappers for authentication, authorization, validation, or dispatch when security dependencies, hooks, operation specs, or lifecycle phases can express the rule once.
@@ -427,6 +427,7 @@ Choose `tigrbl` when you want the full public facade: app composition, schema-fi
 - [Workspace docs](https://github.com/tigrbl/tigrbl/blob/master/docs/README.md)
 - [Equivalence guide index](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/EQUIVALENCE_INDEX.md)
 - [Application authoring equivalence](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/AUTHORING_EQUIVALENCE.md)
+- [Router and table equivalence](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/ROUTER_TABLE_EQUIVALENCE.md)
 - [Transport equivalence](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/TRANSPORT_EQUIVALENCE.md)
 - [Engine and SQL equivalence](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/ENGINE_SQL_EQUIVALENCE.md)
 - [Transports and framing](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/TRANSPORTS_AND_FRAMING.md)
