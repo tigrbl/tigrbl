@@ -1,9 +1,18 @@
+"""The equivalence matrix that points human readers at runnable examples.
+
+The implementation files are deliberately ordinary framework code.  This
+module records which framework examples should be compared, which documents
+they support, and which shared runtime lesson certifies their HTTP behavior.
+"""
+
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from importlib import import_module
 from typing import Any, Literal
+
+from .runtime import assert_widget_rest_crud_over_http
 
 EquivalenceStatus = Literal[
     "equivalent",
@@ -18,18 +27,24 @@ FrameworkName = Literal["tigrbl", "fastapi", "flask"]
 
 @dataclass(frozen=True)
 class FrameworkImplementation:
+    """One framework entry in an equivalence row."""
+
     framework: FrameworkName
     code_ref: str
-    implementation: Callable[[], Any]
+    start_server: Callable[[], Any]
     exercise: Callable[[Any], Any]
     normalize: Callable[[Any], Any]
 
     def certify(self) -> Any:
-        return self.normalize(self.exercise(self.implementation()))
+        """Start the framework example and return normalized proof evidence."""
+
+        return self.normalize(self.exercise(self.start_server()))
 
 
 @dataclass(frozen=True)
 class CertificationResult:
+    """The evidence produced after one equivalence row has been certified."""
+
     equivalence_id: str
     status: EquivalenceStatus
     certified: bool
@@ -38,6 +53,13 @@ class CertificationResult:
 
 @dataclass(frozen=True)
 class CertifiableEquivalence:
+    """A row in the technical-marketing equivalence matrix.
+
+    Each row names the developer intent, points at source files for visual
+    inspection, and runs the same client-side assertions against every listed
+    framework implementation.
+    """
+
     id: str
     category: str
     intent: str
@@ -47,6 +69,8 @@ class CertifiableEquivalence:
     implementations: tuple[FrameworkImplementation, ...]
 
     def certify(self) -> CertificationResult:
+        """Run every implementation and fail if any observed result differs."""
+
         observed = {
             implementation.framework: implementation.certify()
             for implementation in self.implementations
@@ -69,6 +93,8 @@ class CertifiableEquivalence:
 
 
 def equivalence_by_id(equivalence_id: str) -> CertifiableEquivalence:
+    """Return one equivalence row by its stable matrix identifier."""
+
     for case in CERTIFIABLE_EQUIVALENCES:
         if case.id == equivalence_id:
             return case
@@ -76,10 +102,14 @@ def equivalence_by_id(equivalence_id: str) -> CertifiableEquivalence:
 
 
 def certify_all() -> tuple[CertificationResult, ...]:
+    """Certify every declared equivalence row."""
+
     return tuple(case.certify() for case in CERTIFIABLE_EQUIVALENCES)
 
 
 def matrix_rows() -> tuple[dict[str, str], ...]:
+    """Render the rows used by generated documentation tables."""
+
     rows: list[dict[str, str]] = []
     for case in CERTIFIABLE_EQUIVALENCES:
         refs = {item.framework: item.code_ref for item in case.implementations}
@@ -101,14 +131,14 @@ def matrix_rows() -> tuple[dict[str, str], ...]:
 def _impl(
     framework: FrameworkName,
     code_ref: str,
-    implementation: Callable[[], Any],
+    start_server: Callable[[], Any],
     exercise: Callable[[Any], Any],
     normalize: Callable[[Any], Any],
 ) -> FrameworkImplementation:
     return FrameworkImplementation(
         framework=framework,
         code_ref=code_ref,
-        implementation=implementation,
+        start_server=start_server,
         exercise=exercise,
         normalize=normalize,
     )
@@ -124,37 +154,41 @@ def _rest_crud_case(
             "tigrbl",
             "src/tigrbl_equivalence_contracts/frameworks/tigrbl_impl.py",
             _lazy_attr("tigrbl_impl", tigrbl_attr),
-            lambda demo: demo(),
+            assert_widget_rest_crud_over_http,
             lambda result: result,
         ),
         _impl(
             "fastapi",
             "src/tigrbl_equivalence_contracts/frameworks/fastapi_impl.py",
             _lazy_attr("fastapi_impl", fastapi_attr),
-            lambda demo: demo(),
+            assert_widget_rest_crud_over_http,
             lambda result: result,
         ),
         _impl(
             "flask",
             "src/tigrbl_equivalence_contracts/frameworks/flask_impl.py",
             _lazy_attr("flask_impl", flask_attr),
-            lambda demo: demo(),
+            assert_widget_rest_crud_over_http,
             lambda result: result,
         ),
     )
 
 
 def _lazy_attr(module_name: str, attr_name: str) -> Callable[[], Any]:
+    """Load and call a framework startup function only during certification."""
+
     def _get() -> Any:
         module = import_module(
             f"tigrbl_equivalence_contracts.frameworks.{module_name}"
         )
-        return getattr(module, attr_name)
+        return getattr(module, attr_name)()
 
     return _get
 
 
 def _assert_all_equal(values: Any, message: str) -> None:
+    """Assert that every framework produced byte-for-byte equivalent evidence."""
+
     items = tuple(values)
     if not items:
         raise AssertionError("no implementation evidence produced")
@@ -175,9 +209,9 @@ CERTIFIABLE_EQUIVALENCES: tuple[CertifiableEquivalence, ...] = (
             "docs/developer/ROUTER_TABLE_EQUIVALENCE.md",
         ),
         implementations=_rest_crud_case(
-            "assert_rest_crud_e2e",
-            "assert_rest_crud_e2e",
-            "assert_rest_crud_e2e",
+            "start_server",
+            "start_server",
+            "start_server",
         ),
     ),
 )
