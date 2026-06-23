@@ -27,11 +27,16 @@ REQUIRED_BCP_PHRASES = [
     "Avoid:",
     "FastAPI",
     "Starlette",
+    "Flask",
+    "SSE",
+    "WebSocket",
+    "WebTransport",
     "mapped_column",
     "Column(...)",
     "flush()",
     "commit()",
     "Allowed Exceptions",
+    "Why:",
 ]
 
 MAIN_README_REQUIRED_PHRASES = [
@@ -42,8 +47,13 @@ MAIN_README_REQUIRED_PHRASES = [
     "Avoid:",
     "FastAPI",
     "Starlette",
+    "Flask",
+    "SSE",
+    "WebSocket",
+    "WebTransport",
     "mapped_column",
     "Column(...)",
+    "Why:",
 ]
 
 BOUNDARY_README_REQUIREMENTS = {
@@ -92,6 +102,10 @@ PROHIBITED_APPLICATION_SNIPPETS = {
         r"\bfrom\s+starlette\b|\bimport\s+starlette\b|\bRoute\s*\(",
         re.MULTILINE,
     ),
+    "Flask route authoring": re.compile(
+        r"\bfrom\s+flask\s+import\b|\bimport\s+flask\b|\bFlask\s*\(|\bBlueprint\s*\(|\bMethodView\b",
+        re.MULTILINE,
+    ),
     "raw SQLAlchemy mapped_column authoring": re.compile(
         r"\bmapped_column\s*\(",
         re.MULTILINE,
@@ -109,6 +123,50 @@ PROHIBITED_APPLICATION_SNIPPETS = {
 
 def _read(path: Path) -> str:
     return path.read_text(encoding="utf-8")
+
+
+def _authoring_bcp_section(text: str) -> str:
+    marker = "## Authoring BCP"
+    start = text.find(marker)
+    if start == -1:
+        return text
+    end = text.find("\n## ", start + len(marker))
+    if end == -1:
+        return text[start:]
+    return text[start:end]
+
+
+def _rule_bullets(text: str) -> list[tuple[str, str]]:
+    bullets: list[tuple[str, str]] = []
+    active_label: str | None = None
+    current: list[str] = []
+
+    def flush() -> None:
+        nonlocal current
+        if active_label and current:
+            bullets.append((active_label, "\n".join(current).strip()))
+        current = []
+
+    for line in text.splitlines():
+        if line in {"Do:", "Do not:", "Avoid:"}:
+            flush()
+            active_label = line[:-1]
+            continue
+        if line.startswith("#"):
+            flush()
+            active_label = None
+            continue
+        if active_label is None:
+            continue
+        if line.startswith("- "):
+            flush()
+            current = [line]
+            continue
+        if current and (line.startswith("  ") or not line.strip()):
+            current.append(line)
+
+    flush()
+    return bullets
 
 
 def _active_package_readmes() -> list[Path]:
@@ -147,6 +205,17 @@ def main() -> None:
         for phrase in MAIN_README_REQUIRED_PHRASES:
             if phrase not in text:
                 errors.append(f"{readme.relative_to(ROOT)} missing required BCP phrase {phrase!r}")
+
+    rationale_targets = {
+        BCP_DOC: bcp_text,
+        ROOT_README: _authoring_bcp_section(_read(ROOT_README)),
+        FACADE_README: _authoring_bcp_section(_read(FACADE_README)),
+    }
+    for path, text in rationale_targets.items():
+        rel = path.relative_to(ROOT)
+        for label, bullet in _rule_bullets(text):
+            if "Why:" not in bullet:
+                errors.append(f"{rel} {label} bullet missing rationale: {bullet.splitlines()[0]}")
 
     for rel, phrases in BOUNDARY_README_REQUIREMENTS.items():
         path = ROOT / rel

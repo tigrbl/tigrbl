@@ -49,7 +49,7 @@ Tools are not tests unless they are registered as SSOT test entities for a speci
 - package layout matches the normalized workspace policy
 - package-local Markdown does not bypass the governed docs tree
 - required pointer documents exist and resolve to live files or directories
-- authoring BCP docs stay present, explicit, linked, and protected from application-facing README code examples that teach FastAPI, Starlette, Flask, raw SQLAlchemy column authoring, or direct DB/session transaction calls as normal Tigrbl style
+- authoring BCP docs stay present, explicit, linked, rationale-backed, protocol-aware for stream/SSE/WebSocket/WebTransport surfaces, and protected from application-facing README code examples that teach FastAPI, Starlette, Flask, raw SQLAlchemy column authoring, or direct DB/session transaction calls as normal Tigrbl style
 - equivalence-guide generated blocks stay synchronized with live facade exports, binding/framing support, WebTransport lane metadata, engine plugin package metadata, datatype lowering, reflection hints, and built-in table-profile definitions
 - local equivalence runtime contracts under `examples/equivalence_contracts` execute and certify the parity or projection claims they declare
 - root clutter and generated artifact directories are rejected
