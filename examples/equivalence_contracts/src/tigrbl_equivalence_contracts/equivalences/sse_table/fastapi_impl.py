@@ -1,8 +1,37 @@
-"""FastAPI route-surface implementation for Tigrbl SseTable."""
+"""FastAPI implementation for the SseTable Widget route surface."""
 
 from __future__ import annotations
 
 from fastapi import FastAPI
+from pydantic import BaseModel
+from sqlalchemy import String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.pool import StaticPool
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class WidgetRow(Base):
+    __tablename__ = "widgets_sse_table"
+    id: Mapped[str] = mapped_column(String, primary_key=True)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+
+
+engine = create_engine(
+    "sqlite+pysqlite://",
+    connect_args={"check_same_thread": False},
+    poolclass=StaticPool,
+    future=True,
+)
+Base.metadata.create_all(engine)
+
+
+class WidgetOut(BaseModel):
+    id: str
+    name: str
+
 
 app = FastAPI()
 
@@ -12,6 +41,8 @@ def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/widgetssetable")
-def get_1() -> dict[str, str]:
-    return {"table_class": "SseTable", "path": "/widgetssetable", "method": "GET"}
+@app.get("/widgetssetable", response_model=list[WidgetOut])
+def list_widgets() -> list[WidgetOut]:
+    with Session(engine) as session:
+        rows = session.query(WidgetRow).order_by(WidgetRow.id).all()
+        return [WidgetOut(id=row.id, name=row.name) for row in rows]
