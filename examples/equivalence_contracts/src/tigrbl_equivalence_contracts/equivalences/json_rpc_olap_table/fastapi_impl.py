@@ -1,10 +1,11 @@
-"""FastAPI implementation for the JsonRpcOlapTable Widget route surface."""
+"""FastAPI implementation for the JsonRpcOlapTable Widget JSON-RPC surface."""
 
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from sqlalchemy import String, create_engine
+from typing import Any
+
+from fastapi import FastAPI, Request
+from sqlalchemy import String, create_engine, func, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
 
@@ -26,18 +27,6 @@ engine = create_engine(
     future=True,
 )
 Base.metadata.create_all(engine)
-
-
-class WidgetIn(BaseModel):
-    id: str
-    name: str
-
-
-class WidgetOut(BaseModel):
-    id: str
-    name: str
-
-
 app = FastAPI()
 
 
@@ -46,26 +35,48 @@ def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/widgetjsonrpcolaptable", response_model=list[WidgetOut])
-def list_widgets() -> list[WidgetOut]:
+@app.post("/rpc")
+async def jsonrpc(request: Request) -> dict[str, Any]:
+    envelope = await request.json()
+    method = envelope.get("method")
+    params = envelope.get("params") or {}
+    request_id = envelope.get("id")
+    try:
+        result = _dispatch_jsonrpc(method, params)
+        return {"jsonrpc": "2.0", "result": result, "id": request_id}
+    except KeyError as exc:
+        return {
+            "jsonrpc": "2.0",
+            "error": {"code": -32601, "message": f"unknown method: {exc.args[0]}"},
+            "id": request_id,
+        }
+
+
+def _dispatch_jsonrpc(method: str, params: dict[str, Any]) -> Any:
+    if method == "WidgetJsonRpcOlapTable.count":
+        return _count_widgets()
+    if method == "WidgetJsonRpcOlapTable.exists":
+        return _exists_widget(params["id"])
+    if method == "WidgetJsonRpcOlapTable.list":
+        return _list_widgets()
+    if method == "WidgetJsonRpcOlapTable.aggregate":
+        return {"field": params["field"], "op": "sum", "value": 0, "count": 0}
+    if method == "WidgetJsonRpcOlapTable.group_by":
+        return {"field": params["field"], "agg": "count", "groups": []}
+    raise KeyError(method)
+
+
+def _count_widgets() -> dict[str, int]:
     with Session(engine) as session:
-        rows = session.query(WidgetRow).order_by(WidgetRow.id).all()
-        return [WidgetOut(id=row.id, name=row.name) for row in rows]
+        return {"count": int(session.scalar(select(func.count()).select_from(WidgetRow)))}
 
 
-@app.post("/widgetjsonrpcolaptable", response_model=WidgetOut, status_code=201)
-def create_widget(payload: WidgetIn) -> WidgetOut:
+def _exists_widget(item_id: str) -> dict[str, bool]:
     with Session(engine) as session:
-        row = WidgetRow(id=payload.id, name=payload.name)
-        session.add(row)
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
+        return {"exists": session.get(WidgetRow, item_id) is not None}
 
 
-@app.get("/widgetjsonrpcolaptable/{item_id}", response_model=WidgetOut)
-def read_widget(item_id: str) -> WidgetOut:
+def _list_widgets() -> list[dict[str, str]]:
     with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
-        return WidgetOut(id=row.id, name=row.name)
+        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
+        return [{"id": row.id, "name": row.name} for row in rows]

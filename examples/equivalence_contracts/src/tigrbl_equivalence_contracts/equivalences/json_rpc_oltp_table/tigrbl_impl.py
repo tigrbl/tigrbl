@@ -19,3 +19,4 @@ class WidgetJsonRpcOltpTable(JsonRpcOltpTable):
 app = TigrblApp(engine={"kind": "sqlite", "mode": "memory", "async": False})
 app.include_table(WidgetJsonRpcOltpTable)
 app.initialize()
+app.mount_jsonrpc(prefix="/rpc")

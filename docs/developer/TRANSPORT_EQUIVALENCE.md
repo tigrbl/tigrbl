@@ -119,7 +119,7 @@ Source inputs: `pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py`.
 | `bidi_stream` | `stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson` | `bidirectional_stream` |
 | `unidi_client_stream` | `stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson` | `client_stream` |
 | `unidi_server_stream` | `stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson` | `server_stream` |
-| `datagram` | `datagram` | `bytes`, `binary`, `text`, `json` | `bidirectional_stream` |
+| `datagram` | `datagram` | `bytes`, `binary`, `text`, `json`, `jsonrpc` | `bidirectional_stream` |
 <!-- END GENERATED: equivalence-docs:webtransport-lane-support -->
 
 Plain HTTP/3 bindings must not claim WebTransport streams or datagrams.

@@ -1,10 +1,11 @@
-"""FastAPI implementation for the JsonRpcBulkCrudTable Widget route surface."""
+"""FastAPI implementation for the JsonRpcBulkCrudTable Widget JSON-RPC surface."""
 
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-from sqlalchemy import String, create_engine
+from typing import Any
+
+from fastapi import FastAPI, Request
+from sqlalchemy import String, create_engine, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
 
@@ -26,18 +27,6 @@ engine = create_engine(
     future=True,
 )
 Base.metadata.create_all(engine)
-
-
-class WidgetIn(BaseModel):
-    id: str
-    name: str
-
-
-class WidgetOut(BaseModel):
-    id: str
-    name: str
-
-
 app = FastAPI()
 
 
@@ -46,99 +35,87 @@ def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/widgetjsonrpcbulkcrudtable", response_model=list[WidgetOut])
-def list_widgets() -> list[WidgetOut]:
-    with Session(engine) as session:
-        rows = session.query(WidgetRow).order_by(WidgetRow.id).all()
-        return [WidgetOut(id=row.id, name=row.name) for row in rows]
+@app.post("/rpc")
+async def jsonrpc(request: Request) -> dict[str, Any]:
+    envelope = await request.json()
+    method = envelope.get("method")
+    params = envelope.get("params") or []
+    request_id = envelope.get("id")
+    try:
+        result = _dispatch_jsonrpc(method, params)
+        return {"jsonrpc": "2.0", "result": result, "id": request_id}
+    except KeyError as exc:
+        return {
+            "jsonrpc": "2.0",
+            "error": {"code": -32601, "message": f"unknown method: {exc.args[0]}"},
+            "id": request_id,
+        }
 
 
-@app.post("/widgetjsonrpcbulkcrudtable", response_model=WidgetOut, status_code=201)
-def create_widget(payload: WidgetIn) -> WidgetOut:
+def _dispatch_jsonrpc(method: str, params: Any) -> Any:
+    if method == "WidgetJsonRpcBulkCrudTable.bulk_create":
+        return _bulk_create(params)
+    if method == "WidgetJsonRpcBulkCrudTable.bulk_update":
+        return _bulk_update(params)
+    if method == "WidgetJsonRpcBulkCrudTable.bulk_replace":
+        return _bulk_replace(params)
+    if method == "WidgetJsonRpcBulkCrudTable.bulk_delete":
+        return _bulk_delete(params)
+    if method == "WidgetJsonRpcBulkCrudTable.list":
+        return _list_widgets()
+    raise KeyError(method)
+
+
+def _list_widgets() -> list[dict[str, str]]:
     with Session(engine) as session:
-        row = WidgetRow(id=payload.id, name=payload.name)
-        session.add(row)
+        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
+        return [{"id": row.id, "name": row.name} for row in rows]
+
+
+def _bulk_create(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    with Session(engine) as session:
+        for item in rows:
+            session.add(WidgetRow(id=item["id"], name=item["name"]))
         session.commit()
-        return WidgetOut(id=row.id, name=row.name)
+    return _list_widgets()
 
 
-@app.patch("/widgetjsonrpcbulkcrudtable", response_model=list[WidgetOut])
-def bulk_update_widgets(payload: list[WidgetIn]) -> list[WidgetOut]:
+def _bulk_update(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    updated: list[dict[str, str]] = []
     with Session(engine) as session:
-        output: list[WidgetOut] = []
-        for item in payload:
-            row = session.get(WidgetRow, item.id)
+        for item in rows:
+            row = session.get(WidgetRow, item["id"])
             if row is None:
                 continue
-            row.name = item.name
-            output.append(WidgetOut(id=row.id, name=row.name))
+            row.name = item["name"]
+            updated.append({"id": row.id, "name": row.name})
         session.commit()
-        return output
+    return sorted(updated, key=lambda row: row["id"])
 
 
-@app.put("/widgetjsonrpcbulkcrudtable", response_model=list[WidgetOut])
-def bulk_replace_widgets(payload: list[WidgetIn]) -> list[WidgetOut]:
+def _bulk_replace(rows: list[dict[str, str]]) -> list[dict[str, str]]:
+    replaced: list[dict[str, str]] = []
     with Session(engine) as session:
-        output: list[WidgetOut] = []
-        for item in payload:
-            row = session.get(WidgetRow, item.id)
+        for item in rows:
+            row = session.get(WidgetRow, item["id"])
             if row is None:
-                row = WidgetRow(id=item.id, name=item.name)
+                row = WidgetRow(id=item["id"], name=item["name"])
                 session.add(row)
             else:
-                row.name = item.name
-            output.append(WidgetOut(id=row.id, name=row.name))
+                row.name = item["name"]
+            replaced.append({"id": row.id, "name": row.name})
         session.commit()
-        return output
+    return sorted(replaced, key=lambda row: row["id"])
 
 
-@app.delete("/widgetjsonrpcbulkcrudtable")
-def clear_widgets() -> dict[str, int]:
+def _bulk_delete(ids: list[str]) -> dict[str, int]:
+    deleted = 0
     with Session(engine) as session:
-        deleted = session.query(WidgetRow).delete()
+        for item_id in ids:
+            row = session.get(WidgetRow, item_id)
+            if row is None:
+                continue
+            session.delete(row)
+            deleted += 1
         session.commit()
-        return {"deleted": deleted}
-
-
-@app.get("/widgetjsonrpcbulkcrudtable/{item_id}", response_model=WidgetOut)
-def read_widget(item_id: str) -> WidgetOut:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.patch("/widgetjsonrpcbulkcrudtable/{item_id}", response_model=WidgetOut)
-def update_widget(item_id: str, payload: WidgetIn) -> WidgetOut:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
-        row.name = payload.name
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.put("/widgetjsonrpcbulkcrudtable/{item_id}", response_model=WidgetOut)
-def replace_widget(item_id: str, payload: WidgetIn) -> WidgetOut:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            row = WidgetRow(id=item_id, name=payload.name)
-            session.add(row)
-        else:
-            row.name = payload.name
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.delete("/widgetjsonrpcbulkcrudtable/{item_id}")
-def delete_widget(item_id: str) -> dict[str, int]:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
-        session.delete(row)
-        session.commit()
-        return {"deleted": 1}
+    return {"deleted": deleted}

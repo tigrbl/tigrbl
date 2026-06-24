@@ -1,6 +1,15 @@
 from __future__ import annotations
 
 from tigrbl_equivalence_contracts import CERTIFIABLE_EQUIVALENCES, certify_all, equivalence_by_id, matrix_rows
+from tigrbl_equivalence_contracts.equivalences.json_rpc_bulk_crud_table.runtime import (
+    EXPECTED_JSONRPC_BULK_EVIDENCE,
+)
+from tigrbl_equivalence_contracts.equivalences.json_rpc_olap_table.runtime import (
+    EXPECTED_JSONRPC_OLAP_EVIDENCE,
+)
+from tigrbl_equivalence_contracts.equivalences.json_rpc_oltp_table.runtime import (
+    EXPECTED_JSONRPC_OLTP_EVIDENCE,
+)
 from tigrbl_equivalence_contracts.equivalences.rest_table.runtime import EXPECTED_WIDGET_CRUD_EVIDENCE
 
 TABLE_CLASS_IDS = tuple(row["id"] for row in matrix_rows() if row["category"] == "table-class")
@@ -49,6 +58,46 @@ def test_json_rpc_table_equivalence_uses_http_jsonrpc_envelopes() -> None:
         assert observed[2]["envelope"]["result"] == [
             {"id": "widget-1", "name": "First"}
         ]
+
+
+def test_json_rpc_bulk_crud_table_equivalence_uses_bulk_jsonrpc_envelopes() -> None:
+    result = equivalence_by_id("table-class.json-rpc-bulk-crud-table").certify()
+
+    assert result.status == "analogous"
+    for observed in result.evidence["observed"].values():
+        assert observed == EXPECTED_JSONRPC_BULK_EVIDENCE
+        assert {step["step"] for step in observed} == {
+            "bulk_create",
+            "bulk_update",
+            "bulk_replace",
+            "list_replaced",
+            "bulk_delete",
+            "list_deleted",
+        }
+
+
+def test_json_rpc_oltp_table_equivalence_uses_oltp_jsonrpc_envelopes() -> None:
+    result = equivalence_by_id("table-class.json-rpc-oltp-table").certify()
+
+    assert result.status == "analogous"
+    for observed in result.evidence["observed"].values():
+        assert observed == EXPECTED_JSONRPC_OLTP_EVIDENCE
+        assert observed[1]["envelope"]["result"] == {"count": 1}
+        assert observed[2]["envelope"]["result"] == {"exists": True}
+
+
+def test_json_rpc_olap_table_equivalence_uses_read_only_olap_jsonrpc_envelopes() -> None:
+    result = equivalence_by_id("table-class.json-rpc-olap-table").certify()
+
+    assert result.status == "analogous"
+    for observed in result.evidence["observed"].values():
+        assert observed == EXPECTED_JSONRPC_OLAP_EVIDENCE
+        assert observed[3]["envelope"]["result"] == {
+            "field": "name",
+            "op": "sum",
+            "value": 0,
+            "count": 0,
+        }
 
 
 def test_websocket_table_equivalence_uses_real_websocket_exchange() -> None:

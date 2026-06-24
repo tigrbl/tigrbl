@@ -19,3 +19,4 @@ class WidgetJsonRpcBulkCrudTable(JsonRpcBulkCrudTable):
 app = TigrblApp(engine={"kind": "sqlite", "mode": "memory", "async": False})
 app.include_table(WidgetJsonRpcBulkCrudTable)
 app.initialize()
+app.mount_jsonrpc(prefix="/rpc")
