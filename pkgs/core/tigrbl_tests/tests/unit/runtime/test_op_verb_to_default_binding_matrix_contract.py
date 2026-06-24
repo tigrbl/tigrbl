@@ -97,6 +97,38 @@ def test_webtransport_datagram_verbs_lower_to_datagram_only_defaults() -> None:
     assert binding.lane == "datagram"
 
 
+def test_webtransport_ops_lower_to_op_specific_lanes() -> None:
+    profile = TableProfileSpec(
+        kind="webtransport_ops",
+        ops=(
+            OpSpec(alias="create", target="create"),
+            OpSpec(alias="download", target="download"),
+            OpSpec(alias="upload", target="upload"),
+            OpSpec(alias="send_datagram", target="send_datagram"),
+        ),
+    )
+
+    lowered = lower_table_profile_bindings(WebTransportBidiTable, profile, tuple(profile.ops))
+    bindings = {op.target: op.bindings[0] for op in lowered}
+
+    assert (bindings["create"].lane, bindings["create"].inner_framing) == (
+        "bidi_stream",
+        "jsonrpc",
+    )
+    assert (bindings["download"].lane, bindings["download"].inner_framing) == (
+        "unidi_server_stream",
+        "bytes",
+    )
+    assert (bindings["upload"].lane, bindings["upload"].inner_framing) == (
+        "unidi_client_stream",
+        "bytes",
+    )
+    assert (bindings["send_datagram"].lane, bindings["send_datagram"].inner_framing) == (
+        "datagram",
+        "json",
+    )
+
+
 def test_explicit_opspec_bindings_override_verb_defaults() -> None:
     explicit = TableSpec.collect(StreamTable).ops[0].bindings[0]
 

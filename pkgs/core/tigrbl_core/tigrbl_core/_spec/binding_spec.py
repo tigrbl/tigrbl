@@ -30,6 +30,98 @@ Framing = Literal[
     "webtransport",
     "multipart/form-data",
 ]
+
+
+@dataclass(frozen=True, slots=True)
+class FramingSpec(SerdeMixin):
+    kind: Framing
+    required_subprotocol: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class JsonFramingSpec(FramingSpec):
+    kind: Literal["json"] = "json"
+
+
+@dataclass(frozen=True, slots=True)
+class JsonRpcFramingSpec(FramingSpec):
+    kind: Literal["jsonrpc"] = "jsonrpc"
+    required_subprotocol: str | None = "jsonrpc"
+
+
+@dataclass(frozen=True, slots=True)
+class NdjsonFramingSpec(FramingSpec):
+    kind: Literal["ndjson"] = "ndjson"
+    required_subprotocol: str | None = "ndjson"
+
+
+@dataclass(frozen=True, slots=True)
+class SseFramingSpec(FramingSpec):
+    kind: Literal["sse"] = "sse"
+
+
+@dataclass(frozen=True, slots=True)
+class StreamFramingSpec(FramingSpec):
+    kind: Literal["stream"] = "stream"
+
+
+@dataclass(frozen=True, slots=True)
+class TextFramingSpec(FramingSpec):
+    kind: Literal["text"] = "text"
+
+
+@dataclass(frozen=True, slots=True)
+class BytesFramingSpec(FramingSpec):
+    kind: Literal["bytes"] = "bytes"
+
+
+@dataclass(frozen=True, slots=True)
+class BinaryFramingSpec(FramingSpec):
+    kind: Literal["binary"] = "binary"
+
+
+@dataclass(frozen=True, slots=True)
+class WebTransportFramingSpec(FramingSpec):
+    kind: Literal["webtransport"] = "webtransport"
+
+
+@dataclass(frozen=True, slots=True)
+class MultipartFormDataFramingSpec(FramingSpec):
+    kind: Literal["multipart/form-data"] = "multipart/form-data"
+
+
+FRAMING_SPEC_BY_KIND: dict[str, type[FramingSpec]] = {
+    "json": JsonFramingSpec,
+    "jsonrpc": JsonRpcFramingSpec,
+    "ndjson": NdjsonFramingSpec,
+    "sse": SseFramingSpec,
+    "stream": StreamFramingSpec,
+    "text": TextFramingSpec,
+    "bytes": BytesFramingSpec,
+    "binary": BinaryFramingSpec,
+    "webtransport": WebTransportFramingSpec,
+    "multipart/form-data": MultipartFormDataFramingSpec,
+}
+
+
+def normalize_framing_spec(
+    framing: Framing | FramingSpec | str | None,
+    *,
+    default: Framing | str | None = None,
+) -> FramingSpec:
+    if isinstance(framing, FramingSpec):
+        return framing
+    selected = str(framing or default or "")
+    cls = FRAMING_SPEC_BY_KIND.get(selected)
+    if cls is None:
+        raise ValueError(f"unsupported framing kind {selected!r}")
+    return cls()
+
+
+def framing_spec_name(framing: Framing | FramingSpec | str | None) -> str:
+    if isinstance(framing, FramingSpec):
+        return framing.__class__.__name__
+    return FRAMING_SPEC_BY_KIND.get(str(framing or ""), FramingSpec).__name__
 BindingProfile = Literal[
     "rest",
     "jsonrpc",
@@ -148,27 +240,64 @@ def binding_kind_for(*, proto: str, profile: str) -> str:
 def validate_app_framing_for_binding(
     *,
     binding_kind: str,
-    framing: str | None,
+    framing: Framing | FramingSpec | str | None,
     subprotocols: tuple[str, ...] = (),
 ) -> str:
-    selected = str(framing or APP_LEVEL_FRAMING_SUPPORT[binding_kind][0])
     allowed = APP_LEVEL_FRAMING_SUPPORT.get(binding_kind)
     if allowed is None:
         raise ValueError(f"unsupported binding kind {binding_kind!r}")
+    selected = normalize_framing_spec(framing, default=allowed[0]).kind
     if selected not in allowed:
         raise ValueError(
             f"unsupported app-level framing {selected!r} for binding {binding_kind!r}"
         )
     if selected in {"jsonrpc", "ndjson"} and binding_kind in {"ws", "wss"}:
         lowered = tuple(str(item).lower() for item in subprotocols)
-        if selected not in lowered:
+        if lowered and selected not in lowered:
             raise ValueError(
-                f"WebSocket {selected} framing requires subprotocols to include "
-                f"'{selected}'."
+                f"WebSocket {selected} framing conflicts with subprotocols; "
+                f"expected '{selected}'."
             )
     if selected == "ndjson" and "jsonrpc" in binding_kind:
         raise ValueError("ndjson is not a JSON-RPC framing substitute")
     return selected
+
+
+def derive_session_metadata_for_framing(
+    *,
+    binding_kind: str,
+    framing: Framing | FramingSpec | str | None,
+    subprotocols: tuple[str, ...] = (),
+) -> dict[str, object]:
+    spec = normalize_framing_spec(framing)
+    lowered = tuple(str(item).lower() for item in subprotocols)
+    metadata: dict[str, object] = {
+        "framing_kind": spec.kind,
+        "framing_spec": spec.__class__.__name__,
+    }
+    if binding_kind in {"ws", "wss"} and spec.required_subprotocol:
+        if lowered and spec.required_subprotocol not in lowered:
+            raise ValueError(
+                f"WebSocket {spec.kind} framing conflicts with subprotocols; "
+                f"expected '{spec.required_subprotocol}'."
+            )
+        metadata["required_subprotocol"] = spec.required_subprotocol
+        metadata["subprotocols"] = lowered or (spec.required_subprotocol,)
+    return metadata
+
+
+def derive_websocket_subprotocols(
+    *,
+    framing: Framing | FramingSpec | str | None,
+    subprotocols: tuple[str, ...] = (),
+) -> tuple[str, ...]:
+    metadata = derive_session_metadata_for_framing(
+        binding_kind="ws",
+        framing=framing,
+        subprotocols=subprotocols,
+    )
+    fallback = tuple(str(item).lower() for item in subprotocols)
+    return tuple(metadata.get("subprotocols", fallback))  # type: ignore[arg-type]
 
 
 def validate_binding_profile_exchange(
@@ -210,12 +339,12 @@ def webtransport_runtime_family(lane: str) -> str:
 def validate_webtransport_inner_framing(
     *,
     lane: str,
-    inner_framing: str | None,
+    inner_framing: Framing | FramingSpec | str | None,
 ) -> str | None:
     selected_lane = webtransport_lane_for_profile(lane)
     if inner_framing is None:
         return None
-    selected = str(inner_framing)
+    selected = normalize_framing_spec(inner_framing).kind
     allowed = WEBTRANSPORT_INNER_FRAMING_SUPPORT[selected_lane]
     if not allowed:
         raise ValueError("WebTransport session lane does not carry app-level framing")
@@ -247,7 +376,7 @@ class HTTPBindingSpec(SerdeMixin):
     rpc_method: str | None = None
     endpoint: str = __JSONRPC_DEFAULT_ENDPOINT__
     exchange: Exchange | None = None
-    framing: Framing | None = None
+    framing: Framing | FramingSpec | None = None
 
     def __post_init__(self) -> None:
         default_exchange, default_framing = _PROFILE_DEFAULTS[self.profile]
@@ -256,7 +385,7 @@ class HTTPBindingSpec(SerdeMixin):
             binding_kind=kind,
             exchange=str(self.exchange or default_exchange),
         )
-        framing = str(self.framing or default_framing)
+        framing = normalize_framing_spec(self.framing, default=default_framing).kind
         validate_app_framing_for_binding(binding_kind=kind, framing=framing)
         if self.profile == "jsonrpc" and not self.rpc_method:
             raise ValueError("HTTPBindingSpec profile='jsonrpc' requires rpc_method")
@@ -271,10 +400,13 @@ class WebSocketBindingSpec(SerdeMixin):
     path: str = "/"
     subprotocols: tuple[str, ...] = ()
     exchange: Exchange = "bidirectional_stream"
-    framing: Framing = "text"
+    framing: Framing | FramingSpec = "text"
 
     def __post_init__(self) -> None:
-        subprotocols = tuple(str(item).lower() for item in self.subprotocols)
+        subprotocols = derive_websocket_subprotocols(
+            framing=self.framing,
+            subprotocols=self.subprotocols,
+        )
         exchange = validate_binding_profile_exchange(
             binding_kind=self.proto,
             exchange=self.exchange,
@@ -296,11 +428,15 @@ class HttpRestBindingSpec(SerdeMixin):
     path: str
     profile: Literal["rest"] = "rest"
     exchange: Exchange = "request_response"
-    framing: Framing = "json"
+    framing: Framing | FramingSpec = "json"
 
     def __post_init__(self) -> None:
         validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
-        validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        object.__setattr__(self, "framing", framing)
 
 
 @dataclass(frozen=True, slots=True)
@@ -310,11 +446,15 @@ class HttpJsonRpcBindingSpec(SerdeMixin):
     endpoint: str = __JSONRPC_DEFAULT_ENDPOINT__
     profile: Literal["jsonrpc"] = "jsonrpc"
     exchange: Exchange = "request_response"
-    framing: Framing = "jsonrpc"
+    framing: Framing | FramingSpec = "jsonrpc"
 
     def __post_init__(self) -> None:
         validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
-        validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        object.__setattr__(self, "framing", framing)
 
 
 @dataclass(frozen=True, slots=True)
@@ -324,11 +464,15 @@ class HttpStreamBindingSpec(SerdeMixin):
     methods: tuple[str, ...] = ("GET",)
     profile: Literal["stream"] = "stream"
     exchange: Exchange = "server_stream"
-    framing: Framing = "stream"
+    framing: Framing | FramingSpec = "stream"
 
     def __post_init__(self) -> None:
         validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
-        validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        object.__setattr__(self, "framing", framing)
 
 
 @dataclass(frozen=True, slots=True)
@@ -338,11 +482,15 @@ class SseBindingSpec(SerdeMixin):
     methods: tuple[str, ...] = ("GET",)
     profile: Literal["sse"] = "sse"
     exchange: Exchange = "server_stream"
-    framing: Framing = "sse"
+    framing: Framing | FramingSpec = "sse"
 
     def __post_init__(self) -> None:
         validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
-        validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        object.__setattr__(self, "framing", framing)
 
 
 @dataclass(frozen=True, slots=True)
@@ -352,23 +500,25 @@ class WsBindingSpec(SerdeMixin):
     subprotocols: tuple[str, ...] = ()
     profile: Literal["websocket"] = "websocket"
     exchange: Exchange = "bidirectional_stream"
-    framing: Framing = "text"
+    framing: Framing | FramingSpec = "text"
 
     def __post_init__(self) -> None:
-        subprotocols = tuple(str(item).lower() for item in self.subprotocols)
-        if self.framing == "jsonrpc" and not subprotocols:
-            subprotocols = ("jsonrpc",)
+        subprotocols = derive_websocket_subprotocols(
+            framing=self.framing,
+            subprotocols=self.subprotocols,
+        )
         exchange = validate_binding_profile_exchange(
             binding_kind=self.proto,
             exchange=self.exchange,
         )
-        validate_app_framing_for_binding(
+        framing = validate_app_framing_for_binding(
             binding_kind=self.proto,
             framing=self.framing,
             subprotocols=subprotocols,
         )
         object.__setattr__(self, "subprotocols", subprotocols)
         object.__setattr__(self, "exchange", exchange)
+        object.__setattr__(self, "framing", framing)
 
 
 @dataclass(frozen=True, slots=True)
@@ -385,14 +535,21 @@ class WebTransportBindingSpec(SerdeMixin):
     ] = "webtransport"
     lane: WebTransportLane | None = None
     exchange: Exchange = "bidirectional_stream"
-    framing: Framing = "webtransport"
-    inner_framing: Framing | None = None
+    framing: Framing | FramingSpec = "webtransport"
+    inner_framing: Framing | FramingSpec | None = None
 
     def __post_init__(self) -> None:
-        validate_app_framing_for_binding(binding_kind=self.proto, framing=self.framing)
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
         profile_lane = webtransport_lane_for_profile(self.profile)
         lane = webtransport_lane_for_profile(self.lane or self.profile)
-        if self.lane is not None and self.profile not in {"webtransport", "session"} and lane != profile_lane:
+        if (
+            self.lane is not None
+            and self.profile not in {"webtransport", "session"}
+            and lane != profile_lane
+        ):
             raise ValueError(
                 f"WebTransport lane {lane!r} conflicts with profile {self.profile!r}"
             )
@@ -401,12 +558,14 @@ class WebTransportBindingSpec(SerdeMixin):
         if self.exchange == "bidirectional_stream" and default_exchange != "bidirectional_stream":
             exchange = default_exchange
         exchange = validate_webtransport_lane_exchange(lane=lane, exchange=exchange)
-        validate_webtransport_inner_framing(
+        inner_framing = validate_webtransport_inner_framing(
             lane=lane,
             inner_framing=self.inner_framing,
         )
+        object.__setattr__(self, "framing", framing)
         object.__setattr__(self, "lane", lane)
         object.__setattr__(self, "exchange", exchange)
+        object.__setattr__(self, "inner_framing", inner_framing)
 
 
 @dataclass(frozen=True, slots=True)
@@ -425,7 +584,7 @@ class DatagramBindingSpec(SerdeMixin):
     framing: Framing = "bytes"
 
 
-TransportBindingSpec = Union[
+ProtocolBindingSpec = Union[
     HTTPBindingSpec,
     WebSocketBindingSpec,
     HttpRestBindingSpec,
@@ -437,6 +596,7 @@ TransportBindingSpec = Union[
     MessageBindingSpec,
     DatagramBindingSpec,
 ]
+TransportBindingSpec = ProtocolBindingSpec
 
 
 def canonical_binding_kind(binding: TransportBindingSpec | MappingLike) -> str:
@@ -577,6 +737,8 @@ def project_binding_runtime_metadata(binding: TransportBindingSpec) -> dict[str,
         "proto": proto,
         "exchange": exchange,
         "framing": framing,
+        "framing_kind": framing,
+        "framing_spec": framing_spec_name(framing),
         "family": family,
         "subevents": _binding_subevents(family),
     }
@@ -600,6 +762,14 @@ def project_binding_runtime_metadata(binding: TransportBindingSpec) -> dict[str,
             metadata["carrier_kind"] = "http_response_body"
             metadata["stream_initiator"] = "server"
             metadata["direction"] = "server_to_client"
+    if proto in {"ws", "wss"}:
+        metadata.update(
+            derive_session_metadata_for_framing(
+                binding_kind=proto,
+                framing=framing,
+                subprotocols=tuple(getattr(binding, "subprotocols", ()) or ()),
+            )
+        )
     return metadata
 
 
@@ -691,29 +861,46 @@ __all__ = [
     "APP_LEVEL_FRAMING_SUPPORT",
     "BINDING_PROFILE_EXCHANGE_SUPPORT",
     "BindingProfile",
+    "BinaryFramingSpec",
+    "BytesFramingSpec",
     "DatagramBindingSpec",
     "Exchange",
+    "FRAMING_SPEC_BY_KIND",
     "Framing",
+    "FramingSpec",
     "HTTPBindingSpec",
     "HttpJsonRpcBindingSpec",
     "HttpRestBindingSpec",
     "HttpStreamBindingSpec",
+    "JsonFramingSpec",
+    "JsonRpcFramingSpec",
     "MessageBindingSpec",
+    "MultipartFormDataFramingSpec",
+    "NdjsonFramingSpec",
+    "ProtocolBindingSpec",
     "SseBindingSpec",
+    "SseFramingSpec",
+    "StreamFramingSpec",
+    "TextFramingSpec",
     "TransportBindingSpec",
     "WEBTRANSPORT_INNER_FRAMING_SUPPORT",
     "WEBTRANSPORT_LANE_EXCHANGES",
     "WEBTRANSPORT_NATIVE_LANES",
     "WebSocketBindingSpec",
+    "WebTransportFramingSpec",
     "WebTransportBindingSpec",
     "WebTransportLane",
     "WsBindingSpec",
     "binding_kind_for",
     "canonical_binding_kind",
     "compile_binding_event_key",
+    "derive_session_metadata_for_framing",
+    "derive_websocket_subprotocols",
+    "framing_spec_name",
     "matches_exchange_selector",
     "normalize_exchange",
     "normalize_binding_spec",
+    "normalize_framing_spec",
     "project_binding_runtime_metadata",
     "resolve_rest_nested_prefix",
     "validate_app_framing_for_binding",

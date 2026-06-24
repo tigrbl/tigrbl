@@ -3,6 +3,8 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_core._spec import (
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
     WebSocketBindingSpec,
     WsBindingSpec,
     normalize_binding_spec,
@@ -25,8 +27,12 @@ def test_wsbindingspec_lowercases_subprotocols_and_preserves_jsonrpc_framing() -
         "proto": "wss",
         "exchange": "bidirectional_stream",
         "framing": "jsonrpc",
+        "framing_kind": "jsonrpc",
+        "framing_spec": "JsonRpcFramingSpec",
         "family": "message",
         "subevents": ("message.received", "message.processed"),
+        "required_subprotocol": "jsonrpc",
+        "subprotocols": ("jsonrpc", "v2"),
     }
 
 
@@ -37,30 +43,22 @@ def test_wsbindingspec_jsonrpc_implicit_subprotocol_is_stable() -> None:
 
 
 @pytest.mark.parametrize("proto", ("ws", "wss"))
-def test_websocket_jsonrpc_framing_requires_jsonrpc_subprotocol(proto: str) -> None:
-    with pytest.raises(ValueError, match="requires subprotocols"):
+def test_websocket_jsonrpc_framing_rejects_conflicting_subprotocol(proto: str) -> None:
+    with pytest.raises(ValueError, match="conflicts with subprotocols"):
         WsBindingSpec(
             proto=proto,  # type: ignore[arg-type]
             path="/rpc",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             subprotocols=("graphql-ws",),
         )
 
 
 @pytest.mark.parametrize("proto", ("ws", "wss"))
 def test_websocket_ndjson_requires_matching_subprotocol(proto: str) -> None:
-    with pytest.raises(ValueError, match="requires subprotocols"):
-        WsBindingSpec(
-            proto=proto,  # type: ignore[arg-type]
-            path="/stream",
-            framing="ndjson",
-        )
-
     binding = WsBindingSpec(
         proto=proto,  # type: ignore[arg-type]
         path="/stream",
-        framing="ndjson",
-        subprotocols=("NDJSON",),
+        framing=NdjsonFramingSpec(),
     )
 
     assert binding.framing == "ndjson"

@@ -20,6 +20,7 @@ from tigrbl import (
 )
 from tigrbl_core._spec import (
     HttpStreamBindingSpec,
+    JsonRpcFramingSpec,
     OpSpec,
     TableProfileError,
     TableProfileSpec,
@@ -205,7 +206,11 @@ def test_websocket_binding_tokens_include_framing_and_session_lanes() -> None:
     tokens = _tokens(WebSocketJsonRpcTable)
 
     assert {token.binding_kind for token in tokens} == {"ws"}
+    assert {token.protocol_kind for token in tokens} == {"ws"}
     assert {token.framing for token in tokens} == {"jsonrpc"}
+    assert {token.framing_kind for token in tokens} == {"jsonrpc"}
+    assert {token.framing_spec for token in tokens} == {"JsonRpcFramingSpec"}
+    assert {token.required_subprotocol for token in tokens} == {"jsonrpc"}
     assert {tuple(binding.subprotocols) for op in TableSpec.collect(WebSocketJsonRpcTable).ops for binding in op.bindings} == {
         ("jsonrpc",)
     }
@@ -219,6 +224,67 @@ def test_webtransport_binding_tokens_include_stream_and_datagram_lanes() -> None
     assert {token.lane for token in stream_tokens} == {"bidi_stream"}
     assert {token.lane for token in datagram_tokens} == {"datagram"}
     assert {token.op_target for token in datagram_tokens} == {"send_datagram"}
+
+
+def test_webtransport_op_lane_binding_contract() -> None:
+    profile = TableProfileSpec(
+        kind="webtransport_ops",
+        ops=(
+            OpSpec(alias="create", target="create"),
+            OpSpec(alias="tail", target="tail"),
+            OpSpec(alias="append_chunk", target="append_chunk"),
+            OpSpec(alias="send_datagram", target="send_datagram"),
+        ),
+    )
+
+    lowered = lower_table_profile_bindings(WebTransportBidiTable, profile, tuple(profile.ops))
+    by_target = {op.target: op.bindings[0] for op in lowered}
+
+    assert (by_target["create"].lane, by_target["create"].inner_framing) == (
+        "bidi_stream",
+        "jsonrpc",
+    )
+    assert (by_target["tail"].lane, by_target["tail"].inner_framing) == (
+        "unidi_server_stream",
+        "ndjson",
+    )
+    assert (
+        by_target["append_chunk"].lane,
+        by_target["append_chunk"].inner_framing,
+    ) == ("unidi_client_stream", "bytes")
+    assert (
+        by_target["send_datagram"].lane,
+        by_target["send_datagram"].inner_framing,
+    ) == ("datagram", "json")
+
+
+def test_canonical_binding_token_typed_framing_fields() -> None:
+    profile = TableProfileSpec(
+        kind="tests.explicit-ws-jsonrpc",
+        ops=(
+            OpSpec(
+                alias="create",
+                target="create",
+                bindings=(
+                    WebTransportBindingSpec(
+                        profile="bidi_stream",
+                        inner_framing=JsonRpcFramingSpec(),
+                    ),
+                ),
+            ),
+        ),
+        custom=True,
+        namespace="tests",
+    )
+    op = tuple(profile.ops)[0]
+
+    token = lower_binding_tokens_for_ops(WebTransportBidiTable, profile, (op,))[0]
+
+    assert token.protocol_kind == "webtransport"
+    assert token.framing_kind == "webtransport"
+    assert token.framing_spec == "WebTransportFramingSpec"
+    assert token.lane == "bidi_stream"
+    assert token.inner_framing == "jsonrpc"
 
 
 def test_binding_token_lowering_rejects_unsupported_transport_profile_pairs() -> None:

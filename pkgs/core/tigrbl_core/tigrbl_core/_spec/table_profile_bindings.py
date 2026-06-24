@@ -12,6 +12,8 @@ from .binding_spec import (
     WebTransportBindingSpec,
     WsBindingSpec,
     canonical_binding_kind,
+    derive_session_metadata_for_framing,
+    framing_spec_name,
 )
 from .op_spec import OpSpec, TargetOp
 from .table_profile_spec import (
@@ -61,6 +63,7 @@ _WEBTRANSPORT_PROFILE_LANES = {
     "webtransport_server_stream": "unidi_server_stream",
     "webtransport_datagram": "datagram",
 }
+_WEBTRANSPORT_OP_LANE_PROFILES = {"webtransport_ops"}
 
 _REST_METHODS: dict[str, tuple[str, ...]] = {
     "create": ("POST",),
@@ -100,6 +103,33 @@ _WEBTRANSPORT_LANE_TARGETS = {
     "unidi_server_stream": {"download", "tail"},
     "datagram": {"send_datagram"},
 }
+_WEBTRANSPORT_OP_LANE_DEFAULTS: dict[str, tuple[str, str | None]] = {
+    "create": ("bidi_stream", "jsonrpc"),
+    "read": ("bidi_stream", "jsonrpc"),
+    "update": ("bidi_stream", "jsonrpc"),
+    "replace": ("bidi_stream", "jsonrpc"),
+    "merge": ("bidi_stream", "jsonrpc"),
+    "delete": ("bidi_stream", "jsonrpc"),
+    "list": ("bidi_stream", "jsonrpc"),
+    "clear": ("bidi_stream", "jsonrpc"),
+    "count": ("bidi_stream", "jsonrpc"),
+    "exists": ("bidi_stream", "jsonrpc"),
+    "bulk_create": ("bidi_stream", "jsonrpc"),
+    "bulk_update": ("bidi_stream", "jsonrpc"),
+    "bulk_replace": ("bidi_stream", "jsonrpc"),
+    "bulk_merge": ("bidi_stream", "jsonrpc"),
+    "bulk_delete": ("bidi_stream", "jsonrpc"),
+    "aggregate": ("bidi_stream", "jsonrpc"),
+    "group_by": ("bidi_stream", "jsonrpc"),
+    "publish": ("bidi_stream", "jsonrpc"),
+    "subscribe": ("unidi_server_stream", "ndjson"),
+    "tail": ("unidi_server_stream", "ndjson"),
+    "download": ("unidi_server_stream", "bytes"),
+    "upload": ("unidi_client_stream", "bytes"),
+    "append_chunk": ("unidi_client_stream", "bytes"),
+    "send_datagram": ("datagram", "json"),
+    "checkpoint": ("bidi_stream", "jsonrpc"),
+}
 _REST_PROFILE_TARGETS = {
     kind: set(row.targets)
     for kind, row in BUILTIN_TABLE_PROFILE_DEFINITIONS.items()
@@ -121,10 +151,14 @@ class BindingToken:
     op_alias: str
     op_target: str
     binding_kind: str
+    protocol_kind: str = ""
     path: str = ""
     methods: tuple[str, ...] = ()
     rpc_method: str | None = None
     framing: str = ""
+    framing_kind: str = ""
+    framing_spec: str = ""
+    required_subprotocol: str | None = None
     exchange: str = ""
     lane: str | None = None
     inner_framing: str | None = None
@@ -209,6 +243,8 @@ def lower_default_bindings_for_op(
         return (_websocket_binding(table=table, profile=profile, op=op, jsonrpc=False),)
     if kind in _WEBSOCKET_JSONRPC_PROFILES:
         return (_websocket_binding(table=table, profile=profile, op=op, jsonrpc=True),)
+    if kind in _WEBTRANSPORT_OP_LANE_PROFILES:
+        return (_webtransport_op_lane_binding(table=table, profile=profile, op=op),)
     if kind in _WEBTRANSPORT_PROFILE_LANES:
         return (_webtransport_binding(table=table, profile=profile, op=op),)
     if profile.custom:
@@ -415,6 +451,35 @@ def _webtransport_binding(
     )
 
 
+def _webtransport_op_lane_binding(
+    *,
+    table: type,
+    profile: TableProfileSpec,
+    op: OpSpec,
+) -> LoweredBinding:
+    try:
+        lane, inner_framing = _WEBTRANSPORT_OP_LANE_DEFAULTS[str(op.target)]
+    except KeyError as exc:
+        raise TableProfileError(
+            f"profile {profile.kind!r} does not support WebTransport target {op.target!r}"
+        ) from exc
+    binding = WebTransportBindingSpec(
+        path=_path_for_op(op, prefix="/wt"),
+        profile=lane,
+        inner_framing=inner_framing,
+    )
+    return LoweredBinding(
+        token=_token_from_binding(
+            source="table_profile",
+            profile=profile.kind,
+            op=op,
+            binding=binding,
+            precedence=1,
+        ),
+        binding=binding,
+    )
+
+
 def _token_from_binding(
     *,
     source: BindingSource,
@@ -423,18 +488,29 @@ def _token_from_binding(
     binding: TransportBindingSpec,
     precedence: int,
 ) -> BindingToken:
+    binding_kind = canonical_binding_kind(binding)
+    framing = str(getattr(binding, "framing", "") or "")
+    session_metadata = derive_session_metadata_for_framing(
+        binding_kind=binding_kind,
+        framing=framing,
+        subprotocols=tuple(getattr(binding, "subprotocols", ()) or ()),
+    )
     return BindingToken(
         source=source,
         profile=profile,
         op_alias=str(op.alias),
         op_target=str(op.target),
-        binding_kind=canonical_binding_kind(binding),
+        binding_kind=binding_kind,
+        protocol_kind=binding_kind,
         path=str(getattr(binding, "path", "") or ""),
         methods=tuple(
             str(method).upper() for method in getattr(binding, "methods", ()) or ()
         ),
         rpc_method=getattr(binding, "rpc_method", None),
-        framing=str(getattr(binding, "framing", "") or ""),
+        framing=framing,
+        framing_kind=framing,
+        framing_spec=framing_spec_name(framing),
+        required_subprotocol=session_metadata.get("required_subprotocol"),  # type: ignore[arg-type]
         exchange=str(getattr(binding, "exchange", "") or ""),
         lane=getattr(binding, "lane", None),
         inner_framing=getattr(binding, "inner_framing", None),

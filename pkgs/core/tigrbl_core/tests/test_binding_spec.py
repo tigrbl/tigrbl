@@ -6,11 +6,14 @@ from tigrbl_core._spec.binding_spec import (
     BindingRegistrySpec,
     BindingSpec,
     HttpJsonRpcBindingSpec,
-    HttpStreamBindingSpec,
     HttpRestBindingSpec,
+    HttpStreamBindingSpec,
+    JsonFramingSpec,
+    JsonRpcFramingSpec,
     SseBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
+    WebTransportFramingSpec,
     project_binding_runtime_metadata,
     resolve_rest_nested_prefix,
 )
@@ -61,6 +64,39 @@ def test_streaming_binding_specs_expose_exchange_and_framing_defaults() -> None:
     assert ws.framing == "jsonrpc"
     assert wt.exchange == "bidirectional_stream"
     assert wt.framing == "webtransport"
+
+
+def test_protocolbinding_framingspec_authoring_contract() -> None:
+    rest = HttpRestBindingSpec(
+        proto="http.rest",
+        methods=("GET",),
+        path="/items",
+        framing=JsonFramingSpec(),
+    )
+    rpc = HttpJsonRpcBindingSpec(
+        proto="http.jsonrpc",
+        rpc_method="Item.create",
+        framing=JsonRpcFramingSpec(),
+    )
+    ws = WsBindingSpec(
+        proto="ws",
+        path="/items/ws",
+        framing=JsonRpcFramingSpec(),
+    )
+    wt = WebTransportBindingSpec(
+        path="/items/wt",
+        profile="bidi_stream",
+        framing=WebTransportFramingSpec(),
+        inner_framing=JsonRpcFramingSpec(),
+    )
+
+    assert rest.framing == "json"
+    assert rpc.framing == "jsonrpc"
+    assert ws.framing == "jsonrpc"
+    assert ws.subprotocols == ("jsonrpc",)
+    assert wt.framing == "webtransport"
+    assert wt.inner_framing == "jsonrpc"
+    assert wt.lane == "bidi_stream"
 
 
 def test_jsonrpc_binding_spec_exposes_endpoint_default_from_core_constants() -> None:

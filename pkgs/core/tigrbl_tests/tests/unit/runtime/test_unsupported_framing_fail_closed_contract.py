@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_core._spec import WebTransportBindingSpec, WsBindingSpec
+from tigrbl_core._spec import NdjsonFramingSpec, WebTransportBindingSpec, WsBindingSpec
 from tigrbl_core._spec.binding_spec import validate_app_framing_for_binding
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
@@ -14,22 +14,15 @@ def test_unknown_transport_framing_rejects_before_dispatch() -> None:
         validate_app_framing_for_binding(binding_kind="http.rest", framing="jsonrpc")
 
 
-def test_websocket_ndjson_framing_requires_explicit_subprotocol() -> None:
-    with pytest.raises(ValueError, match="requires subprotocols"):
-        WsBindingSpec(proto="ws", path="/socket", framing="ndjson")
-
-    binding = WsBindingSpec(
-        proto="ws",
-        path="/socket",
-        framing="ndjson",
-        subprotocols=("ndjson",),
-    )
+def test_websocket_ndjson_framing_derives_subprotocol() -> None:
+    binding = WsBindingSpec(proto="ws", path="/socket", framing=NdjsonFramingSpec())
 
     assert binding.framing == "ndjson"
+    assert binding.subprotocols == ("ndjson",)
 
 
-def test_websocket_jsonrpc_profile_rejects_non_jsonrpc_framing() -> None:
-    with pytest.raises(ValueError, match="requires subprotocols"):
+def test_websocket_jsonrpc_profile_rejects_conflicting_subprotocol() -> None:
+    with pytest.raises(ValueError, match="conflicts with subprotocols"):
         WsBindingSpec(
             proto="ws",
             path="/socket",

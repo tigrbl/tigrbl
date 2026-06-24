@@ -116,7 +116,7 @@ def test_websocket_jsonrpc_and_ndjson_subprotocols_are_required() -> None:
 
     assert implicit.subprotocols == ("jsonrpc",)
 
-    with pytest.raises(ValueError, match="requires subprotocols"):
+    with pytest.raises(ValueError, match="conflicts with subprotocols"):
         WsBindingSpec(
             proto="ws",
             path="/ws/rpc",
@@ -124,8 +124,9 @@ def test_websocket_jsonrpc_and_ndjson_subprotocols_are_required() -> None:
             subprotocols=("v2",),
         )
 
-    with pytest.raises(ValueError, match="requires subprotocols"):
-        WsBindingSpec(proto="ws", path="/ws/ndjson", framing="ndjson")
+    derived = WsBindingSpec(proto="ws", path="/ws/ndjson", framing="ndjson")
+
+    assert derived.subprotocols == ("ndjson",)
 
     validate_path_binding(
         PathSpec(path="/ws/ndjson", kind="ws-ndjson"),

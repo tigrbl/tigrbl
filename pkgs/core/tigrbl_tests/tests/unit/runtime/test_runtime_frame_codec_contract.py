@@ -16,7 +16,11 @@ from tigrbl_atoms.atoms.framing.codec import (
     supported_frame_codecs,
 )
 from tigrbl_core._spec.binding_spec import (
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
+    WebSocketBindingSpec,
     WsBindingSpec,
+    derive_session_metadata_for_framing,
     validate_app_framing_for_binding,
     validate_webtransport_inner_framing,
 )
@@ -77,7 +81,7 @@ def test_framing_support_matrix_codec_coverage_t0() -> None:
     assert (
         validate_app_framing_for_binding(
             binding_kind="http.jsonrpc",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
         )
         == "jsonrpc"
     )
@@ -283,7 +287,7 @@ def test_webtransport_inner_codec_dispatch_t1() -> None:
 
 
 def test_binding_policy_to_codec_runtime_integration_t2() -> None:
-    binding = WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc")
+    binding = WsBindingSpec(proto="ws", path="/rpc", framing=JsonRpcFramingSpec())
 
     assert binding.framing == "jsonrpc"
     assert binding.subprotocols == ("jsonrpc",)
@@ -314,15 +318,7 @@ def test_framing_negative_corpus_runtime_t2() -> None:
 
 
 def test_websocket_jsonrpc_subprotocol_codec_t2() -> None:
-    with pytest.raises(ValueError, match="requires subprotocols"):
-        WsBindingSpec(proto="ws", path="/events", framing="ndjson")
-
-    ndjson = WsBindingSpec(
-        proto="ws",
-        path="/events",
-        framing="ndjson",
-        subprotocols=("ndjson",),
-    )
+    ndjson = WsBindingSpec(proto="ws", path="/events", framing=NdjsonFramingSpec())
     assert ndjson.framing == "ndjson"
     assert ndjson.subprotocols == ("ndjson",)
     assert decode_frame(
@@ -333,6 +329,36 @@ def test_websocket_jsonrpc_subprotocol_codec_t2() -> None:
     assert WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc").subprotocols == (
         "jsonrpc",
     )
+
+
+def test_jsonrpc_framing_derives_websocket_subprotocol() -> None:
+    binding = WebSocketBindingSpec(
+        proto="wss",
+        path="/rpc",
+        framing=JsonRpcFramingSpec(),
+    )
+
+    assert binding.framing == "jsonrpc"
+    assert binding.subprotocols == ("jsonrpc",)
+    assert derive_session_metadata_for_framing(
+        binding_kind="wss",
+        framing=JsonRpcFramingSpec(),
+    ) == {
+        "framing_kind": "jsonrpc",
+        "framing_spec": "JsonRpcFramingSpec",
+        "required_subprotocol": "jsonrpc",
+        "subprotocols": ("jsonrpc",),
+    }
+
+
+def test_jsonrpc_subprotocol_conflict_fails_closed() -> None:
+    with pytest.raises(ValueError, match="conflicts with subprotocols"):
+        WebSocketBindingSpec(
+            proto="ws",
+            path="/rpc",
+            framing=JsonRpcFramingSpec(),
+            subprotocols=("graphql-ws",),
+        )
 
 
 def test_runtime_websocket_frame_codec_adapters_t2() -> None:
