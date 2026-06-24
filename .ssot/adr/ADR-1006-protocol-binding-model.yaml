@@ -24,19 +24,24 @@ status_notes:
     status: "draft"
     note: "Updated protocol binding model with canonical BindingSpecs, profile/framing separation, and path-first ownership."
     at: "2026-05-28T00:49:15Z"
+  -
+    status: "draft"
+    note: "Updated to split ProtocolBindingSpec carrier ownership from typed FramingSpec payload semantics."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Decision
   
   1. A binding declares how a semantic operation is exposed over a transport/protocol surface.
   2. Bindings do not redefine operation semantics; they project them.
-  3. Binding responsibility includes transport identity, security metadata, profile selection, family, exchange, legal framing, docs metadata, and compiler/runtime constraints.
-  4. `PathSpec.path` remains the first-class address authority. Bindings do not own a separate address path.
-  5. Semantic responsibility remains in the operation model, canonical operation definitions, hooks, and guards.
-  6. Docs generation is binding-driven, but address projection is path-first.
-  7. Any new protocol must enter through a BindingSpec, not a parallel route subsystem.
+  3. Protocol binding responsibility includes transport identity, security metadata, carrier/profile selection, family, exchange, lane or session topology, docs metadata, and compiler/runtime constraints.
+  4. Framing responsibility belongs to typed `FramingSpec` declarations such as JSON, JSON-RPC, text, bytes, NDJSON, and SSE. A protocol binding may carry or reference a framing spec for a selected carrier, but it must not define payload semantics itself.
+  5. `PathSpec.path` remains the first-class address authority. Bindings do not own a separate address path when a containing PathSpec is present.
+  6. Semantic responsibility remains in the operation model, canonical operation definitions, hooks, and guards.
+  7. Docs generation is binding-driven, but address projection is path-first.
+  8. Any new protocol must enter through a protocol BindingSpec, not a parallel route subsystem.
   
-  ## Canonical BindingSpec Update
+  ## Canonical Protocol BindingSpec Update
   
   The canonical BindingSpec set for this governance slice is:
   
@@ -48,13 +53,15 @@ body: |-
   
   Aliases are not independent protocol taxonomies. They must expand into canonical BindingSpec fields before KernelPlan compilation, runtime dispatch, documentation projection, or support-matrix evaluation.
   
-  ## Profile And Framing Separation
+  ## Protocol Binding And Framing Separation
   
-  Bindings select a protocol usage `profile` such as `rest`, `jsonrpc`, `stream`, `sse`, `message`, `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, or `datagram`.
+  Bindings select protocol usage and carrier topology such as `rest`, `stream`, `sse`, `message`, `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, or `datagram`.
   
-  Bindings also select app-level `framing` such as `json`, `jsonrpc`, `ndjson`, `sse`, `text`, `bytes`, or `binary`.
+  Framing specs select app-level payload interpretation such as `json`, `jsonrpc`, `ndjson`, `sse`, `text`, `bytes`, or `binary`.
   
-  Profile and framing are separate fields. `rest` is not a framing token. `stream` is not a framing token. WebTransport stream and datagram profiles do not imply app-level message framing.
+  Profile/carrier selection and framing are separate concerns. `rest` is not a framing token. `stream` is not a framing token. WebTransport stream and datagram profiles do not imply app-level message framing.
+  
+  JSON-RPC over HTTP, WebSocket, or WebTransport is modeled as the selected protocol binding plus `JsonRpcFramingSpec`. It is not a separate protocol. WebSocket subprotocol negotiation may be derived from the framing spec where the framing requires a connection-level application protocol token.
   
   ## Context
   

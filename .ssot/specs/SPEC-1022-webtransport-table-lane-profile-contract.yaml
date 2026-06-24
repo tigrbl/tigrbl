@@ -11,10 +11,53 @@ tags: []
 summary: "Define WebTransport table lane profiles for session, bidirectional stream, client stream, server stream, and datagram operation compatibility."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Expanded lane profile contract for op-selected WebTransport carriers and lane-local framing."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
+  ## Intent
+  
   Define WebTransport table lane profiles for session, bidirectional stream, client stream, server stream, and datagram operation compatibility.
+  
+  ## Contract
+  
+  A WebTransport table profile may expose multiple operation bindings under one session path. Each operation binding selects exactly one native carrier:
+  
+  - `session`
+  - `bidi_stream`
+  - `unidi_client_stream`
+  - `unidi_server_stream`
+  - `datagram`
+  
+  The selected carrier owns transport topology. A lane-local `FramingSpec` owns payload interpretation.
+  
+  ## Lane Names And Purposes
+  
+  WebTransport operation bindings that share a session and use more than one carrier must include a stable lane name or purpose. The reserved purpose names are:
+  
+  - `control`: first bidirectional stream when control-stream policy is declared.
+  - `events`: server-to-client stream for subscription, tail, or download events.
+  - `upload`: client-to-server stream for upload or append chunk traffic.
+  - `presence`: datagram lane for low-latency JSON or byte payloads.
+  
+  Projects may add custom names when they remain unique within the table/session and do not redefine carrier semantics.
+  
+  ## Compatibility Rules
+  
+  CRUD and control-plane operations may bind to a `control` bidirectional stream using `JsonRpcFramingSpec`.
+  
+  `tail`, `subscribe`, and `download` may bind to server stream lanes using stream-compatible framings such as `NdjsonFramingSpec`, `JsonFramingSpec`, or `BytesFramingSpec`.
+  
+  `upload` and `append_chunk` may bind to client stream lanes using stream-compatible framings such as `BytesFramingSpec`, `BinaryFramingSpec`, or `NdjsonFramingSpec`.
+  
+  `send_datagram` may bind to datagram lanes using `BytesFramingSpec`, `BinaryFramingSpec`, `TextFramingSpec`, or `JsonFramingSpec`. `JsonRpcFramingSpec` and `NdjsonFramingSpec` are invalid on datagrams by default.
+  
+  ## Validation
+  
+  Tests must prove that different operations on one WebTransport table can lower to different lane names, carrier profiles, and typed framing specs without sharing lane-local framing state.
 spec_kind: "normative"
 adr_ids:
   - "adr:1100"

@@ -11,10 +11,47 @@ tags: []
 summary: "Defines the canonical lowered binding token fields: token id, op id, table id, router id, transport kind, selector, framing, lane, media type, source policy, and precedence source."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Expanded canonical token schema for protocol binding and typed framing separation."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
-  Defines the canonical lowered binding token fields: token id, op id, table id, router id, transport kind, selector, framing, lane, media type, source policy, and precedence source.
+  Defines the canonical lowered binding token fields for protocol binding and typed framing separation.
+  
+  ## Required Token Fields
+  
+  A lowered binding token must include:
+  
+  - `token_id`
+  - `op_id`
+  - `table_id`
+  - `router_id`
+  - `protocol_kind`
+  - `secure`
+  - `carrier_profile`
+  - `family`
+  - `exchange`
+  - `path_selector`
+  - `lane_kind`, when the protocol uses lanes or streams
+  - `lane_name`, when a multiplexed protocol binding declares a stable lane name or purpose
+  - `framing_kind`
+  - `framing_spec_id`, when a typed framing spec instance is materialized
+  - `required_subprotocol`, when derived session metadata is required by the protocol/framing pair
+  - `media_type`
+  - `source_policy`
+  - `precedence_source`
+  
+  ## Rules
+  
+  `protocol_kind` identifies the carrier protocol, such as `http`, `ws`, `wss`, or `webtransport`.
+  
+  `framing_kind` identifies the typed framing, such as `json`, `jsonrpc`, `text`, `bytes`, `binary`, `ndjson`, or `sse`.
+  
+  `required_subprotocol` is derived metadata and must not be treated as framing.
+  
+  WebTransport lane fields are protocol-local topology. They must not be reused as cross-transport operation selectors.
 spec_kind: "operational"
 adr_ids:
   - "adr:1145"

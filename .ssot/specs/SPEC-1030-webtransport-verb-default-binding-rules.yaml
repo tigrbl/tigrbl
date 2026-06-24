@@ -11,10 +11,67 @@ tags: []
 summary: "Define default binding lowering for WebTransport session, bidirectional stream, client stream, server stream, and datagram operation verbs with lane-compatible defaults."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Expanded default WT verb binding rules for control, stream, and datagram lane defaults."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
+  ## Intent
+  
   Define default binding lowering for WebTransport session, bidirectional stream, client stream, server stream, and datagram operation verbs with lane-compatible defaults.
+  
+  ## Default Operation Mapping
+  
+  When a WebTransport table profile declares a control stream, the default control binding is:
+  
+  - carrier: `bidi_stream`
+  - lane purpose: `control`
+  - opens: `first`
+  - framing: `JsonRpcFramingSpec`
+  
+  The default control stream may carry:
+  
+  - `create`
+  - `read`
+  - `update`
+  - `replace`
+  - `merge`
+  - `delete`
+  - `list`
+  - `clear`
+  - `count`
+  - `exists`
+  - `checkpoint`
+  
+  Server-to-client stream defaults:
+  
+  - `subscribe`, `tail`, and `download` lower to `unidi_server_stream` or explicitly declared `bidi_stream` lanes.
+  - Default lane purpose is `events`.
+  - Default framing is `NdjsonFramingSpec` unless the table profile declares a different stream-compatible framing.
+  
+  Client-to-server stream defaults:
+  
+  - `upload` and `append_chunk` lower to `unidi_client_stream`.
+  - Default lane purpose is `upload`.
+  - Default framing is `BytesFramingSpec`.
+  
+  Datagram defaults:
+  
+  - `send_datagram` lowers to `datagram`.
+  - Default lane purpose is `presence` unless explicitly overridden.
+  - Default framing is `BytesFramingSpec` unless the profile declares `JsonFramingSpec`, `TextFramingSpec`, or `BinaryFramingSpec`.
+  
+  ## Rejections
+  
+  `JsonRpcFramingSpec` and `NdjsonFramingSpec` must fail closed on datagram defaults.
+  
+  A default WebTransport binding must not infer one operation's framing from another operation's lane.
+  
+  ## Validation
+  
+  Tests must cover at least one table where CRUD uses the control stream, `tail` uses an events stream, `append_chunk` uses an upload stream, and `send_datagram` uses a datagram lane.
 spec_kind: "normative"
 adr_ids:
   - "adr:1122"

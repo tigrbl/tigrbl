@@ -20,19 +20,23 @@ status_notes:
     status: "draft"
     note: "Updated WebSocket framing target set and JSON-RPC gating policy."
     at: "2026-05-27T17:59:28Z"
+  -
+    status: "draft"
+    note: "Updated JSON-RPC websocket authoring to derive required subprotocol metadata from JsonRpcFramingSpec."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Decision
   
-  Tigrbl will keep `framing` and `subprotocols` as separate fields on `WsBindingSpec` because they describe different protocol layers.
+  Tigrbl will keep framing and subprotocol metadata as separate protocol layers. Normal authoring selects `JsonRpcFramingSpec`; WebSocket runtime metadata derives the required `jsonrpc` subprotocol unless an advanced declaration explicitly overrides it and passes validation.
   
   1. `WsBindingSpec.proto` owns websocket transport security and MUST be either `ws` or `wss` for websocket bindings.
-  2. `WsBindingSpec.subprotocols` owns handshake negotiation through `Sec-WebSocket-Protocol` and MUST describe the allowed or required application subprotocol tokens advertised for the socket.
-  3. `WsBindingSpec.framing` owns post-handshake message interpretation after the socket is accepted.
-  4. WebSocket JSON-RPC MUST be expressed as websocket transport plus `framing=jsonrpc`; the subprotocol declaration alone must not define JSON-RPC decoding semantics.
-  5. When websocket JSON-RPC is declared, the binding must normalize or require a JSON-RPC-compatible subprotocol token and must reject incompatible subprotocol combinations.
+  2. WebSocket protocol binding owns handshake negotiation through `Sec-WebSocket-Protocol` and MUST describe or derive the allowed or required application subprotocol tokens advertised for the socket.
+  3. A typed framing spec owns post-handshake message interpretation after the socket is accepted.
+  4. WebSocket JSON-RPC MUST be expressed as websocket transport plus `JsonRpcFramingSpec`; the subprotocol declaration alone must not define JSON-RPC decoding semantics.
+  5. When websocket JSON-RPC is declared, the binding must derive or require a JSON-RPC-compatible subprotocol token and must reject incompatible subprotocol combinations.
   6. WebSocket and WSS target app-level framing set is `text`, `bytes`, `binary`, `json`, `jsonrpc`, and `ndjson`.
-  7. WebSocket JSON-RPC requires explicit subprotocol or contract gating.
+  7. WebSocket JSON-RPC requires derived subprotocol metadata or explicit contract gating.
   8. WebSocket text is the default mature framing surface today.
   9. WebSocket binary and websocket bytes may appear in canonical framing vocabulary, but they must not be presented as equivalent to mature framing-atom support unless explicit runtime decode/encode and documentation closure exists.
   10. Path kinds such as `websocket`, `ws-jsonrpc`, `wss-jsonrpc`, `ws-ndjson`, and `wss-ndjson` remain address-surface categories and MUST converge with the websocket binding fields instead of replacing them.
@@ -41,7 +45,7 @@ body: |-
   
   ## Context
   
-  The nested AppSpec transport discussion raised whether `framing` and `subprotocols` both belong on `WsBindingSpec`. The distinction is valid: websocket subprotocols participate in the opening handshake, while framing tells Tigrbl how to decode and encode messages once a websocket connection exists.
+  The nested AppSpec transport discussion raised whether framing and subprotocols are the same layer. The distinction is valid: websocket subprotocols participate in the opening handshake, while framing tells Tigrbl how to decode and encode messages once a websocket connection exists.
   
   Conflating these fields would make canonical specs unable to represent common cases such as raw text websockets with no application subprotocol, JSON-RPC messages over a negotiated `jsonrpc` subprotocol, or planned fail-closed NDJSON framing that should not silently pass as a generic websocket.
   
@@ -49,7 +53,7 @@ body: |-
   
   ## Consequences
   
-  - Websocket bindings carry both handshake and message-envelope metadata.
+  - Websocket bindings carry or derive handshake metadata while typed framing specs carry message-envelope metadata.
   - `PathSpec.kind` can be checked against binding declarations without owning message semantics.
   - WS and WSS JSON-RPC parity can be validated symmetrically.
   - NDJSON websocket scenarios remain explicit and fail closed until framing support exists.
@@ -59,7 +63,7 @@ body: |-
   ## Rejected Alternatives
   
   - Use only `subprotocols` and infer message decoding from the negotiated token.
-  - Use only `framing` and ignore websocket handshake negotiation.
+  - Make normal authors repeat the same JSON-RPC intent as both framing and subprotocol when the subprotocol can be derived safely.
   - Encode websocket JSON-RPC solely in `PathSpec.kind`.
   - Treat websocket docs projection as a docs path concern instead of a binding-selection concern.
   - Treat declared framing tokens as sufficient proof of mature runtime support.

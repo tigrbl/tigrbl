@@ -16,17 +16,21 @@ status_notes:
     status: "draft"
     note: "Created canonical BindingSpec and semantic alias normalization contract."
     at: "2026-05-28T00:49:18Z"
+  -
+    status: "draft"
+    note: "Updated normalization contract for ProtocolBindingSpec plus typed FramingSpec separation."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
   
   Define the canonical BindingSpec normalization contract for Tigrbl.
   
-  ## Canonical BindingSpecs
+  ## Canonical Protocol BindingSpecs
   
-  The canonical BindingSpec set is:
+  The canonical protocol BindingSpec set is:
   
-  | Canonical spec | Transport identity | Secure selector | Profile selector |
+  | Canonical spec | Transport identity | Secure selector | Carrier/profile selector |
   |---|---|---|---|
   | `HTTPBindingSpec` | HTTP-family request and stream transports | `secure=false` for HTTP and `secure=true` for HTTPS | `rest`, `jsonrpc`, `stream`, `client_stream`, `server_stream`, `sse` |
   | `WebSocketBindingSpec` | WebSocket message transport | `secure=false` for WS and `secure=true` for WSS | `message`, `jsonrpc`, `ndjson` |
@@ -36,28 +40,44 @@ body: |-
   
   ## Canonical Fields
   
-  Canonical BindingSpecs must expose or normalize into:
+  Canonical protocol BindingSpecs must expose or normalize into:
   
   - `secure`
   - `profile`
   - `family`
   - `exchange`
-  - `framing`
+  - `framing`, as a typed `FramingSpec` child or equivalent normalized reference
   
   `PathSpec.path` owns the address path. BindingSpecs must not define an independent path field that conflicts with the containing PathSpec.
   
   `PathSpec.kind` remains an address-category discriminator. It is not the same as BindingSpec `profile`.
   
+  ## FramingSpec Normalization
+  
+  Legacy string framing tokens normalize before downstream use:
+  
+  | Legacy token | Typed framing spec |
+  |---|---|
+  | `json` | `JsonFramingSpec` |
+  | `jsonrpc` | `JsonRpcFramingSpec` |
+  | `text` | `TextFramingSpec` |
+  | `bytes` | `BytesFramingSpec` |
+  | `binary` | `BinaryFramingSpec` |
+  | `ndjson` | `NdjsonFramingSpec` |
+  | `sse` | `SseFramingSpec` |
+  
+  The framing spec owns payload interpretation. The protocol binding owns carrier/session topology.
+  
   ## Alias Normalization
   
   Convenience aliases are valid only as authoring shortcuts. Before compiler, runtime, docs, or support-matrix use, they normalize as follows:
   
-  | Alias | Canonical spec | secure | profile | family | exchange | default framing |
+  | Alias | Canonical protocol spec | secure | profile | family | exchange | default framing spec |
   |---|---|---:|---|---|---|---|
   | `HttpRestBindingSpec` | `HTTPBindingSpec` | `false` | `rest` | `request` | `unary` | `json` |
   | `HttpsRestBindingSpec` | `HTTPBindingSpec` | `true` | `rest` | `request` | `unary` | `json` |
-  | `HttpJsonRpcBindingSpec` | `HTTPBindingSpec` | `false` | `jsonrpc` | `request` | `unary` | `jsonrpc` |
-  | `HttpsJsonRpcBindingSpec` | `HTTPBindingSpec` | `true` | `jsonrpc` | `request` | `unary` | `jsonrpc` |
+  | `HttpJsonRpcBindingSpec` | `HTTPBindingSpec` | `false` | `rest` or `rpc_endpoint` | `request` | `unary` | `JsonRpcFramingSpec` |
+  | `HttpsJsonRpcBindingSpec` | `HTTPBindingSpec` | `true` | `rest` or `rpc_endpoint` | `request` | `unary` | `JsonRpcFramingSpec` |
   | `HttpStreamBindingSpec` | `HTTPBindingSpec` | `false` | `server_stream` | `stream` | `server_stream` | `bytes` |
   | `HttpsStreamBindingSpec` | `HTTPBindingSpec` | `true` | `server_stream` | `stream` | `server_stream` | `bytes` |
   | `HttpClientStreamBindingSpec` | `HTTPBindingSpec` | `false` | `client_stream` | `stream` | `client_stream` | `bytes` |
@@ -66,8 +86,8 @@ body: |-
   | `HttpsSseBindingSpec` | `HTTPBindingSpec` | `true` | `sse` | `stream` | `server_stream` | `sse` |
   | `WsBindingSpec` | `WebSocketBindingSpec` | `false` | `message` | `message` | `duplex` | `text` |
   | `WssBindingSpec` | `WebSocketBindingSpec` | `true` | `message` | `message` | `duplex` | `text` |
-  | `WsJsonRpcBindingSpec` | `WebSocketBindingSpec` | `false` | `jsonrpc` | `message` | `duplex` | `jsonrpc` |
-  | `WssJsonRpcBindingSpec` | `WebSocketBindingSpec` | `true` | `jsonrpc` | `message` | `duplex` | `jsonrpc` |
+  | `WsJsonRpcBindingSpec` | `WebSocketBindingSpec` | `false` | `message` | `message` | `duplex` | `JsonRpcFramingSpec`; derives `jsonrpc` subprotocol |
+  | `WssJsonRpcBindingSpec` | `WebSocketBindingSpec` | `true` | `message` | `message` | `duplex` | `JsonRpcFramingSpec`; derives `jsonrpc` subprotocol |
   | `WsNdjsonBindingSpec` | `WebSocketBindingSpec` | `false` | `ndjson` | `message` | `duplex` | `ndjson` |
   | `WssNdjsonBindingSpec` | `WebSocketBindingSpec` | `true` | `ndjson` | `message` | `duplex` | `ndjson` |
   | `WebTransportSessionBindingSpec` | `WebTransportBindingSpec` | profile-local | `session` | `session` | `unary` | `webtransport` |
@@ -84,7 +104,9 @@ body: |-
   
   Profile and framing are separate. `rest`, `stream`, `server_stream`, `client_stream`, `message`, `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, and `datagram` are profile or classification values, not app-level framing tokens.
   
-  Runtime support claims must be made against canonical BindingSpec plus profile plus framing, not against alias names alone.
+  JSON-RPC is an application framing. It is not a canonical protocol binding. Legacy aliases using JSON-RPC in the class name normalize to the selected protocol binding plus `JsonRpcFramingSpec`.
+  
+  Runtime support claims must be made against canonical protocol BindingSpec plus carrier/profile plus typed framing spec, not against alias names alone.
   
   ## Validation
   

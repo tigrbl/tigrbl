@@ -24,6 +24,10 @@ status_notes:
     status: "draft"
     note: "WebSocket framing contract updated for implemented NDJSON support through explicit codec adapters instead of fail-closed fallback behavior."
     at: "2026-06-17T08:29:28Z"
+  -
+    status: "draft"
+    note: "Updated websocket JSON-RPC contract so normal authoring derives subprotocol metadata from JsonRpcFramingSpec."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -34,11 +38,11 @@ body: |-
   
   1. `WsBindingSpec.proto` MUST be `ws` or `wss`.
   2. `WsBindingSpec.subprotocols` MUST be an ordered tuple of websocket subprotocol tokens, defaulting to an empty tuple when no subprotocol is required or advertised.
-  3. `WsBindingSpec.framing` MUST describe post-handshake message interpretation and MUST default to `text` unless the binding declares a different supported or governed framing token.
+  3. WebSocket framing MUST describe post-handshake message interpretation and MUST normalize to a typed `FramingSpec`. Legacy `WsBindingSpec.framing` strings remain compatibility input.
   4. WebSocket and WSS target framing vocabulary is `text`, `bytes`, `binary`, `json`, `jsonrpc`, and `ndjson`.
   5. Websocket text is the mature baseline websocket framing surface at the canonical binding layer.
-  6. JSON-RPC websocket framing MUST be represented as `framing=jsonrpc` on `WsBindingSpec` or as an equivalent normalized binding that lowers to that canonical value.
-  7. `framing=jsonrpc` MUST require or normalize a JSON-RPC-compatible websocket subprotocol token and MUST reject explicitly incompatible subprotocol combinations.
+  6. JSON-RPC websocket framing MUST be represented as `JsonRpcFramingSpec` or legacy `framing=jsonrpc` normalized to that typed value.
+  7. `JsonRpcFramingSpec` MUST derive or require a JSON-RPC-compatible websocket subprotocol token and MUST reject explicitly incompatible subprotocol combinations.
   8. Websocket `binary` and websocket `bytes` may remain in governed framing vocabulary, but they must not be described as equivalent to mature framing-atom support until explicit runtime decode/encode closure exists.
   9. NDJSON websocket framing MUST remain planned and fail-closed until the canonical framing vocabulary and runtime decoder are implemented.
   10. `PathSpec.kind` MUST converge with websocket binding declarations: generic websocket path kinds allow mature text behavior, JSON-RPC path kinds require JSON-RPC framing, and NDJSON path kinds require explicit planned/fail-closed NDJSON handling.
@@ -57,8 +61,8 @@ body: |-
   | WSS text | `WsBindingSpec(proto=wss, framing=text, subprotocols=())` | `websocket` | Canonically supported; Tigrcorn e2e proof still required |
   | WS JSON | `WsBindingSpec(proto=ws, framing=json, subprotocols=())` | `websocket` | Governed vocabulary; runtime support requires explicit codec closure |
   | WSS JSON | `WsBindingSpec(proto=wss, framing=json, subprotocols=())` | `websocket` | Governed vocabulary; runtime support requires explicit codec closure |
-  | WS JSON-RPC | `WsBindingSpec(proto=ws, framing=jsonrpc, subprotocols=(jsonrpc,))` | `ws-jsonrpc` | Canonically supported; live server support is proof-gated |
-  | WSS JSON-RPC | `WsBindingSpec(proto=wss, framing=jsonrpc, subprotocols=(jsonrpc,))` | `wss-jsonrpc` | Canonically supported; live server support is proof-gated |
+  | WS JSON-RPC | `WebSocketProtocolBindingSpec(proto=ws, framing=JsonRpcFramingSpec())` deriving `jsonrpc` subprotocol | `ws-jsonrpc` | Canonically supported; live server support is proof-gated |
+  | WSS JSON-RPC | `WebSocketProtocolBindingSpec(proto=wss, framing=JsonRpcFramingSpec())` deriving `jsonrpc` subprotocol | `wss-jsonrpc` | Canonically supported; live server support is proof-gated |
   | WS bytes | `WsBindingSpec(proto=ws, framing=bytes, subprotocols=())` | `websocket` | Governed vocabulary; runtime support remains partial |
   | WSS bytes | `WsBindingSpec(proto=wss, framing=bytes, subprotocols=())` | `websocket` | Governed vocabulary; runtime support remains partial |
   | WS binary | `WsBindingSpec(proto=ws, framing=binary, subprotocols=())` | `websocket` | Governed vocabulary; runtime support remains partial |
@@ -71,9 +75,9 @@ body: |-
   | Scenario | Expected |
   |---|---|
   | `proto=ws` or `proto=wss` with `framing=text` and no subprotocol | Valid. |
-  | `framing=jsonrpc` with JSON-RPC-compatible subprotocol token | Valid. |
-  | `framing=jsonrpc` with no subprotocol token | Valid only if normalized to the canonical JSON-RPC subprotocol requirement. |
-  | `framing=jsonrpc` with `subprotocols=(graphql-ws,)` | Invalid. |
+  | `JsonRpcFramingSpec` with no explicit subprotocol token | Valid; normalizes to required `jsonrpc` subprotocol metadata. |
+  | `JsonRpcFramingSpec` with JSON-RPC-compatible subprotocol token | Valid. |
+  | `JsonRpcFramingSpec` with `subprotocols=(graphql-ws,)` | Invalid. |
   | `framing=json` without explicit JSON codec closure | Governed vocabulary but not mature runtime support. |
   | `framing=bytes` or `framing=binary` before explicit framing-atom closure | Governed vocabulary but not equivalent to mature websocket text support. |
   | `framing=ndjson` before NDJSON websocket implementation | Planned/fail-closed. |

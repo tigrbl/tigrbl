@@ -24,6 +24,10 @@ status_notes:
     status: "draft"
     note: "Updated by adr:1182: app-level framing matrix rows now require explicit stream initiator and carrier legality metadata for h11 h2 h3 and WebTransport distinctions."
     at: "2026-06-17T10:09:25Z"
+  -
+    status: "draft"
+    note: "Updated framing policy to govern typed FramingSpec rows instead of protocol-owned framing strings."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Context
@@ -34,9 +38,21 @@ body: |-
   
   ## Decision
   
-  Tigrbl shall govern app-level framing as profile-local payload interpretation metadata.
+  Tigrbl shall govern app-level framing as profile-local payload interpretation metadata represented by typed `FramingSpec` declarations.
   
   Each supported protocol/profile row must declare its framing set locally. Secure variants such as HTTPS, WSS, and secure WebTransport repeat their app-level framing policy locally; TLS, mTLS, ALPN, QUIC, and HTTP version facts remain scope metadata.
+  
+  The initial typed framing set is:
+  
+  - `JsonFramingSpec`
+  - `JsonRpcFramingSpec`
+  - `TextFramingSpec`
+  - `BytesFramingSpec`
+  - `BinaryFramingSpec`
+  - `NdjsonFramingSpec`
+  - `SseFramingSpec`
+  
+  Legacy string values normalize to these typed specs before compiler, runtime, docs, support-matrix, or conformance use.
   
   Tigrbl shall use the following target framing policy:
   
@@ -63,11 +79,11 @@ body: |-
   - `wt.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
   - `wts.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
   
-  `jsonrpc` means complete JSON-RPC message semantics. It must not be implied by `json`, `ndjson`, or a generic stream carrier.
+  `JsonRpcFramingSpec` means complete JSON-RPC message semantics. It must not be implied by `JsonFramingSpec`, `NdjsonFramingSpec`, or a generic stream carrier.
   
-  `ndjson` means newline-delimited JSON records and must not imply JSON-RPC semantics.
+  `NdjsonFramingSpec` means newline-delimited JSON records and must not imply JSON-RPC semantics.
   
-  `sse` is exclusive to the SSE profile.
+  `SseFramingSpec` is exclusive to the SSE profile.
   
   `webtransport` is outer transport identity/framing only. App-level framing lives inside the selected WebTransport profile.
   
@@ -79,4 +95,4 @@ body: |-
   
   Support claims must distinguish intended framing policy from implemented runtime support.
   
-  Future framing additions require explicit governance rather than inference from existing transport, profile, or secure variants.
+  Future framing additions require explicit governance rather than inference from existing transport, profile, or secure variants. A protocol binding may derive transport/session metadata from a framing spec only where the framing policy explicitly permits derivation, such as WebSocket JSON-RPC subprotocol selection.

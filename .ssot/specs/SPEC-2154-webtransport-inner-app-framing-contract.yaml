@@ -32,6 +32,10 @@ status_notes:
     status: "draft"
     note: "Updated by adr:1182: WebTransport inner framing remains lane-local while bidirectional stream initiator metadata must be preserved separately from framing."
     at: "2026-06-17T10:11:10Z"
+  -
+    status: "draft"
+    note: "Updated WebTransport inner framing to use lane-local FramingSpec declarations and op-selected lanes."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -40,7 +44,7 @@ body: |-
   
   ## Contract
   
-  WebTransport is governed through `WebTransportBindingSpec` profiles:
+  WebTransport is governed through `WebTransportBindingSpec` profiles or equivalent `WebTransportProtocolBindingSpec` carrier declarations:
   
   - `session`
   - `bidi_stream`
@@ -50,7 +54,7 @@ body: |-
   
   The `session` profile carries session lifecycle metadata and has no app-level payload framing.
   
-  The stream profiles may carry app-level framed payloads only when the framing is legal for that profile and record-boundary behavior is explicit.
+  The stream profiles may carry app-level framed payloads only when a lane-local `FramingSpec` is legal for that profile and record-boundary behavior is explicit.
   
   The datagram profile may carry `bytes`, `binary`, `text`, or `json` payloads. `jsonrpc` and `ndjson` are excluded by default for datagrams because datagrams do not provide reliable stream continuity or ordered record sequencing.
   
@@ -65,6 +69,8 @@ body: |-
   `profile` identifies which WebTransport carrier is being used.
   
   In a multiplexed WebTransport session, each stream or datagram keeps its own payload framing metadata. A selected framing on one stream or datagram must not bleed into another lane, and datagram framing restrictions continue to apply even when streams in the same session allow broader record-oriented framing.
+  
+  Each operation binding that targets WebTransport must identify the selected profile and, where a session uses more than one carrier, a stable lane name or purpose. Examples include `control` for the first bidirectional stream, `events` for server streams, `upload` for client streams, and `presence` for datagrams.
   
   ## Validation
   

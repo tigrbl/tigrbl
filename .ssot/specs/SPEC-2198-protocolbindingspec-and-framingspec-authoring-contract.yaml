@@ -1,0 +1,113 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2198"
+number: 2198
+slug: "protocolbindingspec-and-framingspec-authoring-contract"
+title: "ProtocolBindingSpec and FramingSpec Authoring Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the public table-spec authoring shape for protocol bindings and typed framing specs."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created for protocol binding and framing spec authoring separation."
+    at: "2026-06-24T18:08:31Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the public table-spec authoring shape for protocol bindings and typed framing specs.
+  
+  ## Contract
+  
+  `OpSpec.bindings` contains protocol binding specs.
+  
+  Protocol binding specs own carrier fields:
+  
+  - protocol identity, such as HTTP, WebSocket, WSS, or WebTransport;
+  - address or path reference where the containing spec does not already own it;
+  - HTTP methods where applicable;
+  - WebSocket handshake metadata where applicable;
+  - WebTransport session, stream, datagram, lane, and control-stream topology where applicable.
+  
+  Protocol binding specs may carry a `framing` field, but that field is a typed `FramingSpec` child. It is not a protocol selector.
+  
+  Framing specs own payload or envelope interpretation:
+  
+  - `JsonFramingSpec`
+  - `JsonRpcFramingSpec`
+  - `TextFramingSpec`
+  - `BytesFramingSpec`
+  - `BinaryFramingSpec`
+  - `NdjsonFramingSpec`
+  - `SseFramingSpec`
+  
+  ## Examples
+  
+  HTTP REST create:
+  
+  ```python
+  HttpProtocolBindingSpec(
+      path="/widgets",
+      methods=("POST",),
+      framing=JsonFramingSpec(),
+  )
+  ```
+  
+  HTTP JSON-RPC create:
+  
+  ```python
+  HttpProtocolBindingSpec(
+      path="/rpc",
+      methods=("POST",),
+      framing=JsonRpcFramingSpec(method="Widget.create"),
+  )
+  ```
+  
+  WebSocket JSON-RPC create:
+  
+  ```python
+  WebSocketProtocolBindingSpec(
+      path="/ws/widgets",
+      framing=JsonRpcFramingSpec(method="Widget.create"),
+  )
+  ```
+  
+  WebTransport control-stream JSON-RPC create:
+  
+  ```python
+  WebTransportProtocolBindingSpec(
+      path="/wt/widgets",
+      stream="control",
+      stream_kind="bidi_stream",
+      opens="first",
+      framing=JsonRpcFramingSpec(method="Widget.create"),
+  )
+  ```
+  
+  ## Rules
+  
+  JSON-RPC is modeled by `JsonRpcFramingSpec`, not by a distinct canonical protocol binding.
+  
+  WebSocket subprotocol metadata may be derived from the selected framing spec when the framing policy requires a subprotocol.
+  
+  WebTransport app-level framing is lane-local. A table may bind different operations to different WebTransport lanes with different framing specs.
+  
+  Legacy binding specs and legacy string framing values remain compatibility inputs only when they normalize to this model before compiler, runtime, docs, support-matrix, and conformance use.
+  
+  ## Validation
+  
+  Static tests must prove HTTP REST, HTTP JSON-RPC, WebSocket JSON-RPC, and WebTransport bindings normalize to protocol binding plus typed framing specs.
+  
+  Negative tests must reject declarations that treat JSON-RPC as a canonical protocol identity or that infer one operation's WebTransport framing from another lane.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1006"
+  - "adr:1133"
+  - "adr:1134"
+  - "adr:1131"
+  - "adr:1096"

@@ -1,0 +1,61 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2200"
+number: 2200
+slug: "framing-derived-session-metadata-contract"
+title: "Framing Derived Session Metadata Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define when protocol session metadata may be derived from typed framing specs without making framing and session metadata the same layer."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "draft"
+    note: "Created for safe derivation of protocol session metadata from FramingSpec declarations."
+    at: "2026-06-24T18:08:44Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define when protocol session metadata may be derived from typed framing specs without making framing and session metadata the same layer.
+  
+  ## Contract
+  
+  Framing-derived session metadata is allowed only when:
+  
+  - the framing spec explicitly declares a required protocol/session metadata value;
+  - the selected protocol binding supports that metadata field;
+  - the derived value does not conflict with an explicit advanced protocol binding declaration;
+  - validation records the derived value as protocol/session metadata, not as framing.
+  
+  ## WebSocket JSON-RPC
+  
+  `WebSocketProtocolBindingSpec` with `JsonRpcFramingSpec` derives:
+  
+  - `required_subprotocol = "jsonrpc"`
+  
+  If an author explicitly declares compatible WebSocket subprotocol metadata, validation succeeds.
+  
+  If an author explicitly declares incompatible WebSocket subprotocol metadata, validation fails closed.
+  
+  The derived subprotocol does not parse JSON-RPC payloads. JSON-RPC parsing remains the responsibility of `JsonRpcFramingSpec`.
+  
+  ## Non-WebSocket Protocols
+  
+  HTTP and WebTransport do not use WebSocket subprotocol negotiation. `JsonRpcFramingSpec` on HTTP or WebTransport must not create a WebSocket subprotocol field.
+  
+  WebTransport control-stream reservation may be selected by protocol binding policy, but it is not derived from JSON-RPC framing unless a later ADR explicitly adds that derivation rule.
+  
+  ## Validation
+  
+  Tests must prove that WebSocket JSON-RPC derives `jsonrpc` subprotocol metadata, HTTP JSON-RPC does not, and WebTransport JSON-RPC does not.
+  
+  Tests must prove incompatible explicit WebSocket subprotocol metadata fails closed.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1131"
+  - "adr:1133"
+  - "adr:1006"

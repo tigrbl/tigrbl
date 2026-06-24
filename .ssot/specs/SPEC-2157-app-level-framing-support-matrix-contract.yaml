@@ -28,6 +28,10 @@ status_notes:
     status: "draft"
     note: "Updated by adr:1182: matrix conformance must report protocol support, runtime support, and missing stream initiator legality as separate facts."
     at: "2026-06-17T10:10:45Z"
+  -
+    status: "draft"
+    note: "Updated support matrix to express app framing as typed FramingSpec values."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -36,24 +40,24 @@ body: |-
   
   ## Contract
   
-  App-level framing is payload interpretation metadata and is selected per canonical BindingSpec profile.
+  App-level framing is payload interpretation metadata and is selected per canonical protocol BindingSpec profile as a typed `FramingSpec`.
   
   Secure variants repeat their framing policy locally. TLS, mTLS, ALPN, QUIC, and HTTP version facts remain scope metadata.
   
   | Protocol / profile | Canonical BindingSpec | Family | Exchange | App-level framing support |
   |---|---|---|---|---|
-  | `http.rest` | `HTTPBindingSpec` | `request` | `unary` | `json` required; `text`, `bytes`, `binary` allowed for explicitly declared non-JSON endpoints |
+  | `http.rest` | `HTTPBindingSpec` | `request` | `unary` | `JsonFramingSpec` required; `TextFramingSpec`, `BytesFramingSpec`, `BinaryFramingSpec` allowed for explicitly declared non-JSON endpoints |
   | `https.rest` | `HTTPBindingSpec` | `request` | `unary` | `json` required; `text`, `bytes`, `binary` allowed for explicitly declared non-JSON endpoints |
-  | `http.jsonrpc` | `HTTPBindingSpec` | `request` | `unary` | `jsonrpc` required and exclusive |
-  | `https.jsonrpc` | `HTTPBindingSpec` | `request` | `unary` | `jsonrpc` required and exclusive |
+  | `http` + JSON-RPC framing | `HTTPBindingSpec` | `request` | `unary` | `JsonRpcFramingSpec` required and exclusive |
+  | `https` + JSON-RPC framing | `HTTPBindingSpec` | `request` | `unary` | `JsonRpcFramingSpec` required and exclusive |
   | `http.stream.request` | `HTTPBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
   | `https.stream.request` | `HTTPBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
   | `http.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
   | `https.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
   | `http.sse` | `HTTPBindingSpec` | `stream` | `server_stream` | `sse` required and exclusive |
   | `https.sse` | `HTTPBindingSpec` | `stream` | `server_stream` | `sse` required and exclusive |
-  | `ws.message` | `WebSocketBindingSpec` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol or contract gating |
-  | `wss.message` | `WebSocketBindingSpec` | `message` | `duplex` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson`; `jsonrpc` requires explicit subprotocol or contract gating |
+  | `ws.message` | `WebSocketBindingSpec` | `message` | `duplex` | `TextFramingSpec`, `BytesFramingSpec`, `BinaryFramingSpec`, `JsonFramingSpec`, `JsonRpcFramingSpec`, `NdjsonFramingSpec`; JSON-RPC derives or requires compatible subprotocol metadata |
+  | `wss.message` | `WebSocketBindingSpec` | `message` | `duplex` | `TextFramingSpec`, `BytesFramingSpec`, `BinaryFramingSpec`, `JsonFramingSpec`, `JsonRpcFramingSpec`, `NdjsonFramingSpec`; JSON-RPC derives or requires compatible subprotocol metadata |
   | `wt.session` | `WebTransportBindingSpec` | `session` | `unary` | no app-level framing; session metadata only |
   | `wts.session` | `WebTransportBindingSpec` | `session` | `unary` | no app-level framing; session metadata only |
   | `wt.bidi_stream` | `WebTransportBindingSpec` | `stream` | `duplex` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
@@ -67,17 +71,17 @@ body: |-
   
   ## Rules
   
-  `jsonrpc` means complete JSON-RPC message semantics and must not be inferred from `json`, `ndjson`, or generic stream carriers.
+  `JsonRpcFramingSpec` means complete JSON-RPC message semantics and must not be inferred from `JsonFramingSpec`, `NdjsonFramingSpec`, or generic stream carriers.
   
-  `ndjson` means newline-delimited JSON records and must not imply JSON-RPC semantics.
+  `NdjsonFramingSpec` means newline-delimited JSON records and must not imply JSON-RPC semantics.
   
-  `sse` is exclusive to the SSE profile.
+  `SseFramingSpec` is exclusive to the SSE profile.
   
   `webtransport` is outer transport identity/framing only. App-level framing lives inside the selected WebTransport profile.
   
   ## Validation
   
-  Matrix tests must prove every supported BindingSpec profile has a local framing declaration.
+  Matrix tests must prove every supported BindingSpec profile has a local typed framing declaration.
   
   Runtime-support tests must distinguish intended framing policy from mature runtime implementation.
 spec_kind: "normative"
