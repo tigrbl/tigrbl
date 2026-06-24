@@ -10,6 +10,9 @@ from tigrbl_equivalence_contracts.equivalences.json_rpc_olap_table.runtime impor
 from tigrbl_equivalence_contracts.equivalences.json_rpc_oltp_table.runtime import (
     EXPECTED_JSONRPC_OLTP_EVIDENCE,
 )
+from tigrbl_equivalence_contracts.equivalences.rest_json_rpc_table.runtime import (
+    EXPECTED_EVIDENCE as EXPECTED_REST_JSONRPC_EVIDENCE,
+)
 from tigrbl_equivalence_contracts.equivalences.rest_table.runtime import EXPECTED_WIDGET_CRUD_EVIDENCE
 
 TABLE_CLASS_IDS = tuple(row["id"] for row in matrix_rows() if row["category"] == "table-class")
@@ -58,6 +61,16 @@ def test_json_rpc_table_equivalence_uses_http_jsonrpc_envelopes() -> None:
         assert observed[2]["envelope"]["result"] == [
             {"id": "widget-1", "name": "First"}
         ]
+
+
+def test_rest_json_rpc_table_equivalence_uses_rest_routes_and_jsonrpc_envelopes() -> None:
+    result = equivalence_by_id("table-class.rest-json-rpc-table").certify()
+
+    assert result.status == "analogous"
+    for observed in result.evidence["observed"].values():
+        assert observed == EXPECTED_REST_JSONRPC_EVIDENCE
+        assert set(observed) == {"rest_routes", "jsonrpc"}
+        assert observed["jsonrpc"][0]["envelope"]["jsonrpc"] == "2.0"
 
 
 def test_json_rpc_bulk_crud_table_equivalence_uses_bulk_jsonrpc_envelopes() -> None:
