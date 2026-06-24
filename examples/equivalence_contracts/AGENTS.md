@@ -260,6 +260,36 @@ Keep equivalence changes scoped. Do not mix unrelated Tigrbl runtime changes,
 generated docs rewrites, or package lock churn into equivalence commits unless
 the equivalence requires them.
 
+Scope discipline is not permission to make a narrow cosmetic edit when the
+equivalence is structurally wrong. If the requested change touches an
+equivalence's behavioral claim, protocol, or vendor parity, inspect and update
+the complete equivalence unit:
+
+- `contract.py` claim, status, implementation metadata, and server kind;
+- `runtime.py` protocol-specific client proof and expected evidence;
+- `tigrbl_impl.py`, `fastapi_impl.py`, and `flask_impl.py`;
+- pytest assertions that pin the expected evidence and prevent regression.
+
+Do not stop after replacing fake vendor response payloads if the runtime still
+certifies only OpenAPI route inventory for a non-REST protocol. That is an
+incomplete and misleading equivalence. The minimum acceptable fix is to either
+make the contract, runtime, implementations, and tests protocol-correct
+together, or explicitly mark the framework/equivalence as unsupported,
+not-native, or projection-only with evidence that matches that limitation.
+
+Before committing an equivalence change, run a local audit against the edited
+equivalence:
+
+- Does the proof exercise the same protocol named by the Tigrbl table/profile?
+- Does every vendor implementation expose that protocol through normal
+  first-class framework authoring?
+- Does the shared client assert payloads, frames, envelopes, ordering, lane
+  direction, and completion semantics when those are part of the equivalence?
+- Would a developer reading only the implementation file see a realistic
+  framework example rather than scaffolding built to satisfy a route inventory?
+- Would the test fail if the implementation fell back to ordinary REST or
+  OpenAPI-only evidence?
+
 When adding a new equivalence, update the matrix, implementation files, runtime
 proof, and tests together in the same change. The result should be readable to a
 human and certifiable by pytest.
