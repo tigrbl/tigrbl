@@ -98,7 +98,9 @@ async def _invoke(
             except Exception:
                 pass
     skip_persist: bool = bool(ctx.get(CTX_SKIP_PERSIST_FLAG) or ctx.get("skip_persist"))
+    skip_ingress: bool = bool(ctx.get("skip_ingress"))
     skip_egress: bool = bool(ctx.get("skip_egress"))
+    skip_post_commit: bool = bool(ctx.get("skip_post_commit"))
     if not callable(ctx.get("rpc_error_builder")):
         ctx["rpc_error_builder"] = lambda exc: to_rpc_error_payload(
             create_standardized_error(exc)
@@ -156,15 +158,16 @@ async def _invoke(
                 return
             raise create_standardized_error(exc)
 
-    await _run_phase(
-        "INGRESS_BEGIN", allow_flush=False, allow_commit=False, in_tx=False
-    )
-    await _run_phase(
-        "INGRESS_PARSE", allow_flush=False, allow_commit=False, in_tx=False
-    )
-    await _run_phase(
-        "INGRESS_ROUTE", allow_flush=False, allow_commit=False, in_tx=False
-    )
+    if not skip_ingress:
+        await _run_phase(
+            "INGRESS_BEGIN", allow_flush=False, allow_commit=False, in_tx=False
+        )
+        await _run_phase(
+            "INGRESS_PARSE", allow_flush=False, allow_commit=False, in_tx=False
+        )
+        await _run_phase(
+            "INGRESS_ROUTE", allow_flush=False, allow_commit=False, in_tx=False
+        )
     await _run_phase("PRE_TX_BEGIN", allow_flush=False, allow_commit=False, in_tx=False)
 
     if not skip_persist:
@@ -254,7 +257,10 @@ async def _invoke(
     else:
         setattr(response_obj, "result", ctx.get("result"))
 
-    await _run_phase("POST_COMMIT", allow_flush=True, allow_commit=False, in_tx=False)
+    if not skip_post_commit:
+        await _run_phase(
+            "POST_COMMIT", allow_flush=True, allow_commit=False, in_tx=False
+        )
 
     if not skip_egress:
         await _run_phase(

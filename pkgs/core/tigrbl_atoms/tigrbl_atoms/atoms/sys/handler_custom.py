@@ -42,6 +42,8 @@ class BoundAtom(Atom[Resolved, Operated, Exception]):
             self.name = name
 
     async def __call__(self, obj: object | None, ctx: Ctx[Resolved]) -> Ctx[Operated]:
+        if getattr(ctx, "result", None) is not None:
+            return ctx.promote(OperatedCtx)
         result = self._fn(obj, ctx)
         if inspect.isawaitable(result):
             result = await result
@@ -58,6 +60,8 @@ class AtomImpl(Atom[Resolved, Operated, Exception]):
     anchor = ANCHOR
 
     async def __call__(self, obj: object | None, ctx: Ctx[Resolved]) -> Ctx[Operated]:
+        if getattr(ctx, "result", None) is not None:
+            return ctx.promote(OperatedCtx)
         fn = _resolve_handler(obj, ctx)
         if fn is None:
             return ctx.promote(OperatedCtx)

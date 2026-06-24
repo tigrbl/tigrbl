@@ -46,7 +46,7 @@ def _ensure_model_namespaces(model: type) -> None:
     # hooks: phase chains & raw hook descriptors if you want to expose them
     if "hooks" not in model.__dict__:
         model.hooks = SimpleNamespace()
-    # handlers: .<alias>.raw (core/custom), .<alias>.handler (HANDLER chain entry point)
+    # handlers: .<alias>.invoke/.dispatch/.core plus raw compatibility aliases
     if "handlers" not in model.__dict__:
         model.handlers = SimpleNamespace()
     # rpc: callables to be registered/mounted elsewhere as JSON-RPC methods

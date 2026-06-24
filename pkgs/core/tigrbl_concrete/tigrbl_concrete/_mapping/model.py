@@ -5,7 +5,7 @@ import inspect
 from functools import wraps
 import re
 from types import SimpleNamespace
-from typing import Any, Optional, Set, Tuple
+from typing import Any, Mapping, Optional, Set, Tuple
 
 from pydantic import BaseModel
 
@@ -273,6 +273,125 @@ def _build_raw_handler(model: type, spec: OpSpec):
     return _raw
 
 
+def _prepare_handler_ctx(
+    model: type,
+    spec: OpSpec,
+    ctx: Any,
+    *,
+    request: Any | None,
+    db: Any | None,
+    payload: Any,
+    path_params: Mapping[str, Any] | None,
+    query_params: Mapping[str, Any] | None,
+) -> dict[str, Any]:
+    seed = dict(ctx or {}) if isinstance(ctx, Mapping) else {}
+    alias = str(getattr(spec, "alias", ""))
+    target = str(getattr(spec, "target", alias))
+
+    if payload is not None:
+        seed["payload"] = payload
+    if db is not None:
+        seed["db"] = db
+    if request is not None:
+        seed["request"] = request
+    if path_params is not None:
+        seed["path_params"] = dict(path_params)
+    if query_params is not None:
+        seed["query_params"] = dict(query_params)
+
+    seed.setdefault("model", model)
+    seed.setdefault("op", alias)
+    seed.setdefault("method", alias)
+    seed.setdefault("target", target)
+    return seed
+
+
+def _build_lifecycle_handler(
+    model: type,
+    spec: OpSpec,
+    *,
+    include_ingress: bool,
+    include_egress: bool,
+    include_post_commit: bool,
+    name: str,
+):
+    alias = str(getattr(spec, "alias", ""))
+
+    async def _call(
+        ctx: Any = None,
+        *,
+        request: Any | None = None,
+        db: Any | None = None,
+        payload: Any = None,
+        path_params: Mapping[str, Any] | None = None,
+        query_params: Mapping[str, Any] | None = None,
+    ) -> Any:
+        from tigrbl_runtime.executors.invoke import invoke_op
+
+        seed = _prepare_handler_ctx(
+            model,
+            spec,
+            ctx,
+            request=request,
+            db=db,
+            payload=payload,
+            path_params=path_params,
+            query_params=query_params,
+        )
+        seed["skip_ingress"] = not include_ingress
+        seed["skip_egress"] = not include_egress
+        seed["skip_post_commit"] = not include_post_commit
+
+        return await invoke_op(
+            request=seed.get("request"),
+            db=seed.get("db"),
+            model=model,
+            alias=alias,
+            ctx=seed,
+        )
+
+    _call.__name__ = f"{model.__name__}_{alias}_{name}"
+    _call.__qualname__ = _call.__name__
+    _call.__doc__ = f"{name} entrypoint for {model.__name__}.{alias}"
+    return _call
+
+
+def _build_core_handler(model: type, spec: OpSpec, core_callable: Any):
+    alias = str(getattr(spec, "alias", ""))
+
+    async def _call(
+        ctx: Any = None,
+        *,
+        request: Any | None = None,
+        db: Any | None = None,
+        payload: Any = None,
+        path_params: Mapping[str, Any] | None = None,
+        query_params: Mapping[str, Any] | None = None,
+    ) -> Any:
+        seed = _prepare_handler_ctx(
+            model,
+            spec,
+            ctx,
+            request=request,
+            db=db,
+            payload=payload,
+            path_params=path_params,
+            query_params=query_params,
+        )
+        if getattr(core_callable, "__tigrbl_ctx_wrapper__", False):
+            result = core_callable(ctx=seed)
+        else:
+            result = core_callable(seed)
+        if inspect.isawaitable(result):
+            return await result
+        return result
+
+    _call.__name__ = f"{model.__name__}_{alias}_core"
+    _call.__qualname__ = _call.__name__
+    _call.__doc__ = f"core entrypoint for {model.__name__}.{alias}"
+    return _call
+
+
 def _materialize_handlers(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpec, ...]:
     specs = _normalize_bindings(model, tuple(specs))
     _ensure_model_namespaces(model)
@@ -288,9 +407,32 @@ def _materialize_handlers(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpe
             setattr(handlers, spec.alias, alias_ns)
 
         raw = _build_raw_handler(model, spec)
+        core = _build_core_handler(
+            model,
+            spec,
+            getattr(spec, "core", None) or getattr(spec, "core_raw", None) or raw,
+        )
+        invoke = _build_lifecycle_handler(
+            model,
+            spec,
+            include_ingress=True,
+            include_egress=True,
+            include_post_commit=True,
+            name="invoke",
+        )
+        dispatch = _build_lifecycle_handler(
+            model,
+            spec,
+            include_ingress=False,
+            include_egress=False,
+            include_post_commit=False,
+            name="dispatch",
+        )
         setattr(alias_ns, "raw", raw)
         setattr(alias_ns, "handler", raw)
-        setattr(alias_ns, "core", getattr(spec, "core", None) or raw)
+        setattr(alias_ns, "invoke", invoke)
+        setattr(alias_ns, "dispatch", dispatch)
+        setattr(alias_ns, "core", core)
         setattr(alias_ns, "core_raw", getattr(spec, "core_raw", None) or raw)
 
     # Compatibility alias used by tests and older mapping helpers.
@@ -514,7 +656,10 @@ def _bind_model_hooks(model: type, specs: Tuple[OpSpec, ...]) -> None:
 
             async def _default_handler_step(ctx: Any, _handler=op_handler) -> Any:
                 if callable(_handler):
-                    result = _handler(ctx)
+                    if getattr(_handler, "__tigrbl_ctx_wrapper__", False):
+                        result = _handler(ctx=ctx)
+                    else:
+                        result = _handler(ctx)
                     if inspect.isawaitable(result):
                         return await result
                     return result
