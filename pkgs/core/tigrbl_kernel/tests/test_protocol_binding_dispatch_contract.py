@@ -149,6 +149,7 @@ def test_multiple_ops_compile_to_jsonrpc_methods_on_same_path() -> None:
     plan = _compile_plan(CompilerFixture(), AppFixture(tables=(WidgetProtocolTable,)))
 
     jsonrpc = plan.proto_indices["http.jsonrpc"]["endpoints"]["/rpc"]
+    jsonrpc_by_path = plan.proto_indices["http.jsonrpc"]["paths"]["/rpc"]
 
     assert plan.opkey_to_meta[OpKey("http.jsonrpc", "/rpc:Widget.create")] == 0
     assert plan.opkey_to_meta[OpKey("http.jsonrpc", "/rpc:Widget.read")] == 1
@@ -156,6 +157,7 @@ def test_multiple_ops_compile_to_jsonrpc_methods_on_same_path() -> None:
     assert jsonrpc["Widget.create"]["method"] == "Widget.create"
     assert jsonrpc["Widget.create"]["meta_index"] == 0
     assert jsonrpc["Widget.read"]["meta_index"] == 1
+    assert jsonrpc_by_path == jsonrpc
 
 
 def test_websocket_jsonrpc_route_derives_subprotocol_from_framing() -> None:
@@ -191,39 +193,50 @@ def test_webtransport_route_preserves_session_lane_catalog() -> None:
 
 
 def test_protocol_plan_compiles_websocket_and_webtransport_derived_fields() -> None:
+    rpc_plan = compile_binding_protocol_plan(
+        "Widget.create",
+        HttpJsonRpcProtocolBindingSpec(
+            path="/rpc",
+            method="Widget.create",
+            framing=JsonRpcFramingSpec(),
+        ),
+    )
     ws_plan = compile_binding_protocol_plan(
         "Widget.create",
-        {
-            "kind": "ws",
-            "path": "/ws/widgets",
-            "framing": JsonRpcFramingSpec(),
-        },
+        WebSocketProtocolBindingSpec(
+            path="/ws/widgets",
+            framing=JsonRpcFramingSpec(),
+        ),
     )
     wt_plan = compile_binding_protocol_plan(
         "Widget.subscribe",
-        {
-            "kind": "webtransport",
-            "path": "/wt/widgets",
-            "control_stream": {
+        WebTransportProtocolBindingSpec(
+            path="/wt/widgets",
+            control_stream={
                 "kind": "bidi_stream",
                 "opens": "first",
                 "framing": JsonRpcFramingSpec(),
             },
-            "streams": (
+            streams=(
                 {
                     "name": "events",
                     "kind": "unidi_server_stream",
                     "framing": JsonRpcFramingSpec(),
                 },
             ),
-            "datagrams": (
+            datagrams=(
                 {
                     "name": "acks",
                     "framing": JsonRpcFramingSpec(),
                 },
             ),
-        },
+        ),
     )
+
+    assert rpc_plan["path"] == "/rpc"
+    assert rpc_plan["method"] == "Widget.create"
+    assert rpc_plan["event_key_inputs"]["path"] == "/rpc"
+    assert rpc_plan["event_key_inputs"]["method"] == "Widget.create"
 
     assert ws_plan["websocket_subprotocol"] == "jsonrpc"
     assert "required_subprotocol" not in ws_plan
@@ -233,4 +246,6 @@ def test_protocol_plan_compiles_websocket_and_webtransport_derived_fields() -> N
     assert catalog["control_stream"]["framing"] == "jsonrpc"
     assert catalog["streams"][0]["framing"] == "jsonrpc"
     assert catalog["datagrams"][0]["framing"] == "jsonrpc"
+    assert "inner_framing" not in wt_plan
+    assert "inner_framing" not in wt_plan["event_key_inputs"]
     assert "inner_framing_spec" not in wt_plan

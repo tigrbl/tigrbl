@@ -21,30 +21,51 @@ def _unsupported(message: str) -> ValueError:
     return ValueError(f"binding protocol unsupported before runtime: {message}")
 
 
-def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dict[str, object]:
-    kind = binding.get("kind") or binding.get("proto")
+def _binding_get(binding: Any, key: str, default: Any = None) -> Any:
+    if isinstance(binding, Mapping):
+        return binding.get(key, default)
+    return getattr(binding, key, default)
+
+
+def _lane_mapping(value: Any, *, lane_kind: str | None = None) -> dict[str, Any]:
+    if isinstance(value, Mapping):
+        return dict(value)
+    row: dict[str, Any] = {}
+    for key in ("name", "kind", "opens", "purpose", "framing"):
+        item = getattr(value, key, None)
+        if item is not None:
+            row[key] = item
+    if lane_kind is not None:
+        row.setdefault("kind", lane_kind)
+    return row
+
+
+def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]:
+    kind = _binding_get(binding, "kind") or _binding_get(binding, "proto")
     if not kind:
         raise ValueError(
             "BindingSpec binding source is required; transport guessing is ambiguous"
         )
 
     kind = str(kind)
-    profile = binding.get("profile")
+    profile = _binding_get(binding, "profile")
     if kind in {"http", "https"} and profile:
         kind = f"{kind}.{profile}"
     elif kind == "websocket":
-        kind = str(binding.get("proto") or "ws")
-    framing = binding.get("framing")
+        kind = str(_binding_get(binding, "proto") or "ws")
+    framing = _binding_get(binding, "framing")
     framing_kind = ""
     framing_spec = ""
     subprotocols: tuple[str, ...] = ()
     inner_framing: str | None = None
     rows: tuple[dict[str, str], ...]
+    rpc_path: str | None = None
+    rpc_method: str | None = None
 
     if kind in {"http.rest", "https.rest"}:
         validate_binding_profile_exchange(
             binding_kind=kind,
-            exchange=str(binding.get("exchange") or "request_response"),
+            exchange=str(_binding_get(binding, "exchange") or "request_response"),
         )
         framing_spec_obj = normalize_framing_spec(framing, default="json")
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
@@ -63,12 +84,17 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "request", "subevent": "response.emit"},
         )
     elif kind in {"http.jsonrpc", "https.jsonrpc"}:
-        rpc_method = binding.get("method") or binding.get("rpc_method")
+        rpc_method = _binding_get(binding, "method") or _binding_get(binding, "rpc_method")
         if not rpc_method:
             raise _unsupported("http.jsonrpc requires method")
+        rpc_method = str(rpc_method)
+        rpc_path = str(
+            _binding_get(binding, "path", _binding_get(binding, "endpoint", "/rpc"))
+            or "/rpc"
+        )
         validate_binding_profile_exchange(
             binding_kind=kind,
-            exchange=str(binding.get("exchange") or "request_response"),
+            exchange=str(_binding_get(binding, "exchange") or "request_response"),
         )
         framing_spec_obj = normalize_framing_spec(framing, default="jsonrpc")
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
@@ -89,7 +115,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     elif kind in {"http.stream", "https.stream"}:
         exchange = validate_binding_profile_exchange(
             binding_kind=kind,
-            exchange=str(binding.get("exchange") or "server_stream"),
+            exchange=str(_binding_get(binding, "exchange") or "server_stream"),
         )
         framing_spec_obj = normalize_framing_spec(framing, default="stream")
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
@@ -117,7 +143,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     elif kind in {"http.sse", "https.sse"}:
         validate_binding_profile_exchange(
             binding_kind=kind,
-            exchange=str(binding.get("exchange") or "server_stream"),
+            exchange=str(_binding_get(binding, "exchange") or "server_stream"),
         )
         framing_spec_obj = normalize_framing_spec(framing, default="sse")
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
@@ -137,18 +163,18 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "stream", "subevent": "stream.close"},
         )
     elif kind in {"ws", "wss", "websocket"}:
-        if binding.get("methods"):
+        if _binding_get(binding, "methods"):
             raise _unsupported("websocket bindings do not accept HTTP methods")
         family = "message"
         framing_spec_obj = normalize_framing_spec(framing, default="text")
         framing = framing_spec_obj.kind
         framing_kind = framing
         framing_spec = framing_spec_obj.__class__.__name__
-        subprotocols = tuple(str(item).lower() for item in binding.get("subprotocols", ()))
+        subprotocols = tuple(str(item).lower() for item in (_binding_get(binding, "subprotocols", ()) or ()))
         websocket_subprotocol = derive_websocket_subprotocol_for_framing(framing_spec_obj)
         validate_binding_profile_exchange(
             binding_kind="wss" if kind == "wss" else "ws",
-            exchange=str(binding.get("exchange") or "bidirectional_stream"),
+            exchange=str(_binding_get(binding, "exchange") or "bidirectional_stream"),
         )
         validate_app_framing_for_binding(
             binding_kind="wss" if kind == "wss" else "ws",
@@ -168,7 +194,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "session", "subevent": "session.close"},
         )
     elif kind == "webtransport":
-        if binding.get("exchange") == "request_response":
+        if _binding_get(binding, "exchange") == "request_response":
             raise _unsupported("webtransport request_response exchange")
         framing_spec_obj = normalize_framing_spec(framing, default="webtransport")
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
@@ -176,11 +202,11 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             raise _unsupported("webtransport outer framing must remain webtransport")
         framing_kind = framing_spec_obj.kind
         framing_spec = framing_spec_obj.__class__.__name__
-        control_stream = binding.get("control_stream")
-        streams = tuple(binding.get("streams", ()) or ())
-        datagrams = tuple(binding.get("datagrams", ()) or ())
+        control_stream = _binding_get(binding, "control_stream")
+        streams = tuple(_binding_get(binding, "streams", ()) or ())
+        datagrams = tuple(_binding_get(binding, "datagrams", ()) or ())
         if control_stream is not None:
-            control = dict(control_stream)
+            control = _lane_mapping(control_stream, lane_kind="bidi_stream")
             if control.get("kind") != "bidi_stream":
                 raise _unsupported("webtransport control_stream must use bidi_stream")
             if control.get("opens") != "first":
@@ -193,7 +219,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             datagram_rows = []
             names: list[str] = []
             for stream in streams:
-                row = dict(stream)
+                row = _lane_mapping(stream)
                 name = str(row.get("name") or "")
                 if not name:
                     raise _unsupported("webtransport streams require name")
@@ -205,7 +231,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
                 )
                 stream_rows.append(row)
             for datagram in datagrams:
-                row = dict(datagram)
+                row = _lane_mapping(datagram)
                 name = str(row.get("name") or "")
                 if not name:
                     raise _unsupported("webtransport datagrams require name")
@@ -239,11 +265,11 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
         else:
             lane_catalog = None
             lane = webtransport_lane_for_profile(
-                binding.get("lane") or binding.get("profile") or "webtransport"
+                _binding_get(binding, "lane") or _binding_get(binding, "profile") or "webtransport"
             )
             validate_webtransport_lane_exchange(
                 lane=lane,
-                exchange=str(binding.get("exchange") or {
+                exchange=str(_binding_get(binding, "exchange") or {
                     "session": "bidirectional_stream",
                     "bidi_stream": "bidirectional_stream",
                     "unidi_client_stream": "client_stream",
@@ -253,7 +279,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             )
             inner_framing = validate_webtransport_inner_framing(
                 lane=lane,
-                inner_framing=binding.get("inner_framing"),
+                inner_framing=_binding_get(binding, "inner_framing"),
             )
             family = webtransport_runtime_family(lane)
             framing = framing_spec_obj.kind
@@ -340,14 +366,18 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     }
     if subprotocols:
         event_key_inputs["subprotocols"] = subprotocols
+    if kind in {"http.jsonrpc", "https.jsonrpc"}:
+        event_key_inputs["path"] = rpc_path
+        event_key_inputs["method"] = rpc_method
     if kind in {"ws", "wss", "websocket"} and websocket_subprotocol is not None:
         event_key_inputs["websocket_subprotocol"] = websocket_subprotocol
     if kind == "webtransport":
         event_key_inputs["lane"] = lane
-        event_key_inputs["inner_framing"] = inner_framing
         if lane_catalog is not None:
             event_key_inputs["lane_catalog"] = lane_catalog
-    resume_policy = compile_resume_policy(kind, binding)
+        else:
+            event_key_inputs["inner_framing"] = inner_framing
+    resume_policy = compile_resume_policy(kind, binding if isinstance(binding, Mapping) else {})
     if resume_policy.enabled:
         event_key_inputs["resume_mode"] = resume_policy.mode
 
@@ -367,12 +397,16 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     }
     if subprotocols:
         plan["subprotocols"] = subprotocols
+    if kind in {"http.jsonrpc", "https.jsonrpc"}:
+        plan["path"] = rpc_path
+        plan["method"] = rpc_method
     if kind in {"ws", "wss", "websocket"} and websocket_subprotocol is not None:
         plan["websocket_subprotocol"] = websocket_subprotocol
     if kind == "webtransport":
-        plan["inner_framing"] = inner_framing
         if lane_catalog is not None:
             plan["lane_catalog"] = lane_catalog
+        else:
+            plan["inner_framing"] = inner_framing
     if resume_policy.enabled:
         plan["resume_policy"] = resume_policy.as_dict()
     return plan

@@ -27,7 +27,7 @@ TRANSPORT_ENVELOPE_KEYS = frozenset(
 class EquivalenceCase:
     op_id: str
     category: str
-    bindings: tuple[Mapping[str, Any], ...]
+    bindings: tuple[Any, ...]
 
 
 def canonical_operation_id(op_id: str) -> str:
@@ -42,7 +42,7 @@ def canonical_operation_id(op_id: str) -> str:
 
 def compile_equivalence_manifest(
     op_id: str,
-    bindings: Iterable[Mapping[str, Any]],
+    bindings: Iterable[Any],
     *,
     schema_identity: str = "schema:v1",
     runtime_plan_identity: str = "runtime-plan:v1",
@@ -80,7 +80,7 @@ def equivalent_transport_results(*results: Mapping[str, Any]) -> bool:
     return all(normalized_transport_result(result) == first for result in results[1:])
 
 
-def equivalent_binding_group(op_id: str, bindings: Iterable[Mapping[str, Any]]) -> bool:
+def equivalent_binding_group(op_id: str, bindings: Iterable[Any]) -> bool:
     manifest = compile_equivalence_manifest(op_id, bindings)
     families = {binding["family"] for binding in manifest["bindings"]}
     return bool(families) and len({manifest["op_id"]}) == 1

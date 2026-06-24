@@ -275,7 +275,7 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                                 )
 
                 elif isinstance(binding, (HttpJsonRpcBindingSpec, HttpJsonRpcProtocolBindingSpec)):
-                    endpoint = str(
+                    rpc_path = str(
                         getattr(
                             binding,
                             "path",
@@ -288,23 +288,24 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                         "method",
                         getattr(binding, "rpc_method", None),
                     )
-                    selector = f"{endpoint}:{rpc_method}"
+                    selector = f"{rpc_path}:{rpc_method}"
                     opkey_to_meta[OpKey(proto=binding.proto, selector=selector)] = (
                         meta_index
                     )
                     proto_bucket = route_data.setdefault(
-                        binding.proto, {"endpoints": {}}
+                        binding.proto, {"paths": {}, "endpoints": {}}
                     )
-                    endpoint_bucket = proto_bucket.setdefault("endpoints", {}).setdefault(
-                        endpoint, {}
-                    )
+                    path_bucket = proto_bucket.setdefault("paths", {}).setdefault(rpc_path, {})
+                    endpoint_bucket = proto_bucket.setdefault("endpoints", {}).setdefault(rpc_path, {})
                     proto_bucket[rpc_method] = meta_index
-                    endpoint_bucket[rpc_method] = {
+                    row = {
                         "meta_index": meta_index,
                         "selector": selector,
                         "method": rpc_method,
-                        "path": endpoint,
+                        "path": rpc_path,
                     }
+                    path_bucket[rpc_method] = row
+                    endpoint_bucket[rpc_method] = row
 
                 elif isinstance(
                     binding,
