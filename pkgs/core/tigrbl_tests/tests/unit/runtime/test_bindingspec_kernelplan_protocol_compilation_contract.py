@@ -4,6 +4,8 @@ import importlib
 
 import pytest
 
+from tigrbl_core._spec.binding_spec import JsonRpcFramingSpec
+
 
 def _require(module_name: str, attr_name: str):
     try:
@@ -69,6 +71,60 @@ def test_protocol_compilation_is_deterministic_for_equivalent_bindings() -> None
     second = compile_binding(op_id="Socket.echo", binding=dict(reversed(tuple(binding.items()))))
 
     assert first == second
+
+
+def test_kernel_protocol_plan_accepts_typed_websocket_framing_spec() -> None:
+    compile_binding = _require("tigrbl_kernel.protocol_bindings", "compile_binding_protocol_plan")
+
+    plan = compile_binding(
+        op_id="Socket.rpc",
+        binding={"kind": "ws", "path": "/socket", "framing": JsonRpcFramingSpec()},
+    )
+
+    assert plan["framing"] == "jsonrpc"
+    assert plan["framing_kind"] == "jsonrpc"
+    assert plan["framing_spec"] == "JsonRpcFramingSpec"
+    assert plan["required_subprotocol"] == "jsonrpc"
+    assert plan["subprotocols"] == ("jsonrpc",)
+    assert plan["event_key_inputs"]["required_subprotocol"] == "jsonrpc"
+    assert plan["event_key_inputs"]["subprotocols"] == ("jsonrpc",)
+
+
+def test_kernel_protocol_plan_rejects_conflicting_websocket_subprotocol() -> None:
+    compile_binding = _require("tigrbl_kernel.protocol_bindings", "compile_binding_protocol_plan")
+
+    with pytest.raises(ValueError, match="conflicts with subprotocols"):
+        compile_binding(
+            op_id="Socket.rpc",
+            binding={
+                "kind": "ws",
+                "path": "/socket",
+                "framing": JsonRpcFramingSpec(),
+                "subprotocols": ("graphql-ws",),
+            },
+        )
+
+
+def test_kernel_protocol_plan_normalizes_webtransport_inner_framing_spec() -> None:
+    compile_binding = _require("tigrbl_kernel.protocol_bindings", "compile_binding_protocol_plan")
+
+    plan = compile_binding(
+        op_id="Transport.create",
+        binding={
+            "kind": "webtransport",
+            "path": "/wt",
+            "profile": "bidi_stream",
+            "inner_framing": JsonRpcFramingSpec(),
+        },
+    )
+
+    assert plan["framing"] == "webtransport"
+    assert plan["framing_spec"] == "WebTransportFramingSpec"
+    assert plan["inner_framing"] == "jsonrpc"
+    assert plan["inner_framing_kind"] == "jsonrpc"
+    assert plan["inner_framing_spec"] == "JsonRpcFramingSpec"
+    assert plan["event_key_inputs"]["inner_framing"] == "jsonrpc"
+    assert plan["event_key_inputs"]["inner_framing_spec"] == "JsonRpcFramingSpec"
 
 
 def test_protocol_compilation_emits_lifecycle_matrix_rows_for_each_subevent() -> None:

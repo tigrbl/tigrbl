@@ -5,7 +5,11 @@ from types import SimpleNamespace
 from typing import Any, Mapping
 
 from tigrbl_atoms import StepFn
-from tigrbl_core._spec.binding_spec import HttpRestBindingSpec
+from tigrbl_core._spec.binding_spec import (
+    HttpRestBindingSpec,
+    derive_session_metadata_for_framing,
+    framing_spec_name,
+)
 from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
 from tigrbl_core._spec.op_spec import OpSpec
 from tigrbl_core._spec.well_known_spec import well_known_op_alias
@@ -26,6 +30,33 @@ from .utils import (
 
 
 DEFAULT_PHASE_ORDER = tuple(getattr(_ev, "PHASES", ())) or _DEFAULT_PHASE_ORDER
+
+
+def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
+    framing = str(getattr(binding, "framing", "") or "")
+    metadata: dict[str, Any] = {
+        "framing": framing,
+        "framing_kind": framing,
+        "framing_spec": framing_spec_name(framing),
+    }
+    proto = str(getattr(binding, "proto", "") or "")
+    if proto in {"ws", "wss"}:
+        metadata.update(
+            derive_session_metadata_for_framing(
+                binding_kind=proto,
+                framing=framing,
+                subprotocols=tuple(getattr(binding, "subprotocols", ()) or ()),
+            )
+        )
+    if proto == "webtransport":
+        lane = getattr(binding, "lane", None) or getattr(binding, "profile", None)
+        inner_framing = getattr(binding, "inner_framing", None)
+        metadata["lane"] = lane
+        metadata["inner_framing"] = inner_framing
+        if inner_framing is not None:
+            metadata["inner_framing_kind"] = str(inner_framing)
+            metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
+    return metadata
 
 
 def _pathspec_iter(app: Any) -> tuple[Any, ...]:
@@ -227,6 +258,7 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                         binding.proto, {"exact": {}, "templated": []}
                     )
                     selector = binding.path
+                    route_metadata = _route_metadata_for_binding(binding)
                     opkey_to_meta[OpKey(proto=binding.proto, selector=selector)] = (
                         meta_index
                     )
@@ -240,13 +272,17 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                                 "names": names,
                                 "meta_index": meta_index,
                                 "selector": selector,
-                                "subprotocols": tuple(
-                                    getattr(binding, "subprotocols", ()) or ()
-                                ),
+                                **route_metadata,
                             }
                         )
                     else:
                         bucket["exact"][selector] = meta_index
+                        bucket.setdefault("exact_metadata", {})[selector] = {
+                            "path": binding.path,
+                            "meta_index": meta_index,
+                            "selector": selector,
+                            **route_metadata,
+                        }
 
     semantic = KernelPlan(
         proto_indices=route_data,

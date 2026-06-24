@@ -1,0 +1,7 @@
+Focused pytest evidence for kernel derived framing metadata and route index support.
+
+Command:
+uv run pytest pkgs/core/tigrbl_tests/tests/unit/runtime/test_bindingspec_kernelplan_protocol_compilation_contract.py pkgs/core/tigrbl_kernel/tests/test_compile_plan.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_runtime_frame_codec_contract.py pkgs/core/tigrbl_tests/tests/unit/runtime/test_binding_token_lowering_contract.py -q
+
+Result:
+68 passed in 0.42s

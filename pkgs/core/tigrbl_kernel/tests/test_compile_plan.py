@@ -10,6 +10,8 @@ pytest.importorskip("tigrbl")
 from tigrbl_core._spec.binding_spec import (
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
+    JsonRpcFramingSpec,
+    WebTransportBindingSpec,
     WsBindingSpec,
 )
 from tigrbl_core._spec.app_spec import AppSpec
@@ -84,6 +86,44 @@ class WidgetTable:
     )
 
 
+class RealtimeRouteMetadataTable:
+    ops = (
+        OpSpec(
+            alias="ws_rpc",
+            target="read",
+            bindings=(
+                WsBindingSpec(
+                    proto="ws",
+                    path="/ws/rpc",
+                    framing=JsonRpcFramingSpec(),
+                ),
+            ),
+        ),
+        OpSpec(
+            alias="ws_rpc_item",
+            target="read",
+            bindings=(
+                WsBindingSpec(
+                    proto="ws",
+                    path="/ws/rpc/{item_id}",
+                    framing=JsonRpcFramingSpec(),
+                ),
+            ),
+        ),
+        OpSpec(
+            alias="wt_create",
+            target="create",
+            bindings=(
+                WebTransportBindingSpec(
+                    path="/wt/create",
+                    profile="bidi_stream",
+                    inner_framing=JsonRpcFramingSpec(),
+                ),
+            ),
+        ),
+    )
+
+
 def test_compile_plan_builds_indices_for_rest_ws_and_jsonrpc_bindings() -> None:
     compiler = CompilerFixture()
     app = AppFixture(tables=(WidgetTable,))
@@ -111,6 +151,45 @@ def test_compile_plan_builds_indices_for_rest_ws_and_jsonrpc_bindings() -> None:
     jsonrpc_index = plan.proto_indices["http.jsonrpc"]["endpoints"]["default"]
     assert jsonrpc_index["widgets.lookup"]["meta_index"] == 2
     assert jsonrpc_index["widgets.lookup"]["selector"] == "default:widgets.lookup"
+
+
+def test_compile_plan_preserves_derived_websocket_route_metadata() -> None:
+    compiler = CompilerFixture()
+    app = AppFixture(tables=(RealtimeRouteMetadataTable,))
+
+    plan = _compile_plan(compiler, app)
+
+    ws_index = plan.proto_indices["ws"]
+    exact_metadata = ws_index["exact_metadata"]["/ws/rpc"]
+    templated_metadata = ws_index["templated"][0]
+
+    assert ws_index["exact"]["/ws/rpc"] == 0
+    assert exact_metadata["framing"] == "jsonrpc"
+    assert exact_metadata["framing_spec"] == "JsonRpcFramingSpec"
+    assert exact_metadata["required_subprotocol"] == "jsonrpc"
+    assert exact_metadata["subprotocols"] == ("jsonrpc",)
+    assert templated_metadata["path"] == "/ws/rpc/{item_id}"
+    assert templated_metadata["framing"] == "jsonrpc"
+    assert templated_metadata["framing_spec"] == "JsonRpcFramingSpec"
+    assert templated_metadata["required_subprotocol"] == "jsonrpc"
+    assert templated_metadata["subprotocols"] == ("jsonrpc",)
+
+
+def test_compile_plan_preserves_webtransport_lane_framing_metadata() -> None:
+    compiler = CompilerFixture()
+    app = AppFixture(tables=(RealtimeRouteMetadataTable,))
+
+    plan = _compile_plan(compiler, app)
+
+    wt_index = plan.proto_indices["webtransport"]
+    metadata = wt_index["exact_metadata"]["/wt/create"]
+
+    assert wt_index["exact"]["/wt/create"] == 2
+    assert metadata["framing"] == "webtransport"
+    assert metadata["framing_spec"] == "WebTransportFramingSpec"
+    assert metadata["lane"] == "bidi_stream"
+    assert metadata["inner_framing"] == "jsonrpc"
+    assert metadata["inner_framing_spec"] == "JsonRpcFramingSpec"
 
 
 def test_compile_plan_accepts_appspec_and_declared_tigrbl_ops() -> None:
