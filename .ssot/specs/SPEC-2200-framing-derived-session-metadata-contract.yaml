@@ -35,25 +35,23 @@ body: |-
   
   `WebSocketProtocolBindingSpec` with `JsonRpcFramingSpec` derives:
   
-  - `required_subprotocol = "jsonrpc"`
+  - `websocket_subprotocol = "jsonrpc"`
   
-  If an author explicitly declares compatible WebSocket subprotocol metadata, validation succeeds.
+  The new protocol binding spec does not author `subprotocols` or `required_subprotocol`.
   
-  If an author explicitly declares incompatible WebSocket subprotocol metadata, validation fails closed.
-  
-  The derived subprotocol does not parse JSON-RPC payloads. JSON-RPC parsing remains the responsibility of `JsonRpcFramingSpec`.
+  The derived session label does not parse JSON-RPC payloads. JSON-RPC parsing remains the responsibility of `JsonRpcFramingSpec`.
   
   ## Non-WebSocket Protocols
   
   HTTP and WebTransport do not use WebSocket subprotocol negotiation. `JsonRpcFramingSpec` on HTTP or WebTransport must not create a WebSocket subprotocol field.
   
-  WebTransport control-stream reservation may be selected by protocol binding policy, but it is not derived from JSON-RPC framing unless a later ADR explicitly adds that derivation rule.
+  WebTransport control-stream reservation is selected by protocol binding topology, not by JSON-RPC framing. WebTransport exposes a lane catalog from `control_stream`, `streams`, and `datagrams`; it must not project WebSocket subprotocol metadata.
   
   ## Validation
   
-  Tests must prove that WebSocket JSON-RPC derives `jsonrpc` subprotocol metadata, HTTP JSON-RPC does not, and WebTransport JSON-RPC does not.
+  Tests must prove that WebSocket JSON-RPC derives `websocket_subprotocol="jsonrpc"`, HTTP JSON-RPC does not, and WebTransport JSON-RPC does not.
   
-  Tests must prove incompatible explicit WebSocket subprotocol metadata fails closed.
+  Tests must prove authored WebSocket subprotocol metadata is not part of the new `WebSocketProtocolBindingSpec` schema.
 spec_kind: "normative"
 adr_ids:
   - "adr:1131"

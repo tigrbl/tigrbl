@@ -13,9 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created for op-selected WebTransport lane binding under one session."
     at: "2026-06-24T18:09:05Z"
+    note: "Created for op-selected WebTransport lane binding under one session."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated for session-level WebTransport lane catalog and lane-local framing."
+    at: "2026-06-24T20:43:19Z"
 references: []
 body: |-
   ## Intent
@@ -24,32 +28,33 @@ body: |-
   
   ## Contract
   
-  A WebTransport operation binding must identify:
+  A WebTransport operation binding is session-level and must identify:
   
-  - the WebTransport session path or containing PathSpec;
-  - the selected carrier: `session`, `bidi_stream`, `unidi_client_stream`, `unidi_server_stream`, or `datagram`;
-  - a stable lane name or purpose when more than one carrier is declared for the table;
-  - control-stream reservation metadata when the first bidirectional stream is reserved for control;
-  - the lane-local `FramingSpec`.
+  - the WebTransport session `path` or containing PathSpec;
+  - a required `control_stream` using `kind="bidi_stream"` and `opens="first"`;
+  - zero or more named `streams`;
+  - zero or more named `datagrams`;
+  - lane-local `FramingSpec` declarations for the control stream, each stream, and each datagram.
   
   ## Operation Mapping
   
-  CRUD and control-plane operations SHOULD bind to a `control` bidirectional stream when JSON-RPC framing is selected.
+  CRUD and control-plane operations SHOULD bind to the control bidirectional stream when JSON-RPC framing is selected.
   
   Event and server-output operations SHOULD bind to `events` server streams or explicitly declared bidirectional streams.
   
   Upload and client-input operations SHOULD bind to `upload` client streams.
   
-  Low-latency unordered or lossy operations SHOULD bind to datagram lanes and must use datagram-compatible framing.
+  Low-latency unordered or lossy operations SHOULD bind to named datagram lanes and must use datagram-compatible framing.
   
   ## Examples
   
   One table may declare:
   
-  - `create` on `control` / `bidi_stream` / `JsonRpcFramingSpec`;
+  - `create` on `control_stream` / `bidi_stream` / `JsonRpcFramingSpec`;
   - `tail` on `events` / `unidi_server_stream` / `NdjsonFramingSpec`;
   - `append_chunk` on `upload` / `unidi_client_stream` / `BytesFramingSpec`;
-  - `send_presence` on `presence` / `datagram` / `JsonFramingSpec`.
+  - `send_presence` on `presence` / `datagram` / `JsonFramingSpec`;
+  - `ack` on `acks` / `datagram` / `JsonRpcFramingSpec`.
   
   ## Rules
   
@@ -57,15 +62,15 @@ body: |-
   
   A lane-local framing spec must not bleed into another lane in the same WebTransport session.
   
-  `JsonRpcFramingSpec` and `NdjsonFramingSpec` are invalid on datagram lanes by default.
+  `JsonRpcFramingSpec` and `JsonFramingSpec` are valid on datagram lanes when the runtime codec and lane policy support them. `NdjsonFramingSpec` is invalid on datagram lanes by default.
   
   A table that declares multiple operations on the same named lane must use compatible carrier and framing metadata for those operations or fail closed.
   
   ## Validation
   
-  Tests must prove at least four operations on one table can lower to the `control`, `events`, `upload`, and `presence` lane examples with independent framing metadata.
+  Tests must prove multiple operations on one table can lower to `control_stream`, `events`, `upload`, `presence`, and `acks` lane examples with independent framing metadata.
   
-  Negative tests must reject datagram JSON-RPC, datagram NDJSON, and conflicting carrier/framing declarations for one named lane.
+  Negative tests must reject datagram NDJSON and conflicting carrier/framing declarations for one named lane.
 spec_kind: "normative"
 adr_ids:
   - "adr:1096"

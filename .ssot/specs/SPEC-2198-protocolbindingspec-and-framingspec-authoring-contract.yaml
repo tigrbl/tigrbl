@@ -13,31 +13,36 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "draft"
-    note: "Created for protocol binding and framing spec authoring separation."
     at: "2026-06-24T18:08:31Z"
+    note: "Created for protocol binding and framing spec authoring separation."
+    status: "draft"
+  -
+    status: "draft"
+    note: "Updated for typed protocol binding schema and path-based JSON-RPC authoring."
+    at: "2026-06-24T20:43:12Z"
 references: []
 body: |-
   ## Intent
-  
+
   Define the public table-spec authoring shape for protocol bindings and typed framing specs.
-  
+
   ## Contract
-  
-  `OpSpec.bindings` contains protocol binding specs.
-  
+
+  `OpSpec.bindings` contains protocol binding specs. Protocol binding specs are
+  the authoring surface for carrier and topology. Framing specs are nested child
+  declarations that describe payload or envelope interpretation.
+
   Protocol binding specs own carrier fields:
-  
-  - protocol identity, such as HTTP, WebSocket, WSS, or WebTransport;
-  - address or path reference where the containing spec does not already own it;
+
+  - protocol identity, such as HTTP REST, HTTP JSON-RPC, WebSocket, or WebTransport;
+  - `path` where the containing spec does not already own it;
   - HTTP methods where applicable;
-  - WebSocket handshake metadata where applicable;
   - WebTransport session, stream, datagram, lane, and control-stream topology where applicable.
-  
+
   Protocol binding specs may carry a `framing` field, but that field is a typed `FramingSpec` child. It is not a protocol selector.
-  
+
   Framing specs own payload or envelope interpretation:
-  
+
   - `JsonFramingSpec`
   - `JsonRpcFramingSpec`
   - `TextFramingSpec`
@@ -45,64 +50,73 @@ body: |-
   - `BinaryFramingSpec`
   - `NdjsonFramingSpec`
   - `SseFramingSpec`
-  
+
   ## Examples
-  
+
   HTTP REST create:
-  
+
   ```python
-  HttpProtocolBindingSpec(
+  HttpRestProtocolBindingSpec(
       path="/widgets",
       methods=("POST",),
       framing=JsonFramingSpec(),
   )
   ```
-  
+
   HTTP JSON-RPC create:
-  
+
   ```python
-  HttpProtocolBindingSpec(
+  HttpJsonRpcProtocolBindingSpec(
       path="/rpc",
-      methods=("POST",),
-      framing=JsonRpcFramingSpec(method="Widget.create"),
+      method="Widget.create",
+      framing=JsonRpcFramingSpec(),
   )
   ```
-  
+
   WebSocket JSON-RPC create:
-  
+
   ```python
   WebSocketProtocolBindingSpec(
       path="/ws/widgets",
-      framing=JsonRpcFramingSpec(method="Widget.create"),
+      framing=JsonRpcFramingSpec(),
   )
   ```
-  
+
   WebTransport control-stream JSON-RPC create:
-  
+
   ```python
   WebTransportProtocolBindingSpec(
       path="/wt/widgets",
-      stream="control",
-      stream_kind="bidi_stream",
-      opens="first",
-      framing=JsonRpcFramingSpec(method="Widget.create"),
+      control_stream={
+          "kind": "bidi_stream",
+          "opens": "first",
+          "framing": JsonRpcFramingSpec(),
+      },
+      streams=(
+          {"name": "events", "kind": "unidi_server_stream", "framing": NdjsonFramingSpec()},
+      ),
+      datagrams=(
+          {"name": "acks", "framing": BytesFramingSpec()},
+      ),
   )
   ```
-  
+
   ## Rules
-  
-  JSON-RPC is modeled by `JsonRpcFramingSpec`, not by a distinct canonical protocol binding.
-  
-  WebSocket subprotocol metadata may be derived from the selected framing spec when the framing policy requires a subprotocol.
-  
-  WebTransport app-level framing is lane-local. A table may bind different operations to different WebTransport lanes with different framing specs.
-  
+
+  HTTP JSON-RPC uses `HttpJsonRpcProtocolBindingSpec.path` plus `method`; it does not use an `endpoint` field.
+
+  JSON-RPC is modeled by `JsonRpcFramingSpec`, not by a canonical protocol identity.
+
+  `WebSocketProtocolBindingSpec` does not author WebSocket subprotocols. WebSocket session labels are derived from framing policy.
+
+  WebTransport app-level framing is lane-local. A table may bind different operations to different WebTransport streams and datagrams with different framing specs under one session-level protocol binding.
+
   Legacy binding specs and legacy string framing values remain compatibility inputs only when they normalize to this model before compiler, runtime, docs, support-matrix, and conformance use.
-  
+
   ## Validation
-  
+
   Static tests must prove HTTP REST, HTTP JSON-RPC, WebSocket JSON-RPC, and WebTransport bindings normalize to protocol binding plus typed framing specs.
-  
+
   Negative tests must reject declarations that treat JSON-RPC as a canonical protocol identity or that infer one operation's WebTransport framing from another lane.
 spec_kind: "normative"
 adr_ids:
