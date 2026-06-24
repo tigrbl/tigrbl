@@ -32,6 +32,44 @@ Every equivalence must have four parts:
 
 If any of the four parts is missing, the equivalence is incomplete.
 
+## Protocol Fidelity
+
+The Tigrbl table/profile name is binding authority. Vendor/framework examples
+must implement the same transport family and framing semantics that the Tigrbl
+table/profile declares. Do not collapse protocol-specific equivalences into
+ordinary REST CRUD route inventory.
+
+The runtime proof must exercise the actual protocol named by the equivalence:
+
+- REST equivalences may assert HTTP paths, methods, status codes, and JSON
+  response bodies with `httpx`.
+- HTTP JSON-RPC equivalences must send JSON-RPC 2.0 request envelopes over HTTP
+  and assert JSON-RPC 2.0 response envelopes, including `jsonrpc`, `id`,
+  `result` or `error`, and method identity.
+- WebSocket equivalences must perform a real WebSocket handshake and exchange
+  messages over a WebSocket client. OpenAPI route inventory is not evidence for
+  WebSocket behavior.
+- WebSocket JSON-RPC equivalences must additionally assert JSON-RPC framing,
+  method identity, and subprotocol or contract gating when applicable.
+- SSE, stream, and WebTransport equivalences must prove their stream or lane
+  semantics directly, including ordering, completion, framing, and direction
+  where those fields are part of the Tigrbl surface.
+
+Framework limitations must be explicit in the equivalence row:
+
+- FastAPI can express WebSocket analogues directly with `@app.websocket(...)`.
+- Flask core plus Werkzeug WSGI cannot express native WebSocket behavior. A
+  Flask-labelled WebSocket analogue must either use a declared extension/runtime
+  such as Flask-Sock with a compatible server, use a Flask-adjacent ASGI
+  framework such as Quart and label that explicitly, or be marked unsupported /
+  not native. Do not claim native Flask parity through HTTP routes.
+- FastAPI and Flask do not have first-class `http.jsonrpc` table primitives.
+  Their analogues should be explicit HTTP `POST` JSON-RPC dispatch endpoints,
+  not REST CRUD endpoints.
+
+If the vendor implementation cannot run through the protocol-specific shared
+client proof, the equivalence is not certifiable.
+
 ## Current Reference Shape
 
 Use the Widget REST CRUD equivalence as the reference style:
@@ -60,11 +98,16 @@ Do:
 
 - Use module-level app objects.
 - Use the framework's normal first-class exports and idioms.
+- Match the declared Tigrbl protocol/profile before matching superficial route
+  shape.
 - Keep Tigrbl examples pro-Tigrbl and direct: use Tigrbl table/app primitives.
 - Keep FastAPI examples recognizably FastAPI: decorators, Pydantic models,
-  SQLAlchemy where persistence is needed.
+  SQLAlchemy where persistence is needed, and `@app.websocket` where the
+  equivalence is WebSocket.
 - Keep Flask examples recognizably Flask: decorators, request/jsonify, SQLAlchemy
-  where persistence is needed.
+  where persistence is needed. For WebSocket examples, use and declare the
+  extension/runtime required to make Flask participate in a real WebSocket
+  proof.
 - Use SQLite for local persistence demonstrations unless the equivalence is
   explicitly about another engine.
 - Keep shared mechanics in runtime modules: port selection, server startup,
@@ -75,6 +118,9 @@ Do:
 
 Do not:
 
+- Use REST endpoints as substitutes for JSON-RPC, WebSocket, SSE, stream, or
+  WebTransport equivalences.
+- Use OpenAPI path/method assertions as the only proof for non-REST protocols.
 - Add app factories, router factories, helper builders, projection helpers, or
   abstract wrappers to make the examples shorter.
 - Hide framework authoring behind shared abstractions.
@@ -174,10 +220,14 @@ Runtime code owns common behavior:
 
 - real local server startup;
 - ASGI/WSGI server selection;
+- protocol-appropriate server selection, including rejecting WSGI when the
+  equivalence requires WebSocket behavior and no compatible extension/runtime is
+  declared;
 - port allocation;
 - readiness polling;
 - shutdown;
-- shared `httpx` client calls;
+- shared client calls through the correct protocol client, such as `httpx` for
+  HTTP and `websockets` for WebSocket;
 - expected evidence constants;
 - final parity assertions.
 
