@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from dataclasses import replace
 import inspect
 from functools import wraps
@@ -41,6 +42,91 @@ _CALL_MODEL_AND_CTX = 0
 _CALL_CTX_POSITIONAL = 1
 _CALL_CTX_KEYWORD = 2
 _CALL_NO_ARGS = 3
+
+
+def _stream_chunk_source(payload: Any) -> Any:
+    if isinstance(payload, Mapping):
+        chunks = payload.get("chunks")
+        if chunks is not None:
+            return chunks
+        chunk = payload.get("chunk")
+        if chunk is not None:
+            return (chunk,)
+        return (payload,)
+    if isinstance(payload, (bytes, bytearray, memoryview, str)):
+        return (payload,)
+    if isinstance(payload, (list, tuple)):
+        return tuple(payload)
+    if hasattr(payload, "__aiter__"):
+        return payload
+    if hasattr(payload, "__iter__"):
+        return payload
+    return (payload,)
+
+
+async def _framed_stream_chunks(
+    payload: Any,
+    *,
+    binding: HttpStreamBindingSpec,
+    model: type,
+    alias: str,
+):
+    from tigrbl_atoms.protocol_runtime import iter_items
+
+    framing = str(getattr(binding, "framing", "stream") or "stream")
+    source = _stream_chunk_source(payload)
+    index = 0
+    async for item in iter_items(source):
+        if framing in {"bytes", "binary"}:
+            if isinstance(item, bytes):
+                yield item
+            elif isinstance(item, bytearray):
+                yield bytes(item)
+            elif isinstance(item, memoryview):
+                yield item.tobytes()
+            else:
+                yield bytes(item)
+            index += 1
+            continue
+        if framing == "text":
+            yield (item if isinstance(item, str) else str(item)).encode("utf-8")
+            index += 1
+            continue
+        if framing == "jsonrpc":
+            item = {
+                "jsonrpc": "2.0",
+                "method": f"{model.__name__}.{alias}.chunk",
+                "params": {"index": index, "data": item},
+            }
+        yield (
+            json.dumps(item, ensure_ascii=False, separators=(",", ":"), default=str)
+            + "\n"
+        ).encode("utf-8")
+        index += 1
+
+
+def _streaming_response_for_result(
+    result: Any,
+    *,
+    binding: HttpStreamBindingSpec,
+    model: type,
+    alias: str,
+) -> Any:
+    if hasattr(result, "body_iterator"):
+        return result
+    from tigrbl_concrete._concrete._streaming_response import StreamingResponse
+
+    framing = str(getattr(binding, "framing", "stream") or "stream")
+    media_type = {
+        "bytes": "application/octet-stream",
+        "binary": "application/octet-stream",
+        "text": "text/plain; charset=utf-8",
+        "jsonrpc": "application/json",
+    }.get(framing, "application/x-ndjson")
+    return StreamingResponse(
+        _framed_stream_chunks(result, binding=binding, model=model, alias=alias),
+        media_type=media_type,
+    )
 
 
 def _bulk_rows_verb(spec: OpSpec) -> str:
@@ -1046,7 +1132,7 @@ def _materialize_rest_router(
     if "bulk_delete" in aliases:
         suppressed_aliases.add("clear")
 
-    def _make_materialized_endpoint(alias: str, target: str):
+    def _make_materialized_endpoint(alias: str, target: str, binding: Any):
         async def _materialized_endpoint(
             request: Any = None,
             body: Any = None,
@@ -1077,13 +1163,21 @@ def _materialize_rest_router(
                     {"__sys_db_release__": release} if callable(release) else {}
                 ),
             }
-            return await invoke_op(
+            result = await invoke_op(
                 request=request,
                 db=db,
                 model=model,
                 alias=alias,
                 ctx=ctx,
             )
+            if isinstance(binding, HttpStreamBindingSpec):
+                return _streaming_response_for_result(
+                    result,
+                    binding=binding,
+                    model=model,
+                    alias=alias,
+                )
+            return result
 
         _materialized_endpoint.__name__ = f"{model.__name__}_{alias}_route"
         return _materialized_endpoint
@@ -1136,6 +1230,7 @@ def _materialize_rest_router(
             _materialized_endpoint = _make_materialized_endpoint(
                 spec.alias,
                 spec.target,
+                binding,
             )
             alias_ns = getattr(
                 getattr(model, "schemas", SimpleNamespace()),

@@ -225,6 +225,19 @@ async def _send_transport_response(env: Any, ctx: Any) -> None:
         egress["response_sent"] = True
         return
 
+    stream_binding = _find_http_stream_binding(ctx)
+    if stream_binding is not None and body_obj is not None:
+        await _send_http_stream_response(
+            env,
+            ctx,
+            status=status,
+            headers=headers,
+            body_obj=body_obj,
+            binding=stream_binding,
+        )
+        egress["response_sent"] = True
+        return
+
     if isinstance(body_obj, Mapping) and set(body_obj.keys()) == {"body"}:
         nested = body_obj.get("body")
         if isinstance(nested, (bytes, bytearray)):
@@ -291,6 +304,109 @@ def _json_bytes(obj: Any) -> bytes:
         ensure_ascii=False,
         default=_json_default,
     ).encode("utf-8")
+
+
+def _find_http_stream_binding(ctx: Any) -> Any | None:
+    model = getattr(ctx, "model", None)
+    alias = getattr(ctx, "op", None) or getattr(ctx, "method", None)
+    if model is None or not isinstance(alias, str):
+        return None
+
+    request_path = str(getattr(ctx, "path", "") or "")
+    ops = tuple(getattr(getattr(model, "ops", None), "all", ()) or ())
+    fallback = None
+    for spec in ops:
+        if getattr(spec, "alias", None) != alias:
+            continue
+        for binding in tuple(getattr(spec, "bindings", ()) or ()):
+            proto = str(getattr(binding, "proto", "") or "")
+            if proto not in {"http.stream", "https.stream"}:
+                continue
+            if fallback is None:
+                fallback = binding
+            binding_path = str(getattr(binding, "path", "") or "")
+            if request_path and binding_path == request_path:
+                return binding
+    return fallback
+
+
+def _stream_chunk_source(payload: Any) -> Any:
+    if isinstance(payload, Mapping):
+        chunks = payload.get("chunks")
+        if chunks is not None:
+            return chunks
+        chunk = payload.get("chunk")
+        if chunk is not None:
+            return (chunk,)
+        return (payload,)
+    if isinstance(payload, (bytes, bytearray, memoryview, str)):
+        return (payload,)
+    if isinstance(payload, (list, tuple)):
+        return tuple(payload)
+    if hasattr(payload, "__aiter__"):
+        return payload
+    if hasattr(payload, "__iter__"):
+        return payload
+    return (payload,)
+
+
+def _frame_stream_chunk(item: Any, *, framing: str, index: int, ctx: Any) -> bytes:
+    if framing in {"bytes", "binary"}:
+        return _coerce_body_bytes(item)
+    if framing == "text":
+        return (item if isinstance(item, str) else str(item)).encode("utf-8")
+    if framing == "jsonrpc":
+        model = getattr(ctx, "model", None)
+        model_name = getattr(model, "__name__", "Stream")
+        alias = getattr(ctx, "op", None) or getattr(ctx, "method", None) or "chunk"
+        item = {
+            "jsonrpc": "2.0",
+            "method": f"{model_name}.{alias}.chunk",
+            "params": {"index": index, "data": item},
+        }
+    return _json_bytes(item) + b"\n"
+
+
+async def _send_http_stream_response(
+    env: Any,
+    ctx: Any,
+    *,
+    status: int,
+    headers: list[tuple[bytes, bytes]],
+    body_obj: Any,
+    binding: Any,
+) -> None:
+    from ...protocol_runtime import iter_items
+
+    framing = str(getattr(binding, "framing", "stream") or "stream")
+    headers = [(k, v) for k, v in headers if k.lower() != b"content-length"]
+    if not any(k.lower() == b"content-type" for k, _ in headers):
+        media_type = {
+            "bytes": "application/octet-stream",
+            "binary": "application/octet-stream",
+            "text": "text/plain; charset=utf-8",
+            "jsonrpc": "application/json",
+        }.get(framing, "application/x-ndjson")
+        headers.append((b"content-type", media_type.encode("latin-1")))
+    await env.send(
+        {"type": "http.response.start", "status": status, "headers": headers}
+    )
+    index = 0
+    async for item in iter_items(_stream_chunk_source(body_obj)):
+        await env.send(
+            {
+                "type": "http.response.body",
+                "body": _frame_stream_chunk(
+                    item,
+                    framing=framing,
+                    index=index,
+                    ctx=ctx,
+                ),
+                "more_body": True,
+            }
+        )
+        index += 1
+    await env.send({"type": "http.response.body", "body": b"", "more_body": False})
 
 
 async def _send_response_like(env: Any, resp: Any) -> None:
@@ -388,6 +504,19 @@ async def _run(obj: object | None, ctx: Any) -> None:
                 status = 204
         if is_response_like(body_obj):
             await _send_response_like(raw, body_obj)
+            egress["response_sent"] = True
+            return
+
+        stream_binding = _find_http_stream_binding(ctx)
+        if stream_binding is not None and body_obj is not None:
+            await _send_http_stream_response(
+                raw,
+                ctx,
+                status=status,
+                headers=_headers_to_asgi(_to_headers_mapping(headers)),
+                body_obj=body_obj,
+                binding=stream_binding,
+            )
             egress["response_sent"] = True
             return
 

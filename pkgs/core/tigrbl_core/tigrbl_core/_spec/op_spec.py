@@ -210,8 +210,18 @@ def _generate_canonical(table: type) -> List["OpSpec"]:
     if profile is not None:
         try:
             from tigrbl_core._spec.table_profile_spec import coerce_table_profile
+            from tigrbl_core._spec.table_profile_bindings import (
+                lower_table_profile_bindings,
+            )
 
-            return list(coerce_table_profile(profile).bind_table(table).ops)
+            coerced = coerce_table_profile(profile)
+            return list(
+                lower_table_profile_bindings(
+                    table,
+                    coerced,
+                    tuple(coerced.bind_table(table).ops),
+                )
+            )
         except Exception:
             raise
 
