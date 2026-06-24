@@ -8,14 +8,18 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Decision: table-bound handlers expose three canonical parent-bound callables: invoke for full ingress-dispatch-egress lifecycle, dispatch for dispatch-side lifecycle without ingress, post-commit, or egress, and core for the op body/core callable only. Compatibility raw aliases remain secondary and must not be the normative API."
+summary: "Decision: table-bound handlers expose three canonical parent-bound callables: invoke for full ingress-dispatch-egress lifecycle, dispatch for dispatch-side lifecycle without ingress, post-commit, or egress, and core for the op body/core callable only. Concrete model mapping owns the public bound callables and model/alias lifecycle entrypoint resolution; runtime executors only run supplied phase chains and must not expose an operation-invocation module. Compatibility raw aliases remain secondary and must not be the normative API."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted with runtime implementation and focused tests on 2026-06-24."
     at: "2026-06-24T22:17:44Z"
+    note: "Accepted with runtime implementation and focused tests on 2026-06-24."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated to make concrete ownership explicit and remove runtime operation-invocation ownership."
+    at: "2026-06-24T22:28:08Z"
 references: []
 body: |-
-  Decision: table-bound handlers expose three canonical parent-bound callables: invoke for full ingress-dispatch-egress lifecycle, dispatch for dispatch-side lifecycle without ingress, post-commit, or egress, and core for the op body/core callable only. Compatibility raw aliases remain secondary and must not be the normative API.
+  Decision: table-bound handlers expose three canonical parent-bound callables: invoke for full ingress-dispatch-egress lifecycle, dispatch for dispatch-side lifecycle without ingress, post-commit, or egress, and core for the op body/core callable only. Concrete model mapping owns the public bound callables and model/alias lifecycle entrypoint resolution; runtime executors only run supplied phase chains and must not expose an operation-invocation module. Compatibility raw aliases remain secondary and must not be the normative API.

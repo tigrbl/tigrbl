@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .invoke import _invoke
+from .phase_runner import _invoke
 from .types import _Ctx
 from tigrbl_typing.phases import canonicalize_phase_input as normalize_phase
 

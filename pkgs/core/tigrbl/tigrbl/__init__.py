@@ -266,7 +266,7 @@ from tigrbl_core._spec import (  # noqa: E402
     validate_app_framing_for_binding,
     validate_binding_profile_exchange,
 )
-from tigrbl_runtime.executors.invoke import _invoke  # noqa: E402
+from tigrbl_runtime.executors.phase_runner import _invoke  # noqa: E402
 
 
 def bind(*args, **kwargs):

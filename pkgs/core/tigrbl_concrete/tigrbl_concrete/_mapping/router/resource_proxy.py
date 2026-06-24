@@ -9,7 +9,7 @@ from tigrbl_base._base._rpc_map import (
     _validate_input,
 )
 from ..._concrete import engine_resolver as _resolver
-from tigrbl_runtime.executors.invoke import invoke_op
+from tigrbl_concrete._mapping.invoke import invoke_op
 
 logger = logging.getLogger("uvicorn")
 logger.debug("Loaded module v3/mapping/router/resource_proxy")

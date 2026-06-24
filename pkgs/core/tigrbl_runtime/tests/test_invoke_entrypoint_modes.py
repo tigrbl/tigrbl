@@ -1,6 +1,6 @@
 import pytest
 
-from tigrbl_runtime.executors.invoke import _invoke
+from tigrbl_runtime.executors.phase_runner import _invoke
 
 
 @pytest.mark.asyncio

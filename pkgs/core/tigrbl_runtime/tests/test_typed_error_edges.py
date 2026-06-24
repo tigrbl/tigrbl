@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_runtime.executors.invoke import _invoke
+from tigrbl_runtime.executors.phase_runner import _invoke
 from tigrbl_runtime.executors.types import _Ctx
 
 

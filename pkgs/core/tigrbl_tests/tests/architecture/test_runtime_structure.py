@@ -9,10 +9,14 @@ RUNTIME_PKG = _STANDARDS / "tigrbl_runtime" / "tigrbl_runtime"
 
 def test_dependency_invoke_is_runtime_event_anchor():
     system = (RUNTIME_PKG / "runtime" / "system.py").read_text()
-    invoke = (RUNTIME_PKG / "executors" / "invoke.py").read_text()
+    phase_runner = (RUNTIME_PKG / "executors" / "phase_runner.py").read_text()
+    executors_init = (RUNTIME_PKG / "executors" / "__init__.py").read_text()
+    assert not (RUNTIME_PKG / "executors" / "invoke.py").exists()
     assert "DEP_EXTRA" in system
     assert '"PRE_TX_BEGIN"' in system
-    assert '"PRE_TX_BEGIN"' in invoke
+    assert '"PRE_TX_BEGIN"' in phase_runner
+    assert "invoke_op" not in executors_init
+    assert "tigrbl_ops_oltp" not in phase_runner
 
 
 def test_runtime_gateway_owns_runtime_entrypoint_and_send():

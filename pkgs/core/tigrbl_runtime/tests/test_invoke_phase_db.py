@@ -3,7 +3,7 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_atoms.atoms.sys.phase_db import bind_phase_db
-from tigrbl_runtime.executors.invoke import _invoke
+from tigrbl_runtime.executors.phase_runner import _invoke
 
 
 class FakeDb:

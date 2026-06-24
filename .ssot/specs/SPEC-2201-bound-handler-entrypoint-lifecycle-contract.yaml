@@ -8,17 +8,21 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "Contract: model mapping binds handlers.<op>.invoke, handlers.<op>.dispatch, and handlers.<op>.core to the parent class. invoke executes the full op lifecycle, dispatch skips ingress, post-commit, and egress while retaining dispatch-side behavior, and core invokes only the parent-bound op core callable. Existing raw compatibility aliases remain callable but are not the canonical names."
+summary: "Contract: model mapping binds handlers.<op>.invoke, handlers.<op>.dispatch, and handlers.<op>.core to the parent class. invoke executes the full op lifecycle, dispatch skips ingress, post-commit, and egress while retaining dispatch-side behavior, and core invokes only the parent-bound op core callable. The concrete mapping layer owns model/alias resolution for these callables and delegates only explicit phase-chain execution to runtime. Runtime must not provide tigrbl_runtime.executors.invoke or any equivalent direct op invocation module. Existing raw compatibility aliases remain callable but are not the canonical names."
 supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted with runtime implementation and focused tests on 2026-06-24."
     at: "2026-06-24T22:17:48Z"
+    note: "Accepted with runtime implementation and focused tests on 2026-06-24."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Updated to make concrete ownership explicit and reject runtime direct op invocation."
+    at: "2026-06-24T22:28:13Z"
 references: []
 body: |-
-  Contract: model mapping binds handlers.<op>.invoke, handlers.<op>.dispatch, and handlers.<op>.core to the parent class. invoke executes the full op lifecycle, dispatch skips ingress, post-commit, and egress while retaining dispatch-side behavior, and core invokes only the parent-bound op core callable. Existing raw compatibility aliases remain callable but are not the canonical names.
+  Contract: model mapping binds handlers.<op>.invoke, handlers.<op>.dispatch, and handlers.<op>.core to the parent class. invoke executes the full op lifecycle, dispatch skips ingress, post-commit, and egress while retaining dispatch-side behavior, and core invokes only the parent-bound op core callable. The concrete mapping layer owns model/alias resolution for these callables and delegates only explicit phase-chain execution to runtime. Runtime must not provide tigrbl_runtime.executors.invoke or any equivalent direct op invocation module. Existing raw compatibility aliases remain callable but are not the canonical names.
 spec_kind: "operational"
 adr_ids:
   - "adr:1197"

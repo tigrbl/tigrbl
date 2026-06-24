@@ -11,9 +11,7 @@ _EXPORTS = {
     "PackedPlanExecutor": "packed",
     "NumbaPackedPlanExecutor": "numba_packed",
     "_Ctx": "types",
-    "_invoke": "invoke",
-    "resolve_phase_chains": "invoke",
-    "invoke_op": "invoke",
+    "_invoke": "phase_runner",
 }
 
 __all__ = list(_EXPORTS)

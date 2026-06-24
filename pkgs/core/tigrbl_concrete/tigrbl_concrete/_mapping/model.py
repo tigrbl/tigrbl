@@ -326,7 +326,7 @@ def _build_lifecycle_handler(
         path_params: Mapping[str, Any] | None = None,
         query_params: Mapping[str, Any] | None = None,
     ) -> Any:
-        from tigrbl_runtime.executors.invoke import invoke_op
+        from .invoke import invoke_op
 
         seed = _prepare_handler_ctx(
             model,
@@ -1054,7 +1054,7 @@ def _materialize_rest_router(
             **path_params: Any,
         ) -> Any:
             from tigrbl_concrete._concrete import engine_resolver as _resolver
-            from tigrbl_runtime.executors.invoke import invoke_op
+            from .invoke import invoke_op
 
             db = None
             release = None

@@ -6,7 +6,7 @@ from tigrbl_kernel.models import KernelPlan
 
 from .base import ExecutorBase
 from .types import _Ctx
-from .invoke import _invoke
+from .phase_runner import _invoke
 
 
 class PhaseExecutor(ExecutorBase):
