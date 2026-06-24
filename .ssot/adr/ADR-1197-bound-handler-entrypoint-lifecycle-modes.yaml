@@ -1,0 +1,21 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1197"
+number: 1197
+slug: "bound-handler-entrypoint-lifecycle-modes"
+title: "Bound handler entrypoint lifecycle modes"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Decision: table-bound handlers expose three canonical parent-bound callables: invoke for full ingress-dispatch-egress lifecycle, dispatch for dispatch-side lifecycle without ingress, post-commit, or egress, and core for the op body/core callable only. Compatibility raw aliases remain secondary and must not be the normative API."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted with runtime implementation and focused tests on 2026-06-24."
+    at: "2026-06-24T22:17:44Z"
+references: []
+body: |-
+  Decision: table-bound handlers expose three canonical parent-bound callables: invoke for full ingress-dispatch-egress lifecycle, dispatch for dispatch-side lifecycle without ingress, post-commit, or egress, and core for the op body/core callable only. Compatibility raw aliases remain secondary and must not be the normative API.
