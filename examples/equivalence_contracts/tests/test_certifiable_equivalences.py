@@ -13,6 +13,12 @@ from tigrbl_equivalence_contracts.equivalences.json_rpc_oltp_table.runtime impor
 from tigrbl_equivalence_contracts.equivalences.rest_json_rpc_table.runtime import (
     EXPECTED_EVIDENCE as EXPECTED_REST_JSONRPC_EVIDENCE,
 )
+from tigrbl_equivalence_contracts.equivalences.rest_json_rpc_olap_table.runtime import (
+    EXPECTED_EVIDENCE as EXPECTED_REST_JSONRPC_OLAP_EVIDENCE,
+)
+from tigrbl_equivalence_contracts.equivalences.rest_json_rpc_oltp_table.runtime import (
+    EXPECTED_EVIDENCE as EXPECTED_REST_JSONRPC_OLTP_EVIDENCE,
+)
 from tigrbl_equivalence_contracts.equivalences.rest_table.runtime import EXPECTED_WIDGET_CRUD_EVIDENCE
 
 TABLE_CLASS_IDS = tuple(row["id"] for row in matrix_rows() if row["category"] == "table-class")
@@ -99,6 +105,16 @@ def test_json_rpc_oltp_table_equivalence_uses_oltp_jsonrpc_envelopes() -> None:
         assert observed[2]["envelope"]["result"] == {"exists": True}
 
 
+def test_rest_json_rpc_oltp_table_equivalence_uses_rest_and_oltp_jsonrpc() -> None:
+    result = equivalence_by_id("table-class.rest-json-rpc-oltp-table").certify()
+
+    assert result.status == "analogous"
+    for observed in result.evidence["observed"].values():
+        assert observed == EXPECTED_REST_JSONRPC_OLTP_EVIDENCE
+        assert set(observed) == {"rest_routes", "jsonrpc"}
+        assert observed["jsonrpc"][1]["envelope"]["result"] == {"count": 1}
+
+
 def test_json_rpc_olap_table_equivalence_uses_read_only_olap_jsonrpc_envelopes() -> None:
     result = equivalence_by_id("table-class.json-rpc-olap-table").certify()
 
@@ -110,6 +126,20 @@ def test_json_rpc_olap_table_equivalence_uses_read_only_olap_jsonrpc_envelopes()
             "op": "sum",
             "value": 0,
             "count": 0,
+        }
+
+
+def test_rest_json_rpc_olap_table_equivalence_uses_rest_and_olap_jsonrpc() -> None:
+    result = equivalence_by_id("table-class.rest-json-rpc-olap-table").certify()
+
+    assert result.status == "analogous"
+    for observed in result.evidence["observed"].values():
+        assert observed == EXPECTED_REST_JSONRPC_OLAP_EVIDENCE
+        assert set(observed) == {"rest_routes", "jsonrpc"}
+        assert observed["jsonrpc"][4]["envelope"]["result"] == {
+            "field": "name",
+            "agg": "count",
+            "groups": [],
         }
 
 

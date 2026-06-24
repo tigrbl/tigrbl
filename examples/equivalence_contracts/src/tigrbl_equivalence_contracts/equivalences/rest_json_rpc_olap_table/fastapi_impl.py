@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
+from typing import Any
+
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
-from sqlalchemy import String, create_engine
+from sqlalchemy import String, create_engine, func, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
 
@@ -46,6 +48,23 @@ def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.post("/rpc")
+async def jsonrpc(request: Request) -> dict[str, Any]:
+    envelope = await request.json()
+    method = envelope.get("method")
+    params = envelope.get("params") or {}
+    request_id = envelope.get("id")
+    try:
+        result = _dispatch_jsonrpc(method, params)
+        return {"jsonrpc": "2.0", "result": result, "id": request_id}
+    except KeyError as exc:
+        return {
+            "jsonrpc": "2.0",
+            "error": {"code": -32601, "message": f"unknown method: {exc.args[0]}"},
+            "id": request_id,
+        }
+
+
 @app.get("/widgetrestjsonrpcolaptable", response_model=list[WidgetOut])
 def list_widgets() -> list[WidgetOut]:
     with Session(engine) as session:
@@ -69,3 +88,33 @@ def read_widget(item_id: str) -> WidgetOut:
         if row is None:
             raise HTTPException(status_code=404)
         return WidgetOut(id=row.id, name=row.name)
+
+
+def _dispatch_jsonrpc(method: str, params: dict[str, Any]) -> Any:
+    if method == "WidgetRestJsonRpcOlapTable.count":
+        return _rpc_count_widgets()
+    if method == "WidgetRestJsonRpcOlapTable.exists":
+        return _rpc_exists_widget(params["id"])
+    if method == "WidgetRestJsonRpcOlapTable.list":
+        return _rpc_list_widgets()
+    if method == "WidgetRestJsonRpcOlapTable.aggregate":
+        return {"field": params["field"], "op": "sum", "value": 0, "count": 0}
+    if method == "WidgetRestJsonRpcOlapTable.group_by":
+        return {"field": params["field"], "agg": "count", "groups": []}
+    raise KeyError(method)
+
+
+def _rpc_count_widgets() -> dict[str, int]:
+    with Session(engine) as session:
+        return {"count": int(session.scalar(select(func.count()).select_from(WidgetRow)))}
+
+
+def _rpc_exists_widget(item_id: str) -> dict[str, bool]:
+    with Session(engine) as session:
+        return {"exists": session.get(WidgetRow, item_id) is not None}
+
+
+def _rpc_list_widgets() -> list[dict[str, str]]:
+    with Session(engine) as session:
+        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
+        return [{"id": row.id, "name": row.name} for row in rows]
