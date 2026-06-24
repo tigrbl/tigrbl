@@ -16,6 +16,10 @@ status_notes:
     status: "draft"
     note: "Updated by adr:1182: canonical transport mapping now distinguishes exchange from carrier_kind and stream_initiator legality metadata."
     at: "2026-06-17T10:10:38Z"
+  -
+    status: "draft"
+    note: "Clarified HTTP stream response framing variation, including JSON-RPC chunk envelopes, without changing the server_stream exchange."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -26,7 +30,8 @@ body: |-
   
   - `HttpRestBindingSpec` maps to exchange `request_response`, framing `json`, canonical runtime family `request`, and request-family default runtime subevents derived from the governed `tigr-asgi-contract` vocabulary.
   - `HttpJsonRpcBindingSpec` maps to exchange `request_response`, framing `jsonrpc`, canonical runtime family `request`, and request-family default runtime subevents derived from the governed `tigr-asgi-contract` vocabulary.
-  - `HttpStreamBindingSpec` maps to exchange `server_stream`, framing `stream`, canonical runtime family `stream`, and stream-family default runtime subevents derived from the governed `tigr-asgi-contract` vocabulary.
+  - `HttpStreamBindingSpec` maps to exchange `server_stream`, default framing `stream`, canonical runtime family `stream`, and stream-family default runtime subevents derived from the governed `tigr-asgi-contract` vocabulary.
+  - `HttpStreamBindingSpec` may select app-level response framing such as `json`, `jsonrpc`, `ndjson`, `text`, `bytes`, or `binary` when permitted by the framing support matrix; framing variation does not change the `server_stream` exchange or the stream runtime family.
   - `SseBindingSpec` maps to canonical exchange `server_stream`, framing `sse`, and canonical runtime semantics drawn from the governed `stream`, `message`, and `session` families as required by the governed `tigr-asgi-contract` vocabulary.
   - `WsBindingSpec` maps to exchange `bidirectional_stream`, framing `text` or `jsonrpc`, and canonical runtime semantics drawn from the governed `session` and `message` families.
   - `WebTransportBindingSpec` maps to exchange `bidirectional_stream`, framing `webtransport`, and canonical runtime semantics drawn from the governed `session`, `stream`, `datagram`, and `message` families as applicable to the declared binding shape.
@@ -43,6 +48,7 @@ body: |-
   - Transport-derived default subevents are distinct from declared semantic `OpSpec.subevents` and `HookSpec.subevents`.
   - Default runtime subevents must use governed qualified names rather than coarse channel verbs.
   - Framing-only variation does not create a new runtime family.
+  - HTTP stream JSON-RPC framing emits complete JSON-RPC documents as stream records and must not be treated as the `HttpJsonRpcBindingSpec` request/response profile.
   
   ## Traceability
   

@@ -16,6 +16,10 @@ status_notes:
     at: "2026-05-27T18:17:59Z"
     note: "Updated support matrix to distinguish intended framing policy from runtime support."
     status: "draft"
+  -
+    at: "2026-06-24T00:00:00Z"
+    note: "Updated HTTP stream response support to include active-line JSON-RPC chunk-envelope framing proof."
+    status: "draft"
 references: []
 body: |-
   ## Intent
@@ -36,7 +40,8 @@ body: |-
   - HTTP REST intended `text`, `bytes`, and `binary` framing for explicitly declared non-JSON endpoints: `intended_policy`
   - HTTP JSON-RPC with `jsonrpc` framing: `current_target`
   - HTTP streaming response surface with `stream` framing: `current_target`
-  - HTTP stream app-level `bytes`, `binary`, `text`, `json`, and `ndjson` framing policy: `intended_policy`
+  - HTTP stream response app-level `jsonrpc` chunk-envelope framing: `active_line`
+  - HTTP stream app-level `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson` framing policy: `intended_policy`
   - WHATWG SSE and `EventStreamResponse` with `sse` framing: `current_target`
   - WebSocket text surface: `current_target`
   - WebSocket JSON-RPC framing surface: `active_line`
@@ -60,6 +65,7 @@ body: |-
   - Active-line first-class support and frozen current-target certification must be described as distinct support levels.
   - Presence of a framing token in canonical spec vocabulary does not establish mature runtime support by itself.
   - Runtime framing atoms, explicit binding guards, compiled-kernel closure, docs projection behavior, and direct tests are the authoritative proof points for support claims.
+  - HTTP stream JSON-RPC support means one complete JSON-RPC document per emitted response chunk; it does not reclassify the binding as HTTP JSON-RPC request/response.
   
   ## Traceability
   

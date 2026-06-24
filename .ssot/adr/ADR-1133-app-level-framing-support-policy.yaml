@@ -28,6 +28,10 @@ status_notes:
     status: "draft"
     note: "Updated framing policy to govern typed FramingSpec rows instead of protocol-owned framing strings."
     at: "2026-06-24T00:00:00Z"
+  -
+    status: "draft"
+    note: "Added HTTP stream response JSON-RPC chunk-envelope framing policy."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Context
@@ -62,8 +66,8 @@ body: |-
   - `https.jsonrpc`: `jsonrpc` required and exclusive.
   - `http.stream.request`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
   - `https.stream.request`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
-  - `http.stream.response`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
-  - `https.stream.response`: `bytes`, `binary`, `text`, `json`, and `ndjson`.
+  - `http.stream.response`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`.
+  - `https.stream.response`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`.
   - `http.sse`: `sse` required and exclusive.
   - `https.sse`: `sse` required and exclusive.
   - `ws.message`: `text`, `bytes`, `binary`, `json`, `jsonrpc`, and `ndjson`, with JSON-RPC requiring explicit subprotocol or contract gating.
@@ -79,7 +83,7 @@ body: |-
   - `wt.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
   - `wts.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
   
-  `JsonRpcFramingSpec` means complete JSON-RPC message semantics. It must not be implied by `JsonFramingSpec`, `NdjsonFramingSpec`, or a generic stream carrier.
+  `JsonRpcFramingSpec` means complete JSON-RPC message semantics. It must not be implied by `JsonFramingSpec`, `NdjsonFramingSpec`, or a generic stream carrier. For HTTP stream response profiles it means one complete JSON-RPC document per emitted response chunk, not the HTTP JSON-RPC request/response binding profile.
   
   `NdjsonFramingSpec` means newline-delimited JSON records and must not imply JSON-RPC semantics.
   

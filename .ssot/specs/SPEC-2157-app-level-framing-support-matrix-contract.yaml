@@ -32,6 +32,10 @@ status_notes:
     status: "draft"
     note: "Updated support matrix to express app framing as typed FramingSpec values."
     at: "2026-06-24T00:00:00Z"
+  -
+    status: "draft"
+    note: "Added JsonRpcFramingSpec to HTTP/HTTPS stream response policy as chunk-envelope framing."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -52,8 +56,8 @@ body: |-
   | `https` + JSON-RPC framing | `HTTPBindingSpec` | `request` | `unary` | `JsonRpcFramingSpec` required and exclusive |
   | `http.stream.request` | `HTTPBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
   | `https.stream.request` | `HTTPBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
-  | `http.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
-  | `https.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `ndjson` |
+  | `http.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `BytesFramingSpec`, `BinaryFramingSpec`, `TextFramingSpec`, `JsonFramingSpec`, `JsonRpcFramingSpec`, `NdjsonFramingSpec`; JSON-RPC is one complete envelope per response chunk |
+  | `https.stream.response` | `HTTPBindingSpec` | `stream` | `server_stream` | `BytesFramingSpec`, `BinaryFramingSpec`, `TextFramingSpec`, `JsonFramingSpec`, `JsonRpcFramingSpec`, `NdjsonFramingSpec`; JSON-RPC is one complete envelope per response chunk |
   | `http.sse` | `HTTPBindingSpec` | `stream` | `server_stream` | `sse` required and exclusive |
   | `https.sse` | `HTTPBindingSpec` | `stream` | `server_stream` | `sse` required and exclusive |
   | `ws.message` | `WebSocketBindingSpec` | `message` | `duplex` | `TextFramingSpec`, `BytesFramingSpec`, `BinaryFramingSpec`, `JsonFramingSpec`, `JsonRpcFramingSpec`, `NdjsonFramingSpec`; JSON-RPC derives or requires compatible subprotocol metadata |

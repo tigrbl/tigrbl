@@ -16,6 +16,10 @@ status_notes:
     status: "draft"
     note: "Updated by adr:1182: HTTP stream chains must distinguish inbound client_stream request-body chunks from outbound server_stream response chunks."
     at: "2026-06-17T10:11:01Z"
+  -
+    status: "draft"
+    note: "Added outbound HTTP stream chunk-emission requirements for JSON-line and JSON-RPC-envelope response records."
+    at: "2026-06-24T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -25,6 +29,8 @@ body: |-
   ## Contract
   
   HTTP stream and SSE chains declare inbound and outbound stream lifecycles, SSE session/message/stream subevents, heartbeat and finalization behavior, iterator producers, transport chunk emission, disconnect handling, and POST_EMIT completion fences.
+  
+  Outbound HTTP `server_stream` response chains must emit one ASGI response body event for each normalized producer chunk, followed by a terminal empty response body event. Structured `stream`, `json`, and `ndjson` response records are newline-delimited JSON documents. `jsonrpc` response records are complete JSON-RPC 2.0 documents, one envelope per emitted chunk. Raw `bytes` and `binary` records are emitted as bytes; `text` records are UTF-8 encoded text.
   
   ## Traceability
   
