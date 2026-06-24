@@ -143,6 +143,11 @@ WebTransportLane = Literal[
     "unidi_server_stream",
     "datagram",
 ]
+WebTransportStreamKind = Literal[
+    "bidi_stream",
+    "unidi_client_stream",
+    "unidi_server_stream",
+]
 
 APP_LEVEL_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
     "http.rest": ("json", "multipart/form-data"),
@@ -185,7 +190,7 @@ WEBTRANSPORT_INNER_FRAMING_SUPPORT: dict[str, tuple[str, ...]] = {
     "bidi_stream": ("bytes", "binary", "text", "json", "jsonrpc", "ndjson"),
     "unidi_client_stream": ("bytes", "binary", "text", "json", "jsonrpc", "ndjson"),
     "unidi_server_stream": ("bytes", "binary", "text", "json", "jsonrpc", "ndjson"),
-    "datagram": ("bytes", "binary", "text", "json"),
+    "datagram": ("bytes", "binary", "text", "json", "jsonrpc"),
 }
 
 WEBTRANSPORT_LANE_EXCHANGES: dict[str, str] = {
@@ -300,6 +305,15 @@ def derive_websocket_subprotocols(
     return tuple(metadata.get("subprotocols", fallback))  # type: ignore[arg-type]
 
 
+def derive_websocket_subprotocol_for_framing(
+    framing: Framing | FramingSpec | str | None,
+) -> str | None:
+    selected = normalize_framing_spec(framing).kind
+    if selected in {"jsonrpc", "ndjson"}:
+        return selected
+    return None
+
+
 def validate_binding_profile_exchange(
     *,
     binding_kind: str,
@@ -365,6 +379,173 @@ def validate_webtransport_lane_exchange(*, lane: str, exchange: str | None) -> s
             f"{selected_lane!r}; expected {expected!r}"
         )
     return selected_exchange
+
+
+def _coerce_webtransport_stream_spec(
+    value: "WebTransportStreamSpec | dict[str, Any]",
+    *,
+    default_name: str = "",
+) -> "WebTransportStreamSpec":
+    if isinstance(value, WebTransportStreamSpec):
+        return value
+    return WebTransportStreamSpec(
+        name=str(value.get("name") or default_name),
+        kind=value.get("kind", "bidi_stream"),  # type: ignore[arg-type]
+        opens=value.get("opens"),  # type: ignore[arg-type]
+        purpose=value.get("purpose"),  # type: ignore[arg-type]
+        framing=value.get("framing"),
+    )
+
+
+def _coerce_webtransport_datagram_spec(
+    value: "WebTransportDatagramSpec | dict[str, Any]",
+) -> "WebTransportDatagramSpec":
+    if isinstance(value, WebTransportDatagramSpec):
+        return value
+    return WebTransportDatagramSpec(
+        name=str(value.get("name") or ""),
+        purpose=value.get("purpose"),  # type: ignore[arg-type]
+        framing=value.get("framing"),
+    )
+
+
+@dataclass(frozen=True, slots=True)
+class HttpRestProtocolBindingSpec(SerdeMixin):
+    path: str
+    methods: tuple[str, ...] = ("GET",)
+    framing: Framing | FramingSpec = "json"
+    proto: Literal["http.rest", "https.rest"] = "http.rest"
+    profile: Literal["rest"] = "rest"
+    exchange: Exchange = "request_response"
+
+    def __post_init__(self) -> None:
+        validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        object.__setattr__(self, "methods", tuple(str(method).upper() for method in self.methods))
+        object.__setattr__(self, "framing", framing)
+
+
+@dataclass(frozen=True, slots=True)
+class HttpJsonRpcProtocolBindingSpec(SerdeMixin):
+    method: str
+    path: str = __JSONRPC_DEFAULT_ENDPOINT__
+    framing: Framing | FramingSpec = "jsonrpc"
+    proto: Literal["http.jsonrpc", "https.jsonrpc"] = "http.jsonrpc"
+    profile: Literal["jsonrpc"] = "jsonrpc"
+    exchange: Exchange = "request_response"
+
+    def __post_init__(self) -> None:
+        if not self.method:
+            raise ValueError("HttpJsonRpcProtocolBindingSpec requires method")
+        validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        object.__setattr__(self, "method", str(self.method))
+        object.__setattr__(self, "framing", framing)
+
+
+@dataclass(frozen=True, slots=True)
+class WebSocketProtocolBindingSpec(SerdeMixin):
+    path: str
+    framing: Framing | FramingSpec = "text"
+    proto: Literal["ws", "wss"] = "ws"
+    profile: Literal["websocket"] = "websocket"
+    exchange: Exchange = "bidirectional_stream"
+
+    def __post_init__(self) -> None:
+        exchange = validate_binding_profile_exchange(
+            binding_kind=self.proto,
+            exchange=self.exchange,
+        )
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        object.__setattr__(self, "exchange", exchange)
+        object.__setattr__(self, "framing", framing)
+
+
+@dataclass(frozen=True, slots=True)
+class WebTransportStreamSpec(SerdeMixin):
+    name: str
+    kind: WebTransportStreamKind
+    framing: Framing | FramingSpec
+    opens: Literal["first", "peer"] | None = None
+    purpose: str | None = None
+
+    def __post_init__(self) -> None:
+        kind = str(self.kind)
+        if kind not in {"bidi_stream", "unidi_client_stream", "unidi_server_stream"}:
+            raise ValueError(f"unsupported WebTransport stream kind {kind!r}")
+        framing = validate_webtransport_inner_framing(lane=kind, inner_framing=self.framing)
+        object.__setattr__(self, "name", str(self.name))
+        object.__setattr__(self, "kind", kind)
+        object.__setattr__(self, "framing", framing)
+        if self.purpose is not None:
+            object.__setattr__(self, "purpose", str(self.purpose))
+
+
+@dataclass(frozen=True, slots=True)
+class WebTransportDatagramSpec(SerdeMixin):
+    name: str
+    framing: Framing | FramingSpec
+    purpose: str | None = None
+
+    def __post_init__(self) -> None:
+        if not str(self.name):
+            raise ValueError("WebTransport datagram specs require a name")
+        framing = validate_webtransport_inner_framing(
+            lane="datagram",
+            inner_framing=self.framing,
+        )
+        object.__setattr__(self, "name", str(self.name))
+        object.__setattr__(self, "framing", framing)
+        if self.purpose is not None:
+            object.__setattr__(self, "purpose", str(self.purpose))
+
+
+@dataclass(frozen=True, slots=True)
+class WebTransportProtocolBindingSpec(SerdeMixin):
+    path: str
+    control_stream: WebTransportStreamSpec | dict[str, Any]
+    streams: tuple[WebTransportStreamSpec | dict[str, Any], ...] = ()
+    datagrams: tuple[WebTransportDatagramSpec | dict[str, Any], ...] = ()
+    framing: Framing | FramingSpec = "webtransport"
+    proto: Literal["webtransport"] = "webtransport"
+    profile: Literal["webtransport"] = "webtransport"
+    exchange: Exchange = "bidirectional_stream"
+
+    def __post_init__(self) -> None:
+        framing = validate_app_framing_for_binding(
+            binding_kind=self.proto,
+            framing=self.framing,
+        )
+        validate_webtransport_lane_exchange(lane="session", exchange=self.exchange)
+        control = _coerce_webtransport_stream_spec(
+            self.control_stream,
+            default_name="control",
+        )
+        if control.kind != "bidi_stream":
+            raise ValueError("WebTransport control_stream must use bidi_stream")
+        if control.opens != "first":
+            raise ValueError("WebTransport control_stream must open first")
+        streams = tuple(_coerce_webtransport_stream_spec(item) for item in self.streams)
+        datagrams = tuple(_coerce_webtransport_datagram_spec(item) for item in self.datagrams)
+        names = [item.name for item in streams] + [item.name for item in datagrams]
+        if any(not name for name in names):
+            raise ValueError("WebTransport stream and datagram specs require names")
+        if len(set(names)) != len(names):
+            raise ValueError("WebTransport lane names must be unique")
+        object.__setattr__(self, "control_stream", control)
+        object.__setattr__(self, "streams", streams)
+        object.__setattr__(self, "datagrams", datagrams)
+        object.__setattr__(self, "framing", framing)
+        object.__setattr__(self, "exchange", "bidirectional_stream")
 
 
 @dataclass(frozen=True, slots=True)
@@ -585,6 +766,10 @@ class DatagramBindingSpec(SerdeMixin):
 
 
 ProtocolBindingSpec = Union[
+    HttpRestProtocolBindingSpec,
+    HttpJsonRpcProtocolBindingSpec,
+    WebSocketProtocolBindingSpec,
+    WebTransportProtocolBindingSpec,
     HTTPBindingSpec,
     WebSocketBindingSpec,
     HttpRestBindingSpec,
@@ -600,6 +785,16 @@ TransportBindingSpec = ProtocolBindingSpec
 
 
 def canonical_binding_kind(binding: TransportBindingSpec | MappingLike) -> str:
+    if isinstance(
+        binding,
+        (
+            HttpRestProtocolBindingSpec,
+            HttpJsonRpcProtocolBindingSpec,
+            WebSocketProtocolBindingSpec,
+            WebTransportProtocolBindingSpec,
+        ),
+    ):
+        return str(binding.proto)
     if isinstance(binding, HTTPBindingSpec):
         return binding_kind_for(proto=binding.proto, profile=binding.profile)
     if isinstance(binding, WebSocketBindingSpec):
@@ -611,7 +806,36 @@ def canonical_binding_kind(binding: TransportBindingSpec | MappingLike) -> str:
     return str(getattr(binding, "proto", ""))
 
 
-def normalize_binding_spec(binding: TransportBindingSpec) -> HTTPBindingSpec | WebSocketBindingSpec | WebTransportBindingSpec | MessageBindingSpec | DatagramBindingSpec:
+def normalize_binding_spec(binding: TransportBindingSpec) -> HTTPBindingSpec | WebSocketBindingSpec | WebTransportBindingSpec | WebTransportProtocolBindingSpec | MessageBindingSpec | DatagramBindingSpec:
+    if isinstance(binding, WebTransportProtocolBindingSpec):
+        return binding
+    if isinstance(binding, HttpRestProtocolBindingSpec):
+        proto = "https" if binding.proto == "https.rest" else "http"
+        return HTTPBindingSpec(
+            proto=proto,
+            profile="rest",
+            path=binding.path,
+            methods=binding.methods,
+            exchange=binding.exchange,
+            framing=binding.framing,
+        )
+    if isinstance(binding, HttpJsonRpcProtocolBindingSpec):
+        proto = "https" if binding.proto == "https.jsonrpc" else "http"
+        return HTTPBindingSpec(
+            proto=proto,
+            profile="jsonrpc",
+            rpc_method=binding.method,
+            endpoint=binding.path,
+            exchange=binding.exchange,
+            framing=binding.framing,
+        )
+    if isinstance(binding, WebSocketProtocolBindingSpec):
+        return WebSocketBindingSpec(
+            proto=binding.proto,
+            path=binding.path,
+            exchange=binding.exchange,
+            framing=binding.framing,
+        )
     if isinstance(binding, (HTTPBindingSpec, WebSocketBindingSpec, WebTransportBindingSpec, MessageBindingSpec, DatagramBindingSpec)):
         return binding
     if isinstance(binding, HttpRestBindingSpec):
@@ -742,7 +966,34 @@ def project_binding_runtime_metadata(binding: TransportBindingSpec) -> dict[str,
         "family": family,
         "subevents": _binding_subevents(family),
     }
-    if isinstance(binding, WebTransportBindingSpec):
+    if isinstance(binding, WebTransportProtocolBindingSpec):
+        control = binding.control_stream
+        metadata["lane"] = "session"
+        metadata["control_stream"] = {
+            "name": control.name,
+            "kind": control.kind,
+            "opens": control.opens,
+            "purpose": control.purpose,
+            "framing": control.framing,
+        }
+        metadata["streams"] = tuple(
+            {
+                "name": stream.name,
+                "kind": stream.kind,
+                "purpose": stream.purpose,
+                "framing": stream.framing,
+            }
+            for stream in binding.streams
+        )
+        metadata["datagrams"] = tuple(
+            {
+                "name": datagram.name,
+                "purpose": datagram.purpose,
+                "framing": datagram.framing,
+            }
+            for datagram in binding.datagrams
+        )
+    elif isinstance(binding, WebTransportBindingSpec):
         metadata["lane"] = binding.lane or webtransport_lane_for_profile(binding.profile)
         metadata["inner_framing"] = inner_framing
         if metadata["lane"] == "bidi_stream":
@@ -762,7 +1013,11 @@ def project_binding_runtime_metadata(binding: TransportBindingSpec) -> dict[str,
             metadata["carrier_kind"] = "http_response_body"
             metadata["stream_initiator"] = "server"
             metadata["direction"] = "server_to_client"
-    if proto in {"ws", "wss"}:
+    if isinstance(binding, WebSocketProtocolBindingSpec):
+        derived = derive_websocket_subprotocol_for_framing(binding.framing)
+        if derived is not None:
+            metadata["websocket_subprotocol"] = derived
+    elif proto in {"ws", "wss"}:
         metadata.update(
             derive_session_metadata_for_framing(
                 binding_kind=proto,
@@ -791,6 +1046,14 @@ def compile_binding_event_key(binding: TransportBindingSpec) -> BindingEventKey:
 
 
 def _binding_family(binding: TransportBindingSpec) -> str:
+    if isinstance(binding, HttpRestProtocolBindingSpec):
+        return "request"
+    if isinstance(binding, HttpJsonRpcProtocolBindingSpec):
+        return "request"
+    if isinstance(binding, WebSocketProtocolBindingSpec):
+        return "message"
+    if isinstance(binding, WebTransportProtocolBindingSpec):
+        return "session"
     if isinstance(binding, HTTPBindingSpec):
         if binding.profile == "stream":
             return "stream"
@@ -870,7 +1133,9 @@ __all__ = [
     "FramingSpec",
     "HTTPBindingSpec",
     "HttpJsonRpcBindingSpec",
+    "HttpJsonRpcProtocolBindingSpec",
     "HttpRestBindingSpec",
+    "HttpRestProtocolBindingSpec",
     "HttpStreamBindingSpec",
     "JsonFramingSpec",
     "JsonRpcFramingSpec",
@@ -889,12 +1154,18 @@ __all__ = [
     "WebSocketBindingSpec",
     "WebTransportFramingSpec",
     "WebTransportBindingSpec",
+    "WebSocketProtocolBindingSpec",
+    "WebTransportDatagramSpec",
     "WebTransportLane",
+    "WebTransportProtocolBindingSpec",
+    "WebTransportStreamKind",
+    "WebTransportStreamSpec",
     "WsBindingSpec",
     "binding_kind_for",
     "canonical_binding_kind",
     "compile_binding_event_key",
     "derive_session_metadata_for_framing",
+    "derive_websocket_subprotocol_for_framing",
     "derive_websocket_subprotocols",
     "framing_spec_name",
     "matches_exchange_selector",

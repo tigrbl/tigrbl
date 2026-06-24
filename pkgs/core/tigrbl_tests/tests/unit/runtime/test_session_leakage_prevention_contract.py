@@ -140,7 +140,7 @@ def test_unsupported_framing_rejection_cannot_transfer_session_ownership() -> No
         session.apply_event(
             event="webtransport.datagram.receive",
             channel="receive",
-            payload={"session_id": "s1", "datagram_id": "dg1", "framing": "jsonrpc"},
+            payload={"session_id": "s1", "datagram_id": "dg1", "framing": "ndjson"},
         )
 
     assert session.snapshot()["datagrams_seen"] == ()

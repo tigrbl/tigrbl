@@ -297,7 +297,7 @@ def test_binding_token_lowering_rejects_unsupported_transport_profile_pairs() ->
 
 def test_binding_token_lowering_rejects_unsupported_framing_fallback() -> None:
     with pytest.raises(ValueError, match="inner framing"):
-        WebTransportBindingSpec(profile="datagram", inner_framing="jsonrpc")
+        WebTransportBindingSpec(profile="datagram", inner_framing="ndjson")
 
 
 def test_binding_token_lowering_reports_source_precedence() -> None:

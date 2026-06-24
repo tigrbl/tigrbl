@@ -4,7 +4,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from tigrbl_core._spec.binding_spec import (
-    derive_session_metadata_for_framing,
+    derive_websocket_subprotocol_for_framing,
     framing_spec_name,
     normalize_framing_spec,
     validate_app_framing_for_binding,
@@ -37,11 +37,8 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     framing = binding.get("framing")
     framing_kind = ""
     framing_spec = ""
-    required_subprotocol: str | None = None
     subprotocols: tuple[str, ...] = ()
     inner_framing: str | None = None
-    inner_framing_kind: str | None = None
-    inner_framing_spec: str | None = None
     rows: tuple[dict[str, str], ...]
 
     if kind in {"http.rest", "https.rest"}:
@@ -66,8 +63,9 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             {"family": "request", "subevent": "response.emit"},
         )
     elif kind in {"http.jsonrpc", "https.jsonrpc"}:
-        if not binding.get("rpc_method"):
-            raise _unsupported("http.jsonrpc requires rpc_method")
+        rpc_method = binding.get("method") or binding.get("rpc_method")
+        if not rpc_method:
+            raise _unsupported("http.jsonrpc requires method")
         validate_binding_profile_exchange(
             binding_kind=kind,
             exchange=str(binding.get("exchange") or "request_response"),
@@ -147,13 +145,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
         framing_kind = framing
         framing_spec = framing_spec_obj.__class__.__name__
         subprotocols = tuple(str(item).lower() for item in binding.get("subprotocols", ()))
-        session_metadata = derive_session_metadata_for_framing(
-            binding_kind="wss" if kind == "wss" else "ws",
-            framing=framing_spec_obj,
-            subprotocols=subprotocols,
-        )
-        subprotocols = tuple(session_metadata.get("subprotocols", subprotocols))  # type: ignore[arg-type]
-        required_subprotocol = session_metadata.get("required_subprotocol")  # type: ignore[assignment]
+        websocket_subprotocol = derive_websocket_subprotocol_for_framing(framing_spec_obj)
         validate_binding_profile_exchange(
             binding_kind="wss" if kind == "wss" else "ws",
             exchange=str(binding.get("exchange") or "bidirectional_stream"),
@@ -184,29 +176,51 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
             raise _unsupported("webtransport outer framing must remain webtransport")
         framing_kind = framing_spec_obj.kind
         framing_spec = framing_spec_obj.__class__.__name__
-        lane = webtransport_lane_for_profile(
-            binding.get("lane") or binding.get("profile") or "webtransport"
-        )
-        validate_webtransport_lane_exchange(
-            lane=lane,
-            exchange=str(binding.get("exchange") or {
-                "session": "bidirectional_stream",
-                "bidi_stream": "bidirectional_stream",
-                "unidi_client_stream": "client_stream",
-                "unidi_server_stream": "server_stream",
-                "datagram": "bidirectional_stream",
-            }[lane]),
-        )
-        inner_framing = validate_webtransport_inner_framing(
-            lane=lane,
-            inner_framing=binding.get("inner_framing"),
-        )
-        if inner_framing is not None:
-            inner_framing_kind = inner_framing
-            inner_framing_spec = framing_spec_name(inner_framing)
-        family = webtransport_runtime_family(lane)
-        framing = framing_spec_obj.kind
-        if lane == "session":
+        control_stream = binding.get("control_stream")
+        streams = tuple(binding.get("streams", ()) or ())
+        datagrams = tuple(binding.get("datagrams", ()) or ())
+        if control_stream is not None:
+            control = dict(control_stream)
+            if control.get("kind") != "bidi_stream":
+                raise _unsupported("webtransport control_stream must use bidi_stream")
+            if control.get("opens") != "first":
+                raise _unsupported("webtransport control_stream must open first")
+            control["framing"] = validate_webtransport_inner_framing(
+                lane="bidi_stream",
+                inner_framing=control.get("framing"),
+            )
+            stream_rows = []
+            datagram_rows = []
+            names: list[str] = []
+            for stream in streams:
+                row = dict(stream)
+                name = str(row.get("name") or "")
+                if not name:
+                    raise _unsupported("webtransport streams require name")
+                names.append(name)
+                lane_kind = str(row.get("kind") or "")
+                row["framing"] = validate_webtransport_inner_framing(
+                    lane=lane_kind,
+                    inner_framing=row.get("framing"),
+                )
+                stream_rows.append(row)
+            for datagram in datagrams:
+                row = dict(datagram)
+                name = str(row.get("name") or "")
+                if not name:
+                    raise _unsupported("webtransport datagrams require name")
+                names.append(name)
+                row["framing"] = validate_webtransport_inner_framing(
+                    lane="datagram",
+                    inner_framing=row.get("framing"),
+                )
+                datagram_rows.append(row)
+            if len(set(names)) != len(names):
+                raise _unsupported("webtransport lane names must be unique")
+            family = "session"
+            lane = "session"
+            inner_framing = None
+            framing = framing_spec_obj.kind
             anchors = (
                 "transport.accept",
                 "dispatch.subevent.derive",
@@ -217,68 +231,105 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
                 {"family": "session", "subevent": "session.open"},
                 {"family": "session", "subevent": "session.close"},
             )
-        elif lane == "bidi_stream":
-            anchors = (
-                "transport.accept",
-                "transport.receive",
-                "framing.decode",
-                "dispatch.subevent.derive",
-                "handler.invoke",
-                "framing.encode",
-                "transport.emit",
-                "transport.close",
+            lane_catalog = {
+                "control_stream": control,
+                "streams": tuple(stream_rows),
+                "datagrams": tuple(datagram_rows),
+            }
+        else:
+            lane_catalog = None
+            lane = webtransport_lane_for_profile(
+                binding.get("lane") or binding.get("profile") or "webtransport"
             )
-            rows = (
-                {"family": "stream", "subevent": "stream.open"},
-                {"family": "stream", "subevent": "stream.chunk.received"},
-                {"family": "stream", "subevent": "stream.chunk.emit"},
-                {"family": "stream", "subevent": "stream.close"},
+            validate_webtransport_lane_exchange(
+                lane=lane,
+                exchange=str(binding.get("exchange") or {
+                    "session": "bidirectional_stream",
+                    "bidi_stream": "bidirectional_stream",
+                    "unidi_client_stream": "client_stream",
+                    "unidi_server_stream": "server_stream",
+                    "datagram": "bidirectional_stream",
+                }[lane]),
             )
-        elif lane == "unidi_client_stream":
-            anchors = (
-                "transport.accept",
-                "transport.receive",
-                "framing.decode",
-                "dispatch.subevent.derive",
-                "handler.invoke",
-                "transport.close",
+            inner_framing = validate_webtransport_inner_framing(
+                lane=lane,
+                inner_framing=binding.get("inner_framing"),
             )
-            rows = (
-                {"family": "stream", "subevent": "stream.open"},
-                {"family": "stream", "subevent": "stream.chunk.received"},
-                {"family": "stream", "subevent": "stream.close"},
-            )
-        elif lane == "unidi_server_stream":
-            anchors = (
-                "transport.accept",
-                "handler.invoke",
-                "framing.encode",
-                "transport.emit",
-                "transport.close",
-            )
-            rows = (
-                {"family": "stream", "subevent": "stream.open"},
-                {"family": "stream", "subevent": "stream.chunk.emit"},
-                {"family": "stream", "subevent": "stream.emit_complete"},
-                {"family": "stream", "subevent": "stream.close"},
-            )
-        elif lane == "datagram":
-            anchors = (
-                "transport.accept",
-                "transport.receive",
-                "framing.decode",
-                "dispatch.subevent.derive",
-                "handler.invoke",
-                "framing.encode",
-                "transport.emit",
-            )
-            rows = (
-                {"family": "datagram", "subevent": "datagram.received"},
-                {"family": "datagram", "subevent": "datagram.emit"},
-                {"family": "datagram", "subevent": "datagram.emit_complete"},
-            )
-        else:  # pragma: no cover - guarded by webtransport_lane_for_profile
-            raise _unsupported(f"webtransport lane {lane}")
+            family = webtransport_runtime_family(lane)
+            framing = framing_spec_obj.kind
+            if lane == "session":
+                anchors = (
+                    "transport.accept",
+                    "dispatch.subevent.derive",
+                    "handler.invoke",
+                    "transport.close",
+                )
+                rows = (
+                    {"family": "session", "subevent": "session.open"},
+                    {"family": "session", "subevent": "session.close"},
+                )
+            elif lane == "bidi_stream":
+                anchors = (
+                    "transport.accept",
+                    "transport.receive",
+                    "framing.decode",
+                    "dispatch.subevent.derive",
+                    "handler.invoke",
+                    "framing.encode",
+                    "transport.emit",
+                    "transport.close",
+                )
+                rows = (
+                    {"family": "stream", "subevent": "stream.open"},
+                    {"family": "stream", "subevent": "stream.chunk.received"},
+                    {"family": "stream", "subevent": "stream.chunk.emit"},
+                    {"family": "stream", "subevent": "stream.close"},
+                )
+            elif lane == "unidi_client_stream":
+                anchors = (
+                    "transport.accept",
+                    "transport.receive",
+                    "framing.decode",
+                    "dispatch.subevent.derive",
+                    "handler.invoke",
+                    "transport.close",
+                )
+                rows = (
+                    {"family": "stream", "subevent": "stream.open"},
+                    {"family": "stream", "subevent": "stream.chunk.received"},
+                    {"family": "stream", "subevent": "stream.close"},
+                )
+            elif lane == "unidi_server_stream":
+                anchors = (
+                    "transport.accept",
+                    "handler.invoke",
+                    "framing.encode",
+                    "transport.emit",
+                    "transport.close",
+                )
+                rows = (
+                    {"family": "stream", "subevent": "stream.open"},
+                    {"family": "stream", "subevent": "stream.chunk.emit"},
+                    {"family": "stream", "subevent": "stream.emit_complete"},
+                    {"family": "stream", "subevent": "stream.close"},
+                )
+            elif lane == "datagram":
+                anchors = (
+                    "transport.accept",
+                    "transport.receive",
+                    "framing.decode",
+                    "dispatch.subevent.derive",
+                    "handler.invoke",
+                    "framing.encode",
+                    "transport.emit",
+                )
+                rows = (
+                    {"family": "datagram", "subevent": "datagram.received"},
+                    {"family": "datagram", "subevent": "datagram.emit"},
+                    {"family": "datagram", "subevent": "datagram.emit_complete"},
+                )
+            else:  # pragma: no cover - guarded by webtransport_lane_for_profile
+                raise _unsupported(f"webtransport lane {lane}")
     else:
         raise _unsupported(kind)
 
@@ -286,20 +337,16 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
         "family": family,
         "binding": kind,
         "framing": framing,
-        "framing_kind": framing_kind or str(framing),
-        "framing_spec": framing_spec or framing_spec_name(str(framing)),
     }
     if subprotocols:
         event_key_inputs["subprotocols"] = subprotocols
-    if required_subprotocol is not None:
-        event_key_inputs["required_subprotocol"] = required_subprotocol
+    if kind in {"ws", "wss", "websocket"} and websocket_subprotocol is not None:
+        event_key_inputs["websocket_subprotocol"] = websocket_subprotocol
     if kind == "webtransport":
         event_key_inputs["lane"] = lane
         event_key_inputs["inner_framing"] = inner_framing
-        if inner_framing_kind is not None:
-            event_key_inputs["inner_framing_kind"] = inner_framing_kind
-        if inner_framing_spec is not None:
-            event_key_inputs["inner_framing_spec"] = inner_framing_spec
+        if lane_catalog is not None:
+            event_key_inputs["lane_catalog"] = lane_catalog
     resume_policy = compile_resume_policy(kind, binding)
     if resume_policy.enabled:
         event_key_inputs["resume_mode"] = resume_policy.mode
@@ -320,14 +367,12 @@ def compile_binding_protocol_plan(op_id: str, binding: Mapping[str, Any]) -> dic
     }
     if subprotocols:
         plan["subprotocols"] = subprotocols
-    if required_subprotocol is not None:
-        plan["required_subprotocol"] = required_subprotocol
+    if kind in {"ws", "wss", "websocket"} and websocket_subprotocol is not None:
+        plan["websocket_subprotocol"] = websocket_subprotocol
     if kind == "webtransport":
         plan["inner_framing"] = inner_framing
-        if inner_framing_kind is not None:
-            plan["inner_framing_kind"] = inner_framing_kind
-        if inner_framing_spec is not None:
-            plan["inner_framing_spec"] = inner_framing_spec
+        if lane_catalog is not None:
+            plan["lane_catalog"] = lane_catalog
     if resume_policy.enabled:
         plan["resume_policy"] = resume_policy.as_dict()
     return plan

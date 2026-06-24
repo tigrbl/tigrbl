@@ -6,7 +6,12 @@ from typing import Any, Mapping
 
 from tigrbl_atoms import StepFn
 from tigrbl_core._spec.binding_spec import (
+    HttpJsonRpcProtocolBindingSpec,
     HttpRestBindingSpec,
+    HttpRestProtocolBindingSpec,
+    WebSocketProtocolBindingSpec,
+    WebTransportProtocolBindingSpec,
+    derive_websocket_subprotocol_for_framing,
     derive_session_metadata_for_framing,
     framing_spec_name,
 )
@@ -40,7 +45,11 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
         "framing_spec": framing_spec_name(framing),
     }
     proto = str(getattr(binding, "proto", "") or "")
-    if proto in {"ws", "wss"}:
+    if isinstance(binding, WebSocketProtocolBindingSpec):
+        derived_subprotocol = derive_websocket_subprotocol_for_framing(framing)
+        if derived_subprotocol is not None:
+            metadata["websocket_subprotocol"] = derived_subprotocol
+    elif proto in {"ws", "wss"}:
         metadata.update(
             derive_session_metadata_for_framing(
                 binding_kind=proto,
@@ -48,7 +57,33 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
                 subprotocols=tuple(getattr(binding, "subprotocols", ()) or ()),
             )
         )
-    if proto == "webtransport":
+    if isinstance(binding, WebTransportProtocolBindingSpec):
+        control = binding.control_stream
+        metadata["control_stream"] = {
+            "name": control.name,
+            "kind": control.kind,
+            "opens": control.opens,
+            "purpose": control.purpose,
+            "framing": control.framing,
+        }
+        metadata["streams"] = tuple(
+            {
+                "name": stream.name,
+                "kind": stream.kind,
+                "purpose": stream.purpose,
+                "framing": stream.framing,
+            }
+            for stream in binding.streams
+        )
+        metadata["datagrams"] = tuple(
+            {
+                "name": datagram.name,
+                "purpose": datagram.purpose,
+                "framing": datagram.framing,
+            }
+            for datagram in binding.datagrams
+        )
+    elif proto == "webtransport":
         lane = getattr(binding, "lane", None) or getattr(binding, "profile", None)
         inner_framing = getattr(binding, "inner_framing", None)
         metadata["lane"] = lane
@@ -164,9 +199,13 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
     from tigrbl_core._spec.binding_spec import (
         HttpJsonRpcBindingSpec,
         HttpRestBindingSpec,
+        HttpJsonRpcProtocolBindingSpec,
+        HttpRestProtocolBindingSpec,
         HttpStreamBindingSpec,
         SseBindingSpec,
+        WebSocketProtocolBindingSpec,
         WebTransportBindingSpec,
+        WebTransportProtocolBindingSpec,
         WsBindingSpec,
     )
 
@@ -200,7 +239,12 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
             for binding in getattr(sp, "bindings", ()) or ():
                 if isinstance(
                     binding,
-                    (HttpRestBindingSpec, HttpStreamBindingSpec, SseBindingSpec),
+                    (
+                        HttpRestBindingSpec,
+                        HttpRestProtocolBindingSpec,
+                        HttpStreamBindingSpec,
+                        SseBindingSpec,
+                    ),
                 ):
                     bucket = route_data.setdefault(
                         binding.proto, {"exact": {}, "templated": []}
@@ -230,12 +274,21 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                                     meta_index
                                 )
 
-                elif isinstance(binding, HttpJsonRpcBindingSpec):
+                elif isinstance(binding, (HttpJsonRpcBindingSpec, HttpJsonRpcProtocolBindingSpec)):
                     endpoint = str(
-                        getattr(binding, "endpoint", __JSONRPC_DEFAULT_ENDPOINT__)
+                        getattr(
+                            binding,
+                            "path",
+                            getattr(binding, "endpoint", __JSONRPC_DEFAULT_ENDPOINT__),
+                        )
                         or __JSONRPC_DEFAULT_ENDPOINT__
                     )
-                    selector = f"{endpoint}:{binding.rpc_method}"
+                    rpc_method = getattr(
+                        binding,
+                        "method",
+                        getattr(binding, "rpc_method", None),
+                    )
+                    selector = f"{endpoint}:{rpc_method}"
                     opkey_to_meta[OpKey(proto=binding.proto, selector=selector)] = (
                         meta_index
                     )
@@ -245,15 +298,23 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                     endpoint_bucket = proto_bucket.setdefault("endpoints", {}).setdefault(
                         endpoint, {}
                     )
-                    proto_bucket[binding.rpc_method] = meta_index
-                    endpoint_bucket[binding.rpc_method] = {
+                    proto_bucket[rpc_method] = meta_index
+                    endpoint_bucket[rpc_method] = {
                         "meta_index": meta_index,
                         "selector": selector,
-                        "rpc_method": binding.rpc_method,
-                        "endpoint": endpoint,
+                        "method": rpc_method,
+                        "path": endpoint,
                     }
 
-                elif isinstance(binding, (WsBindingSpec, WebTransportBindingSpec)):
+                elif isinstance(
+                    binding,
+                    (
+                        WsBindingSpec,
+                        WebSocketProtocolBindingSpec,
+                        WebTransportBindingSpec,
+                        WebTransportProtocolBindingSpec,
+                    ),
+                ):
                     bucket = route_data.setdefault(
                         binding.proto, {"exact": {}, "templated": []}
                     )

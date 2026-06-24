@@ -166,12 +166,10 @@ def test_compile_plan_preserves_derived_websocket_route_metadata() -> None:
     assert ws_index["exact"]["/ws/rpc"] == 0
     assert exact_metadata["framing"] == "jsonrpc"
     assert exact_metadata["framing_spec"] == "JsonRpcFramingSpec"
-    assert exact_metadata["required_subprotocol"] == "jsonrpc"
     assert exact_metadata["subprotocols"] == ("jsonrpc",)
     assert templated_metadata["path"] == "/ws/rpc/{item_id}"
     assert templated_metadata["framing"] == "jsonrpc"
     assert templated_metadata["framing_spec"] == "JsonRpcFramingSpec"
-    assert templated_metadata["required_subprotocol"] == "jsonrpc"
     assert templated_metadata["subprotocols"] == ("jsonrpc",)
 
 
@@ -189,7 +187,6 @@ def test_compile_plan_preserves_webtransport_lane_framing_metadata() -> None:
     assert metadata["framing_spec"] == "WebTransportFramingSpec"
     assert metadata["lane"] == "bidi_stream"
     assert metadata["inner_framing"] == "jsonrpc"
-    assert metadata["inner_framing_spec"] == "JsonRpcFramingSpec"
 
 
 def test_compile_plan_accepts_appspec_and_declared_tigrbl_ops() -> None:

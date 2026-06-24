@@ -398,12 +398,21 @@ def test_webtransport_stream_inner_codec_runtime_t2() -> None:
 
 
 def test_webtransport_datagram_inner_codec_runtime_t2() -> None:
-    with pytest.raises(ValueError, match="unsupported WebTransport inner framing"):
-        validate_webtransport_event_payload(
-            event="webtransport.datagram.receive",
-            channel="receive",
-            payload={"datagram_id": "d1", "framing": "jsonrpc"},
-        )
+    assert validate_webtransport_event_payload(
+        event="webtransport.datagram.receive",
+        channel="receive",
+        payload={"datagram_id": "d1", "framing": "jsonrpc"},
+    ) == {"family": "datagram", "lane": "datagram", "exchange": "bidirectional_stream"}
+    encoded = encode_webtransport_inner_frame(
+        lane="datagram",
+        framing="jsonrpc",
+        payload={"jsonrpc": "2.0", "method": "ack"},
+    )
+    assert decode_webtransport_inner_frame(
+        lane="datagram",
+        framing="jsonrpc",
+        payload=encoded,
+    )["method"] == "ack"
     with pytest.raises(ValueError, match="unsupported WebTransport inner framing"):
         encode_webtransport_inner_frame(
             lane="datagram",

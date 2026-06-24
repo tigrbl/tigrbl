@@ -70,8 +70,6 @@ def test_kernelplan_rejects_unsupported_framing_combinations_before_runtime() ->
         {"kind": "http", "profile": "rest", "path": "/items", "framing": "jsonrpc"},
         {"kind": "http", "profile": "jsonrpc", "rpc_method": "Item.read", "framing": "json"},
         {"kind": "http", "profile": "sse", "path": "/events", "framing": "json"},
-        {"kind": "ws", "path": "/socket", "framing": "jsonrpc"},
-        {"kind": "wss", "path": "/socket", "framing": "ndjson"},
         {"kind": "webtransport", "path": "/transport", "framing": "jsonrpc"},
     )
 

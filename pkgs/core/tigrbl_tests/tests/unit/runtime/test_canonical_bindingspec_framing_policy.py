@@ -252,10 +252,16 @@ def test_websocket_jsonrpc_and_ndjson_subprotocol_policy() -> None:
         )
         == "jsonrpc"
     )
-    with pytest.raises(ValueError, match="subprotocols"):
-        WebSocketBindingSpec(proto="ws", path="/socket", framing="jsonrpc")
-    with pytest.raises(ValueError, match="subprotocols"):
-        WsBindingSpec(proto="wss", path="/socket", framing="ndjson")
+    assert WebSocketBindingSpec(
+        proto="ws",
+        path="/socket",
+        framing="jsonrpc",
+    ).subprotocols == ("jsonrpc",)
+    assert WsBindingSpec(
+        proto="wss",
+        path="/socket",
+        framing="ndjson",
+    ).subprotocols == ("ndjson",)
     assert WsBindingSpec(
         proto="wss",
         path="/socket",

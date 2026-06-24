@@ -36,7 +36,7 @@ def test_framing_matrix_keeps_webtransport_outer_and_inner_framing_separate() ->
         "jsonrpc",
         "ndjson",
     }
-    assert "jsonrpc" not in WEBTRANSPORT_INNER_FRAMING_SUPPORT["datagram"]
+    assert "jsonrpc" in WEBTRANSPORT_INNER_FRAMING_SUPPORT["datagram"]
     assert "ndjson" not in WEBTRANSPORT_INNER_FRAMING_SUPPORT["datagram"]
 
 

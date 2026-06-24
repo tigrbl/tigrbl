@@ -55,7 +55,7 @@ def test_webtransport_datagram_rejects_stream_framing() -> None:
 
 
 def test_http_jsonrpc_rejects_rest_body_framing_fallback() -> None:
-    with pytest.raises(ValueError, match="requires rpc_method"):
+    with pytest.raises(ValueError, match="requires method"):
         compile_binding_protocol_plan("Rpc.bad", {"kind": "http.jsonrpc", "path": "/rpc"})
 
 
@@ -69,7 +69,7 @@ def test_sse_rejects_jsonrpc_message_framing_fallback() -> None:
 
 def test_binding_token_lowering_records_unsupported_framing_provenance() -> None:
     with pytest.raises(ValueError, match="inner framing"):
-        WebTransportBindingSpec(profile="datagram", inner_framing="jsonrpc")
+        WebTransportBindingSpec(profile="datagram", inner_framing="ndjson")
 
 
 def test_unsupported_framing_rejection_has_no_persistence_effects() -> None:
@@ -79,7 +79,7 @@ def test_unsupported_framing_rejection_has_no_persistence_effects() -> None:
         session.apply_event(
             event="webtransport.datagram.receive",
             channel="receive",
-            payload={"session_id": "s1", "datagram_id": "dg1", "framing": "jsonrpc"},
+            payload={"session_id": "s1", "datagram_id": "dg1", "framing": "ndjson"},
         )
 
     assert session.snapshot()["datagrams_seen"] == ()

@@ -84,10 +84,10 @@ def test_kernel_protocol_plan_accepts_typed_websocket_framing_spec() -> None:
     assert plan["framing"] == "jsonrpc"
     assert plan["framing_kind"] == "jsonrpc"
     assert plan["framing_spec"] == "JsonRpcFramingSpec"
-    assert plan["required_subprotocol"] == "jsonrpc"
-    assert plan["subprotocols"] == ("jsonrpc",)
-    assert plan["event_key_inputs"]["required_subprotocol"] == "jsonrpc"
-    assert plan["event_key_inputs"]["subprotocols"] == ("jsonrpc",)
+    assert plan["websocket_subprotocol"] == "jsonrpc"
+    assert "required_subprotocol" not in plan
+    assert "subprotocols" not in plan
+    assert plan["event_key_inputs"]["websocket_subprotocol"] == "jsonrpc"
 
 
 def test_kernel_protocol_plan_rejects_conflicting_websocket_subprotocol() -> None:
@@ -121,10 +121,9 @@ def test_kernel_protocol_plan_normalizes_webtransport_inner_framing_spec() -> No
     assert plan["framing"] == "webtransport"
     assert plan["framing_spec"] == "WebTransportFramingSpec"
     assert plan["inner_framing"] == "jsonrpc"
-    assert plan["inner_framing_kind"] == "jsonrpc"
-    assert plan["inner_framing_spec"] == "JsonRpcFramingSpec"
     assert plan["event_key_inputs"]["inner_framing"] == "jsonrpc"
-    assert plan["event_key_inputs"]["inner_framing_spec"] == "JsonRpcFramingSpec"
+    assert "inner_framing_kind" not in plan
+    assert "inner_framing_spec" not in plan
 
 
 def test_protocol_compilation_emits_lifecycle_matrix_rows_for_each_subevent() -> None:

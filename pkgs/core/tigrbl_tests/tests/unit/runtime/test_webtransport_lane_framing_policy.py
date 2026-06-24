@@ -79,15 +79,13 @@ def test_webtransport_inner_framing_is_lane_gated() -> None:
     assert (
         validate_webtransport_inner_framing(
             lane="datagram",
-            inner_framing="json",
+            inner_framing="jsonrpc",
         )
-        == "json"
+        == "jsonrpc"
     )
 
     with pytest.raises(ValueError, match="session lane"):
         validate_webtransport_inner_framing(lane="session", inner_framing="json")
-    with pytest.raises(ValueError, match="inner framing"):
-        validate_webtransport_inner_framing(lane="datagram", inner_framing="jsonrpc")
     with pytest.raises(ValueError, match="inner framing"):
         validate_webtransport_inner_framing(lane="datagram", inner_framing="ndjson")
 
@@ -257,7 +255,7 @@ def test_kernel_plan_rejects_webtransport_message_lane() -> None:
         (
             "webtransport.datagram.send",
             "send",
-            {"session_id": "s1", "datagram_id": "dg1", "framing": "json"},
+            {"session_id": "s1", "datagram_id": "dg1", "framing": "jsonrpc"},
             {"family": "datagram", "lane": "datagram", "exchange": "bidirectional_stream"},
         ),
     ),
@@ -328,7 +326,7 @@ def test_webtransport_event_payload_projects_lane_boundary(
         (
             "webtransport.datagram.send",
             "send",
-            {"session_id": "s1", "datagram_id": "dg1", "framing": "jsonrpc"},
+            {"session_id": "s1", "datagram_id": "dg1", "framing": "ndjson"},
             "inner framing",
         ),
         (
