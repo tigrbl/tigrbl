@@ -19,3 +19,13 @@ class WidgetWebSocketTable(WebSocketTable):
 app = TigrblApp(engine={"kind": "sqlite", "mode": "memory", "async": False})
 app.include_table(WidgetWebSocketTable)
 app.initialize()
+
+
+@app.websocket("/widgetwebsockettable", framing="text")
+async def widget_socket(websocket):
+    """Echo one Widget message through Tigrbl's WebSocket runtime surface."""
+
+    await websocket.accept()
+    message = await websocket.receive_text()
+    await websocket.send_text(f"widget:{message}")
+    await websocket.close()

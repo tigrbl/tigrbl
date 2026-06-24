@@ -10,9 +10,9 @@ from .runtime import assert_equivalence
 CONTRACT = CertifiableEquivalence(
     id="table-class.json-rpc-table",
     category="table-class",
-    intent="Author a Widget resource with Tigrbl JsonRpcTable and compare its projected route surface to FastAPI and Flask.",
+    intent="Author a Widget resource with Tigrbl JsonRpcTable and compare HTTP JSON-RPC behavior to FastAPI and Flask.",
     status="analogous",
-    claim="Tigrbl JsonRpcTable, FastAPI routes, and Flask routes can expose the same Widget route surface for the table class.",
+    claim="Tigrbl JsonRpcTable, a FastAPI JSON-RPC endpoint, and a Flask JSON-RPC endpoint can expose the same Widget JSON-RPC behavior for the table class.",
     source_documents=("docs/developer/AUTHORING_EQUIVALENCE.md", "docs/developer/ROUTER_TABLE_EQUIVALENCE.md"),
     implementations=(
         _impl("tigrbl", "src/tigrbl_equivalence_contracts/equivalences/json_rpc_table/tigrbl_impl.py", _lazy_attr("equivalences.json_rpc_table.tigrbl_impl", "app"), "asgi", assert_equivalence, (), lambda result: result),

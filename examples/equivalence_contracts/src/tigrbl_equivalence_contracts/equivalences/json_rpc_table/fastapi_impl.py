@@ -1,10 +1,12 @@
-"""FastAPI implementation for the JsonRpcTable Widget route surface."""
+"""FastAPI implementation for the JsonRpcTable Widget JSON-RPC surface."""
 
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
+from typing import Any
+
+from fastapi import FastAPI, Request
 from pydantic import BaseModel
-from sqlalchemy import String, create_engine
+from sqlalchemy import String, create_engine, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
 
@@ -46,69 +48,65 @@ def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/widgetjsonrpctable", response_model=list[WidgetOut])
-def list_widgets() -> list[WidgetOut]:
+@app.post("/rpc")
+async def jsonrpc(request: Request) -> dict[str, Any]:
+    """Handle JSON-RPC 2.0 envelopes for the Widget table analogue."""
+
+    envelope = await request.json()
+    method = envelope.get("method")
+    params = envelope.get("params") or {}
+    request_id = envelope.get("id")
+    try:
+        result = _dispatch_jsonrpc(method, params)
+        return {"jsonrpc": "2.0", "result": result, "id": request_id}
+    except KeyError as exc:
+        return {
+            "jsonrpc": "2.0",
+            "error": {"code": -32601, "message": f"unknown method: {exc.args[0]}"},
+            "id": request_id,
+        }
+
+
+def _dispatch_jsonrpc(method: str, params: dict[str, Any]) -> Any:
+    if method == "WidgetJsonRpcTable.create":
+        return _create_widget(params).model_dump()
+    if method == "WidgetJsonRpcTable.read":
+        return _read_widget(params["id"]).model_dump()
+    if method == "WidgetJsonRpcTable.list":
+        return [item.model_dump() for item in _list_widgets()]
+    if method == "WidgetJsonRpcTable.delete":
+        return _delete_widget(params["id"])
+    raise KeyError(method)
+
+
+def _list_widgets() -> list[WidgetOut]:
     with Session(engine) as session:
-        rows = session.query(WidgetRow).order_by(WidgetRow.id).all()
+        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
         return [WidgetOut(id=row.id, name=row.name) for row in rows]
 
 
-@app.post("/widgetjsonrpctable", response_model=WidgetOut, status_code=201)
-def create_widget(payload: WidgetIn) -> WidgetOut:
+def _create_widget(payload: dict[str, Any]) -> WidgetOut:
+    item = WidgetIn(**payload)
     with Session(engine) as session:
-        row = WidgetRow(id=payload.id, name=payload.name)
+        row = WidgetRow(id=item.id, name=item.name)
         session.add(row)
         session.commit()
         return WidgetOut(id=row.id, name=row.name)
 
 
-@app.delete("/widgetjsonrpctable")
-def clear_widgets() -> dict[str, int]:
-    with Session(engine) as session:
-        deleted = session.query(WidgetRow).delete()
-        session.commit()
-        return {"deleted": deleted}
-
-
-@app.get("/widgetjsonrpctable/{item_id}", response_model=WidgetOut)
-def read_widget(item_id: str) -> WidgetOut:
+def _read_widget(item_id: str) -> WidgetOut:
     with Session(engine) as session:
         row = session.get(WidgetRow, item_id)
         if row is None:
-            raise HTTPException(status_code=404)
+            raise KeyError(item_id)
         return WidgetOut(id=row.id, name=row.name)
 
 
-@app.patch("/widgetjsonrpctable/{item_id}", response_model=WidgetOut)
-def update_widget(item_id: str, payload: WidgetIn) -> WidgetOut:
+def _delete_widget(item_id: str) -> dict[str, int]:
     with Session(engine) as session:
         row = session.get(WidgetRow, item_id)
         if row is None:
-            raise HTTPException(status_code=404)
-        row.name = payload.name
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.put("/widgetjsonrpctable/{item_id}", response_model=WidgetOut)
-def replace_widget(item_id: str, payload: WidgetIn) -> WidgetOut:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            row = WidgetRow(id=item_id, name=payload.name)
-            session.add(row)
-        else:
-            row.name = payload.name
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.delete("/widgetjsonrpctable/{item_id}")
-def delete_widget(item_id: str) -> dict[str, int]:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
+            raise KeyError(item_id)
         session.delete(row)
         session.commit()
         return {"deleted": 1}

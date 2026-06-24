@@ -1,11 +1,13 @@
-"""FastAPI implementation for the WebSocketJsonRpcTable Widget route surface."""
+"""FastAPI implementation for the WebSocketJsonRpcTable Widget surface."""
 
 from __future__ import annotations
 
-from fastapi import FastAPI, HTTPException
+import json
+
+from fastapi import FastAPI, WebSocket
 from pydantic import BaseModel
 from sqlalchemy import String, create_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.pool import StaticPool
 
 
@@ -46,61 +48,21 @@ def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/widgetwebsocketjsonrpctable", response_model=list[WidgetOut])
-def list_widgets() -> list[WidgetOut]:
-    with Session(engine) as session:
-        rows = session.query(WidgetRow).order_by(WidgetRow.id).all()
-        return [WidgetOut(id=row.id, name=row.name) for row in rows]
+@app.websocket("/widgetwebsocketjsonrpctable")
+async def widget_socket_jsonrpc(websocket: WebSocket) -> None:
+    """Handle one JSON-RPC envelope over FastAPI's native WebSocket route."""
 
-
-@app.post("/widgetwebsocketjsonrpctable", response_model=WidgetOut, status_code=201)
-def create_widget(payload: WidgetIn) -> WidgetOut:
-    with Session(engine) as session:
-        row = WidgetRow(id=payload.id, name=payload.name)
-        session.add(row)
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.get("/widgetwebsocketjsonrpctable/{item_id}", response_model=WidgetOut)
-def read_widget(item_id: str) -> WidgetOut:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.patch("/widgetwebsocketjsonrpctable/{item_id}", response_model=WidgetOut)
-def update_widget(item_id: str, payload: WidgetIn) -> WidgetOut:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
-        row.name = payload.name
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.put("/widgetwebsocketjsonrpctable/{item_id}", response_model=WidgetOut)
-def replace_widget(item_id: str, payload: WidgetIn) -> WidgetOut:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            row = WidgetRow(id=item_id, name=payload.name)
-            session.add(row)
-        else:
-            row.name = payload.name
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
-
-
-@app.delete("/widgetwebsocketjsonrpctable/{item_id}")
-def delete_widget(item_id: str) -> dict[str, int]:
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            raise HTTPException(status_code=404)
-        session.delete(row)
-        session.commit()
-        return {"deleted": 1}
+    await websocket.accept(subprotocol="jsonrpc")
+    envelope = json.loads(await websocket.receive_text())
+    result = {"message": f"widget:{envelope['params']['message']}"}
+    await websocket.send_text(
+        json.dumps(
+            {
+                "jsonrpc": "2.0",
+                "id": envelope["id"],
+                "result": result,
+            },
+            separators=(",", ":"),
+        )
+    )
+    await websocket.close()

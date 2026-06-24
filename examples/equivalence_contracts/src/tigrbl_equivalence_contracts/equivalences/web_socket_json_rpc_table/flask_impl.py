@@ -1,13 +1,14 @@
-"""Flask implementation for the WebSocketJsonRpcTable Widget route surface."""
+"""Flask-Sock implementation for the WebSocketJsonRpcTable Widget surface."""
 
 from __future__ import annotations
 
-from flask import Flask, abort, jsonify, request
-from sqlalchemy import String, create_engine, select
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
-from sqlalchemy.pool import StaticPool
+import json
 
-from .runtime import ROUTES
+from flask import Flask, jsonify
+from flask_sock import Sock
+from sqlalchemy import String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from sqlalchemy.pool import StaticPool
 
 
 class Base(DeclarativeBase):
@@ -28,6 +29,8 @@ engine = create_engine(
 )
 Base.metadata.create_all(engine)
 app = Flask(__name__)
+app.config["SOCK_SERVER_OPTIONS"] = {"subprotocols": ["jsonrpc"]}
+sock = Sock(app)
 
 
 @app.get("/healthz")
@@ -35,77 +38,19 @@ def healthz():
     return jsonify({"status": "ok"})
 
 
-@app.get("/openapi.json")
-def openapi_json():
-    return jsonify(
-        {
-            "openapi": "3.1.0",
-            "paths": {
-                path: {method.lower(): {} for method in methods}
-                for path, methods in ROUTES
+@sock.route("/widgetwebsocketjsonrpctable")
+def widget_socket_jsonrpc(ws):
+    """Handle one JSON-RPC envelope through Flask-Sock."""
+
+    envelope = json.loads(ws.receive())
+    result = {"message": f"widget:{envelope['params']['message']}"}
+    ws.send(
+        json.dumps(
+            {
+                "jsonrpc": "2.0",
+                "id": envelope["id"],
+                "result": result,
             },
-        }
+            separators=(",", ":"),
+        )
     )
-
-
-@app.get("/widgetwebsocketjsonrpctable")
-def list_widgets():
-    with Session(engine) as session:
-        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
-        return jsonify([{"id": row.id, "name": row.name} for row in rows])
-
-
-@app.post("/widgetwebsocketjsonrpctable")
-def create_widget():
-    payload = request.get_json()
-    with Session(engine) as session:
-        row = WidgetRow(id=payload["id"], name=payload["name"])
-        session.add(row)
-        session.commit()
-        return jsonify({"id": row.id, "name": row.name}), 201
-
-
-@app.get("/widgetwebsocketjsonrpctable/<item_id>")
-def read_widget(item_id: str):
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            abort(404)
-        return jsonify({"id": row.id, "name": row.name})
-
-
-@app.patch("/widgetwebsocketjsonrpctable/<item_id>")
-def update_widget(item_id: str):
-    payload = request.get_json()
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            abort(404)
-        row.name = payload["name"]
-        session.commit()
-        return jsonify({"id": row.id, "name": row.name})
-
-
-@app.put("/widgetwebsocketjsonrpctable/<item_id>")
-def replace_widget(item_id: str):
-    payload = request.get_json()
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            row = WidgetRow(id=item_id, name=payload["name"])
-            session.add(row)
-        else:
-            row.name = payload["name"]
-        session.commit()
-        return jsonify({"id": row.id, "name": row.name})
-
-
-@app.delete("/widgetwebsocketjsonrpctable/<item_id>")
-def delete_widget(item_id: str):
-    with Session(engine) as session:
-        row = session.get(WidgetRow, item_id)
-        if row is None:
-            abort(404)
-        session.delete(row)
-        session.commit()
-        return jsonify({"deleted": 1})

@@ -1,11 +1,11 @@
-"""FastAPI implementation for the WebSocketTable Widget route surface."""
+"""FastAPI implementation for the WebSocketTable Widget WebSocket surface."""
 
 from __future__ import annotations
 
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket
 from pydantic import BaseModel
 from sqlalchemy import String, create_engine
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.pool import StaticPool
 
 
@@ -46,17 +46,11 @@ def healthz() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.get("/widgetwebsockettable", response_model=list[WidgetOut])
-def list_widgets() -> list[WidgetOut]:
-    with Session(engine) as session:
-        rows = session.query(WidgetRow).order_by(WidgetRow.id).all()
-        return [WidgetOut(id=row.id, name=row.name) for row in rows]
+@app.websocket("/widgetwebsockettable")
+async def widget_socket(websocket: WebSocket) -> None:
+    """Echo one Widget message through FastAPI's native WebSocket route."""
 
-
-@app.post("/widgetwebsockettable", response_model=WidgetOut, status_code=201)
-def create_widget(payload: WidgetIn) -> WidgetOut:
-    with Session(engine) as session:
-        row = WidgetRow(id=payload.id, name=payload.name)
-        session.add(row)
-        session.commit()
-        return WidgetOut(id=row.id, name=row.name)
+    await websocket.accept()
+    message = await websocket.receive_text()
+    await websocket.send_text(f"widget:{message}")
+    await websocket.close()

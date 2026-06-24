@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from flask import Flask, jsonify, request
-from sqlalchemy import String, create_engine, select
+from sqlalchemy import String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
 from sqlalchemy.pool import StaticPool
 

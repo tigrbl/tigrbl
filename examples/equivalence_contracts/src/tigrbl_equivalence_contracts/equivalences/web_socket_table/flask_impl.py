@@ -1,13 +1,12 @@
-"""Flask implementation for the WebSocketTable Widget route surface."""
+"""Flask implementation for the WebSocketTable Widget WebSocket surface."""
 
 from __future__ import annotations
 
-from flask import Flask, jsonify, request
-from sqlalchemy import String, create_engine, select
-from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column
+from flask import Flask, jsonify
+from flask_sock import Sock
+from sqlalchemy import String, create_engine
+from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy.pool import StaticPool
-
-from .runtime import ROUTES
 
 
 class Base(DeclarativeBase):
@@ -28,6 +27,7 @@ engine = create_engine(
 )
 Base.metadata.create_all(engine)
 app = Flask(__name__)
+sock = Sock(app)
 
 
 @app.get("/healthz")
@@ -35,31 +35,9 @@ def healthz():
     return jsonify({"status": "ok"})
 
 
-@app.get("/openapi.json")
-def openapi_json():
-    return jsonify(
-        {
-            "openapi": "3.1.0",
-            "paths": {
-                path: {method.lower(): {} for method in methods}
-                for path, methods in ROUTES
-            },
-        }
-    )
+@sock.route("/widgetwebsockettable")
+def widget_socket(ws):
+    """Echo one Widget message through Flask-Sock's WebSocket route."""
 
-
-@app.get("/widgetwebsockettable")
-def list_widgets():
-    with Session(engine) as session:
-        rows = session.scalars(select(WidgetRow).order_by(WidgetRow.id)).all()
-        return jsonify([{"id": row.id, "name": row.name} for row in rows])
-
-
-@app.post("/widgetwebsockettable")
-def create_widget():
-    payload = request.get_json()
-    with Session(engine) as session:
-        row = WidgetRow(id=payload["id"], name=payload["name"])
-        session.add(row)
-        session.commit()
-        return jsonify({"id": row.id, "name": row.name}), 201
+    message = ws.receive()
+    ws.send(f"widget:{message}")
