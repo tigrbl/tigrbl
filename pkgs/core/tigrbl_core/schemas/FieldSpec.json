@@ -41,9 +41,24 @@
     },
     "required_in": {
       "$ref": "./shared.json#/$defs/StringTuple"
+    },
+    "spec_kind": {
+      "const": "FieldSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:FieldSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "py_type",
     "constraints",
     "description",

@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import pytest
 
-from tigrbl_core._spec import NdjsonFramingSpec, WebTransportBindingSpec, WsBindingSpec
+from tigrbl_core._spec import (
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
+    WebTransportBindingSpec,
+    WsBindingSpec,
+)
 from tigrbl_core._spec.binding_spec import validate_app_framing_for_binding
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
 from tigrbl_kernel.webtransport_events import validate_webtransport_event_payload
@@ -10,14 +15,14 @@ from tigrbl_atoms.runtime_channel import WebTransportSessionState
 
 
 def test_unknown_transport_framing_rejects_before_dispatch() -> None:
-    with pytest.raises(ValueError, match="unsupported app-level framing"):
+    with pytest.raises(TypeError, match="FramingSpec"):
         validate_app_framing_for_binding(binding_kind="http.rest", framing="jsonrpc")
 
 
 def test_websocket_ndjson_framing_derives_subprotocol() -> None:
     binding = WsBindingSpec(proto="ws", path="/socket", framing=NdjsonFramingSpec())
 
-    assert binding.framing == "ndjson"
+    assert binding.framing == NdjsonFramingSpec()
     assert binding.subprotocols == ("ndjson",)
 
 
@@ -26,7 +31,7 @@ def test_websocket_jsonrpc_profile_rejects_conflicting_subprotocol() -> None:
         WsBindingSpec(
             proto="ws",
             path="/socket",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             subprotocols=("graphql-ws",),
         )
 
@@ -68,7 +73,7 @@ def test_sse_rejects_jsonrpc_message_framing_fallback() -> None:
 
 
 def test_binding_token_lowering_records_unsupported_framing_provenance() -> None:
-    with pytest.raises(ValueError, match="inner framing"):
+    with pytest.raises(TypeError, match="FramingSpec"):
         WebTransportBindingSpec(profile="datagram", inner_framing="ndjson")
 
 

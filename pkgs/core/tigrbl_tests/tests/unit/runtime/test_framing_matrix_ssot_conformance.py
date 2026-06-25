@@ -26,8 +26,8 @@ def test_framing_matrix_http_client_stream_rows_are_runtime_supported() -> None:
     }
 
 
-def test_framing_matrix_keeps_webtransport_outer_and_inner_framing_separate() -> None:
-    assert APP_LEVEL_FRAMING_SUPPORT["webtransport"] == ("webtransport",)
+def test_framing_matrix_keeps_webtransport_top_level_and_lane_framing_separate() -> None:
+    assert APP_LEVEL_FRAMING_SUPPORT["webtransport"] == ()
     assert set(WEBTRANSPORT_INNER_FRAMING_SUPPORT["bidi_stream"]) >= {
         "bytes",
         "binary",

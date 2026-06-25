@@ -183,10 +183,11 @@ def test_compile_plan_preserves_webtransport_lane_framing_metadata() -> None:
     metadata = wt_index["exact_metadata"]["/wt/create"]
 
     assert wt_index["exact"]["/wt/create"] == 2
-    assert metadata["framing"] == "webtransport"
-    assert metadata["framing_spec"] == "WebTransportFramingSpec"
+    assert metadata["framing"] == ""
+    assert metadata["framing_spec"] == ""
     assert metadata["lane"] == "bidi_stream"
     assert metadata["inner_framing"] == "jsonrpc"
+    assert metadata["inner_framing_spec"] == "JsonRpcFramingSpec"
 
 
 def test_compile_plan_accepts_appspec_and_declared_tigrbl_ops() -> None:

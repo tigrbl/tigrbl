@@ -36,6 +36,10 @@ status_notes:
     status: "draft"
     note: "Added JsonRpcFramingSpec to HTTP/HTTPS stream response policy as chunk-envelope framing."
     at: "2026-06-24T00:00:00Z"
+  -
+    status: "draft"
+    note: "Removed WebTransport as an app-level framing token and made authoring framing typed-only."
+    at: "2026-06-25T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -44,7 +48,7 @@ body: |-
   
   ## Contract
   
-  App-level framing is payload interpretation metadata and is selected per canonical protocol BindingSpec profile as a typed `FramingSpec`.
+  App-level framing is payload interpretation metadata and is selected per canonical protocol BindingSpec profile as a concrete typed `FramingSpec`. String or literal framing tokens are invalid as canonical authoring input.
   
   Secure variants repeat their framing policy locally. TLS, mTLS, ALPN, QUIC, and HTTP version facts remain scope metadata.
   
@@ -70,8 +74,8 @@ body: |-
   | `wts.unidi_client_stream` | `WebTransportBindingSpec` | `stream` | `client_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
   | `wt.unidi_server_stream` | `WebTransportBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
   | `wts.unidi_server_stream` | `WebTransportBindingSpec` | `stream` | `server_stream` | `bytes`, `binary`, `text`, `json`, `jsonrpc`, `ndjson`; stream record-boundary rules required |
-  | `wt.datagram` | `WebTransportBindingSpec` | `datagram` | `duplex` | `bytes`, `binary`, `text`, `json`; `jsonrpc` and `ndjson` excluded by default |
-  | `wts.datagram` | `WebTransportBindingSpec` | `datagram` | `duplex` | `bytes`, `binary`, `text`, `json`; `jsonrpc` and `ndjson` excluded by default |
+  | `wt.datagram` | `WebTransportBindingSpec` | `datagram` | `duplex` | `BytesFramingSpec`, `BinaryFramingSpec`, `TextFramingSpec`, `JsonFramingSpec`, `JsonRpcFramingSpec`; `NdjsonFramingSpec` excluded by default |
+  | `wts.datagram` | `WebTransportBindingSpec` | `datagram` | `duplex` | `BytesFramingSpec`, `BinaryFramingSpec`, `TextFramingSpec`, `JsonFramingSpec`, `JsonRpcFramingSpec`; `NdjsonFramingSpec` excluded by default |
   
   ## Rules
   
@@ -81,7 +85,7 @@ body: |-
   
   `SseFramingSpec` is exclusive to the SSE profile.
   
-  `webtransport` is outer transport identity/framing only. App-level framing lives inside the selected WebTransport profile.
+  `webtransport` is transport identity only, not app-level framing. App-level framing lives inside the selected WebTransport lane profile when that lane carries application payloads.
   
   ## Validation
   

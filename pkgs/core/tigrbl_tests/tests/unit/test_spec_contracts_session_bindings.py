@@ -12,6 +12,7 @@ from tigrbl import (
     tx_repeatable_read,
 )
 from tigrbl_core._spec.session_spec import tx_read_committed, tx_serializable
+from tigrbl_core._spec import SseFramingSpec, TextFramingSpec
 
 
 def test_sessionspec_normalizes_aliases_and_emits_adapter_kwargs() -> None:
@@ -135,7 +136,7 @@ def test_sse_bindingspec_declares_server_stream_sse_get_contract() -> None:
     assert restored == binding
     assert restored.methods == ("GET",)
     assert restored.exchange == "server_stream"
-    assert restored.framing == "sse"
+    assert restored.framing == SseFramingSpec()
 
 
 def test_ws_bindingspec_preserves_bidirectional_subprotocol_metadata() -> None:
@@ -148,17 +149,17 @@ def test_ws_bindingspec_preserves_bidirectional_subprotocol_metadata() -> None:
 
     assert restored == binding
     assert restored.exchange == "bidirectional_stream"
-    assert restored.framing == "text"
+    assert restored.framing == TextFramingSpec()
     assert restored.subprotocols == ("jsonrpc", "v1")
     assert not hasattr(restored, "methods")
 
 
-def test_webtransport_bindingspec_preserves_webtransport_framing() -> None:
+def test_webtransport_bindingspec_has_no_top_level_app_framing() -> None:
     binding = WebTransportBindingSpec(path="/transport")
     restored = WebTransportBindingSpec.from_json(binding.to_json())
 
     assert restored == binding
     assert restored.proto == "webtransport"
     assert restored.exchange == "bidirectional_stream"
-    assert restored.framing == "webtransport"
+    assert restored.framing is None
     assert restored.exchange != "request_response"

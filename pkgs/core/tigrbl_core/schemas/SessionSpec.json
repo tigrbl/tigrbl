@@ -239,6 +239,18 @@
         }
       ]
     },
+    "spec_kind": {
+      "const": "SessionSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:SessionSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    },
     "staleness_ms": {
       "anyOf": [
         {
@@ -311,6 +323,9 @@
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "isolation",
     "read_only",
     "autobegin",

@@ -10,10 +10,12 @@ from tigrbl_core._spec.binding_spec import (
     HttpStreamBindingSpec,
     JsonFramingSpec,
     JsonRpcFramingSpec,
+    BytesFramingSpec,
+    NdjsonFramingSpec,
     SseBindingSpec,
+    SseFramingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
-    WebTransportFramingSpec,
     project_binding_runtime_metadata,
     resolve_rest_nested_prefix,
 )
@@ -53,17 +55,17 @@ def test_resolve_rest_nested_prefix_prefers_callable_attr() -> None:
 def test_streaming_binding_specs_expose_exchange_and_framing_defaults() -> None:
     stream = HttpStreamBindingSpec(proto="http.stream", path="/events")
     sse = SseBindingSpec(path="/events")
-    ws = WsBindingSpec(proto="ws", path="/socket", framing="jsonrpc")
+    ws = WsBindingSpec(proto="ws", path="/socket", framing=JsonRpcFramingSpec())
     wt = WebTransportBindingSpec(path="/transport")
 
     assert stream.exchange == "server_stream"
-    assert stream.framing == "stream"
+    assert isinstance(stream.framing, BytesFramingSpec)
     assert sse.exchange == "server_stream"
-    assert sse.framing == "sse"
+    assert isinstance(sse.framing, SseFramingSpec)
     assert ws.exchange == "bidirectional_stream"
-    assert ws.framing == "jsonrpc"
+    assert isinstance(ws.framing, JsonRpcFramingSpec)
     assert wt.exchange == "bidirectional_stream"
-    assert wt.framing == "webtransport"
+    assert wt.framing is None
 
 
 def test_protocolbinding_framingspec_authoring_contract() -> None:
@@ -86,16 +88,15 @@ def test_protocolbinding_framingspec_authoring_contract() -> None:
     wt = WebTransportBindingSpec(
         path="/items/wt",
         profile="bidi_stream",
-        framing=WebTransportFramingSpec(),
         inner_framing=JsonRpcFramingSpec(),
     )
 
-    assert rest.framing == "json"
-    assert rpc.framing == "jsonrpc"
-    assert ws.framing == "jsonrpc"
+    assert isinstance(rest.framing, JsonFramingSpec)
+    assert isinstance(rpc.framing, JsonRpcFramingSpec)
+    assert isinstance(ws.framing, JsonRpcFramingSpec)
     assert ws.subprotocols == ("jsonrpc",)
-    assert wt.framing == "webtransport"
-    assert wt.inner_framing == "jsonrpc"
+    assert wt.framing is None
+    assert isinstance(wt.inner_framing, JsonRpcFramingSpec)
     assert wt.lane == "bidi_stream"
 
 
@@ -112,7 +113,7 @@ def test_http_stream_binding_accepts_explicit_client_stream_request_body() -> No
         path="/upload",
         methods=("POST",),
         exchange="client_stream",
-        framing="ndjson",
+        framing=NdjsonFramingSpec(),
     )
 
     metadata = project_binding_runtime_metadata(binding)
@@ -122,6 +123,21 @@ def test_http_stream_binding_accepts_explicit_client_stream_request_body() -> No
     assert metadata["carrier_kind"] == "http_request_body"
     assert metadata["stream_initiator"] == "client"
     assert metadata["direction"] == "client_to_server"
+
+
+def test_binding_specs_reject_string_framing_tokens() -> None:
+    with pytest.raises(TypeError, match="FramingSpec"):
+        HttpRestBindingSpec(
+            proto="http.rest",
+            methods=("GET",),
+            path="/items",
+            framing="json",  # type: ignore[arg-type]
+        )
+    with pytest.raises(ValueError, match="top-level app framing"):
+        WebTransportBindingSpec(
+            path="/items/wt",
+            framing=JsonRpcFramingSpec(),  # type: ignore[arg-type]
+        )
 
 
 def test_http_stream_binding_rejects_native_bidirectional_exchange() -> None:

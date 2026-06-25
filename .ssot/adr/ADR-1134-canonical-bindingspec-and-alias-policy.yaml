@@ -20,6 +20,10 @@ status_notes:
     status: "draft"
     note: "Updated aliases to normalize into protocol bindings plus typed FramingSpec children."
     at: "2026-06-24T00:00:00Z"
+  -
+    status: "draft"
+    note: "Preserved OpSpec-owned binding hierarchy and removed WebTransport as an app-level framing."
+    at: "2026-06-25T00:00:00Z"
 references: []
 body: |-
   ## Context
@@ -28,6 +32,8 @@ body: |-
   
   The corrected model keeps `PathSpec.path` as the first-class address authority and lets protocol BindingSpecs select transport, security, carrier/profile, family, exchange, lane/session topology, and a typed framing child.
   
+  `AppSpec`, `RouterSpec`, `PathSpec`, and `TableSpec` may own operation collections, but they do not directly own BindingSpecs. BindingSpecs are meaningful only inside the `OpSpec.bindings` tuple for the operation they expose.
+
   ## Decision
   
   Tigrbl shall govern three canonical protocol BindingSpecs for this slice:
@@ -40,6 +46,8 @@ body: |-
   
   Every alias must normalize to a canonical BindingSpec before KernelPlan compilation, runtime dispatch, docs projection, support-matrix projection, or conformance testing.
   
+  Tigrbl shall preserve the op-owned binding hierarchy. `AppSpec.bindings`, `RouterSpec.bindings`, `PathSpec.bindings`, and `TableSpec.bindings` are not canonical fields. Multi-method, multi-lane, or grouped authoring conveniences may exist only if they lower to concrete `OpSpec(..., bindings=(...))` entries before canonical validation, docs projection, runtime compilation, or conformance checks.
+
   Canonical protocol BindingSpecs use:
   
   - `secure` to distinguish HTTP from HTTPS, WS from WSS, and WT from secure WT where the contract needs that distinction.
@@ -52,6 +60,8 @@ body: |-
   
   `rest`, `stream`, `sse`, `message`, and WebTransport stream/datagram names are carrier/profile values, not framing tokens unless separately declared as framing values by the framing policy.
   
+  `webtransport` is never an app-level framing token. WebTransport BindingSpecs describe session and lane topology; app payload interpretation is declared only on lanes that carry application payloads.
+
   `PathSpec.path` owns the concrete address path. BindingSpecs must not introduce an independent address path that can conflict with the containing PathSpec.
   
   This slice does not add or govern `StdioBindingSpec`.
@@ -60,6 +70,6 @@ body: |-
   
   The compiler, docs projection, runtime support matrix, and tests can target canonical BindingSpecs while preserving ergonomic alias APIs.
   
-  Alias expansion becomes a governed compatibility layer. Alias behavior must not drift from the canonical expansion table, and legacy string `framing` fields must normalize to typed `FramingSpec` values before downstream use.
+  Alias expansion becomes a governed compatibility layer. Alias behavior must not drift from the canonical expansion table, and authoring `framing` fields must be typed `FramingSpec` values before downstream use.
   
   Support claims must distinguish profile selection from app-level framing support and from current runtime implementation maturity.

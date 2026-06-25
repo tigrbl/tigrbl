@@ -62,7 +62,7 @@ body: |-
   
   ## Required Separation
   
-  `webtransport` identifies the outer transport/session layer.
+  `webtransport` identifies the outer transport/session layer, not an app-level framing.
   
   `framing` identifies inner app-level payload interpretation.
   
@@ -74,7 +74,7 @@ body: |-
   
   ## Validation
   
-  Tests must reject claims that `framing=webtransport` proves JSON, JSON-RPC, NDJSON, binary, bytes, text, or message support inside any WebTransport profile.
+  Tests must reject claims that WebTransport top-level metadata proves JSON, JSON-RPC, NDJSON, binary, bytes, text, or message support inside any WebTransport profile.
   
   Tests must reject a native WebTransport `message` profile unless a later ADR explicitly adds one.
   

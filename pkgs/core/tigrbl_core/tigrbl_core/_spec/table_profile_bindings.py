@@ -4,15 +4,21 @@ from dataclasses import dataclass, replace
 from typing import Iterable, Literal, Sequence
 
 from .binding_spec import (
+    BytesFramingSpec,
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     HttpStreamBindingSpec,
+    JsonFramingSpec,
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
     SseBindingSpec,
+    TextFramingSpec,
     TransportBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
     canonical_binding_kind,
     derive_session_metadata_for_framing,
+    framing_kind,
     framing_spec_name,
 )
 from .op_spec import OpSpec, TargetOp
@@ -409,7 +415,7 @@ def _websocket_binding(
     binding = WsBindingSpec(
         proto="ws",
         path=_path_for_op(op, prefix="/ws"),
-        framing="jsonrpc" if jsonrpc else "text",
+        framing=JsonRpcFramingSpec() if jsonrpc else TextFramingSpec(),
         subprotocols=("jsonrpc",) if jsonrpc else (),
     )
     return LoweredBinding(
@@ -466,7 +472,7 @@ def _webtransport_op_lane_binding(
     binding = WebTransportBindingSpec(
         path=_path_for_op(op, prefix="/wt"),
         profile=lane,
-        inner_framing=inner_framing,
+        inner_framing=_table_profile_framing_spec(inner_framing),
     )
     return LoweredBinding(
         token=_token_from_binding(
@@ -489,12 +495,16 @@ def _token_from_binding(
     precedence: int,
 ) -> BindingToken:
     binding_kind = canonical_binding_kind(binding)
-    framing = str(getattr(binding, "framing", "") or "")
-    session_metadata = derive_session_metadata_for_framing(
-        binding_kind=binding_kind,
-        framing=framing,
-        subprotocols=tuple(getattr(binding, "subprotocols", ()) or ()),
-    )
+    framing_obj = getattr(binding, "framing", None)
+    framing = framing_kind(framing_obj)
+    session_metadata = {}
+    if framing:
+        session_metadata = derive_session_metadata_for_framing(
+            binding_kind=binding_kind,
+            framing=framing_obj,
+            subprotocols=tuple(getattr(binding, "subprotocols", ()) or ()),
+        )
+    inner_framing = getattr(binding, "inner_framing", None)
     return BindingToken(
         source=source,
         profile=profile,
@@ -509,13 +519,27 @@ def _token_from_binding(
         rpc_method=getattr(binding, "rpc_method", None),
         framing=framing,
         framing_kind=framing,
-        framing_spec=framing_spec_name(framing),
+        framing_spec=framing_spec_name(framing_obj),
         required_subprotocol=session_metadata.get("required_subprotocol"),  # type: ignore[arg-type]
         exchange=str(getattr(binding, "exchange", "") or ""),
         lane=getattr(binding, "lane", None),
-        inner_framing=getattr(binding, "inner_framing", None),
+        inner_framing=framing_kind(inner_framing),
         precedence=precedence,
     )
+
+
+def _table_profile_framing_spec(kind: str | None):
+    if kind is None:
+        return None
+    if kind == "json":
+        return JsonFramingSpec()
+    if kind == "jsonrpc":
+        return JsonRpcFramingSpec()
+    if kind == "ndjson":
+        return NdjsonFramingSpec()
+    if kind == "bytes":
+        return BytesFramingSpec()
+    raise TableProfileError(f"unsupported table profile framing {kind!r}")
 
 
 def _path_for_op(op: OpSpec, *, prefix: str = "") -> str:

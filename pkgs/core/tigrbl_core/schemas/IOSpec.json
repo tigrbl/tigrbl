@@ -133,9 +133,24 @@
     },
     "sortable": {
       "type": "boolean"
+    },
+    "spec_kind": {
+      "const": "IOSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:IOSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "in_verbs",
     "out_verbs",
     "mutable_verbs",

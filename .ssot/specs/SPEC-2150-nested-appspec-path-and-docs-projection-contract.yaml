@@ -36,6 +36,10 @@ status_notes:
     status: "accepted"
     note: "Added inbound webhook lowering as path-owned HTTP POST event ingress."
     at: "2026-06-17T10:19:15Z"
+  -
+    status: "accepted"
+    note: "Clarified that canonical protocol bindings remain OpSpec-owned; app, router, path, and table scopes may own ops but not direct bindings."
+    at: "2026-06-25T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -53,6 +57,7 @@ body: |-
   3. `TableSpec` entries nested under a `PathSpec` MUST provide table/resource context for contained `OpSpec` entries without requiring `OpSpec.table` to hold a concrete runtime class.
   4. Canonical `TableSpec` identity MUST be spec-native, using fields such as `name`, `resource`, and optional `model_ref`; concrete runtime model classes are lowerer inputs, not canonical identity.
   5. `OpSpec` entries nested under a table or path inherit containing context and define semantic operation fields such as alias, target, arity, schemas, lifecycle defaults, and response policy.
+  5a. Canonical protocol bindings are owned only by `OpSpec.bindings`. `AppSpec`, `RouterSpec`, `PathSpec`, and `TableSpec` may own `ops`, but they MUST NOT own direct `bindings` collections.
   6. `HttpRestBindingSpec` nested under an op selects the op by HTTP method at the containing `PathSpec` path.
   6a. Inbound webhook ingress MUST be represented as ordinary path-owned HTTP POST composition: `PathSpec(kind=resource)` owns the address, `OpSpec(target=custom)` owns semantic handling and acknowledgement policy, and `HttpRestBindingSpec(methods=(POST,))` owns the selector.
   7. `HttpJsonRpcBindingSpec` nested under an op selects the op by JSON-RPC method at the containing dispatcher `PathSpec` path; multiple table groups may share one dispatcher path.

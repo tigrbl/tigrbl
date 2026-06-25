@@ -278,7 +278,7 @@ Tigrbl projects the same operation inventory across multiple protocol surfaces w
 | HTTP stream | stream | stream or configured stream framing | Server-streaming outputs and progressive responses. |
 | SSE | stream | SSE | Browser-friendly event streams. |
 | WebSocket/WSS | message | text or JSON-RPC when negotiated | Bidirectional message workflows. |
-| WebTransport | session, stream, or datagram | WebTransport outer framing plus lane-specific inner framing | Session, stream, and datagram transports with fail-closed lane validation. |
+| WebTransport | session, stream, or datagram | no top-level app framing; lane-local framing only | Session, stream, and datagram transports with fail-closed lane validation. |
 | h11 / h2 / h3 / QUIC carrier metadata | delegated server/runtime boundary | binding-dependent | Serving-stack protocol mechanics, runtime capability metadata, and deployment controls. |
 
 The framework keeps protocol, exchange, and framing separate. For example, strict JSON-RPC document framing is `jsonrpc`; newline-delimited JSON-RPC should be modeled distinctly rather than collapsed into plain `ndjson`. Unsupported combinations fail closed during binding or runtime planning instead of being guessed. Tigrbl owns binding declarations, runtime planning, channel metadata, and frame codecs; the serving/runtime stack owns wire-level HTTP/1.1, HTTP/2, HTTP/3, QUIC, TLS termination, HPACK, QPACK, ALPN, and flow control.

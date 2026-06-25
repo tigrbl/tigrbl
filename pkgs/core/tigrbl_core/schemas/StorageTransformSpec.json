@@ -30,6 +30,18 @@
         }
       ]
     },
+    "spec_kind": {
+      "const": "StorageTransformSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:StorageTransformSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    },
     "to_stored": {
       "anyOf": [
         {
@@ -42,6 +54,9 @@
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "to_stored",
     "from_stored"
   ],

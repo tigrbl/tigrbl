@@ -22,7 +22,6 @@ _DECORATOR_BINDINGS: dict[str, dict[str, str]] = {
     "webtransport_ctx": {
         "proto": "webtransport",
         "exchange": "bidirectional_stream",
-        "framing": "webtransport",
     },
 }
 

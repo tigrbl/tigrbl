@@ -6,6 +6,8 @@ from tigrbl_core._spec import (
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     HttpStreamBindingSpec,
+    JsonRpcFramingSpec,
+    TextFramingSpec,
     PathSpec,
     SseBindingSpec,
     WebTransportBindingSpec,
@@ -46,7 +48,7 @@ VALID_PATHKIND_BINDINGS = (
         WsBindingSpec(
             proto="ws",
             path="/items",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             subprotocols=("jsonrpc",),
         ),
     ),
@@ -55,12 +57,12 @@ VALID_PATHKIND_BINDINGS = (
         WsBindingSpec(
             proto="wss",
             path="/items",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             subprotocols=("jsonrpc",),
         ),
     ),
-    ("websocket", WsBindingSpec(proto="ws", path="/items", framing="text")),
-    ("websocket", WsBindingSpec(proto="wss", path="/items", framing="text")),
+    ("websocket", WsBindingSpec(proto="ws", path="/items", framing=TextFramingSpec())),
+    ("websocket", WsBindingSpec(proto="wss", path="/items", framing=TextFramingSpec())),
     ("webtransport", WebTransportBindingSpec(path="/items")),
 )
 
@@ -85,12 +87,12 @@ def test_valid_pathkind_binding_matrix(kind: str, binding: object) -> None:
         ),
         (
             "jsonrpc",
-            WsBindingSpec(proto="ws", path="/items", framing="jsonrpc"),
+            WsBindingSpec(proto="ws", path="/items", framing=JsonRpcFramingSpec()),
             "ws-jsonrpc",
         ),
         (
             "ws-jsonrpc",
-            WsBindingSpec(proto="wss", path="/items", framing="jsonrpc"),
+            WsBindingSpec(proto="wss", path="/items", framing=JsonRpcFramingSpec()),
             "wss-jsonrpc",
         ),
         ("websocket", SseBindingSpec(proto="http.sse", path="/items"), "sse"),
@@ -108,7 +110,7 @@ def test_invalid_pathkind_binding_matrix_fails_closed(
 
 def test_pathkind_validation_never_silently_downgrades_secure_socket() -> None:
     path = PathSpec(path="/items", kind="ws-jsonrpc")
-    binding = WsBindingSpec(proto="wss", path="/items", framing="jsonrpc")
+    binding = WsBindingSpec(proto="wss", path="/items", framing=JsonRpcFramingSpec())
 
     with pytest.raises(ValueError, match="wss-jsonrpc"):
         validate_path_binding(path, binding)

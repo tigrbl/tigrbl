@@ -4,9 +4,16 @@ from collections.abc import Mapping
 from typing import Any
 
 from tigrbl_core._spec.binding_spec import (
+    BytesFramingSpec,
     derive_websocket_subprotocol_for_framing,
     framing_spec_name,
+    framing_kind as framing_spec_kind,
+    framing_spec_from_kind,
+    JsonFramingSpec,
+    JsonRpcFramingSpec,
     normalize_framing_spec,
+    SseFramingSpec,
+    TextFramingSpec,
     validate_app_framing_for_binding,
     validate_binding_profile_exchange,
     validate_webtransport_inner_framing,
@@ -67,7 +74,10 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
             binding_kind=kind,
             exchange=str(_binding_get(binding, "exchange") or "request_response"),
         )
-        framing_spec_obj = normalize_framing_spec(framing, default="json")
+        framing_spec_obj = normalize_framing_spec(
+            framing_spec_from_kind(framing),
+            default=JsonFramingSpec(),
+        )
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
         family = "request"
         framing = framing_spec_obj.kind
@@ -96,7 +106,10 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
             binding_kind=kind,
             exchange=str(_binding_get(binding, "exchange") or "request_response"),
         )
-        framing_spec_obj = normalize_framing_spec(framing, default="jsonrpc")
+        framing_spec_obj = normalize_framing_spec(
+            framing_spec_from_kind(framing),
+            default=JsonRpcFramingSpec(),
+        )
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
         family = "request"
         framing = framing_spec_obj.kind
@@ -117,7 +130,10 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
             binding_kind=kind,
             exchange=str(_binding_get(binding, "exchange") or "server_stream"),
         )
-        framing_spec_obj = normalize_framing_spec(framing, default="stream")
+        framing_spec_obj = normalize_framing_spec(
+            framing_spec_from_kind(framing),
+            default=BytesFramingSpec(),
+        )
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
         family = "stream"
         framing = framing_spec_obj.kind
@@ -145,7 +161,10 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
             binding_kind=kind,
             exchange=str(_binding_get(binding, "exchange") or "server_stream"),
         )
-        framing_spec_obj = normalize_framing_spec(framing, default="sse")
+        framing_spec_obj = normalize_framing_spec(
+            framing_spec_from_kind(framing),
+            default=SseFramingSpec(),
+        )
         validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
         family = "stream"
         framing = framing_spec_obj.kind
@@ -166,7 +185,10 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
         if _binding_get(binding, "methods"):
             raise _unsupported("websocket bindings do not accept HTTP methods")
         family = "message"
-        framing_spec_obj = normalize_framing_spec(framing, default="text")
+        framing_spec_obj = normalize_framing_spec(
+            framing_spec_from_kind(framing),
+            default=TextFramingSpec(),
+        )
         framing = framing_spec_obj.kind
         framing_kind = framing
         framing_spec = framing_spec_obj.__class__.__name__
@@ -196,25 +218,27 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
     elif kind == "webtransport":
         if _binding_get(binding, "exchange") == "request_response":
             raise _unsupported("webtransport request_response exchange")
-        framing_spec_obj = normalize_framing_spec(framing, default="webtransport")
-        validate_app_framing_for_binding(binding_kind=kind, framing=framing_spec_obj)
-        if framing and framing_spec_obj.kind != "webtransport":
-            raise _unsupported("webtransport outer framing must remain webtransport")
-        framing_kind = framing_spec_obj.kind
-        framing_spec = framing_spec_obj.__class__.__name__
+        if framing is not None:
+            raise _unsupported("webtransport bindings do not accept top-level app framing")
+        framing_kind = ""
+        framing_spec = ""
         control_stream = _binding_get(binding, "control_stream")
         streams = tuple(_binding_get(binding, "streams", ()) or ())
         datagrams = tuple(_binding_get(binding, "datagrams", ()) or ())
-        if control_stream is not None:
-            control = _lane_mapping(control_stream, lane_kind="bidi_stream")
-            if control.get("kind") != "bidi_stream":
-                raise _unsupported("webtransport control_stream must use bidi_stream")
-            if control.get("opens") != "first":
-                raise _unsupported("webtransport control_stream must open first")
-            control["framing"] = validate_webtransport_inner_framing(
-                lane="bidi_stream",
-                inner_framing=control.get("framing"),
-            )
+        if control_stream is not None or streams or datagrams:
+            control = None
+            if control_stream is not None:
+                control = _lane_mapping(control_stream, lane_kind="bidi_stream")
+                if control.get("kind") != "bidi_stream":
+                    raise _unsupported("webtransport control_stream must use bidi_stream")
+                if control.get("opens") != "first":
+                    raise _unsupported("webtransport control_stream must open first")
+                control_framing = validate_webtransport_inner_framing(
+                    lane="bidi_stream",
+                    inner_framing=framing_spec_from_kind(control.get("framing")),
+                )
+                control["framing"] = framing_spec_kind(control_framing)
+                control["framing_spec"] = framing_spec_name(control_framing)
             stream_rows = []
             datagram_rows = []
             names: list[str] = []
@@ -225,10 +249,12 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
                     raise _unsupported("webtransport streams require name")
                 names.append(name)
                 lane_kind = str(row.get("kind") or "")
-                row["framing"] = validate_webtransport_inner_framing(
+                stream_framing = validate_webtransport_inner_framing(
                     lane=lane_kind,
-                    inner_framing=row.get("framing"),
+                    inner_framing=framing_spec_from_kind(row.get("framing")),
                 )
+                row["framing"] = framing_spec_kind(stream_framing)
+                row["framing_spec"] = framing_spec_name(stream_framing)
                 stream_rows.append(row)
             for datagram in datagrams:
                 row = _lane_mapping(datagram)
@@ -236,17 +262,19 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
                 if not name:
                     raise _unsupported("webtransport datagrams require name")
                 names.append(name)
-                row["framing"] = validate_webtransport_inner_framing(
+                datagram_framing = validate_webtransport_inner_framing(
                     lane="datagram",
-                    inner_framing=row.get("framing"),
+                    inner_framing=framing_spec_from_kind(row.get("framing")),
                 )
+                row["framing"] = framing_spec_kind(datagram_framing)
+                row["framing_spec"] = framing_spec_name(datagram_framing)
                 datagram_rows.append(row)
             if len(set(names)) != len(names):
                 raise _unsupported("webtransport lane names must be unique")
             family = "session"
             lane = "session"
             inner_framing = None
-            framing = framing_spec_obj.kind
+            framing = ""
             anchors = (
                 "transport.accept",
                 "dispatch.subevent.derive",
@@ -279,10 +307,12 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
             )
             inner_framing = validate_webtransport_inner_framing(
                 lane=lane,
-                inner_framing=_binding_get(binding, "inner_framing"),
+                inner_framing=framing_spec_from_kind(_binding_get(binding, "inner_framing")),
             )
             family = webtransport_runtime_family(lane)
-            framing = framing_spec_obj.kind
+            framing = framing_spec_kind(inner_framing)
+            framing_kind = framing
+            framing_spec = framing_spec_name(inner_framing)
             if lane == "session":
                 anchors = (
                     "transport.accept",
@@ -376,7 +406,8 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
         if lane_catalog is not None:
             event_key_inputs["lane_catalog"] = lane_catalog
         else:
-            event_key_inputs["inner_framing"] = inner_framing
+            event_key_inputs["inner_framing"] = framing_spec_kind(inner_framing)
+            event_key_inputs["inner_framing_spec"] = framing_spec_name(inner_framing)
     resume_policy = compile_resume_policy(kind, binding if isinstance(binding, Mapping) else {})
     if resume_policy.enabled:
         event_key_inputs["resume_mode"] = resume_policy.mode
@@ -387,7 +418,7 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
         "family": family,
         "framing": framing,
         "framing_kind": framing_kind or str(framing),
-        "framing_spec": framing_spec or framing_spec_name(str(framing)),
+        "framing_spec": framing_spec,
         "atom_anchors": anchors,
         "event_key_inputs": event_key_inputs,
         "capability_requirements": {
@@ -406,7 +437,9 @@ def compile_binding_protocol_plan(op_id: str, binding: Any) -> dict[str, object]
         if lane_catalog is not None:
             plan["lane_catalog"] = lane_catalog
         else:
-            plan["inner_framing"] = inner_framing
+            plan["inner_framing"] = framing_spec_kind(inner_framing)
+            plan["inner_framing_kind"] = framing_spec_kind(inner_framing)
+            plan["inner_framing_spec"] = framing_spec_name(inner_framing)
     if resume_policy.enabled:
         plan["resume_policy"] = resume_policy.as_dict()
     return plan

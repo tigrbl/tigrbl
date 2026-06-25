@@ -17,12 +17,12 @@ def test_wsbindingspec_lowercases_subprotocols_and_preserves_jsonrpc_framing() -
     binding = WsBindingSpec(
         proto="wss",
         path="/rpc",
-        framing="jsonrpc",
+        framing=JsonRpcFramingSpec(),
         subprotocols=("JSONRPC", "V2"),
     )
 
     assert binding.subprotocols == ("jsonrpc", "v2")
-    assert binding.framing == "jsonrpc"
+    assert binding.framing == JsonRpcFramingSpec()
     assert project_binding_runtime_metadata(binding) == {
         "proto": "wss",
         "exchange": "bidirectional_stream",
@@ -37,7 +37,7 @@ def test_wsbindingspec_lowercases_subprotocols_and_preserves_jsonrpc_framing() -
 
 
 def test_wsbindingspec_jsonrpc_implicit_subprotocol_is_stable() -> None:
-    binding = WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc")
+    binding = WsBindingSpec(proto="ws", path="/rpc", framing=JsonRpcFramingSpec())
 
     assert binding.subprotocols == ("jsonrpc",)
 
@@ -61,13 +61,13 @@ def test_websocket_ndjson_requires_matching_subprotocol(proto: str) -> None:
         framing=NdjsonFramingSpec(),
     )
 
-    assert binding.framing == "ndjson"
+    assert binding.framing == NdjsonFramingSpec()
     assert binding.subprotocols == ("ndjson",)
 
 
 @pytest.mark.parametrize("framing", ("sse", "webtransport", "stream"))
 def test_websocket_unsupported_framing_values_fail_closed(framing: str) -> None:
-    with pytest.raises(ValueError, match="unsupported app-level framing"):
+    with pytest.raises((TypeError, ValueError), match="FramingSpec|unsupported app-level framing"):
         validate_app_framing_for_binding(binding_kind="ws", framing=framing)
 
 
@@ -75,7 +75,7 @@ def test_websocket_binding_alias_normalizes_without_losing_subprotocols() -> Non
     binding = WsBindingSpec(
         proto="ws",
         path="/rpc",
-        framing="jsonrpc",
+        framing=JsonRpcFramingSpec(),
         subprotocols=("JSONRPC",),
     )
 
@@ -83,7 +83,7 @@ def test_websocket_binding_alias_normalizes_without_losing_subprotocols() -> Non
 
     assert isinstance(normalized, WebSocketBindingSpec)
     assert normalized.proto == "ws"
-    assert normalized.framing == "jsonrpc"
+    assert normalized.framing == JsonRpcFramingSpec()
     assert normalized.subprotocols == ("jsonrpc",)
 
 
@@ -92,6 +92,6 @@ def test_websocket_runtime_metadata_rejects_invalid_exchange_before_plan_use() -
         WsBindingSpec(
             proto="ws",
             path="/rpc",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             exchange="server_stream",  # type: ignore[arg-type]
         )

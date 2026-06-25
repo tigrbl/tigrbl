@@ -18,6 +18,13 @@ from tigrbl import (
     validate_app_framing_for_binding,
     validate_binding_profile_exchange,
 )
+from tigrbl_core._spec import (
+    JsonFramingSpec,
+    JsonRpcFramingSpec,
+    MultipartFormDataFramingSpec,
+    NdjsonFramingSpec,
+    SseFramingSpec,
+)
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
 
 
@@ -45,24 +52,24 @@ def test_alias_to_canonical_normalization_table_is_stable() -> None:
 
 
 def test_profile_and_framing_are_separate_vocabularies() -> None:
-    rest = HTTPBindingSpec(proto="http", profile="rest", path="/items", framing="json")
-    rpc = HTTPBindingSpec(proto="http", profile="jsonrpc", rpc_method="Item.read", framing="jsonrpc")
-    sse = HTTPBindingSpec(proto="https", profile="sse", path="/events", framing="sse")
+    rest = HTTPBindingSpec(proto="http", profile="rest", path="/items", framing=JsonFramingSpec())
+    rpc = HTTPBindingSpec(proto="http", profile="jsonrpc", rpc_method="Item.read", framing=JsonRpcFramingSpec())
+    sse = HTTPBindingSpec(proto="https", profile="sse", path="/events", framing=SseFramingSpec())
 
     assert rest.profile == "rest"
-    assert rest.framing == "json"
+    assert rest.framing == JsonFramingSpec()
     assert rpc.profile == "jsonrpc"
-    assert rpc.framing == "jsonrpc"
+    assert rpc.framing == JsonRpcFramingSpec()
     assert sse.profile == "sse"
-    assert sse.framing == "sse"
+    assert sse.framing == SseFramingSpec()
 
 
 def test_canonical_bindingspecs_serde_roundtrip() -> None:
     specs = (
         HTTPBindingSpec(proto="http", profile="rest", path="/items", methods=("GET",)),
         HTTPBindingSpec(proto="http", profile="jsonrpc", rpc_method="Item.read"),
-        HTTPBindingSpec(proto="https", profile="stream", path="/stream", framing="ndjson"),
-        WebSocketBindingSpec(proto="wss", path="/socket", framing="jsonrpc", subprotocols=("jsonrpc",)),
+        HTTPBindingSpec(proto="https", profile="stream", path="/stream", framing=NdjsonFramingSpec()),
+        WebSocketBindingSpec(proto="wss", path="/socket", framing=JsonRpcFramingSpec(), subprotocols=("jsonrpc",)),
         WebTransportBindingSpec(path="/transport"),
     )
 
@@ -71,24 +78,24 @@ def test_canonical_bindingspecs_serde_roundtrip() -> None:
 
 
 def test_http_framing_policy_runtime_gates() -> None:
-    assert validate_app_framing_for_binding(binding_kind="http.rest", framing="json") == "json"
+    assert validate_app_framing_for_binding(binding_kind="http.rest", framing=JsonFramingSpec()) == JsonFramingSpec()
     assert (
         validate_app_framing_for_binding(
             binding_kind="http.rest",
-            framing="multipart/form-data",
+            framing=MultipartFormDataFramingSpec(),
         )
-        == "multipart/form-data"
+        == MultipartFormDataFramingSpec()
     )
-    assert validate_app_framing_for_binding(binding_kind="http.jsonrpc", framing="jsonrpc") == "jsonrpc"
-    assert validate_app_framing_for_binding(binding_kind="http.stream", framing="ndjson") == "ndjson"
-    assert validate_app_framing_for_binding(binding_kind="http.sse", framing="sse") == "sse"
+    assert validate_app_framing_for_binding(binding_kind="http.jsonrpc", framing=JsonRpcFramingSpec()) == JsonRpcFramingSpec()
+    assert validate_app_framing_for_binding(binding_kind="http.stream", framing=NdjsonFramingSpec()) == NdjsonFramingSpec()
+    assert validate_app_framing_for_binding(binding_kind="http.sse", framing=SseFramingSpec()) == SseFramingSpec()
 
     with pytest.raises(ValueError, match="framing"):
-        validate_app_framing_for_binding(binding_kind="http.rest", framing="sse")
+        validate_app_framing_for_binding(binding_kind="http.rest", framing=SseFramingSpec())
     with pytest.raises(ValueError, match="framing"):
-        validate_app_framing_for_binding(binding_kind="http.jsonrpc", framing="json")
+        validate_app_framing_for_binding(binding_kind="http.jsonrpc", framing=JsonFramingSpec())
     with pytest.raises(ValueError, match="framing"):
-        validate_app_framing_for_binding(binding_kind="http.sse", framing="json")
+        validate_app_framing_for_binding(binding_kind="http.sse", framing=JsonFramingSpec())
 
 
 def test_http_rest_multipart_form_data_binding_policy_t2() -> None:
@@ -97,13 +104,13 @@ def test_http_rest_multipart_form_data_binding_policy_t2() -> None:
         profile="rest",
         path="/upload",
         methods=("POST",),
-        framing="multipart/form-data",
+        framing=MultipartFormDataFramingSpec(),
     )
     alias = HttpRestBindingSpec(
         proto="http.rest",
         methods=("POST",),
         path="/upload",
-        framing="multipart/form-data",
+        framing=MultipartFormDataFramingSpec(),
     )
     plan = compile_binding_protocol_plan(
         "Upload.create",
@@ -115,8 +122,8 @@ def test_http_rest_multipart_form_data_binding_policy_t2() -> None:
         },
     )
 
-    assert binding.framing == "multipart/form-data"
-    assert alias.framing == "multipart/form-data"
+    assert binding.framing == MultipartFormDataFramingSpec()
+    assert alias.framing == MultipartFormDataFramingSpec()
     assert "ingress.receive" in plan["atom_anchors"]
     assert "transport.emit_complete" in plan["atom_anchors"]
 
@@ -128,26 +135,26 @@ def test_http_rest_multipart_form_data_binding_policy_t2() -> None:
             proto="http",
             profile="jsonrpc",
             rpc_method="Upload.create",
-            framing="multipart/form-data",
+            framing=MultipartFormDataFramingSpec(),
         ),
         lambda: HTTPBindingSpec(
             proto="http",
             profile="stream",
             path="/upload",
-            framing="multipart/form-data",
+            framing=MultipartFormDataFramingSpec(),
         ),
         lambda: HTTPBindingSpec(
             proto="http",
             profile="sse",
             path="/events",
-            framing="multipart/form-data",
+            framing=MultipartFormDataFramingSpec(),
         ),
         lambda: WsBindingSpec(
             proto="ws",
             path="/upload",
-            framing="multipart/form-data",
+            framing=MultipartFormDataFramingSpec(),
         ),
-        lambda: WebTransportBindingSpec(inner_framing="multipart/form-data"),
+        lambda: WebTransportBindingSpec(inner_framing=MultipartFormDataFramingSpec()),
     ),
 )
 def test_multipart_form_data_binding_policy_negative_corpus_t2(spec) -> None:
@@ -247,25 +254,25 @@ def test_websocket_jsonrpc_and_ndjson_subprotocol_policy() -> None:
     assert (
         validate_app_framing_for_binding(
             binding_kind="ws",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             subprotocols=("jsonrpc",),
         )
-        == "jsonrpc"
+        == JsonRpcFramingSpec()
     )
     assert WebSocketBindingSpec(
         proto="ws",
         path="/socket",
-        framing="jsonrpc",
+        framing=JsonRpcFramingSpec(),
     ).subprotocols == ("jsonrpc",)
     assert WsBindingSpec(
         proto="wss",
         path="/socket",
-        framing="ndjson",
+        framing=NdjsonFramingSpec(),
     ).subprotocols == ("ndjson",)
     assert WsBindingSpec(
         proto="wss",
         path="/socket",
-        framing="ndjson",
+        framing=NdjsonFramingSpec(),
         subprotocols=("NDJSON",),
     ).subprotocols == ("ndjson",)
 
@@ -273,10 +280,10 @@ def test_websocket_jsonrpc_and_ndjson_subprotocol_policy() -> None:
 @pytest.mark.parametrize(
     "spec",
     (
-        lambda: HTTPBindingSpec(proto="http", profile="rest", framing="jsonrpc"),
-        lambda: HTTPBindingSpec(proto="http", profile="jsonrpc", rpc_method="Item.read", framing="ndjson"),
-        lambda: HTTPBindingSpec(proto="http", profile="sse", framing="json"),
-        lambda: WebTransportBindingSpec(framing="jsonrpc"),
+        lambda: HTTPBindingSpec(proto="http", profile="rest", framing=JsonRpcFramingSpec()),
+        lambda: HTTPBindingSpec(proto="http", profile="jsonrpc", rpc_method="Item.read", framing=NdjsonFramingSpec()),
+        lambda: HTTPBindingSpec(proto="http", profile="sse", framing=JsonFramingSpec()),
+        lambda: WebTransportBindingSpec(framing=JsonRpcFramingSpec()),
     ),
 )
 def test_profile_framing_confusion_negative_corpus(spec) -> None:

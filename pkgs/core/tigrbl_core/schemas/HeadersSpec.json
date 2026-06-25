@@ -26,11 +26,26 @@
     "required": {
       "$ref": "./shared.json#/$defs/StringTuple"
     },
+    "spec_kind": {
+      "const": "HeadersSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:HeadersSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    },
     "values": {
       "$ref": "./shared.json#/$defs/StringMap"
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "values",
     "required",
     "expose"

@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Literal, Sequence
 
-from .binding_spec import HttpJsonRpcBindingSpec
+from .binding_spec import FramingSpec, HttpJsonRpcBindingSpec
 from .path_spec import PathSpec
 from .serde import SerdeMixin
 
@@ -94,7 +94,7 @@ class DocsProjectionSpec(SerdeMixin):
         protocols = tuple(str(getattr(binding, "proto", "")) for binding in bindings)
         if not protocols:
             return None
-        framings = tuple(str(getattr(binding, "framing", "")) for binding in bindings)
+        framings = tuple(_framing_kind(getattr(binding, "framing", None)) for binding in bindings)
         subprotocols = tuple(
             item
             for binding in bindings
@@ -165,6 +165,14 @@ def _table_name(table: object) -> str:
     if isinstance(model, str) and model:
         return model.rsplit(":", 1)[-1].rsplit(".", 1)[-1]
     return getattr(table, "name", None) or "table"
+
+
+def _framing_kind(value: object) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, FramingSpec):
+        return value.kind
+    return str(value)
 
 
 def validate_docs_tree(paths: Sequence[PathSpec]) -> None:

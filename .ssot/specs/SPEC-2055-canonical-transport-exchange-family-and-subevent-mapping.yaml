@@ -34,7 +34,7 @@ body: |-
   - `HttpStreamBindingSpec` may select app-level response framing such as `json`, `jsonrpc`, `ndjson`, `text`, `bytes`, or `binary` when permitted by the framing support matrix; framing variation does not change the `server_stream` exchange or the stream runtime family.
   - `SseBindingSpec` maps to canonical exchange `server_stream`, framing `sse`, and canonical runtime semantics drawn from the governed `stream`, `message`, and `session` families as required by the governed `tigr-asgi-contract` vocabulary.
   - `WsBindingSpec` maps to exchange `bidirectional_stream`, framing `text` or `jsonrpc`, and canonical runtime semantics drawn from the governed `session` and `message` families.
-  - `WebTransportBindingSpec` maps to exchange `bidirectional_stream`, framing `webtransport`, and canonical runtime semantics drawn from the governed `session`, `stream`, `datagram`, and `message` families as applicable to the declared binding shape.
+  - `WebTransportBindingSpec` maps to exchange `bidirectional_stream`, no top-level app framing, and canonical runtime semantics drawn from the governed `session`, `stream`, `datagram`, and `message` families as applicable to the declared binding shape.
   
   ## Compatibility Rules
   

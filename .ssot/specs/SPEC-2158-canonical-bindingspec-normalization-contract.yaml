@@ -20,6 +20,10 @@ status_notes:
     status: "draft"
     note: "Updated normalization contract for ProtocolBindingSpec plus typed FramingSpec separation."
     at: "2026-06-24T00:00:00Z"
+  -
+    status: "draft"
+    note: "Preserved OpSpec-owned bindings and removed string/WebTransport app-level framing."
+    at: "2026-06-25T00:00:00Z"
 references: []
 body: |-
   ## Intent
@@ -52,11 +56,13 @@ body: |-
   
   `PathSpec.kind` remains an address-category discriminator. It is not the same as BindingSpec `profile`.
   
-  ## FramingSpec Normalization
+  Canonical AppSpec composition keeps BindingSpecs under `OpSpec.bindings`. `AppSpec`, `RouterSpec`, `PathSpec`, and `TableSpec` may own `ops`, but they MUST NOT own direct `bindings` collections.
+
+  ## FramingSpec Authoring
   
-  Legacy string framing tokens normalize before downstream use:
+  Authoring `framing` fields must contain concrete typed `FramingSpec` values. String or literal framing tokens are invalid as canonical authoring input.
   
-  | Legacy token | Typed framing spec |
+  | Kind | Typed framing spec |
   |---|---|
   | `json` | `JsonFramingSpec` |
   | `jsonrpc` | `JsonRpcFramingSpec` |
@@ -68,6 +74,8 @@ body: |-
   
   The framing spec owns payload interpretation. The protocol binding owns carrier/session topology.
   
+  `webtransport` is not a framing kind. WebTransport BindingSpecs own session and lane topology, while `control_stream`, `streams`, and `datagrams` declare typed lane-local app framing when they carry app payloads.
+
   ## Alias Normalization
   
   Convenience aliases are valid only as authoring shortcuts. Before compiler, runtime, docs, or support-matrix use, they normalize as follows:
@@ -90,7 +98,7 @@ body: |-
   | `WssJsonRpcBindingSpec` | `WebSocketBindingSpec` | `true` | `message` | `message` | `duplex` | `JsonRpcFramingSpec`; derives `jsonrpc` subprotocol |
   | `WsNdjsonBindingSpec` | `WebSocketBindingSpec` | `false` | `ndjson` | `message` | `duplex` | `ndjson` |
   | `WssNdjsonBindingSpec` | `WebSocketBindingSpec` | `true` | `ndjson` | `message` | `duplex` | `ndjson` |
-  | `WebTransportSessionBindingSpec` | `WebTransportBindingSpec` | profile-local | `session` | `session` | `unary` | `webtransport` |
+  | `WebTransportSessionBindingSpec` | `WebTransportBindingSpec` | profile-local | `session` | `session` | `unary` | none |
   | `WebTransportBidiStreamBindingSpec` | `WebTransportBindingSpec` | profile-local | `bidi_stream` | `stream` | `duplex` | `bytes` |
   | `WebTransportClientStreamBindingSpec` | `WebTransportBindingSpec` | profile-local | `unidi_client_stream` | `stream` | `client_stream` | `bytes` |
   | `WebTransportServerStreamBindingSpec` | `WebTransportBindingSpec` | profile-local | `unidi_server_stream` | `stream` | `server_stream` | `bytes` |
@@ -106,6 +114,8 @@ body: |-
   
   JSON-RPC is an application framing. It is not a canonical protocol binding. Legacy aliases using JSON-RPC in the class name normalize to the selected protocol binding plus `JsonRpcFramingSpec`.
   
+  WebTransport aliases and protocol bindings MUST NOT declare top-level app framing. Session/control/stream/datagram payload framing is lane-local and typed.
+
   Runtime support claims must be made against canonical protocol BindingSpec plus carrier/profile plus typed framing spec, not against alias names alone.
   
   ## Validation

@@ -5,7 +5,12 @@ from types import SimpleNamespace
 from typing import Any, Callable
 
 from tigrbl_concrete._concrete._route import ensure_route_ops_model, upsert_route_opspec
-from tigrbl_core._spec.binding_spec import WsBindingSpec
+from tigrbl_core._spec.binding_spec import (
+    FramingSpec,
+    framing_kind,
+    framing_spec_from_kind,
+    WsBindingSpec,
+)
 from tigrbl_core._spec.op_spec import OpSpec
 from tigrbl_runtime.channel import normalize_exchange, websocket_adapter
 
@@ -18,7 +23,7 @@ def register_runtime_websocket_route(
     endpoint: Callable[..., Any],
     protocol: str = "ws",
     exchange: str = "bidirectional_stream",
-    framing: str = "text",
+    framing: FramingSpec | str = "text",
     subprotocols: tuple[str, ...] | None = None,
 ) -> None:
     """Register a websocket endpoint as a runtime-owned operation."""
@@ -27,7 +32,8 @@ def register_runtime_websocket_route(
         return
 
     normalized_exchange = normalize_exchange(exchange)
-    normalized_framing = str(framing)
+    framing_spec = framing_spec_from_kind(framing)
+    normalized_framing = framing_kind(framing_spec)
     normalized_subprotocols = tuple(str(value) for value in (subprotocols or ()))
     if normalized_framing == "jsonrpc" and "jsonrpc" not in normalized_subprotocols:
         normalized_subprotocols = (*normalized_subprotocols, "jsonrpc")
@@ -46,7 +52,7 @@ def register_runtime_websocket_route(
                 proto=str(protocol),
                 path=path,
                 exchange=normalized_exchange,
-                framing=normalized_framing,
+                framing=framing_spec,
                 subprotocols=normalized_subprotocols,
             ),
         ),

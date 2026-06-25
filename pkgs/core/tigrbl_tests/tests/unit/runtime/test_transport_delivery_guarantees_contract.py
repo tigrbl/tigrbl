@@ -20,7 +20,10 @@ def test_each_transport_binding_declares_delivery_guarantees() -> None:
     for binding in bindings:
         plan = compile_binding_protocol_plan("Item.op", binding)
         assert plan["family"]
-        assert plan["framing"]
+        if binding["kind"] == "webtransport":
+            assert plan["framing"] == ""
+        else:
+            assert plan["framing"]
         assert plan["capability_requirements"]["required_mask"] > 0
         assert plan["lifecycle_rows"]
 
@@ -139,7 +142,8 @@ def test_delivery_diagnostics_report_ordering_retry_and_replay_sources() -> None
     assert plan["event_key_inputs"] == {
         "family": "stream",
         "binding": "webtransport",
-        "framing": "webtransport",
+        "framing": "",
         "lane": "bidi_stream",
-        "inner_framing": None,
+        "inner_framing": "",
+        "inner_framing_spec": "",
     }

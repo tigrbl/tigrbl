@@ -116,9 +116,9 @@ Protocol planning keeps binding kind, family, framing, exchange, lane, subevent 
 | `http.stream` / `https.stream` | stream | stream | handler invoke, transport emit, stream close. |
 | `http.sse` / `https.sse` | stream | SSE | encode event, emit event, close stream. |
 | `ws` / `wss` / `websocket` | message | text or negotiated JSON-RPC | accept, decode, dispatch, handler, emit/close. |
-| `webtransport` | session, stream, or datagram | WebTransport outer framing | lane-specific session, stream, or datagram rows with inner-framing validation. |
+| `webtransport` | session, stream, or datagram | no top-level app framing | lane-specific session, stream, or datagram rows with lane-local framing validation. |
 
-Unsupported or ambiguous bindings raise planning errors. For example, WebSocket bindings do not accept HTTP methods, HTTP JSON-RPC requires an RPC method, WebTransport request/response exchange is unsupported, and WebTransport outer framing must remain `webtransport`.
+Unsupported or ambiguous bindings raise planning errors. For example, WebSocket bindings do not accept HTTP methods, HTTP JSON-RPC requires an RPC method, WebTransport request/response exchange is unsupported, and WebTransport app framing must be declared on the relevant control stream, stream, or datagram lane.
 
 ## Hook Ordering and Labels
 

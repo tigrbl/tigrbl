@@ -6,8 +6,11 @@ from tigrbl_core._spec import (
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     HttpStreamBindingSpec,
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
     OpSpec,
     PathSpec,
+    TextFramingSpec,
     WellKnownResourceSpec,
     WsBindingSpec,
     validate_path_binding,
@@ -39,12 +42,12 @@ def test_pathspec_rejects_unknown_kind_with_actionable_diagnostic() -> None:
         ),
         (
             PathSpec(path="/rpc", kind="jsonrpc"),
-            WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc"),
+            WsBindingSpec(proto="ws", path="/rpc", framing=JsonRpcFramingSpec()),
             "ws-jsonrpc",
         ),
         (
             PathSpec(path="/events", kind="stream"),
-            WsBindingSpec(proto="ws", path="/events", framing="text"),
+            WsBindingSpec(proto="ws", path="/events", framing=TextFramingSpec()),
             "websocket",
         ),
         (
@@ -84,7 +87,7 @@ def test_pathspec_round_trip_preserves_kind_path_ops_and_binding_metadata() -> N
                     proto="https.stream",
                     path="/items/tail",
                     methods=("GET",),
-                    framing="ndjson",
+                    framing=NdjsonFramingSpec(),
                 ),
             ),
         ),
@@ -98,7 +101,7 @@ def test_pathspec_round_trip_preserves_kind_path_ops_and_binding_metadata() -> N
     assert restored.ops[0].alias == "tail"
     assert isinstance(binding, HttpStreamBindingSpec)
     assert binding.proto == "https.stream"
-    assert binding.framing == "ndjson"
+    assert isinstance(binding.framing, NdjsonFramingSpec)
 
 
 def test_pathspec_well_known_kind_requires_spec_payload_and_round_trips() -> None:

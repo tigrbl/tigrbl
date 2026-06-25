@@ -7,7 +7,11 @@ from email import policy
 from email.parser import BytesParser
 from typing import Any
 
-from tigrbl_core._spec.binding_spec import validate_webtransport_inner_framing
+from tigrbl_core._spec.binding_spec import (
+    framing_kind,
+    framing_spec_from_kind,
+    validate_webtransport_inner_framing,
+)
 
 _BYTES_TYPES = (bytes, bytearray, memoryview)
 _WEBSOCKET_FRAME_TYPES = {"websocket.receive", "websocket.send"}
@@ -482,10 +486,14 @@ def encode_webtransport_inner_frame(
     framing: str | None,
     payload: Any,
 ) -> bytes:
-    selected = validate_webtransport_inner_framing(lane=lane, inner_framing=framing)
-    if selected is None:
+    selected = validate_webtransport_inner_framing(
+        lane=lane,
+        inner_framing=framing_spec_from_kind(framing),
+    )
+    selected_kind = framing_kind(selected)
+    if not selected_kind:
         return _as_bytes(payload, "webtransport")
-    return encode_frame(selected, payload)
+    return encode_frame(selected_kind, payload)
 
 
 def decode_webtransport_inner_frame(
@@ -494,10 +502,14 @@ def decode_webtransport_inner_frame(
     framing: str | None,
     payload: bytes | bytearray | str,
 ) -> Any:
-    selected = validate_webtransport_inner_framing(lane=lane, inner_framing=framing)
-    if selected is None:
+    selected = validate_webtransport_inner_framing(
+        lane=lane,
+        inner_framing=framing_spec_from_kind(framing),
+    )
+    selected_kind = framing_kind(selected)
+    if not selected_kind:
         return _as_bytes(payload, "webtransport")
-    return decode_frame(selected, payload)
+    return decode_frame(selected_kind, payload)
 
 
 __all__ = [

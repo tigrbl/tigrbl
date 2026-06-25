@@ -128,7 +128,7 @@ def test_cross_transport_equivalence_respects_delivery_ordering_and_framing_decl
     )
 
     assert {row["family"] for row in manifest["bindings"]} == {"stream"}
-    assert {row["framing"] for row in manifest["bindings"]} == {"stream", "sse", "webtransport"}
+    assert {row["framing"] for row in manifest["bindings"]} == {"", "bytes", "sse"}
 
 
 def test_cross_transport_equivalence_manifest_preserves_runtime_plan_and_schema_identity() -> None:

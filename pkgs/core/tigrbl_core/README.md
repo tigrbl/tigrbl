@@ -120,7 +120,7 @@ Use this package when you need to inspect or build operation specs before runtim
 
 - protocol or binding kind, such as HTTP REST, HTTP JSON-RPC, HTTP stream, SSE, WebSocket, WSS, or WebTransport;
 - exchange shape, such as request/response, server stream, bidirectional stream, client stream, server stream, session, or datagram;
-- framing, such as JSON, JSON-RPC, SSE, WebSocket text, stream framing, or WebTransport outer framing;
+- framing, such as JSON, JSON-RPC, SSE, WebSocket text, stream framing, or WebTransport lane-local framing;
 - runtime lane metadata, especially for WebTransport session, stream, and datagram behavior.
 
 This separation is deliberate. Extension authors should not collapse protocol support into a single string or infer framing from the transport name. Invalid combinations should remain explicit validation failures so runtime behavior is fail-closed.

@@ -8,6 +8,8 @@ from tigrbl_core._spec import (
     EngineSpec,
     HttpJsonRpcBindingSpec,
     HttpStreamBindingSpec,
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
     OpSpec,
     PathSpec,
     RouterSpec,
@@ -82,7 +84,7 @@ def test_transport_path_kinds_converge_with_bindings() -> None:
     socket_rpc = PathSpec(path="/ws/rpc", kind="ws-jsonrpc")
     validate_path_binding(
         socket_rpc,
-        WsBindingSpec(proto="ws", path="/ws/rpc", framing="jsonrpc", subprotocols=("jsonrpc",)),
+        WsBindingSpec(proto="ws", path="/ws/rpc", framing=JsonRpcFramingSpec(), subprotocols=("jsonrpc",)),
     )
     secure_socket_rpc = PathSpec(path="/wss/rpc", kind="wss-jsonrpc")
     validate_path_binding(
@@ -90,7 +92,7 @@ def test_transport_path_kinds_converge_with_bindings() -> None:
         WsBindingSpec(
             proto="wss",
             path="/wss/rpc",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             subprotocols=("jsonrpc",),
         ),
     )
@@ -98,7 +100,7 @@ def test_transport_path_kinds_converge_with_bindings() -> None:
     with pytest.raises(ValueError, match="requires PathSpec.kind"):
         validate_path_binding(
             PathSpec(path="/ws/rpc", kind="websocket"),
-            WsBindingSpec(proto="ws", path="/ws/rpc", framing="jsonrpc", subprotocols=("jsonrpc",)),
+            WsBindingSpec(proto="ws", path="/ws/rpc", framing=JsonRpcFramingSpec(), subprotocols=("jsonrpc",)),
         )
 
 
@@ -106,13 +108,13 @@ def test_websocket_jsonrpc_and_ndjson_subprotocols_are_required() -> None:
     binding = WsBindingSpec(
         proto="wss",
         path="/wss/rpc",
-        framing="jsonrpc",
+        framing=JsonRpcFramingSpec(),
         subprotocols=("JSONRPC",),
     )
 
     assert binding.subprotocols == ("jsonrpc",)
 
-    implicit = WsBindingSpec(proto="ws", path="/ws/rpc", framing="jsonrpc")
+    implicit = WsBindingSpec(proto="ws", path="/ws/rpc", framing=JsonRpcFramingSpec())
 
     assert implicit.subprotocols == ("jsonrpc",)
 
@@ -120,11 +122,11 @@ def test_websocket_jsonrpc_and_ndjson_subprotocols_are_required() -> None:
         WsBindingSpec(
             proto="ws",
             path="/ws/rpc",
-            framing="jsonrpc",
+            framing=JsonRpcFramingSpec(),
             subprotocols=("v2",),
         )
 
-    derived = WsBindingSpec(proto="ws", path="/ws/ndjson", framing="ndjson")
+    derived = WsBindingSpec(proto="ws", path="/ws/ndjson", framing=NdjsonFramingSpec())
 
     assert derived.subprotocols == ("ndjson",)
 
@@ -133,7 +135,7 @@ def test_websocket_jsonrpc_and_ndjson_subprotocols_are_required() -> None:
         WsBindingSpec(
             proto="ws",
             path="/ws/ndjson",
-            framing="ndjson",
+            framing=NdjsonFramingSpec(),
             subprotocols=("ndjson",),
         ),
     )
@@ -142,7 +144,7 @@ def test_websocket_jsonrpc_and_ndjson_subprotocols_are_required() -> None:
         WsBindingSpec(
             proto="wss",
             path="/wss/ndjson",
-            framing="ndjson",
+            framing=NdjsonFramingSpec(),
             subprotocols=("ndjson",),
         ),
     )
@@ -158,7 +160,7 @@ def test_docs_projection_selects_transport_metadata_explicitly() -> None:
                 WsBindingSpec(
                     proto="ws",
                     path="/ws/rpc",
-                    framing="jsonrpc",
+                    framing=JsonRpcFramingSpec(),
                     subprotocols=("jsonrpc",),
                 ),
             ),

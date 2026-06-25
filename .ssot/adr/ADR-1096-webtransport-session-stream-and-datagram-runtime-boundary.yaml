@@ -40,7 +40,7 @@ body: |-
   2. Those carriers are represented through `WebTransportBindingSpec.profile` or its normalized protocol-binding equivalent. Tigrbl does not introduce a cross-transport lane axis for this policy.
   3. `message` is not a peer native WebTransport transport profile.
   4. App-level message framing, including JSON, JSON-RPC, text, bytes, binary, or NDJSON where explicitly supported, is an inner payload concern inside a selected stream or datagram profile and is represented by a lane-local `FramingSpec`.
-  5. `WebTransportBindingSpec.framing=webtransport` governs the outer transport/session layer only. It does not prove inner app-level framing support.
+  5. `WebTransportBindingSpec` governs the outer transport/session layer without top-level app framing. It does not prove inner app-level framing support.
   6. WebTransport stream profiles may target record-oriented framings only when boundary rules are explicit.
   7. WebTransport datagram profiles exclude `jsonrpc` and `ndjson` by default because datagrams do not provide stream continuity or reliable record sequencing.
   8. NDJSON must not be implied as a WebTransport transport framing merely because it may later be used as an application payload shape inside a stream.

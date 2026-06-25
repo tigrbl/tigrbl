@@ -36,11 +36,26 @@
       ],
       "type": "string"
     },
+    "spec_kind": {
+      "const": "WsBindingSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:WsBindingSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    },
     "subprotocols": {
       "$ref": "./shared.json#/$defs/StringTuple"
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "proto",
     "path",
     "subprotocols",

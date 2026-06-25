@@ -66,12 +66,12 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
         ),
         (
             binding_spec.HttpStreamBindingSpec(proto="http.stream", path="/items/stream"),
-            {
-                "proto": "http.stream",
-                "exchange": "server_stream",
-                "framing": "stream",
-                "family": "stream",
-            },
+                {
+                    "proto": "http.stream",
+                    "exchange": "server_stream",
+                    "framing": "bytes",
+                    "family": "stream",
+                },
         ),
         (
             binding_spec.SseBindingSpec(path="/items/events"),
@@ -96,7 +96,7 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
             {
                 "proto": "webtransport",
                 "exchange": "bidirectional_stream",
-                "framing": "webtransport",
+                "framing": "",
                 "family": "session",
             },
         ),

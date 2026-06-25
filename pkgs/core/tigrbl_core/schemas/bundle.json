@@ -83,6 +83,18 @@
         "security_deps": {
           "$ref": "#/$defs/StepFnTuple"
         },
+        "spec_kind": {
+          "const": "AppSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:AppSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "system_prefix": {
           "type": "string"
         },
@@ -97,6 +109,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "title",
         "description",
         "version",
@@ -148,9 +163,24 @@
             ]
           },
           "type": "object"
+        },
+        "spec_kind": {
+          "const": "BindingRegistrySpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:BindingRegistrySpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "_bindings"
       ],
       "title": "BindingRegistrySpec",
@@ -179,9 +209,24 @@
         },
         "spec": {
           "$ref": "#/$defs/TransportBindingSpec"
+        },
+        "spec_kind": {
+          "const": "BindingSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:BindingSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "name",
         "spec"
       ],
@@ -277,6 +322,18 @@
             }
           ]
         },
+        "spec_kind": {
+          "const": "ColumnSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:ColumnSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "storage": {
           "anyOf": [
             {
@@ -296,6 +353,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "storage",
         "field",
         "io",
@@ -349,9 +409,24 @@
         },
         "options": {
           "$ref": "#/$defs/AnyMap"
+        },
+        "spec_kind": {
+          "const": "DataTypeSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:DataTypeSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "logical_name",
         "nullable",
         "options"
@@ -386,9 +461,24 @@
               "$ref": "#/$defs/EngineSpecEnvelope"
             }
           ]
+        },
+        "spec_kind": {
+          "const": "EngineProviderSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:EngineProviderSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "spec"
       ],
       "title": "EngineProviderSpec",
@@ -514,6 +604,18 @@
             }
           ]
         },
+        "spec_kind": {
+          "const": "EngineSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:EngineSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "user": {
           "anyOf": [
             {
@@ -526,6 +628,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "kind",
         "async_",
         "dsn",
@@ -583,9 +688,24 @@
         },
         "required_in": {
           "$ref": "#/$defs/StringTuple"
+        },
+        "spec_kind": {
+          "const": "FieldSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:FieldSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "py_type",
         "constraints",
         "description",
@@ -645,11 +765,26 @@
           ],
           "type": "string"
         },
+        "spec_kind": {
+          "const": "ForeignKeySpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:ForeignKeySpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "target": {
           "type": "string"
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "target",
         "on_delete",
         "on_update",
@@ -684,11 +819,26 @@
         "required": {
           "$ref": "#/$defs/StringTuple"
         },
+        "spec_kind": {
+          "const": "HeadersSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:HeadersSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "values": {
           "$ref": "#/$defs/StringMap"
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "values",
         "required",
         "expose"
@@ -784,6 +934,18 @@
         "phase": {
           "type": "string"
         },
+        "spec_kind": {
+          "const": "HookSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:HookSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "subevents": {
           "$ref": "#/$defs/StringTuple"
         },
@@ -799,6 +961,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "phase",
         "fn",
         "ops",
@@ -850,9 +1015,24 @@
         },
         "rpc_method": {
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "HttpJsonRpcBindingSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:HttpJsonRpcBindingSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "proto",
         "rpc_method",
         "endpoint",
@@ -898,9 +1078,24 @@
             "https.rest"
           ],
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "HttpRestBindingSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:HttpRestBindingSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "proto",
         "methods",
         "path",
@@ -946,9 +1141,24 @@
             "https.stream"
           ],
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "HttpStreamBindingSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:HttpStreamBindingSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "proto",
         "path",
         "methods",
@@ -1089,9 +1299,24 @@
         },
         "sortable": {
           "type": "boolean"
+        },
+        "spec_kind": {
+          "const": "IOSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:IOSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "in_verbs",
         "out_verbs",
         "mutable_verbs",
@@ -1314,6 +1539,18 @@
         "security_deps": {
           "$ref": "#/$defs/StepFnTuple"
         },
+        "spec_kind": {
+          "const": "OpSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:OpSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "status_code": {
           "anyOf": [
             {
@@ -1348,6 +1585,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "alias",
         "target",
         "table",
@@ -1429,9 +1669,24 @@
         },
         "script_name": {
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "RequestSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:RequestSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "method",
         "path",
         "headers",
@@ -1547,6 +1802,18 @@
             }
           ]
         },
+        "spec_kind": {
+          "const": "ResponseSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:ResponseSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "status_code": {
           "anyOf": [
             {
@@ -1576,6 +1843,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "kind",
         "media_type",
         "status_code",
@@ -1657,6 +1927,18 @@
         "security_deps": {
           "$ref": "#/$defs/StepFnTuple"
         },
+        "spec_kind": {
+          "const": "RouterSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:RouterSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "tables": {
           "$ref": "#/$defs/StepFnTuple"
         },
@@ -1665,6 +1947,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "name",
         "prefix",
         "engine",
@@ -1707,9 +1992,24 @@
             "out"
           ],
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "SchemaRef",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:SchemaRef:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "alias",
         "kind"
       ],
@@ -1763,9 +2063,24 @@
               "type": "null"
             }
           ]
+        },
+        "spec_kind": {
+          "const": "SchemaSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:SchemaSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "alias",
         "kind",
         "for_",
@@ -2117,6 +2432,18 @@
             }
           ]
         },
+        "spec_kind": {
+          "const": "SessionSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:SessionSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "staleness_ms": {
           "anyOf": [
             {
@@ -2189,6 +2516,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "isolation",
         "read_only",
         "autobegin",
@@ -2260,9 +2590,24 @@
             "https.sse"
           ],
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "SseBindingSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:SseBindingSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "proto",
         "path",
         "methods",
@@ -2418,6 +2763,18 @@
             }
           ]
         },
+        "spec_kind": {
+          "const": "StorageSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:StorageSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "transform": {
           "anyOf": [
             {
@@ -2450,6 +2807,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "type_",
         "physical_type",
         "nullable",
@@ -2497,6 +2857,18 @@
             }
           ]
         },
+        "spec_kind": {
+          "const": "StorageTransformSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:StorageTransformSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "to_stored": {
           "anyOf": [
             {
@@ -2509,6 +2881,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "to_stored",
         "from_stored"
       ],
@@ -2545,9 +2920,24 @@
         },
         "physical_name": {
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "StorageTypeRef",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:StorageTypeRef:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "physical_name",
         "engine_kind"
       ],
@@ -2684,9 +3074,24 @@
             "default"
           ],
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "TableProfileSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:TableProfileSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "kind",
         "role",
         "ops",
@@ -2717,11 +3122,26 @@
     "TableRegistrySpec": {
       "additionalProperties": false,
       "properties": {
+        "spec_kind": {
+          "const": "TableRegistrySpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:TableRegistrySpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "tables": {
           "$ref": "#/$defs/StepFnTuple"
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "tables"
       ],
       "title": "TableRegistrySpec",
@@ -2833,6 +3253,18 @@
         "security_deps": {
           "$ref": "#/$defs/StepFnTuple"
         },
+        "spec_kind": {
+          "const": "TableSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:TableSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "table_profile": {
           "anyOf": [
             {
@@ -2848,6 +3280,9 @@
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "model",
         "model_ref",
         "engine",
@@ -2918,9 +3353,24 @@
             "type": "string"
           },
           "type": "array"
+        },
+        "spec_kind": {
+          "const": "TemplateSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:TemplateSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "name",
         "search_paths",
         "package",
@@ -3016,9 +3466,24 @@
         "proto": {
           "const": "webtransport",
           "type": "string"
+        },
+        "spec_kind": {
+          "const": "WebTransportBindingSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:WebTransportBindingSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "proto",
         "path",
         "profile",
@@ -3064,11 +3529,26 @@
           ],
           "type": "string"
         },
+        "spec_kind": {
+          "const": "WsBindingSpec",
+          "description": "Tigrbl spec payload kind."
+        },
+        "spec_schema_version": {
+          "const": "0.3.20",
+          "description": "Tigrbl spec schema catalog version."
+        },
+        "spec_type": {
+          "const": "urn:tigrbl:spec:WsBindingSpec:0.3.20",
+          "description": "Versioned Tigrbl spec type URN."
+        },
         "subprotocols": {
           "$ref": "#/$defs/StringTuple"
         }
       },
       "required": [
+        "spec_kind",
+        "spec_schema_version",
+        "spec_type",
         "proto",
         "path",
         "subprotocols",

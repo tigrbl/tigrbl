@@ -20,7 +20,10 @@ from tigrbl import (
 )
 from tigrbl_core._spec import (
     HttpStreamBindingSpec,
+    BytesFramingSpec,
+    JsonFramingSpec,
     JsonRpcFramingSpec,
+    NdjsonFramingSpec,
     OpSpec,
     TableProfileError,
     TableProfileSpec,
@@ -242,20 +245,20 @@ def test_webtransport_op_lane_binding_contract() -> None:
 
     assert (by_target["create"].lane, by_target["create"].inner_framing) == (
         "bidi_stream",
-        "jsonrpc",
+        JsonRpcFramingSpec(),
     )
     assert (by_target["tail"].lane, by_target["tail"].inner_framing) == (
         "unidi_server_stream",
-        "ndjson",
+        NdjsonFramingSpec(),
     )
     assert (
         by_target["append_chunk"].lane,
         by_target["append_chunk"].inner_framing,
-    ) == ("unidi_client_stream", "bytes")
+    ) == ("unidi_client_stream", BytesFramingSpec())
     assert (
         by_target["send_datagram"].lane,
         by_target["send_datagram"].inner_framing,
-    ) == ("datagram", "json")
+    ) == ("datagram", JsonFramingSpec())
 
 
 def test_canonical_binding_token_typed_framing_fields() -> None:
@@ -281,8 +284,9 @@ def test_canonical_binding_token_typed_framing_fields() -> None:
     token = lower_binding_tokens_for_ops(WebTransportBidiTable, profile, (op,))[0]
 
     assert token.protocol_kind == "webtransport"
-    assert token.framing_kind == "webtransport"
-    assert token.framing_spec == "WebTransportFramingSpec"
+    assert token.framing == ""
+    assert token.framing_kind == ""
+    assert token.framing_spec == ""
     assert token.lane == "bidi_stream"
     assert token.inner_framing == "jsonrpc"
 
@@ -296,7 +300,7 @@ def test_binding_token_lowering_rejects_unsupported_transport_profile_pairs() ->
 
 
 def test_binding_token_lowering_rejects_unsupported_framing_fallback() -> None:
-    with pytest.raises(ValueError, match="inner framing"):
+    with pytest.raises(TypeError, match="FramingSpec"):
         WebTransportBindingSpec(profile="datagram", inner_framing="ndjson")
 
 

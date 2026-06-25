@@ -8,13 +8,13 @@ status: "accepted"
 origin: "repo-local"
 decision_date: null
 tags: []
-summary: "WebTransport outer framing remains webtransport. Session lanes have no app-level inner framing, stream lanes may select stream-safe codecs through inner_framing, datagram lanes may select only datagram-safe codecs, and illegal lane/framing combinations fail closed before runtime dispatch."
+summary: "WebTransport has no top-level app framing. Session lanes have no app-level inner framing, stream lanes may select stream-safe codecs through inner_framing, datagram lanes may select only datagram-safe codecs, and illegal lane/framing combinations fail closed before runtime dispatch."
 supersedes: []
 superseded_by: []
 status_notes: []
 references: []
 body: |-
-  WebTransport outer framing remains webtransport. Session lanes have no app-level inner framing, stream lanes may select stream-safe codecs through inner_framing, datagram lanes may select only datagram-safe codecs, and illegal lane/framing combinations fail closed before runtime dispatch.
+  WebTransport has no top-level app framing. Session lanes have no app-level inner framing, stream lanes may select stream-safe codecs through inner_framing, datagram lanes may select only datagram-safe codecs, and illegal lane/framing combinations fail closed before runtime dispatch.
 spec_kind: "normative"
 adr_ids:
   - "adr:1173"

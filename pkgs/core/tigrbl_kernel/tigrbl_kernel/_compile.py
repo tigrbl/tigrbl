@@ -13,6 +13,7 @@ from tigrbl_core._spec.binding_spec import (
     WebTransportProtocolBindingSpec,
     derive_websocket_subprotocol_for_framing,
     derive_session_metadata_for_framing,
+    framing_kind,
     framing_spec_name,
 )
 from tigrbl_core.config.constants import __JSONRPC_DEFAULT_ENDPOINT__
@@ -38,40 +39,44 @@ DEFAULT_PHASE_ORDER = tuple(getattr(_ev, "PHASES", ())) or _DEFAULT_PHASE_ORDER
 
 
 def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
-    framing = str(getattr(binding, "framing", "") or "")
+    framing_obj = getattr(binding, "framing", None)
+    framing = framing_kind(framing_obj)
     metadata: dict[str, Any] = {
         "framing": framing,
         "framing_kind": framing,
-        "framing_spec": framing_spec_name(framing),
+        "framing_spec": framing_spec_name(framing_obj),
     }
     proto = str(getattr(binding, "proto", "") or "")
     if isinstance(binding, WebSocketProtocolBindingSpec):
-        derived_subprotocol = derive_websocket_subprotocol_for_framing(framing)
+        derived_subprotocol = derive_websocket_subprotocol_for_framing(framing_obj)
         if derived_subprotocol is not None:
             metadata["websocket_subprotocol"] = derived_subprotocol
     elif proto in {"ws", "wss"}:
         metadata.update(
             derive_session_metadata_for_framing(
                 binding_kind=proto,
-                framing=framing,
+                framing=framing_obj,
                 subprotocols=tuple(getattr(binding, "subprotocols", ()) or ()),
             )
         )
     if isinstance(binding, WebTransportProtocolBindingSpec):
-        control = binding.control_stream
-        metadata["control_stream"] = {
-            "name": control.name,
-            "kind": control.kind,
-            "opens": control.opens,
-            "purpose": control.purpose,
-            "framing": control.framing,
-        }
+        if binding.control_stream is not None:
+            control = binding.control_stream
+            metadata["control_stream"] = {
+                "name": control.name,
+                "kind": control.kind,
+                "opens": control.opens,
+                "purpose": control.purpose,
+                "framing": framing_kind(control.framing),
+                "framing_spec": framing_spec_name(control.framing),
+            }
         metadata["streams"] = tuple(
             {
                 "name": stream.name,
                 "kind": stream.kind,
                 "purpose": stream.purpose,
-                "framing": stream.framing,
+                "framing": framing_kind(stream.framing),
+                "framing_spec": framing_spec_name(stream.framing),
             }
             for stream in binding.streams
         )
@@ -79,7 +84,8 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
             {
                 "name": datagram.name,
                 "purpose": datagram.purpose,
-                "framing": datagram.framing,
+                "framing": framing_kind(datagram.framing),
+                "framing_spec": framing_spec_name(datagram.framing),
             }
             for datagram in binding.datagrams
         )
@@ -87,7 +93,8 @@ def _route_metadata_for_binding(binding: Any) -> dict[str, Any]:
         lane = getattr(binding, "lane", None) or getattr(binding, "profile", None)
         inner_framing = getattr(binding, "inner_framing", None)
         metadata["lane"] = lane
-        metadata["inner_framing"] = inner_framing
+        metadata["inner_framing"] = framing_kind(inner_framing)
+        metadata["inner_framing_spec"] = framing_spec_name(inner_framing)
         if inner_framing is not None:
             metadata["inner_framing_kind"] = str(inner_framing)
             metadata["inner_framing_spec"] = framing_spec_name(inner_framing)

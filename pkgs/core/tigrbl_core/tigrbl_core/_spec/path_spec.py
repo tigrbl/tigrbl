@@ -11,6 +11,7 @@ from .binding_spec import (
     TransportBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
+    framing_kind,
 )
 from .op_spec import OpSpec
 from .serde import SerdeMixin
@@ -117,9 +118,10 @@ class PathSpec(SerdeMixin):
             return
         if isinstance(binding, WsBindingSpec):
             expected = {"websocket"}
-            if binding.framing == "jsonrpc":
+            selected_framing = framing_kind(binding.framing)
+            if selected_framing == "jsonrpc":
                 expected = {"ws-jsonrpc"} if binding.proto == "ws" else {"wss-jsonrpc"}
-            elif binding.framing == "ndjson":
+            elif selected_framing == "ndjson":
                 expected = {"ws-ndjson"} if binding.proto == "ws" else {"wss-ndjson"}
             _expect_path_kind(self.kind, expected)
 

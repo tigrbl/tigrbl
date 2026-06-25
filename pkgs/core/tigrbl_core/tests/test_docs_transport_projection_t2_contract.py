@@ -11,6 +11,8 @@ from tigrbl_core._spec import (
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     HttpStreamBindingSpec,
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
     OpSpec,
     PathSpec,
     SseBindingSpec,
@@ -71,7 +73,7 @@ def _projection_paths() -> tuple[PathSpec, ...]:
                     HttpStreamBindingSpec(
                         proto="https.stream",
                         path="/items/tail",
-                        framing="ndjson",
+                        framing=NdjsonFramingSpec(),
                     ),
                     tags=("stream",),
                 ),
@@ -97,7 +99,7 @@ def _projection_paths() -> tuple[PathSpec, ...]:
                     WsBindingSpec(
                         proto="ws",
                         path="/ws/rpc",
-                        framing="jsonrpc",
+                        framing=JsonRpcFramingSpec(),
                         subprotocols=("jsonrpc",),
                     ),
                     tags=("socket",),
@@ -113,7 +115,7 @@ def _projection_paths() -> tuple[PathSpec, ...]:
                     WsBindingSpec(
                         proto="wss",
                         path="/wss/rpc",
-                        framing="jsonrpc",
+                        framing=JsonRpcFramingSpec(),
                         subprotocols=("jsonrpc",),
                     ),
                     tags=("socket", "secure"),

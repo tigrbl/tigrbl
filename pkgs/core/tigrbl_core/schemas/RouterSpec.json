@@ -68,6 +68,18 @@
     "security_deps": {
       "$ref": "./shared.json#/$defs/StepFnTuple"
     },
+    "spec_kind": {
+      "const": "RouterSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:RouterSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    },
     "tables": {
       "$ref": "./shared.json#/$defs/StepFnTuple"
     },
@@ -76,6 +88,9 @@
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "name",
     "prefix",
     "engine",

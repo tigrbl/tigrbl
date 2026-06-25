@@ -110,20 +110,20 @@ def test_protocol_binding_appspec_schema_authors_path_not_endpoint_or_subprotoco
     assert isinstance(rest, HttpRestProtocolBindingSpec)
     assert rest.path == "/widgets"
     assert rest.methods == ("POST",)
-    assert rest.framing == "json"
+    assert isinstance(rest.framing, JsonFramingSpec)
     assert not hasattr(rest, "endpoint")
     assert not hasattr(rest, "rpc_method")
 
     assert isinstance(rpc, HttpJsonRpcProtocolBindingSpec)
     assert rpc.path == "/rpc"
     assert rpc.method == "Widget.create"
-    assert rpc.framing == "jsonrpc"
+    assert isinstance(rpc.framing, JsonRpcFramingSpec)
     assert not hasattr(rpc, "endpoint")
     assert not hasattr(rpc, "rpc_method")
 
     assert isinstance(ws, WebSocketProtocolBindingSpec)
     assert ws.path == "/ws/widgets"
-    assert ws.framing == "jsonrpc"
+    assert isinstance(ws.framing, JsonRpcFramingSpec)
     assert not hasattr(ws, "subprotocols")
 
 
@@ -132,10 +132,11 @@ def test_webtransport_protocol_binding_schema_declares_named_jsonrpc_lanes() -> 
 
     assert isinstance(binding, WebTransportProtocolBindingSpec)
     assert binding.path == "/wt/widgets"
+    assert binding.control_stream is not None
     assert binding.control_stream.kind == "bidi_stream"
     assert binding.control_stream.opens == "first"
     assert binding.control_stream.purpose == "session_control"
-    assert binding.control_stream.framing == "jsonrpc"
+    assert isinstance(binding.control_stream.framing, JsonRpcFramingSpec)
     assert tuple(stream.name for stream in binding.streams) == (
         "commands",
         "events",
@@ -146,9 +147,9 @@ def test_webtransport_protocol_binding_schema_declares_named_jsonrpc_lanes() -> 
         "unidi_server_stream",
         "unidi_client_stream",
     }
-    assert {stream.framing for stream in binding.streams} == {"jsonrpc"}
+    assert {type(stream.framing) for stream in binding.streams} == {JsonRpcFramingSpec}
     assert tuple(datagram.name for datagram in binding.datagrams) == ("acks",)
-    assert binding.datagrams[0].framing == "jsonrpc"
+    assert isinstance(binding.datagrams[0].framing, JsonRpcFramingSpec)
 
 
 def test_protocol_binding_runtime_metadata_derives_not_authors_session_labels() -> None:
@@ -174,6 +175,32 @@ def test_protocol_binding_runtime_metadata_derives_not_authors_session_labels() 
     assert "inner_framing_spec" not in wt_metadata
 
 
+def test_webtransport_protocol_binding_allows_lane_ops_without_control_stream() -> None:
+    binding = WebTransportProtocolBindingSpec(
+        path="/wt/widgets",
+        streams=(
+            {
+                "name": "events",
+                "kind": "unidi_server_stream",
+                "framing": JsonRpcFramingSpec(),
+            },
+        ),
+        datagrams=(
+            {
+                "name": "acks",
+                "framing": BytesFramingSpec(),
+            },
+        ),
+    )
+
+    metadata = project_binding_runtime_metadata(binding)
+
+    assert binding.control_stream is None
+    assert "control_stream" not in metadata
+    assert metadata["streams"][0]["framing"] == "jsonrpc"
+    assert metadata["datagrams"][0]["framing"] == "bytes"
+
+
 def test_protocol_binding_schema_negative_corpus_fails_closed() -> None:
     with pytest.raises(TypeError):
         HttpJsonRpcProtocolBindingSpec(  # type: ignore[call-arg]
@@ -185,6 +212,12 @@ def test_protocol_binding_schema_negative_corpus_fails_closed() -> None:
             path="/ws/widgets",
             framing=JsonRpcFramingSpec(),
             subprotocols=("jsonrpc",),
+        )
+    with pytest.raises(TypeError, match="FramingSpec"):
+        HttpRestProtocolBindingSpec(
+            path="/widgets",
+            methods=("GET",),
+            framing="json",  # type: ignore[arg-type]
         )
     with pytest.raises(ValueError, match="unique"):
         WebTransportProtocolBindingSpec(

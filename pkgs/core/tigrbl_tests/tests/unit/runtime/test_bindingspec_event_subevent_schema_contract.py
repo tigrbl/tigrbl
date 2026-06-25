@@ -69,7 +69,7 @@ def _require(module_name: str, attr_name: str):
             {
                 "exchange": "bidirectional_stream",
                 "family": "session",
-                "framing": "webtransport",
+                "framing": "",
                 "subevents": ("session.open", "stream.received", "datagram.received", "session.close"),
             },
         ),

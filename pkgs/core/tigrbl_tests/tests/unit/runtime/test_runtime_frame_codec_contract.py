@@ -16,8 +16,11 @@ from tigrbl_atoms.atoms.framing.codec import (
     supported_frame_codecs,
 )
 from tigrbl_core._spec.binding_spec import (
+    JsonFramingSpec,
     JsonRpcFramingSpec,
     NdjsonFramingSpec,
+    SseFramingSpec,
+    TextFramingSpec,
     WebSocketBindingSpec,
     WsBindingSpec,
     derive_session_metadata_for_framing,
@@ -77,31 +80,31 @@ def test_runtime_frame_envelope_schema_static_t0() -> None:
 
 
 def test_framing_support_matrix_codec_coverage_t0() -> None:
-    assert validate_app_framing_for_binding(binding_kind="http.rest", framing="json") == "json"
+    assert validate_app_framing_for_binding(binding_kind="http.rest", framing=JsonFramingSpec()) == JsonFramingSpec()
     assert (
         validate_app_framing_for_binding(
             binding_kind="http.jsonrpc",
             framing=JsonRpcFramingSpec(),
         )
-        == "jsonrpc"
+        == JsonRpcFramingSpec()
     )
-    assert validate_app_framing_for_binding(binding_kind="http.sse", framing="sse") == "sse"
-    assert validate_app_framing_for_binding(binding_kind="ws", framing="text") == "text"
+    assert validate_app_framing_for_binding(binding_kind="http.sse", framing=SseFramingSpec()) == SseFramingSpec()
+    assert validate_app_framing_for_binding(binding_kind="ws", framing=TextFramingSpec()) == TextFramingSpec()
 
 
 def test_jsonrpc_ndjson_distinction_static_t0() -> None:
     with pytest.raises(ValueError, match="ndjson"):
         validate_app_framing_for_binding(
             binding_kind="http.jsonrpc",
-            framing="ndjson",
+            framing=NdjsonFramingSpec(),
         )
 
 
 def test_webtransport_inner_codec_legality_static_t0() -> None:
-    assert validate_webtransport_inner_framing(lane="bidi_stream", inner_framing="json") == "json"
+    assert validate_webtransport_inner_framing(lane="bidi_stream", inner_framing=JsonFramingSpec()) == JsonFramingSpec()
     assert validate_webtransport_inner_framing(lane="datagram", inner_framing=None) is None
     with pytest.raises(ValueError, match="session lane"):
-        validate_webtransport_inner_framing(lane="session", inner_framing="json")
+        validate_webtransport_inner_framing(lane="session", inner_framing=JsonFramingSpec())
 
 
 def test_runtime_json_codec_roundtrip_t1() -> None:
@@ -289,7 +292,7 @@ def test_webtransport_inner_codec_dispatch_t1() -> None:
 def test_binding_policy_to_codec_runtime_integration_t2() -> None:
     binding = WsBindingSpec(proto="ws", path="/rpc", framing=JsonRpcFramingSpec())
 
-    assert binding.framing == "jsonrpc"
+    assert binding.framing == JsonRpcFramingSpec()
     assert binding.subprotocols == ("jsonrpc",)
     assert decode_frame("jsonrpc", encode_frame("jsonrpc", {"method": "ping"}))[
         "method"
@@ -319,14 +322,14 @@ def test_framing_negative_corpus_runtime_t2() -> None:
 
 def test_websocket_jsonrpc_subprotocol_codec_t2() -> None:
     ndjson = WsBindingSpec(proto="ws", path="/events", framing=NdjsonFramingSpec())
-    assert ndjson.framing == "ndjson"
+    assert ndjson.framing == NdjsonFramingSpec()
     assert ndjson.subprotocols == ("ndjson",)
     assert decode_frame(
         "websocket.ndjson",
         encode_frame("websocket.ndjson", [{"event": "ready"}]),
     ) == [{"event": "ready"}]
 
-    assert WsBindingSpec(proto="ws", path="/rpc", framing="jsonrpc").subprotocols == (
+    assert WsBindingSpec(proto="ws", path="/rpc", framing=JsonRpcFramingSpec()).subprotocols == (
         "jsonrpc",
     )
 
@@ -338,7 +341,7 @@ def test_jsonrpc_framing_derives_websocket_subprotocol() -> None:
         framing=JsonRpcFramingSpec(),
     )
 
-    assert binding.framing == "jsonrpc"
+    assert binding.framing == JsonRpcFramingSpec()
     assert binding.subprotocols == ("jsonrpc",)
     assert derive_session_metadata_for_framing(
         binding_kind="wss",

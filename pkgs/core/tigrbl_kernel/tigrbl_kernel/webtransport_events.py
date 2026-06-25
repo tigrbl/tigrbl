@@ -3,7 +3,10 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Any
 
-from tigrbl_core._spec.binding_spec import validate_webtransport_inner_framing
+from tigrbl_core._spec.binding_spec import (
+    framing_spec_from_kind,
+    validate_webtransport_inner_framing,
+)
 
 
 def _event(subevent: str, atom: str, family: str) -> dict[str, str]:
@@ -194,7 +197,7 @@ def _validate_stream_payload(
         raise ValueError("client_to_server unidirectional streams cannot be send events")
     validate_webtransport_inner_framing(
         lane=lane,
-        inner_framing=payload.get("framing"),
+        inner_framing=framing_spec_from_kind(payload.get("framing")),
     )
     projection = {
         "family": "stream",
@@ -228,7 +231,7 @@ def _validate_datagram_payload(
     _forbid(payload, "stream_id", "stream_direction", "stream_initiator", "lane_id")
     validate_webtransport_inner_framing(
         lane="datagram",
-        inner_framing=payload.get("framing"),
+        inner_framing=framing_spec_from_kind(payload.get("framing")),
     )
     return {"family": "datagram", "lane": "datagram", "exchange": "bidirectional_stream"}
 

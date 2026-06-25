@@ -32,9 +32,24 @@
     },
     "physical_name": {
       "type": "string"
+    },
+    "spec_kind": {
+      "const": "StorageTypeRef",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:StorageTypeRef:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "physical_name",
     "engine_kind"
   ],

@@ -45,9 +45,24 @@
     },
     "options": {
       "$ref": "./shared.json#/$defs/AnyMap"
+    },
+    "spec_kind": {
+      "const": "DataTypeSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:DataTypeSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "logical_name",
     "nullable",
     "options"

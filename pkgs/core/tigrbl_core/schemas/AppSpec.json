@@ -94,6 +94,18 @@
     "security_deps": {
       "$ref": "./shared.json#/$defs/StepFnTuple"
     },
+    "spec_kind": {
+      "const": "AppSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:AppSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
+    },
     "system_prefix": {
       "type": "string"
     },
@@ -108,6 +120,9 @@
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "title",
     "description",
     "version",

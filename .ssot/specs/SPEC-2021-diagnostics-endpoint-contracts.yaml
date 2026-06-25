@@ -11,7 +11,11 @@ tags: []
 summary: "This document defines the stable payload and mount behavior for framework-owned"
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    at: "2026-06-25T00:00:00Z"
+    note: "Added methodz diagnostics payload coverage for canonical app, router, table, path, and system ops."
+    status: "draft"
 references: []
 body: |-
   ## Intent
@@ -29,6 +33,8 @@ body: |-
   - warnings, when present, come from a governed vocabulary.
   - `/system/kernelz` exposes kernel and priming status through a bounded
     operational payload rather than raw internal object state.
+  - `/system/methodz` exposes a bounded method catalog for canonical app,
+    router, table, path, and system ops rather than raw handler internals.
   
   ## Traceability
   

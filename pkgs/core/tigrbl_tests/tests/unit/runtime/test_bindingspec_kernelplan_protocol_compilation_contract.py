@@ -31,7 +31,7 @@ def _require(module_name: str, attr_name: str):
         ),
         (
             {"kind": "http.stream", "path": "/stream"},
-            {"family": "stream", "framing": "stream", "anchors": ("transport.emit", "transport.emit_complete")},
+            {"family": "stream", "framing": "bytes", "anchors": ("transport.emit", "transport.emit_complete")},
         ),
         (
             {"kind": "http.sse", "path": "/events"},
@@ -43,7 +43,7 @@ def _require(module_name: str, attr_name: str):
         ),
         (
             {"kind": "webtransport", "path": "/transport"},
-            {"family": "session", "framing": "webtransport", "anchors": ("transport.accept", "dispatch.subevent.derive", "transport.close")},
+            {"family": "session", "framing": "", "anchors": ("transport.accept", "dispatch.subevent.derive", "transport.close")},
         ),
     ),
 )
@@ -118,12 +118,12 @@ def test_kernel_protocol_plan_normalizes_webtransport_inner_framing_spec() -> No
         },
     )
 
-    assert plan["framing"] == "webtransport"
-    assert plan["framing_spec"] == "WebTransportFramingSpec"
+    assert plan["framing"] == "jsonrpc"
+    assert plan["framing_kind"] == "jsonrpc"
+    assert plan["framing_spec"] == "JsonRpcFramingSpec"
     assert plan["inner_framing"] == "jsonrpc"
+    assert plan["inner_framing_spec"] == "JsonRpcFramingSpec"
     assert plan["event_key_inputs"]["inner_framing"] == "jsonrpc"
-    assert "inner_framing_kind" not in plan
-    assert "inner_framing_spec" not in plan
 
 
 def test_protocol_compilation_emits_lifecycle_matrix_rows_for_each_subevent() -> None:
@@ -153,6 +153,7 @@ def test_protocol_compilation_uses_bindingspec_as_source_of_truth_not_transport_
         {"kind": "http.rest", "path": "/items", "framing": "sse"},
         {"kind": "http.jsonrpc", "path": "/rpc"},
         {"kind": "ws", "path": "/socket", "methods": ("GET",)},
+        {"kind": "webtransport", "path": "/transport", "framing": "webtransport"},
         {"kind": "webtransport", "path": "/transport", "exchange": "request_response"},
     ),
 )

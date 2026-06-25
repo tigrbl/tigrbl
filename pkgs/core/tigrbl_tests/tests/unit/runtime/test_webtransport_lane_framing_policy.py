@@ -3,6 +3,10 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_core._spec.binding_spec import (
+    JsonFramingSpec,
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
+    TextFramingSpec,
     WEBTRANSPORT_INNER_FRAMING_SUPPORT,
     WEBTRANSPORT_LANE_EXCHANGES,
     WEBTRANSPORT_NATIVE_LANES,
@@ -28,34 +32,36 @@ def test_webtransport_native_lane_table_has_no_message_lane() -> None:
     assert set(WEBTRANSPORT_LANE_EXCHANGES) == set(WEBTRANSPORT_NATIVE_LANES)
 
 
-def test_webtransport_bindingspec_defaults_to_session_lane_and_outer_framing() -> None:
+def test_webtransport_bindingspec_defaults_to_session_lane_without_outer_framing() -> None:
     binding = WebTransportBindingSpec(path="/transport")
 
     assert binding.profile == "webtransport"
     assert binding.lane == "session"
-    assert binding.framing == "webtransport"
+    assert binding.framing is None
     assert binding.inner_framing is None
 
     metadata = project_binding_runtime_metadata(binding)
     assert metadata["family"] == "session"
     assert metadata["lane"] == "session"
-    assert metadata["framing"] == "webtransport"
+    assert metadata["framing"] == ""
+    assert metadata["framing_spec"] == ""
 
 
 @pytest.mark.parametrize(
-    ("profile", "expected_exchange", "expected_family", "inner_framing"),
+    ("profile", "expected_exchange", "expected_family", "inner_framing", "expected_framing"),
     (
-        ("bidi_stream", "bidirectional_stream", "stream", "jsonrpc"),
-        ("unidi_client_stream", "client_stream", "stream", "ndjson"),
-        ("unidi_server_stream", "server_stream", "stream", "text"),
-        ("datagram", "bidirectional_stream", "datagram", "json"),
+        ("bidi_stream", "bidirectional_stream", "stream", JsonRpcFramingSpec(), "jsonrpc"),
+        ("unidi_client_stream", "client_stream", "stream", NdjsonFramingSpec(), "ndjson"),
+        ("unidi_server_stream", "server_stream", "stream", TextFramingSpec(), "text"),
+        ("datagram", "bidirectional_stream", "datagram", JsonFramingSpec(), "json"),
     ),
 )
 def test_webtransport_lane_specs_project_family_exchange_and_inner_framing(
     profile: str,
     expected_exchange: str,
     expected_family: str,
-    inner_framing: str,
+    inner_framing,
+    expected_framing: str,
 ) -> None:
     binding = WebTransportBindingSpec(profile=profile, inner_framing=inner_framing)
 
@@ -65,29 +71,30 @@ def test_webtransport_lane_specs_project_family_exchange_and_inner_framing(
     assert binding.exchange == expected_exchange
     assert metadata["family"] == expected_family
     assert metadata["lane"] == profile
-    assert metadata["inner_framing"] == inner_framing
+    assert metadata["framing"] == ""
+    assert metadata["inner_framing"] == expected_framing
 
 
 def test_webtransport_inner_framing_is_lane_gated() -> None:
     assert (
         validate_webtransport_inner_framing(
             lane="bidi_stream",
-            inner_framing="jsonrpc",
+            inner_framing=JsonRpcFramingSpec(),
         )
-        == "jsonrpc"
+        == JsonRpcFramingSpec()
     )
     assert (
         validate_webtransport_inner_framing(
             lane="datagram",
-            inner_framing="jsonrpc",
+            inner_framing=JsonRpcFramingSpec(),
         )
-        == "jsonrpc"
+        == JsonRpcFramingSpec()
     )
 
     with pytest.raises(ValueError, match="session lane"):
-        validate_webtransport_inner_framing(lane="session", inner_framing="json")
+        validate_webtransport_inner_framing(lane="session", inner_framing=JsonFramingSpec())
     with pytest.raises(ValueError, match="inner framing"):
-        validate_webtransport_inner_framing(lane="datagram", inner_framing="ndjson")
+        validate_webtransport_inner_framing(lane="datagram", inner_framing=NdjsonFramingSpec())
 
 
 @pytest.mark.parametrize(
@@ -148,7 +155,7 @@ def test_webtransport_rejects_message_profile_and_outer_framing_confusion() -> N
         WebTransportBindingSpec(profile="message")  # type: ignore[arg-type]
 
     with pytest.raises(ValueError, match="framing"):
-        WebTransportBindingSpec(profile="bidi_stream", framing="jsonrpc")
+        WebTransportBindingSpec(profile="bidi_stream", framing=JsonRpcFramingSpec())
 
     with pytest.raises(ValueError, match="framing|outer"):
         compile_binding_protocol_plan(
@@ -195,7 +202,8 @@ def test_kernel_plan_compiles_webtransport_native_lanes(
     plan = compile_binding_protocol_plan("Transport.op", binding)
 
     assert plan["family"] == family
-    assert plan["framing"] == "webtransport"
+    expected_framing = "" if binding.get("profile") == "webtransport" else binding.get("inner_framing")
+    assert plan["framing"] == expected_framing
     expected_lane = "session" if binding.get("profile") == "webtransport" else binding.get("profile")
     assert plan["event_key_inputs"]["lane"] == expected_lane
     assert {row["subevent"] for row in plan["lifecycle_rows"]} == expected_subevents

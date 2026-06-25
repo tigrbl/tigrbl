@@ -32,13 +32,17 @@ status_notes:
     status: "draft"
     note: "Added HTTP stream response JSON-RPC chunk-envelope framing policy."
     at: "2026-06-24T00:00:00Z"
+  -
+    status: "draft"
+    note: "Removed WebTransport as an app-level framing token and made authoring framing typed-only."
+    at: "2026-06-25T00:00:00Z"
 references: []
 body: |-
   ## Context
   
   The contract and bridge taxonomy now separate canonical event identity from channel, family, exchange, direction, and app-level framing metadata. Tigrbl also has a dated framing matrix addendum that declares intended app-level framing support per protocol profile.
   
-  Without a dedicated policy, Tigrbl can accidentally infer app framing from protocol names, secure variants, WebTransport outer framing, or type-union tokens. That would overstate support and make runtime codecs hard to validate.
+  Without a dedicated policy, Tigrbl can accidentally infer app framing from protocol names, secure variants, WebTransport transport identity, or type-union tokens. That would overstate support and make runtime codecs hard to validate.
   
   ## Decision
   
@@ -56,7 +60,7 @@ body: |-
   - `NdjsonFramingSpec`
   - `SseFramingSpec`
   
-  Legacy string values normalize to these typed specs before compiler, runtime, docs, support-matrix, or conformance use.
+  Authoring `framing` values must be concrete typed `FramingSpec` declarations. String or literal framing tokens are invalid at the spec boundary and must not be accepted as canonical authoring input.
   
   Tigrbl shall use the following target framing policy:
   
@@ -80,8 +84,8 @@ body: |-
   - `wts.unidi_client_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
   - `wt.unidi_server_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
   - `wts.unidi_server_stream`: `bytes`, `binary`, `text`, `json`, `jsonrpc`, and `ndjson`, with stream record-boundary rules required.
-  - `wt.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
-  - `wts.datagram`: `bytes`, `binary`, `text`, and `json`; `jsonrpc` and `ndjson` are excluded by default.
+  - `wt.datagram`: `bytes`, `binary`, `text`, `json`, and `jsonrpc`; `ndjson` is excluded by default.
+  - `wts.datagram`: `bytes`, `binary`, `text`, `json`, and `jsonrpc`; `ndjson` is excluded by default.
   
   `JsonRpcFramingSpec` means complete JSON-RPC message semantics. It must not be implied by `JsonFramingSpec`, `NdjsonFramingSpec`, or a generic stream carrier. For HTTP stream response profiles it means one complete JSON-RPC document per emitted response chunk, not the HTTP JSON-RPC request/response binding profile.
   
@@ -89,7 +93,7 @@ body: |-
   
   `SseFramingSpec` is exclusive to the SSE profile.
   
-  `webtransport` is outer transport identity/framing only. App-level framing lives inside the selected WebTransport profile.
+  `webtransport` is transport identity only, not an app-level framing. App-level framing lives only inside the selected WebTransport lane profile when that lane carries application payloads.
   
   This slice does not add `StdioBindingSpec` or stdio framing policy.
   

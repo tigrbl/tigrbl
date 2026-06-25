@@ -54,9 +54,24 @@
         "type": "string"
       },
       "type": "array"
+    },
+    "spec_kind": {
+      "const": "TemplateSpec",
+      "description": "Tigrbl spec payload kind."
+    },
+    "spec_schema_version": {
+      "const": "0.3.20",
+      "description": "Tigrbl spec schema catalog version."
+    },
+    "spec_type": {
+      "const": "urn:tigrbl:spec:TemplateSpec:0.3.20",
+      "description": "Versioned Tigrbl spec type URN."
     }
   },
   "required": [
+    "spec_kind",
+    "spec_schema_version",
+    "spec_type",
     "name",
     "search_paths",
     "package",

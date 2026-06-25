@@ -32,7 +32,7 @@ def test_eventful_protocol_decorators_lower_to_op_ctx_plus_binding_specs() -> No
         ("websocket_ctx", {"proto": "ws", "exchange": "bidirectional_stream", "framing": "text"}),
         ("sse_ctx", {"proto": "http.sse", "exchange": "server_stream", "framing": "sse"}),
         ("stream_ctx", {"proto": "http.stream", "exchange": "server_stream", "framing": "stream"}),
-        ("webtransport_ctx", {"proto": "webtransport", "exchange": "bidirectional_stream", "framing": "webtransport"}),
+        ("webtransport_ctx", {"proto": "webtransport", "exchange": "bidirectional_stream"}),
     ),
 )
 def test_each_eventful_decorator_lowers_to_expected_binding_shape(
@@ -48,6 +48,8 @@ def test_each_eventful_decorator_lowers_to_expected_binding_shape(
     assert binding["path"] == "/events"
     for key, value in expected.items():
         assert binding[key] == value
+    if decorator == "webtransport_ctx":
+        assert "framing" not in binding
 
 
 def test_subevent_ctx_binds_optional_dispatch_handler() -> None:
