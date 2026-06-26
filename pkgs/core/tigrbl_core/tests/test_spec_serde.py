@@ -8,6 +8,7 @@ from tigrbl_core._spec.binding_spec import (
     BindingRegistrySpec,
     BindingSpec,
     HttpRestBindingSpec,
+    JsonRpcFramingSpec,
 )
 from tigrbl_core._spec.column_spec import ColumnSpec
 from tigrbl_core._spec.datatypes import TypeRegistry
@@ -119,6 +120,16 @@ def test_binding_spec_inherits_serde_mixin_and_round_trips() -> None:
     assert restored.name == "list_widgets"
     assert isinstance(restored.spec, HttpRestBindingSpec)
     assert restored.spec.path == "/widgets"
+
+
+def test_framing_spec_inherits_serde_mixin_and_serializes() -> None:
+    framing = JsonRpcFramingSpec()
+
+    assert isinstance(framing, SerdeMixin)
+    assert framing.to_dict() == {
+        "kind": "jsonrpc",
+        "required_subprotocol": "jsonrpc",
+    }
 
 
 def test_binding_registry_spec_inherits_serde_mixin_and_round_trips() -> None:

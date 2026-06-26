@@ -13,6 +13,7 @@ from tigrbl_concrete._concrete._streaming_response import StreamingResponse
 from tigrbl_concrete._concrete._app import App as TigrblApp
 from tigrbl_concrete._concrete._router import Router as TigrblRouter
 from tigrbl_concrete.system import mount_json_schema, mount_lens, mount_openapi, mount_openrpc, mount_static, mount_swagger
+from tigrbl_core._spec.binding_spec import JsonRpcFramingSpec
 
 
 async def _collect_asgi_messages(app: Any, scope: dict[str, Any], inbound: list[dict[str, Any]] | None = None) -> list[dict[str, Any]]:
@@ -230,4 +231,4 @@ def test_websocket_routes_register_concrete_bindings_with_prefixed_paths() -> No
 
     assert binding.path == "/ws/echo"
     assert binding.exchange == "bidirectional_stream"
-    assert binding.framing == "jsonrpc"
+    assert binding.framing == JsonRpcFramingSpec()

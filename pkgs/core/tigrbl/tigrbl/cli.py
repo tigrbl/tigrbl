@@ -21,6 +21,7 @@ from . import TigrblApp, TigrblRouter
 from .engine import known_engine_kinds, load_engine_plugins
 from .system import mount_lens, mount_openapi, mount_openrpc, mount_swagger
 from tigrbl_core._spec.engine_spec import EngineSpec
+from tigrbl_core._spec.serde import SerdeMixin
 
 SUPPORTED_SERVERS = ("tigrcorn", "uvicorn", "hypercorn", "gunicorn")
 DEFAULT_HOST = "127.0.0.1"
@@ -415,6 +416,8 @@ def _json_default(value: Any) -> Any:
             return [str(item) for item in value]
     if isinstance(value, Path):
         return str(value)
+    if isinstance(value, SerdeMixin):
+        return value.to_dict()
     raise TypeError(f"Object of type {value.__class__.__name__} is not JSON serializable")
 
 
