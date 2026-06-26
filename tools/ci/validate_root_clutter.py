@@ -49,6 +49,7 @@ DISALLOWED_GENERATED_DIR_NAMES = {
 }
 
 EXCLUDED_ROOTS = {
+    ROOT / ".agents",
     ROOT / ".git",
     ROOT / ".pytest_cache",
     ROOT / ".venv",
@@ -63,6 +64,7 @@ EXCLUDED_ROOTS = {
 
 EXCLUDED_DIR_NAMES = {
     "__pycache__",
+    ".venv",
     ".pytest_cache",
 }
 

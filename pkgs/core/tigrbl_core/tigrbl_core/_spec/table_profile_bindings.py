@@ -87,8 +87,8 @@ _REST_METHODS: dict[str, tuple[str, ...]] = {
     "bulk_replace": ("PUT",),
     "bulk_merge": ("PATCH",),
     "bulk_delete": ("DELETE",),
-    "aggregate": ("GET",),
-    "group_by": ("GET",),
+    "aggregate": ("POST",),
+    "group_by": ("POST",),
     "checkpoint": ("POST",),
 }
 _STREAM_TARGETS = {"tail", "download"}
@@ -317,7 +317,7 @@ def _rest_binding(
     binding = HttpRestBindingSpec(
         proto="http.rest",
         methods=tuple(op.http_methods or _REST_METHODS[str(op.target)]),
-        path=_path_for_op(op),
+        path=_rest_path_for_op(table, op),
     )
     return LoweredBinding(
         token=_token_from_binding(
@@ -369,7 +369,10 @@ def _stream_binding(
         raise TableProfileError(
             f"profile {profile.kind!r} does not support stream target {op.target!r}"
         )
-    binding = HttpStreamBindingSpec(proto="http.stream", path=_path_for_op(op))
+    binding = HttpStreamBindingSpec(
+        proto="http.stream",
+        path=_rest_path_for_op(table, op),
+    )
     return LoweredBinding(
         token=_token_from_binding(
             source="table_profile",
@@ -389,7 +392,7 @@ def _sse_binding(
         raise TableProfileError(
             f"profile {profile.kind!r} does not support SSE target {op.target!r}"
         )
-    binding = SseBindingSpec(proto="http.sse", path=_path_for_op(op))
+    binding = SseBindingSpec(proto="http.sse", path=_rest_path_for_op(table, op))
     return LoweredBinding(
         token=_token_from_binding(
             source="table_profile",
@@ -553,6 +556,29 @@ def _path_for_op(op: OpSpec, *, prefix: str = "") -> str:
     if not path.startswith("/"):
         path = f"/{path}"
     return f"{prefix}{path}" if prefix else path
+
+
+def _resource_name(table: type) -> str:
+    table_dict = vars(table)
+    resource = table_dict.get("resource_name") or table_dict.get("__resource__")
+    if isinstance(resource, str) and resource:
+        return resource
+    return table.__name__.lower()
+
+
+def _rest_path_for_op(table: type, op: OpSpec) -> str:
+    resource = _resource_name(table)
+    suffix = getattr(op, "path_suffix", None)
+    if suffix is None and op.alias != op.target:
+        suffix = f"/{op.alias}"
+    suffix = (suffix or "").strip()
+    if suffix and not suffix.startswith("/"):
+        suffix = f"/{suffix}"
+
+    member_target = {"read", "update", "replace", "merge", "delete", "exists"}
+    if op.arity == "member" or op.target in member_target:
+        return f"/{resource}/{{item_id}}{suffix}"
+    return f"/{resource}{suffix}"
 
 
 def _is_custom_or_unknown(op: OpSpec) -> bool:

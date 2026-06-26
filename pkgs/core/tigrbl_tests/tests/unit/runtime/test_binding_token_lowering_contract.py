@@ -48,7 +48,7 @@ def test_binding_tokens_have_canonical_shape() -> None:
     assert token.op_alias == "create"
     assert token.op_target == "create"
     assert token.binding_kind == "http.rest"
-    assert token.path == "/create"
+    assert token.path == "/resttable"
     assert token.methods == ("POST",)
     assert token.framing == "json"
     assert token.exchange == "request_response"
@@ -140,9 +140,9 @@ def test_oltp_and_olap_token_details_preserve_protocol_specific_selectors() -> N
     jsonrpc_olap = {token.op_alias: token for token in _tokens(JsonRpcOlapTable)}
 
     assert rest_oltp["merge"].methods == ("PATCH",)
-    assert rest_oltp["merge"].path == "/merge"
-    assert rest_olap["aggregate"].methods == ("GET",)
-    assert rest_olap["aggregate"].path == "/aggregate"
+    assert rest_oltp["merge"].path == "/restoltptable/{item_id}"
+    assert rest_olap["aggregate"].methods == ("POST",)
+    assert rest_olap["aggregate"].path == "/restolaptable"
     assert jsonrpc_oltp["merge"].rpc_method == "JsonRpcOltpTable.merge"
     assert jsonrpc_oltp["merge"].framing == "jsonrpc"
     assert jsonrpc_olap["aggregate"].rpc_method == "JsonRpcOlapTable.aggregate"
@@ -156,7 +156,7 @@ def test_dual_tokens_keep_independent_rest_path_and_jsonrpc_method() -> None:
 
     merge = pairs["merge"]
 
-    assert merge["http.rest"].path == "/merge"
+    assert merge["http.rest"].path == "/restjsonrpcoltptable/{item_id}"
     assert merge["http.rest"].methods == ("PATCH",)
     assert merge["http.rest"].rpc_method is None
     assert merge["http.jsonrpc"].path == ""
@@ -193,7 +193,7 @@ def test_rest_binding_tokens_include_method_path_and_media_type() -> None:
     assert tokens["update"].methods == ("PATCH",)
     assert tokens["replace"].methods == ("PUT",)
     assert tokens["delete"].methods == ("DELETE",)
-    assert tokens["list"].path == "/list"
+    assert tokens["list"].path == "/resttable"
     assert tokens["list"].framing == "json"
 
 

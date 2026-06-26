@@ -2038,6 +2038,7 @@ dependencies = [
     { name = "tigrbl-ops-olap" },
     { name = "tigrbl-ops-oltp" },
     { name = "tigrbl-ops-realtime" },
+    { name = "tigrbl-ops-webtransport" },
     { name = "tigrbl-typing" },
     { name = "typing-extensions" },
 ]
@@ -2050,6 +2051,7 @@ requires-dist = [
     { name = "tigrbl-ops-olap", editable = "../../pkgs/core/tigrbl_ops_olap" },
     { name = "tigrbl-ops-oltp", editable = "../../pkgs/core/tigrbl_ops_oltp" },
     { name = "tigrbl-ops-realtime", editable = "../../pkgs/core/tigrbl_ops_realtime" },
+    { name = "tigrbl-ops-webtransport", editable = "../../pkgs/core/tigrbl_ops_webtransport" },
     { name = "tigrbl-typing", editable = "../../pkgs/core/tigrbl_typing" },
     { name = "typing-extensions", specifier = ">=4.0" },
 ]
@@ -2131,9 +2133,11 @@ dependencies = [
     { name = "tigrbl-atoms" },
     { name = "tigrbl-base" },
     { name = "tigrbl-core" },
+    { name = "tigrbl-kernel" },
     { name = "tigrbl-ops-olap" },
     { name = "tigrbl-ops-oltp" },
     { name = "tigrbl-ops-realtime" },
+    { name = "tigrbl-ops-webtransport" },
     { name = "tigrbl-runtime" },
     { name = "tigrbl-typing" },
     { name = "uvicorn" },
@@ -2147,9 +2151,11 @@ requires-dist = [
     { name = "tigrbl-atoms", editable = "../../pkgs/core/tigrbl_atoms" },
     { name = "tigrbl-base", editable = "../../pkgs/core/tigrbl_base" },
     { name = "tigrbl-core", editable = "../../pkgs/core/tigrbl_core" },
+    { name = "tigrbl-kernel", editable = "../../pkgs/core/tigrbl_kernel" },
     { name = "tigrbl-ops-olap", editable = "../../pkgs/core/tigrbl_ops_olap" },
     { name = "tigrbl-ops-oltp", editable = "../../pkgs/core/tigrbl_ops_oltp" },
     { name = "tigrbl-ops-realtime", editable = "../../pkgs/core/tigrbl_ops_realtime" },
+    { name = "tigrbl-ops-webtransport", editable = "../../pkgs/core/tigrbl_ops_webtransport" },
     { name = "tigrbl-runtime", editable = "../../pkgs/core/tigrbl_runtime" },
     { name = "tigrbl-typing", editable = "../../pkgs/core/tigrbl_typing" },
     { name = "uvicorn" },
@@ -2342,6 +2348,19 @@ dev = [
 name = "tigrbl-ops-realtime"
 version = "0.4.4.dev1"
 source = { editable = "../../pkgs/core/tigrbl_ops_realtime" }
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8.0" },
+    { name = "ruff", specifier = ">=0.9" },
+]
+
+[[package]]
+name = "tigrbl-ops-webtransport"
+version = "0.4.4.dev1"
+source = { editable = "../../pkgs/core/tigrbl_ops_webtransport" }
 
 [package.metadata]
 

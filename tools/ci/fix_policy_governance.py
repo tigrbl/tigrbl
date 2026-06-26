@@ -78,6 +78,7 @@ DISALLOWED_DIR_NAMES = {
 }
 
 EXCLUDED_ROOTS = {
+    ROOT / ".agents",
     ROOT / ".git",
     ROOT / ".venv",
     ROOT / ".tmp",
@@ -86,6 +87,10 @@ EXCLUDED_ROOTS = {
     ROOT / ".uv-pytest-tigrbl-tests",
     ROOT / ".pip-cache",
     ROOT / ".benchmarks",
+}
+
+EXCLUDED_DIR_NAMES = {
+    ".venv",
 }
 
 ROOT_TEMP_FILES = {
@@ -115,7 +120,9 @@ def _run_validation(script: str) -> tuple[int, str]:
 def _path_is_excluded(path: Path) -> bool:
     if path == ROOT:
         return False
-    return any(excluded == path or excluded in path.parents for excluded in EXCLUDED_ROOTS)
+    if any(excluded == path or excluded in path.parents for excluded in EXCLUDED_ROOTS):
+        return True
+    return any(part in EXCLUDED_DIR_NAMES for part in path.relative_to(ROOT).parts)
 
 
 def _remove_path(path: Path) -> bool:

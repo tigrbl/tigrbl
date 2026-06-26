@@ -23,6 +23,7 @@ EXCLUDED_ROOTS = {
 
 EXCLUDED_NAMES = {
     '__pycache__',
+    '.venv',
     '.pytest_cache',
     '.ruff_cache',
     '.mypy_cache',

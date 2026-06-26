@@ -58,13 +58,13 @@ Source inputs: `pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py`.
 | `https.rest` | `json`, `multipart/form-data` | `request_response` |
 | `http.jsonrpc` | `jsonrpc` | `request_response` |
 | `https.jsonrpc` | `jsonrpc` | `request_response` |
-| `http.stream` | `stream`, `bytes`, `binary`, `text`, `json`, `ndjson` | `server_stream`, `client_stream` |
-| `https.stream` | `stream`, `bytes`, `binary`, `text`, `json`, `ndjson` | `server_stream`, `client_stream` |
+| `http.stream` | `stream`, `bytes`, `binary`, `text`, `json`, `ndjson`, `jsonrpc` | `server_stream`, `client_stream` |
+| `https.stream` | `stream`, `bytes`, `binary`, `text`, `json`, `ndjson`, `jsonrpc` | `server_stream`, `client_stream` |
 | `http.sse` | `sse` | `server_stream` |
 | `https.sse` | `sse` | `server_stream` |
 | `ws` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson` | `bidirectional_stream` |
 | `wss` | `text`, `bytes`, `binary`, `json`, `jsonrpc`, `ndjson` | `bidirectional_stream` |
-| `webtransport` | `webtransport` | `bidirectional_stream`, `client_stream`, `server_stream` |
+| `webtransport` | none | `bidirectional_stream`, `client_stream`, `server_stream` |
 <!-- END GENERATED: equivalence-docs:transport-binding-support -->
 
 ## ASGI Projection

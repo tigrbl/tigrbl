@@ -21,6 +21,20 @@ def _excluded(path: Path) -> bool:
     return module.is_excluded(path)
 
 
+def test_example_local_virtualenv_is_excluded() -> None:
+    path = (
+        REPO_ROOT
+        / 'examples'
+        / 'equivalence_contracts'
+        / '.venv'
+        / 'Lib'
+        / 'site-packages'
+        / 'very_long_generated_dependency_path'
+    )
+
+    assert _excluded(path)
+
+
 def test_repository_conforms_to_declared_path_limits() -> None:
     max_path = 0
     max_file = 0
