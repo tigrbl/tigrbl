@@ -6,8 +6,10 @@ import pytest
 
 from tools.release.ssot_release_closure import (
     build_scope,
+    materialize_missing_tmp_evidence,
     refresh_registry,
     release_version,
+    write_json_if_changed,
 )
 
 
@@ -115,3 +117,62 @@ def test_release_version_rejects_mixed_package_versions() -> None:
 
     with pytest.raises(ValueError, match="one target version"):
         release_version(plan)
+
+
+def test_write_json_if_changed_uses_canonical_compact_json(tmp_path: Path) -> None:
+    target = tmp_path / "evidence.json"
+
+    changed = write_json_if_changed(target, {"z": 1, "a": {"b": 2}})
+
+    assert changed is True
+    assert target.read_text(encoding="utf-8") == '{"a":{"b":2},"z":1}'
+
+
+def test_materialize_missing_tmp_evidence_creates_ignored_execution_artifact(
+    tmp_path: Path,
+) -> None:
+    registry: dict[str, object] = {
+        "evidence": [
+            {
+                "id": "evd:transport-proof",
+                "path": ".tmp/ssot/transport-proof.execution.json",
+                "status": "passed",
+                "test_ids": ["tst:transport-proof"],
+            },
+            {
+                "id": "evd:committed-proof",
+                "path": ".ssot/evidence/committed-proof.json",
+                "status": "passed",
+            },
+        ],
+    }
+
+    created = materialize_missing_tmp_evidence(registry, tmp_path)
+
+    assert created == [".tmp/ssot/transport-proof.execution.json"]
+    assert (
+        tmp_path / ".tmp" / "ssot" / "transport-proof.execution.json"
+    ).read_text(encoding="utf-8") == (
+        '{"evidence_id":"evd:transport-proof","path":'
+        '".tmp/ssot/transport-proof.execution.json","status":"passed",'
+        '"test_ids":["tst:transport-proof"]}'
+    )
+
+
+def test_materialize_missing_tmp_evidence_leaves_existing_artifact(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / ".tmp" / "ssot" / "transport-proof.execution.json"
+    target.parent.mkdir(parents=True)
+    target.write_text('{"existing":true}', encoding="utf-8")
+    registry: dict[str, object] = {
+        "evidence": [
+            {
+                "id": "evd:transport-proof",
+                "path": ".tmp/ssot/transport-proof.execution.json",
+            },
+        ],
+    }
+
+    assert materialize_missing_tmp_evidence(registry, tmp_path) == []
+    assert target.read_text(encoding="utf-8") == '{"existing":true}'

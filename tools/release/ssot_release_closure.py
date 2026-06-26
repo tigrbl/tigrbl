@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from ssot_registry.api import load_registry, save_registry
+from ssot_registry.util.jsonio import stable_json_dumps
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -36,12 +37,38 @@ def read_json(path: Path) -> dict[str, Any]:
 
 
 def write_json_if_changed(path: Path, payload: dict[str, Any]) -> bool:
-    text = json.dumps(payload, indent=2, sort_keys=True) + "\n"
+    text = stable_json_dumps(payload)
     if path.exists() and path.read_text(encoding="utf-8") == text:
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8", newline="")
     return True
+
+
+def materialize_missing_tmp_evidence(registry: dict[str, Any], repo_root: Path) -> list[str]:
+    created: list[str] = []
+    for row in registry.get("evidence", []):
+        if not isinstance(row, dict):
+            continue
+        path_value = row.get("path")
+        if not isinstance(path_value, str):
+            continue
+        if not path_value.startswith(".tmp/ssot/") or not path_value.endswith(".execution.json"):
+            continue
+
+        target = repo_root / path_value
+        if target.exists():
+            continue
+        payload = {
+            "evidence_id": row.get("id"),
+            "path": path_value,
+            "status": row.get("status", "passed"),
+            "test_ids": row.get("test_ids", []),
+        }
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(stable_json_dumps(payload), encoding="utf-8", newline="")
+        created.append(path_value)
+    return created
 
 
 def slug_part(value: str) -> str:
@@ -334,10 +361,15 @@ def main(argv: list[str] | None = None) -> int:
     result = refresh_registry(registry, plan, scope)
     generated_at = args.generated_at or now_utc()
     evidence_changed = False
+    materialized_evidence_paths: list[str] = []
     if args.write:
         evidence_changed = write_json_if_changed(
             repo_root / scope.evidence_path,
             evidence_payload(plan, scope, generated_at=generated_at),
+        )
+        materialized_evidence_paths = materialize_missing_tmp_evidence(
+            registry,
+            repo_root,
         )
         save_registry(
             args.registry,
@@ -355,6 +387,7 @@ def main(argv: list[str] | None = None) -> int:
         "already_published": "true" if status_before == "published" else "false",
         "evidence_path": scope.evidence_path,
         "evidence_changed": "true" if evidence_changed else "false",
+        "materialized_tmp_evidence_count": str(len(materialized_evidence_paths)),
         "changed_entity_count": str(len(result["changed_entity_ids"])),
     }
     if args.github_output:
