@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import pytest
 
-pytest.importorskip("tigrbl")
-
 from tigrbl_core._spec import (
     DocsPayloadSpec,
     DocsProjectionSpec,
@@ -20,7 +18,11 @@ from tigrbl_core._spec import (
 )
 from tigrbl_core._spec.docs_spec import validate_docs_tree
 from tigrbl_core._spec.table_spec import TableSpec
-from tigrbl import RestJsonRpcTable
+
+
+class RestJsonRpcTable:
+    resource_name = "create"
+    TABLE_PROFILE = "rest_jsonrpc"
 
 
 def _op(alias: str, *bindings: object, tags: tuple[str, ...] = ()) -> OpSpec:

@@ -14,6 +14,7 @@ from tigrbl_core._spec.binding_spec import (
     NdjsonFramingSpec,
     SseBindingSpec,
     SseFramingSpec,
+    StreamFramingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
     project_binding_runtime_metadata,
@@ -59,7 +60,7 @@ def test_streaming_binding_specs_expose_exchange_and_framing_defaults() -> None:
     wt = WebTransportBindingSpec(path="/transport")
 
     assert stream.exchange == "server_stream"
-    assert isinstance(stream.framing, BytesFramingSpec)
+    assert isinstance(stream.framing, StreamFramingSpec)
     assert sse.exchange == "server_stream"
     assert isinstance(sse.framing, SseFramingSpec)
     assert ws.exchange == "bidirectional_stream"

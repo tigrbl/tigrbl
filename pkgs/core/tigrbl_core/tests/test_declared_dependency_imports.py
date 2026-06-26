@@ -4,8 +4,15 @@ import ast
 import sys
 from pathlib import Path
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # pragma: no cover - Python 3.10
+    import tomli as tomllib
+
 PACKAGE_NAME = "tigrbl_core"
-PACKAGE_DIR = Path(__file__).resolve().parents[1] / PACKAGE_NAME
+PACKAGE_ROOT = Path(__file__).resolve().parents[1]
+PACKAGE_DIR = PACKAGE_ROOT / PACKAGE_NAME
+TESTS_DIR = PACKAGE_ROOT / "tests"
 
 # Static snapshot from pyproject.toml [project.dependencies].
 ALLOWED_TOP_LEVEL_IMPORTS = {
@@ -66,3 +73,16 @@ def test_core_does_not_import_base_concrete_kernel_or_runtime() -> None:
     }
 
     assert imported.isdisjoint(forbidden)
+
+
+def test_core_pyproject_does_not_depend_on_public_facade() -> None:
+    pyproject = tomllib.loads((PACKAGE_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
+    dependencies = pyproject["project"]["dependencies"]
+
+    assert "tigrbl" not in dependencies
+
+
+def test_core_package_local_tests_do_not_import_public_facade() -> None:
+    imported = _collect_top_level_imports(TESTS_DIR)
+
+    assert "tigrbl" not in imported

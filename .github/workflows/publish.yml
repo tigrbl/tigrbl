@@ -204,12 +204,127 @@ jobs:
           name: release-plan
           path: release-plan.json
 
+  ssot-release-closure:
+    name: Refresh and publish SSOT release closure
+    runs-on: ubuntu-latest
+    needs:
+      - prepare-release
+    outputs:
+      commit_sha: ${{ steps.commit.outputs.commit_sha }}
+      release_id: ${{ steps.ssot.outputs.release_id }}
+      boundary_id: ${{ steps.ssot.outputs.boundary_id }}
+    steps:
+      - name: Check out prepared release commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        run: python -m pip install --upgrade pip uv
+
+      - name: Download release plan
+        uses: actions/download-artifact@v4
+        with:
+          name: release-plan
+          path: .
+
+      - name: Refresh SSOT proof chain
+        id: ssot
+        run: >-
+          uv run python tools/release/ssot_release_closure.py
+          --summary release-plan.json
+          --prepared-commit "${{ needs.prepare-release.outputs.commit_sha }}"
+          --write
+          --github-output "$GITHUB_OUTPUT"
+
+      - name: Validate SSOT registry before progression
+        run: uv run ssot validate . --write-report
+
+      - name: Synchronize SSOT statuses
+        run: |
+          uv run ssot registry sync-statuses . --dry-run
+          uv run ssot registry sync-statuses .
+
+      - name: Certify SSOT release
+        if: ${{ steps.ssot.outputs.already_published != 'true' }}
+        run: >-
+          uv run ssot release certify .
+          --release-id "${{ steps.ssot.outputs.release_id }}"
+          --write-report
+
+      - name: Promote SSOT release
+        if: ${{ steps.ssot.outputs.already_published != 'true' }}
+        run: >-
+          uv run ssot release promote .
+          --release-id "${{ steps.ssot.outputs.release_id }}"
+
+      - name: Publish SSOT release
+        if: ${{ steps.ssot.outputs.already_published != 'true' }}
+        run: >-
+          uv run ssot release publish .
+          --release-id "${{ steps.ssot.outputs.release_id }}"
+
+      - name: Validate and export SSOT closure
+        run: |
+          uv run ssot registry sync-statuses .
+          uv run ssot validate . --write-report
+          uv run ssot registry export . --format json --output .ssot/exports/registry-current.json
+          uv run ssot graph export . --format json --output .ssot/exports/graph-current.json
+
+      - name: Commit SSOT release closure
+        id: commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          commit_created=false
+          git status --short
+          if [[ -n "$(git status --porcelain .ssot)" ]]; then
+            git add .ssot
+            if ! git diff --cached --quiet; then
+              git commit -m "release: publish SSOT closure ${{ steps.ssot.outputs.release_id }}"
+              commit_created=true
+              git push origin HEAD:${{ github.ref_name }}
+            fi
+          fi
+
+          commit_sha="$(git rev-parse HEAD)"
+          git fetch origin "${{ github.ref_name }}"
+          remote_sha="$(git rev-parse "origin/${{ github.ref_name }}")"
+          if [[ "${remote_sha}" != "${commit_sha}" ]]; then
+            echo "SSOT release closure commit was not pushed to origin/${{ github.ref_name }}." >&2
+            echo "closure=${commit_sha}" >&2
+            echo "remote=${remote_sha}" >&2
+            exit 1
+          fi
+
+          {
+            echo "### SSOT release closure"
+            echo "- Release: \`${{ steps.ssot.outputs.release_id }}\`"
+            echo "- Boundary: \`${{ steps.ssot.outputs.boundary_id }}\`"
+            echo "- Commit: \`${commit_sha}\`"
+            echo "- Remote verified: \`${remote_sha}\`"
+            echo "- Commit created: \`${commit_created}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          echo "commit_sha=${commit_sha}" >> "$GITHUB_OUTPUT"
+
   validate-python-packages:
     name: Validate Python package (${{ matrix.package }})
     if: ${{ needs.prepare-release.outputs.has_python == 'true' }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
+      - ssot-release-closure
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare-release.outputs.python_validation_matrix) }}
@@ -219,7 +334,7 @@ jobs:
       - name: Check out prepared release commit
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+          ref: ${{ needs.ssot-release-closure.outputs.commit_sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -263,6 +378,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare-release
+      - ssot-release-closure
       - validate-python-packages
     strategy:
       fail-fast: false
@@ -271,7 +387,7 @@ jobs:
       - name: Check out prepared release commit
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+          ref: ${{ needs.ssot-release-closure.outputs.commit_sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -306,6 +422,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare-release
+      - ssot-release-closure
       - validate-python-packages
     env:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -314,7 +431,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+          ref: ${{ needs.ssot-release-closure.outputs.commit_sha }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Download release plan
@@ -339,6 +456,7 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - prepare-release
+      - ssot-release-closure
       - validate-python-packages
       - build-python-packages
     strategy:
@@ -348,7 +466,7 @@ jobs:
       - name: Check out prepared release commit
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.prepare-release.outputs.commit_sha }}
+          ref: ${{ needs.ssot-release-closure.outputs.commit_sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5

@@ -20,7 +20,6 @@ ALLOWED_TOP_LEVEL_IMPORTS = {
     "tigrbl_ops_realtime",
     "tigrbl_ops_webtransport",
     "tigrbl_runtime",
-    "tigrbl_kernel",
     "tigrbl_typing",
     "uvicorn",
 }

@@ -3,7 +3,12 @@ from __future__ import annotations
 import pytest
 
 from tigrbl_runtime import runtime as runtime_api
-from tigrbl_runtime.executors.kernel_executor import _run, _run_phase_chain
+from tigrbl_runtime.executors.kernel_executor import (
+    _run,
+    _run_phase_chain,
+    invoke_op,
+    resolve_phase_chains,
+)
 
 
 def test_runtime_api_does_not_export_kernel_planning_shims() -> None:
@@ -15,3 +20,5 @@ def test_runtime_api_does_not_export_kernel_planning_shims() -> None:
 def test_runtime_executor_methods_remain_runtime_owned() -> None:
     assert _run.__module__ == "tigrbl_runtime.executors.kernel_executor"
     assert _run_phase_chain.__module__ == "tigrbl_runtime.executors.kernel_executor"
+    assert invoke_op.__module__ == "tigrbl_runtime.executors.kernel_executor"
+    assert resolve_phase_chains.__module__ == "tigrbl_runtime.executors.kernel_executor"

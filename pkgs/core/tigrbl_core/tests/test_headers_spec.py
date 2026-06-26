@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import tigrbl
 import tigrbl_core._spec as spec
 from tigrbl_core._spec.headers_spec import HeadersSpec
 from tigrbl_core._spec.serde import SerdeMixin
@@ -39,8 +38,6 @@ def test_headers_spec_serde_round_trip() -> None:
     )
 
 
-def test_headers_spec_is_exported_from_core_and_public_facade() -> None:
+def test_headers_spec_is_exported_from_core() -> None:
     assert spec.HeadersSpec is HeadersSpec
     assert "HeadersSpec" in spec.__all__
-    assert tigrbl.HeadersSpec is HeadersSpec
-    assert "HeadersSpec" in tigrbl.__all__
