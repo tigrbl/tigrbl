@@ -23,6 +23,7 @@ class ReleaseScope:
     version: str
     prepared_commit: str
     feature_id: str
+    source_claim_id: str
     claim_id: str
     test_id: str
     source_evidence_id: str
@@ -105,6 +106,7 @@ def build_scope(
         version=f"{version}+package-release.{commit_slug}",
         prepared_commit=prepared_commit,
         feature_id=f"feat:{slug}",
+        source_claim_id=f"clm:{slug}.source.t1",
         claim_id=f"clm:{slug}.t2",
         test_id=f"tst:{slug}.workflow",
         source_evidence_id=f"evd:{slug}.source-plan",
@@ -210,25 +212,43 @@ def refresh_registry(
             "requires": [],
             "parent_feature_ids": [],
             "spec_ids": [],
-            "claim_ids": [scope.claim_id],
+            "claim_ids": [scope.source_claim_id, scope.claim_id],
             "test_ids": [scope.test_id],
         },
-        "claims": {
-            "id": scope.claim_id,
-            "title": f"Package release {scope.version} publication closure",
-            "description": (
-                "The prepared release commit has a refreshed SSOT proof chain "
-                "and is eligible for release certification, promotion, and publication."
-            ),
-            "origin": "repo-local",
-            "kind": "release",
-            "tier": "T2",
-            "status": "evidenced",
-            "feature_ids": [scope.feature_id],
-            "test_ids": [scope.test_id],
-            "evidence_ids": [scope.evidence_id],
-            "depends_on_claim_ids": [],
-        },
+        "claims": [
+            {
+                "id": scope.source_claim_id,
+                "title": f"Package release {scope.version} source plan collected",
+                "description": (
+                    "The prepared release plan exists as project-controlled source "
+                    "evidence for the package release proof chain."
+                ),
+                "origin": "repo-local",
+                "kind": "release-source",
+                "tier": "T1",
+                "status": "evidenced",
+                "feature_ids": [scope.feature_id],
+                "test_ids": [scope.test_id],
+                "evidence_ids": [scope.source_evidence_id],
+                "depends_on_claim_ids": [],
+            },
+            {
+                "id": scope.claim_id,
+                "title": f"Package release {scope.version} publication closure",
+                "description": (
+                    "The prepared release commit has a refreshed SSOT proof chain "
+                    "and is eligible for release certification, promotion, and publication."
+                ),
+                "origin": "repo-local",
+                "kind": "release",
+                "tier": "T2",
+                "status": "evidenced",
+                "feature_ids": [scope.feature_id],
+                "test_ids": [scope.test_id],
+                "evidence_ids": [scope.evidence_id],
+                "depends_on_claim_ids": [scope.source_claim_id],
+            },
+        ],
         "tests": {
             "id": scope.test_id,
             "title": f"Publish workflow release closure for {scope.version}",
@@ -238,7 +258,7 @@ def refresh_registry(
             "status": "passing",
             "path": ".github/workflows/publish.yml",
             "feature_ids": [scope.feature_id],
-            "claim_ids": [scope.claim_id],
+            "claim_ids": [scope.source_claim_id, scope.claim_id],
             "evidence_ids": [scope.evidence_id],
             "execution": {
                 "argv": [
@@ -273,9 +293,9 @@ def refresh_registry(
                 "origin": "repo-local",
                 "kind": "source-evidence",
                 "tier": "T1",
-                "status": "collected",
+                "status": "passed",
                 "path": scope.evidence_path,
-                "claim_ids": [],
+                "claim_ids": [scope.source_claim_id],
                 "test_ids": [scope.test_id],
             },
             {
@@ -403,6 +423,7 @@ def main(argv: list[str] | None = None) -> int:
         "release_id": scope.release_id,
         "boundary_id": scope.boundary_id,
         "feature_id": scope.feature_id,
+        "source_claim_id": scope.source_claim_id,
         "source_evidence_id": scope.source_evidence_id,
         "evidence_id": scope.evidence_id,
         "release_status_before": status_before,
