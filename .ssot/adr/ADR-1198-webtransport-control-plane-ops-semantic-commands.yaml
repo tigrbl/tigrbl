@@ -1,0 +1,35 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1198"
+number: 1198
+slug: "webtransport-control-plane-ops-semantic-commands"
+title: "WebTransport control-plane ops are semantic control commands"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "WebTransport control-plane operations are semantic control commands in Tigrbl, not direct QUIC stream constructors. The canonical control-plane operation set is `open_bidi_stream`, `open_unidi_stream`, `close_stream`, and `close_session`."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted with tigrbl_ops_webtransport implementation and focused tests in commit fcc7be67."
+    at: "2026-06-26T06:46:00Z"
+references: []
+body: |-
+  ## Decision
+  
+  WebTransport control-plane operations are semantic control commands in Tigrbl, not direct QUIC stream constructors. The canonical control-plane operation set is `open_bidi_stream`, `open_unidi_stream`, `close_stream`, and `close_session`.
+  
+  ## Rationale
+  
+  WebTransport exposes session, bidirectional stream, unidirectional stream, and datagram lanes. Tigrbl already models lane binding and inner framing separately from wire-stack ownership. A default control-plane operation package gives appspecs and opspecs a stable semantic vocabulary for requesting stream/session lifecycle actions while keeping actual WebTransport stream creation in the delegated runtime/wire stack.
+  
+  ## Policy
+  
+  The control-plane operation package is owned by `tigrbl_ops_webtransport`. Concrete mapping may route the four target ops to that package. Atom handlers may project those operations as wire effects. Kernel effect classification must treat them as WebTransport wire-control operations. Default binding policy should place the commands on a WebTransport bidirectional control stream with explicit app framing, normally JSON-RPC.
+  
+  ## Boundaries
+  
+  These operations return command payloads that can be consumed by a WebTransport runtime or adapter. They do not claim that the Python operation function itself opens a QUIC stream, allocates an HTTP/3 stream id, or performs network I/O.

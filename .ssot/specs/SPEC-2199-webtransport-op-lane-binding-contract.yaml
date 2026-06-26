@@ -18,8 +18,8 @@ status_notes:
     status: "draft"
   -
     status: "draft"
-    note: "Updated for session-level WebTransport lane catalog and lane-local framing."
-    at: "2026-06-24T20:43:19Z"
+    note: "Updated for default WebTransport control-plane operations."
+    at: "2026-06-26T06:51:48Z"
 references: []
 body: |-
   ## Intent
@@ -31,7 +31,7 @@ body: |-
   A WebTransport operation binding is session-level and must identify:
   
   - the WebTransport session `path` or containing PathSpec;
-  - a required `control_stream` using `kind="bidi_stream"` and `opens="first"`;
+  - a required `control_stream` using `kind=bidi_stream` and `opens=first`;
   - zero or more named `streams`;
   - zero or more named `datagrams`;
   - lane-local `FramingSpec` declarations for the control stream, each stream, and each datagram.
@@ -39,6 +39,8 @@ body: |-
   ## Operation Mapping
   
   CRUD and control-plane operations SHOULD bind to the control bidirectional stream when JSON-RPC framing is selected.
+  
+  The default WebTransport control-plane operation set is `open_bidi_stream`, `open_unidi_stream`, `close_stream`, and `close_session`. These operations are semantic control commands. They request stream or session lifecycle action through a WebTransport control lane; they do not directly allocate QUIC or HTTP/3 stream ids.
   
   Event and server-output operations SHOULD bind to `events` server streams or explicitly declared bidirectional streams.
   
@@ -51,6 +53,8 @@ body: |-
   One table may declare:
   
   - `create` on `control_stream` / `bidi_stream` / `JsonRpcFramingSpec`;
+  - `open_bidi_stream` and `open_unidi_stream` on `control_stream` / `bidi_stream` / `JsonRpcFramingSpec`;
+  - `close_stream` and `close_session` on `control_stream` / `bidi_stream` / `JsonRpcFramingSpec`;
   - `tail` on `events` / `unidi_server_stream` / `NdjsonFramingSpec`;
   - `append_chunk` on `upload` / `unidi_client_stream` / `BytesFramingSpec`;
   - `send_presence` on `presence` / `datagram` / `JsonFramingSpec`;
@@ -77,3 +81,4 @@ adr_ids:
   - "adr:1133"
   - "adr:1006"
   - "adr:1102"
+  - "adr:1198"

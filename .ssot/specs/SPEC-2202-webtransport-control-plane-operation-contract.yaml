@@ -1,0 +1,58 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:2202"
+number: 2202
+slug: "webtransport-control-plane-operation-contract"
+title: "WebTransport Control Plane Operation Contract"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the default WebTransport control-plane operation contract used by appspecs, opspecs, protocol binding specs, and runtime atom planning."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Accepted with tigrbl_ops_webtransport implementation and focused tests in commit fcc7be67."
+    at: "2026-06-26T06:46:25Z"
+references: []
+body: |-
+  ## Intent
+  
+  Define the default WebTransport control-plane operation contract used by appspecs, opspecs, protocol binding specs, and runtime atom planning.
+  
+  ## Operation Set
+  
+  The default control-plane operation set is:
+  
+  - `open_bidi_stream`: request creation or attachment of a bidirectional WebTransport stream.
+  - `open_unidi_stream`: request creation or attachment of a unidirectional WebTransport stream.
+  - `close_stream`: request closure of a named stream or stream binding.
+  - `close_session`: request closure of the WebTransport session.
+  
+  ## Package Ownership
+  
+  The operation implementation package is `tigrbl_ops_webtransport`. The package returns structured command payloads and performs payload validation. It does not own QUIC, HTTP/3, ASGI, or server runtime stream allocation.
+  
+  ## Binding Rules
+  
+  Default WebTransport table/profile lowering must bind these control-plane operations to a WebTransport bidirectional stream. The default app framing is JSON-RPC unless a more specific, validated lane-local framing override is present.
+  
+  Explicit OpSpec bindings may override the default only if the requested lane kind and framing are legal for WebTransport control-plane commands. Invalid overrides fail closed through binding-token lowering and operation matrix validation.
+  
+  ## Runtime And Atom Rules
+  
+  Atom handlers for the four operations are system atoms and must be classified as wire effects. Kernel and atom metadata must preserve the distinction between a semantic control command and the delegated runtime act of opening or closing a WebTransport stream or session.
+  
+  ## Validation
+  
+  Conformance requires focused tests for package behavior, package importability, default binding lowering, concrete mapping package selection, sys atom handler projection, and kernel effect classification.
+spec_kind: "normative"
+adr_ids:
+  - "adr:1198"
+  - "adr:1189"
+  - "adr:1190"
+  - "adr:1182"
+  - "adr:1174"
+  - "adr:1122"

@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:2108"
 number: 2108
@@ -18,8 +18,8 @@ status_notes:
     status: "draft"
   -
     status: "draft"
-    note: "Updated WebTransport atom chain contract with native session multiplexing proof boundary."
-    at: "2026-05-31T19:28:33Z"
+    note: "Updated for WebTransport control-plane sys atoms and wire-effect planning."
+    at: "2026-06-26T06:52:09Z"
 references: []
 body: |-
   ## Intent
@@ -42,6 +42,8 @@ body: |-
   
   App-framed message decode/encode is inner payload framing within stream or datagram lanes. `message` is not a peer native WebTransport transport lane.
   
+  System atom handlers for `open_bidi_stream`, `open_unidi_stream`, `close_stream`, and `close_session` project semantic WebTransport control commands into wire-effect planning. They must preserve the distinction between command emission and delegated runtime stream or session allocation.
+  
   ## Multiplexing Proof Boundary
   
   Native WebTransport multiplexing is proven only when one WebTransport session preserves independent lane identity across mixed traffic. Required evidence includes:
@@ -59,7 +61,7 @@ body: |-
   
   ## Traceability
   
-  ADRs: adr:1091, adr:1092, adr:1094, adr:1096, adr:1100, adr:1132.
+  ADRs: adr:1091, adr:1092, adr:1094, adr:1096, adr:1100, adr:1132, adr:1198.
 spec_kind: "normative"
 adr_ids:
   - "adr:1091"
@@ -67,3 +69,4 @@ adr_ids:
   - "adr:1094"
   - "adr:1096"
   - "adr:1132"
+  - "adr:1198"

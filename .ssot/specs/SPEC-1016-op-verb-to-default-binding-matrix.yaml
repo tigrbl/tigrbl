@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:1016"
 number: 1016
@@ -11,12 +11,18 @@ tags: []
 summary: "Define the default transport binding tokens generated for canonical operation verbs and reject incompatible verb/profile combinations."
 supersedes: []
 superseded_by: []
-status_notes: []
+status_notes:
+  -
+    status: "draft"
+    note: "Updated default operation matrix for WebTransport control-plane ops."
+    at: "2026-06-26T06:53:04Z"
 references: []
 body: |-
   Define the default transport binding tokens generated for canonical operation verbs and reject incompatible verb/profile combinations.
-
+  
   REST profile kinds lower supported verbs to HttpRestBindingSpec. HTTP JSON-RPC profile kinds lower supported verbs to HttpJsonRpcBindingSpec. REST+JSON-RPC profile kinds lower supported verbs to both bindings in REST-then-JSON-RPC order. OLAP profile kinds reject mutation verbs before kernel planning.
+  
+  WebTransport profile kinds lower `open_bidi_stream`, `open_unidi_stream`, `close_stream`, and `close_session` to a bidirectional control stream using explicit JSON-RPC app framing unless an allowed OpSpec override supplies a different lane-local framing.
 spec_kind: "normative"
 adr_ids:
   - "adr:1088"
@@ -24,3 +30,4 @@ adr_ids:
   - "adr:1102"
   - "adr:1122"
   - "adr:1144"
+  - "adr:1198"

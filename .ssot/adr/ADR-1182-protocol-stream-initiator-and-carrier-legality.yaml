@@ -13,9 +13,13 @@ supersedes: []
 superseded_by: []
 status_notes:
   -
-    status: "accepted"
-    note: "Accepted to govern h11 h2 h3 and WebTransport stream shape legality before runtime codec dispatch."
     at: "2026-06-17T10:03:05Z"
+    note: "Accepted to govern h11 h2 h3 and WebTransport stream shape legality before runtime codec dispatch."
+    status: "accepted"
+  -
+    status: "accepted"
+    note: "Extended by adr:1198 to distinguish semantic stream-initiation commands from delegated runtime stream allocation."
+    at: "2026-06-26T06:54:05Z"
 references: []
 body: |-
   Tigrbl shall model stream legality with explicit carrier and initiator metadata before runtime frame-codec dispatch. Payload codecs remain separate from transport legality. h11 supports request-body and response-body streaming but not independent bidirectional streams. h2 request streams are client initiated and bidirectional at the transport layer; server push is response-only and not application bidirectional. Plain h3 request streams are client initiated bidirectional QUIC streams, push uses server initiated unidirectional push streams, and server initiated bidirectional streams are invalid unless an extension binding explicitly authorizes them. WebTransport may carry client and server initiated bidi or unidi streams, but those initiator and direction facts must be lane metadata rather than new codecs.

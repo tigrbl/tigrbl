@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:1030"
 number: 1030
@@ -14,8 +14,8 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Expanded default WT verb binding rules for control, stream, and datagram lane defaults."
-    at: "2026-06-24T00:00:00Z"
+    note: "Updated default WebTransport control stream verbs."
+    at: "2026-06-26T06:52:30Z"
 references: []
 body: |-
   ## Intent
@@ -44,6 +44,10 @@ body: |-
   - `count`
   - `exists`
   - `checkpoint`
+  - `open_bidi_stream`
+  - `open_unidi_stream`
+  - `close_stream`
+  - `close_session`
   
   Server-to-client stream defaults:
   
@@ -71,8 +75,9 @@ body: |-
   
   ## Validation
   
-  Tests must cover at least one table where CRUD uses the control stream, `tail` uses an events stream, `append_chunk` uses an upload stream, and `send_datagram` uses a datagram lane.
+  Tests must cover at least one table where CRUD and control-plane ops use the control stream, `tail` uses an events stream, `append_chunk` uses an upload stream, and `send_datagram` uses a datagram lane.
 spec_kind: "normative"
 adr_ids:
   - "adr:1122"
   - "adr:1102"
+  - "adr:1198"

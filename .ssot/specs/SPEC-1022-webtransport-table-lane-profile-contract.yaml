@@ -1,4 +1,4 @@
-schema_version: "0.7.0"
+schema_version: "0.8.0"
 kind: "spec"
 id: "spc:1022"
 number: 1022
@@ -14,8 +14,8 @@ superseded_by: []
 status_notes:
   -
     status: "draft"
-    note: "Expanded lane profile contract for op-selected WebTransport carriers and lane-local framing."
-    at: "2026-06-24T00:00:00Z"
+    note: "Updated table lane profile with WebTransport control-plane ops."
+    at: "2026-06-26T06:52:51Z"
 references: []
 body: |-
   ## Intent
@@ -49,6 +49,8 @@ body: |-
   
   CRUD and control-plane operations may bind to a `control` bidirectional stream using `JsonRpcFramingSpec`.
   
+  The built-in WebTransport control-plane operations `open_bidi_stream`, `open_unidi_stream`, `close_stream`, and `close_session` are compatible with the `control` bidirectional stream profile by default.
+  
   `tail`, `subscribe`, and `download` may bind to server stream lanes using stream-compatible framings such as `NdjsonFramingSpec`, `JsonFramingSpec`, or `BytesFramingSpec`.
   
   `upload` and `append_chunk` may bind to client stream lanes using stream-compatible framings such as `BytesFramingSpec`, `BinaryFramingSpec`, or `NdjsonFramingSpec`.
@@ -62,3 +64,4 @@ spec_kind: "normative"
 adr_ids:
   - "adr:1100"
   - "adr:1102"
+  - "adr:1198"
