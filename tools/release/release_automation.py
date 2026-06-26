@@ -17,6 +17,11 @@ ROOT = Path(__file__).resolve().parents[2]
 PYPROJECT_VERSION_RE = re.compile(r'(?m)^(version\s*=\s*)"([^"]+)"')
 PACKAGE_SPLIT_RE = re.compile(r"[\s,]+")
 PYTHON_VERSION_FLOOR = "0.4.0.dev1"
+PYPI_TRUSTED_PUBLISH_EXCLUDED = {
+    # PyPI trusted publishing can upload to an existing project, but cannot
+    # create the first release for a new project identity.
+    "tigrbl-ops-webtransport": "PyPI project is not bootstrapped for trusted publishing",
+}
 
 
 @dataclass(frozen=True)
@@ -213,6 +218,20 @@ def build_plan(
         {"kind": "pypi", "tag": f'{release["name"]}=={release["version"]}', **release}
         for release in py_releases
     ]
+    pypi_releases = [
+        release
+        for release in py_releases
+        if release["name"] not in PYPI_TRUSTED_PUBLISH_EXCLUDED
+    ]
+    pypi_skipped = [
+        {
+            "name": release["name"],
+            "version": release["version"],
+            "reason": PYPI_TRUSTED_PUBLISH_EXCLUDED[release["name"]],
+        }
+        for release in py_releases
+        if release["name"] in PYPI_TRUSTED_PUBLISH_EXCLUDED
+    ]
 
     is_prerelease = any(Version.parse(release["version"]).dev is not None for release in all_releases)
     ensure_all_versions_meet_floor(all_py_projects, py_releases)
@@ -222,6 +241,8 @@ def build_plan(
         "prerelease": is_prerelease,
         "package_selection": sorted(selected) if selected is not None else "all",
         "python": py_releases,
+        "pypi": pypi_releases,
+        "pypi_skipped": pypi_skipped,
         "github_releases": all_releases,
         "changed_files": sorted(set(changed)),
     }
@@ -229,6 +250,7 @@ def build_plan(
 
 def matrix_output(plan_path: Path, *, python_versions: str, output: Path | None) -> None:
     plan = json.loads(read(plan_path))
+    pypi_projects = plan.get("pypi", plan["python"])
     versions = [version for version in PACKAGE_SPLIT_RE.split(python_versions.strip()) if version]
     if not versions:
         raise ValueError("at least one Python version is required")
@@ -249,11 +271,12 @@ def matrix_output(plan_path: Path, *, python_versions: str, output: Path | None)
                 "path": project["path"],
                 "artifact": f'python-dist-{project["name"].replace("_", "-")}',
             }
-            for project in plan["python"]
+            for project in pypi_projects
         ]
     }
     values = {
         "has_python": "true" if plan["python"] else "false",
+        "has_pypi": "true" if pypi_projects else "false",
         "python_validation_matrix": json.dumps(python_validation, separators=(",", ":")),
         "python_build_matrix": json.dumps(python_build, separators=(",", ":")),
     }
@@ -349,7 +372,7 @@ def validate_release_targets(plan_path: Path, *, github: bool, pypi: bool) -> No
                 failures.append(f"GitHub release already exists: {tag}")
 
     if pypi:
-        for release in plan["python"]:
+        for release in plan.get("pypi", plan["python"]):
             project = normalize_python_project(release["name"])
             version = release["version"]
             url = f"https://pypi.org/pypi/{project}/{version}/json"
@@ -435,9 +458,10 @@ def create_github_releases(plan_path: Path) -> None:
 
 def build_pypi_packages(plan_path: Path, *, out_dir: str) -> None:
     plan = json.loads(read(plan_path))
-    if not plan["python"]:
+    projects = plan.get("pypi", plan["python"])
+    if not projects:
         raise RuntimeError("release plan does not include any Python packages")
-    for project in plan["python"]:
+    for project in projects:
         run(["uv", "build", "--package", project["name"], "--out-dir", out_dir])
 
 

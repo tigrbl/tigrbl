@@ -72,6 +72,7 @@ jobs:
     outputs:
       commit_sha: ${{ steps.commit.outputs.commit_sha }}
       has_python: ${{ steps.matrices.outputs.has_python }}
+      has_pypi: ${{ steps.matrices.outputs.has_pypi }}
       python_validation_matrix: ${{ steps.matrices.outputs.python_validation_matrix }}
       python_build_matrix: ${{ steps.matrices.outputs.python_build_matrix }}
     steps:
@@ -184,11 +185,21 @@ jobs:
               summary.write(f"- Remote verified: `{os.environ['REMOTE_SHA']}`\n")
               summary.write(f"- Commit created: `{os.environ['COMMIT_CREATED']}`\n\n")
               summary.write("### Version plan\n")
+              pypi_packages = {release["name"] for release in plan.get("pypi", [])}
               for release in plan.get("python", []):
+                  target = "pypi" if release["name"] in pypi_packages else "github-only"
                   summary.write(
                       f"- {release['name']}: {release['old_version']} -> "
-                      f"{release['version']} (pypi)\n"
+                      f"{release['version']} ({target})\n"
                   )
+              skipped = plan.get("pypi_skipped", [])
+              if skipped:
+                  summary.write("\n### PyPI publish exclusions\n")
+                  for release in skipped:
+                      summary.write(
+                          f"- {release['name']} {release['version']}: "
+                          f"{release['reason']}\n"
+                      )
           PY
 
       - name: Generate release matrices
@@ -374,7 +385,7 @@ jobs:
 
   build-python-packages:
     name: Build Python package (${{ matrix.package }})
-    if: ${{ inputs.pypi && needs.prepare-release.outputs.has_python == 'true' }}
+    if: ${{ inputs.pypi && needs.prepare-release.outputs.has_pypi == 'true' }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release
@@ -452,7 +463,7 @@ jobs:
 
   publish-pypi:
     name: Publish PyPI package (${{ matrix.package }})
-    if: ${{ inputs.pypi && needs.prepare-release.outputs.has_python == 'true' && !failure() && !cancelled() }}
+    if: ${{ inputs.pypi && needs.prepare-release.outputs.has_pypi == 'true' && !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     needs:
       - prepare-release

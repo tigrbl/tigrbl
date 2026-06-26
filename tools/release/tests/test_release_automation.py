@@ -10,6 +10,7 @@ from tools.release.release_automation import (
     Version,
     build_plan,
     ensure_allowed_target_version,
+    matrix_output,
 )
 
 
@@ -62,6 +63,7 @@ def test_release_plan_can_select_one_python_package() -> None:
     plan = build_plan("patch", write_changes=False, packages="tigrbl")
 
     assert [release["name"] for release in plan["python"]] == ["tigrbl"]
+    assert [release["name"] for release in plan["pypi"]] == ["tigrbl"]
     assert "crates" not in plan
     assert "crate_publish_order" not in plan
     assert [release["tag"] for release in plan["github_releases"]] == [
@@ -83,6 +85,52 @@ def test_release_plan_can_select_package_subset() -> None:
     assert plan["package_selection"] == [
         "tigrbl",
     ]
+
+
+def test_release_plan_keeps_webtransport_github_release_without_pypi_publish() -> None:
+    plan = build_plan(
+        "patch",
+        write_changes=False,
+        packages="tigrbl-ops-webtransport",
+    )
+
+    assert [release["name"] for release in plan["python"]] == [
+        "tigrbl-ops-webtransport"
+    ]
+    assert [release["tag"] for release in plan["github_releases"]] == [
+        f"tigrbl-ops-webtransport=={plan['python'][0]['version']}"
+    ]
+    assert plan["pypi"] == []
+    assert plan["pypi_skipped"] == [
+        {
+            "name": "tigrbl-ops-webtransport",
+            "version": plan["python"][0]["version"],
+            "reason": "PyPI project is not bootstrapped for trusted publishing",
+        }
+    ]
+
+
+def test_release_matrices_exclude_webtransport_from_pypi_build(
+    tmp_path: Path,
+) -> None:
+    plan = build_plan(
+        "patch",
+        write_changes=False,
+        packages="tigrbl-ops-webtransport",
+    )
+    summary = tmp_path / "release-plan.json"
+    output = tmp_path / "github-output.txt"
+    summary.write_text(json.dumps(plan), encoding="utf-8")
+
+    matrix_output(summary, python_versions="3.12", output=output)
+
+    values = dict(line.split("=", 1) for line in output.read_text().splitlines())
+    validation_matrix = json.loads(values["python_validation_matrix"])
+    build_matrix = json.loads(values["python_build_matrix"])
+    assert values["has_python"] == "true"
+    assert values["has_pypi"] == "false"
+    assert validation_matrix["include"][0]["package"] == "tigrbl-ops-webtransport"
+    assert build_matrix["include"] == []
 
 
 def test_unknown_package_selection_fails() -> None:
