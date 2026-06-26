@@ -29,6 +29,7 @@ from tigrbl import (
     WebTransportTable,
 )
 from tigrbl_core._spec import OpSpec, TableProfileError, TableProfileSpec, TableSpec
+from tigrbl_core._spec.binding_spec import JsonRpcFramingSpec
 from tigrbl_core._spec.table_profile_bindings import lower_binding_tokens_for_ops
 
 
@@ -169,7 +170,7 @@ def test_ssetable_op_binding_compatibility() -> None:
 def test_websocket_jsonrpc_table_requires_subprotocol() -> None:
     for op in _spec(WebSocketJsonRpcTable).ops:
         binding = op.bindings[0]
-        assert binding.framing == "jsonrpc"
+        assert binding.framing == JsonRpcFramingSpec()
         assert binding.subprotocols == ("jsonrpc",)
 
 

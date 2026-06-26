@@ -272,12 +272,10 @@ def _lower_op_with_profile_defaults(
         return op
     lowered = lower_default_bindings_for_op(table=table, profile=profile, op=op)
     if not lowered:
-        return replace(op, expose_routes=False, expose_rpc=False)
+        return op
     return replace(
         op,
         bindings=tuple(item.binding for item in lowered),
-        expose_routes=False,
-        expose_rpc=False,
         extra={
             **dict(getattr(op, "extra", {}) or {}),
             "__tigrbl_binding_source__": "table_profile",

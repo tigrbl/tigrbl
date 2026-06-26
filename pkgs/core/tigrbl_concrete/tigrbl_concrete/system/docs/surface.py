@@ -10,6 +10,8 @@ from tigrbl_core._spec.binding_spec import (
     TransportBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
+    framing_kind,
+    framing_spec_name,
 )
 from tigrbl_core._spec.op_spec import OpSpec
 
@@ -25,11 +27,13 @@ def binding_family(binding: TransportBindingSpec) -> str:
 
 
 def binding_surface(binding: TransportBindingSpec) -> dict[str, Any]:
+    framing = getattr(binding, "framing", None)
     surface = {
         "proto": getattr(binding, "proto", None),
         "path": getattr(binding, "path", None),
         "rpcMethod": getattr(binding, "rpc_method", None),
-        "framing": getattr(binding, "framing", None),
+        "framing": framing_kind(framing),
+        "framingSpec": framing_spec_name(framing),
         "exchange": getattr(binding, "exchange", None),
         "family": binding_family(binding),
     }

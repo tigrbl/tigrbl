@@ -274,12 +274,12 @@ def bind(
 ) -> Tuple[OpSpec, ...]:
     specs = tuple(_filter_specs(tuple(resolve_ops(model)), only_keys))
     all_specs = _materialize_handlers(model, specs)
-    _bind_model_hooks(model, specs)
-    _materialize_schemas(model, specs)
+    _bind_model_hooks(model, all_specs)
+    _materialize_schemas(model, all_specs)
 
-    register_rpc(model, specs)
+    register_rpc(model, all_specs)
 
-    _materialize_rest_router(model, specs, router=router)
+    _materialize_rest_router(model, all_specs, router=router)
 
     return all_specs
 
