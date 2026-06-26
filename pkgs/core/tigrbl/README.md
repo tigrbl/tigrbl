@@ -148,7 +148,7 @@ Tigrbl is organized as a split framework behind this facade:
 | Atoms | `tigrbl-atoms` | Phase names, stage transitions, typed contexts, ingress/dispatch/wire/storage/handler/egress/error atoms, transaction atoms, batch atoms, and transport atoms. |
 | Kernel | `tigrbl-kernel` | Operation-view compilation, hook ordering, labels, packed plans, protocol chains, lifecycle rows, event keys, capability masks, and dispatch plans. |
 | Runtime | `tigrbl-runtime` | Runtime-owned routing, request execution, framing atoms, transport channels, and default kernel integration. |
-| Operation packs | `tigrbl-ops-oltp`, `tigrbl-ops-olap`, `tigrbl-ops-realtime` | Canonical operation definitions for CRUD, analytics, and realtime/streaming workloads. |
+| Operation packs | `tigrbl-ops-oltp`, `tigrbl-ops-olap`, `tigrbl-ops-realtime`, `tigrbl-ops-webtransport` | Canonical operation definitions for CRUD, analytics, realtime/streaming, and WebTransport control-plane workloads. |
 | ORM | `tigrbl-orm` | SQLAlchemy-facing table and mixin helpers used by application models. |
 | Engines | `tigrbl-engine-*` | Persistence, cache, queue, rate, bloom, dedupe, dataframe, warehouse, and database engine integrations. |
 

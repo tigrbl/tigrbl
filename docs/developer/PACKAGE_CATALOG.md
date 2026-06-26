@@ -4,7 +4,7 @@ This document is the canonical workspace inventory for Python package locations.
 
 ## Counts
 
-- core Python packages: 15
+- core Python packages: 16
 - engine packages: 22
 - application packages: 0
 - Rust runtime binding packages: 0
@@ -21,6 +21,7 @@ This document is the canonical workspace inventory for Python package locations.
 - `tigrbl_kernel`
 - `tigrbl_ops_olap`
 - `tigrbl_ops_oltp`
+- `tigrbl_ops_webtransport`
 - `tigrbl_orm`
 - `tigrbl_runtime`
 - `tigrbl_spec`

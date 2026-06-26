@@ -26,6 +26,7 @@ CORE_INSTALL_DIRS = [
     ROOT / 'pkgs' / 'core' / 'tigrbl_ops_olap',
     ROOT / 'pkgs' / 'core' / 'tigrbl_ops_oltp',
     ROOT / 'pkgs' / 'core' / 'tigrbl_ops_realtime',
+    ROOT / 'pkgs' / 'core' / 'tigrbl_ops_webtransport',
     ROOT / 'pkgs' / 'core' / 'tigrbl_orm',
     ROOT / 'pkgs' / 'core' / 'tigrbl_concrete',
 ]

@@ -10,6 +10,8 @@ from . import handler_bulk_replace as _handler_bulk_replace
 from . import handler_bulk_update as _handler_bulk_update
 from . import handler_checkpoint as _handler_checkpoint
 from . import handler_clear as _handler_clear
+from . import handler_close_session as _handler_close_session
+from . import handler_close_stream as _handler_close_stream
 from . import handler_count as _handler_count
 from . import handler_create as _handler_create
 from . import handler_delete as _handler_delete
@@ -20,6 +22,8 @@ from . import handler_group_by as _handler_group_by
 from . import handler_list as _handler_list
 from . import handler_merge as _handler_merge
 from . import handler_noop as _handler_noop
+from . import handler_open_bidi_stream as _handler_open_bidi_stream
+from . import handler_open_unidi_stream as _handler_open_unidi_stream
 from . import handler_append_chunk as _handler_append_chunk
 from . import handler_persistence as _handler_persistence
 from . import handler_publish as _handler_publish
@@ -124,6 +128,30 @@ _ORDERED: Tuple[Tuple[str, str, str, RunFn], ...] = (
         "handler_checkpoint",
         _handler_checkpoint.ANCHOR,
         _handler_checkpoint.INSTANCE,
+    ),
+    (
+        "sys",
+        "handler_open_bidi_stream",
+        _handler_open_bidi_stream.ANCHOR,
+        _handler_open_bidi_stream.INSTANCE,
+    ),
+    (
+        "sys",
+        "handler_open_unidi_stream",
+        _handler_open_unidi_stream.ANCHOR,
+        _handler_open_unidi_stream.INSTANCE,
+    ),
+    (
+        "sys",
+        "handler_close_stream",
+        _handler_close_stream.ANCHOR,
+        _handler_close_stream.INSTANCE,
+    ),
+    (
+        "sys",
+        "handler_close_session",
+        _handler_close_session.ANCHOR,
+        _handler_close_session.INSTANCE,
     ),
     ("sys", "commit_tx", _commit_tx.ANCHOR, _commit_tx.INSTANCE),
 )

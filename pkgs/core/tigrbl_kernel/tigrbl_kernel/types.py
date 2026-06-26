@@ -41,6 +41,10 @@ EFFECT_BY_ATOM_NAME = {
     "sys.handler_append_chunk": EFFECT_WIRE,
     "sys.handler_send_datagram": EFFECT_WIRE,
     "sys.handler_checkpoint": EFFECT_WIRE,
+    "sys.handler_open_bidi_stream": EFFECT_WIRE,
+    "sys.handler_open_unidi_stream": EFFECT_WIRE,
+    "sys.handler_close_stream": EFFECT_WIRE,
+    "sys.handler_close_session": EFFECT_WIRE,
     "egress.to_transport_response": EFFECT_WIRE,
     "egress.asgi_send": EFFECT_WIRE,
 }

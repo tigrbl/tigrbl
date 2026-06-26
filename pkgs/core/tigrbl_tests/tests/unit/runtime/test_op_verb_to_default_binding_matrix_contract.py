@@ -73,7 +73,7 @@ def test_websocket_jsonrpc_verbs_require_jsonrpc_framing_defaults() -> None:
     for op in TableSpec.collect(WebSocketJsonRpcTable).ops:
         assert len(op.bindings) == 1
         binding = op.bindings[0]
-        assert binding.framing == "jsonrpc"
+        assert str(binding.framing) == "jsonrpc"
         assert binding.subprotocols == ("jsonrpc",)
 
 
@@ -105,27 +105,38 @@ def test_webtransport_ops_lower_to_op_specific_lanes() -> None:
             OpSpec(alias="download", target="download"),
             OpSpec(alias="upload", target="upload"),
             OpSpec(alias="send_datagram", target="send_datagram"),
+            OpSpec(alias="open_bidi_stream", target="open_bidi_stream"),
         ),
     )
 
     lowered = lower_table_profile_bindings(WebTransportBidiTable, profile, tuple(profile.ops))
     bindings = {op.target: op.bindings[0] for op in lowered}
 
-    assert (bindings["create"].lane, bindings["create"].inner_framing) == (
+    assert (bindings["create"].lane, str(bindings["create"].inner_framing)) == (
         "bidi_stream",
         "jsonrpc",
     )
-    assert (bindings["download"].lane, bindings["download"].inner_framing) == (
+    assert (bindings["download"].lane, str(bindings["download"].inner_framing)) == (
         "unidi_server_stream",
         "bytes",
     )
-    assert (bindings["upload"].lane, bindings["upload"].inner_framing) == (
+    assert (bindings["upload"].lane, str(bindings["upload"].inner_framing)) == (
         "unidi_client_stream",
         "bytes",
     )
-    assert (bindings["send_datagram"].lane, bindings["send_datagram"].inner_framing) == (
+    assert (
+        bindings["send_datagram"].lane,
+        str(bindings["send_datagram"].inner_framing),
+    ) == (
         "datagram",
         "json",
+    )
+    assert (
+        bindings["open_bidi_stream"].lane,
+        str(bindings["open_bidi_stream"].inner_framing),
+    ) == (
+        "bidi_stream",
+        "jsonrpc",
     )
 
 

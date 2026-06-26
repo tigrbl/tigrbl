@@ -91,7 +91,7 @@ Package catalog:
 
 - Import roots: `tigrbl_concrete`.
 - Public symbols: public surface is module-oriented; import the package boundary and inspect submodules as needed.
-- Workspace dependencies: [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/), [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/), [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/), [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/).
+- Workspace dependencies: [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/), [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/), [`tigrbl-ops-webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/), [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/), [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/), [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/).
 - External runtime dependencies: `orjson`, `pydantic>=2.0`, `sqlalchemy`, `uvicorn`.
 
 ## Concrete Implementation Semantics
@@ -220,7 +220,9 @@ Choose `tigrbl-concrete` when the quick-answer table matches your use case. Choo
 - [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/)
 - [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/)
 - [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/)
+- [`tigrbl-ops-webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/)
 - [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/)
+- [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/)
 - [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/)
 - [`tigrbl`](https://pypi.org/project/tigrbl/)
 

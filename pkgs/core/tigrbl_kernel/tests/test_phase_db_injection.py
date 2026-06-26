@@ -22,6 +22,23 @@ class FakeModel:
     )
 
 
+class WebTransportControlModel:
+    hooks = SimpleNamespace(open_bidi_stream=SimpleNamespace())
+    ops = SimpleNamespace(
+        by_alias={
+            "open_bidi_stream": [
+                SimpleNamespace(
+                    alias="open_bidi_stream",
+                    target="open_bidi_stream",
+                    persist="default",
+                    secdeps=(),
+                    deps=(),
+                )
+            ]
+        }
+    )
+
+
 def test_build_op_prepends_phase_db_binding_to_each_phase() -> None:
     chains = Kernel()._build_op(FakeModel, "create")
 
@@ -68,3 +85,11 @@ def test_ingress_and_egress_chains_prepend_phase_db_binding() -> None:
                 getattr(steps[0], "__tigrbl_label", "")
                 == "atom:sys:phase_db@SYS_PHASE_DB_BIND"
             )
+
+
+def test_webtransport_control_op_selects_control_plane_handler_atom() -> None:
+    chains = Kernel()._build_op(WebTransportControlModel, "open_bidi_stream")
+    labels = [getattr(step, "__tigrbl_label", "") for step in chains["HANDLER"]]
+
+    assert "atom:sys:handler_open_bidi_stream@sys.handler.persistence" in labels
+    assert "atom:sys:handler_create@sys.handler.persistence" not in labels

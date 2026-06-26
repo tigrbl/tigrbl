@@ -52,6 +52,10 @@ TargetOp = Literal[
     "append_chunk",
     "send_datagram",
     "checkpoint",
+    "open_bidi_stream",
+    "open_unidi_stream",
+    "close_stream",
+    "close_session",
     "custom",
 ]
 

@@ -1,20 +1,18 @@
 [project]
-name = "tigrbl-concrete"
+name = "tigrbl-ops-webtransport"
 version = "0.4.4.dev1"
-description = "Concrete Tigrbl implementations for reusable framework behavior, sessions, routes, responses, and base abstraction adapters."
+description = "WebTransport control-plane operation handlers for Tigrbl stream and session coordination."
 readme = "README.md"
 license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
     "api",
-    "json-rpc",
-    "rest",
-    "sqlalchemy",
-    "pydantic",
-    "concrete",
-    "implementation",
-    "framework",
+    "webtransport",
+    "quic",
+    "control-plane",
+    "streams",
+    "ops",
     "openapi",
     "openrpc",
     "schema-first",
@@ -40,51 +38,21 @@ classifiers = [
 requires-python = ">=3.10,<3.15"
 authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
-dependencies = [
-    "orjson",
-    "pydantic>=2.0",
-    "sqlalchemy",
-    "tigrbl-atoms",
-    "tigrbl-base",
-    "tigrbl-core",
-    "tigrbl-ops-olap",
-    "tigrbl-ops-oltp",
-    "tigrbl-ops-realtime",
-    "tigrbl-ops-webtransport",
-    "tigrbl-runtime",
-    "tigrbl-kernel",
-    "tigrbl-typing",
-    "uvicorn",
-]
-
 
 [project.urls]
 Organization = "https://github.com/tigrbl"
 Discord = "https://discord.gg/K4YTAPapjR"
 Homepage = "https://github.com/tigrbl/tigrbl"
-Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_webtransport"
 Issues = "https://github.com/tigrbl/tigrbl/issues"
-
-[tool.uv.sources]
-"tigrbl-atoms" = { workspace = true }
-"tigrbl-base" = { workspace = true }
-"tigrbl-core" = { workspace = true }
-"tigrbl-ops-olap" = { workspace = true }
-"tigrbl-ops-oltp" = { workspace = true }
-"tigrbl-ops-realtime" = { workspace = true }
-"tigrbl-ops-webtransport" = { workspace = true }
-"tigrbl-runtime" = { workspace = true }
-"tigrbl-kernel" = { workspace = true }
-"tigrbl-typing" = { workspace = true }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
-
 [tool.poetry]
 packages = [
-    { include = "tigrbl_concrete" },
+    { include = "tigrbl_ops_webtransport" },
 ]
 
 [dependency-groups]
@@ -92,6 +60,3 @@ dev = [
     "pytest>=8.0",
     "ruff>=0.9",
 ]
-
-[project.entry-points."tigrbl.engine_plugins"]
-concrete = "tigrbl_concrete.engine.plugins:register"

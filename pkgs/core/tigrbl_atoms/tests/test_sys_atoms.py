@@ -17,6 +17,8 @@ from tigrbl_atoms.atoms.sys import (
     handler_bulk_update,
     handler_checkpoint,
     handler_clear,
+    handler_close_session,
+    handler_close_stream,
     handler_count,
     handler_create,
     handler_custom,
@@ -27,6 +29,8 @@ from tigrbl_atoms.atoms.sys import (
     handler_list,
     handler_merge,
     handler_noop,
+    handler_open_bidi_stream,
+    handler_open_unidi_stream,
     handler_persistence,
     handler_publish,
     handler_read,
@@ -73,6 +77,10 @@ def test_sys_registry_contains_expected_atoms() -> None:
         ("sys", "handler_append_chunk"),
         ("sys", "handler_send_datagram"),
         ("sys", "handler_checkpoint"),
+        ("sys", "handler_open_bidi_stream"),
+        ("sys", "handler_open_unidi_stream"),
+        ("sys", "handler_close_stream"),
+        ("sys", "handler_close_session"),
         ("sys", "commit_tx"),
     }
 
@@ -183,6 +191,22 @@ def test_sys_registry_binds_expected_anchor_and_instance_samples() -> None:
         handler_checkpoint.ANCHOR,
         handler_checkpoint.INSTANCE,
     )
+    assert REGISTRY[("sys", "handler_open_bidi_stream")] == (
+        handler_open_bidi_stream.ANCHOR,
+        handler_open_bidi_stream.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_open_unidi_stream")] == (
+        handler_open_unidi_stream.ANCHOR,
+        handler_open_unidi_stream.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_close_stream")] == (
+        handler_close_stream.ANCHOR,
+        handler_close_stream.INSTANCE,
+    )
+    assert REGISTRY[("sys", "handler_close_session")] == (
+        handler_close_session.ANCHOR,
+        handler_close_session.INSTANCE,
+    )
     assert REGISTRY[("sys", "handler_persistence")] == (
         handler_persistence.ANCHOR,
         handler_persistence.INSTANCE,
@@ -225,6 +249,10 @@ def test_sys_instances_and_impls_use_atom_contract() -> None:
         handler_append_chunk,
         handler_send_datagram,
         handler_checkpoint,
+        handler_open_bidi_stream,
+        handler_open_unidi_stream,
+        handler_close_stream,
+        handler_close_session,
         handler_noop,
     )
     for module in modules:
@@ -576,6 +604,34 @@ def test_handler_list_passes_filters_and_pagination(
             "checkpoint",
             {"cursor": "x"},
             {"checkpointed": True},
+        ),
+        (
+            handler_open_bidi_stream,
+            handler_open_bidi_stream,
+            "open_bidi_stream",
+            {"initiator": "server"},
+            {"action": "open_stream"},
+        ),
+        (
+            handler_open_unidi_stream,
+            handler_open_unidi_stream,
+            "open_unidi_stream",
+            {"initiator": "client"},
+            {"action": "open_stream"},
+        ),
+        (
+            handler_close_stream,
+            handler_close_stream,
+            "close_stream",
+            {"stream_id": "s"},
+            {"action": "close_stream"},
+        ),
+        (
+            handler_close_session,
+            handler_close_session,
+            "close_session",
+            {"session_id": "s"},
+            {"action": "close_session"},
         ),
     ),
 )

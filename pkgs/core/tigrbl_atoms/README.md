@@ -90,7 +90,7 @@ Package catalog:
 
 - Import roots: `tigrbl_atoms`.
 - Public symbols: `EGRESS_PHASES`, `EdgeTarget`, `ErrorCtx`, `HANDLER_PHASES`, `HookPhase`, `HookPhases`, `HookPredicate`, `INGRESS_PHASES`, `PHASE_SEQUENCE`, `PhaseTreeEdge`, `PhaseTreeNode`, `StepFn`.
-- Workspace dependencies: [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/), [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/).
+- Workspace dependencies: [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/), [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/), [`tigrbl-ops-webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/), [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/).
 - External runtime dependencies: `jinja2>=3.1`, `sqlalchemy>=2.0`, `typing-extensions>=4.0`.
 
 ## Lifecycle Phases
@@ -202,6 +202,7 @@ Choose `tigrbl-atoms` when the quick-answer table matches your use case. Choose 
 - [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/)
 - [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/)
 - [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/)
+- [`tigrbl-ops-webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/)
 - [`tigrbl-core`](https://pypi.org/project/tigrbl-core/)
 - [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/)
 - [`tigrbl`](https://pypi.org/project/tigrbl/)

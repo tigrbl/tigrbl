@@ -298,6 +298,7 @@ Recommended examples:
 | `tigrbl-ops-oltp` | `tigrbl_ops_oltp` | Transactional operations | CRUD, bulk, REST, JSON-RPC, and database-backed operation handlers. |
 | `tigrbl-ops-olap` | `tigrbl_ops_olap` | Analytical operations | Query-oriented and analytical operation boundaries for OLAP workloads and engine integrations. |
 | `tigrbl-ops-realtime` | `tigrbl_ops_realtime` | Realtime operations | Realtime, streaming, datagram, WebSocket, and event operation handlers for ASGI runtimes. |
+| `tigrbl-ops-webtransport` | `tigrbl_ops_webtransport` | WebTransport control operations | Control-plane stream and session command handlers for WebTransport-aware runtimes. |
 
 ### Developer and Integration Utilities
 
@@ -480,7 +481,7 @@ These should be resolved before final website publication:
    - Website should pick a single current version source and label historical release docs clearly.
 
 2. Package catalog consistency.
-   - `docs/developer/PACKAGE_CATALOG.md` lists 15 core packages and 22 engine packages, but live package metadata includes `tigrbl-ops-realtime` and 24 engine directories in `pkgs/engines`.
+   - `docs/developer/PACKAGE_CATALOG.md` lists 16 core packages and 22 engine packages; verify live package metadata and engine directory counts before reusing older package totals.
    - The catalog also references `tigrbl_canon` as a core package while the live tree places it under `pkgs/deprecated`.
    - Website should use a refreshed package inventory before publishing package counts.
 

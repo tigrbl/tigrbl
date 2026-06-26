@@ -17,6 +17,7 @@ for rel in [
     'pkgs/core/tigrbl_kernel',
     'pkgs/core/tigrbl_ops_olap',
     'pkgs/core/tigrbl_ops_oltp',
+    'pkgs/core/tigrbl_ops_webtransport',
     'pkgs/core/tigrbl_orm',
     'pkgs/core/tigrbl_runtime',
     'pkgs/core/tigrbl_spec',

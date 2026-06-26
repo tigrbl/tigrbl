@@ -237,6 +237,7 @@ def test_webtransport_op_lane_binding_contract() -> None:
             OpSpec(alias="tail", target="tail"),
             OpSpec(alias="append_chunk", target="append_chunk"),
             OpSpec(alias="send_datagram", target="send_datagram"),
+            OpSpec(alias="open_unidi_stream", target="open_unidi_stream"),
         ),
     )
 
@@ -259,6 +260,10 @@ def test_webtransport_op_lane_binding_contract() -> None:
         by_target["send_datagram"].lane,
         by_target["send_datagram"].inner_framing,
     ) == ("datagram", JsonFramingSpec())
+    assert (
+        by_target["open_unidi_stream"].lane,
+        by_target["open_unidi_stream"].inner_framing,
+    ) == ("bidi_stream", JsonRpcFramingSpec())
 
 
 def test_canonical_binding_token_typed_framing_fields() -> None:

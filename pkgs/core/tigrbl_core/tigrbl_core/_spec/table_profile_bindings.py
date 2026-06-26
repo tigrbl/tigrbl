@@ -135,6 +135,10 @@ _WEBTRANSPORT_OP_LANE_DEFAULTS: dict[str, tuple[str, str | None]] = {
     "append_chunk": ("unidi_client_stream", "bytes"),
     "send_datagram": ("datagram", "json"),
     "checkpoint": ("bidi_stream", "jsonrpc"),
+    "open_bidi_stream": ("bidi_stream", "jsonrpc"),
+    "open_unidi_stream": ("bidi_stream", "jsonrpc"),
+    "close_stream": ("bidi_stream", "jsonrpc"),
+    "close_session": ("bidi_stream", "jsonrpc"),
 }
 _REST_PROFILE_TARGETS = {
     kind: set(row.targets)
