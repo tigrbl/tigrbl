@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import Iterable, Literal, Sequence
+from typing import Any, Iterable, Literal, Sequence
 
 from .binding_spec import (
     BytesFramingSpec,
@@ -184,12 +184,14 @@ class LoweredBinding:
 def lower_table_profile_bindings(
     table: type,
     profile: TableProfileSpec,
-    ops: Sequence[OpSpec],
-) -> tuple[OpSpec, ...]:
+    ops: Sequence[Any],
+) -> tuple[Any, ...]:
     """Return ops with profile-specific default bindings applied."""
 
     return tuple(
         _lower_op_with_profile_defaults(table=table, profile=profile, op=op)
+        if isinstance(op, OpSpec)
+        else op
         for op in ops
     )
 
@@ -197,12 +199,14 @@ def lower_table_profile_bindings(
 def lower_binding_tokens_for_ops(
     table: type,
     profile: TableProfileSpec,
-    ops: Sequence[OpSpec],
+    ops: Sequence[Any],
 ) -> tuple[BindingToken, ...]:
     """Return deterministic tokens for explicit or profile-derived bindings."""
 
     out: list[BindingToken] = []
     for op in ops:
+        if not isinstance(op, OpSpec):
+            continue
         explicit = tuple(getattr(op, "bindings", ()) or ())
         if explicit:
             source: BindingSource = (
