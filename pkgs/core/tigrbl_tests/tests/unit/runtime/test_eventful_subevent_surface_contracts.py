@@ -7,7 +7,11 @@ from tigrbl_concrete._decorators.eventful import (
     lower_on_mapping,
 )
 from tigrbl_concrete.system.docs.surface import binding_surface
-from tigrbl_core._spec.binding_spec import HttpStreamBindingSpec, WsBindingSpec
+from tigrbl_core._spec.binding_spec import (
+    HttpStreamBindingSpec,
+    JsonRpcFramingSpec,
+    WsBindingSpec,
+)
 from tigrbl_kernel.eventkey import build_dispatch_table, pack_event_key
 from tigrbl_kernel.eventkey_hooks import compile_hook_buckets
 from tigrbl_kernel.lifecycle_matrix import select_subevents
@@ -88,7 +92,9 @@ def test_eventful_channel_state_and_decorator_lowering_emit_metadata() -> None:
 
 def test_declared_surface_binding_metadata_and_cross_projection_parity() -> None:
     stream = binding_surface(HttpStreamBindingSpec(proto="http.stream", path="/widgets/events"))
-    socket = binding_surface(WsBindingSpec(proto="ws", path="/socket", framing="jsonrpc"))
+    socket = binding_surface(
+        WsBindingSpec(proto="ws", path="/socket", framing=JsonRpcFramingSpec())
+    )
     app, model = _build_app()
 
     with Client(transport=ASGITransport(app=app), base_url="http://test") as client:

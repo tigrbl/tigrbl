@@ -8,11 +8,13 @@ from typing import Any, Callable, Iterable, Optional, Sequence, Union
 from tigrbl_core._spec.binding_spec import (
     Exchange,
     Framing,
+    FramingSpec,
     HttpStreamBindingSpec,
     SseBindingSpec,
     TransportBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
+    framing_spec_from_kind,
 )
 from tigrbl_core._spec.op_spec import (
     Arity,
@@ -273,11 +275,15 @@ def _normalize_bindings(
     return (value,)
 
 
+def _normalize_framing_arg(framing: Framing | FramingSpec | None) -> FramingSpec | None:
+    return framing_spec_from_kind(framing)
+
+
 def websocket_ctx(
     path: str,
     *,
     proto: str = "ws",
-    framing: Framing = "text",
+    framing: Framing | FramingSpec = "text",
     subprotocols: Sequence[str] | None = None,
     **kwargs: Any,
 ):
@@ -285,7 +291,7 @@ def websocket_ctx(
         proto=proto,
         path=path,
         subprotocols=tuple(subprotocols or ()),
-        framing=framing,
+        framing=_normalize_framing_arg(framing),
     )
     exchange = kwargs.pop("exchange", binding.exchange)
     return op_ctx(bindings=(binding,), exchange=exchange, **kwargs)
@@ -308,14 +314,14 @@ def stream_ctx(
     *,
     proto: str = "http.stream",
     methods: Sequence[str] | None = None,
-    framing: Framing = "stream",
+    framing: Framing | FramingSpec = "stream",
     **kwargs: Any,
 ):
     binding = HttpStreamBindingSpec(
         proto=proto,
         path=path,
         methods=tuple(methods or ("GET",)),
-        framing=framing,
+        framing=_normalize_framing_arg(framing),
     )
     exchange = kwargs.pop("exchange", binding.exchange)
     return op_ctx(bindings=(binding,), exchange=exchange, **kwargs)

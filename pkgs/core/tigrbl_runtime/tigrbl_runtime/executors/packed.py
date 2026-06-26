@@ -1431,6 +1431,33 @@ class PackedPlanExecutor(ExecutorBase):
         hot.absent_fields = tuple(absent)
         hot.used_default_factory = tuple(used_default)
 
+    @staticmethod
+    def _publish_compiled_payload(ctx: _Ctx, hot: HotCtx) -> None:
+        field_names = tuple(getattr(hot, "slot_field_names", ()) or ())
+        values = getattr(hot, "assembled_slot_values", None)
+        present = getattr(hot, "assembled_slot_present", None)
+        if not field_names or values is None or present is None:
+            return
+        payload = {
+            field_names[idx]: values[idx]
+            for idx in range(min(len(field_names), len(values), len(present)))
+            if present[idx]
+        }
+        if not payload:
+            return
+        ctx["payload"] = payload
+        ctx["in_data"] = payload
+        ctx["data"] = payload
+
+    @staticmethod
+    def _publish_route_payload(ctx: _Ctx, hot: HotCtx) -> None:
+        payload = getattr(hot, "route_payload", None)
+        if not isinstance(payload, Mapping):
+            return
+        ctx["payload"] = dict(payload)
+        ctx["in_data"] = dict(payload)
+        ctx["data"] = dict(payload)
+
     def _resolve_segments_for_program(
         self, packed: PackedKernel, program_id: int
     ) -> tuple[tuple[int, ...], tuple[int, ...]]:
@@ -2699,6 +2726,7 @@ class PackedPlanExecutor(ExecutorBase):
             if hot is None:
                 return
             await self._prepare_compiled_input(ctx, hot, packed, program_id, hot_op_plan)
+            self._publish_route_payload(ctx, hot)
             if hot.compiled_input_ready:
                 plan = self._resolve_compiled_param_plan(
                     ctx,
@@ -2707,6 +2735,7 @@ class PackedPlanExecutor(ExecutorBase):
                     hot.param_shape_id,
                 )
                 self._compiled_validate_and_assemble(ctx, hot, plan)
+                self._publish_compiled_payload(ctx, hot)
             current_phase = ""
             for phase_name, invoke_kind, call, dep, is_async in compiled_steps:
                 if phase_name != current_phase:

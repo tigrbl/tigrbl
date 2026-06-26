@@ -252,7 +252,7 @@ def _default_framing_spec_for_profile(profile: str) -> FramingSpec | None:
     defaults: dict[str, FramingSpec | None] = {
         "rest": JsonFramingSpec(),
         "jsonrpc": JsonRpcFramingSpec(),
-        "stream": BytesFramingSpec(),
+        "stream": StreamFramingSpec(),
         "sse": SseFramingSpec(),
         "websocket": TextFramingSpec(),
         "session": None,
@@ -702,7 +702,7 @@ class HttpStreamBindingSpec(SerdeMixin):
     methods: tuple[str, ...] = ("GET",)
     profile: Literal["stream"] = "stream"
     exchange: Exchange = "server_stream"
-    framing: FramingSpec = field(default_factory=BytesFramingSpec)
+    framing: FramingSpec = field(default_factory=StreamFramingSpec)
 
     def __post_init__(self) -> None:
         validate_binding_profile_exchange(binding_kind=self.proto, exchange=self.exchange)

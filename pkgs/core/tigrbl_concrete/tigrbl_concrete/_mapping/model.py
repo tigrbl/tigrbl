@@ -19,6 +19,7 @@ from tigrbl_core._spec.binding_spec import (
     SseBindingSpec,
     WebTransportBindingSpec,
     WsBindingSpec,
+    framing_kind,
     resolve_rest_nested_prefix,
 )
 from tigrbl_core.config.constants import HOOK_DECLS_ATTR
@@ -1001,7 +1002,10 @@ def _normalize_bindings(model: type, specs: Tuple[OpSpec, ...]) -> Tuple[OpSpec,
 
         if spec.expose_method:
             for binding in tuple(getattr(spec, "bindings", ()) or ()):
-                if isinstance(binding, WsBindingSpec) and binding.framing == "jsonrpc":
+                if (
+                    isinstance(binding, WsBindingSpec)
+                    and framing_kind(binding.framing) == "jsonrpc"
+                ):
                     rpc_binding = HttpJsonRpcBindingSpec(
                         proto="http.jsonrpc",
                         rpc_method=f"{model.__name__}.{spec.alias}",

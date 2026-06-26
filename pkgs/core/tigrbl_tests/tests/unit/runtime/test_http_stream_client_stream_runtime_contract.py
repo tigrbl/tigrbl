@@ -5,7 +5,7 @@ from types import SimpleNamespace
 import pytest
 
 from tigrbl_atoms.protocol_runtime import run_http_client_stream_chain
-from tigrbl_core._spec.binding_spec import HttpStreamBindingSpec
+from tigrbl_core._spec.binding_spec import BytesFramingSpec, HttpStreamBindingSpec
 from tigrbl_kernel.protocol_bindings import compile_binding_protocol_plan
 from tigrbl_runtime.channel._asgi_scope import build_asgi_channel
 
@@ -16,7 +16,7 @@ def test_http_stream_request_binding_projects_client_stream_runtime_metadata() -
         path="/upload",
         methods=("POST",),
         exchange="client_stream",
-        framing="bytes",
+        framing=BytesFramingSpec(),
     )
     plan = compile_binding_protocol_plan(
         "Upload.append",

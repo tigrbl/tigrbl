@@ -369,6 +369,7 @@ class TigrblRouter(_Router):
             normalized_path = full_path.rstrip("/") or "/"
             pattern, param_names = compile_path(normalized_path)
             route_name = kwargs.get("name", getattr(handler, "__name__", "websocket"))
+            framing = kwargs.get("framing", "text")
             self.websocket_routes.append(
                 WebSocketRoute(
                     path_template=normalized_path,
@@ -380,7 +381,7 @@ class TigrblRouter(_Router):
                     exchange=str(
                         kwargs.get("exchange", "bidirectional_stream")
                     ),
-                    framing=str(kwargs.get("framing", "text")),
+                    framing=str(framing),
                     summary=kwargs.get("summary"),
                     description=kwargs.get("description"),
                     tags=kwargs.get("tags"),
@@ -393,7 +394,7 @@ class TigrblRouter(_Router):
                 endpoint=handler,
                 protocol=str(kwargs.get("protocol", kwargs.get("proto", "ws"))),
                 exchange=str(kwargs.get("exchange", "bidirectional_stream")),
-                framing=str(kwargs.get("framing", "text")),
+                framing=framing,
                 subprotocols=tuple(kwargs.get("subprotocols", ())),
             )
             return handler

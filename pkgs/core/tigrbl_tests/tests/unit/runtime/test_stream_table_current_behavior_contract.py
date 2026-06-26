@@ -60,7 +60,7 @@ async def test_stream_table_materialized_routes_emit_json_chunks() -> None:
         app.include_table(ProbeStreamTable)
         app.initialize()
 
-        route_messages = await _collect_asgi_messages(app, "/download")
+        route_messages = await _collect_asgi_messages(app, "/probestreamtable")
         body_messages = [
             message
             for message in route_messages
@@ -95,6 +95,7 @@ async def test_stream_table_materialized_routes_emit_json_chunks() -> None:
 @pytest.mark.asyncio
 async def test_http_stream_jsonrpc_framing_emits_jsonrpc_chunk_envelopes() -> None:
     from tigrbl import HttpStreamBindingSpec, OpSpec, TableBase
+    from tigrbl_core._spec import JsonRpcFramingSpec
 
     class ProbeJsonRpcStream(TableBase):
         __tablename__ = "stream_table_jsonrpc_framing_probe"
@@ -107,7 +108,7 @@ async def test_http_stream_jsonrpc_framing_emits_jsonrpc_chunk_envelopes() -> No
                     HttpStreamBindingSpec(
                         proto="http.stream",
                         path="/tail",
-                        framing="jsonrpc",
+                        framing=JsonRpcFramingSpec(),
                     ),
                 ),
             ),

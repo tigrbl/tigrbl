@@ -114,8 +114,11 @@ def _iter_webtransport_hooks(ctx: Any) -> tuple[HookSpec, ...]:
     hooks: list[HookSpec] = []
     seen: set[int] = set()
     for owner_key in ("app", "router"):
-        owner = ctx.get(owner_key) if isinstance(ctx, dict) else None
-        for item in tuple(getattr(owner, "hooks", ()) or ()):
+        getter = getattr(ctx, "get", None)
+        owner = getter(owner_key) if callable(getter) else None
+        if owner is None:
+            owner = getattr(ctx, owner_key, None)
+        for item in _iter_hook_candidates(getattr(owner, "hooks", ())):
             if id(item) in seen:
                 continue
             if isinstance(item, HookSpec):
@@ -126,6 +129,19 @@ def _iter_webtransport_hooks(ctx: Any) -> tuple[HookSpec, ...]:
                 hooks.append(hook)
                 seen.add(id(item))
     return tuple(sorted(hooks, key=lambda hook: int(getattr(hook, "order", 0))))
+
+
+def _iter_hook_candidates(value: Any) -> tuple[Any, ...]:
+    if value is None:
+        return ()
+    if isinstance(value, Mapping):
+        return tuple(value.values())
+    if isinstance(value, (list, tuple, set, frozenset)):
+        return tuple(value)
+    data = getattr(value, "__dict__", None)
+    if isinstance(data, Mapping):
+        return tuple(data.values())
+    return ()
 
 
 async def _call_webtransport_hook(hook: HookSpec, ctx: Any) -> None:

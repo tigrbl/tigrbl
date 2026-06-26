@@ -20,6 +20,7 @@ from tigrbl import (
     webtransport_ctx,
 )
 from tigrbl_core.config.constants import HOOK_DECLS_ATTR
+from tigrbl_core._spec import JsonRpcFramingSpec, StreamFramingSpec
 from tests.conftest import mro_collect_decorated_ops
 
 
@@ -80,10 +81,10 @@ def test_alias_surface_decorators_attach_expected_bindings() -> None:
 
     specs = {spec.alias: spec for spec in mro_collect_decorated_ops(Widget)}
     assert isinstance(specs["socket"].bindings[0], WsBindingSpec)
-    assert specs["socket"].bindings[0].framing == "jsonrpc"
+    assert specs["socket"].bindings[0].framing == JsonRpcFramingSpec()
     assert isinstance(specs["events"].bindings[0], SseBindingSpec)
     assert specs["events"].exchange == "server_stream"
-    assert specs["stream"].bindings[0].framing == "stream"
+    assert specs["stream"].bindings[0].framing == StreamFramingSpec()
     assert specs["transport"].bindings[0].proto == "webtransport"
 
 

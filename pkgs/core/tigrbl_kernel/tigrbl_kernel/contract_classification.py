@@ -61,6 +61,9 @@ CANONICAL_CONTRACT_EVENTS: tuple[str, ...] = (
     "webtransport.stream.stop_sending",
     "webtransport.datagram.receive",
     "webtransport.datagram.send",
+    "stream.resume.request",
+    "stream.resume.accept",
+    "stream.resume.reject",
     "webtransport.disconnect",
     "webtransport.close",
     "transport.emit.complete",
@@ -71,6 +74,7 @@ _EVENT_SCOPE_PREFIXES: dict[str, str] = {
     "http.": "http",
     "websocket.": "websocket",
     "webtransport.": "webtransport",
+    "stream.resume.": "webtransport",
     "transport.emit.": "webtransport",
 }
 

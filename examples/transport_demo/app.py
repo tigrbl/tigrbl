@@ -23,6 +23,12 @@ from tigrbl import (
 from tigrbl.factories.engine import sqlitef
 from tigrbl.security import Security
 from tigrbl.types import Column, Integer, String
+from tigrbl_core._spec import (
+    JsonRpcFramingSpec,
+    NdjsonFramingSpec,
+    StreamFramingSpec,
+    TextFramingSpec,
+)
 
 
 _JSONRPC_PROTOCOL_CLOSE_CODE = 1002
@@ -181,7 +187,12 @@ async def _send_jsonrpc_error(
 def build_fail_closed_examples() -> dict[str, str]:
     failures: dict[str, str] = {}
     try:
-        WsBindingSpec(proto="wss", path="/wss/ndjson", framing="ndjson")
+        WsBindingSpec(
+            proto="wss",
+            path="/wss/ndjson",
+            framing=NdjsonFramingSpec(),
+            subprotocols=("jsonrpc",),
+        )
     except ValueError as exc:
         failures["wss_ndjson"] = str(exc)
     return failures
@@ -271,7 +282,7 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
             proto="http.stream",
             path="/stream/raw",
             methods=("GET",),
-            framing="stream",
+            framing=StreamFramingSpec(),
         ),
         tigrbl_exchange="server_stream",
     )
@@ -288,7 +299,7 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
             proto="http.stream",
             path="/stream/ndjson",
             methods=("GET",),
-            framing="ndjson",
+            framing=NdjsonFramingSpec(),
         ),
         tigrbl_exchange="server_stream",
     )
@@ -309,14 +320,14 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
         tigrbl_exchange="event_stream",
     )
 
-    @app.websocket("/ws/echo", proto="ws", framing="text", summary="WebSocket text echo")
+    @app.websocket("/ws/echo", proto="ws", framing=TextFramingSpec(), summary="WebSocket text echo")
     async def ws_echo(ws) -> None:
         await ws.accept()
         text = await ws.receive_text()
         await ws.send_text(f"ws:{text}")
         await ws.close(code=1000)
 
-    @app.websocket("/wss/echo", proto="wss", framing="text", summary="Secure WebSocket text echo")
+    @app.websocket("/wss/echo", proto="wss", framing=TextFramingSpec(), summary="Secure WebSocket text echo")
     async def wss_echo(ws) -> None:
         await ws.accept()
         text = await ws.receive_text()
@@ -326,7 +337,7 @@ def build_app(db_path: str | Path | None = None) -> TigrblApp:
     @app.websocket(
         "/wss/jsonrpc",
         proto="wss",
-        framing="jsonrpc",
+        framing=JsonRpcFramingSpec(),
         subprotocols=("jsonrpc",),
         summary="Secure WebSocket JSON-RPC echo",
     )

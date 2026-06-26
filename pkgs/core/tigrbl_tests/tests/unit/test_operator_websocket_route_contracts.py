@@ -6,6 +6,7 @@ import pytest
 
 from tigrbl_concrete._concrete._app import App as TigrblApp
 from tigrbl_concrete._concrete._router import Router as TigrblRouter
+from tigrbl_core._spec import JsonRpcFramingSpec
 
 
 async def _run_websocket(app: Any, path: str, inbound: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -69,7 +70,7 @@ def test_websocket_route_registration_records_prefixed_runtime_binding_metadata(
     assert binding.path == "/tenant/events"
     assert binding.proto == "ws"
     assert binding.exchange == "bidirectional_stream"
-    assert binding.framing == "jsonrpc"
+    assert binding.framing == JsonRpcFramingSpec()
 
 
 @pytest.mark.asyncio

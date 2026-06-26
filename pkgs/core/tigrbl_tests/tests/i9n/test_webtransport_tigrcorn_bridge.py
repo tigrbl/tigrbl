@@ -7,6 +7,7 @@ from typing import Any
 import pytest
 
 from tigrbl import WebTransportBindingSpec
+from tigrbl_core._spec import TextFramingSpec
 from tigrbl_core._spec.hook_spec import HookSpec
 from tigrbl_core._spec.hook_types import HookPhase
 from tigrbl_concrete._concrete._app import App as TigrblApp
@@ -77,7 +78,7 @@ def _app(path: str) -> TigrblApp:
             proto="webtransport",
             path=path,
             profile="bidi_stream",
-            inner_framing="text",
+            inner_framing=TextFramingSpec(),
         ),
         tigrbl_exchange="bidirectional_stream",
     )
@@ -132,6 +133,7 @@ async def test_tigrbl_webtransport_bidi_stream_runs_over_tigrcorn_contract_event
         "session_id": "session-1",
         "stream_id": "stream-1",
         "stream_direction": "bidi",
+        "stream_initiator": "client",
         "framing": "text",
         "data": b"echo:hello",
         "more": False,
@@ -220,7 +222,7 @@ async def test_webtransport_bidi_and_unidi_lane_metadata_reaches_hooks() -> None
             proto="webtransport",
             path="/transport/lanes",
             profile="bidi_stream",
-            inner_framing="text",
+            inner_framing=TextFramingSpec(),
         ),
         tigrbl_exchange="bidirectional_stream",
     )

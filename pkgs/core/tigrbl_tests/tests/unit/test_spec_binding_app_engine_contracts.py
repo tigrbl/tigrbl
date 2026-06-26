@@ -18,6 +18,8 @@ from tigrbl_core._spec.binding_spec import (
     HttpJsonRpcBindingSpec,
     HttpRestBindingSpec,
     HttpStreamBindingSpec,
+    JsonRpcFramingSpec,
+    StreamFramingSpec,
     compile_binding_event_key,
     project_binding_runtime_metadata,
 )
@@ -74,13 +76,13 @@ def test_http_binding_specs_project_canonical_transport_metadata() -> None:
 
     assert rpc.endpoint == "default"
     assert rpc.exchange == "request_response"
-    assert rpc.framing == "jsonrpc"
+    assert rpc.framing == JsonRpcFramingSpec()
     assert rpc_meta["family"] == "request"
     assert rpc_meta["subevents"] == ("request.received", "response.emit")
 
     assert stream.methods == ("GET",)
     assert stream.exchange == "server_stream"
-    assert stream.framing == "stream"
+    assert stream.framing == StreamFramingSpec()
     assert stream_meta["family"] == "stream"
     assert stream_meta["subevents"] == (
         "stream.open",

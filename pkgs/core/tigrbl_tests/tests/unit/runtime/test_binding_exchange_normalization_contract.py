@@ -69,7 +69,7 @@ def test_transport_bindings_project_canonical_exchange_family_and_subevents() ->
                 {
                     "proto": "http.stream",
                     "exchange": "server_stream",
-                    "framing": "bytes",
+                    "framing": "stream",
                     "family": "stream",
                 },
         ),

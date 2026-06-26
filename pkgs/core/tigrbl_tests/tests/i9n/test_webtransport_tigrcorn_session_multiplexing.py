@@ -8,6 +8,7 @@ from typing import Any
 import pytest
 
 from tigrbl import WebTransportBindingSpec
+from tigrbl_core._spec import TextFramingSpec
 from tigrbl_core._spec.hook_spec import HookSpec
 from tigrbl_core._spec.hook_types import HookPhase
 from tigrbl_concrete._concrete._app import App as TigrblApp
@@ -87,7 +88,7 @@ def _app(path: str) -> TigrblApp:
             proto="webtransport",
             path=path,
             profile="bidi_stream",
-            inner_framing="text",
+            inner_framing=TextFramingSpec(),
         ),
         tigrbl_exchange="bidirectional_stream",
     )
@@ -239,7 +240,7 @@ async def test_webtransport_tigrcorn_session_stays_open_for_delayed_lanes() -> N
             proto="webtransport",
             path="/transport/echo-live",
             profile="bidi_stream",
-            inner_framing="text",
+            inner_framing=TextFramingSpec(),
         ),
         tigrbl_exchange="bidirectional_stream",
     )
@@ -266,20 +267,22 @@ async def test_webtransport_tigrcorn_session_stays_open_for_delayed_lanes() -> N
     assert stream_sends == [
         {
             "type": "webtransport.stream.send",
-            "session_id": "session-1",
-            "stream_id": "bidi-1",
-            "stream_direction": "bidi",
-            "framing": "text",
-            "data": b"echo:alpha",
+                "session_id": "session-1",
+                "stream_id": "bidi-1",
+                "stream_direction": "bidi",
+                "stream_initiator": "client",
+                "framing": "text",
+                "data": b"echo:alpha",
             "more": False,
         },
         {
             "type": "webtransport.stream.send",
-            "session_id": "session-1",
-            "stream_id": "bidi-2",
-            "stream_direction": "bidi",
-            "framing": "text",
-            "data": b"echo:beta",
+                "session_id": "session-1",
+                "stream_id": "bidi-2",
+                "stream_direction": "bidi",
+                "stream_initiator": "client",
+                "framing": "text",
+                "data": b"echo:beta",
             "more": False,
         },
     ]
@@ -297,11 +300,11 @@ async def test_webtransport_tigrcorn_session_stays_open_for_delayed_lanes() -> N
     assert [
         (item["direction"], item["type"], item.get("stream_id"), item.get("datagram_id"))
         for item in trace
-        if item["direction"] == "receive"
+        if item["phase"] == "ctx.channel_message"
     ] == [
         ("receive", "webtransport.connect", None, None),
-        ("receive", "webtransport.stream.receive", "bidi-1", None),
-        ("receive", "webtransport.stream.receive", "bidi-2", None),
+        ("bidirectional", "webtransport.stream.receive", "bidi-1", None),
+        ("bidirectional", "webtransport.stream.receive", "bidi-2", None),
         ("receive", "webtransport.datagram.receive", None, "dg-client-1"),
         ("receive", "webtransport.disconnect", None, None),
     ]
