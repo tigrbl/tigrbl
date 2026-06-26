@@ -53,7 +53,7 @@ async def test_batch_scheduler_i9n_executemany_to_grouped_fanout() -> None:
         db=Db(),
         op="create",
         model=object,
-        batch_policy={"enabled": True, "max_size": 2},
+        batch_policy={"enabled": True, "max_size": 2, "max_delay_ms": 60_000},
         temp={},
     )
 
