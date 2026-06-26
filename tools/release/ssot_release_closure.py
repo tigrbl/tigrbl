@@ -226,7 +226,7 @@ def refresh_registry(
             "status": "evidenced",
             "feature_ids": [scope.feature_id],
             "test_ids": [scope.test_id],
-            "evidence_ids": [scope.source_evidence_id, scope.evidence_id],
+            "evidence_ids": [scope.evidence_id],
             "depends_on_claim_ids": [],
         },
         "tests": {
@@ -275,7 +275,7 @@ def refresh_registry(
                 "tier": "T1",
                 "status": "collected",
                 "path": scope.evidence_path,
-                "claim_ids": [scope.claim_id],
+                "claim_ids": [],
                 "test_ids": [scope.test_id],
             },
             {
@@ -324,7 +324,7 @@ def refresh_registry(
             "boundary_id": scope.boundary_id,
             "boundary_ids": [scope.boundary_id],
             "claim_ids": [scope.claim_id],
-            "evidence_ids": [scope.source_evidence_id, scope.evidence_id],
+            "evidence_ids": [scope.evidence_id],
         },
     }
 

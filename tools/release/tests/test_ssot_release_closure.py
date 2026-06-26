@@ -81,13 +81,14 @@ def test_refresh_registry_creates_linked_release_proof_rows() -> None:
     assert release["status"] == "candidate"
     assert release["boundary_id"] == scope.boundary_id
     assert release["claim_ids"] == [scope.claim_id]
-    assert release["evidence_ids"] == [scope.source_evidence_id, scope.evidence_id]
+    assert release["evidence_ids"] == [scope.evidence_id]
     claim = registry["claims"][0]  # type: ignore[index]
-    assert claim["evidence_ids"] == [scope.source_evidence_id, scope.evidence_id]
+    assert claim["evidence_ids"] == [scope.evidence_id]
     source_evidence, proof_evidence = registry["evidence"]  # type: ignore[misc]
     assert source_evidence["id"] == scope.source_evidence_id
     assert source_evidence["tier"] == "T1"
     assert source_evidence["status"] == "collected"
+    assert source_evidence["claim_ids"] == []
     assert proof_evidence["id"] == scope.evidence_id
     assert proof_evidence["tier"] == "T2"
     assert proof_evidence["status"] == "passed"
