@@ -72,6 +72,7 @@ def test_refresh_registry_creates_linked_release_proof_rows() -> None:
         scope.feature_id,
         scope.claim_id,
         scope.test_id,
+        scope.source_evidence_id,
         scope.evidence_id,
         scope.boundary_id,
         scope.release_id,
@@ -80,7 +81,18 @@ def test_refresh_registry_creates_linked_release_proof_rows() -> None:
     assert release["status"] == "candidate"
     assert release["boundary_id"] == scope.boundary_id
     assert release["claim_ids"] == [scope.claim_id]
-    assert release["evidence_ids"] == [scope.evidence_id]
+    assert release["evidence_ids"] == [scope.source_evidence_id, scope.evidence_id]
+    claim = registry["claims"][0]  # type: ignore[index]
+    assert claim["evidence_ids"] == [scope.source_evidence_id, scope.evidence_id]
+    source_evidence, proof_evidence = registry["evidence"]  # type: ignore[misc]
+    assert source_evidence["id"] == scope.source_evidence_id
+    assert source_evidence["tier"] == "T1"
+    assert source_evidence["status"] == "collected"
+    assert proof_evidence["id"] == scope.evidence_id
+    assert proof_evidence["tier"] == "T2"
+    assert proof_evidence["status"] == "passed"
+    assert proof_evidence["source_evidence_ids"] == [scope.source_evidence_id]
+    assert "regression_corpus" in proof_evidence["robustness_dimensions"]
 
 
 def test_refresh_registry_preserves_published_release_status() -> None:

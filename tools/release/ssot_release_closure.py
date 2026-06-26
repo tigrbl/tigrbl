@@ -25,6 +25,7 @@ class ReleaseScope:
     feature_id: str
     claim_id: str
     test_id: str
+    source_evidence_id: str
     evidence_id: str
     boundary_id: str
     release_id: str
@@ -106,6 +107,7 @@ def build_scope(
         feature_id=f"feat:{slug}",
         claim_id=f"clm:{slug}.t2",
         test_id=f"tst:{slug}.workflow",
+        source_evidence_id=f"evd:{slug}.source-plan",
         evidence_id=f"evd:{slug}.proof-chain",
         boundary_id=f"bnd:{slug}",
         release_id=f"rel:{slug}",
@@ -183,7 +185,7 @@ def refresh_registry(
     )
     changes: list[str] = []
 
-    rows = {
+    rows: dict[str, dict[str, Any] | list[dict[str, Any]]] = {
         "features": {
             "id": scope.feature_id,
             "title": f"Package release {scope.version}",
@@ -224,7 +226,7 @@ def refresh_registry(
             "status": "evidenced",
             "feature_ids": [scope.feature_id],
             "test_ids": [scope.test_id],
-            "evidence_ids": [scope.evidence_id],
+            "evidence_ids": [scope.source_evidence_id, scope.evidence_id],
             "depends_on_claim_ids": [],
         },
         "tests": {
@@ -260,33 +262,51 @@ def refresh_registry(
                 "timeout_seconds": 120,
             },
         },
-        "evidence": {
-            "id": scope.evidence_id,
-            "title": f"Package release {scope.version} proof chain evidence",
-            "body": (
-                "Derived from the release plan emitted after version bumping and "
-                "before downstream package validation and publication."
-            ),
-            "origin": "repo-local",
-            "kind": "release-plan",
-            "tier": "T2",
-            "status": "passed",
-            "path": scope.evidence_path,
-            "claim_ids": [scope.claim_id],
-            "test_ids": [scope.test_id],
-            "robustness_dimensions": [
-                "release_automation",
-                "traceability",
-                "publication_gate",
-            ],
-            "release_context": {
-                "release_id": scope.release_id,
-                "boundary_id": scope.boundary_id,
-                "boundary_ids": [scope.boundary_id],
-                "prepared_commit": scope.prepared_commit,
-                "package_count": scope.package_count,
+        "evidence": [
+            {
+                "id": scope.source_evidence_id,
+                "title": f"Package release {scope.version} source plan evidence",
+                "body": (
+                    "Baseline project-controlled source evidence for the package "
+                    "release proof chain."
+                ),
+                "origin": "repo-local",
+                "kind": "source-evidence",
+                "tier": "T1",
+                "status": "collected",
+                "path": scope.evidence_path,
+                "claim_ids": [scope.claim_id],
+                "test_ids": [scope.test_id],
             },
-        },
+            {
+                "id": scope.evidence_id,
+                "title": f"Package release {scope.version} proof chain evidence",
+                "body": (
+                    "Derived from the release plan emitted after version bumping and "
+                    "before downstream package validation and publication."
+                ),
+                "origin": "repo-local",
+                "kind": "release-plan",
+                "tier": "T2",
+                "status": "passed",
+                "path": scope.evidence_path,
+                "claim_ids": [scope.claim_id],
+                "test_ids": [scope.test_id],
+                "source_evidence_ids": [scope.source_evidence_id],
+                "robustness_dimensions": [
+                    "regression_corpus",
+                    "compatibility_matrix",
+                    "failure_recovery",
+                ],
+                "release_context": {
+                    "release_id": scope.release_id,
+                    "boundary_id": scope.boundary_id,
+                    "boundary_ids": [scope.boundary_id],
+                    "prepared_commit": scope.prepared_commit,
+                    "package_count": scope.package_count,
+                },
+            },
+        ],
         "boundaries": {
             "id": scope.boundary_id,
             "title": f"Package release {scope.version} boundary",
@@ -304,25 +324,26 @@ def refresh_registry(
             "boundary_id": scope.boundary_id,
             "boundary_ids": [scope.boundary_id],
             "claim_ids": [scope.claim_id],
-            "evidence_ids": [scope.evidence_id],
+            "evidence_ids": [scope.source_evidence_id, scope.evidence_id],
         },
     }
 
-    for section, row in rows.items():
-        preserve_statuses = (
-            {"certified", "promoted", "published", "revoked"}
-            if section == "releases"
-            else None
-        )
-        _, changed = upsert_row(
-            registry,
-            section,
-            row["id"],
-            row,
-            preserve_statuses=preserve_statuses,
-        )
-        if changed:
-            changes.append(row["id"])
+    for section, section_rows in rows.items():
+        for row in section_rows if isinstance(section_rows, list) else [section_rows]:
+            preserve_statuses = (
+                {"certified", "promoted", "published", "revoked"}
+                if section == "releases"
+                else None
+            )
+            _, changed = upsert_row(
+                registry,
+                section,
+                row["id"],
+                row,
+                preserve_statuses=preserve_statuses,
+            )
+            if changed:
+                changes.append(row["id"])
 
     return {"changed_entity_ids": changes}
 
@@ -382,6 +403,7 @@ def main(argv: list[str] | None = None) -> int:
         "release_id": scope.release_id,
         "boundary_id": scope.boundary_id,
         "feature_id": scope.feature_id,
+        "source_evidence_id": scope.source_evidence_id,
         "evidence_id": scope.evidence_id,
         "release_status_before": status_before,
         "already_published": "true" if status_before == "published" else "false",
