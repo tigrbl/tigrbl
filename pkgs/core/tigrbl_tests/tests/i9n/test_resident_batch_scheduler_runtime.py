@@ -31,7 +31,7 @@ class Hot:
     batch = {
         "enabled": True,
         "max_size": 2,
-        "max_delay_ms": 1,
+        "max_delay_ms": 60_000,
         "max_queue_depth": 8,
     }
 
