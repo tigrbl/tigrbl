@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from enum import Enum
 from functools import lru_cache
 import os
+from pathlib import Path
+import sys
 import tempfile
 from types import SimpleNamespace
 from typing import Any, AsyncIterator, Iterator
@@ -40,6 +42,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, Session
 import asyncio
 import httpx
+
+CORE_ROOT = Path(__file__).resolve().parents[2]
+TIGRBL_EXAMPLES_ROOT = CORE_ROOT / "tigrbl_examples"
+if TIGRBL_EXAMPLES_ROOT.exists():
+    _examples_root = str(TIGRBL_EXAMPLES_ROOT)
+    if _examples_root not in sys.path:
+        sys.path.insert(0, _examples_root)
 
 
 @lru_cache(maxsize=None)

@@ -87,6 +87,7 @@ The active registry validates, but it is not certifiably fully featured or fully
 - `tigrbl-client`
 - `tigrbl-concrete`
 - `tigrbl-core`
+- `tigrbl-examples`
 - `tigrbl-engine-bigquery`
 - `tigrbl-engine-clickhouse`
 - `tigrbl-engine-csv`
@@ -115,6 +116,7 @@ The active registry validates, but it is not certifiably fully featured or fully
 - `tigrbl-ops-olap`
 - `tigrbl-ops-oltp`
 - `tigrbl-ops-realtime`
+- `tigrbl-ops-webtransport`
 - `tigrbl-orm`
 - `tigrbl-runtime`
 - `tigrbl-spec`

@@ -47,6 +47,7 @@ authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
 
 dependencies = [
     "tigrbl",
+    "tigrbl-examples",
     "tigrbl_client",
     "psycopg2-binary>=2.9.9",
     "asyncpg>=0.30.0",
@@ -73,6 +74,7 @@ Issues = "https://github.com/tigrbl/tigrbl/issues"
 
 [tool.uv.sources]
 tigrbl = { workspace = true }
+"tigrbl-examples" = { workspace = true }
 tigrbl_client = { workspace = true }
 
 [tool.pytest.ini_options]

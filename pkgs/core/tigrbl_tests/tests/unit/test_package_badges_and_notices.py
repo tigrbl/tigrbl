@@ -42,7 +42,7 @@ def _package_roots() -> list[Path]:
 
 def test_all_package_roots_have_required_legal_files_and_badges() -> None:
     package_roots = _package_roots()
-    assert len(package_roots) == 41
+    assert len(package_roots) == 42
 
     for package_root in package_roots:
         readme = (package_root / "README.md").read_text(encoding="utf-8")

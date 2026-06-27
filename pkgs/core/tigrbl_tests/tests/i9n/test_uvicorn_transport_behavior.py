@@ -10,7 +10,7 @@ import pytest
 from tigrbl import Request
 from tigrbl import TigrblApp
 from tigrbl import TigrblRouter
-from tigrbl_tests.examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
+from tigrbl_examples._support import pick_unique_port, start_uvicorn, stop_uvicorn
 
 
 async def _probe_http3_over_quic(host: str, port: int) -> dict[str, Any]:

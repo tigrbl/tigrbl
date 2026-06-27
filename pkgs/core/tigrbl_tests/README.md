@@ -65,14 +65,14 @@ pip install tigrbl_tests
 
 Implementation orientation:
 - `benchmarks`: comparative_benchmark_verification, open_loop_load_patterns, run_hot_path_perf_suite, tigrbl_fastapi_surface_matrix_benchmark, tigrbl_kernel_plan_benchmark, tigrbl_request_response_benchmark, tigrbl_sse_perf_suite, tigrbl_streaming_perf_suite, tigrbl_websocket_perf_suite, tigrbl_webtransport_perf_suite
-- `tigrbl_tests`: examples/, tests/
+- `tigrbl_tests`: tests/
 - `v4`: tests/
 
 ## Public API and Import Surface
 
 - Import roots: `benchmarks`, `tigrbl_tests`, `triage_tests`, `v4`.
 - Public symbols: public surface is module-oriented; import the package boundary and inspect submodules as needed.
-- Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/), [`tigrbl_client`](https://pypi.org/project/tigrbl_client/).
+- Workspace dependencies: [`tigrbl`](https://pypi.org/project/tigrbl/), [`tigrbl-examples`](https://pypi.org/project/tigrbl-examples/), [`tigrbl_client`](https://pypi.org/project/tigrbl_client/).
 - External runtime dependencies: `psycopg2-binary>=2.9.9`, `asyncpg>=0.30.0`, `pytest>=8.0`, `pytest-asyncio>=0.24.0`, `pytest-xdist>=3.6.1`, `pytest-json-report>=1.5.0`, `python-dotenv`, `requests>=2.32.3`, `flake8>=7.0`, `pytest-timeout>=2.3.1`, `ruff>=0.9.9`, `pytest-benchmark>=4.0.0`, `jinja2>=3.1.0`.
 
 ## Usage Examples
@@ -116,6 +116,7 @@ Choose `tigrbl_tests` when the quick-answer table matches your use case. Choose 
 ## Related Packages
 
 - [`tigrbl`](https://pypi.org/project/tigrbl/)
+- [`tigrbl-examples`](https://pypi.org/project/tigrbl-examples/)
 - [`tigrbl_client`](https://pypi.org/project/tigrbl_client/)
 
 ## Documentation Links
