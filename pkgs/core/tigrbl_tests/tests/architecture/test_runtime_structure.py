@@ -22,7 +22,7 @@ def test_dependency_invoke_is_runtime_event_anchor():
 def test_runtime_gateway_owns_runtime_entrypoint_and_send():
     runtime_source = (RUNTIME_PKG / "runtime" / "runtime.py").read_text()
     executor_source = (RUNTIME_PKG / "executors" / "kernel_executor.py").read_text()
-    packed_source = (RUNTIME_PKG / "executors" / "packed.py").read_text()
+    packed_source = (RUNTIME_PKG / "executors" / "packed" / "execute.py").read_text()
     channel_source = (RUNTIME_PKG / "channel" / "websocket.py").read_text()
 
     assert "kernel.kernel_plan(app)" in runtime_source

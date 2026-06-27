@@ -74,7 +74,14 @@ def test_http_bearer_valid_credentials_decode() -> None:
 
 def test_executor_and_sender_source_preserve_http_exception_headers() -> None:
     packed_text = (
-        REPO_ROOT / 'pkgs' / 'core' / 'tigrbl_runtime' / 'tigrbl_runtime' / 'executors' / 'packed.py'
+        REPO_ROOT
+        / 'pkgs'
+        / 'core'
+        / 'tigrbl_runtime'
+        / 'tigrbl_runtime'
+        / 'executors'
+        / 'packed'
+        / 'execute.py'
     ).read_text(encoding='utf-8')
     asgi_send_text = (
         REPO_ROOT / 'pkgs' / 'core' / 'tigrbl_atoms' / 'tigrbl_atoms' / 'atoms' / 'egress' / 'asgi_send.py'
