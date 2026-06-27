@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from typing import Any, Callable, Iterable, Optional, Sequence, Union
 
 from tigrbl_core._spec.binding_spec import (
@@ -223,14 +223,18 @@ def op_ctx(
         f.__tigrbl_op_decl__ = spec
 
         if bind is not None:
-            targets = (
-                bind
-                if isinstance(bind, Iterable) and not isinstance(bind, (str, bytes))
-                else [bind]
-            )
+            targets = _bind_targets(bind)
             for obj in targets:
                 setattr(obj, f.__name__, cm)
                 if isinstance(obj, type):
+                    _register_bound_op(
+                        obj,
+                        spec,
+                        f,
+                        arity_was_explicit=arity is not None,
+                        persist_was_explicit=persist is not None,
+                        rest_was_explicit=rest is not None,
+                    )
                     _refresh_bound_ops(obj)
 
         return cm
@@ -273,6 +277,117 @@ def _normalize_bindings(
     if isinstance(value, Iterable) and not isinstance(value, (str, bytes)):
         return tuple(value)
     return (value,)
+
+
+def _bind_targets(bind: Any | Iterable[Any]) -> tuple[Any, ...]:
+    if isinstance(bind, Iterable) and not isinstance(bind, (str, bytes)):
+        return tuple(bind)
+    return (bind,)
+
+
+def _register_bound_op(
+    model: type,
+    spec: OpSpec,
+    func: Callable[..., Any],
+    *,
+    arity_was_explicit: bool,
+    persist_was_explicit: bool,
+    rest_was_explicit: bool,
+) -> None:
+    registered = _registered_bound_spec(
+        model,
+        spec,
+        func,
+    )
+    ops = list(getattr(model, "__tigrbl_ops__", ()) or ())
+    key = (registered.alias, registered.target)
+    for index, existing in enumerate(ops):
+        existing_key = (
+            getattr(existing, "alias", None),
+            getattr(existing, "target", None),
+        )
+        if existing_key == key:
+            ops[index] = _merge_registered_bound_spec(
+                existing,
+                registered,
+                arity_was_explicit=arity_was_explicit,
+                persist_was_explicit=persist_was_explicit,
+                rest_was_explicit=rest_was_explicit,
+            )
+            break
+    else:
+        ops.append(registered)
+    model.__tigrbl_ops__ = tuple(ops)
+
+
+def _registered_bound_spec(
+    model: type,
+    spec: OpSpec,
+    func: Callable[..., Any],
+) -> OpSpec:
+    try:
+        from tigrbl_core._spec.op_spec import _wrap_ctx_core
+
+        handler = _wrap_ctx_core(model, func)
+    except Exception:
+        handler = None
+    return replace(
+        spec,
+        table=model,
+        handler=handler,
+        core=handler,
+        core_raw=handler,
+    )
+
+
+def _merge_registered_bound_spec(
+    existing: OpSpec,
+    registered: OpSpec,
+    *,
+    arity_was_explicit: bool,
+    persist_was_explicit: bool,
+    rest_was_explicit: bool,
+) -> OpSpec:
+    existing_bindings = tuple(getattr(existing, "bindings", ()) or ())
+    registered_bindings = tuple(getattr(registered, "bindings", ()) or ())
+    bindings = registered_bindings or existing_bindings
+    if existing_bindings and registered_bindings:
+        bindings = tuple(dict.fromkeys((*existing_bindings, *registered_bindings)))
+
+    return replace(
+        registered,
+        http_methods=registered.http_methods or existing.http_methods,
+        bindings=bindings,
+        path_suffix=registered.path_suffix
+        if registered.path_suffix is not None
+        else existing.path_suffix,
+        tags=registered.tags or existing.tags,
+        status_code=registered.status_code
+        if registered.status_code is not None
+        else existing.status_code,
+        request_model=registered.request_model or existing.request_model,
+        response_model=registered.response_model or existing.response_model,
+        response=registered.response or existing.response,
+        engine=registered.engine if registered.engine is not None else existing.engine,
+        engine_name=registered.engine_name
+        if registered.engine_name is not None
+        else existing.engine_name,
+        arity=registered.arity if arity_was_explicit else existing.arity,
+        persist=registered.persist if persist_was_explicit else existing.persist,
+        expose_routes=registered.expose_routes
+        if rest_was_explicit
+        else existing.expose_routes,
+        expose_rpc=registered.expose_rpc
+        if registered.expose_rpc is not None
+        else existing.expose_rpc,
+        expose_method=registered.expose_method
+        if registered.expose_method is not None
+        else existing.expose_method,
+        deps=registered.deps or existing.deps,
+        security_deps=registered.security_deps or existing.security_deps,
+        secdeps=registered.secdeps or existing.secdeps,
+        extra={**dict(getattr(existing, "extra", {}) or {}), **dict(registered.extra)},
+    )
 
 
 def _normalize_framing_arg(framing: Framing | FramingSpec | None) -> FramingSpec | None:

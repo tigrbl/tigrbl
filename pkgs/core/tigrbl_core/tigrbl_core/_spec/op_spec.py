@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from importlib import metadata as importlib_metadata
 import inspect
+import warnings
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -58,6 +60,11 @@ TargetOp = Literal[
     "close_session",
     "custom",
 ]
+
+_CANONICAL_OP_SPEC_ATTR = "__tigrbl_op_spec__"
+_LEGACY_OP_DECL_ATTR = "__tigrbl_op_decl__"
+_LEGACY_OP_DECL_FALLBACK_VERSION = "0.4.5.dev1"
+_LEGACY_OP_DECL_FAILS_IN = (0, 7)
 
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -151,6 +158,46 @@ class OpSpec(SerdeMixin):
 
 
 _ALIAS_RE = __import__("re").compile(r"^[a-z][a-z0-9_]*$")
+_VERSION_RE = __import__("re").compile(r"^\s*(\d+)\.(\d+)")
+
+
+def _parse_major_minor(version: str) -> tuple[int, int]:
+    match = _VERSION_RE.match(version)
+    if match is None:
+        return (0, 0)
+    return (int(match.group(1)), int(match.group(2)))
+
+
+def _current_major_minor() -> tuple[int, int]:
+    try:
+        version = importlib_metadata.version("tigrbl-core")
+    except importlib_metadata.PackageNotFoundError:
+        version = _LEGACY_OP_DECL_FALLBACK_VERSION
+    return _parse_major_minor(version)
+
+
+def _warn_or_fail_legacy_op_decl() -> None:
+    if _current_major_minor() >= _LEGACY_OP_DECL_FAILS_IN:
+        raise RuntimeError(
+            "__tigrbl_op_decl__ is no longer supported; use "
+            "__tigrbl_op_spec__ for operation metadata."
+        )
+    warnings.warn(
+        "__tigrbl_op_decl__ is deprecated and will be removed in "
+        "tigrbl-core 0.7.0; use __tigrbl_op_spec__ instead.",
+        DeprecationWarning,
+        stacklevel=3,
+    )
+
+
+def _get_decorated_op_spec(func: Any) -> Optional["OpSpec"]:
+    op_spec: OpSpec | None = getattr(func, _CANONICAL_OP_SPEC_ATTR, None)
+    if op_spec is not None:
+        return op_spec
+    op_spec = getattr(func, _LEGACY_OP_DECL_ATTR, None)
+    if op_spec is not None:
+        _warn_or_fail_legacy_op_decl()
+    return op_spec
 
 
 def _ensure_spec_table(spec: Any, table: type) -> OpSpec:
@@ -484,9 +531,7 @@ def _mro_collect_decorated_ops(table: type) -> List["OpSpec"]:
             if name in seen:
                 continue
             func = _unwrap(attr)
-            op_spec: OpSpec | None = getattr(func, "__tigrbl_op_spec__", None)
-            if op_spec is None:
-                op_spec = getattr(func, "__tigrbl_op_decl__", None)
+            op_spec = _get_decorated_op_spec(func)
             if op_spec is None:
                 continue
 

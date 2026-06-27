@@ -20,7 +20,7 @@ from typing import (
 
 from ._app import App as _App
 from .tigrbl_router import TigrblRouter
-from tigrbl_core._spec.op_spec import OpSpec
+from tigrbl_core._spec.op_spec import OpSpec, _get_decorated_op_spec
 from tigrbl_core._spec.engine_spec import EngineCfg
 from tigrbl_concrete._concrete import engine_resolver as _resolver
 from tigrbl_concrete.ddl import initialize as _ddl_initialize
@@ -320,9 +320,7 @@ class TigrblApp(_App):
 
         for attr in app_cls.__dict__.values():
             fn = getattr(attr, "__func__", attr)
-            if getattr(fn, "__tigrbl_op_spec__", None) is not None:
-                return True
-            if getattr(fn, "__tigrbl_op_decl__", None) is not None:
+            if _get_decorated_op_spec(fn) is not None:
                 return True
         return False
 

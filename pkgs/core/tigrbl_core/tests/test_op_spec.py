@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import pytest
+
+import tigrbl_core._spec.op_spec as op_spec_module
 from tigrbl_core._spec.op_spec import OpSpec
 
 
@@ -31,3 +34,49 @@ def test_collect_returns_decorated_op_specs() -> None:
     assert decorated[0].target == "read"
     # Canonical ops are also generated for the table
     assert len(ops) >= 1
+
+
+def test_collect_warns_for_legacy_op_decl_only(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(op_spec_module, "_current_major_minor", lambda: (0, 6))
+
+    class DecoratedSpec:
+        alias = "legacy_get"
+        target = "read"
+        arity = "member"
+        persist = "default"
+
+    def handler(ctx=None):
+        return ctx
+
+    handler.__tigrbl_op_decl__ = DecoratedSpec()
+
+    class DemoTable:
+        get = handler
+
+    with pytest.warns(DeprecationWarning, match="__tigrbl_op_decl__ is deprecated"):
+        ops = OpSpec.collect(DemoTable)
+
+    assert any(op.alias == "legacy_get" for op in ops)
+
+
+def test_collect_fails_for_legacy_op_decl_after_removal(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(op_spec_module, "_current_major_minor", lambda: (0, 7))
+
+    class DecoratedSpec:
+        alias = "legacy_get"
+        target = "read"
+        arity = "member"
+        persist = "default"
+
+    def handler(ctx=None):
+        return ctx
+
+    handler.__tigrbl_op_decl__ = DecoratedSpec()
+
+    class DemoTable:
+        get = handler
+
+    with pytest.raises(RuntimeError, match="__tigrbl_op_decl__ is no longer supported"):
+        OpSpec.collect(DemoTable)
