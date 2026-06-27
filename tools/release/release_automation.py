@@ -17,11 +17,7 @@ ROOT = Path(__file__).resolve().parents[2]
 PYPROJECT_VERSION_RE = re.compile(r'(?m)^(version\s*=\s*)"([^"]+)"')
 PACKAGE_SPLIT_RE = re.compile(r"[\s,]+")
 PYTHON_VERSION_FLOOR = "0.4.0.dev1"
-PYPI_TRUSTED_PUBLISH_EXCLUDED = {
-    # PyPI trusted publishing can upload to an existing project, but cannot
-    # create the first release for a new project identity.
-    "tigrbl-ops-webtransport": "PyPI project is not bootstrapped for trusted publishing",
-}
+PYPI_TRUSTED_PUBLISH_EXCLUDED = {}
 
 
 @dataclass(frozen=True)

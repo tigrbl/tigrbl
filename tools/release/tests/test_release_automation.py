@@ -87,7 +87,7 @@ def test_release_plan_can_select_package_subset() -> None:
     ]
 
 
-def test_release_plan_keeps_webtransport_github_release_without_pypi_publish() -> None:
+def test_release_plan_includes_webtransport_in_pypi_publish() -> None:
     plan = build_plan(
         "patch",
         write_changes=False,
@@ -100,17 +100,13 @@ def test_release_plan_keeps_webtransport_github_release_without_pypi_publish() -
     assert [release["tag"] for release in plan["github_releases"]] == [
         f"tigrbl-ops-webtransport=={plan['python'][0]['version']}"
     ]
-    assert plan["pypi"] == []
-    assert plan["pypi_skipped"] == [
-        {
-            "name": "tigrbl-ops-webtransport",
-            "version": plan["python"][0]["version"],
-            "reason": "PyPI project is not bootstrapped for trusted publishing",
-        }
+    assert [release["name"] for release in plan["pypi"]] == [
+        "tigrbl-ops-webtransport"
     ]
+    assert plan["pypi_skipped"] == []
 
 
-def test_release_matrices_exclude_webtransport_from_pypi_build(
+def test_release_matrices_include_webtransport_in_pypi_build(
     tmp_path: Path,
 ) -> None:
     plan = build_plan(
@@ -128,9 +124,9 @@ def test_release_matrices_exclude_webtransport_from_pypi_build(
     validation_matrix = json.loads(values["python_validation_matrix"])
     build_matrix = json.loads(values["python_build_matrix"])
     assert values["has_python"] == "true"
-    assert values["has_pypi"] == "false"
+    assert values["has_pypi"] == "true"
     assert validation_matrix["include"][0]["package"] == "tigrbl-ops-webtransport"
-    assert build_matrix["include"] == []
+    assert build_matrix["include"][0]["package"] == "tigrbl-ops-webtransport"
 
 
 def test_unknown_package_selection_fails() -> None:
