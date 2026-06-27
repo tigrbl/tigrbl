@@ -35,13 +35,6 @@ Application developers, platform teams, and service owners building schema-first
 
 It re-exports stable author-facing classes and decorators while delegating resident behavior to core, base, runtime, kernel, atoms, ORM, and operation packages.
 
-## Certification Status
-
-- Package status: governed package in the `tigrbl/tigrbl` workspace.
-- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
-- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
-- Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
-- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
 
 ## Install
 
@@ -154,46 +147,123 @@ Tigrbl is organized as a split framework behind this facade:
 
 Use the facade for application code unless you are maintaining a framework layer, testing a boundary in isolation, or writing a package that intentionally plugs into one of the lower layers.
 
-## Authoring BCP
+## Convenient Authoring Path and Best Current Practice (BCP)
 
-The facade is the normal application authoring surface. Use `docs/developer/AUTHORING_BCP.md` for the full policy; this package README keeps the public-package guidance explicit because it is the README most application developers see first.
+Tigrbl is most convenient when application code describes behavior once and lets the framework project that behavior into routes, RPC methods, schemas, docs, lifecycle hooks, diagnostics, tests, and transport-aware runtime plans. The best current practice is to use tables, default canonical operations, operation specs, custom handlers, and lifecycle hooks together instead of spreading one behavior across lower-level framework surfaces. The detailed policy is in [`docs/developer/AUTHORING_BCP.md`](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/AUTHORING_BCP.md).
 
-If you are translating concepts from Starlette, FastAPI, Flask, ASGI 3,
-WebSocket, WebTransport, SQLAlchemy, or backend-specific SQL engines, start with
+For readers translating from Starlette, FastAPI, Flask, ASGI 3, WebSocket,
+WebTransport, SQLAlchemy, or database-engine concepts, use
 [`docs/developer/EQUIVALENCE_INDEX.md`](https://github.com/tigrbl/tigrbl/blob/master/docs/developer/EQUIVALENCE_INDEX.md).
-Those guides describe analogous lower-layer concepts while keeping Tigrbl-owned
-authoring surfaces as the application contract.
+Those guides explain nearby concepts without making lower-layer frameworks the
+Tigrbl application authoring contract.
 
-Do:
+### Keep the facade as the application contract
 
-- Do import application-facing classes, decorators, helpers, and shortcuts from `tigrbl` unless you are intentionally maintaining a lower-level package. Why: the facade is the supported application contract and hides lower-layer package splits.
-- Do create services with `TigrblApp`, `TigrblRouter`, facade route/operation decorators, table helpers, column helpers, hook decorators, response decorators, schema helpers, and engine decorators. Why: these entry points are visible to runtime planning, docs, diagnostics, schemas, and tests.
-- Do model domain actions as Tigrbl operations, including canonical CRUD operations, operation-pack verbs, or explicit custom operation specs. Why: operations are the unit Tigrbl can project consistently across protocol surfaces.
-- Do use operation handlers through Tigrbl specs and kernel/runtime dispatch so REST, JSON-RPC, HTTP streams, SSE, WebSocket, WebTransport-aware runtime units, OpenAPI, OpenRPC, diagnostics, schemas, hooks, and tests stay aligned. Why: handler dispatch is where protocol projection and lifecycle guarantees meet.
-- Do express field behavior through Tigrbl table, column, datatype, storage, IO, request, response, and operation specs. Why: specs are the shared source for storage lowering, wire schemas, docs, runtime planning, hooks, and diagnostics.
-- Do use `get_schema(...)` or schema helpers for operation request/response payloads. Why: generated schemas keep payloads aligned with operation specs and docs.
-- Do bind engines declaratively at app, router, table, or operation scope. Why: declarative binding lets the runtime own session selection, transaction scope, diagnostics, and backend-specific behavior.
-- Do use lifecycle hooks for policy, validation, enrichment, audit, response shaping, and post-response work. Why: hooks make policy visible to lifecycle ordering, diagnostics, tests, and transport-independent execution.
-- Do use `/system/methodz`, `/system/hookz`, `/system/kernelz`, OpenAPI, and OpenRPC to inspect the registered framework state. Why: these surfaces show the compiled Tigrbl state instead of a lower-level framework's partial view.
+- Avoid: Treating ASGI, FastAPI, Flask, Starlette, SQLAlchemy ORM materialization, or direct database/session calls as the user-facing application contract.
+- Do: Build application services with `TigrblApp`, `TigrblRouter`, facade decorators, table helpers, column helpers, operation specs, hook specs, binding specs, engine specs, and generated schemas.
+- Why: Tigrbl-owned authoring surfaces are the entry points that runtime planning, docs, diagnostics, schemas, and tests understand.
 
-Do not:
+### Start with tables and default canonical operations
 
-- Do not author application endpoints with FastAPI `FastAPI`, `APIRouter`, dependency wiring, route decorators, middleware registration, docs generation, or lifecycle hooks. Why: that makes FastAPI the application contract instead of Tigrbl's operation, binding, hook, schema, docs, and diagnostics contract.
-- Do not author application endpoints with Starlette route, request, response, middleware, background-task, or lifecycle classes. Why: Starlette is a lower-level runtime substrate here, not the application-facing authoring surface.
-- Do not author application endpoints with Flask `Flask`, `Blueprint`, route decorators, request/response globals, `MethodView`, extension registration, or lifecycle hooks. Why: Flask route objects cannot preserve Tigrbl's shared operation inventory, schema generation, lifecycle phases, or transport plan.
-- Do not use raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the primary application authoring surface when Tigrbl column helpers or specs can represent the field behavior. Why: raw ORM declarations are only one lowering target and cannot carry the full storage, IO, validation, docs, hook, and runtime contract.
-- Do not build ad-hoc SQLAlchemy engines, sessions, or sessionmakers inside request handlers. Why: ad-hoc construction bypasses declarative engine binding, session policy, pooling, diagnostics, tests, and backend adapters.
-- Do not call direct database/session methods such as `flush()` or `commit()` from application hooks or handlers unless you are implementing a framework-level atom with the correct lifecycle guard contract. Why: direct calls bypass lifecycle guards and can commit partial state before hooks, errors, rollback handlers, or response shaping have run.
-- Do not wrap model behavior in one-off route handlers when an operation spec can represent the behavior. Why: route wrappers hide behavior from protocol projection, docs, hooks, diagnostics, and tests.
-- Do not bypass kernel/runtime plans when wiring REST, JSON-RPC, HTTP stream, SSE, WebSocket, or WebTransport behavior. Why: bypasses skip legality checks, lifecycle phases, transaction ownership, protocol framing policy, and fail-closed unsupported-combination handling.
+- Avoid: Hand-writing endpoint-specific behavior before checking whether table-backed default operations already express it.
+- Do: Model resources with Tigrbl tables and use default canonical operations such as `create`, `read`, `update`, `replace`, `delete`, `list`, and `clear` where they fit.
+- Why: Tables plus canonical operations give Tigrbl a durable resource model that can be projected consistently across REST, JSON-RPC, schemas, docs, hooks, diagnostics, and tests.
 
-Avoid:
+### Use operations and custom handlers for domain actions
 
-- Avoid treating ASGI, FastAPI, Flask, Starlette, SQLAlchemy ORM materialization, or direct DB methods as the user-facing application contract. Tigrbl owns the authoring contract; lower-level libraries are implementation substrates behind Tigrbl-owned adapters, engines, tests, or benchmarks. Why: lower-level substrates are legal implementation tools, but not the supported application API.
-- Avoid duplicating field behavior in SQLAlchemy, Pydantic, docs, and route handlers. Put reusable behavior in Tigrbl specs so storage, schema, docs, runtime, hooks, and diagnostics read the same source. Why: duplicated rules create stale validation, stale docs, and protocol-specific behavior differences.
-- Avoid hand-written Pydantic envelopes for payloads that belong to a Tigrbl operation. Why: generated schemas keep request/response payloads aligned with operation specs and docs.
-- Avoid transport-specific wrappers for authentication, authorization, validation, or dispatch when security dependencies, hooks, operation specs, or lifecycle phases can express the rule once. Why: transport-layer policy can make REST, JSON-RPC, streams, SSE, WebSocket, and WebTransport disagree about the same domain operation.
-- Avoid teaching lower-level internals in application README examples unless the example is clearly marked as a test, benchmark, migration, engine adapter, or framework-internal compatibility surface. Why: examples without a boundary marker become accidental guidance.
+- Avoid: Splitting one domain action across separate REST handlers, JSON-RPC handlers, stream handlers, docs snippets, and protocol-specific wrappers.
+- Do: Model domain actions as Tigrbl operations with operation specs and custom handlers when the default canonical operations are not enough.
+- Why: Operations are the unit Tigrbl can bind, document, inspect, test, and project across protocol surfaces.
+
+### Use lifecycle hooks around operations
+
+- Avoid: Embedding lifecycle policy directly inside transport-specific handlers or lower-level framework middleware.
+- Do: Use lifecycle hooks around operations for validation, authorization, enrichment, auditing, response shaping, rollback handling, and post-response work.
+- Why: Hooks make behavior visible before and after the operation, while preserving lifecycle ordering across REST, JSON-RPC, streams, SSE, WebSocket, and WebTransport-aware runtime plans.
+
+### Support persistence and non-persistence operations
+
+- Avoid: Assuming every operation or custom handler must be database-backed.
+- Do: Use operations and custom handlers for persistence workflows and for non-persistence workflows such as computed responses, orchestration, control-plane commands, stream/session commands, or external-service actions.
+- Why: The operation model gives both persistence and non-persistence behavior the same docs, hooks, diagnostics, protocol projection, and runtime planning path.
+
+### Put field behavior in Tigrbl specs
+
+- Avoid: Duplicating field behavior across SQLAlchemy declarations, Pydantic models, route handlers, and docs.
+- Do: Describe field behavior through Tigrbl tables, `FieldSpec`, `ColumnSpec`, `StorageSpec`, and `IOSpec`.
+- Why: These specs keep field semantics aligned for storage lowering, validation, schemas, docs, hooks, diagnostics, and runtime planning.
+
+### Use generated schemas for operation payloads
+
+- Avoid: Hand-written Pydantic envelopes for payloads that belong to a Tigrbl operation.
+- Do: Use `get_schema(...)` or other Tigrbl schema helpers for operation request and response payloads.
+- Why: Generated schemas keep payloads aligned with operation specs, docs, validation, and protocol projections.
+
+### Keep engines and transactions declarative
+
+- Avoid: Creating ad-hoc SQLAlchemy engines, sessions, sessionmakers, commits, or flushes inside application handlers.
+- Do: Bind engines declaratively at app, router, table, or operation scope, and let kernel/runtime phases own dispatch and transaction progression.
+- Why: Declarative binding lets the runtime own session selection, transaction scope, rollback behavior, pooling, diagnostics, backend adapters, and post-response work.
+
+### Keep examples in Tigrbl style
+
+- Avoid: README examples that present lower-level framework internals as normal application style.
+- Do: Use Tigrbl facade imports and Tigrbl-owned authoring surfaces in application examples unless the example is explicitly marked as a lower-layer test, benchmark, migration, engine adapter, or framework-internal compatibility example.
+- Why: Examples should show the framework path that keeps operations, schemas, docs, hooks, diagnostics, and runtime planning aligned.
+
+### Keep workspace docs in their right lanes
+
+- Avoid: Using the root README as the only documentation for a distributable package.
+- Do: Use package-local README files to explain package boundaries, install targets, import roots, dependency surfaces, usage examples, and links to governed docs.
+- Why: The root README orients the workspace, while package READMEs serve PyPI users who arrive at one install target.
+
+### Do not wire endpoints around the operation plan
+
+- Do not: Bypass operation specs, handlers, kernel plans, runtime atoms, or lifecycle phases with one-off route wrappers for REST, JSON-RPC, HTTP stream, SSE, WebSocket, or WebTransport behavior.
+- Do: Define the operation once, bind it through Tigrbl specs, and let kernel/runtime planning own protocol dispatch.
+- Why: This preserves legality checks, lifecycle phases, transaction ownership, protocol framing policy, and fail-closed unsupported-combination handling.
+
+### Do not make lower-level frameworks the application surface
+
+- Do not: Author Tigrbl application endpoints with FastAPI `FastAPI`, `APIRouter`, dependency wiring, route decorators, middleware registration, docs generation, or application lifecycle wiring.
+- Do: Use Tigrbl app/router factories, decorators, tables, default canonical operations, operation specs, custom handlers, lifecycle hooks, schema helpers, and engine decorators.
+- Why: FastAPI is a substrate here; Tigrbl is the application contract that keeps operations, bindings, hooks, schemas, docs, diagnostics, and tests together.
+
+### Do not route around the runtime substrate boundary
+
+- Do not: Author application endpoints directly with Starlette route, request, response, middleware, background-task, or application lifecycle classes.
+- Do: Express application behavior through Tigrbl operations, bindings, lifecycle hooks, and runtime-managed execution.
+- Why: Starlette is a lower-level runtime substrate here, not the application-facing authoring surface.
+
+### Do not fragment behavior into Flask route objects
+
+- Do not: Author application endpoints with Flask `Flask`, `Blueprint`, route decorators, request/response globals, `MethodView`, extension registration, or application lifecycle hooks.
+- Do: Keep resources in tables, use default canonical operations where they fit, and use operation specs plus custom handlers for domain actions.
+- Why: Flask route objects cannot preserve Tigrbl's shared operation inventory, schema generation, lifecycle phases, hook ordering, or transport plan.
+
+### Do not use raw ORM declarations as the primary application model
+
+- Do not: Use raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the primary application authoring surface when Tigrbl specs can represent the field behavior.
+- Do: Describe field behavior through Tigrbl tables, `FieldSpec`, `ColumnSpec`, `StorageSpec`, and `IOSpec`.
+- Why: Raw ORM declarations are only one lowering target and cannot carry the full storage, IO, validation, docs, hook, and runtime contract.
+
+### Do not manage database state inside handlers
+
+- Do not: Call direct database/session methods such as `flush()` or `commit()` from application hooks or handlers.
+- Do: Let lifecycle phases such as `START_TX`, `PRE_HANDLER`, `HANDLER`, `POST_HANDLER`, `PRE_COMMIT`, and `TX_COMMIT` own transaction progression.
+- Why: Direct calls bypass lifecycle guards and can commit partial state before hooks, errors, rollback handlers, or response shaping have run.
+
+### Do not blur package boundaries
+
+- Do not: Widen a package boundary by adding dependencies, imports, examples, or docs that belong in another split package.
+- Do: Keep facade guidance in `tigrbl`, framework internals in the lower-level packages that own them, and package-specific usage in package-local READMEs.
+- Why: Clear package boundaries make the split distribution convenient instead of surprising, especially for users installing only one package.
+
+### Keep release and certification claims governed
+
+- Avoid: Duplicating release, certification, target-state, or conformance claims outside governed evidence records.
+- Do: Use `.ssot/`, conformance docs, release evidence, and certification reports for governed feature, claim, release, evidence, and target-state questions.
+- Why: Release status and proof chains need one source of truth so package docs do not drift from CI and certification evidence.
 
 ## Default CRUD and Operation Semantics
 
@@ -450,6 +520,14 @@ Choose `tigrbl` when you want the full public facade: app composition, schema-fi
 ## Package-local Boundary
 
 This file is a package-local distribution entry point. This README is the package-local distribution entry point for `tigrbl`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
+
+## Certification Status
+
+- Package status: governed package in the `tigrbl/tigrbl` workspace.
+- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
+- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
+- Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
+- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
 
 ## License
 

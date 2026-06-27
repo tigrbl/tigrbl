@@ -35,13 +35,6 @@ Application developers, data platform engineers, and operators choosing concrete
 
 It exposes a `tigrbl.engine` entry point and a package `register()` hook so Tigrbl can discover or load the backend at runtime.
 
-## Certification Status
-
-- Package status: governed package in the `tigrbl/tigrbl` workspace.
-- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
-- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
-- Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
-- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
 
 ## Install
 
@@ -151,6 +144,14 @@ Choose `tigrbl_engine_csv` when the quick-answer table matches your use case. Ch
 ## Package-local Boundary
 
 This README is the package-local distribution entry point for `tigrbl_engine_csv`. It answers install, usage, API, ownership, and certification-orientation questions for this package. Broader architectural decisions, release status, and cross-package proof chains remain in the repository-level docs and SSOT registry.
+
+## Certification Status
+
+- Package status: governed package in the `tigrbl/tigrbl` workspace.
+- Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
+- Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
+- Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies every package README keeps the Discord badge, Apache 2.0 badge, explicit Python-version badge, `LICENSE`, and `NOTICE`.
+- Scope note: this README documents the package boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
 
 ## License
 
