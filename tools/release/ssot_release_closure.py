@@ -15,6 +15,7 @@ from ssot_registry.util.jsonio import stable_json_dumps
 
 ROOT = Path(__file__).resolve().parents[2]
 VERSION_ID_RE = re.compile(r"[^a-zA-Z0-9]+")
+PYTHON_VERSION_RE = re.compile(r"(\d+)\.(\d+)\.(\d+)(?:\.dev(\d+))?")
 
 
 @dataclass(frozen=True)
@@ -78,17 +79,31 @@ def slug_part(value: str) -> str:
     return slug or "unknown"
 
 
+def version_sort_key(value: str) -> tuple[int, int, int, int, int]:
+    match = PYTHON_VERSION_RE.fullmatch(value)
+    if not match:
+        raise ValueError(f"unsupported version {value!r}")
+    major, minor, patch, dev = match.groups()
+    return (
+        int(major),
+        int(minor),
+        int(patch),
+        1 if dev is None else 0,
+        int(dev or 0),
+    )
+
+
 def release_version(plan: dict[str, Any]) -> str:
     releases = plan.get("python") or []
     if not releases:
         raise ValueError("release plan does not include any Python packages")
-    versions = {str(release["version"]) for release in releases}
-    if len(versions) != 1:
-        raise ValueError(
-            "SSOT package release closure requires one target version; "
-            f"got {', '.join(sorted(versions))}"
-        )
-    return versions.pop()
+    versions = sorted(
+        {str(release["version"]) for release in releases},
+        key=version_sort_key,
+    )
+    if len(versions) == 1:
+        return versions[0]
+    return f"{versions[0]}-to-{versions[-1]}"
 
 
 def build_scope(

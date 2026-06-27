@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from tools.release.ssot_release_closure import (
     build_scope,
     materialize_missing_tmp_evidence,
@@ -121,7 +119,7 @@ def test_refresh_registry_preserves_published_release_status() -> None:
     assert registry["releases"][0]["status"] == "published"  # type: ignore[index]
 
 
-def test_release_version_rejects_mixed_package_versions() -> None:
+def test_release_version_uses_span_for_mixed_package_versions() -> None:
     plan = _plan()
     plan["python"].append(  # type: ignore[index, union-attr]
         {
@@ -133,8 +131,32 @@ def test_release_version_rejects_mixed_package_versions() -> None:
         }
     )
 
-    with pytest.raises(ValueError, match="one target version"):
-        release_version(plan)
+    assert release_version(plan) == "0.4.4.dev2-to-0.4.4.dev3"
+
+
+def test_release_scope_uses_span_for_mixed_package_versions() -> None:
+    plan = _plan()
+    plan["python"].append(  # type: ignore[index, union-attr]
+        {
+            "name": "tigrbl-core",
+            "path": "pkgs/core/tigrbl_core/pyproject.toml",
+            "old_version": "0.4.4.dev1",
+            "version": "0.4.4.dev3",
+            "tag": "tigrbl-core==0.4.4.dev3",
+        }
+    )
+
+    scope = build_scope(
+        plan,
+        prepared_commit="ab4923ed1d278ea87b44f63c1896d74a6affbc4a",
+        evidence_dir=Path("ignored"),
+    )
+
+    assert (
+        scope.release_id
+        == "rel:package-release-0-4-4-dev2-to-0-4-4-dev3-ab4923ed1d27"
+    )
+    assert scope.version == "0.4.4.dev2-to-0.4.4.dev3+package-release.ab4923ed1d27"
 
 
 def test_write_json_if_changed_uses_canonical_compact_json(tmp_path: Path) -> None:
