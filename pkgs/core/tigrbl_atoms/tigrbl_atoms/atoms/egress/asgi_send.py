@@ -14,6 +14,7 @@ ANCHOR = _ev.EGRESS_ASGI_SEND
 
 
 NO_BODY_STATUS = set(range(100, 200)) | {204, 205, 304}
+UNMATCHED_RUNTIME_DETAIL = "No runtime operation matched request."
 
 
 def _json_default(value: Any) -> Any:
@@ -138,8 +139,28 @@ async def _send_json(
         normalized = path.rstrip("/") or "/"
         if normalized == "/rpc":
             is_jsonrpc = True
+        else:
+            owner = scope.get("app") if isinstance(scope, Mapping) else None
+            mounts = getattr(owner, "_jsonrpc_endpoint_mounts", None)
+            if isinstance(mounts, Mapping) and (
+                normalized in mounts or f"{normalized}/" in mounts
+            ):
+                is_jsonrpc = True
+            elif normalized.startswith("/rpc"):
+                is_jsonrpc = True
     if isinstance(payload, Mapping) and payload.get("jsonrpc") == "2.0":
         is_jsonrpc = True
+    detail = payload.get("detail") if isinstance(payload, Mapping) else None
+    if detail == UNMATCHED_RUNTIME_DETAIL:
+        if is_jsonrpc:
+            payload = {
+                "jsonrpc": "2.0",
+                "error": {"code": -32601, "message": "Method not found"},
+                "id": None,
+            }
+            status = 200
+        else:
+            payload = {"detail": "Not Found"}
     if is_jsonrpc and isinstance(payload, Mapping) and "error" not in payload:
         from tigrbl_typing.status.mappings import ERROR_MESSAGES, _HTTP_TO_RPC
 

@@ -1,22 +1,18 @@
 [project]
 name = "tigrbl-runtime"
 version = "0.4.5.dev2"
-description = "Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch."
+description = "Execution bridge for compiled Tigrbl kernel plans and narrow runtime context/carrier compatibility."
 readme = "README.md"
 license = { file = "LICENSE" }
 keywords = [
     "tigrbl",
     "asgi",
     "api",
-    "json-rpc",
-    "rest",
     "sqlalchemy",
     "pydantic",
     "runtime",
     "pipeline",
     "bridge",
-    "openapi",
-    "openrpc",
     "schema-first",
 ]
 classifiers = [

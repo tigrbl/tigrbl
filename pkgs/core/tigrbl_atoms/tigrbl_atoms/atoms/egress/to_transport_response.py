@@ -10,6 +10,7 @@ from ... import events as _ev
 from .._temp import _ensure_temp
 
 ANCHOR = _ev.EGRESS_TO_TRANSPORT_RESPONSE
+UNMATCHED_RUNTIME_DETAIL = "No runtime operation matched request."
 
 
 def _jsonrpc_request_id(ctx: Any) -> Any:
@@ -161,9 +162,15 @@ def _normalize_jsonrpc_transport_response(
             message = ERROR_MESSAGES.get(rpc_code, "Internal error")
             if isinstance(body, Mapping):
                 detail = body.get("detail")
-                if isinstance(detail, str) and detail:
+                if detail == UNMATCHED_RUNTIME_DETAIL:
+                    rpc_code = -32601
+                    message = "Method not found"
+                    data = {"detail": "Method not found"}
+                elif isinstance(detail, str) and detail:
                     message = detail
-                data = dict(body)
+                    data = dict(body)
+                else:
+                    data = dict(body)
             else:
                 data = {"detail": body}
             body = {

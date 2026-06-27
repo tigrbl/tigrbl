@@ -1,0 +1,90 @@
+package: tigrbl_runtime
+role: execute_compiled_kernel_plans_only
+
+owns:
+  - compiled_kernel_plan_execution
+  - runtime_context_compatibility
+  - declared_carrier_lifecycle_bridge
+
+does_not_own:
+  - route_matching_semantics
+  - protocol_error_policy
+  - jsonrpc_or_rest_envelope_policy
+  - response_rendering
+  - response_or_chunk_emission_semantics
+  - operation_behavior
+  - new_executor_families
+
+allowed_import_roots_from_pyproject: true
+forbidden_import_roots:
+  - tigrbl_ops_oltp
+  - tigrbl_ops_olap
+  - tigrbl_ops_realtime
+  - tigrbl_ops_webtransport
+
+max_python_file_loc: 400
+frozen_module_tree: true
+
+allowed_runtime_files:
+  - __init__.py
+  - callbacks.py
+  - channel/__init__.py
+  - channel/_asgi_completion.py
+  - channel/_asgi_context.py
+  - channel/_asgi_jsonrpc.py
+  - channel/_asgi_receive.py
+  - channel/_asgi_scope.py
+  - channel/_asgi_send.py
+  - channel/_asgi_webtransport.py
+  - channel/asgi.py
+  - channel/capabilities.py
+  - channel/websocket.py
+  - config/__init__.py
+  - config/constants.py
+  - executors/__init__.py
+  - executors/_invoke_support.py
+  - executors/base.py
+  - executors/ctx/__init__.py
+  - executors/ctx/context.py
+  - executors/ctx/hot.py
+  - executors/ctx/hot_namespace_values.py
+  - executors/ctx/hot_namespaces.py
+  - executors/ctx/hot_state.py
+  - executors/kernel_executor.py
+  - executors/numba_packed.py
+  - executors/packed/__init__.py
+  - executors/packed/_shared.py
+  - executors/packed/batch.py
+  - executors/packed/error_edges.py
+  - executors/packed/execute.py
+  - executors/packed/executor.py
+  - executors/packed/hot_access.py
+  - executors/packed/hot_context.py
+  - executors/packed/input_compile.py
+  - executors/packed/input_extract.py
+  - executors/packed/request_select.py
+  - executors/packed/route_select.py
+  - executors/packed/runner_resolve.py
+  - executors/packed/segments.py
+  - executors/phase.py
+  - executors/phase_runner.py
+  - executors/types.py
+  - runtime/__init__.py
+  - runtime/_typing_aliases.py
+  - runtime/base.py
+  - runtime/channel.py
+  - runtime/exceptions.py
+  - runtime/hook_types.py
+  - runtime/response.py
+  - runtime/runtime.py
+  - runtime/system.py
+  - semantics.py
+
+legacy_token_ratchets:
+  _send_json: 10
+  _send_transport_response: 7
+  http.response.body: 1
+  content-type: 2
+  jsonrpc_literal: 13
+  error_literal: 10
+  id_literal: 20

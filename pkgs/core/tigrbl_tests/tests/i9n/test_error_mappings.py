@@ -220,10 +220,7 @@ async def test_error_parity_crud_vs_rpc(app_client):
     # be explicit 404/not-found category errors.
     rest_detail = str(rest_error.get("detail", "")).lower()
     rpc_message = rpc_error["message"].lower()
-    assert (
-        "not found" in rest_detail
-        or "no runtime operation matched request" in rest_detail
-    )
+    assert "not found" in rest_detail
     assert "not found" in rpc_message
 
 

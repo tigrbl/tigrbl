@@ -135,7 +135,8 @@ async def test_negative_corpus_unknown_rpc_method_returns_fail_closed_contract()
             )
         body = response.json()
         assert response.status_code == case["expect"]["status"]
-        assert body.get("detail") == case["expect"]["detail"]
+        assert body["error"]["code"] == case["expect"]["jsonrpc_error_code"]
+        assert body["error"]["message"] == case["expect"]["jsonrpc_error_message"]
     finally:
         await stop_uvicorn(server, task)
 
@@ -179,8 +180,16 @@ async def test_negative_corpus_no_rpc_binding_has_no_rpc_runtime_side_effect() -
                 json={"name": "rest-still-works"},
             )
 
-        assert missing_rpc.status_code == 404
-        assert missing_rpc.json()["detail"] == "No runtime operation matched request."
+        assert missing_rpc.status_code == 200
+        missing_rpc_body = missing_rpc.json()
+        assert missing_rpc_body["error"]["code"] == -32601
+        assert missing_rpc_body["error"]["message"] == "Method not found"
+
+        async with httpx.AsyncClient(base_url=base_url, timeout=10.0) as client:
+            missing_http = await client.get("/definitely-missing")
+
+        assert missing_http.status_code == 404
+        assert missing_http.json()["detail"] == "Not Found"
         assert rest.status_code in {200, 201}
     finally:
         await stop_uvicorn(server, task)

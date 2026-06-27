@@ -1,0 +1,23 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1146"
+number: 1146
+slug: "runtime-compiled-plan-execution-boundary"
+title: "Runtime compiled-plan execution boundary"
+status: "accepted"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "tigrbl_runtime executes compiled Tigrbl kernel plans only. Route and protocol selection, fallback policy, response envelope construction, phase behavior, and operation behavior are owned by tigrbl_kernel, tigrbl_atoms, and tigrbl_ops packages respectively. Runtime changes are limited to compiled plan execution, runtime context compatibility, and declared carrier lifecycle bridges."
+supersedes: []
+superseded_by: []
+status_notes:
+  -
+    status: "accepted"
+    note: "Boundary hardening for tigrbl_runtime package ownership."
+    at: "2026-06-27T10:24:16Z"
+references: []
+body: |-
+  tigrbl_runtime executes compiled Tigrbl kernel plans only. Route and protocol selection, fallback policy, response envelope construction, phase behavior, and operation behavior are owned by tigrbl_kernel, tigrbl_atoms, and tigrbl_ops packages respectively. Runtime changes are limited to compiled plan execution, runtime context compatibility, and declared carrier lifecycle bridges.
+spec_kind: "governance"
+adr_ids: []

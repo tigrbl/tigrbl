@@ -36,8 +36,9 @@
         "resource": "widget"
       },
       "expect": {
-        "status": 404,
-        "detail": "No runtime operation matched request."
+        "status": 200,
+        "jsonrpc_error_code": -32601,
+        "jsonrpc_error_message": "Method not found"
       }
     }
   ]

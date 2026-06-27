@@ -1,7 +1,7 @@
 <div align="center">
 <h1>tigrbl-runtime</h1>
 <img src="https://raw.githubusercontent.com/swarmauri/swarmauri-sdk/master/assets/tigrbl_full_logo.png" alt="Tigrbl logo" width="140"/>
-<p><strong>Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.</strong></p>
+<p><strong>Execution bridge for compiled Tigrbl kernel plans and narrow runtime context/carrier compatibility.</strong></p>
 <a href="https://pypi.org/project/tigrbl-runtime/"><img src="https://img.shields.io/pypi/v/tigrbl-runtime?label=PyPI" alt="PyPI version for tigrbl-runtime"/></a>
 <a href="https://pypi.org/project/tigrbl-runtime/"><img src="https://static.pepy.tech/badge/tigrbl-runtime" alt="Downloads for tigrbl-runtime"/></a>
 <a href="https://discord.gg/K4YTAPapjR"><img src="https://img.shields.io/badge/Discord-Join%20chat-5865F2?logo=discord&logoColor=white" alt="Discord community for tigrbl-runtime"/></a>
@@ -13,7 +13,7 @@
 
 ## What is tigrbl-runtime?
 
-Runtime pipeline helpers and execution bridge surfaces for Tigrbl ASGI applications, transports, and operation dispatch.
+`tigrbl-runtime` executes compiled Tigrbl kernel plans and preserves the narrow runtime context/carrier bridge needed to run those plans. Route selection, protocol fallback policy, response shaping, transport envelopes, and operation semantics are owned by kernel, atoms, and ops packages.
 
 ## Why use tigrbl-runtime?
 
@@ -61,17 +61,18 @@ pip install tigrbl-runtime
 
 ## What It Owns
 
-`tigrbl-runtime` owns the `foundational framework package` boundary. It should be installed when you need this package's focused responsibility without assuming every other Tigrbl workspace package is present.
+`tigrbl-runtime` owns the compiled-plan execution boundary. It should be installed when you need the narrow bridge that runs already-planned Tigrbl work without assuming the full facade is present.
 
 Implementation orientation:
-- `tigrbl_runtime`: callbacks, channel/, config/, executors/, protocol/, runtime/, transactions, webhooks
+- `tigrbl_runtime`: compiled plan execution, runtime context compatibility, and declared carrier lifecycle bridges
 
 Runtime authoring BCP:
-- Do use this package for runtime-owned routing, request execution, transport-unit execution, framing atoms, transport channels, transaction helpers, and kernel integration.
-- Do keep handler invocation, transaction progression, error handling, and transport emission aligned with compiled plans.
+- Do use this package for executing compiled kernel plans and maintaining runtime context/carrier compatibility.
+- Do keep execution aligned with compiled plans.
+- Do not add route matching semantics, protocol fallback policy, JSON-RPC/REST envelope policy, response rendering, chunk emission semantics, operation behavior, or new executor families.
 - Do not make application route handlers, FastAPI/Starlette objects, direct SQLAlchemy session calls, or ad-hoc engine construction the runtime contract.
 - Do not bypass kernel plans or lifecycle phases when adding REST, JSON-RPC, stream, SSE, WebSocket, or WebTransport behavior.
-- Avoid hiding behavior in transport wrappers that diagnostics and compiled plans cannot inspect.
+- Avoid hiding behavior in runtime wrappers that diagnostics and compiled plans cannot inspect.
 
 ## Public API and Import Surface
 
