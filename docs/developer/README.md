@@ -4,7 +4,7 @@ This section collects developer-facing summaries and pointers.
 
 ## Contents
 
-- `AUTHORING_BCP.md` - application authoring best current practice, including what to do, what not to do, what to avoid, and why each rule exists
+- `AUTHORING_BCP.md` - convenient authoring path and best current practice, with grouped avoid/do/why and do-not/do/why guidance
 - `EQUIVALENCE_INDEX.md` - reader path and vocabulary for authoring, transport, and engine equivalence guides
 - `AUTHORING_EQUIVALENCE.md` - Tigrbl, Starlette, and FastAPI application authoring concept map
 - `ROUTER_TABLE_EQUIVALENCE.md` - Tigrbl, FastAPI, and Flask router/table equivalence matrices

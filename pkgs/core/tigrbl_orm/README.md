@@ -119,23 +119,33 @@ PY
 
 Choose `tigrbl-orm` when the quick-answer table matches your use case. Choose [`tigrbl`](https://pypi.org/project/tigrbl/) instead when you want the full public facade. Choose a lower-level package such as [`tigrbl-core`](https://pypi.org/project/tigrbl-core/), [`tigrbl-base`](https://pypi.org/project/tigrbl-base/), or [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) when you are building framework extensions or testing a specific internal boundary.
 
-## Authoring BCP
+## Convenient Authoring Path and Best Current Practice (BCP)
 
 `tigrbl-orm` is the SQLAlchemy-facing implementation boundary for Tigrbl table and persistence helpers. Normal application documentation should still lead with the `tigrbl` facade, Tigrbl table/column helpers, and Tigrbl specs.
 
-Do:
-- Do use this package when implementing or testing ORM helpers, table mixins, persistence primitives, and SQLAlchemy-facing compatibility behavior.
-- Do keep ORM behavior aligned with Tigrbl table, column, datatype, storage, IO, and operation specs.
-- Do let Tigrbl specs describe reusable field and operation intent before ORM materialization.
+### Keep ORM usage boundary-owned
 
-Do not:
-- Do not present raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the preferred application authoring surface when Tigrbl column helpers or specs can express the behavior.
-- Do not put application route authoring, FastAPI/Starlette route objects, ad-hoc engine construction in handlers, or direct transaction control in this package's public examples.
-- Do not treat SQLAlchemy tables as the only source of truth for schema, docs, runtime, hooks, and diagnostics.
+- Avoid: Exposing implementation-only ORM helpers as facade-level guidance unless the package boundary is explicit.
+- Do: Use this package when implementing or testing ORM helpers, table mixins, persistence primitives, and SQLAlchemy-facing compatibility behavior.
+- Why: SQLAlchemy is useful inside the storage boundary, while application users still get the more convenient Tigrbl facade contract.
 
-Avoid:
-- Avoid duplicating field behavior across ORM declarations and Tigrbl specs. Keep the spec layer authoritative for behavior that must project into storage, validation, runtime, and docs.
-- Avoid exposing implementation-only ORM helpers as facade-level guidance unless the package boundary is explicit.
+### Keep specs authoritative before ORM materialization
+
+- Avoid: Duplicating field behavior across ORM declarations and Tigrbl specs.
+- Do: Keep ORM behavior aligned with Tigrbl table, column, datatype, storage, IO, and operation specs.
+- Why: The spec layer is the reusable source for behavior that must project into storage, validation, runtime, hooks, diagnostics, and docs.
+
+### Do not teach raw ORM declarations as application style
+
+- Do not: Present raw SQLAlchemy `mapped_column(...)` or `Column(...)` as the preferred application authoring surface when Tigrbl column helpers or specs can express the behavior.
+- Do: Let Tigrbl specs describe reusable field and operation intent before ORM materialization.
+- Why: Raw ORM declarations are only one lowering target and cannot carry the full Tigrbl storage, IO, validation, docs, hook, and runtime contract.
+
+### Do not move application behavior into this boundary
+
+- Do not: Put application route authoring, FastAPI/Starlette route objects, ad-hoc engine construction in handlers, or direct transaction control in this package's public examples.
+- Do: Keep application-facing examples on the `tigrbl` facade and keep this README focused on the ORM implementation boundary.
+- Why: This keeps routes, engines, transactions, schemas, hooks, diagnostics, and runtime planning owned by the packages that govern those behaviors.
 
 ## Related Packages
 

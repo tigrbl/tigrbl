@@ -10,6 +10,8 @@ ROOT = repo_root()
 BCP_DOC = ROOT / "docs" / "developer" / "AUTHORING_BCP.md"
 ROOT_README = ROOT / "README.md"
 FACADE_README = ROOT / "pkgs" / "core" / "tigrbl" / "README.md"
+BCP_TITLE = "Convenient Authoring Path and Best Current Practice (BCP)"
+README_BCP_HEADING = f"## {BCP_TITLE}"
 
 REQUIRED_DOCS = [
     BCP_DOC,
@@ -22,6 +24,7 @@ REQUIRED_DOCS = [
 ]
 
 REQUIRED_BCP_PHRASES = [
+    f"# {BCP_TITLE}",
     "Do:",
     "Do not:",
     "Avoid:",
@@ -40,7 +43,7 @@ REQUIRED_BCP_PHRASES = [
 ]
 
 MAIN_README_REQUIRED_PHRASES = [
-    "## Authoring BCP",
+    README_BCP_HEADING,
     "docs/developer/AUTHORING_BCP.md",
     "Do:",
     "Do not:",
@@ -82,10 +85,10 @@ BOUNDARY_README_REQUIREMENTS = {
         "Avoid hiding behavior",
     ],
     Path("pkgs/core/tigrbl_orm/README.md"): [
-        "## Authoring BCP",
-        "Do:",
-        "Do not:",
-        "Avoid:",
+        README_BCP_HEADING,
+        "- Do:",
+        "- Do not:",
+        "- Avoid:",
         "mapped_column",
         "Column(...)",
     ],
@@ -126,7 +129,7 @@ def _read(path: Path) -> str:
 
 
 def _authoring_bcp_section(text: str) -> str:
-    marker = "## Authoring BCP"
+    marker = README_BCP_HEADING
     start = text.find(marker)
     if start == -1:
         return text
@@ -136,37 +139,50 @@ def _authoring_bcp_section(text: str) -> str:
     return text[start:end]
 
 
-def _rule_bullets(text: str) -> list[tuple[str, str]]:
-    bullets: list[tuple[str, str]] = []
-    active_label: str | None = None
+def _guidance_groups(text: str) -> list[tuple[str, str]]:
+    groups: list[tuple[str, str]] = []
+    active_heading: str | None = None
     current: list[str] = []
 
     def flush() -> None:
         nonlocal current
-        if active_label and current:
-            bullets.append((active_label, "\n".join(current).strip()))
+        if active_heading is not None:
+            groups.append((active_heading, "\n".join(current).strip()))
         current = []
 
     for line in text.splitlines():
-        if line in {"Do:", "Do not:", "Avoid:"}:
+        if line.startswith("### "):
             flush()
-            active_label = line[:-1]
+            active_heading = line[4:].strip()
             continue
-        if line.startswith("#"):
+        if line.startswith("## "):
             flush()
-            active_label = None
+            active_heading = None
             continue
-        if active_label is None:
-            continue
-        if line.startswith("- "):
-            flush()
-            current = [line]
-            continue
-        if current and (line.startswith("  ") or not line.strip()):
+        if active_heading is not None:
             current.append(line)
 
     flush()
-    return bullets
+    return groups
+
+
+def _validate_grouped_guidance(path: Path, text: str) -> list[str]:
+    errors: list[str] = []
+    rel = path.relative_to(ROOT)
+    groups = _guidance_groups(text)
+    if not groups:
+        return [f"{rel} has no grouped BCP guidance sections"]
+
+    for heading, body in groups:
+        if "- Do:" not in body:
+            errors.append(f"{rel} group {heading!r} missing '- Do:' bullet")
+        if "- Why:" not in body:
+            errors.append(f"{rel} group {heading!r} missing '- Why:' bullet")
+        if "- Avoid:" not in body and "- Do not:" not in body:
+            errors.append(
+                f"{rel} group {heading!r} missing '- Avoid:' or '- Do not:' bullet"
+            )
+    return errors
 
 
 def _active_package_readmes() -> list[Path]:
@@ -206,16 +222,13 @@ def main() -> None:
             if phrase not in text:
                 errors.append(f"{readme.relative_to(ROOT)} missing required BCP phrase {phrase!r}")
 
-    rationale_targets = {
+    grouped_guidance_targets = {
         BCP_DOC: bcp_text,
         ROOT_README: _authoring_bcp_section(_read(ROOT_README)),
         FACADE_README: _authoring_bcp_section(_read(FACADE_README)),
     }
-    for path, text in rationale_targets.items():
-        rel = path.relative_to(ROOT)
-        for label, bullet in _rule_bullets(text):
-            if "Why:" not in bullet:
-                errors.append(f"{rel} {label} bullet missing rationale: {bullet.splitlines()[0]}")
+    for path, text in grouped_guidance_targets.items():
+        errors.extend(_validate_grouped_guidance(path, text))
 
     for rel, phrases in BOUNDARY_README_REQUIREMENTS.items():
         path = ROOT / rel

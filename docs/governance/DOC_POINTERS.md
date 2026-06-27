@@ -26,7 +26,7 @@ claims, evidence, boundaries, releases, ADRs, or specs.
 | Conformance overview | `docs/conformance/README.md` |
 | Current frozen target narrative | `docs/conformance/CURRENT_TARGET.md` |
 | Developer and operator docs | `docs/developer/` |
-| Application authoring BCP | `docs/developer/AUTHORING_BCP.md` |
+| Convenient authoring path and BCP | `docs/developer/AUTHORING_BCP.md` |
 | Equivalence guide index | `docs/developer/EQUIVALENCE_INDEX.md` |
 | Tigrbl, Starlette, and FastAPI application authoring comparison | `docs/developer/AUTHORING_EQUIVALENCE.md` |
 | Tigrbl, FastAPI, and Flask router/table comparison | `docs/developer/ROUTER_TABLE_EQUIVALENCE.md` |
