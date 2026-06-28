@@ -1,0 +1,42 @@
+[project]
+name = "tigrbl-transport-surface-matrix-demo"
+version = "0.1.0"
+description = "Tigrbl transport surface matrix example for REST, JSON-RPC, streaming, SSE, WebSocket, mTLS, and WebTransport."
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+  "tigrbl",
+  "tigrbl-core",
+  "tigrbl-kernel",
+  "httpx>=0.27.0,<0.28",
+  "uvicorn",
+]
+
+[dependency-groups]
+dev = [
+  "aioquic>=1.3.0",
+  "cryptography>=46.0.0",
+  "h11>=0.14.0",
+  "h2>=4.1.0",
+  "pytest>=8.0",
+  "pytest-asyncio>=0.24.0",
+  "PyYAML>=6.0",
+  "websockets>=13",
+  "wsproto>=1.3.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+tigrbl = { path = "../../pkgs/core/tigrbl", editable = true }
+tigrbl-core = { path = "../../pkgs/core/tigrbl_core", editable = true }
+tigrbl-kernel = { path = "../../pkgs/core/tigrbl_kernel", editable = true }
+
+[tool.pytest.ini_options]
+addopts = [
+  "--import-mode=importlib",
+]
+testpaths = [
+  "tests",
+]

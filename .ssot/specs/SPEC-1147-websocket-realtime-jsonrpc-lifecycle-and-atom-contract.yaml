@@ -1,0 +1,130 @@
+schema_version: "0.8.0"
+kind: "spec"
+id: "spc:1147"
+number: 1147
+slug: "websocket-realtime-jsonrpc-lifecycle-and-atom-contract"
+title: "WebSocket Realtime JSON-RPC Lifecycle and Atom Contract"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Define the normative WebSocket realtime lifecycle, JSON-RPC dispatch, atom catalog, subscribe acknowledgement, and explicit publish fanout contract."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Intent
+  
+  Define the normative WebSocket realtime lifecycle, JSON-RPC dispatch, atom catalog, subscribe acknowledgement, and explicit publish fanout contract.
+  
+  ## Contract
+  
+  ### Session Lifecycle
+  
+  WebSocket realtime execution MUST compile an outer session lifecycle around per-message operation lifecycles:
+  
+  ```text
+  SESSION_OPEN
+  POST_SESSION_OPEN
+  MESSAGE_RECEIVE
+  INGRESS_PARSE
+  INGRESS_DISPATCH
+  PRE_TX_BEGIN
+  START_TX
+  PRE_HANDLER
+  HANDLER
+  POST_HANDLER
+  PRE_COMMIT
+  TX_COMMIT
+  POST_COMMIT
+  EGRESS_SHAPE
+  EGRESS_FINALIZE
+  POST_RESPONSE
+  PRE_SESSION_CLOSE
+  SESSION_CLOSE
+  POST_SESSION_CLOSE
+  ```
+  
+  `SESSION_OPEN`, `SESSION_CLOSE`, and `MESSAGE_RECEIVE` are structural transport phases. `POST_SESSION_OPEN`, `PRE_SESSION_CLOSE`, and `POST_SESSION_CLOSE` are hookable session lifecycle phases.
+  
+  ### Framing
+  
+  `framing.decode` and `framing.encode` MUST be first-class atoms. They MUST call the selected codec from the codec registry for the binding/framing context, including `jsonrpc` and `websocket.jsonrpc` where applicable.
+  
+  ### JSON-RPC Dispatch
+  
+  `WsBindingSpec` and `WebSocketBindingSpec` MUST NOT carry WebSocket-specific JSON-RPC method identity. JSON-RPC method identity MUST be derived from executable `OpSpec` identity.
+  
+  Every op executable over a WebSocket bidirectional session MUST have a WebSocket binding whose `path` is the socket connect path.
+  
+  For JSON-RPC-framed WebSocket bindings, the kernel MUST compile a derived endpoint/method dispatch index:
+  
+  ```python
+  proto_indices["ws.jsonrpc"]["endpoints"][path][op_method] = op_program
+  ```
+  
+  The kernel MUST also preserve the structural WebSocket session route:
+  
+  ```python
+  proto_indices["ws"]["exact"][path] = session_program
+  ```
+  
+  The compiler MUST reject duplicate `(path, op_method)` WebSocket JSON-RPC registrations.
+  
+  ### Atom Catalog
+  
+  The core WebSocket realtime atom catalog MUST include:
+  
+  ```text
+  transport.accept
+  transport.receive
+  transport.emit
+  transport.close
+  framing.decode
+  framing.encode
+  dispatch.binding.match
+  dispatch.binding.parse
+  subscription.register
+  subscription.unregister
+  publish.prepare
+  publish.enqueue
+  publish.fanout
+  ```
+  
+  ### Subscribe
+  
+  `subscribe` MUST be a finite request/response operation. It MUST register session-scoped interest and return a JSON-RPC acknowledgement. It MUST NOT own or block the WebSocket receive loop.
+  
+  Subscription registration SHOULD run in `POST_COMMIT` for consistent post-commit visibility. Subscription cleanup MUST run through `subscription.unregister` in `PRE_SESSION_CLOSE`.
+  
+  ### Publish Fanout
+  
+  Publish fanout MUST be explicit. `create`, `send`, and other OLTP operations MUST NOT publish automatically unless they declare a publish effect or hook.
+  
+  Publish lifecycle placement is:
+  
+  ```text
+  HANDLER         -> publish op validates/builds the publish intent
+  POST_COMMIT     -> publish.prepare / publish.enqueue
+  EGRESS_FINALIZE -> publish.fanout + framing.encode + transport.emit
+  POST_RESPONSE   -> cleanup/metrics
+  ```
+  
+  ### Runtime Boundary
+  
+  Runtime MUST execute the compiled kernel plan. Runtime MUST NOT own WebSocket lifecycle semantics, JSON-RPC method dispatch, publish fanout policy, or domain cleanup policy.
+  
+  ## Traceability
+  
+  ADRs: adr:1199
+  
+  Governed features:
+  
+  - `feat:websocket-realtime-session-lifecycle`
+  - `feat:websocket-jsonrpc-op-dispatch-index`
+  - `feat:websocket-realtime-atom-catalog`
+  - `feat:websocket-publish-subscribe-fanout`
+spec_kind: "normative"
+adr_ids:
+  - "adr:1199"

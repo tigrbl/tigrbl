@@ -1,0 +1,34 @@
+[project]
+name = "tigrbl-websocket-realtime-ops-demo"
+version = "0.1.0"
+description = "Tigrbl WebSocket realtime subscribe/publish ops example."
+readme = "README.md"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+  "tigrbl",
+  "tigrbl-core",
+  "tigrbl-ops-realtime",
+  "uvicorn",
+]
+
+[dependency-groups]
+dev = [
+  "pytest>=8.0",
+  "pytest-asyncio>=0.24.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.uv.sources]
+tigrbl = { path = "../../pkgs/core/tigrbl", editable = true }
+tigrbl-core = { path = "../../pkgs/core/tigrbl_core", editable = true }
+tigrbl-ops-realtime = { path = "../../pkgs/core/tigrbl_ops_realtime", editable = true }
+
+[tool.pytest.ini_options]
+addopts = [
+  "--import-mode=importlib",
+]
+testpaths = [
+  "tests",
+]

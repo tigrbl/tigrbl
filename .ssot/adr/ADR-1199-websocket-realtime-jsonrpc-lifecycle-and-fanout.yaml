@@ -1,0 +1,120 @@
+schema_version: "0.8.0"
+kind: "adr"
+id: "adr:1199"
+number: 1199
+slug: "websocket-realtime-jsonrpc-lifecycle-and-fanout"
+title: "WebSocket Realtime JSON-RPC Lifecycle and Fanout"
+status: "draft"
+origin: "repo-local"
+decision_date: null
+tags: []
+summary: "Tigrbl WebSocket realtime support is governed as a kernel-plan and atom-catalog feature, not as application-local WebSocket handler code."
+supersedes: []
+superseded_by: []
+status_notes: []
+references: []
+body: |-
+  ## Decision
+  
+  Tigrbl WebSocket realtime support is governed as a kernel-plan and atom-catalog feature, not as application-local WebSocket handler code.
+  
+  The settled design decisions are:
+  
+  1. WebSocket subprotocols are inferred from the framing spec. `JsonRpcFramingSpec` implies JSON-RPC WebSocket subprotocol negotiation.
+  2. App WebSocket handlers must not implement operation dispatch loops, JSON parsing loops, send calls, broadcast loops, or framework-owned cleanup.
+  3. Runtime executes the compiled kernel plan. Runtime does not own WebSocket lifecycle semantics, JSON-RPC dispatch, emission, broadcast, or cleanup policy.
+  4. WebSocket open and close are structural lifecycle concerns.
+  5. Domain-specific cleanup belongs to hooks.
+  6. `framing.decode` and `framing.encode` are first-class atoms backed by the codec registry.
+  7. WebSocket uses an outer session lifecycle around per-message operation lifecycles.
+  8. Publish fanout is explicit and first-class through a publish op plus publish/fanout atoms.
+  9. WebSocket bindings do not carry JSON-RPC method identity. JSON-RPC method identity is derived from executable `OpSpec` identity.
+  10. Every op executable over a WebSocket bidirectional session has a WebSocket binding whose path is the socket connect path.
+  11. The kernel derives WebSocket JSON-RPC dispatch indexes from op identity and socket path.
+  12. `subscribe` is a finite request/response operation that acknowledges immediately.
+  13. Subscription registration and cleanup are atoms.
+  14. The core WebSocket realtime atom catalog is settled.
+  
+  ## Lifecycle
+  
+  The WebSocket session lifecycle is:
+  
+  ```text
+  SESSION_OPEN
+  POST_SESSION_OPEN
+  
+  MESSAGE_RECEIVE
+  INGRESS_PARSE
+  INGRESS_DISPATCH
+  PRE_TX_BEGIN
+  START_TX
+  PRE_HANDLER
+  HANDLER
+  POST_HANDLER
+  PRE_COMMIT
+  TX_COMMIT
+  POST_COMMIT
+  EGRESS_SHAPE
+  EGRESS_FINALIZE
+  POST_RESPONSE
+  
+  PRE_SESSION_CLOSE
+  SESSION_CLOSE
+  POST_SESSION_CLOSE
+  ```
+  
+  `SESSION_OPEN` accepts the socket. `POST_SESSION_OPEN` provides a post-accept hook point. `MESSAGE_RECEIVE` receives one frame. Each frame then runs through the existing operation lifecycle. `PRE_SESSION_CLOSE` runs cleanup before structural close. `SESSION_CLOSE` closes the transport when needed. `POST_SESSION_CLOSE` provides post-close cleanup and observability.
+  
+  ## Dispatch Policy
+  
+  For JSON-RPC-framed WebSocket bindings, the binding declares transport reachability and framing. It does not declare `rpc_method`.
+  
+  The kernel compiles both:
+  
+  ```python
+  proto_indices["ws"]["exact"][path] = session_program
+  proto_indices["ws.jsonrpc"]["endpoints"][path][op_method] = op_program
+  ```
+  
+  The `op_method` value comes from canonical op identity. The compiler rejects duplicate `(path, op_method)` registrations.
+  
+  ## Publish And Subscribe Policy
+  
+  `subscribe` is a normal JSON-RPC request/response op. It validates the request, registers session-scoped interest, returns a JSON-RPC acknowledgement, and completes. It does not own the WebSocket loop.
+  
+  `publish` is explicit. OLTP operations such as `create` do not automatically publish unless they declare a publish effect or hook.
+  
+  Publish fanout placement is:
+  
+  ```text
+  HANDLER         -> publish op validates/builds the publish intent
+  POST_COMMIT     -> publish.prepare / publish.enqueue
+  EGRESS_FINALIZE -> publish.fanout + framing.encode + transport.emit
+  POST_RESPONSE   -> cleanup/metrics
+  ```
+  
+  Subscription cleanup uses `subscription.unregister` in `PRE_SESSION_CLOSE`.
+  
+  ## Consequences
+  
+  - Application code stays declarative and operation-oriented.
+  - Existing JSON-RPC codec and dispatch machinery are reused for WebSocket JSON-RPC.
+  - WebSocket session handling remains distinct from per-message operation execution.
+  - Publish and subscribe are explicit operation semantics rather than implicit transport side effects.
+  - Fanout cannot expose uncommitted database state because publish preparation/enqueueing occurs after commit.
+  
+  ## Governed Feature Scope
+  
+  - `feat:websocket-realtime-session-lifecycle`
+  - `feat:websocket-jsonrpc-op-dispatch-index`
+  - `feat:websocket-realtime-atom-catalog`
+  - `feat:websocket-publish-subscribe-fanout`
+  
+  ## Verification Plan
+  
+  - Add kernel compilation tests for session phases and per-message operation phases.
+  - Add dispatch index tests for multiple JSON-RPC ops sharing one WebSocket connect path.
+  - Add codec atom tests for `framing.decode` and `framing.encode`.
+  - Add transport atom tests for accept, receive, emit, and close phase placement.
+  - Add subscribe ack and session cleanup tests.
+  - Add publish fanout tests proving post-commit enqueue and egress fanout behavior.
