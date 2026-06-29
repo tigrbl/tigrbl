@@ -213,6 +213,8 @@ async def rpc_call(
 
     resolution = _fallback_resolution(router, model_or_name, method)
     mdl = resolution.model
+    op_spec = next((sp for sp in resolve_ops(mdl) if sp.alias == method), None)
+    requires_db = getattr(op_spec, "tx_scope", "inherit") != "none"
     logger.debug(
         "Resolved operation model=%s alias=%s target=%s",
         getattr(mdl, "__name__", mdl),
@@ -231,7 +233,7 @@ async def rpc_call(
 
     # Acquire DB if not explicitly provided (op > model > router > app)
     _release_db = None
-    if db is None:
+    if db is None and requires_db:
         try:
             logger.debug(
                 "Acquiring DB for rpc_call %s.%s", getattr(mdl, "__name__", mdl), method
@@ -246,6 +248,12 @@ async def rpc_call(
                 method,
             )
             raise
+    elif db is None:
+        logger.debug(
+            "Skipping DB acquire for rpc_call %s.%s because tx_scope is none",
+            getattr(mdl, "__name__", mdl),
+            method,
+        )
     else:
         logger.debug(
             "Using provided DB for rpc_call %s.%s",

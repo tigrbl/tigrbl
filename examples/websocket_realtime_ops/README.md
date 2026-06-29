@@ -1,17 +1,21 @@
-# Tigrbl WebSocket Realtime Ops Demo
+# Tigrbl WebSocket Realtime JSON-RPC Framework Demo
 
-This UV project observes the current `tigrbl_ops_realtime.subscribe` and
-`tigrbl_ops_realtime.publish` behavior over a WebSocket server.
+This UV project demonstrates the canonical framework declaration shape for
+WebSocket realtime JSON-RPC ops:
 
-It is intentionally separate from the broader transport demo. The goal is to
-watch one client subscribe to a channel while another client publishes to that
-same channel.
+- `AppSpec`
+- `RouterSpec`
+- `PathSpec(kind="ws-jsonrpc")`
+- `TableSpec`
+- `OpSpec`
 
-## Run
+The ops share one WebSocket connect path, use `JsonRpcFramingSpec`, infer the
+`jsonrpc` subprotocol from framing, and lower through `TigrblApp.from_spec(...)`
+into a framework-owned WebSocket JSON-RPC dispatcher route.
 
-```powershell
-uv run --project .\examples\websocket_realtime_ops python -m tigrbl serve .\examples\websocket_realtime_ops\app.py:build_app --server uvicorn --host 127.0.0.1 --port 8000
-```
+It does not implement an app-local receive loop, JSON parser, op switch, send
+loop, broadcast loop, or cleanup block. Those are kernel/atom/runtime
+responsibilities governed by `adr:1199` and `spc:1147`.
 
 ## Test
 
@@ -20,24 +24,18 @@ cd .\examples\websocket_realtime_ops
 uv run pytest
 ```
 
-Connect two WebSocket clients to:
+## Declared Ops
 
 ```text
-ws://127.0.0.1:8000/ws/realtime
+/ws/realtime
+  Thread
+    subscribe -> target=subscribe
+    publish   -> target=publish
+  Message
+    create    -> target=create
 ```
 
-Subscriber client:
-
-```json
-{"op":"subscribe","payload":{"channel":"thread:alpha","cursor":"msg-0"}}
-```
-
-Publisher client:
-
-```json
-{"op":"publish","payload":{"channel":"thread:alpha","event":{"message_id":"msg-1","body":"hello"}}}
-```
-
-Observed result: `subscribe` and `publish` return metadata envelopes. This
-demo's in-memory registry forwards the publish result to subscribed WebSocket
-clients so we can observe the broker-shaped behavior separately from the ops.
+`Thread.subscribe` is modeled as a finite JSON-RPC request/response op that
+acknowledges registration. `Thread.publish` is modeled as an explicit fanout op.
+`Message.create` is present to show that OLTP create does not publish unless a
+publish effect is declared.

@@ -288,7 +288,7 @@ def bind(
 def _build_raw_handler(model: type, spec: OpSpec):
     target = getattr(spec, "target", "custom")
 
-    if target == "custom" and callable(getattr(spec, "handler", None)):
+    if callable(getattr(spec, "handler", None)):
         handler = spec.handler
 
         @wraps(handler)

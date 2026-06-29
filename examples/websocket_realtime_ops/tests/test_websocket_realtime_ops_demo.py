@@ -1,18 +1,23 @@
 from __future__ import annotations
 
-import asyncio
-import importlib.util
+import ast
 import json
+import importlib.util
+import sys
 from pathlib import Path
-from typing import Any
 
 import pytest
+from tigrbl_core._spec import AppSpec, OpSpec, PathSpec, RouterSpec, TableSpec
+from tigrbl_core._spec.binding_spec import HttpJsonRpcBindingSpec, WsBindingSpec
 
 
 EXAMPLE_PATH = Path(__file__).resolve().parents[1] / "app.py"
 
 
 def _load_example_module():
+    example_dir = str(EXAMPLE_PATH.parent)
+    if example_dir not in sys.path:
+        sys.path.insert(0, example_dir)
     spec = importlib.util.spec_from_file_location(
         "websocket_realtime_ops_app",
         EXAMPLE_PATH,
@@ -24,119 +29,164 @@ def _load_example_module():
     return module
 
 
-class _WebSocketClient:
-    def __init__(self, app: Any, path: str) -> None:
-        self.sent: list[dict[str, object]] = []
-        self._inbound: asyncio.Queue[dict[str, object]] = asyncio.Queue()
-        self._message_event = asyncio.Event()
-
-        async def receive() -> dict[str, object]:
-            return await self._inbound.get()
-
-        async def send(message: dict[str, object]) -> None:
-            self.sent.append(message)
-            self._message_event.set()
-
-        self._task = asyncio.create_task(
-            app(
-                {
-                    "type": "websocket",
-                    "scheme": "ws",
-                    "path": path,
-                    "query_string": b"",
-                    "headers": [],
-                },
-                receive,
-                send,
-            )
-        )
-
-    async def receive_text(self, text: str) -> None:
-        await self._inbound.put({"type": "websocket.receive", "text": text})
-
-    async def disconnect(self) -> None:
-        await self._inbound.put({"type": "websocket.disconnect", "code": 1000})
-        await asyncio.wait_for(self._task, timeout=1.0)
-
-    async def wait_for(self, op: str) -> dict[str, object]:
-        while True:
-            for message in self.sent:
-                if message.get("type") != "websocket.send":
-                    continue
-                payload = json.loads(str(message.get("text") or "{}"))
-                if payload.get("op") == op:
-                    return payload
-            self._message_event.clear()
-            await asyncio.wait_for(self._message_event.wait(), timeout=1.0)
-
-
-def test_websocket_realtime_ops_demo_registers_websocket_route() -> None:
+def test_websocket_realtime_ops_demo_declares_jsonrpc_websocket_route() -> None:
     module = _load_example_module()
     app = module.build_app()
 
-    paths = {route.path_template: route for route in app.websocket_routes}
+    assert isinstance(module.APP_SPEC, AppSpec)
+    assert isinstance(module.REALTIME_ROUTER, RouterSpec)
+    assert isinstance(module.REALTIME_PATH, PathSpec)
+    assert module.REALTIME_PATH.path == "/ws/realtime"
+    assert module.REALTIME_PATH.kind == "ws-jsonrpc"
+    assert module.WEBSOCKET_BINDING.subprotocols == ("jsonrpc",)
+    assert app.title == module.APP_SPEC.title
+    assert {route.path_template for route in app.websocket_routes} == {
+        module.WEBSOCKET_PATH
+    }
 
-    assert "/ws/realtime" in paths
-    assert paths["/ws/realtime"].protocol == "ws"
-    assert paths["/ws/realtime"].framing == "text"
+
+def test_websocket_realtime_ops_demo_declares_table_owned_opspecs() -> None:
+    module = _load_example_module()
+
+    assert tuple(module.REALTIME_PATH.tables) == (
+        module.THREAD_TABLE,
+        module.MESSAGE_TABLE,
+    )
+    assert all(isinstance(table, TableSpec) for table in module.REALTIME_PATH.tables)
+    assert all(isinstance(op, OpSpec) for op in module.REALTIME_OPS)
+    assert (
+        tuple(
+            (table.name, op.alias, op.target)
+            for table in module.REALTIME_PATH.tables
+            for op in table.ops
+        )
+        == (
+            ("Thread", "subscribe", "subscribe"),
+            ("Thread", "publish", "publish"),
+            ("Message", "create", "create"),
+        )
+    )
+    assert {
+        binding.path
+        for op in module.REALTIME_PATH.iter_ops()
+        for binding in op.bindings
+    } == {"/ws/realtime"}
+    assert all(op.tx_scope == "none" for op in module.REALTIME_PATH.iter_ops())
+
+
+def test_websocket_realtime_ops_demo_uses_framework_lowered_bindings() -> None:
+    module = _load_example_module()
+    app = module.build_app()
+
+    thread = app.tables["Thread"]
+    message = app.tables["Message"]
+    thread_methods = {op.alias: op for op in thread.ops.all}
+    message_methods = {op.alias: op for op in message.ops.all}
+
+    assert app.routers["realtime"]._jsonrpc_endpoint_mounts == {}
+    for model, alias in (
+        (thread, "subscribe"),
+        (thread, "publish"),
+        (message, "create"),
+    ):
+        op = {spec.alias: spec for spec in model.ops.all}[alias]
+        assert any(isinstance(binding, WsBindingSpec) for binding in op.bindings)
+        assert any(
+            isinstance(binding, HttpJsonRpcBindingSpec)
+            and binding.rpc_method == f"{model.__name__}.{alias}"
+            for binding in op.bindings
+        )
+
+    assert set(thread_methods) >= {"subscribe", "publish"}
+    assert set(message_methods) >= {"create"}
 
 
 @pytest.mark.asyncio
-async def test_websocket_realtime_ops_demo_observes_subscribe_and_publish() -> None:
+async def test_websocket_realtime_ops_demo_dispatches_jsonrpc_over_websocket() -> None:
     module = _load_example_module()
     app = module.build_app()
-
-    subscriber = _WebSocketClient(app, "/ws/realtime")
-    publisher = _WebSocketClient(app, "/ws/realtime")
-    try:
-        await subscriber.receive_text(
-            json.dumps(
+    sent = []
+    inbound = [
+        {"type": "websocket.connect"},
+        {
+            "type": "websocket.receive",
+            "text": json.dumps(
                 {
-                    "op": "subscribe",
-                    "payload": {"channel": "thread:alpha", "cursor": "msg-0"},
-                },
-                separators=(",", ":"),
-            )
-        )
-        subscribe_result = await subscriber.wait_for("subscribe.result")
+                    "jsonrpc": "2.0",
+                    "method": "Thread.subscribe",
+                    "params": {"channel": "thread:alpha", "cursor": "msg-0"},
+                    "id": "sub-1",
+                }
+            ),
+        },
+        {"type": "websocket.disconnect", "code": 1000},
+    ]
 
-        assert subscribe_result == {
-            "op": "subscribe.result",
-            "result": {
-                "subscribed": True,
-                "channel": "thread:alpha",
-                "cursor": "msg-0",
-            },
-        }
+    async def receive():
+        return inbound.pop(0)
 
-        await publisher.receive_text(
-            json.dumps(
-                {
-                    "op": "publish",
-                    "payload": {
-                        "channel": "thread:alpha",
-                        "event": {"message_id": "msg-1", "body": "hello"},
-                    },
-                },
-                separators=(",", ":"),
-            )
-        )
-        publish_result = await publisher.wait_for("publish.result")
-        published_event = await subscriber.wait_for("publish.event")
+    async def send(message):
+        sent.append(message)
 
-        expected_publish_result = {
-            "op": "publish.result",
-            "result": {
-                "published": True,
-                "channel": "thread:alpha",
-                "event": {"message_id": "msg-1", "body": "hello"},
-            },
-        }
-        assert publish_result == expected_publish_result
-        assert published_event == {
-            "op": "publish.event",
-            "result": expected_publish_result["result"],
-        }
-    finally:
-        await subscriber.disconnect()
-        await publisher.disconnect()
+    await app(
+        {
+            "type": "websocket",
+            "scheme": "ws",
+            "path": "/ws/realtime",
+            "query_string": b"",
+            "headers": [],
+        },
+        receive,
+        send,
+    )
+
+    assert sent[0] == {"type": "websocket.accept", "subprotocol": "jsonrpc"}
+    payload = json.loads(sent[1]["text"])
+    assert payload == {
+        "jsonrpc": "2.0",
+        "result": {
+            "id": None,
+            "subscribed": True,
+            "channel": "thread:alpha",
+            "cursor": "msg-0",
+        },
+        "id": "sub-1",
+    }
+
+
+def test_websocket_realtime_ops_demo_has_no_app_local_protocol_loop() -> None:
+    tree = ast.parse(EXAMPLE_PATH.read_text())
+    forbidden_calls = {
+        "accept",
+        "receive",
+        "receive_text",
+        "send_text",
+        "send_bytes",
+        "close",
+    }
+    forbidden_names = {"realtime_publish", "realtime_subscribe"}
+    forbidden_decorators = {"websocket"}
+
+    assert not any(isinstance(node, (ast.For, ast.AsyncFor, ast.While)) for node in ast.walk(tree))
+    assert not any(
+        isinstance(node, ast.If)
+        and isinstance(node.test, ast.Compare)
+        and ast.unparse(node.test).startswith("op ")
+        for node in ast.walk(tree)
+    )
+    assert not any(
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr in forbidden_calls
+        for node in ast.walk(tree)
+    )
+    assert not any(
+        isinstance(node, ast.Name) and node.id in forbidden_names
+        for node in ast.walk(tree)
+    )
+    assert not any(
+        isinstance(node, ast.Call)
+        and isinstance(node.func, ast.Attribute)
+        and node.func.attr in forbidden_decorators
+        for node in ast.walk(tree)
+    )

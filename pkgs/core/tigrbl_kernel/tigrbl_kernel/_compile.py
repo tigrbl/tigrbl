@@ -326,6 +326,12 @@ def _compile_plan(self: Any, app: Any) -> KernelPlan:
                     bucket = route_data.setdefault(
                         binding.proto, {"exact": {}, "templated": []}
                     )
+                    if (
+                        isinstance(binding, (WsBindingSpec, WebSocketProtocolBindingSpec))
+                        and framing_kind(getattr(binding, "framing", None)) == "jsonrpc"
+                        and target != "custom"
+                    ):
+                        continue
                     selector = binding.path
                     route_metadata = _route_metadata_for_binding(binding)
                     opkey_to_meta[OpKey(proto=binding.proto, selector=selector)] = (

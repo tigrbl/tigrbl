@@ -1,12 +1,12 @@
 from tigrbl_concrete.system.docs.surface import binding_surface
-from tigrbl_core._spec.binding_spec import WsBindingSpec
+from tigrbl_core._spec.binding_spec import JsonRpcFramingSpec, WsBindingSpec
 
 
 def test_docs_websocket_transport_projection_contract() -> None:
     binding = WsBindingSpec(
         proto="wss",
         path="/rpc",
-        framing="jsonrpc",
+        framing=JsonRpcFramingSpec(),
         subprotocols=("jsonrpc",),
     )
 
