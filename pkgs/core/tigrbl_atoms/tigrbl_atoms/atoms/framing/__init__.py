@@ -20,6 +20,7 @@ from .codec import (
     get_frame_codec,
     supported_frame_codecs,
 )
+from . import websocket_jsonrpc as websocket_jsonrpc
 
 __all__ = [
     "DEFAULT_MAX_PAYLOAD_SIZE",
@@ -38,4 +39,5 @@ __all__ = [
     "encode_webtransport_inner_frame",
     "get_frame_codec",
     "supported_frame_codecs",
+    "websocket_jsonrpc",
 ]

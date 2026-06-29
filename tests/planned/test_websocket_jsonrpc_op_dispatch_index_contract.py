@@ -122,3 +122,13 @@ def test_websocket_jsonrpc_example_has_no_custom_kernel_contract() -> None:
     assert "compile_websocket_jsonrpc_dispatch_index" not in source
     assert "compile_websocket_chain" not in source
     assert "websocket_realtime_kernel_chain" not in source
+
+
+def test_websocket_jsonrpc_loop_is_not_concrete_runtime_contract() -> None:
+    source = Path(
+        "pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/runtime_ops.py"
+    ).read_text()
+
+    assert "_dispatch_jsonrpc_text" not in source
+    assert "json.loads" not in source
+    assert "receive_text()" not in source

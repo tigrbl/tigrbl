@@ -6,6 +6,7 @@ from dataclasses import replace
 from typing import Any
 
 from tigrbl_core._spec.docs_spec import DocsPayloadSpec, DocsUixSpec
+from tigrbl_core._spec import JsonRpcFramingSpec
 from tigrbl_core._spec.path_spec import PathSpec
 from tigrbl_core._spec.well_known_spec import well_known_path
 from tigrbl_concrete._concrete import engine_resolver as _resolver
@@ -146,7 +147,10 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
 
     if websocket_jsonrpc_tables:
         from tigrbl_concrete.system.docs.runtime_ops import (
-            register_websocket_jsonrpc_dispatch_route,
+            register_runtime_websocket_route,
+        )
+        from tigrbl_kernel.protocol_chains.websocket import (
+            build_websocket_jsonrpc_session_handler,
         )
 
         mounted_dispatchers: set[str] = set()
@@ -168,11 +172,16 @@ def _lower_router_paths(router: Any, router_spec: Any) -> None:
                 route_alias = (
                     f"ws_jsonrpc:{str(dispatcher_path).strip('/') or 'root'}"
                 )
-                register_websocket_jsonrpc_dispatch_route(
+                handler_step = build_websocket_jsonrpc_session_handler(router)
+                register_runtime_websocket_route(
                     router,
                     path=dispatcher_path,
                     alias=route_alias,
+                    endpoint=handler_step,
+                    handler_step=handler_step,
                     protocol=protocol,
+                    framing=JsonRpcFramingSpec(),
+                    subprotocols=("jsonrpc",),
                 )
                 mounted_dispatchers.add(dispatcher_path)
 

@@ -4,6 +4,7 @@ from typing import Any, Callable, Dict, Optional, Tuple
 
 from . import sink_bind as _sink_bind
 from . import unit_capture as _unit_capture
+from . import websocket as websocket
 
 RunFn = Callable[[Optional[object], Any], Any]
 
@@ -16,4 +17,4 @@ REGISTRY: Dict[Tuple[str, str], Tuple[str, RunFn]] = {
     (domain, subject): (anchor, run) for domain, subject, anchor, run in _ORDERED
 }
 
-__all__ = ["REGISTRY", "RunFn"]
+__all__ = ["REGISTRY", "RunFn", "websocket"]

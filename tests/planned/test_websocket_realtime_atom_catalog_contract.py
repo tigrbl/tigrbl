@@ -6,6 +6,18 @@ from tigrbl_kernel.protocol_chains.websocket import (
 )
 
 
+def test_websocket_realtime_transport_and_framing_atoms_are_exported() -> None:
+    from tigrbl_atoms.atoms.framing import websocket_jsonrpc
+    from tigrbl_atoms.atoms.transport import websocket
+
+    assert callable(websocket.accept)
+    assert callable(websocket.receive)
+    assert callable(websocket.emit)
+    assert callable(websocket.close)
+    assert callable(websocket_jsonrpc.decode)
+    assert callable(websocket_jsonrpc.encode)
+
+
 def test_websocket_realtime_required_atoms_contract() -> None:
     chain = compile_websocket_chain({"path": "/ws/thread/{thread_id}", "scheme": "ws"})
 

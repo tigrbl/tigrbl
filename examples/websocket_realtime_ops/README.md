@@ -11,7 +11,8 @@ WebSocket realtime JSON-RPC ops:
 
 The ops share one WebSocket connect path, use `JsonRpcFramingSpec`, infer the
 `jsonrpc` subprotocol from framing, and lower through `TigrblApp.from_spec(...)`
-into a framework-owned WebSocket JSON-RPC dispatcher route.
+into a route whose WebSocket JSON-RPC session behavior is composed by the
+kernel from transport, framing, dispatch, and emit atoms.
 
 It does not implement an app-local receive loop, JSON parser, op switch, send
 loop, broadcast loop, or cleanup block. Those are kernel/atom/runtime

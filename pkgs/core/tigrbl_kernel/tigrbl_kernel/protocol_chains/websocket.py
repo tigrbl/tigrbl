@@ -3,6 +3,9 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from typing import Any
 
+from tigrbl_atoms.atoms.framing import websocket_jsonrpc as _jsonrpc_framing
+from tigrbl_atoms.atoms.transport import websocket as _websocket_transport
+
 ANCHORS: tuple[str, ...] = (
     "transport.accept",
     "transport.receive",
@@ -288,6 +291,141 @@ def compile_websocket_jsonrpc_dispatch_index(
     }
 
 
+def _jsonrpc_error(
+    code: int,
+    message: str,
+    request_id: Any,
+    *,
+    data: Any | None = None,
+) -> dict[str, Any]:
+    error: dict[str, Any] = {"code": code, "message": message}
+    if data is not None:
+        error["data"] = data
+    return {"jsonrpc": "2.0", "error": error, "id": request_id}
+
+
+def _jsonrpc_result(result: Any, request_id: Any) -> dict[str, Any]:
+    return {"jsonrpc": "2.0", "result": result, "id": request_id}
+
+
+def _resolve_rpc_target(router: Any, method: str) -> tuple[Any, str] | None:
+    table_name, sep, alias = method.partition(".")
+    if not sep or not table_name or not alias:
+        return None
+    tables = getattr(router, "tables", None)
+    if isinstance(tables, Mapping):
+        model = tables.get(table_name)
+        if isinstance(model, type):
+            return model, alias
+        for candidate in tables.values():
+            if (
+                isinstance(candidate, type)
+                and getattr(candidate, "__name__", None) == table_name
+            ):
+                return candidate, alias
+    return table_name, alias
+
+
+def _op_tx_scope(model: Any, alias: str) -> str:
+    ops = getattr(getattr(model, "ops", None), "all", ())
+    for spec in tuple(ops or ()):
+        if getattr(spec, "alias", None) == alias:
+            return str(getattr(spec, "tx_scope", "inherit") or "inherit")
+    return "inherit"
+
+
+async def _dispatch_jsonrpc_payload(router: Any, payload: Any) -> Any:
+    if not isinstance(payload, Mapping) or payload.get("jsonrpc") != "2.0":
+        return _jsonrpc_error(-32600, "Invalid Request", None)
+    request_id = payload.get("id")
+    method = payload.get("method")
+    if not isinstance(method, str) or not method:
+        return _jsonrpc_error(-32601, "Method not found", request_id)
+    target = _resolve_rpc_target(router, method)
+    if target is None:
+        return _jsonrpc_error(-32601, "Method not found", request_id)
+    params = payload.get("params", {})
+    if params is None:
+        params = {}
+    if not isinstance(params, (dict, list, tuple)):
+        return _jsonrpc_error(-32602, "Invalid params", request_id)
+    model, alias = target
+    rpc_call = getattr(router, "rpc_call", None)
+    if not callable(rpc_call):
+        return _jsonrpc_error(-32603, "Internal error", request_id)
+    kwargs: dict[str, Any] = {
+        "ctx": {"jsonrpc": dict(payload), "jsonrpc_request_id": request_id}
+    }
+    if _op_tx_scope(model, alias) == "none":
+        kwargs["db"] = {}
+    try:
+        result = await rpc_call(model, alias, params, **kwargs)
+    except AttributeError:
+        return _jsonrpc_error(-32601, "Method not found", request_id)
+    except Exception as exc:
+        return _jsonrpc_error(
+            -32603,
+            "Internal error",
+            request_id,
+            data={"detail": str(exc)},
+        )
+    if "id" not in payload:
+        return None
+    return _jsonrpc_result(result, request_id)
+
+
+async def _dispatch_jsonrpc_decoded(router: Any, payload: Any) -> Any:
+    if isinstance(payload, list):
+        responses = []
+        for item in payload:
+            response = await _dispatch_jsonrpc_payload(router, item)
+            if response is not None:
+                responses.append(response)
+        return responses or None
+    return await _dispatch_jsonrpc_payload(router, payload)
+
+
+def build_websocket_jsonrpc_session_handler(
+    router: Any,
+    *,
+    subprotocol: str = "jsonrpc",
+) -> Any:
+    """Build a kernel-owned WebSocket JSON-RPC session handler step."""
+
+    async def _websocket_jsonrpc_session(ctx: Any) -> None:
+        await _websocket_transport.accept(ctx, subprotocol=subprotocol)
+        try:
+            while True:
+                await _websocket_transport.receive(ctx)
+                ws_state = ctx.get("temp", {}).setdefault("websocket", {})
+                if isinstance(ws_state, dict) and ws_state.get("disconnected"):
+                    break
+                try:
+                    decoded = await _jsonrpc_framing.decode(ctx)
+                    response = await _dispatch_jsonrpc_decoded(router, decoded)
+                except ValueError:
+                    response = _jsonrpc_error(-32700, "Parse error", None)
+                if response is None:
+                    continue
+                ws_state["response"] = response
+                await _jsonrpc_framing.encode(ctx)
+                await _websocket_transport.emit(ctx)
+        finally:
+            await _websocket_transport.close(ctx)
+
+    setattr(
+        _websocket_jsonrpc_session,
+        "__tigrbl_label",
+        "kernel:websocket:jsonrpc:session",
+    )
+    setattr(
+        _websocket_jsonrpc_session,
+        "__tigrbl_atom_name__",
+        "websocket.jsonrpc.session",
+    )
+    return _websocket_jsonrpc_session
+
+
 __all__ = [
     "ATOM_PHASE_PLACEMENT",
     "CORE_REALTIME_ATOMS",
@@ -296,6 +434,7 @@ __all__ = [
     "SESSION_LIFECYCLE_PHASES",
     "SESSION_STRUCTURAL_PHASES",
     "SUBSCRIBE_POLICY",
+    "build_websocket_jsonrpc_session_handler",
     "compile_websocket_chain",
     "compile_websocket_jsonrpc_dispatch_index",
 ]
