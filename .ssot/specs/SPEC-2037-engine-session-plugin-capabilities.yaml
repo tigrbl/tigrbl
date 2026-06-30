@@ -21,13 +21,14 @@ body: |-
   ## Invariants
   
   - Engine plugins may advertise or resolve sync/async session-factory behavior.
-  - Session plugin capabilities include factory construction, provider acquisition, and `SessionSpec` application.
+  - Session plugin capabilities include factory construction, provider acquisition, and `EngineSessionSpec` application.
+  - Plugin-provided session factories preserve the `EngineSessionBase` contract at public engine boundaries.
   - Plugin capability resolution remains engine-owned and may affect runtime and DDL execution paths.
   - Session capability extension does not bypass engine precedence rules.
   
   ## Traceability
   
   - ADRs: `adr:1015`, `adr:1055`
-  - Related features: `feat:engine-surface-plugin-resolution-001`, `feat:engine-session-runtime-surface-001`
+  - Related features: `feat:engine-surface-plugin-resolution-001`, `feat:enginesessionbase-contract-001`, `feat:engine-extension-session-base-conformance-001`
 spec_kind: "local-policy"
 adr_ids: []

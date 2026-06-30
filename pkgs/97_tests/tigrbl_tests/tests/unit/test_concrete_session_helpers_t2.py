@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+from tigrbl_base._base._session_base import EngineSessionBase
 from tigrbl_concrete._concrete._engine_session import EngineSession, wrap_sessionmaker
 from tigrbl_core._spec.engine_session_spec import EngineSessionSpec
 
@@ -93,5 +94,11 @@ def test_wrap_sessionmaker_returns_isolated_default_sessions_with_spec() -> None
     assert first is not second
     assert first._u is made[0]
     assert second._u is made[1]
-    assert first._spec is spec
-    assert second._spec is spec
+    assert isinstance(first, EngineSessionBase)
+    assert isinstance(first, EngineSessionSpec)
+    assert first.read_only is True
+    assert first.tag == "tenant-a"
+    assert isinstance(second, EngineSessionBase)
+    assert isinstance(second, EngineSessionSpec)
+    assert second.read_only is True
+    assert second.tag == "tenant-a"

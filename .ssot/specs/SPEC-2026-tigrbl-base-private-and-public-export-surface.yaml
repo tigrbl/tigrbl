@@ -23,6 +23,7 @@ body: |-
   - The canonical base-layer export surface is the full key set of `tigrbl_base._base.__init__._EXPORTS`.
   - Each governed base export identifies a reusable base-layer class, protocol, or support type owned by the `tigrbl_base` package.
   - `HeadersBase` and `HeaderCookiesBase` are governed base support types for reusable request/response header and cookie behavior.
+  - `EngineSessionBase` is the canonical base-layer engine-session contract and includes `EngineSessionSpec` policy fields; `SessionABC` is not a governed base export.
   - The base layer remains distinct from `tigrbl_concrete`, `tigrbl_core._spec`, and the top-level facade.
   
   ## Public Operator Projection

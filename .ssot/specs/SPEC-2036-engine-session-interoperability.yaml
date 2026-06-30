@@ -16,11 +16,13 @@ references: []
 body: |-
   ## Intent
   
-  Define engine-session interoperability for the concrete runtime session wrapper.
+  Define engine-session interoperability for the concrete runtime session wrapper and engine extension session classes.
   
   ## Invariants
   
-  - `DefaultSession` delegates transaction and CRUD methods to the underlying provider session with awaitable awareness.
+  - `EngineSession` delegates transaction and CRUD methods to the underlying provider session with awaitable awareness.
+  - `EngineSessionBase` inherits `EngineSessionSpec` and owns the shared lifecycle, read-only, and batch guardrails for engine sessions.
+  - Engine extension sessions inherit `EngineSessionBase` directly or inherit `EngineSession` when they need the generic provider-delegating wrapper.
   - The session wrapper may expose `run_sync()` for sync work on async-backed providers.
   - Interoperability does not invent provider methods that the underlying session does not implement.
   - Session interoperability must cover sync, async, and mixed bootstrap paths.
@@ -28,6 +30,6 @@ body: |-
   ## Traceability
   
   - ADRs: `adr:1015`, `adr:1055`
-  - Related features: `feat:engine-session-runtime-surface-001`, `feat:defaultsession-concrete-session-class-001`
+  - Related features: `feat:enginesessionbase-contract-001`, `feat:defaultsession-concrete-session-class-001`, `feat:engine-extension-session-base-conformance-001`
 spec_kind: "local-policy"
 adr_ids: []

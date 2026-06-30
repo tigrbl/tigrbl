@@ -21,13 +21,14 @@ body: |-
   ## Invariants
   
   - Engine providers own how sessions are acquired for runtime and DDL work.
-  - Session pairing may be expressed through provider `get_db()`, `sessionmaker`, `async_sessionmaker`, or wrapped factory behavior.
-  - `wrap_sessionmaker()` is the canonical concrete helper for applying `SessionSpec` to provider factories.
+  - Session pairing may be expressed through provider `get_db()`, `sessionmaker`, `async_sessionmaker`, or wrapped factory behavior, but public session results must satisfy `EngineSessionBase`.
+  - Provider-native sessions such as SQLAlchemy sessions may remain private adapters behind an engine-owned session object.
+  - `wrap_sessionmaker()` is the canonical concrete helper for applying `EngineSessionSpec` to provider factories.
   - Concrete runtime surfaces may depend on the pairing, but they do not redefine it.
   
   ## Traceability
   
   - ADRs: `adr:1015`, `adr:1055`
-  - Related features: `feat:engine-session-runtime-surface-001`, `feat:defaultsession-concrete-session-class-001`
+  - Related features: `feat:enginesessionbase-contract-001`, `feat:defaultsession-concrete-session-class-001`, `feat:wrap-sessionmaker-helper-surface-001`
 spec_kind: "local-policy"
 adr_ids: []
