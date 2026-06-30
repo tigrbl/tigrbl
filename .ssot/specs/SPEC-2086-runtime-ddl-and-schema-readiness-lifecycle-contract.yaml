@@ -40,18 +40,21 @@ body: |-
   4. If schema readiness has not been established, ordinary request execution MUST fail closed with a clear configuration or runtime error.
   5. A deliberately configured development auto-initialization mode MAY run schema-readiness work only when that mode is explicit and evidenced as outside production request semantics.
   6. Optional Rust/runtime-binding execution is retired under `adr:1185` and is not a required conformance lane.
+  7. Engine package certification for schema readiness MUST prove `app.initialize()` or another governed initialization entrypoint creates usable schema before ordinary canonical operation execution.
   
   ## Python Runtime Requirements
   
   1. Python request execution MUST NOT call `create_all`, migration routines, implicit table bootstrap, or schema readiness helpers for ordinary CRUD requests.
   2. Python initialization, bootstrapping, and explicit DDL/admin operations MAY perform schema readiness when explicitly requested.
   3. Python evidence MUST prove ordinary request execution does not perform DDL or implicit schema readiness.
+  4. DuckDB engine evidence MUST prove `TigrblApp` initialization creates DuckDB-backed tables and subsequent sessions can operate on those tables without request-path DDL repair.
   
   ## Evidence Requirements
   
   - Unit or integration tests showing DDL happens during initialization or explicit readiness phases.
   - Request-path tests or instrumentation proving DDL does not run for ordinary CRUD requests.
   - Fail-closed tests for missing schema readiness.
+  - Engine-package tests linking schema readiness to the package's advertised provider and session capabilities.
   - Rust/runtime-binding evidence is not required and must not be used as a core release gate.
   
   ## Non-Goals

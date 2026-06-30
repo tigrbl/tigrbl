@@ -40,6 +40,7 @@ body: |-
   6. Python engines must document and test their lifecycle placement.
   7. Rust/runtime-binding lifecycle parity is retired under `adr:1185`.
   8. Engine session implementations expose lifecycle behavior through `EngineSessionBase`; the generic `EngineSession` and package-specific engine sessions must inherit `EngineSessionBase`, and `EngineSessionBase` carries `EngineSessionSpec` policy fields.
+  9. Engine packages must test their default and provider-specific session modes against the shared engine-session lifecycle contract before claiming runtime certification.
   
   ## Consequences
   
@@ -48,9 +49,11 @@ body: |-
   - Missing lifecycle state should produce clear fail-closed errors rather than implicit lifecycle repair during ordinary requests.
   - Optional Rust/runtime-binding evidence is no longer required for this boundary.
   - Engine extensions share one base session contract instead of package-local session roots or a separate `SessionABC`.
+  - Engine package certification must distinguish initialization, session acquisition, transaction work, canonical operation execution, and close/disposal behavior.
   
   ## Rejected alternatives
   
   - Treating engine open and transaction begin as the same lifecycle step.
   - Letting request execution repair missing initialization state opportunistically.
   - Keeping optional runtime binding parity language after Tigrbl selects a Python-only runtime.
+  - Treating a provider-native session object as certified merely because it can execute a vendor query.

@@ -24,10 +24,13 @@ body: |-
   - Multi-provider bootstrap may group tables by resolved provider before DDL execution.
   - Interoperability includes both sync and async provider binds.
   - Transport projection may depend on resolved engines but does not redefine engine behavior.
+  - Engine-specific certification includes plugin discovery, resolver registration, named provider resolution, and session factory construction.
+  - DuckDB certification targets the `tigrbl_engine_duckdb` package and must prove the portable canonical operation subset without relying on application-specific handlers.
+  - Package-coordinate traceability is necessary but not sufficient for runtime engine certification.
   
   ## Traceability
   
   - ADRs: `adr:1015`, `adr:1055`
-  - Related features: `feat:engine-surface-contract-001`, `feat:multi-engine-interop-runtime-surface-001`
+  - Related features: `feat:engine-surface-contract-001`, `feat:multi-engine-interop-runtime-surface-001`, `feat:tigrbl-engine-duckdb-plugin-registration-001`, `feat:tigrbl-engine-duckdb-cross-engine-parity-001`
 spec_kind: "local-policy"
 adr_ids: []

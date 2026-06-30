@@ -35,6 +35,7 @@ body: |-
   5. Engine adapters must document capability differences and error behavior.
   6. Later engine classes may extend this contract, but they may not redefine the meaning of canonical OLTP operations.
   7. Engine session adapters expose their public session behavior through the shared `EngineSessionBase` contract. Raw provider sessions may remain private implementation details, but engine-owned session factories must return objects that satisfy the governed engine-session base contract.
+  8. Engine packages such as `tigrbl_engine_duckdb` must prove plugin registration, provider resolution, DDL readiness, engine-session conformance, canonical operation behavior, and bounded cross-engine parity before runtime engine certification can be claimed.
   
   ## Context
   
@@ -46,3 +47,4 @@ body: |-
   - Letting handlers call engine-specific APIs directly as the primary integration style.
   - Implicitly assuming every engine supports the full canonical contract.
   - Encoding engine behavior into bindings or transport adapters.
+  - Treating package-coordinate traceability as sufficient proof of runtime engine behavior.

@@ -24,6 +24,7 @@ body: |-
   2. The DDL family owns bootstrap orchestration and non-migration schema/table creation behavior for concrete app, router, and table owners.
   3. Bootstrap execution timing and event-loop mode behavior are governed by specs, not by this ADR.
   4. PostgreSQL schema namespaces and SQLite attachment maps are governed as a separate namespace boundary rather than being collapsed into generic table/model schema language.
+  5. Engine package certification for DDL readiness must use governed bootstrap entrypoints such as `app.initialize()` rather than engine-local raw DDL helper paths.
   
   ## Context
   
@@ -35,9 +36,11 @@ body: |-
   - Non-bootstrap DDL contract, bootstrap execution/timing, namespace ensuring, namespace parity, and migration remain separately spec-governed surfaces.
   - Migration surfaces do not inherit ownership merely because they also touch database structure.
   - Runtime dispatch and operator projections do not redefine DDL or namespace ownership.
+  - Engine-specific DDL proof must demonstrate schema readiness through the Tigrbl initialization boundary before ordinary canonical operations run.
   
   ## Rejected Alternatives
   
   - Treat bootstrap and migration as one undifferentiated surface.
   - Treat PostgreSQL schema namespaces and SQLite attachments as incidental implementation details.
   - Let helper exports or transport projections redefine DDL ownership.
+  - Certifying an engine's schema readiness through ad hoc SQL executed outside the Tigrbl initialization boundary.

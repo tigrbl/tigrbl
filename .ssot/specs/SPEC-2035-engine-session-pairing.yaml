@@ -25,10 +25,12 @@ body: |-
   - Provider-native sessions such as SQLAlchemy sessions may remain private adapters behind an engine-owned session object.
   - `wrap_sessionmaker()` is the canonical concrete helper for applying `EngineSessionSpec` to provider factories.
   - Concrete runtime surfaces may depend on the pairing, but they do not redefine it.
+  - DuckDB default mode must return a concrete engine session suitable for Tigrbl DDL and canonical operation execution.
+  - DuckDB native mode may expose a package-specific session class, but that class must inherit `EngineSessionBase` and satisfy shared lifecycle behavior.
   
   ## Traceability
   
   - ADRs: `adr:1015`, `adr:1055`
-  - Related features: `feat:enginesessionbase-contract-001`, `feat:defaultsession-concrete-session-class-001`, `feat:wrap-sessionmaker-helper-surface-001`
+  - Related features: `feat:enginesessionbase-contract-001`, `feat:defaultsession-concrete-session-class-001`, `feat:wrap-sessionmaker-helper-surface-001`, `feat:tigrbl-engine-duckdb-engine-session-001`
 spec_kind: "local-policy"
 adr_ids: []
