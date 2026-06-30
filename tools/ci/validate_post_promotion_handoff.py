@@ -93,10 +93,10 @@ def main() -> None:
     if governed_key is None:
         errors.append(f'.ssot/registry.json repo.version must be a dev checkpoint version, got {governed_dev_version!r}')
     elif package_key is None:
-        errors.append(f'pkgs/core/tigrbl/pyproject.toml must record a valid semver, got {package_version!r}')
+        errors.append(f'pkgs/80_facade/tigrbl/pyproject.toml must record a valid semver, got {package_version!r}')
     elif package_key < governed_key:
         errors.append(
-            'pkgs/core/tigrbl/pyproject.toml must not lag behind '
+            'pkgs/80_facade/tigrbl/pyproject.toml must not lag behind '
             f'.ssot/registry.json repo.version {governed_dev_version}; got {package_version}'
         )
 

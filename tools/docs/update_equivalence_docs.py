@@ -143,8 +143,8 @@ def render_authoring_public_surface() -> str:
         [
             _generated_note(
                 [
-                    "pkgs/core/tigrbl/tigrbl/__init__.py",
-                    "pkgs/core/tigrbl_core/tigrbl_core/_spec/",
+                    "pkgs/80_facade/tigrbl/tigrbl/__init__.py",
+                    "pkgs/10_core/tigrbl_core/tigrbl_core/_spec/",
                 ]
             ),
             _markdown_table(
@@ -199,8 +199,8 @@ def render_router_table_public_surface() -> str:
         [
             _generated_note(
                 [
-                    "pkgs/core/tigrbl/tigrbl/__init__.py",
-                    "pkgs/core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py",
+                    "pkgs/80_facade/tigrbl/tigrbl/__init__.py",
+                    "pkgs/10_core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py",
                 ]
             ),
             _markdown_table(
@@ -233,7 +233,7 @@ def render_table_profile_snapshot() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py"]
+                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/table_profile_spec.py"]
             ),
             _markdown_table(
                 [
@@ -288,7 +288,7 @@ def render_transport_binding_support() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
+                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
             ),
             _markdown_table(
                 ["Binding kind", "Allowed app-level framing", "Allowed exchanges"],
@@ -320,7 +320,7 @@ def render_webtransport_lane_support() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
+                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py"]
             ),
             _markdown_table(
                 ["Lane", "Runtime family", "Allowed inner framing", "Required exchange"],
@@ -366,7 +366,7 @@ def render_engine_package_snapshot() -> str:
         )
     return "\n\n".join(
         [
-            _generated_note(["pkgs/engines/*/pyproject.toml"]),
+            _generated_note(["pkgs/90_engines/*/pyproject.toml"]),
             _markdown_table(
                 ["Package", "Engine entry points", "Import root", "Repository path"],
                 rows,
@@ -410,7 +410,7 @@ def render_datatype_lowering_matrix() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
+                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
             ),
             _markdown_table(headers, rows),
         ]
@@ -441,7 +441,7 @@ def render_reflection_hints() -> str:
     return "\n\n".join(
         [
             _generated_note(
-                ["pkgs/core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
+                ["pkgs/10_core/tigrbl_core/tigrbl_core/_spec/datatypes.py"]
             ),
             _markdown_table(["Engine family", "Physical names", "Logical hint"], rows),
         ]

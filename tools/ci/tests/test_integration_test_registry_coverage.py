@@ -28,7 +28,7 @@ def test_every_integration_test_file_has_registry_row_and_existing_path() -> Non
         row.get("path"): row
         for row in tests
         if isinstance(row.get("path"), str)
-        and row["path"].startswith("pkgs/core/tigrbl_tests/tests/i9n/")
+        and row["path"].startswith("pkgs/97_tests/tigrbl_tests/tests/i9n/")
     }
 
     missing = sorted(_i9n_paths() - set(rows_by_path))
@@ -46,7 +46,7 @@ def test_integration_registry_coverage_feature_has_reciprocal_test_links() -> No
         row
         for row in registry["tests"]
         if isinstance(row.get("path"), str)
-        and row["path"].startswith("pkgs/core/tigrbl_tests/tests/i9n/")
+        and row["path"].startswith("pkgs/97_tests/tigrbl_tests/tests/i9n/")
     ]
 
     unlinked_from_feature = sorted(

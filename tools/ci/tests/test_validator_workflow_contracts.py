@@ -37,6 +37,6 @@ def test_post_promotion_handoff_workflow_fails_if_validation_and_repair_fail() -
 def test_post_promotion_handoff_workflow_runs_tigrbl_tests_after_successful_validation() -> None:
     workflow = _workflow("post-promotion-handoff.yml")
 
-    assert "pkgs/core/tigrbl_tests/tests" in workflow
+    assert "pkgs/97_tests/tigrbl_tests/tests" in workflow
     assert "steps.validate-post-promotion-handoff.outcome == 'success'" in workflow
     assert "steps.revalidate-post-promotion-handoff.outcome == 'success'" in workflow

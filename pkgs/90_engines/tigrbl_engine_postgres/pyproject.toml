@@ -1,0 +1,73 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tigrbl_engine_postgres"
+version = "0.4.5.dev4"
+description = "PostgreSQL engine plugin for SQLAlchemy sessions, async database workflows, and Tigrbl application persistence."
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "json-rpc",
+    "rest",
+    "sqlalchemy",
+    "pydantic",
+    "engine",
+    "plugin",
+    "database",
+    "postgres",
+    "postgresql",
+    "psycopg",
+    "openapi",
+    "openrpc",
+    "schema-first",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Database",
+]
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+requires-python = ">=3.10,<3.15"
+dependencies = [
+    "SQLAlchemy>=2.0,<3.0",
+    "psycopg[binary]>=3.1,<4.0",
+    "tigrbl>=0.3.0.dev4",
+]
+
+
+[project.urls]
+Organization = "https://github.com/tigrbl"
+Discord = "https://discord.gg/K4YTAPapjR"
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_postgres"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[project.entry-points."tigrbl.engine"]
+postgres = "tigrbl_engine_postgres:register"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.0",
+]
+
+[tool.uv.sources]
+tigrbl = { workspace = true }

@@ -1,0 +1,97 @@
+[project]
+name = "tigrbl-atoms"
+version = "0.4.5.dev4"
+description = "Runtime atom package for Tigrbl stages, phases, typed contexts, event anchors, protocol execution, and composable pipeline algebra."
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "atom algebra",
+    "atom pipeline",
+    "event anchors",
+    "json-rpc",
+    "atoms",
+    "execution",
+    "phases",
+    "openapi",
+    "openrpc",
+    "protocol runtime",
+    "rest",
+    "runtime",
+    "schema-first",
+    "stages",
+    "typed context",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.10,<3.15"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
+dependencies = [
+    "tigrbl-ops-oltp",
+    "tigrbl-ops-olap",
+    "tigrbl-ops-realtime",
+    "tigrbl-ops-webtransport",
+    "tigrbl-core",
+    "tigrbl-typing",
+    "jinja2>=3.1",
+    "sqlalchemy>=2.0",
+    "typing-extensions>=4.0",
+]
+
+
+[project.urls]
+Organization = "https://github.com/tigrbl"
+Discord = "https://discord.gg/K4YTAPapjR"
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/40_atoms/tigrbl_atoms"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[tool.uv.sources]
+"tigrbl-ops-oltp" = { workspace = true }
+"tigrbl-ops-olap" = { workspace = true }
+"tigrbl-ops-realtime" = { workspace = true }
+"tigrbl-ops-webtransport" = { workspace = true }
+"tigrbl-core" = { workspace = true }
+"tigrbl-typing" = { workspace = true }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+packages = [
+    { include = "tigrbl_atoms" },
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-timeout>=2.3.1",
+    "ruff>=0.9",
+]

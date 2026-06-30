@@ -54,7 +54,20 @@ dev = [
 
 [tool.uv.workspace]
 members = [
-  "pkgs/core/*",
-  "pkgs/deprecated/*",
-  "pkgs/engines/*",
+  "pkgs/00_typing/*",
+  "pkgs/01_spec/*",
+  "pkgs/10_core/*",
+  "pkgs/20_base/*",
+  "pkgs/30_orm/*",
+  "pkgs/40_atoms/*",
+  "pkgs/45_kernel/*",
+  "pkgs/50_runtime/*",
+  "pkgs/60_ops/*",
+  "pkgs/70_concrete/*",
+  "pkgs/80_facade/*",
+  "pkgs/90_engines/*",
+  "pkgs/95_client/*",
+  "pkgs/96_examples/*",
+  "pkgs/97_tests/*",
+  "pkgs/99_deprecated/*",
 ]

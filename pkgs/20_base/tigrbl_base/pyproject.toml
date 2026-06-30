@@ -1,0 +1,91 @@
+[project]
+name = "tigrbl-base"
+version = "0.4.5.dev4"
+description = "Base contract package for Tigrbl apps, routers, tables, sessions, middleware, requests, responses, bindings, and engine interfaces."
+readme = "README.md"
+license = { file = "LICENSE" }
+keywords = [
+    "tigrbl",
+    "asgi",
+    "api",
+    "abstract base classes",
+    "api contracts",
+    "base contracts",
+    "engine interfaces",
+    "framework internals",
+    "json-rpc",
+    "base",
+    "base-classes",
+    "interfaces",
+    "abstractions",
+    "openapi",
+    "openrpc",
+    "request response",
+    "rest",
+    "schema-first",
+    "session interfaces",
+    "sqlalchemy",
+    "table base",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Framework :: AsyncIO",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Code Generators",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+requires-python = ">=3.10,<3.15"
+authors = [{ name = "Jacob Stewart", email = "jacob@swarmauri.com" }]
+
+dependencies = [
+    "tigrbl-core",
+    "tigrbl-atoms",
+    "sqlalchemy>=2.0",
+    "pydantic>=2.0",
+]
+
+
+[project.urls]
+Organization = "https://github.com/tigrbl"
+Discord = "https://discord.gg/K4YTAPapjR"
+Homepage = "https://github.com/tigrbl/tigrbl"
+Repository = "https://github.com/tigrbl/tigrbl/tree/master/pkgs/20_base/tigrbl_base"
+Issues = "https://github.com/tigrbl/tigrbl/issues"
+
+[tool.uv.sources]
+"tigrbl-core" = { workspace = true }
+"tigrbl-atoms" = { workspace = true }
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.poetry]
+packages = [
+    { include = "tigrbl_base" },
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-timeout>=2.3.1",
+    "ruff>=0.9",
+]

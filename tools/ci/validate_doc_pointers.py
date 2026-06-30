@@ -69,15 +69,11 @@ ROOT_RELATIVE_FILES = {
 
 
 def package_readmes() -> list[Path]:
-    patterns = [
-        "pkgs/core/*/README.md",
-        "pkgs/engines/*/README.md",
-        "pkgs/apps/*/README.md",
-    ]
-    files: list[Path] = []
-    for pattern in patterns:
-        files.extend(sorted(ROOT.glob(pattern)))
-    return [p for p in files if p.is_file()]
+    return sorted(
+        p
+        for p in ROOT.glob("pkgs/*/*/README.md")
+        if p.is_file() and (p.parent / "pyproject.toml").is_file()
+    )
 
 
 def iter_pointer_docs() -> list[Path]:

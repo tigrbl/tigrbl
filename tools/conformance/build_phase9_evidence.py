@@ -57,15 +57,15 @@ GROUPS: dict[str, EvidenceTemplate] = {
     'spec': EvidenceTemplate(
         lane_classes=['unit', 'integration', 'spec conformance', 'docs UI smoke'],
         tests=[
-            'pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py',
-            'pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py',
-            'pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py',
-            'pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py',
-            'pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_docs_security_parity.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py',
+            'pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py',
+            'pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py',
+            'pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py',
+            'pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py',
         ],
         ci_jobs=[
             '.github/workflows/evidence-lanes.yml#evidence-lane[spec-conformance]',
@@ -85,9 +85,9 @@ GROUPS: dict[str, EvidenceTemplate] = {
     'security': EvidenceTemplate(
         lane_classes=['security / negative', 'unit'],
         tests=[
-            'pkgs/core/tigrbl_tests/tests/security/test_schemes.py',
+            'pkgs/97_tests/tigrbl_tests/tests/security/test_schemes.py',
             'tools/ci/tests/test_http_auth_challenges.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py',
         ],
         ci_jobs=[
             '.github/workflows/evidence-lanes.yml#evidence-lane[security-negative]',
@@ -104,8 +104,8 @@ GROUPS: dict[str, EvidenceTemplate] = {
     'operator': EvidenceTemplate(
         lane_classes=['operator-surface smoke', 'docs UI smoke'],
         tests=[
-            'pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_closure.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py',
         ],
         ci_jobs=[
             '.github/workflows/operator-surface.yml#phase7-operator-surface',
@@ -125,8 +125,8 @@ GROUPS: dict[str, EvidenceTemplate] = {
     'cli': EvidenceTemplate(
         lane_classes=['CLI smoke', 'server compatibility smoke'],
         tests=[
-            'pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py',
-            'pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py',
         ],
         ci_jobs=[
             '.github/workflows/cli-smoke.yml#phase8-cli',
@@ -232,7 +232,7 @@ CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
             'docs/conformance/dev/0.3.19.dev1/EVIDENCE_INDEX.md',
         ],
         'doc_paths': [
-            'pkgs/core/tigrbl/pyproject.toml',
+            'pkgs/80_facade/tigrbl/pyproject.toml',
             'docs/governance/VERSIONING_POLICY.md',
             'docs/conformance/CURRENT_STATE.md',
             'docs/conformance/dev/README.md',
@@ -258,27 +258,27 @@ CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
     },
     'NEXT-003': {
         'lane_classes': ['policy governance'],
-        'tests': ['pkgs/core/tigrbl_tests/tests/unit/decorators/test_declarative_surface.py::test_declarative_surface_literals_are_present'],
+        'tests': ['pkgs/97_tests/tigrbl_tests/tests/unit/decorators/test_declarative_surface.py::test_declarative_surface_literals_are_present'],
         'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
-        'artifact_paths': ['pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py'],
+        'artifact_paths': ['pkgs/10_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py'],
         'doc_paths': [
-            'pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py',
-            'pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/op.py',
-            'pkgs/core/tigrbl_concrete/tigrbl_concrete/_decorators/hook.py',
+            'pkgs/10_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py',
+            'pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete/_decorators/op.py',
+            'pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete/_decorators/hook.py',
         ],
     },
     'NEXT-004': {
         'lane_classes': ['policy governance'],
         'tests': [
-            'pkgs/core/tigrbl_tests/tests/unit/test_declared_surface_docs.py::test_declared_surface_docs_derive_from_bindings',
-            'pkgs/core/tigrbl_concrete/tests/test_phase2_transport_docs.py::test_transport_docs_follow_declared_bindings',
+            'pkgs/97_tests/tigrbl_tests/tests/unit/test_declared_surface_docs.py::test_declared_surface_docs_derive_from_bindings',
+            'pkgs/70_concrete/tigrbl_concrete/tests/test_phase2_transport_docs.py::test_transport_docs_follow_declared_bindings',
         ],
         'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
-        'artifact_paths': ['pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py'],
+        'artifact_paths': ['pkgs/80_facade/tigrbl/tigrbl/system/docs/openapi/schema.py'],
         'doc_paths': [
-            'pkgs/core/tigrbl/tigrbl/system/docs/openapi/schema.py',
-            'pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py',
-            'pkgs/core/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py',
+            'pkgs/80_facade/tigrbl/tigrbl/system/docs/openapi/schema.py',
+            'pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete/system/docs/openrpc.py',
+            'pkgs/70_concrete/tigrbl_concrete/tigrbl_concrete/system/docs/asyncapi.py',
         ],
     },
     'NEXT-005': {
@@ -304,7 +304,7 @@ CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
     },
     'NEXT-007': {
         'lane_classes': ['next-target planning'],
-        'tests': ['pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching'],
+        'tests': ['pkgs/45_kernel/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching'],
         'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
         'artifact_paths': ['.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml'],
         'doc_paths': [
@@ -314,7 +314,7 @@ CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
     },
     'NEXT-008': {
         'lane_classes': ['next-target planning'],
-        'tests': ['pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity'],
+        'tests': ['pkgs/10_core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity'],
         'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
         'artifact_paths': ['.ssot/adr/ADR-1046-endpoint-keyed-multiplexed-transport-bindings.yaml'],
         'doc_paths': [
@@ -326,8 +326,8 @@ CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
     'NEXT-009': {
         'lane_classes': ['next-target planning'],
         'tests': [
-            'pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching',
-            'pkgs/core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity',
+            'pkgs/45_kernel/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching',
+            'pkgs/10_core/tigrbl_core/tests/test_jsonrpc_endpoint_binding_spec_contract.py::test_http_jsonrpc_binding_spec_exposes_endpoint_identity',
         ],
         'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
         'artifact_paths': ['.ssot/specs/SPEC-2014-binding-driven-rest-jsonrpc-materialization.yaml'],
@@ -335,7 +335,7 @@ CLAIM_OVERRIDES: dict[str, dict[str, list[str]]] = {
     },
     'NEXT-010': {
         'lane_classes': ['next-target planning'],
-        'tests': ['pkgs/core/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching'],
+        'tests': ['pkgs/45_kernel/tigrbl_kernel/tests/test_transport_dispatch_kernelplan_contract.py::test_kernelplan_owns_transport_lookup_and_matching'],
         'ci_jobs': ['.github/workflows/policy-governance.yml#validate-policy'],
         'artifact_paths': ['.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml'],
         'doc_paths': ['.ssot/adr/ADR-1047-kernelplan-owned-transport-dispatch.yaml'],
@@ -453,8 +453,8 @@ This lane aggregates the current checkpoint's representative unit-level proof.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py`
 - `tools/ci/tests/test_evidence_registry.py`
 
 ## Source audit logs
@@ -469,10 +469,10 @@ This lane keeps the integration evidence paths visible and durable.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
 
 ## Source audit logs
 
@@ -485,11 +485,11 @@ This lane covers OpenAPI, JSON Schema, JSON-RPC, and OpenRPC conformance evidenc
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_spec_snapshots.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_docs_security_parity.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_spec_snapshots.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_openapi_documentation_security_behavior.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_openrpc_documentation_security_behavior.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_docs_security_parity.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_jsonrpc_openrpc.py`
 
 ## Source audit logs
 
@@ -502,9 +502,9 @@ This lane covers retained HTTP auth behavior, security negative tests, and chall
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/security/test_schemes.py`
+- `pkgs/97_tests/tigrbl_tests/tests/security/test_schemes.py`
 - `tools/ci/tests/test_http_auth_challenges.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_authorize_runtime_secdep.py`
 
 ## Source audit logs
 
@@ -517,11 +517,11 @@ This lane covers the mounted docs/spec endpoints and parity docs.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py`
 
 ## Source audit logs
 
@@ -534,8 +534,8 @@ This lane covers the unified `tigrbl` CLI command and flag smoke.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`
 
 ## Source audit logs
 
@@ -548,8 +548,8 @@ This lane covers the current operator-surface closure tests.
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_phase7_operator_surface_closure.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_phase7_operator_surface_docs_parity.py`
 
 ## Source audit logs
 
@@ -573,7 +573,7 @@ It does **not** yet claim full live-network or clean-room installed-package comp
 
 ## Primary tests
 
-- `pkgs/core/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`
+- `pkgs/97_tests/tigrbl_tests/tests/unit/test_phase8_cli_srv.py`
 
 ## Source audit logs
 

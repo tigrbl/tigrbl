@@ -33,7 +33,7 @@ jobs:
         run: |
           set -euo pipefail
           PY_PATH="$GITHUB_WORKSPACE"
-          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+          for base in "$GITHUB_WORKSPACE/pkgs"/*; do
             if [[ -d "$base" ]]; then
               for child in "$base"/*; do
                 [[ -d "$child" ]] || continue
@@ -44,8 +44,8 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/core/tigrbl_runtime"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/50_runtime/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Run CLI smoke and server-compat tests
-        run: uv run --no-sync python -m pytest --noconftest -q pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py -p no:cacheprovider
+        run: uv run --no-sync python -m pytest --noconftest -q pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py -p no:cacheprovider

@@ -37,7 +37,7 @@ jobs:
         run: |
           set -euo pipefail
           PY_PATH="$GITHUB_WORKSPACE"
-          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+          for base in "$GITHUB_WORKSPACE/pkgs"/*; do
             if [[ -d "$base" ]]; then
               for child in "$base"/*; do
                 [[ -d "$child" ]] || continue
@@ -48,7 +48,7 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/core/tigrbl_runtime"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/50_runtime/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Validate Post-promotion handoff
@@ -94,5 +94,5 @@ jobs:
           export TMPDIR="${GITHUB_WORKSPACE}/.tmp"
           export TEMP="${GITHUB_WORKSPACE}/.tmp"
           export TMP="${GITHUB_WORKSPACE}/.tmp"
-          uv pip install --no-deps -e pkgs/core/tigrbl -e pkgs/core/tigrbl_runtime
-          uv run --no-sync python -m pytest -q pkgs/core/tigrbl_tests/tests -p no:cacheprovider --basetemp .uv-pytest-tigrbl-tests
+          uv pip install --no-deps -e pkgs/80_facade/tigrbl -e pkgs/50_runtime/tigrbl_runtime
+          uv run --no-sync python -m pytest -q pkgs/97_tests/tigrbl_tests/tests -p no:cacheprovider --basetemp .uv-pytest-tigrbl-tests

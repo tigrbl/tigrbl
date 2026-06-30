@@ -3103,7 +3103,7 @@ wheels = [
 [[package]]
 name = "tigrbl"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl" }
+source = { editable = "pkgs/80_facade/tigrbl" }
 dependencies = [
     { name = "aiosqlite" },
     { name = "greenlet" },
@@ -3167,16 +3167,16 @@ requires-dist = [
     { name = "psycopg2-binary", marker = "extra == 'postgres'", specifier = ">=2.9.9" },
     { name = "pydantic", specifier = ">=2.0.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
-    { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
-    { name = "tigrbl-base", editable = "pkgs/core/tigrbl_base" },
-    { name = "tigrbl-canon", editable = "pkgs/deprecated/tigrbl_canon" },
-    { name = "tigrbl-concrete", editable = "pkgs/core/tigrbl_concrete" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
-    { name = "tigrbl-kernel", editable = "pkgs/core/tigrbl_kernel" },
-    { name = "tigrbl-ops-oltp", editable = "pkgs/core/tigrbl_ops_oltp" },
-    { name = "tigrbl-orm", editable = "pkgs/core/tigrbl_orm" },
-    { name = "tigrbl-runtime", editable = "pkgs/core/tigrbl_runtime" },
-    { name = "tigrbl-tests", marker = "extra == 'tests'", editable = "pkgs/core/tigrbl_tests" },
+    { name = "tigrbl-atoms", editable = "pkgs/40_atoms/tigrbl_atoms" },
+    { name = "tigrbl-base", editable = "pkgs/20_base/tigrbl_base" },
+    { name = "tigrbl-canon", editable = "pkgs/99_deprecated/tigrbl_canon" },
+    { name = "tigrbl-concrete", editable = "pkgs/70_concrete/tigrbl_concrete" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
+    { name = "tigrbl-kernel", editable = "pkgs/45_kernel/tigrbl_kernel" },
+    { name = "tigrbl-ops-oltp", editable = "pkgs/60_ops/tigrbl_ops_oltp" },
+    { name = "tigrbl-orm", editable = "pkgs/30_orm/tigrbl_orm" },
+    { name = "tigrbl-runtime", editable = "pkgs/50_runtime/tigrbl_runtime" },
+    { name = "tigrbl-tests", marker = "extra == 'tests'", editable = "pkgs/97_tests/tigrbl_tests" },
     { name = "uvicorn" },
 ]
 provides-extras = ["postgres", "templates", "servers", "tests"]
@@ -3195,13 +3195,13 @@ dev = [
     { name = "python-dotenv" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
-    { name = "tigrbl-client", editable = "pkgs/core/tigrbl_client" },
+    { name = "tigrbl-client", editable = "pkgs/95_client/tigrbl_client" },
 ]
 
 [[package]]
 name = "tigrbl-atoms"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_atoms" }
+source = { editable = "pkgs/40_atoms/tigrbl_atoms" }
 dependencies = [
     { name = "jinja2" },
     { name = "sqlalchemy" },
@@ -3226,12 +3226,12 @@ dev = [
 requires-dist = [
     { name = "jinja2", specifier = ">=3.1" },
     { name = "sqlalchemy", specifier = ">=2.0" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
-    { name = "tigrbl-ops-olap", editable = "pkgs/core/tigrbl_ops_olap" },
-    { name = "tigrbl-ops-oltp", editable = "pkgs/core/tigrbl_ops_oltp" },
-    { name = "tigrbl-ops-realtime", editable = "pkgs/core/tigrbl_ops_realtime" },
-    { name = "tigrbl-ops-webtransport", editable = "pkgs/core/tigrbl_ops_webtransport" },
-    { name = "tigrbl-typing", editable = "pkgs/core/tigrbl_typing" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
+    { name = "tigrbl-ops-olap", editable = "pkgs/60_ops/tigrbl_ops_olap" },
+    { name = "tigrbl-ops-oltp", editable = "pkgs/60_ops/tigrbl_ops_oltp" },
+    { name = "tigrbl-ops-realtime", editable = "pkgs/60_ops/tigrbl_ops_realtime" },
+    { name = "tigrbl-ops-webtransport", editable = "pkgs/60_ops/tigrbl_ops_webtransport" },
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
     { name = "typing-extensions", specifier = ">=4.0" },
 ]
 
@@ -3246,7 +3246,7 @@ dev = [
 [[package]]
 name = "tigrbl-base"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_base" }
+source = { editable = "pkgs/20_base/tigrbl_base" }
 dependencies = [
     { name = "pydantic" },
     { name = "sqlalchemy" },
@@ -3266,8 +3266,8 @@ dev = [
 requires-dist = [
     { name = "pydantic", specifier = ">=2.0" },
     { name = "sqlalchemy", specifier = ">=2.0" },
-    { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
+    { name = "tigrbl-atoms", editable = "pkgs/40_atoms/tigrbl_atoms" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
 ]
 
 [package.metadata.requires-dev]
@@ -3281,7 +3281,7 @@ dev = [
 [[package]]
 name = "tigrbl-canon"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/deprecated/tigrbl_canon" }
+source = { editable = "pkgs/99_deprecated/tigrbl_canon" }
 dependencies = [
     { name = "tigrbl" },
     { name = "tigrbl-atoms" },
@@ -3300,13 +3300,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
-    { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
-    { name = "tigrbl-base", editable = "pkgs/core/tigrbl_base" },
-    { name = "tigrbl-concrete", editable = "pkgs/core/tigrbl_concrete" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
-    { name = "tigrbl-ops-oltp", editable = "pkgs/core/tigrbl_ops_oltp" },
-    { name = "tigrbl-runtime", editable = "pkgs/core/tigrbl_runtime" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
+    { name = "tigrbl-atoms", editable = "pkgs/40_atoms/tigrbl_atoms" },
+    { name = "tigrbl-base", editable = "pkgs/20_base/tigrbl_base" },
+    { name = "tigrbl-concrete", editable = "pkgs/70_concrete/tigrbl_concrete" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
+    { name = "tigrbl-ops-oltp", editable = "pkgs/60_ops/tigrbl_ops_oltp" },
+    { name = "tigrbl-runtime", editable = "pkgs/50_runtime/tigrbl_runtime" },
 ]
 
 [package.metadata.requires-dev]
@@ -3318,7 +3318,7 @@ dev = [
 [[package]]
 name = "tigrbl-client"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_client" }
+source = { editable = "pkgs/95_client/tigrbl_client" }
 dependencies = [
     { name = "fastapi" },
     { name = "pydantic" },
@@ -3361,7 +3361,7 @@ dev = [
 [[package]]
 name = "tigrbl-concrete"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_concrete" }
+source = { editable = "pkgs/70_concrete/tigrbl_concrete" }
 dependencies = [
     { name = "orjson" },
     { name = "pydantic" },
@@ -3389,15 +3389,15 @@ requires-dist = [
     { name = "orjson" },
     { name = "pydantic", specifier = ">=2.0" },
     { name = "sqlalchemy" },
-    { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
-    { name = "tigrbl-base", editable = "pkgs/core/tigrbl_base" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
-    { name = "tigrbl-ops-olap", editable = "pkgs/core/tigrbl_ops_olap" },
-    { name = "tigrbl-ops-oltp", editable = "pkgs/core/tigrbl_ops_oltp" },
-    { name = "tigrbl-ops-realtime", editable = "pkgs/core/tigrbl_ops_realtime" },
-    { name = "tigrbl-ops-webtransport", editable = "pkgs/core/tigrbl_ops_webtransport" },
-    { name = "tigrbl-runtime", editable = "pkgs/core/tigrbl_runtime" },
-    { name = "tigrbl-typing", editable = "pkgs/core/tigrbl_typing" },
+    { name = "tigrbl-atoms", editable = "pkgs/40_atoms/tigrbl_atoms" },
+    { name = "tigrbl-base", editable = "pkgs/20_base/tigrbl_base" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
+    { name = "tigrbl-ops-olap", editable = "pkgs/60_ops/tigrbl_ops_olap" },
+    { name = "tigrbl-ops-oltp", editable = "pkgs/60_ops/tigrbl_ops_oltp" },
+    { name = "tigrbl-ops-realtime", editable = "pkgs/60_ops/tigrbl_ops_realtime" },
+    { name = "tigrbl-ops-webtransport", editable = "pkgs/60_ops/tigrbl_ops_webtransport" },
+    { name = "tigrbl-runtime", editable = "pkgs/50_runtime/tigrbl_runtime" },
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
     { name = "uvicorn" },
 ]
 
@@ -3410,7 +3410,7 @@ dev = [
 [[package]]
 name = "tigrbl-core"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_core" }
+source = { editable = "pkgs/10_core/tigrbl_core" }
 dependencies = [
     { name = "pydantic" },
     { name = "pyyaml" },
@@ -3430,8 +3430,8 @@ dev = [
 requires-dist = [
     { name = "pydantic", specifier = ">=2.10,<3" },
     { name = "pyyaml" },
-    { name = "tigrbl-spec", editable = "pkgs/core/tigrbl_spec" },
-    { name = "tigrbl-typing", editable = "pkgs/core/tigrbl_typing" },
+    { name = "tigrbl-spec", editable = "pkgs/01_spec/tigrbl_spec" },
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
     { name = "tomli", marker = "python_full_version < '3.11'", specifier = ">=2.0.1" },
     { name = "tomli-w" },
 ]
@@ -3445,7 +3445,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-bigquery"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_bigquery" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_bigquery" }
 dependencies = [
     { name = "google-cloud-bigquery" },
     { name = "tigrbl" },
@@ -3468,7 +3468,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "google-cloud-bigquery", specifier = ">=3.25" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3488,7 +3488,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-clickhouse"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_clickhouse" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_clickhouse" }
 dependencies = [
     { name = "clickhouse-connect" },
     { name = "tigrbl" },
@@ -3511,7 +3511,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "clickhouse-connect", specifier = ">=0.6.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3531,7 +3531,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-csv"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_csv" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_csv" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -3550,8 +3550,8 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "pandas", specifier = ">=2.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
-    { name = "tigrbl-engine-pandas", editable = "pkgs/engines/tigrbl_engine_pandas" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
+    { name = "tigrbl-engine-pandas", editable = "pkgs/90_engines/tigrbl_engine_pandas" },
 ]
 
 [package.metadata.requires-dev]
@@ -3565,7 +3565,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-dataframe"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_dataframe" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_dataframe" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -3589,7 +3589,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "pandas", specifier = ">=2.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3609,7 +3609,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-duckdb"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_duckdb" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_duckdb" }
 dependencies = [
     { name = "duckdb" },
     { name = "duckdb-engine" },
@@ -3634,7 +3634,7 @@ dev = [
 requires-dist = [
     { name = "duckdb", specifier = ">=1.0.0" },
     { name = "duckdb-engine", specifier = ">=0.17.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3654,7 +3654,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-inmemcache"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_inmemcache" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_inmemcache" }
 dependencies = [
     { name = "tigrbl" },
 ]
@@ -3665,7 +3665,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ruff", specifier = ">=0.11.0" }]
@@ -3673,7 +3673,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 [[package]]
 name = "tigrbl-engine-inmemory"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_inmemory" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_inmemory" }
 dependencies = [
     { name = "tigrbl" },
 ]
@@ -3684,7 +3684,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ruff", specifier = ">=0.11.0" }]
@@ -3692,7 +3692,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 [[package]]
 name = "tigrbl-engine-membloom"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_membloom" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_membloom" }
 dependencies = [
     { name = "tigrbl" },
 ]
@@ -3703,7 +3703,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ruff", specifier = ">=0.11.0" }]
@@ -3711,73 +3711,73 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 [[package]]
 name = "tigrbl-engine-memdedupe"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_memdedupe" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_memdedupe" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memkv"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_memkv" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_memkv" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memlru"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_memlru" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_memlru" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-mempubsub"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_mempubsub" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_mempubsub" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memqueue"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_memqueue" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_memqueue" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-memrate"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_memrate" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_memrate" }
 dependencies = [
     { name = "tigrbl" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tigrbl", editable = "pkgs/core/tigrbl" }]
+requires-dist = [{ name = "tigrbl", editable = "pkgs/80_facade/tigrbl" }]
 
 [[package]]
 name = "tigrbl-engine-numpy"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_numpy" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_numpy" }
 dependencies = [
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.4.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -3795,7 +3795,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "numpy", specifier = ">=1.26" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3809,7 +3809,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-pandas"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_pandas" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_pandas" }
 dependencies = [
     { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -3833,7 +3833,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "pandas", specifier = ">=2.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3853,7 +3853,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-pgsqli-wal"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_pgsqli_wal" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_pgsqli_wal" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
     { name = "sqlalchemy" },
@@ -3896,7 +3896,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-postgres"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_postgres" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_postgres" }
 dependencies = [
     { name = "psycopg", extra = ["binary"] },
     { name = "sqlalchemy" },
@@ -3912,7 +3912,7 @@ dev = [
 requires-dist = [
     { name = "psycopg", extras = ["binary"], specifier = ">=3.1,<4.0" },
     { name = "sqlalchemy", specifier = ">=2.0,<3.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3921,7 +3921,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 [[package]]
 name = "tigrbl-engine-pyspark"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_pyspark" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_pyspark" }
 dependencies = [
     { name = "pyspark" },
     { name = "tigrbl" },
@@ -3935,7 +3935,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "pyspark", specifier = ">=3.4" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3944,7 +3944,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 [[package]]
 name = "tigrbl-engine-redis"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_redis" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_redis" }
 dependencies = [
     { name = "redis" },
     { name = "tigrbl" },
@@ -3967,7 +3967,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "redis", specifier = ">=5.0.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -3987,7 +3987,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-rediscachethrough"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_rediscachethrough" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_rediscachethrough" }
 dependencies = [
     { name = "redis" },
     { name = "tigrbl" },
@@ -4010,7 +4010,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "redis", specifier = ">=5.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -4030,7 +4030,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-snowflake"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_snowflake" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_snowflake" }
 dependencies = [
     { name = "snowflake-connector-python" },
     { name = "snowflake-sqlalchemy" },
@@ -4075,7 +4075,7 @@ dev = [
 [[package]]
 name = "tigrbl-engine-sqlite"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_sqlite" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_sqlite" }
 dependencies = [
     { name = "sqlalchemy" },
     { name = "tigrbl" },
@@ -4089,7 +4089,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "sqlalchemy", specifier = ">=2.0,<3.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -4098,7 +4098,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 [[package]]
 name = "tigrbl-engine-xlsx"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/engines/tigrbl_engine_xlsx" }
+source = { editable = "pkgs/90_engines/tigrbl_engine_xlsx" }
 dependencies = [
     { name = "openpyxl" },
     { name = "tigrbl" },
@@ -4115,7 +4115,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "openpyxl", specifier = ">=3.1" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
 ]
 
 [package.metadata.requires-dev]
@@ -4129,7 +4129,7 @@ dev = [
 [[package]]
 name = "tigrbl-examples"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_examples" }
+source = { editable = "pkgs/96_examples/tigrbl_examples" }
 dependencies = [
     { name = "httpx" },
     { name = "pytest" },
@@ -4150,8 +4150,8 @@ requires-dist = [
     { name = "httpx", specifier = ">=0.27.0,<0.28" },
     { name = "pytest", specifier = ">=8.0" },
     { name = "pytest-asyncio", specifier = ">=0.24.0" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
-    { name = "tigrbl-client", editable = "pkgs/core/tigrbl_client" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
+    { name = "tigrbl-client", editable = "pkgs/95_client/tigrbl_client" },
     { name = "uvicorn" },
 ]
 
@@ -4164,7 +4164,7 @@ dev = [
 [[package]]
 name = "tigrbl-kernel"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_kernel" }
+source = { editable = "pkgs/45_kernel/tigrbl_kernel" }
 dependencies = [
     { name = "tigrbl-atoms" },
     { name = "tigrbl-core" },
@@ -4181,9 +4181,9 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
-    { name = "tigrbl-typing", editable = "pkgs/core/tigrbl_typing" },
+    { name = "tigrbl-atoms", editable = "pkgs/40_atoms/tigrbl_atoms" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
 ]
 
 [package.metadata.requires-dev]
@@ -4197,7 +4197,7 @@ dev = [
 [[package]]
 name = "tigrbl-ops-olap"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_ops_olap" }
+source = { editable = "pkgs/60_ops/tigrbl_ops_olap" }
 
 [package.dev-dependencies]
 dev = [
@@ -4216,7 +4216,7 @@ dev = [
 [[package]]
 name = "tigrbl-ops-oltp"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_ops_oltp" }
+source = { editable = "pkgs/60_ops/tigrbl_ops_oltp" }
 dependencies = [
     { name = "tigrbl-base" },
     { name = "tigrbl-core" },
@@ -4231,9 +4231,9 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "tigrbl-base", editable = "pkgs/core/tigrbl_base" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
-    { name = "tigrbl-orm", editable = "pkgs/core/tigrbl_orm" },
+    { name = "tigrbl-base", editable = "pkgs/20_base/tigrbl_base" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
+    { name = "tigrbl-orm", editable = "pkgs/30_orm/tigrbl_orm" },
 ]
 
 [package.metadata.requires-dev]
@@ -4245,7 +4245,7 @@ dev = [
 [[package]]
 name = "tigrbl-ops-realtime"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_ops_realtime" }
+source = { editable = "pkgs/60_ops/tigrbl_ops_realtime" }
 
 [package.dev-dependencies]
 dev = [
@@ -4264,7 +4264,7 @@ dev = [
 [[package]]
 name = "tigrbl-ops-webtransport"
 version = "0.4.5.dev5"
-source = { editable = "pkgs/core/tigrbl_ops_webtransport" }
+source = { editable = "pkgs/60_ops/tigrbl_ops_webtransport" }
 
 [package.dev-dependencies]
 dev = [
@@ -4283,7 +4283,7 @@ dev = [
 [[package]]
 name = "tigrbl-orm"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_orm" }
+source = { editable = "pkgs/30_orm/tigrbl_orm" }
 dependencies = [
     { name = "sqlalchemy" },
 ]
@@ -4306,7 +4306,7 @@ dev = [
 [[package]]
 name = "tigrbl-runtime"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_runtime" }
+source = { editable = "pkgs/50_runtime/tigrbl_runtime" }
 dependencies = [
     { name = "numba" },
     { name = "tigrbl-atoms" },
@@ -4327,11 +4327,11 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "numba", specifier = ">=0.61.2" },
-    { name = "tigrbl-atoms", editable = "pkgs/core/tigrbl_atoms" },
-    { name = "tigrbl-base", editable = "pkgs/core/tigrbl_base" },
-    { name = "tigrbl-core", editable = "pkgs/core/tigrbl_core" },
-    { name = "tigrbl-kernel", editable = "pkgs/core/tigrbl_kernel" },
-    { name = "tigrbl-typing", editable = "pkgs/core/tigrbl_typing" },
+    { name = "tigrbl-atoms", editable = "pkgs/40_atoms/tigrbl_atoms" },
+    { name = "tigrbl-base", editable = "pkgs/20_base/tigrbl_base" },
+    { name = "tigrbl-core", editable = "pkgs/10_core/tigrbl_core" },
+    { name = "tigrbl-kernel", editable = "pkgs/45_kernel/tigrbl_kernel" },
+    { name = "tigrbl-typing", editable = "pkgs/00_typing/tigrbl_typing" },
 ]
 
 [package.metadata.requires-dev]
@@ -4345,7 +4345,7 @@ dev = [
 [[package]]
 name = "tigrbl-spec"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_spec" }
+source = { editable = "pkgs/01_spec/tigrbl_spec" }
 dependencies = [
     { name = "jsonschema" },
     { name = "typing-extensions" },
@@ -4372,7 +4372,7 @@ dev = [
 [[package]]
 name = "tigrbl-tests"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_tests" }
+source = { editable = "pkgs/97_tests/tigrbl_tests" }
 dependencies = [
     { name = "asyncpg" },
     { name = "flake8" },
@@ -4412,9 +4412,9 @@ requires-dist = [
     { name = "python-dotenv" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "ruff", specifier = ">=0.9.9" },
-    { name = "tigrbl", editable = "pkgs/core/tigrbl" },
-    { name = "tigrbl-client", editable = "pkgs/core/tigrbl_client" },
-    { name = "tigrbl-examples", editable = "pkgs/core/tigrbl_examples" },
+    { name = "tigrbl", editable = "pkgs/80_facade/tigrbl" },
+    { name = "tigrbl-client", editable = "pkgs/95_client/tigrbl_client" },
+    { name = "tigrbl-examples", editable = "pkgs/96_examples/tigrbl_examples" },
 ]
 
 [package.metadata.requires-dev]
@@ -4423,7 +4423,7 @@ dev = [{ name = "ruff", specifier = ">=0.11.0" }]
 [[package]]
 name = "tigrbl-typing"
 version = "0.4.5.dev4"
-source = { editable = "pkgs/core/tigrbl_typing" }
+source = { editable = "pkgs/00_typing/tigrbl_typing" }
 dependencies = [
     { name = "pydantic" },
 ]

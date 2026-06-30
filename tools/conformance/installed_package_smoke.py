@@ -256,7 +256,7 @@ def main() -> None:
             'wheel_entry_points': wheel_eps,
             'sdist_contents': sdist_info,
             'install_mode': 'isolated target install root',
-            'rust_binding_support': 'source-path fallback via pkgs/core/tigrbl_runtime',
+            'rust_binding_support': 'source-path fallback via pkgs/50_runtime/tigrbl_runtime',
             'installed_cli': {
                 'commands': capabilities['commands'],
                 'flags': capabilities['flags'],

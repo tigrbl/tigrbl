@@ -7,21 +7,21 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 for rel in [
-    'pkgs/core/tigrbl',
-    'pkgs/core/tigrbl_atoms',
-    'pkgs/core/tigrbl_base',
-    'pkgs/deprecated/tigrbl_canon',
-    'pkgs/core/tigrbl_client',
-    'pkgs/core/tigrbl_concrete',
-    'pkgs/core/tigrbl_core',
-    'pkgs/core/tigrbl_kernel',
-    'pkgs/core/tigrbl_ops_olap',
-    'pkgs/core/tigrbl_ops_oltp',
-    'pkgs/core/tigrbl_ops_webtransport',
-    'pkgs/core/tigrbl_orm',
-    'pkgs/core/tigrbl_runtime',
-    'pkgs/core/tigrbl_spec',
-    'pkgs/core/tigrbl_typing',
+    'pkgs/80_facade/tigrbl',
+    'pkgs/40_atoms/tigrbl_atoms',
+    'pkgs/20_base/tigrbl_base',
+    'pkgs/99_deprecated/tigrbl_canon',
+    'pkgs/95_client/tigrbl_client',
+    'pkgs/70_concrete/tigrbl_concrete',
+    'pkgs/10_core/tigrbl_core',
+    'pkgs/45_kernel/tigrbl_kernel',
+    'pkgs/60_ops/tigrbl_ops_olap',
+    'pkgs/60_ops/tigrbl_ops_oltp',
+    'pkgs/60_ops/tigrbl_ops_webtransport',
+    'pkgs/30_orm/tigrbl_orm',
+    'pkgs/50_runtime/tigrbl_runtime',
+    'pkgs/01_spec/tigrbl_spec',
+    'pkgs/00_typing/tigrbl_typing',
 ]:
     sys.path.insert(0, str(ROOT / rel))
 

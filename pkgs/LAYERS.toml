@@ -9,7 +9,7 @@ allow_same_layer_dependencies = true
 id = "00_typing"
 order = 0
 title = "Typing"
-path = "pkgs/core"
+path = "pkgs/00_typing"
 packages = [
   "tigrbl_typing",
 ]
@@ -18,7 +18,7 @@ packages = [
 id = "01_spec"
 order = 1
 title = "Spec"
-path = "pkgs/core"
+path = "pkgs/01_spec"
 packages = [
   "tigrbl_spec",
 ]
@@ -27,7 +27,7 @@ packages = [
 id = "10_core"
 order = 10
 title = "Core"
-path = "pkgs/core"
+path = "pkgs/10_core"
 packages = [
   "tigrbl_core",
 ]
@@ -36,7 +36,7 @@ packages = [
 id = "20_base"
 order = 20
 title = "Base"
-path = "pkgs/core"
+path = "pkgs/20_base"
 packages = [
   "tigrbl_base",
 ]
@@ -45,7 +45,7 @@ packages = [
 id = "30_orm"
 order = 30
 title = "ORM"
-path = "pkgs/core"
+path = "pkgs/30_orm"
 packages = [
   "tigrbl_orm",
 ]
@@ -54,7 +54,7 @@ packages = [
 id = "40_atoms"
 order = 40
 title = "Atoms"
-path = "pkgs/core"
+path = "pkgs/40_atoms"
 packages = [
   "tigrbl_atoms",
 ]
@@ -63,7 +63,7 @@ packages = [
 id = "45_kernel"
 order = 45
 title = "Kernel"
-path = "pkgs/core"
+path = "pkgs/45_kernel"
 packages = [
   "tigrbl_kernel",
 ]
@@ -72,7 +72,7 @@ packages = [
 id = "50_runtime"
 order = 50
 title = "Runtime"
-path = "pkgs/core"
+path = "pkgs/50_runtime"
 packages = [
   "tigrbl_runtime",
 ]
@@ -81,7 +81,7 @@ packages = [
 id = "60_ops"
 order = 60
 title = "Operations"
-path = "pkgs/core"
+path = "pkgs/60_ops"
 packages = [
   "tigrbl_ops_olap",
   "tigrbl_ops_oltp",
@@ -93,7 +93,7 @@ packages = [
 id = "70_concrete"
 order = 70
 title = "Concrete"
-path = "pkgs/core"
+path = "pkgs/70_concrete"
 packages = [
   "tigrbl_concrete",
 ]
@@ -102,7 +102,7 @@ packages = [
 id = "80_facade"
 order = 80
 title = "Facade"
-path = "pkgs/core"
+path = "pkgs/80_facade"
 packages = [
   "tigrbl",
 ]
@@ -111,7 +111,7 @@ packages = [
 id = "90_engines"
 order = 90
 title = "Engines"
-path = "pkgs/engines"
+path = "pkgs/90_engines"
 packages = [
   "tigrbl_engine_bigquery",
   "tigrbl_engine_clickhouse",
@@ -140,13 +140,29 @@ packages = [
 ]
 
 [[layer]]
-id = "95_tooling"
+id = "95_client"
 order = 95
-title = "Tooling"
-path = "pkgs/core"
+title = "Client"
+path = "pkgs/95_client"
 packages = [
   "tigrbl_client",
+]
+
+[[layer]]
+id = "96_examples"
+order = 96
+title = "Examples"
+path = "pkgs/96_examples"
+packages = [
   "tigrbl_examples",
+]
+
+[[layer]]
+id = "97_tests"
+order = 97
+title = "Test Suite"
+path = "pkgs/97_tests"
+packages = [
   "tigrbl_tests",
 ]
 
@@ -154,7 +170,7 @@ packages = [
 id = "99_deprecated"
 order = 99
 title = "Deprecated"
-path = "pkgs/deprecated"
+path = "pkgs/99_deprecated"
 packages = [
   "tigrbl_canon",
 ]

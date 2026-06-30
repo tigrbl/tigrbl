@@ -21,15 +21,12 @@ The root must not accumulate:
 
 ## Source roots
 
-- `pkgs/core/` - core Python packages
-- `pkgs/engines/` - engine packages
-- `pkgs/apps/` - application packages
-- `pkgs/deprecated/` - deprecated compatibility packages
+- `pkgs/<layer-id>/` - numbered Python package layers governed by `pkgs/LAYERS.toml`
 - `examples/` - non-authoritative demos and verification helpers
 
 Logical package layering is governed by `pkgs/LAYERS.toml` and projected in
-`docs/developer/PACKAGE_LAYERS.md`. Physical package roots do not define layer
-order by themselves.
+`docs/developer/PACKAGE_LAYERS.md`. Physical package roots carry the same layer
+ids used by the layer index.
 
 ## Python package layout
 

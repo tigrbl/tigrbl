@@ -3,9 +3,10 @@
 `pkgs/LAYERS.toml` is the machine-readable package layer index. This document is
 the human-readable projection for repository maintainers.
 
-The index is dependency-oriented, not a physical move plan. Package directories
-remain under `pkgs/core`, `pkgs/engines`, and `pkgs/deprecated`; layer membership
-records their intended ownership and dependency order.
+The index is dependency-oriented and the package directories physically follow
+the layer ids under `pkgs/<layer-id>/<package>`. Published distribution names and
+Python import roots remain stable; the numbered folders encode ownership and
+dependency order.
 
 ## Dependency Rule
 
@@ -29,7 +30,9 @@ explicit dependency exceptions with a reason.
 | 70 | Concrete | `tigrbl_concrete` |
 | 80 | Facade | `tigrbl` |
 | 90 | Engines | `tigrbl_engine_bigquery`, `tigrbl_engine_clickhouse`, `tigrbl_engine_csv`, `tigrbl_engine_dataframe`, `tigrbl_engine_duckdb`, `tigrbl_engine_inmemcache`, `tigrbl_engine_inmemory`, `tigrbl_engine_membloom`, `tigrbl_engine_memdedupe`, `tigrbl_engine_memkv`, `tigrbl_engine_memlru`, `tigrbl_engine_mempubsub`, `tigrbl_engine_memqueue`, `tigrbl_engine_memrate`, `tigrbl_engine_numpy`, `tigrbl_engine_pandas`, `tigrbl_engine_pgsqli_wal`, `tigrbl_engine_postgres`, `tigrbl_engine_pyspark`, `tigrbl_engine_redis`, `tigrbl_engine_rediscachethrough`, `tigrbl_engine_snowflake`, `tigrbl_engine_sqlite`, `tigrbl_engine_xlsx` |
-| 95 | Tooling | `tigrbl_client`, `tigrbl_examples`, `tigrbl_tests` |
+| 95 | Client | `tigrbl_client` |
+| 96 | Examples | `tigrbl_examples` |
+| 97 | Test Suite | `tigrbl_tests` |
 | 99 | Deprecated | `tigrbl_canon` |
 
 ## Current Exceptions
@@ -54,4 +57,4 @@ When adding, removing, or moving a package:
 
 1. Update `pkgs/LAYERS.toml`.
 2. Update this document and `docs/developer/PACKAGE_CATALOG.md`.
-3. Run `uv run pytest pkgs/core/tigrbl_tests/tests/unit/test_package_layers.py -q`.
+3. Run `uv run pytest pkgs/97_tests/tigrbl_tests/tests/unit/test_package_layers.py -q`.

@@ -9,7 +9,7 @@ ROOT = repo_root()
 
 BCP_DOC = ROOT / "docs" / "developer" / "AUTHORING_BCP.md"
 ROOT_README = ROOT / "README.md"
-FACADE_README = ROOT / "pkgs" / "core" / "tigrbl" / "README.md"
+FACADE_README = ROOT / "pkgs" / "80_facade" / "tigrbl" / "README.md"
 BCP_TITLE = "Convenient Authoring Path and Best Current Practice (BCP)"
 README_BCP_HEADING = f"## {BCP_TITLE}"
 
@@ -60,31 +60,31 @@ MAIN_README_REQUIRED_PHRASES = [
 ]
 
 BOUNDARY_README_REQUIREMENTS = {
-    Path("pkgs/core/tigrbl_core/README.md"): [
+    Path("pkgs/10_core/tigrbl_core/README.md"): [
         "Authoring BCP for this boundary:",
         "Do treat `ColumnSpec`",
         "Do not move application route authoring",
         "Avoid duplicating spec fields",
     ],
-    Path("pkgs/core/tigrbl_base/README.md"): [
+    Path("pkgs/20_base/tigrbl_base/README.md"): [
         "Authoring BCP for this boundary:",
         "Do use `tigrbl-base`",
         "Do not put route registration side effects",
         "Avoid treating SQLAlchemy materialization",
     ],
-    Path("pkgs/core/tigrbl_concrete/README.md"): [
+    Path("pkgs/70_concrete/tigrbl_concrete/README.md"): [
         "Authoring BCP for this boundary:",
         "Do use `tigrbl-concrete`",
         "Do not teach application users",
         "Avoid hard-coded documentation",
     ],
-    Path("pkgs/core/tigrbl_runtime/README.md"): [
+    Path("pkgs/50_runtime/tigrbl_runtime/README.md"): [
         "Runtime authoring BCP:",
-        "Do use this package for runtime-owned routing",
+        "Do use this package for executing compiled kernel plans",
         "Do not bypass kernel plans",
         "Avoid hiding behavior",
     ],
-    Path("pkgs/core/tigrbl_orm/README.md"): [
+    Path("pkgs/30_orm/tigrbl_orm/README.md"): [
         README_BCP_HEADING,
         "- Do:",
         "- Do not:",
@@ -186,15 +186,11 @@ def _validate_grouped_guidance(path: Path, text: str) -> list[str]:
 
 
 def _active_package_readmes() -> list[Path]:
-    patterns = [
-        "pkgs/core/*/README.md",
-        "pkgs/engines/*/README.md",
-        "pkgs/apps/*/README.md",
-    ]
-    readmes: list[Path] = []
-    for pattern in patterns:
-        readmes.extend(ROOT.glob(pattern))
-    return sorted(path for path in readmes if path.is_file())
+    return sorted(
+        path
+        for path in ROOT.glob("pkgs/*/*/README.md")
+        if path.is_file() and (path.parent / "pyproject.toml").is_file()
+    )
 
 
 def _app_facing_readmes() -> list[Path]:

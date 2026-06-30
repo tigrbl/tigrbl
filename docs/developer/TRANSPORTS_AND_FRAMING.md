@@ -106,10 +106,10 @@ The serving/runtime stack owns wire-level HTTP/1.1, HTTP/2, HTTP/3, QUIC, TLS te
 
 ## Source Pointers
 
-- Binding policy and framing allowlists: `pkgs/core/tigrbl_core/tigrbl_core/_spec/binding_spec.py`
-- Runtime framing codecs: `pkgs/core/tigrbl_atoms/tigrbl_atoms/atoms/framing/codec.py`
-- WebTransport runtime channel state: `pkgs/core/tigrbl_atoms/tigrbl_atoms/runtime_channel.py`
-- Plain protocol stream taxonomy: `pkgs/core/tigrbl_kernel/tigrbl_kernel/protocol_streams.py`
+- Binding policy and framing allowlists: `pkgs/10_core/tigrbl_core/tigrbl_core/_spec/binding_spec.py`
+- Runtime framing codecs: `pkgs/40_atoms/tigrbl_atoms/tigrbl_atoms/atoms/framing/codec.py`
+- WebTransport runtime channel state: `pkgs/40_atoms/tigrbl_atoms/tigrbl_atoms/runtime_channel.py`
+- Plain protocol stream taxonomy: `pkgs/45_kernel/tigrbl_kernel/tigrbl_kernel/protocol_streams.py`
 - Public support and monitoring boundary: `docs/monitoring-and-transport-support-matrix.md`
 - Current target boundary: `docs/conformance/CURRENT_TARGET.md`
 - SSOT stream and protocol SPECs: `SPEC-2185`, `SPEC-2186`, `SPEC-2190`, `SPEC-2191`, `SPEC-2192`, and `SPEC-2193`

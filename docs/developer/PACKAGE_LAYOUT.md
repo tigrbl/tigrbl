@@ -23,14 +23,10 @@ Allowed top-level repository entries are:
 
 Python packages live under one of:
 
-- `pkgs/core/<package>/`
-- `pkgs/engines/<package>/`
-- `pkgs/apps/<package>/`
-- `pkgs/deprecated/<package>/`
+- `pkgs/<layer-id>/<package>/`
 
 Layer membership is governed by `pkgs/LAYERS.toml` and projected in
-`docs/developer/PACKAGE_LAYERS.md`. Layer membership is independent of the
-physical source root.
+`docs/developer/PACKAGE_LAYERS.md`. The physical source root is the layer id.
 
 Each Python package root must contain:
 

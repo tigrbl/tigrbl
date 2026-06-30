@@ -124,7 +124,7 @@ def test_release_version_uses_span_for_mixed_package_versions() -> None:
     plan["python"].append(  # type: ignore[index, union-attr]
         {
             "name": "tigrbl-core",
-            "path": "pkgs/core/tigrbl_core/pyproject.toml",
+            "path": "pkgs/10_core/tigrbl_core/pyproject.toml",
             "old_version": "0.4.4.dev1",
             "version": "0.4.4.dev3",
             "tag": "tigrbl-core==0.4.4.dev3",
@@ -139,7 +139,7 @@ def test_release_scope_uses_span_for_mixed_package_versions() -> None:
     plan["python"].append(  # type: ignore[index, union-attr]
         {
             "name": "tigrbl-core",
-            "path": "pkgs/core/tigrbl_core/pyproject.toml",
+            "path": "pkgs/10_core/tigrbl_core/pyproject.toml",
             "old_version": "0.4.4.dev1",
             "version": "0.4.4.dev3",
             "tag": "tigrbl-core==0.4.4.dev3",

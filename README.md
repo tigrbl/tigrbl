@@ -19,7 +19,7 @@
 
 Tigrbl is the repository for a schema-first Python framework family. It contains the public `tigrbl` facade package, split framework packages, operation packs, installable engine plugins, tests, governance docs, and Python runtime work.
 
-Most application developers should start with the [`tigrbl`](https://pypi.org/project/tigrbl/) distribution. This root README is the repository and workspace entry point; the PyPI-facing facade package README lives at [`pkgs/core/tigrbl/README.md`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl). Package-local README files under `pkgs/` document install targets, package boundaries, dependency surfaces, and links back to governed docs.
+Most application developers should start with the [`tigrbl`](https://pypi.org/project/tigrbl/) distribution. This root README is the repository and workspace entry point; the PyPI-facing facade package README lives at [`pkgs/80_facade/tigrbl/README.md`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/80_facade/tigrbl). Package-local README files under `pkgs/` document install targets, package boundaries, dependency surfaces, and links back to governed docs.
 
 ## Why use Tigrbl?
 
@@ -90,7 +90,7 @@ tigrbl --help
 python -m tigrbl --help
 ```
 
-The root `pyproject.toml` is a uv workspace manifest and is not itself a publishable package. It declares workspace membership under `pkgs/core/*`, `pkgs/deprecated/*`, and `pkgs/engines/*`, plus development dependencies for tests, CI validation, server compatibility, package builds, and release tooling.
+The root `pyproject.toml` is a uv workspace manifest and is not itself a publishable package. It declares workspace membership under numbered package layers such as `pkgs/00_typing/*`, `pkgs/60_ops/*`, `pkgs/90_engines/*`, `pkgs/95_client/*`, `pkgs/96_examples/*`, and `pkgs/97_tests/*`, plus development dependencies for tests, CI validation, server compatibility, package builds, and release tooling.
 
 ## Surface Coverage
 
@@ -99,8 +99,8 @@ The root `pyproject.toml` is a uv workspace manifest and is not itself a publish
 | GitHub repository | [`tigrbl/tigrbl`](https://github.com/tigrbl/tigrbl) |
 | Root workspace manifest | [`pyproject.toml`](https://github.com/tigrbl/tigrbl/blob/master/pyproject.toml) |
 | Primary PyPI package | [`tigrbl`](https://pypi.org/project/tigrbl/) |
-| Primary package path | [`pkgs/core/tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl) |
-| Workspace package roots | `pkgs/core/*`, `pkgs/engines/*`, `pkgs/deprecated/*` |
+| Primary package path | [`pkgs/80_facade/tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/80_facade/tigrbl) |
+| Workspace package roots | `pkgs/<layer-id>/*` |
 | Python import roots | `tigrbl`, `tigrbl_core`, `tigrbl_base`, `tigrbl_concrete`, `tigrbl_runtime`, `tigrbl_atoms`, `tigrbl_kernel`, `tigrbl_orm`, operation packs, engine packages, and support packages |
 | Console scripts | `tigrbl` from the facade package |
 | Current package line | `0.4.1` |
@@ -199,16 +199,16 @@ Tigrbl is organized as a split framework behind the facade:
 
 | Layer | Package | PyPI | GitHub path | Responsibility |
 |---|---|---|---|---|
-| Facade | `tigrbl` | [`tigrbl`](https://pypi.org/project/tigrbl/) | [`pkgs/core/tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl) | Public authoring imports, shortcuts, compatibility modules, CLI entry point, and application-facing docs |
-| Core specs | `tigrbl-core` | [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) | [`pkgs/core/tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_core) | App, router, table, column, op, hook, schema, response, binding, engine, storage, path, docs, session, and middleware specs |
-| Base contracts | `tigrbl-base` | [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) | [`pkgs/core/tigrbl_base`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_base) | Abstract app/router/table/session/request/response/binding/security/middleware/storage interfaces and mapping helpers |
-| Concrete adapters | `tigrbl-concrete` | [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) | [`pkgs/core/tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete) | Concrete app/router/table/response/request/security/decorator/engine/system/transport implementations |
-| Atoms | `tigrbl-atoms` | [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) | [`pkgs/core/tigrbl_atoms`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_atoms) | Phase names, stage transitions, contexts, atom implementations, transactions, batch atoms, and transport atoms |
-| Kernel | `tigrbl-kernel` | [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) | [`pkgs/core/tigrbl_kernel`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_kernel) | Operation-view compilation, hook ordering, labels, packed plans, protocol chains, lifecycle rows, event keys, capability masks, and dispatch plans |
-| Runtime | `tigrbl-runtime` | [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | [`pkgs/core/tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) | Execution of compiled kernel plans plus narrow runtime context/carrier compatibility; route selection, protocol policy, response shaping, and operation semantics belong to kernel, atoms, and ops packages |
-| Operation packs | `tigrbl-ops-*` | [`oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`olap`](https://pypi.org/project/tigrbl-ops-olap/), [`realtime`](https://pypi.org/project/tigrbl-ops-realtime/), [`webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/) | [`pkgs/core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core) | Canonical operation definitions for CRUD, analytics, realtime, streaming, pub/sub, and WebTransport control-plane workloads |
-| ORM | `tigrbl-orm` | [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) | [`pkgs/core/tigrbl_orm`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_orm) | SQLAlchemy-facing table and mixin helpers used by Tigrbl models and internals |
-| Engines | `tigrbl-engine-*` | Engine PyPI distributions | [`pkgs/engines`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines) | Backend-specific persistence, cache, queue, rate, bloom, dedupe, dataframe, warehouse, and database integrations |
+| Facade | `tigrbl` | [`tigrbl`](https://pypi.org/project/tigrbl/) | [`pkgs/80_facade/tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/80_facade/tigrbl) | Public authoring imports, shortcuts, compatibility modules, CLI entry point, and application-facing docs |
+| Core specs | `tigrbl-core` | [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) | [`pkgs/10_core/tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/10_core/tigrbl_core) | App, router, table, column, op, hook, schema, response, binding, engine, storage, path, docs, session, and middleware specs |
+| Base contracts | `tigrbl-base` | [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) | [`pkgs/20_base/tigrbl_base`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/20_base/tigrbl_base) | Abstract app/router/table/session/request/response/binding/security/middleware/storage interfaces and mapping helpers |
+| Concrete adapters | `tigrbl-concrete` | [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) | [`pkgs/70_concrete/tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/70_concrete/tigrbl_concrete) | Concrete app/router/table/response/request/security/decorator/engine/system/transport implementations |
+| Atoms | `tigrbl-atoms` | [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) | [`pkgs/40_atoms/tigrbl_atoms`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/40_atoms/tigrbl_atoms) | Phase names, stage transitions, contexts, atom implementations, transactions, batch atoms, and transport atoms |
+| Kernel | `tigrbl-kernel` | [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) | [`pkgs/45_kernel/tigrbl_kernel`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/45_kernel/tigrbl_kernel) | Operation-view compilation, hook ordering, labels, packed plans, protocol chains, lifecycle rows, event keys, capability masks, and dispatch plans |
+| Runtime | `tigrbl-runtime` | [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | [`pkgs/50_runtime/tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/50_runtime/tigrbl_runtime) | Execution of compiled kernel plans plus narrow runtime context/carrier compatibility; route selection, protocol policy, response shaping, and operation semantics belong to kernel, atoms, and ops packages |
+| Operation packs | `tigrbl-ops-*` | [`oltp`](https://pypi.org/project/tigrbl-ops-oltp/), [`olap`](https://pypi.org/project/tigrbl-ops-olap/), [`realtime`](https://pypi.org/project/tigrbl-ops-realtime/), [`webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/) | [`pkgs/60_ops`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/60_ops) | Canonical operation definitions for CRUD, analytics, realtime, streaming, pub/sub, and WebTransport control-plane workloads |
+| ORM | `tigrbl-orm` | [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) | [`pkgs/30_orm/tigrbl_orm`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/30_orm/tigrbl_orm) | SQLAlchemy-facing table and mixin helpers used by Tigrbl models and internals |
+| Engines | `tigrbl-engine-*` | Engine PyPI distributions | [`pkgs/90_engines`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines) | Backend-specific persistence, cache, queue, rate, bloom, dedupe, dataframe, warehouse, and database integrations |
 
 Use the facade for application code unless you are maintaining a framework layer, testing a boundary in isolation, or writing a package that intentionally plugs into one of the lower layers.
 
@@ -415,52 +415,52 @@ Use that same mental model for schema, response, path, engine, and operation beh
 
 | Package | PyPI | GitHub path | Import root |
 |---|---|---|---|
-| `tigrbl` | [`tigrbl`](https://pypi.org/project/tigrbl/) | [`pkgs/core/tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl) | `tigrbl` |
-| `tigrbl-atoms` | [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) | [`pkgs/core/tigrbl_atoms`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_atoms) | `tigrbl_atoms` |
-| `tigrbl-base` | [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) | [`pkgs/core/tigrbl_base`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_base) | `tigrbl_base` |
-| `tigrbl-canon` | [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) | [`pkgs/deprecated/tigrbl_canon`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/deprecated/tigrbl_canon) | `tigrbl_canon` |
-| `tigrbl_client` | [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) | [`pkgs/core/tigrbl_client`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_client) | `tigrbl_client` |
-| `tigrbl-concrete` | [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) | [`pkgs/core/tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_concrete) | `tigrbl_concrete` |
-| `tigrbl-core` | [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) | [`pkgs/core/tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_core) | `tigrbl_core` |
-| `tigrbl-kernel` | [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) | [`pkgs/core/tigrbl_kernel`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_kernel) | `tigrbl_kernel` |
-| `tigrbl-ops-olap` | [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) | [`pkgs/core/tigrbl_ops_olap`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_olap) | `tigrbl_ops_olap` |
-| `tigrbl-ops-oltp` | [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) | [`pkgs/core/tigrbl_ops_oltp`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_oltp) | `tigrbl_ops_oltp` |
-| `tigrbl-ops-realtime` | [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) | [`pkgs/core/tigrbl_ops_realtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_realtime) | `tigrbl_ops_realtime` |
-| `tigrbl-ops-webtransport` | [`tigrbl-ops-webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/) | [`pkgs/core/tigrbl_ops_webtransport`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_ops_webtransport) | `tigrbl_ops_webtransport` |
-| `tigrbl-orm` | [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) | [`pkgs/core/tigrbl_orm`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_orm) | `tigrbl_orm` |
-| `tigrbl-runtime` | [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | [`pkgs/core/tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_runtime) | `tigrbl_runtime` |
-| `tigrbl_spec` | [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) | [`pkgs/core/tigrbl_spec`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_spec) | `tigrbl_spec` |
-| `tigrbl_tests` | [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) | [`pkgs/core/tigrbl_tests`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_tests) | `tigrbl_tests` |
-| `tigrbl-typing` | [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) | [`pkgs/core/tigrbl_typing`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl_typing) | `tigrbl_typing` |
+| `tigrbl` | [`tigrbl`](https://pypi.org/project/tigrbl/) | [`pkgs/80_facade/tigrbl`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/80_facade/tigrbl) | `tigrbl` |
+| `tigrbl-atoms` | [`tigrbl-atoms`](https://pypi.org/project/tigrbl-atoms/) | [`pkgs/40_atoms/tigrbl_atoms`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/40_atoms/tigrbl_atoms) | `tigrbl_atoms` |
+| `tigrbl-base` | [`tigrbl-base`](https://pypi.org/project/tigrbl-base/) | [`pkgs/20_base/tigrbl_base`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/20_base/tigrbl_base) | `tigrbl_base` |
+| `tigrbl-canon` | [`tigrbl-canon`](https://pypi.org/project/tigrbl-canon/) | [`pkgs/99_deprecated/tigrbl_canon`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/99_deprecated/tigrbl_canon) | `tigrbl_canon` |
+| `tigrbl_client` | [`tigrbl_client`](https://pypi.org/project/tigrbl_client/) | [`pkgs/95_client/tigrbl_client`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/95_client/tigrbl_client) | `tigrbl_client` |
+| `tigrbl-concrete` | [`tigrbl-concrete`](https://pypi.org/project/tigrbl-concrete/) | [`pkgs/70_concrete/tigrbl_concrete`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/70_concrete/tigrbl_concrete) | `tigrbl_concrete` |
+| `tigrbl-core` | [`tigrbl-core`](https://pypi.org/project/tigrbl-core/) | [`pkgs/10_core/tigrbl_core`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/10_core/tigrbl_core) | `tigrbl_core` |
+| `tigrbl-kernel` | [`tigrbl-kernel`](https://pypi.org/project/tigrbl-kernel/) | [`pkgs/45_kernel/tigrbl_kernel`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/45_kernel/tigrbl_kernel) | `tigrbl_kernel` |
+| `tigrbl-ops-olap` | [`tigrbl-ops-olap`](https://pypi.org/project/tigrbl-ops-olap/) | [`pkgs/60_ops/tigrbl_ops_olap`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/60_ops/tigrbl_ops_olap) | `tigrbl_ops_olap` |
+| `tigrbl-ops-oltp` | [`tigrbl-ops-oltp`](https://pypi.org/project/tigrbl-ops-oltp/) | [`pkgs/60_ops/tigrbl_ops_oltp`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/60_ops/tigrbl_ops_oltp) | `tigrbl_ops_oltp` |
+| `tigrbl-ops-realtime` | [`tigrbl-ops-realtime`](https://pypi.org/project/tigrbl-ops-realtime/) | [`pkgs/60_ops/tigrbl_ops_realtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/60_ops/tigrbl_ops_realtime) | `tigrbl_ops_realtime` |
+| `tigrbl-ops-webtransport` | [`tigrbl-ops-webtransport`](https://pypi.org/project/tigrbl-ops-webtransport/) | [`pkgs/60_ops/tigrbl_ops_webtransport`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/60_ops/tigrbl_ops_webtransport) | `tigrbl_ops_webtransport` |
+| `tigrbl-orm` | [`tigrbl-orm`](https://pypi.org/project/tigrbl-orm/) | [`pkgs/30_orm/tigrbl_orm`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/30_orm/tigrbl_orm) | `tigrbl_orm` |
+| `tigrbl-runtime` | [`tigrbl-runtime`](https://pypi.org/project/tigrbl-runtime/) | [`pkgs/50_runtime/tigrbl_runtime`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/50_runtime/tigrbl_runtime) | `tigrbl_runtime` |
+| `tigrbl_spec` | [`tigrbl_spec`](https://pypi.org/project/tigrbl_spec/) | [`pkgs/01_spec/tigrbl_spec`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/01_spec/tigrbl_spec) | `tigrbl_spec` |
+| `tigrbl_tests` | [`tigrbl_tests`](https://pypi.org/project/tigrbl_tests/) | [`pkgs/97_tests/tigrbl_tests`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/97_tests/tigrbl_tests) | `tigrbl_tests` |
+| `tigrbl-typing` | [`tigrbl-typing`](https://pypi.org/project/tigrbl-typing/) | [`pkgs/00_typing/tigrbl_typing`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/00_typing/tigrbl_typing) | `tigrbl_typing` |
 
 ### Engine Packages
 
 | Package | PyPI | GitHub path | Primary use |
 |---|---|---|---|
-| `tigrbl_engine_bigquery` | [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) | [`pkgs/engines/tigrbl_engine_bigquery`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_bigquery) | BigQuery integration |
-| `tigrbl_engine_clickhouse` | [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) | [`pkgs/engines/tigrbl_engine_clickhouse`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_clickhouse) | ClickHouse integration |
-| `tigrbl_engine_csv` | [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) | [`pkgs/engines/tigrbl_engine_csv`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_csv) | CSV-backed workflows |
-| `tigrbl_engine_dataframe` | [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) | [`pkgs/engines/tigrbl_engine_dataframe`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_dataframe) | DataFrame workflows |
-| `tigrbl_engine_duckdb` | [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) | [`pkgs/engines/tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_duckdb) | DuckDB integration |
-| `tigrbl_engine_inmemcache` | [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) | [`pkgs/engines/tigrbl_engine_inmemcache`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemcache) | In-memory cache |
-| `tigrbl_engine_inmemory` | [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) | [`pkgs/engines/tigrbl_engine_inmemory`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_inmemory) | In-memory persistence |
-| `tigrbl_engine_membloom` | [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) | [`pkgs/engines/tigrbl_engine_membloom`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_membloom) | In-memory bloom filters |
-| `tigrbl_engine_memdedupe` | [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) | [`pkgs/engines/tigrbl_engine_memdedupe`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_memdedupe) | In-memory dedupe |
-| `tigrbl_engine_memkv` | [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) | [`pkgs/engines/tigrbl_engine_memkv`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_memkv) | In-memory key-value storage |
-| `tigrbl_engine_memlru` | [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) | [`pkgs/engines/tigrbl_engine_memlru`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_memlru) | In-memory LRU cache |
-| `tigrbl_engine_mempubsub` | [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) | [`pkgs/engines/tigrbl_engine_mempubsub`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_mempubsub) | In-memory pub/sub |
-| `tigrbl_engine_memqueue` | [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) | [`pkgs/engines/tigrbl_engine_memqueue`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_memqueue) | In-memory queues |
-| `tigrbl_engine_memrate` | [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) | [`pkgs/engines/tigrbl_engine_memrate`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_memrate) | In-memory rate limits |
-| `tigrbl_engine_numpy` | [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) | [`pkgs/engines/tigrbl_engine_numpy`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_numpy) | NumPy-backed workflows |
-| `tigrbl_engine_pandas` | [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) | [`pkgs/engines/tigrbl_engine_pandas`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pandas) | Pandas-backed workflows |
-| `tigrbl_engine_pgsqli_wal` | [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) | [`pkgs/engines/tigrbl_engine_pgsqli_wal`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pgsqli_wal) | PostgreSQL/SQLite WAL workflows |
-| `tigrbl_engine_postgres` | [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) | [`pkgs/engines/tigrbl_engine_postgres`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_postgres) | PostgreSQL integration |
-| `tigrbl_engine_pyspark` | [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) | [`pkgs/engines/tigrbl_engine_pyspark`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_pyspark) | PySpark workflows |
-| `tigrbl_engine_redis` | [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) | [`pkgs/engines/tigrbl_engine_redis`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_redis) | Redis integration |
-| `tigrbl_engine_rediscachethrough` | [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) | [`pkgs/engines/tigrbl_engine_rediscachethrough`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_rediscachethrough) | Redis cache-through integration |
-| `tigrbl_engine_snowflake` | [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) | [`pkgs/engines/tigrbl_engine_snowflake`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_snowflake) | Snowflake integration |
-| `tigrbl_engine_sqlite` | [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) | [`pkgs/engines/tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_sqlite) | SQLite integration |
-| `tigrbl_engine_xlsx` | [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) | [`pkgs/engines/tigrbl_engine_xlsx`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/engines/tigrbl_engine_xlsx) | XLSX-backed workflows |
+| `tigrbl_engine_bigquery` | [`tigrbl_engine_bigquery`](https://pypi.org/project/tigrbl_engine_bigquery/) | [`pkgs/90_engines/tigrbl_engine_bigquery`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_bigquery) | BigQuery integration |
+| `tigrbl_engine_clickhouse` | [`tigrbl_engine_clickhouse`](https://pypi.org/project/tigrbl_engine_clickhouse/) | [`pkgs/90_engines/tigrbl_engine_clickhouse`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_clickhouse) | ClickHouse integration |
+| `tigrbl_engine_csv` | [`tigrbl_engine_csv`](https://pypi.org/project/tigrbl_engine_csv/) | [`pkgs/90_engines/tigrbl_engine_csv`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_csv) | CSV-backed workflows |
+| `tigrbl_engine_dataframe` | [`tigrbl_engine_dataframe`](https://pypi.org/project/tigrbl_engine_dataframe/) | [`pkgs/90_engines/tigrbl_engine_dataframe`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_dataframe) | DataFrame workflows |
+| `tigrbl_engine_duckdb` | [`tigrbl_engine_duckdb`](https://pypi.org/project/tigrbl_engine_duckdb/) | [`pkgs/90_engines/tigrbl_engine_duckdb`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_duckdb) | DuckDB integration |
+| `tigrbl_engine_inmemcache` | [`tigrbl_engine_inmemcache`](https://pypi.org/project/tigrbl_engine_inmemcache/) | [`pkgs/90_engines/tigrbl_engine_inmemcache`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_inmemcache) | In-memory cache |
+| `tigrbl_engine_inmemory` | [`tigrbl_engine_inmemory`](https://pypi.org/project/tigrbl_engine_inmemory/) | [`pkgs/90_engines/tigrbl_engine_inmemory`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_inmemory) | In-memory persistence |
+| `tigrbl_engine_membloom` | [`tigrbl_engine_membloom`](https://pypi.org/project/tigrbl_engine_membloom/) | [`pkgs/90_engines/tigrbl_engine_membloom`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_membloom) | In-memory bloom filters |
+| `tigrbl_engine_memdedupe` | [`tigrbl_engine_memdedupe`](https://pypi.org/project/tigrbl_engine_memdedupe/) | [`pkgs/90_engines/tigrbl_engine_memdedupe`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_memdedupe) | In-memory dedupe |
+| `tigrbl_engine_memkv` | [`tigrbl_engine_memkv`](https://pypi.org/project/tigrbl_engine_memkv/) | [`pkgs/90_engines/tigrbl_engine_memkv`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_memkv) | In-memory key-value storage |
+| `tigrbl_engine_memlru` | [`tigrbl_engine_memlru`](https://pypi.org/project/tigrbl_engine_memlru/) | [`pkgs/90_engines/tigrbl_engine_memlru`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_memlru) | In-memory LRU cache |
+| `tigrbl_engine_mempubsub` | [`tigrbl_engine_mempubsub`](https://pypi.org/project/tigrbl_engine_mempubsub/) | [`pkgs/90_engines/tigrbl_engine_mempubsub`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_mempubsub) | In-memory pub/sub |
+| `tigrbl_engine_memqueue` | [`tigrbl_engine_memqueue`](https://pypi.org/project/tigrbl_engine_memqueue/) | [`pkgs/90_engines/tigrbl_engine_memqueue`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_memqueue) | In-memory queues |
+| `tigrbl_engine_memrate` | [`tigrbl_engine_memrate`](https://pypi.org/project/tigrbl_engine_memrate/) | [`pkgs/90_engines/tigrbl_engine_memrate`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_memrate) | In-memory rate limits |
+| `tigrbl_engine_numpy` | [`tigrbl_engine_numpy`](https://pypi.org/project/tigrbl_engine_numpy/) | [`pkgs/90_engines/tigrbl_engine_numpy`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_numpy) | NumPy-backed workflows |
+| `tigrbl_engine_pandas` | [`tigrbl_engine_pandas`](https://pypi.org/project/tigrbl_engine_pandas/) | [`pkgs/90_engines/tigrbl_engine_pandas`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_pandas) | Pandas-backed workflows |
+| `tigrbl_engine_pgsqli_wal` | [`tigrbl_engine_pgsqli_wal`](https://pypi.org/project/tigrbl_engine_pgsqli_wal/) | [`pkgs/90_engines/tigrbl_engine_pgsqli_wal`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_pgsqli_wal) | PostgreSQL/SQLite WAL workflows |
+| `tigrbl_engine_postgres` | [`tigrbl_engine_postgres`](https://pypi.org/project/tigrbl_engine_postgres/) | [`pkgs/90_engines/tigrbl_engine_postgres`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_postgres) | PostgreSQL integration |
+| `tigrbl_engine_pyspark` | [`tigrbl_engine_pyspark`](https://pypi.org/project/tigrbl_engine_pyspark/) | [`pkgs/90_engines/tigrbl_engine_pyspark`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_pyspark) | PySpark workflows |
+| `tigrbl_engine_redis` | [`tigrbl_engine_redis`](https://pypi.org/project/tigrbl_engine_redis/) | [`pkgs/90_engines/tigrbl_engine_redis`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_redis) | Redis integration |
+| `tigrbl_engine_rediscachethrough` | [`tigrbl_engine_rediscachethrough`](https://pypi.org/project/tigrbl_engine_rediscachethrough/) | [`pkgs/90_engines/tigrbl_engine_rediscachethrough`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_rediscachethrough) | Redis cache-through integration |
+| `tigrbl_engine_snowflake` | [`tigrbl_engine_snowflake`](https://pypi.org/project/tigrbl_engine_snowflake/) | [`pkgs/90_engines/tigrbl_engine_snowflake`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_snowflake) | Snowflake integration |
+| `tigrbl_engine_sqlite` | [`tigrbl_engine_sqlite`](https://pypi.org/project/tigrbl_engine_sqlite/) | [`pkgs/90_engines/tigrbl_engine_sqlite`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_sqlite) | SQLite integration |
+| `tigrbl_engine_xlsx` | [`tigrbl_engine_xlsx`](https://pypi.org/project/tigrbl_engine_xlsx/) | [`pkgs/90_engines/tigrbl_engine_xlsx`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/90_engines/tigrbl_engine_xlsx) | XLSX-backed workflows |
 
 ### Runtime Execution
 
@@ -520,7 +520,7 @@ Release evidence is organized under `docs/conformance/releases/`. Active develop
 - Community: [Discord](https://discord.gg/K4YTAPapjR).
 - Issues: [GitHub Issues](https://github.com/tigrbl/tigrbl/issues).
 - Repository: [`tigrbl/tigrbl`](https://github.com/tigrbl/tigrbl).
-- Primary package README: [`pkgs/core/tigrbl/README.md`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/core/tigrbl).
+- Primary package README: [`pkgs/80_facade/tigrbl/README.md`](https://github.com/tigrbl/tigrbl/tree/master/pkgs/80_facade/tigrbl).
 
 ## Repository-local Boundary
 
@@ -531,7 +531,7 @@ This root README is the repository and workspace entry point. It answers reposit
 - Workspace status: governed Python workspace in the [`tigrbl/tigrbl`](https://github.com/tigrbl/tigrbl) repository.
 - Governance source: [SSOT registry](https://github.com/tigrbl/tigrbl/blob/master/.ssot/registry.json).
 - Release evidence: [publish workflow](https://github.com/tigrbl/tigrbl/actions/workflows/publish.yml) validates package builds, tests, GitHub release assets, and PyPI publication for managed packages.
-- Local certification guard: `pkgs/core/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies package README badges, legal pointers, and required package sections.
+- Local certification guard: `pkgs/97_tests/tigrbl_tests/tests/unit/test_package_badges_and_notices.py` verifies package README badges, legal pointers, and required package sections.
 - Scope note: this root README documents the repository and workspace boundary. Runtime feature support remains governed by `.ssot/` entities and the conformance docs linked below.
 
 ## License

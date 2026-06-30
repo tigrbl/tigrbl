@@ -34,7 +34,7 @@ jobs:
         run: |
           set -euo pipefail
           PY_PATH="$GITHUB_WORKSPACE"
-          for base in "$GITHUB_WORKSPACE/pkgs/core" "$GITHUB_WORKSPACE/pkgs/apps" "$GITHUB_WORKSPACE/pkgs/engines"; do
+          for base in "$GITHUB_WORKSPACE/pkgs"/*; do
             if [[ -d "$base" ]]; then
               for child in "$base"/*; do
                 [[ -d "$child" ]] || continue
@@ -45,7 +45,7 @@ jobs:
               done
             fi
           done
-          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/core/tigrbl_runtime"
+          PY_PATH="$PY_PATH:$GITHUB_WORKSPACE/pkgs/50_runtime/tigrbl_runtime"
           echo "PYTHONPATH=$PY_PATH" >> "$GITHUB_ENV"
 
       - name: Validate Gate B surface closure
@@ -54,13 +54,13 @@ jobs:
       - name: Run Gate B surface tests
         run: >-
           uv run --no-sync python -m pytest --noconftest -q
-          pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
-          pkgs/core/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
-          pkgs/core/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
-          pkgs/core/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py
-          pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_closure.py
-          pkgs/core/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
-          pkgs/core/tigrbl_tests/tests/unit/test_cli_cmds.py
-          pkgs/core/tigrbl_tests/tests/unit/test_cli_srv.py
+          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openapi_uvicorn.py
+          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_swagger_uvicorn.py
+          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_openrpc_uvicorn.py
+          pkgs/97_tests/tigrbl_tests/tests/i9n/test_mountable_lens_uvicorn.py
+          pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_closure.py
+          pkgs/97_tests/tigrbl_tests/tests/unit/test_operator_surface_docs_parity.py
+          pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_cmds.py
+          pkgs/97_tests/tigrbl_tests/tests/unit/test_cli_srv.py
           tools/ci/tests/test_gate_b_surface_closure.py
           -p no:cacheprovider
